@@ -1,0 +1,52 @@
+# schema tells gqlgen where the GraphQL schema is located.
+schema:
+  - graphql/*.graphql
+
+exec:
+  layout: follow-schema
+  dir: graphql/generated
+  package: generated
+
+# resolver reports where the resolver implementations go.
+resolver:
+  layout: follow-schema
+  dir: graphql
+  package: graphql
+  filename_template: "{name}.resolvers.go"
+
+# model:
+#   filename: graphql/model/models_gen.go
+#   package: model
+
+# gqlgen will search for any type names in the schema in these go packages
+# if they match it will use them, otherwise it will generate them.
+
+# autobind tells gqngen to search for any type names in the GraphQL schema in the
+# provided package. If they match it will use them, otherwise it will generate new.
+autobind:
+  - cscd-bds/store/ent
+  - cscd-bds/store/ent/opportunity
+  - cscd-bds/store/ent/user
+  # - cscd-bds/store/ent/assetcategory
+  # - cscd-bds/store/ent/admin
+  # - cscd-bds/store/ent/site
+  # - cscd-attendance/ent/attendance
+  # - cscd-attendance/ent/site
+
+# This section declares type mapping between the GraphQL and Go type systems.
+models:
+  # Defines the ID field as Go 'int'.
+  ID:
+    model:
+      # - github.com/99designs/gqlgen/graphql.ID
+      # - github.com/rs/xid/id
+      - "cscd-bds/store/ent/schema/xid.ID"
+  UUID:
+    model:
+      - github.com/99designs/gqlgen/graphql.UUID
+  Node:
+    model:
+      - cscd-bds/store/ent.Noder
+  # ZhongHaiTongUser:
+  #   model:
+  #     - cscd-bds/store/ent/schema.ZhongHaiTongUser

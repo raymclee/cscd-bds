@@ -1,0 +1,9 @@
+@import url("@arco-design/web-react/dist/css/arco.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+    @apply min-h-screen;
+}
