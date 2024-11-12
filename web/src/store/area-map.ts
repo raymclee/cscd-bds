@@ -20,6 +20,7 @@ export const useAreaMapStore = create<MapState>()((set) => ({
         // "coastline-stroke": "#d0f5ce",
         // "province-stroke": "#d0f5ce",
         // "county-stroke": "#d0f5ce",
+        // @ts-expect-error
         fill: (props: { adcode_pro: number }) => {
           switch (props.adcode_pro) {
             case 540000: //西藏
@@ -121,11 +122,13 @@ export const useAreaMapStore = create<MapState>()((set) => ({
       for (let i = 0; i < LabelsData.length; i++) {
         const labelsMarker = new AMap.LabelMarker(LabelsData[i]);
         labelsMarker.on("click", (e) => {
-          map.setZoomAndCenter(16, LabelsData[i].position);
-          map.remove(disCountry);
-          map.remove(distWorld);
-          map.add(AMap.createDefaultLayer());
+          // map.setZoomAndCenter(16, LabelsData[i].position);
+          // map.remove(disCountry);
+          // map.remove(distWorld);
+          // map.add(AMap.createDefaultLayer());
           // map.add(satellite);
+          navigate({ to: "/2" });
+          map.destroy();
         });
         // @ts-expect-error
         layer.add(labelsMarker);

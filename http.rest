@@ -1,0 +1,1 @@
+GET https://restapi.amap.com/v3/config/district?keywords=北京&subdistrict=0&extensions=all&key=28982eb1a6a3cd956e0e0614c2fb131b

@@ -8,11 +8,23 @@ export const Route = createLazyFileRoute("/__map/2")({
 });
 
 function RouteComponent() {
-  const [initMap] = useMapStore(useShallow((state) => [state.initMap]));
+  const [map, initMap] = useMapStore(
+    useShallow((state) => [state.map, state.initMap])
+  );
 
   React.useEffect(() => {
-    initMap("map");
+    initMap("map", {
+      zoom: 4,
+      center: [116.397428, 39.90923],
+    });
   }, []);
+
+  React.useEffect(() => {
+    map?.on("complete", () => {
+      map?.setZoomAndCenter(8, [116.397428, 39.90923]);
+      // AMap.Util.requestAnimFrame(map);
+    });
+  }, [map]);
 
   return (
     <>

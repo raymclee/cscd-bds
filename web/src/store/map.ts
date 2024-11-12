@@ -1,94 +1,93 @@
+import { NavigateFn, useNavigate } from "@tanstack/react-router";
 import { create } from "zustand";
 
-type MapState = {
-  map: AMap.Map | null;
-  initMap: (container: string, opts?: Partial<AMap.MapOptions>) => void;
-  onDistrictClick: (e: any) => void;
+type District = {
+  id: string;
+  citycode: string[];
+  adcode: number[];
+  name: string;
+  center: [number, number];
+  level: string;
+  districts: District[];
 };
 
-export const useMapStore = create<MapState>()((set) => ({
-  map: null,
-  initMap: (container, opts?: Partial<AMap.MapOptions>) => {
-    const map = new AMap.Map(container, { ...opts });
-    map?.on("complete", (e) => {
-      const layer = new AMap.LabelsLayer({
-        // 开启标注避让，默认为开启，v1.4.15 新增属性
-        collision: false,
-        // 开启标注淡入动画，默认为开启，v1.4.15 新增属性
-      });
-      for (const district of districts) {
-        const marker = new AMap.LabelMarker({
-          position: district.center as [number, number],
-          name: district.name,
-          zooms: [0, 4.8],
-          zIndex: 1,
-          opacity: 1,
-          text: {
-            content: district.name,
-            direction: "center",
-            style: {
-              fontSize: 24,
-              fontWeight: "normal",
-              fillColor: "#eee",
-              strokeColor: "#88f",
-              strokeWidth: 2,
-            },
-          },
-          innerOverlay: true,
-        });
-        marker.on("click", (e) => {
-          console.log(e);
-        });
-        layer.add(marker);
-      }
-      map.add(layer);
-    });
-    set({ map });
-  },
-  onDistrictClick: (e) => {
-    console.log(e);
-  },
-}));
-
-const districts = [
+const districts: District[] = [
   {
+    id: "1",
     citycode: [],
-    adcode: "440000",
+    adcode: [
+      540000, 650000, 620000, 630000, 510000, 530000, 640000, 610000, 500000,
+      520000,
+    ],
     name: "西部地区",
     center: [90.986153, 36.876121],
     level: "province",
     districts: [],
   },
   {
+    id: "2",
     citycode: [],
-    adcode: "440000",
+    adcode: [
+      150000, 230000, 220000, 210000, 110000, 130000, 140000, 120000, 370000,
+    ],
     name: "华北地区",
     center: [116.136142, 42.021244],
     level: "province",
     districts: [],
   },
   {
+    id: "3",
     citycode: [],
-    adcode: "440000",
+    adcode: [320000, 310000, 340000, 330000, 410000],
     name: "华东地区",
     center: [119.008879, 32.688899],
     level: "province",
     districts: [],
   },
   {
+    id: "4",
     citycode: [],
-    adcode: "440000",
+    adcode: [430000, 350000, 440000, 450000, 360000, 420000, 460000, 710000],
     name: "华南地区",
     center: [112.186512, 28.03419],
     level: "province",
     districts: [],
   },
   {
+    id: "5",
     citycode: [],
-    adcode: "440000",
+    adcode: [810000, 82000],
     name: "港澳地区",
     center: [114.183583, 22.385247],
     level: "province",
     districts: [],
   },
 ];
+
+type InitMap = {
+  container: string;
+  opts?: Partial<AMap.MapOptions>;
+  navigate?: NavigateFn;
+};
+
+type MapState = {
+  map: AMap.Map | null;
+  selectedDistrict: District | null;
+  districts: District[];
+  initMap: (container: string, opts: Partial<AMap.MapOptions>) => void;
+  selectDistrict: (district: District) => void;
+};
+
+export const useMapStore = create<MapState>()((set) => ({
+  map: null,
+  selectedDistrict: null,
+  districts,
+  initMap: (container, opts) => {
+    const map = new AMap.Map(container, { ...opts });
+
+    set({ map });
+  },
+  selectDistrict: (selectedDistrict) => {
+    set({ selectedDistrict });
+  },
+}));

@@ -8,21 +8,21 @@ export const Route = createLazyFileRoute("/__map/map")({
 });
 
 function RouteComponent() {
-  const [map, initMap] = useMapStore(
-    useShallow((state) => [state.map, state.initMap])
-  );
+  // const [map, initMap] = useMapStore(
+  //   useShallow((state) => [state.map, state.initMap])
+  // );
 
-  React.useEffect(() => {
-    initMap("map", {
-      zoom: 4,
-      center: [116.397428, 39.90923],
-      //   layers: [new AMap.DistrictLayer.Country({ depth: 2 })],
-    });
+  // React.useEffect(() => {
+  //   initMap("map", {
+  //     zoom: 4,
+  //     center: [116.397428, 39.90923],
+  //     //   layers: [new AMap.DistrictLayer.Country({ depth: 2 })],
+  //   });
 
-    return () => {
-      map?.destroy();
-    };
-  }, []);
+  //   return () => {
+  //     map?.destroy();
+  //   };
+  // }, []);
 
   return (
     <>

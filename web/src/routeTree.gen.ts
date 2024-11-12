@@ -20,9 +20,13 @@ import { Route as IndexImport } from './routes/index'
 // Create Virtual Routes
 
 const authLazyImport = createFileRoute('/__auth')()
+const mapProvinceLazyImport = createFileRoute('/__map/province')()
 const mapMapLazyImport = createFileRoute('/__map/map')()
 const mapAreaMapLazyImport = createFileRoute('/__map/area-map')()
 const map2LazyImport = createFileRoute('/__map/2')()
+const mapProvincesIndexLazyImport = createFileRoute('/__map/provinces/')()
+const mapAreasIndexLazyImport = createFileRoute('/__map/areas/')()
+const mapAreasAreaLazyImport = createFileRoute('/__map/areas/$area')()
 
 // Create/Update Routes
 
@@ -39,18 +43,24 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const mapRoute = mapImport
-  .update({
-    id: '/__map',
-    getParentRoute: () => rootRoute,
-  } as any)
-  .lazy(() => import('./routes/__map.lazy').then((d) => d.Route))
+const mapRoute = mapImport.update({
+  id: '/__map',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const mapProvinceLazyRoute = mapProvinceLazyImport
+  .update({
+    id: '/province',
+    path: '/province',
+    getParentRoute: () => mapRoute,
+  } as any)
+  .lazy(() => import('./routes/__map/province.lazy').then((d) => d.Route))
 
 const mapMapLazyRoute = mapMapLazyImport
   .update({
@@ -75,6 +85,32 @@ const map2LazyRoute = map2LazyImport
     getParentRoute: () => mapRoute,
   } as any)
   .lazy(() => import('./routes/__map/2.lazy').then((d) => d.Route))
+
+const mapProvincesIndexLazyRoute = mapProvincesIndexLazyImport
+  .update({
+    id: '/provinces/',
+    path: '/provinces/',
+    getParentRoute: () => mapRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__map/provinces/index.lazy').then((d) => d.Route),
+  )
+
+const mapAreasIndexLazyRoute = mapAreasIndexLazyImport
+  .update({
+    id: '/areas/',
+    path: '/areas/',
+    getParentRoute: () => mapRoute,
+  } as any)
+  .lazy(() => import('./routes/__map/areas/index.lazy').then((d) => d.Route))
+
+const mapAreasAreaLazyRoute = mapAreasAreaLazyImport
+  .update({
+    id: '/areas/$area',
+    path: '/areas/$area',
+    getParentRoute: () => mapRoute,
+  } as any)
+  .lazy(() => import('./routes/__map/areas/$area.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -129,6 +165,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof mapMapLazyImport
       parentRoute: typeof mapImport
     }
+    '/__map/province': {
+      id: '/__map/province'
+      path: '/province'
+      fullPath: '/province'
+      preLoaderRoute: typeof mapProvinceLazyImport
+      parentRoute: typeof mapImport
+    }
+    '/__map/areas/$area': {
+      id: '/__map/areas/$area'
+      path: '/areas/$area'
+      fullPath: '/areas/$area'
+      preLoaderRoute: typeof mapAreasAreaLazyImport
+      parentRoute: typeof mapImport
+    }
+    '/__map/areas/': {
+      id: '/__map/areas/'
+      path: '/areas'
+      fullPath: '/areas'
+      preLoaderRoute: typeof mapAreasIndexLazyImport
+      parentRoute: typeof mapImport
+    }
+    '/__map/provinces/': {
+      id: '/__map/provinces/'
+      path: '/provinces'
+      fullPath: '/provinces'
+      preLoaderRoute: typeof mapProvincesIndexLazyImport
+      parentRoute: typeof mapImport
+    }
   }
 }
 
@@ -138,12 +202,20 @@ interface mapRouteChildren {
   map2LazyRoute: typeof map2LazyRoute
   mapAreaMapLazyRoute: typeof mapAreaMapLazyRoute
   mapMapLazyRoute: typeof mapMapLazyRoute
+  mapProvinceLazyRoute: typeof mapProvinceLazyRoute
+  mapAreasAreaLazyRoute: typeof mapAreasAreaLazyRoute
+  mapAreasIndexLazyRoute: typeof mapAreasIndexLazyRoute
+  mapProvincesIndexLazyRoute: typeof mapProvincesIndexLazyRoute
 }
 
 const mapRouteChildren: mapRouteChildren = {
   map2LazyRoute: map2LazyRoute,
   mapAreaMapLazyRoute: mapAreaMapLazyRoute,
   mapMapLazyRoute: mapMapLazyRoute,
+  mapProvinceLazyRoute: mapProvinceLazyRoute,
+  mapAreasAreaLazyRoute: mapAreasAreaLazyRoute,
+  mapAreasIndexLazyRoute: mapAreasIndexLazyRoute,
+  mapProvincesIndexLazyRoute: mapProvincesIndexLazyRoute,
 }
 
 const mapRouteWithChildren = mapRoute._addFileChildren(mapRouteChildren)
@@ -155,6 +227,10 @@ export interface FileRoutesByFullPath {
   '/2': typeof map2LazyRoute
   '/area-map': typeof mapAreaMapLazyRoute
   '/map': typeof mapMapLazyRoute
+  '/province': typeof mapProvinceLazyRoute
+  '/areas/$area': typeof mapAreasAreaLazyRoute
+  '/areas': typeof mapAreasIndexLazyRoute
+  '/provinces': typeof mapProvincesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -164,6 +240,10 @@ export interface FileRoutesByTo {
   '/2': typeof map2LazyRoute
   '/area-map': typeof mapAreaMapLazyRoute
   '/map': typeof mapMapLazyRoute
+  '/province': typeof mapProvinceLazyRoute
+  '/areas/$area': typeof mapAreasAreaLazyRoute
+  '/areas': typeof mapAreasIndexLazyRoute
+  '/provinces': typeof mapProvincesIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -175,13 +255,37 @@ export interface FileRoutesById {
   '/__map/2': typeof map2LazyRoute
   '/__map/area-map': typeof mapAreaMapLazyRoute
   '/__map/map': typeof mapMapLazyRoute
+  '/__map/province': typeof mapProvinceLazyRoute
+  '/__map/areas/$area': typeof mapAreasAreaLazyRoute
+  '/__map/areas/': typeof mapAreasIndexLazyRoute
+  '/__map/provinces/': typeof mapProvincesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/about' | '/2' | '/area-map' | '/map'
+  fullPaths:
+    | '/'
+    | ''
+    | '/about'
+    | '/2'
+    | '/area-map'
+    | '/map'
+    | '/province'
+    | '/areas/$area'
+    | '/areas'
+    | '/provinces'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/2' | '/area-map' | '/map'
+  to:
+    | '/'
+    | ''
+    | '/about'
+    | '/2'
+    | '/area-map'
+    | '/map'
+    | '/province'
+    | '/areas/$area'
+    | '/areas'
+    | '/provinces'
   id:
     | '__root__'
     | '/'
@@ -191,6 +295,10 @@ export interface FileRouteTypes {
     | '/__map/2'
     | '/__map/area-map'
     | '/__map/map'
+    | '/__map/province'
+    | '/__map/areas/$area'
+    | '/__map/areas/'
+    | '/__map/provinces/'
   fileRoutesById: FileRoutesById
 }
 
@@ -232,7 +340,11 @@ export const routeTree = rootRoute
       "children": [
         "/__map/2",
         "/__map/area-map",
-        "/__map/map"
+        "/__map/map",
+        "/__map/province",
+        "/__map/areas/$area",
+        "/__map/areas/",
+        "/__map/provinces/"
       ]
     },
     "/about": {
@@ -251,6 +363,22 @@ export const routeTree = rootRoute
     },
     "/__map/map": {
       "filePath": "__map/map.lazy.tsx",
+      "parent": "/__map"
+    },
+    "/__map/province": {
+      "filePath": "__map/province.lazy.tsx",
+      "parent": "/__map"
+    },
+    "/__map/areas/$area": {
+      "filePath": "__map/areas/$area.lazy.tsx",
+      "parent": "/__map"
+    },
+    "/__map/areas/": {
+      "filePath": "__map/areas/index.lazy.tsx",
+      "parent": "/__map"
+    },
+    "/__map/provinces/": {
+      "filePath": "__map/provinces/index.lazy.tsx",
       "parent": "/__map"
     }
   }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { AreaSelect } from "~/components/area-select";
+import { DistrictSelect } from "~/components/district-select";
 import { useAreaMapStore } from "~/store/area-map";
 
 export const Route = createLazyFileRoute("/__map/area-map")({
@@ -8,12 +8,12 @@ export const Route = createLazyFileRoute("/__map/area-map")({
 });
 
 function RouteComponent() {
-  const initMap = useAreaMapStore((state) => state.initAreaMap);
-  const navigate = Route.useNavigate();
+  // const initMap = useAreaMapStore((state) => state.initAreaMap);
+  // const navigate = Route.useNavigate();
 
-  React.useEffect(() => {
-    initMap(navigate);
-  }, []);
+  // React.useEffect(() => {
+  //   initMap(navigate);
+  // }, []);
 
   return (
     <>
@@ -23,7 +23,7 @@ function RouteComponent() {
         
       </div> */}
 
-      <AreaSelect className="absolute top-6 left-6" />
+      <DistrictSelect className="absolute top-6 left-6" />
     </>
   );
 }
