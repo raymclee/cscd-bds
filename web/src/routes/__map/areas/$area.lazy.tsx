@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useMatch } from "@tanstack/react-router";
 import { useMapStore } from "~/store/map";
 import { useShallow } from "zustand/shallow";
 
@@ -50,7 +50,7 @@ function RouteComponent() {
       initMap("map", {
         zoom: 5,
         center: selectedDistrict!.center,
-        layers: [districtLayer],
+        layers: [districtLayer, new AMap.TileLayer()],
         // isHotspot: false,
         // defaultCursor: "pointer",
         // viewMode: "3D",

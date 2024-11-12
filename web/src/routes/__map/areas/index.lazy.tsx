@@ -1,8 +1,9 @@
 import * as React from "react";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useMatch } from "@tanstack/react-router";
 import { useMapStore } from "~/store/map";
 import { useShallow } from "zustand/shallow";
 import { DistrictSelect } from "~/components/district-select";
+import { i } from "node_modules/vite/dist/node/types.d-aGj9QkWt";
 
 export const Route = createLazyFileRoute("/__map/areas/")({
   component: RouteComponent,
@@ -21,8 +22,8 @@ function RouteComponent() {
 
   React.useEffect(() => {
     initMap("map", {
-      // center: [106.122082, 33.719192],
-      zoom: 2,
+      center: [106.122082, 33.719192],
+      zoom: 4.5,
     });
   }, []);
 
@@ -115,11 +116,18 @@ function RouteComponent() {
               strokeWidth: 2,
             },
           },
+          rank: 1,
           innerOverlay: true,
+          extData: {
+            id: district.id,
+          },
         });
         marker.on("click", (e) => {
           navigate({ to: "/areas/$area", params: { area: district.id } });
           selectDistrict(district);
+        });
+        marker.on("mouseover", function (e) {
+          console.log(e.target.getExtData());
         });
         // @ts-expect-error
         layer.add(marker);
@@ -127,7 +135,7 @@ function RouteComponent() {
       // map.add(layer);
       layer.setMap(map);
 
-      map?.setZoomAndCenter(4, [106.122082, 33.719192], false, 600);
+      // map?.setZoomAndCenter(4, [106.122082, 33.719192], false, 600);
 
       // AMap.Util.requestAnimFrame(map);
     });
