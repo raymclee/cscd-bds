@@ -13,7 +13,7 @@ export const Route = createFileRoute("/__map")({
       version: "2.0",
       AMapUI: {
         version: "1.1",
-        plugins: ["geo/DistrictCluster"],
+        plugins: ["geo/DistrictCluster", "geo/DistrictExplorer"],
       },
       // plugins: ["ui/geo/DistrictCluster"],
       // plugins: ["AMap.PolygonEditor", "AMap.ToolBar", "AMap.Scale"],

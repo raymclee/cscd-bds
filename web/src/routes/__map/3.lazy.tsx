@@ -10,7 +10,6 @@ export const Route = createLazyFileRoute("/__map/3")({
 });
 
 function RouteComponent() {
-  const [loading, setLoading] = React.useState(true);
   const [map, initMap] = useMapStore(
     useShallow((state) => [state.map, state.initMap])
   );

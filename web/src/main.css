@@ -1,6 +1,6 @@
 /* @import url("@arco-design/web-react/dist/css/arco.css"); */
 
-/*
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -119,7 +119,7 @@
   body {
     @apply bg-background text-foreground;
   }
-} */
+}
 
 #map {
   position: absolute;

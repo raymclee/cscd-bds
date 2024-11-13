@@ -1,7 +1,7 @@
 import { NavigateFn, useNavigate } from "@tanstack/react-router";
 import { create } from "zustand";
 
-type District = {
+export type District = {
   id: string;
   citycode: string[];
   adcode: number[];
@@ -64,21 +64,19 @@ const districts: District[] = [
   },
 ];
 
-type InitMap = {
-  container: string;
-  opts?: Partial<AMap.MapOptions>;
-  navigate?: NavigateFn;
-};
-
 type MapState = {
   map: AMap.Map | null;
   selectedDistrict: District | null;
   districts: District[];
   initMap: (container: string, opts: Partial<AMap.MapOptions>) => void;
   selectDistrict: (district: District) => void;
+  openSatalite: () => void;
+  closeSatalite: () => void;
 };
 
-export const useMapStore = create<MapState>()((set) => ({
+const sataliteLayer = new AMap.TileLayer.Satellite();
+
+export const useMapStore = create<MapState>()((set, get) => ({
   map: null,
   selectedDistrict: null,
   districts,
@@ -89,5 +87,13 @@ export const useMapStore = create<MapState>()((set) => ({
   },
   selectDistrict: (selectedDistrict) => {
     set({ selectedDistrict });
+  },
+  openSatalite: () => {
+    get().map?.add([sataliteLayer]);
+    // sataliteLayer.setMap(get().map);
+  },
+  closeSatalite: () => {
+    // sataliteLayer.setMap(null);
+    get().map?.remove(sataliteLayer);
   },
 }));
