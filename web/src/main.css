@@ -1,6 +1,5 @@
 /* @import url("@arco-design/web-react/dist/css/arco.css"); */
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -153,4 +152,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.amap-marker-label {
+  @apply border-transparent shadow-lg px-2 py-1 rounded-lg bg-black/70 text-white backdrop-blur transition-shadow cursor-pointer  hover:ring-1 hover:ring-offset-2 hover:ring-white;
+}
+
+.arco-tree-select .arco-tree-select-view {
+  @apply rounded-lg bg-black/70 shadow-lg text-white hover:bg-black;
 }

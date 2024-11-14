@@ -1,4 +1,4 @@
-let colors = [
+const colors = [
   "#3366cc",
   "#dc3912",
   "#ff9900",
@@ -38,8 +38,8 @@ export function getDistrictColor(code: number, i: number): string {
     case 500000: //重庆
     case 520000: //貴州
     case 450000: //广西
-      fillColor = "#d0f5ce";
-      strokeColor = "#d0f5ce";
+      fillColor = colors[3];
+      strokeColor = colors[3];
       break;
     //華北
     case 150000: //内蒙古
@@ -51,8 +51,8 @@ export function getDistrictColor(code: number, i: number): string {
     case 140000: //山西
     case 120000: //天津
     case 370000: //山东
-      fillColor = "#efe6fe";
-      strokeColor = "#efe6fe";
+      fillColor = colors[4];
+      strokeColor = colors[4];
       break;
     //華東
     case 320000: //江苏
@@ -61,8 +61,8 @@ export function getDistrictColor(code: number, i: number): string {
     case 330000: //浙江
     case 410000: //河南
     case 350000: //福建
-      fillColor = "#e0e9ff";
-      strokeColor = "#e0e9ff";
+      fillColor = colors[5];
+      strokeColor = colors[5];
       break;
     //華南
     case 430000: //湖南
@@ -71,13 +71,13 @@ export function getDistrictColor(code: number, i: number): string {
     case 420000: //湖北
     case 460000: //海南
     case 710000: //台湾
-      fillColor = "#fee3e2";
-      strokeColor = "#fee3e2";
+      fillColor = colors[12];
+      strokeColor = colors[12];
       break;
     case 810000: //香港
     case 820000: //澳门
-      fillColor = "#fee7cd";
-      strokeColor = "#fee7cd";
+      fillColor = colors[14];
+      strokeColor = colors[14];
       break;
   }
 

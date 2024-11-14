@@ -56,7 +56,7 @@ const districts: District[] = [
   {
     id: "5",
     citycode: [],
-    adcode: [810000, 82000],
+    adcode: [810000, 820000],
     name: "港澳地区",
     center: [114.183583, 22.385247],
     level: "province",
@@ -68,16 +68,15 @@ type MapState = {
   map: AMap.Map | null;
   selectedDistrict: District | null;
   districts: District[];
+  districtExplorer: any | null;
   initMap: (container: string, opts: Partial<AMap.MapOptions>) => void;
   selectDistrict: (district: District) => void;
-  openSatalite: () => void;
-  closeSatalite: () => void;
+  setDistrictExplorer: (districtExplorer: any) => void;
 };
-
-const sataliteLayer = new AMap.TileLayer.Satellite();
 
 export const useMapStore = create<MapState>()((set, get) => ({
   map: null,
+  districtExplorer: null,
   selectedDistrict: null,
   districts,
   initMap: (container, opts) => {
@@ -88,12 +87,7 @@ export const useMapStore = create<MapState>()((set, get) => ({
   selectDistrict: (selectedDistrict) => {
     set({ selectedDistrict });
   },
-  openSatalite: () => {
-    get().map?.add([sataliteLayer]);
-    // sataliteLayer.setMap(get().map);
-  },
-  closeSatalite: () => {
-    // sataliteLayer.setMap(null);
-    get().map?.remove(sataliteLayer);
+  setDistrictExplorer: (districtExplorer) => {
+    set({ districtExplorer });
   },
 }));

@@ -1,9 +1,9 @@
-import { Button } from "@arco-design/web-react";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { Button } from '@arco-design/web-react'
+import { createFileRoute, Navigate } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/5')({
   component: HomeComponent,
-});
+})
 
 function HomeComponent() {
   // React.useEffect(() => {
@@ -16,5 +16,5 @@ function HomeComponent() {
   //     <Button type="primary">Hello</Button>
   //   </div>
   // )
-  return <Navigate to="/3" />;
+  return <Navigate to="/3" />
 }
