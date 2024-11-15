@@ -10,12 +10,21 @@ export default {
         sans: [...defaultTheme.fontFamily.sans],
         mono: [...defaultTheme.fontFamily.mono],
       },
+      backgroundImage: {
+        dashboard: "url('/src/assets/bg.png')",
+        "dashboard-head": "url('/src/assets/head.png')",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        "dashboard-card":
+          "rgb(0 0 0 / 76%) 0px 15px 45px, rgb(0 0 0 / 83%) 0px 15px 45px",
+      },
       colors: {
+        brand: "#3cb8e6",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

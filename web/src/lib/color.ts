@@ -21,9 +21,9 @@ const colors = [
   "#3b3eac",
 ];
 
-export function getDistrictColor(code: number, i: number): string {
-  let fillColor = colors[i % colors.length];
-  let strokeColor = colors[colors.length - 1 - (i % colors.length)];
+export function getDistrictColor(code: number, i?: number): string {
+  let fillColor = "";
+  let strokeColor = "";
 
   switch (code) {
     //華西
@@ -79,6 +79,11 @@ export function getDistrictColor(code: number, i: number): string {
       fillColor = colors[14];
       strokeColor = colors[14];
       break;
+  }
+
+  if (i) {
+    fillColor = colors[i % colors.length];
+    strokeColor = colors[colors.length - 1 - (i % colors.length)];
   }
 
   return fillColor;
