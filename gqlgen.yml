@@ -25,7 +25,9 @@ resolver:
 # provided package. If they match it will use them, otherwise it will generate new.
 autobind:
   - cscd-bds/store/ent
-  - cscd-bds/store/ent/opportunity
+  - cscd-bds/store/ent/area
+  - cscd-bds/store/ent/customer
+  - cscd-bds/store/ent/tender
   - cscd-bds/store/ent/user
   # - cscd-bds/store/ent/assetcategory
   # - cscd-bds/store/ent/admin

@@ -91,24 +91,6 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
-	Opportunity struct {
-		CreatedAt          func(childComplexity int) int
-		ID                 func(childComplexity int) int
-		RegistrationNumber func(childComplexity int) int
-		UpdatedAt          func(childComplexity int) int
-	}
-
-	OpportunityConnection struct {
-		Edges      func(childComplexity int) int
-		PageInfo   func(childComplexity int) int
-		TotalCount func(childComplexity int) int
-	}
-
-	OpportunityEdge struct {
-		Cursor func(childComplexity int) int
-		Node   func(childComplexity int) int
-	}
-
 	PageInfo struct {
 		EndCursor       func(childComplexity int) int
 		HasNextPage     func(childComplexity int) int
@@ -117,13 +99,12 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Areas         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
-		Customers     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
-		Node          func(childComplexity int, id xid.ID) int
-		Nodes         func(childComplexity int, ids []*xid.ID) int
-		Opportunities func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.OpportunityWhereInput) int
-		Tenders       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
-		Users         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
+		Areas     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
+		Customers func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
+		Node      func(childComplexity int, id xid.ID) int
+		Nodes     func(childComplexity int, ids []*xid.ID) int
+		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
+		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
 	}
 
 	Tender struct {
@@ -423,69 +404,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CustomerEdge.Node(childComplexity), true
 
-	case "Opportunity.createdAt":
-		if e.complexity.Opportunity.CreatedAt == nil {
-			break
-		}
-
-		return e.complexity.Opportunity.CreatedAt(childComplexity), true
-
-	case "Opportunity.id":
-		if e.complexity.Opportunity.ID == nil {
-			break
-		}
-
-		return e.complexity.Opportunity.ID(childComplexity), true
-
-	case "Opportunity.registrationNumber":
-		if e.complexity.Opportunity.RegistrationNumber == nil {
-			break
-		}
-
-		return e.complexity.Opportunity.RegistrationNumber(childComplexity), true
-
-	case "Opportunity.updatedAt":
-		if e.complexity.Opportunity.UpdatedAt == nil {
-			break
-		}
-
-		return e.complexity.Opportunity.UpdatedAt(childComplexity), true
-
-	case "OpportunityConnection.edges":
-		if e.complexity.OpportunityConnection.Edges == nil {
-			break
-		}
-
-		return e.complexity.OpportunityConnection.Edges(childComplexity), true
-
-	case "OpportunityConnection.pageInfo":
-		if e.complexity.OpportunityConnection.PageInfo == nil {
-			break
-		}
-
-		return e.complexity.OpportunityConnection.PageInfo(childComplexity), true
-
-	case "OpportunityConnection.totalCount":
-		if e.complexity.OpportunityConnection.TotalCount == nil {
-			break
-		}
-
-		return e.complexity.OpportunityConnection.TotalCount(childComplexity), true
-
-	case "OpportunityEdge.cursor":
-		if e.complexity.OpportunityEdge.Cursor == nil {
-			break
-		}
-
-		return e.complexity.OpportunityEdge.Cursor(childComplexity), true
-
-	case "OpportunityEdge.node":
-		if e.complexity.OpportunityEdge.Node == nil {
-			break
-		}
-
-		return e.complexity.OpportunityEdge.Node(childComplexity), true
-
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
 			break
@@ -561,18 +479,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]*xid.ID)), true
-
-	case "Query.opportunities":
-		if e.complexity.Query.Opportunities == nil {
-			break
-		}
-
-		args, err := ec.field_Query_opportunities_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Opportunities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.OpportunityWhereInput)), true
 
 	case "Query.tenders":
 		if e.complexity.Query.Tenders == nil {
@@ -903,15 +809,12 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputAreaWhereInput,
 		ec.unmarshalInputCreateAreaInput,
 		ec.unmarshalInputCreateCustomerInput,
-		ec.unmarshalInputCreateOpportunityInput,
 		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCustomerWhereInput,
-		ec.unmarshalInputOpportunityWhereInput,
 		ec.unmarshalInputTenderWhereInput,
 		ec.unmarshalInputUpdateAreaInput,
 		ec.unmarshalInputUpdateCustomerInput,
-		ec.unmarshalInputUpdateOpportunityInput,
 		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUserWhereInput,
@@ -1151,15 +1054,6 @@ input CreateCustomerInput {
   contactPersonEmail: String
   areaID: ID!
   tenderIDs: [ID!]
-}
-"""
-CreateOpportunityInput is used for create Opportunity object.
-Input was generated by ent.
-"""
-input CreateOpportunityInput {
-  createdAt: Time
-  updatedAt: Time
-  registrationNumber: String!
 }
 """
 CreateTenderInput is used for create Tender object.
@@ -1450,100 +1344,6 @@ interface Node @goModel(model: "cscd-bds/store/ent.Noder") {
   """
   id: ID!
 }
-type Opportunity implements Node {
-  id: ID!
-  createdAt: Time!
-  updatedAt: Time!
-  registrationNumber: String!
-}
-"""
-A connection to a list of items.
-"""
-type OpportunityConnection {
-  """
-  A list of edges.
-  """
-  edges: [OpportunityEdge]
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  """
-  Identifies the total count of items in the connection.
-  """
-  totalCount: Int!
-}
-"""
-An edge in a connection.
-"""
-type OpportunityEdge {
-  """
-  The item at the end of the edge.
-  """
-  node: Opportunity
-  """
-  A cursor for use in pagination.
-  """
-  cursor: Cursor!
-}
-"""
-OpportunityWhereInput is used for filtering Opportunity objects.
-Input was generated by ent.
-"""
-input OpportunityWhereInput {
-  not: OpportunityWhereInput
-  and: [OpportunityWhereInput!]
-  or: [OpportunityWhereInput!]
-  """
-  id field predicates
-  """
-  id: ID
-  idNEQ: ID
-  idIn: [ID!]
-  idNotIn: [ID!]
-  idGT: ID
-  idGTE: ID
-  idLT: ID
-  idLTE: ID
-  """
-  created_at field predicates
-  """
-  createdAt: Time
-  createdAtNEQ: Time
-  createdAtIn: [Time!]
-  createdAtNotIn: [Time!]
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
-  """
-  updated_at field predicates
-  """
-  updatedAt: Time
-  updatedAtNEQ: Time
-  updatedAtIn: [Time!]
-  updatedAtNotIn: [Time!]
-  updatedAtGT: Time
-  updatedAtGTE: Time
-  updatedAtLT: Time
-  updatedAtLTE: Time
-  """
-  registration_number field predicates
-  """
-  registrationNumber: String
-  registrationNumberNEQ: String
-  registrationNumberIn: [String!]
-  registrationNumberNotIn: [String!]
-  registrationNumberGT: String
-  registrationNumberGTE: String
-  registrationNumberLT: String
-  registrationNumberLTE: String
-  registrationNumberContains: String
-  registrationNumberHasPrefix: String
-  registrationNumberHasSuffix: String
-  registrationNumberEqualFold: String
-  registrationNumberContainsFold: String
-}
 """
 Possible directions in which to order a list of items when provided an ` + "`" + `orderBy` + "`" + ` argument.
 """
@@ -1650,32 +1450,6 @@ type Query {
     """
     where: CustomerWhereInput
   ): CustomerConnection!
-  opportunities(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: Cursor
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: Cursor
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-
-    """
-    Filtering options for Opportunities returned from the connection.
-    """
-    where: OpportunityWhereInput
-  ): OpportunityConnection!
   tenders(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -2168,14 +1942,6 @@ input UpdateCustomerInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
-}
-"""
-UpdateOpportunityInput is used for update Opportunity object.
-Input was generated by ent.
-"""
-input UpdateOpportunityInput {
-  updatedAt: Time
-  registrationNumber: String
 }
 """
 UpdateTenderInput is used for update Tender object.
