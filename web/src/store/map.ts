@@ -76,6 +76,7 @@ type MapState = {
   currentAreaNode: any | null;
   satelliteLayer: AMap.TileLayer | null;
   districtExplorer: any;
+  polygonEditor: AMap.PolygonEditor | null;
   navigations: Navigation[];
   dashboardVisible: boolean;
 };
@@ -89,6 +90,7 @@ type Action = {
   pop: (i: number) => void;
   push: (navigation: Navigation) => void;
   switch2AreaNode: (adcode: number) => void;
+  setPolygonEditor: (editor: AMap.PolygonEditor) => void;
   // navigate:
 };
 
@@ -97,6 +99,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   dashboardVisible: true,
   satelliteLayer: null,
   districtExplorer: null,
+  polygonEditor: null,
   currentAreaNode: null,
   makers: [],
   navigations: [],
@@ -155,6 +158,9 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
         navigations,
       };
     });
+  },
+  setPolygonEditor: (editor) => {
+    set({ polygonEditor: editor });
   },
   switch2AreaNode(adcode) {
     const districtExplorer = get().districtExplorer;

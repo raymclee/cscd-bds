@@ -88,6 +88,7 @@ function RouteComponent() {
   // const districtExplorerRef = React.useRef<any>();
   // const [visible, setVisible] = React.useState(false);
   const makersRef = React.useRef<AMap.Marker[]>([]);
+  const polygonsRef = React.useRef<AMap.Polygon[]>([]);
 
   // const data = usePreloadedQuery<MapPageQuery>(query, Route.useLoaderData());
   // const data = useLazyLoadQuery<MapPageQuery>(query, {});
@@ -131,6 +132,7 @@ function RouteComponent() {
               resetNaivgation();
               setSelectedDistrict(null);
             }
+            map?.remove(polygonsRef.current);
           },
           {
             levelLimit: 2,
@@ -309,6 +311,66 @@ function RouteComponent() {
     switch2AreaNode(props.adcode, props.childrenNum > 0);
     if (props.childrenNum == 0) {
       // map?.setZoom(18, true, 200);
+      const polygon = new AMap.Polygon();
+      polygon.setPath([
+        [114.233116, 22.279279],
+        [114.233116, 22.279338],
+        [114.234902, 22.279259],
+        [114.234987, 22.279082],
+        [114.234945, 22.278885],
+        [114.23486, 22.27861],
+        [114.234796, 22.278374],
+        [114.234732, 22.278078],
+        [114.234477, 22.277527],
+        [114.234137, 22.276996],
+        [114.234094, 22.276937],
+        [114.233094, 22.276956],
+      ]);
+      polygonsRef.current.push(polygon);
+      const poly2 = new AMap.Polygon();
+      poly2.setPath([
+        [114.230747, 22.280171],
+        [114.230898, 22.28005],
+        [114.231043, 22.279986],
+        [114.232733, 22.279985],
+        [114.23281, 22.27997],
+        [114.232862, 22.279943],
+        [114.2329, 22.27992],
+        [114.232932, 22.279869],
+        [114.232977, 22.279393],
+        [114.232929, 22.279254],
+        [114.232921, 22.276892],
+        [114.232573, 22.276895],
+        [114.232337, 22.276902],
+        [114.232225, 22.276926],
+        [114.232142, 22.276961],
+        [114.231989, 22.277065],
+        [114.231262, 22.277748],
+        [114.23094, 22.27808],
+        [114.2303, 22.278423],
+        [114.230003, 22.278827],
+        [114.23009, 22.279543],
+      ]);
+      poly2.setOptions({ fillColor: "red", strokeColor: "red" });
+      polygonsRef.current.push(poly2);
+
+      const poly3 = new AMap.Polygon();
+      poly3.setPath([
+        [114.229415, 22.281422],
+        [114.230694, 22.280218],
+        [114.229326, 22.27889],
+        [114.22885, 22.279186],
+        [114.228657, 22.279255],
+        [114.228463, 22.279372],
+        [114.227928, 22.280012],
+      ]);
+      poly3.setOptions({ fillColor: "yellow", strokeColor: "yellow" });
+      polygonsRef.current.push(poly3);
+
+      map?.add(polygon);
+      map?.add(poly2);
+      map?.add(poly3);
+
       setDashboardVisible(false);
       map?.setZoomAndCenter(15, props.center, false, 600);
       map?.addLayer(satelliteRef.current!);
