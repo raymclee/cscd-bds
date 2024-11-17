@@ -255,7 +255,7 @@ function RouteComponent() {
                   fillColor,
                   //   fillColor: "black",
                   //   fillColor: areaNode.getParentFeature() ? "black" : null,
-                  fillOpacity: 0.35, //填充透明度
+                  fillOpacity: 0.5, //填充透明度
                 });
               }
             },
@@ -421,7 +421,7 @@ function RouteComponent() {
           strokeOpacity: 1, //线透明度
           strokeWeight: 1, //线宽
           fillColor: fillColor, //填充色
-          fillOpacity: 0.35, //填充透明度
+          fillOpacity: 0.5, //填充透明度
         };
       },
     );
@@ -451,7 +451,7 @@ function RouteComponent() {
       fillColor: "",
       //   fillColor: "black",
       //   fillColor: areaNode.getParentFeature() ? "black" : null,
-      fillOpacity: 0.35, //填充透明度
+      // fillOpacity: 0.5, //填充透明度
     });
   }
 
@@ -542,7 +542,7 @@ function RouteComponent() {
             fillColor,
             //   fillColor: "black",
             //   fillColor: areaNode.getParentFeature() ? "black" : null,
-            fillOpacity: 0.35, //填充透明度
+            fillOpacity: 0.5, //填充透明度
           });
         }
       },
@@ -877,7 +877,7 @@ function TenderBoard() {
     <DashboardCard title="新增商机数">
       <div className="mt-14 flex h-full justify-around">
         <div className="space-y-2">
-          <div className="bg-brand/40 mx-auto flex h-12 w-12 items-center justify-center rounded-full p-2 backdrop-blur">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/40 p-2 backdrop-blur">
             <BadgeJapaneseYen className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">
@@ -888,7 +888,7 @@ function TenderBoard() {
         </div>
 
         <div className="space-y-2">
-          <div className="bg-brand/40 mx-auto flex h-12 w-12 items-center justify-center rounded-full p-2 backdrop-blur">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/40 p-2 backdrop-blur">
             <Layers className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">
@@ -898,7 +898,7 @@ function TenderBoard() {
         </div>
 
         <div className="space-y-2">
-          <div className="bg-brand/40 mx-auto flex h-12 w-12 items-center justify-center rounded-full p-2 backdrop-blur">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/40 p-2 backdrop-blur">
             <ChartPie className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">
