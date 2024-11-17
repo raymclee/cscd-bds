@@ -457,7 +457,7 @@ function RouteComponent() {
 
   //绘制marker
   function renderMarker(props: any) {
-    if (props.adcode === useMapStore.getState().currentAreaNode.adcode) {
+    if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
       return;
     }
     // @ts-expect-error
@@ -578,6 +578,7 @@ function RouteComponent() {
                   setSelectedDistrict(null);
                   resetNaivgation();
                   map?.remove(satelliteRef.current!);
+                  map?.remove(polygonsRef.current);
                   switch2AreaNode(100000);
                   // setVisible(!visible);
                 }}
@@ -590,7 +591,7 @@ function RouteComponent() {
               <BreadcrumbLink
                 className={cn(
                   "select-none",
-                  navigations.length > 2 && "cursor-pointer",
+                  navigations.length > 1 && "cursor-pointer",
                 )}
                 onClick={() => {
                   if (navigations.length < 2) {
@@ -599,8 +600,10 @@ function RouteComponent() {
                   // switch2AreaNode(district.adcode[0]);
                   // setVisible(true);
                   // resetNaivgation();
+                  setCurrentAreaNode(null);
                   pop(0);
                   map?.remove(satelliteRef.current!);
+                  map?.remove(polygonsRef.current);
                   // setSelectedDistrict(selectedDistrict);
                   renderArea(selectedDistrict!);
                 }}
@@ -661,6 +664,7 @@ function RouteComponent() {
                           if (navigations.length == i + 2) {
                             return;
                           }
+                          map?.remove(polygonsRef.current);
                           map?.remove(satelliteRef.current!);
                           pop(i);
                           switch2AreaNode(navigation.adcode || 100000);
@@ -882,9 +886,9 @@ function TenderBoard() {
           </div>
           <div className="text-center text-gray-300">
             <span className="mr-2 text-3xl font-bold">{total[0]}</span>
-            億元
+            亿元
           </div>
-          <div className="text-center text-xs text-gray-300">金額</div>
+          <div className="text-center text-xs text-gray-300">金额</div>
         </div>
 
         <div className="space-y-2">
@@ -892,9 +896,9 @@ function TenderBoard() {
             <Layers className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">
-            <span className="mr-2 text-3xl font-bold">{total[1]}</span>個
+            <span className="mr-2 text-3xl font-bold">{total[1]}</span>个
           </div>
-          <div className="text-center text-xs text-gray-300">數量</div>
+          <div className="text-center text-xs text-gray-300">数量</div>
         </div>
 
         <div className="space-y-2">
