@@ -90,7 +90,7 @@ function RouteComponent() {
   const makersRef = React.useRef<AMap.Marker[]>([]);
 
   // const data = usePreloadedQuery<MapPageQuery>(query, Route.useLoaderData());
-  const data = useLazyLoadQuery<MapPageQuery>(query, {});
+  // const data = useLazyLoadQuery<MapPageQuery>(query, {});
 
   React.useEffect(() => {
     initMap("map", {
