@@ -1,14 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { MapPageQuery } from "__generated__/MapPageQuery.graphql";
-import { MapUserFragment$key } from "__generated__/MapUserFragment.graphql";
 import { BadgeJapaneseYen, ChartPie, Layers } from "lucide-react";
 import * as React from "react";
-import {
-  graphql,
-  useFragment,
-  useLazyLoadQuery,
-  usePreloadedQuery,
-} from "react-relay";
 import { useShallow } from "zustand/shallow";
 import { BidChart } from "~/components/bid-chart";
 import { BusinessChart } from "~/components/business-chart";
@@ -821,44 +813,6 @@ function DashboardCard({
       <CardContent className="mt-4 h-full">{children}</CardContent>
     </Card>
   );
-}
-
-const query = graphql`
-  query MapPageQuery {
-    ...MapUserFragment
-    ...MapTenderListFragment
-  }
-`;
-
-const mapUserFragment = graphql`
-  fragment MapUserFragment on Query {
-    users {
-      edges {
-        node {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const tenderListFragment = graphql`
-  fragment MapTenderListFragment on Query {
-    tenders {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
-function UserCard({ queryRef }: { queryRef: MapUserFragment$key }) {
-  const data = useFragment(mapUserFragment, queryRef);
-
-  return <div>{JSON.stringify(data, null, 2)}</div>;
 }
 
 function TenderBoard() {

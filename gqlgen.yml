@@ -14,9 +14,9 @@ resolver:
   package: graphql
   filename_template: "{name}.resolvers.go"
 
-# model:
-#   filename: graphql/model/models_gen.go
-#   package: model
+model:
+  filename: graphql/model/models_gen.go
+  package: model
 
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.

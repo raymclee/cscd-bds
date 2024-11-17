@@ -1,23 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPageQuery } from "__generated__/MapPageQuery.graphql";
-import { MapUserFragment$key } from "__generated__/MapUserFragment.graphql";
 import {
   BadgeJapaneseYen,
   ChartPie,
   CircleDollarSign,
-  IceCream,
   Layers,
 } from "lucide-react";
 import * as React from "react";
-import {
-  graphql,
-  useFragment,
-  useLazyLoadQuery,
-  usePreloadedQuery,
-} from "react-relay";
 import { useShallow } from "zustand/shallow";
 import { BusinessChart } from "~/components/business-chart";
-import { PercentageChart } from "~/components/percentage-chart";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -95,7 +85,7 @@ function RouteComponent() {
   const makersRef = React.useRef<AMap.Marker[]>([]);
 
   // const data = usePreloadedQuery<MapPageQuery>(query, Route.useLoaderData());
-  const data = useLazyLoadQuery<MapPageQuery>(query, {});
+  // const data = useLazyLoadQuery<MapPageQuery>(query, {});
 
   React.useEffect(() => {
     initMap("map", {
@@ -776,44 +766,6 @@ function DashboardCard({
   );
 }
 
-const query = graphql`
-  query MapPageQuery {
-    ...MapUserFragment
-    ...MapTenderListFragment
-  }
-`;
-
-const mapUserFragment = graphql`
-  fragment MapUserFragment on Query {
-    users {
-      edges {
-        node {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const tenderListFragment = graphql`
-  fragment MapTenderListFragment on Query {
-    tenders {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
-function UserCard({ queryRef }: { queryRef: MapUserFragment$key }) {
-  const data = useFragment(mapUserFragment, queryRef);
-
-  return <div>{JSON.stringify(data, null, 2)}</div>;
-}
-
 function TenderBoard() {
   const selectedDistrict = useMapStore((state) => state.selectedDistrict);
 
@@ -834,7 +786,7 @@ function TenderBoard() {
     <DashboardCard title="新增商机数">
       <div className="mt-14 flex h-full justify-around">
         <div className="space-y-2">
-          <div className="bg-brand/40 mx-auto flex h-12 w-12 items-center justify-center rounded-full p-2 backdrop-blur">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/40 p-2 backdrop-blur">
             <BadgeJapaneseYen className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">
@@ -845,7 +797,7 @@ function TenderBoard() {
         </div>
 
         <div className="space-y-2">
-          <div className="bg-brand/40 mx-auto flex h-12 w-12 items-center justify-center rounded-full p-2 backdrop-blur">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/40 p-2 backdrop-blur">
             <Layers className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">
@@ -855,7 +807,7 @@ function TenderBoard() {
         </div>
 
         <div className="space-y-2">
-          <div className="bg-brand/40 mx-auto flex h-12 w-12 items-center justify-center rounded-full p-2 backdrop-blur">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/40 p-2 backdrop-blur">
             <ChartPie className="h-full w-full text-brand" />
           </div>
           <div className="text-center text-gray-300">

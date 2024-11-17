@@ -103,8 +103,16 @@ type ComplexityRoot struct {
 		Customers func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
 		Node      func(childComplexity int, id xid.ID) int
 		Nodes     func(childComplexity int, ids []*xid.ID) int
+		Session   func(childComplexity int) int
 		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
 		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
+	}
+
+	Session struct {
+		AvatarURL func(childComplexity int) int
+		Email     func(childComplexity int) int
+		Name      func(childComplexity int) int
+		Username  func(childComplexity int) int
 	}
 
 	Tender struct {
@@ -480,6 +488,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]*xid.ID)), true
 
+	case "Query.session":
+		if e.complexity.Query.Session == nil {
+			break
+		}
+
+		return e.complexity.Query.Session(childComplexity), true
+
 	case "Query.tenders":
 		if e.complexity.Query.Tenders == nil {
 			break
@@ -503,6 +518,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.UserWhereInput)), true
+
+	case "Session.avatarUrl":
+		if e.complexity.Session.AvatarURL == nil {
+			break
+		}
+
+		return e.complexity.Session.AvatarURL(childComplexity), true
+
+	case "Session.email":
+		if e.complexity.Session.Email == nil {
+			break
+		}
+
+		return e.complexity.Session.Email(childComplexity), true
+
+	case "Session.name":
+		if e.complexity.Session.Name == nil {
+			break
+		}
+
+		return e.complexity.Session.Name(childComplexity), true
+
+	case "Session.username":
+		if e.complexity.Session.Username == nil {
+			break
+		}
+
+		return e.complexity.Session.Username(childComplexity), true
 
 	case "Tender.area":
 		if e.complexity.Tender.Area == nil {
@@ -2095,6 +2138,17 @@ input UserWhereInput {
 }
 `, BuiltIn: false},
 	{Name: "../scalar.graphql", Input: `scalar Time
+`, BuiltIn: false},
+	{Name: "../session.graphql", Input: `type Session {
+  name: String!
+  username: String!
+  email: String!
+  avatarUrl: String!
+}
+
+extend type Query {
+  session: Session!
+}
 `, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)

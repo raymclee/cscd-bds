@@ -1,0 +1,10 @@
+type Session {
+  name: String!
+  username: String!
+  email: String!
+  avatarUrl: String!
+}
+
+extend type Query {
+  session: Session!
+}
