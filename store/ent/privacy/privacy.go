@@ -111,28 +111,76 @@ func DenyMutationOperationRule(op ent.Op) MutationRule {
 	return OnMutationOperation(rule, op)
 }
 
-// The OpportunityQueryRuleFunc type is an adapter to allow the use of ordinary
+// The AreaQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
-type OpportunityQueryRuleFunc func(context.Context, *ent.OpportunityQuery) error
+type AreaQueryRuleFunc func(context.Context, *ent.AreaQuery) error
 
 // EvalQuery return f(ctx, q).
-func (f OpportunityQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.OpportunityQuery); ok {
+func (f AreaQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.AreaQuery); ok {
 		return f(ctx, q)
 	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.OpportunityQuery", q)
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.AreaQuery", q)
 }
 
-// The OpportunityMutationRuleFunc type is an adapter to allow the use of ordinary
+// The AreaMutationRuleFunc type is an adapter to allow the use of ordinary
 // functions as a mutation rule.
-type OpportunityMutationRuleFunc func(context.Context, *ent.OpportunityMutation) error
+type AreaMutationRuleFunc func(context.Context, *ent.AreaMutation) error
 
 // EvalMutation calls f(ctx, m).
-func (f OpportunityMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.OpportunityMutation); ok {
+func (f AreaMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.AreaMutation); ok {
 		return f(ctx, m)
 	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.OpportunityMutation", m)
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.AreaMutation", m)
+}
+
+// The CustomerQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type CustomerQueryRuleFunc func(context.Context, *ent.CustomerQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f CustomerQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.CustomerQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.CustomerQuery", q)
+}
+
+// The CustomerMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type CustomerMutationRuleFunc func(context.Context, *ent.CustomerMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f CustomerMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.CustomerMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CustomerMutation", m)
+}
+
+// The TenderQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type TenderQueryRuleFunc func(context.Context, *ent.TenderQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f TenderQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.TenderQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.TenderQuery", q)
+}
+
+// The TenderMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type TenderMutationRuleFunc func(context.Context, *ent.TenderMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f TenderMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.TenderMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.TenderMutation", m)
 }
 
 // The UserQueryRuleFunc type is an adapter to allow the use of ordinary
@@ -194,7 +242,11 @@ var _ QueryMutationRule = FilterFunc(nil)
 
 func queryFilter(q ent.Query) (Filter, error) {
 	switch q := q.(type) {
-	case *ent.OpportunityQuery:
+	case *ent.AreaQuery:
+		return q.Filter(), nil
+	case *ent.CustomerQuery:
+		return q.Filter(), nil
+	case *ent.TenderQuery:
 		return q.Filter(), nil
 	case *ent.UserQuery:
 		return q.Filter(), nil
@@ -205,7 +257,11 @@ func queryFilter(q ent.Query) (Filter, error) {
 
 func mutationFilter(m ent.Mutation) (Filter, error) {
 	switch m := m.(type) {
-	case *ent.OpportunityMutation:
+	case *ent.AreaMutation:
+		return m.Filter(), nil
+	case *ent.CustomerMutation:
+		return m.Filter(), nil
+	case *ent.TenderMutation:
 		return m.Filter(), nil
 	case *ent.UserMutation:
 		return m.Filter(), nil

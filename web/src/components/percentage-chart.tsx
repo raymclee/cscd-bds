@@ -43,7 +43,10 @@ const chartConfig = {
 
 export function PercentageChart() {
   return (
-    <ChartContainer config={chartConfig} className="mx-auto aspect-square">
+    <ChartContainer
+      config={chartConfig}
+      className="mx-auto h-[200px] aspect-square"
+    >
       <PieChart>
         <ChartTooltip
           cursor={false}

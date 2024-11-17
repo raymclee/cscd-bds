@@ -4,47 +4,80 @@ package ent
 
 import (
 	"context"
-	"cscd-bds/store/ent/opportunity"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 
 	"github.com/99designs/gqlgen/graphql"
 )
 
 // CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (o *OpportunityQuery) CollectFields(ctx context.Context, satisfies ...string) (*OpportunityQuery, error) {
+func (a *AreaQuery) CollectFields(ctx context.Context, satisfies ...string) (*AreaQuery, error) {
 	fc := graphql.GetFieldContext(ctx)
 	if fc == nil {
-		return o, nil
+		return a, nil
 	}
-	if err := o.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+	if err := a.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
 		return nil, err
 	}
-	return o, nil
+	return a, nil
 }
 
-func (o *OpportunityQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
 	path = append([]string(nil), path...)
 	var (
 		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(opportunity.Columns))
-		selectedFields = []string{opportunity.FieldID}
+		fieldSeen      = make(map[string]struct{}, len(area.Columns))
+		selectedFields = []string{area.FieldID}
 	)
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
+
+		case "customers":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CustomerClient{config: a.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, customerImplementors)...); err != nil {
+				return err
+			}
+			a.WithNamedCustomers(alias, func(wq *CustomerQuery) {
+				*wq = *query
+			})
+
+		case "tenders":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: a.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			a.WithNamedTenders(alias, func(wq *TenderQuery) {
+				*wq = *query
+			})
 		case "createdAt":
-			if _, ok := fieldSeen[opportunity.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, opportunity.FieldCreatedAt)
-				fieldSeen[opportunity.FieldCreatedAt] = struct{}{}
+			if _, ok := fieldSeen[area.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, area.FieldCreatedAt)
+				fieldSeen[area.FieldCreatedAt] = struct{}{}
 			}
 		case "updatedAt":
-			if _, ok := fieldSeen[opportunity.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, opportunity.FieldUpdatedAt)
-				fieldSeen[opportunity.FieldUpdatedAt] = struct{}{}
+			if _, ok := fieldSeen[area.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, area.FieldUpdatedAt)
+				fieldSeen[area.FieldUpdatedAt] = struct{}{}
 			}
-		case "registrationNumber":
-			if _, ok := fieldSeen[opportunity.FieldRegistrationNumber]; !ok {
-				selectedFields = append(selectedFields, opportunity.FieldRegistrationNumber)
-				fieldSeen[opportunity.FieldRegistrationNumber] = struct{}{}
+		case "name":
+			if _, ok := fieldSeen[area.FieldName]; !ok {
+				selectedFields = append(selectedFields, area.FieldName)
+				fieldSeen[area.FieldName] = struct{}{}
+			}
+		case "code":
+			if _, ok := fieldSeen[area.FieldCode]; !ok {
+				selectedFields = append(selectedFields, area.FieldCode)
+				fieldSeen[area.FieldCode] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -53,19 +86,19 @@ func (o *OpportunityQuery) collectField(ctx context.Context, oneNode bool, opCtx
 		}
 	}
 	if !unknownSeen {
-		o.Select(selectedFields...)
+		a.Select(selectedFields...)
 	}
 	return nil
 }
 
-type opportunityPaginateArgs struct {
+type areaPaginateArgs struct {
 	first, last   *int
 	after, before *Cursor
-	opts          []OpportunityPaginateOption
+	opts          []AreaPaginateOption
 }
 
-func newOpportunityPaginateArgs(rv map[string]any) *opportunityPaginateArgs {
-	args := &opportunityPaginateArgs{}
+func newAreaPaginateArgs(rv map[string]any) *areaPaginateArgs {
+	args := &areaPaginateArgs{}
 	if rv == nil {
 		return args
 	}
@@ -81,8 +114,370 @@ func newOpportunityPaginateArgs(rv map[string]any) *opportunityPaginateArgs {
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
 	}
-	if v, ok := rv[whereField].(*OpportunityWhereInput); ok {
-		args.opts = append(args.opts, WithOpportunityFilter(v.Filter))
+	if v, ok := rv[whereField].(*AreaWhereInput); ok {
+		args.opts = append(args.opts, WithAreaFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (c *CustomerQuery) CollectFields(ctx context.Context, satisfies ...string) (*CustomerQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return c, nil
+	}
+	if err := c.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(customer.Columns))
+		selectedFields = []string{customer.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+
+		case "area":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&AreaClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, areaImplementors)...); err != nil {
+				return err
+			}
+			c.withArea = query
+			if _, ok := fieldSeen[customer.FieldAreaID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldAreaID)
+				fieldSeen[customer.FieldAreaID] = struct{}{}
+			}
+
+		case "tenders":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			c.WithNamedTenders(alias, func(wq *TenderQuery) {
+				*wq = *query
+			})
+		case "createdAt":
+			if _, ok := fieldSeen[customer.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, customer.FieldCreatedAt)
+				fieldSeen[customer.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[customer.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, customer.FieldUpdatedAt)
+				fieldSeen[customer.FieldUpdatedAt] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[customer.FieldName]; !ok {
+				selectedFields = append(selectedFields, customer.FieldName)
+				fieldSeen[customer.FieldName] = struct{}{}
+			}
+		case "ownerType":
+			if _, ok := fieldSeen[customer.FieldOwnerType]; !ok {
+				selectedFields = append(selectedFields, customer.FieldOwnerType)
+				fieldSeen[customer.FieldOwnerType] = struct{}{}
+			}
+		case "industry":
+			if _, ok := fieldSeen[customer.FieldIndustry]; !ok {
+				selectedFields = append(selectedFields, customer.FieldIndustry)
+				fieldSeen[customer.FieldIndustry] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[customer.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, customer.FieldStatus)
+				fieldSeen[customer.FieldStatus] = struct{}{}
+			}
+		case "contactPerson":
+			if _, ok := fieldSeen[customer.FieldContactPerson]; !ok {
+				selectedFields = append(selectedFields, customer.FieldContactPerson)
+				fieldSeen[customer.FieldContactPerson] = struct{}{}
+			}
+		case "contactPersonPosition":
+			if _, ok := fieldSeen[customer.FieldContactPersonPosition]; !ok {
+				selectedFields = append(selectedFields, customer.FieldContactPersonPosition)
+				fieldSeen[customer.FieldContactPersonPosition] = struct{}{}
+			}
+		case "contactPersonPhone":
+			if _, ok := fieldSeen[customer.FieldContactPersonPhone]; !ok {
+				selectedFields = append(selectedFields, customer.FieldContactPersonPhone)
+				fieldSeen[customer.FieldContactPersonPhone] = struct{}{}
+			}
+		case "contactPersonEmail":
+			if _, ok := fieldSeen[customer.FieldContactPersonEmail]; !ok {
+				selectedFields = append(selectedFields, customer.FieldContactPersonEmail)
+				fieldSeen[customer.FieldContactPersonEmail] = struct{}{}
+			}
+		case "areaID":
+			if _, ok := fieldSeen[customer.FieldAreaID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldAreaID)
+				fieldSeen[customer.FieldAreaID] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		c.Select(selectedFields...)
+	}
+	return nil
+}
+
+type customerPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []CustomerPaginateOption
+}
+
+func newCustomerPaginateArgs(rv map[string]any) *customerPaginateArgs {
+	args := &customerPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*CustomerWhereInput); ok {
+		args.opts = append(args.opts, WithCustomerFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (t *TenderQuery) CollectFields(ctx context.Context, satisfies ...string) (*TenderQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return t, nil
+	}
+	if err := t.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return t, nil
+}
+
+func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(tender.Columns))
+		selectedFields = []string{tender.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+
+		case "area":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&AreaClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, areaImplementors)...); err != nil {
+				return err
+			}
+			t.withArea = query
+			if _, ok := fieldSeen[tender.FieldAreaID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldAreaID)
+				fieldSeen[tender.FieldAreaID] = struct{}{}
+			}
+
+		case "customer":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CustomerClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, customerImplementors)...); err != nil {
+				return err
+			}
+			t.withCustomer = query
+			if _, ok := fieldSeen[tender.FieldCustomerID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCustomerID)
+				fieldSeen[tender.FieldCustomerID] = struct{}{}
+			}
+		case "createdAt":
+			if _, ok := fieldSeen[tender.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCreatedAt)
+				fieldSeen[tender.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[tender.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, tender.FieldUpdatedAt)
+				fieldSeen[tender.FieldUpdatedAt] = struct{}{}
+			}
+		case "code":
+			if _, ok := fieldSeen[tender.FieldCode]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCode)
+				fieldSeen[tender.FieldCode] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[tender.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, tender.FieldStatus)
+				fieldSeen[tender.FieldStatus] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[tender.FieldName]; !ok {
+				selectedFields = append(selectedFields, tender.FieldName)
+				fieldSeen[tender.FieldName] = struct{}{}
+			}
+		case "estimatedAmount":
+			if _, ok := fieldSeen[tender.FieldEstimatedAmount]; !ok {
+				selectedFields = append(selectedFields, tender.FieldEstimatedAmount)
+				fieldSeen[tender.FieldEstimatedAmount] = struct{}{}
+			}
+		case "tenderDate":
+			if _, ok := fieldSeen[tender.FieldTenderDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderDate)
+				fieldSeen[tender.FieldTenderDate] = struct{}{}
+			}
+		case "findDate":
+			if _, ok := fieldSeen[tender.FieldFindDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldFindDate)
+				fieldSeen[tender.FieldFindDate] = struct{}{}
+			}
+		case "sizeAndValueRating":
+			if _, ok := fieldSeen[tender.FieldSizeAndValueRating]; !ok {
+				selectedFields = append(selectedFields, tender.FieldSizeAndValueRating)
+				fieldSeen[tender.FieldSizeAndValueRating] = struct{}{}
+			}
+		case "creditAndPaymentRating":
+			if _, ok := fieldSeen[tender.FieldCreditAndPaymentRating]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCreditAndPaymentRating)
+				fieldSeen[tender.FieldCreditAndPaymentRating] = struct{}{}
+			}
+		case "timeLimitRating":
+			if _, ok := fieldSeen[tender.FieldTimeLimitRating]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTimeLimitRating)
+				fieldSeen[tender.FieldTimeLimitRating] = struct{}{}
+			}
+		case "customerRelationshipRating":
+			if _, ok := fieldSeen[tender.FieldCustomerRelationshipRating]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCustomerRelationshipRating)
+				fieldSeen[tender.FieldCustomerRelationshipRating] = struct{}{}
+			}
+		case "competitivePartnershipRating":
+			if _, ok := fieldSeen[tender.FieldCompetitivePartnershipRating]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCompetitivePartnershipRating)
+				fieldSeen[tender.FieldCompetitivePartnershipRating] = struct{}{}
+			}
+		case "prepareToBid":
+			if _, ok := fieldSeen[tender.FieldPrepareToBid]; !ok {
+				selectedFields = append(selectedFields, tender.FieldPrepareToBid)
+				fieldSeen[tender.FieldPrepareToBid] = struct{}{}
+			}
+		case "projectCode":
+			if _, ok := fieldSeen[tender.FieldProjectCode]; !ok {
+				selectedFields = append(selectedFields, tender.FieldProjectCode)
+				fieldSeen[tender.FieldProjectCode] = struct{}{}
+			}
+		case "projectDefinition":
+			if _, ok := fieldSeen[tender.FieldProjectDefinition]; !ok {
+				selectedFields = append(selectedFields, tender.FieldProjectDefinition)
+				fieldSeen[tender.FieldProjectDefinition] = struct{}{}
+			}
+		case "estimatedProjectStartDate":
+			if _, ok := fieldSeen[tender.FieldEstimatedProjectStartDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldEstimatedProjectStartDate)
+				fieldSeen[tender.FieldEstimatedProjectStartDate] = struct{}{}
+			}
+		case "estimatedProjectEndDate":
+			if _, ok := fieldSeen[tender.FieldEstimatedProjectEndDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldEstimatedProjectEndDate)
+				fieldSeen[tender.FieldEstimatedProjectEndDate] = struct{}{}
+			}
+		case "projectType":
+			if _, ok := fieldSeen[tender.FieldProjectType]; !ok {
+				selectedFields = append(selectedFields, tender.FieldProjectType)
+				fieldSeen[tender.FieldProjectType] = struct{}{}
+			}
+		case "attachements":
+			if _, ok := fieldSeen[tender.FieldAttachements]; !ok {
+				selectedFields = append(selectedFields, tender.FieldAttachements)
+				fieldSeen[tender.FieldAttachements] = struct{}{}
+			}
+		case "geoLocation":
+			if _, ok := fieldSeen[tender.FieldGeoLocation]; !ok {
+				selectedFields = append(selectedFields, tender.FieldGeoLocation)
+				fieldSeen[tender.FieldGeoLocation] = struct{}{}
+			}
+		case "remark":
+			if _, ok := fieldSeen[tender.FieldRemark]; !ok {
+				selectedFields = append(selectedFields, tender.FieldRemark)
+				fieldSeen[tender.FieldRemark] = struct{}{}
+			}
+		case "images":
+			if _, ok := fieldSeen[tender.FieldImages]; !ok {
+				selectedFields = append(selectedFields, tender.FieldImages)
+				fieldSeen[tender.FieldImages] = struct{}{}
+			}
+		case "areaID":
+			if _, ok := fieldSeen[tender.FieldAreaID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldAreaID)
+				fieldSeen[tender.FieldAreaID] = struct{}{}
+			}
+		case "customerID":
+			if _, ok := fieldSeen[tender.FieldCustomerID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCustomerID)
+				fieldSeen[tender.FieldCustomerID] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		t.Select(selectedFields...)
+	}
+	return nil
+}
+
+type tenderPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []TenderPaginateOption
+}
+
+func newTenderPaginateArgs(rv map[string]any) *tenderPaginateArgs {
+	args := &tenderPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*TenderWhereInput); ok {
+		args.opts = append(args.opts, WithTenderFilter(v.Filter))
 	}
 	return args
 }

@@ -1,4 +1,3 @@
-import { NavigateFn, useNavigate } from "@tanstack/react-router";
 import { create } from "zustand";
 
 export type District = {
@@ -64,30 +63,176 @@ const districts: District[] = [
   },
 ];
 
+type Navigation = {
+  name: string;
+  adcode?: number;
+};
+
 type MapState = {
   map: AMap.Map | null;
   selectedDistrict: District | null;
   districts: District[];
-  districtExplorer: any | null;
-  initMap: (container: string, opts: Partial<AMap.MapOptions>) => void;
-  selectDistrict: (district: District) => void;
-  setDistrictExplorer: (districtExplorer: any) => void;
+  makers: AMap.Marker[];
+  currentAreaNode: any | null;
+  satelliteLayer: AMap.TileLayer | null;
+  districtExplorer: any;
+  navigations: Navigation[];
+  dashboardVisible: boolean;
 };
 
-export const useMapStore = create<MapState>()((set, get) => ({
+type Action = {
+  initMap: (container: string, opts: Partial<AMap.MapOptions>) => void;
+  setCurrentAreaNode: (node: any) => void;
+  resetNavigation: () => void;
+  setSelectedDistrict: (district: District | null) => void;
+  setDashboardVisible: (visible: boolean) => void;
+  pop: (i: number) => void;
+  push: (navigation: Navigation) => void;
+  switch2AreaNode: (adcode: number) => void;
+  // navigate:
+};
+
+export const useMapStore = create<MapState & Action>()((set, get) => ({
   map: null,
+  dashboardVisible: true,
+  satelliteLayer: null,
   districtExplorer: null,
+  currentAreaNode: null,
+  makers: [],
+  navigations: [],
+  breadcrumb: [],
   selectedDistrict: null,
   districts,
   initMap: (container, opts) => {
     const map = new AMap.Map(container, { ...opts });
+    const satelliteLayer = new AMap.TileLayer.Satellite();
+    // @ts-expect-error
+    const districtExplorer = new AMapUI.DistrictExplorer({
+      eventSupport: true,
+      map: map,
+    });
+    set({ map, districtExplorer, satelliteLayer });
+  },
+  setDashboardVisible: (visible) => {
+    set({ dashboardVisible: visible });
+  },
+  setSelectedDistrict: (district) => {
+    if (!district) {
+      set({ selectedDistrict: null });
+      return;
+    }
+    set({
+      selectedDistrict: district,
+      navigations: [{ name: district?.name }],
+    });
+  },
+  setCurrentAreaNode: (node) => {
+    set({ currentAreaNode: node });
+  },
+  resetNavigation: () => {
+    set({ navigations: [] });
+  },
+  push: (navigation) => {
+    set((state) => {
+      if (state.navigations.some((item) => item.name === navigation.name)) {
+        return state;
+      }
+      return { navigations: [...state.navigations, navigation] };
+    });
+  },
+  pop: (i) => {
+    set((state) => {
+      const navigations = state.navigations.reduce<Navigation[]>(
+        (acc, cur, idx) => {
+          if (idx <= i) {
+            acc.push(cur);
+          }
+          return acc;
+        },
+        [],
+      );
+      return {
+        navigations,
+      };
+    });
+  },
+  switch2AreaNode(adcode) {
+    const districtExplorer = get().districtExplorer;
+    const map = get().map;
+    map?.removeLayer(get().satelliteLayer!);
+    map?.remove(get().makers);
 
-    set({ map });
-  },
-  selectDistrict: (selectedDistrict) => {
-    set({ selectedDistrict });
-  },
-  setDistrictExplorer: (districtExplorer) => {
-    set({ districtExplorer });
+    districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      set({ currentAreaNode: areaNode });
+      districtExplorer.setAreaNodesForLocating([areaNode]);
+      districtExplorer.setHoverFeature(null);
+
+      const bounds = areaNode.getBounds();
+      map?.setBounds(bounds, false, [140, 0, 20, 20]);
+
+      districtExplorer.clearFeaturePolygons();
+
+      districtExplorer.renderSubFeatures(
+        areaNode,
+        (feature: any, i: number) => {
+          const props = feature.properties;
+
+          // if (!topLevel) {
+          //   renderMarker(props);
+          // }
+
+          // const colorIndex = topLevel ? 0 : i;
+          // const strokeColor = getDistrictColor(
+          //   feature.properties.adcode,
+          //   colorIndex,
+          // );
+          // const fillColor = getDistrictColor(
+          //   feature.properties.adcode,
+          //   colorIndex,
+          // );
+          const strokeColor = "#3cb8e6";
+          const fillColor = "#3cb8e6";
+
+          return {
+            cursor: "default",
+            bubble: true,
+            strokeColor: strokeColor, //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 1, //线宽
+            fillColor: fillColor, //填充色
+            fillOpacity: 0.35, //填充透明度
+          };
+        },
+      );
+
+      const props = areaNode.getProps();
+
+      if (props.adcode !== 100000) {
+        get().push({ name: props.name, adcode: props.adcode });
+      }
+
+      //绘制父区域;
+      districtExplorer.renderParentFeature(areaNode, {
+        cursor: "default",
+        bubble: true,
+        // strokeColor: "white", //线颜色
+        strokeColor:
+          props.adcode !== 100000 && areaNode.getSubFeatures().length
+            ? ""
+            : "#3cb8e6", //线颜色
+        strokeOpacity: 1, //线透明度
+        strokeWeight: 2, //线宽
+        // fillColor, //填充色
+        fillColor: "",
+        //   fillColor: "black",
+        //   fillColor: areaNode.getParentFeature() ? "black" : null,
+        fillOpacity: 0.35, //填充透明度
+      });
+    });
   },
 }));

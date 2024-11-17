@@ -138,7 +138,8 @@ export function BidChart({ className }: { className?: string }) {
   return (
     <ChartContainer
       config={chartConfig}
-      className={cn("aspect-auto w-full text-white", className)}
+      // className={cn("aspect-auto w-full text-white")}
+      className={className}
     >
       <AreaChart data={filteredData}>
         <defs>

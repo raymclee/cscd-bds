@@ -3,9 +3,11 @@
 package ent
 
 import (
-	"cscd-bds/store/ent/opportunity"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"time"
 )
@@ -14,27 +16,167 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	opportunityMixin := schema.Opportunity{}.Mixin()
-	opportunityMixinFields0 := opportunityMixin[0].Fields()
-	_ = opportunityMixinFields0
-	opportunityMixinFields1 := opportunityMixin[1].Fields()
-	_ = opportunityMixinFields1
-	opportunityFields := schema.Opportunity{}.Fields()
-	_ = opportunityFields
-	// opportunityDescCreatedAt is the schema descriptor for created_at field.
-	opportunityDescCreatedAt := opportunityMixinFields1[0].Descriptor()
-	// opportunity.DefaultCreatedAt holds the default value on creation for the created_at field.
-	opportunity.DefaultCreatedAt = opportunityDescCreatedAt.Default.(func() time.Time)
-	// opportunityDescUpdatedAt is the schema descriptor for updated_at field.
-	opportunityDescUpdatedAt := opportunityMixinFields1[1].Descriptor()
-	// opportunity.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	opportunity.DefaultUpdatedAt = opportunityDescUpdatedAt.Default.(func() time.Time)
-	// opportunity.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	opportunity.UpdateDefaultUpdatedAt = opportunityDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// opportunityDescID is the schema descriptor for id field.
-	opportunityDescID := opportunityMixinFields0[0].Descriptor()
-	// opportunity.DefaultID holds the default value on creation for the id field.
-	opportunity.DefaultID = opportunityDescID.Default.(func() xid.ID)
+	areaMixin := schema.Area{}.Mixin()
+	areaMixinFields0 := areaMixin[0].Fields()
+	_ = areaMixinFields0
+	areaMixinFields1 := areaMixin[1].Fields()
+	_ = areaMixinFields1
+	areaFields := schema.Area{}.Fields()
+	_ = areaFields
+	// areaDescCreatedAt is the schema descriptor for created_at field.
+	areaDescCreatedAt := areaMixinFields1[0].Descriptor()
+	// area.DefaultCreatedAt holds the default value on creation for the created_at field.
+	area.DefaultCreatedAt = areaDescCreatedAt.Default.(func() time.Time)
+	// areaDescUpdatedAt is the schema descriptor for updated_at field.
+	areaDescUpdatedAt := areaMixinFields1[1].Descriptor()
+	// area.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	area.DefaultUpdatedAt = areaDescUpdatedAt.Default.(func() time.Time)
+	// area.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	area.UpdateDefaultUpdatedAt = areaDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// areaDescID is the schema descriptor for id field.
+	areaDescID := areaMixinFields0[0].Descriptor()
+	// area.DefaultID holds the default value on creation for the id field.
+	area.DefaultID = areaDescID.Default.(func() xid.ID)
+	customerMixin := schema.Customer{}.Mixin()
+	customerMixinFields0 := customerMixin[0].Fields()
+	_ = customerMixinFields0
+	customerMixinFields1 := customerMixin[1].Fields()
+	_ = customerMixinFields1
+	customerFields := schema.Customer{}.Fields()
+	_ = customerFields
+	// customerDescCreatedAt is the schema descriptor for created_at field.
+	customerDescCreatedAt := customerMixinFields1[0].Descriptor()
+	// customer.DefaultCreatedAt holds the default value on creation for the created_at field.
+	customer.DefaultCreatedAt = customerDescCreatedAt.Default.(func() time.Time)
+	// customerDescUpdatedAt is the schema descriptor for updated_at field.
+	customerDescUpdatedAt := customerMixinFields1[1].Descriptor()
+	// customer.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	customer.DefaultUpdatedAt = customerDescUpdatedAt.Default.(func() time.Time)
+	// customer.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	customer.UpdateDefaultUpdatedAt = customerDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// customerDescID is the schema descriptor for id field.
+	customerDescID := customerMixinFields0[0].Descriptor()
+	// customer.DefaultID holds the default value on creation for the id field.
+	customer.DefaultID = customerDescID.Default.(func() xid.ID)
+	tenderMixin := schema.Tender{}.Mixin()
+	tenderMixinFields0 := tenderMixin[0].Fields()
+	_ = tenderMixinFields0
+	tenderMixinFields1 := tenderMixin[1].Fields()
+	_ = tenderMixinFields1
+	tenderFields := schema.Tender{}.Fields()
+	_ = tenderFields
+	// tenderDescCreatedAt is the schema descriptor for created_at field.
+	tenderDescCreatedAt := tenderMixinFields1[0].Descriptor()
+	// tender.DefaultCreatedAt holds the default value on creation for the created_at field.
+	tender.DefaultCreatedAt = tenderDescCreatedAt.Default.(func() time.Time)
+	// tenderDescUpdatedAt is the schema descriptor for updated_at field.
+	tenderDescUpdatedAt := tenderMixinFields1[1].Descriptor()
+	// tender.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	tender.DefaultUpdatedAt = tenderDescUpdatedAt.Default.(func() time.Time)
+	// tender.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	tender.UpdateDefaultUpdatedAt = tenderDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// tenderDescStatus is the schema descriptor for status field.
+	tenderDescStatus := tenderFields[1].Descriptor()
+	// tender.DefaultStatus holds the default value on creation for the status field.
+	tender.DefaultStatus = tenderDescStatus.Default.(int)
+	// tenderDescSizeAndValueRating is the schema descriptor for size_and_value_rating field.
+	tenderDescSizeAndValueRating := tenderFields[9].Descriptor()
+	// tender.SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
+	tender.SizeAndValueRatingValidator = func() func(int) error {
+		validators := tenderDescSizeAndValueRating.Validators
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
+		}
+		return func(size_and_value_rating int) error {
+			for _, fn := range fns {
+				if err := fn(size_and_value_rating); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// tenderDescCreditAndPaymentRating is the schema descriptor for credit_and_payment_rating field.
+	tenderDescCreditAndPaymentRating := tenderFields[10].Descriptor()
+	// tender.CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
+	tender.CreditAndPaymentRatingValidator = func() func(int) error {
+		validators := tenderDescCreditAndPaymentRating.Validators
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
+		}
+		return func(credit_and_payment_rating int) error {
+			for _, fn := range fns {
+				if err := fn(credit_and_payment_rating); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// tenderDescTimeLimitRating is the schema descriptor for time_limit_rating field.
+	tenderDescTimeLimitRating := tenderFields[11].Descriptor()
+	// tender.TimeLimitRatingValidator is a validator for the "time_limit_rating" field. It is called by the builders before save.
+	tender.TimeLimitRatingValidator = func() func(int) error {
+		validators := tenderDescTimeLimitRating.Validators
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
+		}
+		return func(time_limit_rating int) error {
+			for _, fn := range fns {
+				if err := fn(time_limit_rating); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// tenderDescCustomerRelationshipRating is the schema descriptor for customer_relationship_rating field.
+	tenderDescCustomerRelationshipRating := tenderFields[12].Descriptor()
+	// tender.CustomerRelationshipRatingValidator is a validator for the "customer_relationship_rating" field. It is called by the builders before save.
+	tender.CustomerRelationshipRatingValidator = func() func(int) error {
+		validators := tenderDescCustomerRelationshipRating.Validators
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
+		}
+		return func(customer_relationship_rating int) error {
+			for _, fn := range fns {
+				if err := fn(customer_relationship_rating); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// tenderDescCompetitivePartnershipRating is the schema descriptor for competitive_partnership_rating field.
+	tenderDescCompetitivePartnershipRating := tenderFields[13].Descriptor()
+	// tender.CompetitivePartnershipRatingValidator is a validator for the "competitive_partnership_rating" field. It is called by the builders before save.
+	tender.CompetitivePartnershipRatingValidator = func() func(int) error {
+		validators := tenderDescCompetitivePartnershipRating.Validators
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
+		}
+		return func(competitive_partnership_rating int) error {
+			for _, fn := range fns {
+				if err := fn(competitive_partnership_rating); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// tenderDescPrepareToBid is the schema descriptor for prepare_to_bid field.
+	tenderDescPrepareToBid := tenderFields[14].Descriptor()
+	// tender.DefaultPrepareToBid holds the default value on creation for the prepare_to_bid field.
+	tender.DefaultPrepareToBid = tenderDescPrepareToBid.Default.(bool)
+	// tenderDescID is the schema descriptor for id field.
+	tenderDescID := tenderMixinFields0[0].Descriptor()
+	// tender.DefaultID holds the default value on creation for the id field.
+	tender.DefaultID = tenderDescID.Default.(func() xid.ID)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0

@@ -27,9 +27,24 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []*xid.ID) ([]ent.Noder, 
 	return r.store.Noders(ctx, idx, ent.WithNodeType(ent.IDToType))
 }
 
+// Areas is the resolver for the areas field.
+func (r *queryResolver) Areas(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) (*ent.AreaConnection, error) {
+	return r.store.Area.Query().Paginate(ctx, after, first, before, last, ent.WithAreaFilter(where.Filter))
+}
+
+// Customers is the resolver for the customers field.
+func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
+	return r.store.Customer.Query().Paginate(ctx, after, first, before, last, ent.WithCustomerFilter(where.Filter))
+}
+
 // Opportunities is the resolver for the opportunities field.
 func (r *queryResolver) Opportunities(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.OpportunityWhereInput) (*ent.OpportunityConnection, error) {
 	return r.store.Opportunity.Query().Paginate(ctx, after, first, before, last, ent.WithOpportunityFilter(where.Filter))
+}
+
+// Tenders is the resolver for the tenders field.
+func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
+	return r.store.Tender.Query().Paginate(ctx, after, first, before, last, ent.WithTenderFilter(where.Filter))
 }
 
 // Users is the resolver for the users field.

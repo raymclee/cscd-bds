@@ -13,20 +13,21 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
 import { Route as mapImport } from './routes/__map'
-import { Route as R5Import } from './routes/5'
+import { Route as mapIndexImport } from './routes/__map/index'
+import { Route as mapHomeImport } from './routes/__map/home'
 
 // Create Virtual Routes
 
 const authLazyImport = createFileRoute('/__auth')()
-const mapIndexLazyImport = createFileRoute('/__map/')()
 const mapProvinceLazyImport = createFileRoute('/__map/province')()
 const mapDashboardLazyImport = createFileRoute('/__map/dashboard')()
 const mapAreaMapLazyImport = createFileRoute('/__map/area-map')()
+const map7LazyImport = createFileRoute('/__map/7')()
 const map6LazyImport = createFileRoute('/__map/6')()
 const map4LazyImport = createFileRoute('/__map/4')()
-const map3LazyImport = createFileRoute('/__map/3')()
 const map2LazyImport = createFileRoute('/__map/2')()
 const mapProvincesIndexLazyImport = createFileRoute('/__map/provinces/')()
 const mapAreasIndexLazyImport = createFileRoute('/__map/areas/')()
@@ -41,6 +42,12 @@ const authLazyRoute = authLazyImport
   } as any)
   .lazy(() => import('./routes/__auth.lazy').then((d) => d.Route))
 
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AboutRoute = AboutImport.update({
   id: '/about',
   path: '/about',
@@ -52,13 +59,7 @@ const mapRoute = mapImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const R5Route = R5Import.update({
-  id: '/5',
-  path: '/5',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const mapIndexLazyRoute = mapIndexLazyImport
+const mapIndexRoute = mapIndexImport
   .update({
     id: '/',
     path: '/',
@@ -90,6 +91,14 @@ const mapAreaMapLazyRoute = mapAreaMapLazyImport
   } as any)
   .lazy(() => import('./routes/__map/area-map.lazy').then((d) => d.Route))
 
+const map7LazyRoute = map7LazyImport
+  .update({
+    id: '/7',
+    path: '/7',
+    getParentRoute: () => mapRoute,
+  } as any)
+  .lazy(() => import('./routes/__map/7.lazy').then((d) => d.Route))
+
 const map6LazyRoute = map6LazyImport
   .update({
     id: '/6',
@@ -106,14 +115,6 @@ const map4LazyRoute = map4LazyImport
   } as any)
   .lazy(() => import('./routes/__map/4.lazy').then((d) => d.Route))
 
-const map3LazyRoute = map3LazyImport
-  .update({
-    id: '/3',
-    path: '/3',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/3.lazy').then((d) => d.Route))
-
 const map2LazyRoute = map2LazyImport
   .update({
     id: '/2',
@@ -121,6 +122,12 @@ const map2LazyRoute = map2LazyImport
     getParentRoute: () => mapRoute,
   } as any)
   .lazy(() => import('./routes/__map/2.lazy').then((d) => d.Route))
+
+const mapHomeRoute = mapHomeImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => mapRoute,
+} as any)
 
 const mapProvincesIndexLazyRoute = mapProvincesIndexLazyImport
   .update({
@@ -152,13 +159,6 @@ const mapAreasAreaLazyRoute = mapAreasAreaLazyImport
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/5': {
-      id: '/5'
-      path: '/5'
-      fullPath: '/5'
-      preLoaderRoute: typeof R5Import
-      parentRoute: typeof rootRoute
-    }
     '/__map': {
       id: '/__map'
       path: ''
@@ -173,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
     '/__auth': {
       id: '/__auth'
       path: ''
@@ -180,18 +187,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authLazyImport
       parentRoute: typeof rootRoute
     }
+    '/__map/home': {
+      id: '/__map/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof mapHomeImport
+      parentRoute: typeof mapImport
+    }
     '/__map/2': {
       id: '/__map/2'
       path: '/2'
       fullPath: '/2'
       preLoaderRoute: typeof map2LazyImport
-      parentRoute: typeof mapImport
-    }
-    '/__map/3': {
-      id: '/__map/3'
-      path: '/3'
-      fullPath: '/3'
-      preLoaderRoute: typeof map3LazyImport
       parentRoute: typeof mapImport
     }
     '/__map/4': {
@@ -206,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/6'
       fullPath: '/6'
       preLoaderRoute: typeof map6LazyImport
+      parentRoute: typeof mapImport
+    }
+    '/__map/7': {
+      id: '/__map/7'
+      path: '/7'
+      fullPath: '/7'
+      preLoaderRoute: typeof map7LazyImport
       parentRoute: typeof mapImport
     }
     '/__map/area-map': {
@@ -233,7 +247,7 @@ declare module '@tanstack/react-router' {
       id: '/__map/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof mapIndexLazyImport
+      preLoaderRoute: typeof mapIndexImport
       parentRoute: typeof mapImport
     }
     '/__map/areas/$area': {
@@ -263,28 +277,30 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface mapRouteChildren {
+  mapHomeRoute: typeof mapHomeRoute
   map2LazyRoute: typeof map2LazyRoute
-  map3LazyRoute: typeof map3LazyRoute
   map4LazyRoute: typeof map4LazyRoute
   map6LazyRoute: typeof map6LazyRoute
+  map7LazyRoute: typeof map7LazyRoute
   mapAreaMapLazyRoute: typeof mapAreaMapLazyRoute
   mapDashboardLazyRoute: typeof mapDashboardLazyRoute
   mapProvinceLazyRoute: typeof mapProvinceLazyRoute
-  mapIndexLazyRoute: typeof mapIndexLazyRoute
+  mapIndexRoute: typeof mapIndexRoute
   mapAreasAreaLazyRoute: typeof mapAreasAreaLazyRoute
   mapAreasIndexLazyRoute: typeof mapAreasIndexLazyRoute
   mapProvincesIndexLazyRoute: typeof mapProvincesIndexLazyRoute
 }
 
 const mapRouteChildren: mapRouteChildren = {
+  mapHomeRoute: mapHomeRoute,
   map2LazyRoute: map2LazyRoute,
-  map3LazyRoute: map3LazyRoute,
   map4LazyRoute: map4LazyRoute,
   map6LazyRoute: map6LazyRoute,
+  map7LazyRoute: map7LazyRoute,
   mapAreaMapLazyRoute: mapAreaMapLazyRoute,
   mapDashboardLazyRoute: mapDashboardLazyRoute,
   mapProvinceLazyRoute: mapProvinceLazyRoute,
-  mapIndexLazyRoute: mapIndexLazyRoute,
+  mapIndexRoute: mapIndexRoute,
   mapAreasAreaLazyRoute: mapAreasAreaLazyRoute,
   mapAreasIndexLazyRoute: mapAreasIndexLazyRoute,
   mapProvincesIndexLazyRoute: mapProvincesIndexLazyRoute,
@@ -293,34 +309,36 @@ const mapRouteChildren: mapRouteChildren = {
 const mapRouteWithChildren = mapRoute._addFileChildren(mapRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/5': typeof R5Route
   '': typeof authLazyRoute
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
+  '/home': typeof mapHomeRoute
   '/2': typeof map2LazyRoute
-  '/3': typeof map3LazyRoute
   '/4': typeof map4LazyRoute
   '/6': typeof map6LazyRoute
+  '/7': typeof map7LazyRoute
   '/area-map': typeof mapAreaMapLazyRoute
   '/dashboard': typeof mapDashboardLazyRoute
   '/province': typeof mapProvinceLazyRoute
-  '/': typeof mapIndexLazyRoute
+  '/': typeof mapIndexRoute
   '/areas/$area': typeof mapAreasAreaLazyRoute
   '/areas': typeof mapAreasIndexLazyRoute
   '/provinces': typeof mapProvincesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/5': typeof R5Route
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
   '': typeof authLazyRoute
+  '/home': typeof mapHomeRoute
   '/2': typeof map2LazyRoute
-  '/3': typeof map3LazyRoute
   '/4': typeof map4LazyRoute
   '/6': typeof map6LazyRoute
+  '/7': typeof map7LazyRoute
   '/area-map': typeof mapAreaMapLazyRoute
   '/dashboard': typeof mapDashboardLazyRoute
   '/province': typeof mapProvinceLazyRoute
-  '/': typeof mapIndexLazyRoute
+  '/': typeof mapIndexRoute
   '/areas/$area': typeof mapAreasAreaLazyRoute
   '/areas': typeof mapAreasIndexLazyRoute
   '/provinces': typeof mapProvincesIndexLazyRoute
@@ -328,18 +346,19 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/5': typeof R5Route
   '/__map': typeof mapRouteWithChildren
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
   '/__auth': typeof authLazyRoute
+  '/__map/home': typeof mapHomeRoute
   '/__map/2': typeof map2LazyRoute
-  '/__map/3': typeof map3LazyRoute
   '/__map/4': typeof map4LazyRoute
   '/__map/6': typeof map6LazyRoute
+  '/__map/7': typeof map7LazyRoute
   '/__map/area-map': typeof mapAreaMapLazyRoute
   '/__map/dashboard': typeof mapDashboardLazyRoute
   '/__map/province': typeof mapProvinceLazyRoute
-  '/__map/': typeof mapIndexLazyRoute
+  '/__map/': typeof mapIndexRoute
   '/__map/areas/$area': typeof mapAreasAreaLazyRoute
   '/__map/areas/': typeof mapAreasIndexLazyRoute
   '/__map/provinces/': typeof mapProvincesIndexLazyRoute
@@ -348,13 +367,14 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/5'
     | ''
     | '/about'
+    | '/login'
+    | '/home'
     | '/2'
-    | '/3'
     | '/4'
     | '/6'
+    | '/7'
     | '/area-map'
     | '/dashboard'
     | '/province'
@@ -364,13 +384,14 @@ export interface FileRouteTypes {
     | '/provinces'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/5'
     | '/about'
+    | '/login'
     | ''
+    | '/home'
     | '/2'
-    | '/3'
     | '/4'
     | '/6'
+    | '/7'
     | '/area-map'
     | '/dashboard'
     | '/province'
@@ -380,14 +401,15 @@ export interface FileRouteTypes {
     | '/provinces'
   id:
     | '__root__'
-    | '/5'
     | '/__map'
     | '/about'
+    | '/login'
     | '/__auth'
+    | '/__map/home'
     | '/__map/2'
-    | '/__map/3'
     | '/__map/4'
     | '/__map/6'
+    | '/__map/7'
     | '/__map/area-map'
     | '/__map/dashboard'
     | '/__map/province'
@@ -399,16 +421,16 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  R5Route: typeof R5Route
   mapRoute: typeof mapRouteWithChildren
   AboutRoute: typeof AboutRoute
+  LoginRoute: typeof LoginRoute
   authLazyRoute: typeof authLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  R5Route: R5Route,
   mapRoute: mapRouteWithChildren,
   AboutRoute: AboutRoute,
+  LoginRoute: LoginRoute,
   authLazyRoute: authLazyRoute,
 }
 
@@ -422,22 +444,20 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/5",
         "/__map",
         "/about",
+        "/login",
         "/__auth"
       ]
-    },
-    "/5": {
-      "filePath": "5.tsx"
     },
     "/__map": {
       "filePath": "__map.tsx",
       "children": [
+        "/__map/home",
         "/__map/2",
-        "/__map/3",
         "/__map/4",
         "/__map/6",
+        "/__map/7",
         "/__map/area-map",
         "/__map/dashboard",
         "/__map/province",
@@ -450,15 +470,18 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
+    "/login": {
+      "filePath": "login.tsx"
+    },
     "/__auth": {
       "filePath": "__auth.lazy.tsx"
     },
-    "/__map/2": {
-      "filePath": "__map/2.lazy.tsx",
+    "/__map/home": {
+      "filePath": "__map/home.tsx",
       "parent": "/__map"
     },
-    "/__map/3": {
-      "filePath": "__map/3.lazy.tsx",
+    "/__map/2": {
+      "filePath": "__map/2.lazy.tsx",
       "parent": "/__map"
     },
     "/__map/4": {
@@ -467,6 +490,10 @@ export const routeTree = rootRoute
     },
     "/__map/6": {
       "filePath": "__map/6.lazy.tsx",
+      "parent": "/__map"
+    },
+    "/__map/7": {
+      "filePath": "__map/7.lazy.tsx",
       "parent": "/__map"
     },
     "/__map/area-map": {
@@ -482,7 +509,7 @@ export const routeTree = rootRoute
       "parent": "/__map"
     },
     "/__map/": {
-      "filePath": "__map/index.lazy.tsx",
+      "filePath": "__map/index.tsx",
       "parent": "/__map"
     },
     "/__map/areas/$area": {

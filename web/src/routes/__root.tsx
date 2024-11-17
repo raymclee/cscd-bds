@@ -1,7 +1,12 @@
-import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { RelayEnvironment } from "~/lib/relay";
 // import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-export const Route = createRootRoute({
+type RouteContext = {
+  RelayEnvironment: typeof RelayEnvironment;
+};
+
+export const Route = createRootRouteWithContext<RouteContext>()({
   component: RootComponent,
 });
 

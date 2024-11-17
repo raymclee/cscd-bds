@@ -6,8 +6,14 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Opportunity is the predicate function for opportunity builders.
-type Opportunity func(*sql.Selector)
+// Area is the predicate function for area builders.
+type Area func(*sql.Selector)
+
+// Customer is the predicate function for customer builders.
+type Customer func(*sql.Selector)
+
+// Tender is the predicate function for tender builders.
+type Tender func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)

@@ -12,12 +12,15 @@ import (
 	"cscd-bds/store/ent/migrate"
 	"cscd-bds/store/ent/schema/xid"
 
-	"cscd-bds/store/ent/opportunity"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // Client is the client that holds all ent builders.
@@ -25,8 +28,12 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// Opportunity is the client for interacting with the Opportunity builders.
-	Opportunity *OpportunityClient
+	// Area is the client for interacting with the Area builders.
+	Area *AreaClient
+	// Customer is the client for interacting with the Customer builders.
+	Customer *CustomerClient
+	// Tender is the client for interacting with the Tender builders.
+	Tender *TenderClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -40,7 +47,9 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.Opportunity = NewOpportunityClient(c.config)
+	c.Area = NewAreaClient(c.config)
+	c.Customer = NewCustomerClient(c.config)
+	c.Tender = NewTenderClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -132,10 +141,12 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:         ctx,
-		config:      cfg,
-		Opportunity: NewOpportunityClient(cfg),
-		User:        NewUserClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		Area:     NewAreaClient(cfg),
+		Customer: NewCustomerClient(cfg),
+		Tender:   NewTenderClient(cfg),
+		User:     NewUserClient(cfg),
 	}, nil
 }
 
@@ -153,17 +164,19 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:         ctx,
-		config:      cfg,
-		Opportunity: NewOpportunityClient(cfg),
-		User:        NewUserClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		Area:     NewAreaClient(cfg),
+		Customer: NewCustomerClient(cfg),
+		Tender:   NewTenderClient(cfg),
+		User:     NewUserClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Opportunity.
+//		Area.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -185,22 +198,30 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Opportunity.Use(hooks...)
+	c.Area.Use(hooks...)
+	c.Customer.Use(hooks...)
+	c.Tender.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Opportunity.Intercept(interceptors...)
+	c.Area.Intercept(interceptors...)
+	c.Customer.Intercept(interceptors...)
+	c.Tender.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
-	case *OpportunityMutation:
-		return c.Opportunity.mutate(ctx, m)
+	case *AreaMutation:
+		return c.Area.mutate(ctx, m)
+	case *CustomerMutation:
+		return c.Customer.mutate(ctx, m)
+	case *TenderMutation:
+		return c.Tender.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -208,107 +229,107 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	}
 }
 
-// OpportunityClient is a client for the Opportunity schema.
-type OpportunityClient struct {
+// AreaClient is a client for the Area schema.
+type AreaClient struct {
 	config
 }
 
-// NewOpportunityClient returns a client for the Opportunity from the given config.
-func NewOpportunityClient(c config) *OpportunityClient {
-	return &OpportunityClient{config: c}
+// NewAreaClient returns a client for the Area from the given config.
+func NewAreaClient(c config) *AreaClient {
+	return &AreaClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `opportunity.Hooks(f(g(h())))`.
-func (c *OpportunityClient) Use(hooks ...Hook) {
-	c.hooks.Opportunity = append(c.hooks.Opportunity, hooks...)
+// A call to `Use(f, g, h)` equals to `area.Hooks(f(g(h())))`.
+func (c *AreaClient) Use(hooks ...Hook) {
+	c.hooks.Area = append(c.hooks.Area, hooks...)
 }
 
 // Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `opportunity.Intercept(f(g(h())))`.
-func (c *OpportunityClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Opportunity = append(c.inters.Opportunity, interceptors...)
+// A call to `Intercept(f, g, h)` equals to `area.Intercept(f(g(h())))`.
+func (c *AreaClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Area = append(c.inters.Area, interceptors...)
 }
 
-// Create returns a builder for creating a Opportunity entity.
-func (c *OpportunityClient) Create() *OpportunityCreate {
-	mutation := newOpportunityMutation(c.config, OpCreate)
-	return &OpportunityCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a Area entity.
+func (c *AreaClient) Create() *AreaCreate {
+	mutation := newAreaMutation(c.config, OpCreate)
+	return &AreaCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Opportunity entities.
-func (c *OpportunityClient) CreateBulk(builders ...*OpportunityCreate) *OpportunityCreateBulk {
-	return &OpportunityCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Area entities.
+func (c *AreaClient) CreateBulk(builders ...*AreaCreate) *AreaCreateBulk {
+	return &AreaCreateBulk{config: c.config, builders: builders}
 }
 
 // MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
 // a builder and applies setFunc on it.
-func (c *OpportunityClient) MapCreateBulk(slice any, setFunc func(*OpportunityCreate, int)) *OpportunityCreateBulk {
+func (c *AreaClient) MapCreateBulk(slice any, setFunc func(*AreaCreate, int)) *AreaCreateBulk {
 	rv := reflect.ValueOf(slice)
 	if rv.Kind() != reflect.Slice {
-		return &OpportunityCreateBulk{err: fmt.Errorf("calling to OpportunityClient.MapCreateBulk with wrong type %T, need slice", slice)}
+		return &AreaCreateBulk{err: fmt.Errorf("calling to AreaClient.MapCreateBulk with wrong type %T, need slice", slice)}
 	}
-	builders := make([]*OpportunityCreate, rv.Len())
+	builders := make([]*AreaCreate, rv.Len())
 	for i := 0; i < rv.Len(); i++ {
 		builders[i] = c.Create()
 		setFunc(builders[i], i)
 	}
-	return &OpportunityCreateBulk{config: c.config, builders: builders}
+	return &AreaCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Opportunity.
-func (c *OpportunityClient) Update() *OpportunityUpdate {
-	mutation := newOpportunityMutation(c.config, OpUpdate)
-	return &OpportunityUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Area.
+func (c *AreaClient) Update() *AreaUpdate {
+	mutation := newAreaMutation(c.config, OpUpdate)
+	return &AreaUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *OpportunityClient) UpdateOne(o *Opportunity) *OpportunityUpdateOne {
-	mutation := newOpportunityMutation(c.config, OpUpdateOne, withOpportunity(o))
-	return &OpportunityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *AreaClient) UpdateOne(a *Area) *AreaUpdateOne {
+	mutation := newAreaMutation(c.config, OpUpdateOne, withArea(a))
+	return &AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *OpportunityClient) UpdateOneID(id xid.ID) *OpportunityUpdateOne {
-	mutation := newOpportunityMutation(c.config, OpUpdateOne, withOpportunityID(id))
-	return &OpportunityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *AreaClient) UpdateOneID(id xid.ID) *AreaUpdateOne {
+	mutation := newAreaMutation(c.config, OpUpdateOne, withAreaID(id))
+	return &AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Opportunity.
-func (c *OpportunityClient) Delete() *OpportunityDelete {
-	mutation := newOpportunityMutation(c.config, OpDelete)
-	return &OpportunityDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Area.
+func (c *AreaClient) Delete() *AreaDelete {
+	mutation := newAreaMutation(c.config, OpDelete)
+	return &AreaDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *OpportunityClient) DeleteOne(o *Opportunity) *OpportunityDeleteOne {
-	return c.DeleteOneID(o.ID)
+func (c *AreaClient) DeleteOne(a *Area) *AreaDeleteOne {
+	return c.DeleteOneID(a.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *OpportunityClient) DeleteOneID(id xid.ID) *OpportunityDeleteOne {
-	builder := c.Delete().Where(opportunity.ID(id))
+func (c *AreaClient) DeleteOneID(id xid.ID) *AreaDeleteOne {
+	builder := c.Delete().Where(area.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &OpportunityDeleteOne{builder}
+	return &AreaDeleteOne{builder}
 }
 
-// Query returns a query builder for Opportunity.
-func (c *OpportunityClient) Query() *OpportunityQuery {
-	return &OpportunityQuery{
+// Query returns a query builder for Area.
+func (c *AreaClient) Query() *AreaQuery {
+	return &AreaQuery{
 		config: c.config,
-		ctx:    &QueryContext{Type: TypeOpportunity},
+		ctx:    &QueryContext{Type: TypeArea},
 		inters: c.Interceptors(),
 	}
 }
 
-// Get returns a Opportunity entity by its id.
-func (c *OpportunityClient) Get(ctx context.Context, id xid.ID) (*Opportunity, error) {
-	return c.Query().Where(opportunity.ID(id)).Only(ctx)
+// Get returns a Area entity by its id.
+func (c *AreaClient) Get(ctx context.Context, id xid.ID) (*Area, error) {
+	return c.Query().Where(area.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *OpportunityClient) GetX(ctx context.Context, id xid.ID) *Opportunity {
+func (c *AreaClient) GetX(ctx context.Context, id xid.ID) *Area {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -316,28 +337,390 @@ func (c *OpportunityClient) GetX(ctx context.Context, id xid.ID) *Opportunity {
 	return obj
 }
 
+// QueryCustomers queries the customers edge of a Area.
+func (c *AreaClient) QueryCustomers(a *Area) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(area.Table, area.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, area.CustomersTable, area.CustomersColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTenders queries the tenders edge of a Area.
+func (c *AreaClient) QueryTenders(a *Area) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(area.Table, area.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, area.TendersTable, area.TendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
-func (c *OpportunityClient) Hooks() []Hook {
-	return c.hooks.Opportunity
+func (c *AreaClient) Hooks() []Hook {
+	return c.hooks.Area
 }
 
 // Interceptors returns the client interceptors.
-func (c *OpportunityClient) Interceptors() []Interceptor {
-	return c.inters.Opportunity
+func (c *AreaClient) Interceptors() []Interceptor {
+	return c.inters.Area
 }
 
-func (c *OpportunityClient) mutate(ctx context.Context, m *OpportunityMutation) (Value, error) {
+func (c *AreaClient) mutate(ctx context.Context, m *AreaMutation) (Value, error) {
 	switch m.Op() {
 	case OpCreate:
-		return (&OpportunityCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&AreaCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdate:
-		return (&OpportunityUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&AreaUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdateOne:
-		return (&OpportunityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpDelete, OpDeleteOne:
-		return (&OpportunityDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+		return (&AreaDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("ent: unknown Opportunity mutation op: %q", m.Op())
+		return nil, fmt.Errorf("ent: unknown Area mutation op: %q", m.Op())
+	}
+}
+
+// CustomerClient is a client for the Customer schema.
+type CustomerClient struct {
+	config
+}
+
+// NewCustomerClient returns a client for the Customer from the given config.
+func NewCustomerClient(c config) *CustomerClient {
+	return &CustomerClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `customer.Hooks(f(g(h())))`.
+func (c *CustomerClient) Use(hooks ...Hook) {
+	c.hooks.Customer = append(c.hooks.Customer, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `customer.Intercept(f(g(h())))`.
+func (c *CustomerClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Customer = append(c.inters.Customer, interceptors...)
+}
+
+// Create returns a builder for creating a Customer entity.
+func (c *CustomerClient) Create() *CustomerCreate {
+	mutation := newCustomerMutation(c.config, OpCreate)
+	return &CustomerCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Customer entities.
+func (c *CustomerClient) CreateBulk(builders ...*CustomerCreate) *CustomerCreateBulk {
+	return &CustomerCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CustomerClient) MapCreateBulk(slice any, setFunc func(*CustomerCreate, int)) *CustomerCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CustomerCreateBulk{err: fmt.Errorf("calling to CustomerClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CustomerCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CustomerCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Customer.
+func (c *CustomerClient) Update() *CustomerUpdate {
+	mutation := newCustomerMutation(c.config, OpUpdate)
+	return &CustomerUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CustomerClient) UpdateOne(cu *Customer) *CustomerUpdateOne {
+	mutation := newCustomerMutation(c.config, OpUpdateOne, withCustomer(cu))
+	return &CustomerUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CustomerClient) UpdateOneID(id xid.ID) *CustomerUpdateOne {
+	mutation := newCustomerMutation(c.config, OpUpdateOne, withCustomerID(id))
+	return &CustomerUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Customer.
+func (c *CustomerClient) Delete() *CustomerDelete {
+	mutation := newCustomerMutation(c.config, OpDelete)
+	return &CustomerDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CustomerClient) DeleteOne(cu *Customer) *CustomerDeleteOne {
+	return c.DeleteOneID(cu.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CustomerClient) DeleteOneID(id xid.ID) *CustomerDeleteOne {
+	builder := c.Delete().Where(customer.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CustomerDeleteOne{builder}
+}
+
+// Query returns a query builder for Customer.
+func (c *CustomerClient) Query() *CustomerQuery {
+	return &CustomerQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCustomer},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Customer entity by its id.
+func (c *CustomerClient) Get(ctx context.Context, id xid.ID) (*Customer, error) {
+	return c.Query().Where(customer.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CustomerClient) GetX(ctx context.Context, id xid.ID) *Customer {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryArea queries the area edge of a Customer.
+func (c *CustomerClient) QueryArea(cu *Customer) *AreaQuery {
+	query := (&AreaClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(area.Table, area.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, customer.AreaTable, customer.AreaColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTenders queries the tenders edge of a Customer.
+func (c *CustomerClient) QueryTenders(cu *Customer) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.TendersTable, customer.TendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CustomerClient) Hooks() []Hook {
+	return c.hooks.Customer
+}
+
+// Interceptors returns the client interceptors.
+func (c *CustomerClient) Interceptors() []Interceptor {
+	return c.inters.Customer
+}
+
+func (c *CustomerClient) mutate(ctx context.Context, m *CustomerMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CustomerCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CustomerUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CustomerUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CustomerDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Customer mutation op: %q", m.Op())
+	}
+}
+
+// TenderClient is a client for the Tender schema.
+type TenderClient struct {
+	config
+}
+
+// NewTenderClient returns a client for the Tender from the given config.
+func NewTenderClient(c config) *TenderClient {
+	return &TenderClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tender.Hooks(f(g(h())))`.
+func (c *TenderClient) Use(hooks ...Hook) {
+	c.hooks.Tender = append(c.hooks.Tender, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `tender.Intercept(f(g(h())))`.
+func (c *TenderClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Tender = append(c.inters.Tender, interceptors...)
+}
+
+// Create returns a builder for creating a Tender entity.
+func (c *TenderClient) Create() *TenderCreate {
+	mutation := newTenderMutation(c.config, OpCreate)
+	return &TenderCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Tender entities.
+func (c *TenderClient) CreateBulk(builders ...*TenderCreate) *TenderCreateBulk {
+	return &TenderCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *TenderClient) MapCreateBulk(slice any, setFunc func(*TenderCreate, int)) *TenderCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &TenderCreateBulk{err: fmt.Errorf("calling to TenderClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*TenderCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &TenderCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Tender.
+func (c *TenderClient) Update() *TenderUpdate {
+	mutation := newTenderMutation(c.config, OpUpdate)
+	return &TenderUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TenderClient) UpdateOne(t *Tender) *TenderUpdateOne {
+	mutation := newTenderMutation(c.config, OpUpdateOne, withTender(t))
+	return &TenderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TenderClient) UpdateOneID(id xid.ID) *TenderUpdateOne {
+	mutation := newTenderMutation(c.config, OpUpdateOne, withTenderID(id))
+	return &TenderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Tender.
+func (c *TenderClient) Delete() *TenderDelete {
+	mutation := newTenderMutation(c.config, OpDelete)
+	return &TenderDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TenderClient) DeleteOne(t *Tender) *TenderDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TenderClient) DeleteOneID(id xid.ID) *TenderDeleteOne {
+	builder := c.Delete().Where(tender.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TenderDeleteOne{builder}
+}
+
+// Query returns a query builder for Tender.
+func (c *TenderClient) Query() *TenderQuery {
+	return &TenderQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTender},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Tender entity by its id.
+func (c *TenderClient) Get(ctx context.Context, id xid.ID) (*Tender, error) {
+	return c.Query().Where(tender.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TenderClient) GetX(ctx context.Context, id xid.ID) *Tender {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryArea queries the area edge of a Tender.
+func (c *TenderClient) QueryArea(t *Tender) *AreaQuery {
+	query := (&AreaClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(area.Table, area.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.AreaTable, tender.AreaColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCustomer queries the customer edge of a Tender.
+func (c *TenderClient) QueryCustomer(t *Tender) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.CustomerTable, tender.CustomerColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *TenderClient) Hooks() []Hook {
+	return c.hooks.Tender
+}
+
+// Interceptors returns the client interceptors.
+func (c *TenderClient) Interceptors() []Interceptor {
+	return c.inters.Tender
+}
+
+func (c *TenderClient) mutate(ctx context.Context, m *TenderMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TenderCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TenderUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TenderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TenderDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Tender mutation op: %q", m.Op())
 	}
 }
 
@@ -477,9 +860,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Opportunity, User []ent.Hook
+		Area, Customer, Tender, User []ent.Hook
 	}
 	inters struct {
-		Opportunity, User []ent.Interceptor
+		Area, Customer, Tender, User []ent.Interceptor
 	}
 )

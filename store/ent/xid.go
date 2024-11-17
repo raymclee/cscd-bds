@@ -4,15 +4,19 @@ package ent
 
 import (
 	"context"
-	"cscd-bds/store/ent/opportunity"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"fmt"
 )
 
 // prefixMap maps xid prefixes to table names.
 var prefixMap = map[xid.ID]string{
-	{V: "OP"}: opportunity.Table,
+	{V: "AR"}: area.Table,
+	{V: "CU"}: customer.Table,
+	{V: "TE"}: tender.Table,
 	{V: "US"}: user.Table,
 }
 

@@ -3,57 +3,540 @@
 package ent
 
 import (
+	"cscd-bds/store/ent/schema/xid"
 	"time"
 )
 
-// CreateOpportunityInput represents a mutation input for creating opportunities.
-type CreateOpportunityInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	RegistrationNumber string
+// CreateAreaInput represents a mutation input for creating areas.
+type CreateAreaInput struct {
+	CreatedAt   *time.Time
+	UpdatedAt   *time.Time
+	Name        string
+	Code        string
+	CustomerIDs []xid.ID
+	TenderIDs   []xid.ID
 }
 
-// Mutate applies the CreateOpportunityInput on the OpportunityMutation builder.
-func (i *CreateOpportunityInput) Mutate(m *OpportunityMutation) {
+// Mutate applies the CreateAreaInput on the AreaMutation builder.
+func (i *CreateAreaInput) Mutate(m *AreaMutation) {
 	if v := i.CreatedAt; v != nil {
 		m.SetCreatedAt(*v)
 	}
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
 	}
-	m.SetRegistrationNumber(i.RegistrationNumber)
+	m.SetName(i.Name)
+	m.SetCode(i.Code)
+	if v := i.CustomerIDs; len(v) > 0 {
+		m.AddCustomerIDs(v...)
+	}
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
 }
 
-// SetInput applies the change-set in the CreateOpportunityInput on the OpportunityCreate builder.
-func (c *OpportunityCreate) SetInput(i CreateOpportunityInput) *OpportunityCreate {
+// SetInput applies the change-set in the CreateAreaInput on the AreaCreate builder.
+func (c *AreaCreate) SetInput(i CreateAreaInput) *AreaCreate {
 	i.Mutate(c.Mutation())
 	return c
 }
 
-// UpdateOpportunityInput represents a mutation input for updating opportunities.
-type UpdateOpportunityInput struct {
-	UpdatedAt          *time.Time
-	RegistrationNumber *string
+// UpdateAreaInput represents a mutation input for updating areas.
+type UpdateAreaInput struct {
+	UpdatedAt         *time.Time
+	Name              *string
+	Code              *string
+	ClearCustomers    bool
+	AddCustomerIDs    []xid.ID
+	RemoveCustomerIDs []xid.ID
+	ClearTenders      bool
+	AddTenderIDs      []xid.ID
+	RemoveTenderIDs   []xid.ID
 }
 
-// Mutate applies the UpdateOpportunityInput on the OpportunityMutation builder.
-func (i *UpdateOpportunityInput) Mutate(m *OpportunityMutation) {
+// Mutate applies the UpdateAreaInput on the AreaMutation builder.
+func (i *UpdateAreaInput) Mutate(m *AreaMutation) {
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
 	}
-	if v := i.RegistrationNumber; v != nil {
-		m.SetRegistrationNumber(*v)
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.Code; v != nil {
+		m.SetCode(*v)
+	}
+	if i.ClearCustomers {
+		m.ClearCustomers()
+	}
+	if v := i.AddCustomerIDs; len(v) > 0 {
+		m.AddCustomerIDs(v...)
+	}
+	if v := i.RemoveCustomerIDs; len(v) > 0 {
+		m.RemoveCustomerIDs(v...)
+	}
+	if i.ClearTenders {
+		m.ClearTenders()
+	}
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
 	}
 }
 
-// SetInput applies the change-set in the UpdateOpportunityInput on the OpportunityUpdate builder.
-func (c *OpportunityUpdate) SetInput(i UpdateOpportunityInput) *OpportunityUpdate {
+// SetInput applies the change-set in the UpdateAreaInput on the AreaUpdate builder.
+func (c *AreaUpdate) SetInput(i UpdateAreaInput) *AreaUpdate {
 	i.Mutate(c.Mutation())
 	return c
 }
 
-// SetInput applies the change-set in the UpdateOpportunityInput on the OpportunityUpdateOne builder.
-func (c *OpportunityUpdateOne) SetInput(i UpdateOpportunityInput) *OpportunityUpdateOne {
+// SetInput applies the change-set in the UpdateAreaInput on the AreaUpdateOne builder.
+func (c *AreaUpdateOne) SetInput(i UpdateAreaInput) *AreaUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateCustomerInput represents a mutation input for creating customers.
+type CreateCustomerInput struct {
+	CreatedAt             *time.Time
+	UpdatedAt             *time.Time
+	Name                  string
+	OwnerType             *int
+	Industry              int
+	Status                *int
+	ContactPerson         *string
+	ContactPersonPosition *string
+	ContactPersonPhone    *string
+	ContactPersonEmail    *string
+	AreaID                xid.ID
+	TenderIDs             []xid.ID
+}
+
+// Mutate applies the CreateCustomerInput on the CustomerMutation builder.
+func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetName(i.Name)
+	if v := i.OwnerType; v != nil {
+		m.SetOwnerType(*v)
+	}
+	m.SetIndustry(i.Industry)
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.ContactPerson; v != nil {
+		m.SetContactPerson(*v)
+	}
+	if v := i.ContactPersonPosition; v != nil {
+		m.SetContactPersonPosition(*v)
+	}
+	if v := i.ContactPersonPhone; v != nil {
+		m.SetContactPersonPhone(*v)
+	}
+	if v := i.ContactPersonEmail; v != nil {
+		m.SetContactPersonEmail(*v)
+	}
+	m.SetAreaID(i.AreaID)
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateCustomerInput on the CustomerCreate builder.
+func (c *CustomerCreate) SetInput(i CreateCustomerInput) *CustomerCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateCustomerInput represents a mutation input for updating customers.
+type UpdateCustomerInput struct {
+	UpdatedAt                  *time.Time
+	Name                       *string
+	ClearOwnerType             bool
+	OwnerType                  *int
+	Industry                   *int
+	ClearStatus                bool
+	Status                     *int
+	ClearContactPerson         bool
+	ContactPerson              *string
+	ClearContactPersonPosition bool
+	ContactPersonPosition      *string
+	ClearContactPersonPhone    bool
+	ContactPersonPhone         *string
+	ClearContactPersonEmail    bool
+	ContactPersonEmail         *string
+	AreaID                     *xid.ID
+	ClearTenders               bool
+	AddTenderIDs               []xid.ID
+	RemoveTenderIDs            []xid.ID
+}
+
+// Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
+func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if i.ClearOwnerType {
+		m.ClearOwnerType()
+	}
+	if v := i.OwnerType; v != nil {
+		m.SetOwnerType(*v)
+	}
+	if v := i.Industry; v != nil {
+		m.SetIndustry(*v)
+	}
+	if i.ClearStatus {
+		m.ClearStatus()
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearContactPerson {
+		m.ClearContactPerson()
+	}
+	if v := i.ContactPerson; v != nil {
+		m.SetContactPerson(*v)
+	}
+	if i.ClearContactPersonPosition {
+		m.ClearContactPersonPosition()
+	}
+	if v := i.ContactPersonPosition; v != nil {
+		m.SetContactPersonPosition(*v)
+	}
+	if i.ClearContactPersonPhone {
+		m.ClearContactPersonPhone()
+	}
+	if v := i.ContactPersonPhone; v != nil {
+		m.SetContactPersonPhone(*v)
+	}
+	if i.ClearContactPersonEmail {
+		m.ClearContactPersonEmail()
+	}
+	if v := i.ContactPersonEmail; v != nil {
+		m.SetContactPersonEmail(*v)
+	}
+	if v := i.AreaID; v != nil {
+		m.SetAreaID(*v)
+	}
+	if i.ClearTenders {
+		m.ClearTenders()
+	}
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the UpdateCustomerInput on the CustomerUpdate builder.
+func (c *CustomerUpdate) SetInput(i UpdateCustomerInput) *CustomerUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateCustomerInput on the CustomerUpdateOne builder.
+func (c *CustomerUpdateOne) SetInput(i UpdateCustomerInput) *CustomerUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateTenderInput represents a mutation input for creating tenders.
+type CreateTenderInput struct {
+	CreatedAt                    *time.Time
+	UpdatedAt                    *time.Time
+	Code                         string
+	Status                       *int
+	Name                         string
+	EstimatedAmount              *float64
+	TenderDate                   *time.Time
+	FindDate                     time.Time
+	SizeAndValueRating           *int
+	CreditAndPaymentRating       *int
+	TimeLimitRating              *int
+	CustomerRelationshipRating   *int
+	CompetitivePartnershipRating *int
+	PrepareToBid                 *bool
+	ProjectCode                  *string
+	ProjectDefinition            *string
+	EstimatedProjectStartDate    *time.Time
+	EstimatedProjectEndDate      *time.Time
+	ProjectType                  *string
+	Attachements                 []string
+	GeoLocation                  *string
+	Remark                       *string
+	Images                       []string
+	AreaID                       xid.ID
+	CustomerID                   xid.ID
+}
+
+// Mutate applies the CreateTenderInput on the TenderMutation builder.
+func (i *CreateTenderInput) Mutate(m *TenderMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetCode(i.Code)
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	m.SetName(i.Name)
+	if v := i.EstimatedAmount; v != nil {
+		m.SetEstimatedAmount(*v)
+	}
+	if v := i.TenderDate; v != nil {
+		m.SetTenderDate(*v)
+	}
+	m.SetFindDate(i.FindDate)
+	if v := i.SizeAndValueRating; v != nil {
+		m.SetSizeAndValueRating(*v)
+	}
+	if v := i.CreditAndPaymentRating; v != nil {
+		m.SetCreditAndPaymentRating(*v)
+	}
+	if v := i.TimeLimitRating; v != nil {
+		m.SetTimeLimitRating(*v)
+	}
+	if v := i.CustomerRelationshipRating; v != nil {
+		m.SetCustomerRelationshipRating(*v)
+	}
+	if v := i.CompetitivePartnershipRating; v != nil {
+		m.SetCompetitivePartnershipRating(*v)
+	}
+	if v := i.PrepareToBid; v != nil {
+		m.SetPrepareToBid(*v)
+	}
+	if v := i.ProjectCode; v != nil {
+		m.SetProjectCode(*v)
+	}
+	if v := i.ProjectDefinition; v != nil {
+		m.SetProjectDefinition(*v)
+	}
+	if v := i.EstimatedProjectStartDate; v != nil {
+		m.SetEstimatedProjectStartDate(*v)
+	}
+	if v := i.EstimatedProjectEndDate; v != nil {
+		m.SetEstimatedProjectEndDate(*v)
+	}
+	if v := i.ProjectType; v != nil {
+		m.SetProjectType(*v)
+	}
+	if v := i.Attachements; v != nil {
+		m.SetAttachements(v)
+	}
+	if v := i.GeoLocation; v != nil {
+		m.SetGeoLocation(*v)
+	}
+	if v := i.Remark; v != nil {
+		m.SetRemark(*v)
+	}
+	if v := i.Images; v != nil {
+		m.SetImages(v)
+	}
+	m.SetAreaID(i.AreaID)
+	m.SetCustomerID(i.CustomerID)
+}
+
+// SetInput applies the change-set in the CreateTenderInput on the TenderCreate builder.
+func (c *TenderCreate) SetInput(i CreateTenderInput) *TenderCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateTenderInput represents a mutation input for updating tenders.
+type UpdateTenderInput struct {
+	UpdatedAt                         *time.Time
+	Code                              *string
+	Status                            *int
+	Name                              *string
+	ClearEstimatedAmount              bool
+	EstimatedAmount                   *float64
+	ClearTenderDate                   bool
+	TenderDate                        *time.Time
+	FindDate                          *time.Time
+	ClearSizeAndValueRating           bool
+	SizeAndValueRating                *int
+	ClearCreditAndPaymentRating       bool
+	CreditAndPaymentRating            *int
+	ClearTimeLimitRating              bool
+	TimeLimitRating                   *int
+	ClearCustomerRelationshipRating   bool
+	CustomerRelationshipRating        *int
+	ClearCompetitivePartnershipRating bool
+	CompetitivePartnershipRating      *int
+	PrepareToBid                      *bool
+	ClearProjectCode                  bool
+	ProjectCode                       *string
+	ClearProjectDefinition            bool
+	ProjectDefinition                 *string
+	ClearEstimatedProjectStartDate    bool
+	EstimatedProjectStartDate         *time.Time
+	ClearEstimatedProjectEndDate      bool
+	EstimatedProjectEndDate           *time.Time
+	ClearProjectType                  bool
+	ProjectType                       *string
+	ClearAttachements                 bool
+	Attachements                      []string
+	AppendAttachements                []string
+	ClearGeoLocation                  bool
+	GeoLocation                       *string
+	ClearRemark                       bool
+	Remark                            *string
+	ClearImages                       bool
+	Images                            []string
+	AppendImages                      []string
+	AreaID                            *xid.ID
+	CustomerID                        *xid.ID
+}
+
+// Mutate applies the UpdateTenderInput on the TenderMutation builder.
+func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Code; v != nil {
+		m.SetCode(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if i.ClearEstimatedAmount {
+		m.ClearEstimatedAmount()
+	}
+	if v := i.EstimatedAmount; v != nil {
+		m.SetEstimatedAmount(*v)
+	}
+	if i.ClearTenderDate {
+		m.ClearTenderDate()
+	}
+	if v := i.TenderDate; v != nil {
+		m.SetTenderDate(*v)
+	}
+	if v := i.FindDate; v != nil {
+		m.SetFindDate(*v)
+	}
+	if i.ClearSizeAndValueRating {
+		m.ClearSizeAndValueRating()
+	}
+	if v := i.SizeAndValueRating; v != nil {
+		m.SetSizeAndValueRating(*v)
+	}
+	if i.ClearCreditAndPaymentRating {
+		m.ClearCreditAndPaymentRating()
+	}
+	if v := i.CreditAndPaymentRating; v != nil {
+		m.SetCreditAndPaymentRating(*v)
+	}
+	if i.ClearTimeLimitRating {
+		m.ClearTimeLimitRating()
+	}
+	if v := i.TimeLimitRating; v != nil {
+		m.SetTimeLimitRating(*v)
+	}
+	if i.ClearCustomerRelationshipRating {
+		m.ClearCustomerRelationshipRating()
+	}
+	if v := i.CustomerRelationshipRating; v != nil {
+		m.SetCustomerRelationshipRating(*v)
+	}
+	if i.ClearCompetitivePartnershipRating {
+		m.ClearCompetitivePartnershipRating()
+	}
+	if v := i.CompetitivePartnershipRating; v != nil {
+		m.SetCompetitivePartnershipRating(*v)
+	}
+	if v := i.PrepareToBid; v != nil {
+		m.SetPrepareToBid(*v)
+	}
+	if i.ClearProjectCode {
+		m.ClearProjectCode()
+	}
+	if v := i.ProjectCode; v != nil {
+		m.SetProjectCode(*v)
+	}
+	if i.ClearProjectDefinition {
+		m.ClearProjectDefinition()
+	}
+	if v := i.ProjectDefinition; v != nil {
+		m.SetProjectDefinition(*v)
+	}
+	if i.ClearEstimatedProjectStartDate {
+		m.ClearEstimatedProjectStartDate()
+	}
+	if v := i.EstimatedProjectStartDate; v != nil {
+		m.SetEstimatedProjectStartDate(*v)
+	}
+	if i.ClearEstimatedProjectEndDate {
+		m.ClearEstimatedProjectEndDate()
+	}
+	if v := i.EstimatedProjectEndDate; v != nil {
+		m.SetEstimatedProjectEndDate(*v)
+	}
+	if i.ClearProjectType {
+		m.ClearProjectType()
+	}
+	if v := i.ProjectType; v != nil {
+		m.SetProjectType(*v)
+	}
+	if i.ClearAttachements {
+		m.ClearAttachements()
+	}
+	if v := i.Attachements; v != nil {
+		m.SetAttachements(v)
+	}
+	if i.AppendAttachements != nil {
+		m.AppendAttachements(i.Attachements)
+	}
+	if i.ClearGeoLocation {
+		m.ClearGeoLocation()
+	}
+	if v := i.GeoLocation; v != nil {
+		m.SetGeoLocation(*v)
+	}
+	if i.ClearRemark {
+		m.ClearRemark()
+	}
+	if v := i.Remark; v != nil {
+		m.SetRemark(*v)
+	}
+	if i.ClearImages {
+		m.ClearImages()
+	}
+	if v := i.Images; v != nil {
+		m.SetImages(v)
+	}
+	if i.AppendImages != nil {
+		m.AppendImages(i.Images)
+	}
+	if v := i.AreaID; v != nil {
+		m.SetAreaID(*v)
+	}
+	if v := i.CustomerID; v != nil {
+		m.SetCustomerID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateTenderInput on the TenderUpdate builder.
+func (c *TenderUpdate) SetInput(i UpdateTenderInput) *TenderUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateTenderInput on the TenderUpdateOne builder.
+func (c *TenderUpdateOne) SetInput(i UpdateTenderInput) *TenderUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }

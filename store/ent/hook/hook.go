@@ -8,16 +8,40 @@ import (
 	"fmt"
 )
 
-// The OpportunityFunc type is an adapter to allow the use of ordinary
-// function as Opportunity mutator.
-type OpportunityFunc func(context.Context, *ent.OpportunityMutation) (ent.Value, error)
+// The AreaFunc type is an adapter to allow the use of ordinary
+// function as Area mutator.
+type AreaFunc func(context.Context, *ent.AreaMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f OpportunityFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.OpportunityMutation); ok {
+func (f AreaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.AreaMutation); ok {
 		return f(ctx, mv)
 	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OpportunityMutation", m)
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AreaMutation", m)
+}
+
+// The CustomerFunc type is an adapter to allow the use of ordinary
+// function as Customer mutator.
+type CustomerFunc func(context.Context, *ent.CustomerMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CustomerFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CustomerMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CustomerMutation", m)
+}
+
+// The TenderFunc type is an adapter to allow the use of ordinary
+// function as Tender mutator.
+type TenderFunc func(context.Context, *ent.TenderMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TenderFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.TenderMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TenderMutation", m)
 }
 
 // The UserFunc type is an adapter to allow the use of ordinary

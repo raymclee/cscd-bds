@@ -4,8 +4,10 @@ package ent
 
 import (
 	"context"
-	"cscd-bds/store/ent/opportunity"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"fmt"
 
@@ -19,10 +21,20 @@ type Noder interface {
 	IsNode()
 }
 
-var opportunityImplementors = []string{"Opportunity", "Node"}
+var areaImplementors = []string{"Area", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
-func (*Opportunity) IsNode() {}
+func (*Area) IsNode() {}
+
+var customerImplementors = []string{"Customer", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*Customer) IsNode() {}
+
+var tenderImplementors = []string{"Tender", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*Tender) IsNode() {}
 
 var userImplementors = []string{"User", "Node"}
 
@@ -87,15 +99,41 @@ func (c *Client) Noder(ctx context.Context, id xid.ID, opts ...NodeOption) (_ No
 
 func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, error) {
 	switch table {
-	case opportunity.Table:
+	case area.Table:
 		var uid xid.ID
 		if err := uid.UnmarshalGQL(id); err != nil {
 			return nil, err
 		}
-		query := c.Opportunity.Query().
-			Where(opportunity.ID(uid))
+		query := c.Area.Query().
+			Where(area.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
-			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, opportunityImplementors...); err != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, areaImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case customer.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Customer.Query().
+			Where(customer.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, customerImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case tender.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Tender.Query().
+			Where(tender.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, tenderImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -186,10 +224,42 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		idmap[id] = append(idmap[id], &noders[i])
 	}
 	switch table {
-	case opportunity.Table:
-		query := c.Opportunity.Query().
-			Where(opportunity.IDIn(ids...))
-		query, err := query.CollectFields(ctx, opportunityImplementors...)
+	case area.Table:
+		query := c.Area.Query().
+			Where(area.IDIn(ids...))
+		query, err := query.CollectFields(ctx, areaImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case customer.Table:
+		query := c.Customer.Query().
+			Where(customer.IDIn(ids...))
+		query, err := query.CollectFields(ctx, customerImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case tender.Table:
+		query := c.Tender.Query().
+			Where(tender.IDIn(ids...))
+		query, err := query.CollectFields(ctx, tenderImplementors...)
 		if err != nil {
 			return nil, err
 		}

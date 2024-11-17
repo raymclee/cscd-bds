@@ -8,18 +8,105 @@ import (
 )
 
 var (
-	// OpportunitiesColumns holds the columns for the "opportunities" table.
-	OpportunitiesColumns = []*schema.Column{
+	// AreasColumns holds the columns for the "areas" table.
+	AreasColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "registration_number", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString},
+		{Name: "code", Type: field.TypeString},
+		{Name: "sales_team_members", Type: field.TypeJSON},
 	}
-	// OpportunitiesTable holds the schema information for the "opportunities" table.
-	OpportunitiesTable = &schema.Table{
-		Name:       "opportunities",
-		Columns:    OpportunitiesColumns,
-		PrimaryKey: []*schema.Column{OpportunitiesColumns[0]},
+	// AreasTable holds the schema information for the "areas" table.
+	AreasTable = &schema.Table{
+		Name:       "areas",
+		Columns:    AreasColumns,
+		PrimaryKey: []*schema.Column{AreasColumns[0]},
+	}
+	// CustomersColumns holds the columns for the "customers" table.
+	CustomersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString},
+		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
+		{Name: "industry", Type: field.TypeInt},
+		{Name: "status", Type: field.TypeInt, Nullable: true},
+		{Name: "contact_person", Type: field.TypeString, Nullable: true},
+		{Name: "contact_person_position", Type: field.TypeString, Nullable: true},
+		{Name: "contact_person_phone", Type: field.TypeString, Nullable: true},
+		{Name: "contact_person_email", Type: field.TypeString, Nullable: true},
+		{Name: "customer_owner", Type: field.TypeJSON, Nullable: true},
+		{Name: "sales_leader", Type: field.TypeJSON, Nullable: true},
+		{Name: "created_by", Type: field.TypeJSON},
+		{Name: "area_id", Type: field.TypeString},
+	}
+	// CustomersTable holds the schema information for the "customers" table.
+	CustomersTable = &schema.Table{
+		Name:       "customers",
+		Columns:    CustomersColumns,
+		PrimaryKey: []*schema.Column{CustomersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "customers_areas_customers",
+				Columns:    []*schema.Column{CustomersColumns[14]},
+				RefColumns: []*schema.Column{AreasColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
+	// TendersColumns holds the columns for the "tenders" table.
+	TendersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "name", Type: field.TypeString},
+		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
+		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
+		{Name: "find_date", Type: field.TypeTime},
+		{Name: "finder", Type: field.TypeJSON},
+		{Name: "created_by", Type: field.TypeJSON},
+		{Name: "following_person", Type: field.TypeJSON, Nullable: true},
+		{Name: "size_and_value_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "credit_and_payment_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "time_limit_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "customer_relationship_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "competitive_partnership_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "prepare_to_bid", Type: field.TypeBool, Default: false},
+		{Name: "project_code", Type: field.TypeString, Nullable: true},
+		{Name: "project_definition", Type: field.TypeString, Nullable: true},
+		{Name: "estimated_project_start_date", Type: field.TypeTime, Nullable: true},
+		{Name: "estimated_project_end_date", Type: field.TypeTime, Nullable: true},
+		{Name: "project_type", Type: field.TypeString, Nullable: true},
+		{Name: "attachements", Type: field.TypeJSON, Nullable: true},
+		{Name: "geo_location", Type: field.TypeString, Nullable: true},
+		{Name: "geo_coordinate", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "remark", Type: field.TypeString, Nullable: true},
+		{Name: "images", Type: field.TypeJSON, Nullable: true},
+		{Name: "area_id", Type: field.TypeString},
+		{Name: "customer_id", Type: field.TypeString},
+	}
+	// TendersTable holds the schema information for the "tenders" table.
+	TendersTable = &schema.Table{
+		Name:       "tenders",
+		Columns:    TendersColumns,
+		PrimaryKey: []*schema.Column{TendersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "tenders_areas_tenders",
+				Columns:    []*schema.Column{TendersColumns[28]},
+				RefColumns: []*schema.Column{AreasColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tenders_customers_tenders",
+				Columns:    []*schema.Column{TendersColumns[29]},
+				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
 	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
@@ -36,10 +123,15 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		OpportunitiesTable,
+		AreasTable,
+		CustomersTable,
+		TendersTable,
 		UsersTable,
 	}
 )
 
 func init() {
+	CustomersTable.ForeignKeys[0].RefTable = AreasTable
+	TendersTable.ForeignKeys[0].RefTable = AreasTable
+	TendersTable.ForeignKeys[1].RefTable = CustomersTable
 }

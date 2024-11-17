@@ -8,24 +8,24 @@ import {
 } from "~/components/ui/chart";
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", desktop: Math.floor(Math.random() * 500) },
+  { month: "February", desktop: Math.floor(Math.random() * 500) },
+  { month: "March", desktop: Math.floor(Math.random() * 500) },
+  { month: "April", desktop: Math.floor(Math.random() * 500) },
+  { month: "May", desktop: Math.floor(Math.random() * 500) },
+  { month: "June", desktop: Math.floor(Math.random() * 500) },
 ];
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-2))",
+    label: "对手",
+    color: "var(--brand)",
   },
 } satisfies ChartConfig;
 
-export function BusinessChart() {
+export function BusinessChart({ className }: { className?: string }) {
   return (
-    <ChartContainer config={chartConfig}>
+    <ChartContainer config={chartConfig} className={className}>
       <LineChart
         accessibilityLayer
         data={chartData}

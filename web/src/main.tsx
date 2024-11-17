@@ -1,7 +1,9 @@
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { RelayEnvironmentProvider } from "react-relay";
+import { RelayEnvironment } from "~/lib/relay";
+
 import { routeTree } from "./routeTree.gen";
-import { ConfigProvider } from "@arco-design/web-react";
 
 import "@amap/amap-jsapi-types";
 import "./main.css";
@@ -10,14 +12,13 @@ import "./main.css";
 const router = createRouter({
   routeTree,
   defaultPreload: "intent",
+  context: {
+    RelayEnvironment,
+  },
   Wrap: ({ children }) => (
-    <ConfigProvider
-    // componentConfig={{
-    //   Menu: { color: "rgb(0, 21, 41)" },
-    // }}
-    >
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
       {children}
-    </ConfigProvider>
+    </RelayEnvironmentProvider>
   ),
 });
 

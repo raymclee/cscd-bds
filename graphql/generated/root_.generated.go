@@ -42,6 +42,55 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Area struct {
+		Code      func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		Customers func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		Tenders   func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	AreaConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	AreaEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	Customer struct {
+		Area                  func(childComplexity int) int
+		AreaID                func(childComplexity int) int
+		ContactPerson         func(childComplexity int) int
+		ContactPersonEmail    func(childComplexity int) int
+		ContactPersonPhone    func(childComplexity int) int
+		ContactPersonPosition func(childComplexity int) int
+		CreatedAt             func(childComplexity int) int
+		ID                    func(childComplexity int) int
+		Industry              func(childComplexity int) int
+		Name                  func(childComplexity int) int
+		OwnerType             func(childComplexity int) int
+		Status                func(childComplexity int) int
+		Tenders               func(childComplexity int) int
+		UpdatedAt             func(childComplexity int) int
+	}
+
+	CustomerConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	CustomerEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Opportunity struct {
 		CreatedAt          func(childComplexity int) int
 		ID                 func(childComplexity int) int
@@ -68,10 +117,55 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		Areas         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
+		Customers     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
 		Node          func(childComplexity int, id xid.ID) int
 		Nodes         func(childComplexity int, ids []*xid.ID) int
 		Opportunities func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.OpportunityWhereInput) int
+		Tenders       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
 		Users         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
+	}
+
+	Tender struct {
+		Area                         func(childComplexity int) int
+		AreaID                       func(childComplexity int) int
+		Attachements                 func(childComplexity int) int
+		Code                         func(childComplexity int) int
+		CompetitivePartnershipRating func(childComplexity int) int
+		CreatedAt                    func(childComplexity int) int
+		CreditAndPaymentRating       func(childComplexity int) int
+		Customer                     func(childComplexity int) int
+		CustomerID                   func(childComplexity int) int
+		CustomerRelationshipRating   func(childComplexity int) int
+		EstimatedAmount              func(childComplexity int) int
+		EstimatedProjectEndDate      func(childComplexity int) int
+		EstimatedProjectStartDate    func(childComplexity int) int
+		FindDate                     func(childComplexity int) int
+		GeoLocation                  func(childComplexity int) int
+		ID                           func(childComplexity int) int
+		Images                       func(childComplexity int) int
+		Name                         func(childComplexity int) int
+		PrepareToBid                 func(childComplexity int) int
+		ProjectCode                  func(childComplexity int) int
+		ProjectDefinition            func(childComplexity int) int
+		ProjectType                  func(childComplexity int) int
+		Remark                       func(childComplexity int) int
+		SizeAndValueRating           func(childComplexity int) int
+		Status                       func(childComplexity int) int
+		TenderDate                   func(childComplexity int) int
+		TimeLimitRating              func(childComplexity int) int
+		UpdatedAt                    func(childComplexity int) int
+	}
+
+	TenderConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	TenderEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 
 	User struct {
@@ -111,6 +205,223 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "Area.code":
+		if e.complexity.Area.Code == nil {
+			break
+		}
+
+		return e.complexity.Area.Code(childComplexity), true
+
+	case "Area.createdAt":
+		if e.complexity.Area.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Area.CreatedAt(childComplexity), true
+
+	case "Area.customers":
+		if e.complexity.Area.Customers == nil {
+			break
+		}
+
+		return e.complexity.Area.Customers(childComplexity), true
+
+	case "Area.id":
+		if e.complexity.Area.ID == nil {
+			break
+		}
+
+		return e.complexity.Area.ID(childComplexity), true
+
+	case "Area.name":
+		if e.complexity.Area.Name == nil {
+			break
+		}
+
+		return e.complexity.Area.Name(childComplexity), true
+
+	case "Area.tenders":
+		if e.complexity.Area.Tenders == nil {
+			break
+		}
+
+		return e.complexity.Area.Tenders(childComplexity), true
+
+	case "Area.updatedAt":
+		if e.complexity.Area.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Area.UpdatedAt(childComplexity), true
+
+	case "AreaConnection.edges":
+		if e.complexity.AreaConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.AreaConnection.Edges(childComplexity), true
+
+	case "AreaConnection.pageInfo":
+		if e.complexity.AreaConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.AreaConnection.PageInfo(childComplexity), true
+
+	case "AreaConnection.totalCount":
+		if e.complexity.AreaConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.AreaConnection.TotalCount(childComplexity), true
+
+	case "AreaEdge.cursor":
+		if e.complexity.AreaEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.AreaEdge.Cursor(childComplexity), true
+
+	case "AreaEdge.node":
+		if e.complexity.AreaEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.AreaEdge.Node(childComplexity), true
+
+	case "Customer.area":
+		if e.complexity.Customer.Area == nil {
+			break
+		}
+
+		return e.complexity.Customer.Area(childComplexity), true
+
+	case "Customer.areaID":
+		if e.complexity.Customer.AreaID == nil {
+			break
+		}
+
+		return e.complexity.Customer.AreaID(childComplexity), true
+
+	case "Customer.contactPerson":
+		if e.complexity.Customer.ContactPerson == nil {
+			break
+		}
+
+		return e.complexity.Customer.ContactPerson(childComplexity), true
+
+	case "Customer.contactPersonEmail":
+		if e.complexity.Customer.ContactPersonEmail == nil {
+			break
+		}
+
+		return e.complexity.Customer.ContactPersonEmail(childComplexity), true
+
+	case "Customer.contactPersonPhone":
+		if e.complexity.Customer.ContactPersonPhone == nil {
+			break
+		}
+
+		return e.complexity.Customer.ContactPersonPhone(childComplexity), true
+
+	case "Customer.contactPersonPosition":
+		if e.complexity.Customer.ContactPersonPosition == nil {
+			break
+		}
+
+		return e.complexity.Customer.ContactPersonPosition(childComplexity), true
+
+	case "Customer.createdAt":
+		if e.complexity.Customer.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Customer.CreatedAt(childComplexity), true
+
+	case "Customer.id":
+		if e.complexity.Customer.ID == nil {
+			break
+		}
+
+		return e.complexity.Customer.ID(childComplexity), true
+
+	case "Customer.industry":
+		if e.complexity.Customer.Industry == nil {
+			break
+		}
+
+		return e.complexity.Customer.Industry(childComplexity), true
+
+	case "Customer.name":
+		if e.complexity.Customer.Name == nil {
+			break
+		}
+
+		return e.complexity.Customer.Name(childComplexity), true
+
+	case "Customer.ownerType":
+		if e.complexity.Customer.OwnerType == nil {
+			break
+		}
+
+		return e.complexity.Customer.OwnerType(childComplexity), true
+
+	case "Customer.status":
+		if e.complexity.Customer.Status == nil {
+			break
+		}
+
+		return e.complexity.Customer.Status(childComplexity), true
+
+	case "Customer.tenders":
+		if e.complexity.Customer.Tenders == nil {
+			break
+		}
+
+		return e.complexity.Customer.Tenders(childComplexity), true
+
+	case "Customer.updatedAt":
+		if e.complexity.Customer.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Customer.UpdatedAt(childComplexity), true
+
+	case "CustomerConnection.edges":
+		if e.complexity.CustomerConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.CustomerConnection.Edges(childComplexity), true
+
+	case "CustomerConnection.pageInfo":
+		if e.complexity.CustomerConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.CustomerConnection.PageInfo(childComplexity), true
+
+	case "CustomerConnection.totalCount":
+		if e.complexity.CustomerConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.CustomerConnection.TotalCount(childComplexity), true
+
+	case "CustomerEdge.cursor":
+		if e.complexity.CustomerEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.CustomerEdge.Cursor(childComplexity), true
+
+	case "CustomerEdge.node":
+		if e.complexity.CustomerEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.CustomerEdge.Node(childComplexity), true
 
 	case "Opportunity.createdAt":
 		if e.complexity.Opportunity.CreatedAt == nil {
@@ -203,6 +514,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PageInfo.StartCursor(childComplexity), true
 
+	case "Query.areas":
+		if e.complexity.Query.Areas == nil {
+			break
+		}
+
+		args, err := ec.field_Query_areas_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Areas(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.AreaWhereInput)), true
+
+	case "Query.customers":
+		if e.complexity.Query.Customers == nil {
+			break
+		}
+
+		args, err := ec.field_Query_customers_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Customers(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.CustomerWhereInput)), true
+
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
 			break
@@ -239,6 +574,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Opportunities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.OpportunityWhereInput)), true
 
+	case "Query.tenders":
+		if e.complexity.Query.Tenders == nil {
+			break
+		}
+
+		args, err := ec.field_Query_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.TenderWhereInput)), true
+
 	case "Query.users":
 		if e.complexity.Query.Users == nil {
 			break
@@ -250,6 +597,237 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.UserWhereInput)), true
+
+	case "Tender.area":
+		if e.complexity.Tender.Area == nil {
+			break
+		}
+
+		return e.complexity.Tender.Area(childComplexity), true
+
+	case "Tender.areaID":
+		if e.complexity.Tender.AreaID == nil {
+			break
+		}
+
+		return e.complexity.Tender.AreaID(childComplexity), true
+
+	case "Tender.attachements":
+		if e.complexity.Tender.Attachements == nil {
+			break
+		}
+
+		return e.complexity.Tender.Attachements(childComplexity), true
+
+	case "Tender.code":
+		if e.complexity.Tender.Code == nil {
+			break
+		}
+
+		return e.complexity.Tender.Code(childComplexity), true
+
+	case "Tender.competitivePartnershipRating":
+		if e.complexity.Tender.CompetitivePartnershipRating == nil {
+			break
+		}
+
+		return e.complexity.Tender.CompetitivePartnershipRating(childComplexity), true
+
+	case "Tender.createdAt":
+		if e.complexity.Tender.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Tender.CreatedAt(childComplexity), true
+
+	case "Tender.creditAndPaymentRating":
+		if e.complexity.Tender.CreditAndPaymentRating == nil {
+			break
+		}
+
+		return e.complexity.Tender.CreditAndPaymentRating(childComplexity), true
+
+	case "Tender.customer":
+		if e.complexity.Tender.Customer == nil {
+			break
+		}
+
+		return e.complexity.Tender.Customer(childComplexity), true
+
+	case "Tender.customerID":
+		if e.complexity.Tender.CustomerID == nil {
+			break
+		}
+
+		return e.complexity.Tender.CustomerID(childComplexity), true
+
+	case "Tender.customerRelationshipRating":
+		if e.complexity.Tender.CustomerRelationshipRating == nil {
+			break
+		}
+
+		return e.complexity.Tender.CustomerRelationshipRating(childComplexity), true
+
+	case "Tender.estimatedAmount":
+		if e.complexity.Tender.EstimatedAmount == nil {
+			break
+		}
+
+		return e.complexity.Tender.EstimatedAmount(childComplexity), true
+
+	case "Tender.estimatedProjectEndDate":
+		if e.complexity.Tender.EstimatedProjectEndDate == nil {
+			break
+		}
+
+		return e.complexity.Tender.EstimatedProjectEndDate(childComplexity), true
+
+	case "Tender.estimatedProjectStartDate":
+		if e.complexity.Tender.EstimatedProjectStartDate == nil {
+			break
+		}
+
+		return e.complexity.Tender.EstimatedProjectStartDate(childComplexity), true
+
+	case "Tender.findDate":
+		if e.complexity.Tender.FindDate == nil {
+			break
+		}
+
+		return e.complexity.Tender.FindDate(childComplexity), true
+
+	case "Tender.geoLocation":
+		if e.complexity.Tender.GeoLocation == nil {
+			break
+		}
+
+		return e.complexity.Tender.GeoLocation(childComplexity), true
+
+	case "Tender.id":
+		if e.complexity.Tender.ID == nil {
+			break
+		}
+
+		return e.complexity.Tender.ID(childComplexity), true
+
+	case "Tender.images":
+		if e.complexity.Tender.Images == nil {
+			break
+		}
+
+		return e.complexity.Tender.Images(childComplexity), true
+
+	case "Tender.name":
+		if e.complexity.Tender.Name == nil {
+			break
+		}
+
+		return e.complexity.Tender.Name(childComplexity), true
+
+	case "Tender.prepareToBid":
+		if e.complexity.Tender.PrepareToBid == nil {
+			break
+		}
+
+		return e.complexity.Tender.PrepareToBid(childComplexity), true
+
+	case "Tender.projectCode":
+		if e.complexity.Tender.ProjectCode == nil {
+			break
+		}
+
+		return e.complexity.Tender.ProjectCode(childComplexity), true
+
+	case "Tender.projectDefinition":
+		if e.complexity.Tender.ProjectDefinition == nil {
+			break
+		}
+
+		return e.complexity.Tender.ProjectDefinition(childComplexity), true
+
+	case "Tender.projectType":
+		if e.complexity.Tender.ProjectType == nil {
+			break
+		}
+
+		return e.complexity.Tender.ProjectType(childComplexity), true
+
+	case "Tender.remark":
+		if e.complexity.Tender.Remark == nil {
+			break
+		}
+
+		return e.complexity.Tender.Remark(childComplexity), true
+
+	case "Tender.sizeAndValueRating":
+		if e.complexity.Tender.SizeAndValueRating == nil {
+			break
+		}
+
+		return e.complexity.Tender.SizeAndValueRating(childComplexity), true
+
+	case "Tender.status":
+		if e.complexity.Tender.Status == nil {
+			break
+		}
+
+		return e.complexity.Tender.Status(childComplexity), true
+
+	case "Tender.tenderDate":
+		if e.complexity.Tender.TenderDate == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderDate(childComplexity), true
+
+	case "Tender.timeLimitRating":
+		if e.complexity.Tender.TimeLimitRating == nil {
+			break
+		}
+
+		return e.complexity.Tender.TimeLimitRating(childComplexity), true
+
+	case "Tender.updatedAt":
+		if e.complexity.Tender.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Tender.UpdatedAt(childComplexity), true
+
+	case "TenderConnection.edges":
+		if e.complexity.TenderConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.TenderConnection.Edges(childComplexity), true
+
+	case "TenderConnection.pageInfo":
+		if e.complexity.TenderConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.TenderConnection.PageInfo(childComplexity), true
+
+	case "TenderConnection.totalCount":
+		if e.complexity.TenderConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.TenderConnection.TotalCount(childComplexity), true
+
+	case "TenderEdge.cursor":
+		if e.complexity.TenderEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.TenderEdge.Cursor(childComplexity), true
+
+	case "TenderEdge.node":
+		if e.complexity.TenderEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.TenderEdge.Node(childComplexity), true
 
 	case "User.createdAt":
 		if e.complexity.User.CreatedAt == nil {
@@ -322,10 +900,19 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputAreaWhereInput,
+		ec.unmarshalInputCreateAreaInput,
+		ec.unmarshalInputCreateCustomerInput,
 		ec.unmarshalInputCreateOpportunityInput,
+		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
+		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputOpportunityWhereInput,
+		ec.unmarshalInputTenderWhereInput,
+		ec.unmarshalInputUpdateAreaInput,
+		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateOpportunityInput,
+		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUserWhereInput,
 	)
@@ -412,6 +999,159 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 var sources = []*ast.Source{
 	{Name: "../ent.graphql", Input: `directive @goField(forceResolver: Boolean, name: String, omittable: Boolean) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 directive @goModel(model: String, models: [String!], forceGenerate: Boolean) on OBJECT | INPUT_OBJECT | SCALAR | ENUM | INTERFACE | UNION
+type Area implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  name: String!
+  code: String!
+  customers: [Customer!]
+  tenders: [Tender!]
+}
+"""
+A connection to a list of items.
+"""
+type AreaConnection {
+  """
+  A list of edges.
+  """
+  edges: [AreaEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type AreaEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Area
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+AreaWhereInput is used for filtering Area objects.
+Input was generated by ent.
+"""
+input AreaWhereInput {
+  not: AreaWhereInput
+  and: [AreaWhereInput!]
+  or: [AreaWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  code field predicates
+  """
+  code: String
+  codeNEQ: String
+  codeIn: [String!]
+  codeNotIn: [String!]
+  codeGT: String
+  codeGTE: String
+  codeLT: String
+  codeLTE: String
+  codeContains: String
+  codeHasPrefix: String
+  codeHasSuffix: String
+  codeEqualFold: String
+  codeContainsFold: String
+  """
+  customers edge predicates
+  """
+  hasCustomers: Boolean
+  hasCustomersWith: [CustomerWhereInput!]
+  """
+  tenders edge predicates
+  """
+  hasTenders: Boolean
+  hasTendersWith: [TenderWhereInput!]
+}
+"""
+CreateAreaInput is used for create Area object.
+Input was generated by ent.
+"""
+input CreateAreaInput {
+  createdAt: Time
+  updatedAt: Time
+  name: String!
+  code: String!
+  customerIDs: [ID!]
+  tenderIDs: [ID!]
+}
+"""
+CreateCustomerInput is used for create Customer object.
+Input was generated by ent.
+"""
+input CreateCustomerInput {
+  createdAt: Time
+  updatedAt: Time
+  name: String!
+  ownerType: Int
+  industry: Int!
+  status: Int
+  contactPerson: String
+  contactPersonPosition: String
+  contactPersonPhone: String
+  contactPersonEmail: String
+  areaID: ID!
+  tenderIDs: [ID!]
+}
 """
 CreateOpportunityInput is used for create Opportunity object.
 Input was generated by ent.
@@ -420,6 +1160,37 @@ input CreateOpportunityInput {
   createdAt: Time
   updatedAt: Time
   registrationNumber: String!
+}
+"""
+CreateTenderInput is used for create Tender object.
+Input was generated by ent.
+"""
+input CreateTenderInput {
+  createdAt: Time
+  updatedAt: Time
+  code: String!
+  status: Int
+  name: String!
+  estimatedAmount: Float
+  tenderDate: Time
+  findDate: Time!
+  sizeAndValueRating: Int
+  creditAndPaymentRating: Int
+  timeLimitRating: Int
+  customerRelationshipRating: Int
+  competitivePartnershipRating: Int
+  prepareToBid: Boolean
+  projectCode: String
+  projectDefinition: String
+  estimatedProjectStartDate: Time
+  estimatedProjectEndDate: Time
+  projectType: String
+  attachements: [String!]
+  geoLocation: String
+  remark: String
+  images: [String!]
+  areaID: ID!
+  customerID: ID!
 }
 """
 CreateUserInput is used for create User object.
@@ -435,6 +1206,240 @@ Define a Relay Cursor type:
 https://relay.dev/graphql/connections.htm#sec-Cursor
 """
 scalar Cursor
+type Customer implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  name: String!
+  ownerType: Int
+  industry: Int!
+  status: Int
+  contactPerson: String
+  contactPersonPosition: String
+  contactPersonPhone: String
+  contactPersonEmail: String
+  areaID: ID!
+  area: Area!
+  tenders: [Tender!]
+}
+"""
+A connection to a list of items.
+"""
+type CustomerConnection {
+  """
+  A list of edges.
+  """
+  edges: [CustomerEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type CustomerEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Customer
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+CustomerWhereInput is used for filtering Customer objects.
+Input was generated by ent.
+"""
+input CustomerWhereInput {
+  not: CustomerWhereInput
+  and: [CustomerWhereInput!]
+  or: [CustomerWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  owner_type field predicates
+  """
+  ownerType: Int
+  ownerTypeNEQ: Int
+  ownerTypeIn: [Int!]
+  ownerTypeNotIn: [Int!]
+  ownerTypeGT: Int
+  ownerTypeGTE: Int
+  ownerTypeLT: Int
+  ownerTypeLTE: Int
+  ownerTypeIsNil: Boolean
+  ownerTypeNotNil: Boolean
+  """
+  industry field predicates
+  """
+  industry: Int
+  industryNEQ: Int
+  industryIn: [Int!]
+  industryNotIn: [Int!]
+  industryGT: Int
+  industryGTE: Int
+  industryLT: Int
+  industryLTE: Int
+  """
+  status field predicates
+  """
+  status: Int
+  statusNEQ: Int
+  statusIn: [Int!]
+  statusNotIn: [Int!]
+  statusGT: Int
+  statusGTE: Int
+  statusLT: Int
+  statusLTE: Int
+  statusIsNil: Boolean
+  statusNotNil: Boolean
+  """
+  contact_person field predicates
+  """
+  contactPerson: String
+  contactPersonNEQ: String
+  contactPersonIn: [String!]
+  contactPersonNotIn: [String!]
+  contactPersonGT: String
+  contactPersonGTE: String
+  contactPersonLT: String
+  contactPersonLTE: String
+  contactPersonContains: String
+  contactPersonHasPrefix: String
+  contactPersonHasSuffix: String
+  contactPersonIsNil: Boolean
+  contactPersonNotNil: Boolean
+  contactPersonEqualFold: String
+  contactPersonContainsFold: String
+  """
+  contact_person_position field predicates
+  """
+  contactPersonPosition: String
+  contactPersonPositionNEQ: String
+  contactPersonPositionIn: [String!]
+  contactPersonPositionNotIn: [String!]
+  contactPersonPositionGT: String
+  contactPersonPositionGTE: String
+  contactPersonPositionLT: String
+  contactPersonPositionLTE: String
+  contactPersonPositionContains: String
+  contactPersonPositionHasPrefix: String
+  contactPersonPositionHasSuffix: String
+  contactPersonPositionIsNil: Boolean
+  contactPersonPositionNotNil: Boolean
+  contactPersonPositionEqualFold: String
+  contactPersonPositionContainsFold: String
+  """
+  contact_person_phone field predicates
+  """
+  contactPersonPhone: String
+  contactPersonPhoneNEQ: String
+  contactPersonPhoneIn: [String!]
+  contactPersonPhoneNotIn: [String!]
+  contactPersonPhoneGT: String
+  contactPersonPhoneGTE: String
+  contactPersonPhoneLT: String
+  contactPersonPhoneLTE: String
+  contactPersonPhoneContains: String
+  contactPersonPhoneHasPrefix: String
+  contactPersonPhoneHasSuffix: String
+  contactPersonPhoneIsNil: Boolean
+  contactPersonPhoneNotNil: Boolean
+  contactPersonPhoneEqualFold: String
+  contactPersonPhoneContainsFold: String
+  """
+  contact_person_email field predicates
+  """
+  contactPersonEmail: String
+  contactPersonEmailNEQ: String
+  contactPersonEmailIn: [String!]
+  contactPersonEmailNotIn: [String!]
+  contactPersonEmailGT: String
+  contactPersonEmailGTE: String
+  contactPersonEmailLT: String
+  contactPersonEmailLTE: String
+  contactPersonEmailContains: String
+  contactPersonEmailHasPrefix: String
+  contactPersonEmailHasSuffix: String
+  contactPersonEmailIsNil: Boolean
+  contactPersonEmailNotNil: Boolean
+  contactPersonEmailEqualFold: String
+  contactPersonEmailContainsFold: String
+  """
+  area_id field predicates
+  """
+  areaID: ID
+  areaIDNEQ: ID
+  areaIDIn: [ID!]
+  areaIDNotIn: [ID!]
+  areaIDGT: ID
+  areaIDGTE: ID
+  areaIDLT: ID
+  areaIDLTE: ID
+  """
+  area edge predicates
+  """
+  hasArea: Boolean
+  hasAreaWith: [AreaWhereInput!]
+  """
+  tenders edge predicates
+  """
+  hasTenders: Boolean
+  hasTendersWith: [TenderWhereInput!]
+}
 """
 An object with an ID.
 Follows the [Relay Global Object Identification Specification](https://relay.dev/graphql/objectidentification.htm)
@@ -593,6 +1598,58 @@ type Query {
     """
     ids: [ID!]!
   ): [Node]!
+  areas(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Areas returned from the connection.
+    """
+    where: AreaWhereInput
+  ): AreaConnection!
+  customers(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Customers returned from the connection.
+    """
+    where: CustomerWhereInput
+  ): CustomerConnection!
   opportunities(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -619,6 +1676,32 @@ type Query {
     """
     where: OpportunityWhereInput
   ): OpportunityConnection!
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
   users(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -646,6 +1729,446 @@ type Query {
     where: UserWhereInput
   ): UserConnection!
 }
+type Tender implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  code: String!
+  status: Int!
+  name: String!
+  estimatedAmount: Float
+  tenderDate: Time
+  findDate: Time!
+  sizeAndValueRating: Int
+  creditAndPaymentRating: Int
+  timeLimitRating: Int
+  customerRelationshipRating: Int
+  competitivePartnershipRating: Int
+  prepareToBid: Boolean!
+  projectCode: String
+  projectDefinition: String
+  estimatedProjectStartDate: Time
+  estimatedProjectEndDate: Time
+  projectType: String
+  attachements: [String!]
+  geoLocation: String
+  remark: String
+  images: [String!]
+  areaID: ID!
+  customerID: ID!
+  area: Area!
+  customer: Customer!
+}
+"""
+A connection to a list of items.
+"""
+type TenderConnection {
+  """
+  A list of edges.
+  """
+  edges: [TenderEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type TenderEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Tender
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+TenderWhereInput is used for filtering Tender objects.
+Input was generated by ent.
+"""
+input TenderWhereInput {
+  not: TenderWhereInput
+  and: [TenderWhereInput!]
+  or: [TenderWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  code field predicates
+  """
+  code: String
+  codeNEQ: String
+  codeIn: [String!]
+  codeNotIn: [String!]
+  codeGT: String
+  codeGTE: String
+  codeLT: String
+  codeLTE: String
+  codeContains: String
+  codeHasPrefix: String
+  codeHasSuffix: String
+  codeEqualFold: String
+  codeContainsFold: String
+  """
+  status field predicates
+  """
+  status: Int
+  statusNEQ: Int
+  statusIn: [Int!]
+  statusNotIn: [Int!]
+  statusGT: Int
+  statusGTE: Int
+  statusLT: Int
+  statusLTE: Int
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  estimated_amount field predicates
+  """
+  estimatedAmount: Float
+  estimatedAmountNEQ: Float
+  estimatedAmountIn: [Float!]
+  estimatedAmountNotIn: [Float!]
+  estimatedAmountGT: Float
+  estimatedAmountGTE: Float
+  estimatedAmountLT: Float
+  estimatedAmountLTE: Float
+  estimatedAmountIsNil: Boolean
+  estimatedAmountNotNil: Boolean
+  """
+  tender_date field predicates
+  """
+  tenderDate: Time
+  tenderDateNEQ: Time
+  tenderDateIn: [Time!]
+  tenderDateNotIn: [Time!]
+  tenderDateGT: Time
+  tenderDateGTE: Time
+  tenderDateLT: Time
+  tenderDateLTE: Time
+  tenderDateIsNil: Boolean
+  tenderDateNotNil: Boolean
+  """
+  find_date field predicates
+  """
+  findDate: Time
+  findDateNEQ: Time
+  findDateIn: [Time!]
+  findDateNotIn: [Time!]
+  findDateGT: Time
+  findDateGTE: Time
+  findDateLT: Time
+  findDateLTE: Time
+  """
+  size_and_value_rating field predicates
+  """
+  sizeAndValueRating: Int
+  sizeAndValueRatingNEQ: Int
+  sizeAndValueRatingIn: [Int!]
+  sizeAndValueRatingNotIn: [Int!]
+  sizeAndValueRatingGT: Int
+  sizeAndValueRatingGTE: Int
+  sizeAndValueRatingLT: Int
+  sizeAndValueRatingLTE: Int
+  sizeAndValueRatingIsNil: Boolean
+  sizeAndValueRatingNotNil: Boolean
+  """
+  credit_and_payment_rating field predicates
+  """
+  creditAndPaymentRating: Int
+  creditAndPaymentRatingNEQ: Int
+  creditAndPaymentRatingIn: [Int!]
+  creditAndPaymentRatingNotIn: [Int!]
+  creditAndPaymentRatingGT: Int
+  creditAndPaymentRatingGTE: Int
+  creditAndPaymentRatingLT: Int
+  creditAndPaymentRatingLTE: Int
+  creditAndPaymentRatingIsNil: Boolean
+  creditAndPaymentRatingNotNil: Boolean
+  """
+  time_limit_rating field predicates
+  """
+  timeLimitRating: Int
+  timeLimitRatingNEQ: Int
+  timeLimitRatingIn: [Int!]
+  timeLimitRatingNotIn: [Int!]
+  timeLimitRatingGT: Int
+  timeLimitRatingGTE: Int
+  timeLimitRatingLT: Int
+  timeLimitRatingLTE: Int
+  timeLimitRatingIsNil: Boolean
+  timeLimitRatingNotNil: Boolean
+  """
+  customer_relationship_rating field predicates
+  """
+  customerRelationshipRating: Int
+  customerRelationshipRatingNEQ: Int
+  customerRelationshipRatingIn: [Int!]
+  customerRelationshipRatingNotIn: [Int!]
+  customerRelationshipRatingGT: Int
+  customerRelationshipRatingGTE: Int
+  customerRelationshipRatingLT: Int
+  customerRelationshipRatingLTE: Int
+  customerRelationshipRatingIsNil: Boolean
+  customerRelationshipRatingNotNil: Boolean
+  """
+  competitive_partnership_rating field predicates
+  """
+  competitivePartnershipRating: Int
+  competitivePartnershipRatingNEQ: Int
+  competitivePartnershipRatingIn: [Int!]
+  competitivePartnershipRatingNotIn: [Int!]
+  competitivePartnershipRatingGT: Int
+  competitivePartnershipRatingGTE: Int
+  competitivePartnershipRatingLT: Int
+  competitivePartnershipRatingLTE: Int
+  competitivePartnershipRatingIsNil: Boolean
+  competitivePartnershipRatingNotNil: Boolean
+  """
+  prepare_to_bid field predicates
+  """
+  prepareToBid: Boolean
+  prepareToBidNEQ: Boolean
+  """
+  project_code field predicates
+  """
+  projectCode: String
+  projectCodeNEQ: String
+  projectCodeIn: [String!]
+  projectCodeNotIn: [String!]
+  projectCodeGT: String
+  projectCodeGTE: String
+  projectCodeLT: String
+  projectCodeLTE: String
+  projectCodeContains: String
+  projectCodeHasPrefix: String
+  projectCodeHasSuffix: String
+  projectCodeIsNil: Boolean
+  projectCodeNotNil: Boolean
+  projectCodeEqualFold: String
+  projectCodeContainsFold: String
+  """
+  project_definition field predicates
+  """
+  projectDefinition: String
+  projectDefinitionNEQ: String
+  projectDefinitionIn: [String!]
+  projectDefinitionNotIn: [String!]
+  projectDefinitionGT: String
+  projectDefinitionGTE: String
+  projectDefinitionLT: String
+  projectDefinitionLTE: String
+  projectDefinitionContains: String
+  projectDefinitionHasPrefix: String
+  projectDefinitionHasSuffix: String
+  projectDefinitionIsNil: Boolean
+  projectDefinitionNotNil: Boolean
+  projectDefinitionEqualFold: String
+  projectDefinitionContainsFold: String
+  """
+  estimated_project_start_date field predicates
+  """
+  estimatedProjectStartDate: Time
+  estimatedProjectStartDateNEQ: Time
+  estimatedProjectStartDateIn: [Time!]
+  estimatedProjectStartDateNotIn: [Time!]
+  estimatedProjectStartDateGT: Time
+  estimatedProjectStartDateGTE: Time
+  estimatedProjectStartDateLT: Time
+  estimatedProjectStartDateLTE: Time
+  estimatedProjectStartDateIsNil: Boolean
+  estimatedProjectStartDateNotNil: Boolean
+  """
+  estimated_project_end_date field predicates
+  """
+  estimatedProjectEndDate: Time
+  estimatedProjectEndDateNEQ: Time
+  estimatedProjectEndDateIn: [Time!]
+  estimatedProjectEndDateNotIn: [Time!]
+  estimatedProjectEndDateGT: Time
+  estimatedProjectEndDateGTE: Time
+  estimatedProjectEndDateLT: Time
+  estimatedProjectEndDateLTE: Time
+  estimatedProjectEndDateIsNil: Boolean
+  estimatedProjectEndDateNotNil: Boolean
+  """
+  project_type field predicates
+  """
+  projectType: String
+  projectTypeNEQ: String
+  projectTypeIn: [String!]
+  projectTypeNotIn: [String!]
+  projectTypeGT: String
+  projectTypeGTE: String
+  projectTypeLT: String
+  projectTypeLTE: String
+  projectTypeContains: String
+  projectTypeHasPrefix: String
+  projectTypeHasSuffix: String
+  projectTypeIsNil: Boolean
+  projectTypeNotNil: Boolean
+  projectTypeEqualFold: String
+  projectTypeContainsFold: String
+  """
+  geo_location field predicates
+  """
+  geoLocation: String
+  geoLocationNEQ: String
+  geoLocationIn: [String!]
+  geoLocationNotIn: [String!]
+  geoLocationGT: String
+  geoLocationGTE: String
+  geoLocationLT: String
+  geoLocationLTE: String
+  geoLocationContains: String
+  geoLocationHasPrefix: String
+  geoLocationHasSuffix: String
+  geoLocationIsNil: Boolean
+  geoLocationNotNil: Boolean
+  geoLocationEqualFold: String
+  geoLocationContainsFold: String
+  """
+  remark field predicates
+  """
+  remark: String
+  remarkNEQ: String
+  remarkIn: [String!]
+  remarkNotIn: [String!]
+  remarkGT: String
+  remarkGTE: String
+  remarkLT: String
+  remarkLTE: String
+  remarkContains: String
+  remarkHasPrefix: String
+  remarkHasSuffix: String
+  remarkIsNil: Boolean
+  remarkNotNil: Boolean
+  remarkEqualFold: String
+  remarkContainsFold: String
+  """
+  area_id field predicates
+  """
+  areaID: ID
+  areaIDNEQ: ID
+  areaIDIn: [ID!]
+  areaIDNotIn: [ID!]
+  areaIDGT: ID
+  areaIDGTE: ID
+  areaIDLT: ID
+  areaIDLTE: ID
+  """
+  customer_id field predicates
+  """
+  customerID: ID
+  customerIDNEQ: ID
+  customerIDIn: [ID!]
+  customerIDNotIn: [ID!]
+  customerIDGT: ID
+  customerIDGTE: ID
+  customerIDLT: ID
+  customerIDLTE: ID
+  """
+  area edge predicates
+  """
+  hasArea: Boolean
+  hasAreaWith: [AreaWhereInput!]
+  """
+  customer edge predicates
+  """
+  hasCustomer: Boolean
+  hasCustomerWith: [CustomerWhereInput!]
+}
+"""
+UpdateAreaInput is used for update Area object.
+Input was generated by ent.
+"""
+input UpdateAreaInput {
+  updatedAt: Time
+  name: String
+  code: String
+  addCustomerIDs: [ID!]
+  removeCustomerIDs: [ID!]
+  clearCustomers: Boolean
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
+}
+"""
+UpdateCustomerInput is used for update Customer object.
+Input was generated by ent.
+"""
+input UpdateCustomerInput {
+  updatedAt: Time
+  name: String
+  ownerType: Int
+  clearOwnerType: Boolean
+  industry: Int
+  status: Int
+  clearStatus: Boolean
+  contactPerson: String
+  clearContactPerson: Boolean
+  contactPersonPosition: String
+  clearContactPersonPosition: Boolean
+  contactPersonPhone: String
+  clearContactPersonPhone: Boolean
+  contactPersonEmail: String
+  clearContactPersonEmail: Boolean
+  areaID: ID
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
+}
 """
 UpdateOpportunityInput is used for update Opportunity object.
 Input was generated by ent.
@@ -653,6 +2176,54 @@ Input was generated by ent.
 input UpdateOpportunityInput {
   updatedAt: Time
   registrationNumber: String
+}
+"""
+UpdateTenderInput is used for update Tender object.
+Input was generated by ent.
+"""
+input UpdateTenderInput {
+  updatedAt: Time
+  code: String
+  status: Int
+  name: String
+  estimatedAmount: Float
+  clearEstimatedAmount: Boolean
+  tenderDate: Time
+  clearTenderDate: Boolean
+  findDate: Time
+  sizeAndValueRating: Int
+  clearSizeAndValueRating: Boolean
+  creditAndPaymentRating: Int
+  clearCreditAndPaymentRating: Boolean
+  timeLimitRating: Int
+  clearTimeLimitRating: Boolean
+  customerRelationshipRating: Int
+  clearCustomerRelationshipRating: Boolean
+  competitivePartnershipRating: Int
+  clearCompetitivePartnershipRating: Boolean
+  prepareToBid: Boolean
+  projectCode: String
+  clearProjectCode: Boolean
+  projectDefinition: String
+  clearProjectDefinition: Boolean
+  estimatedProjectStartDate: Time
+  clearEstimatedProjectStartDate: Boolean
+  estimatedProjectEndDate: Time
+  clearEstimatedProjectEndDate: Boolean
+  projectType: String
+  clearProjectType: Boolean
+  attachements: [String!]
+  appendAttachements: [String!]
+  clearAttachements: Boolean
+  geoLocation: String
+  clearGeoLocation: Boolean
+  remark: String
+  clearRemark: Boolean
+  images: [String!]
+  appendImages: [String!]
+  clearImages: Boolean
+  areaID: ID
+  customerID: ID
 }
 """
 UpdateUserInput is used for update User object.

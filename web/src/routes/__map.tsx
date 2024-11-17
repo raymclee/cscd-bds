@@ -20,5 +20,3 @@ export const Route = createFileRoute("/__map")({
     });
   },
 });
-
-declare namespace AMapUI {}
