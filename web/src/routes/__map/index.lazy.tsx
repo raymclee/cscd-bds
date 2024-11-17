@@ -502,7 +502,7 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "fixed bottom-6 left-[26vw] transition",
+          "absolute bottom-6 left-1/2 -translate-x-1/2 transition",
           navigations.length < 1 && "translate-y-[200%]",
         )}
       >
