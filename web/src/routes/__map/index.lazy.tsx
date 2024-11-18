@@ -29,6 +29,8 @@ import { District, useMapStore } from "~/store/map";
 import { Bar } from "@ant-design/plots";
 import { DashboardCard } from "~/components/dasboard-card";
 import { NewTenderBoard } from "~/components/new-tender-card";
+import { TenderTypeChart } from "~/components/tender-type-chart";
+import { RankingListChart } from "~/components/ranking-list-chart";
 
 export const Route = createLazyFileRoute("/__map/")({
   component: RouteComponent,
@@ -144,14 +146,16 @@ function RouteComponent() {
             !marker.getExtData()?.home &&
             marker.getExtData()?.adcode !== feature.properties.adcode
           ) {
-            marker.hide();
+            // marker.hide();
+            marker.getContentDom().style.opacity = "0";
           }
         });
       });
 
       districtExplorer.on("featureMouseout", (e: any, feature: any) => {
         makersRef.current.forEach((marker) => {
-          marker.show();
+          // marker.show();
+          marker.getContentDom().style.opacity = "1";
         });
       });
 
@@ -222,7 +226,7 @@ function RouteComponent() {
                 <div class="text-lg font-medium">${district.name}</div>
                 <div class="flex items-baseline gap-3">
                   <div>
-                    项目数量:<span class="ml-1 font-bold text-xl">${Math.floor(Math.random() * 100)}</span>
+                    项目:<span class="ml-1 font-bold text-xl">${Math.floor(Math.random() * 100)}</span>
                   </div>
                   <div>
                     金额:<span class="mx-1 font-bold text-xl">${Math.floor(Math.random() * 1000)}</span>亿
@@ -231,7 +235,7 @@ function RouteComponent() {
                 <div></div>
               </div>
           `,
-            offset: new AMap.Pixel(-40, 40),
+            // offset: new AMap.Pixel(-40, 40),
           },
           map,
           position: district.center,
@@ -258,7 +262,7 @@ function RouteComponent() {
                   props.adcode,
                   props.childrenNum,
                 );
-                renderMarker(props);
+                renderMarker(props, true);
 
                 districtExplorer.renderParentFeature(areaNode, {
                   cursor: "default",
@@ -546,7 +550,7 @@ function RouteComponent() {
 
           const fillColor = getDistrictColor(props.adcode, props.childrenNum);
           const strokeColor = getDistrictColor(props.adcode, props.childrenNum);
-          renderMarker(props);
+          renderMarker(props, true);
 
           districtExplorer.renderParentFeature(areaNode, {
             cursor: "default",
@@ -573,7 +577,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="relative max-h-screen min-h-screen overflow-hidden bg-dashboard bg-no-repeat">
+    <div className="relative max-h-dvh min-h-dvh overflow-hidden bg-dashboard bg-no-repeat">
       <div id="map" className="absolute inset-0"></div>
 
       <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
@@ -715,7 +719,7 @@ function RouteComponent() {
       <div className="flex gap-2 px-4 pt-14">
         <div
           className={cn(
-            "hidden h-full w-[20vw] space-y-2 transition xl:block",
+            "hidden h-full w-[380px] space-y-2 transition xl:block",
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
@@ -728,20 +732,16 @@ function RouteComponent() {
 
         <div
           className={cn(
-            "hidden w-[20vw] space-y-2 transition xl:block",
+            "hidden w-[380px] space-y-2 transition xl:block",
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
-          <DashboardCard title="项目商机类型金额占比">
-            <PercentageChart />
-          </DashboardCard>
+          <TenderTypeChart />
 
-          <DashboardCard title="市场竞争龙虎榜">
-            <BusinessChart className="mt-12" />
-          </DashboardCard>
+          <RankingListChart />
 
           <DashboardCard title="项目例表">
-            <ScrollArea className="h-96">
+            <ScrollArea className="mt-4 h-96">
               <Table>
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="bg-brand/10">
@@ -825,7 +825,7 @@ function AmountBoard() {
   );
 
   return (
-    <DashboardCard title="商机汇总总金额" className="h-[34rem]">
+    <DashboardCard title="商机汇总总金额" className="h-[clamp(34rem,58dvh)]">
       <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
         <div className="flex items-center justify-between rounded px-6 py-4">
           <div className="flex items-baseline gap-2">
@@ -843,7 +843,7 @@ function AmountBoard() {
       </div>
 
       <div className="mt-6">
-        <div className="text-right text-sm text-brand/70">单位: 项目数量</div>
+        <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
         <div className="mt-2 space-y-4 text-sm text-brand">
           {statusItems.map((status, i) => {
             const percentage = Math.floor(Math.random() * 100);

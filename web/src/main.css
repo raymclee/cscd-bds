@@ -78,7 +78,7 @@
 } */
 
 .amap-marker {
-  @apply transition
+  @apply transition-opacity;
 }
 
 .amap-marker-label {
