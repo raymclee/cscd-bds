@@ -30,6 +30,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
     --chart-1: 221.2 83.2% 53.3%;
     --chart-2: 212 95% 68%;
     --chart-3: 216 92% 60%;
@@ -76,8 +77,12 @@
   margin: 0px;
 } */
 
+.amap-marker {
+  @apply transition
+}
+
 .amap-marker-label {
-  @apply cursor-pointer rounded border-0 bg-gradient-to-r from-sky-900 to-teal-700 px-2 py-1 text-white transition-shadow hover:ring hover:ring-white;
+  @apply cursor-pointer rounded border-0 bg-gradient-to-r from-sky-900 to-sky-700 px-2 py-1 text-white transition-shadow hover:ring hover:ring-white;
 }
 
 .arco-tree-select .arco-tree-select-view {

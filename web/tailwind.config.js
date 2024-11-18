@@ -22,9 +22,9 @@ export default {
       },
       boxShadow: {
         "dashboard-card":
-          "rgb(0 0 0 / 76%) 0px 15px 45px, rgb(0 0 0 / 83%) 0px 15px 45px",
+          "rgb(0 0 0 / 76%) 0px 15px 25px, rgb(0 0 0 / 83%) 0px 15px 25px",
         marker:
-          "rgb(0 0 0 / 50%) 0px 15px 45px, rgb(0 0 0 / 50%) 0px 15px 25px",
+          "rgb(0 0 0 / 50%) 0px 15px 25px, rgb(0 0 0 / 50%) 0px 15px 25px",
       },
       colors: {
         brand: "#3cb8e6",
@@ -68,6 +68,9 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+      },
+      screens: {
+        "large-screen": "1920px",
       },
     },
   },

@@ -1,5 +1,5 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { BadgeJapaneseYen, ChartPie, Layers } from "lucide-react";
+import { BadgeJapaneseYen, ChartPie, Layers, Wallet } from "lucide-react";
 import * as React from "react";
 import { useShallow } from "zustand/shallow";
 import { BidChart } from "~/components/bid-chart";
@@ -13,6 +13,7 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Progress } from "~/components/ui/progress";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Table,
@@ -25,6 +26,9 @@ import {
 import { getDistrictColor } from "~/lib/color";
 import { cn } from "~/lib/utils";
 import { District, useMapStore } from "~/store/map";
+import { Bar } from "@ant-design/plots";
+import { DashboardCard } from "~/components/dasboard-card";
+import { NewTenderBoard } from "~/components/new-tender-card";
 
 export const Route = createLazyFileRoute("/__map/")({
   component: RouteComponent,
@@ -133,6 +137,24 @@ function RouteComponent() {
         map?.removeLayer(satelliteRef.current!);
       });
 
+      districtExplorer.on("featureMouseover", (e: any, feature: any) => {
+        makersRef.current.forEach((marker) => {
+          if (
+            marker.getExtData()?.hidable &&
+            !marker.getExtData()?.home &&
+            marker.getExtData()?.adcode !== feature.properties.adcode
+          ) {
+            marker.hide();
+          }
+        });
+      });
+
+      districtExplorer.on("featureMouseout", (e: any, feature: any) => {
+        makersRef.current.forEach((marker) => {
+          marker.show();
+        });
+      });
+
       districtExplorer.on("featureClick", (e: any, feature: any) => {
         const props = feature.properties;
         const district = districts.find((d) => d.adcode.includes(props.adcode));
@@ -213,6 +235,9 @@ function RouteComponent() {
           },
           map,
           position: district.center,
+          extData: {
+            home: true,
+          },
         });
         marker.on("click", () => {
           map?.remove(makersRef.current);
@@ -393,7 +418,7 @@ function RouteComponent() {
         const props = feature.properties;
 
         if (!topLevel) {
-          renderMarker(props);
+          renderMarker(props, true);
         }
 
         const colorIndex = topLevel ? 0 : i;
@@ -448,8 +473,15 @@ function RouteComponent() {
   }
 
   //绘制marker
-  function renderMarker(props: any) {
+  function renderMarker(props: any, hidable = false) {
     if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
+      return;
+    }
+
+    const projectCount = Math.floor(Math.random() * 100);
+    const projectAmount = Math.floor(Math.random() * 1000);
+
+    if (projectCount < 0) {
       return;
     }
     // @ts-expect-error
@@ -458,23 +490,19 @@ function RouteComponent() {
       iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
       label: {
         content: `
-        <div class="flex flex-col">
-          <div class="font-medium mb-1">${props.name}</div>
-          <div class="flex items-baseline gap-2">
-            <div>
-              项目数量:<span class="ml-1 font-bold">${Math.floor(Math.random() * 100)}</span>
-            </div>
-            <div>
-              金额:<span class="mx-1 font-bold">${Math.floor(Math.random() * 1000)}亿</span>
-            </div>
-          </div>
-          <div></div>
+        <div class="flex flex-col gap-1 text-xs">
+          <div class="font-medium">${props.name}(${projectCount})</div>
+          <div>${projectAmount}亿</div>
         </div>
         `,
         offset: new AMap.Pixel(-50, 0),
       },
       map,
-      position: props.center,
+      position: props.centroid || props.center,
+      extData: {
+        hidable,
+        adcode: props.adcode,
+      },
     });
 
     marker.on("click", () => {
@@ -549,8 +577,8 @@ function RouteComponent() {
       <div id="map" className="absolute inset-0"></div>
 
       <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
-        <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-semibold">
-          远东幕墙市场投标地图
+        <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
+          远东幕墙市场拓展地图
         </div>
       </div>
 
@@ -561,7 +589,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-teal-700 px-3 py-2">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -687,36 +715,25 @@ function RouteComponent() {
       <div className="flex gap-2 px-4 pt-14">
         <div
           className={cn(
-            "hidden h-full w-[18vw] space-y-2 transition xl:block",
+            "hidden h-full w-[22vw] space-y-2 transition xl:block",
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
-          <TenderBoard />
+          <AmountBoard />
 
-          <DashboardCard title="商机汇总总金额" className="text-white">
-            <div className="pt-6">
-              <BidChart />
-            </div>
-            {/* <React.Suspense fallback={<div>loading...</div>}>
-              <UserCard queryRef={data} />
-            </React.Suspense> */}
-          </DashboardCard>
-
-          <DashboardCard title="项目商机类型金额占比">
-            <PercentageChart />
-          </DashboardCard>
+          <NewTenderBoard />
         </div>
 
         <div className="flex-1 space-y-2"></div>
 
         <div
           className={cn(
-            "hidden w-[18vw] space-y-2 transition xl:block",
+            "hidden w-[22vw] space-y-2 transition xl:block",
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
-          <DashboardCard title="市场竞争龙虎榜">
-            <BusinessChart className="mt-12" />
+          <DashboardCard title="项目商机类型金额占比">
+            <PercentageChart />
           </DashboardCard>
 
           <DashboardCard title="市场竞争龙虎榜">
@@ -729,16 +746,16 @@ function RouteComponent() {
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="bg-brand/10">
                   <TableRow className="items-center">
-                    <TableHead className="w-[55px] text-xs text-gray-300">
+                    <TableHead className="w-[55px] text-[0.7rem] text-gray-300">
                       序号
                     </TableHead>
-                    <TableHead className="text-xs text-gray-300">
+                    <TableHead className="text-[0.7rem] text-gray-300">
                       名称
                     </TableHead>
-                    <TableHead className="text-xs text-gray-300">
+                    <TableHead className="text-[0.7rem] text-gray-300">
                       区域
                     </TableHead>
-                    <TableHead className="w-[80px] text-center text-xs text-gray-300">
+                    <TableHead className="w-[80px] text-center text-[0.7rem] text-gray-300">
                       <div>预计金额</div>
                       (亿元)
                     </TableHead>
@@ -779,7 +796,7 @@ function RouteComponent() {
   );
 }
 
-const statusItems = ["跟進中", "中標", "失標", "估價", "已交標", "停止跟進"];
+const statusItems = ["跟进中", "中标", "失标", "估价", "已交标", "停止跟进"];
 
 function getDistrictZoomLevel(id: string) {
   let zoom = 5;
@@ -791,31 +808,7 @@ function getDistrictZoomLevel(id: string) {
   return zoom;
 }
 
-function DashboardCard({
-  title,
-  children,
-  className,
-}: {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <Card
-      className={cn(
-        "h-[17.5rem] overflow-hidden rounded border border-brand bg-transparent shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        className,
-      )}
-    >
-      <CardHeader className="bg-gradient-to-r from-sky-900 via-teal-600 to-sky-800 font-bold text-white">
-        {title}
-      </CardHeader>
-      <CardContent className="mt-4 h-full">{children}</CardContent>
-    </Card>
-  );
-}
-
-function TenderBoard() {
+function AmountBoard() {
   const selectedDistrict = useMapStore((state) => state.selectedDistrict);
 
   const total = Object.values(data).reduce(
@@ -829,6 +822,78 @@ function TenderBoard() {
       return acc;
     },
     [0, 0, 0],
+  );
+
+  return (
+    <DashboardCard title="商机汇总总金额" className="h-[34rem]">
+      <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
+        <div className="flex items-center justify-between rounded px-6 py-4">
+          <div className="flex items-baseline gap-2">
+            <span className="text-4xl font-black text-white">¥</span>
+            <span className="text-4xl font-black text-white">{total[0]}</span>
+            <span className="large-screen:block hidden font-medium text-brand">
+              亿元
+            </span>
+          </div>
+
+          <div className="rounded-full bg-brand/30 p-2">
+            <Wallet className="h-10 w-10 text-brand" />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <div className="text-right text-sm text-brand/70">单位: 项目数量</div>
+        <div className="mt-2 space-y-4 text-sm text-brand">
+          {statusItems.map((status, i) => {
+            const percentage = Math.floor(Math.random() * 100);
+            const count = Math.floor(Math.random() * 10);
+            return (
+              <div
+                key={status}
+                className="mt-2 flex items-center justify-between gap-x-4"
+              >
+                <div className="w-[5rem]">{status}</div>
+                <div className="text-white">{count}</div>
+                <Progress
+                  value={percentage}
+                  className="h-2 w-[70%] text-brand"
+                />
+                <div>{percentage}%</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-6 h-[6rem]">
+        <div className="flex h-full items-center justify-between gap-6">
+          <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+            <div className="flex h-full flex-col rounded">
+              <div className="flex flex-1 items-center justify-center gap-1">
+                <span className="text-3xl font-bold">1.20</span>
+                <span className="pt-2 font-medium text-brand">亿元</span>
+              </div>
+              <div className="bg-gray-500/50 py-1 text-center text-xs">
+                实施中的金额(亿元)
+              </div>
+            </div>
+          </div>
+
+          <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+            <div className="flex h-full flex-col rounded">
+              <div className="flex flex-1 items-center justify-center gap-1">
+                <span className="text-3xl font-bold">5</span>
+                <span className="pt-2 font-medium text-brand">个项目</span>
+              </div>
+              <div className="bg-gray-500/50 py-1 text-center text-xs">
+                总体情况
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </DashboardCard>
   );
 
   return (

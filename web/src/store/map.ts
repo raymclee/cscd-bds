@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { getDistrictColor } from "~/lib/color";
 
 export type District = {
   id: string;
@@ -91,6 +92,11 @@ type Action = {
   push: (navigation: Navigation) => void;
   switch2AreaNode: (adcode: number) => void;
   setPolygonEditor: (editor: AMap.PolygonEditor) => void;
+  renderArea: (district: District) => void;
+  renderAreas: () => void;
+  renderMarker: (props: any) => void;
+  addMarker: (marker: AMap.Marker) => void;
+  onFeatureOrMarkerClick: (props: any) => void;
   // navigate:
 };
 
@@ -163,10 +169,9 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
     set({ polygonEditor: editor });
   },
   switch2AreaNode(adcode) {
-    const districtExplorer = get().districtExplorer;
-    const map = get().map;
-    map?.removeLayer(get().satelliteLayer!);
-    map?.remove(get().makers);
+    const { districtExplorer, map, satelliteLayer, makers } = get();
+    map?.removeLayer(satelliteLayer!);
+    map?.remove(makers);
 
     districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
       if (error) {
@@ -241,4 +246,116 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
       });
     });
   },
+  renderAreas() {
+    const { districts, renderArea } = get();
+
+    // renderArea({ adcode: [100000] });
+  },
+  renderArea(district) {
+    set({ dashboardVisible: false });
+    const map = get().map;
+    map?.remove(get().makers);
+
+    const districtExplorer = get().districtExplorer;
+    districtExplorer.clearFeaturePolygons();
+    districtExplorer.loadMultiAreaNodes(
+      district.adcode,
+      (error: any, areaNodes: any) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        for (const areaNode of areaNodes) {
+          const props = areaNode.getProps();
+
+          get().renderMarker(props);
+
+          const fillColor = getDistrictColor(props.adcode, props.childrenNum);
+          const strokeColor = getDistrictColor(props.adcode, props.childrenNum);
+          districtExplorer.renderParentFeature(areaNode, {
+            cursor: "default",
+            bubble: true,
+            strokeColor,
+            // strokeColor: areaNode.getSubFeatures().length
+            //   ? ""
+            //   : "#3cb8e6", //线颜色
+            // strokeColor: areaNode.getSubFeatures().length ? "black" : "", //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 1, //线宽
+            // fillColor: "", //填充色
+            fillColor,
+            //   fillColor: "black",
+            //   fillColor: areaNode.getParentFeature() ? "black" : null,
+            fillOpacity: 0.5, //填充透明度
+          });
+        }
+      },
+    );
+
+    const zoom = getDistrictZoomLevel(district.id);
+    map?.setZoomAndCenter(zoom, district.center, false, 600);
+  },
+  renderMarker(props) {
+    if (props.adcode === get().currentAreaNode?.adcode) {
+      return;
+    }
+
+    const big = props.adcode === 100000;
+    // @ts-expect-error
+    const marker = new AMapUI.SimpleMarker({
+      // @ts-expect-error
+      iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+      label: {
+        content: `
+        <div class="flex flex-col">
+          <div class="font-medium mb-1">${props.name}</div>
+          <div class="flex items-baseline gap-2">
+            <div>
+              项目数量:<span class="ml-1 font-bold">${Math.floor(Math.random() * 100)}</span>
+            </div>
+            <div>
+              金额:<span class="mx-1 font-bold">${Math.floor(Math.random() * 1000)}亿</span>
+            </div>
+          </div>
+          <div></div>
+        </div>
+        `,
+        offset: new AMap.Pixel(-50, 0),
+      },
+      map: get().map,
+      position: props.center,
+    });
+
+    marker.on("click", () => {
+      const district = districts.find((d) => d.adcode.includes(props.adcode));
+      if (district) {
+        set({ selectedDistrict: district });
+      }
+      get().push({ name: props.name, adcode: props.adcode });
+      get().onFeatureOrMarkerClick(props);
+    });
+    marker.on("mouseover", () => {
+      marker.setOptions({ zIndex: 13 });
+    });
+    marker.on("mouseout", () => {
+      marker.setOptions({ zIndex: 12 });
+    });
+  },
+  onFeatureOrMarkerClick(props) {},
+  addMarker(marker) {
+    set((state) => {
+      return { makers: [...state.makers, marker] };
+    });
+  },
 }));
+
+function getDistrictZoomLevel(id: string) {
+  let zoom = 5;
+  if (id === "5") {
+    zoom = 10;
+  } else if (id === "3" || id === "4") {
+    zoom = 6;
+  }
+  return zoom;
+}
