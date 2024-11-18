@@ -106,17 +106,37 @@ const barConfig = {
 
 const percent = 0.7;
 
-const monthConfig = {
-  percent,
-  theme: "classicDark",
-  width: 90,
-  height: 90,
-  color: ["#E8EFF5", "#66AFF4"],
+const amountConfig = {
+  percent: lastMonthAddedAmount / mountAddedAmount,
+  width: 70,
+  height: 70,
+  color: ["#E8EFF5", "red"],
   annotations: [
     {
       type: "text",
       style: {
-        text: `${percent * 100}%`,
+        text: `${Math.round((lastMonthAddedAmount / mountAddedAmount) * 100)}%`,
+        x: "50%",
+        y: "50%",
+        textAlign: "center",
+        fontSize: 16,
+        fontStyle: "bold",
+        fill: "white",
+      },
+    },
+  ],
+};
+
+const totalConfig = {
+  percent: lastMonthAdded / monthAdded,
+  width: 70,
+  height: 70,
+  color: ["#E8EFF5", "#109618"],
+  annotations: [
+    {
+      type: "text",
+      style: {
+        text: `${Math.round((lastMonthAdded / monthAdded) * 100)}%`,
         x: "50%",
         y: "50%",
         textAlign: "center",
@@ -145,8 +165,10 @@ export function NewTenderBoard() {
         {/* </div> */}
         <div className="flex w-[40%] flex-col items-center justify-center py-4">
           {/* <AmountChart /> */}
-          <Tiny.Ring {...monthConfig} />
-          <Tiny.Ring {...monthConfig} />
+          <Tiny.Ring {...amountConfig} />
+          <span className="mb-4 mt-2 text-xs text-brand/70">金額佔比上升</span>
+          <Tiny.Ring {...totalConfig} />
+          <span className="mb-2 mt-2 text-xs text-brand/70">數量佔比下降</span>
         </div>
         <Column {...barConfig} />
         {/* <ChartContainer

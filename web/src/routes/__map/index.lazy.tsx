@@ -715,7 +715,7 @@ function RouteComponent() {
       <div className="flex gap-2 px-4 pt-14">
         <div
           className={cn(
-            "hidden h-full w-[22vw] space-y-2 transition xl:block",
+            "hidden h-full w-[20vw] space-y-2 transition xl:block",
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
@@ -728,7 +728,7 @@ function RouteComponent() {
 
         <div
           className={cn(
-            "hidden w-[22vw] space-y-2 transition xl:block",
+            "hidden w-[20vw] space-y-2 transition xl:block",
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
