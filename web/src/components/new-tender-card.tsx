@@ -99,7 +99,7 @@ export function NewTenderBoard() {
   return (
     <Card
       className={cn(
-        "h-[clamp(19rem,34dvh,19rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(18rem,31dvh,18rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">

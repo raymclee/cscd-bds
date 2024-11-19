@@ -825,7 +825,10 @@ function AmountBoard() {
   );
 
   return (
-    <DashboardCard title="商机汇总总金额" className="h-[clamp(34rem,58dvh)]">
+    <DashboardCard
+      title="商机汇总总金额"
+      className="h-[clamp(32rem,59dvh,34rem)]"
+    >
       <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
         <div className="flex items-center justify-between rounded px-6 py-4">
           <div className="flex items-baseline gap-2">
