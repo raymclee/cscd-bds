@@ -101,7 +101,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldFeishuGroup:           {Type: field.TypeJSON, Column: customer.FieldFeishuGroup},
 			customer.FieldAreaID:                {Type: field.TypeString, Column: customer.FieldAreaID},
 			customer.FieldSalesID:               {Type: field.TypeString, Column: customer.FieldSalesID},
-			customer.FieldCreatedByUserID:       {Type: field.TypeString, Column: customer.FieldCreatedByUserID},
+			customer.FieldCreatedByID:           {Type: field.TypeString, Column: customer.FieldCreatedByID},
 		},
 	}
 	graph.Nodes[4] = &sqlgraph.Node{
@@ -156,35 +156,58 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Tender",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			tender.FieldCreatedAt:                    {Type: field.TypeTime, Column: tender.FieldCreatedAt},
-			tender.FieldUpdatedAt:                    {Type: field.TypeTime, Column: tender.FieldUpdatedAt},
-			tender.FieldCode:                         {Type: field.TypeString, Column: tender.FieldCode},
-			tender.FieldStatus:                       {Type: field.TypeInt8, Column: tender.FieldStatus},
-			tender.FieldName:                         {Type: field.TypeString, Column: tender.FieldName},
-			tender.FieldEstimatedAmount:              {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
-			tender.FieldTenderDate:                   {Type: field.TypeTime, Column: tender.FieldTenderDate},
-			tender.FieldFindDate:                     {Type: field.TypeTime, Column: tender.FieldFindDate},
-			tender.FieldFinder:                       {Type: field.TypeJSON, Column: tender.FieldFinder},
-			tender.FieldCreatedBy:                    {Type: field.TypeJSON, Column: tender.FieldCreatedBy},
-			tender.FieldFollowingPerson:              {Type: field.TypeJSON, Column: tender.FieldFollowingPerson},
-			tender.FieldSizeAndValueRating:           {Type: field.TypeInt8, Column: tender.FieldSizeAndValueRating},
-			tender.FieldCreditAndPaymentRating:       {Type: field.TypeInt8, Column: tender.FieldCreditAndPaymentRating},
-			tender.FieldTimeLimitRating:              {Type: field.TypeInt8, Column: tender.FieldTimeLimitRating},
-			tender.FieldCustomerRelationshipRating:   {Type: field.TypeInt8, Column: tender.FieldCustomerRelationshipRating},
-			tender.FieldCompetitivePartnershipRating: {Type: field.TypeInt8, Column: tender.FieldCompetitivePartnershipRating},
-			tender.FieldPrepareToBid:                 {Type: field.TypeBool, Column: tender.FieldPrepareToBid},
-			tender.FieldProjectCode:                  {Type: field.TypeString, Column: tender.FieldProjectCode},
-			tender.FieldProjectDefinition:            {Type: field.TypeString, Column: tender.FieldProjectDefinition},
-			tender.FieldEstimatedProjectStartDate:    {Type: field.TypeTime, Column: tender.FieldEstimatedProjectStartDate},
-			tender.FieldEstimatedProjectEndDate:      {Type: field.TypeTime, Column: tender.FieldEstimatedProjectEndDate},
-			tender.FieldProjectType:                  {Type: field.TypeString, Column: tender.FieldProjectType},
-			tender.FieldAttachements:                 {Type: field.TypeJSON, Column: tender.FieldAttachements},
-			tender.FieldGeoLocation:                  {Type: field.TypeString, Column: tender.FieldGeoLocation},
-			tender.FieldGeoCoordinate:                {Type: field.TypeOther, Column: tender.FieldGeoCoordinate},
-			tender.FieldRemark:                       {Type: field.TypeString, Column: tender.FieldRemark},
-			tender.FieldImages:                       {Type: field.TypeJSON, Column: tender.FieldImages},
-			tender.FieldAreaID:                       {Type: field.TypeString, Column: tender.FieldAreaID},
-			tender.FieldCustomerID:                   {Type: field.TypeString, Column: tender.FieldCustomerID},
+			tender.FieldCreatedAt:                            {Type: field.TypeTime, Column: tender.FieldCreatedAt},
+			tender.FieldUpdatedAt:                            {Type: field.TypeTime, Column: tender.FieldUpdatedAt},
+			tender.FieldCode:                                 {Type: field.TypeString, Column: tender.FieldCode},
+			tender.FieldStatus:                               {Type: field.TypeInt8, Column: tender.FieldStatus},
+			tender.FieldName:                                 {Type: field.TypeString, Column: tender.FieldName},
+			tender.FieldEstimatedAmount:                      {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
+			tender.FieldTenderDate:                           {Type: field.TypeTime, Column: tender.FieldTenderDate},
+			tender.FieldDiscoveryDate:                        {Type: field.TypeTime, Column: tender.FieldDiscoveryDate},
+			tender.FieldAddress:                              {Type: field.TypeString, Column: tender.FieldAddress},
+			tender.FieldFullAddress:                          {Type: field.TypeString, Column: tender.FieldFullAddress},
+			tender.FieldContractor:                           {Type: field.TypeString, Column: tender.FieldContractor},
+			tender.FieldSizeAndValueRating:                   {Type: field.TypeInt8, Column: tender.FieldSizeAndValueRating},
+			tender.FieldSizeAndValueRatingOverview:           {Type: field.TypeString, Column: tender.FieldSizeAndValueRatingOverview},
+			tender.FieldCreditAndPaymentRating:               {Type: field.TypeInt8, Column: tender.FieldCreditAndPaymentRating},
+			tender.FieldCreditAndPaymentRatingOverview:       {Type: field.TypeString, Column: tender.FieldCreditAndPaymentRatingOverview},
+			tender.FieldTimeLimitRating:                      {Type: field.TypeInt8, Column: tender.FieldTimeLimitRating},
+			tender.FieldTimeLimitRatingOverview:              {Type: field.TypeString, Column: tender.FieldTimeLimitRatingOverview},
+			tender.FieldCustomerRelationshipRating:           {Type: field.TypeInt8, Column: tender.FieldCustomerRelationshipRating},
+			tender.FieldCustomerRelationshipRatingOverview:   {Type: field.TypeString, Column: tender.FieldCustomerRelationshipRatingOverview},
+			tender.FieldCompetitivePartnershipRating:         {Type: field.TypeInt8, Column: tender.FieldCompetitivePartnershipRating},
+			tender.FieldCompetitivePartnershipRatingOverview: {Type: field.TypeString, Column: tender.FieldCompetitivePartnershipRatingOverview},
+			tender.FieldPrepareToBid:                         {Type: field.TypeBool, Column: tender.FieldPrepareToBid},
+			tender.FieldProjectCode:                          {Type: field.TypeString, Column: tender.FieldProjectCode},
+			tender.FieldProjectDefinition:                    {Type: field.TypeString, Column: tender.FieldProjectDefinition},
+			tender.FieldEstimatedProjectStartDate:            {Type: field.TypeTime, Column: tender.FieldEstimatedProjectStartDate},
+			tender.FieldEstimatedProjectEndDate:              {Type: field.TypeTime, Column: tender.FieldEstimatedProjectEndDate},
+			tender.FieldProjectType:                          {Type: field.TypeString, Column: tender.FieldProjectType},
+			tender.FieldAttachements:                         {Type: field.TypeJSON, Column: tender.FieldAttachements},
+			tender.FieldGeoCoordinate:                        {Type: field.TypeOther, Column: tender.FieldGeoCoordinate},
+			tender.FieldRemark:                               {Type: field.TypeString, Column: tender.FieldRemark},
+			tender.FieldImages:                               {Type: field.TypeJSON, Column: tender.FieldImages},
+			tender.FieldTenderSituations:                     {Type: field.TypeString, Column: tender.FieldTenderSituations},
+			tender.FieldOwnerSituations:                      {Type: field.TypeString, Column: tender.FieldOwnerSituations},
+			tender.FieldBiddingInstructions:                  {Type: field.TypeString, Column: tender.FieldBiddingInstructions},
+			tender.FieldCompetitorSituations:                 {Type: field.TypeString, Column: tender.FieldCompetitorSituations},
+			tender.FieldCostEngineer:                         {Type: field.TypeString, Column: tender.FieldCostEngineer},
+			tender.FieldTenderForm:                           {Type: field.TypeString, Column: tender.FieldTenderForm},
+			tender.FieldContractForm:                         {Type: field.TypeString, Column: tender.FieldContractForm},
+			tender.FieldManagementCompany:                    {Type: field.TypeString, Column: tender.FieldManagementCompany},
+			tender.FieldTenderingAgency:                      {Type: field.TypeString, Column: tender.FieldTenderingAgency},
+			tender.FieldBiddingDate:                          {Type: field.TypeTime, Column: tender.FieldBiddingDate},
+			tender.FieldFacadeConsultant:                     {Type: field.TypeString, Column: tender.FieldFacadeConsultant},
+			tender.FieldDesignUnit:                           {Type: field.TypeString, Column: tender.FieldDesignUnit},
+			tender.FieldConsultingFirm:                       {Type: field.TypeString, Column: tender.FieldConsultingFirm},
+			tender.FieldKeyProject:                           {Type: field.TypeBool, Column: tender.FieldKeyProject},
+			tender.FieldAreaID:                               {Type: field.TypeString, Column: tender.FieldAreaID},
+			tender.FieldProvinceID:                           {Type: field.TypeString, Column: tender.FieldProvinceID},
+			tender.FieldCityID:                               {Type: field.TypeString, Column: tender.FieldCityID},
+			tender.FieldDistrictID:                           {Type: field.TypeString, Column: tender.FieldDistrictID},
+			tender.FieldCustomerID:                           {Type: field.TypeString, Column: tender.FieldCustomerID},
+			tender.FieldFinderID:                             {Type: field.TypeString, Column: tender.FieldFinderID},
+			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
 		},
 	}
 	graph.Nodes[7] = &sqlgraph.Node{
@@ -268,6 +291,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"City",
 		"Province",
+	)
+	graph.MustAddE(
+		"tenders",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+		},
+		"City",
+		"Tender",
 	)
 	graph.MustAddE(
 		"provinces",
@@ -354,6 +389,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"City",
 	)
 	graph.MustAddE(
+		"tenders",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+		},
+		"District",
+		"Tender",
+	)
+	graph.MustAddE(
 		"districts",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -390,6 +437,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"Country",
 	)
 	graph.MustAddE(
+		"tenders",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   province.TendersTable,
+			Columns: []string{province.TendersColumn},
+			Bidi:    false,
+		},
+		"Province",
+		"Tender",
+	)
+	graph.MustAddE(
 		"area",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -412,6 +471,78 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Tender",
 		"Customer",
+	)
+	graph.MustAddE(
+		"finder",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.FinderTable,
+			Columns: []string{tender.FinderColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"User",
+	)
+	graph.MustAddE(
+		"created_by",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.CreatedByTable,
+			Columns: []string{tender.CreatedByColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"User",
+	)
+	graph.MustAddE(
+		"following_sales",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+		},
+		"Tender",
+		"User",
+	)
+	graph.MustAddE(
+		"province",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.ProvinceTable,
+			Columns: []string{tender.ProvinceColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"Province",
+	)
+	graph.MustAddE(
+		"city",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CityTable,
+			Columns: []string{tender.CityColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"City",
+	)
+	graph.MustAddE(
+		"district",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.DistrictTable,
+			Columns: []string{tender.DistrictColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"District",
 	)
 	graph.MustAddE(
 		"areas",
@@ -460,6 +591,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"User",
 		"User",
+	)
+	graph.MustAddE(
+		"tenders",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+		},
+		"User",
+		"Tender",
 	)
 	return graph
 }()
@@ -675,6 +818,20 @@ func (f *CityFilter) WhereHasProvinceWith(preds ...predicate.Province) {
 	})))
 }
 
+// WhereHasTenders applies a predicate to check if query has an edge tenders.
+func (f *CityFilter) WhereHasTenders() {
+	f.Where(entql.HasEdge("tenders"))
+}
+
+// WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
+func (f *CityFilter) WhereHasTendersWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (cq *CountryQuery) addPredicate(pred func(s *sql.Selector)) {
 	cq.predicates = append(cq.predicates, pred)
@@ -859,9 +1016,9 @@ func (f *CustomerFilter) WhereSalesID(p entql.StringP) {
 	f.Where(p.Field(customer.FieldSalesID))
 }
 
-// WhereCreatedByUserID applies the entql string predicate on the created_by_user_id field.
-func (f *CustomerFilter) WhereCreatedByUserID(p entql.StringP) {
-	f.Where(p.Field(customer.FieldCreatedByUserID))
+// WhereCreatedByID applies the entql string predicate on the created_by_id field.
+func (f *CustomerFilter) WhereCreatedByID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldCreatedByID))
 }
 
 // WhereHasArea applies a predicate to check if query has an edge area.
@@ -1033,6 +1190,20 @@ func (f *DistrictFilter) WhereHasCityWith(preds ...predicate.City) {
 	})))
 }
 
+// WhereHasTenders applies a predicate to check if query has an edge tenders.
+func (f *DistrictFilter) WhereHasTenders() {
+	f.Where(entql.HasEdge("tenders"))
+}
+
+// WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
+func (f *DistrictFilter) WhereHasTendersWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (pq *ProvinceQuery) addPredicate(pred func(s *sql.Selector)) {
 	pq.predicates = append(pq.predicates, pred)
@@ -1145,6 +1316,20 @@ func (f *ProvinceFilter) WhereHasCountryWith(preds ...predicate.Country) {
 	})))
 }
 
+// WhereHasTenders applies a predicate to check if query has an edge tenders.
+func (f *ProvinceFilter) WhereHasTenders() {
+	f.Where(entql.HasEdge("tenders"))
+}
+
+// WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
+func (f *ProvinceFilter) WhereHasTendersWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (tq *TenderQuery) addPredicate(pred func(s *sql.Selector)) {
 	tq.predicates = append(tq.predicates, pred)
@@ -1220,24 +1405,24 @@ func (f *TenderFilter) WhereTenderDate(p entql.TimeP) {
 	f.Where(p.Field(tender.FieldTenderDate))
 }
 
-// WhereFindDate applies the entql time.Time predicate on the find_date field.
-func (f *TenderFilter) WhereFindDate(p entql.TimeP) {
-	f.Where(p.Field(tender.FieldFindDate))
+// WhereDiscoveryDate applies the entql time.Time predicate on the discovery_date field.
+func (f *TenderFilter) WhereDiscoveryDate(p entql.TimeP) {
+	f.Where(p.Field(tender.FieldDiscoveryDate))
 }
 
-// WhereFinder applies the entql json.RawMessage predicate on the finder field.
-func (f *TenderFilter) WhereFinder(p entql.BytesP) {
-	f.Where(p.Field(tender.FieldFinder))
+// WhereAddress applies the entql string predicate on the address field.
+func (f *TenderFilter) WhereAddress(p entql.StringP) {
+	f.Where(p.Field(tender.FieldAddress))
 }
 
-// WhereCreatedBy applies the entql json.RawMessage predicate on the created_by field.
-func (f *TenderFilter) WhereCreatedBy(p entql.BytesP) {
-	f.Where(p.Field(tender.FieldCreatedBy))
+// WhereFullAddress applies the entql string predicate on the full_address field.
+func (f *TenderFilter) WhereFullAddress(p entql.StringP) {
+	f.Where(p.Field(tender.FieldFullAddress))
 }
 
-// WhereFollowingPerson applies the entql json.RawMessage predicate on the following_person field.
-func (f *TenderFilter) WhereFollowingPerson(p entql.BytesP) {
-	f.Where(p.Field(tender.FieldFollowingPerson))
+// WhereContractor applies the entql string predicate on the contractor field.
+func (f *TenderFilter) WhereContractor(p entql.StringP) {
+	f.Where(p.Field(tender.FieldContractor))
 }
 
 // WhereSizeAndValueRating applies the entql int8 predicate on the size_and_value_rating field.
@@ -1245,9 +1430,19 @@ func (f *TenderFilter) WhereSizeAndValueRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldSizeAndValueRating))
 }
 
+// WhereSizeAndValueRatingOverview applies the entql string predicate on the size_and_value_rating_overview field.
+func (f *TenderFilter) WhereSizeAndValueRatingOverview(p entql.StringP) {
+	f.Where(p.Field(tender.FieldSizeAndValueRatingOverview))
+}
+
 // WhereCreditAndPaymentRating applies the entql int8 predicate on the credit_and_payment_rating field.
 func (f *TenderFilter) WhereCreditAndPaymentRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldCreditAndPaymentRating))
+}
+
+// WhereCreditAndPaymentRatingOverview applies the entql string predicate on the credit_and_payment_rating_overview field.
+func (f *TenderFilter) WhereCreditAndPaymentRatingOverview(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCreditAndPaymentRatingOverview))
 }
 
 // WhereTimeLimitRating applies the entql int8 predicate on the time_limit_rating field.
@@ -1255,14 +1450,29 @@ func (f *TenderFilter) WhereTimeLimitRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldTimeLimitRating))
 }
 
+// WhereTimeLimitRatingOverview applies the entql string predicate on the time_limit_rating_overview field.
+func (f *TenderFilter) WhereTimeLimitRatingOverview(p entql.StringP) {
+	f.Where(p.Field(tender.FieldTimeLimitRatingOverview))
+}
+
 // WhereCustomerRelationshipRating applies the entql int8 predicate on the customer_relationship_rating field.
 func (f *TenderFilter) WhereCustomerRelationshipRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldCustomerRelationshipRating))
 }
 
+// WhereCustomerRelationshipRatingOverview applies the entql string predicate on the customer_relationship_rating_overview field.
+func (f *TenderFilter) WhereCustomerRelationshipRatingOverview(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCustomerRelationshipRatingOverview))
+}
+
 // WhereCompetitivePartnershipRating applies the entql int8 predicate on the competitive_partnership_rating field.
 func (f *TenderFilter) WhereCompetitivePartnershipRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldCompetitivePartnershipRating))
+}
+
+// WhereCompetitivePartnershipRatingOverview applies the entql string predicate on the competitive_partnership_rating_overview field.
+func (f *TenderFilter) WhereCompetitivePartnershipRatingOverview(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCompetitivePartnershipRatingOverview))
 }
 
 // WherePrepareToBid applies the entql bool predicate on the prepare_to_bid field.
@@ -1300,11 +1510,6 @@ func (f *TenderFilter) WhereAttachements(p entql.BytesP) {
 	f.Where(p.Field(tender.FieldAttachements))
 }
 
-// WhereGeoLocation applies the entql string predicate on the geo_location field.
-func (f *TenderFilter) WhereGeoLocation(p entql.StringP) {
-	f.Where(p.Field(tender.FieldGeoLocation))
-}
-
 // WhereGeoCoordinate applies the entql other predicate on the geo_coordinate field.
 func (f *TenderFilter) WhereGeoCoordinate(p entql.OtherP) {
 	f.Where(p.Field(tender.FieldGeoCoordinate))
@@ -1320,14 +1525,109 @@ func (f *TenderFilter) WhereImages(p entql.BytesP) {
 	f.Where(p.Field(tender.FieldImages))
 }
 
+// WhereTenderSituations applies the entql string predicate on the tender_situations field.
+func (f *TenderFilter) WhereTenderSituations(p entql.StringP) {
+	f.Where(p.Field(tender.FieldTenderSituations))
+}
+
+// WhereOwnerSituations applies the entql string predicate on the owner_situations field.
+func (f *TenderFilter) WhereOwnerSituations(p entql.StringP) {
+	f.Where(p.Field(tender.FieldOwnerSituations))
+}
+
+// WhereBiddingInstructions applies the entql string predicate on the bidding_instructions field.
+func (f *TenderFilter) WhereBiddingInstructions(p entql.StringP) {
+	f.Where(p.Field(tender.FieldBiddingInstructions))
+}
+
+// WhereCompetitorSituations applies the entql string predicate on the competitor_situations field.
+func (f *TenderFilter) WhereCompetitorSituations(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCompetitorSituations))
+}
+
+// WhereCostEngineer applies the entql string predicate on the cost_engineer field.
+func (f *TenderFilter) WhereCostEngineer(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCostEngineer))
+}
+
+// WhereTenderForm applies the entql string predicate on the tender_form field.
+func (f *TenderFilter) WhereTenderForm(p entql.StringP) {
+	f.Where(p.Field(tender.FieldTenderForm))
+}
+
+// WhereContractForm applies the entql string predicate on the contract_form field.
+func (f *TenderFilter) WhereContractForm(p entql.StringP) {
+	f.Where(p.Field(tender.FieldContractForm))
+}
+
+// WhereManagementCompany applies the entql string predicate on the management_company field.
+func (f *TenderFilter) WhereManagementCompany(p entql.StringP) {
+	f.Where(p.Field(tender.FieldManagementCompany))
+}
+
+// WhereTenderingAgency applies the entql string predicate on the tendering_agency field.
+func (f *TenderFilter) WhereTenderingAgency(p entql.StringP) {
+	f.Where(p.Field(tender.FieldTenderingAgency))
+}
+
+// WhereBiddingDate applies the entql time.Time predicate on the bidding_date field.
+func (f *TenderFilter) WhereBiddingDate(p entql.TimeP) {
+	f.Where(p.Field(tender.FieldBiddingDate))
+}
+
+// WhereFacadeConsultant applies the entql string predicate on the facade_consultant field.
+func (f *TenderFilter) WhereFacadeConsultant(p entql.StringP) {
+	f.Where(p.Field(tender.FieldFacadeConsultant))
+}
+
+// WhereDesignUnit applies the entql string predicate on the design_unit field.
+func (f *TenderFilter) WhereDesignUnit(p entql.StringP) {
+	f.Where(p.Field(tender.FieldDesignUnit))
+}
+
+// WhereConsultingFirm applies the entql string predicate on the consulting_firm field.
+func (f *TenderFilter) WhereConsultingFirm(p entql.StringP) {
+	f.Where(p.Field(tender.FieldConsultingFirm))
+}
+
+// WhereKeyProject applies the entql bool predicate on the key_project field.
+func (f *TenderFilter) WhereKeyProject(p entql.BoolP) {
+	f.Where(p.Field(tender.FieldKeyProject))
+}
+
 // WhereAreaID applies the entql string predicate on the area_id field.
 func (f *TenderFilter) WhereAreaID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldAreaID))
 }
 
+// WhereProvinceID applies the entql string predicate on the province_id field.
+func (f *TenderFilter) WhereProvinceID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldProvinceID))
+}
+
+// WhereCityID applies the entql string predicate on the city_id field.
+func (f *TenderFilter) WhereCityID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCityID))
+}
+
+// WhereDistrictID applies the entql string predicate on the district_id field.
+func (f *TenderFilter) WhereDistrictID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldDistrictID))
+}
+
 // WhereCustomerID applies the entql string predicate on the customer_id field.
 func (f *TenderFilter) WhereCustomerID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCustomerID))
+}
+
+// WhereFinderID applies the entql string predicate on the finder_id field.
+func (f *TenderFilter) WhereFinderID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldFinderID))
+}
+
+// WhereCreatedByID applies the entql string predicate on the created_by_id field.
+func (f *TenderFilter) WhereCreatedByID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCreatedByID))
 }
 
 // WhereHasArea applies a predicate to check if query has an edge area.
@@ -1352,6 +1652,90 @@ func (f *TenderFilter) WhereHasCustomer() {
 // WhereHasCustomerWith applies a predicate to check if query has an edge customer with a given conditions (other predicates).
 func (f *TenderFilter) WhereHasCustomerWith(preds ...predicate.Customer) {
 	f.Where(entql.HasEdgeWith("customer", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasFinder applies a predicate to check if query has an edge finder.
+func (f *TenderFilter) WhereHasFinder() {
+	f.Where(entql.HasEdge("finder"))
+}
+
+// WhereHasFinderWith applies a predicate to check if query has an edge finder with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasFinderWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("finder", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCreatedBy applies a predicate to check if query has an edge created_by.
+func (f *TenderFilter) WhereHasCreatedBy() {
+	f.Where(entql.HasEdge("created_by"))
+}
+
+// WhereHasCreatedByWith applies a predicate to check if query has an edge created_by with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasCreatedByWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("created_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasFollowingSales applies a predicate to check if query has an edge following_sales.
+func (f *TenderFilter) WhereHasFollowingSales() {
+	f.Where(entql.HasEdge("following_sales"))
+}
+
+// WhereHasFollowingSalesWith applies a predicate to check if query has an edge following_sales with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasFollowingSalesWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("following_sales", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasProvince applies a predicate to check if query has an edge province.
+func (f *TenderFilter) WhereHasProvince() {
+	f.Where(entql.HasEdge("province"))
+}
+
+// WhereHasProvinceWith applies a predicate to check if query has an edge province with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasProvinceWith(preds ...predicate.Province) {
+	f.Where(entql.HasEdgeWith("province", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCity applies a predicate to check if query has an edge city.
+func (f *TenderFilter) WhereHasCity() {
+	f.Where(entql.HasEdge("city"))
+}
+
+// WhereHasCityWith applies a predicate to check if query has an edge city with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasCityWith(preds ...predicate.City) {
+	f.Where(entql.HasEdgeWith("city", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasDistrict applies a predicate to check if query has an edge district.
+func (f *TenderFilter) WhereHasDistrict() {
+	f.Where(entql.HasEdge("district"))
+}
+
+// WhereHasDistrictWith applies a predicate to check if query has an edge district with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasDistrictWith(preds ...predicate.District) {
+	f.Where(entql.HasEdgeWith("district", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -1493,6 +1877,20 @@ func (f *UserFilter) WhereHasTeamMembers() {
 // WhereHasTeamMembersWith applies a predicate to check if query has an edge team_members with a given conditions (other predicates).
 func (f *UserFilter) WhereHasTeamMembersWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("team_members", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasTenders applies a predicate to check if query has an edge tenders.
+func (f *UserFilter) WhereHasTenders() {
+	f.Where(entql.HasEdge("tenders"))
+}
+
+// WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
+func (f *UserFilter) WhereHasTendersWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

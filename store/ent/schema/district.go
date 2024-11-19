@@ -38,8 +38,12 @@ func (District) Fields() []ent.Field {
 			Annotations(
 				entgql.Skip(entgql.SkipAll),
 			),
-		field.String("province_id").GoType(xid.ID{}),
-		field.String("city_id").Optional().GoType(xid.ID{}),
+		field.String("province_id").
+			GoType(xid.ID("")),
+		field.String("city_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -55,6 +59,7 @@ func (District) Edges() []ent.Edge {
 			Ref("districts").
 			Field("city_id").
 			Unique(),
+		edge.To("tenders", Tender.Type),
 	}
 }
 

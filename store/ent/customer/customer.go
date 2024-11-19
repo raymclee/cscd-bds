@@ -41,8 +41,8 @@ const (
 	FieldAreaID = "area_id"
 	// FieldSalesID holds the string denoting the sales_id field in the database.
 	FieldSalesID = "sales_id"
-	// FieldCreatedByUserID holds the string denoting the created_by_user_id field in the database.
-	FieldCreatedByUserID = "created_by_user_id"
+	// FieldCreatedByID holds the string denoting the created_by_id field in the database.
+	FieldCreatedByID = "created_by_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
@@ -80,7 +80,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	CreatedByInverseTable = "users"
 	// CreatedByColumn is the table column denoting the created_by relation/edge.
-	CreatedByColumn = "created_by_user_id"
+	CreatedByColumn = "created_by_id"
 )
 
 // Columns holds all SQL columns for customer fields.
@@ -99,7 +99,7 @@ var Columns = []string{
 	FieldFeishuGroup,
 	FieldAreaID,
 	FieldSalesID,
-	FieldCreatedByUserID,
+	FieldCreatedByID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -191,9 +191,9 @@ func BySalesID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSalesID, opts...).ToFunc()
 }
 
-// ByCreatedByUserID orders the results by the created_by_user_id field.
-func ByCreatedByUserID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedByUserID, opts...).ToFunc()
+// ByCreatedByID orders the results by the created_by_id field.
+func ByCreatedByID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedByID, opts...).ToFunc()
 }
 
 // ByAreaField orders the results by area field.

@@ -46,14 +46,17 @@ type ProvinceEdges struct {
 	Cities []*City `json:"cities,omitempty"`
 	// Country holds the value of the country edge.
 	Country *Country `json:"country,omitempty"`
+	// Tenders holds the value of the tenders edge.
+	Tenders []*Tender `json:"tenders,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [4]map[string]int
 
 	namedDistricts map[string][]*District
 	namedCities    map[string][]*City
+	namedTenders   map[string][]*Tender
 }
 
 // DistrictsOrErr returns the Districts value or an error if the edge
@@ -83,6 +86,15 @@ func (e ProvinceEdges) CountryOrErr() (*Country, error) {
 		return nil, &NotFoundError{label: country.Label}
 	}
 	return nil, &NotLoadedError{edge: "country"}
+}
+
+// TendersOrErr returns the Tenders value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProvinceEdges) TendersOrErr() ([]*Tender, error) {
+	if e.loadedTypes[3] {
+		return e.Tenders, nil
+	}
+	return nil, &NotLoadedError{edge: "tenders"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -185,6 +197,11 @@ func (pr *Province) QueryCountry() *CountryQuery {
 	return NewProvinceClient(pr.config).QueryCountry(pr)
 }
 
+// QueryTenders queries the "tenders" edge of the Province entity.
+func (pr *Province) QueryTenders() *TenderQuery {
+	return NewProvinceClient(pr.config).QueryTenders(pr)
+}
+
 // Update returns a builder for updating this Province.
 // Note that you need to call Province.Unwrap() before calling this method if this Province
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -274,6 +291,30 @@ func (pr *Province) appendNamedCities(name string, edges ...*City) {
 		pr.Edges.namedCities[name] = []*City{}
 	} else {
 		pr.Edges.namedCities[name] = append(pr.Edges.namedCities[name], edges...)
+	}
+}
+
+// NamedTenders returns the Tenders named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (pr *Province) NamedTenders(name string) ([]*Tender, error) {
+	if pr.Edges.namedTenders == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := pr.Edges.namedTenders[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (pr *Province) appendNamedTenders(name string, edges ...*Tender) {
+	if pr.Edges.namedTenders == nil {
+		pr.Edges.namedTenders = make(map[string][]*Tender)
+	}
+	if len(edges) == 0 {
+		pr.Edges.namedTenders[name] = []*Tender{}
+	} else {
+		pr.Edges.namedTenders[name] = append(pr.Edges.namedTenders[name], edges...)
 	}
 }
 

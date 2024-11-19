@@ -46,13 +46,16 @@ type CityEdges struct {
 	Districts []*District `json:"districts,omitempty"`
 	// Province holds the value of the province edge.
 	Province *Province `json:"province,omitempty"`
+	// Tenders holds the value of the tenders edge.
+	Tenders []*Tender `json:"tenders,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
 
 	namedDistricts map[string][]*District
+	namedTenders   map[string][]*Tender
 }
 
 // DistrictsOrErr returns the Districts value or an error if the edge
@@ -73,6 +76,15 @@ func (e CityEdges) ProvinceOrErr() (*Province, error) {
 		return nil, &NotFoundError{label: province.Label}
 	}
 	return nil, &NotLoadedError{edge: "province"}
+}
+
+// TendersOrErr returns the Tenders value or an error if the edge
+// was not loaded in eager-loading.
+func (e CityEdges) TendersOrErr() ([]*Tender, error) {
+	if e.loadedTypes[2] {
+		return e.Tenders, nil
+	}
+	return nil, &NotLoadedError{edge: "tenders"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -176,6 +188,11 @@ func (c *City) QueryProvince() *ProvinceQuery {
 	return NewCityClient(c.config).QueryProvince(c)
 }
 
+// QueryTenders queries the "tenders" edge of the City entity.
+func (c *City) QueryTenders() *TenderQuery {
+	return NewCityClient(c.config).QueryTenders(c)
+}
+
 // Update returns a builder for updating this City.
 // Note that you need to call City.Unwrap() before calling this method if this City
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -244,6 +261,30 @@ func (c *City) appendNamedDistricts(name string, edges ...*District) {
 		c.Edges.namedDistricts[name] = []*District{}
 	} else {
 		c.Edges.namedDistricts[name] = append(c.Edges.namedDistricts[name], edges...)
+	}
+}
+
+// NamedTenders returns the Tenders named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *City) NamedTenders(name string) ([]*Tender, error) {
+	if c.Edges.namedTenders == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedTenders[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *City) appendNamedTenders(name string, edges ...*Tender) {
+	if c.Edges.namedTenders == nil {
+		c.Edges.namedTenders = make(map[string][]*Tender)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedTenders[name] = []*Tender{}
+	} else {
+		c.Edges.namedTenders[name] = append(c.Edges.namedTenders[name], edges...)
 	}
 }
 

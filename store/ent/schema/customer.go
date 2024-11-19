@@ -53,12 +53,13 @@ func (Customer) Fields() []ent.Field {
 			Annotations(entgql.Skip(entgql.SkipAll)),
 
 		field.String("area_id").
-			GoType(xid.ID{}),
+			GoType(xid.ID("")),
 		field.String("sales_id").
-			GoType(xid.ID{}).
-			Optional(),
-		field.String("created_by_user_id").
-			GoType(xid.ID{}),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
+		field.String("created_by_id").
+			GoType(xid.ID("")),
 	}
 }
 
@@ -76,7 +77,7 @@ func (Customer) Edges() []ent.Edge {
 			Ref("customers").
 			Unique(),
 		edge.To("created_by", User.Type).
-			Field("created_by_user_id").
+			Field("created_by_id").
 			Unique().
 			Required(),
 	}

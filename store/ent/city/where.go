@@ -397,6 +397,36 @@ func ProvinceIDLTE(v xid.ID) predicate.City {
 	return predicate.City(sql.FieldLTE(FieldProvinceID, v))
 }
 
+// ProvinceIDContains applies the Contains predicate on the "province_id" field.
+func ProvinceIDContains(v xid.ID) predicate.City {
+	vc := string(v)
+	return predicate.City(sql.FieldContains(FieldProvinceID, vc))
+}
+
+// ProvinceIDHasPrefix applies the HasPrefix predicate on the "province_id" field.
+func ProvinceIDHasPrefix(v xid.ID) predicate.City {
+	vc := string(v)
+	return predicate.City(sql.FieldHasPrefix(FieldProvinceID, vc))
+}
+
+// ProvinceIDHasSuffix applies the HasSuffix predicate on the "province_id" field.
+func ProvinceIDHasSuffix(v xid.ID) predicate.City {
+	vc := string(v)
+	return predicate.City(sql.FieldHasSuffix(FieldProvinceID, vc))
+}
+
+// ProvinceIDEqualFold applies the EqualFold predicate on the "province_id" field.
+func ProvinceIDEqualFold(v xid.ID) predicate.City {
+	vc := string(v)
+	return predicate.City(sql.FieldEqualFold(FieldProvinceID, vc))
+}
+
+// ProvinceIDContainsFold applies the ContainsFold predicate on the "province_id" field.
+func ProvinceIDContainsFold(v xid.ID) predicate.City {
+	vc := string(v)
+	return predicate.City(sql.FieldContainsFold(FieldProvinceID, vc))
+}
+
 // HasDistricts applies the HasEdge predicate on the "districts" edge.
 func HasDistricts() predicate.City {
 	return predicate.City(func(s *sql.Selector) {
@@ -435,6 +465,29 @@ func HasProvince() predicate.City {
 func HasProvinceWith(preds ...predicate.Province) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		step := newProvinceStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTenders applies the HasEdge predicate on the "tenders" edge.
+func HasTenders() predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTendersWith applies the HasEdge predicate on the "tenders" edge with a given conditions (other predicates).
+func HasTendersWith(preds ...predicate.Tender) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		step := newTendersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

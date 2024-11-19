@@ -29,7 +29,7 @@ type CustomerResolver interface {
 }
 type QueryResolver interface {
 	Node(ctx context.Context, id xid.ID) (ent.Noder, error)
-	Nodes(ctx context.Context, ids []*xid.ID) ([]ent.Noder, error)
+	Nodes(ctx context.Context, ids []xid.ID) ([]ent.Noder, error)
 	Areas(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) (*ent.AreaConnection, error)
 	Cities(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) (*ent.CityConnection, error)
 	Countries(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) (*ent.CountryConnection, error)
@@ -44,10 +44,16 @@ type TenderResolver interface {
 	Status(ctx context.Context, obj *ent.Tender) (int, error)
 
 	SizeAndValueRating(ctx context.Context, obj *ent.Tender) (*int, error)
+
 	CreditAndPaymentRating(ctx context.Context, obj *ent.Tender) (*int, error)
+
 	TimeLimitRating(ctx context.Context, obj *ent.Tender) (*int, error)
+
 	CustomerRelationshipRating(ctx context.Context, obj *ent.Tender) (*int, error)
+
 	CompetitivePartnershipRating(ctx context.Context, obj *ent.Tender) (*int, error)
+
+	GeoCoordinate(ctx context.Context, obj *ent.Tender) (*model.GeoJSON, error)
 }
 
 type CreateCustomerInputResolver interface {
@@ -59,9 +65,13 @@ type CreateTenderInputResolver interface {
 	Status(ctx context.Context, obj *ent.CreateTenderInput, data *int) error
 
 	SizeAndValueRating(ctx context.Context, obj *ent.CreateTenderInput, data *int) error
+
 	CreditAndPaymentRating(ctx context.Context, obj *ent.CreateTenderInput, data *int) error
+
 	TimeLimitRating(ctx context.Context, obj *ent.CreateTenderInput, data *int) error
+
 	CustomerRelationshipRating(ctx context.Context, obj *ent.CreateTenderInput, data *int) error
+
 	CompetitivePartnershipRating(ctx context.Context, obj *ent.CreateTenderInput, data *int) error
 }
 type CustomerWhereInputResolver interface {
@@ -947,22 +957,22 @@ func (ec *executionContext) field_Query_nodes_args(ctx context.Context, rawArgs 
 func (ec *executionContext) field_Query_nodes_argsIds(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) ([]*xid.ID, error) {
+) ([]xid.ID, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["ids"]
 	if !ok {
-		var zeroVal []*xid.ID
+		var zeroVal []xid.ID
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("ids"))
 	if tmp, ok := rawArgs["ids"]; ok {
-		return ec.unmarshalNID2ᚕᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, tmp)
+		return ec.unmarshalNID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, tmp)
 	}
 
-	var zeroVal []*xid.ID
+	var zeroVal []xid.ID
 	return zeroVal, nil
 }
 
@@ -1676,8 +1686,8 @@ func (ec *executionContext) fieldContext_Area_customers(_ context.Context, field
 				return ec.fieldContext_Customer_areaID(ctx, field)
 			case "salesID":
 				return ec.fieldContext_Customer_salesID(ctx, field)
-			case "createdByUserID":
-				return ec.fieldContext_Customer_createdByUserID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Customer_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -1745,18 +1755,34 @@ func (ec *executionContext) fieldContext_Area_tenders(_ context.Context, field g
 				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
 			case "tenderDate":
 				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "findDate":
-				return ec.fieldContext_Tender_findDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
 			case "sizeAndValueRating":
 				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
 			case "creditAndPaymentRating":
 				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
 			case "timeLimitRating":
 				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
 			case "customerRelationshipRating":
 				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
 			case "competitivePartnershipRating":
 				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
 			case "prepareToBid":
 				return ec.fieldContext_Tender_prepareToBid(ctx, field)
 			case "projectCode":
@@ -1771,20 +1797,70 @@ func (ec *executionContext) fieldContext_Area_tenders(_ context.Context, field g
 				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "attachements":
 				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "geoLocation":
-				return ec.fieldContext_Tender_geoLocation(ctx, field)
 			case "remark":
 				return ec.fieldContext_Tender_remark(ctx, field)
 			case "images":
 				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
 			case "areaID":
 				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
 			case "customerID":
 				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
 				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -1856,6 +1932,8 @@ func (ec *executionContext) fieldContext_Area_sales(_ context.Context, field gra
 				return ec.fieldContext_User_leader(ctx, field)
 			case "teamMembers":
 				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -2477,6 +2555,8 @@ func (ec *executionContext) fieldContext_City_districts(_ context.Context, field
 				return ec.fieldContext_District_province(ctx, field)
 			case "city":
 				return ec.fieldContext_District_city(ctx, field)
+			case "tenders":
+				return ec.fieldContext_District_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
 		},
@@ -2541,8 +2621,175 @@ func (ec *executionContext) fieldContext_City_province(_ context.Context, field 
 				return ec.fieldContext_Province_cities(ctx, field)
 			case "country":
 				return ec.fieldContext_Province_country(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Province_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _City_tenders(ctx context.Context, field graphql.CollectedField, obj *ent.City) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_City_tenders(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tenders(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*ent.Tender)
+	fc.Result = res
+	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_City_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "City",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Tender_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Tender_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Tender_updatedAt(ctx, field)
+			case "code":
+				return ec.fieldContext_Tender_code(ctx, field)
+			case "status":
+				return ec.fieldContext_Tender_status(ctx, field)
+			case "name":
+				return ec.fieldContext_Tender_name(ctx, field)
+			case "estimatedAmount":
+				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
+			case "tenderDate":
+				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "sizeAndValueRating":
+				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
+			case "creditAndPaymentRating":
+				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
+			case "timeLimitRating":
+				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
+			case "customerRelationshipRating":
+				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
+			case "competitivePartnershipRating":
+				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
+			case "prepareToBid":
+				return ec.fieldContext_Tender_prepareToBid(ctx, field)
+			case "projectCode":
+				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectDefinition":
+				return ec.fieldContext_Tender_projectDefinition(ctx, field)
+			case "estimatedProjectStartDate":
+				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
+			case "estimatedProjectEndDate":
+				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
+			case "attachements":
+				return ec.fieldContext_Tender_attachements(ctx, field)
+			case "remark":
+				return ec.fieldContext_Tender_remark(ctx, field)
+			case "images":
+				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
+			case "area":
+				return ec.fieldContext_Tender_area(ctx, field)
+			case "customer":
+				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
 	}
 	return fc, nil
@@ -2747,6 +2994,8 @@ func (ec *executionContext) fieldContext_CityEdge_node(_ context.Context, field 
 				return ec.fieldContext_City_districts(ctx, field)
 			case "province":
 				return ec.fieldContext_City_province(ctx, field)
+			case "tenders":
+				return ec.fieldContext_City_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type City", field.Name)
 		},
@@ -3072,6 +3321,8 @@ func (ec *executionContext) fieldContext_Country_provinces(_ context.Context, fi
 				return ec.fieldContext_Province_cities(ctx, field)
 			case "country":
 				return ec.fieldContext_Province_country(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Province_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
 		},
@@ -3856,9 +4107,9 @@ func (ec *executionContext) _Customer_salesID(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(xid.ID)
+	res := resTmp.(*xid.ID)
 	fc.Result = res
-	return ec.marshalOID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+	return ec.marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Customer_salesID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3874,8 +4125,8 @@ func (ec *executionContext) fieldContext_Customer_salesID(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_createdByUserID(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Customer_createdByUserID(ctx, field)
+func (ec *executionContext) _Customer_createdByID(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Customer_createdByID(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3888,7 +4139,7 @@ func (ec *executionContext) _Customer_createdByUserID(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedByUserID, nil
+		return obj.CreatedByID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3905,7 +4156,7 @@ func (ec *executionContext) _Customer_createdByUserID(ctx context.Context, field
 	return ec.marshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Customer_createdByUserID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Customer_createdByID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Customer",
 		Field:      field,
@@ -4032,18 +4283,34 @@ func (ec *executionContext) fieldContext_Customer_tenders(_ context.Context, fie
 				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
 			case "tenderDate":
 				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "findDate":
-				return ec.fieldContext_Tender_findDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
 			case "sizeAndValueRating":
 				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
 			case "creditAndPaymentRating":
 				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
 			case "timeLimitRating":
 				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
 			case "customerRelationshipRating":
 				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
 			case "competitivePartnershipRating":
 				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
 			case "prepareToBid":
 				return ec.fieldContext_Tender_prepareToBid(ctx, field)
 			case "projectCode":
@@ -4058,20 +4325,70 @@ func (ec *executionContext) fieldContext_Customer_tenders(_ context.Context, fie
 				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "attachements":
 				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "geoLocation":
-				return ec.fieldContext_Tender_geoLocation(ctx, field)
 			case "remark":
 				return ec.fieldContext_Tender_remark(ctx, field)
 			case "images":
 				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
 			case "areaID":
 				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
 			case "customerID":
 				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
 				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -4143,6 +4460,8 @@ func (ec *executionContext) fieldContext_Customer_sales(_ context.Context, field
 				return ec.fieldContext_User_leader(ctx, field)
 			case "teamMembers":
 				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -4217,6 +4536,8 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 				return ec.fieldContext_User_leader(ctx, field)
 			case "teamMembers":
 				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -4431,8 +4752,8 @@ func (ec *executionContext) fieldContext_CustomerEdge_node(_ context.Context, fi
 				return ec.fieldContext_Customer_areaID(ctx, field)
 			case "salesID":
 				return ec.fieldContext_Customer_salesID(ctx, field)
-			case "createdByUserID":
-				return ec.fieldContext_Customer_createdByUserID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Customer_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -4867,9 +5188,9 @@ func (ec *executionContext) _District_cityID(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(xid.ID)
+	res := resTmp.(*xid.ID)
 	fc.Result = res
-	return ec.marshalOID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+	return ec.marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_District_cityID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -4942,6 +5263,8 @@ func (ec *executionContext) fieldContext_District_province(_ context.Context, fi
 				return ec.fieldContext_Province_cities(ctx, field)
 			case "country":
 				return ec.fieldContext_Province_country(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Province_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
 		},
@@ -5003,8 +5326,175 @@ func (ec *executionContext) fieldContext_District_city(_ context.Context, field 
 				return ec.fieldContext_City_districts(ctx, field)
 			case "province":
 				return ec.fieldContext_City_province(ctx, field)
+			case "tenders":
+				return ec.fieldContext_City_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type City", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _District_tenders(ctx context.Context, field graphql.CollectedField, obj *ent.District) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_District_tenders(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tenders(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*ent.Tender)
+	fc.Result = res
+	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_District_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "District",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Tender_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Tender_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Tender_updatedAt(ctx, field)
+			case "code":
+				return ec.fieldContext_Tender_code(ctx, field)
+			case "status":
+				return ec.fieldContext_Tender_status(ctx, field)
+			case "name":
+				return ec.fieldContext_Tender_name(ctx, field)
+			case "estimatedAmount":
+				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
+			case "tenderDate":
+				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "sizeAndValueRating":
+				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
+			case "creditAndPaymentRating":
+				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
+			case "timeLimitRating":
+				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
+			case "customerRelationshipRating":
+				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
+			case "competitivePartnershipRating":
+				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
+			case "prepareToBid":
+				return ec.fieldContext_Tender_prepareToBid(ctx, field)
+			case "projectCode":
+				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectDefinition":
+				return ec.fieldContext_Tender_projectDefinition(ctx, field)
+			case "estimatedProjectStartDate":
+				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
+			case "estimatedProjectEndDate":
+				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
+			case "attachements":
+				return ec.fieldContext_Tender_attachements(ctx, field)
+			case "remark":
+				return ec.fieldContext_Tender_remark(ctx, field)
+			case "images":
+				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
+			case "area":
+				return ec.fieldContext_Tender_area(ctx, field)
+			case "customer":
+				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
 	}
 	return fc, nil
@@ -5213,6 +5703,8 @@ func (ec *executionContext) fieldContext_DistrictEdge_node(_ context.Context, fi
 				return ec.fieldContext_District_province(ctx, field)
 			case "city":
 				return ec.fieldContext_District_city(ctx, field)
+			case "tenders":
+				return ec.fieldContext_District_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
 		},
@@ -5756,6 +6248,8 @@ func (ec *executionContext) fieldContext_Province_districts(_ context.Context, f
 				return ec.fieldContext_District_province(ctx, field)
 			case "city":
 				return ec.fieldContext_District_city(ctx, field)
+			case "tenders":
+				return ec.fieldContext_District_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
 		},
@@ -5817,6 +6311,8 @@ func (ec *executionContext) fieldContext_Province_cities(_ context.Context, fiel
 				return ec.fieldContext_City_districts(ctx, field)
 			case "province":
 				return ec.fieldContext_City_province(ctx, field)
+			case "tenders":
+				return ec.fieldContext_City_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type City", field.Name)
 		},
@@ -5877,6 +6373,171 @@ func (ec *executionContext) fieldContext_Province_country(_ context.Context, fie
 				return ec.fieldContext_Country_provinces(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Country", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Province_tenders(ctx context.Context, field graphql.CollectedField, obj *ent.Province) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Province_tenders(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tenders(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*ent.Tender)
+	fc.Result = res
+	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Province_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Province",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Tender_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Tender_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Tender_updatedAt(ctx, field)
+			case "code":
+				return ec.fieldContext_Tender_code(ctx, field)
+			case "status":
+				return ec.fieldContext_Tender_status(ctx, field)
+			case "name":
+				return ec.fieldContext_Tender_name(ctx, field)
+			case "estimatedAmount":
+				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
+			case "tenderDate":
+				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "sizeAndValueRating":
+				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
+			case "creditAndPaymentRating":
+				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
+			case "timeLimitRating":
+				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
+			case "customerRelationshipRating":
+				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
+			case "competitivePartnershipRating":
+				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
+			case "prepareToBid":
+				return ec.fieldContext_Tender_prepareToBid(ctx, field)
+			case "projectCode":
+				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectDefinition":
+				return ec.fieldContext_Tender_projectDefinition(ctx, field)
+			case "estimatedProjectStartDate":
+				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
+			case "estimatedProjectEndDate":
+				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
+			case "attachements":
+				return ec.fieldContext_Tender_attachements(ctx, field)
+			case "remark":
+				return ec.fieldContext_Tender_remark(ctx, field)
+			case "images":
+				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
+			case "area":
+				return ec.fieldContext_Tender_area(ctx, field)
+			case "customer":
+				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
 	}
 	return fc, nil
@@ -6081,6 +6742,8 @@ func (ec *executionContext) fieldContext_ProvinceEdge_node(_ context.Context, fi
 				return ec.fieldContext_Province_cities(ctx, field)
 			case "country":
 				return ec.fieldContext_Province_country(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Province_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
 		},
@@ -6198,7 +6861,7 @@ func (ec *executionContext) _Query_nodes(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Nodes(rctx, fc.Args["ids"].([]*xid.ID))
+		return ec.resolvers.Query().Nodes(rctx, fc.Args["ids"].([]xid.ID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -7272,8 +7935,8 @@ func (ec *executionContext) fieldContext_Tender_tenderDate(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Tender_findDate(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Tender_findDate(ctx, field)
+func (ec *executionContext) _Tender_discoveryDate(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_discoveryDate(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7286,7 +7949,7 @@ func (ec *executionContext) _Tender_findDate(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.FindDate, nil
+		return obj.DiscoveryDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -7303,7 +7966,7 @@ func (ec *executionContext) _Tender_findDate(ctx context.Context, field graphql.
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Tender_findDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Tender_discoveryDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tender",
 		Field:      field,
@@ -7311,6 +7974,129 @@ func (ec *executionContext) fieldContext_Tender_findDate(_ context.Context, fiel
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_address(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_address(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_address(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_fullAddress(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_fullAddress(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FullAddress, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_fullAddress(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_contractor(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_contractor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Contractor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_contractor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -7357,6 +8143,47 @@ func (ec *executionContext) fieldContext_Tender_sizeAndValueRating(_ context.Con
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_sizeAndValueRatingOverview(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SizeAndValueRatingOverview, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_sizeAndValueRatingOverview(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_creditAndPaymentRating(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
 	if err != nil {
@@ -7393,6 +8220,47 @@ func (ec *executionContext) fieldContext_Tender_creditAndPaymentRating(_ context
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_creditAndPaymentRatingOverview(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreditAndPaymentRatingOverview, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_creditAndPaymentRatingOverview(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -7439,6 +8307,47 @@ func (ec *executionContext) fieldContext_Tender_timeLimitRating(_ context.Contex
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_timeLimitRatingOverview(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TimeLimitRatingOverview, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_timeLimitRatingOverview(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_customerRelationshipRating(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
 	if err != nil {
@@ -7480,6 +8389,47 @@ func (ec *executionContext) fieldContext_Tender_customerRelationshipRating(_ con
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_customerRelationshipRatingOverview(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomerRelationshipRatingOverview, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_customerRelationshipRatingOverview(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_competitivePartnershipRating(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
 	if err != nil {
@@ -7516,6 +8466,47 @@ func (ec *executionContext) fieldContext_Tender_competitivePartnershipRating(_ c
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_competitivePartnershipRatingOverview(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CompetitivePartnershipRatingOverview, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_competitivePartnershipRatingOverview(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -7811,47 +8802,6 @@ func (ec *executionContext) fieldContext_Tender_attachements(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Tender_geoLocation(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Tender_geoLocation(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.GeoLocation, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Tender_geoLocation(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Tender",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Tender_remark(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_remark(ctx, field)
 	if err != nil {
@@ -7875,9 +8825,9 @@ func (ec *executionContext) _Tender_remark(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalOString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tender_remark(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7934,6 +8884,583 @@ func (ec *executionContext) fieldContext_Tender_images(_ context.Context, field 
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_tenderSituations(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_tenderSituations(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TenderSituations, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_tenderSituations(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_ownerSituations(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_ownerSituations(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.OwnerSituations, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_ownerSituations(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_biddingInstructions(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_biddingInstructions(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BiddingInstructions, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_biddingInstructions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_competitorSituations(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_competitorSituations(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CompetitorSituations, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_competitorSituations(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_costEngineer(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_costEngineer(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CostEngineer, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_costEngineer(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_tenderForm(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_tenderForm(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TenderForm, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_tenderForm(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_contractForm(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_contractForm(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ContractForm, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_contractForm(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_managementCompany(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_managementCompany(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ManagementCompany, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_managementCompany(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_tenderingAgency(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_tenderingAgency(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TenderingAgency, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_tenderingAgency(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_biddingDate(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_biddingDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BiddingDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_biddingDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_facadeConsultant(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_facadeConsultant(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FacadeConsultant, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_facadeConsultant(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_designUnit(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_designUnit(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DesignUnit, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_designUnit(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_consultingFirm(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_consultingFirm(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ConsultingFirm, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_consultingFirm(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_keyProject(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_keyProject(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.KeyProject, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_keyProject(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_areaID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_areaID(ctx, field)
 	if err != nil {
@@ -7978,6 +9505,135 @@ func (ec *executionContext) fieldContext_Tender_areaID(_ context.Context, field 
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_provinceID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_provinceID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ProvinceID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(xid.ID)
+	fc.Result = res
+	return ec.marshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_provinceID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_cityID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_cityID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CityID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*xid.ID)
+	fc.Result = res
+	return ec.marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_cityID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_districtID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_districtID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DistrictID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(xid.ID)
+	fc.Result = res
+	return ec.marshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_districtID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Tender_customerID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Tender_customerID(ctx, field)
 	if err != nil {
@@ -8010,6 +9666,94 @@ func (ec *executionContext) _Tender_customerID(ctx context.Context, field graphq
 }
 
 func (ec *executionContext) fieldContext_Tender_customerID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_finderID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_finderID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FinderID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(xid.ID)
+	fc.Result = res
+	return ec.marshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_finderID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_createdByID(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_createdByID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedByID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(xid.ID)
+	fc.Result = res
+	return ec.marshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_createdByID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tender",
 		Field:      field,
@@ -8149,8 +9893,8 @@ func (ec *executionContext) fieldContext_Tender_customer(_ context.Context, fiel
 				return ec.fieldContext_Customer_areaID(ctx, field)
 			case "salesID":
 				return ec.fieldContext_Customer_salesID(ctx, field)
-			case "createdByUserID":
-				return ec.fieldContext_Customer_createdByUserID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Customer_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -8161,6 +9905,477 @@ func (ec *executionContext) fieldContext_Tender_customer(_ context.Context, fiel
 				return ec.fieldContext_Customer_createdBy(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_finder(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_finder(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Finder(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖcscdᚑbdsᚋstoreᚋentᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_finder(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
+			case "avatarURL":
+				return ec.fieldContext_User_avatarURL(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "leaderID":
+				return ec.fieldContext_User_leaderID(ctx, field)
+			case "areas":
+				return ec.fieldContext_User_areas(ctx, field)
+			case "customers":
+				return ec.fieldContext_User_customers(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "teamMembers":
+				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_createdBy(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_createdBy(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖcscdᚑbdsᚋstoreᚋentᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_createdBy(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
+			case "avatarURL":
+				return ec.fieldContext_User_avatarURL(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "leaderID":
+				return ec.fieldContext_User_leaderID(ctx, field)
+			case "areas":
+				return ec.fieldContext_User_areas(ctx, field)
+			case "customers":
+				return ec.fieldContext_User_customers(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "teamMembers":
+				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_followingSales(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_followingSales(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FollowingSales(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*ent.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_followingSales(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
+			case "avatarURL":
+				return ec.fieldContext_User_avatarURL(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "leaderID":
+				return ec.fieldContext_User_leaderID(ctx, field)
+			case "areas":
+				return ec.fieldContext_User_areas(ctx, field)
+			case "customers":
+				return ec.fieldContext_User_customers(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "teamMembers":
+				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_province(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_province(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Province(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Province)
+	fc.Result = res
+	return ec.marshalNProvince2ᚖcscdᚑbdsᚋstoreᚋentᚐProvince(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_province(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Province_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Province_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Province_updatedAt(ctx, field)
+			case "adcode":
+				return ec.fieldContext_Province_adcode(ctx, field)
+			case "name":
+				return ec.fieldContext_Province_name(ctx, field)
+			case "countryID":
+				return ec.fieldContext_Province_countryID(ctx, field)
+			case "districts":
+				return ec.fieldContext_Province_districts(ctx, field)
+			case "cities":
+				return ec.fieldContext_Province_cities(ctx, field)
+			case "country":
+				return ec.fieldContext_Province_country(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Province_tenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_city(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_city(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.City(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.City)
+	fc.Result = res
+	return ec.marshalOCity2ᚖcscdᚑbdsᚋstoreᚋentᚐCity(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_city(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_City_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_City_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_City_updatedAt(ctx, field)
+			case "adcode":
+				return ec.fieldContext_City_adcode(ctx, field)
+			case "provCode":
+				return ec.fieldContext_City_provCode(ctx, field)
+			case "name":
+				return ec.fieldContext_City_name(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_City_provinceID(ctx, field)
+			case "districts":
+				return ec.fieldContext_City_districts(ctx, field)
+			case "province":
+				return ec.fieldContext_City_province(ctx, field)
+			case "tenders":
+				return ec.fieldContext_City_tenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type City", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_district(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_district(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.District(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.District)
+	fc.Result = res
+	return ec.marshalNDistrict2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrict(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_district(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_District_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_District_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_District_updatedAt(ctx, field)
+			case "adcode":
+				return ec.fieldContext_District_adcode(ctx, field)
+			case "provCode":
+				return ec.fieldContext_District_provCode(ctx, field)
+			case "cityCode":
+				return ec.fieldContext_District_cityCode(ctx, field)
+			case "name":
+				return ec.fieldContext_District_name(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_District_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_District_cityID(ctx, field)
+			case "province":
+				return ec.fieldContext_District_province(ctx, field)
+			case "city":
+				return ec.fieldContext_District_city(ctx, field)
+			case "tenders":
+				return ec.fieldContext_District_tenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tender_geoCoordinate(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_geoCoordinate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Tender().GeoCoordinate(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.GeoJSON)
+	fc.Result = res
+	return ec.marshalOGeoJson2ᚖcscdᚑbdsᚋgraphqlᚋmodelᚐGeoJSON(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_geoCoordinate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "type":
+				return ec.fieldContext_GeoJson_type(ctx, field)
+			case "coordinates":
+				return ec.fieldContext_GeoJson_coordinates(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GeoJson", field.Name)
 		},
 	}
 	return fc, nil
@@ -8363,18 +10578,34 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
 			case "tenderDate":
 				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "findDate":
-				return ec.fieldContext_Tender_findDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
 			case "sizeAndValueRating":
 				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
 			case "creditAndPaymentRating":
 				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
 			case "timeLimitRating":
 				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
 			case "customerRelationshipRating":
 				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
 			case "competitivePartnershipRating":
 				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
 			case "prepareToBid":
 				return ec.fieldContext_Tender_prepareToBid(ctx, field)
 			case "projectCode":
@@ -8389,20 +10620,70 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "attachements":
 				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "geoLocation":
-				return ec.fieldContext_Tender_geoLocation(ctx, field)
 			case "remark":
 				return ec.fieldContext_Tender_remark(ctx, field)
 			case "images":
 				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
 			case "areaID":
 				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
 			case "customerID":
 				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
 				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -9012,8 +11293,8 @@ func (ec *executionContext) fieldContext_User_customers(_ context.Context, field
 				return ec.fieldContext_Customer_areaID(ctx, field)
 			case "salesID":
 				return ec.fieldContext_Customer_salesID(ctx, field)
-			case "createdByUserID":
-				return ec.fieldContext_Customer_createdByUserID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Customer_createdByID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -9093,6 +11374,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_leader(ctx, field)
 			case "teamMembers":
 				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -9164,8 +11447,175 @@ func (ec *executionContext) fieldContext_User_teamMembers(_ context.Context, fie
 				return ec.fieldContext_User_leader(ctx, field)
 			case "teamMembers":
 				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_tenders(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_tenders(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tenders(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*ent.Tender)
+	fc.Result = res
+	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Tender_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Tender_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Tender_updatedAt(ctx, field)
+			case "code":
+				return ec.fieldContext_Tender_code(ctx, field)
+			case "status":
+				return ec.fieldContext_Tender_status(ctx, field)
+			case "name":
+				return ec.fieldContext_Tender_name(ctx, field)
+			case "estimatedAmount":
+				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
+			case "tenderDate":
+				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "discoveryDate":
+				return ec.fieldContext_Tender_discoveryDate(ctx, field)
+			case "address":
+				return ec.fieldContext_Tender_address(ctx, field)
+			case "fullAddress":
+				return ec.fieldContext_Tender_fullAddress(ctx, field)
+			case "contractor":
+				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "sizeAndValueRating":
+				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
+			case "sizeAndValueRatingOverview":
+				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
+			case "creditAndPaymentRating":
+				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
+			case "creditAndPaymentRatingOverview":
+				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
+			case "timeLimitRating":
+				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
+			case "timeLimitRatingOverview":
+				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
+			case "customerRelationshipRating":
+				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
+			case "customerRelationshipRatingOverview":
+				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
+			case "competitivePartnershipRating":
+				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
+			case "competitivePartnershipRatingOverview":
+				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
+			case "prepareToBid":
+				return ec.fieldContext_Tender_prepareToBid(ctx, field)
+			case "projectCode":
+				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectDefinition":
+				return ec.fieldContext_Tender_projectDefinition(ctx, field)
+			case "estimatedProjectStartDate":
+				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
+			case "estimatedProjectEndDate":
+				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
+			case "attachements":
+				return ec.fieldContext_Tender_attachements(ctx, field)
+			case "remark":
+				return ec.fieldContext_Tender_remark(ctx, field)
+			case "images":
+				return ec.fieldContext_Tender_images(ctx, field)
+			case "tenderSituations":
+				return ec.fieldContext_Tender_tenderSituations(ctx, field)
+			case "ownerSituations":
+				return ec.fieldContext_Tender_ownerSituations(ctx, field)
+			case "biddingInstructions":
+				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
+			case "competitorSituations":
+				return ec.fieldContext_Tender_competitorSituations(ctx, field)
+			case "costEngineer":
+				return ec.fieldContext_Tender_costEngineer(ctx, field)
+			case "tenderForm":
+				return ec.fieldContext_Tender_tenderForm(ctx, field)
+			case "contractForm":
+				return ec.fieldContext_Tender_contractForm(ctx, field)
+			case "managementCompany":
+				return ec.fieldContext_Tender_managementCompany(ctx, field)
+			case "tenderingAgency":
+				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
+			case "biddingDate":
+				return ec.fieldContext_Tender_biddingDate(ctx, field)
+			case "facadeConsultant":
+				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
+			case "designUnit":
+				return ec.fieldContext_Tender_designUnit(ctx, field)
+			case "consultingFirm":
+				return ec.fieldContext_Tender_consultingFirm(ctx, field)
+			case "keyProject":
+				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Tender_areaID(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_Tender_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_Tender_cityID(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Tender_districtID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_Tender_customerID(ctx, field)
+			case "finderID":
+				return ec.fieldContext_Tender_finderID(ctx, field)
+			case "createdByID":
+				return ec.fieldContext_Tender_createdByID(ctx, field)
+			case "area":
+				return ec.fieldContext_Tender_area(ctx, field)
+			case "customer":
+				return ec.fieldContext_Tender_customer(ctx, field)
+			case "finder":
+				return ec.fieldContext_Tender_finder(ctx, field)
+			case "createdBy":
+				return ec.fieldContext_Tender_createdBy(ctx, field)
+			case "followingSales":
+				return ec.fieldContext_Tender_followingSales(ctx, field)
+			case "province":
+				return ec.fieldContext_Tender_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Tender_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Tender_district(ctx, field)
+			case "geoCoordinate":
+				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
 	}
 	return fc, nil
@@ -9380,6 +11830,8 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 				return ec.fieldContext_User_leader(ctx, field)
 			case "teamMembers":
 				return ec.fieldContext_User_teamMembers(ctx, field)
+			case "tenders":
+				return ec.fieldContext_User_tenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -9875,7 +12327,7 @@ func (ec *executionContext) unmarshalInputCityWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "adcode", "adcodeNEQ", "adcodeIn", "adcodeNotIn", "adcodeGT", "adcodeGTE", "adcodeLT", "adcodeLTE", "provCode", "provCodeNEQ", "provCodeIn", "provCodeNotIn", "provCodeGT", "provCodeGTE", "provCodeLT", "provCodeLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "hasDistricts", "hasDistrictsWith", "hasProvince", "hasProvinceWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "adcode", "adcodeNEQ", "adcodeIn", "adcodeNotIn", "adcodeGT", "adcodeGTE", "adcodeLT", "adcodeLTE", "provCode", "provCodeNEQ", "provCodeIn", "provCodeNotIn", "provCodeGT", "provCodeGTE", "provCodeLT", "provCodeLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDEqualFold", "provinceIDContainsFold", "hasDistricts", "hasDistrictsWith", "hasProvince", "hasProvinceWith", "hasTenders", "hasTendersWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -10330,6 +12782,41 @@ func (ec *executionContext) unmarshalInputCityWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.ProvinceIDLTE = data
+		case "provinceIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDContains = data
+		case "provinceIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDHasPrefix = data
+		case "provinceIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDHasSuffix = data
+		case "provinceIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDEqualFold = data
+		case "provinceIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDContainsFold = data
 		case "hasDistricts":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasDistricts"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -10358,6 +12845,20 @@ func (ec *executionContext) unmarshalInputCityWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasProvinceWith = data
+		case "hasTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTenders"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTenders = data
+		case "hasTendersWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTendersWith"))
+			data, err := ec.unmarshalOTenderWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTendersWith = data
 		}
 	}
 
@@ -10810,7 +13311,7 @@ func (ec *executionContext) unmarshalInputCreateCityInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "adcode", "provCode", "name", "districtIDs", "provinceID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "adcode", "provCode", "name", "districtIDs", "provinceID", "tenderIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -10866,6 +13367,13 @@ func (ec *executionContext) unmarshalInputCreateCityInput(ctx context.Context, o
 				return it, err
 			}
 			it.ProvinceID = data
+		case "tenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderIDs = data
 		}
 	}
 
@@ -11058,7 +13566,7 @@ func (ec *executionContext) unmarshalInputCreateDistrictInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "adcode", "provCode", "cityCode", "name", "provinceID", "cityID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "adcode", "provCode", "cityCode", "name", "provinceID", "cityID", "tenderIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -11121,6 +13629,13 @@ func (ec *executionContext) unmarshalInputCreateDistrictInput(ctx context.Contex
 				return it, err
 			}
 			it.CityID = data
+		case "tenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderIDs = data
 		}
 	}
 
@@ -11134,7 +13649,7 @@ func (ec *executionContext) unmarshalInputCreateProvinceInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "adcode", "name", "districtIDs", "cityIDs", "countryID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "adcode", "name", "districtIDs", "cityIDs", "countryID", "tenderIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -11190,6 +13705,13 @@ func (ec *executionContext) unmarshalInputCreateProvinceInput(ctx context.Contex
 				return it, err
 			}
 			it.CountryID = data
+		case "tenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderIDs = data
 		}
 	}
 
@@ -11203,7 +13725,7 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "code", "status", "name", "estimatedAmount", "tenderDate", "findDate", "sizeAndValueRating", "creditAndPaymentRating", "timeLimitRating", "customerRelationshipRating", "competitivePartnershipRating", "prepareToBid", "projectCode", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "projectType", "attachements", "geoLocation", "remark", "images", "areaID", "customerID"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "code", "status", "name", "estimatedAmount", "tenderDate", "discoveryDate", "address", "fullAddress", "contractor", "sizeAndValueRating", "sizeAndValueRatingOverview", "creditAndPaymentRating", "creditAndPaymentRatingOverview", "timeLimitRating", "timeLimitRatingOverview", "customerRelationshipRating", "customerRelationshipRatingOverview", "competitivePartnershipRating", "competitivePartnershipRatingOverview", "prepareToBid", "projectCode", "projectDefinition", "estimatedProjectStartDate", "estimatedProjectEndDate", "projectType", "attachements", "remark", "images", "tenderSituations", "ownerSituations", "biddingInstructions", "competitorSituations", "costEngineer", "tenderForm", "contractForm", "managementCompany", "tenderingAgency", "biddingDate", "facadeConsultant", "designUnit", "consultingFirm", "keyProject", "areaID", "customerID", "finderID", "createdByID", "followingSaleIDs", "provinceID", "cityID", "districtID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -11261,13 +13783,34 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.TenderDate = data
-		case "findDate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDate"))
+		case "discoveryDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDate"))
 			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDate = data
+			it.DiscoveryDate = data
+		case "address":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Address = data
+		case "fullAddress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddress"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddress = data
+		case "contractor":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractor"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Contractor = data
 		case "sizeAndValueRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -11277,6 +13820,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 			if err = ec.resolvers.CreateTenderInput().SizeAndValueRating(ctx, &it, data); err != nil {
 				return it, err
 			}
+		case "sizeAndValueRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverview = data
 		case "creditAndPaymentRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -11286,6 +13836,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 			if err = ec.resolvers.CreateTenderInput().CreditAndPaymentRating(ctx, &it, data); err != nil {
 				return it, err
 			}
+		case "creditAndPaymentRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverview = data
 		case "timeLimitRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -11295,6 +13852,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 			if err = ec.resolvers.CreateTenderInput().TimeLimitRating(ctx, &it, data); err != nil {
 				return it, err
 			}
+		case "timeLimitRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverview = data
 		case "customerRelationshipRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -11304,6 +13868,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 			if err = ec.resolvers.CreateTenderInput().CustomerRelationshipRating(ctx, &it, data); err != nil {
 				return it, err
 			}
+		case "customerRelationshipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverview = data
 		case "competitivePartnershipRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -11313,6 +13884,13 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 			if err = ec.resolvers.CreateTenderInput().CompetitivePartnershipRating(ctx, &it, data); err != nil {
 				return it, err
 			}
+		case "competitivePartnershipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverview = data
 		case "prepareToBid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("prepareToBid"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -11362,13 +13940,6 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.Attachements = data
-		case "geoLocation":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocation"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocation = data
 		case "remark":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("remark"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -11383,6 +13954,104 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.Images = data
+		case "tenderSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituations = data
+		case "ownerSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituations = data
+		case "biddingInstructions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructions"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructions = data
+		case "competitorSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituations = data
+		case "costEngineer":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineer"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineer = data
+		case "tenderForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderForm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderForm = data
+		case "contractForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractForm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractForm = data
+		case "managementCompany":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompany"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompany = data
+		case "tenderingAgency":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgency"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgency = data
+		case "biddingDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDate = data
+		case "facadeConsultant":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultant"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultant = data
+		case "designUnit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnit"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnit = data
+		case "consultingFirm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirm = data
+		case "keyProject":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("keyProject"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.KeyProject = data
 		case "areaID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaID"))
 			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -11397,6 +14066,48 @@ func (ec *executionContext) unmarshalInputCreateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.CustomerID = data
+		case "finderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderID"))
+			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderID = data
+		case "createdByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByID"))
+			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByID = data
+		case "followingSaleIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("followingSaleIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FollowingSaleIDs = data
+		case "provinceID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceID"))
+			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceID = data
+		case "cityID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityID = data
+		case "districtID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtID"))
+			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictID = data
 		}
 	}
 
@@ -11410,7 +14121,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -11501,6 +14212,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.TeamMemberIDs = data
+		case "tenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderIDs = data
 		}
 	}
 
@@ -11514,7 +14232,7 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "ownerType", "ownerTypeNEQ", "ownerTypeIn", "ownerTypeNotIn", "ownerTypeGT", "ownerTypeGTE", "ownerTypeLT", "ownerTypeLTE", "ownerTypeIsNil", "ownerTypeNotNil", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "size", "sizeNEQ", "sizeIn", "sizeNotIn", "sizeGT", "sizeGTE", "sizeLT", "sizeLTE", "sizeIsNil", "sizeNotNil", "contactPerson", "contactPersonNEQ", "contactPersonIn", "contactPersonNotIn", "contactPersonGT", "contactPersonGTE", "contactPersonLT", "contactPersonLTE", "contactPersonContains", "contactPersonHasPrefix", "contactPersonHasSuffix", "contactPersonIsNil", "contactPersonNotNil", "contactPersonEqualFold", "contactPersonContainsFold", "contactPersonPosition", "contactPersonPositionNEQ", "contactPersonPositionIn", "contactPersonPositionNotIn", "contactPersonPositionGT", "contactPersonPositionGTE", "contactPersonPositionLT", "contactPersonPositionLTE", "contactPersonPositionContains", "contactPersonPositionHasPrefix", "contactPersonPositionHasSuffix", "contactPersonPositionIsNil", "contactPersonPositionNotNil", "contactPersonPositionEqualFold", "contactPersonPositionContainsFold", "contactPersonPhone", "contactPersonPhoneNEQ", "contactPersonPhoneIn", "contactPersonPhoneNotIn", "contactPersonPhoneGT", "contactPersonPhoneGTE", "contactPersonPhoneLT", "contactPersonPhoneLTE", "contactPersonPhoneContains", "contactPersonPhoneHasPrefix", "contactPersonPhoneHasSuffix", "contactPersonPhoneIsNil", "contactPersonPhoneNotNil", "contactPersonPhoneEqualFold", "contactPersonPhoneContainsFold", "contactPersonEmail", "contactPersonEmailNEQ", "contactPersonEmailIn", "contactPersonEmailNotIn", "contactPersonEmailGT", "contactPersonEmailGTE", "contactPersonEmailLT", "contactPersonEmailLTE", "contactPersonEmailContains", "contactPersonEmailHasPrefix", "contactPersonEmailHasSuffix", "contactPersonEmailIsNil", "contactPersonEmailNotNil", "contactPersonEmailEqualFold", "contactPersonEmailContainsFold", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "salesID", "salesIDNEQ", "salesIDIn", "salesIDNotIn", "salesIDGT", "salesIDGTE", "salesIDLT", "salesIDLTE", "salesIDIsNil", "salesIDNotNil", "createdByUserID", "createdByUserIDNEQ", "createdByUserIDIn", "createdByUserIDNotIn", "createdByUserIDGT", "createdByUserIDGTE", "createdByUserIDLT", "createdByUserIDLTE", "hasArea", "hasAreaWith", "hasTenders", "hasTendersWith", "hasSales", "hasSalesWith", "hasCreatedBy", "hasCreatedByWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "ownerType", "ownerTypeNEQ", "ownerTypeIn", "ownerTypeNotIn", "ownerTypeGT", "ownerTypeGTE", "ownerTypeLT", "ownerTypeLTE", "ownerTypeIsNil", "ownerTypeNotNil", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "size", "sizeNEQ", "sizeIn", "sizeNotIn", "sizeGT", "sizeGTE", "sizeLT", "sizeLTE", "sizeIsNil", "sizeNotNil", "contactPerson", "contactPersonNEQ", "contactPersonIn", "contactPersonNotIn", "contactPersonGT", "contactPersonGTE", "contactPersonLT", "contactPersonLTE", "contactPersonContains", "contactPersonHasPrefix", "contactPersonHasSuffix", "contactPersonIsNil", "contactPersonNotNil", "contactPersonEqualFold", "contactPersonContainsFold", "contactPersonPosition", "contactPersonPositionNEQ", "contactPersonPositionIn", "contactPersonPositionNotIn", "contactPersonPositionGT", "contactPersonPositionGTE", "contactPersonPositionLT", "contactPersonPositionLTE", "contactPersonPositionContains", "contactPersonPositionHasPrefix", "contactPersonPositionHasSuffix", "contactPersonPositionIsNil", "contactPersonPositionNotNil", "contactPersonPositionEqualFold", "contactPersonPositionContainsFold", "contactPersonPhone", "contactPersonPhoneNEQ", "contactPersonPhoneIn", "contactPersonPhoneNotIn", "contactPersonPhoneGT", "contactPersonPhoneGTE", "contactPersonPhoneLT", "contactPersonPhoneLTE", "contactPersonPhoneContains", "contactPersonPhoneHasPrefix", "contactPersonPhoneHasSuffix", "contactPersonPhoneIsNil", "contactPersonPhoneNotNil", "contactPersonPhoneEqualFold", "contactPersonPhoneContainsFold", "contactPersonEmail", "contactPersonEmailNEQ", "contactPersonEmailIn", "contactPersonEmailNotIn", "contactPersonEmailGT", "contactPersonEmailGTE", "contactPersonEmailLT", "contactPersonEmailLTE", "contactPersonEmailContains", "contactPersonEmailHasPrefix", "contactPersonEmailHasSuffix", "contactPersonEmailIsNil", "contactPersonEmailNotNil", "contactPersonEmailEqualFold", "contactPersonEmailContainsFold", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "salesID", "salesIDNEQ", "salesIDIn", "salesIDNotIn", "salesIDGT", "salesIDGTE", "salesIDLT", "salesIDLTE", "salesIDContains", "salesIDHasPrefix", "salesIDHasSuffix", "salesIDIsNil", "salesIDNotNil", "salesIDEqualFold", "salesIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDEqualFold", "createdByIDContainsFold", "hasArea", "hasAreaWith", "hasTenders", "hasTendersWith", "hasSales", "hasSalesWith", "hasCreatedBy", "hasCreatedByWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -12521,6 +15239,41 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 				return it, err
 			}
 			it.AreaIDLTE = data
+		case "areaIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDContains = data
+		case "areaIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDHasPrefix = data
+		case "areaIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDHasSuffix = data
+		case "areaIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDEqualFold = data
+		case "areaIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDContainsFold = data
 		case "salesID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -12577,6 +15330,27 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 				return it, err
 			}
 			it.SalesIDLTE = data
+		case "salesIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SalesIDContains = data
+		case "salesIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SalesIDHasPrefix = data
+		case "salesIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SalesIDHasSuffix = data
 		case "salesIDIsNil":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesIDIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
@@ -12591,62 +15365,111 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 				return it, err
 			}
 			it.SalesIDNotNil = data
-		case "createdByUserID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserID"))
+		case "salesIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesIDEqualFold"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserID = data
-		case "createdByUserIDNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDNEQ"))
+			it.SalesIDEqualFold = data
+		case "salesIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("salesIDContainsFold"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDNEQ = data
-		case "createdByUserIDIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDIn"))
+			it.SalesIDContainsFold = data
+		case "createdByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByID = data
+		case "createdByIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDNEQ = data
+		case "createdByIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDIn"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDIn = data
-		case "createdByUserIDNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDNotIn"))
+			it.CreatedByIDIn = data
+		case "createdByIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDNotIn"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDNotIn = data
-		case "createdByUserIDGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDGT"))
+			it.CreatedByIDNotIn = data
+		case "createdByIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDGT"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDGT = data
-		case "createdByUserIDGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDGTE"))
+			it.CreatedByIDGT = data
+		case "createdByIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDGTE"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDGTE = data
-		case "createdByUserIDLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDLT"))
+			it.CreatedByIDGTE = data
+		case "createdByIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDLT"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDLT = data
-		case "createdByUserIDLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByUserIDLTE"))
+			it.CreatedByIDLT = data
+		case "createdByIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDLTE"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedByUserIDLTE = data
+			it.CreatedByIDLTE = data
+		case "createdByIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDContains = data
+		case "createdByIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDHasPrefix = data
+		case "createdByIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDHasSuffix = data
+		case "createdByIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDEqualFold = data
+		case "createdByIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDContainsFold = data
 		case "hasArea":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasArea"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -12716,7 +15539,7 @@ func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "adcode", "adcodeNEQ", "adcodeIn", "adcodeNotIn", "adcodeGT", "adcodeGTE", "adcodeLT", "adcodeLTE", "provCode", "provCodeNEQ", "provCodeIn", "provCodeNotIn", "provCodeGT", "provCodeGTE", "provCodeLT", "provCodeLTE", "cityCode", "cityCodeNEQ", "cityCodeIn", "cityCodeNotIn", "cityCodeGT", "cityCodeGTE", "cityCodeLT", "cityCodeLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDIsNil", "cityIDNotNil", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "adcode", "adcodeNEQ", "adcodeIn", "adcodeNotIn", "adcodeGT", "adcodeGTE", "adcodeLT", "adcodeLTE", "provCode", "provCodeNEQ", "provCodeIn", "provCodeNotIn", "provCodeGT", "provCodeGTE", "provCodeLT", "provCodeLTE", "cityCode", "cityCodeNEQ", "cityCodeIn", "cityCodeNotIn", "cityCodeGT", "cityCodeGTE", "cityCodeLT", "cityCodeLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasTenders", "hasTendersWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -13227,6 +16050,41 @@ func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context
 				return it, err
 			}
 			it.ProvinceIDLTE = data
+		case "provinceIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDContains = data
+		case "provinceIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDHasPrefix = data
+		case "provinceIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDHasSuffix = data
+		case "provinceIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDEqualFold = data
+		case "provinceIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDContainsFold = data
 		case "cityID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -13283,6 +16141,27 @@ func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context
 				return it, err
 			}
 			it.CityIDLTE = data
+		case "cityIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDContains = data
+		case "cityIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDHasPrefix = data
+		case "cityIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDHasSuffix = data
 		case "cityIDIsNil":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
@@ -13297,6 +16176,20 @@ func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context
 				return it, err
 			}
 			it.CityIDNotNil = data
+		case "cityIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDEqualFold = data
+		case "cityIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDContainsFold = data
 		case "hasProvince":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProvince"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -13325,6 +16218,20 @@ func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasCityWith = data
+		case "hasTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTenders"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTenders = data
+		case "hasTendersWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTendersWith"))
+			data, err := ec.unmarshalOTenderWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTendersWith = data
 		}
 	}
 
@@ -13338,7 +16245,7 @@ func (ec *executionContext) unmarshalInputProvinceWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "adcode", "adcodeNEQ", "adcodeIn", "adcodeNotIn", "adcodeGT", "adcodeGTE", "adcodeLT", "adcodeLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "countryID", "countryIDNEQ", "countryIDIn", "countryIDNotIn", "countryIDGT", "countryIDGTE", "countryIDLT", "countryIDLTE", "hasDistricts", "hasDistrictsWith", "hasCities", "hasCitiesWith", "hasCountry", "hasCountryWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "adcode", "adcodeNEQ", "adcodeIn", "adcodeNotIn", "adcodeGT", "adcodeGTE", "adcodeLT", "adcodeLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "countryID", "countryIDNEQ", "countryIDIn", "countryIDNotIn", "countryIDGT", "countryIDGTE", "countryIDLT", "countryIDLTE", "countryIDContains", "countryIDHasPrefix", "countryIDHasSuffix", "countryIDEqualFold", "countryIDContainsFold", "hasDistricts", "hasDistrictsWith", "hasCities", "hasCitiesWith", "hasCountry", "hasCountryWith", "hasTenders", "hasTendersWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -13737,6 +16644,41 @@ func (ec *executionContext) unmarshalInputProvinceWhereInput(ctx context.Context
 				return it, err
 			}
 			it.CountryIDLTE = data
+		case "countryIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CountryIDContains = data
+		case "countryIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CountryIDHasPrefix = data
+		case "countryIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CountryIDHasSuffix = data
+		case "countryIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CountryIDEqualFold = data
+		case "countryIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("countryIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CountryIDContainsFold = data
 		case "hasDistricts":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasDistricts"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -13779,6 +16721,20 @@ func (ec *executionContext) unmarshalInputProvinceWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasCountryWith = data
+		case "hasTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTenders"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTenders = data
+		case "hasTendersWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTendersWith"))
+			data, err := ec.unmarshalOTenderWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTendersWith = data
 		}
 	}
 
@@ -13792,7 +16748,7 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "findDate", "findDateNEQ", "findDateIn", "findDateNotIn", "findDateGT", "findDateGTE", "findDateLT", "findDateLTE", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "geoLocation", "geoLocationNEQ", "geoLocationIn", "geoLocationNotIn", "geoLocationGT", "geoLocationGTE", "geoLocationLT", "geoLocationLTE", "geoLocationContains", "geoLocationHasPrefix", "geoLocationHasSuffix", "geoLocationIsNil", "geoLocationNotNil", "geoLocationEqualFold", "geoLocationContainsFold", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "hasArea", "hasAreaWith", "hasCustomer", "hasCustomerWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "statusGT", "statusGTE", "statusLT", "statusLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "estimatedAmount", "estimatedAmountNEQ", "estimatedAmountIn", "estimatedAmountNotIn", "estimatedAmountGT", "estimatedAmountGTE", "estimatedAmountLT", "estimatedAmountLTE", "estimatedAmountIsNil", "estimatedAmountNotNil", "tenderDate", "tenderDateNEQ", "tenderDateIn", "tenderDateNotIn", "tenderDateGT", "tenderDateGTE", "tenderDateLT", "tenderDateLTE", "tenderDateIsNil", "tenderDateNotNil", "discoveryDate", "discoveryDateNEQ", "discoveryDateIn", "discoveryDateNotIn", "discoveryDateGT", "discoveryDateGTE", "discoveryDateLT", "discoveryDateLTE", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "fullAddress", "fullAddressNEQ", "fullAddressIn", "fullAddressNotIn", "fullAddressGT", "fullAddressGTE", "fullAddressLT", "fullAddressLTE", "fullAddressContains", "fullAddressHasPrefix", "fullAddressHasSuffix", "fullAddressIsNil", "fullAddressNotNil", "fullAddressEqualFold", "fullAddressContainsFold", "contractor", "contractorNEQ", "contractorIn", "contractorNotIn", "contractorGT", "contractorGTE", "contractorLT", "contractorLTE", "contractorContains", "contractorHasPrefix", "contractorHasSuffix", "contractorIsNil", "contractorNotNil", "contractorEqualFold", "contractorContainsFold", "sizeAndValueRating", "sizeAndValueRatingNEQ", "sizeAndValueRatingIn", "sizeAndValueRatingNotIn", "sizeAndValueRatingGT", "sizeAndValueRatingGTE", "sizeAndValueRatingLT", "sizeAndValueRatingLTE", "sizeAndValueRatingIsNil", "sizeAndValueRatingNotNil", "sizeAndValueRatingOverview", "sizeAndValueRatingOverviewNEQ", "sizeAndValueRatingOverviewIn", "sizeAndValueRatingOverviewNotIn", "sizeAndValueRatingOverviewGT", "sizeAndValueRatingOverviewGTE", "sizeAndValueRatingOverviewLT", "sizeAndValueRatingOverviewLTE", "sizeAndValueRatingOverviewContains", "sizeAndValueRatingOverviewHasPrefix", "sizeAndValueRatingOverviewHasSuffix", "sizeAndValueRatingOverviewIsNil", "sizeAndValueRatingOverviewNotNil", "sizeAndValueRatingOverviewEqualFold", "sizeAndValueRatingOverviewContainsFold", "creditAndPaymentRating", "creditAndPaymentRatingNEQ", "creditAndPaymentRatingIn", "creditAndPaymentRatingNotIn", "creditAndPaymentRatingGT", "creditAndPaymentRatingGTE", "creditAndPaymentRatingLT", "creditAndPaymentRatingLTE", "creditAndPaymentRatingIsNil", "creditAndPaymentRatingNotNil", "creditAndPaymentRatingOverview", "creditAndPaymentRatingOverviewNEQ", "creditAndPaymentRatingOverviewIn", "creditAndPaymentRatingOverviewNotIn", "creditAndPaymentRatingOverviewGT", "creditAndPaymentRatingOverviewGTE", "creditAndPaymentRatingOverviewLT", "creditAndPaymentRatingOverviewLTE", "creditAndPaymentRatingOverviewContains", "creditAndPaymentRatingOverviewHasPrefix", "creditAndPaymentRatingOverviewHasSuffix", "creditAndPaymentRatingOverviewIsNil", "creditAndPaymentRatingOverviewNotNil", "creditAndPaymentRatingOverviewEqualFold", "creditAndPaymentRatingOverviewContainsFold", "timeLimitRating", "timeLimitRatingNEQ", "timeLimitRatingIn", "timeLimitRatingNotIn", "timeLimitRatingGT", "timeLimitRatingGTE", "timeLimitRatingLT", "timeLimitRatingLTE", "timeLimitRatingIsNil", "timeLimitRatingNotNil", "timeLimitRatingOverview", "timeLimitRatingOverviewNEQ", "timeLimitRatingOverviewIn", "timeLimitRatingOverviewNotIn", "timeLimitRatingOverviewGT", "timeLimitRatingOverviewGTE", "timeLimitRatingOverviewLT", "timeLimitRatingOverviewLTE", "timeLimitRatingOverviewContains", "timeLimitRatingOverviewHasPrefix", "timeLimitRatingOverviewHasSuffix", "timeLimitRatingOverviewIsNil", "timeLimitRatingOverviewNotNil", "timeLimitRatingOverviewEqualFold", "timeLimitRatingOverviewContainsFold", "customerRelationshipRating", "customerRelationshipRatingNEQ", "customerRelationshipRatingIn", "customerRelationshipRatingNotIn", "customerRelationshipRatingGT", "customerRelationshipRatingGTE", "customerRelationshipRatingLT", "customerRelationshipRatingLTE", "customerRelationshipRatingIsNil", "customerRelationshipRatingNotNil", "customerRelationshipRatingOverview", "customerRelationshipRatingOverviewNEQ", "customerRelationshipRatingOverviewIn", "customerRelationshipRatingOverviewNotIn", "customerRelationshipRatingOverviewGT", "customerRelationshipRatingOverviewGTE", "customerRelationshipRatingOverviewLT", "customerRelationshipRatingOverviewLTE", "customerRelationshipRatingOverviewContains", "customerRelationshipRatingOverviewHasPrefix", "customerRelationshipRatingOverviewHasSuffix", "customerRelationshipRatingOverviewIsNil", "customerRelationshipRatingOverviewNotNil", "customerRelationshipRatingOverviewEqualFold", "customerRelationshipRatingOverviewContainsFold", "competitivePartnershipRating", "competitivePartnershipRatingNEQ", "competitivePartnershipRatingIn", "competitivePartnershipRatingNotIn", "competitivePartnershipRatingGT", "competitivePartnershipRatingGTE", "competitivePartnershipRatingLT", "competitivePartnershipRatingLTE", "competitivePartnershipRatingIsNil", "competitivePartnershipRatingNotNil", "competitivePartnershipRatingOverview", "competitivePartnershipRatingOverviewNEQ", "competitivePartnershipRatingOverviewIn", "competitivePartnershipRatingOverviewNotIn", "competitivePartnershipRatingOverviewGT", "competitivePartnershipRatingOverviewGTE", "competitivePartnershipRatingOverviewLT", "competitivePartnershipRatingOverviewLTE", "competitivePartnershipRatingOverviewContains", "competitivePartnershipRatingOverviewHasPrefix", "competitivePartnershipRatingOverviewHasSuffix", "competitivePartnershipRatingOverviewIsNil", "competitivePartnershipRatingOverviewNotNil", "competitivePartnershipRatingOverviewEqualFold", "competitivePartnershipRatingOverviewContainsFold", "prepareToBid", "prepareToBidNEQ", "projectCode", "projectCodeNEQ", "projectCodeIn", "projectCodeNotIn", "projectCodeGT", "projectCodeGTE", "projectCodeLT", "projectCodeLTE", "projectCodeContains", "projectCodeHasPrefix", "projectCodeHasSuffix", "projectCodeIsNil", "projectCodeNotNil", "projectCodeEqualFold", "projectCodeContainsFold", "projectDefinition", "projectDefinitionNEQ", "projectDefinitionIn", "projectDefinitionNotIn", "projectDefinitionGT", "projectDefinitionGTE", "projectDefinitionLT", "projectDefinitionLTE", "projectDefinitionContains", "projectDefinitionHasPrefix", "projectDefinitionHasSuffix", "projectDefinitionIsNil", "projectDefinitionNotNil", "projectDefinitionEqualFold", "projectDefinitionContainsFold", "estimatedProjectStartDate", "estimatedProjectStartDateNEQ", "estimatedProjectStartDateIn", "estimatedProjectStartDateNotIn", "estimatedProjectStartDateGT", "estimatedProjectStartDateGTE", "estimatedProjectStartDateLT", "estimatedProjectStartDateLTE", "estimatedProjectStartDateIsNil", "estimatedProjectStartDateNotNil", "estimatedProjectEndDate", "estimatedProjectEndDateNEQ", "estimatedProjectEndDateIn", "estimatedProjectEndDateNotIn", "estimatedProjectEndDateGT", "estimatedProjectEndDateGTE", "estimatedProjectEndDateLT", "estimatedProjectEndDateLTE", "estimatedProjectEndDateIsNil", "estimatedProjectEndDateNotNil", "projectType", "projectTypeNEQ", "projectTypeIn", "projectTypeNotIn", "projectTypeGT", "projectTypeGTE", "projectTypeLT", "projectTypeLTE", "projectTypeContains", "projectTypeHasPrefix", "projectTypeHasSuffix", "projectTypeIsNil", "projectTypeNotNil", "projectTypeEqualFold", "projectTypeContainsFold", "remark", "remarkNEQ", "remarkIn", "remarkNotIn", "remarkGT", "remarkGTE", "remarkLT", "remarkLTE", "remarkContains", "remarkHasPrefix", "remarkHasSuffix", "remarkIsNil", "remarkNotNil", "remarkEqualFold", "remarkContainsFold", "tenderSituations", "tenderSituationsNEQ", "tenderSituationsIn", "tenderSituationsNotIn", "tenderSituationsGT", "tenderSituationsGTE", "tenderSituationsLT", "tenderSituationsLTE", "tenderSituationsContains", "tenderSituationsHasPrefix", "tenderSituationsHasSuffix", "tenderSituationsIsNil", "tenderSituationsNotNil", "tenderSituationsEqualFold", "tenderSituationsContainsFold", "ownerSituations", "ownerSituationsNEQ", "ownerSituationsIn", "ownerSituationsNotIn", "ownerSituationsGT", "ownerSituationsGTE", "ownerSituationsLT", "ownerSituationsLTE", "ownerSituationsContains", "ownerSituationsHasPrefix", "ownerSituationsHasSuffix", "ownerSituationsIsNil", "ownerSituationsNotNil", "ownerSituationsEqualFold", "ownerSituationsContainsFold", "biddingInstructions", "biddingInstructionsNEQ", "biddingInstructionsIn", "biddingInstructionsNotIn", "biddingInstructionsGT", "biddingInstructionsGTE", "biddingInstructionsLT", "biddingInstructionsLTE", "biddingInstructionsContains", "biddingInstructionsHasPrefix", "biddingInstructionsHasSuffix", "biddingInstructionsIsNil", "biddingInstructionsNotNil", "biddingInstructionsEqualFold", "biddingInstructionsContainsFold", "competitorSituations", "competitorSituationsNEQ", "competitorSituationsIn", "competitorSituationsNotIn", "competitorSituationsGT", "competitorSituationsGTE", "competitorSituationsLT", "competitorSituationsLTE", "competitorSituationsContains", "competitorSituationsHasPrefix", "competitorSituationsHasSuffix", "competitorSituationsIsNil", "competitorSituationsNotNil", "competitorSituationsEqualFold", "competitorSituationsContainsFold", "costEngineer", "costEngineerNEQ", "costEngineerIn", "costEngineerNotIn", "costEngineerGT", "costEngineerGTE", "costEngineerLT", "costEngineerLTE", "costEngineerContains", "costEngineerHasPrefix", "costEngineerHasSuffix", "costEngineerIsNil", "costEngineerNotNil", "costEngineerEqualFold", "costEngineerContainsFold", "tenderForm", "tenderFormNEQ", "tenderFormIn", "tenderFormNotIn", "tenderFormGT", "tenderFormGTE", "tenderFormLT", "tenderFormLTE", "tenderFormContains", "tenderFormHasPrefix", "tenderFormHasSuffix", "tenderFormIsNil", "tenderFormNotNil", "tenderFormEqualFold", "tenderFormContainsFold", "contractForm", "contractFormNEQ", "contractFormIn", "contractFormNotIn", "contractFormGT", "contractFormGTE", "contractFormLT", "contractFormLTE", "contractFormContains", "contractFormHasPrefix", "contractFormHasSuffix", "contractFormIsNil", "contractFormNotNil", "contractFormEqualFold", "contractFormContainsFold", "managementCompany", "managementCompanyNEQ", "managementCompanyIn", "managementCompanyNotIn", "managementCompanyGT", "managementCompanyGTE", "managementCompanyLT", "managementCompanyLTE", "managementCompanyContains", "managementCompanyHasPrefix", "managementCompanyHasSuffix", "managementCompanyIsNil", "managementCompanyNotNil", "managementCompanyEqualFold", "managementCompanyContainsFold", "tenderingAgency", "tenderingAgencyNEQ", "tenderingAgencyIn", "tenderingAgencyNotIn", "tenderingAgencyGT", "tenderingAgencyGTE", "tenderingAgencyLT", "tenderingAgencyLTE", "tenderingAgencyContains", "tenderingAgencyHasPrefix", "tenderingAgencyHasSuffix", "tenderingAgencyIsNil", "tenderingAgencyNotNil", "tenderingAgencyEqualFold", "tenderingAgencyContainsFold", "biddingDate", "biddingDateNEQ", "biddingDateIn", "biddingDateNotIn", "biddingDateGT", "biddingDateGTE", "biddingDateLT", "biddingDateLTE", "biddingDateIsNil", "biddingDateNotNil", "facadeConsultant", "facadeConsultantNEQ", "facadeConsultantIn", "facadeConsultantNotIn", "facadeConsultantGT", "facadeConsultantGTE", "facadeConsultantLT", "facadeConsultantLTE", "facadeConsultantContains", "facadeConsultantHasPrefix", "facadeConsultantHasSuffix", "facadeConsultantIsNil", "facadeConsultantNotNil", "facadeConsultantEqualFold", "facadeConsultantContainsFold", "designUnit", "designUnitNEQ", "designUnitIn", "designUnitNotIn", "designUnitGT", "designUnitGTE", "designUnitLT", "designUnitLTE", "designUnitContains", "designUnitHasPrefix", "designUnitHasSuffix", "designUnitIsNil", "designUnitNotNil", "designUnitEqualFold", "designUnitContainsFold", "consultingFirm", "consultingFirmNEQ", "consultingFirmIn", "consultingFirmNotIn", "consultingFirmGT", "consultingFirmGTE", "consultingFirmLT", "consultingFirmLTE", "consultingFirmContains", "consultingFirmHasPrefix", "consultingFirmHasSuffix", "consultingFirmIsNil", "consultingFirmNotNil", "consultingFirmEqualFold", "consultingFirmContainsFold", "keyProject", "keyProjectNEQ", "areaID", "areaIDNEQ", "areaIDIn", "areaIDNotIn", "areaIDGT", "areaIDGTE", "areaIDLT", "areaIDLTE", "areaIDContains", "areaIDHasPrefix", "areaIDHasSuffix", "areaIDEqualFold", "areaIDContainsFold", "provinceID", "provinceIDNEQ", "provinceIDIn", "provinceIDNotIn", "provinceIDGT", "provinceIDGTE", "provinceIDLT", "provinceIDLTE", "provinceIDContains", "provinceIDHasPrefix", "provinceIDHasSuffix", "provinceIDEqualFold", "provinceIDContainsFold", "cityID", "cityIDNEQ", "cityIDIn", "cityIDNotIn", "cityIDGT", "cityIDGTE", "cityIDLT", "cityIDLTE", "cityIDContains", "cityIDHasPrefix", "cityIDHasSuffix", "cityIDIsNil", "cityIDNotNil", "cityIDEqualFold", "cityIDContainsFold", "districtID", "districtIDNEQ", "districtIDIn", "districtIDNotIn", "districtIDGT", "districtIDGTE", "districtIDLT", "districtIDLTE", "districtIDContains", "districtIDHasPrefix", "districtIDHasSuffix", "districtIDEqualFold", "districtIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDEqualFold", "customerIDContainsFold", "finderID", "finderIDNEQ", "finderIDIn", "finderIDNotIn", "finderIDGT", "finderIDGTE", "finderIDLT", "finderIDLTE", "finderIDContains", "finderIDHasPrefix", "finderIDHasSuffix", "finderIDEqualFold", "finderIDContainsFold", "createdByID", "createdByIDNEQ", "createdByIDIn", "createdByIDNotIn", "createdByIDGT", "createdByIDGTE", "createdByIDLT", "createdByIDLTE", "createdByIDContains", "createdByIDHasPrefix", "createdByIDHasSuffix", "createdByIDEqualFold", "createdByIDContainsFold", "hasArea", "hasAreaWith", "hasCustomer", "hasCustomerWith", "hasFinder", "hasFinderWith", "hasCreatedBy", "hasCreatedByWith", "hasFollowingSales", "hasFollowingSalesWith", "hasProvince", "hasProvinceWith", "hasCity", "hasCityWith", "hasDistrict", "hasDistrictWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -14382,62 +17338,377 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.TenderDateNotNil = data
-		case "findDate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDate"))
+		case "discoveryDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDate = data
-		case "findDateNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateNEQ"))
+			it.DiscoveryDate = data
+		case "discoveryDateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateNEQ"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateNEQ = data
-		case "findDateIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateIn"))
+			it.DiscoveryDateNEQ = data
+		case "discoveryDateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateIn = data
-		case "findDateNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateNotIn"))
+			it.DiscoveryDateIn = data
+		case "discoveryDateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateNotIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateNotIn = data
-		case "findDateGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateGT"))
+			it.DiscoveryDateNotIn = data
+		case "discoveryDateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateGT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateGT = data
-		case "findDateGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateGTE"))
+			it.DiscoveryDateGT = data
+		case "discoveryDateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateGTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateGTE = data
-		case "findDateLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateLT"))
+			it.DiscoveryDateGTE = data
+		case "discoveryDateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateLT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateLT = data
-		case "findDateLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDateLTE"))
+			it.DiscoveryDateLT = data
+		case "discoveryDateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDateLTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDateLTE = data
+			it.DiscoveryDateLTE = data
+		case "address":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Address = data
+		case "addressNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressNEQ = data
+		case "addressIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressIn = data
+		case "addressNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressNotIn = data
+		case "addressGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressGT = data
+		case "addressGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressGTE = data
+		case "addressLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressLT = data
+		case "addressLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressLTE = data
+		case "addressContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressContains = data
+		case "addressHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressHasPrefix = data
+		case "addressHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressHasSuffix = data
+		case "addressIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressIsNil = data
+		case "addressNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressNotNil = data
+		case "addressEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressEqualFold = data
+		case "addressContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressContainsFold = data
+		case "fullAddress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddress"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddress = data
+		case "fullAddressNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressNEQ = data
+		case "fullAddressIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressIn = data
+		case "fullAddressNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressNotIn = data
+		case "fullAddressGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressGT = data
+		case "fullAddressGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressGTE = data
+		case "fullAddressLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressLT = data
+		case "fullAddressLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressLTE = data
+		case "fullAddressContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressContains = data
+		case "fullAddressHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressHasPrefix = data
+		case "fullAddressHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressHasSuffix = data
+		case "fullAddressIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressIsNil = data
+		case "fullAddressNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressNotNil = data
+		case "fullAddressEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressEqualFold = data
+		case "fullAddressContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddressContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddressContainsFold = data
+		case "contractor":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractor"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Contractor = data
+		case "contractorNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorNEQ = data
+		case "contractorIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorIn = data
+		case "contractorNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorNotIn = data
+		case "contractorGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorGT = data
+		case "contractorGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorGTE = data
+		case "contractorLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorLT = data
+		case "contractorLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorLTE = data
+		case "contractorContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorContains = data
+		case "contractorHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorHasPrefix = data
+		case "contractorHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorHasSuffix = data
+		case "contractorIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorIsNil = data
+		case "contractorNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorNotNil = data
+		case "contractorEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorEqualFold = data
+		case "contractorContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorContainsFold = data
 		case "sizeAndValueRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -14524,6 +17795,111 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.SizeAndValueRatingNotNil = data
+		case "sizeAndValueRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverview = data
+		case "sizeAndValueRatingOverviewNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewNEQ = data
+		case "sizeAndValueRatingOverviewIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewIn = data
+		case "sizeAndValueRatingOverviewNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewNotIn = data
+		case "sizeAndValueRatingOverviewGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewGT = data
+		case "sizeAndValueRatingOverviewGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewGTE = data
+		case "sizeAndValueRatingOverviewLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewLT = data
+		case "sizeAndValueRatingOverviewLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewLTE = data
+		case "sizeAndValueRatingOverviewContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewContains = data
+		case "sizeAndValueRatingOverviewHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewHasPrefix = data
+		case "sizeAndValueRatingOverviewHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewHasSuffix = data
+		case "sizeAndValueRatingOverviewIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewIsNil = data
+		case "sizeAndValueRatingOverviewNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewNotNil = data
+		case "sizeAndValueRatingOverviewEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewEqualFold = data
+		case "sizeAndValueRatingOverviewContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverviewContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverviewContainsFold = data
 		case "creditAndPaymentRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -14610,6 +17986,111 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.CreditAndPaymentRatingNotNil = data
+		case "creditAndPaymentRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverview = data
+		case "creditAndPaymentRatingOverviewNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewNEQ = data
+		case "creditAndPaymentRatingOverviewIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewIn = data
+		case "creditAndPaymentRatingOverviewNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewNotIn = data
+		case "creditAndPaymentRatingOverviewGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewGT = data
+		case "creditAndPaymentRatingOverviewGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewGTE = data
+		case "creditAndPaymentRatingOverviewLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewLT = data
+		case "creditAndPaymentRatingOverviewLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewLTE = data
+		case "creditAndPaymentRatingOverviewContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewContains = data
+		case "creditAndPaymentRatingOverviewHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewHasPrefix = data
+		case "creditAndPaymentRatingOverviewHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewHasSuffix = data
+		case "creditAndPaymentRatingOverviewIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewIsNil = data
+		case "creditAndPaymentRatingOverviewNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewNotNil = data
+		case "creditAndPaymentRatingOverviewEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewEqualFold = data
+		case "creditAndPaymentRatingOverviewContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverviewContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverviewContainsFold = data
 		case "timeLimitRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -14696,6 +18177,111 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.TimeLimitRatingNotNil = data
+		case "timeLimitRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverview = data
+		case "timeLimitRatingOverviewNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewNEQ = data
+		case "timeLimitRatingOverviewIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewIn = data
+		case "timeLimitRatingOverviewNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewNotIn = data
+		case "timeLimitRatingOverviewGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewGT = data
+		case "timeLimitRatingOverviewGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewGTE = data
+		case "timeLimitRatingOverviewLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewLT = data
+		case "timeLimitRatingOverviewLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewLTE = data
+		case "timeLimitRatingOverviewContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewContains = data
+		case "timeLimitRatingOverviewHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewHasPrefix = data
+		case "timeLimitRatingOverviewHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewHasSuffix = data
+		case "timeLimitRatingOverviewIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewIsNil = data
+		case "timeLimitRatingOverviewNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewNotNil = data
+		case "timeLimitRatingOverviewEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewEqualFold = data
+		case "timeLimitRatingOverviewContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverviewContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverviewContainsFold = data
 		case "customerRelationshipRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -14782,6 +18368,111 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.CustomerRelationshipRatingNotNil = data
+		case "customerRelationshipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverview = data
+		case "customerRelationshipRatingOverviewNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewNEQ = data
+		case "customerRelationshipRatingOverviewIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewIn = data
+		case "customerRelationshipRatingOverviewNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewNotIn = data
+		case "customerRelationshipRatingOverviewGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewGT = data
+		case "customerRelationshipRatingOverviewGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewGTE = data
+		case "customerRelationshipRatingOverviewLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewLT = data
+		case "customerRelationshipRatingOverviewLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewLTE = data
+		case "customerRelationshipRatingOverviewContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewContains = data
+		case "customerRelationshipRatingOverviewHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewHasPrefix = data
+		case "customerRelationshipRatingOverviewHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewHasSuffix = data
+		case "customerRelationshipRatingOverviewIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewIsNil = data
+		case "customerRelationshipRatingOverviewNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewNotNil = data
+		case "customerRelationshipRatingOverviewEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewEqualFold = data
+		case "customerRelationshipRatingOverviewContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverviewContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverviewContainsFold = data
 		case "competitivePartnershipRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -14868,6 +18559,111 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.CompetitivePartnershipRatingNotNil = data
+		case "competitivePartnershipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverview = data
+		case "competitivePartnershipRatingOverviewNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewNEQ = data
+		case "competitivePartnershipRatingOverviewIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewIn = data
+		case "competitivePartnershipRatingOverviewNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewNotIn = data
+		case "competitivePartnershipRatingOverviewGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewGT = data
+		case "competitivePartnershipRatingOverviewGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewGTE = data
+		case "competitivePartnershipRatingOverviewLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewLT = data
+		case "competitivePartnershipRatingOverviewLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewLTE = data
+		case "competitivePartnershipRatingOverviewContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewContains = data
+		case "competitivePartnershipRatingOverviewHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewHasPrefix = data
+		case "competitivePartnershipRatingOverviewHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewHasSuffix = data
+		case "competitivePartnershipRatingOverviewIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewIsNil = data
+		case "competitivePartnershipRatingOverviewNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewNotNil = data
+		case "competitivePartnershipRatingOverviewEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewEqualFold = data
+		case "competitivePartnershipRatingOverviewContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverviewContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverviewContainsFold = data
 		case "prepareToBid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("prepareToBid"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -15337,111 +19133,6 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.ProjectTypeContainsFold = data
-		case "geoLocation":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocation"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocation = data
-		case "geoLocationNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationNEQ = data
-		case "geoLocationIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationIn = data
-		case "geoLocationNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationNotIn = data
-		case "geoLocationGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationGT = data
-		case "geoLocationGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationGTE = data
-		case "geoLocationLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationLT = data
-		case "geoLocationLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationLTE = data
-		case "geoLocationContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationContains = data
-		case "geoLocationHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationHasPrefix = data
-		case "geoLocationHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationHasSuffix = data
-		case "geoLocationIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationIsNil = data
-		case "geoLocationNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationNotNil = data
-		case "geoLocationEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationEqualFold = data
-		case "geoLocationContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocationContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocationContainsFold = data
 		case "remark":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("remark"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -15547,6 +19238,1350 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.RemarkContainsFold = data
+		case "tenderSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituations = data
+		case "tenderSituationsNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsNEQ = data
+		case "tenderSituationsIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsIn = data
+		case "tenderSituationsNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsNotIn = data
+		case "tenderSituationsGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsGT = data
+		case "tenderSituationsGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsGTE = data
+		case "tenderSituationsLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsLT = data
+		case "tenderSituationsLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsLTE = data
+		case "tenderSituationsContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsContains = data
+		case "tenderSituationsHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsHasPrefix = data
+		case "tenderSituationsHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsHasSuffix = data
+		case "tenderSituationsIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsIsNil = data
+		case "tenderSituationsNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsNotNil = data
+		case "tenderSituationsEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsEqualFold = data
+		case "tenderSituationsContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituationsContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituationsContainsFold = data
+		case "ownerSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituations = data
+		case "ownerSituationsNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsNEQ = data
+		case "ownerSituationsIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsIn = data
+		case "ownerSituationsNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsNotIn = data
+		case "ownerSituationsGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsGT = data
+		case "ownerSituationsGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsGTE = data
+		case "ownerSituationsLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsLT = data
+		case "ownerSituationsLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsLTE = data
+		case "ownerSituationsContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsContains = data
+		case "ownerSituationsHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsHasPrefix = data
+		case "ownerSituationsHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsHasSuffix = data
+		case "ownerSituationsIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsIsNil = data
+		case "ownerSituationsNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsNotNil = data
+		case "ownerSituationsEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsEqualFold = data
+		case "ownerSituationsContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituationsContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituationsContainsFold = data
+		case "biddingInstructions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructions"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructions = data
+		case "biddingInstructionsNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsNEQ = data
+		case "biddingInstructionsIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsIn = data
+		case "biddingInstructionsNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsNotIn = data
+		case "biddingInstructionsGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsGT = data
+		case "biddingInstructionsGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsGTE = data
+		case "biddingInstructionsLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsLT = data
+		case "biddingInstructionsLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsLTE = data
+		case "biddingInstructionsContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsContains = data
+		case "biddingInstructionsHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsHasPrefix = data
+		case "biddingInstructionsHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsHasSuffix = data
+		case "biddingInstructionsIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsIsNil = data
+		case "biddingInstructionsNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsNotNil = data
+		case "biddingInstructionsEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsEqualFold = data
+		case "biddingInstructionsContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructionsContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructionsContainsFold = data
+		case "competitorSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituations = data
+		case "competitorSituationsNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsNEQ = data
+		case "competitorSituationsIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsIn = data
+		case "competitorSituationsNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsNotIn = data
+		case "competitorSituationsGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsGT = data
+		case "competitorSituationsGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsGTE = data
+		case "competitorSituationsLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsLT = data
+		case "competitorSituationsLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsLTE = data
+		case "competitorSituationsContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsContains = data
+		case "competitorSituationsHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsHasPrefix = data
+		case "competitorSituationsHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsHasSuffix = data
+		case "competitorSituationsIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsIsNil = data
+		case "competitorSituationsNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsNotNil = data
+		case "competitorSituationsEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsEqualFold = data
+		case "competitorSituationsContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituationsContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituationsContainsFold = data
+		case "costEngineer":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineer"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineer = data
+		case "costEngineerNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerNEQ = data
+		case "costEngineerIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerIn = data
+		case "costEngineerNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerNotIn = data
+		case "costEngineerGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerGT = data
+		case "costEngineerGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerGTE = data
+		case "costEngineerLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerLT = data
+		case "costEngineerLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerLTE = data
+		case "costEngineerContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerContains = data
+		case "costEngineerHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerHasPrefix = data
+		case "costEngineerHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerHasSuffix = data
+		case "costEngineerIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerIsNil = data
+		case "costEngineerNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerNotNil = data
+		case "costEngineerEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerEqualFold = data
+		case "costEngineerContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineerContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineerContainsFold = data
+		case "tenderForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderForm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderForm = data
+		case "tenderFormNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormNEQ = data
+		case "tenderFormIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormIn = data
+		case "tenderFormNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormNotIn = data
+		case "tenderFormGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormGT = data
+		case "tenderFormGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormGTE = data
+		case "tenderFormLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormLT = data
+		case "tenderFormLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormLTE = data
+		case "tenderFormContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormContains = data
+		case "tenderFormHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormHasPrefix = data
+		case "tenderFormHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormHasSuffix = data
+		case "tenderFormIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormIsNil = data
+		case "tenderFormNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormNotNil = data
+		case "tenderFormEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormEqualFold = data
+		case "tenderFormContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderFormContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderFormContainsFold = data
+		case "contractForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractForm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractForm = data
+		case "contractFormNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormNEQ = data
+		case "contractFormIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormIn = data
+		case "contractFormNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormNotIn = data
+		case "contractFormGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormGT = data
+		case "contractFormGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormGTE = data
+		case "contractFormLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormLT = data
+		case "contractFormLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormLTE = data
+		case "contractFormContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormContains = data
+		case "contractFormHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormHasPrefix = data
+		case "contractFormHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormHasSuffix = data
+		case "contractFormIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormIsNil = data
+		case "contractFormNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormNotNil = data
+		case "contractFormEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormEqualFold = data
+		case "contractFormContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractFormContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractFormContainsFold = data
+		case "managementCompany":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompany"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompany = data
+		case "managementCompanyNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyNEQ = data
+		case "managementCompanyIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyIn = data
+		case "managementCompanyNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyNotIn = data
+		case "managementCompanyGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyGT = data
+		case "managementCompanyGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyGTE = data
+		case "managementCompanyLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyLT = data
+		case "managementCompanyLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyLTE = data
+		case "managementCompanyContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyContains = data
+		case "managementCompanyHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyHasPrefix = data
+		case "managementCompanyHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyHasSuffix = data
+		case "managementCompanyIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyIsNil = data
+		case "managementCompanyNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyNotNil = data
+		case "managementCompanyEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyEqualFold = data
+		case "managementCompanyContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompanyContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompanyContainsFold = data
+		case "tenderingAgency":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgency"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgency = data
+		case "tenderingAgencyNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyNEQ = data
+		case "tenderingAgencyIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyIn = data
+		case "tenderingAgencyNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyNotIn = data
+		case "tenderingAgencyGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyGT = data
+		case "tenderingAgencyGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyGTE = data
+		case "tenderingAgencyLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyLT = data
+		case "tenderingAgencyLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyLTE = data
+		case "tenderingAgencyContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyContains = data
+		case "tenderingAgencyHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyHasPrefix = data
+		case "tenderingAgencyHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyHasSuffix = data
+		case "tenderingAgencyIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyIsNil = data
+		case "tenderingAgencyNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyNotNil = data
+		case "tenderingAgencyEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyEqualFold = data
+		case "tenderingAgencyContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgencyContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgencyContainsFold = data
+		case "biddingDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDate = data
+		case "biddingDateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateNEQ = data
+		case "biddingDateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateIn = data
+		case "biddingDateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateNotIn = data
+		case "biddingDateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateGT = data
+		case "biddingDateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateGTE = data
+		case "biddingDateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateLT = data
+		case "biddingDateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateLTE = data
+		case "biddingDateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateIsNil = data
+		case "biddingDateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDateNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDateNotNil = data
+		case "facadeConsultant":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultant"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultant = data
+		case "facadeConsultantNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantNEQ = data
+		case "facadeConsultantIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantIn = data
+		case "facadeConsultantNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantNotIn = data
+		case "facadeConsultantGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantGT = data
+		case "facadeConsultantGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantGTE = data
+		case "facadeConsultantLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantLT = data
+		case "facadeConsultantLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantLTE = data
+		case "facadeConsultantContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantContains = data
+		case "facadeConsultantHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantHasPrefix = data
+		case "facadeConsultantHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantHasSuffix = data
+		case "facadeConsultantIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantIsNil = data
+		case "facadeConsultantNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantNotNil = data
+		case "facadeConsultantEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantEqualFold = data
+		case "facadeConsultantContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultantContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultantContainsFold = data
+		case "designUnit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnit"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnit = data
+		case "designUnitNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitNEQ = data
+		case "designUnitIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitIn = data
+		case "designUnitNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitNotIn = data
+		case "designUnitGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitGT = data
+		case "designUnitGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitGTE = data
+		case "designUnitLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitLT = data
+		case "designUnitLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitLTE = data
+		case "designUnitContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitContains = data
+		case "designUnitHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitHasPrefix = data
+		case "designUnitHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitHasSuffix = data
+		case "designUnitIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitIsNil = data
+		case "designUnitNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitNotNil = data
+		case "designUnitEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitEqualFold = data
+		case "designUnitContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnitContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnitContainsFold = data
+		case "consultingFirm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirm = data
+		case "consultingFirmNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmNEQ = data
+		case "consultingFirmIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmIn = data
+		case "consultingFirmNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmNotIn = data
+		case "consultingFirmGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmGT = data
+		case "consultingFirmGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmGTE = data
+		case "consultingFirmLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmLT = data
+		case "consultingFirmLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmLTE = data
+		case "consultingFirmContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmContains = data
+		case "consultingFirmHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmHasPrefix = data
+		case "consultingFirmHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmHasSuffix = data
+		case "consultingFirmIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmIsNil = data
+		case "consultingFirmNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmNotNil = data
+		case "consultingFirmEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmEqualFold = data
+		case "consultingFirmContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirmContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirmContainsFold = data
+		case "keyProject":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("keyProject"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.KeyProject = data
+		case "keyProjectNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("keyProjectNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.KeyProjectNEQ = data
 		case "areaID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -15603,6 +20638,328 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.AreaIDLTE = data
+		case "areaIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDContains = data
+		case "areaIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDHasPrefix = data
+		case "areaIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDHasSuffix = data
+		case "areaIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDEqualFold = data
+		case "areaIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AreaIDContainsFold = data
+		case "provinceID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceID = data
+		case "provinceIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDNEQ = data
+		case "provinceIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDIn = data
+		case "provinceIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDNotIn = data
+		case "provinceIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDGT = data
+		case "provinceIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDGTE = data
+		case "provinceIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDLT = data
+		case "provinceIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDLTE = data
+		case "provinceIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDContains = data
+		case "provinceIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDHasPrefix = data
+		case "provinceIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDHasSuffix = data
+		case "provinceIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDEqualFold = data
+		case "provinceIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceIDContainsFold = data
+		case "cityID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityID = data
+		case "cityIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDNEQ = data
+		case "cityIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDIn = data
+		case "cityIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDNotIn = data
+		case "cityIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDGT = data
+		case "cityIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDGTE = data
+		case "cityIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDLT = data
+		case "cityIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDLTE = data
+		case "cityIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDContains = data
+		case "cityIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDHasPrefix = data
+		case "cityIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDHasSuffix = data
+		case "cityIDIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDIsNil = data
+		case "cityIDNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDNotNil = data
+		case "cityIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDEqualFold = data
+		case "cityIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityIDContainsFold = data
+		case "districtID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictID = data
+		case "districtIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDNEQ = data
+		case "districtIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDIn = data
+		case "districtIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDNotIn = data
+		case "districtIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDGT = data
+		case "districtIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDGTE = data
+		case "districtIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDLT = data
+		case "districtIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDLTE = data
+		case "districtIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDContains = data
+		case "districtIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDHasPrefix = data
+		case "districtIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDHasSuffix = data
+		case "districtIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDEqualFold = data
+		case "districtIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictIDContainsFold = data
 		case "customerID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -15659,6 +21016,223 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.CustomerIDLTE = data
+		case "customerIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerIDContains = data
+		case "customerIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerIDHasPrefix = data
+		case "customerIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerIDHasSuffix = data
+		case "customerIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerIDEqualFold = data
+		case "customerIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerIDContainsFold = data
+		case "finderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderID = data
+		case "finderIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDNEQ = data
+		case "finderIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDIn = data
+		case "finderIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDNotIn = data
+		case "finderIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDGT = data
+		case "finderIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDGTE = data
+		case "finderIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDLT = data
+		case "finderIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDLTE = data
+		case "finderIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDContains = data
+		case "finderIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDHasPrefix = data
+		case "finderIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDHasSuffix = data
+		case "finderIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDEqualFold = data
+		case "finderIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderIDContainsFold = data
+		case "createdByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByID = data
+		case "createdByIDNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDNEQ"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDNEQ = data
+		case "createdByIDIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDIn = data
+		case "createdByIDNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDNotIn"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDNotIn = data
+		case "createdByIDGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDGT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDGT = data
+		case "createdByIDGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDGTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDGTE = data
+		case "createdByIDLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDLT"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDLT = data
+		case "createdByIDLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDLTE"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDLTE = data
+		case "createdByIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDContains = data
+		case "createdByIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDHasPrefix = data
+		case "createdByIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDHasSuffix = data
+		case "createdByIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDEqualFold = data
+		case "createdByIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByIDContainsFold = data
 		case "hasArea":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasArea"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -15687,6 +21261,90 @@ func (ec *executionContext) unmarshalInputTenderWhereInput(ctx context.Context, 
 				return it, err
 			}
 			it.HasCustomerWith = data
+		case "hasFinder":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasFinder"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasFinder = data
+		case "hasFinderWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasFinderWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasFinderWith = data
+		case "hasCreatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedBy"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedBy = data
+		case "hasCreatedByWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedByWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedByWith = data
+		case "hasFollowingSales":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasFollowingSales"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasFollowingSales = data
+		case "hasFollowingSalesWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasFollowingSalesWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasFollowingSalesWith = data
+		case "hasProvince":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProvince"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasProvince = data
+		case "hasProvinceWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProvinceWith"))
+			data, err := ec.unmarshalOProvinceWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProvinceWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasProvinceWith = data
+		case "hasCity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCity"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCity = data
+		case "hasCityWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCityWith"))
+			data, err := ec.unmarshalOCityWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCityWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCityWith = data
+		case "hasDistrict":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasDistrict"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasDistrict = data
+		case "hasDistrictWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasDistrictWith"))
+			data, err := ec.unmarshalODistrictWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐDistrictWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasDistrictWith = data
 		}
 	}
 
@@ -15804,7 +21462,7 @@ func (ec *executionContext) unmarshalInputUpdateCityInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "adcode", "provCode", "name", "addDistrictIDs", "removeDistrictIDs", "clearDistricts", "provinceID"}
+	fieldsInOrder := [...]string{"updatedAt", "adcode", "provCode", "name", "addDistrictIDs", "removeDistrictIDs", "clearDistricts", "provinceID", "addTenderIDs", "removeTenderIDs", "clearTenders"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -15867,6 +21525,27 @@ func (ec *executionContext) unmarshalInputUpdateCityInput(ctx context.Context, o
 				return it, err
 			}
 			it.ProvinceID = data
+		case "addTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddTenderIDs = data
+		case "removeTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveTenderIDs = data
+		case "clearTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenders"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenders = data
 		}
 	}
 
@@ -16122,7 +21801,7 @@ func (ec *executionContext) unmarshalInputUpdateDistrictInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "adcode", "provCode", "cityCode", "name", "provinceID", "cityID", "clearCity"}
+	fieldsInOrder := [...]string{"updatedAt", "adcode", "provCode", "cityCode", "name", "provinceID", "cityID", "clearCity", "addTenderIDs", "removeTenderIDs", "clearTenders"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16185,6 +21864,27 @@ func (ec *executionContext) unmarshalInputUpdateDistrictInput(ctx context.Contex
 				return it, err
 			}
 			it.ClearCity = data
+		case "addTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddTenderIDs = data
+		case "removeTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveTenderIDs = data
+		case "clearTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenders"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenders = data
 		}
 	}
 
@@ -16198,7 +21898,7 @@ func (ec *executionContext) unmarshalInputUpdateProvinceInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "adcode", "name", "addDistrictIDs", "removeDistrictIDs", "clearDistricts", "addCityIDs", "removeCityIDs", "clearCities", "countryID"}
+	fieldsInOrder := [...]string{"updatedAt", "adcode", "name", "addDistrictIDs", "removeDistrictIDs", "clearDistricts", "addCityIDs", "removeCityIDs", "clearCities", "countryID", "addTenderIDs", "removeTenderIDs", "clearTenders"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16275,6 +21975,27 @@ func (ec *executionContext) unmarshalInputUpdateProvinceInput(ctx context.Contex
 				return it, err
 			}
 			it.CountryID = data
+		case "addTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddTenderIDs = data
+		case "removeTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveTenderIDs = data
+		case "clearTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenders"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenders = data
 		}
 	}
 
@@ -16288,7 +22009,7 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "code", "status", "name", "estimatedAmount", "clearEstimatedAmount", "tenderDate", "clearTenderDate", "findDate", "sizeAndValueRating", "clearSizeAndValueRating", "creditAndPaymentRating", "clearCreditAndPaymentRating", "timeLimitRating", "clearTimeLimitRating", "customerRelationshipRating", "clearCustomerRelationshipRating", "competitivePartnershipRating", "clearCompetitivePartnershipRating", "prepareToBid", "projectCode", "clearProjectCode", "projectDefinition", "clearProjectDefinition", "estimatedProjectStartDate", "clearEstimatedProjectStartDate", "estimatedProjectEndDate", "clearEstimatedProjectEndDate", "projectType", "clearProjectType", "attachements", "appendAttachements", "clearAttachements", "geoLocation", "clearGeoLocation", "remark", "clearRemark", "images", "appendImages", "clearImages", "areaID", "customerID"}
+	fieldsInOrder := [...]string{"updatedAt", "code", "status", "name", "estimatedAmount", "clearEstimatedAmount", "tenderDate", "clearTenderDate", "discoveryDate", "address", "clearAddress", "fullAddress", "clearFullAddress", "contractor", "clearContractor", "sizeAndValueRating", "clearSizeAndValueRating", "sizeAndValueRatingOverview", "clearSizeAndValueRatingOverview", "creditAndPaymentRating", "clearCreditAndPaymentRating", "creditAndPaymentRatingOverview", "clearCreditAndPaymentRatingOverview", "timeLimitRating", "clearTimeLimitRating", "timeLimitRatingOverview", "clearTimeLimitRatingOverview", "customerRelationshipRating", "clearCustomerRelationshipRating", "customerRelationshipRatingOverview", "clearCustomerRelationshipRatingOverview", "competitivePartnershipRating", "clearCompetitivePartnershipRating", "competitivePartnershipRatingOverview", "clearCompetitivePartnershipRatingOverview", "prepareToBid", "projectCode", "clearProjectCode", "projectDefinition", "clearProjectDefinition", "estimatedProjectStartDate", "clearEstimatedProjectStartDate", "estimatedProjectEndDate", "clearEstimatedProjectEndDate", "projectType", "clearProjectType", "attachements", "appendAttachements", "clearAttachements", "remark", "clearRemark", "images", "appendImages", "clearImages", "tenderSituations", "clearTenderSituations", "ownerSituations", "clearOwnerSituations", "biddingInstructions", "clearBiddingInstructions", "competitorSituations", "clearCompetitorSituations", "costEngineer", "clearCostEngineer", "tenderForm", "clearTenderForm", "contractForm", "clearContractForm", "managementCompany", "clearManagementCompany", "tenderingAgency", "clearTenderingAgency", "biddingDate", "clearBiddingDate", "facadeConsultant", "clearFacadeConsultant", "designUnit", "clearDesignUnit", "consultingFirm", "clearConsultingFirm", "keyProject", "areaID", "customerID", "finderID", "createdByID", "addFollowingSaleIDs", "removeFollowingSaleIDs", "clearFollowingSales", "provinceID", "cityID", "clearCity", "districtID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16353,13 +22074,55 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearTenderDate = data
-		case "findDate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("findDate"))
+		case "discoveryDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("discoveryDate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.FindDate = data
+			it.DiscoveryDate = data
+		case "address":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Address = data
+		case "clearAddress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAddress"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAddress = data
+		case "fullAddress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fullAddress"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FullAddress = data
+		case "clearFullAddress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearFullAddress"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearFullAddress = data
+		case "contractor":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractor"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Contractor = data
+		case "clearContractor":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearContractor"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearContractor = data
 		case "sizeAndValueRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -16376,6 +22139,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearSizeAndValueRating = data
+		case "sizeAndValueRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sizeAndValueRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SizeAndValueRatingOverview = data
+		case "clearSizeAndValueRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSizeAndValueRatingOverview"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearSizeAndValueRatingOverview = data
 		case "creditAndPaymentRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -16392,6 +22169,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearCreditAndPaymentRating = data
+		case "creditAndPaymentRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("creditAndPaymentRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreditAndPaymentRatingOverview = data
+		case "clearCreditAndPaymentRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCreditAndPaymentRatingOverview"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCreditAndPaymentRatingOverview = data
 		case "timeLimitRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -16408,6 +22199,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearTimeLimitRating = data
+		case "timeLimitRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("timeLimitRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TimeLimitRatingOverview = data
+		case "clearTimeLimitRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTimeLimitRatingOverview"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTimeLimitRatingOverview = data
 		case "customerRelationshipRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -16424,6 +22229,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearCustomerRelationshipRating = data
+		case "customerRelationshipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerRelationshipRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CustomerRelationshipRatingOverview = data
+		case "clearCustomerRelationshipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCustomerRelationshipRatingOverview"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCustomerRelationshipRatingOverview = data
 		case "competitivePartnershipRating":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRating"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -16440,6 +22259,20 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearCompetitivePartnershipRating = data
+		case "competitivePartnershipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitivePartnershipRatingOverview"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitivePartnershipRatingOverview = data
+		case "clearCompetitivePartnershipRatingOverview":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCompetitivePartnershipRatingOverview"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCompetitivePartnershipRatingOverview = data
 		case "prepareToBid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("prepareToBid"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -16538,20 +22371,6 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearAttachements = data
-		case "geoLocation":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("geoLocation"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.GeoLocation = data
-		case "clearGeoLocation":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearGeoLocation"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearGeoLocation = data
 		case "remark":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("remark"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -16587,6 +22406,195 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.ClearImages = data
+		case "tenderSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderSituations = data
+		case "clearTenderSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenderSituations"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenderSituations = data
+		case "ownerSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerSituations = data
+		case "clearOwnerSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOwnerSituations"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOwnerSituations = data
+		case "biddingInstructions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingInstructions"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingInstructions = data
+		case "clearBiddingInstructions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearBiddingInstructions"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearBiddingInstructions = data
+		case "competitorSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitorSituations"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitorSituations = data
+		case "clearCompetitorSituations":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCompetitorSituations"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCompetitorSituations = data
+		case "costEngineer":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("costEngineer"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CostEngineer = data
+		case "clearCostEngineer":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCostEngineer"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCostEngineer = data
+		case "tenderForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderForm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderForm = data
+		case "clearTenderForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenderForm"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenderForm = data
+		case "contractForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractForm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractForm = data
+		case "clearContractForm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearContractForm"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearContractForm = data
+		case "managementCompany":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("managementCompany"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ManagementCompany = data
+		case "clearManagementCompany":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearManagementCompany"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearManagementCompany = data
+		case "tenderingAgency":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderingAgency"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderingAgency = data
+		case "clearTenderingAgency":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenderingAgency"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenderingAgency = data
+		case "biddingDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("biddingDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BiddingDate = data
+		case "clearBiddingDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearBiddingDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearBiddingDate = data
+		case "facadeConsultant":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facadeConsultant"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FacadeConsultant = data
+		case "clearFacadeConsultant":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearFacadeConsultant"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearFacadeConsultant = data
+		case "designUnit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("designUnit"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DesignUnit = data
+		case "clearDesignUnit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDesignUnit"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDesignUnit = data
+		case "consultingFirm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultingFirm"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConsultingFirm = data
+		case "clearConsultingFirm":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearConsultingFirm"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearConsultingFirm = data
+		case "keyProject":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("keyProject"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.KeyProject = data
 		case "areaID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -16601,6 +22609,69 @@ func (ec *executionContext) unmarshalInputUpdateTenderInput(ctx context.Context,
 				return it, err
 			}
 			it.CustomerID = data
+		case "finderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("finderID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FinderID = data
+		case "createdByID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdByID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByID = data
+		case "addFollowingSaleIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addFollowingSaleIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddFollowingSaleIDs = data
+		case "removeFollowingSaleIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeFollowingSaleIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveFollowingSaleIDs = data
+		case "clearFollowingSales":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearFollowingSales"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearFollowingSales = data
+		case "provinceID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("provinceID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProvinceID = data
+		case "cityID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cityID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CityID = data
+		case "clearCity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCity"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCity = data
+		case "districtID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("districtID"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DistrictID = data
 		}
 	}
 
@@ -16614,7 +22685,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers"}
+	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16747,6 +22818,27 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearTeamMembers = data
+		case "addTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddTenderIDs = data
+		case "removeTenderIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeTenderIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveTenderIDs = data
+		case "clearTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTenders"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTenders = data
 		}
 	}
 
@@ -16760,7 +22852,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDIsNil", "leaderIDNotNil", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -17481,6 +23573,27 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.LeaderIDLTE = data
+		case "leaderIDContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderIDContains"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderIDContains = data
+		case "leaderIDHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderIDHasPrefix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderIDHasPrefix = data
+		case "leaderIDHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderIDHasSuffix"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderIDHasSuffix = data
 		case "leaderIDIsNil":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderIDIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
@@ -17495,6 +23608,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.LeaderIDNotNil = data
+		case "leaderIDEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderIDEqualFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderIDEqualFold = data
+		case "leaderIDContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderIDContainsFold"))
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderIDContainsFold = data
 		case "hasAreas":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAreas"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -17551,6 +23678,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasTeamMembersWith = data
+		case "hasTenders":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTenders"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTenders = data
+		case "hasTendersWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTendersWith"))
+			data, err := ec.unmarshalOTenderWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasTendersWith = data
 		}
 	}
 
@@ -17951,6 +24092,39 @@ func (ec *executionContext) _City(ctx context.Context, sel ast.SelectionSet, obj
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "tenders":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._City_tenders(ctx, field, obj)
 				return res
 			}
 
@@ -18411,8 +24585,8 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "salesID":
 			out.Values[i] = ec._Customer_salesID(ctx, field, obj)
-		case "createdByUserID":
-			out.Values[i] = ec._Customer_createdByUserID(ctx, field, obj)
+		case "createdByID":
+			out.Values[i] = ec._Customer_createdByID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
@@ -18786,6 +24960,39 @@ func (ec *executionContext) _District(ctx context.Context, sel ast.SelectionSet,
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "tenders":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._District_tenders(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -19064,6 +25271,39 @@ func (ec *executionContext) _Province(ctx context.Context, sel ast.SelectionSet,
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "tenders":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Province_tenders(ctx, field, obj)
 				return res
 			}
 
@@ -19562,11 +25802,17 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec._Tender_estimatedAmount(ctx, field, obj)
 		case "tenderDate":
 			out.Values[i] = ec._Tender_tenderDate(ctx, field, obj)
-		case "findDate":
-			out.Values[i] = ec._Tender_findDate(ctx, field, obj)
+		case "discoveryDate":
+			out.Values[i] = ec._Tender_discoveryDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "address":
+			out.Values[i] = ec._Tender_address(ctx, field, obj)
+		case "fullAddress":
+			out.Values[i] = ec._Tender_fullAddress(ctx, field, obj)
+		case "contractor":
+			out.Values[i] = ec._Tender_contractor(ctx, field, obj)
 		case "sizeAndValueRating":
 			field := field
 
@@ -19600,6 +25846,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "sizeAndValueRatingOverview":
+			out.Values[i] = ec._Tender_sizeAndValueRatingOverview(ctx, field, obj)
 		case "creditAndPaymentRating":
 			field := field
 
@@ -19633,6 +25881,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "creditAndPaymentRatingOverview":
+			out.Values[i] = ec._Tender_creditAndPaymentRatingOverview(ctx, field, obj)
 		case "timeLimitRating":
 			field := field
 
@@ -19666,6 +25916,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "timeLimitRatingOverview":
+			out.Values[i] = ec._Tender_timeLimitRatingOverview(ctx, field, obj)
 		case "customerRelationshipRating":
 			field := field
 
@@ -19699,6 +25951,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "customerRelationshipRatingOverview":
+			out.Values[i] = ec._Tender_customerRelationshipRatingOverview(ctx, field, obj)
 		case "competitivePartnershipRating":
 			field := field
 
@@ -19732,6 +25986,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "competitivePartnershipRatingOverview":
+			out.Values[i] = ec._Tender_competitivePartnershipRatingOverview(ctx, field, obj)
 		case "prepareToBid":
 			out.Values[i] = ec._Tender_prepareToBid(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -19749,19 +26005,70 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			out.Values[i] = ec._Tender_projectType(ctx, field, obj)
 		case "attachements":
 			out.Values[i] = ec._Tender_attachements(ctx, field, obj)
-		case "geoLocation":
-			out.Values[i] = ec._Tender_geoLocation(ctx, field, obj)
 		case "remark":
 			out.Values[i] = ec._Tender_remark(ctx, field, obj)
 		case "images":
 			out.Values[i] = ec._Tender_images(ctx, field, obj)
+		case "tenderSituations":
+			out.Values[i] = ec._Tender_tenderSituations(ctx, field, obj)
+		case "ownerSituations":
+			out.Values[i] = ec._Tender_ownerSituations(ctx, field, obj)
+		case "biddingInstructions":
+			out.Values[i] = ec._Tender_biddingInstructions(ctx, field, obj)
+		case "competitorSituations":
+			out.Values[i] = ec._Tender_competitorSituations(ctx, field, obj)
+		case "costEngineer":
+			out.Values[i] = ec._Tender_costEngineer(ctx, field, obj)
+		case "tenderForm":
+			out.Values[i] = ec._Tender_tenderForm(ctx, field, obj)
+		case "contractForm":
+			out.Values[i] = ec._Tender_contractForm(ctx, field, obj)
+		case "managementCompany":
+			out.Values[i] = ec._Tender_managementCompany(ctx, field, obj)
+		case "tenderingAgency":
+			out.Values[i] = ec._Tender_tenderingAgency(ctx, field, obj)
+		case "biddingDate":
+			out.Values[i] = ec._Tender_biddingDate(ctx, field, obj)
+		case "facadeConsultant":
+			out.Values[i] = ec._Tender_facadeConsultant(ctx, field, obj)
+		case "designUnit":
+			out.Values[i] = ec._Tender_designUnit(ctx, field, obj)
+		case "consultingFirm":
+			out.Values[i] = ec._Tender_consultingFirm(ctx, field, obj)
+		case "keyProject":
+			out.Values[i] = ec._Tender_keyProject(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
 		case "areaID":
 			out.Values[i] = ec._Tender_areaID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "provinceID":
+			out.Values[i] = ec._Tender_provinceID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "cityID":
+			out.Values[i] = ec._Tender_cityID(ctx, field, obj)
+		case "districtID":
+			out.Values[i] = ec._Tender_districtID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
 		case "customerID":
 			out.Values[i] = ec._Tender_customerID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "finderID":
+			out.Values[i] = ec._Tender_finderID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "createdByID":
+			out.Values[i] = ec._Tender_createdByID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
@@ -19814,6 +26121,249 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "finder":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_finder(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "createdBy":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_createdBy(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "followingSales":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_followingSales(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "province":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_province(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "city":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_city(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "district":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_district(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "geoCoordinate":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Tender_geoCoordinate(ctx, field, obj)
 				return res
 			}
 
@@ -20114,6 +26664,39 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_teamMembers(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "tenders":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_tenders(ctx, field, obj)
 				return res
 			}
 

@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"errors"
 	"fmt"
 	"time"
@@ -134,6 +135,21 @@ func (cu *CityUpdate) SetProvince(p *Province) *CityUpdate {
 	return cu.SetProvinceID(p.ID)
 }
 
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (cu *CityUpdate) AddTenderIDs(ids ...xid.ID) *CityUpdate {
+	cu.mutation.AddTenderIDs(ids...)
+	return cu
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (cu *CityUpdate) AddTenders(t ...*Tender) *CityUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cu.AddTenderIDs(ids...)
+}
+
 // Mutation returns the CityMutation object of the builder.
 func (cu *CityUpdate) Mutation() *CityMutation {
 	return cu.mutation
@@ -164,6 +180,27 @@ func (cu *CityUpdate) RemoveDistricts(d ...*District) *CityUpdate {
 func (cu *CityUpdate) ClearProvince() *CityUpdate {
 	cu.mutation.ClearProvince()
 	return cu
+}
+
+// ClearTenders clears all "tenders" edges to the Tender entity.
+func (cu *CityUpdate) ClearTenders() *CityUpdate {
+	cu.mutation.ClearTenders()
+	return cu
+}
+
+// RemoveTenderIDs removes the "tenders" edge to Tender entities by IDs.
+func (cu *CityUpdate) RemoveTenderIDs(ids ...xid.ID) *CityUpdate {
+	cu.mutation.RemoveTenderIDs(ids...)
+	return cu
+}
+
+// RemoveTenders removes "tenders" edges to Tender entities.
+func (cu *CityUpdate) RemoveTenders(t ...*Tender) *CityUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cu.RemoveTenderIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -317,6 +354,51 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cu.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedTendersIDs(); len(nodes) > 0 && !cu.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{city.Label}
@@ -439,6 +521,21 @@ func (cuo *CityUpdateOne) SetProvince(p *Province) *CityUpdateOne {
 	return cuo.SetProvinceID(p.ID)
 }
 
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (cuo *CityUpdateOne) AddTenderIDs(ids ...xid.ID) *CityUpdateOne {
+	cuo.mutation.AddTenderIDs(ids...)
+	return cuo
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (cuo *CityUpdateOne) AddTenders(t ...*Tender) *CityUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cuo.AddTenderIDs(ids...)
+}
+
 // Mutation returns the CityMutation object of the builder.
 func (cuo *CityUpdateOne) Mutation() *CityMutation {
 	return cuo.mutation
@@ -469,6 +566,27 @@ func (cuo *CityUpdateOne) RemoveDistricts(d ...*District) *CityUpdateOne {
 func (cuo *CityUpdateOne) ClearProvince() *CityUpdateOne {
 	cuo.mutation.ClearProvince()
 	return cuo
+}
+
+// ClearTenders clears all "tenders" edges to the Tender entity.
+func (cuo *CityUpdateOne) ClearTenders() *CityUpdateOne {
+	cuo.mutation.ClearTenders()
+	return cuo
+}
+
+// RemoveTenderIDs removes the "tenders" edge to Tender entities by IDs.
+func (cuo *CityUpdateOne) RemoveTenderIDs(ids ...xid.ID) *CityUpdateOne {
+	cuo.mutation.RemoveTenderIDs(ids...)
+	return cuo
+}
+
+// RemoveTenders removes "tenders" edges to Tender entities.
+func (cuo *CityUpdateOne) RemoveTenders(t ...*Tender) *CityUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cuo.RemoveTenderIDs(ids...)
 }
 
 // Where appends a list predicates to the CityUpdate builder.
@@ -645,6 +763,51 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (_node *City, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedTendersIDs(); len(nodes) > 0 && !cuo.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

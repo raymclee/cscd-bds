@@ -37,7 +37,8 @@ func (City) Fields() []ent.Field {
 			Annotations(
 				entgql.Skip(entgql.SkipAll),
 			),
-		field.String("province_id").GoType(xid.ID{}),
+		field.String("province_id").
+			GoType(xid.ID("")),
 	}
 }
 
@@ -50,6 +51,7 @@ func (City) Edges() []ent.Edge {
 			Required().
 			Field("province_id").
 			Unique(),
+		edge.To("tenders", Tender.Type),
 	}
 }
 

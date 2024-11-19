@@ -5,11 +5,14 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -110,27 +113,51 @@ func (tc *TenderCreate) SetNillableTenderDate(t *time.Time) *TenderCreate {
 	return tc
 }
 
-// SetFindDate sets the "find_date" field.
-func (tc *TenderCreate) SetFindDate(t time.Time) *TenderCreate {
-	tc.mutation.SetFindDate(t)
+// SetDiscoveryDate sets the "discovery_date" field.
+func (tc *TenderCreate) SetDiscoveryDate(t time.Time) *TenderCreate {
+	tc.mutation.SetDiscoveryDate(t)
 	return tc
 }
 
-// SetFinder sets the "finder" field.
-func (tc *TenderCreate) SetFinder(z *zht.User) *TenderCreate {
-	tc.mutation.SetFinder(z)
+// SetAddress sets the "address" field.
+func (tc *TenderCreate) SetAddress(s string) *TenderCreate {
+	tc.mutation.SetAddress(s)
 	return tc
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (tc *TenderCreate) SetCreatedBy(z *zht.User) *TenderCreate {
-	tc.mutation.SetCreatedBy(z)
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableAddress(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetAddress(*s)
+	}
 	return tc
 }
 
-// SetFollowingPerson sets the "following_person" field.
-func (tc *TenderCreate) SetFollowingPerson(z []zht.User) *TenderCreate {
-	tc.mutation.SetFollowingPerson(z)
+// SetFullAddress sets the "full_address" field.
+func (tc *TenderCreate) SetFullAddress(s string) *TenderCreate {
+	tc.mutation.SetFullAddress(s)
+	return tc
+}
+
+// SetNillableFullAddress sets the "full_address" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableFullAddress(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetFullAddress(*s)
+	}
+	return tc
+}
+
+// SetContractor sets the "contractor" field.
+func (tc *TenderCreate) SetContractor(s string) *TenderCreate {
+	tc.mutation.SetContractor(s)
+	return tc
+}
+
+// SetNillableContractor sets the "contractor" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableContractor(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetContractor(*s)
+	}
 	return tc
 }
 
@@ -144,6 +171,20 @@ func (tc *TenderCreate) SetSizeAndValueRating(i int8) *TenderCreate {
 func (tc *TenderCreate) SetNillableSizeAndValueRating(i *int8) *TenderCreate {
 	if i != nil {
 		tc.SetSizeAndValueRating(*i)
+	}
+	return tc
+}
+
+// SetSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field.
+func (tc *TenderCreate) SetSizeAndValueRatingOverview(s string) *TenderCreate {
+	tc.mutation.SetSizeAndValueRatingOverview(s)
+	return tc
+}
+
+// SetNillableSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableSizeAndValueRatingOverview(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetSizeAndValueRatingOverview(*s)
 	}
 	return tc
 }
@@ -162,6 +203,20 @@ func (tc *TenderCreate) SetNillableCreditAndPaymentRating(i *int8) *TenderCreate
 	return tc
 }
 
+// SetCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field.
+func (tc *TenderCreate) SetCreditAndPaymentRatingOverview(s string) *TenderCreate {
+	tc.mutation.SetCreditAndPaymentRatingOverview(s)
+	return tc
+}
+
+// SetNillableCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCreditAndPaymentRatingOverview(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetCreditAndPaymentRatingOverview(*s)
+	}
+	return tc
+}
+
 // SetTimeLimitRating sets the "time_limit_rating" field.
 func (tc *TenderCreate) SetTimeLimitRating(i int8) *TenderCreate {
 	tc.mutation.SetTimeLimitRating(i)
@@ -172,6 +227,20 @@ func (tc *TenderCreate) SetTimeLimitRating(i int8) *TenderCreate {
 func (tc *TenderCreate) SetNillableTimeLimitRating(i *int8) *TenderCreate {
 	if i != nil {
 		tc.SetTimeLimitRating(*i)
+	}
+	return tc
+}
+
+// SetTimeLimitRatingOverview sets the "time_limit_rating_overview" field.
+func (tc *TenderCreate) SetTimeLimitRatingOverview(s string) *TenderCreate {
+	tc.mutation.SetTimeLimitRatingOverview(s)
+	return tc
+}
+
+// SetNillableTimeLimitRatingOverview sets the "time_limit_rating_overview" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTimeLimitRatingOverview(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTimeLimitRatingOverview(*s)
 	}
 	return tc
 }
@@ -190,6 +259,20 @@ func (tc *TenderCreate) SetNillableCustomerRelationshipRating(i *int8) *TenderCr
 	return tc
 }
 
+// SetCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field.
+func (tc *TenderCreate) SetCustomerRelationshipRatingOverview(s string) *TenderCreate {
+	tc.mutation.SetCustomerRelationshipRatingOverview(s)
+	return tc
+}
+
+// SetNillableCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCustomerRelationshipRatingOverview(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetCustomerRelationshipRatingOverview(*s)
+	}
+	return tc
+}
+
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
 func (tc *TenderCreate) SetCompetitivePartnershipRating(i int8) *TenderCreate {
 	tc.mutation.SetCompetitivePartnershipRating(i)
@@ -200,6 +283,20 @@ func (tc *TenderCreate) SetCompetitivePartnershipRating(i int8) *TenderCreate {
 func (tc *TenderCreate) SetNillableCompetitivePartnershipRating(i *int8) *TenderCreate {
 	if i != nil {
 		tc.SetCompetitivePartnershipRating(*i)
+	}
+	return tc
+}
+
+// SetCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field.
+func (tc *TenderCreate) SetCompetitivePartnershipRatingOverview(s string) *TenderCreate {
+	tc.mutation.SetCompetitivePartnershipRatingOverview(s)
+	return tc
+}
+
+// SetNillableCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCompetitivePartnershipRatingOverview(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetCompetitivePartnershipRatingOverview(*s)
 	}
 	return tc
 }
@@ -294,20 +391,6 @@ func (tc *TenderCreate) SetAttachements(s []string) *TenderCreate {
 	return tc
 }
 
-// SetGeoLocation sets the "geo_location" field.
-func (tc *TenderCreate) SetGeoLocation(s string) *TenderCreate {
-	tc.mutation.SetGeoLocation(s)
-	return tc
-}
-
-// SetNillableGeoLocation sets the "geo_location" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableGeoLocation(s *string) *TenderCreate {
-	if s != nil {
-		tc.SetGeoLocation(*s)
-	}
-	return tc
-}
-
 // SetGeoCoordinate sets the "geo_coordinate" field.
 func (tc *TenderCreate) SetGeoCoordinate(gj *geo.GeoJson) *TenderCreate {
 	tc.mutation.SetGeoCoordinate(gj)
@@ -334,15 +417,249 @@ func (tc *TenderCreate) SetImages(s []string) *TenderCreate {
 	return tc
 }
 
+// SetTenderSituations sets the "tender_situations" field.
+func (tc *TenderCreate) SetTenderSituations(s string) *TenderCreate {
+	tc.mutation.SetTenderSituations(s)
+	return tc
+}
+
+// SetNillableTenderSituations sets the "tender_situations" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderSituations(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderSituations(*s)
+	}
+	return tc
+}
+
+// SetOwnerSituations sets the "owner_situations" field.
+func (tc *TenderCreate) SetOwnerSituations(s string) *TenderCreate {
+	tc.mutation.SetOwnerSituations(s)
+	return tc
+}
+
+// SetNillableOwnerSituations sets the "owner_situations" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableOwnerSituations(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetOwnerSituations(*s)
+	}
+	return tc
+}
+
+// SetBiddingInstructions sets the "bidding_instructions" field.
+func (tc *TenderCreate) SetBiddingInstructions(s string) *TenderCreate {
+	tc.mutation.SetBiddingInstructions(s)
+	return tc
+}
+
+// SetNillableBiddingInstructions sets the "bidding_instructions" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableBiddingInstructions(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetBiddingInstructions(*s)
+	}
+	return tc
+}
+
+// SetCompetitorSituations sets the "competitor_situations" field.
+func (tc *TenderCreate) SetCompetitorSituations(s string) *TenderCreate {
+	tc.mutation.SetCompetitorSituations(s)
+	return tc
+}
+
+// SetNillableCompetitorSituations sets the "competitor_situations" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCompetitorSituations(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetCompetitorSituations(*s)
+	}
+	return tc
+}
+
+// SetCostEngineer sets the "cost_engineer" field.
+func (tc *TenderCreate) SetCostEngineer(s string) *TenderCreate {
+	tc.mutation.SetCostEngineer(s)
+	return tc
+}
+
+// SetNillableCostEngineer sets the "cost_engineer" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCostEngineer(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetCostEngineer(*s)
+	}
+	return tc
+}
+
+// SetTenderForm sets the "tender_form" field.
+func (tc *TenderCreate) SetTenderForm(s string) *TenderCreate {
+	tc.mutation.SetTenderForm(s)
+	return tc
+}
+
+// SetNillableTenderForm sets the "tender_form" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderForm(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderForm(*s)
+	}
+	return tc
+}
+
+// SetContractForm sets the "contract_form" field.
+func (tc *TenderCreate) SetContractForm(s string) *TenderCreate {
+	tc.mutation.SetContractForm(s)
+	return tc
+}
+
+// SetNillableContractForm sets the "contract_form" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableContractForm(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetContractForm(*s)
+	}
+	return tc
+}
+
+// SetManagementCompany sets the "management_company" field.
+func (tc *TenderCreate) SetManagementCompany(s string) *TenderCreate {
+	tc.mutation.SetManagementCompany(s)
+	return tc
+}
+
+// SetNillableManagementCompany sets the "management_company" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableManagementCompany(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetManagementCompany(*s)
+	}
+	return tc
+}
+
+// SetTenderingAgency sets the "tendering_agency" field.
+func (tc *TenderCreate) SetTenderingAgency(s string) *TenderCreate {
+	tc.mutation.SetTenderingAgency(s)
+	return tc
+}
+
+// SetNillableTenderingAgency sets the "tendering_agency" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderingAgency(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderingAgency(*s)
+	}
+	return tc
+}
+
+// SetBiddingDate sets the "bidding_date" field.
+func (tc *TenderCreate) SetBiddingDate(t time.Time) *TenderCreate {
+	tc.mutation.SetBiddingDate(t)
+	return tc
+}
+
+// SetNillableBiddingDate sets the "bidding_date" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableBiddingDate(t *time.Time) *TenderCreate {
+	if t != nil {
+		tc.SetBiddingDate(*t)
+	}
+	return tc
+}
+
+// SetFacadeConsultant sets the "facade_consultant" field.
+func (tc *TenderCreate) SetFacadeConsultant(s string) *TenderCreate {
+	tc.mutation.SetFacadeConsultant(s)
+	return tc
+}
+
+// SetNillableFacadeConsultant sets the "facade_consultant" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableFacadeConsultant(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetFacadeConsultant(*s)
+	}
+	return tc
+}
+
+// SetDesignUnit sets the "design_unit" field.
+func (tc *TenderCreate) SetDesignUnit(s string) *TenderCreate {
+	tc.mutation.SetDesignUnit(s)
+	return tc
+}
+
+// SetNillableDesignUnit sets the "design_unit" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableDesignUnit(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetDesignUnit(*s)
+	}
+	return tc
+}
+
+// SetConsultingFirm sets the "consulting_firm" field.
+func (tc *TenderCreate) SetConsultingFirm(s string) *TenderCreate {
+	tc.mutation.SetConsultingFirm(s)
+	return tc
+}
+
+// SetNillableConsultingFirm sets the "consulting_firm" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableConsultingFirm(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetConsultingFirm(*s)
+	}
+	return tc
+}
+
+// SetKeyProject sets the "key_project" field.
+func (tc *TenderCreate) SetKeyProject(b bool) *TenderCreate {
+	tc.mutation.SetKeyProject(b)
+	return tc
+}
+
+// SetNillableKeyProject sets the "key_project" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableKeyProject(b *bool) *TenderCreate {
+	if b != nil {
+		tc.SetKeyProject(*b)
+	}
+	return tc
+}
+
 // SetAreaID sets the "area_id" field.
 func (tc *TenderCreate) SetAreaID(x xid.ID) *TenderCreate {
 	tc.mutation.SetAreaID(x)
 	return tc
 }
 
+// SetProvinceID sets the "province_id" field.
+func (tc *TenderCreate) SetProvinceID(x xid.ID) *TenderCreate {
+	tc.mutation.SetProvinceID(x)
+	return tc
+}
+
+// SetCityID sets the "city_id" field.
+func (tc *TenderCreate) SetCityID(x xid.ID) *TenderCreate {
+	tc.mutation.SetCityID(x)
+	return tc
+}
+
+// SetNillableCityID sets the "city_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCityID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetCityID(*x)
+	}
+	return tc
+}
+
+// SetDistrictID sets the "district_id" field.
+func (tc *TenderCreate) SetDistrictID(x xid.ID) *TenderCreate {
+	tc.mutation.SetDistrictID(x)
+	return tc
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (tc *TenderCreate) SetCustomerID(x xid.ID) *TenderCreate {
 	tc.mutation.SetCustomerID(x)
+	return tc
+}
+
+// SetFinderID sets the "finder_id" field.
+func (tc *TenderCreate) SetFinderID(x xid.ID) *TenderCreate {
+	tc.mutation.SetFinderID(x)
+	return tc
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (tc *TenderCreate) SetCreatedByID(x xid.ID) *TenderCreate {
+	tc.mutation.SetCreatedByID(x)
 	return tc
 }
 
@@ -368,6 +685,46 @@ func (tc *TenderCreate) SetArea(a *Area) *TenderCreate {
 // SetCustomer sets the "customer" edge to the Customer entity.
 func (tc *TenderCreate) SetCustomer(c *Customer) *TenderCreate {
 	return tc.SetCustomerID(c.ID)
+}
+
+// SetFinder sets the "finder" edge to the User entity.
+func (tc *TenderCreate) SetFinder(u *User) *TenderCreate {
+	return tc.SetFinderID(u.ID)
+}
+
+// SetCreatedBy sets the "created_by" edge to the User entity.
+func (tc *TenderCreate) SetCreatedBy(u *User) *TenderCreate {
+	return tc.SetCreatedByID(u.ID)
+}
+
+// AddFollowingSaleIDs adds the "following_sales" edge to the User entity by IDs.
+func (tc *TenderCreate) AddFollowingSaleIDs(ids ...xid.ID) *TenderCreate {
+	tc.mutation.AddFollowingSaleIDs(ids...)
+	return tc
+}
+
+// AddFollowingSales adds the "following_sales" edges to the User entity.
+func (tc *TenderCreate) AddFollowingSales(u ...*User) *TenderCreate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return tc.AddFollowingSaleIDs(ids...)
+}
+
+// SetProvince sets the "province" edge to the Province entity.
+func (tc *TenderCreate) SetProvince(p *Province) *TenderCreate {
+	return tc.SetProvinceID(p.ID)
+}
+
+// SetCity sets the "city" edge to the City entity.
+func (tc *TenderCreate) SetCity(c *City) *TenderCreate {
+	return tc.SetCityID(c.ID)
+}
+
+// SetDistrict sets the "district" edge to the District entity.
+func (tc *TenderCreate) SetDistrict(d *District) *TenderCreate {
+	return tc.SetDistrictID(d.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -421,6 +778,10 @@ func (tc *TenderCreate) defaults() {
 		v := tender.DefaultPrepareToBid
 		tc.mutation.SetPrepareToBid(v)
 	}
+	if _, ok := tc.mutation.KeyProject(); !ok {
+		v := tender.DefaultKeyProject
+		tc.mutation.SetKeyProject(v)
+	}
 	if _, ok := tc.mutation.ID(); !ok {
 		v := tender.DefaultID()
 		tc.mutation.SetID(v)
@@ -444,14 +805,8 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Tender.name"`)}
 	}
-	if _, ok := tc.mutation.FindDate(); !ok {
-		return &ValidationError{Name: "find_date", err: errors.New(`ent: missing required field "Tender.find_date"`)}
-	}
-	if _, ok := tc.mutation.Finder(); !ok {
-		return &ValidationError{Name: "finder", err: errors.New(`ent: missing required field "Tender.finder"`)}
-	}
-	if _, ok := tc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Tender.created_by"`)}
+	if _, ok := tc.mutation.DiscoveryDate(); !ok {
+		return &ValidationError{Name: "discovery_date", err: errors.New(`ent: missing required field "Tender.discovery_date"`)}
 	}
 	if v, ok := tc.mutation.SizeAndValueRating(); ok {
 		if err := tender.SizeAndValueRatingValidator(v); err != nil {
@@ -481,17 +836,44 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.PrepareToBid(); !ok {
 		return &ValidationError{Name: "prepare_to_bid", err: errors.New(`ent: missing required field "Tender.prepare_to_bid"`)}
 	}
+	if _, ok := tc.mutation.KeyProject(); !ok {
+		return &ValidationError{Name: "key_project", err: errors.New(`ent: missing required field "Tender.key_project"`)}
+	}
 	if _, ok := tc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Tender.area_id"`)}
 	}
+	if _, ok := tc.mutation.ProvinceID(); !ok {
+		return &ValidationError{Name: "province_id", err: errors.New(`ent: missing required field "Tender.province_id"`)}
+	}
+	if _, ok := tc.mutation.DistrictID(); !ok {
+		return &ValidationError{Name: "district_id", err: errors.New(`ent: missing required field "Tender.district_id"`)}
+	}
 	if _, ok := tc.mutation.CustomerID(); !ok {
 		return &ValidationError{Name: "customer_id", err: errors.New(`ent: missing required field "Tender.customer_id"`)}
+	}
+	if _, ok := tc.mutation.FinderID(); !ok {
+		return &ValidationError{Name: "finder_id", err: errors.New(`ent: missing required field "Tender.finder_id"`)}
+	}
+	if _, ok := tc.mutation.CreatedByID(); !ok {
+		return &ValidationError{Name: "created_by_id", err: errors.New(`ent: missing required field "Tender.created_by_id"`)}
 	}
 	if len(tc.mutation.AreaIDs()) == 0 {
 		return &ValidationError{Name: "area", err: errors.New(`ent: missing required edge "Tender.area"`)}
 	}
 	if len(tc.mutation.CustomerIDs()) == 0 {
 		return &ValidationError{Name: "customer", err: errors.New(`ent: missing required edge "Tender.customer"`)}
+	}
+	if len(tc.mutation.FinderIDs()) == 0 {
+		return &ValidationError{Name: "finder", err: errors.New(`ent: missing required edge "Tender.finder"`)}
+	}
+	if len(tc.mutation.CreatedByIDs()) == 0 {
+		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required edge "Tender.created_by"`)}
+	}
+	if len(tc.mutation.ProvinceIDs()) == 0 {
+		return &ValidationError{Name: "province", err: errors.New(`ent: missing required edge "Tender.province"`)}
+	}
+	if len(tc.mutation.DistrictIDs()) == 0 {
+		return &ValidationError{Name: "district", err: errors.New(`ent: missing required edge "Tender.district"`)}
 	}
 	return nil
 }
@@ -557,41 +939,61 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldTenderDate, field.TypeTime, value)
 		_node.TenderDate = value
 	}
-	if value, ok := tc.mutation.FindDate(); ok {
-		_spec.SetField(tender.FieldFindDate, field.TypeTime, value)
-		_node.FindDate = value
+	if value, ok := tc.mutation.DiscoveryDate(); ok {
+		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)
+		_node.DiscoveryDate = value
 	}
-	if value, ok := tc.mutation.Finder(); ok {
-		_spec.SetField(tender.FieldFinder, field.TypeJSON, value)
-		_node.Finder = value
+	if value, ok := tc.mutation.Address(); ok {
+		_spec.SetField(tender.FieldAddress, field.TypeString, value)
+		_node.Address = &value
 	}
-	if value, ok := tc.mutation.CreatedBy(); ok {
-		_spec.SetField(tender.FieldCreatedBy, field.TypeJSON, value)
-		_node.CreatedBy = value
+	if value, ok := tc.mutation.FullAddress(); ok {
+		_spec.SetField(tender.FieldFullAddress, field.TypeString, value)
+		_node.FullAddress = &value
 	}
-	if value, ok := tc.mutation.FollowingPerson(); ok {
-		_spec.SetField(tender.FieldFollowingPerson, field.TypeJSON, value)
-		_node.FollowingPerson = value
+	if value, ok := tc.mutation.Contractor(); ok {
+		_spec.SetField(tender.FieldContractor, field.TypeString, value)
+		_node.Contractor = &value
 	}
 	if value, ok := tc.mutation.SizeAndValueRating(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
-		_node.SizeAndValueRating = value
+		_node.SizeAndValueRating = &value
+	}
+	if value, ok := tc.mutation.SizeAndValueRatingOverview(); ok {
+		_spec.SetField(tender.FieldSizeAndValueRatingOverview, field.TypeString, value)
+		_node.SizeAndValueRatingOverview = &value
 	}
 	if value, ok := tc.mutation.CreditAndPaymentRating(); ok {
 		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
-		_node.CreditAndPaymentRating = value
+		_node.CreditAndPaymentRating = &value
+	}
+	if value, ok := tc.mutation.CreditAndPaymentRatingOverview(); ok {
+		_spec.SetField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString, value)
+		_node.CreditAndPaymentRatingOverview = &value
 	}
 	if value, ok := tc.mutation.TimeLimitRating(); ok {
 		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt8, value)
-		_node.TimeLimitRating = value
+		_node.TimeLimitRating = &value
+	}
+	if value, ok := tc.mutation.TimeLimitRatingOverview(); ok {
+		_spec.SetField(tender.FieldTimeLimitRatingOverview, field.TypeString, value)
+		_node.TimeLimitRatingOverview = &value
 	}
 	if value, ok := tc.mutation.CustomerRelationshipRating(); ok {
 		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
-		_node.CustomerRelationshipRating = value
+		_node.CustomerRelationshipRating = &value
+	}
+	if value, ok := tc.mutation.CustomerRelationshipRatingOverview(); ok {
+		_spec.SetField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString, value)
+		_node.CustomerRelationshipRatingOverview = &value
 	}
 	if value, ok := tc.mutation.CompetitivePartnershipRating(); ok {
 		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
-		_node.CompetitivePartnershipRating = value
+		_node.CompetitivePartnershipRating = &value
+	}
+	if value, ok := tc.mutation.CompetitivePartnershipRatingOverview(); ok {
+		_spec.SetField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString, value)
+		_node.CompetitivePartnershipRatingOverview = &value
 	}
 	if value, ok := tc.mutation.PrepareToBid(); ok {
 		_spec.SetField(tender.FieldPrepareToBid, field.TypeBool, value)
@@ -621,21 +1023,73 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldAttachements, field.TypeJSON, value)
 		_node.Attachements = value
 	}
-	if value, ok := tc.mutation.GeoLocation(); ok {
-		_spec.SetField(tender.FieldGeoLocation, field.TypeString, value)
-		_node.GeoLocation = &value
-	}
 	if value, ok := tc.mutation.GeoCoordinate(); ok {
 		_spec.SetField(tender.FieldGeoCoordinate, field.TypeOther, value)
 		_node.GeoCoordinate = value
 	}
 	if value, ok := tc.mutation.Remark(); ok {
 		_spec.SetField(tender.FieldRemark, field.TypeString, value)
-		_node.Remark = &value
+		_node.Remark = value
 	}
 	if value, ok := tc.mutation.Images(); ok {
 		_spec.SetField(tender.FieldImages, field.TypeJSON, value)
 		_node.Images = value
+	}
+	if value, ok := tc.mutation.TenderSituations(); ok {
+		_spec.SetField(tender.FieldTenderSituations, field.TypeString, value)
+		_node.TenderSituations = &value
+	}
+	if value, ok := tc.mutation.OwnerSituations(); ok {
+		_spec.SetField(tender.FieldOwnerSituations, field.TypeString, value)
+		_node.OwnerSituations = &value
+	}
+	if value, ok := tc.mutation.BiddingInstructions(); ok {
+		_spec.SetField(tender.FieldBiddingInstructions, field.TypeString, value)
+		_node.BiddingInstructions = &value
+	}
+	if value, ok := tc.mutation.CompetitorSituations(); ok {
+		_spec.SetField(tender.FieldCompetitorSituations, field.TypeString, value)
+		_node.CompetitorSituations = &value
+	}
+	if value, ok := tc.mutation.CostEngineer(); ok {
+		_spec.SetField(tender.FieldCostEngineer, field.TypeString, value)
+		_node.CostEngineer = &value
+	}
+	if value, ok := tc.mutation.TenderForm(); ok {
+		_spec.SetField(tender.FieldTenderForm, field.TypeString, value)
+		_node.TenderForm = &value
+	}
+	if value, ok := tc.mutation.ContractForm(); ok {
+		_spec.SetField(tender.FieldContractForm, field.TypeString, value)
+		_node.ContractForm = &value
+	}
+	if value, ok := tc.mutation.ManagementCompany(); ok {
+		_spec.SetField(tender.FieldManagementCompany, field.TypeString, value)
+		_node.ManagementCompany = &value
+	}
+	if value, ok := tc.mutation.TenderingAgency(); ok {
+		_spec.SetField(tender.FieldTenderingAgency, field.TypeString, value)
+		_node.TenderingAgency = &value
+	}
+	if value, ok := tc.mutation.BiddingDate(); ok {
+		_spec.SetField(tender.FieldBiddingDate, field.TypeTime, value)
+		_node.BiddingDate = &value
+	}
+	if value, ok := tc.mutation.FacadeConsultant(); ok {
+		_spec.SetField(tender.FieldFacadeConsultant, field.TypeString, value)
+		_node.FacadeConsultant = &value
+	}
+	if value, ok := tc.mutation.DesignUnit(); ok {
+		_spec.SetField(tender.FieldDesignUnit, field.TypeString, value)
+		_node.DesignUnit = &value
+	}
+	if value, ok := tc.mutation.ConsultingFirm(); ok {
+		_spec.SetField(tender.FieldConsultingFirm, field.TypeString, value)
+		_node.ConsultingFirm = &value
+	}
+	if value, ok := tc.mutation.KeyProject(); ok {
+		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
+		_node.KeyProject = value
 	}
 	if nodes := tc.mutation.AreaIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -669,6 +1123,107 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CustomerID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.FinderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.FinderTable,
+			Columns: []string{tender.FinderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.FinderID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.CreatedByTable,
+			Columns: []string{tender.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CreatedByID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.FollowingSalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.ProvinceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.ProvinceTable,
+			Columns: []string{tender.ProvinceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ProvinceID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.CityIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CityTable,
+			Columns: []string{tender.CityColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CityID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.DistrictIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.DistrictTable,
+			Columns: []string{tender.DistrictColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.DistrictID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -819,57 +1374,69 @@ func (u *TenderUpsert) ClearTenderDate() *TenderUpsert {
 	return u
 }
 
-// SetFindDate sets the "find_date" field.
-func (u *TenderUpsert) SetFindDate(v time.Time) *TenderUpsert {
-	u.Set(tender.FieldFindDate, v)
+// SetDiscoveryDate sets the "discovery_date" field.
+func (u *TenderUpsert) SetDiscoveryDate(v time.Time) *TenderUpsert {
+	u.Set(tender.FieldDiscoveryDate, v)
 	return u
 }
 
-// UpdateFindDate sets the "find_date" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateFindDate() *TenderUpsert {
-	u.SetExcluded(tender.FieldFindDate)
+// UpdateDiscoveryDate sets the "discovery_date" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateDiscoveryDate() *TenderUpsert {
+	u.SetExcluded(tender.FieldDiscoveryDate)
 	return u
 }
 
-// SetFinder sets the "finder" field.
-func (u *TenderUpsert) SetFinder(v *zht.User) *TenderUpsert {
-	u.Set(tender.FieldFinder, v)
+// SetAddress sets the "address" field.
+func (u *TenderUpsert) SetAddress(v string) *TenderUpsert {
+	u.Set(tender.FieldAddress, v)
 	return u
 }
 
-// UpdateFinder sets the "finder" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateFinder() *TenderUpsert {
-	u.SetExcluded(tender.FieldFinder)
+// UpdateAddress sets the "address" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateAddress() *TenderUpsert {
+	u.SetExcluded(tender.FieldAddress)
 	return u
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (u *TenderUpsert) SetCreatedBy(v *zht.User) *TenderUpsert {
-	u.Set(tender.FieldCreatedBy, v)
+// ClearAddress clears the value of the "address" field.
+func (u *TenderUpsert) ClearAddress() *TenderUpsert {
+	u.SetNull(tender.FieldAddress)
 	return u
 }
 
-// UpdateCreatedBy sets the "created_by" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateCreatedBy() *TenderUpsert {
-	u.SetExcluded(tender.FieldCreatedBy)
+// SetFullAddress sets the "full_address" field.
+func (u *TenderUpsert) SetFullAddress(v string) *TenderUpsert {
+	u.Set(tender.FieldFullAddress, v)
 	return u
 }
 
-// SetFollowingPerson sets the "following_person" field.
-func (u *TenderUpsert) SetFollowingPerson(v []zht.User) *TenderUpsert {
-	u.Set(tender.FieldFollowingPerson, v)
+// UpdateFullAddress sets the "full_address" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateFullAddress() *TenderUpsert {
+	u.SetExcluded(tender.FieldFullAddress)
 	return u
 }
 
-// UpdateFollowingPerson sets the "following_person" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateFollowingPerson() *TenderUpsert {
-	u.SetExcluded(tender.FieldFollowingPerson)
+// ClearFullAddress clears the value of the "full_address" field.
+func (u *TenderUpsert) ClearFullAddress() *TenderUpsert {
+	u.SetNull(tender.FieldFullAddress)
 	return u
 }
 
-// ClearFollowingPerson clears the value of the "following_person" field.
-func (u *TenderUpsert) ClearFollowingPerson() *TenderUpsert {
-	u.SetNull(tender.FieldFollowingPerson)
+// SetContractor sets the "contractor" field.
+func (u *TenderUpsert) SetContractor(v string) *TenderUpsert {
+	u.Set(tender.FieldContractor, v)
+	return u
+}
+
+// UpdateContractor sets the "contractor" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateContractor() *TenderUpsert {
+	u.SetExcluded(tender.FieldContractor)
+	return u
+}
+
+// ClearContractor clears the value of the "contractor" field.
+func (u *TenderUpsert) ClearContractor() *TenderUpsert {
+	u.SetNull(tender.FieldContractor)
 	return u
 }
 
@@ -897,6 +1464,24 @@ func (u *TenderUpsert) ClearSizeAndValueRating() *TenderUpsert {
 	return u
 }
 
+// SetSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field.
+func (u *TenderUpsert) SetSizeAndValueRatingOverview(v string) *TenderUpsert {
+	u.Set(tender.FieldSizeAndValueRatingOverview, v)
+	return u
+}
+
+// UpdateSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateSizeAndValueRatingOverview() *TenderUpsert {
+	u.SetExcluded(tender.FieldSizeAndValueRatingOverview)
+	return u
+}
+
+// ClearSizeAndValueRatingOverview clears the value of the "size_and_value_rating_overview" field.
+func (u *TenderUpsert) ClearSizeAndValueRatingOverview() *TenderUpsert {
+	u.SetNull(tender.FieldSizeAndValueRatingOverview)
+	return u
+}
+
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
 func (u *TenderUpsert) SetCreditAndPaymentRating(v int8) *TenderUpsert {
 	u.Set(tender.FieldCreditAndPaymentRating, v)
@@ -918,6 +1503,24 @@ func (u *TenderUpsert) AddCreditAndPaymentRating(v int8) *TenderUpsert {
 // ClearCreditAndPaymentRating clears the value of the "credit_and_payment_rating" field.
 func (u *TenderUpsert) ClearCreditAndPaymentRating() *TenderUpsert {
 	u.SetNull(tender.FieldCreditAndPaymentRating)
+	return u
+}
+
+// SetCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field.
+func (u *TenderUpsert) SetCreditAndPaymentRatingOverview(v string) *TenderUpsert {
+	u.Set(tender.FieldCreditAndPaymentRatingOverview, v)
+	return u
+}
+
+// UpdateCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCreditAndPaymentRatingOverview() *TenderUpsert {
+	u.SetExcluded(tender.FieldCreditAndPaymentRatingOverview)
+	return u
+}
+
+// ClearCreditAndPaymentRatingOverview clears the value of the "credit_and_payment_rating_overview" field.
+func (u *TenderUpsert) ClearCreditAndPaymentRatingOverview() *TenderUpsert {
+	u.SetNull(tender.FieldCreditAndPaymentRatingOverview)
 	return u
 }
 
@@ -945,6 +1548,24 @@ func (u *TenderUpsert) ClearTimeLimitRating() *TenderUpsert {
 	return u
 }
 
+// SetTimeLimitRatingOverview sets the "time_limit_rating_overview" field.
+func (u *TenderUpsert) SetTimeLimitRatingOverview(v string) *TenderUpsert {
+	u.Set(tender.FieldTimeLimitRatingOverview, v)
+	return u
+}
+
+// UpdateTimeLimitRatingOverview sets the "time_limit_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTimeLimitRatingOverview() *TenderUpsert {
+	u.SetExcluded(tender.FieldTimeLimitRatingOverview)
+	return u
+}
+
+// ClearTimeLimitRatingOverview clears the value of the "time_limit_rating_overview" field.
+func (u *TenderUpsert) ClearTimeLimitRatingOverview() *TenderUpsert {
+	u.SetNull(tender.FieldTimeLimitRatingOverview)
+	return u
+}
+
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
 func (u *TenderUpsert) SetCustomerRelationshipRating(v int8) *TenderUpsert {
 	u.Set(tender.FieldCustomerRelationshipRating, v)
@@ -969,6 +1590,24 @@ func (u *TenderUpsert) ClearCustomerRelationshipRating() *TenderUpsert {
 	return u
 }
 
+// SetCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field.
+func (u *TenderUpsert) SetCustomerRelationshipRatingOverview(v string) *TenderUpsert {
+	u.Set(tender.FieldCustomerRelationshipRatingOverview, v)
+	return u
+}
+
+// UpdateCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCustomerRelationshipRatingOverview() *TenderUpsert {
+	u.SetExcluded(tender.FieldCustomerRelationshipRatingOverview)
+	return u
+}
+
+// ClearCustomerRelationshipRatingOverview clears the value of the "customer_relationship_rating_overview" field.
+func (u *TenderUpsert) ClearCustomerRelationshipRatingOverview() *TenderUpsert {
+	u.SetNull(tender.FieldCustomerRelationshipRatingOverview)
+	return u
+}
+
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
 func (u *TenderUpsert) SetCompetitivePartnershipRating(v int8) *TenderUpsert {
 	u.Set(tender.FieldCompetitivePartnershipRating, v)
@@ -990,6 +1629,24 @@ func (u *TenderUpsert) AddCompetitivePartnershipRating(v int8) *TenderUpsert {
 // ClearCompetitivePartnershipRating clears the value of the "competitive_partnership_rating" field.
 func (u *TenderUpsert) ClearCompetitivePartnershipRating() *TenderUpsert {
 	u.SetNull(tender.FieldCompetitivePartnershipRating)
+	return u
+}
+
+// SetCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field.
+func (u *TenderUpsert) SetCompetitivePartnershipRatingOverview(v string) *TenderUpsert {
+	u.Set(tender.FieldCompetitivePartnershipRatingOverview, v)
+	return u
+}
+
+// UpdateCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCompetitivePartnershipRatingOverview() *TenderUpsert {
+	u.SetExcluded(tender.FieldCompetitivePartnershipRatingOverview)
+	return u
+}
+
+// ClearCompetitivePartnershipRatingOverview clears the value of the "competitive_partnership_rating_overview" field.
+func (u *TenderUpsert) ClearCompetitivePartnershipRatingOverview() *TenderUpsert {
+	u.SetNull(tender.FieldCompetitivePartnershipRatingOverview)
 	return u
 }
 
@@ -1113,24 +1770,6 @@ func (u *TenderUpsert) ClearAttachements() *TenderUpsert {
 	return u
 }
 
-// SetGeoLocation sets the "geo_location" field.
-func (u *TenderUpsert) SetGeoLocation(v string) *TenderUpsert {
-	u.Set(tender.FieldGeoLocation, v)
-	return u
-}
-
-// UpdateGeoLocation sets the "geo_location" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateGeoLocation() *TenderUpsert {
-	u.SetExcluded(tender.FieldGeoLocation)
-	return u
-}
-
-// ClearGeoLocation clears the value of the "geo_location" field.
-func (u *TenderUpsert) ClearGeoLocation() *TenderUpsert {
-	u.SetNull(tender.FieldGeoLocation)
-	return u
-}
-
 // SetGeoCoordinate sets the "geo_coordinate" field.
 func (u *TenderUpsert) SetGeoCoordinate(v *geo.GeoJson) *TenderUpsert {
 	u.Set(tender.FieldGeoCoordinate, v)
@@ -1185,6 +1824,252 @@ func (u *TenderUpsert) ClearImages() *TenderUpsert {
 	return u
 }
 
+// SetTenderSituations sets the "tender_situations" field.
+func (u *TenderUpsert) SetTenderSituations(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderSituations, v)
+	return u
+}
+
+// UpdateTenderSituations sets the "tender_situations" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderSituations() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderSituations)
+	return u
+}
+
+// ClearTenderSituations clears the value of the "tender_situations" field.
+func (u *TenderUpsert) ClearTenderSituations() *TenderUpsert {
+	u.SetNull(tender.FieldTenderSituations)
+	return u
+}
+
+// SetOwnerSituations sets the "owner_situations" field.
+func (u *TenderUpsert) SetOwnerSituations(v string) *TenderUpsert {
+	u.Set(tender.FieldOwnerSituations, v)
+	return u
+}
+
+// UpdateOwnerSituations sets the "owner_situations" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateOwnerSituations() *TenderUpsert {
+	u.SetExcluded(tender.FieldOwnerSituations)
+	return u
+}
+
+// ClearOwnerSituations clears the value of the "owner_situations" field.
+func (u *TenderUpsert) ClearOwnerSituations() *TenderUpsert {
+	u.SetNull(tender.FieldOwnerSituations)
+	return u
+}
+
+// SetBiddingInstructions sets the "bidding_instructions" field.
+func (u *TenderUpsert) SetBiddingInstructions(v string) *TenderUpsert {
+	u.Set(tender.FieldBiddingInstructions, v)
+	return u
+}
+
+// UpdateBiddingInstructions sets the "bidding_instructions" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateBiddingInstructions() *TenderUpsert {
+	u.SetExcluded(tender.FieldBiddingInstructions)
+	return u
+}
+
+// ClearBiddingInstructions clears the value of the "bidding_instructions" field.
+func (u *TenderUpsert) ClearBiddingInstructions() *TenderUpsert {
+	u.SetNull(tender.FieldBiddingInstructions)
+	return u
+}
+
+// SetCompetitorSituations sets the "competitor_situations" field.
+func (u *TenderUpsert) SetCompetitorSituations(v string) *TenderUpsert {
+	u.Set(tender.FieldCompetitorSituations, v)
+	return u
+}
+
+// UpdateCompetitorSituations sets the "competitor_situations" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCompetitorSituations() *TenderUpsert {
+	u.SetExcluded(tender.FieldCompetitorSituations)
+	return u
+}
+
+// ClearCompetitorSituations clears the value of the "competitor_situations" field.
+func (u *TenderUpsert) ClearCompetitorSituations() *TenderUpsert {
+	u.SetNull(tender.FieldCompetitorSituations)
+	return u
+}
+
+// SetCostEngineer sets the "cost_engineer" field.
+func (u *TenderUpsert) SetCostEngineer(v string) *TenderUpsert {
+	u.Set(tender.FieldCostEngineer, v)
+	return u
+}
+
+// UpdateCostEngineer sets the "cost_engineer" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCostEngineer() *TenderUpsert {
+	u.SetExcluded(tender.FieldCostEngineer)
+	return u
+}
+
+// ClearCostEngineer clears the value of the "cost_engineer" field.
+func (u *TenderUpsert) ClearCostEngineer() *TenderUpsert {
+	u.SetNull(tender.FieldCostEngineer)
+	return u
+}
+
+// SetTenderForm sets the "tender_form" field.
+func (u *TenderUpsert) SetTenderForm(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderForm, v)
+	return u
+}
+
+// UpdateTenderForm sets the "tender_form" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderForm() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderForm)
+	return u
+}
+
+// ClearTenderForm clears the value of the "tender_form" field.
+func (u *TenderUpsert) ClearTenderForm() *TenderUpsert {
+	u.SetNull(tender.FieldTenderForm)
+	return u
+}
+
+// SetContractForm sets the "contract_form" field.
+func (u *TenderUpsert) SetContractForm(v string) *TenderUpsert {
+	u.Set(tender.FieldContractForm, v)
+	return u
+}
+
+// UpdateContractForm sets the "contract_form" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateContractForm() *TenderUpsert {
+	u.SetExcluded(tender.FieldContractForm)
+	return u
+}
+
+// ClearContractForm clears the value of the "contract_form" field.
+func (u *TenderUpsert) ClearContractForm() *TenderUpsert {
+	u.SetNull(tender.FieldContractForm)
+	return u
+}
+
+// SetManagementCompany sets the "management_company" field.
+func (u *TenderUpsert) SetManagementCompany(v string) *TenderUpsert {
+	u.Set(tender.FieldManagementCompany, v)
+	return u
+}
+
+// UpdateManagementCompany sets the "management_company" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateManagementCompany() *TenderUpsert {
+	u.SetExcluded(tender.FieldManagementCompany)
+	return u
+}
+
+// ClearManagementCompany clears the value of the "management_company" field.
+func (u *TenderUpsert) ClearManagementCompany() *TenderUpsert {
+	u.SetNull(tender.FieldManagementCompany)
+	return u
+}
+
+// SetTenderingAgency sets the "tendering_agency" field.
+func (u *TenderUpsert) SetTenderingAgency(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderingAgency, v)
+	return u
+}
+
+// UpdateTenderingAgency sets the "tendering_agency" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderingAgency() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderingAgency)
+	return u
+}
+
+// ClearTenderingAgency clears the value of the "tendering_agency" field.
+func (u *TenderUpsert) ClearTenderingAgency() *TenderUpsert {
+	u.SetNull(tender.FieldTenderingAgency)
+	return u
+}
+
+// SetBiddingDate sets the "bidding_date" field.
+func (u *TenderUpsert) SetBiddingDate(v time.Time) *TenderUpsert {
+	u.Set(tender.FieldBiddingDate, v)
+	return u
+}
+
+// UpdateBiddingDate sets the "bidding_date" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateBiddingDate() *TenderUpsert {
+	u.SetExcluded(tender.FieldBiddingDate)
+	return u
+}
+
+// ClearBiddingDate clears the value of the "bidding_date" field.
+func (u *TenderUpsert) ClearBiddingDate() *TenderUpsert {
+	u.SetNull(tender.FieldBiddingDate)
+	return u
+}
+
+// SetFacadeConsultant sets the "facade_consultant" field.
+func (u *TenderUpsert) SetFacadeConsultant(v string) *TenderUpsert {
+	u.Set(tender.FieldFacadeConsultant, v)
+	return u
+}
+
+// UpdateFacadeConsultant sets the "facade_consultant" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateFacadeConsultant() *TenderUpsert {
+	u.SetExcluded(tender.FieldFacadeConsultant)
+	return u
+}
+
+// ClearFacadeConsultant clears the value of the "facade_consultant" field.
+func (u *TenderUpsert) ClearFacadeConsultant() *TenderUpsert {
+	u.SetNull(tender.FieldFacadeConsultant)
+	return u
+}
+
+// SetDesignUnit sets the "design_unit" field.
+func (u *TenderUpsert) SetDesignUnit(v string) *TenderUpsert {
+	u.Set(tender.FieldDesignUnit, v)
+	return u
+}
+
+// UpdateDesignUnit sets the "design_unit" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateDesignUnit() *TenderUpsert {
+	u.SetExcluded(tender.FieldDesignUnit)
+	return u
+}
+
+// ClearDesignUnit clears the value of the "design_unit" field.
+func (u *TenderUpsert) ClearDesignUnit() *TenderUpsert {
+	u.SetNull(tender.FieldDesignUnit)
+	return u
+}
+
+// SetConsultingFirm sets the "consulting_firm" field.
+func (u *TenderUpsert) SetConsultingFirm(v string) *TenderUpsert {
+	u.Set(tender.FieldConsultingFirm, v)
+	return u
+}
+
+// UpdateConsultingFirm sets the "consulting_firm" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateConsultingFirm() *TenderUpsert {
+	u.SetExcluded(tender.FieldConsultingFirm)
+	return u
+}
+
+// ClearConsultingFirm clears the value of the "consulting_firm" field.
+func (u *TenderUpsert) ClearConsultingFirm() *TenderUpsert {
+	u.SetNull(tender.FieldConsultingFirm)
+	return u
+}
+
+// SetKeyProject sets the "key_project" field.
+func (u *TenderUpsert) SetKeyProject(v bool) *TenderUpsert {
+	u.Set(tender.FieldKeyProject, v)
+	return u
+}
+
+// UpdateKeyProject sets the "key_project" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateKeyProject() *TenderUpsert {
+	u.SetExcluded(tender.FieldKeyProject)
+	return u
+}
+
 // SetAreaID sets the "area_id" field.
 func (u *TenderUpsert) SetAreaID(v xid.ID) *TenderUpsert {
 	u.Set(tender.FieldAreaID, v)
@@ -1197,6 +2082,48 @@ func (u *TenderUpsert) UpdateAreaID() *TenderUpsert {
 	return u
 }
 
+// SetProvinceID sets the "province_id" field.
+func (u *TenderUpsert) SetProvinceID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldProvinceID, v)
+	return u
+}
+
+// UpdateProvinceID sets the "province_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateProvinceID() *TenderUpsert {
+	u.SetExcluded(tender.FieldProvinceID)
+	return u
+}
+
+// SetCityID sets the "city_id" field.
+func (u *TenderUpsert) SetCityID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldCityID, v)
+	return u
+}
+
+// UpdateCityID sets the "city_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCityID() *TenderUpsert {
+	u.SetExcluded(tender.FieldCityID)
+	return u
+}
+
+// ClearCityID clears the value of the "city_id" field.
+func (u *TenderUpsert) ClearCityID() *TenderUpsert {
+	u.SetNull(tender.FieldCityID)
+	return u
+}
+
+// SetDistrictID sets the "district_id" field.
+func (u *TenderUpsert) SetDistrictID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldDistrictID, v)
+	return u
+}
+
+// UpdateDistrictID sets the "district_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateDistrictID() *TenderUpsert {
+	u.SetExcluded(tender.FieldDistrictID)
+	return u
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (u *TenderUpsert) SetCustomerID(v xid.ID) *TenderUpsert {
 	u.Set(tender.FieldCustomerID, v)
@@ -1206,6 +2133,30 @@ func (u *TenderUpsert) SetCustomerID(v xid.ID) *TenderUpsert {
 // UpdateCustomerID sets the "customer_id" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateCustomerID() *TenderUpsert {
 	u.SetExcluded(tender.FieldCustomerID)
+	return u
+}
+
+// SetFinderID sets the "finder_id" field.
+func (u *TenderUpsert) SetFinderID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldFinderID, v)
+	return u
+}
+
+// UpdateFinderID sets the "finder_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateFinderID() *TenderUpsert {
+	u.SetExcluded(tender.FieldFinderID)
+	return u
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (u *TenderUpsert) SetCreatedByID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldCreatedByID, v)
+	return u
+}
+
+// UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCreatedByID() *TenderUpsert {
+	u.SetExcluded(tender.FieldCreatedByID)
 	return u
 }
 
@@ -1372,66 +2323,80 @@ func (u *TenderUpsertOne) ClearTenderDate() *TenderUpsertOne {
 	})
 }
 
-// SetFindDate sets the "find_date" field.
-func (u *TenderUpsertOne) SetFindDate(v time.Time) *TenderUpsertOne {
+// SetDiscoveryDate sets the "discovery_date" field.
+func (u *TenderUpsertOne) SetDiscoveryDate(v time.Time) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetFindDate(v)
+		s.SetDiscoveryDate(v)
 	})
 }
 
-// UpdateFindDate sets the "find_date" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateFindDate() *TenderUpsertOne {
+// UpdateDiscoveryDate sets the "discovery_date" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateDiscoveryDate() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateFindDate()
+		s.UpdateDiscoveryDate()
 	})
 }
 
-// SetFinder sets the "finder" field.
-func (u *TenderUpsertOne) SetFinder(v *zht.User) *TenderUpsertOne {
+// SetAddress sets the "address" field.
+func (u *TenderUpsertOne) SetAddress(v string) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetFinder(v)
+		s.SetAddress(v)
 	})
 }
 
-// UpdateFinder sets the "finder" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateFinder() *TenderUpsertOne {
+// UpdateAddress sets the "address" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateAddress() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateFinder()
+		s.UpdateAddress()
 	})
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (u *TenderUpsertOne) SetCreatedBy(v *zht.User) *TenderUpsertOne {
+// ClearAddress clears the value of the "address" field.
+func (u *TenderUpsertOne) ClearAddress() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetCreatedBy(v)
+		s.ClearAddress()
 	})
 }
 
-// UpdateCreatedBy sets the "created_by" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateCreatedBy() *TenderUpsertOne {
+// SetFullAddress sets the "full_address" field.
+func (u *TenderUpsertOne) SetFullAddress(v string) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateCreatedBy()
+		s.SetFullAddress(v)
 	})
 }
 
-// SetFollowingPerson sets the "following_person" field.
-func (u *TenderUpsertOne) SetFollowingPerson(v []zht.User) *TenderUpsertOne {
+// UpdateFullAddress sets the "full_address" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateFullAddress() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetFollowingPerson(v)
+		s.UpdateFullAddress()
 	})
 }
 
-// UpdateFollowingPerson sets the "following_person" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateFollowingPerson() *TenderUpsertOne {
+// ClearFullAddress clears the value of the "full_address" field.
+func (u *TenderUpsertOne) ClearFullAddress() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateFollowingPerson()
+		s.ClearFullAddress()
 	})
 }
 
-// ClearFollowingPerson clears the value of the "following_person" field.
-func (u *TenderUpsertOne) ClearFollowingPerson() *TenderUpsertOne {
+// SetContractor sets the "contractor" field.
+func (u *TenderUpsertOne) SetContractor(v string) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
-		s.ClearFollowingPerson()
+		s.SetContractor(v)
+	})
+}
+
+// UpdateContractor sets the "contractor" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateContractor() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateContractor()
+	})
+}
+
+// ClearContractor clears the value of the "contractor" field.
+func (u *TenderUpsertOne) ClearContractor() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearContractor()
 	})
 }
 
@@ -1463,6 +2428,27 @@ func (u *TenderUpsertOne) ClearSizeAndValueRating() *TenderUpsertOne {
 	})
 }
 
+// SetSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field.
+func (u *TenderUpsertOne) SetSizeAndValueRatingOverview(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetSizeAndValueRatingOverview(v)
+	})
+}
+
+// UpdateSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateSizeAndValueRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateSizeAndValueRatingOverview()
+	})
+}
+
+// ClearSizeAndValueRatingOverview clears the value of the "size_and_value_rating_overview" field.
+func (u *TenderUpsertOne) ClearSizeAndValueRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearSizeAndValueRatingOverview()
+	})
+}
+
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
 func (u *TenderUpsertOne) SetCreditAndPaymentRating(v int8) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -1488,6 +2474,27 @@ func (u *TenderUpsertOne) UpdateCreditAndPaymentRating() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearCreditAndPaymentRating() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearCreditAndPaymentRating()
+	})
+}
+
+// SetCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field.
+func (u *TenderUpsertOne) SetCreditAndPaymentRatingOverview(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCreditAndPaymentRatingOverview(v)
+	})
+}
+
+// UpdateCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCreditAndPaymentRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCreditAndPaymentRatingOverview()
+	})
+}
+
+// ClearCreditAndPaymentRatingOverview clears the value of the "credit_and_payment_rating_overview" field.
+func (u *TenderUpsertOne) ClearCreditAndPaymentRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCreditAndPaymentRatingOverview()
 	})
 }
 
@@ -1519,6 +2526,27 @@ func (u *TenderUpsertOne) ClearTimeLimitRating() *TenderUpsertOne {
 	})
 }
 
+// SetTimeLimitRatingOverview sets the "time_limit_rating_overview" field.
+func (u *TenderUpsertOne) SetTimeLimitRatingOverview(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTimeLimitRatingOverview(v)
+	})
+}
+
+// UpdateTimeLimitRatingOverview sets the "time_limit_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTimeLimitRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTimeLimitRatingOverview()
+	})
+}
+
+// ClearTimeLimitRatingOverview clears the value of the "time_limit_rating_overview" field.
+func (u *TenderUpsertOne) ClearTimeLimitRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTimeLimitRatingOverview()
+	})
+}
+
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
 func (u *TenderUpsertOne) SetCustomerRelationshipRating(v int8) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -1547,6 +2575,27 @@ func (u *TenderUpsertOne) ClearCustomerRelationshipRating() *TenderUpsertOne {
 	})
 }
 
+// SetCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field.
+func (u *TenderUpsertOne) SetCustomerRelationshipRatingOverview(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCustomerRelationshipRatingOverview(v)
+	})
+}
+
+// UpdateCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCustomerRelationshipRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCustomerRelationshipRatingOverview()
+	})
+}
+
+// ClearCustomerRelationshipRatingOverview clears the value of the "customer_relationship_rating_overview" field.
+func (u *TenderUpsertOne) ClearCustomerRelationshipRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCustomerRelationshipRatingOverview()
+	})
+}
+
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
 func (u *TenderUpsertOne) SetCompetitivePartnershipRating(v int8) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -1572,6 +2621,27 @@ func (u *TenderUpsertOne) UpdateCompetitivePartnershipRating() *TenderUpsertOne 
 func (u *TenderUpsertOne) ClearCompetitivePartnershipRating() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearCompetitivePartnershipRating()
+	})
+}
+
+// SetCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field.
+func (u *TenderUpsertOne) SetCompetitivePartnershipRatingOverview(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCompetitivePartnershipRatingOverview(v)
+	})
+}
+
+// UpdateCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCompetitivePartnershipRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCompetitivePartnershipRatingOverview()
+	})
+}
+
+// ClearCompetitivePartnershipRatingOverview clears the value of the "competitive_partnership_rating_overview" field.
+func (u *TenderUpsertOne) ClearCompetitivePartnershipRatingOverview() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCompetitivePartnershipRatingOverview()
 	})
 }
 
@@ -1715,27 +2785,6 @@ func (u *TenderUpsertOne) ClearAttachements() *TenderUpsertOne {
 	})
 }
 
-// SetGeoLocation sets the "geo_location" field.
-func (u *TenderUpsertOne) SetGeoLocation(v string) *TenderUpsertOne {
-	return u.Update(func(s *TenderUpsert) {
-		s.SetGeoLocation(v)
-	})
-}
-
-// UpdateGeoLocation sets the "geo_location" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateGeoLocation() *TenderUpsertOne {
-	return u.Update(func(s *TenderUpsert) {
-		s.UpdateGeoLocation()
-	})
-}
-
-// ClearGeoLocation clears the value of the "geo_location" field.
-func (u *TenderUpsertOne) ClearGeoLocation() *TenderUpsertOne {
-	return u.Update(func(s *TenderUpsert) {
-		s.ClearGeoLocation()
-	})
-}
-
 // SetGeoCoordinate sets the "geo_coordinate" field.
 func (u *TenderUpsertOne) SetGeoCoordinate(v *geo.GeoJson) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -1799,6 +2848,293 @@ func (u *TenderUpsertOne) ClearImages() *TenderUpsertOne {
 	})
 }
 
+// SetTenderSituations sets the "tender_situations" field.
+func (u *TenderUpsertOne) SetTenderSituations(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderSituations(v)
+	})
+}
+
+// UpdateTenderSituations sets the "tender_situations" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderSituations() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderSituations()
+	})
+}
+
+// ClearTenderSituations clears the value of the "tender_situations" field.
+func (u *TenderUpsertOne) ClearTenderSituations() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderSituations()
+	})
+}
+
+// SetOwnerSituations sets the "owner_situations" field.
+func (u *TenderUpsertOne) SetOwnerSituations(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetOwnerSituations(v)
+	})
+}
+
+// UpdateOwnerSituations sets the "owner_situations" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateOwnerSituations() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateOwnerSituations()
+	})
+}
+
+// ClearOwnerSituations clears the value of the "owner_situations" field.
+func (u *TenderUpsertOne) ClearOwnerSituations() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearOwnerSituations()
+	})
+}
+
+// SetBiddingInstructions sets the "bidding_instructions" field.
+func (u *TenderUpsertOne) SetBiddingInstructions(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetBiddingInstructions(v)
+	})
+}
+
+// UpdateBiddingInstructions sets the "bidding_instructions" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateBiddingInstructions() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateBiddingInstructions()
+	})
+}
+
+// ClearBiddingInstructions clears the value of the "bidding_instructions" field.
+func (u *TenderUpsertOne) ClearBiddingInstructions() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearBiddingInstructions()
+	})
+}
+
+// SetCompetitorSituations sets the "competitor_situations" field.
+func (u *TenderUpsertOne) SetCompetitorSituations(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCompetitorSituations(v)
+	})
+}
+
+// UpdateCompetitorSituations sets the "competitor_situations" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCompetitorSituations() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCompetitorSituations()
+	})
+}
+
+// ClearCompetitorSituations clears the value of the "competitor_situations" field.
+func (u *TenderUpsertOne) ClearCompetitorSituations() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCompetitorSituations()
+	})
+}
+
+// SetCostEngineer sets the "cost_engineer" field.
+func (u *TenderUpsertOne) SetCostEngineer(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCostEngineer(v)
+	})
+}
+
+// UpdateCostEngineer sets the "cost_engineer" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCostEngineer() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCostEngineer()
+	})
+}
+
+// ClearCostEngineer clears the value of the "cost_engineer" field.
+func (u *TenderUpsertOne) ClearCostEngineer() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCostEngineer()
+	})
+}
+
+// SetTenderForm sets the "tender_form" field.
+func (u *TenderUpsertOne) SetTenderForm(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderForm(v)
+	})
+}
+
+// UpdateTenderForm sets the "tender_form" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderForm() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderForm()
+	})
+}
+
+// ClearTenderForm clears the value of the "tender_form" field.
+func (u *TenderUpsertOne) ClearTenderForm() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderForm()
+	})
+}
+
+// SetContractForm sets the "contract_form" field.
+func (u *TenderUpsertOne) SetContractForm(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetContractForm(v)
+	})
+}
+
+// UpdateContractForm sets the "contract_form" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateContractForm() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateContractForm()
+	})
+}
+
+// ClearContractForm clears the value of the "contract_form" field.
+func (u *TenderUpsertOne) ClearContractForm() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearContractForm()
+	})
+}
+
+// SetManagementCompany sets the "management_company" field.
+func (u *TenderUpsertOne) SetManagementCompany(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetManagementCompany(v)
+	})
+}
+
+// UpdateManagementCompany sets the "management_company" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateManagementCompany() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateManagementCompany()
+	})
+}
+
+// ClearManagementCompany clears the value of the "management_company" field.
+func (u *TenderUpsertOne) ClearManagementCompany() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearManagementCompany()
+	})
+}
+
+// SetTenderingAgency sets the "tendering_agency" field.
+func (u *TenderUpsertOne) SetTenderingAgency(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderingAgency(v)
+	})
+}
+
+// UpdateTenderingAgency sets the "tendering_agency" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderingAgency() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderingAgency()
+	})
+}
+
+// ClearTenderingAgency clears the value of the "tendering_agency" field.
+func (u *TenderUpsertOne) ClearTenderingAgency() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderingAgency()
+	})
+}
+
+// SetBiddingDate sets the "bidding_date" field.
+func (u *TenderUpsertOne) SetBiddingDate(v time.Time) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetBiddingDate(v)
+	})
+}
+
+// UpdateBiddingDate sets the "bidding_date" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateBiddingDate() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateBiddingDate()
+	})
+}
+
+// ClearBiddingDate clears the value of the "bidding_date" field.
+func (u *TenderUpsertOne) ClearBiddingDate() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearBiddingDate()
+	})
+}
+
+// SetFacadeConsultant sets the "facade_consultant" field.
+func (u *TenderUpsertOne) SetFacadeConsultant(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetFacadeConsultant(v)
+	})
+}
+
+// UpdateFacadeConsultant sets the "facade_consultant" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateFacadeConsultant() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateFacadeConsultant()
+	})
+}
+
+// ClearFacadeConsultant clears the value of the "facade_consultant" field.
+func (u *TenderUpsertOne) ClearFacadeConsultant() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearFacadeConsultant()
+	})
+}
+
+// SetDesignUnit sets the "design_unit" field.
+func (u *TenderUpsertOne) SetDesignUnit(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetDesignUnit(v)
+	})
+}
+
+// UpdateDesignUnit sets the "design_unit" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateDesignUnit() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateDesignUnit()
+	})
+}
+
+// ClearDesignUnit clears the value of the "design_unit" field.
+func (u *TenderUpsertOne) ClearDesignUnit() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearDesignUnit()
+	})
+}
+
+// SetConsultingFirm sets the "consulting_firm" field.
+func (u *TenderUpsertOne) SetConsultingFirm(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetConsultingFirm(v)
+	})
+}
+
+// UpdateConsultingFirm sets the "consulting_firm" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateConsultingFirm() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateConsultingFirm()
+	})
+}
+
+// ClearConsultingFirm clears the value of the "consulting_firm" field.
+func (u *TenderUpsertOne) ClearConsultingFirm() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearConsultingFirm()
+	})
+}
+
+// SetKeyProject sets the "key_project" field.
+func (u *TenderUpsertOne) SetKeyProject(v bool) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetKeyProject(v)
+	})
+}
+
+// UpdateKeyProject sets the "key_project" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateKeyProject() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateKeyProject()
+	})
+}
+
 // SetAreaID sets the "area_id" field.
 func (u *TenderUpsertOne) SetAreaID(v xid.ID) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -1813,6 +3149,55 @@ func (u *TenderUpsertOne) UpdateAreaID() *TenderUpsertOne {
 	})
 }
 
+// SetProvinceID sets the "province_id" field.
+func (u *TenderUpsertOne) SetProvinceID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetProvinceID(v)
+	})
+}
+
+// UpdateProvinceID sets the "province_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateProvinceID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateProvinceID()
+	})
+}
+
+// SetCityID sets the "city_id" field.
+func (u *TenderUpsertOne) SetCityID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCityID(v)
+	})
+}
+
+// UpdateCityID sets the "city_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCityID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCityID()
+	})
+}
+
+// ClearCityID clears the value of the "city_id" field.
+func (u *TenderUpsertOne) ClearCityID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCityID()
+	})
+}
+
+// SetDistrictID sets the "district_id" field.
+func (u *TenderUpsertOne) SetDistrictID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetDistrictID(v)
+	})
+}
+
+// UpdateDistrictID sets the "district_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateDistrictID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateDistrictID()
+	})
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (u *TenderUpsertOne) SetCustomerID(v xid.ID) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -1824,6 +3209,34 @@ func (u *TenderUpsertOne) SetCustomerID(v xid.ID) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateCustomerID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCustomerID()
+	})
+}
+
+// SetFinderID sets the "finder_id" field.
+func (u *TenderUpsertOne) SetFinderID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetFinderID(v)
+	})
+}
+
+// UpdateFinderID sets the "finder_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateFinderID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateFinderID()
+	})
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (u *TenderUpsertOne) SetCreatedByID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCreatedByID(v)
+	})
+}
+
+// UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCreatedByID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCreatedByID()
 	})
 }
 
@@ -2157,66 +3570,80 @@ func (u *TenderUpsertBulk) ClearTenderDate() *TenderUpsertBulk {
 	})
 }
 
-// SetFindDate sets the "find_date" field.
-func (u *TenderUpsertBulk) SetFindDate(v time.Time) *TenderUpsertBulk {
+// SetDiscoveryDate sets the "discovery_date" field.
+func (u *TenderUpsertBulk) SetDiscoveryDate(v time.Time) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetFindDate(v)
+		s.SetDiscoveryDate(v)
 	})
 }
 
-// UpdateFindDate sets the "find_date" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateFindDate() *TenderUpsertBulk {
+// UpdateDiscoveryDate sets the "discovery_date" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateDiscoveryDate() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateFindDate()
+		s.UpdateDiscoveryDate()
 	})
 }
 
-// SetFinder sets the "finder" field.
-func (u *TenderUpsertBulk) SetFinder(v *zht.User) *TenderUpsertBulk {
+// SetAddress sets the "address" field.
+func (u *TenderUpsertBulk) SetAddress(v string) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetFinder(v)
+		s.SetAddress(v)
 	})
 }
 
-// UpdateFinder sets the "finder" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateFinder() *TenderUpsertBulk {
+// UpdateAddress sets the "address" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateAddress() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateFinder()
+		s.UpdateAddress()
 	})
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (u *TenderUpsertBulk) SetCreatedBy(v *zht.User) *TenderUpsertBulk {
+// ClearAddress clears the value of the "address" field.
+func (u *TenderUpsertBulk) ClearAddress() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetCreatedBy(v)
+		s.ClearAddress()
 	})
 }
 
-// UpdateCreatedBy sets the "created_by" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateCreatedBy() *TenderUpsertBulk {
+// SetFullAddress sets the "full_address" field.
+func (u *TenderUpsertBulk) SetFullAddress(v string) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateCreatedBy()
+		s.SetFullAddress(v)
 	})
 }
 
-// SetFollowingPerson sets the "following_person" field.
-func (u *TenderUpsertBulk) SetFollowingPerson(v []zht.User) *TenderUpsertBulk {
+// UpdateFullAddress sets the "full_address" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateFullAddress() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.SetFollowingPerson(v)
+		s.UpdateFullAddress()
 	})
 }
 
-// UpdateFollowingPerson sets the "following_person" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateFollowingPerson() *TenderUpsertBulk {
+// ClearFullAddress clears the value of the "full_address" field.
+func (u *TenderUpsertBulk) ClearFullAddress() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.UpdateFollowingPerson()
+		s.ClearFullAddress()
 	})
 }
 
-// ClearFollowingPerson clears the value of the "following_person" field.
-func (u *TenderUpsertBulk) ClearFollowingPerson() *TenderUpsertBulk {
+// SetContractor sets the "contractor" field.
+func (u *TenderUpsertBulk) SetContractor(v string) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
-		s.ClearFollowingPerson()
+		s.SetContractor(v)
+	})
+}
+
+// UpdateContractor sets the "contractor" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateContractor() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateContractor()
+	})
+}
+
+// ClearContractor clears the value of the "contractor" field.
+func (u *TenderUpsertBulk) ClearContractor() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearContractor()
 	})
 }
 
@@ -2248,6 +3675,27 @@ func (u *TenderUpsertBulk) ClearSizeAndValueRating() *TenderUpsertBulk {
 	})
 }
 
+// SetSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field.
+func (u *TenderUpsertBulk) SetSizeAndValueRatingOverview(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetSizeAndValueRatingOverview(v)
+	})
+}
+
+// UpdateSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateSizeAndValueRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateSizeAndValueRatingOverview()
+	})
+}
+
+// ClearSizeAndValueRatingOverview clears the value of the "size_and_value_rating_overview" field.
+func (u *TenderUpsertBulk) ClearSizeAndValueRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearSizeAndValueRatingOverview()
+	})
+}
+
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
 func (u *TenderUpsertBulk) SetCreditAndPaymentRating(v int8) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -2273,6 +3721,27 @@ func (u *TenderUpsertBulk) UpdateCreditAndPaymentRating() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearCreditAndPaymentRating() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearCreditAndPaymentRating()
+	})
+}
+
+// SetCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field.
+func (u *TenderUpsertBulk) SetCreditAndPaymentRatingOverview(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCreditAndPaymentRatingOverview(v)
+	})
+}
+
+// UpdateCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCreditAndPaymentRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCreditAndPaymentRatingOverview()
+	})
+}
+
+// ClearCreditAndPaymentRatingOverview clears the value of the "credit_and_payment_rating_overview" field.
+func (u *TenderUpsertBulk) ClearCreditAndPaymentRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCreditAndPaymentRatingOverview()
 	})
 }
 
@@ -2304,6 +3773,27 @@ func (u *TenderUpsertBulk) ClearTimeLimitRating() *TenderUpsertBulk {
 	})
 }
 
+// SetTimeLimitRatingOverview sets the "time_limit_rating_overview" field.
+func (u *TenderUpsertBulk) SetTimeLimitRatingOverview(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTimeLimitRatingOverview(v)
+	})
+}
+
+// UpdateTimeLimitRatingOverview sets the "time_limit_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTimeLimitRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTimeLimitRatingOverview()
+	})
+}
+
+// ClearTimeLimitRatingOverview clears the value of the "time_limit_rating_overview" field.
+func (u *TenderUpsertBulk) ClearTimeLimitRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTimeLimitRatingOverview()
+	})
+}
+
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
 func (u *TenderUpsertBulk) SetCustomerRelationshipRating(v int8) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -2332,6 +3822,27 @@ func (u *TenderUpsertBulk) ClearCustomerRelationshipRating() *TenderUpsertBulk {
 	})
 }
 
+// SetCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field.
+func (u *TenderUpsertBulk) SetCustomerRelationshipRatingOverview(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCustomerRelationshipRatingOverview(v)
+	})
+}
+
+// UpdateCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCustomerRelationshipRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCustomerRelationshipRatingOverview()
+	})
+}
+
+// ClearCustomerRelationshipRatingOverview clears the value of the "customer_relationship_rating_overview" field.
+func (u *TenderUpsertBulk) ClearCustomerRelationshipRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCustomerRelationshipRatingOverview()
+	})
+}
+
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
 func (u *TenderUpsertBulk) SetCompetitivePartnershipRating(v int8) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -2357,6 +3868,27 @@ func (u *TenderUpsertBulk) UpdateCompetitivePartnershipRating() *TenderUpsertBul
 func (u *TenderUpsertBulk) ClearCompetitivePartnershipRating() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearCompetitivePartnershipRating()
+	})
+}
+
+// SetCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field.
+func (u *TenderUpsertBulk) SetCompetitivePartnershipRatingOverview(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCompetitivePartnershipRatingOverview(v)
+	})
+}
+
+// UpdateCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCompetitivePartnershipRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCompetitivePartnershipRatingOverview()
+	})
+}
+
+// ClearCompetitivePartnershipRatingOverview clears the value of the "competitive_partnership_rating_overview" field.
+func (u *TenderUpsertBulk) ClearCompetitivePartnershipRatingOverview() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCompetitivePartnershipRatingOverview()
 	})
 }
 
@@ -2500,27 +4032,6 @@ func (u *TenderUpsertBulk) ClearAttachements() *TenderUpsertBulk {
 	})
 }
 
-// SetGeoLocation sets the "geo_location" field.
-func (u *TenderUpsertBulk) SetGeoLocation(v string) *TenderUpsertBulk {
-	return u.Update(func(s *TenderUpsert) {
-		s.SetGeoLocation(v)
-	})
-}
-
-// UpdateGeoLocation sets the "geo_location" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateGeoLocation() *TenderUpsertBulk {
-	return u.Update(func(s *TenderUpsert) {
-		s.UpdateGeoLocation()
-	})
-}
-
-// ClearGeoLocation clears the value of the "geo_location" field.
-func (u *TenderUpsertBulk) ClearGeoLocation() *TenderUpsertBulk {
-	return u.Update(func(s *TenderUpsert) {
-		s.ClearGeoLocation()
-	})
-}
-
 // SetGeoCoordinate sets the "geo_coordinate" field.
 func (u *TenderUpsertBulk) SetGeoCoordinate(v *geo.GeoJson) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -2584,6 +4095,293 @@ func (u *TenderUpsertBulk) ClearImages() *TenderUpsertBulk {
 	})
 }
 
+// SetTenderSituations sets the "tender_situations" field.
+func (u *TenderUpsertBulk) SetTenderSituations(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderSituations(v)
+	})
+}
+
+// UpdateTenderSituations sets the "tender_situations" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderSituations() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderSituations()
+	})
+}
+
+// ClearTenderSituations clears the value of the "tender_situations" field.
+func (u *TenderUpsertBulk) ClearTenderSituations() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderSituations()
+	})
+}
+
+// SetOwnerSituations sets the "owner_situations" field.
+func (u *TenderUpsertBulk) SetOwnerSituations(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetOwnerSituations(v)
+	})
+}
+
+// UpdateOwnerSituations sets the "owner_situations" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateOwnerSituations() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateOwnerSituations()
+	})
+}
+
+// ClearOwnerSituations clears the value of the "owner_situations" field.
+func (u *TenderUpsertBulk) ClearOwnerSituations() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearOwnerSituations()
+	})
+}
+
+// SetBiddingInstructions sets the "bidding_instructions" field.
+func (u *TenderUpsertBulk) SetBiddingInstructions(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetBiddingInstructions(v)
+	})
+}
+
+// UpdateBiddingInstructions sets the "bidding_instructions" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateBiddingInstructions() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateBiddingInstructions()
+	})
+}
+
+// ClearBiddingInstructions clears the value of the "bidding_instructions" field.
+func (u *TenderUpsertBulk) ClearBiddingInstructions() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearBiddingInstructions()
+	})
+}
+
+// SetCompetitorSituations sets the "competitor_situations" field.
+func (u *TenderUpsertBulk) SetCompetitorSituations(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCompetitorSituations(v)
+	})
+}
+
+// UpdateCompetitorSituations sets the "competitor_situations" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCompetitorSituations() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCompetitorSituations()
+	})
+}
+
+// ClearCompetitorSituations clears the value of the "competitor_situations" field.
+func (u *TenderUpsertBulk) ClearCompetitorSituations() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCompetitorSituations()
+	})
+}
+
+// SetCostEngineer sets the "cost_engineer" field.
+func (u *TenderUpsertBulk) SetCostEngineer(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCostEngineer(v)
+	})
+}
+
+// UpdateCostEngineer sets the "cost_engineer" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCostEngineer() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCostEngineer()
+	})
+}
+
+// ClearCostEngineer clears the value of the "cost_engineer" field.
+func (u *TenderUpsertBulk) ClearCostEngineer() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCostEngineer()
+	})
+}
+
+// SetTenderForm sets the "tender_form" field.
+func (u *TenderUpsertBulk) SetTenderForm(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderForm(v)
+	})
+}
+
+// UpdateTenderForm sets the "tender_form" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderForm() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderForm()
+	})
+}
+
+// ClearTenderForm clears the value of the "tender_form" field.
+func (u *TenderUpsertBulk) ClearTenderForm() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderForm()
+	})
+}
+
+// SetContractForm sets the "contract_form" field.
+func (u *TenderUpsertBulk) SetContractForm(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetContractForm(v)
+	})
+}
+
+// UpdateContractForm sets the "contract_form" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateContractForm() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateContractForm()
+	})
+}
+
+// ClearContractForm clears the value of the "contract_form" field.
+func (u *TenderUpsertBulk) ClearContractForm() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearContractForm()
+	})
+}
+
+// SetManagementCompany sets the "management_company" field.
+func (u *TenderUpsertBulk) SetManagementCompany(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetManagementCompany(v)
+	})
+}
+
+// UpdateManagementCompany sets the "management_company" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateManagementCompany() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateManagementCompany()
+	})
+}
+
+// ClearManagementCompany clears the value of the "management_company" field.
+func (u *TenderUpsertBulk) ClearManagementCompany() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearManagementCompany()
+	})
+}
+
+// SetTenderingAgency sets the "tendering_agency" field.
+func (u *TenderUpsertBulk) SetTenderingAgency(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderingAgency(v)
+	})
+}
+
+// UpdateTenderingAgency sets the "tendering_agency" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderingAgency() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderingAgency()
+	})
+}
+
+// ClearTenderingAgency clears the value of the "tendering_agency" field.
+func (u *TenderUpsertBulk) ClearTenderingAgency() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderingAgency()
+	})
+}
+
+// SetBiddingDate sets the "bidding_date" field.
+func (u *TenderUpsertBulk) SetBiddingDate(v time.Time) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetBiddingDate(v)
+	})
+}
+
+// UpdateBiddingDate sets the "bidding_date" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateBiddingDate() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateBiddingDate()
+	})
+}
+
+// ClearBiddingDate clears the value of the "bidding_date" field.
+func (u *TenderUpsertBulk) ClearBiddingDate() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearBiddingDate()
+	})
+}
+
+// SetFacadeConsultant sets the "facade_consultant" field.
+func (u *TenderUpsertBulk) SetFacadeConsultant(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetFacadeConsultant(v)
+	})
+}
+
+// UpdateFacadeConsultant sets the "facade_consultant" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateFacadeConsultant() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateFacadeConsultant()
+	})
+}
+
+// ClearFacadeConsultant clears the value of the "facade_consultant" field.
+func (u *TenderUpsertBulk) ClearFacadeConsultant() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearFacadeConsultant()
+	})
+}
+
+// SetDesignUnit sets the "design_unit" field.
+func (u *TenderUpsertBulk) SetDesignUnit(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetDesignUnit(v)
+	})
+}
+
+// UpdateDesignUnit sets the "design_unit" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateDesignUnit() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateDesignUnit()
+	})
+}
+
+// ClearDesignUnit clears the value of the "design_unit" field.
+func (u *TenderUpsertBulk) ClearDesignUnit() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearDesignUnit()
+	})
+}
+
+// SetConsultingFirm sets the "consulting_firm" field.
+func (u *TenderUpsertBulk) SetConsultingFirm(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetConsultingFirm(v)
+	})
+}
+
+// UpdateConsultingFirm sets the "consulting_firm" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateConsultingFirm() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateConsultingFirm()
+	})
+}
+
+// ClearConsultingFirm clears the value of the "consulting_firm" field.
+func (u *TenderUpsertBulk) ClearConsultingFirm() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearConsultingFirm()
+	})
+}
+
+// SetKeyProject sets the "key_project" field.
+func (u *TenderUpsertBulk) SetKeyProject(v bool) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetKeyProject(v)
+	})
+}
+
+// UpdateKeyProject sets the "key_project" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateKeyProject() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateKeyProject()
+	})
+}
+
 // SetAreaID sets the "area_id" field.
 func (u *TenderUpsertBulk) SetAreaID(v xid.ID) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -2598,6 +4396,55 @@ func (u *TenderUpsertBulk) UpdateAreaID() *TenderUpsertBulk {
 	})
 }
 
+// SetProvinceID sets the "province_id" field.
+func (u *TenderUpsertBulk) SetProvinceID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetProvinceID(v)
+	})
+}
+
+// UpdateProvinceID sets the "province_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateProvinceID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateProvinceID()
+	})
+}
+
+// SetCityID sets the "city_id" field.
+func (u *TenderUpsertBulk) SetCityID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCityID(v)
+	})
+}
+
+// UpdateCityID sets the "city_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCityID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCityID()
+	})
+}
+
+// ClearCityID clears the value of the "city_id" field.
+func (u *TenderUpsertBulk) ClearCityID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCityID()
+	})
+}
+
+// SetDistrictID sets the "district_id" field.
+func (u *TenderUpsertBulk) SetDistrictID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetDistrictID(v)
+	})
+}
+
+// UpdateDistrictID sets the "district_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateDistrictID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateDistrictID()
+	})
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (u *TenderUpsertBulk) SetCustomerID(v xid.ID) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -2609,6 +4456,34 @@ func (u *TenderUpsertBulk) SetCustomerID(v xid.ID) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateCustomerID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCustomerID()
+	})
+}
+
+// SetFinderID sets the "finder_id" field.
+func (u *TenderUpsertBulk) SetFinderID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetFinderID(v)
+	})
+}
+
+// UpdateFinderID sets the "finder_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateFinderID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateFinderID()
+	})
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (u *TenderUpsertBulk) SetCreatedByID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCreatedByID(v)
+	})
+}
+
+// UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCreatedByID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCreatedByID()
 	})
 }
 

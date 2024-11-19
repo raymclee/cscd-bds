@@ -4,11 +4,14 @@ package ent
 
 import (
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -37,24 +40,34 @@ type Tender struct {
 	EstimatedAmount float64 `json:"estimated_amount,omitempty"`
 	// TenderDate holds the value of the "tender_date" field.
 	TenderDate time.Time `json:"tender_date,omitempty"`
-	// FindDate holds the value of the "find_date" field.
-	FindDate time.Time `json:"find_date,omitempty"`
-	// Finder holds the value of the "finder" field.
-	Finder *zht.User `json:"finder,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy *zht.User `json:"created_by,omitempty"`
-	// FollowingPerson holds the value of the "following_person" field.
-	FollowingPerson []zht.User `json:"following_person,omitempty"`
+	// DiscoveryDate holds the value of the "discovery_date" field.
+	DiscoveryDate time.Time `json:"discovery_date,omitempty"`
+	// Address holds the value of the "address" field.
+	Address *string `json:"address,omitempty"`
+	// FullAddress holds the value of the "full_address" field.
+	FullAddress *string `json:"full_address,omitempty"`
+	// Contractor holds the value of the "contractor" field.
+	Contractor *string `json:"contractor,omitempty"`
 	// SizeAndValueRating holds the value of the "size_and_value_rating" field.
-	SizeAndValueRating int8 `json:"size_and_value_rating,omitempty"`
+	SizeAndValueRating *int8 `json:"size_and_value_rating,omitempty"`
+	// SizeAndValueRatingOverview holds the value of the "size_and_value_rating_overview" field.
+	SizeAndValueRatingOverview *string `json:"size_and_value_rating_overview,omitempty"`
 	// CreditAndPaymentRating holds the value of the "credit_and_payment_rating" field.
-	CreditAndPaymentRating int8 `json:"credit_and_payment_rating,omitempty"`
+	CreditAndPaymentRating *int8 `json:"credit_and_payment_rating,omitempty"`
+	// CreditAndPaymentRatingOverview holds the value of the "credit_and_payment_rating_overview" field.
+	CreditAndPaymentRatingOverview *string `json:"credit_and_payment_rating_overview,omitempty"`
 	// TimeLimitRating holds the value of the "time_limit_rating" field.
-	TimeLimitRating int8 `json:"time_limit_rating,omitempty"`
+	TimeLimitRating *int8 `json:"time_limit_rating,omitempty"`
+	// TimeLimitRatingOverview holds the value of the "time_limit_rating_overview" field.
+	TimeLimitRatingOverview *string `json:"time_limit_rating_overview,omitempty"`
 	// CustomerRelationshipRating holds the value of the "customer_relationship_rating" field.
-	CustomerRelationshipRating int8 `json:"customer_relationship_rating,omitempty"`
+	CustomerRelationshipRating *int8 `json:"customer_relationship_rating,omitempty"`
+	// CustomerRelationshipRatingOverview holds the value of the "customer_relationship_rating_overview" field.
+	CustomerRelationshipRatingOverview *string `json:"customer_relationship_rating_overview,omitempty"`
 	// CompetitivePartnershipRating holds the value of the "competitive_partnership_rating" field.
-	CompetitivePartnershipRating int8 `json:"competitive_partnership_rating,omitempty"`
+	CompetitivePartnershipRating *int8 `json:"competitive_partnership_rating,omitempty"`
+	// CompetitivePartnershipRatingOverview holds the value of the "competitive_partnership_rating_overview" field.
+	CompetitivePartnershipRatingOverview *string `json:"competitive_partnership_rating_overview,omitempty"`
 	// PrepareToBid holds the value of the "prepare_to_bid" field.
 	PrepareToBid bool `json:"prepare_to_bid,omitempty"`
 	// ProjectCode holds the value of the "project_code" field.
@@ -69,18 +82,54 @@ type Tender struct {
 	ProjectType *string `json:"project_type,omitempty"`
 	// Attachements holds the value of the "attachements" field.
 	Attachements []string `json:"attachements,omitempty"`
-	// GeoLocation holds the value of the "geo_location" field.
-	GeoLocation *string `json:"geo_location,omitempty"`
 	// GeoCoordinate holds the value of the "geo_coordinate" field.
 	GeoCoordinate *geo.GeoJson `json:"geo_coordinate,omitempty"`
 	// Remark holds the value of the "remark" field.
-	Remark *string `json:"remark,omitempty"`
+	Remark string `json:"remark,omitempty"`
 	// Images holds the value of the "images" field.
 	Images []string `json:"images,omitempty"`
+	// TenderSituations holds the value of the "tender_situations" field.
+	TenderSituations *string `json:"tender_situations,omitempty"`
+	// OwnerSituations holds the value of the "owner_situations" field.
+	OwnerSituations *string `json:"owner_situations,omitempty"`
+	// BiddingInstructions holds the value of the "bidding_instructions" field.
+	BiddingInstructions *string `json:"bidding_instructions,omitempty"`
+	// CompetitorSituations holds the value of the "competitor_situations" field.
+	CompetitorSituations *string `json:"competitor_situations,omitempty"`
+	// CostEngineer holds the value of the "cost_engineer" field.
+	CostEngineer *string `json:"cost_engineer,omitempty"`
+	// TenderForm holds the value of the "tender_form" field.
+	TenderForm *string `json:"tender_form,omitempty"`
+	// ContractForm holds the value of the "contract_form" field.
+	ContractForm *string `json:"contract_form,omitempty"`
+	// ManagementCompany holds the value of the "management_company" field.
+	ManagementCompany *string `json:"management_company,omitempty"`
+	// TenderingAgency holds the value of the "tendering_agency" field.
+	TenderingAgency *string `json:"tendering_agency,omitempty"`
+	// BiddingDate holds the value of the "bidding_date" field.
+	BiddingDate *time.Time `json:"bidding_date,omitempty"`
+	// FacadeConsultant holds the value of the "facade_consultant" field.
+	FacadeConsultant *string `json:"facade_consultant,omitempty"`
+	// DesignUnit holds the value of the "design_unit" field.
+	DesignUnit *string `json:"design_unit,omitempty"`
+	// ConsultingFirm holds the value of the "consulting_firm" field.
+	ConsultingFirm *string `json:"consulting_firm,omitempty"`
+	// KeyProject holds the value of the "key_project" field.
+	KeyProject bool `json:"key_project,omitempty"`
 	// AreaID holds the value of the "area_id" field.
 	AreaID xid.ID `json:"area_id,omitempty"`
+	// ProvinceID holds the value of the "province_id" field.
+	ProvinceID xid.ID `json:"province_id,omitempty"`
+	// CityID holds the value of the "city_id" field.
+	CityID *xid.ID `json:"city_id,omitempty"`
+	// DistrictID holds the value of the "district_id" field.
+	DistrictID xid.ID `json:"district_id,omitempty"`
 	// CustomerID holds the value of the "customer_id" field.
 	CustomerID xid.ID `json:"customer_id,omitempty"`
+	// FinderID holds the value of the "finder_id" field.
+	FinderID xid.ID `json:"finder_id,omitempty"`
+	// CreatedByID holds the value of the "created_by_id" field.
+	CreatedByID xid.ID `json:"created_by_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TenderQuery when eager-loading is set.
 	Edges        TenderEdges `json:"edges"`
@@ -93,11 +142,25 @@ type TenderEdges struct {
 	Area *Area `json:"area,omitempty"`
 	// Customer holds the value of the customer edge.
 	Customer *Customer `json:"customer,omitempty"`
+	// Finder holds the value of the finder edge.
+	Finder *User `json:"finder,omitempty"`
+	// CreatedBy holds the value of the created_by edge.
+	CreatedBy *User `json:"created_by,omitempty"`
+	// FollowingSales holds the value of the following_sales edge.
+	FollowingSales []*User `json:"following_sales,omitempty"`
+	// Province holds the value of the province edge.
+	Province *Province `json:"province,omitempty"`
+	// City holds the value of the city edge.
+	City *City `json:"city,omitempty"`
+	// District holds the value of the district edge.
+	District *District `json:"district,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [8]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [8]map[string]int
+
+	namedFollowingSales map[string][]*User
 }
 
 // AreaOrErr returns the Area value or an error if the edge
@@ -122,6 +185,70 @@ func (e TenderEdges) CustomerOrErr() (*Customer, error) {
 	return nil, &NotLoadedError{edge: "customer"}
 }
 
+// FinderOrErr returns the Finder value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) FinderOrErr() (*User, error) {
+	if e.Finder != nil {
+		return e.Finder, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "finder"}
+}
+
+// CreatedByOrErr returns the CreatedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) CreatedByOrErr() (*User, error) {
+	if e.CreatedBy != nil {
+		return e.CreatedBy, nil
+	} else if e.loadedTypes[3] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "created_by"}
+}
+
+// FollowingSalesOrErr returns the FollowingSales value or an error if the edge
+// was not loaded in eager-loading.
+func (e TenderEdges) FollowingSalesOrErr() ([]*User, error) {
+	if e.loadedTypes[4] {
+		return e.FollowingSales, nil
+	}
+	return nil, &NotLoadedError{edge: "following_sales"}
+}
+
+// ProvinceOrErr returns the Province value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) ProvinceOrErr() (*Province, error) {
+	if e.Province != nil {
+		return e.Province, nil
+	} else if e.loadedTypes[5] {
+		return nil, &NotFoundError{label: province.Label}
+	}
+	return nil, &NotLoadedError{edge: "province"}
+}
+
+// CityOrErr returns the City value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) CityOrErr() (*City, error) {
+	if e.City != nil {
+		return e.City, nil
+	} else if e.loadedTypes[6] {
+		return nil, &NotFoundError{label: city.Label}
+	}
+	return nil, &NotLoadedError{edge: "city"}
+}
+
+// DistrictOrErr returns the District value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) DistrictOrErr() (*District, error) {
+	if e.District != nil {
+		return e.District, nil
+	} else if e.loadedTypes[7] {
+		return nil, &NotFoundError{label: district.Label}
+	}
+	return nil, &NotLoadedError{edge: "district"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Tender) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -129,19 +256,21 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldFinder, tender.FieldCreatedBy, tender.FieldFollowingPerson, tender.FieldAttachements, tender.FieldImages:
+		case tender.FieldCityID:
+			values[i] = &sql.NullScanner{S: new(xid.ID)}
+		case tender.FieldAttachements, tender.FieldImages:
 			values[i] = new([]byte)
-		case tender.FieldPrepareToBid:
+		case tender.FieldPrepareToBid, tender.FieldKeyProject:
 			values[i] = new(sql.NullBool)
 		case tender.FieldEstimatedAmount:
 			values[i] = new(sql.NullFloat64)
 		case tender.FieldStatus, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
-		case tender.FieldCode, tender.FieldName, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldGeoLocation, tender.FieldRemark:
+		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm:
 			values[i] = new(sql.NullString)
-		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldFindDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate:
+		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate:
 			values[i] = new(sql.NullTime)
-		case tender.FieldID, tender.FieldAreaID, tender.FieldCustomerID:
+		case tender.FieldID, tender.FieldAreaID, tender.FieldProvinceID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -206,65 +335,102 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.TenderDate = value.Time
 			}
-		case tender.FieldFindDate:
+		case tender.FieldDiscoveryDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field find_date", values[i])
+				return fmt.Errorf("unexpected type %T for field discovery_date", values[i])
 			} else if value.Valid {
-				t.FindDate = value.Time
+				t.DiscoveryDate = value.Time
 			}
-		case tender.FieldFinder:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field finder", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &t.Finder); err != nil {
-					return fmt.Errorf("unmarshal field finder: %w", err)
-				}
+		case tender.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
+			} else if value.Valid {
+				t.Address = new(string)
+				*t.Address = value.String
 			}
-		case tender.FieldCreatedBy:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &t.CreatedBy); err != nil {
-					return fmt.Errorf("unmarshal field created_by: %w", err)
-				}
+		case tender.FieldFullAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field full_address", values[i])
+			} else if value.Valid {
+				t.FullAddress = new(string)
+				*t.FullAddress = value.String
 			}
-		case tender.FieldFollowingPerson:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field following_person", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &t.FollowingPerson); err != nil {
-					return fmt.Errorf("unmarshal field following_person: %w", err)
-				}
+		case tender.FieldContractor:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contractor", values[i])
+			} else if value.Valid {
+				t.Contractor = new(string)
+				*t.Contractor = value.String
 			}
 		case tender.FieldSizeAndValueRating:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field size_and_value_rating", values[i])
 			} else if value.Valid {
-				t.SizeAndValueRating = int8(value.Int64)
+				t.SizeAndValueRating = new(int8)
+				*t.SizeAndValueRating = int8(value.Int64)
+			}
+		case tender.FieldSizeAndValueRatingOverview:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field size_and_value_rating_overview", values[i])
+			} else if value.Valid {
+				t.SizeAndValueRatingOverview = new(string)
+				*t.SizeAndValueRatingOverview = value.String
 			}
 		case tender.FieldCreditAndPaymentRating:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field credit_and_payment_rating", values[i])
 			} else if value.Valid {
-				t.CreditAndPaymentRating = int8(value.Int64)
+				t.CreditAndPaymentRating = new(int8)
+				*t.CreditAndPaymentRating = int8(value.Int64)
+			}
+		case tender.FieldCreditAndPaymentRatingOverview:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field credit_and_payment_rating_overview", values[i])
+			} else if value.Valid {
+				t.CreditAndPaymentRatingOverview = new(string)
+				*t.CreditAndPaymentRatingOverview = value.String
 			}
 		case tender.FieldTimeLimitRating:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field time_limit_rating", values[i])
 			} else if value.Valid {
-				t.TimeLimitRating = int8(value.Int64)
+				t.TimeLimitRating = new(int8)
+				*t.TimeLimitRating = int8(value.Int64)
+			}
+		case tender.FieldTimeLimitRatingOverview:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field time_limit_rating_overview", values[i])
+			} else if value.Valid {
+				t.TimeLimitRatingOverview = new(string)
+				*t.TimeLimitRatingOverview = value.String
 			}
 		case tender.FieldCustomerRelationshipRating:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field customer_relationship_rating", values[i])
 			} else if value.Valid {
-				t.CustomerRelationshipRating = int8(value.Int64)
+				t.CustomerRelationshipRating = new(int8)
+				*t.CustomerRelationshipRating = int8(value.Int64)
+			}
+		case tender.FieldCustomerRelationshipRatingOverview:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field customer_relationship_rating_overview", values[i])
+			} else if value.Valid {
+				t.CustomerRelationshipRatingOverview = new(string)
+				*t.CustomerRelationshipRatingOverview = value.String
 			}
 		case tender.FieldCompetitivePartnershipRating:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field competitive_partnership_rating", values[i])
 			} else if value.Valid {
-				t.CompetitivePartnershipRating = int8(value.Int64)
+				t.CompetitivePartnershipRating = new(int8)
+				*t.CompetitivePartnershipRating = int8(value.Int64)
+			}
+		case tender.FieldCompetitivePartnershipRatingOverview:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field competitive_partnership_rating_overview", values[i])
+			} else if value.Valid {
+				t.CompetitivePartnershipRatingOverview = new(string)
+				*t.CompetitivePartnershipRatingOverview = value.String
 			}
 		case tender.FieldPrepareToBid:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -315,13 +481,6 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 					return fmt.Errorf("unmarshal field attachements: %w", err)
 				}
 			}
-		case tender.FieldGeoLocation:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field geo_location", values[i])
-			} else if value.Valid {
-				t.GeoLocation = new(string)
-				*t.GeoLocation = value.String
-			}
 		case tender.FieldGeoCoordinate:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field geo_coordinate", values[i])
@@ -332,8 +491,7 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
-				t.Remark = new(string)
-				*t.Remark = value.String
+				t.Remark = value.String
 			}
 		case tender.FieldImages:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -343,17 +501,145 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 					return fmt.Errorf("unmarshal field images: %w", err)
 				}
 			}
+		case tender.FieldTenderSituations:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_situations", values[i])
+			} else if value.Valid {
+				t.TenderSituations = new(string)
+				*t.TenderSituations = value.String
+			}
+		case tender.FieldOwnerSituations:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field owner_situations", values[i])
+			} else if value.Valid {
+				t.OwnerSituations = new(string)
+				*t.OwnerSituations = value.String
+			}
+		case tender.FieldBiddingInstructions:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bidding_instructions", values[i])
+			} else if value.Valid {
+				t.BiddingInstructions = new(string)
+				*t.BiddingInstructions = value.String
+			}
+		case tender.FieldCompetitorSituations:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field competitor_situations", values[i])
+			} else if value.Valid {
+				t.CompetitorSituations = new(string)
+				*t.CompetitorSituations = value.String
+			}
+		case tender.FieldCostEngineer:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field cost_engineer", values[i])
+			} else if value.Valid {
+				t.CostEngineer = new(string)
+				*t.CostEngineer = value.String
+			}
+		case tender.FieldTenderForm:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_form", values[i])
+			} else if value.Valid {
+				t.TenderForm = new(string)
+				*t.TenderForm = value.String
+			}
+		case tender.FieldContractForm:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contract_form", values[i])
+			} else if value.Valid {
+				t.ContractForm = new(string)
+				*t.ContractForm = value.String
+			}
+		case tender.FieldManagementCompany:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field management_company", values[i])
+			} else if value.Valid {
+				t.ManagementCompany = new(string)
+				*t.ManagementCompany = value.String
+			}
+		case tender.FieldTenderingAgency:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tendering_agency", values[i])
+			} else if value.Valid {
+				t.TenderingAgency = new(string)
+				*t.TenderingAgency = value.String
+			}
+		case tender.FieldBiddingDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field bidding_date", values[i])
+			} else if value.Valid {
+				t.BiddingDate = new(time.Time)
+				*t.BiddingDate = value.Time
+			}
+		case tender.FieldFacadeConsultant:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field facade_consultant", values[i])
+			} else if value.Valid {
+				t.FacadeConsultant = new(string)
+				*t.FacadeConsultant = value.String
+			}
+		case tender.FieldDesignUnit:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field design_unit", values[i])
+			} else if value.Valid {
+				t.DesignUnit = new(string)
+				*t.DesignUnit = value.String
+			}
+		case tender.FieldConsultingFirm:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field consulting_firm", values[i])
+			} else if value.Valid {
+				t.ConsultingFirm = new(string)
+				*t.ConsultingFirm = value.String
+			}
+		case tender.FieldKeyProject:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field key_project", values[i])
+			} else if value.Valid {
+				t.KeyProject = value.Bool
+			}
 		case tender.FieldAreaID:
 			if value, ok := values[i].(*xid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field area_id", values[i])
 			} else if value != nil {
 				t.AreaID = *value
 			}
+		case tender.FieldProvinceID:
+			if value, ok := values[i].(*xid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field province_id", values[i])
+			} else if value != nil {
+				t.ProvinceID = *value
+			}
+		case tender.FieldCityID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field city_id", values[i])
+			} else if value.Valid {
+				t.CityID = new(xid.ID)
+				*t.CityID = *value.S.(*xid.ID)
+			}
+		case tender.FieldDistrictID:
+			if value, ok := values[i].(*xid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field district_id", values[i])
+			} else if value != nil {
+				t.DistrictID = *value
+			}
 		case tender.FieldCustomerID:
 			if value, ok := values[i].(*xid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field customer_id", values[i])
 			} else if value != nil {
 				t.CustomerID = *value
+			}
+		case tender.FieldFinderID:
+			if value, ok := values[i].(*xid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field finder_id", values[i])
+			} else if value != nil {
+				t.FinderID = *value
+			}
+		case tender.FieldCreatedByID:
+			if value, ok := values[i].(*xid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by_id", values[i])
+			} else if value != nil {
+				t.CreatedByID = *value
 			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
@@ -376,6 +662,36 @@ func (t *Tender) QueryArea() *AreaQuery {
 // QueryCustomer queries the "customer" edge of the Tender entity.
 func (t *Tender) QueryCustomer() *CustomerQuery {
 	return NewTenderClient(t.config).QueryCustomer(t)
+}
+
+// QueryFinder queries the "finder" edge of the Tender entity.
+func (t *Tender) QueryFinder() *UserQuery {
+	return NewTenderClient(t.config).QueryFinder(t)
+}
+
+// QueryCreatedBy queries the "created_by" edge of the Tender entity.
+func (t *Tender) QueryCreatedBy() *UserQuery {
+	return NewTenderClient(t.config).QueryCreatedBy(t)
+}
+
+// QueryFollowingSales queries the "following_sales" edge of the Tender entity.
+func (t *Tender) QueryFollowingSales() *UserQuery {
+	return NewTenderClient(t.config).QueryFollowingSales(t)
+}
+
+// QueryProvince queries the "province" edge of the Tender entity.
+func (t *Tender) QueryProvince() *ProvinceQuery {
+	return NewTenderClient(t.config).QueryProvince(t)
+}
+
+// QueryCity queries the "city" edge of the Tender entity.
+func (t *Tender) QueryCity() *CityQuery {
+	return NewTenderClient(t.config).QueryCity(t)
+}
+
+// QueryDistrict queries the "district" edge of the Tender entity.
+func (t *Tender) QueryDistrict() *DistrictQuery {
+	return NewTenderClient(t.config).QueryDistrict(t)
 }
 
 // Update returns a builder for updating this Tender.
@@ -422,32 +738,73 @@ func (t *Tender) String() string {
 	builder.WriteString("tender_date=")
 	builder.WriteString(t.TenderDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("find_date=")
-	builder.WriteString(t.FindDate.Format(time.ANSIC))
+	builder.WriteString("discovery_date=")
+	builder.WriteString(t.DiscoveryDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("finder=")
-	builder.WriteString(fmt.Sprintf("%v", t.Finder))
+	if v := t.Address; v != nil {
+		builder.WriteString("address=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", t.CreatedBy))
+	if v := t.FullAddress; v != nil {
+		builder.WriteString("full_address=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("following_person=")
-	builder.WriteString(fmt.Sprintf("%v", t.FollowingPerson))
+	if v := t.Contractor; v != nil {
+		builder.WriteString("contractor=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("size_and_value_rating=")
-	builder.WriteString(fmt.Sprintf("%v", t.SizeAndValueRating))
+	if v := t.SizeAndValueRating; v != nil {
+		builder.WriteString("size_and_value_rating=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("credit_and_payment_rating=")
-	builder.WriteString(fmt.Sprintf("%v", t.CreditAndPaymentRating))
+	if v := t.SizeAndValueRatingOverview; v != nil {
+		builder.WriteString("size_and_value_rating_overview=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("time_limit_rating=")
-	builder.WriteString(fmt.Sprintf("%v", t.TimeLimitRating))
+	if v := t.CreditAndPaymentRating; v != nil {
+		builder.WriteString("credit_and_payment_rating=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("customer_relationship_rating=")
-	builder.WriteString(fmt.Sprintf("%v", t.CustomerRelationshipRating))
+	if v := t.CreditAndPaymentRatingOverview; v != nil {
+		builder.WriteString("credit_and_payment_rating_overview=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("competitive_partnership_rating=")
-	builder.WriteString(fmt.Sprintf("%v", t.CompetitivePartnershipRating))
+	if v := t.TimeLimitRating; v != nil {
+		builder.WriteString("time_limit_rating=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := t.TimeLimitRatingOverview; v != nil {
+		builder.WriteString("time_limit_rating_overview=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.CustomerRelationshipRating; v != nil {
+		builder.WriteString("customer_relationship_rating=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := t.CustomerRelationshipRatingOverview; v != nil {
+		builder.WriteString("customer_relationship_rating_overview=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.CompetitivePartnershipRating; v != nil {
+		builder.WriteString("competitive_partnership_rating=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := t.CompetitivePartnershipRatingOverview; v != nil {
+		builder.WriteString("competitive_partnership_rating_overview=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("prepare_to_bid=")
 	builder.WriteString(fmt.Sprintf("%v", t.PrepareToBid))
@@ -480,31 +837,133 @@ func (t *Tender) String() string {
 	builder.WriteString("attachements=")
 	builder.WriteString(fmt.Sprintf("%v", t.Attachements))
 	builder.WriteString(", ")
-	if v := t.GeoLocation; v != nil {
-		builder.WriteString("geo_location=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
 	if v := t.GeoCoordinate; v != nil {
 		builder.WriteString("geo_coordinate=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := t.Remark; v != nil {
-		builder.WriteString("remark=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("remark=")
+	builder.WriteString(t.Remark)
 	builder.WriteString(", ")
 	builder.WriteString("images=")
 	builder.WriteString(fmt.Sprintf("%v", t.Images))
 	builder.WriteString(", ")
+	if v := t.TenderSituations; v != nil {
+		builder.WriteString("tender_situations=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.OwnerSituations; v != nil {
+		builder.WriteString("owner_situations=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.BiddingInstructions; v != nil {
+		builder.WriteString("bidding_instructions=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.CompetitorSituations; v != nil {
+		builder.WriteString("competitor_situations=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.CostEngineer; v != nil {
+		builder.WriteString("cost_engineer=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.TenderForm; v != nil {
+		builder.WriteString("tender_form=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.ContractForm; v != nil {
+		builder.WriteString("contract_form=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.ManagementCompany; v != nil {
+		builder.WriteString("management_company=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.TenderingAgency; v != nil {
+		builder.WriteString("tendering_agency=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.BiddingDate; v != nil {
+		builder.WriteString("bidding_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := t.FacadeConsultant; v != nil {
+		builder.WriteString("facade_consultant=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.DesignUnit; v != nil {
+		builder.WriteString("design_unit=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.ConsultingFirm; v != nil {
+		builder.WriteString("consulting_firm=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	builder.WriteString("key_project=")
+	builder.WriteString(fmt.Sprintf("%v", t.KeyProject))
+	builder.WriteString(", ")
 	builder.WriteString("area_id=")
 	builder.WriteString(fmt.Sprintf("%v", t.AreaID))
 	builder.WriteString(", ")
+	builder.WriteString("province_id=")
+	builder.WriteString(fmt.Sprintf("%v", t.ProvinceID))
+	builder.WriteString(", ")
+	if v := t.CityID; v != nil {
+		builder.WriteString("city_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("district_id=")
+	builder.WriteString(fmt.Sprintf("%v", t.DistrictID))
+	builder.WriteString(", ")
 	builder.WriteString("customer_id=")
 	builder.WriteString(fmt.Sprintf("%v", t.CustomerID))
+	builder.WriteString(", ")
+	builder.WriteString("finder_id=")
+	builder.WriteString(fmt.Sprintf("%v", t.FinderID))
+	builder.WriteString(", ")
+	builder.WriteString("created_by_id=")
+	builder.WriteString(fmt.Sprintf("%v", t.CreatedByID))
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedFollowingSales returns the FollowingSales named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (t *Tender) NamedFollowingSales(name string) ([]*User, error) {
+	if t.Edges.namedFollowingSales == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := t.Edges.namedFollowingSales[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (t *Tender) appendNamedFollowingSales(name string, edges ...*User) {
+	if t.Edges.namedFollowingSales == nil {
+		t.Edges.namedFollowingSales = make(map[string][]*User)
+	}
+	if len(edges) == 0 {
+		t.Edges.namedFollowingSales[name] = []*User{}
+	} else {
+		t.Edges.namedFollowingSales[name] = append(t.Edges.namedFollowingSales[name], edges...)
+	}
 }
 
 // Tenders is a parsable slice of Tender.

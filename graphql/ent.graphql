@@ -139,6 +139,7 @@ type City implements Node {
   provinceID: ID!
   districts: [District!]
   province: Province!
+  tenders: [Tender!]
 }
 """
 A connection to a list of items.
@@ -260,6 +261,11 @@ input CityWhereInput {
   provinceIDGTE: ID
   provinceIDLT: ID
   provinceIDLTE: ID
+  provinceIDContains: ID
+  provinceIDHasPrefix: ID
+  provinceIDHasSuffix: ID
+  provinceIDEqualFold: ID
+  provinceIDContainsFold: ID
   """
   districts edge predicates
   """
@@ -270,6 +276,11 @@ input CityWhereInput {
   """
   hasProvince: Boolean
   hasProvinceWith: [ProvinceWhereInput!]
+  """
+  tenders edge predicates
+  """
+  hasTenders: Boolean
+  hasTendersWith: [TenderWhereInput!]
 }
 type Country implements Node {
   id: ID!
@@ -408,6 +419,7 @@ input CreateCityInput {
   name: String!
   districtIDs: [ID!]
   provinceID: ID!
+  tenderIDs: [ID!]
 }
 """
 CreateCountryInput is used for create Country object.
@@ -453,6 +465,7 @@ input CreateDistrictInput {
   name: String!
   provinceID: ID!
   cityID: ID
+  tenderIDs: [ID!]
 }
 """
 CreateProvinceInput is used for create Province object.
@@ -466,6 +479,7 @@ input CreateProvinceInput {
   districtIDs: [ID!]
   cityIDs: [ID!]
   countryID: ID!
+  tenderIDs: [ID!]
 }
 """
 CreateTenderInput is used for create Tender object.
@@ -479,12 +493,20 @@ input CreateTenderInput {
   name: String!
   estimatedAmount: Float
   tenderDate: Time
-  findDate: Time!
+  discoveryDate: Time!
+  address: String
+  fullAddress: String
+  contractor: String
   sizeAndValueRating: Int
+  sizeAndValueRatingOverview: String
   creditAndPaymentRating: Int
+  creditAndPaymentRatingOverview: String
   timeLimitRating: Int
+  timeLimitRatingOverview: String
   customerRelationshipRating: Int
+  customerRelationshipRatingOverview: String
   competitivePartnershipRating: Int
+  competitivePartnershipRatingOverview: String
   prepareToBid: Boolean
   projectCode: String
   projectDefinition: String
@@ -492,11 +514,30 @@ input CreateTenderInput {
   estimatedProjectEndDate: Time
   projectType: String
   attachements: [String!]
-  geoLocation: String
   remark: String
   images: [String!]
+  tenderSituations: String
+  ownerSituations: String
+  biddingInstructions: String
+  competitorSituations: String
+  costEngineer: String
+  tenderForm: String
+  contractForm: String
+  managementCompany: String
+  tenderingAgency: String
+  biddingDate: Time
+  facadeConsultant: String
+  designUnit: String
+  consultingFirm: String
+  keyProject: Boolean
   areaID: ID!
   customerID: ID!
+  finderID: ID!
+  createdByID: ID!
+  followingSaleIDs: [ID!]
+  provinceID: ID!
+  cityID: ID
+  districtID: ID!
 }
 """
 CreateUserInput is used for create User object.
@@ -515,6 +556,7 @@ input CreateUserInput {
   customerIDs: [ID!]
   leaderID: ID
   teamMemberIDs: [ID!]
+  tenderIDs: [ID!]
 }
 """
 Define a Relay Cursor type:
@@ -535,7 +577,7 @@ type Customer implements Node {
   contactPersonEmail: String
   areaID: ID!
   salesID: ID
-  createdByUserID: ID!
+  createdByID: ID!
   area: Area!
   tenders: [Tender!]
   sales: User
@@ -748,6 +790,11 @@ input CustomerWhereInput {
   areaIDGTE: ID
   areaIDLT: ID
   areaIDLTE: ID
+  areaIDContains: ID
+  areaIDHasPrefix: ID
+  areaIDHasSuffix: ID
+  areaIDEqualFold: ID
+  areaIDContainsFold: ID
   """
   sales_id field predicates
   """
@@ -759,19 +806,29 @@ input CustomerWhereInput {
   salesIDGTE: ID
   salesIDLT: ID
   salesIDLTE: ID
+  salesIDContains: ID
+  salesIDHasPrefix: ID
+  salesIDHasSuffix: ID
   salesIDIsNil: Boolean
   salesIDNotNil: Boolean
+  salesIDEqualFold: ID
+  salesIDContainsFold: ID
   """
-  created_by_user_id field predicates
+  created_by_id field predicates
   """
-  createdByUserID: ID
-  createdByUserIDNEQ: ID
-  createdByUserIDIn: [ID!]
-  createdByUserIDNotIn: [ID!]
-  createdByUserIDGT: ID
-  createdByUserIDGTE: ID
-  createdByUserIDLT: ID
-  createdByUserIDLTE: ID
+  createdByID: ID
+  createdByIDNEQ: ID
+  createdByIDIn: [ID!]
+  createdByIDNotIn: [ID!]
+  createdByIDGT: ID
+  createdByIDGTE: ID
+  createdByIDLT: ID
+  createdByIDLTE: ID
+  createdByIDContains: ID
+  createdByIDHasPrefix: ID
+  createdByIDHasSuffix: ID
+  createdByIDEqualFold: ID
+  createdByIDContainsFold: ID
   """
   area edge predicates
   """
@@ -805,6 +862,7 @@ type District implements Node {
   cityID: ID
   province: Province!
   city: City
+  tenders: [Tender!]
 }
 """
 A connection to a list of items.
@@ -937,6 +995,11 @@ input DistrictWhereInput {
   provinceIDGTE: ID
   provinceIDLT: ID
   provinceIDLTE: ID
+  provinceIDContains: ID
+  provinceIDHasPrefix: ID
+  provinceIDHasSuffix: ID
+  provinceIDEqualFold: ID
+  provinceIDContainsFold: ID
   """
   city_id field predicates
   """
@@ -948,8 +1011,13 @@ input DistrictWhereInput {
   cityIDGTE: ID
   cityIDLT: ID
   cityIDLTE: ID
+  cityIDContains: ID
+  cityIDHasPrefix: ID
+  cityIDHasSuffix: ID
   cityIDIsNil: Boolean
   cityIDNotNil: Boolean
+  cityIDEqualFold: ID
+  cityIDContainsFold: ID
   """
   province edge predicates
   """
@@ -960,6 +1028,11 @@ input DistrictWhereInput {
   """
   hasCity: Boolean
   hasCityWith: [CityWhereInput!]
+  """
+  tenders edge predicates
+  """
+  hasTenders: Boolean
+  hasTendersWith: [TenderWhereInput!]
 }
 """
 An object with an ID.
@@ -1016,6 +1089,7 @@ type Province implements Node {
   districts: [District!]
   cities: [City!]
   country: Country!
+  tenders: [Tender!]
 }
 """
 A connection to a list of items.
@@ -1126,6 +1200,11 @@ input ProvinceWhereInput {
   countryIDGTE: ID
   countryIDLT: ID
   countryIDLTE: ID
+  countryIDContains: ID
+  countryIDHasPrefix: ID
+  countryIDHasSuffix: ID
+  countryIDEqualFold: ID
+  countryIDContainsFold: ID
   """
   districts edge predicates
   """
@@ -1141,6 +1220,11 @@ input ProvinceWhereInput {
   """
   hasCountry: Boolean
   hasCountryWith: [CountryWhereInput!]
+  """
+  tenders edge predicates
+  """
+  hasTenders: Boolean
+  hasTendersWith: [TenderWhereInput!]
 }
 type Query {
   """
@@ -1379,12 +1463,20 @@ type Tender implements Node {
   name: String!
   estimatedAmount: Float
   tenderDate: Time
-  findDate: Time!
+  discoveryDate: Time!
+  address: String
+  fullAddress: String
+  contractor: String
   sizeAndValueRating: Int
+  sizeAndValueRatingOverview: String
   creditAndPaymentRating: Int
+  creditAndPaymentRatingOverview: String
   timeLimitRating: Int
+  timeLimitRatingOverview: String
   customerRelationshipRating: Int
+  customerRelationshipRatingOverview: String
   competitivePartnershipRating: Int
+  competitivePartnershipRatingOverview: String
   prepareToBid: Boolean!
   projectCode: String
   projectDefinition: String
@@ -1392,13 +1484,37 @@ type Tender implements Node {
   estimatedProjectEndDate: Time
   projectType: String
   attachements: [String!]
-  geoLocation: String
   remark: String
   images: [String!]
+  tenderSituations: String
+  ownerSituations: String
+  biddingInstructions: String
+  competitorSituations: String
+  costEngineer: String
+  tenderForm: String
+  contractForm: String
+  managementCompany: String
+  tenderingAgency: String
+  biddingDate: Time
+  facadeConsultant: String
+  designUnit: String
+  consultingFirm: String
+  keyProject: Boolean!
   areaID: ID!
+  provinceID: ID!
+  cityID: ID
+  districtID: ID!
   customerID: ID!
+  finderID: ID!
+  createdByID: ID!
   area: Area!
   customer: Customer!
+  finder: User!
+  createdBy: User!
+  followingSales: [User!]
+  province: Province!
+  city: City
+  district: District!
 }
 """
 A connection to a list of items.
@@ -1541,16 +1657,70 @@ input TenderWhereInput {
   tenderDateIsNil: Boolean
   tenderDateNotNil: Boolean
   """
-  find_date field predicates
+  discovery_date field predicates
   """
-  findDate: Time
-  findDateNEQ: Time
-  findDateIn: [Time!]
-  findDateNotIn: [Time!]
-  findDateGT: Time
-  findDateGTE: Time
-  findDateLT: Time
-  findDateLTE: Time
+  discoveryDate: Time
+  discoveryDateNEQ: Time
+  discoveryDateIn: [Time!]
+  discoveryDateNotIn: [Time!]
+  discoveryDateGT: Time
+  discoveryDateGTE: Time
+  discoveryDateLT: Time
+  discoveryDateLTE: Time
+  """
+  address field predicates
+  """
+  address: String
+  addressNEQ: String
+  addressIn: [String!]
+  addressNotIn: [String!]
+  addressGT: String
+  addressGTE: String
+  addressLT: String
+  addressLTE: String
+  addressContains: String
+  addressHasPrefix: String
+  addressHasSuffix: String
+  addressIsNil: Boolean
+  addressNotNil: Boolean
+  addressEqualFold: String
+  addressContainsFold: String
+  """
+  full_address field predicates
+  """
+  fullAddress: String
+  fullAddressNEQ: String
+  fullAddressIn: [String!]
+  fullAddressNotIn: [String!]
+  fullAddressGT: String
+  fullAddressGTE: String
+  fullAddressLT: String
+  fullAddressLTE: String
+  fullAddressContains: String
+  fullAddressHasPrefix: String
+  fullAddressHasSuffix: String
+  fullAddressIsNil: Boolean
+  fullAddressNotNil: Boolean
+  fullAddressEqualFold: String
+  fullAddressContainsFold: String
+  """
+  contractor field predicates
+  """
+  contractor: String
+  contractorNEQ: String
+  contractorIn: [String!]
+  contractorNotIn: [String!]
+  contractorGT: String
+  contractorGTE: String
+  contractorLT: String
+  contractorLTE: String
+  contractorContains: String
+  contractorHasPrefix: String
+  contractorHasSuffix: String
+  contractorIsNil: Boolean
+  contractorNotNil: Boolean
+  contractorEqualFold: String
+  contractorContainsFold: String
   """
   size_and_value_rating field predicates
   """
@@ -1565,6 +1735,24 @@ input TenderWhereInput {
   sizeAndValueRatingIsNil: Boolean
   sizeAndValueRatingNotNil: Boolean
   """
+  size_and_value_rating_overview field predicates
+  """
+  sizeAndValueRatingOverview: String
+  sizeAndValueRatingOverviewNEQ: String
+  sizeAndValueRatingOverviewIn: [String!]
+  sizeAndValueRatingOverviewNotIn: [String!]
+  sizeAndValueRatingOverviewGT: String
+  sizeAndValueRatingOverviewGTE: String
+  sizeAndValueRatingOverviewLT: String
+  sizeAndValueRatingOverviewLTE: String
+  sizeAndValueRatingOverviewContains: String
+  sizeAndValueRatingOverviewHasPrefix: String
+  sizeAndValueRatingOverviewHasSuffix: String
+  sizeAndValueRatingOverviewIsNil: Boolean
+  sizeAndValueRatingOverviewNotNil: Boolean
+  sizeAndValueRatingOverviewEqualFold: String
+  sizeAndValueRatingOverviewContainsFold: String
+  """
   credit_and_payment_rating field predicates
   """
   creditAndPaymentRating: Int
@@ -1577,6 +1765,24 @@ input TenderWhereInput {
   creditAndPaymentRatingLTE: Int
   creditAndPaymentRatingIsNil: Boolean
   creditAndPaymentRatingNotNil: Boolean
+  """
+  credit_and_payment_rating_overview field predicates
+  """
+  creditAndPaymentRatingOverview: String
+  creditAndPaymentRatingOverviewNEQ: String
+  creditAndPaymentRatingOverviewIn: [String!]
+  creditAndPaymentRatingOverviewNotIn: [String!]
+  creditAndPaymentRatingOverviewGT: String
+  creditAndPaymentRatingOverviewGTE: String
+  creditAndPaymentRatingOverviewLT: String
+  creditAndPaymentRatingOverviewLTE: String
+  creditAndPaymentRatingOverviewContains: String
+  creditAndPaymentRatingOverviewHasPrefix: String
+  creditAndPaymentRatingOverviewHasSuffix: String
+  creditAndPaymentRatingOverviewIsNil: Boolean
+  creditAndPaymentRatingOverviewNotNil: Boolean
+  creditAndPaymentRatingOverviewEqualFold: String
+  creditAndPaymentRatingOverviewContainsFold: String
   """
   time_limit_rating field predicates
   """
@@ -1591,6 +1797,24 @@ input TenderWhereInput {
   timeLimitRatingIsNil: Boolean
   timeLimitRatingNotNil: Boolean
   """
+  time_limit_rating_overview field predicates
+  """
+  timeLimitRatingOverview: String
+  timeLimitRatingOverviewNEQ: String
+  timeLimitRatingOverviewIn: [String!]
+  timeLimitRatingOverviewNotIn: [String!]
+  timeLimitRatingOverviewGT: String
+  timeLimitRatingOverviewGTE: String
+  timeLimitRatingOverviewLT: String
+  timeLimitRatingOverviewLTE: String
+  timeLimitRatingOverviewContains: String
+  timeLimitRatingOverviewHasPrefix: String
+  timeLimitRatingOverviewHasSuffix: String
+  timeLimitRatingOverviewIsNil: Boolean
+  timeLimitRatingOverviewNotNil: Boolean
+  timeLimitRatingOverviewEqualFold: String
+  timeLimitRatingOverviewContainsFold: String
+  """
   customer_relationship_rating field predicates
   """
   customerRelationshipRating: Int
@@ -1604,6 +1828,24 @@ input TenderWhereInput {
   customerRelationshipRatingIsNil: Boolean
   customerRelationshipRatingNotNil: Boolean
   """
+  customer_relationship_rating_overview field predicates
+  """
+  customerRelationshipRatingOverview: String
+  customerRelationshipRatingOverviewNEQ: String
+  customerRelationshipRatingOverviewIn: [String!]
+  customerRelationshipRatingOverviewNotIn: [String!]
+  customerRelationshipRatingOverviewGT: String
+  customerRelationshipRatingOverviewGTE: String
+  customerRelationshipRatingOverviewLT: String
+  customerRelationshipRatingOverviewLTE: String
+  customerRelationshipRatingOverviewContains: String
+  customerRelationshipRatingOverviewHasPrefix: String
+  customerRelationshipRatingOverviewHasSuffix: String
+  customerRelationshipRatingOverviewIsNil: Boolean
+  customerRelationshipRatingOverviewNotNil: Boolean
+  customerRelationshipRatingOverviewEqualFold: String
+  customerRelationshipRatingOverviewContainsFold: String
+  """
   competitive_partnership_rating field predicates
   """
   competitivePartnershipRating: Int
@@ -1616,6 +1858,24 @@ input TenderWhereInput {
   competitivePartnershipRatingLTE: Int
   competitivePartnershipRatingIsNil: Boolean
   competitivePartnershipRatingNotNil: Boolean
+  """
+  competitive_partnership_rating_overview field predicates
+  """
+  competitivePartnershipRatingOverview: String
+  competitivePartnershipRatingOverviewNEQ: String
+  competitivePartnershipRatingOverviewIn: [String!]
+  competitivePartnershipRatingOverviewNotIn: [String!]
+  competitivePartnershipRatingOverviewGT: String
+  competitivePartnershipRatingOverviewGTE: String
+  competitivePartnershipRatingOverviewLT: String
+  competitivePartnershipRatingOverviewLTE: String
+  competitivePartnershipRatingOverviewContains: String
+  competitivePartnershipRatingOverviewHasPrefix: String
+  competitivePartnershipRatingOverviewHasSuffix: String
+  competitivePartnershipRatingOverviewIsNil: Boolean
+  competitivePartnershipRatingOverviewNotNil: Boolean
+  competitivePartnershipRatingOverviewEqualFold: String
+  competitivePartnershipRatingOverviewContainsFold: String
   """
   prepare_to_bid field predicates
   """
@@ -1702,24 +1962,6 @@ input TenderWhereInput {
   projectTypeEqualFold: String
   projectTypeContainsFold: String
   """
-  geo_location field predicates
-  """
-  geoLocation: String
-  geoLocationNEQ: String
-  geoLocationIn: [String!]
-  geoLocationNotIn: [String!]
-  geoLocationGT: String
-  geoLocationGTE: String
-  geoLocationLT: String
-  geoLocationLTE: String
-  geoLocationContains: String
-  geoLocationHasPrefix: String
-  geoLocationHasSuffix: String
-  geoLocationIsNil: Boolean
-  geoLocationNotNil: Boolean
-  geoLocationEqualFold: String
-  geoLocationContainsFold: String
-  """
   remark field predicates
   """
   remark: String
@@ -1738,6 +1980,240 @@ input TenderWhereInput {
   remarkEqualFold: String
   remarkContainsFold: String
   """
+  tender_situations field predicates
+  """
+  tenderSituations: String
+  tenderSituationsNEQ: String
+  tenderSituationsIn: [String!]
+  tenderSituationsNotIn: [String!]
+  tenderSituationsGT: String
+  tenderSituationsGTE: String
+  tenderSituationsLT: String
+  tenderSituationsLTE: String
+  tenderSituationsContains: String
+  tenderSituationsHasPrefix: String
+  tenderSituationsHasSuffix: String
+  tenderSituationsIsNil: Boolean
+  tenderSituationsNotNil: Boolean
+  tenderSituationsEqualFold: String
+  tenderSituationsContainsFold: String
+  """
+  owner_situations field predicates
+  """
+  ownerSituations: String
+  ownerSituationsNEQ: String
+  ownerSituationsIn: [String!]
+  ownerSituationsNotIn: [String!]
+  ownerSituationsGT: String
+  ownerSituationsGTE: String
+  ownerSituationsLT: String
+  ownerSituationsLTE: String
+  ownerSituationsContains: String
+  ownerSituationsHasPrefix: String
+  ownerSituationsHasSuffix: String
+  ownerSituationsIsNil: Boolean
+  ownerSituationsNotNil: Boolean
+  ownerSituationsEqualFold: String
+  ownerSituationsContainsFold: String
+  """
+  bidding_instructions field predicates
+  """
+  biddingInstructions: String
+  biddingInstructionsNEQ: String
+  biddingInstructionsIn: [String!]
+  biddingInstructionsNotIn: [String!]
+  biddingInstructionsGT: String
+  biddingInstructionsGTE: String
+  biddingInstructionsLT: String
+  biddingInstructionsLTE: String
+  biddingInstructionsContains: String
+  biddingInstructionsHasPrefix: String
+  biddingInstructionsHasSuffix: String
+  biddingInstructionsIsNil: Boolean
+  biddingInstructionsNotNil: Boolean
+  biddingInstructionsEqualFold: String
+  biddingInstructionsContainsFold: String
+  """
+  competitor_situations field predicates
+  """
+  competitorSituations: String
+  competitorSituationsNEQ: String
+  competitorSituationsIn: [String!]
+  competitorSituationsNotIn: [String!]
+  competitorSituationsGT: String
+  competitorSituationsGTE: String
+  competitorSituationsLT: String
+  competitorSituationsLTE: String
+  competitorSituationsContains: String
+  competitorSituationsHasPrefix: String
+  competitorSituationsHasSuffix: String
+  competitorSituationsIsNil: Boolean
+  competitorSituationsNotNil: Boolean
+  competitorSituationsEqualFold: String
+  competitorSituationsContainsFold: String
+  """
+  cost_engineer field predicates
+  """
+  costEngineer: String
+  costEngineerNEQ: String
+  costEngineerIn: [String!]
+  costEngineerNotIn: [String!]
+  costEngineerGT: String
+  costEngineerGTE: String
+  costEngineerLT: String
+  costEngineerLTE: String
+  costEngineerContains: String
+  costEngineerHasPrefix: String
+  costEngineerHasSuffix: String
+  costEngineerIsNil: Boolean
+  costEngineerNotNil: Boolean
+  costEngineerEqualFold: String
+  costEngineerContainsFold: String
+  """
+  tender_form field predicates
+  """
+  tenderForm: String
+  tenderFormNEQ: String
+  tenderFormIn: [String!]
+  tenderFormNotIn: [String!]
+  tenderFormGT: String
+  tenderFormGTE: String
+  tenderFormLT: String
+  tenderFormLTE: String
+  tenderFormContains: String
+  tenderFormHasPrefix: String
+  tenderFormHasSuffix: String
+  tenderFormIsNil: Boolean
+  tenderFormNotNil: Boolean
+  tenderFormEqualFold: String
+  tenderFormContainsFold: String
+  """
+  contract_form field predicates
+  """
+  contractForm: String
+  contractFormNEQ: String
+  contractFormIn: [String!]
+  contractFormNotIn: [String!]
+  contractFormGT: String
+  contractFormGTE: String
+  contractFormLT: String
+  contractFormLTE: String
+  contractFormContains: String
+  contractFormHasPrefix: String
+  contractFormHasSuffix: String
+  contractFormIsNil: Boolean
+  contractFormNotNil: Boolean
+  contractFormEqualFold: String
+  contractFormContainsFold: String
+  """
+  management_company field predicates
+  """
+  managementCompany: String
+  managementCompanyNEQ: String
+  managementCompanyIn: [String!]
+  managementCompanyNotIn: [String!]
+  managementCompanyGT: String
+  managementCompanyGTE: String
+  managementCompanyLT: String
+  managementCompanyLTE: String
+  managementCompanyContains: String
+  managementCompanyHasPrefix: String
+  managementCompanyHasSuffix: String
+  managementCompanyIsNil: Boolean
+  managementCompanyNotNil: Boolean
+  managementCompanyEqualFold: String
+  managementCompanyContainsFold: String
+  """
+  tendering_agency field predicates
+  """
+  tenderingAgency: String
+  tenderingAgencyNEQ: String
+  tenderingAgencyIn: [String!]
+  tenderingAgencyNotIn: [String!]
+  tenderingAgencyGT: String
+  tenderingAgencyGTE: String
+  tenderingAgencyLT: String
+  tenderingAgencyLTE: String
+  tenderingAgencyContains: String
+  tenderingAgencyHasPrefix: String
+  tenderingAgencyHasSuffix: String
+  tenderingAgencyIsNil: Boolean
+  tenderingAgencyNotNil: Boolean
+  tenderingAgencyEqualFold: String
+  tenderingAgencyContainsFold: String
+  """
+  bidding_date field predicates
+  """
+  biddingDate: Time
+  biddingDateNEQ: Time
+  biddingDateIn: [Time!]
+  biddingDateNotIn: [Time!]
+  biddingDateGT: Time
+  biddingDateGTE: Time
+  biddingDateLT: Time
+  biddingDateLTE: Time
+  biddingDateIsNil: Boolean
+  biddingDateNotNil: Boolean
+  """
+  facade_consultant field predicates
+  """
+  facadeConsultant: String
+  facadeConsultantNEQ: String
+  facadeConsultantIn: [String!]
+  facadeConsultantNotIn: [String!]
+  facadeConsultantGT: String
+  facadeConsultantGTE: String
+  facadeConsultantLT: String
+  facadeConsultantLTE: String
+  facadeConsultantContains: String
+  facadeConsultantHasPrefix: String
+  facadeConsultantHasSuffix: String
+  facadeConsultantIsNil: Boolean
+  facadeConsultantNotNil: Boolean
+  facadeConsultantEqualFold: String
+  facadeConsultantContainsFold: String
+  """
+  design_unit field predicates
+  """
+  designUnit: String
+  designUnitNEQ: String
+  designUnitIn: [String!]
+  designUnitNotIn: [String!]
+  designUnitGT: String
+  designUnitGTE: String
+  designUnitLT: String
+  designUnitLTE: String
+  designUnitContains: String
+  designUnitHasPrefix: String
+  designUnitHasSuffix: String
+  designUnitIsNil: Boolean
+  designUnitNotNil: Boolean
+  designUnitEqualFold: String
+  designUnitContainsFold: String
+  """
+  consulting_firm field predicates
+  """
+  consultingFirm: String
+  consultingFirmNEQ: String
+  consultingFirmIn: [String!]
+  consultingFirmNotIn: [String!]
+  consultingFirmGT: String
+  consultingFirmGTE: String
+  consultingFirmLT: String
+  consultingFirmLTE: String
+  consultingFirmContains: String
+  consultingFirmHasPrefix: String
+  consultingFirmHasSuffix: String
+  consultingFirmIsNil: Boolean
+  consultingFirmNotNil: Boolean
+  consultingFirmEqualFold: String
+  consultingFirmContainsFold: String
+  """
+  key_project field predicates
+  """
+  keyProject: Boolean
+  keyProjectNEQ: Boolean
+  """
   area_id field predicates
   """
   areaID: ID
@@ -1748,6 +2224,61 @@ input TenderWhereInput {
   areaIDGTE: ID
   areaIDLT: ID
   areaIDLTE: ID
+  areaIDContains: ID
+  areaIDHasPrefix: ID
+  areaIDHasSuffix: ID
+  areaIDEqualFold: ID
+  areaIDContainsFold: ID
+  """
+  province_id field predicates
+  """
+  provinceID: ID
+  provinceIDNEQ: ID
+  provinceIDIn: [ID!]
+  provinceIDNotIn: [ID!]
+  provinceIDGT: ID
+  provinceIDGTE: ID
+  provinceIDLT: ID
+  provinceIDLTE: ID
+  provinceIDContains: ID
+  provinceIDHasPrefix: ID
+  provinceIDHasSuffix: ID
+  provinceIDEqualFold: ID
+  provinceIDContainsFold: ID
+  """
+  city_id field predicates
+  """
+  cityID: ID
+  cityIDNEQ: ID
+  cityIDIn: [ID!]
+  cityIDNotIn: [ID!]
+  cityIDGT: ID
+  cityIDGTE: ID
+  cityIDLT: ID
+  cityIDLTE: ID
+  cityIDContains: ID
+  cityIDHasPrefix: ID
+  cityIDHasSuffix: ID
+  cityIDIsNil: Boolean
+  cityIDNotNil: Boolean
+  cityIDEqualFold: ID
+  cityIDContainsFold: ID
+  """
+  district_id field predicates
+  """
+  districtID: ID
+  districtIDNEQ: ID
+  districtIDIn: [ID!]
+  districtIDNotIn: [ID!]
+  districtIDGT: ID
+  districtIDGTE: ID
+  districtIDLT: ID
+  districtIDLTE: ID
+  districtIDContains: ID
+  districtIDHasPrefix: ID
+  districtIDHasSuffix: ID
+  districtIDEqualFold: ID
+  districtIDContainsFold: ID
   """
   customer_id field predicates
   """
@@ -1759,6 +2290,43 @@ input TenderWhereInput {
   customerIDGTE: ID
   customerIDLT: ID
   customerIDLTE: ID
+  customerIDContains: ID
+  customerIDHasPrefix: ID
+  customerIDHasSuffix: ID
+  customerIDEqualFold: ID
+  customerIDContainsFold: ID
+  """
+  finder_id field predicates
+  """
+  finderID: ID
+  finderIDNEQ: ID
+  finderIDIn: [ID!]
+  finderIDNotIn: [ID!]
+  finderIDGT: ID
+  finderIDGTE: ID
+  finderIDLT: ID
+  finderIDLTE: ID
+  finderIDContains: ID
+  finderIDHasPrefix: ID
+  finderIDHasSuffix: ID
+  finderIDEqualFold: ID
+  finderIDContainsFold: ID
+  """
+  created_by_id field predicates
+  """
+  createdByID: ID
+  createdByIDNEQ: ID
+  createdByIDIn: [ID!]
+  createdByIDNotIn: [ID!]
+  createdByIDGT: ID
+  createdByIDGTE: ID
+  createdByIDLT: ID
+  createdByIDLTE: ID
+  createdByIDContains: ID
+  createdByIDHasPrefix: ID
+  createdByIDHasSuffix: ID
+  createdByIDEqualFold: ID
+  createdByIDContainsFold: ID
   """
   area edge predicates
   """
@@ -1769,6 +2337,36 @@ input TenderWhereInput {
   """
   hasCustomer: Boolean
   hasCustomerWith: [CustomerWhereInput!]
+  """
+  finder edge predicates
+  """
+  hasFinder: Boolean
+  hasFinderWith: [UserWhereInput!]
+  """
+  created_by edge predicates
+  """
+  hasCreatedBy: Boolean
+  hasCreatedByWith: [UserWhereInput!]
+  """
+  following_sales edge predicates
+  """
+  hasFollowingSales: Boolean
+  hasFollowingSalesWith: [UserWhereInput!]
+  """
+  province edge predicates
+  """
+  hasProvince: Boolean
+  hasProvinceWith: [ProvinceWhereInput!]
+  """
+  city edge predicates
+  """
+  hasCity: Boolean
+  hasCityWith: [CityWhereInput!]
+  """
+  district edge predicates
+  """
+  hasDistrict: Boolean
+  hasDistrictWith: [DistrictWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -1801,6 +2399,9 @@ input UpdateCityInput {
   removeDistrictIDs: [ID!]
   clearDistricts: Boolean
   provinceID: ID
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
 }
 """
 UpdateCountryInput is used for update Country object.
@@ -1855,6 +2456,9 @@ input UpdateDistrictInput {
   provinceID: ID
   cityID: ID
   clearCity: Boolean
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
 }
 """
 UpdateProvinceInput is used for update Province object.
@@ -1871,6 +2475,9 @@ input UpdateProvinceInput {
   removeCityIDs: [ID!]
   clearCities: Boolean
   countryID: ID
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
 }
 """
 UpdateTenderInput is used for update Tender object.
@@ -1885,17 +2492,33 @@ input UpdateTenderInput {
   clearEstimatedAmount: Boolean
   tenderDate: Time
   clearTenderDate: Boolean
-  findDate: Time
+  discoveryDate: Time
+  address: String
+  clearAddress: Boolean
+  fullAddress: String
+  clearFullAddress: Boolean
+  contractor: String
+  clearContractor: Boolean
   sizeAndValueRating: Int
   clearSizeAndValueRating: Boolean
+  sizeAndValueRatingOverview: String
+  clearSizeAndValueRatingOverview: Boolean
   creditAndPaymentRating: Int
   clearCreditAndPaymentRating: Boolean
+  creditAndPaymentRatingOverview: String
+  clearCreditAndPaymentRatingOverview: Boolean
   timeLimitRating: Int
   clearTimeLimitRating: Boolean
+  timeLimitRatingOverview: String
+  clearTimeLimitRatingOverview: Boolean
   customerRelationshipRating: Int
   clearCustomerRelationshipRating: Boolean
+  customerRelationshipRatingOverview: String
+  clearCustomerRelationshipRatingOverview: Boolean
   competitivePartnershipRating: Int
   clearCompetitivePartnershipRating: Boolean
+  competitivePartnershipRatingOverview: String
+  clearCompetitivePartnershipRatingOverview: Boolean
   prepareToBid: Boolean
   projectCode: String
   clearProjectCode: Boolean
@@ -1910,15 +2533,49 @@ input UpdateTenderInput {
   attachements: [String!]
   appendAttachements: [String!]
   clearAttachements: Boolean
-  geoLocation: String
-  clearGeoLocation: Boolean
   remark: String
   clearRemark: Boolean
   images: [String!]
   appendImages: [String!]
   clearImages: Boolean
+  tenderSituations: String
+  clearTenderSituations: Boolean
+  ownerSituations: String
+  clearOwnerSituations: Boolean
+  biddingInstructions: String
+  clearBiddingInstructions: Boolean
+  competitorSituations: String
+  clearCompetitorSituations: Boolean
+  costEngineer: String
+  clearCostEngineer: Boolean
+  tenderForm: String
+  clearTenderForm: Boolean
+  contractForm: String
+  clearContractForm: Boolean
+  managementCompany: String
+  clearManagementCompany: Boolean
+  tenderingAgency: String
+  clearTenderingAgency: Boolean
+  biddingDate: Time
+  clearBiddingDate: Boolean
+  facadeConsultant: String
+  clearFacadeConsultant: Boolean
+  designUnit: String
+  clearDesignUnit: Boolean
+  consultingFirm: String
+  clearConsultingFirm: Boolean
+  keyProject: Boolean
   areaID: ID
   customerID: ID
+  finderID: ID
+  createdByID: ID
+  addFollowingSaleIDs: [ID!]
+  removeFollowingSaleIDs: [ID!]
+  clearFollowingSales: Boolean
+  provinceID: ID
+  cityID: ID
+  clearCity: Boolean
+  districtID: ID
 }
 """
 UpdateUserInput is used for update User object.
@@ -1943,6 +2600,9 @@ input UpdateUserInput {
   addTeamMemberIDs: [ID!]
   removeTeamMemberIDs: [ID!]
   clearTeamMembers: Boolean
+  addTenderIDs: [ID!]
+  removeTenderIDs: [ID!]
+  clearTenders: Boolean
 }
 type User implements Node {
   id: ID!
@@ -1959,6 +2619,7 @@ type User implements Node {
   customers: [Customer!]
   leader: User
   teamMembers: [User!]
+  tenders: [Tender!]
 }
 """
 A connection to a list of items.
@@ -2127,8 +2788,13 @@ input UserWhereInput {
   leaderIDGTE: ID
   leaderIDLT: ID
   leaderIDLTE: ID
+  leaderIDContains: ID
+  leaderIDHasPrefix: ID
+  leaderIDHasSuffix: ID
   leaderIDIsNil: Boolean
   leaderIDNotNil: Boolean
+  leaderIDEqualFold: ID
+  leaderIDContainsFold: ID
   """
   areas edge predicates
   """
@@ -2149,4 +2815,9 @@ input UserWhereInput {
   """
   hasTeamMembers: Boolean
   hasTeamMembersWith: [UserWhereInput!]
+  """
+  tenders edge predicates
+  """
+  hasTenders: Boolean
+  hasTendersWith: [TenderWhereInput!]
 }

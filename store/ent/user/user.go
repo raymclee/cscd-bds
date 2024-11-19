@@ -41,6 +41,8 @@ const (
 	EdgeLeader = "leader"
 	// EdgeTeamMembers holds the string denoting the team_members edge name in mutations.
 	EdgeTeamMembers = "team_members"
+	// EdgeTenders holds the string denoting the tenders edge name in mutations.
+	EdgeTenders = "tenders"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// AreasTable is the table that holds the areas relation/edge. The primary key declared below.
@@ -63,6 +65,11 @@ const (
 	TeamMembersTable = "users"
 	// TeamMembersColumn is the table column denoting the team_members relation/edge.
 	TeamMembersColumn = "leader_id"
+	// TendersTable is the table that holds the tenders relation/edge. The primary key declared below.
+	TendersTable = "tender_following_sales"
+	// TendersInverseTable is the table name for the Tender entity.
+	// It exists in this package in order to avoid circular dependency with the "tender" package.
+	TendersInverseTable = "tenders"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -83,6 +90,9 @@ var (
 	// AreasPrimaryKey and AreasColumn2 are the table columns denoting the
 	// primary key for the areas relation (M2M).
 	AreasPrimaryKey = []string{"area_id", "user_id"}
+	// TendersPrimaryKey and TendersColumn2 are the table columns denoting the
+	// primary key for the tenders relation (M2M).
+	TendersPrimaryKey = []string{"tender_id", "user_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -209,6 +219,20 @@ func ByTeamMembers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTeamMembersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByTendersCount orders the results by tenders count.
+func ByTendersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newTendersStep(), opts...)
+	}
+}
+
+// ByTenders orders the results by tenders terms.
+func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newAreasStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -235,5 +259,12 @@ func newTeamMembersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(Table, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, TeamMembersTable, TeamMembersColumn),
+	)
+}
+func newTendersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(TendersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, TendersTable, TendersPrimaryKey...),
 	)
 }

@@ -37,6 +37,8 @@ const (
 	EdgeProvince = "province"
 	// EdgeCity holds the string denoting the city edge name in mutations.
 	EdgeCity = "city"
+	// EdgeTenders holds the string denoting the tenders edge name in mutations.
+	EdgeTenders = "tenders"
 	// Table holds the table name of the district in the database.
 	Table = "districts"
 	// ProvinceTable is the table that holds the province relation/edge.
@@ -53,6 +55,13 @@ const (
 	CityInverseTable = "cities"
 	// CityColumn is the table column denoting the city relation/edge.
 	CityColumn = "city_id"
+	// TendersTable is the table that holds the tenders relation/edge.
+	TendersTable = "tenders"
+	// TendersInverseTable is the table name for the Tender entity.
+	// It exists in this package in order to avoid circular dependency with the "tender" package.
+	TendersInverseTable = "tenders"
+	// TendersColumn is the table column denoting the tenders relation/edge.
+	TendersColumn = "district_id"
 )
 
 // Columns holds all SQL columns for district fields.
@@ -156,6 +165,20 @@ func ByCityField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCityStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByTendersCount orders the results by tenders count.
+func ByTendersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newTendersStep(), opts...)
+	}
+}
+
+// ByTenders orders the results by tenders terms.
+func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newProvinceStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -168,5 +191,12 @@ func newCityStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CityInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CityTable, CityColumn),
+	)
+}
+func newTendersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(TendersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
 	)
 }

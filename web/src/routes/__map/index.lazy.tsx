@@ -1,20 +1,23 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { BadgeJapaneseYen, ChartPie, Layers, Wallet } from 'lucide-react'
-import * as React from 'react'
-import { useShallow } from 'zustand/shallow'
-import { BidChart } from '~/components/bid-chart'
-import { BusinessChart } from '~/components/business-chart'
-import { PercentageChart } from '~/components/percentage-chart'
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
+import { BadgeJapaneseYen, ChartPie, Layers, Wallet } from "lucide-react";
+import * as React from "react";
+import { usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { useShallow } from "zustand/shallow";
+import { DashboardCard } from "~/components/dasboard-card";
+import { NewTenderBoard } from "~/components/new-tender-card";
+import { RankingListChart } from "~/components/ranking-list-chart";
+import { TenderTypeChart } from "~/components/tender-type-chart";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from '~/components/ui/breadcrumb'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import { Progress } from '~/components/ui/progress'
-import { ScrollArea } from '~/components/ui/scroll-area'
+} from "~/components/ui/breadcrumb";
+import { Progress } from "~/components/ui/progress";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -22,33 +25,42 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/ui/table'
-import { getDistrictColor } from '~/lib/color'
-import { cn } from '~/lib/utils'
-import { District, useMapStore } from '~/store/map'
-import { Bar } from '@ant-design/plots'
-import { DashboardCard } from '~/components/dasboard-card'
-import { NewTenderBoard } from '~/components/new-tender-card'
-import { TenderTypeChart } from '~/components/tender-type-chart'
-import { RankingListChart } from '~/components/ranking-list-chart'
+} from "~/components/ui/table";
+import { getDistrictColor } from "~/lib/color";
+import { cn } from "~/lib/utils";
+import { District, useMapStore } from "~/store/map";
 
-export const Route = createLazyFileRoute('/__map/')({
+export const Route = createLazyFileRoute("/__map/")({
   component: RouteComponent,
-})
-
-type Item = {
-  label: string
-  value: number
-  children: Item[]
-}
+});
 
 const data = {
-  '1': [0.8, 1, 10],
-  '2': [4, 5, 20],
-  '3': [6, 7, 25],
-  '4': [10, 6, 30],
-  '5': [7, 3, 19],
-}
+  "1": [0.8, 1, 10],
+  "2": [4, 5, 20],
+  "3": [6, 7, 25],
+  "4": [10, 6, 30],
+  "5": [7, 3, 19],
+};
+
+const query = graphql`
+  query MapIndexPageQuery {
+    areas {
+      edges {
+        node {
+          id
+          tenders {
+            id
+            name
+            estimatedAmount
+            area {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 function RouteComponent() {
   const [
@@ -81,65 +93,68 @@ function RouteComponent() {
       state.pop,
       state.resetNavigation,
     ]),
-  )
-  const satelliteRef = React.useRef<AMap.TileLayer>()
+  );
+  const satelliteRef = React.useRef<AMap.TileLayer>();
   // const districtExplorerRef = React.useRef<any>();
   // const [visible, setVisible] = React.useState(false);
-  const makersRef = React.useRef<AMap.Marker[]>([])
-  const polygonsRef = React.useRef<AMap.Polygon[]>([])
+  const makersRef = React.useRef<AMap.Marker[]>([]);
+  const polygonsRef = React.useRef<AMap.Polygon[]>([]);
 
-  // const data = usePreloadedQuery<MapPageQuery>(query, Route.useLoaderData());
+  const data = usePreloadedQuery<MapIndexPageQuery>(
+    query,
+    Route.useLoaderData(),
+  );
   // const data = useLazyLoadQuery<MapPageQuery>(query, {});
 
   React.useEffect(() => {
-    initMap('map', {
+    initMap("map", {
       zoom: 4,
       // mapStyle: "amap://styles/grey",
-      mapStyle: 'amap://styles/darkblue',
+      mapStyle: "amap://styles/darkblue",
       // viewMode: "3D",
       // pitch: 30,
-    })
-    satelliteRef.current = new AMap.TileLayer.Satellite()
-  }, [])
+    });
+    satelliteRef.current = new AMap.TileLayer.Satellite();
+  }, []);
 
   React.useEffect(() => {
-    map?.on('complete', () => {
+    map?.on("complete", () => {
       //外部区域被点击
-      districtExplorer.on('outsideClick', function (e: any) {
+      districtExplorer.on("outsideClick", function (e: any) {
         districtExplorer.locatePosition(
           e.originalEvent.lnglat,
           (error: any, routeFeatures: any) => {
             if (routeFeatures && routeFeatures.length > 1) {
               //切换到省级区域
-              const props = routeFeatures[1].properties
+              const props = routeFeatures[1].properties;
               const district = districts.find((d) =>
                 d.adcode.includes(props.adcode),
-              )
+              );
               if (district) {
-                setSelectedDistrict(district)
+                setSelectedDistrict(district);
               }
-              switch2AreaNode(props.adcode)
+              switch2AreaNode(props.adcode);
               // switchNavigation({
               //   name: routeFeatures[1].properties.name,
               //   adcode: routeFeatures[1].properties.adcode,
               // });
-              pop(1)
+              pop(1);
             } else {
               //切换到全国
-              switch2AreaNode(100000)
-              resetNaivgation()
-              setSelectedDistrict(null)
+              switch2AreaNode(100000);
+              resetNaivgation();
+              setSelectedDistrict(null);
             }
-            map?.remove(polygonsRef.current)
+            map?.remove(polygonsRef.current);
           },
           {
             levelLimit: 2,
           },
-        )
-        map?.removeLayer(satelliteRef.current!)
-      })
+        );
+        map?.removeLayer(satelliteRef.current!);
+      });
 
-      districtExplorer.on('featureMouseover', (e: any, feature: any) => {
+      districtExplorer.on("featureMouseover", (e: any, feature: any) => {
         makersRef.current.forEach((marker) => {
           if (
             marker.getExtData()?.hidable &&
@@ -147,34 +162,34 @@ function RouteComponent() {
             marker.getExtData()?.adcode !== feature.properties.adcode
           ) {
             // marker.hide();
-            marker.getContentDom().style.opacity = '0'
+            marker.getContentDom().style.opacity = "0";
           }
-        })
-      })
+        });
+      });
 
-      districtExplorer.on('featureMouseout', (e: any, feature: any) => {
+      districtExplorer.on("featureMouseout", (e: any, feature: any) => {
         makersRef.current.forEach((marker) => {
           // marker.show();
-          marker.getContentDom().style.opacity = '1'
-        })
-      })
+          marker.getContentDom().style.opacity = "1";
+        });
+      });
 
-      districtExplorer.on('featureClick', (e: any, feature: any) => {
-        const props = feature.properties
-        const district = districts.find((d) => d.adcode.includes(props.adcode))
+      districtExplorer.on("featureClick", (e: any, feature: any) => {
+        const props = feature.properties;
+        const district = districts.find((d) => d.adcode.includes(props.adcode));
         if (district) {
-          setSelectedDistrict(district)
+          setSelectedDistrict(district);
         }
 
         if (e.target.getZoom() < 5) {
           if (!district) {
-            return
+            return;
           }
 
           // setSelectedDistrict(district);
-          push({ name: district.name })
-          renderArea(district)
-          return
+          push({ name: district.name });
+          renderArea(district);
+          return;
         }
 
         // const district = districts.find((d) => d.adcode.includes(props.adcode));
@@ -185,18 +200,18 @@ function RouteComponent() {
 
         // }
 
-        onFeatureOrMarkerClick(props)
-      })
+        onFeatureOrMarkerClick(props);
+      });
 
       //切换区域
 
-      switch2AreaNode(100000)
-    })
+      switch2AreaNode(100000);
+    });
 
     return () => {
-      map?.destroy()
-    }
-  }, [map, satelliteRef])
+      map?.destroy();
+    };
+  }, [map, satelliteRef]);
 
   function switch2AreaNode(
     adcode: number,
@@ -210,16 +225,16 @@ function RouteComponent() {
     //   return;
     // }
 
-    map?.removeLayer(satelliteRef.current!)
-    setDashboardVisible(true)
-    map?.remove(makersRef.current)
+    map?.removeLayer(satelliteRef.current!);
+    setDashboardVisible(true);
+    map?.remove(makersRef.current);
 
     if (adcode === 100000) {
       for (const district of districts) {
         //@ts-expect-error
         const marker = new AMapUI.SimpleMarker({
           // @ts-expect-error
-          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles('default'),
+          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
           label: {
             content: `
               <div class="flex flex-col">
@@ -242,30 +257,30 @@ function RouteComponent() {
           extData: {
             home: true,
           },
-        })
-        marker.on('click', () => {
-          map?.remove(makersRef.current)
+        });
+        marker.on("click", () => {
+          map?.remove(makersRef.current);
 
-          districtExplorer.clearFeaturePolygons()
+          districtExplorer.clearFeaturePolygons();
 
           districtExplorer.loadMultiAreaNodes(
             district.adcode,
             (error: any, areaNodes: any) => {
               for (const [i, areaNode] of areaNodes.entries()) {
-                const props = areaNode.getProps()
+                const props = areaNode.getProps();
 
                 const fillColor = getDistrictColor(
                   props.adcode,
                   props.childrenNum,
-                )
+                );
                 const strokeColor = getDistrictColor(
                   props.adcode,
                   props.childrenNum,
-                )
-                renderMarker(props, true)
+                );
+                renderMarker(props, true);
 
                 districtExplorer.renderParentFeature(areaNode, {
-                  cursor: 'default',
+                  cursor: "default",
                   bubble: true,
                   strokeColor,
                   // strokeColor: areaNode.getSubFeatures().length ? "black" : "white", //线颜色
@@ -277,33 +292,33 @@ function RouteComponent() {
                   //   fillColor: "black",
                   //   fillColor: areaNode.getParentFeature() ? "black" : null,
                   fillOpacity: 0.5, //填充透明度
-                })
+                });
               }
             },
-          )
+          );
 
-          const zoom = getDistrictZoomLevel(district.id)
-          setSelectedDistrict(district)
-          push({ name: district.name })
-          map?.setZoomAndCenter(zoom, district.center, false, 600)
-        })
-        makersRef.current.push(marker)
+          const zoom = getDistrictZoomLevel(district.id);
+          setSelectedDistrict(district);
+          push({ name: district.name });
+          map?.setZoomAndCenter(zoom, district.center, false, 600);
+        });
+        makersRef.current.push(marker);
       }
     }
 
     loadAreaNode(adcode, function (error: any, areaNode: any) {
       if (error) {
-        return
+        return;
       }
 
-      setCurrentAreaNode(areaNode)
+      setCurrentAreaNode(areaNode);
       // currentAreaNode = areaNode;
 
       //设置当前使用的定位用节点
-      districtExplorer.setAreaNodesForLocating([areaNode])
+      districtExplorer.setAreaNodesForLocating([areaNode]);
 
-      refreshAreaNode(areaNode, zoomeToNode, adcode === 100000)
-    })
+      refreshAreaNode(areaNode, zoomeToNode, adcode === 100000);
+    });
   }
 
   //加载区域
@@ -314,25 +329,25 @@ function RouteComponent() {
     districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
       if (error) {
         if (callback) {
-          callback(error)
+          callback(error);
         }
 
-        console.error(error)
+        console.error(error);
 
-        return
+        return;
       }
 
       if (callback) {
-        callback(null, areaNode)
+        callback(null, areaNode);
       }
-    })
+    });
   }
 
   const onFeatureOrMarkerClick = (props: any) => {
-    switch2AreaNode(props.adcode, props.childrenNum > 0)
+    switch2AreaNode(props.adcode, props.childrenNum > 0);
     if (props.childrenNum == 0) {
       // map?.setZoom(18, true, 200);
-      const polygon = new AMap.Polygon()
+      const polygon = new AMap.Polygon();
       polygon.setPath([
         [114.233116, 22.279279],
         [114.233116, 22.279338],
@@ -346,9 +361,9 @@ function RouteComponent() {
         [114.234137, 22.276996],
         [114.234094, 22.276937],
         [114.233094, 22.276956],
-      ])
-      polygonsRef.current.push(polygon)
-      const poly2 = new AMap.Polygon()
+      ]);
+      polygonsRef.current.push(polygon);
+      const poly2 = new AMap.Polygon();
       poly2.setPath([
         [114.230747, 22.280171],
         [114.230898, 22.28005],
@@ -371,11 +386,11 @@ function RouteComponent() {
         [114.2303, 22.278423],
         [114.230003, 22.278827],
         [114.23009, 22.279543],
-      ])
-      poly2.setOptions({ fillColor: 'red', strokeColor: 'red' })
-      polygonsRef.current.push(poly2)
+      ]);
+      poly2.setOptions({ fillColor: "red", strokeColor: "red" });
+      polygonsRef.current.push(poly2);
 
-      const poly3 = new AMap.Polygon()
+      const poly3 = new AMap.Polygon();
       poly3.setPath([
         [114.229415, 22.281422],
         [114.230694, 22.280218],
@@ -384,19 +399,19 @@ function RouteComponent() {
         [114.228657, 22.279255],
         [114.228463, 22.279372],
         [114.227928, 22.280012],
-      ])
-      poly3.setOptions({ fillColor: 'yellow', strokeColor: 'yellow' })
-      polygonsRef.current.push(poly3)
+      ]);
+      poly3.setOptions({ fillColor: "yellow", strokeColor: "yellow" });
+      polygonsRef.current.push(poly3);
 
-      map?.add(polygon)
-      map?.add(poly2)
-      map?.add(poly3)
+      map?.add(polygon);
+      map?.add(poly2);
+      map?.add(poly3);
 
-      setDashboardVisible(false)
-      map?.setZoomAndCenter(15, props.center, false, 600)
-      map?.addLayer(satelliteRef.current!)
+      setDashboardVisible(false);
+      map?.setZoomAndCenter(15, props.center, false, 600);
+      map?.addLayer(satelliteRef.current!);
     }
-  }
+  };
 
   //绘制某个区域的边界
   function renderAreaPolygons(
@@ -407,50 +422,50 @@ function RouteComponent() {
   ) {
     //更新地图视野
     if (zoomeToNode) {
-      map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20])
+      map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);
     }
 
     if (clear) {
       //清除已有的绘制内容
-      districtExplorer.clearFeaturePolygons()
+      districtExplorer.clearFeaturePolygons();
     }
 
     //绘制子区域
     districtExplorer.renderSubFeatures(
       areaNode,
       function (feature: any, i: number) {
-        const props = feature.properties
+        const props = feature.properties;
 
         if (!topLevel) {
-          renderMarker(props, true)
+          renderMarker(props, true);
         }
 
-        const colorIndex = topLevel ? 0 : i
+        const colorIndex = topLevel ? 0 : i;
         const strokeColor = getDistrictColor(
           feature.properties.adcode,
           colorIndex,
-        )
+        );
         const fillColor = getDistrictColor(
           feature.properties.adcode,
           colorIndex,
-        )
+        );
 
         return {
-          cursor: 'default',
+          cursor: "default",
           bubble: true,
           strokeColor: strokeColor, //线颜色
           strokeOpacity: 1, //线透明度
           strokeWeight: 1, //线宽
           fillColor: fillColor, //填充色
           fillOpacity: 0.5, //填充透明度
-        }
+        };
       },
-    )
+    );
 
-    const props = areaNode.getProps()
+    const props = areaNode.getProps();
 
     if (props.adcode !== 100000) {
-      push({ name: props.name, adcode: props.adcode })
+      push({ name: props.name, adcode: props.adcode });
     }
 
     // if (!topLevel) {
@@ -459,39 +474,39 @@ function RouteComponent() {
 
     //绘制父区域;
     districtExplorer.renderParentFeature(areaNode, {
-      cursor: 'default',
+      cursor: "default",
       bubble: true,
       // strokeColor: "white", //线颜色
       strokeColor:
         props.adcode !== 100000 && areaNode.getSubFeatures().length
-          ? ''
-          : '#3cb8e6', //线颜色
+          ? ""
+          : "#3cb8e6", //线颜色
       strokeOpacity: 1, //线透明度
       strokeWeight: 2, //线宽
       // fillColor, //填充色
-      fillColor: '',
+      fillColor: "",
       //   fillColor: "black",
       //   fillColor: areaNode.getParentFeature() ? "black" : null,
       // fillOpacity: 0.5, //填充透明度
-    })
+    });
   }
 
   //绘制marker
   function renderMarker(props: any, hidable = false) {
     if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
-      return
+      return;
     }
 
-    const projectCount = Math.floor(Math.random() * 100)
-    const projectAmount = Math.floor(Math.random() * 1000)
+    const projectCount = Math.floor(Math.random() * 100);
+    const projectAmount = Math.floor(Math.random() * 1000);
 
     if (projectCount < 0) {
-      return
+      return;
     }
     // @ts-expect-error
     const marker = new AMapUI.SimpleMarker({
       // @ts-expect-error
-      iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles('default'),
+      iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
       label: {
         content: `
         <div class="flex flex-col gap-1 text-xs">
@@ -507,23 +522,23 @@ function RouteComponent() {
         hidable,
         adcode: props.adcode,
       },
-    })
+    });
 
-    marker.on('click', () => {
-      const district = districts.find((d) => d.adcode.includes(props.adcode))
+    marker.on("click", () => {
+      const district = districts.find((d) => d.adcode.includes(props.adcode));
       if (district) {
-        setSelectedDistrict(district)
+        setSelectedDistrict(district);
       }
-      push({ name: props.name, adcode: props.adcode })
-      onFeatureOrMarkerClick(props)
-    })
-    marker.on('mouseover', () => {
-      marker.setOptions({ zIndex: 13 })
-    })
-    marker.on('mouseout', () => {
-      marker.setOptions({ zIndex: 12 })
-    })
-    makersRef.current.push(marker)
+      push({ name: props.name, adcode: props.adcode });
+      onFeatureOrMarkerClick(props);
+    });
+    marker.on("mouseover", () => {
+      marker.setOptions({ zIndex: 13 });
+    });
+    marker.on("mouseout", () => {
+      marker.setOptions({ zIndex: 12 });
+    });
+    makersRef.current.push(marker);
   }
 
   //切换区域后刷新显示内容
@@ -532,28 +547,28 @@ function RouteComponent() {
     zoomeToNode: boolean,
     topLevel: boolean,
   ) {
-    districtExplorer.setHoverFeature(null)
+    districtExplorer.setHoverFeature(null);
 
-    renderAreaPolygons(areaNode, zoomeToNode, topLevel)
+    renderAreaPolygons(areaNode, zoomeToNode, topLevel);
   }
 
   function renderArea(district: District) {
-    setDashboardVisible(true)
-    map?.remove(makersRef.current)
-    districtExplorer.clearFeaturePolygons()
+    setDashboardVisible(true);
+    map?.remove(makersRef.current);
+    districtExplorer.clearFeaturePolygons();
 
     districtExplorer.loadMultiAreaNodes(
       district.adcode,
       (error: any, areaNodes: any) => {
         for (const [i, areaNode] of areaNodes.entries()) {
-          const props = areaNode.getProps()
+          const props = areaNode.getProps();
 
-          const fillColor = getDistrictColor(props.adcode, props.childrenNum)
-          const strokeColor = getDistrictColor(props.adcode, props.childrenNum)
-          renderMarker(props, true)
+          const fillColor = getDistrictColor(props.adcode, props.childrenNum);
+          const strokeColor = getDistrictColor(props.adcode, props.childrenNum);
+          renderMarker(props, true);
 
           districtExplorer.renderParentFeature(areaNode, {
-            cursor: 'default',
+            cursor: "default",
             bubble: true,
             strokeColor,
             // strokeColor: areaNode.getSubFeatures().length
@@ -567,13 +582,13 @@ function RouteComponent() {
             //   fillColor: "black",
             //   fillColor: areaNode.getParentFeature() ? "black" : null,
             fillOpacity: 0.5, //填充透明度
-          })
+          });
         }
       },
-    )
+    );
 
-    const zoom = getDistrictZoomLevel(district.id)
-    map?.setZoomAndCenter(zoom, district.center, false, 600)
+    const zoom = getDistrictZoomLevel(district.id);
+    map?.setZoomAndCenter(zoom, district.center, false, 600);
   }
 
   return (
@@ -588,8 +603,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          'absolute bottom-6 left-1/2 -translate-x-1/2 transition',
-          navigations.length < 1 && 'translate-y-[200%]',
+          "absolute bottom-6 left-1/2 -translate-x-1/2 transition",
+          navigations.length < 1 && "translate-y-[200%]",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -599,11 +614,11 @@ function RouteComponent() {
                 className="cursor-pointer select-none"
                 onClick={() => {
                   // switch2AreaNode(district.adcode[0]);
-                  setSelectedDistrict(null)
-                  resetNaivgation()
-                  map?.remove(satelliteRef.current!)
-                  map?.remove(polygonsRef.current)
-                  switch2AreaNode(100000)
+                  setSelectedDistrict(null);
+                  resetNaivgation();
+                  map?.remove(satelliteRef.current!);
+                  map?.remove(polygonsRef.current);
+                  switch2AreaNode(100000);
                   // setVisible(!visible);
                 }}
               >
@@ -614,22 +629,22 @@ function RouteComponent() {
             <BreadcrumbItem>
               <BreadcrumbLink
                 className={cn(
-                  'select-none',
-                  navigations.length > 1 && 'cursor-pointer',
+                  "select-none",
+                  navigations.length > 1 && "cursor-pointer",
                 )}
                 onClick={() => {
                   if (navigations.length < 2) {
-                    return
+                    return;
                   }
                   // switch2AreaNode(district.adcode[0]);
                   // setVisible(true);
                   // resetNaivgation();
-                  setCurrentAreaNode(null)
-                  pop(0)
-                  map?.remove(satelliteRef.current!)
-                  map?.remove(polygonsRef.current)
+                  setCurrentAreaNode(null);
+                  pop(0);
+                  map?.remove(satelliteRef.current!);
+                  map?.remove(polygonsRef.current);
                   // setSelectedDistrict(selectedDistrict);
-                  renderArea(selectedDistrict!)
+                  renderArea(selectedDistrict!);
                 }}
               >
                 {selectedDistrict?.name}
@@ -675,30 +690,30 @@ function RouteComponent() {
                 //   return null;
                 // }
                 return (
-                  <React.Fragment key={[navigation.adcode, i].join('-')}>
+                  <React.Fragment key={[navigation.adcode, i].join("-")}>
                     <BreadcrumbSeparator></BreadcrumbSeparator>
                     <BreadcrumbItem>
                       <BreadcrumbLink
                         // className="max-w-[6rem] cursor-pointer overflow-hidden text-ellipsis text-nowrap"
                         className={cn(
-                          'select-none',
-                          navigations.length != i + 2 && 'cursor-pointer',
+                          "select-none",
+                          navigations.length != i + 2 && "cursor-pointer",
                         )}
                         onClick={() => {
                           if (navigations.length == i + 2) {
-                            return
+                            return;
                           }
-                          map?.remove(polygonsRef.current)
-                          map?.remove(satelliteRef.current!)
-                          pop(i)
-                          switch2AreaNode(navigation.adcode || 100000)
+                          map?.remove(polygonsRef.current);
+                          map?.remove(satelliteRef.current!);
+                          pop(i);
+                          switch2AreaNode(navigation.adcode || 100000);
                         }}
                       >
                         {navigation.name}
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                   </React.Fragment>
-                )
+                );
               })}
             {/* <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem>
@@ -719,8 +734,8 @@ function RouteComponent() {
       <div className="flex gap-2 px-4 pt-14">
         <div
           className={cn(
-            'hidden h-full w-[380px] space-y-2 transition xl:block',
-            !dashboardVisible && '-translate-x-[110%]',
+            "hidden h-full w-[380px] space-y-2 transition xl:block",
+            !dashboardVisible && "-translate-x-[110%]",
           )}
         >
           <AmountBoard />
@@ -732,8 +747,8 @@ function RouteComponent() {
 
         <div
           className={cn(
-            'hidden w-[380px] space-y-2 transition xl:block',
-            !dashboardVisible && 'translate-x-[110%]',
+            "hidden w-[380px] space-y-2 transition xl:block",
+            !dashboardVisible && "translate-x-[110%]",
           )}
         >
           <TenderTypeChart />
@@ -741,8 +756,8 @@ function RouteComponent() {
           <RankingListChart />
 
           <DashboardCard title="项目例表">
-            <ScrollArea className="mt-4 h-96">
-              <Table>
+            <ScrollArea className="h-full">
+              <Table className="my-4 h-full">
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="bg-brand/10">
                   <TableRow className="items-center">
@@ -752,40 +767,36 @@ function RouteComponent() {
                     <TableHead className="text-[0.7rem] text-gray-300">
                       名称
                     </TableHead>
-                    <TableHead className="text-[0.7rem] text-gray-300">
+                    <TableHead className="w-[80px] text-[0.7rem] text-gray-300">
                       区域
                     </TableHead>
-                    <TableHead className="w-[80px] text-center text-[0.7rem] text-gray-300">
-                      <div>预计金额</div>
-                      (亿元)
+                    <TableHead className="text-center text-[0.7rem] text-gray-300">
+                      <div>金额</div>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="text-xs text-white">
-                  <TableRow>
-                    <TableCell>1</TableCell>
-                    <TableCell className="font-medium">珠海国际大厦</TableCell>
-                    <TableCell>珠海</TableCell>
-                    <TableCell className="text-center">3.12</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>2</TableCell>
-                    <TableCell className="font-medium">珠海国际大厦</TableCell>
-                    <TableCell>珠海</TableCell>
-                    <TableCell className="text-center">3.12</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>3</TableCell>
-                    <TableCell className="font-medium">珠海国际大厦</TableCell>
-                    <TableCell>珠海</TableCell>
-                    <TableCell className="text-center">3.12</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>4</TableCell>
-                    <TableCell className="font-medium">珠海国际大厦</TableCell>
-                    <TableCell>珠海</TableCell>
-                    <TableCell className="text-center">3.12</TableCell>
-                  </TableRow>
+                  {data.areas.edges
+                    ?.flatMap((e) => e?.node?.tenders)
+                    .map((tender, i) => (
+                      <TableRow key={tender?.id}>
+                        <TableCell>{i + 1}</TableCell>
+                        <TableCell className="line-clamp-1 flex items-center text-ellipsis font-medium">
+                          {tender?.name}
+                        </TableCell>
+                        <TableCell>{tender?.area.name}</TableCell>
+                        <TableCell className="text-center">
+                          {new Intl.NumberFormat("zh-Hans-CN", {
+                            style: "currency",
+                            currency: "CNY",
+                            trailingZeroDisplay: "auto",
+                            maximumSignificantDigits: 2,
+                            compactDisplay: "short",
+                            unitDisplay: "short",
+                          }).format(tender?.estimatedAmount! / 100000000)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </ScrollArea>
@@ -793,36 +804,36 @@ function RouteComponent() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-const statusItems = ['跟进中', '中标', '失标', '估价', '已交标', '停止跟进']
+const statusItems = ["跟进中", "中标", "失标", "估价", "已交标", "停止跟进"];
 
 function getDistrictZoomLevel(id: string) {
-  let zoom = 5
-  if (id === '5') {
-    zoom = 10
-  } else if (id === '3' || id === '4') {
-    zoom = 6
+  let zoom = 5;
+  if (id === "5") {
+    zoom = 10;
+  } else if (id === "3" || id === "4") {
+    zoom = 6;
   }
-  return zoom
+  return zoom;
 }
 
 function AmountBoard() {
-  const selectedDistrict = useMapStore((state) => state.selectedDistrict)
+  const selectedDistrict = useMapStore((state) => state.selectedDistrict);
 
   const total = Object.values(data).reduce(
     (acc, cur) => {
       if (selectedDistrict) {
-        return data[selectedDistrict.id as keyof typeof data]
+        return data[selectedDistrict.id as keyof typeof data];
       }
-      acc[0] += cur[0]
-      acc[1] += cur[1]
-      acc[2] += cur[2]
-      return acc
+      acc[0] += cur[0];
+      acc[1] += cur[1];
+      acc[2] += cur[2];
+      return acc;
     },
     [0, 0, 0],
-  )
+  );
 
   return (
     <DashboardCard
@@ -834,7 +845,7 @@ function AmountBoard() {
           <div className="flex items-baseline gap-2">
             <span className="text-4xl font-black text-white">¥</span>
             <span className="text-4xl font-black text-white">{total[0]}</span>
-            <span className="large-screen:block hidden font-medium text-brand">
+            <span className="hidden font-medium text-brand large-screen:block">
               亿元
             </span>
           </div>
@@ -849,8 +860,8 @@ function AmountBoard() {
         <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
         <div className="mt-2 space-y-4 text-sm text-brand">
           {statusItems.map((status, i) => {
-            const percentage = Math.floor(Math.random() * 100)
-            const count = Math.floor(Math.random() * 10)
+            const percentage = Math.floor(Math.random() * 100);
+            const count = Math.floor(Math.random() * 10);
             return (
               <div
                 key={status}
@@ -864,7 +875,7 @@ function AmountBoard() {
                 />
                 <div>{percentage}%</div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
@@ -897,7 +908,7 @@ function AmountBoard() {
         </div>
       </div>
     </DashboardCard>
-  )
+  );
 
   return (
     <DashboardCard title="新增商机数">
@@ -934,5 +945,5 @@ function AmountBoard() {
         </div>
       </div>
     </DashboardCard>
-  )
+  );
 }

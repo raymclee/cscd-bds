@@ -9,6 +9,8 @@ import (
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -21,14 +23,16 @@ import (
 // DistrictQuery is the builder for querying District entities.
 type DistrictQuery struct {
 	config
-	ctx          *QueryContext
-	order        []district.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.District
-	withProvince *ProvinceQuery
-	withCity     *CityQuery
-	modifiers    []func(*sql.Selector)
-	loadTotal    []func(context.Context, []*District) error
+	ctx              *QueryContext
+	order            []district.OrderOption
+	inters           []Interceptor
+	predicates       []predicate.District
+	withProvince     *ProvinceQuery
+	withCity         *CityQuery
+	withTenders      *TenderQuery
+	modifiers        []func(*sql.Selector)
+	loadTotal        []func(context.Context, []*District) error
+	withNamedTenders map[string]*TenderQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -102,6 +106,28 @@ func (dq *DistrictQuery) QueryCity() *CityQuery {
 			sqlgraph.From(district.Table, district.FieldID, selector),
 			sqlgraph.To(city.Table, city.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, district.CityTable, district.CityColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTenders chains the current query on the "tenders" edge.
+func (dq *DistrictQuery) QueryTenders() *TenderQuery {
+	query := (&TenderClient{config: dq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := dq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := dq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(district.Table, district.FieldID, selector),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, district.TendersTable, district.TendersColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
@@ -303,6 +329,7 @@ func (dq *DistrictQuery) Clone() *DistrictQuery {
 		predicates:   append([]predicate.District{}, dq.predicates...),
 		withProvince: dq.withProvince.Clone(),
 		withCity:     dq.withCity.Clone(),
+		withTenders:  dq.withTenders.Clone(),
 		// clone intermediate query.
 		sql:  dq.sql.Clone(),
 		path: dq.path,
@@ -328,6 +355,17 @@ func (dq *DistrictQuery) WithCity(opts ...func(*CityQuery)) *DistrictQuery {
 		opt(query)
 	}
 	dq.withCity = query
+	return dq
+}
+
+// WithTenders tells the query-builder to eager-load the nodes that are connected to
+// the "tenders" edge. The optional arguments are used to configure the query builder of the edge.
+func (dq *DistrictQuery) WithTenders(opts ...func(*TenderQuery)) *DistrictQuery {
+	query := (&TenderClient{config: dq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	dq.withTenders = query
 	return dq
 }
 
@@ -409,9 +447,10 @@ func (dq *DistrictQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Dis
 	var (
 		nodes       = []*District{}
 		_spec       = dq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			dq.withProvince != nil,
 			dq.withCity != nil,
+			dq.withTenders != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -444,6 +483,20 @@ func (dq *DistrictQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Dis
 	if query := dq.withCity; query != nil {
 		if err := dq.loadCity(ctx, query, nodes, nil,
 			func(n *District, e *City) { n.Edges.City = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := dq.withTenders; query != nil {
+		if err := dq.loadTenders(ctx, query, nodes,
+			func(n *District) { n.Edges.Tenders = []*Tender{} },
+			func(n *District, e *Tender) { n.Edges.Tenders = append(n.Edges.Tenders, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range dq.withNamedTenders {
+		if err := dq.loadTenders(ctx, query, nodes,
+			func(n *District) { n.appendNamedTenders(name) },
+			func(n *District, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -488,7 +541,10 @@ func (dq *DistrictQuery) loadCity(ctx context.Context, query *CityQuery, nodes [
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*District)
 	for i := range nodes {
-		fk := nodes[i].CityID
+		if nodes[i].CityID == nil {
+			continue
+		}
+		fk := *nodes[i].CityID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -510,6 +566,36 @@ func (dq *DistrictQuery) loadCity(ctx context.Context, query *CityQuery, nodes [
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (dq *DistrictQuery) loadTenders(ctx context.Context, query *TenderQuery, nodes []*District, init func(*District), assign func(*District, *Tender)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*District)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(tender.FieldDistrictID)
+	}
+	query.Where(predicate.Tender(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(district.TendersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.DistrictID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "district_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -602,6 +688,20 @@ func (dq *DistrictQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// WithNamedTenders tells the query-builder to eager-load the nodes that are connected to the "tenders"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (dq *DistrictQuery) WithNamedTenders(name string, opts ...func(*TenderQuery)) *DistrictQuery {
+	query := (&TenderClient{config: dq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if dq.withNamedTenders == nil {
+		dq.withNamedTenders = make(map[string]*TenderQuery)
+	}
+	dq.withNamedTenders[name] = query
+	return dq
 }
 
 // DistrictGroupBy is the group-by builder for District entities.

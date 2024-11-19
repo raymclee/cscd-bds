@@ -5,12 +5,15 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -136,47 +139,77 @@ func (tu *TenderUpdate) ClearTenderDate() *TenderUpdate {
 	return tu
 }
 
-// SetFindDate sets the "find_date" field.
-func (tu *TenderUpdate) SetFindDate(t time.Time) *TenderUpdate {
-	tu.mutation.SetFindDate(t)
+// SetDiscoveryDate sets the "discovery_date" field.
+func (tu *TenderUpdate) SetDiscoveryDate(t time.Time) *TenderUpdate {
+	tu.mutation.SetDiscoveryDate(t)
 	return tu
 }
 
-// SetNillableFindDate sets the "find_date" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableFindDate(t *time.Time) *TenderUpdate {
+// SetNillableDiscoveryDate sets the "discovery_date" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableDiscoveryDate(t *time.Time) *TenderUpdate {
 	if t != nil {
-		tu.SetFindDate(*t)
+		tu.SetDiscoveryDate(*t)
 	}
 	return tu
 }
 
-// SetFinder sets the "finder" field.
-func (tu *TenderUpdate) SetFinder(z *zht.User) *TenderUpdate {
-	tu.mutation.SetFinder(z)
+// SetAddress sets the "address" field.
+func (tu *TenderUpdate) SetAddress(s string) *TenderUpdate {
+	tu.mutation.SetAddress(s)
 	return tu
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (tu *TenderUpdate) SetCreatedBy(z *zht.User) *TenderUpdate {
-	tu.mutation.SetCreatedBy(z)
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableAddress(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetAddress(*s)
+	}
 	return tu
 }
 
-// SetFollowingPerson sets the "following_person" field.
-func (tu *TenderUpdate) SetFollowingPerson(z []zht.User) *TenderUpdate {
-	tu.mutation.SetFollowingPerson(z)
+// ClearAddress clears the value of the "address" field.
+func (tu *TenderUpdate) ClearAddress() *TenderUpdate {
+	tu.mutation.ClearAddress()
 	return tu
 }
 
-// AppendFollowingPerson appends z to the "following_person" field.
-func (tu *TenderUpdate) AppendFollowingPerson(z []zht.User) *TenderUpdate {
-	tu.mutation.AppendFollowingPerson(z)
+// SetFullAddress sets the "full_address" field.
+func (tu *TenderUpdate) SetFullAddress(s string) *TenderUpdate {
+	tu.mutation.SetFullAddress(s)
 	return tu
 }
 
-// ClearFollowingPerson clears the value of the "following_person" field.
-func (tu *TenderUpdate) ClearFollowingPerson() *TenderUpdate {
-	tu.mutation.ClearFollowingPerson()
+// SetNillableFullAddress sets the "full_address" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableFullAddress(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetFullAddress(*s)
+	}
+	return tu
+}
+
+// ClearFullAddress clears the value of the "full_address" field.
+func (tu *TenderUpdate) ClearFullAddress() *TenderUpdate {
+	tu.mutation.ClearFullAddress()
+	return tu
+}
+
+// SetContractor sets the "contractor" field.
+func (tu *TenderUpdate) SetContractor(s string) *TenderUpdate {
+	tu.mutation.SetContractor(s)
+	return tu
+}
+
+// SetNillableContractor sets the "contractor" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableContractor(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetContractor(*s)
+	}
+	return tu
+}
+
+// ClearContractor clears the value of the "contractor" field.
+func (tu *TenderUpdate) ClearContractor() *TenderUpdate {
+	tu.mutation.ClearContractor()
 	return tu
 }
 
@@ -207,6 +240,26 @@ func (tu *TenderUpdate) ClearSizeAndValueRating() *TenderUpdate {
 	return tu
 }
 
+// SetSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field.
+func (tu *TenderUpdate) SetSizeAndValueRatingOverview(s string) *TenderUpdate {
+	tu.mutation.SetSizeAndValueRatingOverview(s)
+	return tu
+}
+
+// SetNillableSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableSizeAndValueRatingOverview(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetSizeAndValueRatingOverview(*s)
+	}
+	return tu
+}
+
+// ClearSizeAndValueRatingOverview clears the value of the "size_and_value_rating_overview" field.
+func (tu *TenderUpdate) ClearSizeAndValueRatingOverview() *TenderUpdate {
+	tu.mutation.ClearSizeAndValueRatingOverview()
+	return tu
+}
+
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
 func (tu *TenderUpdate) SetCreditAndPaymentRating(i int8) *TenderUpdate {
 	tu.mutation.ResetCreditAndPaymentRating()
@@ -231,6 +284,26 @@ func (tu *TenderUpdate) AddCreditAndPaymentRating(i int8) *TenderUpdate {
 // ClearCreditAndPaymentRating clears the value of the "credit_and_payment_rating" field.
 func (tu *TenderUpdate) ClearCreditAndPaymentRating() *TenderUpdate {
 	tu.mutation.ClearCreditAndPaymentRating()
+	return tu
+}
+
+// SetCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field.
+func (tu *TenderUpdate) SetCreditAndPaymentRatingOverview(s string) *TenderUpdate {
+	tu.mutation.SetCreditAndPaymentRatingOverview(s)
+	return tu
+}
+
+// SetNillableCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCreditAndPaymentRatingOverview(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetCreditAndPaymentRatingOverview(*s)
+	}
+	return tu
+}
+
+// ClearCreditAndPaymentRatingOverview clears the value of the "credit_and_payment_rating_overview" field.
+func (tu *TenderUpdate) ClearCreditAndPaymentRatingOverview() *TenderUpdate {
+	tu.mutation.ClearCreditAndPaymentRatingOverview()
 	return tu
 }
 
@@ -261,6 +334,26 @@ func (tu *TenderUpdate) ClearTimeLimitRating() *TenderUpdate {
 	return tu
 }
 
+// SetTimeLimitRatingOverview sets the "time_limit_rating_overview" field.
+func (tu *TenderUpdate) SetTimeLimitRatingOverview(s string) *TenderUpdate {
+	tu.mutation.SetTimeLimitRatingOverview(s)
+	return tu
+}
+
+// SetNillableTimeLimitRatingOverview sets the "time_limit_rating_overview" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTimeLimitRatingOverview(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTimeLimitRatingOverview(*s)
+	}
+	return tu
+}
+
+// ClearTimeLimitRatingOverview clears the value of the "time_limit_rating_overview" field.
+func (tu *TenderUpdate) ClearTimeLimitRatingOverview() *TenderUpdate {
+	tu.mutation.ClearTimeLimitRatingOverview()
+	return tu
+}
+
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
 func (tu *TenderUpdate) SetCustomerRelationshipRating(i int8) *TenderUpdate {
 	tu.mutation.ResetCustomerRelationshipRating()
@@ -288,6 +381,26 @@ func (tu *TenderUpdate) ClearCustomerRelationshipRating() *TenderUpdate {
 	return tu
 }
 
+// SetCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field.
+func (tu *TenderUpdate) SetCustomerRelationshipRatingOverview(s string) *TenderUpdate {
+	tu.mutation.SetCustomerRelationshipRatingOverview(s)
+	return tu
+}
+
+// SetNillableCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCustomerRelationshipRatingOverview(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetCustomerRelationshipRatingOverview(*s)
+	}
+	return tu
+}
+
+// ClearCustomerRelationshipRatingOverview clears the value of the "customer_relationship_rating_overview" field.
+func (tu *TenderUpdate) ClearCustomerRelationshipRatingOverview() *TenderUpdate {
+	tu.mutation.ClearCustomerRelationshipRatingOverview()
+	return tu
+}
+
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
 func (tu *TenderUpdate) SetCompetitivePartnershipRating(i int8) *TenderUpdate {
 	tu.mutation.ResetCompetitivePartnershipRating()
@@ -312,6 +425,26 @@ func (tu *TenderUpdate) AddCompetitivePartnershipRating(i int8) *TenderUpdate {
 // ClearCompetitivePartnershipRating clears the value of the "competitive_partnership_rating" field.
 func (tu *TenderUpdate) ClearCompetitivePartnershipRating() *TenderUpdate {
 	tu.mutation.ClearCompetitivePartnershipRating()
+	return tu
+}
+
+// SetCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field.
+func (tu *TenderUpdate) SetCompetitivePartnershipRatingOverview(s string) *TenderUpdate {
+	tu.mutation.SetCompetitivePartnershipRatingOverview(s)
+	return tu
+}
+
+// SetNillableCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCompetitivePartnershipRatingOverview(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetCompetitivePartnershipRatingOverview(*s)
+	}
+	return tu
+}
+
+// ClearCompetitivePartnershipRatingOverview clears the value of the "competitive_partnership_rating_overview" field.
+func (tu *TenderUpdate) ClearCompetitivePartnershipRatingOverview() *TenderUpdate {
+	tu.mutation.ClearCompetitivePartnershipRatingOverview()
 	return tu
 }
 
@@ -447,26 +580,6 @@ func (tu *TenderUpdate) ClearAttachements() *TenderUpdate {
 	return tu
 }
 
-// SetGeoLocation sets the "geo_location" field.
-func (tu *TenderUpdate) SetGeoLocation(s string) *TenderUpdate {
-	tu.mutation.SetGeoLocation(s)
-	return tu
-}
-
-// SetNillableGeoLocation sets the "geo_location" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableGeoLocation(s *string) *TenderUpdate {
-	if s != nil {
-		tu.SetGeoLocation(*s)
-	}
-	return tu
-}
-
-// ClearGeoLocation clears the value of the "geo_location" field.
-func (tu *TenderUpdate) ClearGeoLocation() *TenderUpdate {
-	tu.mutation.ClearGeoLocation()
-	return tu
-}
-
 // SetGeoCoordinate sets the "geo_coordinate" field.
 func (tu *TenderUpdate) SetGeoCoordinate(gj *geo.GeoJson) *TenderUpdate {
 	tu.mutation.SetGeoCoordinate(gj)
@@ -517,6 +630,280 @@ func (tu *TenderUpdate) ClearImages() *TenderUpdate {
 	return tu
 }
 
+// SetTenderSituations sets the "tender_situations" field.
+func (tu *TenderUpdate) SetTenderSituations(s string) *TenderUpdate {
+	tu.mutation.SetTenderSituations(s)
+	return tu
+}
+
+// SetNillableTenderSituations sets the "tender_situations" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderSituations(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTenderSituations(*s)
+	}
+	return tu
+}
+
+// ClearTenderSituations clears the value of the "tender_situations" field.
+func (tu *TenderUpdate) ClearTenderSituations() *TenderUpdate {
+	tu.mutation.ClearTenderSituations()
+	return tu
+}
+
+// SetOwnerSituations sets the "owner_situations" field.
+func (tu *TenderUpdate) SetOwnerSituations(s string) *TenderUpdate {
+	tu.mutation.SetOwnerSituations(s)
+	return tu
+}
+
+// SetNillableOwnerSituations sets the "owner_situations" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableOwnerSituations(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetOwnerSituations(*s)
+	}
+	return tu
+}
+
+// ClearOwnerSituations clears the value of the "owner_situations" field.
+func (tu *TenderUpdate) ClearOwnerSituations() *TenderUpdate {
+	tu.mutation.ClearOwnerSituations()
+	return tu
+}
+
+// SetBiddingInstructions sets the "bidding_instructions" field.
+func (tu *TenderUpdate) SetBiddingInstructions(s string) *TenderUpdate {
+	tu.mutation.SetBiddingInstructions(s)
+	return tu
+}
+
+// SetNillableBiddingInstructions sets the "bidding_instructions" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableBiddingInstructions(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetBiddingInstructions(*s)
+	}
+	return tu
+}
+
+// ClearBiddingInstructions clears the value of the "bidding_instructions" field.
+func (tu *TenderUpdate) ClearBiddingInstructions() *TenderUpdate {
+	tu.mutation.ClearBiddingInstructions()
+	return tu
+}
+
+// SetCompetitorSituations sets the "competitor_situations" field.
+func (tu *TenderUpdate) SetCompetitorSituations(s string) *TenderUpdate {
+	tu.mutation.SetCompetitorSituations(s)
+	return tu
+}
+
+// SetNillableCompetitorSituations sets the "competitor_situations" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCompetitorSituations(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetCompetitorSituations(*s)
+	}
+	return tu
+}
+
+// ClearCompetitorSituations clears the value of the "competitor_situations" field.
+func (tu *TenderUpdate) ClearCompetitorSituations() *TenderUpdate {
+	tu.mutation.ClearCompetitorSituations()
+	return tu
+}
+
+// SetCostEngineer sets the "cost_engineer" field.
+func (tu *TenderUpdate) SetCostEngineer(s string) *TenderUpdate {
+	tu.mutation.SetCostEngineer(s)
+	return tu
+}
+
+// SetNillableCostEngineer sets the "cost_engineer" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCostEngineer(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetCostEngineer(*s)
+	}
+	return tu
+}
+
+// ClearCostEngineer clears the value of the "cost_engineer" field.
+func (tu *TenderUpdate) ClearCostEngineer() *TenderUpdate {
+	tu.mutation.ClearCostEngineer()
+	return tu
+}
+
+// SetTenderForm sets the "tender_form" field.
+func (tu *TenderUpdate) SetTenderForm(s string) *TenderUpdate {
+	tu.mutation.SetTenderForm(s)
+	return tu
+}
+
+// SetNillableTenderForm sets the "tender_form" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderForm(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTenderForm(*s)
+	}
+	return tu
+}
+
+// ClearTenderForm clears the value of the "tender_form" field.
+func (tu *TenderUpdate) ClearTenderForm() *TenderUpdate {
+	tu.mutation.ClearTenderForm()
+	return tu
+}
+
+// SetContractForm sets the "contract_form" field.
+func (tu *TenderUpdate) SetContractForm(s string) *TenderUpdate {
+	tu.mutation.SetContractForm(s)
+	return tu
+}
+
+// SetNillableContractForm sets the "contract_form" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableContractForm(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetContractForm(*s)
+	}
+	return tu
+}
+
+// ClearContractForm clears the value of the "contract_form" field.
+func (tu *TenderUpdate) ClearContractForm() *TenderUpdate {
+	tu.mutation.ClearContractForm()
+	return tu
+}
+
+// SetManagementCompany sets the "management_company" field.
+func (tu *TenderUpdate) SetManagementCompany(s string) *TenderUpdate {
+	tu.mutation.SetManagementCompany(s)
+	return tu
+}
+
+// SetNillableManagementCompany sets the "management_company" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableManagementCompany(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetManagementCompany(*s)
+	}
+	return tu
+}
+
+// ClearManagementCompany clears the value of the "management_company" field.
+func (tu *TenderUpdate) ClearManagementCompany() *TenderUpdate {
+	tu.mutation.ClearManagementCompany()
+	return tu
+}
+
+// SetTenderingAgency sets the "tendering_agency" field.
+func (tu *TenderUpdate) SetTenderingAgency(s string) *TenderUpdate {
+	tu.mutation.SetTenderingAgency(s)
+	return tu
+}
+
+// SetNillableTenderingAgency sets the "tendering_agency" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderingAgency(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTenderingAgency(*s)
+	}
+	return tu
+}
+
+// ClearTenderingAgency clears the value of the "tendering_agency" field.
+func (tu *TenderUpdate) ClearTenderingAgency() *TenderUpdate {
+	tu.mutation.ClearTenderingAgency()
+	return tu
+}
+
+// SetBiddingDate sets the "bidding_date" field.
+func (tu *TenderUpdate) SetBiddingDate(t time.Time) *TenderUpdate {
+	tu.mutation.SetBiddingDate(t)
+	return tu
+}
+
+// SetNillableBiddingDate sets the "bidding_date" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableBiddingDate(t *time.Time) *TenderUpdate {
+	if t != nil {
+		tu.SetBiddingDate(*t)
+	}
+	return tu
+}
+
+// ClearBiddingDate clears the value of the "bidding_date" field.
+func (tu *TenderUpdate) ClearBiddingDate() *TenderUpdate {
+	tu.mutation.ClearBiddingDate()
+	return tu
+}
+
+// SetFacadeConsultant sets the "facade_consultant" field.
+func (tu *TenderUpdate) SetFacadeConsultant(s string) *TenderUpdate {
+	tu.mutation.SetFacadeConsultant(s)
+	return tu
+}
+
+// SetNillableFacadeConsultant sets the "facade_consultant" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableFacadeConsultant(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetFacadeConsultant(*s)
+	}
+	return tu
+}
+
+// ClearFacadeConsultant clears the value of the "facade_consultant" field.
+func (tu *TenderUpdate) ClearFacadeConsultant() *TenderUpdate {
+	tu.mutation.ClearFacadeConsultant()
+	return tu
+}
+
+// SetDesignUnit sets the "design_unit" field.
+func (tu *TenderUpdate) SetDesignUnit(s string) *TenderUpdate {
+	tu.mutation.SetDesignUnit(s)
+	return tu
+}
+
+// SetNillableDesignUnit sets the "design_unit" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableDesignUnit(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetDesignUnit(*s)
+	}
+	return tu
+}
+
+// ClearDesignUnit clears the value of the "design_unit" field.
+func (tu *TenderUpdate) ClearDesignUnit() *TenderUpdate {
+	tu.mutation.ClearDesignUnit()
+	return tu
+}
+
+// SetConsultingFirm sets the "consulting_firm" field.
+func (tu *TenderUpdate) SetConsultingFirm(s string) *TenderUpdate {
+	tu.mutation.SetConsultingFirm(s)
+	return tu
+}
+
+// SetNillableConsultingFirm sets the "consulting_firm" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableConsultingFirm(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetConsultingFirm(*s)
+	}
+	return tu
+}
+
+// ClearConsultingFirm clears the value of the "consulting_firm" field.
+func (tu *TenderUpdate) ClearConsultingFirm() *TenderUpdate {
+	tu.mutation.ClearConsultingFirm()
+	return tu
+}
+
+// SetKeyProject sets the "key_project" field.
+func (tu *TenderUpdate) SetKeyProject(b bool) *TenderUpdate {
+	tu.mutation.SetKeyProject(b)
+	return tu
+}
+
+// SetNillableKeyProject sets the "key_project" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableKeyProject(b *bool) *TenderUpdate {
+	if b != nil {
+		tu.SetKeyProject(*b)
+	}
+	return tu
+}
+
 // SetAreaID sets the "area_id" field.
 func (tu *TenderUpdate) SetAreaID(x xid.ID) *TenderUpdate {
 	tu.mutation.SetAreaID(x)
@@ -527,6 +914,54 @@ func (tu *TenderUpdate) SetAreaID(x xid.ID) *TenderUpdate {
 func (tu *TenderUpdate) SetNillableAreaID(x *xid.ID) *TenderUpdate {
 	if x != nil {
 		tu.SetAreaID(*x)
+	}
+	return tu
+}
+
+// SetProvinceID sets the "province_id" field.
+func (tu *TenderUpdate) SetProvinceID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetProvinceID(x)
+	return tu
+}
+
+// SetNillableProvinceID sets the "province_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableProvinceID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetProvinceID(*x)
+	}
+	return tu
+}
+
+// SetCityID sets the "city_id" field.
+func (tu *TenderUpdate) SetCityID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetCityID(x)
+	return tu
+}
+
+// SetNillableCityID sets the "city_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCityID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetCityID(*x)
+	}
+	return tu
+}
+
+// ClearCityID clears the value of the "city_id" field.
+func (tu *TenderUpdate) ClearCityID() *TenderUpdate {
+	tu.mutation.ClearCityID()
+	return tu
+}
+
+// SetDistrictID sets the "district_id" field.
+func (tu *TenderUpdate) SetDistrictID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetDistrictID(x)
+	return tu
+}
+
+// SetNillableDistrictID sets the "district_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableDistrictID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetDistrictID(*x)
 	}
 	return tu
 }
@@ -545,6 +980,34 @@ func (tu *TenderUpdate) SetNillableCustomerID(x *xid.ID) *TenderUpdate {
 	return tu
 }
 
+// SetFinderID sets the "finder_id" field.
+func (tu *TenderUpdate) SetFinderID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetFinderID(x)
+	return tu
+}
+
+// SetNillableFinderID sets the "finder_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableFinderID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetFinderID(*x)
+	}
+	return tu
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (tu *TenderUpdate) SetCreatedByID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetCreatedByID(x)
+	return tu
+}
+
+// SetNillableCreatedByID sets the "created_by_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCreatedByID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetCreatedByID(*x)
+	}
+	return tu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tu *TenderUpdate) SetArea(a *Area) *TenderUpdate {
 	return tu.SetAreaID(a.ID)
@@ -553,6 +1016,46 @@ func (tu *TenderUpdate) SetArea(a *Area) *TenderUpdate {
 // SetCustomer sets the "customer" edge to the Customer entity.
 func (tu *TenderUpdate) SetCustomer(c *Customer) *TenderUpdate {
 	return tu.SetCustomerID(c.ID)
+}
+
+// SetFinder sets the "finder" edge to the User entity.
+func (tu *TenderUpdate) SetFinder(u *User) *TenderUpdate {
+	return tu.SetFinderID(u.ID)
+}
+
+// SetCreatedBy sets the "created_by" edge to the User entity.
+func (tu *TenderUpdate) SetCreatedBy(u *User) *TenderUpdate {
+	return tu.SetCreatedByID(u.ID)
+}
+
+// AddFollowingSaleIDs adds the "following_sales" edge to the User entity by IDs.
+func (tu *TenderUpdate) AddFollowingSaleIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.AddFollowingSaleIDs(ids...)
+	return tu
+}
+
+// AddFollowingSales adds the "following_sales" edges to the User entity.
+func (tu *TenderUpdate) AddFollowingSales(u ...*User) *TenderUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return tu.AddFollowingSaleIDs(ids...)
+}
+
+// SetProvince sets the "province" edge to the Province entity.
+func (tu *TenderUpdate) SetProvince(p *Province) *TenderUpdate {
+	return tu.SetProvinceID(p.ID)
+}
+
+// SetCity sets the "city" edge to the City entity.
+func (tu *TenderUpdate) SetCity(c *City) *TenderUpdate {
+	return tu.SetCityID(c.ID)
+}
+
+// SetDistrict sets the "district" edge to the District entity.
+func (tu *TenderUpdate) SetDistrict(d *District) *TenderUpdate {
+	return tu.SetDistrictID(d.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -569,6 +1072,57 @@ func (tu *TenderUpdate) ClearArea() *TenderUpdate {
 // ClearCustomer clears the "customer" edge to the Customer entity.
 func (tu *TenderUpdate) ClearCustomer() *TenderUpdate {
 	tu.mutation.ClearCustomer()
+	return tu
+}
+
+// ClearFinder clears the "finder" edge to the User entity.
+func (tu *TenderUpdate) ClearFinder() *TenderUpdate {
+	tu.mutation.ClearFinder()
+	return tu
+}
+
+// ClearCreatedBy clears the "created_by" edge to the User entity.
+func (tu *TenderUpdate) ClearCreatedBy() *TenderUpdate {
+	tu.mutation.ClearCreatedBy()
+	return tu
+}
+
+// ClearFollowingSales clears all "following_sales" edges to the User entity.
+func (tu *TenderUpdate) ClearFollowingSales() *TenderUpdate {
+	tu.mutation.ClearFollowingSales()
+	return tu
+}
+
+// RemoveFollowingSaleIDs removes the "following_sales" edge to User entities by IDs.
+func (tu *TenderUpdate) RemoveFollowingSaleIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.RemoveFollowingSaleIDs(ids...)
+	return tu
+}
+
+// RemoveFollowingSales removes "following_sales" edges to User entities.
+func (tu *TenderUpdate) RemoveFollowingSales(u ...*User) *TenderUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return tu.RemoveFollowingSaleIDs(ids...)
+}
+
+// ClearProvince clears the "province" edge to the Province entity.
+func (tu *TenderUpdate) ClearProvince() *TenderUpdate {
+	tu.mutation.ClearProvince()
+	return tu
+}
+
+// ClearCity clears the "city" edge to the City entity.
+func (tu *TenderUpdate) ClearCity() *TenderUpdate {
+	tu.mutation.ClearCity()
+	return tu
+}
+
+// ClearDistrict clears the "district" edge to the District entity.
+func (tu *TenderUpdate) ClearDistrict() *TenderUpdate {
+	tu.mutation.ClearDistrict()
 	return tu
 }
 
@@ -641,6 +1195,18 @@ func (tu *TenderUpdate) check() error {
 	if tu.mutation.CustomerCleared() && len(tu.mutation.CustomerIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.customer"`)
 	}
+	if tu.mutation.FinderCleared() && len(tu.mutation.FinderIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.finder"`)
+	}
+	if tu.mutation.CreatedByCleared() && len(tu.mutation.CreatedByIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.created_by"`)
+	}
+	if tu.mutation.ProvinceCleared() && len(tu.mutation.ProvinceIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.province"`)
+	}
+	if tu.mutation.DistrictCleared() && len(tu.mutation.DistrictIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.district"`)
+	}
 	return nil
 }
 
@@ -686,25 +1252,26 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.TenderDateCleared() {
 		_spec.ClearField(tender.FieldTenderDate, field.TypeTime)
 	}
-	if value, ok := tu.mutation.FindDate(); ok {
-		_spec.SetField(tender.FieldFindDate, field.TypeTime, value)
+	if value, ok := tu.mutation.DiscoveryDate(); ok {
+		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)
 	}
-	if value, ok := tu.mutation.Finder(); ok {
-		_spec.SetField(tender.FieldFinder, field.TypeJSON, value)
+	if value, ok := tu.mutation.Address(); ok {
+		_spec.SetField(tender.FieldAddress, field.TypeString, value)
 	}
-	if value, ok := tu.mutation.CreatedBy(); ok {
-		_spec.SetField(tender.FieldCreatedBy, field.TypeJSON, value)
+	if tu.mutation.AddressCleared() {
+		_spec.ClearField(tender.FieldAddress, field.TypeString)
 	}
-	if value, ok := tu.mutation.FollowingPerson(); ok {
-		_spec.SetField(tender.FieldFollowingPerson, field.TypeJSON, value)
+	if value, ok := tu.mutation.FullAddress(); ok {
+		_spec.SetField(tender.FieldFullAddress, field.TypeString, value)
 	}
-	if value, ok := tu.mutation.AppendedFollowingPerson(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, tender.FieldFollowingPerson, value)
-		})
+	if tu.mutation.FullAddressCleared() {
+		_spec.ClearField(tender.FieldFullAddress, field.TypeString)
 	}
-	if tu.mutation.FollowingPersonCleared() {
-		_spec.ClearField(tender.FieldFollowingPerson, field.TypeJSON)
+	if value, ok := tu.mutation.Contractor(); ok {
+		_spec.SetField(tender.FieldContractor, field.TypeString, value)
+	}
+	if tu.mutation.ContractorCleared() {
+		_spec.ClearField(tender.FieldContractor, field.TypeString)
 	}
 	if value, ok := tu.mutation.SizeAndValueRating(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
@@ -715,6 +1282,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.SizeAndValueRatingCleared() {
 		_spec.ClearField(tender.FieldSizeAndValueRating, field.TypeInt8)
 	}
+	if value, ok := tu.mutation.SizeAndValueRatingOverview(); ok {
+		_spec.SetField(tender.FieldSizeAndValueRatingOverview, field.TypeString, value)
+	}
+	if tu.mutation.SizeAndValueRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldSizeAndValueRatingOverview, field.TypeString)
+	}
 	if value, ok := tu.mutation.CreditAndPaymentRating(); ok {
 		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
 	}
@@ -723,6 +1296,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.CreditAndPaymentRatingCleared() {
 		_spec.ClearField(tender.FieldCreditAndPaymentRating, field.TypeInt8)
+	}
+	if value, ok := tu.mutation.CreditAndPaymentRatingOverview(); ok {
+		_spec.SetField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString, value)
+	}
+	if tu.mutation.CreditAndPaymentRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString)
 	}
 	if value, ok := tu.mutation.TimeLimitRating(); ok {
 		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt8, value)
@@ -733,6 +1312,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.TimeLimitRatingCleared() {
 		_spec.ClearField(tender.FieldTimeLimitRating, field.TypeInt8)
 	}
+	if value, ok := tu.mutation.TimeLimitRatingOverview(); ok {
+		_spec.SetField(tender.FieldTimeLimitRatingOverview, field.TypeString, value)
+	}
+	if tu.mutation.TimeLimitRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldTimeLimitRatingOverview, field.TypeString)
+	}
 	if value, ok := tu.mutation.CustomerRelationshipRating(); ok {
 		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
 	}
@@ -742,6 +1327,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.CustomerRelationshipRatingCleared() {
 		_spec.ClearField(tender.FieldCustomerRelationshipRating, field.TypeInt8)
 	}
+	if value, ok := tu.mutation.CustomerRelationshipRatingOverview(); ok {
+		_spec.SetField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString, value)
+	}
+	if tu.mutation.CustomerRelationshipRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString)
+	}
 	if value, ok := tu.mutation.CompetitivePartnershipRating(); ok {
 		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
 	}
@@ -750,6 +1341,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.CompetitivePartnershipRatingCleared() {
 		_spec.ClearField(tender.FieldCompetitivePartnershipRating, field.TypeInt8)
+	}
+	if value, ok := tu.mutation.CompetitivePartnershipRatingOverview(); ok {
+		_spec.SetField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString, value)
+	}
+	if tu.mutation.CompetitivePartnershipRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString)
 	}
 	if value, ok := tu.mutation.PrepareToBid(); ok {
 		_spec.SetField(tender.FieldPrepareToBid, field.TypeBool, value)
@@ -795,12 +1392,6 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.AttachementsCleared() {
 		_spec.ClearField(tender.FieldAttachements, field.TypeJSON)
 	}
-	if value, ok := tu.mutation.GeoLocation(); ok {
-		_spec.SetField(tender.FieldGeoLocation, field.TypeString, value)
-	}
-	if tu.mutation.GeoLocationCleared() {
-		_spec.ClearField(tender.FieldGeoLocation, field.TypeString)
-	}
 	if value, ok := tu.mutation.GeoCoordinate(); ok {
 		_spec.SetField(tender.FieldGeoCoordinate, field.TypeOther, value)
 	}
@@ -823,6 +1414,87 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.ImagesCleared() {
 		_spec.ClearField(tender.FieldImages, field.TypeJSON)
+	}
+	if value, ok := tu.mutation.TenderSituations(); ok {
+		_spec.SetField(tender.FieldTenderSituations, field.TypeString, value)
+	}
+	if tu.mutation.TenderSituationsCleared() {
+		_spec.ClearField(tender.FieldTenderSituations, field.TypeString)
+	}
+	if value, ok := tu.mutation.OwnerSituations(); ok {
+		_spec.SetField(tender.FieldOwnerSituations, field.TypeString, value)
+	}
+	if tu.mutation.OwnerSituationsCleared() {
+		_spec.ClearField(tender.FieldOwnerSituations, field.TypeString)
+	}
+	if value, ok := tu.mutation.BiddingInstructions(); ok {
+		_spec.SetField(tender.FieldBiddingInstructions, field.TypeString, value)
+	}
+	if tu.mutation.BiddingInstructionsCleared() {
+		_spec.ClearField(tender.FieldBiddingInstructions, field.TypeString)
+	}
+	if value, ok := tu.mutation.CompetitorSituations(); ok {
+		_spec.SetField(tender.FieldCompetitorSituations, field.TypeString, value)
+	}
+	if tu.mutation.CompetitorSituationsCleared() {
+		_spec.ClearField(tender.FieldCompetitorSituations, field.TypeString)
+	}
+	if value, ok := tu.mutation.CostEngineer(); ok {
+		_spec.SetField(tender.FieldCostEngineer, field.TypeString, value)
+	}
+	if tu.mutation.CostEngineerCleared() {
+		_spec.ClearField(tender.FieldCostEngineer, field.TypeString)
+	}
+	if value, ok := tu.mutation.TenderForm(); ok {
+		_spec.SetField(tender.FieldTenderForm, field.TypeString, value)
+	}
+	if tu.mutation.TenderFormCleared() {
+		_spec.ClearField(tender.FieldTenderForm, field.TypeString)
+	}
+	if value, ok := tu.mutation.ContractForm(); ok {
+		_spec.SetField(tender.FieldContractForm, field.TypeString, value)
+	}
+	if tu.mutation.ContractFormCleared() {
+		_spec.ClearField(tender.FieldContractForm, field.TypeString)
+	}
+	if value, ok := tu.mutation.ManagementCompany(); ok {
+		_spec.SetField(tender.FieldManagementCompany, field.TypeString, value)
+	}
+	if tu.mutation.ManagementCompanyCleared() {
+		_spec.ClearField(tender.FieldManagementCompany, field.TypeString)
+	}
+	if value, ok := tu.mutation.TenderingAgency(); ok {
+		_spec.SetField(tender.FieldTenderingAgency, field.TypeString, value)
+	}
+	if tu.mutation.TenderingAgencyCleared() {
+		_spec.ClearField(tender.FieldTenderingAgency, field.TypeString)
+	}
+	if value, ok := tu.mutation.BiddingDate(); ok {
+		_spec.SetField(tender.FieldBiddingDate, field.TypeTime, value)
+	}
+	if tu.mutation.BiddingDateCleared() {
+		_spec.ClearField(tender.FieldBiddingDate, field.TypeTime)
+	}
+	if value, ok := tu.mutation.FacadeConsultant(); ok {
+		_spec.SetField(tender.FieldFacadeConsultant, field.TypeString, value)
+	}
+	if tu.mutation.FacadeConsultantCleared() {
+		_spec.ClearField(tender.FieldFacadeConsultant, field.TypeString)
+	}
+	if value, ok := tu.mutation.DesignUnit(); ok {
+		_spec.SetField(tender.FieldDesignUnit, field.TypeString, value)
+	}
+	if tu.mutation.DesignUnitCleared() {
+		_spec.ClearField(tender.FieldDesignUnit, field.TypeString)
+	}
+	if value, ok := tu.mutation.ConsultingFirm(); ok {
+		_spec.SetField(tender.FieldConsultingFirm, field.TypeString, value)
+	}
+	if tu.mutation.ConsultingFirmCleared() {
+		_spec.ClearField(tender.FieldConsultingFirm, field.TypeString)
+	}
+	if value, ok := tu.mutation.KeyProject(); ok {
+		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
 	}
 	if tu.mutation.AreaCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -875,6 +1547,196 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.FinderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.FinderTable,
+			Columns: []string{tender.FinderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.FinderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.FinderTable,
+			Columns: []string{tender.FinderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.CreatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.CreatedByTable,
+			Columns: []string{tender.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.CreatedByTable,
+			Columns: []string{tender.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.FollowingSalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedFollowingSalesIDs(); len(nodes) > 0 && !tu.mutation.FollowingSalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.FollowingSalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.ProvinceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.ProvinceTable,
+			Columns: []string{tender.ProvinceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.ProvinceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.ProvinceTable,
+			Columns: []string{tender.ProvinceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.CityCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CityTable,
+			Columns: []string{tender.CityColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.CityIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CityTable,
+			Columns: []string{tender.CityColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.DistrictCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.DistrictTable,
+			Columns: []string{tender.DistrictColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.DistrictIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.DistrictTable,
+			Columns: []string{tender.DistrictColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -1004,47 +1866,77 @@ func (tuo *TenderUpdateOne) ClearTenderDate() *TenderUpdateOne {
 	return tuo
 }
 
-// SetFindDate sets the "find_date" field.
-func (tuo *TenderUpdateOne) SetFindDate(t time.Time) *TenderUpdateOne {
-	tuo.mutation.SetFindDate(t)
+// SetDiscoveryDate sets the "discovery_date" field.
+func (tuo *TenderUpdateOne) SetDiscoveryDate(t time.Time) *TenderUpdateOne {
+	tuo.mutation.SetDiscoveryDate(t)
 	return tuo
 }
 
-// SetNillableFindDate sets the "find_date" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableFindDate(t *time.Time) *TenderUpdateOne {
+// SetNillableDiscoveryDate sets the "discovery_date" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableDiscoveryDate(t *time.Time) *TenderUpdateOne {
 	if t != nil {
-		tuo.SetFindDate(*t)
+		tuo.SetDiscoveryDate(*t)
 	}
 	return tuo
 }
 
-// SetFinder sets the "finder" field.
-func (tuo *TenderUpdateOne) SetFinder(z *zht.User) *TenderUpdateOne {
-	tuo.mutation.SetFinder(z)
+// SetAddress sets the "address" field.
+func (tuo *TenderUpdateOne) SetAddress(s string) *TenderUpdateOne {
+	tuo.mutation.SetAddress(s)
 	return tuo
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (tuo *TenderUpdateOne) SetCreatedBy(z *zht.User) *TenderUpdateOne {
-	tuo.mutation.SetCreatedBy(z)
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableAddress(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetAddress(*s)
+	}
 	return tuo
 }
 
-// SetFollowingPerson sets the "following_person" field.
-func (tuo *TenderUpdateOne) SetFollowingPerson(z []zht.User) *TenderUpdateOne {
-	tuo.mutation.SetFollowingPerson(z)
+// ClearAddress clears the value of the "address" field.
+func (tuo *TenderUpdateOne) ClearAddress() *TenderUpdateOne {
+	tuo.mutation.ClearAddress()
 	return tuo
 }
 
-// AppendFollowingPerson appends z to the "following_person" field.
-func (tuo *TenderUpdateOne) AppendFollowingPerson(z []zht.User) *TenderUpdateOne {
-	tuo.mutation.AppendFollowingPerson(z)
+// SetFullAddress sets the "full_address" field.
+func (tuo *TenderUpdateOne) SetFullAddress(s string) *TenderUpdateOne {
+	tuo.mutation.SetFullAddress(s)
 	return tuo
 }
 
-// ClearFollowingPerson clears the value of the "following_person" field.
-func (tuo *TenderUpdateOne) ClearFollowingPerson() *TenderUpdateOne {
-	tuo.mutation.ClearFollowingPerson()
+// SetNillableFullAddress sets the "full_address" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableFullAddress(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetFullAddress(*s)
+	}
+	return tuo
+}
+
+// ClearFullAddress clears the value of the "full_address" field.
+func (tuo *TenderUpdateOne) ClearFullAddress() *TenderUpdateOne {
+	tuo.mutation.ClearFullAddress()
+	return tuo
+}
+
+// SetContractor sets the "contractor" field.
+func (tuo *TenderUpdateOne) SetContractor(s string) *TenderUpdateOne {
+	tuo.mutation.SetContractor(s)
+	return tuo
+}
+
+// SetNillableContractor sets the "contractor" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableContractor(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetContractor(*s)
+	}
+	return tuo
+}
+
+// ClearContractor clears the value of the "contractor" field.
+func (tuo *TenderUpdateOne) ClearContractor() *TenderUpdateOne {
+	tuo.mutation.ClearContractor()
 	return tuo
 }
 
@@ -1075,6 +1967,26 @@ func (tuo *TenderUpdateOne) ClearSizeAndValueRating() *TenderUpdateOne {
 	return tuo
 }
 
+// SetSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field.
+func (tuo *TenderUpdateOne) SetSizeAndValueRatingOverview(s string) *TenderUpdateOne {
+	tuo.mutation.SetSizeAndValueRatingOverview(s)
+	return tuo
+}
+
+// SetNillableSizeAndValueRatingOverview sets the "size_and_value_rating_overview" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableSizeAndValueRatingOverview(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetSizeAndValueRatingOverview(*s)
+	}
+	return tuo
+}
+
+// ClearSizeAndValueRatingOverview clears the value of the "size_and_value_rating_overview" field.
+func (tuo *TenderUpdateOne) ClearSizeAndValueRatingOverview() *TenderUpdateOne {
+	tuo.mutation.ClearSizeAndValueRatingOverview()
+	return tuo
+}
+
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
 func (tuo *TenderUpdateOne) SetCreditAndPaymentRating(i int8) *TenderUpdateOne {
 	tuo.mutation.ResetCreditAndPaymentRating()
@@ -1099,6 +2011,26 @@ func (tuo *TenderUpdateOne) AddCreditAndPaymentRating(i int8) *TenderUpdateOne {
 // ClearCreditAndPaymentRating clears the value of the "credit_and_payment_rating" field.
 func (tuo *TenderUpdateOne) ClearCreditAndPaymentRating() *TenderUpdateOne {
 	tuo.mutation.ClearCreditAndPaymentRating()
+	return tuo
+}
+
+// SetCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field.
+func (tuo *TenderUpdateOne) SetCreditAndPaymentRatingOverview(s string) *TenderUpdateOne {
+	tuo.mutation.SetCreditAndPaymentRatingOverview(s)
+	return tuo
+}
+
+// SetNillableCreditAndPaymentRatingOverview sets the "credit_and_payment_rating_overview" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCreditAndPaymentRatingOverview(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetCreditAndPaymentRatingOverview(*s)
+	}
+	return tuo
+}
+
+// ClearCreditAndPaymentRatingOverview clears the value of the "credit_and_payment_rating_overview" field.
+func (tuo *TenderUpdateOne) ClearCreditAndPaymentRatingOverview() *TenderUpdateOne {
+	tuo.mutation.ClearCreditAndPaymentRatingOverview()
 	return tuo
 }
 
@@ -1129,6 +2061,26 @@ func (tuo *TenderUpdateOne) ClearTimeLimitRating() *TenderUpdateOne {
 	return tuo
 }
 
+// SetTimeLimitRatingOverview sets the "time_limit_rating_overview" field.
+func (tuo *TenderUpdateOne) SetTimeLimitRatingOverview(s string) *TenderUpdateOne {
+	tuo.mutation.SetTimeLimitRatingOverview(s)
+	return tuo
+}
+
+// SetNillableTimeLimitRatingOverview sets the "time_limit_rating_overview" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTimeLimitRatingOverview(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTimeLimitRatingOverview(*s)
+	}
+	return tuo
+}
+
+// ClearTimeLimitRatingOverview clears the value of the "time_limit_rating_overview" field.
+func (tuo *TenderUpdateOne) ClearTimeLimitRatingOverview() *TenderUpdateOne {
+	tuo.mutation.ClearTimeLimitRatingOverview()
+	return tuo
+}
+
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
 func (tuo *TenderUpdateOne) SetCustomerRelationshipRating(i int8) *TenderUpdateOne {
 	tuo.mutation.ResetCustomerRelationshipRating()
@@ -1156,6 +2108,26 @@ func (tuo *TenderUpdateOne) ClearCustomerRelationshipRating() *TenderUpdateOne {
 	return tuo
 }
 
+// SetCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field.
+func (tuo *TenderUpdateOne) SetCustomerRelationshipRatingOverview(s string) *TenderUpdateOne {
+	tuo.mutation.SetCustomerRelationshipRatingOverview(s)
+	return tuo
+}
+
+// SetNillableCustomerRelationshipRatingOverview sets the "customer_relationship_rating_overview" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCustomerRelationshipRatingOverview(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetCustomerRelationshipRatingOverview(*s)
+	}
+	return tuo
+}
+
+// ClearCustomerRelationshipRatingOverview clears the value of the "customer_relationship_rating_overview" field.
+func (tuo *TenderUpdateOne) ClearCustomerRelationshipRatingOverview() *TenderUpdateOne {
+	tuo.mutation.ClearCustomerRelationshipRatingOverview()
+	return tuo
+}
+
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
 func (tuo *TenderUpdateOne) SetCompetitivePartnershipRating(i int8) *TenderUpdateOne {
 	tuo.mutation.ResetCompetitivePartnershipRating()
@@ -1180,6 +2152,26 @@ func (tuo *TenderUpdateOne) AddCompetitivePartnershipRating(i int8) *TenderUpdat
 // ClearCompetitivePartnershipRating clears the value of the "competitive_partnership_rating" field.
 func (tuo *TenderUpdateOne) ClearCompetitivePartnershipRating() *TenderUpdateOne {
 	tuo.mutation.ClearCompetitivePartnershipRating()
+	return tuo
+}
+
+// SetCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field.
+func (tuo *TenderUpdateOne) SetCompetitivePartnershipRatingOverview(s string) *TenderUpdateOne {
+	tuo.mutation.SetCompetitivePartnershipRatingOverview(s)
+	return tuo
+}
+
+// SetNillableCompetitivePartnershipRatingOverview sets the "competitive_partnership_rating_overview" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCompetitivePartnershipRatingOverview(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetCompetitivePartnershipRatingOverview(*s)
+	}
+	return tuo
+}
+
+// ClearCompetitivePartnershipRatingOverview clears the value of the "competitive_partnership_rating_overview" field.
+func (tuo *TenderUpdateOne) ClearCompetitivePartnershipRatingOverview() *TenderUpdateOne {
+	tuo.mutation.ClearCompetitivePartnershipRatingOverview()
 	return tuo
 }
 
@@ -1315,26 +2307,6 @@ func (tuo *TenderUpdateOne) ClearAttachements() *TenderUpdateOne {
 	return tuo
 }
 
-// SetGeoLocation sets the "geo_location" field.
-func (tuo *TenderUpdateOne) SetGeoLocation(s string) *TenderUpdateOne {
-	tuo.mutation.SetGeoLocation(s)
-	return tuo
-}
-
-// SetNillableGeoLocation sets the "geo_location" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableGeoLocation(s *string) *TenderUpdateOne {
-	if s != nil {
-		tuo.SetGeoLocation(*s)
-	}
-	return tuo
-}
-
-// ClearGeoLocation clears the value of the "geo_location" field.
-func (tuo *TenderUpdateOne) ClearGeoLocation() *TenderUpdateOne {
-	tuo.mutation.ClearGeoLocation()
-	return tuo
-}
-
 // SetGeoCoordinate sets the "geo_coordinate" field.
 func (tuo *TenderUpdateOne) SetGeoCoordinate(gj *geo.GeoJson) *TenderUpdateOne {
 	tuo.mutation.SetGeoCoordinate(gj)
@@ -1385,6 +2357,280 @@ func (tuo *TenderUpdateOne) ClearImages() *TenderUpdateOne {
 	return tuo
 }
 
+// SetTenderSituations sets the "tender_situations" field.
+func (tuo *TenderUpdateOne) SetTenderSituations(s string) *TenderUpdateOne {
+	tuo.mutation.SetTenderSituations(s)
+	return tuo
+}
+
+// SetNillableTenderSituations sets the "tender_situations" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderSituations(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTenderSituations(*s)
+	}
+	return tuo
+}
+
+// ClearTenderSituations clears the value of the "tender_situations" field.
+func (tuo *TenderUpdateOne) ClearTenderSituations() *TenderUpdateOne {
+	tuo.mutation.ClearTenderSituations()
+	return tuo
+}
+
+// SetOwnerSituations sets the "owner_situations" field.
+func (tuo *TenderUpdateOne) SetOwnerSituations(s string) *TenderUpdateOne {
+	tuo.mutation.SetOwnerSituations(s)
+	return tuo
+}
+
+// SetNillableOwnerSituations sets the "owner_situations" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableOwnerSituations(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetOwnerSituations(*s)
+	}
+	return tuo
+}
+
+// ClearOwnerSituations clears the value of the "owner_situations" field.
+func (tuo *TenderUpdateOne) ClearOwnerSituations() *TenderUpdateOne {
+	tuo.mutation.ClearOwnerSituations()
+	return tuo
+}
+
+// SetBiddingInstructions sets the "bidding_instructions" field.
+func (tuo *TenderUpdateOne) SetBiddingInstructions(s string) *TenderUpdateOne {
+	tuo.mutation.SetBiddingInstructions(s)
+	return tuo
+}
+
+// SetNillableBiddingInstructions sets the "bidding_instructions" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableBiddingInstructions(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetBiddingInstructions(*s)
+	}
+	return tuo
+}
+
+// ClearBiddingInstructions clears the value of the "bidding_instructions" field.
+func (tuo *TenderUpdateOne) ClearBiddingInstructions() *TenderUpdateOne {
+	tuo.mutation.ClearBiddingInstructions()
+	return tuo
+}
+
+// SetCompetitorSituations sets the "competitor_situations" field.
+func (tuo *TenderUpdateOne) SetCompetitorSituations(s string) *TenderUpdateOne {
+	tuo.mutation.SetCompetitorSituations(s)
+	return tuo
+}
+
+// SetNillableCompetitorSituations sets the "competitor_situations" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCompetitorSituations(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetCompetitorSituations(*s)
+	}
+	return tuo
+}
+
+// ClearCompetitorSituations clears the value of the "competitor_situations" field.
+func (tuo *TenderUpdateOne) ClearCompetitorSituations() *TenderUpdateOne {
+	tuo.mutation.ClearCompetitorSituations()
+	return tuo
+}
+
+// SetCostEngineer sets the "cost_engineer" field.
+func (tuo *TenderUpdateOne) SetCostEngineer(s string) *TenderUpdateOne {
+	tuo.mutation.SetCostEngineer(s)
+	return tuo
+}
+
+// SetNillableCostEngineer sets the "cost_engineer" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCostEngineer(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetCostEngineer(*s)
+	}
+	return tuo
+}
+
+// ClearCostEngineer clears the value of the "cost_engineer" field.
+func (tuo *TenderUpdateOne) ClearCostEngineer() *TenderUpdateOne {
+	tuo.mutation.ClearCostEngineer()
+	return tuo
+}
+
+// SetTenderForm sets the "tender_form" field.
+func (tuo *TenderUpdateOne) SetTenderForm(s string) *TenderUpdateOne {
+	tuo.mutation.SetTenderForm(s)
+	return tuo
+}
+
+// SetNillableTenderForm sets the "tender_form" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderForm(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTenderForm(*s)
+	}
+	return tuo
+}
+
+// ClearTenderForm clears the value of the "tender_form" field.
+func (tuo *TenderUpdateOne) ClearTenderForm() *TenderUpdateOne {
+	tuo.mutation.ClearTenderForm()
+	return tuo
+}
+
+// SetContractForm sets the "contract_form" field.
+func (tuo *TenderUpdateOne) SetContractForm(s string) *TenderUpdateOne {
+	tuo.mutation.SetContractForm(s)
+	return tuo
+}
+
+// SetNillableContractForm sets the "contract_form" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableContractForm(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetContractForm(*s)
+	}
+	return tuo
+}
+
+// ClearContractForm clears the value of the "contract_form" field.
+func (tuo *TenderUpdateOne) ClearContractForm() *TenderUpdateOne {
+	tuo.mutation.ClearContractForm()
+	return tuo
+}
+
+// SetManagementCompany sets the "management_company" field.
+func (tuo *TenderUpdateOne) SetManagementCompany(s string) *TenderUpdateOne {
+	tuo.mutation.SetManagementCompany(s)
+	return tuo
+}
+
+// SetNillableManagementCompany sets the "management_company" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableManagementCompany(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetManagementCompany(*s)
+	}
+	return tuo
+}
+
+// ClearManagementCompany clears the value of the "management_company" field.
+func (tuo *TenderUpdateOne) ClearManagementCompany() *TenderUpdateOne {
+	tuo.mutation.ClearManagementCompany()
+	return tuo
+}
+
+// SetTenderingAgency sets the "tendering_agency" field.
+func (tuo *TenderUpdateOne) SetTenderingAgency(s string) *TenderUpdateOne {
+	tuo.mutation.SetTenderingAgency(s)
+	return tuo
+}
+
+// SetNillableTenderingAgency sets the "tendering_agency" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderingAgency(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTenderingAgency(*s)
+	}
+	return tuo
+}
+
+// ClearTenderingAgency clears the value of the "tendering_agency" field.
+func (tuo *TenderUpdateOne) ClearTenderingAgency() *TenderUpdateOne {
+	tuo.mutation.ClearTenderingAgency()
+	return tuo
+}
+
+// SetBiddingDate sets the "bidding_date" field.
+func (tuo *TenderUpdateOne) SetBiddingDate(t time.Time) *TenderUpdateOne {
+	tuo.mutation.SetBiddingDate(t)
+	return tuo
+}
+
+// SetNillableBiddingDate sets the "bidding_date" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableBiddingDate(t *time.Time) *TenderUpdateOne {
+	if t != nil {
+		tuo.SetBiddingDate(*t)
+	}
+	return tuo
+}
+
+// ClearBiddingDate clears the value of the "bidding_date" field.
+func (tuo *TenderUpdateOne) ClearBiddingDate() *TenderUpdateOne {
+	tuo.mutation.ClearBiddingDate()
+	return tuo
+}
+
+// SetFacadeConsultant sets the "facade_consultant" field.
+func (tuo *TenderUpdateOne) SetFacadeConsultant(s string) *TenderUpdateOne {
+	tuo.mutation.SetFacadeConsultant(s)
+	return tuo
+}
+
+// SetNillableFacadeConsultant sets the "facade_consultant" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableFacadeConsultant(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetFacadeConsultant(*s)
+	}
+	return tuo
+}
+
+// ClearFacadeConsultant clears the value of the "facade_consultant" field.
+func (tuo *TenderUpdateOne) ClearFacadeConsultant() *TenderUpdateOne {
+	tuo.mutation.ClearFacadeConsultant()
+	return tuo
+}
+
+// SetDesignUnit sets the "design_unit" field.
+func (tuo *TenderUpdateOne) SetDesignUnit(s string) *TenderUpdateOne {
+	tuo.mutation.SetDesignUnit(s)
+	return tuo
+}
+
+// SetNillableDesignUnit sets the "design_unit" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableDesignUnit(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetDesignUnit(*s)
+	}
+	return tuo
+}
+
+// ClearDesignUnit clears the value of the "design_unit" field.
+func (tuo *TenderUpdateOne) ClearDesignUnit() *TenderUpdateOne {
+	tuo.mutation.ClearDesignUnit()
+	return tuo
+}
+
+// SetConsultingFirm sets the "consulting_firm" field.
+func (tuo *TenderUpdateOne) SetConsultingFirm(s string) *TenderUpdateOne {
+	tuo.mutation.SetConsultingFirm(s)
+	return tuo
+}
+
+// SetNillableConsultingFirm sets the "consulting_firm" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableConsultingFirm(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetConsultingFirm(*s)
+	}
+	return tuo
+}
+
+// ClearConsultingFirm clears the value of the "consulting_firm" field.
+func (tuo *TenderUpdateOne) ClearConsultingFirm() *TenderUpdateOne {
+	tuo.mutation.ClearConsultingFirm()
+	return tuo
+}
+
+// SetKeyProject sets the "key_project" field.
+func (tuo *TenderUpdateOne) SetKeyProject(b bool) *TenderUpdateOne {
+	tuo.mutation.SetKeyProject(b)
+	return tuo
+}
+
+// SetNillableKeyProject sets the "key_project" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableKeyProject(b *bool) *TenderUpdateOne {
+	if b != nil {
+		tuo.SetKeyProject(*b)
+	}
+	return tuo
+}
+
 // SetAreaID sets the "area_id" field.
 func (tuo *TenderUpdateOne) SetAreaID(x xid.ID) *TenderUpdateOne {
 	tuo.mutation.SetAreaID(x)
@@ -1395,6 +2641,54 @@ func (tuo *TenderUpdateOne) SetAreaID(x xid.ID) *TenderUpdateOne {
 func (tuo *TenderUpdateOne) SetNillableAreaID(x *xid.ID) *TenderUpdateOne {
 	if x != nil {
 		tuo.SetAreaID(*x)
+	}
+	return tuo
+}
+
+// SetProvinceID sets the "province_id" field.
+func (tuo *TenderUpdateOne) SetProvinceID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetProvinceID(x)
+	return tuo
+}
+
+// SetNillableProvinceID sets the "province_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableProvinceID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetProvinceID(*x)
+	}
+	return tuo
+}
+
+// SetCityID sets the "city_id" field.
+func (tuo *TenderUpdateOne) SetCityID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetCityID(x)
+	return tuo
+}
+
+// SetNillableCityID sets the "city_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCityID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetCityID(*x)
+	}
+	return tuo
+}
+
+// ClearCityID clears the value of the "city_id" field.
+func (tuo *TenderUpdateOne) ClearCityID() *TenderUpdateOne {
+	tuo.mutation.ClearCityID()
+	return tuo
+}
+
+// SetDistrictID sets the "district_id" field.
+func (tuo *TenderUpdateOne) SetDistrictID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetDistrictID(x)
+	return tuo
+}
+
+// SetNillableDistrictID sets the "district_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableDistrictID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetDistrictID(*x)
 	}
 	return tuo
 }
@@ -1413,6 +2707,34 @@ func (tuo *TenderUpdateOne) SetNillableCustomerID(x *xid.ID) *TenderUpdateOne {
 	return tuo
 }
 
+// SetFinderID sets the "finder_id" field.
+func (tuo *TenderUpdateOne) SetFinderID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetFinderID(x)
+	return tuo
+}
+
+// SetNillableFinderID sets the "finder_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableFinderID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetFinderID(*x)
+	}
+	return tuo
+}
+
+// SetCreatedByID sets the "created_by_id" field.
+func (tuo *TenderUpdateOne) SetCreatedByID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetCreatedByID(x)
+	return tuo
+}
+
+// SetNillableCreatedByID sets the "created_by_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCreatedByID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetCreatedByID(*x)
+	}
+	return tuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tuo *TenderUpdateOne) SetArea(a *Area) *TenderUpdateOne {
 	return tuo.SetAreaID(a.ID)
@@ -1421,6 +2743,46 @@ func (tuo *TenderUpdateOne) SetArea(a *Area) *TenderUpdateOne {
 // SetCustomer sets the "customer" edge to the Customer entity.
 func (tuo *TenderUpdateOne) SetCustomer(c *Customer) *TenderUpdateOne {
 	return tuo.SetCustomerID(c.ID)
+}
+
+// SetFinder sets the "finder" edge to the User entity.
+func (tuo *TenderUpdateOne) SetFinder(u *User) *TenderUpdateOne {
+	return tuo.SetFinderID(u.ID)
+}
+
+// SetCreatedBy sets the "created_by" edge to the User entity.
+func (tuo *TenderUpdateOne) SetCreatedBy(u *User) *TenderUpdateOne {
+	return tuo.SetCreatedByID(u.ID)
+}
+
+// AddFollowingSaleIDs adds the "following_sales" edge to the User entity by IDs.
+func (tuo *TenderUpdateOne) AddFollowingSaleIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.AddFollowingSaleIDs(ids...)
+	return tuo
+}
+
+// AddFollowingSales adds the "following_sales" edges to the User entity.
+func (tuo *TenderUpdateOne) AddFollowingSales(u ...*User) *TenderUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return tuo.AddFollowingSaleIDs(ids...)
+}
+
+// SetProvince sets the "province" edge to the Province entity.
+func (tuo *TenderUpdateOne) SetProvince(p *Province) *TenderUpdateOne {
+	return tuo.SetProvinceID(p.ID)
+}
+
+// SetCity sets the "city" edge to the City entity.
+func (tuo *TenderUpdateOne) SetCity(c *City) *TenderUpdateOne {
+	return tuo.SetCityID(c.ID)
+}
+
+// SetDistrict sets the "district" edge to the District entity.
+func (tuo *TenderUpdateOne) SetDistrict(d *District) *TenderUpdateOne {
+	return tuo.SetDistrictID(d.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1437,6 +2799,57 @@ func (tuo *TenderUpdateOne) ClearArea() *TenderUpdateOne {
 // ClearCustomer clears the "customer" edge to the Customer entity.
 func (tuo *TenderUpdateOne) ClearCustomer() *TenderUpdateOne {
 	tuo.mutation.ClearCustomer()
+	return tuo
+}
+
+// ClearFinder clears the "finder" edge to the User entity.
+func (tuo *TenderUpdateOne) ClearFinder() *TenderUpdateOne {
+	tuo.mutation.ClearFinder()
+	return tuo
+}
+
+// ClearCreatedBy clears the "created_by" edge to the User entity.
+func (tuo *TenderUpdateOne) ClearCreatedBy() *TenderUpdateOne {
+	tuo.mutation.ClearCreatedBy()
+	return tuo
+}
+
+// ClearFollowingSales clears all "following_sales" edges to the User entity.
+func (tuo *TenderUpdateOne) ClearFollowingSales() *TenderUpdateOne {
+	tuo.mutation.ClearFollowingSales()
+	return tuo
+}
+
+// RemoveFollowingSaleIDs removes the "following_sales" edge to User entities by IDs.
+func (tuo *TenderUpdateOne) RemoveFollowingSaleIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.RemoveFollowingSaleIDs(ids...)
+	return tuo
+}
+
+// RemoveFollowingSales removes "following_sales" edges to User entities.
+func (tuo *TenderUpdateOne) RemoveFollowingSales(u ...*User) *TenderUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return tuo.RemoveFollowingSaleIDs(ids...)
+}
+
+// ClearProvince clears the "province" edge to the Province entity.
+func (tuo *TenderUpdateOne) ClearProvince() *TenderUpdateOne {
+	tuo.mutation.ClearProvince()
+	return tuo
+}
+
+// ClearCity clears the "city" edge to the City entity.
+func (tuo *TenderUpdateOne) ClearCity() *TenderUpdateOne {
+	tuo.mutation.ClearCity()
+	return tuo
+}
+
+// ClearDistrict clears the "district" edge to the District entity.
+func (tuo *TenderUpdateOne) ClearDistrict() *TenderUpdateOne {
+	tuo.mutation.ClearDistrict()
 	return tuo
 }
 
@@ -1522,6 +2935,18 @@ func (tuo *TenderUpdateOne) check() error {
 	if tuo.mutation.CustomerCleared() && len(tuo.mutation.CustomerIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.customer"`)
 	}
+	if tuo.mutation.FinderCleared() && len(tuo.mutation.FinderIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.finder"`)
+	}
+	if tuo.mutation.CreatedByCleared() && len(tuo.mutation.CreatedByIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.created_by"`)
+	}
+	if tuo.mutation.ProvinceCleared() && len(tuo.mutation.ProvinceIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.province"`)
+	}
+	if tuo.mutation.DistrictCleared() && len(tuo.mutation.DistrictIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Tender.district"`)
+	}
 	return nil
 }
 
@@ -1584,25 +3009,26 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if tuo.mutation.TenderDateCleared() {
 		_spec.ClearField(tender.FieldTenderDate, field.TypeTime)
 	}
-	if value, ok := tuo.mutation.FindDate(); ok {
-		_spec.SetField(tender.FieldFindDate, field.TypeTime, value)
+	if value, ok := tuo.mutation.DiscoveryDate(); ok {
+		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)
 	}
-	if value, ok := tuo.mutation.Finder(); ok {
-		_spec.SetField(tender.FieldFinder, field.TypeJSON, value)
+	if value, ok := tuo.mutation.Address(); ok {
+		_spec.SetField(tender.FieldAddress, field.TypeString, value)
 	}
-	if value, ok := tuo.mutation.CreatedBy(); ok {
-		_spec.SetField(tender.FieldCreatedBy, field.TypeJSON, value)
+	if tuo.mutation.AddressCleared() {
+		_spec.ClearField(tender.FieldAddress, field.TypeString)
 	}
-	if value, ok := tuo.mutation.FollowingPerson(); ok {
-		_spec.SetField(tender.FieldFollowingPerson, field.TypeJSON, value)
+	if value, ok := tuo.mutation.FullAddress(); ok {
+		_spec.SetField(tender.FieldFullAddress, field.TypeString, value)
 	}
-	if value, ok := tuo.mutation.AppendedFollowingPerson(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, tender.FieldFollowingPerson, value)
-		})
+	if tuo.mutation.FullAddressCleared() {
+		_spec.ClearField(tender.FieldFullAddress, field.TypeString)
 	}
-	if tuo.mutation.FollowingPersonCleared() {
-		_spec.ClearField(tender.FieldFollowingPerson, field.TypeJSON)
+	if value, ok := tuo.mutation.Contractor(); ok {
+		_spec.SetField(tender.FieldContractor, field.TypeString, value)
+	}
+	if tuo.mutation.ContractorCleared() {
+		_spec.ClearField(tender.FieldContractor, field.TypeString)
 	}
 	if value, ok := tuo.mutation.SizeAndValueRating(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
@@ -1613,6 +3039,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if tuo.mutation.SizeAndValueRatingCleared() {
 		_spec.ClearField(tender.FieldSizeAndValueRating, field.TypeInt8)
 	}
+	if value, ok := tuo.mutation.SizeAndValueRatingOverview(); ok {
+		_spec.SetField(tender.FieldSizeAndValueRatingOverview, field.TypeString, value)
+	}
+	if tuo.mutation.SizeAndValueRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldSizeAndValueRatingOverview, field.TypeString)
+	}
 	if value, ok := tuo.mutation.CreditAndPaymentRating(); ok {
 		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
 	}
@@ -1621,6 +3053,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.CreditAndPaymentRatingCleared() {
 		_spec.ClearField(tender.FieldCreditAndPaymentRating, field.TypeInt8)
+	}
+	if value, ok := tuo.mutation.CreditAndPaymentRatingOverview(); ok {
+		_spec.SetField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString, value)
+	}
+	if tuo.mutation.CreditAndPaymentRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString)
 	}
 	if value, ok := tuo.mutation.TimeLimitRating(); ok {
 		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt8, value)
@@ -1631,6 +3069,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if tuo.mutation.TimeLimitRatingCleared() {
 		_spec.ClearField(tender.FieldTimeLimitRating, field.TypeInt8)
 	}
+	if value, ok := tuo.mutation.TimeLimitRatingOverview(); ok {
+		_spec.SetField(tender.FieldTimeLimitRatingOverview, field.TypeString, value)
+	}
+	if tuo.mutation.TimeLimitRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldTimeLimitRatingOverview, field.TypeString)
+	}
 	if value, ok := tuo.mutation.CustomerRelationshipRating(); ok {
 		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
 	}
@@ -1640,6 +3084,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if tuo.mutation.CustomerRelationshipRatingCleared() {
 		_spec.ClearField(tender.FieldCustomerRelationshipRating, field.TypeInt8)
 	}
+	if value, ok := tuo.mutation.CustomerRelationshipRatingOverview(); ok {
+		_spec.SetField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString, value)
+	}
+	if tuo.mutation.CustomerRelationshipRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString)
+	}
 	if value, ok := tuo.mutation.CompetitivePartnershipRating(); ok {
 		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
 	}
@@ -1648,6 +3098,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.CompetitivePartnershipRatingCleared() {
 		_spec.ClearField(tender.FieldCompetitivePartnershipRating, field.TypeInt8)
+	}
+	if value, ok := tuo.mutation.CompetitivePartnershipRatingOverview(); ok {
+		_spec.SetField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString, value)
+	}
+	if tuo.mutation.CompetitivePartnershipRatingOverviewCleared() {
+		_spec.ClearField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString)
 	}
 	if value, ok := tuo.mutation.PrepareToBid(); ok {
 		_spec.SetField(tender.FieldPrepareToBid, field.TypeBool, value)
@@ -1693,12 +3149,6 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if tuo.mutation.AttachementsCleared() {
 		_spec.ClearField(tender.FieldAttachements, field.TypeJSON)
 	}
-	if value, ok := tuo.mutation.GeoLocation(); ok {
-		_spec.SetField(tender.FieldGeoLocation, field.TypeString, value)
-	}
-	if tuo.mutation.GeoLocationCleared() {
-		_spec.ClearField(tender.FieldGeoLocation, field.TypeString)
-	}
 	if value, ok := tuo.mutation.GeoCoordinate(); ok {
 		_spec.SetField(tender.FieldGeoCoordinate, field.TypeOther, value)
 	}
@@ -1721,6 +3171,87 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.ImagesCleared() {
 		_spec.ClearField(tender.FieldImages, field.TypeJSON)
+	}
+	if value, ok := tuo.mutation.TenderSituations(); ok {
+		_spec.SetField(tender.FieldTenderSituations, field.TypeString, value)
+	}
+	if tuo.mutation.TenderSituationsCleared() {
+		_spec.ClearField(tender.FieldTenderSituations, field.TypeString)
+	}
+	if value, ok := tuo.mutation.OwnerSituations(); ok {
+		_spec.SetField(tender.FieldOwnerSituations, field.TypeString, value)
+	}
+	if tuo.mutation.OwnerSituationsCleared() {
+		_spec.ClearField(tender.FieldOwnerSituations, field.TypeString)
+	}
+	if value, ok := tuo.mutation.BiddingInstructions(); ok {
+		_spec.SetField(tender.FieldBiddingInstructions, field.TypeString, value)
+	}
+	if tuo.mutation.BiddingInstructionsCleared() {
+		_spec.ClearField(tender.FieldBiddingInstructions, field.TypeString)
+	}
+	if value, ok := tuo.mutation.CompetitorSituations(); ok {
+		_spec.SetField(tender.FieldCompetitorSituations, field.TypeString, value)
+	}
+	if tuo.mutation.CompetitorSituationsCleared() {
+		_spec.ClearField(tender.FieldCompetitorSituations, field.TypeString)
+	}
+	if value, ok := tuo.mutation.CostEngineer(); ok {
+		_spec.SetField(tender.FieldCostEngineer, field.TypeString, value)
+	}
+	if tuo.mutation.CostEngineerCleared() {
+		_spec.ClearField(tender.FieldCostEngineer, field.TypeString)
+	}
+	if value, ok := tuo.mutation.TenderForm(); ok {
+		_spec.SetField(tender.FieldTenderForm, field.TypeString, value)
+	}
+	if tuo.mutation.TenderFormCleared() {
+		_spec.ClearField(tender.FieldTenderForm, field.TypeString)
+	}
+	if value, ok := tuo.mutation.ContractForm(); ok {
+		_spec.SetField(tender.FieldContractForm, field.TypeString, value)
+	}
+	if tuo.mutation.ContractFormCleared() {
+		_spec.ClearField(tender.FieldContractForm, field.TypeString)
+	}
+	if value, ok := tuo.mutation.ManagementCompany(); ok {
+		_spec.SetField(tender.FieldManagementCompany, field.TypeString, value)
+	}
+	if tuo.mutation.ManagementCompanyCleared() {
+		_spec.ClearField(tender.FieldManagementCompany, field.TypeString)
+	}
+	if value, ok := tuo.mutation.TenderingAgency(); ok {
+		_spec.SetField(tender.FieldTenderingAgency, field.TypeString, value)
+	}
+	if tuo.mutation.TenderingAgencyCleared() {
+		_spec.ClearField(tender.FieldTenderingAgency, field.TypeString)
+	}
+	if value, ok := tuo.mutation.BiddingDate(); ok {
+		_spec.SetField(tender.FieldBiddingDate, field.TypeTime, value)
+	}
+	if tuo.mutation.BiddingDateCleared() {
+		_spec.ClearField(tender.FieldBiddingDate, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.FacadeConsultant(); ok {
+		_spec.SetField(tender.FieldFacadeConsultant, field.TypeString, value)
+	}
+	if tuo.mutation.FacadeConsultantCleared() {
+		_spec.ClearField(tender.FieldFacadeConsultant, field.TypeString)
+	}
+	if value, ok := tuo.mutation.DesignUnit(); ok {
+		_spec.SetField(tender.FieldDesignUnit, field.TypeString, value)
+	}
+	if tuo.mutation.DesignUnitCleared() {
+		_spec.ClearField(tender.FieldDesignUnit, field.TypeString)
+	}
+	if value, ok := tuo.mutation.ConsultingFirm(); ok {
+		_spec.SetField(tender.FieldConsultingFirm, field.TypeString, value)
+	}
+	if tuo.mutation.ConsultingFirmCleared() {
+		_spec.ClearField(tender.FieldConsultingFirm, field.TypeString)
+	}
+	if value, ok := tuo.mutation.KeyProject(); ok {
+		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
 	}
 	if tuo.mutation.AreaCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1773,6 +3304,196 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.FinderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.FinderTable,
+			Columns: []string{tender.FinderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.FinderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.FinderTable,
+			Columns: []string{tender.FinderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.CreatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.CreatedByTable,
+			Columns: []string{tender.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.CreatedByTable,
+			Columns: []string{tender.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.FollowingSalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedFollowingSalesIDs(); len(nodes) > 0 && !tuo.mutation.FollowingSalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.FollowingSalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   tender.FollowingSalesTable,
+			Columns: tender.FollowingSalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.ProvinceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.ProvinceTable,
+			Columns: []string{tender.ProvinceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.ProvinceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.ProvinceTable,
+			Columns: []string{tender.ProvinceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.CityCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CityTable,
+			Columns: []string{tender.CityColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.CityIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CityTable,
+			Columns: []string{tender.CityColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.DistrictCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.DistrictTable,
+			Columns: []string{tender.DistrictColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.DistrictIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.DistrictTable,
+			Columns: []string{tender.DistrictColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

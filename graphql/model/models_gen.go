@@ -2,6 +2,11 @@
 
 package model
 
+type GeoJSON struct {
+	Type        string    `json:"type"`
+	Coordinates []float64 `json:"coordinates"`
+}
+
 type Session struct {
 	Name      string `json:"name"`
 	Username  string `json:"username"`

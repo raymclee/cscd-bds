@@ -254,16 +254,16 @@ func (cu *CustomerUpdate) ClearSalesID() *CustomerUpdate {
 	return cu
 }
 
-// SetCreatedByUserID sets the "created_by_user_id" field.
-func (cu *CustomerUpdate) SetCreatedByUserID(x xid.ID) *CustomerUpdate {
-	cu.mutation.SetCreatedByUserID(x)
+// SetCreatedByID sets the "created_by_id" field.
+func (cu *CustomerUpdate) SetCreatedByID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetCreatedByID(x)
 	return cu
 }
 
-// SetNillableCreatedByUserID sets the "created_by_user_id" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableCreatedByUserID(x *xid.ID) *CustomerUpdate {
+// SetNillableCreatedByID sets the "created_by_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableCreatedByID(x *xid.ID) *CustomerUpdate {
 	if x != nil {
-		cu.SetCreatedByUserID(*x)
+		cu.SetCreatedByID(*x)
 	}
 	return cu
 }
@@ -291,12 +291,6 @@ func (cu *CustomerUpdate) AddTenders(t ...*Tender) *CustomerUpdate {
 // SetSales sets the "sales" edge to the User entity.
 func (cu *CustomerUpdate) SetSales(u *User) *CustomerUpdate {
 	return cu.SetSalesID(u.ID)
-}
-
-// SetCreatedByID sets the "created_by" edge to the User entity by ID.
-func (cu *CustomerUpdate) SetCreatedByID(id xid.ID) *CustomerUpdate {
-	cu.mutation.SetCreatedByID(id)
-	return cu
 }
 
 // SetCreatedBy sets the "created_by" edge to the User entity.
@@ -840,16 +834,16 @@ func (cuo *CustomerUpdateOne) ClearSalesID() *CustomerUpdateOne {
 	return cuo
 }
 
-// SetCreatedByUserID sets the "created_by_user_id" field.
-func (cuo *CustomerUpdateOne) SetCreatedByUserID(x xid.ID) *CustomerUpdateOne {
-	cuo.mutation.SetCreatedByUserID(x)
+// SetCreatedByID sets the "created_by_id" field.
+func (cuo *CustomerUpdateOne) SetCreatedByID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetCreatedByID(x)
 	return cuo
 }
 
-// SetNillableCreatedByUserID sets the "created_by_user_id" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableCreatedByUserID(x *xid.ID) *CustomerUpdateOne {
+// SetNillableCreatedByID sets the "created_by_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableCreatedByID(x *xid.ID) *CustomerUpdateOne {
 	if x != nil {
-		cuo.SetCreatedByUserID(*x)
+		cuo.SetCreatedByID(*x)
 	}
 	return cuo
 }
@@ -877,12 +871,6 @@ func (cuo *CustomerUpdateOne) AddTenders(t ...*Tender) *CustomerUpdateOne {
 // SetSales sets the "sales" edge to the User entity.
 func (cuo *CustomerUpdateOne) SetSales(u *User) *CustomerUpdateOne {
 	return cuo.SetSalesID(u.ID)
-}
-
-// SetCreatedByID sets the "created_by" edge to the User entity by ID.
-func (cuo *CustomerUpdateOne) SetCreatedByID(id xid.ID) *CustomerUpdateOne {
-	cuo.mutation.SetCreatedByID(id)
-	return cuo
 }
 
 // SetCreatedBy sets the "created_by" edge to the User entity.

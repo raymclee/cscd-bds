@@ -1,0 +1,8 @@
+extend type Tender {
+  geoCoordinate: GeoJson
+}
+
+type GeoJson {
+  type: String!
+  coordinates: [Float!]!
+}

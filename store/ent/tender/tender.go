@@ -29,24 +29,34 @@ const (
 	FieldEstimatedAmount = "estimated_amount"
 	// FieldTenderDate holds the string denoting the tender_date field in the database.
 	FieldTenderDate = "tender_date"
-	// FieldFindDate holds the string denoting the find_date field in the database.
-	FieldFindDate = "find_date"
-	// FieldFinder holds the string denoting the finder field in the database.
-	FieldFinder = "finder"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
-	// FieldFollowingPerson holds the string denoting the following_person field in the database.
-	FieldFollowingPerson = "following_person"
+	// FieldDiscoveryDate holds the string denoting the discovery_date field in the database.
+	FieldDiscoveryDate = "discovery_date"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
+	// FieldFullAddress holds the string denoting the full_address field in the database.
+	FieldFullAddress = "full_address"
+	// FieldContractor holds the string denoting the contractor field in the database.
+	FieldContractor = "contractor"
 	// FieldSizeAndValueRating holds the string denoting the size_and_value_rating field in the database.
 	FieldSizeAndValueRating = "size_and_value_rating"
+	// FieldSizeAndValueRatingOverview holds the string denoting the size_and_value_rating_overview field in the database.
+	FieldSizeAndValueRatingOverview = "size_and_value_rating_overview"
 	// FieldCreditAndPaymentRating holds the string denoting the credit_and_payment_rating field in the database.
 	FieldCreditAndPaymentRating = "credit_and_payment_rating"
+	// FieldCreditAndPaymentRatingOverview holds the string denoting the credit_and_payment_rating_overview field in the database.
+	FieldCreditAndPaymentRatingOverview = "credit_and_payment_rating_overview"
 	// FieldTimeLimitRating holds the string denoting the time_limit_rating field in the database.
 	FieldTimeLimitRating = "time_limit_rating"
+	// FieldTimeLimitRatingOverview holds the string denoting the time_limit_rating_overview field in the database.
+	FieldTimeLimitRatingOverview = "time_limit_rating_overview"
 	// FieldCustomerRelationshipRating holds the string denoting the customer_relationship_rating field in the database.
 	FieldCustomerRelationshipRating = "customer_relationship_rating"
+	// FieldCustomerRelationshipRatingOverview holds the string denoting the customer_relationship_rating_overview field in the database.
+	FieldCustomerRelationshipRatingOverview = "customer_relationship_rating_overview"
 	// FieldCompetitivePartnershipRating holds the string denoting the competitive_partnership_rating field in the database.
 	FieldCompetitivePartnershipRating = "competitive_partnership_rating"
+	// FieldCompetitivePartnershipRatingOverview holds the string denoting the competitive_partnership_rating_overview field in the database.
+	FieldCompetitivePartnershipRatingOverview = "competitive_partnership_rating_overview"
 	// FieldPrepareToBid holds the string denoting the prepare_to_bid field in the database.
 	FieldPrepareToBid = "prepare_to_bid"
 	// FieldProjectCode holds the string denoting the project_code field in the database.
@@ -61,22 +71,70 @@ const (
 	FieldProjectType = "project_type"
 	// FieldAttachements holds the string denoting the attachements field in the database.
 	FieldAttachements = "attachements"
-	// FieldGeoLocation holds the string denoting the geo_location field in the database.
-	FieldGeoLocation = "geo_location"
 	// FieldGeoCoordinate holds the string denoting the geo_coordinate field in the database.
 	FieldGeoCoordinate = "geo_coordinate"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
 	// FieldImages holds the string denoting the images field in the database.
 	FieldImages = "images"
+	// FieldTenderSituations holds the string denoting the tender_situations field in the database.
+	FieldTenderSituations = "tender_situations"
+	// FieldOwnerSituations holds the string denoting the owner_situations field in the database.
+	FieldOwnerSituations = "owner_situations"
+	// FieldBiddingInstructions holds the string denoting the bidding_instructions field in the database.
+	FieldBiddingInstructions = "bidding_instructions"
+	// FieldCompetitorSituations holds the string denoting the competitor_situations field in the database.
+	FieldCompetitorSituations = "competitor_situations"
+	// FieldCostEngineer holds the string denoting the cost_engineer field in the database.
+	FieldCostEngineer = "cost_engineer"
+	// FieldTenderForm holds the string denoting the tender_form field in the database.
+	FieldTenderForm = "tender_form"
+	// FieldContractForm holds the string denoting the contract_form field in the database.
+	FieldContractForm = "contract_form"
+	// FieldManagementCompany holds the string denoting the management_company field in the database.
+	FieldManagementCompany = "management_company"
+	// FieldTenderingAgency holds the string denoting the tendering_agency field in the database.
+	FieldTenderingAgency = "tendering_agency"
+	// FieldBiddingDate holds the string denoting the bidding_date field in the database.
+	FieldBiddingDate = "bidding_date"
+	// FieldFacadeConsultant holds the string denoting the facade_consultant field in the database.
+	FieldFacadeConsultant = "facade_consultant"
+	// FieldDesignUnit holds the string denoting the design_unit field in the database.
+	FieldDesignUnit = "design_unit"
+	// FieldConsultingFirm holds the string denoting the consulting_firm field in the database.
+	FieldConsultingFirm = "consulting_firm"
+	// FieldKeyProject holds the string denoting the key_project field in the database.
+	FieldKeyProject = "key_project"
 	// FieldAreaID holds the string denoting the area_id field in the database.
 	FieldAreaID = "area_id"
+	// FieldProvinceID holds the string denoting the province_id field in the database.
+	FieldProvinceID = "province_id"
+	// FieldCityID holds the string denoting the city_id field in the database.
+	FieldCityID = "city_id"
+	// FieldDistrictID holds the string denoting the district_id field in the database.
+	FieldDistrictID = "district_id"
 	// FieldCustomerID holds the string denoting the customer_id field in the database.
 	FieldCustomerID = "customer_id"
+	// FieldFinderID holds the string denoting the finder_id field in the database.
+	FieldFinderID = "finder_id"
+	// FieldCreatedByID holds the string denoting the created_by_id field in the database.
+	FieldCreatedByID = "created_by_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeCustomer holds the string denoting the customer edge name in mutations.
 	EdgeCustomer = "customer"
+	// EdgeFinder holds the string denoting the finder edge name in mutations.
+	EdgeFinder = "finder"
+	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
+	EdgeCreatedBy = "created_by"
+	// EdgeFollowingSales holds the string denoting the following_sales edge name in mutations.
+	EdgeFollowingSales = "following_sales"
+	// EdgeProvince holds the string denoting the province edge name in mutations.
+	EdgeProvince = "province"
+	// EdgeCity holds the string denoting the city edge name in mutations.
+	EdgeCity = "city"
+	// EdgeDistrict holds the string denoting the district edge name in mutations.
+	EdgeDistrict = "district"
 	// Table holds the table name of the tender in the database.
 	Table = "tenders"
 	// AreaTable is the table that holds the area relation/edge.
@@ -93,6 +151,46 @@ const (
 	CustomerInverseTable = "customers"
 	// CustomerColumn is the table column denoting the customer relation/edge.
 	CustomerColumn = "customer_id"
+	// FinderTable is the table that holds the finder relation/edge.
+	FinderTable = "tenders"
+	// FinderInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	FinderInverseTable = "users"
+	// FinderColumn is the table column denoting the finder relation/edge.
+	FinderColumn = "finder_id"
+	// CreatedByTable is the table that holds the created_by relation/edge.
+	CreatedByTable = "tenders"
+	// CreatedByInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	CreatedByInverseTable = "users"
+	// CreatedByColumn is the table column denoting the created_by relation/edge.
+	CreatedByColumn = "created_by_id"
+	// FollowingSalesTable is the table that holds the following_sales relation/edge. The primary key declared below.
+	FollowingSalesTable = "tender_following_sales"
+	// FollowingSalesInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	FollowingSalesInverseTable = "users"
+	// ProvinceTable is the table that holds the province relation/edge.
+	ProvinceTable = "tenders"
+	// ProvinceInverseTable is the table name for the Province entity.
+	// It exists in this package in order to avoid circular dependency with the "province" package.
+	ProvinceInverseTable = "provinces"
+	// ProvinceColumn is the table column denoting the province relation/edge.
+	ProvinceColumn = "province_id"
+	// CityTable is the table that holds the city relation/edge.
+	CityTable = "tenders"
+	// CityInverseTable is the table name for the City entity.
+	// It exists in this package in order to avoid circular dependency with the "city" package.
+	CityInverseTable = "cities"
+	// CityColumn is the table column denoting the city relation/edge.
+	CityColumn = "city_id"
+	// DistrictTable is the table that holds the district relation/edge.
+	DistrictTable = "tenders"
+	// DistrictInverseTable is the table name for the District entity.
+	// It exists in this package in order to avoid circular dependency with the "district" package.
+	DistrictInverseTable = "districts"
+	// DistrictColumn is the table column denoting the district relation/edge.
+	DistrictColumn = "district_id"
 )
 
 // Columns holds all SQL columns for tender fields.
@@ -105,15 +203,20 @@ var Columns = []string{
 	FieldName,
 	FieldEstimatedAmount,
 	FieldTenderDate,
-	FieldFindDate,
-	FieldFinder,
-	FieldCreatedBy,
-	FieldFollowingPerson,
+	FieldDiscoveryDate,
+	FieldAddress,
+	FieldFullAddress,
+	FieldContractor,
 	FieldSizeAndValueRating,
+	FieldSizeAndValueRatingOverview,
 	FieldCreditAndPaymentRating,
+	FieldCreditAndPaymentRatingOverview,
 	FieldTimeLimitRating,
+	FieldTimeLimitRatingOverview,
 	FieldCustomerRelationshipRating,
+	FieldCustomerRelationshipRatingOverview,
 	FieldCompetitivePartnershipRating,
+	FieldCompetitivePartnershipRatingOverview,
 	FieldPrepareToBid,
 	FieldProjectCode,
 	FieldProjectDefinition,
@@ -121,13 +224,37 @@ var Columns = []string{
 	FieldEstimatedProjectEndDate,
 	FieldProjectType,
 	FieldAttachements,
-	FieldGeoLocation,
 	FieldGeoCoordinate,
 	FieldRemark,
 	FieldImages,
+	FieldTenderSituations,
+	FieldOwnerSituations,
+	FieldBiddingInstructions,
+	FieldCompetitorSituations,
+	FieldCostEngineer,
+	FieldTenderForm,
+	FieldContractForm,
+	FieldManagementCompany,
+	FieldTenderingAgency,
+	FieldBiddingDate,
+	FieldFacadeConsultant,
+	FieldDesignUnit,
+	FieldConsultingFirm,
+	FieldKeyProject,
 	FieldAreaID,
+	FieldProvinceID,
+	FieldCityID,
+	FieldDistrictID,
 	FieldCustomerID,
+	FieldFinderID,
+	FieldCreatedByID,
 }
+
+var (
+	// FollowingSalesPrimaryKey and FollowingSalesColumn2 are the table columns denoting the
+	// primary key for the following_sales relation (M2M).
+	FollowingSalesPrimaryKey = []string{"tender_id", "user_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -160,6 +287,8 @@ var (
 	CompetitivePartnershipRatingValidator func(int8) error
 	// DefaultPrepareToBid holds the default value on creation for the "prepare_to_bid" field.
 	DefaultPrepareToBid bool
+	// DefaultKeyProject holds the default value on creation for the "key_project" field.
+	DefaultKeyProject bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -207,9 +336,24 @@ func ByTenderDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTenderDate, opts...).ToFunc()
 }
 
-// ByFindDate orders the results by the find_date field.
-func ByFindDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldFindDate, opts...).ToFunc()
+// ByDiscoveryDate orders the results by the discovery_date field.
+func ByDiscoveryDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiscoveryDate, opts...).ToFunc()
+}
+
+// ByAddress orders the results by the address field.
+func ByAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddress, opts...).ToFunc()
+}
+
+// ByFullAddress orders the results by the full_address field.
+func ByFullAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFullAddress, opts...).ToFunc()
+}
+
+// ByContractor orders the results by the contractor field.
+func ByContractor(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractor, opts...).ToFunc()
 }
 
 // BySizeAndValueRating orders the results by the size_and_value_rating field.
@@ -217,9 +361,19 @@ func BySizeAndValueRating(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSizeAndValueRating, opts...).ToFunc()
 }
 
+// BySizeAndValueRatingOverview orders the results by the size_and_value_rating_overview field.
+func BySizeAndValueRatingOverview(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSizeAndValueRatingOverview, opts...).ToFunc()
+}
+
 // ByCreditAndPaymentRating orders the results by the credit_and_payment_rating field.
 func ByCreditAndPaymentRating(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreditAndPaymentRating, opts...).ToFunc()
+}
+
+// ByCreditAndPaymentRatingOverview orders the results by the credit_and_payment_rating_overview field.
+func ByCreditAndPaymentRatingOverview(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreditAndPaymentRatingOverview, opts...).ToFunc()
 }
 
 // ByTimeLimitRating orders the results by the time_limit_rating field.
@@ -227,14 +381,29 @@ func ByTimeLimitRating(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTimeLimitRating, opts...).ToFunc()
 }
 
+// ByTimeLimitRatingOverview orders the results by the time_limit_rating_overview field.
+func ByTimeLimitRatingOverview(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTimeLimitRatingOverview, opts...).ToFunc()
+}
+
 // ByCustomerRelationshipRating orders the results by the customer_relationship_rating field.
 func ByCustomerRelationshipRating(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerRelationshipRating, opts...).ToFunc()
 }
 
+// ByCustomerRelationshipRatingOverview orders the results by the customer_relationship_rating_overview field.
+func ByCustomerRelationshipRatingOverview(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCustomerRelationshipRatingOverview, opts...).ToFunc()
+}
+
 // ByCompetitivePartnershipRating orders the results by the competitive_partnership_rating field.
 func ByCompetitivePartnershipRating(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompetitivePartnershipRating, opts...).ToFunc()
+}
+
+// ByCompetitivePartnershipRatingOverview orders the results by the competitive_partnership_rating_overview field.
+func ByCompetitivePartnershipRatingOverview(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCompetitivePartnershipRatingOverview, opts...).ToFunc()
 }
 
 // ByPrepareToBid orders the results by the prepare_to_bid field.
@@ -267,11 +436,6 @@ func ByProjectType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProjectType, opts...).ToFunc()
 }
 
-// ByGeoLocation orders the results by the geo_location field.
-func ByGeoLocation(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldGeoLocation, opts...).ToFunc()
-}
-
 // ByGeoCoordinate orders the results by the geo_coordinate field.
 func ByGeoCoordinate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldGeoCoordinate, opts...).ToFunc()
@@ -282,14 +446,109 @@ func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
+// ByTenderSituations orders the results by the tender_situations field.
+func ByTenderSituations(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderSituations, opts...).ToFunc()
+}
+
+// ByOwnerSituations orders the results by the owner_situations field.
+func ByOwnerSituations(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOwnerSituations, opts...).ToFunc()
+}
+
+// ByBiddingInstructions orders the results by the bidding_instructions field.
+func ByBiddingInstructions(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBiddingInstructions, opts...).ToFunc()
+}
+
+// ByCompetitorSituations orders the results by the competitor_situations field.
+func ByCompetitorSituations(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCompetitorSituations, opts...).ToFunc()
+}
+
+// ByCostEngineer orders the results by the cost_engineer field.
+func ByCostEngineer(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCostEngineer, opts...).ToFunc()
+}
+
+// ByTenderForm orders the results by the tender_form field.
+func ByTenderForm(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderForm, opts...).ToFunc()
+}
+
+// ByContractForm orders the results by the contract_form field.
+func ByContractForm(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractForm, opts...).ToFunc()
+}
+
+// ByManagementCompany orders the results by the management_company field.
+func ByManagementCompany(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldManagementCompany, opts...).ToFunc()
+}
+
+// ByTenderingAgency orders the results by the tendering_agency field.
+func ByTenderingAgency(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderingAgency, opts...).ToFunc()
+}
+
+// ByBiddingDate orders the results by the bidding_date field.
+func ByBiddingDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBiddingDate, opts...).ToFunc()
+}
+
+// ByFacadeConsultant orders the results by the facade_consultant field.
+func ByFacadeConsultant(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFacadeConsultant, opts...).ToFunc()
+}
+
+// ByDesignUnit orders the results by the design_unit field.
+func ByDesignUnit(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDesignUnit, opts...).ToFunc()
+}
+
+// ByConsultingFirm orders the results by the consulting_firm field.
+func ByConsultingFirm(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldConsultingFirm, opts...).ToFunc()
+}
+
+// ByKeyProject orders the results by the key_project field.
+func ByKeyProject(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldKeyProject, opts...).ToFunc()
+}
+
 // ByAreaID orders the results by the area_id field.
 func ByAreaID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAreaID, opts...).ToFunc()
 }
 
+// ByProvinceID orders the results by the province_id field.
+func ByProvinceID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProvinceID, opts...).ToFunc()
+}
+
+// ByCityID orders the results by the city_id field.
+func ByCityID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCityID, opts...).ToFunc()
+}
+
+// ByDistrictID orders the results by the district_id field.
+func ByDistrictID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDistrictID, opts...).ToFunc()
+}
+
 // ByCustomerID orders the results by the customer_id field.
 func ByCustomerID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerID, opts...).ToFunc()
+}
+
+// ByFinderID orders the results by the finder_id field.
+func ByFinderID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFinderID, opts...).ToFunc()
+}
+
+// ByCreatedByID orders the results by the created_by_id field.
+func ByCreatedByID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedByID, opts...).ToFunc()
 }
 
 // ByAreaField orders the results by area field.
@@ -305,6 +564,55 @@ func ByCustomerField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCustomerStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByFinderField orders the results by finder field.
+func ByFinderField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newFinderStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByCreatedByField orders the results by created_by field.
+func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByFollowingSalesCount orders the results by following_sales count.
+func ByFollowingSalesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newFollowingSalesStep(), opts...)
+	}
+}
+
+// ByFollowingSales orders the results by following_sales terms.
+func ByFollowingSales(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newFollowingSalesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByProvinceField orders the results by province field.
+func ByProvinceField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProvinceStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByCityField orders the results by city field.
+func ByCityField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCityStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByDistrictField orders the results by district field.
+func ByDistrictField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newDistrictStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -317,5 +625,47 @@ func newCustomerStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CustomerInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CustomerTable, CustomerColumn),
+	)
+}
+func newFinderStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(FinderInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, FinderTable, FinderColumn),
+	)
+}
+func newCreatedByStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CreatedByInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, CreatedByTable, CreatedByColumn),
+	)
+}
+func newFollowingSalesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(FollowingSalesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, FollowingSalesTable, FollowingSalesPrimaryKey...),
+	)
+}
+func newProvinceStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProvinceInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ProvinceTable, ProvinceColumn),
+	)
+}
+func newCityStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CityInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, CityTable, CityColumn),
+	)
+}
+func newDistrictStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(DistrictInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, DistrictTable, DistrictColumn),
 	)
 }

@@ -122,6 +122,7 @@ type CreateCityInput struct {
 	Name        string
 	DistrictIDs []xid.ID
 	ProvinceID  xid.ID
+	TenderIDs   []xid.ID
 }
 
 // Mutate applies the CreateCityInput on the CityMutation builder.
@@ -139,6 +140,9 @@ func (i *CreateCityInput) Mutate(m *CityMutation) {
 		m.AddDistrictIDs(v...)
 	}
 	m.SetProvinceID(i.ProvinceID)
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateCityInput on the CityCreate builder.
@@ -157,6 +161,9 @@ type UpdateCityInput struct {
 	AddDistrictIDs    []xid.ID
 	RemoveDistrictIDs []xid.ID
 	ProvinceID        *xid.ID
+	ClearTenders      bool
+	AddTenderIDs      []xid.ID
+	RemoveTenderIDs   []xid.ID
 }
 
 // Mutate applies the UpdateCityInput on the CityMutation builder.
@@ -184,6 +191,15 @@ func (i *UpdateCityInput) Mutate(m *CityMutation) {
 	}
 	if v := i.ProvinceID; v != nil {
 		m.SetProvinceID(*v)
+	}
+	if i.ClearTenders {
+		m.ClearTenders()
+	}
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
 	}
 }
 
@@ -453,6 +469,7 @@ type CreateDistrictInput struct {
 	Name       string
 	ProvinceID xid.ID
 	CityID     *xid.ID
+	TenderIDs  []xid.ID
 }
 
 // Mutate applies the CreateDistrictInput on the DistrictMutation builder.
@@ -471,6 +488,9 @@ func (i *CreateDistrictInput) Mutate(m *DistrictMutation) {
 	if v := i.CityID; v != nil {
 		m.SetCityID(*v)
 	}
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateDistrictInput on the DistrictCreate builder.
@@ -481,14 +501,17 @@ func (c *DistrictCreate) SetInput(i CreateDistrictInput) *DistrictCreate {
 
 // UpdateDistrictInput represents a mutation input for updating districts.
 type UpdateDistrictInput struct {
-	UpdatedAt  *time.Time
-	Adcode     *int
-	ProvCode   *int
-	CityCode   *int
-	Name       *string
-	ProvinceID *xid.ID
-	ClearCity  bool
-	CityID     *xid.ID
+	UpdatedAt       *time.Time
+	Adcode          *int
+	ProvCode        *int
+	CityCode        *int
+	Name            *string
+	ProvinceID      *xid.ID
+	ClearCity       bool
+	CityID          *xid.ID
+	ClearTenders    bool
+	AddTenderIDs    []xid.ID
+	RemoveTenderIDs []xid.ID
 }
 
 // Mutate applies the UpdateDistrictInput on the DistrictMutation builder.
@@ -517,6 +540,15 @@ func (i *UpdateDistrictInput) Mutate(m *DistrictMutation) {
 	if v := i.CityID; v != nil {
 		m.SetCityID(*v)
 	}
+	if i.ClearTenders {
+		m.ClearTenders()
+	}
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateDistrictInput on the DistrictUpdate builder.
@@ -540,6 +572,7 @@ type CreateProvinceInput struct {
 	DistrictIDs []xid.ID
 	CityIDs     []xid.ID
 	CountryID   xid.ID
+	TenderIDs   []xid.ID
 }
 
 // Mutate applies the CreateProvinceInput on the ProvinceMutation builder.
@@ -559,6 +592,9 @@ func (i *CreateProvinceInput) Mutate(m *ProvinceMutation) {
 		m.AddCityIDs(v...)
 	}
 	m.SetCountryID(i.CountryID)
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateProvinceInput on the ProvinceCreate builder.
@@ -579,6 +615,9 @@ type UpdateProvinceInput struct {
 	AddCityIDs        []xid.ID
 	RemoveCityIDs     []xid.ID
 	CountryID         *xid.ID
+	ClearTenders      bool
+	AddTenderIDs      []xid.ID
+	RemoveTenderIDs   []xid.ID
 }
 
 // Mutate applies the UpdateProvinceInput on the ProvinceMutation builder.
@@ -613,6 +652,15 @@ func (i *UpdateProvinceInput) Mutate(m *ProvinceMutation) {
 	if v := i.CountryID; v != nil {
 		m.SetCountryID(*v)
 	}
+	if i.ClearTenders {
+		m.ClearTenders()
+	}
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateProvinceInput on the ProvinceUpdate builder.
@@ -629,31 +677,58 @@ func (c *ProvinceUpdateOne) SetInput(i UpdateProvinceInput) *ProvinceUpdateOne {
 
 // CreateTenderInput represents a mutation input for creating tenders.
 type CreateTenderInput struct {
-	CreatedAt                    *time.Time
-	UpdatedAt                    *time.Time
-	Code                         string
-	Status                       *int8
-	Name                         string
-	EstimatedAmount              *float64
-	TenderDate                   *time.Time
-	FindDate                     time.Time
-	SizeAndValueRating           *int8
-	CreditAndPaymentRating       *int8
-	TimeLimitRating              *int8
-	CustomerRelationshipRating   *int8
-	CompetitivePartnershipRating *int8
-	PrepareToBid                 *bool
-	ProjectCode                  *string
-	ProjectDefinition            *string
-	EstimatedProjectStartDate    *time.Time
-	EstimatedProjectEndDate      *time.Time
-	ProjectType                  *string
-	Attachements                 []string
-	GeoLocation                  *string
-	Remark                       *string
-	Images                       []string
-	AreaID                       xid.ID
-	CustomerID                   xid.ID
+	CreatedAt                            *time.Time
+	UpdatedAt                            *time.Time
+	Code                                 string
+	Status                               *int8
+	Name                                 string
+	EstimatedAmount                      *float64
+	TenderDate                           *time.Time
+	DiscoveryDate                        time.Time
+	Address                              *string
+	FullAddress                          *string
+	Contractor                           *string
+	SizeAndValueRating                   *int8
+	SizeAndValueRatingOverview           *string
+	CreditAndPaymentRating               *int8
+	CreditAndPaymentRatingOverview       *string
+	TimeLimitRating                      *int8
+	TimeLimitRatingOverview              *string
+	CustomerRelationshipRating           *int8
+	CustomerRelationshipRatingOverview   *string
+	CompetitivePartnershipRating         *int8
+	CompetitivePartnershipRatingOverview *string
+	PrepareToBid                         *bool
+	ProjectCode                          *string
+	ProjectDefinition                    *string
+	EstimatedProjectStartDate            *time.Time
+	EstimatedProjectEndDate              *time.Time
+	ProjectType                          *string
+	Attachements                         []string
+	Remark                               *string
+	Images                               []string
+	TenderSituations                     *string
+	OwnerSituations                      *string
+	BiddingInstructions                  *string
+	CompetitorSituations                 *string
+	CostEngineer                         *string
+	TenderForm                           *string
+	ContractForm                         *string
+	ManagementCompany                    *string
+	TenderingAgency                      *string
+	BiddingDate                          *time.Time
+	FacadeConsultant                     *string
+	DesignUnit                           *string
+	ConsultingFirm                       *string
+	KeyProject                           *bool
+	AreaID                               xid.ID
+	CustomerID                           xid.ID
+	FinderID                             xid.ID
+	CreatedByID                          xid.ID
+	FollowingSaleIDs                     []xid.ID
+	ProvinceID                           xid.ID
+	CityID                               *xid.ID
+	DistrictID                           xid.ID
 }
 
 // Mutate applies the CreateTenderInput on the TenderMutation builder.
@@ -675,21 +750,45 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TenderDate; v != nil {
 		m.SetTenderDate(*v)
 	}
-	m.SetFindDate(i.FindDate)
+	m.SetDiscoveryDate(i.DiscoveryDate)
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if v := i.FullAddress; v != nil {
+		m.SetFullAddress(*v)
+	}
+	if v := i.Contractor; v != nil {
+		m.SetContractor(*v)
+	}
 	if v := i.SizeAndValueRating; v != nil {
 		m.SetSizeAndValueRating(*v)
+	}
+	if v := i.SizeAndValueRatingOverview; v != nil {
+		m.SetSizeAndValueRatingOverview(*v)
 	}
 	if v := i.CreditAndPaymentRating; v != nil {
 		m.SetCreditAndPaymentRating(*v)
 	}
+	if v := i.CreditAndPaymentRatingOverview; v != nil {
+		m.SetCreditAndPaymentRatingOverview(*v)
+	}
 	if v := i.TimeLimitRating; v != nil {
 		m.SetTimeLimitRating(*v)
+	}
+	if v := i.TimeLimitRatingOverview; v != nil {
+		m.SetTimeLimitRatingOverview(*v)
 	}
 	if v := i.CustomerRelationshipRating; v != nil {
 		m.SetCustomerRelationshipRating(*v)
 	}
+	if v := i.CustomerRelationshipRatingOverview; v != nil {
+		m.SetCustomerRelationshipRatingOverview(*v)
+	}
 	if v := i.CompetitivePartnershipRating; v != nil {
 		m.SetCompetitivePartnershipRating(*v)
+	}
+	if v := i.CompetitivePartnershipRatingOverview; v != nil {
+		m.SetCompetitivePartnershipRatingOverview(*v)
 	}
 	if v := i.PrepareToBid; v != nil {
 		m.SetPrepareToBid(*v)
@@ -712,17 +811,66 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.Attachements; v != nil {
 		m.SetAttachements(v)
 	}
-	if v := i.GeoLocation; v != nil {
-		m.SetGeoLocation(*v)
-	}
 	if v := i.Remark; v != nil {
 		m.SetRemark(*v)
 	}
 	if v := i.Images; v != nil {
 		m.SetImages(v)
 	}
+	if v := i.TenderSituations; v != nil {
+		m.SetTenderSituations(*v)
+	}
+	if v := i.OwnerSituations; v != nil {
+		m.SetOwnerSituations(*v)
+	}
+	if v := i.BiddingInstructions; v != nil {
+		m.SetBiddingInstructions(*v)
+	}
+	if v := i.CompetitorSituations; v != nil {
+		m.SetCompetitorSituations(*v)
+	}
+	if v := i.CostEngineer; v != nil {
+		m.SetCostEngineer(*v)
+	}
+	if v := i.TenderForm; v != nil {
+		m.SetTenderForm(*v)
+	}
+	if v := i.ContractForm; v != nil {
+		m.SetContractForm(*v)
+	}
+	if v := i.ManagementCompany; v != nil {
+		m.SetManagementCompany(*v)
+	}
+	if v := i.TenderingAgency; v != nil {
+		m.SetTenderingAgency(*v)
+	}
+	if v := i.BiddingDate; v != nil {
+		m.SetBiddingDate(*v)
+	}
+	if v := i.FacadeConsultant; v != nil {
+		m.SetFacadeConsultant(*v)
+	}
+	if v := i.DesignUnit; v != nil {
+		m.SetDesignUnit(*v)
+	}
+	if v := i.ConsultingFirm; v != nil {
+		m.SetConsultingFirm(*v)
+	}
+	if v := i.KeyProject; v != nil {
+		m.SetKeyProject(*v)
+	}
 	m.SetAreaID(i.AreaID)
 	m.SetCustomerID(i.CustomerID)
+	m.SetFinderID(i.FinderID)
+	m.SetCreatedByID(i.CreatedByID)
+	if v := i.FollowingSaleIDs; len(v) > 0 {
+		m.AddFollowingSaleIDs(v...)
+	}
+	m.SetProvinceID(i.ProvinceID)
+	if v := i.CityID; v != nil {
+		m.SetCityID(*v)
+	}
+	m.SetDistrictID(i.DistrictID)
 }
 
 // SetInput applies the change-set in the CreateTenderInput on the TenderCreate builder.
@@ -733,48 +881,98 @@ func (c *TenderCreate) SetInput(i CreateTenderInput) *TenderCreate {
 
 // UpdateTenderInput represents a mutation input for updating tenders.
 type UpdateTenderInput struct {
-	UpdatedAt                         *time.Time
-	Code                              *string
-	Status                            *int8
-	Name                              *string
-	ClearEstimatedAmount              bool
-	EstimatedAmount                   *float64
-	ClearTenderDate                   bool
-	TenderDate                        *time.Time
-	FindDate                          *time.Time
-	ClearSizeAndValueRating           bool
-	SizeAndValueRating                *int8
-	ClearCreditAndPaymentRating       bool
-	CreditAndPaymentRating            *int8
-	ClearTimeLimitRating              bool
-	TimeLimitRating                   *int8
-	ClearCustomerRelationshipRating   bool
-	CustomerRelationshipRating        *int8
-	ClearCompetitivePartnershipRating bool
-	CompetitivePartnershipRating      *int8
-	PrepareToBid                      *bool
-	ClearProjectCode                  bool
-	ProjectCode                       *string
-	ClearProjectDefinition            bool
-	ProjectDefinition                 *string
-	ClearEstimatedProjectStartDate    bool
-	EstimatedProjectStartDate         *time.Time
-	ClearEstimatedProjectEndDate      bool
-	EstimatedProjectEndDate           *time.Time
-	ClearProjectType                  bool
-	ProjectType                       *string
-	ClearAttachements                 bool
-	Attachements                      []string
-	AppendAttachements                []string
-	ClearGeoLocation                  bool
-	GeoLocation                       *string
-	ClearRemark                       bool
-	Remark                            *string
-	ClearImages                       bool
-	Images                            []string
-	AppendImages                      []string
-	AreaID                            *xid.ID
-	CustomerID                        *xid.ID
+	UpdatedAt                                 *time.Time
+	Code                                      *string
+	Status                                    *int8
+	Name                                      *string
+	ClearEstimatedAmount                      bool
+	EstimatedAmount                           *float64
+	ClearTenderDate                           bool
+	TenderDate                                *time.Time
+	DiscoveryDate                             *time.Time
+	ClearAddress                              bool
+	Address                                   *string
+	ClearFullAddress                          bool
+	FullAddress                               *string
+	ClearContractor                           bool
+	Contractor                                *string
+	ClearSizeAndValueRating                   bool
+	SizeAndValueRating                        *int8
+	ClearSizeAndValueRatingOverview           bool
+	SizeAndValueRatingOverview                *string
+	ClearCreditAndPaymentRating               bool
+	CreditAndPaymentRating                    *int8
+	ClearCreditAndPaymentRatingOverview       bool
+	CreditAndPaymentRatingOverview            *string
+	ClearTimeLimitRating                      bool
+	TimeLimitRating                           *int8
+	ClearTimeLimitRatingOverview              bool
+	TimeLimitRatingOverview                   *string
+	ClearCustomerRelationshipRating           bool
+	CustomerRelationshipRating                *int8
+	ClearCustomerRelationshipRatingOverview   bool
+	CustomerRelationshipRatingOverview        *string
+	ClearCompetitivePartnershipRating         bool
+	CompetitivePartnershipRating              *int8
+	ClearCompetitivePartnershipRatingOverview bool
+	CompetitivePartnershipRatingOverview      *string
+	PrepareToBid                              *bool
+	ClearProjectCode                          bool
+	ProjectCode                               *string
+	ClearProjectDefinition                    bool
+	ProjectDefinition                         *string
+	ClearEstimatedProjectStartDate            bool
+	EstimatedProjectStartDate                 *time.Time
+	ClearEstimatedProjectEndDate              bool
+	EstimatedProjectEndDate                   *time.Time
+	ClearProjectType                          bool
+	ProjectType                               *string
+	ClearAttachements                         bool
+	Attachements                              []string
+	AppendAttachements                        []string
+	ClearRemark                               bool
+	Remark                                    *string
+	ClearImages                               bool
+	Images                                    []string
+	AppendImages                              []string
+	ClearTenderSituations                     bool
+	TenderSituations                          *string
+	ClearOwnerSituations                      bool
+	OwnerSituations                           *string
+	ClearBiddingInstructions                  bool
+	BiddingInstructions                       *string
+	ClearCompetitorSituations                 bool
+	CompetitorSituations                      *string
+	ClearCostEngineer                         bool
+	CostEngineer                              *string
+	ClearTenderForm                           bool
+	TenderForm                                *string
+	ClearContractForm                         bool
+	ContractForm                              *string
+	ClearManagementCompany                    bool
+	ManagementCompany                         *string
+	ClearTenderingAgency                      bool
+	TenderingAgency                           *string
+	ClearBiddingDate                          bool
+	BiddingDate                               *time.Time
+	ClearFacadeConsultant                     bool
+	FacadeConsultant                          *string
+	ClearDesignUnit                           bool
+	DesignUnit                                *string
+	ClearConsultingFirm                       bool
+	ConsultingFirm                            *string
+	KeyProject                                *bool
+	AreaID                                    *xid.ID
+	CustomerID                                *xid.ID
+	FinderID                                  *xid.ID
+	CreatedByID                               *xid.ID
+	ClearFollowingSales                       bool
+	AddFollowingSaleIDs                       []xid.ID
+	RemoveFollowingSaleIDs                    []xid.ID
+	ProvinceID                                *xid.ID
+	ClearCity                                 bool
+	CityID                                    *xid.ID
+	DistrictID                                *xid.ID
 }
 
 // Mutate applies the UpdateTenderInput on the TenderMutation builder.
@@ -803,8 +1001,26 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TenderDate; v != nil {
 		m.SetTenderDate(*v)
 	}
-	if v := i.FindDate; v != nil {
-		m.SetFindDate(*v)
+	if v := i.DiscoveryDate; v != nil {
+		m.SetDiscoveryDate(*v)
+	}
+	if i.ClearAddress {
+		m.ClearAddress()
+	}
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if i.ClearFullAddress {
+		m.ClearFullAddress()
+	}
+	if v := i.FullAddress; v != nil {
+		m.SetFullAddress(*v)
+	}
+	if i.ClearContractor {
+		m.ClearContractor()
+	}
+	if v := i.Contractor; v != nil {
+		m.SetContractor(*v)
 	}
 	if i.ClearSizeAndValueRating {
 		m.ClearSizeAndValueRating()
@@ -812,11 +1028,23 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.SizeAndValueRating; v != nil {
 		m.SetSizeAndValueRating(*v)
 	}
+	if i.ClearSizeAndValueRatingOverview {
+		m.ClearSizeAndValueRatingOverview()
+	}
+	if v := i.SizeAndValueRatingOverview; v != nil {
+		m.SetSizeAndValueRatingOverview(*v)
+	}
 	if i.ClearCreditAndPaymentRating {
 		m.ClearCreditAndPaymentRating()
 	}
 	if v := i.CreditAndPaymentRating; v != nil {
 		m.SetCreditAndPaymentRating(*v)
+	}
+	if i.ClearCreditAndPaymentRatingOverview {
+		m.ClearCreditAndPaymentRatingOverview()
+	}
+	if v := i.CreditAndPaymentRatingOverview; v != nil {
+		m.SetCreditAndPaymentRatingOverview(*v)
 	}
 	if i.ClearTimeLimitRating {
 		m.ClearTimeLimitRating()
@@ -824,17 +1052,35 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.TimeLimitRating; v != nil {
 		m.SetTimeLimitRating(*v)
 	}
+	if i.ClearTimeLimitRatingOverview {
+		m.ClearTimeLimitRatingOverview()
+	}
+	if v := i.TimeLimitRatingOverview; v != nil {
+		m.SetTimeLimitRatingOverview(*v)
+	}
 	if i.ClearCustomerRelationshipRating {
 		m.ClearCustomerRelationshipRating()
 	}
 	if v := i.CustomerRelationshipRating; v != nil {
 		m.SetCustomerRelationshipRating(*v)
 	}
+	if i.ClearCustomerRelationshipRatingOverview {
+		m.ClearCustomerRelationshipRatingOverview()
+	}
+	if v := i.CustomerRelationshipRatingOverview; v != nil {
+		m.SetCustomerRelationshipRatingOverview(*v)
+	}
 	if i.ClearCompetitivePartnershipRating {
 		m.ClearCompetitivePartnershipRating()
 	}
 	if v := i.CompetitivePartnershipRating; v != nil {
 		m.SetCompetitivePartnershipRating(*v)
+	}
+	if i.ClearCompetitivePartnershipRatingOverview {
+		m.ClearCompetitivePartnershipRatingOverview()
+	}
+	if v := i.CompetitivePartnershipRatingOverview; v != nil {
+		m.SetCompetitivePartnershipRatingOverview(*v)
 	}
 	if v := i.PrepareToBid; v != nil {
 		m.SetPrepareToBid(*v)
@@ -878,12 +1124,6 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if i.AppendAttachements != nil {
 		m.AppendAttachements(i.Attachements)
 	}
-	if i.ClearGeoLocation {
-		m.ClearGeoLocation()
-	}
-	if v := i.GeoLocation; v != nil {
-		m.SetGeoLocation(*v)
-	}
 	if i.ClearRemark {
 		m.ClearRemark()
 	}
@@ -899,11 +1139,119 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if i.AppendImages != nil {
 		m.AppendImages(i.Images)
 	}
+	if i.ClearTenderSituations {
+		m.ClearTenderSituations()
+	}
+	if v := i.TenderSituations; v != nil {
+		m.SetTenderSituations(*v)
+	}
+	if i.ClearOwnerSituations {
+		m.ClearOwnerSituations()
+	}
+	if v := i.OwnerSituations; v != nil {
+		m.SetOwnerSituations(*v)
+	}
+	if i.ClearBiddingInstructions {
+		m.ClearBiddingInstructions()
+	}
+	if v := i.BiddingInstructions; v != nil {
+		m.SetBiddingInstructions(*v)
+	}
+	if i.ClearCompetitorSituations {
+		m.ClearCompetitorSituations()
+	}
+	if v := i.CompetitorSituations; v != nil {
+		m.SetCompetitorSituations(*v)
+	}
+	if i.ClearCostEngineer {
+		m.ClearCostEngineer()
+	}
+	if v := i.CostEngineer; v != nil {
+		m.SetCostEngineer(*v)
+	}
+	if i.ClearTenderForm {
+		m.ClearTenderForm()
+	}
+	if v := i.TenderForm; v != nil {
+		m.SetTenderForm(*v)
+	}
+	if i.ClearContractForm {
+		m.ClearContractForm()
+	}
+	if v := i.ContractForm; v != nil {
+		m.SetContractForm(*v)
+	}
+	if i.ClearManagementCompany {
+		m.ClearManagementCompany()
+	}
+	if v := i.ManagementCompany; v != nil {
+		m.SetManagementCompany(*v)
+	}
+	if i.ClearTenderingAgency {
+		m.ClearTenderingAgency()
+	}
+	if v := i.TenderingAgency; v != nil {
+		m.SetTenderingAgency(*v)
+	}
+	if i.ClearBiddingDate {
+		m.ClearBiddingDate()
+	}
+	if v := i.BiddingDate; v != nil {
+		m.SetBiddingDate(*v)
+	}
+	if i.ClearFacadeConsultant {
+		m.ClearFacadeConsultant()
+	}
+	if v := i.FacadeConsultant; v != nil {
+		m.SetFacadeConsultant(*v)
+	}
+	if i.ClearDesignUnit {
+		m.ClearDesignUnit()
+	}
+	if v := i.DesignUnit; v != nil {
+		m.SetDesignUnit(*v)
+	}
+	if i.ClearConsultingFirm {
+		m.ClearConsultingFirm()
+	}
+	if v := i.ConsultingFirm; v != nil {
+		m.SetConsultingFirm(*v)
+	}
+	if v := i.KeyProject; v != nil {
+		m.SetKeyProject(*v)
+	}
 	if v := i.AreaID; v != nil {
 		m.SetAreaID(*v)
 	}
 	if v := i.CustomerID; v != nil {
 		m.SetCustomerID(*v)
+	}
+	if v := i.FinderID; v != nil {
+		m.SetFinderID(*v)
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+	if i.ClearFollowingSales {
+		m.ClearFollowingSales()
+	}
+	if v := i.AddFollowingSaleIDs; len(v) > 0 {
+		m.AddFollowingSaleIDs(v...)
+	}
+	if v := i.RemoveFollowingSaleIDs; len(v) > 0 {
+		m.RemoveFollowingSaleIDs(v...)
+	}
+	if v := i.ProvinceID; v != nil {
+		m.SetProvinceID(*v)
+	}
+	if i.ClearCity {
+		m.ClearCity()
+	}
+	if v := i.CityID; v != nil {
+		m.SetCityID(*v)
+	}
+	if v := i.DistrictID; v != nil {
+		m.SetDistrictID(*v)
 	}
 }
 
@@ -933,6 +1281,7 @@ type CreateUserInput struct {
 	CustomerIDs   []xid.ID
 	LeaderID      *xid.ID
 	TeamMemberIDs []xid.ID
+	TenderIDs     []xid.ID
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
@@ -963,6 +1312,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.TeamMemberIDs; len(v) > 0 {
 		m.AddTeamMemberIDs(v...)
 	}
+	if v := i.TenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateUserInput on the UserCreate builder.
@@ -991,6 +1343,9 @@ type UpdateUserInput struct {
 	ClearTeamMembers    bool
 	AddTeamMemberIDs    []xid.ID
 	RemoveTeamMemberIDs []xid.ID
+	ClearTenders        bool
+	AddTenderIDs        []xid.ID
+	RemoveTenderIDs     []xid.ID
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
@@ -1048,6 +1403,15 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.RemoveTeamMemberIDs; len(v) > 0 {
 		m.RemoveTeamMemberIDs(v...)
+	}
+	if i.ClearTenders {
+		m.ClearTenders()
+	}
+	if v := i.AddTenderIDs; len(v) > 0 {
+		m.AddTenderIDs(v...)
+	}
+	if v := i.RemoveTenderIDs; len(v) > 0 {
+		m.RemoveTenderIDs(v...)
 	}
 }
 

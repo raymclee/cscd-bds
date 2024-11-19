@@ -7,6 +7,7 @@ import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
@@ -174,6 +175,21 @@ func (uc *UserCreate) AddTeamMembers(u ...*User) *UserCreate {
 		ids[i] = u[i].ID
 	}
 	return uc.AddTeamMemberIDs(ids...)
+}
+
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (uc *UserCreate) AddTenderIDs(ids ...xid.ID) *UserCreate {
+	uc.mutation.AddTenderIDs(ids...)
+	return uc
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (uc *UserCreate) AddTenders(t ...*Tender) *UserCreate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return uc.AddTenderIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -381,6 +397,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"errors"
 	"fmt"
 	"time"
@@ -165,6 +166,21 @@ func (du *DistrictUpdate) SetCity(c *City) *DistrictUpdate {
 	return du.SetCityID(c.ID)
 }
 
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (du *DistrictUpdate) AddTenderIDs(ids ...xid.ID) *DistrictUpdate {
+	du.mutation.AddTenderIDs(ids...)
+	return du
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (du *DistrictUpdate) AddTenders(t ...*Tender) *DistrictUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return du.AddTenderIDs(ids...)
+}
+
 // Mutation returns the DistrictMutation object of the builder.
 func (du *DistrictUpdate) Mutation() *DistrictMutation {
 	return du.mutation
@@ -180,6 +196,27 @@ func (du *DistrictUpdate) ClearProvince() *DistrictUpdate {
 func (du *DistrictUpdate) ClearCity() *DistrictUpdate {
 	du.mutation.ClearCity()
 	return du
+}
+
+// ClearTenders clears all "tenders" edges to the Tender entity.
+func (du *DistrictUpdate) ClearTenders() *DistrictUpdate {
+	du.mutation.ClearTenders()
+	return du
+}
+
+// RemoveTenderIDs removes the "tenders" edge to Tender entities by IDs.
+func (du *DistrictUpdate) RemoveTenderIDs(ids ...xid.ID) *DistrictUpdate {
+	du.mutation.RemoveTenderIDs(ids...)
+	return du
+}
+
+// RemoveTenders removes "tenders" edges to Tender entities.
+func (du *DistrictUpdate) RemoveTenders(t ...*Tender) *DistrictUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return du.RemoveTenderIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -316,6 +353,51 @@ func (du *DistrictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if du.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := du.mutation.RemovedTendersIDs(); len(nodes) > 0 && !du.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := du.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -476,6 +558,21 @@ func (duo *DistrictUpdateOne) SetCity(c *City) *DistrictUpdateOne {
 	return duo.SetCityID(c.ID)
 }
 
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (duo *DistrictUpdateOne) AddTenderIDs(ids ...xid.ID) *DistrictUpdateOne {
+	duo.mutation.AddTenderIDs(ids...)
+	return duo
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (duo *DistrictUpdateOne) AddTenders(t ...*Tender) *DistrictUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return duo.AddTenderIDs(ids...)
+}
+
 // Mutation returns the DistrictMutation object of the builder.
 func (duo *DistrictUpdateOne) Mutation() *DistrictMutation {
 	return duo.mutation
@@ -491,6 +588,27 @@ func (duo *DistrictUpdateOne) ClearProvince() *DistrictUpdateOne {
 func (duo *DistrictUpdateOne) ClearCity() *DistrictUpdateOne {
 	duo.mutation.ClearCity()
 	return duo
+}
+
+// ClearTenders clears all "tenders" edges to the Tender entity.
+func (duo *DistrictUpdateOne) ClearTenders() *DistrictUpdateOne {
+	duo.mutation.ClearTenders()
+	return duo
+}
+
+// RemoveTenderIDs removes the "tenders" edge to Tender entities by IDs.
+func (duo *DistrictUpdateOne) RemoveTenderIDs(ids ...xid.ID) *DistrictUpdateOne {
+	duo.mutation.RemoveTenderIDs(ids...)
+	return duo
+}
+
+// RemoveTenders removes "tenders" edges to Tender entities.
+func (duo *DistrictUpdateOne) RemoveTenders(t ...*Tender) *DistrictUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return duo.RemoveTenderIDs(ids...)
 }
 
 // Where appends a list predicates to the DistrictUpdate builder.
@@ -657,6 +775,51 @@ func (duo *DistrictUpdateOne) sqlSave(ctx context.Context) (_node *District, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(city.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if duo.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := duo.mutation.RemovedTendersIDs(); len(nodes) > 0 && !duo.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := duo.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.TendersTable,
+			Columns: []string{district.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

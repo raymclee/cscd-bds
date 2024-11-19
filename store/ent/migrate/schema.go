@@ -77,7 +77,7 @@ var (
 		{Name: "contact_person_email", Type: field.TypeString, Nullable: true},
 		{Name: "feishu_group", Type: field.TypeJSON, Nullable: true},
 		{Name: "area_id", Type: field.TypeString},
-		{Name: "created_by_user_id", Type: field.TypeString},
+		{Name: "created_by_id", Type: field.TypeString},
 		{Name: "sales_id", Type: field.TypeString, Nullable: true},
 	}
 	// CustomersTable holds the schema information for the "customers" table.
@@ -173,15 +173,20 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
-		{Name: "find_date", Type: field.TypeTime},
-		{Name: "finder", Type: field.TypeJSON},
-		{Name: "created_by", Type: field.TypeJSON},
-		{Name: "following_person", Type: field.TypeJSON, Nullable: true},
+		{Name: "discovery_date", Type: field.TypeTime},
+		{Name: "address", Type: field.TypeString, Nullable: true},
+		{Name: "full_address", Type: field.TypeString, Nullable: true},
+		{Name: "contractor", Type: field.TypeString, Nullable: true},
 		{Name: "size_and_value_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "size_and_value_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "credit_and_payment_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "credit_and_payment_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "time_limit_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "time_limit_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "customer_relationship_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "customer_relationship_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "competitive_partnership_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "competitive_partnership_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "prepare_to_bid", Type: field.TypeBool, Default: false},
 		{Name: "project_code", Type: field.TypeString, Nullable: true},
 		{Name: "project_definition", Type: field.TypeString, Nullable: true},
@@ -189,12 +194,30 @@ var (
 		{Name: "estimated_project_end_date", Type: field.TypeTime, Nullable: true},
 		{Name: "project_type", Type: field.TypeString, Nullable: true},
 		{Name: "attachements", Type: field.TypeJSON, Nullable: true},
-		{Name: "geo_location", Type: field.TypeString, Nullable: true},
 		{Name: "geo_coordinate", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
 		{Name: "remark", Type: field.TypeString, Nullable: true},
 		{Name: "images", Type: field.TypeJSON, Nullable: true},
+		{Name: "tender_situations", Type: field.TypeString, Nullable: true},
+		{Name: "owner_situations", Type: field.TypeString, Nullable: true},
+		{Name: "bidding_instructions", Type: field.TypeString, Nullable: true},
+		{Name: "competitor_situations", Type: field.TypeString, Nullable: true},
+		{Name: "cost_engineer", Type: field.TypeString, Nullable: true},
+		{Name: "tender_form", Type: field.TypeString, Nullable: true},
+		{Name: "contract_form", Type: field.TypeString, Nullable: true},
+		{Name: "management_company", Type: field.TypeString, Nullable: true},
+		{Name: "tendering_agency", Type: field.TypeString, Nullable: true},
+		{Name: "bidding_date", Type: field.TypeTime, Nullable: true},
+		{Name: "facade_consultant", Type: field.TypeString, Nullable: true},
+		{Name: "design_unit", Type: field.TypeString, Nullable: true},
+		{Name: "consulting_firm", Type: field.TypeString, Nullable: true},
+		{Name: "key_project", Type: field.TypeBool, Default: false},
 		{Name: "area_id", Type: field.TypeString},
+		{Name: "city_id", Type: field.TypeString, Nullable: true},
 		{Name: "customer_id", Type: field.TypeString},
+		{Name: "district_id", Type: field.TypeString},
+		{Name: "province_id", Type: field.TypeString},
+		{Name: "finder_id", Type: field.TypeString},
+		{Name: "created_by_id", Type: field.TypeString},
 	}
 	// TendersTable holds the schema information for the "tenders" table.
 	TendersTable = &schema.Table{
@@ -204,14 +227,44 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tenders_areas_tenders",
-				Columns:    []*schema.Column{TendersColumns[28]},
+				Columns:    []*schema.Column{TendersColumns[46]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
+				Symbol:     "tenders_cities_tenders",
+				Columns:    []*schema.Column{TendersColumns[47]},
+				RefColumns: []*schema.Column{CitiesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
 				Symbol:     "tenders_customers_tenders",
-				Columns:    []*schema.Column{TendersColumns[29]},
+				Columns:    []*schema.Column{TendersColumns[48]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tenders_districts_tenders",
+				Columns:    []*schema.Column{TendersColumns[49]},
+				RefColumns: []*schema.Column{DistrictsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tenders_provinces_tenders",
+				Columns:    []*schema.Column{TendersColumns[50]},
+				RefColumns: []*schema.Column{ProvincesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tenders_users_finder",
+				Columns:    []*schema.Column{TendersColumns[51]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "tenders_users_created_by",
+				Columns:    []*schema.Column{TendersColumns[52]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 		},
@@ -268,6 +321,31 @@ var (
 			},
 		},
 	}
+	// TenderFollowingSalesColumns holds the columns for the "tender_following_sales" table.
+	TenderFollowingSalesColumns = []*schema.Column{
+		{Name: "tender_id", Type: field.TypeString},
+		{Name: "user_id", Type: field.TypeString},
+	}
+	// TenderFollowingSalesTable holds the schema information for the "tender_following_sales" table.
+	TenderFollowingSalesTable = &schema.Table{
+		Name:       "tender_following_sales",
+		Columns:    TenderFollowingSalesColumns,
+		PrimaryKey: []*schema.Column{TenderFollowingSalesColumns[0], TenderFollowingSalesColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "tender_following_sales_tender_id",
+				Columns:    []*schema.Column{TenderFollowingSalesColumns[0]},
+				RefColumns: []*schema.Column{TendersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "tender_following_sales_user_id",
+				Columns:    []*schema.Column{TenderFollowingSalesColumns[1]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AreasTable,
@@ -279,6 +357,7 @@ var (
 		TendersTable,
 		UsersTable,
 		AreaSalesTable,
+		TenderFollowingSalesTable,
 	}
 )
 
@@ -291,8 +370,15 @@ func init() {
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
 	ProvincesTable.ForeignKeys[0].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable
-	TendersTable.ForeignKeys[1].RefTable = CustomersTable
+	TendersTable.ForeignKeys[1].RefTable = CitiesTable
+	TendersTable.ForeignKeys[2].RefTable = CustomersTable
+	TendersTable.ForeignKeys[3].RefTable = DistrictsTable
+	TendersTable.ForeignKeys[4].RefTable = ProvincesTable
+	TendersTable.ForeignKeys[5].RefTable = UsersTable
+	TendersTable.ForeignKeys[6].RefTable = UsersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	AreaSalesTable.ForeignKeys[0].RefTable = AreasTable
 	AreaSalesTable.ForeignKeys[1].RefTable = UsersTable
+	TenderFollowingSalesTable.ForeignKeys[0].RefTable = TendersTable
+	TenderFollowingSalesTable.ForeignKeys[1].RefTable = UsersTable
 }

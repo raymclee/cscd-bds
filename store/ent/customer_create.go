@@ -178,9 +178,9 @@ func (cc *CustomerCreate) SetNillableSalesID(x *xid.ID) *CustomerCreate {
 	return cc
 }
 
-// SetCreatedByUserID sets the "created_by_user_id" field.
-func (cc *CustomerCreate) SetCreatedByUserID(x xid.ID) *CustomerCreate {
-	cc.mutation.SetCreatedByUserID(x)
+// SetCreatedByID sets the "created_by_id" field.
+func (cc *CustomerCreate) SetCreatedByID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetCreatedByID(x)
 	return cc
 }
 
@@ -221,12 +221,6 @@ func (cc *CustomerCreate) AddTenders(t ...*Tender) *CustomerCreate {
 // SetSales sets the "sales" edge to the User entity.
 func (cc *CustomerCreate) SetSales(u *User) *CustomerCreate {
 	return cc.SetSalesID(u.ID)
-}
-
-// SetCreatedByID sets the "created_by" edge to the User entity by ID.
-func (cc *CustomerCreate) SetCreatedByID(id xid.ID) *CustomerCreate {
-	cc.mutation.SetCreatedByID(id)
-	return cc
 }
 
 // SetCreatedBy sets the "created_by" edge to the User entity.
@@ -300,8 +294,8 @@ func (cc *CustomerCreate) check() error {
 	if _, ok := cc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Customer.area_id"`)}
 	}
-	if _, ok := cc.mutation.CreatedByUserID(); !ok {
-		return &ValidationError{Name: "created_by_user_id", err: errors.New(`ent: missing required field "Customer.created_by_user_id"`)}
+	if _, ok := cc.mutation.CreatedByID(); !ok {
+		return &ValidationError{Name: "created_by_id", err: errors.New(`ent: missing required field "Customer.created_by_id"`)}
 	}
 	if len(cc.mutation.AreaIDs()) == 0 {
 		return &ValidationError{Name: "area", err: errors.New(`ent: missing required edge "Customer.area"`)}
@@ -436,7 +430,7 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.SalesID = nodes[0]
+		_node.SalesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := cc.mutation.CreatedByIDs(); len(nodes) > 0 {
@@ -453,7 +447,7 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.CreatedByUserID = nodes[0]
+		_node.CreatedByID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -718,15 +712,15 @@ func (u *CustomerUpsert) ClearSalesID() *CustomerUpsert {
 	return u
 }
 
-// SetCreatedByUserID sets the "created_by_user_id" field.
-func (u *CustomerUpsert) SetCreatedByUserID(v xid.ID) *CustomerUpsert {
-	u.Set(customer.FieldCreatedByUserID, v)
+// SetCreatedByID sets the "created_by_id" field.
+func (u *CustomerUpsert) SetCreatedByID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldCreatedByID, v)
 	return u
 }
 
-// UpdateCreatedByUserID sets the "created_by_user_id" field to the value that was provided on create.
-func (u *CustomerUpsert) UpdateCreatedByUserID() *CustomerUpsert {
-	u.SetExcluded(customer.FieldCreatedByUserID)
+// UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateCreatedByID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldCreatedByID)
 	return u
 }
 
@@ -1026,17 +1020,17 @@ func (u *CustomerUpsertOne) ClearSalesID() *CustomerUpsertOne {
 	})
 }
 
-// SetCreatedByUserID sets the "created_by_user_id" field.
-func (u *CustomerUpsertOne) SetCreatedByUserID(v xid.ID) *CustomerUpsertOne {
+// SetCreatedByID sets the "created_by_id" field.
+func (u *CustomerUpsertOne) SetCreatedByID(v xid.ID) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetCreatedByUserID(v)
+		s.SetCreatedByID(v)
 	})
 }
 
-// UpdateCreatedByUserID sets the "created_by_user_id" field to the value that was provided on create.
-func (u *CustomerUpsertOne) UpdateCreatedByUserID() *CustomerUpsertOne {
+// UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateCreatedByID() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateCreatedByUserID()
+		s.UpdateCreatedByID()
 	})
 }
 
@@ -1503,17 +1497,17 @@ func (u *CustomerUpsertBulk) ClearSalesID() *CustomerUpsertBulk {
 	})
 }
 
-// SetCreatedByUserID sets the "created_by_user_id" field.
-func (u *CustomerUpsertBulk) SetCreatedByUserID(v xid.ID) *CustomerUpsertBulk {
+// SetCreatedByID sets the "created_by_id" field.
+func (u *CustomerUpsertBulk) SetCreatedByID(v xid.ID) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetCreatedByUserID(v)
+		s.SetCreatedByID(v)
 	})
 }
 
-// UpdateCreatedByUserID sets the "created_by_user_id" field to the value that was provided on create.
-func (u *CustomerUpsertBulk) UpdateCreatedByUserID() *CustomerUpsertBulk {
+// UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateCreatedByID() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateCreatedByUserID()
+		s.UpdateCreatedByID()
 	})
 }
 

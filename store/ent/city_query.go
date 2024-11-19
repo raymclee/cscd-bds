@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -28,9 +29,11 @@ type CityQuery struct {
 	predicates         []predicate.City
 	withDistricts      *DistrictQuery
 	withProvince       *ProvinceQuery
+	withTenders        *TenderQuery
 	modifiers          []func(*sql.Selector)
 	loadTotal          []func(context.Context, []*City) error
 	withNamedDistricts map[string]*DistrictQuery
+	withNamedTenders   map[string]*TenderQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -104,6 +107,28 @@ func (cq *CityQuery) QueryProvince() *ProvinceQuery {
 			sqlgraph.From(city.Table, city.FieldID, selector),
 			sqlgraph.To(province.Table, province.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, city.ProvinceTable, city.ProvinceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTenders chains the current query on the "tenders" edge.
+func (cq *CityQuery) QueryTenders() *TenderQuery {
+	query := (&TenderClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(city.Table, city.FieldID, selector),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, city.TendersTable, city.TendersColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -305,6 +330,7 @@ func (cq *CityQuery) Clone() *CityQuery {
 		predicates:    append([]predicate.City{}, cq.predicates...),
 		withDistricts: cq.withDistricts.Clone(),
 		withProvince:  cq.withProvince.Clone(),
+		withTenders:   cq.withTenders.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -330,6 +356,17 @@ func (cq *CityQuery) WithProvince(opts ...func(*ProvinceQuery)) *CityQuery {
 		opt(query)
 	}
 	cq.withProvince = query
+	return cq
+}
+
+// WithTenders tells the query-builder to eager-load the nodes that are connected to
+// the "tenders" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CityQuery) WithTenders(opts ...func(*TenderQuery)) *CityQuery {
+	query := (&TenderClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withTenders = query
 	return cq
 }
 
@@ -411,9 +448,10 @@ func (cq *CityQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*City, e
 	var (
 		nodes       = []*City{}
 		_spec       = cq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			cq.withDistricts != nil,
 			cq.withProvince != nil,
+			cq.withTenders != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -450,10 +488,24 @@ func (cq *CityQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*City, e
 			return nil, err
 		}
 	}
+	if query := cq.withTenders; query != nil {
+		if err := cq.loadTenders(ctx, query, nodes,
+			func(n *City) { n.Edges.Tenders = []*Tender{} },
+			func(n *City, e *Tender) { n.Edges.Tenders = append(n.Edges.Tenders, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range cq.withNamedDistricts {
 		if err := cq.loadDistricts(ctx, query, nodes,
 			func(n *City) { n.appendNamedDistricts(name) },
 			func(n *City, e *District) { n.appendNamedDistricts(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedTenders {
+		if err := cq.loadTenders(ctx, query, nodes,
+			func(n *City) { n.appendNamedTenders(name) },
+			func(n *City, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -487,9 +539,12 @@ func (cq *CityQuery) loadDistricts(ctx context.Context, query *DistrictQuery, no
 	}
 	for _, n := range neighbors {
 		fk := n.CityID
-		node, ok := nodeids[fk]
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "city_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "city_id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "city_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -521,6 +576,39 @@ func (cq *CityQuery) loadProvince(ctx context.Context, query *ProvinceQuery, nod
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (cq *CityQuery) loadTenders(ctx context.Context, query *TenderQuery, nodes []*City, init func(*City), assign func(*City, *Tender)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*City)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(tender.FieldCityID)
+	}
+	query.Where(predicate.Tender(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(city.TendersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.CityID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "city_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "city_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -623,6 +711,20 @@ func (cq *CityQuery) WithNamedDistricts(name string, opts ...func(*DistrictQuery
 		cq.withNamedDistricts = make(map[string]*DistrictQuery)
 	}
 	cq.withNamedDistricts[name] = query
+	return cq
+}
+
+// WithNamedTenders tells the query-builder to eager-load the nodes that are connected to the "tenders"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CityQuery) WithNamedTenders(name string, opts ...func(*TenderQuery)) *CityQuery {
+	query := (&TenderClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedTenders == nil {
+		cq.withNamedTenders = make(map[string]*TenderQuery)
+	}
+	cq.withNamedTenders[name] = query
 	return cq
 }
 

@@ -64,6 +64,18 @@ func (c *City) Province(ctx context.Context) (*Province, error) {
 	return result, err
 }
 
+func (c *City) Tenders(ctx context.Context) (result []*Tender, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.TendersOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryTenders().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Country) Provinces(ctx context.Context) (result []*Province, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedProvinces(graphql.GetFieldContext(ctx).Field.Alias)
@@ -128,6 +140,18 @@ func (d *District) City(ctx context.Context) (*City, error) {
 	return result, MaskNotFound(err)
 }
 
+func (d *District) Tenders(ctx context.Context) (result []*Tender, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = d.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = d.Edges.TendersOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = d.QueryTenders().All(ctx)
+	}
+	return result, err
+}
+
 func (pr *Province) Districts(ctx context.Context) (result []*District, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = pr.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)
@@ -160,6 +184,18 @@ func (pr *Province) Country(ctx context.Context) (*Country, error) {
 	return result, err
 }
 
+func (pr *Province) Tenders(ctx context.Context) (result []*Tender, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pr.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pr.Edges.TendersOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pr.QueryTenders().All(ctx)
+	}
+	return result, err
+}
+
 func (t *Tender) Area(ctx context.Context) (*Area, error) {
 	result, err := t.Edges.AreaOrErr()
 	if IsNotLoaded(err) {
@@ -172,6 +208,58 @@ func (t *Tender) Customer(ctx context.Context) (*Customer, error) {
 	result, err := t.Edges.CustomerOrErr()
 	if IsNotLoaded(err) {
 		result, err = t.QueryCustomer().Only(ctx)
+	}
+	return result, err
+}
+
+func (t *Tender) Finder(ctx context.Context) (*User, error) {
+	result, err := t.Edges.FinderOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryFinder().Only(ctx)
+	}
+	return result, err
+}
+
+func (t *Tender) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := t.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryCreatedBy().Only(ctx)
+	}
+	return result, err
+}
+
+func (t *Tender) FollowingSales(ctx context.Context) (result []*User, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = t.NamedFollowingSales(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = t.Edges.FollowingSalesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = t.QueryFollowingSales().All(ctx)
+	}
+	return result, err
+}
+
+func (t *Tender) Province(ctx context.Context) (*Province, error) {
+	result, err := t.Edges.ProvinceOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryProvince().Only(ctx)
+	}
+	return result, err
+}
+
+func (t *Tender) City(ctx context.Context) (*City, error) {
+	result, err := t.Edges.CityOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryCity().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (t *Tender) District(ctx context.Context) (*District, error) {
+	result, err := t.Edges.DistrictOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryDistrict().Only(ctx)
 	}
 	return result, err
 }
@@ -216,6 +304,18 @@ func (u *User) TeamMembers(ctx context.Context) (result []*User, err error) {
 	}
 	if IsNotLoaded(err) {
 		result, err = u.QueryTeamMembers().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) Tenders(ctx context.Context) (result []*Tender, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.TendersOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryTenders().All(ctx)
 	}
 	return result, err
 }

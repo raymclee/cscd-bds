@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"errors"
 	"fmt"
 	"time"
@@ -127,6 +128,21 @@ func (pc *ProvinceCreate) AddCities(c ...*City) *ProvinceCreate {
 // SetCountry sets the "country" edge to the Country entity.
 func (pc *ProvinceCreate) SetCountry(c *Country) *ProvinceCreate {
 	return pc.SetCountryID(c.ID)
+}
+
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (pc *ProvinceCreate) AddTenderIDs(ids ...xid.ID) *ProvinceCreate {
+	pc.mutation.AddTenderIDs(ids...)
+	return pc
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (pc *ProvinceCreate) AddTenders(t ...*Tender) *ProvinceCreate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return pc.AddTenderIDs(ids...)
 }
 
 // Mutation returns the ProvinceMutation object of the builder.
@@ -304,6 +320,22 @@ func (pc *ProvinceCreate) createSpec() (*Province, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CountryID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   province.TendersTable,
+			Columns: []string{province.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

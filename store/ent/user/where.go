@@ -556,6 +556,24 @@ func LeaderIDLTE(v xid.ID) predicate.User {
 	return predicate.User(sql.FieldLTE(FieldLeaderID, v))
 }
 
+// LeaderIDContains applies the Contains predicate on the "leader_id" field.
+func LeaderIDContains(v xid.ID) predicate.User {
+	vc := string(v)
+	return predicate.User(sql.FieldContains(FieldLeaderID, vc))
+}
+
+// LeaderIDHasPrefix applies the HasPrefix predicate on the "leader_id" field.
+func LeaderIDHasPrefix(v xid.ID) predicate.User {
+	vc := string(v)
+	return predicate.User(sql.FieldHasPrefix(FieldLeaderID, vc))
+}
+
+// LeaderIDHasSuffix applies the HasSuffix predicate on the "leader_id" field.
+func LeaderIDHasSuffix(v xid.ID) predicate.User {
+	vc := string(v)
+	return predicate.User(sql.FieldHasSuffix(FieldLeaderID, vc))
+}
+
 // LeaderIDIsNil applies the IsNil predicate on the "leader_id" field.
 func LeaderIDIsNil() predicate.User {
 	return predicate.User(sql.FieldIsNull(FieldLeaderID))
@@ -564,6 +582,18 @@ func LeaderIDIsNil() predicate.User {
 // LeaderIDNotNil applies the NotNil predicate on the "leader_id" field.
 func LeaderIDNotNil() predicate.User {
 	return predicate.User(sql.FieldNotNull(FieldLeaderID))
+}
+
+// LeaderIDEqualFold applies the EqualFold predicate on the "leader_id" field.
+func LeaderIDEqualFold(v xid.ID) predicate.User {
+	vc := string(v)
+	return predicate.User(sql.FieldEqualFold(FieldLeaderID, vc))
+}
+
+// LeaderIDContainsFold applies the ContainsFold predicate on the "leader_id" field.
+func LeaderIDContainsFold(v xid.ID) predicate.User {
+	vc := string(v)
+	return predicate.User(sql.FieldContainsFold(FieldLeaderID, vc))
 }
 
 // HasAreas applies the HasEdge predicate on the "areas" edge.
@@ -650,6 +680,29 @@ func HasTeamMembers() predicate.User {
 func HasTeamMembersWith(preds ...predicate.User) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		step := newTeamMembersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTenders applies the HasEdge predicate on the "tenders" edge.
+func HasTenders() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, TendersTable, TendersPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTendersWith applies the HasEdge predicate on the "tenders" edge with a given conditions (other predicates).
+func HasTendersWith(preds ...predicate.Tender) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := newTendersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

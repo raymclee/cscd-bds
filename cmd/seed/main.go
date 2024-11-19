@@ -4,7 +4,6 @@ import (
 	"context"
 	"cscd-bds/store"
 	"cscd-bds/store/ent/schema/geo"
-	"cscd-bds/store/ent/schema/xid"
 	"encoding/json"
 	"os"
 
@@ -67,21 +66,20 @@ func main() {
 		panic(err)
 	}
 
-	// center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{country.Center[1], country.Center[0]}).SetSRID(4326))
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// err = s.Country.Create().
-	// 	SetName(country.Name).
-	// 	SetAdcode(country.Adcode).
-	// 	SetCenter(&geo.GeoJson{Geometry: center}).
-	// 	OnConflict(sql.DoNothing()).
-	// 	Exec(ctx)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{country.Center[1], country.Center[0]}).SetSRID(4326))
+	if err != nil {
+		panic(err)
+	}
+	coun := s.Country.Create().
+		SetName(country.Name).
+		SetAdcode(country.Adcode).
+		SetCenter(&geo.GeoJson{Geometry: center}).
+		SaveX(ctx)
+	if err != nil {
+		panic(err)
+	}
 
-	countryId := xid.ID{V: "CO-csu3hhhhi01a8n6bp4lg"}
+	countryId := coun.ID
 	for _, province := range country.Children {
 		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{province.Center[1], province.Center[0]}).SetSRID(4326))
 		if err != nil {

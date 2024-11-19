@@ -584,6 +584,22 @@ func (c *CityClient) QueryProvince(ci *City) *ProvinceQuery {
 	return query
 }
 
+// QueryTenders queries the tenders edge of a City.
+func (c *CityClient) QueryTenders(ci *City) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ci.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(city.Table, city.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, city.TendersTable, city.TendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(ci.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CityClient) Hooks() []Hook {
 	return c.hooks.City
@@ -1095,6 +1111,22 @@ func (c *DistrictClient) QueryCity(d *District) *CityQuery {
 	return query
 }
 
+// QueryTenders queries the tenders edge of a District.
+func (c *DistrictClient) QueryTenders(d *District) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := d.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(district.Table, district.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, district.TendersTable, district.TendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *DistrictClient) Hooks() []Hook {
 	return c.hooks.District
@@ -1276,6 +1308,22 @@ func (c *ProvinceClient) QueryCountry(pr *Province) *CountryQuery {
 	return query
 }
 
+// QueryTenders queries the tenders edge of a Province.
+func (c *ProvinceClient) QueryTenders(pr *Province) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(province.Table, province.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, province.TendersTable, province.TendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *ProvinceClient) Hooks() []Hook {
 	return c.hooks.Province
@@ -1434,6 +1482,102 @@ func (c *TenderClient) QueryCustomer(t *Tender) *CustomerQuery {
 			sqlgraph.From(tender.Table, tender.FieldID, id),
 			sqlgraph.To(customer.Table, customer.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, tender.CustomerTable, tender.CustomerColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryFinder queries the finder edge of a Tender.
+func (c *TenderClient) QueryFinder(t *Tender) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.FinderTable, tender.FinderColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCreatedBy queries the created_by edge of a Tender.
+func (c *TenderClient) QueryCreatedBy(t *Tender) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.CreatedByTable, tender.CreatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryFollowingSales queries the following_sales edge of a Tender.
+func (c *TenderClient) QueryFollowingSales(t *Tender) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, tender.FollowingSalesTable, tender.FollowingSalesPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProvince queries the province edge of a Tender.
+func (c *TenderClient) QueryProvince(t *Tender) *ProvinceQuery {
+	query := (&ProvinceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(province.Table, province.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.ProvinceTable, tender.ProvinceColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCity queries the city edge of a Tender.
+func (c *TenderClient) QueryCity(t *Tender) *CityQuery {
+	query := (&CityClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(city.Table, city.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.CityTable, tender.CityColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryDistrict queries the district edge of a Tender.
+func (c *TenderClient) QueryDistrict(t *Tender) *DistrictQuery {
+	query := (&DistrictClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(district.Table, district.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.DistrictTable, tender.DistrictColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil
@@ -1631,6 +1775,22 @@ func (c *UserClient) QueryTeamMembers(u *User) *UserQuery {
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, user.TeamMembersTable, user.TeamMembersColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTenders queries the tenders edge of a User.
+func (c *UserClient) QueryTenders(u *User) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, user.TendersTable, user.TendersPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil

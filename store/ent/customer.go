@@ -47,9 +47,9 @@ type Customer struct {
 	// AreaID holds the value of the "area_id" field.
 	AreaID xid.ID `json:"area_id,omitempty"`
 	// SalesID holds the value of the "sales_id" field.
-	SalesID xid.ID `json:"sales_id,omitempty"`
-	// CreatedByUserID holds the value of the "created_by_user_id" field.
-	CreatedByUserID xid.ID `json:"created_by_user_id,omitempty"`
+	SalesID *xid.ID `json:"sales_id,omitempty"`
+	// CreatedByID holds the value of the "created_by_id" field.
+	CreatedByID xid.ID `json:"created_by_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CustomerQuery when eager-loading is set.
 	Edges        CustomerEdges `json:"edges"`
@@ -122,6 +122,8 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case customer.FieldSalesID:
+			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case customer.FieldFeishuGroup:
 			values[i] = new([]byte)
 		case customer.FieldOwnerType, customer.FieldIndustry, customer.FieldSize:
@@ -130,7 +132,7 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case customer.FieldCreatedAt, customer.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case customer.FieldID, customer.FieldAreaID, customer.FieldSalesID, customer.FieldCreatedByUserID:
+		case customer.FieldID, customer.FieldAreaID, customer.FieldCreatedByID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -234,16 +236,17 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				c.AreaID = *value
 			}
 		case customer.FieldSalesID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field sales_id", values[i])
-			} else if value != nil {
-				c.SalesID = *value
+			} else if value.Valid {
+				c.SalesID = new(xid.ID)
+				*c.SalesID = *value.S.(*xid.ID)
 			}
-		case customer.FieldCreatedByUserID:
+		case customer.FieldCreatedByID:
 			if value, ok := values[i].(*xid.ID); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by_user_id", values[i])
+				return fmt.Errorf("unexpected type %T for field created_by_id", values[i])
 			} else if value != nil {
-				c.CreatedByUserID = *value
+				c.CreatedByID = *value
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -349,11 +352,13 @@ func (c *Customer) String() string {
 	builder.WriteString("area_id=")
 	builder.WriteString(fmt.Sprintf("%v", c.AreaID))
 	builder.WriteString(", ")
-	builder.WriteString("sales_id=")
-	builder.WriteString(fmt.Sprintf("%v", c.SalesID))
+	if v := c.SalesID; v != nil {
+		builder.WriteString("sales_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("created_by_user_id=")
-	builder.WriteString(fmt.Sprintf("%v", c.CreatedByUserID))
+	builder.WriteString("created_by_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.CreatedByID))
 	builder.WriteByte(')')
 	return builder.String()
 }

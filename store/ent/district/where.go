@@ -447,6 +447,36 @@ func ProvinceIDLTE(v xid.ID) predicate.District {
 	return predicate.District(sql.FieldLTE(FieldProvinceID, v))
 }
 
+// ProvinceIDContains applies the Contains predicate on the "province_id" field.
+func ProvinceIDContains(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldContains(FieldProvinceID, vc))
+}
+
+// ProvinceIDHasPrefix applies the HasPrefix predicate on the "province_id" field.
+func ProvinceIDHasPrefix(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldHasPrefix(FieldProvinceID, vc))
+}
+
+// ProvinceIDHasSuffix applies the HasSuffix predicate on the "province_id" field.
+func ProvinceIDHasSuffix(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldHasSuffix(FieldProvinceID, vc))
+}
+
+// ProvinceIDEqualFold applies the EqualFold predicate on the "province_id" field.
+func ProvinceIDEqualFold(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldEqualFold(FieldProvinceID, vc))
+}
+
+// ProvinceIDContainsFold applies the ContainsFold predicate on the "province_id" field.
+func ProvinceIDContainsFold(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldContainsFold(FieldProvinceID, vc))
+}
+
 // CityIDEQ applies the EQ predicate on the "city_id" field.
 func CityIDEQ(v xid.ID) predicate.District {
 	return predicate.District(sql.FieldEQ(FieldCityID, v))
@@ -487,6 +517,24 @@ func CityIDLTE(v xid.ID) predicate.District {
 	return predicate.District(sql.FieldLTE(FieldCityID, v))
 }
 
+// CityIDContains applies the Contains predicate on the "city_id" field.
+func CityIDContains(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldContains(FieldCityID, vc))
+}
+
+// CityIDHasPrefix applies the HasPrefix predicate on the "city_id" field.
+func CityIDHasPrefix(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldHasPrefix(FieldCityID, vc))
+}
+
+// CityIDHasSuffix applies the HasSuffix predicate on the "city_id" field.
+func CityIDHasSuffix(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldHasSuffix(FieldCityID, vc))
+}
+
 // CityIDIsNil applies the IsNil predicate on the "city_id" field.
 func CityIDIsNil() predicate.District {
 	return predicate.District(sql.FieldIsNull(FieldCityID))
@@ -495,6 +543,18 @@ func CityIDIsNil() predicate.District {
 // CityIDNotNil applies the NotNil predicate on the "city_id" field.
 func CityIDNotNil() predicate.District {
 	return predicate.District(sql.FieldNotNull(FieldCityID))
+}
+
+// CityIDEqualFold applies the EqualFold predicate on the "city_id" field.
+func CityIDEqualFold(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldEqualFold(FieldCityID, vc))
+}
+
+// CityIDContainsFold applies the ContainsFold predicate on the "city_id" field.
+func CityIDContainsFold(v xid.ID) predicate.District {
+	vc := string(v)
+	return predicate.District(sql.FieldContainsFold(FieldCityID, vc))
 }
 
 // HasProvince applies the HasEdge predicate on the "province" edge.
@@ -535,6 +595,29 @@ func HasCity() predicate.District {
 func HasCityWith(preds ...predicate.City) predicate.District {
 	return predicate.District(func(s *sql.Selector) {
 		step := newCityStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTenders applies the HasEdge predicate on the "tenders" edge.
+func HasTenders() predicate.District {
+	return predicate.District(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTendersWith applies the HasEdge predicate on the "tenders" edge with a given conditions (other predicates).
+func HasTendersWith(preds ...predicate.Tender) predicate.District {
+	return predicate.District(func(s *sql.Selector) {
+		step := newTendersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

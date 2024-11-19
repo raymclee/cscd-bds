@@ -39,7 +39,7 @@ func (m Mixin) Fields() []ent.Field {
 		field.String("id").
 			Immutable().
 			Unique().
-			GoType(xid.ID{}).
+			GoType(xid.ID("")).
 			DefaultFunc(func() xid.ID { return xid.MustNew(m.prefix) }),
 	}
 }

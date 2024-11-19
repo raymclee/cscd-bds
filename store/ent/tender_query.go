@@ -5,10 +5,15 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -21,14 +26,21 @@ import (
 // TenderQuery is the builder for querying Tender entities.
 type TenderQuery struct {
 	config
-	ctx          *QueryContext
-	order        []tender.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.Tender
-	withArea     *AreaQuery
-	withCustomer *CustomerQuery
-	modifiers    []func(*sql.Selector)
-	loadTotal    []func(context.Context, []*Tender) error
+	ctx                     *QueryContext
+	order                   []tender.OrderOption
+	inters                  []Interceptor
+	predicates              []predicate.Tender
+	withArea                *AreaQuery
+	withCustomer            *CustomerQuery
+	withFinder              *UserQuery
+	withCreatedBy           *UserQuery
+	withFollowingSales      *UserQuery
+	withProvince            *ProvinceQuery
+	withCity                *CityQuery
+	withDistrict            *DistrictQuery
+	modifiers               []func(*sql.Selector)
+	loadTotal               []func(context.Context, []*Tender) error
+	withNamedFollowingSales map[string]*UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -102,6 +114,138 @@ func (tq *TenderQuery) QueryCustomer() *CustomerQuery {
 			sqlgraph.From(tender.Table, tender.FieldID, selector),
 			sqlgraph.To(customer.Table, customer.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, tender.CustomerTable, tender.CustomerColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryFinder chains the current query on the "finder" edge.
+func (tq *TenderQuery) QueryFinder() *UserQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.FinderTable, tender.FinderColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCreatedBy chains the current query on the "created_by" edge.
+func (tq *TenderQuery) QueryCreatedBy() *UserQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.CreatedByTable, tender.CreatedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryFollowingSales chains the current query on the "following_sales" edge.
+func (tq *TenderQuery) QueryFollowingSales() *UserQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, tender.FollowingSalesTable, tender.FollowingSalesPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProvince chains the current query on the "province" edge.
+func (tq *TenderQuery) QueryProvince() *ProvinceQuery {
+	query := (&ProvinceClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(province.Table, province.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.ProvinceTable, tender.ProvinceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCity chains the current query on the "city" edge.
+func (tq *TenderQuery) QueryCity() *CityQuery {
+	query := (&CityClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(city.Table, city.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.CityTable, tender.CityColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryDistrict chains the current query on the "district" edge.
+func (tq *TenderQuery) QueryDistrict() *DistrictQuery {
+	query := (&DistrictClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(district.Table, district.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.DistrictTable, tender.DistrictColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -296,13 +440,19 @@ func (tq *TenderQuery) Clone() *TenderQuery {
 		return nil
 	}
 	return &TenderQuery{
-		config:       tq.config,
-		ctx:          tq.ctx.Clone(),
-		order:        append([]tender.OrderOption{}, tq.order...),
-		inters:       append([]Interceptor{}, tq.inters...),
-		predicates:   append([]predicate.Tender{}, tq.predicates...),
-		withArea:     tq.withArea.Clone(),
-		withCustomer: tq.withCustomer.Clone(),
+		config:             tq.config,
+		ctx:                tq.ctx.Clone(),
+		order:              append([]tender.OrderOption{}, tq.order...),
+		inters:             append([]Interceptor{}, tq.inters...),
+		predicates:         append([]predicate.Tender{}, tq.predicates...),
+		withArea:           tq.withArea.Clone(),
+		withCustomer:       tq.withCustomer.Clone(),
+		withFinder:         tq.withFinder.Clone(),
+		withCreatedBy:      tq.withCreatedBy.Clone(),
+		withFollowingSales: tq.withFollowingSales.Clone(),
+		withProvince:       tq.withProvince.Clone(),
+		withCity:           tq.withCity.Clone(),
+		withDistrict:       tq.withDistrict.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
@@ -328,6 +478,72 @@ func (tq *TenderQuery) WithCustomer(opts ...func(*CustomerQuery)) *TenderQuery {
 		opt(query)
 	}
 	tq.withCustomer = query
+	return tq
+}
+
+// WithFinder tells the query-builder to eager-load the nodes that are connected to
+// the "finder" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithFinder(opts ...func(*UserQuery)) *TenderQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withFinder = query
+	return tq
+}
+
+// WithCreatedBy tells the query-builder to eager-load the nodes that are connected to
+// the "created_by" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithCreatedBy(opts ...func(*UserQuery)) *TenderQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withCreatedBy = query
+	return tq
+}
+
+// WithFollowingSales tells the query-builder to eager-load the nodes that are connected to
+// the "following_sales" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithFollowingSales(opts ...func(*UserQuery)) *TenderQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withFollowingSales = query
+	return tq
+}
+
+// WithProvince tells the query-builder to eager-load the nodes that are connected to
+// the "province" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithProvince(opts ...func(*ProvinceQuery)) *TenderQuery {
+	query := (&ProvinceClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withProvince = query
+	return tq
+}
+
+// WithCity tells the query-builder to eager-load the nodes that are connected to
+// the "city" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithCity(opts ...func(*CityQuery)) *TenderQuery {
+	query := (&CityClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withCity = query
+	return tq
+}
+
+// WithDistrict tells the query-builder to eager-load the nodes that are connected to
+// the "district" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithDistrict(opts ...func(*DistrictQuery)) *TenderQuery {
+	query := (&DistrictClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withDistrict = query
 	return tq
 }
 
@@ -409,9 +625,15 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 	var (
 		nodes       = []*Tender{}
 		_spec       = tq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [8]bool{
 			tq.withArea != nil,
 			tq.withCustomer != nil,
+			tq.withFinder != nil,
+			tq.withCreatedBy != nil,
+			tq.withFollowingSales != nil,
+			tq.withProvince != nil,
+			tq.withCity != nil,
+			tq.withDistrict != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -444,6 +666,50 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 	if query := tq.withCustomer; query != nil {
 		if err := tq.loadCustomer(ctx, query, nodes, nil,
 			func(n *Tender, e *Customer) { n.Edges.Customer = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withFinder; query != nil {
+		if err := tq.loadFinder(ctx, query, nodes, nil,
+			func(n *Tender, e *User) { n.Edges.Finder = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withCreatedBy; query != nil {
+		if err := tq.loadCreatedBy(ctx, query, nodes, nil,
+			func(n *Tender, e *User) { n.Edges.CreatedBy = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withFollowingSales; query != nil {
+		if err := tq.loadFollowingSales(ctx, query, nodes,
+			func(n *Tender) { n.Edges.FollowingSales = []*User{} },
+			func(n *Tender, e *User) { n.Edges.FollowingSales = append(n.Edges.FollowingSales, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withProvince; query != nil {
+		if err := tq.loadProvince(ctx, query, nodes, nil,
+			func(n *Tender, e *Province) { n.Edges.Province = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withCity; query != nil {
+		if err := tq.loadCity(ctx, query, nodes, nil,
+			func(n *Tender, e *City) { n.Edges.City = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withDistrict; query != nil {
+		if err := tq.loadDistrict(ctx, query, nodes, nil,
+			func(n *Tender, e *District) { n.Edges.District = e }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range tq.withNamedFollowingSales {
+		if err := tq.loadFollowingSales(ctx, query, nodes,
+			func(n *Tender) { n.appendNamedFollowingSales(name) },
+			func(n *Tender, e *User) { n.appendNamedFollowingSales(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -513,6 +779,215 @@ func (tq *TenderQuery) loadCustomer(ctx context.Context, query *CustomerQuery, n
 	}
 	return nil
 }
+func (tq *TenderQuery) loadFinder(ctx context.Context, query *UserQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		fk := nodes[i].FinderID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "finder_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (tq *TenderQuery) loadCreatedBy(ctx context.Context, query *UserQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		fk := nodes[i].CreatedByID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "created_by_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (tq *TenderQuery) loadFollowingSales(ctx context.Context, query *UserQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *User)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[xid.ID]*Tender)
+	nids := make(map[xid.ID]map[*Tender]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(tender.FollowingSalesTable)
+		s.Join(joinT).On(s.C(user.FieldID), joinT.C(tender.FollowingSalesPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(tender.FollowingSalesPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(tender.FollowingSalesPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(xid.ID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*xid.ID)
+				inValue := *values[1].(*xid.ID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*Tender]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*User](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "following_sales" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
+func (tq *TenderQuery) loadProvince(ctx context.Context, query *ProvinceQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *Province)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		fk := nodes[i].ProvinceID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(province.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "province_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (tq *TenderQuery) loadCity(ctx context.Context, query *CityQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *City)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		if nodes[i].CityID == nil {
+			continue
+		}
+		fk := *nodes[i].CityID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(city.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "city_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (tq *TenderQuery) loadDistrict(ctx context.Context, query *DistrictQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *District)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Tender)
+	for i := range nodes {
+		fk := nodes[i].DistrictID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(district.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "district_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (tq *TenderQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
@@ -547,6 +1022,21 @@ func (tq *TenderQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if tq.withCustomer != nil {
 			_spec.Node.AddColumnOnce(tender.FieldCustomerID)
+		}
+		if tq.withFinder != nil {
+			_spec.Node.AddColumnOnce(tender.FieldFinderID)
+		}
+		if tq.withCreatedBy != nil {
+			_spec.Node.AddColumnOnce(tender.FieldCreatedByID)
+		}
+		if tq.withProvince != nil {
+			_spec.Node.AddColumnOnce(tender.FieldProvinceID)
+		}
+		if tq.withCity != nil {
+			_spec.Node.AddColumnOnce(tender.FieldCityID)
+		}
+		if tq.withDistrict != nil {
+			_spec.Node.AddColumnOnce(tender.FieldDistrictID)
 		}
 	}
 	if ps := tq.predicates; len(ps) > 0 {
@@ -602,6 +1092,20 @@ func (tq *TenderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// WithNamedFollowingSales tells the query-builder to eager-load the nodes that are connected to the "following_sales"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithNamedFollowingSales(name string, opts ...func(*UserQuery)) *TenderQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if tq.withNamedFollowingSales == nil {
+		tq.withNamedFollowingSales = make(map[string]*UserQuery)
+	}
+	tq.withNamedFollowingSales[name] = query
+	return tq
 }
 
 // TenderGroupBy is the group-by builder for Tender entities.

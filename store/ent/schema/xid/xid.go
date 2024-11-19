@@ -9,12 +9,9 @@ import (
 	"github.com/rs/xid"
 )
 
-// type ID string
-type ID struct {
-	V string
-}
+type ID string
 
-func MustNew(prefix string) ID { return ID{fmt.Sprintf("%s-%s", prefix, xid.New())} }
+func MustNew(prefix string) ID { return ID(fmt.Sprintf("%s-%s", prefix, xid.New())) }
 
 // UnmarshalGQL implements the graphql.Unmarshaler interface
 func (u *ID) UnmarshalGQL(v interface{}) error {
@@ -23,7 +20,7 @@ func (u *ID) UnmarshalGQL(v interface{}) error {
 
 // MarshalGQL implements the graphql.Marshaler interface
 func (u ID) MarshalGQL(w io.Writer) {
-	_, _ = io.WriteString(w, strconv.Quote(u.V))
+	_, _ = io.WriteString(w, strconv.Quote(string(u)))
 }
 
 // Scan implements the Scanner interface.
@@ -33,7 +30,7 @@ func (u *ID) Scan(src interface{}) error {
 	}
 	switch src := src.(type) {
 	case string:
-		*u = ID{src}
+		*u = ID(src)
 	case ID:
 		*u = src
 	default:
@@ -44,7 +41,7 @@ func (u *ID) Scan(src interface{}) error {
 
 // Value implements the driver Valuer interface.
 func (u ID) Value() (driver.Value, error) {
-	return u.V, nil
+	return string(u), nil
 }
 
 // func MarshalID(id xid.ID) graphql.Marshaler {

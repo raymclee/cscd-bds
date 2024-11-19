@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"errors"
 	"fmt"
 	"time"
@@ -117,6 +118,21 @@ func (cc *CityCreate) AddDistricts(d ...*District) *CityCreate {
 // SetProvince sets the "province" edge to the Province entity.
 func (cc *CityCreate) SetProvince(p *Province) *CityCreate {
 	return cc.SetProvinceID(p.ID)
+}
+
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (cc *CityCreate) AddTenderIDs(ids ...xid.ID) *CityCreate {
+	cc.mutation.AddTenderIDs(ids...)
+	return cc
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (cc *CityCreate) AddTenders(t ...*Tender) *CityCreate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cc.AddTenderIDs(ids...)
 }
 
 // Mutation returns the CityMutation object of the builder.
@@ -285,6 +301,22 @@ func (cc *CityCreate) createSpec() (*City, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.ProvinceID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.TendersTable,
+			Columns: []string{city.TendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

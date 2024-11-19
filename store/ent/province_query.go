@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -30,10 +31,12 @@ type ProvinceQuery struct {
 	withDistricts      *DistrictQuery
 	withCities         *CityQuery
 	withCountry        *CountryQuery
+	withTenders        *TenderQuery
 	modifiers          []func(*sql.Selector)
 	loadTotal          []func(context.Context, []*Province) error
 	withNamedDistricts map[string]*DistrictQuery
 	withNamedCities    map[string]*CityQuery
+	withNamedTenders   map[string]*TenderQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -129,6 +132,28 @@ func (pq *ProvinceQuery) QueryCountry() *CountryQuery {
 			sqlgraph.From(province.Table, province.FieldID, selector),
 			sqlgraph.To(country.Table, country.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, province.CountryTable, province.CountryColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTenders chains the current query on the "tenders" edge.
+func (pq *ProvinceQuery) QueryTenders() *TenderQuery {
+	query := (&TenderClient{config: pq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(province.Table, province.FieldID, selector),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, province.TendersTable, province.TendersColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -331,6 +356,7 @@ func (pq *ProvinceQuery) Clone() *ProvinceQuery {
 		withDistricts: pq.withDistricts.Clone(),
 		withCities:    pq.withCities.Clone(),
 		withCountry:   pq.withCountry.Clone(),
+		withTenders:   pq.withTenders.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -367,6 +393,17 @@ func (pq *ProvinceQuery) WithCountry(opts ...func(*CountryQuery)) *ProvinceQuery
 		opt(query)
 	}
 	pq.withCountry = query
+	return pq
+}
+
+// WithTenders tells the query-builder to eager-load the nodes that are connected to
+// the "tenders" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProvinceQuery) WithTenders(opts ...func(*TenderQuery)) *ProvinceQuery {
+	query := (&TenderClient{config: pq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withTenders = query
 	return pq
 }
 
@@ -448,10 +485,11 @@ func (pq *ProvinceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 	var (
 		nodes       = []*Province{}
 		_spec       = pq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			pq.withDistricts != nil,
 			pq.withCities != nil,
 			pq.withCountry != nil,
+			pq.withTenders != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -495,6 +533,13 @@ func (pq *ProvinceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 			return nil, err
 		}
 	}
+	if query := pq.withTenders; query != nil {
+		if err := pq.loadTenders(ctx, query, nodes,
+			func(n *Province) { n.Edges.Tenders = []*Tender{} },
+			func(n *Province, e *Tender) { n.Edges.Tenders = append(n.Edges.Tenders, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range pq.withNamedDistricts {
 		if err := pq.loadDistricts(ctx, query, nodes,
 			func(n *Province) { n.appendNamedDistricts(name) },
@@ -506,6 +551,13 @@ func (pq *ProvinceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 		if err := pq.loadCities(ctx, query, nodes,
 			func(n *Province) { n.appendNamedCities(name) },
 			func(n *Province, e *City) { n.appendNamedCities(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range pq.withNamedTenders {
+		if err := pq.loadTenders(ctx, query, nodes,
+			func(n *Province) { n.appendNamedTenders(name) },
+			func(n *Province, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -603,6 +655,36 @@ func (pq *ProvinceQuery) loadCountry(ctx context.Context, query *CountryQuery, n
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (pq *ProvinceQuery) loadTenders(ctx context.Context, query *TenderQuery, nodes []*Province, init func(*Province), assign func(*Province, *Tender)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Province)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(tender.FieldProvinceID)
+	}
+	query.Where(predicate.Tender(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(province.TendersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ProvinceID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "province_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -719,6 +801,20 @@ func (pq *ProvinceQuery) WithNamedCities(name string, opts ...func(*CityQuery)) 
 		pq.withNamedCities = make(map[string]*CityQuery)
 	}
 	pq.withNamedCities[name] = query
+	return pq
+}
+
+// WithNamedTenders tells the query-builder to eager-load the nodes that are connected to the "tenders"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProvinceQuery) WithNamedTenders(name string, opts ...func(*TenderQuery)) *ProvinceQuery {
+	query := (&TenderClient{config: pq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if pq.withNamedTenders == nil {
+		pq.withNamedTenders = make(map[string]*TenderQuery)
+	}
+	pq.withNamedTenders[name] = query
 	return pq
 }
 

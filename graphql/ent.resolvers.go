@@ -35,12 +35,8 @@ func (r *queryResolver) Node(ctx context.Context, id xid.ID) (ent.Noder, error) 
 }
 
 // Nodes is the resolver for the nodes field.
-func (r *queryResolver) Nodes(ctx context.Context, ids []*xid.ID) ([]ent.Noder, error) {
-	idx := make([]xid.ID, len(ids))
-	for i, id := range ids {
-		idx[i] = *id
-	}
-	return r.store.Noders(ctx, idx, ent.WithNodeType(ent.IDToType))
+func (r *queryResolver) Nodes(ctx context.Context, ids []xid.ID) ([]ent.Noder, error) {
+	return r.store.Noders(ctx, ids, ent.WithNodeType(ent.IDToType))
 }
 
 // Areas is the resolver for the areas field.

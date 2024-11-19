@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"database/sql/driver"
 	"fmt"
@@ -30,11 +31,13 @@ type UserQuery struct {
 	withCustomers        *CustomerQuery
 	withLeader           *UserQuery
 	withTeamMembers      *UserQuery
+	withTenders          *TenderQuery
 	modifiers            []func(*sql.Selector)
 	loadTotal            []func(context.Context, []*User) error
 	withNamedAreas       map[string]*AreaQuery
 	withNamedCustomers   map[string]*CustomerQuery
 	withNamedTeamMembers map[string]*UserQuery
+	withNamedTenders     map[string]*TenderQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -152,6 +155,28 @@ func (uq *UserQuery) QueryTeamMembers() *UserQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, user.TeamMembersTable, user.TeamMembersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTenders chains the current query on the "tenders" edge.
+func (uq *UserQuery) QueryTenders() *TenderQuery {
+	query := (&TenderClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, user.TendersTable, user.TendersPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -355,6 +380,7 @@ func (uq *UserQuery) Clone() *UserQuery {
 		withCustomers:   uq.withCustomers.Clone(),
 		withLeader:      uq.withLeader.Clone(),
 		withTeamMembers: uq.withTeamMembers.Clone(),
+		withTenders:     uq.withTenders.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
@@ -402,6 +428,17 @@ func (uq *UserQuery) WithTeamMembers(opts ...func(*UserQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withTeamMembers = query
+	return uq
+}
+
+// WithTenders tells the query-builder to eager-load the nodes that are connected to
+// the "tenders" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithTenders(opts ...func(*TenderQuery)) *UserQuery {
+	query := (&TenderClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withTenders = query
 	return uq
 }
 
@@ -483,11 +520,12 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			uq.withAreas != nil,
 			uq.withCustomers != nil,
 			uq.withLeader != nil,
 			uq.withTeamMembers != nil,
+			uq.withTenders != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -538,6 +576,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	if query := uq.withTenders; query != nil {
+		if err := uq.loadTenders(ctx, query, nodes,
+			func(n *User) { n.Edges.Tenders = []*Tender{} },
+			func(n *User, e *Tender) { n.Edges.Tenders = append(n.Edges.Tenders, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range uq.withNamedAreas {
 		if err := uq.loadAreas(ctx, query, nodes,
 			func(n *User) { n.appendNamedAreas(name) },
@@ -556,6 +601,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadTeamMembers(ctx, query, nodes,
 			func(n *User) { n.appendNamedTeamMembers(name) },
 			func(n *User, e *User) { n.appendNamedTeamMembers(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedTenders {
+		if err := uq.loadTenders(ctx, query, nodes,
+			func(n *User) { n.appendNamedTenders(name) },
+			func(n *User, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -650,9 +702,12 @@ func (uq *UserQuery) loadCustomers(ctx context.Context, query *CustomerQuery, no
 	}
 	for _, n := range neighbors {
 		fk := n.SalesID
-		node, ok := nodeids[fk]
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "sales_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "sales_id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "sales_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -720,6 +775,67 @@ func (uq *UserQuery) loadTeamMembers(ctx context.Context, query *UserQuery, node
 			return fmt.Errorf(`unexpected referenced foreign-key "leader_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadTenders(ctx context.Context, query *TenderQuery, nodes []*User, init func(*User), assign func(*User, *Tender)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[xid.ID]*User)
+	nids := make(map[xid.ID]map[*User]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(user.TendersTable)
+		s.Join(joinT).On(s.C(tender.FieldID), joinT.C(user.TendersPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(user.TendersPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(user.TendersPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(xid.ID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*xid.ID)
+				inValue := *values[1].(*xid.ID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*User]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*Tender](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "tenders" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
 	}
 	return nil
 }
@@ -850,6 +966,20 @@ func (uq *UserQuery) WithNamedTeamMembers(name string, opts ...func(*UserQuery))
 		uq.withNamedTeamMembers = make(map[string]*UserQuery)
 	}
 	uq.withNamedTeamMembers[name] = query
+	return uq
+}
+
+// WithNamedTenders tells the query-builder to eager-load the nodes that are connected to the "tenders"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedTenders(name string, opts ...func(*TenderQuery)) *UserQuery {
+	query := (&TenderClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedTenders == nil {
+		uq.withNamedTenders = make(map[string]*TenderQuery)
+	}
+	uq.withNamedTenders[name] = query
 	return uq
 }
 

@@ -3,7 +3,6 @@ package schema
 import (
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
 
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
@@ -37,25 +36,22 @@ func (Tender) Fields() []ent.Field {
 				dialect.Postgres: "numeric",
 			}),
 		field.Time("tender_date").Optional(),
-		field.Time("find_date"),
-		field.JSON("finder", &zht.User{}).
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
-		field.JSON("created_by", &zht.User{}).
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
-		field.JSON("following_person", []zht.User{}).
-			Optional().
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
-		field.Int8("size_and_value_rating").Optional().Min(1).Max(5),
-		field.Int8("credit_and_payment_rating").Optional().Min(1).Max(5),
-		field.Int8("time_limit_rating").Optional().Min(1).Max(5),
-		field.Int8("customer_relationship_rating").Optional().Min(1).Max(5),
-		field.Int8("competitive_partnership_rating").Optional().Min(1).Max(5),
+		field.Time("discovery_date"),
+		field.String("address").Optional().Nillable(),
+		field.String("full_address").Optional().Nillable(),
+		field.String("contractor").Optional().Nillable(),
+
+		field.Int8("size_and_value_rating").Optional().Nillable().Min(1).Max(5),
+		field.String("size_and_value_rating_overview").Optional().Nillable(),
+		field.Int8("credit_and_payment_rating").Optional().Nillable().Min(1).Max(5),
+		field.String("credit_and_payment_rating_overview").Optional().Nillable(),
+		field.Int8("time_limit_rating").Optional().Nillable().Min(1).Max(5),
+		field.String("time_limit_rating_overview").Optional().Nillable(),
+		field.Int8("customer_relationship_rating").Optional().Nillable().Min(1).Max(5),
+		field.String("customer_relationship_rating_overview").Optional().Nillable(),
+		field.Int8("competitive_partnership_rating").Optional().Nillable().Min(1).Max(5),
+		field.String("competitive_partnership_rating_overview").Optional().Nillable(),
+
 		field.Bool("prepare_to_bid").Default(false),
 		field.String("project_code").Optional().Nillable(),
 		field.String("project_definition").Optional().Nillable(),
@@ -63,7 +59,6 @@ func (Tender) Fields() []ent.Field {
 		field.Time("estimated_project_end_date").Optional().Nillable(),
 		field.String("project_type").Optional().Nillable(),
 		field.Strings("attachements").Optional(),
-		field.String("geo_location").Optional().Nillable(),
 		field.Other("geo_coordinate", &geo.GeoJson{}).
 			SchemaType(map[string]string{
 				dialect.Postgres: "geometry(Point,4326)",
@@ -73,13 +68,39 @@ func (Tender) Fields() []ent.Field {
 			Annotations(
 				entgql.Skip(entgql.SkipAll),
 			),
-		field.String("remark").Optional().Nillable(),
+		field.String("remark").Optional(),
 		field.Strings("images").Optional(),
+		field.String("tender_situations").Optional().Nillable(),
+		field.String("owner_situations").Optional().Nillable(),
+		field.String("bidding_instructions").Optional().Nillable(),
+		field.String("competitor_situations").Optional().Nillable(),
+		field.String("cost_engineer").Optional().Nillable(),
+		field.String("tender_form").Optional().Nillable(),
+		field.String("contract_form").Optional().Nillable(),
+		field.String("management_company").Optional().Nillable(),
+		field.String("tendering_agency").Optional().Nillable(),
+		field.Time("bidding_date").Optional().Nillable(),
+		field.String("facade_consultant").Optional().Nillable(),
+		field.String("design_unit").Optional().Nillable(),
+		field.String("consulting_firm").Optional().Nillable(),
+		field.Bool("key_project").Default(false),
 
 		field.String("area_id").
-			GoType(xid.ID{}),
+			GoType(xid.ID("")),
+		field.String("province_id").
+			GoType(xid.ID("")),
+		field.String("city_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
+		field.String("district_id").
+			GoType(xid.ID("")),
 		field.String("customer_id").
-			GoType(xid.ID{}),
+			GoType(xid.ID("")),
+		field.String("finder_id").
+			GoType(xid.ID("")),
+		field.String("created_by_id").
+			GoType(xid.ID("")),
 	}
 }
 
@@ -94,6 +115,29 @@ func (Tender) Edges() []ent.Edge {
 		edge.From("customer", Customer.Type).
 			Ref("tenders").
 			Field("customer_id").
+			Required().
+			Unique(),
+		edge.To("finder", User.Type).
+			Field("finder_id").
+			Unique().
+			Required(),
+		edge.To("created_by", User.Type).
+			Field("created_by_id").
+			Unique().
+			Required(),
+		edge.To("following_sales", User.Type),
+		edge.From("province", Province.Type).
+			Ref("tenders").
+			Field("province_id").
+			Required().
+			Unique(),
+		edge.From("city", City.Type).
+			Ref("tenders").
+			Field("city_id").
+			Unique(),
+		edge.From("district", District.Type).
+			Ref("tenders").
+			Field("district_id").
 			Required().
 			Unique(),
 	}

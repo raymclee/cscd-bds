@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
@@ -191,6 +192,21 @@ func (uu *UserUpdate) AddTeamMembers(u ...*User) *UserUpdate {
 	return uu.AddTeamMemberIDs(ids...)
 }
 
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (uu *UserUpdate) AddTenderIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.AddTenderIDs(ids...)
+	return uu
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (uu *UserUpdate) AddTenders(t ...*Tender) *UserUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return uu.AddTenderIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -263,6 +279,27 @@ func (uu *UserUpdate) RemoveTeamMembers(u ...*User) *UserUpdate {
 		ids[i] = u[i].ID
 	}
 	return uu.RemoveTeamMemberIDs(ids...)
+}
+
+// ClearTenders clears all "tenders" edges to the Tender entity.
+func (uu *UserUpdate) ClearTenders() *UserUpdate {
+	uu.mutation.ClearTenders()
+	return uu
+}
+
+// RemoveTenderIDs removes the "tenders" edge to Tender entities by IDs.
+func (uu *UserUpdate) RemoveTenderIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.RemoveTenderIDs(ids...)
+	return uu
+}
+
+// RemoveTenders removes "tenders" edges to Tender entities.
+func (uu *UserUpdate) RemoveTenders(t ...*Tender) *UserUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return uu.RemoveTenderIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -495,6 +532,51 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedTendersIDs(); len(nodes) > 0 && !uu.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -675,6 +757,21 @@ func (uuo *UserUpdateOne) AddTeamMembers(u ...*User) *UserUpdateOne {
 	return uuo.AddTeamMemberIDs(ids...)
 }
 
+// AddTenderIDs adds the "tenders" edge to the Tender entity by IDs.
+func (uuo *UserUpdateOne) AddTenderIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.AddTenderIDs(ids...)
+	return uuo
+}
+
+// AddTenders adds the "tenders" edges to the Tender entity.
+func (uuo *UserUpdateOne) AddTenders(t ...*Tender) *UserUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return uuo.AddTenderIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -747,6 +844,27 @@ func (uuo *UserUpdateOne) RemoveTeamMembers(u ...*User) *UserUpdateOne {
 		ids[i] = u[i].ID
 	}
 	return uuo.RemoveTeamMemberIDs(ids...)
+}
+
+// ClearTenders clears all "tenders" edges to the Tender entity.
+func (uuo *UserUpdateOne) ClearTenders() *UserUpdateOne {
+	uuo.mutation.ClearTenders()
+	return uuo
+}
+
+// RemoveTenderIDs removes the "tenders" edge to Tender entities by IDs.
+func (uuo *UserUpdateOne) RemoveTenderIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.RemoveTenderIDs(ids...)
+	return uuo
+}
+
+// RemoveTenders removes "tenders" edges to Tender entities.
+func (uuo *UserUpdateOne) RemoveTenders(t ...*Tender) *UserUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return uuo.RemoveTenderIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -1002,6 +1120,51 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedTendersIDs(); len(nodes) > 0 && !uuo.mutation.TendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.TendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.TendersTable,
+			Columns: user.TendersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

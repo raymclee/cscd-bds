@@ -18,25 +18,25 @@ import (
 
 // prefixMap maps xid prefixes to table names.
 var prefixMap = map[xid.ID]string{
-	{V: "AR"}: area.Table,
-	{V: "CI"}: city.Table,
-	{V: "CO"}: country.Table,
-	{V: "CU"}: customer.Table,
-	{V: "DI"}: district.Table,
-	{V: "PR"}: province.Table,
-	{V: "TE"}: tender.Table,
-	{V: "US"}: user.Table,
+	"AR": area.Table,
+	"CI": city.Table,
+	"CO": country.Table,
+	"CU": customer.Table,
+	"DI": district.Table,
+	"PR": province.Table,
+	"TE": tender.Table,
+	"US": user.Table,
 }
 
 // IDToType maps a xid.ID to the underlying table.
 func IDToType(ctx context.Context, id xid.ID) (string, error) {
-	if len(id.V) < 2 {
+	if len(id) < 2 {
 		return "", fmt.Errorf("IDToType: id too short")
 	}
-	p := xid.ID{V: id.V[:2]}
-	typ := prefixMap[p]
+	prefix := id[:2]
+	typ := prefixMap[prefix]
 	if typ == "" {
-		return "", fmt.Errorf("IDToType: could not map prefix '%s' to a type", p.V)
+		return "", fmt.Errorf("IDToType: could not map prefix '%s' to a type", prefix)
 	}
 	return typ, nil
 }

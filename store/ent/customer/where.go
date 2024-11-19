@@ -116,9 +116,9 @@ func SalesID(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldSalesID, v))
 }
 
-// CreatedByUserID applies equality check predicate on the "created_by_user_id" field. It's identical to CreatedByUserIDEQ.
-func CreatedByUserID(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldEQ(FieldCreatedByUserID, v))
+// CreatedByID applies equality check predicate on the "created_by_id" field. It's identical to CreatedByIDEQ.
+func CreatedByID(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldCreatedByID, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -756,6 +756,36 @@ func AreaIDLTE(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldAreaID, v))
 }
 
+// AreaIDContains applies the Contains predicate on the "area_id" field.
+func AreaIDContains(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContains(FieldAreaID, vc))
+}
+
+// AreaIDHasPrefix applies the HasPrefix predicate on the "area_id" field.
+func AreaIDHasPrefix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasPrefix(FieldAreaID, vc))
+}
+
+// AreaIDHasSuffix applies the HasSuffix predicate on the "area_id" field.
+func AreaIDHasSuffix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasSuffix(FieldAreaID, vc))
+}
+
+// AreaIDEqualFold applies the EqualFold predicate on the "area_id" field.
+func AreaIDEqualFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldEqualFold(FieldAreaID, vc))
+}
+
+// AreaIDContainsFold applies the ContainsFold predicate on the "area_id" field.
+func AreaIDContainsFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContainsFold(FieldAreaID, vc))
+}
+
 // SalesIDEQ applies the EQ predicate on the "sales_id" field.
 func SalesIDEQ(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldSalesID, v))
@@ -796,6 +826,24 @@ func SalesIDLTE(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldSalesID, v))
 }
 
+// SalesIDContains applies the Contains predicate on the "sales_id" field.
+func SalesIDContains(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContains(FieldSalesID, vc))
+}
+
+// SalesIDHasPrefix applies the HasPrefix predicate on the "sales_id" field.
+func SalesIDHasPrefix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasPrefix(FieldSalesID, vc))
+}
+
+// SalesIDHasSuffix applies the HasSuffix predicate on the "sales_id" field.
+func SalesIDHasSuffix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasSuffix(FieldSalesID, vc))
+}
+
 // SalesIDIsNil applies the IsNil predicate on the "sales_id" field.
 func SalesIDIsNil() predicate.Customer {
 	return predicate.Customer(sql.FieldIsNull(FieldSalesID))
@@ -806,44 +854,86 @@ func SalesIDNotNil() predicate.Customer {
 	return predicate.Customer(sql.FieldNotNull(FieldSalesID))
 }
 
-// CreatedByUserIDEQ applies the EQ predicate on the "created_by_user_id" field.
-func CreatedByUserIDEQ(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldEQ(FieldCreatedByUserID, v))
+// SalesIDEqualFold applies the EqualFold predicate on the "sales_id" field.
+func SalesIDEqualFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldEqualFold(FieldSalesID, vc))
 }
 
-// CreatedByUserIDNEQ applies the NEQ predicate on the "created_by_user_id" field.
-func CreatedByUserIDNEQ(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldNEQ(FieldCreatedByUserID, v))
+// SalesIDContainsFold applies the ContainsFold predicate on the "sales_id" field.
+func SalesIDContainsFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContainsFold(FieldSalesID, vc))
 }
 
-// CreatedByUserIDIn applies the In predicate on the "created_by_user_id" field.
-func CreatedByUserIDIn(vs ...xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldIn(FieldCreatedByUserID, vs...))
+// CreatedByIDEQ applies the EQ predicate on the "created_by_id" field.
+func CreatedByIDEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldCreatedByID, v))
 }
 
-// CreatedByUserIDNotIn applies the NotIn predicate on the "created_by_user_id" field.
-func CreatedByUserIDNotIn(vs ...xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldNotIn(FieldCreatedByUserID, vs...))
+// CreatedByIDNEQ applies the NEQ predicate on the "created_by_id" field.
+func CreatedByIDNEQ(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldCreatedByID, v))
 }
 
-// CreatedByUserIDGT applies the GT predicate on the "created_by_user_id" field.
-func CreatedByUserIDGT(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldGT(FieldCreatedByUserID, v))
+// CreatedByIDIn applies the In predicate on the "created_by_id" field.
+func CreatedByIDIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldIn(FieldCreatedByID, vs...))
 }
 
-// CreatedByUserIDGTE applies the GTE predicate on the "created_by_user_id" field.
-func CreatedByUserIDGTE(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldGTE(FieldCreatedByUserID, v))
+// CreatedByIDNotIn applies the NotIn predicate on the "created_by_id" field.
+func CreatedByIDNotIn(vs ...xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldNotIn(FieldCreatedByID, vs...))
 }
 
-// CreatedByUserIDLT applies the LT predicate on the "created_by_user_id" field.
-func CreatedByUserIDLT(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldLT(FieldCreatedByUserID, v))
+// CreatedByIDGT applies the GT predicate on the "created_by_id" field.
+func CreatedByIDGT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGT(FieldCreatedByID, v))
 }
 
-// CreatedByUserIDLTE applies the LTE predicate on the "created_by_user_id" field.
-func CreatedByUserIDLTE(v xid.ID) predicate.Customer {
-	return predicate.Customer(sql.FieldLTE(FieldCreatedByUserID, v))
+// CreatedByIDGTE applies the GTE predicate on the "created_by_id" field.
+func CreatedByIDGTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldGTE(FieldCreatedByID, v))
+}
+
+// CreatedByIDLT applies the LT predicate on the "created_by_id" field.
+func CreatedByIDLT(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLT(FieldCreatedByID, v))
+}
+
+// CreatedByIDLTE applies the LTE predicate on the "created_by_id" field.
+func CreatedByIDLTE(v xid.ID) predicate.Customer {
+	return predicate.Customer(sql.FieldLTE(FieldCreatedByID, v))
+}
+
+// CreatedByIDContains applies the Contains predicate on the "created_by_id" field.
+func CreatedByIDContains(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContains(FieldCreatedByID, vc))
+}
+
+// CreatedByIDHasPrefix applies the HasPrefix predicate on the "created_by_id" field.
+func CreatedByIDHasPrefix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasPrefix(FieldCreatedByID, vc))
+}
+
+// CreatedByIDHasSuffix applies the HasSuffix predicate on the "created_by_id" field.
+func CreatedByIDHasSuffix(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldHasSuffix(FieldCreatedByID, vc))
+}
+
+// CreatedByIDEqualFold applies the EqualFold predicate on the "created_by_id" field.
+func CreatedByIDEqualFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldEqualFold(FieldCreatedByID, vc))
+}
+
+// CreatedByIDContainsFold applies the ContainsFold predicate on the "created_by_id" field.
+func CreatedByIDContainsFold(v xid.ID) predicate.Customer {
+	vc := string(v)
+	return predicate.Customer(sql.FieldContainsFold(FieldCreatedByID, vc))
 }
 
 // HasArea applies the HasEdge predicate on the "area" edge.

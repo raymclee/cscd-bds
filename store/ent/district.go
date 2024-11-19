@@ -38,7 +38,7 @@ type District struct {
 	// ProvinceID holds the value of the "province_id" field.
 	ProvinceID xid.ID `json:"province_id,omitempty"`
 	// CityID holds the value of the "city_id" field.
-	CityID xid.ID `json:"city_id,omitempty"`
+	CityID *xid.ID `json:"city_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DistrictQuery when eager-loading is set.
 	Edges        DistrictEdges `json:"edges"`
@@ -51,11 +51,15 @@ type DistrictEdges struct {
 	Province *Province `json:"province,omitempty"`
 	// City holds the value of the city edge.
 	City *City `json:"city,omitempty"`
+	// Tenders holds the value of the tenders edge.
+	Tenders []*Tender `json:"tenders,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
+
+	namedTenders map[string][]*Tender
 }
 
 // ProvinceOrErr returns the Province value or an error if the edge
@@ -80,11 +84,22 @@ func (e DistrictEdges) CityOrErr() (*City, error) {
 	return nil, &NotLoadedError{edge: "city"}
 }
 
+// TendersOrErr returns the Tenders value or an error if the edge
+// was not loaded in eager-loading.
+func (e DistrictEdges) TendersOrErr() ([]*Tender, error) {
+	if e.loadedTypes[2] {
+		return e.Tenders, nil
+	}
+	return nil, &NotLoadedError{edge: "tenders"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*District) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case district.FieldCityID:
+			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case district.FieldCenter:
 			values[i] = new(geo.GeoJson)
 		case district.FieldAdcode, district.FieldProvCode, district.FieldCityCode:
@@ -93,7 +108,7 @@ func (*District) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case district.FieldCreatedAt, district.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case district.FieldID, district.FieldProvinceID, district.FieldCityID:
+		case district.FieldID, district.FieldProvinceID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -165,10 +180,11 @@ func (d *District) assignValues(columns []string, values []any) error {
 				d.ProvinceID = *value
 			}
 		case district.FieldCityID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field city_id", values[i])
-			} else if value != nil {
-				d.CityID = *value
+			} else if value.Valid {
+				d.CityID = new(xid.ID)
+				*d.CityID = *value.S.(*xid.ID)
 			}
 		default:
 			d.selectValues.Set(columns[i], values[i])
@@ -191,6 +207,11 @@ func (d *District) QueryProvince() *ProvinceQuery {
 // QueryCity queries the "city" edge of the District entity.
 func (d *District) QueryCity() *CityQuery {
 	return NewDistrictClient(d.config).QueryCity(d)
+}
+
+// QueryTenders queries the "tenders" edge of the District entity.
+func (d *District) QueryTenders() *TenderQuery {
+	return NewDistrictClient(d.config).QueryTenders(d)
 }
 
 // Update returns a builder for updating this District.
@@ -240,10 +261,36 @@ func (d *District) String() string {
 	builder.WriteString("province_id=")
 	builder.WriteString(fmt.Sprintf("%v", d.ProvinceID))
 	builder.WriteString(", ")
-	builder.WriteString("city_id=")
-	builder.WriteString(fmt.Sprintf("%v", d.CityID))
+	if v := d.CityID; v != nil {
+		builder.WriteString("city_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedTenders returns the Tenders named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (d *District) NamedTenders(name string) ([]*Tender, error) {
+	if d.Edges.namedTenders == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := d.Edges.namedTenders[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (d *District) appendNamedTenders(name string, edges ...*Tender) {
+	if d.Edges.namedTenders == nil {
+		d.Edges.namedTenders = make(map[string][]*Tender)
+	}
+	if len(edges) == 0 {
+		d.Edges.namedTenders[name] = []*Tender{}
+	} else {
+		d.Edges.namedTenders[name] = append(d.Edges.namedTenders[name], edges...)
+	}
 }
 
 // Districts is a parsable slice of District.

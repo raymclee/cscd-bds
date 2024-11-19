@@ -32,7 +32,10 @@ func (User) Fields() []ent.Field {
 		field.String("avatar_url"),
 		field.Bool("disabled").Default(false),
 
-		field.String("leader_id").GoType(xid.ID{}).Optional().Nillable(),
+		field.String("leader_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -46,6 +49,8 @@ func (User) Edges() []ent.Edge {
 			From("leader").
 			Field("leader_id").
 			Unique(),
+		edge.From("tenders", Tender.Type).
+			Ref("following_sales"),
 	}
 }
 

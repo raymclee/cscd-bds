@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bf4e6e2eec40bb8897fec0c9a728d883>>
+ * @generated SignedSource<<bf7f31b7953801063c5712359e0d2f13>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,6 +16,9 @@ export type MapIndexPageQuery$data = {
       readonly node: {
         readonly id: string;
         readonly tenders: ReadonlyArray<{
+          readonly area: {
+            readonly name: string;
+          };
           readonly estimatedAmount: number | null | undefined;
           readonly id: string;
           readonly name: string;
@@ -37,53 +40,76 @@ var v0 = {
   "name": "id",
   "storageKey": null
 },
-v1 = [
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "AreaConnection",
-    "kind": "LinkedField",
-    "name": "areas",
-    "plural": false,
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "estimatedAmount",
+  "storageKey": null
+};
+return {
+  "fragment": {
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MapIndexPageQuery",
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "AreaEdge",
+        "concreteType": "AreaConnection",
         "kind": "LinkedField",
-        "name": "edges",
-        "plural": true,
+        "name": "areas",
+        "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Area",
+            "concreteType": "AreaEdge",
             "kind": "LinkedField",
-            "name": "node",
-            "plural": false,
+            "name": "edges",
+            "plural": true,
             "selections": [
-              (v0/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Tender",
+                "concreteType": "Area",
                 "kind": "LinkedField",
-                "name": "tenders",
-                "plural": true,
+                "name": "node",
+                "plural": false,
                 "selections": [
                   (v0/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "estimatedAmount",
+                    "concreteType": "Tender",
+                    "kind": "LinkedField",
+                    "name": "tenders",
+                    "plural": true,
+                    "selections": [
+                      (v0/*: any*/),
+                      (v1/*: any*/),
+                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Area",
+                        "kind": "LinkedField",
+                        "name": "area",
+                        "plural": false,
+                        "selections": [
+                          (v1/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -96,16 +122,6 @@ v1 = [
         "storageKey": null
       }
     ],
-    "storageKey": null
-  }
-];
-return {
-  "fragment": {
-    "argumentDefinitions": [],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "MapIndexPageQuery",
-    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -114,19 +130,81 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MapIndexPageQuery",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "AreaConnection",
+        "kind": "LinkedField",
+        "name": "areas",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AreaEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Area",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v0/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Tender",
+                    "kind": "LinkedField",
+                    "name": "tenders",
+                    "plural": true,
+                    "selections": [
+                      (v0/*: any*/),
+                      (v1/*: any*/),
+                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Area",
+                        "kind": "LinkedField",
+                        "name": "area",
+                        "plural": false,
+                        "selections": [
+                          (v1/*: any*/),
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "812b6a2e9c4e07400ea5a0fe6cb050d1",
+    "cacheID": "f3020426d463ff1cbe82ea79186b0f7d",
     "id": null,
     "metadata": {},
     "name": "MapIndexPageQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageQuery {\n  areas {\n    edges {\n      node {\n        id\n        tenders {\n          id\n          name\n          estimatedAmount\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query MapIndexPageQuery {\n  areas {\n    edges {\n      node {\n        id\n        tenders {\n          id\n          name\n          estimatedAmount\n          area {\n            name\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e26c5d0856980869b2bdbbec2b815445";
+(node as any).hash = "fe198b6983208cd34015e0e84aa2e42f";
 
 export default node;

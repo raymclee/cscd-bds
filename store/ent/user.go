@@ -52,15 +52,18 @@ type UserEdges struct {
 	Leader *User `json:"leader,omitempty"`
 	// TeamMembers holds the value of the team_members edge.
 	TeamMembers []*User `json:"team_members,omitempty"`
+	// Tenders holds the value of the tenders edge.
+	Tenders []*Tender `json:"tenders,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 	// totalCount holds the count of the edges above.
-	totalCount [4]map[string]int
+	totalCount [5]map[string]int
 
 	namedAreas       map[string][]*Area
 	namedCustomers   map[string][]*Customer
 	namedTeamMembers map[string][]*User
+	namedTenders     map[string][]*Tender
 }
 
 // AreasOrErr returns the Areas value or an error if the edge
@@ -99,6 +102,15 @@ func (e UserEdges) TeamMembersOrErr() ([]*User, error) {
 		return e.TeamMembers, nil
 	}
 	return nil, &NotLoadedError{edge: "team_members"}
+}
+
+// TendersOrErr returns the Tenders value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) TendersOrErr() ([]*Tender, error) {
+	if e.loadedTypes[4] {
+		return e.Tenders, nil
+	}
+	return nil, &NotLoadedError{edge: "tenders"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -225,6 +237,11 @@ func (u *User) QueryTeamMembers() *UserQuery {
 	return NewUserClient(u.config).QueryTeamMembers(u)
 }
 
+// QueryTenders queries the "tenders" edge of the User entity.
+func (u *User) QueryTenders() *TenderQuery {
+	return NewUserClient(u.config).QueryTenders(u)
+}
+
 // Update returns a builder for updating this User.
 // Note that you need to call User.Unwrap() before calling this method if this User
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -349,6 +366,30 @@ func (u *User) appendNamedTeamMembers(name string, edges ...*User) {
 		u.Edges.namedTeamMembers[name] = []*User{}
 	} else {
 		u.Edges.namedTeamMembers[name] = append(u.Edges.namedTeamMembers[name], edges...)
+	}
+}
+
+// NamedTenders returns the Tenders named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedTenders(name string) ([]*Tender, error) {
+	if u.Edges.namedTenders == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedTenders[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedTenders(name string, edges ...*Tender) {
+	if u.Edges.namedTenders == nil {
+		u.Edges.namedTenders = make(map[string][]*Tender)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedTenders[name] = []*Tender{}
+	} else {
+		u.Edges.namedTenders[name] = append(u.Edges.namedTenders[name], edges...)
 	}
 }
 

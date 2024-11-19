@@ -186,6 +186,19 @@ func (c *CityQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				selectedFields = append(selectedFields, city.FieldProvinceID)
 				fieldSeen[city.FieldProvinceID] = struct{}{}
 			}
+
+		case "tenders":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			c.WithNamedTenders(alias, func(wq *TenderQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[city.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, city.FieldCreatedAt)
@@ -427,9 +440,9 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				return err
 			}
 			c.withCreatedBy = query
-			if _, ok := fieldSeen[customer.FieldCreatedByUserID]; !ok {
-				selectedFields = append(selectedFields, customer.FieldCreatedByUserID)
-				fieldSeen[customer.FieldCreatedByUserID] = struct{}{}
+			if _, ok := fieldSeen[customer.FieldCreatedByID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldCreatedByID)
+				fieldSeen[customer.FieldCreatedByID] = struct{}{}
 			}
 		case "createdAt":
 			if _, ok := fieldSeen[customer.FieldCreatedAt]; !ok {
@@ -491,10 +504,10 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, customer.FieldSalesID)
 				fieldSeen[customer.FieldSalesID] = struct{}{}
 			}
-		case "createdByUserID":
-			if _, ok := fieldSeen[customer.FieldCreatedByUserID]; !ok {
-				selectedFields = append(selectedFields, customer.FieldCreatedByUserID)
-				fieldSeen[customer.FieldCreatedByUserID] = struct{}{}
+		case "createdByID":
+			if _, ok := fieldSeen[customer.FieldCreatedByID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldCreatedByID)
+				fieldSeen[customer.FieldCreatedByID] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -588,6 +601,19 @@ func (d *DistrictQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, district.FieldCityID)
 				fieldSeen[district.FieldCityID] = struct{}{}
 			}
+
+		case "tenders":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: d.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			d.WithNamedTenders(alias, func(wq *TenderQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[district.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, district.FieldCreatedAt)
@@ -731,6 +757,19 @@ func (pr *ProvinceQuery) collectField(ctx context.Context, oneNode bool, opCtx *
 				selectedFields = append(selectedFields, province.FieldCountryID)
 				fieldSeen[province.FieldCountryID] = struct{}{}
 			}
+
+		case "tenders":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			pr.WithNamedTenders(alias, func(wq *TenderQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[province.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, province.FieldCreatedAt)
@@ -848,6 +887,94 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldCustomerID)
 				fieldSeen[tender.FieldCustomerID] = struct{}{}
 			}
+
+		case "finder":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			t.withFinder = query
+			if _, ok := fieldSeen[tender.FieldFinderID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldFinderID)
+				fieldSeen[tender.FieldFinderID] = struct{}{}
+			}
+
+		case "createdBy":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			t.withCreatedBy = query
+			if _, ok := fieldSeen[tender.FieldCreatedByID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCreatedByID)
+				fieldSeen[tender.FieldCreatedByID] = struct{}{}
+			}
+
+		case "followingSales":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			t.WithNamedFollowingSales(alias, func(wq *UserQuery) {
+				*wq = *query
+			})
+
+		case "province":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProvinceClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, provinceImplementors)...); err != nil {
+				return err
+			}
+			t.withProvince = query
+			if _, ok := fieldSeen[tender.FieldProvinceID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldProvinceID)
+				fieldSeen[tender.FieldProvinceID] = struct{}{}
+			}
+
+		case "city":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CityClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, cityImplementors)...); err != nil {
+				return err
+			}
+			t.withCity = query
+			if _, ok := fieldSeen[tender.FieldCityID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCityID)
+				fieldSeen[tender.FieldCityID] = struct{}{}
+			}
+
+		case "district":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&DistrictClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, districtImplementors)...); err != nil {
+				return err
+			}
+			t.withDistrict = query
+			if _, ok := fieldSeen[tender.FieldDistrictID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldDistrictID)
+				fieldSeen[tender.FieldDistrictID] = struct{}{}
+			}
 		case "createdAt":
 			if _, ok := fieldSeen[tender.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCreatedAt)
@@ -883,35 +1010,75 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldTenderDate)
 				fieldSeen[tender.FieldTenderDate] = struct{}{}
 			}
-		case "findDate":
-			if _, ok := fieldSeen[tender.FieldFindDate]; !ok {
-				selectedFields = append(selectedFields, tender.FieldFindDate)
-				fieldSeen[tender.FieldFindDate] = struct{}{}
+		case "discoveryDate":
+			if _, ok := fieldSeen[tender.FieldDiscoveryDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldDiscoveryDate)
+				fieldSeen[tender.FieldDiscoveryDate] = struct{}{}
+			}
+		case "address":
+			if _, ok := fieldSeen[tender.FieldAddress]; !ok {
+				selectedFields = append(selectedFields, tender.FieldAddress)
+				fieldSeen[tender.FieldAddress] = struct{}{}
+			}
+		case "fullAddress":
+			if _, ok := fieldSeen[tender.FieldFullAddress]; !ok {
+				selectedFields = append(selectedFields, tender.FieldFullAddress)
+				fieldSeen[tender.FieldFullAddress] = struct{}{}
+			}
+		case "contractor":
+			if _, ok := fieldSeen[tender.FieldContractor]; !ok {
+				selectedFields = append(selectedFields, tender.FieldContractor)
+				fieldSeen[tender.FieldContractor] = struct{}{}
 			}
 		case "sizeAndValueRating":
 			if _, ok := fieldSeen[tender.FieldSizeAndValueRating]; !ok {
 				selectedFields = append(selectedFields, tender.FieldSizeAndValueRating)
 				fieldSeen[tender.FieldSizeAndValueRating] = struct{}{}
 			}
+		case "sizeAndValueRatingOverview":
+			if _, ok := fieldSeen[tender.FieldSizeAndValueRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tender.FieldSizeAndValueRatingOverview)
+				fieldSeen[tender.FieldSizeAndValueRatingOverview] = struct{}{}
+			}
 		case "creditAndPaymentRating":
 			if _, ok := fieldSeen[tender.FieldCreditAndPaymentRating]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCreditAndPaymentRating)
 				fieldSeen[tender.FieldCreditAndPaymentRating] = struct{}{}
+			}
+		case "creditAndPaymentRatingOverview":
+			if _, ok := fieldSeen[tender.FieldCreditAndPaymentRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCreditAndPaymentRatingOverview)
+				fieldSeen[tender.FieldCreditAndPaymentRatingOverview] = struct{}{}
 			}
 		case "timeLimitRating":
 			if _, ok := fieldSeen[tender.FieldTimeLimitRating]; !ok {
 				selectedFields = append(selectedFields, tender.FieldTimeLimitRating)
 				fieldSeen[tender.FieldTimeLimitRating] = struct{}{}
 			}
+		case "timeLimitRatingOverview":
+			if _, ok := fieldSeen[tender.FieldTimeLimitRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTimeLimitRatingOverview)
+				fieldSeen[tender.FieldTimeLimitRatingOverview] = struct{}{}
+			}
 		case "customerRelationshipRating":
 			if _, ok := fieldSeen[tender.FieldCustomerRelationshipRating]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCustomerRelationshipRating)
 				fieldSeen[tender.FieldCustomerRelationshipRating] = struct{}{}
 			}
+		case "customerRelationshipRatingOverview":
+			if _, ok := fieldSeen[tender.FieldCustomerRelationshipRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCustomerRelationshipRatingOverview)
+				fieldSeen[tender.FieldCustomerRelationshipRatingOverview] = struct{}{}
+			}
 		case "competitivePartnershipRating":
 			if _, ok := fieldSeen[tender.FieldCompetitivePartnershipRating]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCompetitivePartnershipRating)
 				fieldSeen[tender.FieldCompetitivePartnershipRating] = struct{}{}
+			}
+		case "competitivePartnershipRatingOverview":
+			if _, ok := fieldSeen[tender.FieldCompetitivePartnershipRatingOverview]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCompetitivePartnershipRatingOverview)
+				fieldSeen[tender.FieldCompetitivePartnershipRatingOverview] = struct{}{}
 			}
 		case "prepareToBid":
 			if _, ok := fieldSeen[tender.FieldPrepareToBid]; !ok {
@@ -948,11 +1115,6 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldAttachements)
 				fieldSeen[tender.FieldAttachements] = struct{}{}
 			}
-		case "geoLocation":
-			if _, ok := fieldSeen[tender.FieldGeoLocation]; !ok {
-				selectedFields = append(selectedFields, tender.FieldGeoLocation)
-				fieldSeen[tender.FieldGeoLocation] = struct{}{}
-			}
 		case "remark":
 			if _, ok := fieldSeen[tender.FieldRemark]; !ok {
 				selectedFields = append(selectedFields, tender.FieldRemark)
@@ -963,15 +1125,110 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldImages)
 				fieldSeen[tender.FieldImages] = struct{}{}
 			}
+		case "tenderSituations":
+			if _, ok := fieldSeen[tender.FieldTenderSituations]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderSituations)
+				fieldSeen[tender.FieldTenderSituations] = struct{}{}
+			}
+		case "ownerSituations":
+			if _, ok := fieldSeen[tender.FieldOwnerSituations]; !ok {
+				selectedFields = append(selectedFields, tender.FieldOwnerSituations)
+				fieldSeen[tender.FieldOwnerSituations] = struct{}{}
+			}
+		case "biddingInstructions":
+			if _, ok := fieldSeen[tender.FieldBiddingInstructions]; !ok {
+				selectedFields = append(selectedFields, tender.FieldBiddingInstructions)
+				fieldSeen[tender.FieldBiddingInstructions] = struct{}{}
+			}
+		case "competitorSituations":
+			if _, ok := fieldSeen[tender.FieldCompetitorSituations]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCompetitorSituations)
+				fieldSeen[tender.FieldCompetitorSituations] = struct{}{}
+			}
+		case "costEngineer":
+			if _, ok := fieldSeen[tender.FieldCostEngineer]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCostEngineer)
+				fieldSeen[tender.FieldCostEngineer] = struct{}{}
+			}
+		case "tenderForm":
+			if _, ok := fieldSeen[tender.FieldTenderForm]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderForm)
+				fieldSeen[tender.FieldTenderForm] = struct{}{}
+			}
+		case "contractForm":
+			if _, ok := fieldSeen[tender.FieldContractForm]; !ok {
+				selectedFields = append(selectedFields, tender.FieldContractForm)
+				fieldSeen[tender.FieldContractForm] = struct{}{}
+			}
+		case "managementCompany":
+			if _, ok := fieldSeen[tender.FieldManagementCompany]; !ok {
+				selectedFields = append(selectedFields, tender.FieldManagementCompany)
+				fieldSeen[tender.FieldManagementCompany] = struct{}{}
+			}
+		case "tenderingAgency":
+			if _, ok := fieldSeen[tender.FieldTenderingAgency]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderingAgency)
+				fieldSeen[tender.FieldTenderingAgency] = struct{}{}
+			}
+		case "biddingDate":
+			if _, ok := fieldSeen[tender.FieldBiddingDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldBiddingDate)
+				fieldSeen[tender.FieldBiddingDate] = struct{}{}
+			}
+		case "facadeConsultant":
+			if _, ok := fieldSeen[tender.FieldFacadeConsultant]; !ok {
+				selectedFields = append(selectedFields, tender.FieldFacadeConsultant)
+				fieldSeen[tender.FieldFacadeConsultant] = struct{}{}
+			}
+		case "designUnit":
+			if _, ok := fieldSeen[tender.FieldDesignUnit]; !ok {
+				selectedFields = append(selectedFields, tender.FieldDesignUnit)
+				fieldSeen[tender.FieldDesignUnit] = struct{}{}
+			}
+		case "consultingFirm":
+			if _, ok := fieldSeen[tender.FieldConsultingFirm]; !ok {
+				selectedFields = append(selectedFields, tender.FieldConsultingFirm)
+				fieldSeen[tender.FieldConsultingFirm] = struct{}{}
+			}
+		case "keyProject":
+			if _, ok := fieldSeen[tender.FieldKeyProject]; !ok {
+				selectedFields = append(selectedFields, tender.FieldKeyProject)
+				fieldSeen[tender.FieldKeyProject] = struct{}{}
+			}
 		case "areaID":
 			if _, ok := fieldSeen[tender.FieldAreaID]; !ok {
 				selectedFields = append(selectedFields, tender.FieldAreaID)
 				fieldSeen[tender.FieldAreaID] = struct{}{}
 			}
+		case "provinceID":
+			if _, ok := fieldSeen[tender.FieldProvinceID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldProvinceID)
+				fieldSeen[tender.FieldProvinceID] = struct{}{}
+			}
+		case "cityID":
+			if _, ok := fieldSeen[tender.FieldCityID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCityID)
+				fieldSeen[tender.FieldCityID] = struct{}{}
+			}
+		case "districtID":
+			if _, ok := fieldSeen[tender.FieldDistrictID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldDistrictID)
+				fieldSeen[tender.FieldDistrictID] = struct{}{}
+			}
 		case "customerID":
 			if _, ok := fieldSeen[tender.FieldCustomerID]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCustomerID)
 				fieldSeen[tender.FieldCustomerID] = struct{}{}
+			}
+		case "finderID":
+			if _, ok := fieldSeen[tender.FieldFinderID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldFinderID)
+				fieldSeen[tender.FieldFinderID] = struct{}{}
+			}
+		case "createdByID":
+			if _, ok := fieldSeen[tender.FieldCreatedByID]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCreatedByID)
+				fieldSeen[tender.FieldCreatedByID] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -1087,6 +1344,19 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				return err
 			}
 			u.WithNamedTeamMembers(alias, func(wq *UserQuery) {
+				*wq = *query
+			})
+
+		case "tenders":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			u.WithNamedTenders(alias, func(wq *TenderQuery) {
 				*wq = *query
 			})
 		case "createdAt":

@@ -613,7 +613,10 @@ func (cq *CustomerQuery) loadSales(ctx context.Context, query *UserQuery, nodes 
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Customer)
 	for i := range nodes {
-		fk := nodes[i].SalesID
+		if nodes[i].SalesID == nil {
+			continue
+		}
+		fk := *nodes[i].SalesID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -642,7 +645,7 @@ func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, no
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Customer)
 	for i := range nodes {
-		fk := nodes[i].CreatedByUserID
+		fk := nodes[i].CreatedByID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -659,7 +662,7 @@ func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, no
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "created_by_user_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "created_by_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -703,7 +706,7 @@ func (cq *CustomerQuery) querySpec() *sqlgraph.QuerySpec {
 			_spec.Node.AddColumnOnce(customer.FieldSalesID)
 		}
 		if cq.withCreatedBy != nil {
-			_spec.Node.AddColumnOnce(customer.FieldCreatedByUserID)
+			_spec.Node.AddColumnOnce(customer.FieldCreatedByID)
 		}
 	}
 	if ps := cq.predicates; len(ps) > 0 {
