@@ -4,7 +4,10 @@ package ent
 
 import (
 	"context"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
@@ -48,9 +51,218 @@ func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
 	return uu
 }
 
+// SetEmail sets the "email" field.
+func (uu *UserUpdate) SetEmail(s string) *UserUpdate {
+	uu.mutation.SetEmail(s)
+	return uu
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableEmail(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetEmail(*s)
+	}
+	return uu
+}
+
+// SetUsername sets the "username" field.
+func (uu *UserUpdate) SetUsername(s string) *UserUpdate {
+	uu.mutation.SetUsername(s)
+	return uu
+}
+
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableUsername(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetUsername(*s)
+	}
+	return uu
+}
+
+// SetOpenID sets the "open_id" field.
+func (uu *UserUpdate) SetOpenID(s string) *UserUpdate {
+	uu.mutation.SetOpenID(s)
+	return uu
+}
+
+// SetNillableOpenID sets the "open_id" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableOpenID(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetOpenID(*s)
+	}
+	return uu
+}
+
+// SetAvatarURL sets the "avatar_url" field.
+func (uu *UserUpdate) SetAvatarURL(s string) *UserUpdate {
+	uu.mutation.SetAvatarURL(s)
+	return uu
+}
+
+// SetNillableAvatarURL sets the "avatar_url" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableAvatarURL(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetAvatarURL(*s)
+	}
+	return uu
+}
+
+// SetDisabled sets the "disabled" field.
+func (uu *UserUpdate) SetDisabled(b bool) *UserUpdate {
+	uu.mutation.SetDisabled(b)
+	return uu
+}
+
+// SetNillableDisabled sets the "disabled" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDisabled(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetDisabled(*b)
+	}
+	return uu
+}
+
+// SetLeaderID sets the "leader_id" field.
+func (uu *UserUpdate) SetLeaderID(x xid.ID) *UserUpdate {
+	uu.mutation.SetLeaderID(x)
+	return uu
+}
+
+// SetNillableLeaderID sets the "leader_id" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableLeaderID(x *xid.ID) *UserUpdate {
+	if x != nil {
+		uu.SetLeaderID(*x)
+	}
+	return uu
+}
+
+// ClearLeaderID clears the value of the "leader_id" field.
+func (uu *UserUpdate) ClearLeaderID() *UserUpdate {
+	uu.mutation.ClearLeaderID()
+	return uu
+}
+
+// AddAreaIDs adds the "areas" edge to the Area entity by IDs.
+func (uu *UserUpdate) AddAreaIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.AddAreaIDs(ids...)
+	return uu
+}
+
+// AddAreas adds the "areas" edges to the Area entity.
+func (uu *UserUpdate) AddAreas(a ...*Area) *UserUpdate {
+	ids := make([]xid.ID, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uu.AddAreaIDs(ids...)
+}
+
+// AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
+func (uu *UserUpdate) AddCustomerIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.AddCustomerIDs(ids...)
+	return uu
+}
+
+// AddCustomers adds the "customers" edges to the Customer entity.
+func (uu *UserUpdate) AddCustomers(c ...*Customer) *UserUpdate {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.AddCustomerIDs(ids...)
+}
+
+// SetLeader sets the "leader" edge to the User entity.
+func (uu *UserUpdate) SetLeader(u *User) *UserUpdate {
+	return uu.SetLeaderID(u.ID)
+}
+
+// AddTeamMemberIDs adds the "team_members" edge to the User entity by IDs.
+func (uu *UserUpdate) AddTeamMemberIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.AddTeamMemberIDs(ids...)
+	return uu
+}
+
+// AddTeamMembers adds the "team_members" edges to the User entity.
+func (uu *UserUpdate) AddTeamMembers(u ...*User) *UserUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uu.AddTeamMemberIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
+}
+
+// ClearAreas clears all "areas" edges to the Area entity.
+func (uu *UserUpdate) ClearAreas() *UserUpdate {
+	uu.mutation.ClearAreas()
+	return uu
+}
+
+// RemoveAreaIDs removes the "areas" edge to Area entities by IDs.
+func (uu *UserUpdate) RemoveAreaIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.RemoveAreaIDs(ids...)
+	return uu
+}
+
+// RemoveAreas removes "areas" edges to Area entities.
+func (uu *UserUpdate) RemoveAreas(a ...*Area) *UserUpdate {
+	ids := make([]xid.ID, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uu.RemoveAreaIDs(ids...)
+}
+
+// ClearCustomers clears all "customers" edges to the Customer entity.
+func (uu *UserUpdate) ClearCustomers() *UserUpdate {
+	uu.mutation.ClearCustomers()
+	return uu
+}
+
+// RemoveCustomerIDs removes the "customers" edge to Customer entities by IDs.
+func (uu *UserUpdate) RemoveCustomerIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.RemoveCustomerIDs(ids...)
+	return uu
+}
+
+// RemoveCustomers removes "customers" edges to Customer entities.
+func (uu *UserUpdate) RemoveCustomers(c ...*Customer) *UserUpdate {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.RemoveCustomerIDs(ids...)
+}
+
+// ClearLeader clears the "leader" edge to the User entity.
+func (uu *UserUpdate) ClearLeader() *UserUpdate {
+	uu.mutation.ClearLeader()
+	return uu
+}
+
+// ClearTeamMembers clears all "team_members" edges to the User entity.
+func (uu *UserUpdate) ClearTeamMembers() *UserUpdate {
+	uu.mutation.ClearTeamMembers()
+	return uu
+}
+
+// RemoveTeamMemberIDs removes the "team_members" edge to User entities by IDs.
+func (uu *UserUpdate) RemoveTeamMemberIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.RemoveTeamMemberIDs(ids...)
+	return uu
+}
+
+// RemoveTeamMembers removes "team_members" edges to User entities.
+func (uu *UserUpdate) RemoveTeamMembers(u ...*User) *UserUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uu.RemoveTeamMemberIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -104,6 +316,185 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
+	if value, ok := uu.mutation.Email(); ok {
+		_spec.SetField(user.FieldEmail, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.Username(); ok {
+		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.OpenID(); ok {
+		_spec.SetField(user.FieldOpenID, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.AvatarURL(); ok {
+		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.Disabled(); ok {
+		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+	}
+	if uu.mutation.AreasCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedAreasIDs(); len(nodes) > 0 && !uu.mutation.AreasCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.AreasIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.CustomersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedCustomersIDs(); len(nodes) > 0 && !uu.mutation.CustomersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.CustomersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.LeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.TeamMembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedTeamMembersIDs(); len(nodes) > 0 && !uu.mutation.TeamMembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.TeamMembersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -144,9 +535,218 @@ func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// SetEmail sets the "email" field.
+func (uuo *UserUpdateOne) SetEmail(s string) *UserUpdateOne {
+	uuo.mutation.SetEmail(s)
+	return uuo
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableEmail(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetEmail(*s)
+	}
+	return uuo
+}
+
+// SetUsername sets the "username" field.
+func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
+	uuo.mutation.SetUsername(s)
+	return uuo
+}
+
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableUsername(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetUsername(*s)
+	}
+	return uuo
+}
+
+// SetOpenID sets the "open_id" field.
+func (uuo *UserUpdateOne) SetOpenID(s string) *UserUpdateOne {
+	uuo.mutation.SetOpenID(s)
+	return uuo
+}
+
+// SetNillableOpenID sets the "open_id" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableOpenID(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetOpenID(*s)
+	}
+	return uuo
+}
+
+// SetAvatarURL sets the "avatar_url" field.
+func (uuo *UserUpdateOne) SetAvatarURL(s string) *UserUpdateOne {
+	uuo.mutation.SetAvatarURL(s)
+	return uuo
+}
+
+// SetNillableAvatarURL sets the "avatar_url" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableAvatarURL(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetAvatarURL(*s)
+	}
+	return uuo
+}
+
+// SetDisabled sets the "disabled" field.
+func (uuo *UserUpdateOne) SetDisabled(b bool) *UserUpdateOne {
+	uuo.mutation.SetDisabled(b)
+	return uuo
+}
+
+// SetNillableDisabled sets the "disabled" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDisabled(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetDisabled(*b)
+	}
+	return uuo
+}
+
+// SetLeaderID sets the "leader_id" field.
+func (uuo *UserUpdateOne) SetLeaderID(x xid.ID) *UserUpdateOne {
+	uuo.mutation.SetLeaderID(x)
+	return uuo
+}
+
+// SetNillableLeaderID sets the "leader_id" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableLeaderID(x *xid.ID) *UserUpdateOne {
+	if x != nil {
+		uuo.SetLeaderID(*x)
+	}
+	return uuo
+}
+
+// ClearLeaderID clears the value of the "leader_id" field.
+func (uuo *UserUpdateOne) ClearLeaderID() *UserUpdateOne {
+	uuo.mutation.ClearLeaderID()
+	return uuo
+}
+
+// AddAreaIDs adds the "areas" edge to the Area entity by IDs.
+func (uuo *UserUpdateOne) AddAreaIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.AddAreaIDs(ids...)
+	return uuo
+}
+
+// AddAreas adds the "areas" edges to the Area entity.
+func (uuo *UserUpdateOne) AddAreas(a ...*Area) *UserUpdateOne {
+	ids := make([]xid.ID, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uuo.AddAreaIDs(ids...)
+}
+
+// AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
+func (uuo *UserUpdateOne) AddCustomerIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.AddCustomerIDs(ids...)
+	return uuo
+}
+
+// AddCustomers adds the "customers" edges to the Customer entity.
+func (uuo *UserUpdateOne) AddCustomers(c ...*Customer) *UserUpdateOne {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.AddCustomerIDs(ids...)
+}
+
+// SetLeader sets the "leader" edge to the User entity.
+func (uuo *UserUpdateOne) SetLeader(u *User) *UserUpdateOne {
+	return uuo.SetLeaderID(u.ID)
+}
+
+// AddTeamMemberIDs adds the "team_members" edge to the User entity by IDs.
+func (uuo *UserUpdateOne) AddTeamMemberIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.AddTeamMemberIDs(ids...)
+	return uuo
+}
+
+// AddTeamMembers adds the "team_members" edges to the User entity.
+func (uuo *UserUpdateOne) AddTeamMembers(u ...*User) *UserUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uuo.AddTeamMemberIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
+}
+
+// ClearAreas clears all "areas" edges to the Area entity.
+func (uuo *UserUpdateOne) ClearAreas() *UserUpdateOne {
+	uuo.mutation.ClearAreas()
+	return uuo
+}
+
+// RemoveAreaIDs removes the "areas" edge to Area entities by IDs.
+func (uuo *UserUpdateOne) RemoveAreaIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.RemoveAreaIDs(ids...)
+	return uuo
+}
+
+// RemoveAreas removes "areas" edges to Area entities.
+func (uuo *UserUpdateOne) RemoveAreas(a ...*Area) *UserUpdateOne {
+	ids := make([]xid.ID, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uuo.RemoveAreaIDs(ids...)
+}
+
+// ClearCustomers clears all "customers" edges to the Customer entity.
+func (uuo *UserUpdateOne) ClearCustomers() *UserUpdateOne {
+	uuo.mutation.ClearCustomers()
+	return uuo
+}
+
+// RemoveCustomerIDs removes the "customers" edge to Customer entities by IDs.
+func (uuo *UserUpdateOne) RemoveCustomerIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.RemoveCustomerIDs(ids...)
+	return uuo
+}
+
+// RemoveCustomers removes "customers" edges to Customer entities.
+func (uuo *UserUpdateOne) RemoveCustomers(c ...*Customer) *UserUpdateOne {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.RemoveCustomerIDs(ids...)
+}
+
+// ClearLeader clears the "leader" edge to the User entity.
+func (uuo *UserUpdateOne) ClearLeader() *UserUpdateOne {
+	uuo.mutation.ClearLeader()
+	return uuo
+}
+
+// ClearTeamMembers clears all "team_members" edges to the User entity.
+func (uuo *UserUpdateOne) ClearTeamMembers() *UserUpdateOne {
+	uuo.mutation.ClearTeamMembers()
+	return uuo
+}
+
+// RemoveTeamMemberIDs removes the "team_members" edge to User entities by IDs.
+func (uuo *UserUpdateOne) RemoveTeamMemberIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.RemoveTeamMemberIDs(ids...)
+	return uuo
+}
+
+// RemoveTeamMembers removes "team_members" edges to User entities.
+func (uuo *UserUpdateOne) RemoveTeamMembers(u ...*User) *UserUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uuo.RemoveTeamMemberIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -229,6 +829,185 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Email(); ok {
+		_spec.SetField(user.FieldEmail, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Username(); ok {
+		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.OpenID(); ok {
+		_spec.SetField(user.FieldOpenID, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.AvatarURL(); ok {
+		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Disabled(); ok {
+		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+	}
+	if uuo.mutation.AreasCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedAreasIDs(); len(nodes) > 0 && !uuo.mutation.AreasCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.AreasIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.CustomersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedCustomersIDs(); len(nodes) > 0 && !uuo.mutation.CustomersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.CustomersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.LeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.TeamMembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedTeamMembersIDs(); len(nodes) > 0 && !uuo.mutation.TeamMembersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.TeamMembersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &User{config: uuo.config}
 	_spec.Assign = _node.assignValues

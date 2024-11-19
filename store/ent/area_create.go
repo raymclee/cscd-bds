@@ -7,8 +7,8 @@ import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -67,12 +67,6 @@ func (ac *AreaCreate) SetCode(s string) *AreaCreate {
 	return ac
 }
 
-// SetSalesTeamMembers sets the "sales_team_members" field.
-func (ac *AreaCreate) SetSalesTeamMembers(z []zht.User) *AreaCreate {
-	ac.mutation.SetSalesTeamMembers(z)
-	return ac
-}
-
 // SetID sets the "id" field.
 func (ac *AreaCreate) SetID(x xid.ID) *AreaCreate {
 	ac.mutation.SetID(x)
@@ -115,6 +109,21 @@ func (ac *AreaCreate) AddTenders(t ...*Tender) *AreaCreate {
 		ids[i] = t[i].ID
 	}
 	return ac.AddTenderIDs(ids...)
+}
+
+// AddSaleIDs adds the "sales" edge to the User entity by IDs.
+func (ac *AreaCreate) AddSaleIDs(ids ...xid.ID) *AreaCreate {
+	ac.mutation.AddSaleIDs(ids...)
+	return ac
+}
+
+// AddSales adds the "sales" edges to the User entity.
+func (ac *AreaCreate) AddSales(u ...*User) *AreaCreate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return ac.AddSaleIDs(ids...)
 }
 
 // Mutation returns the AreaMutation object of the builder.
@@ -180,9 +189,6 @@ func (ac *AreaCreate) check() error {
 	if _, ok := ac.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Area.code"`)}
 	}
-	if _, ok := ac.mutation.SalesTeamMembers(); !ok {
-		return &ValidationError{Name: "sales_team_members", err: errors.New(`ent: missing required field "Area.sales_team_members"`)}
-	}
 	return nil
 }
 
@@ -235,10 +241,6 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
-	if value, ok := ac.mutation.SalesTeamMembers(); ok {
-		_spec.SetField(area.FieldSalesTeamMembers, field.TypeJSON, value)
-		_node.SalesTeamMembers = value
-	}
 	if nodes := ac.mutation.CustomersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -264,6 +266,22 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ac.mutation.SalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -359,18 +377,6 @@ func (u *AreaUpsert) UpdateCode() *AreaUpsert {
 	return u
 }
 
-// SetSalesTeamMembers sets the "sales_team_members" field.
-func (u *AreaUpsert) SetSalesTeamMembers(v []zht.User) *AreaUpsert {
-	u.Set(area.FieldSalesTeamMembers, v)
-	return u
-}
-
-// UpdateSalesTeamMembers sets the "sales_team_members" field to the value that was provided on create.
-func (u *AreaUpsert) UpdateSalesTeamMembers() *AreaUpsert {
-	u.SetExcluded(area.FieldSalesTeamMembers)
-	return u
-}
-
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -461,20 +467,6 @@ func (u *AreaUpsertOne) SetCode(v string) *AreaUpsertOne {
 func (u *AreaUpsertOne) UpdateCode() *AreaUpsertOne {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCode()
-	})
-}
-
-// SetSalesTeamMembers sets the "sales_team_members" field.
-func (u *AreaUpsertOne) SetSalesTeamMembers(v []zht.User) *AreaUpsertOne {
-	return u.Update(func(s *AreaUpsert) {
-		s.SetSalesTeamMembers(v)
-	})
-}
-
-// UpdateSalesTeamMembers sets the "sales_team_members" field to the value that was provided on create.
-func (u *AreaUpsertOne) UpdateSalesTeamMembers() *AreaUpsertOne {
-	return u.Update(func(s *AreaUpsert) {
-		s.UpdateSalesTeamMembers()
 	})
 }
 
@@ -735,20 +727,6 @@ func (u *AreaUpsertBulk) SetCode(v string) *AreaUpsertBulk {
 func (u *AreaUpsertBulk) UpdateCode() *AreaUpsertBulk {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCode()
-	})
-}
-
-// SetSalesTeamMembers sets the "sales_team_members" field.
-func (u *AreaUpsertBulk) SetSalesTeamMembers(v []zht.User) *AreaUpsertBulk {
-	return u.Update(func(s *AreaUpsert) {
-		s.SetSalesTeamMembers(v)
-	})
-}
-
-// UpdateSalesTeamMembers sets the "sales_team_members" field to the value that was provided on create.
-func (u *AreaUpsertBulk) UpdateSalesTeamMembers() *AreaUpsertBulk {
-	return u.Update(func(s *AreaUpsert) {
-		s.UpdateSalesTeamMembers()
 	})
 }
 

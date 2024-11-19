@@ -2721,6 +2721,16 @@ func (ec *executionContext) marshalOFloat2ᚖfloat64(ctx context.Context, sel as
 	return graphql.WrapContextMarshaler(ctx, res)
 }
 
+func (ec *executionContext) unmarshalOID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx context.Context, v interface{}) (xid.ID, error) {
+	var res xid.ID
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx context.Context, sel ast.SelectionSet, v xid.ID) graphql.Marshaler {
+	return v
+}
+
 func (ec *executionContext) unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx context.Context, v interface{}) ([]xid.ID, error) {
 	if v == nil {
 		return nil, nil
@@ -2773,16 +2783,6 @@ func (ec *executionContext) marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxi
 		return graphql.Null
 	}
 	return v
-}
-
-func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
-	res, err := graphql.UnmarshalInt(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
-	res := graphql.MarshalInt(v)
-	return res
 }
 
 func (ec *executionContext) unmarshalOInt2ᚕintᚄ(ctx context.Context, v interface{}) ([]int, error) {

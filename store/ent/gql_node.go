@@ -5,7 +5,11 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -26,10 +30,30 @@ var areaImplementors = []string{"Area", "Node"}
 // IsNode implements the Node interface check for GQLGen.
 func (*Area) IsNode() {}
 
+var cityImplementors = []string{"City", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*City) IsNode() {}
+
+var countryImplementors = []string{"Country", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*Country) IsNode() {}
+
 var customerImplementors = []string{"Customer", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*Customer) IsNode() {}
+
+var districtImplementors = []string{"District", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*District) IsNode() {}
+
+var provinceImplementors = []string{"Province", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*Province) IsNode() {}
 
 var tenderImplementors = []string{"Tender", "Node"}
 
@@ -112,6 +136,32 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			}
 		}
 		return query.Only(ctx)
+	case city.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.City.Query().
+			Where(city.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, cityImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case country.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Country.Query().
+			Where(country.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, countryImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
 	case customer.Table:
 		var uid xid.ID
 		if err := uid.UnmarshalGQL(id); err != nil {
@@ -121,6 +171,32 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(customer.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, customerImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case district.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.District.Query().
+			Where(district.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, districtImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case province.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Province.Query().
+			Where(province.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, provinceImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -240,10 +316,74 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 				*noder = node
 			}
 		}
+	case city.Table:
+		query := c.City.Query().
+			Where(city.IDIn(ids...))
+		query, err := query.CollectFields(ctx, cityImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case country.Table:
+		query := c.Country.Query().
+			Where(country.IDIn(ids...))
+		query, err := query.CollectFields(ctx, countryImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
 	case customer.Table:
 		query := c.Customer.Query().
 			Where(customer.IDIn(ids...))
 		query, err := query.CollectFields(ctx, customerImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case district.Table:
+		query := c.District.Query().
+			Where(district.IDIn(ids...))
+		query, err := query.CollectFields(ctx, districtImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case province.Table:
+		query := c.Province.Query().
+			Where(province.IDIn(ids...))
+		query, err := query.CollectFields(ctx, provinceImplementors...)
 		if err != nil {
 			return nil, err
 		}

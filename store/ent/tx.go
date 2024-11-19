@@ -14,8 +14,16 @@ type Tx struct {
 	config
 	// Area is the client for interacting with the Area builders.
 	Area *AreaClient
+	// City is the client for interacting with the City builders.
+	City *CityClient
+	// Country is the client for interacting with the Country builders.
+	Country *CountryClient
 	// Customer is the client for interacting with the Customer builders.
 	Customer *CustomerClient
+	// District is the client for interacting with the District builders.
+	District *DistrictClient
+	// Province is the client for interacting with the Province builders.
+	Province *ProvinceClient
 	// Tender is the client for interacting with the Tender builders.
 	Tender *TenderClient
 	// User is the client for interacting with the User builders.
@@ -152,7 +160,11 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Area = NewAreaClient(tx.config)
+	tx.City = NewCityClient(tx.config)
+	tx.Country = NewCountryClient(tx.config)
 	tx.Customer = NewCustomerClient(tx.config)
+	tx.District = NewDistrictClient(tx.config)
+	tx.Province = NewProvinceClient(tx.config)
 	tx.Tender = NewTenderClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -20,8 +21,48 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
+	// FieldUsername holds the string denoting the username field in the database.
+	FieldUsername = "username"
+	// FieldOpenID holds the string denoting the open_id field in the database.
+	FieldOpenID = "open_id"
+	// FieldAvatarURL holds the string denoting the avatar_url field in the database.
+	FieldAvatarURL = "avatar_url"
+	// FieldDisabled holds the string denoting the disabled field in the database.
+	FieldDisabled = "disabled"
+	// FieldLeaderID holds the string denoting the leader_id field in the database.
+	FieldLeaderID = "leader_id"
+	// EdgeAreas holds the string denoting the areas edge name in mutations.
+	EdgeAreas = "areas"
+	// EdgeCustomers holds the string denoting the customers edge name in mutations.
+	EdgeCustomers = "customers"
+	// EdgeLeader holds the string denoting the leader edge name in mutations.
+	EdgeLeader = "leader"
+	// EdgeTeamMembers holds the string denoting the team_members edge name in mutations.
+	EdgeTeamMembers = "team_members"
 	// Table holds the table name of the user in the database.
 	Table = "users"
+	// AreasTable is the table that holds the areas relation/edge. The primary key declared below.
+	AreasTable = "area_sales"
+	// AreasInverseTable is the table name for the Area entity.
+	// It exists in this package in order to avoid circular dependency with the "area" package.
+	AreasInverseTable = "areas"
+	// CustomersTable is the table that holds the customers relation/edge.
+	CustomersTable = "customers"
+	// CustomersInverseTable is the table name for the Customer entity.
+	// It exists in this package in order to avoid circular dependency with the "customer" package.
+	CustomersInverseTable = "customers"
+	// CustomersColumn is the table column denoting the customers relation/edge.
+	CustomersColumn = "sales_id"
+	// LeaderTable is the table that holds the leader relation/edge.
+	LeaderTable = "users"
+	// LeaderColumn is the table column denoting the leader relation/edge.
+	LeaderColumn = "leader_id"
+	// TeamMembersTable is the table that holds the team_members relation/edge.
+	TeamMembersTable = "users"
+	// TeamMembersColumn is the table column denoting the team_members relation/edge.
+	TeamMembersColumn = "leader_id"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -30,7 +71,19 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldName,
+	FieldEmail,
+	FieldUsername,
+	FieldOpenID,
+	FieldAvatarURL,
+	FieldDisabled,
+	FieldLeaderID,
 }
+
+var (
+	// AreasPrimaryKey and AreasColumn2 are the table columns denoting the
+	// primary key for the areas relation (M2M).
+	AreasPrimaryKey = []string{"area_id", "user_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -49,6 +102,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultDisabled holds the default value on creation for the "disabled" field.
+	DefaultDisabled bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -74,4 +129,111 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
+// ByEmail orders the results by the email field.
+func ByEmail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEmail, opts...).ToFunc()
+}
+
+// ByUsername orders the results by the username field.
+func ByUsername(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUsername, opts...).ToFunc()
+}
+
+// ByOpenID orders the results by the open_id field.
+func ByOpenID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOpenID, opts...).ToFunc()
+}
+
+// ByAvatarURL orders the results by the avatar_url field.
+func ByAvatarURL(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAvatarURL, opts...).ToFunc()
+}
+
+// ByDisabled orders the results by the disabled field.
+func ByDisabled(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDisabled, opts...).ToFunc()
+}
+
+// ByLeaderID orders the results by the leader_id field.
+func ByLeaderID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLeaderID, opts...).ToFunc()
+}
+
+// ByAreasCount orders the results by areas count.
+func ByAreasCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newAreasStep(), opts...)
+	}
+}
+
+// ByAreas orders the results by areas terms.
+func ByAreas(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newAreasStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByCustomersCount orders the results by customers count.
+func ByCustomersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCustomersStep(), opts...)
+	}
+}
+
+// ByCustomers orders the results by customers terms.
+func ByCustomers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCustomersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByLeaderField orders the results by leader field.
+func ByLeaderField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLeaderStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByTeamMembersCount orders the results by team_members count.
+func ByTeamMembersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newTeamMembersStep(), opts...)
+	}
+}
+
+// ByTeamMembers orders the results by team_members terms.
+func ByTeamMembers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newTeamMembersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newAreasStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(AreasInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, AreasTable, AreasPrimaryKey...),
+	)
+}
+func newCustomersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CustomersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CustomersTable, CustomersColumn),
+	)
+}
+func newLeaderStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(Table, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, LeaderTable, LeaderColumn),
+	)
+}
+func newTeamMembersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(Table, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, TeamMembersTable, TeamMembersColumn),
+	)
 }

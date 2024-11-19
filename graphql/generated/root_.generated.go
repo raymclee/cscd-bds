@@ -35,7 +35,15 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Customer() CustomerResolver
 	Query() QueryResolver
+	Tender() TenderResolver
+	CreateCustomerInput() CreateCustomerInputResolver
+	CreateTenderInput() CreateTenderInputResolver
+	CustomerWhereInput() CustomerWhereInputResolver
+	TenderWhereInput() TenderWhereInputResolver
+	UpdateCustomerInput() UpdateCustomerInputResolver
+	UpdateTenderInput() UpdateTenderInputResolver
 }
 
 type DirectiveRoot struct {
@@ -48,6 +56,7 @@ type ComplexityRoot struct {
 		Customers func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
+		Sales     func(childComplexity int) int
 		Tenders   func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
 	}
@@ -63,6 +72,49 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	City struct {
+		Adcode     func(childComplexity int) int
+		CreatedAt  func(childComplexity int) int
+		Districts  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Name       func(childComplexity int) int
+		ProvCode   func(childComplexity int) int
+		Province   func(childComplexity int) int
+		ProvinceID func(childComplexity int) int
+		UpdatedAt  func(childComplexity int) int
+	}
+
+	CityConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	CityEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	Country struct {
+		Adcode    func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		Provinces func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	CountryConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	CountryEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Customer struct {
 		Area                  func(childComplexity int) int
 		AreaID                func(childComplexity int) int
@@ -71,11 +123,15 @@ type ComplexityRoot struct {
 		ContactPersonPhone    func(childComplexity int) int
 		ContactPersonPosition func(childComplexity int) int
 		CreatedAt             func(childComplexity int) int
+		CreatedBy             func(childComplexity int) int
+		CreatedByUserID       func(childComplexity int) int
 		ID                    func(childComplexity int) int
 		Industry              func(childComplexity int) int
 		Name                  func(childComplexity int) int
 		OwnerType             func(childComplexity int) int
-		Status                func(childComplexity int) int
+		Sales                 func(childComplexity int) int
+		SalesID               func(childComplexity int) int
+		Size                  func(childComplexity int) int
 		Tenders               func(childComplexity int) int
 		UpdatedAt             func(childComplexity int) int
 	}
@@ -91,6 +147,31 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	District struct {
+		Adcode     func(childComplexity int) int
+		City       func(childComplexity int) int
+		CityCode   func(childComplexity int) int
+		CityID     func(childComplexity int) int
+		CreatedAt  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Name       func(childComplexity int) int
+		ProvCode   func(childComplexity int) int
+		Province   func(childComplexity int) int
+		ProvinceID func(childComplexity int) int
+		UpdatedAt  func(childComplexity int) int
+	}
+
+	DistrictConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	DistrictEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	PageInfo struct {
 		EndCursor       func(childComplexity int) int
 		HasNextPage     func(childComplexity int) int
@@ -98,11 +179,38 @@ type ComplexityRoot struct {
 		StartCursor     func(childComplexity int) int
 	}
 
+	Province struct {
+		Adcode    func(childComplexity int) int
+		Cities    func(childComplexity int) int
+		Country   func(childComplexity int) int
+		CountryID func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		Districts func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	ProvinceConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	ProvinceEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Query struct {
 		Areas     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
+		Cities    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) int
+		Countries func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) int
 		Customers func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
+		Districts func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) int
 		Node      func(childComplexity int, id xid.ID) int
 		Nodes     func(childComplexity int, ids []*xid.ID) int
+		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) int
 		Session   func(childComplexity int) int
 		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
 		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
@@ -158,10 +266,20 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
-		CreatedAt func(childComplexity int) int
-		ID        func(childComplexity int) int
-		Name      func(childComplexity int) int
-		UpdatedAt func(childComplexity int) int
+		Areas       func(childComplexity int) int
+		AvatarURL   func(childComplexity int) int
+		CreatedAt   func(childComplexity int) int
+		Customers   func(childComplexity int) int
+		Disabled    func(childComplexity int) int
+		Email       func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Leader      func(childComplexity int) int
+		LeaderID    func(childComplexity int) int
+		Name        func(childComplexity int) int
+		OpenID      func(childComplexity int) int
+		TeamMembers func(childComplexity int) int
+		UpdatedAt   func(childComplexity int) int
+		Username    func(childComplexity int) int
 	}
 
 	UserConnection struct {
@@ -230,6 +348,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Area.Name(childComplexity), true
 
+	case "Area.sales":
+		if e.complexity.Area.Sales == nil {
+			break
+		}
+
+		return e.complexity.Area.Sales(childComplexity), true
+
 	case "Area.tenders":
 		if e.complexity.Area.Tenders == nil {
 			break
@@ -278,6 +403,181 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.AreaEdge.Node(childComplexity), true
+
+	case "City.adcode":
+		if e.complexity.City.Adcode == nil {
+			break
+		}
+
+		return e.complexity.City.Adcode(childComplexity), true
+
+	case "City.createdAt":
+		if e.complexity.City.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.City.CreatedAt(childComplexity), true
+
+	case "City.districts":
+		if e.complexity.City.Districts == nil {
+			break
+		}
+
+		return e.complexity.City.Districts(childComplexity), true
+
+	case "City.id":
+		if e.complexity.City.ID == nil {
+			break
+		}
+
+		return e.complexity.City.ID(childComplexity), true
+
+	case "City.name":
+		if e.complexity.City.Name == nil {
+			break
+		}
+
+		return e.complexity.City.Name(childComplexity), true
+
+	case "City.provCode":
+		if e.complexity.City.ProvCode == nil {
+			break
+		}
+
+		return e.complexity.City.ProvCode(childComplexity), true
+
+	case "City.province":
+		if e.complexity.City.Province == nil {
+			break
+		}
+
+		return e.complexity.City.Province(childComplexity), true
+
+	case "City.provinceID":
+		if e.complexity.City.ProvinceID == nil {
+			break
+		}
+
+		return e.complexity.City.ProvinceID(childComplexity), true
+
+	case "City.updatedAt":
+		if e.complexity.City.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.City.UpdatedAt(childComplexity), true
+
+	case "CityConnection.edges":
+		if e.complexity.CityConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.CityConnection.Edges(childComplexity), true
+
+	case "CityConnection.pageInfo":
+		if e.complexity.CityConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.CityConnection.PageInfo(childComplexity), true
+
+	case "CityConnection.totalCount":
+		if e.complexity.CityConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.CityConnection.TotalCount(childComplexity), true
+
+	case "CityEdge.cursor":
+		if e.complexity.CityEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.CityEdge.Cursor(childComplexity), true
+
+	case "CityEdge.node":
+		if e.complexity.CityEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.CityEdge.Node(childComplexity), true
+
+	case "Country.adcode":
+		if e.complexity.Country.Adcode == nil {
+			break
+		}
+
+		return e.complexity.Country.Adcode(childComplexity), true
+
+	case "Country.createdAt":
+		if e.complexity.Country.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Country.CreatedAt(childComplexity), true
+
+	case "Country.id":
+		if e.complexity.Country.ID == nil {
+			break
+		}
+
+		return e.complexity.Country.ID(childComplexity), true
+
+	case "Country.name":
+		if e.complexity.Country.Name == nil {
+			break
+		}
+
+		return e.complexity.Country.Name(childComplexity), true
+
+	case "Country.provinces":
+		if e.complexity.Country.Provinces == nil {
+			break
+		}
+
+		return e.complexity.Country.Provinces(childComplexity), true
+
+	case "Country.updatedAt":
+		if e.complexity.Country.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Country.UpdatedAt(childComplexity), true
+
+	case "CountryConnection.edges":
+		if e.complexity.CountryConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.CountryConnection.Edges(childComplexity), true
+
+	case "CountryConnection.pageInfo":
+		if e.complexity.CountryConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.CountryConnection.PageInfo(childComplexity), true
+
+	case "CountryConnection.totalCount":
+		if e.complexity.CountryConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.CountryConnection.TotalCount(childComplexity), true
+
+	case "CountryEdge.cursor":
+		if e.complexity.CountryEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.CountryEdge.Cursor(childComplexity), true
+
+	case "CountryEdge.node":
+		if e.complexity.CountryEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.CountryEdge.Node(childComplexity), true
 
 	case "Customer.area":
 		if e.complexity.Customer.Area == nil {
@@ -328,6 +628,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Customer.CreatedAt(childComplexity), true
 
+	case "Customer.createdBy":
+		if e.complexity.Customer.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Customer.CreatedBy(childComplexity), true
+
+	case "Customer.createdByUserID":
+		if e.complexity.Customer.CreatedByUserID == nil {
+			break
+		}
+
+		return e.complexity.Customer.CreatedByUserID(childComplexity), true
+
 	case "Customer.id":
 		if e.complexity.Customer.ID == nil {
 			break
@@ -356,12 +670,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Customer.OwnerType(childComplexity), true
 
-	case "Customer.status":
-		if e.complexity.Customer.Status == nil {
+	case "Customer.sales":
+		if e.complexity.Customer.Sales == nil {
 			break
 		}
 
-		return e.complexity.Customer.Status(childComplexity), true
+		return e.complexity.Customer.Sales(childComplexity), true
+
+	case "Customer.salesID":
+		if e.complexity.Customer.SalesID == nil {
+			break
+		}
+
+		return e.complexity.Customer.SalesID(childComplexity), true
+
+	case "Customer.size":
+		if e.complexity.Customer.Size == nil {
+			break
+		}
+
+		return e.complexity.Customer.Size(childComplexity), true
 
 	case "Customer.tenders":
 		if e.complexity.Customer.Tenders == nil {
@@ -412,6 +740,118 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CustomerEdge.Node(childComplexity), true
 
+	case "District.adcode":
+		if e.complexity.District.Adcode == nil {
+			break
+		}
+
+		return e.complexity.District.Adcode(childComplexity), true
+
+	case "District.city":
+		if e.complexity.District.City == nil {
+			break
+		}
+
+		return e.complexity.District.City(childComplexity), true
+
+	case "District.cityCode":
+		if e.complexity.District.CityCode == nil {
+			break
+		}
+
+		return e.complexity.District.CityCode(childComplexity), true
+
+	case "District.cityID":
+		if e.complexity.District.CityID == nil {
+			break
+		}
+
+		return e.complexity.District.CityID(childComplexity), true
+
+	case "District.createdAt":
+		if e.complexity.District.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.District.CreatedAt(childComplexity), true
+
+	case "District.id":
+		if e.complexity.District.ID == nil {
+			break
+		}
+
+		return e.complexity.District.ID(childComplexity), true
+
+	case "District.name":
+		if e.complexity.District.Name == nil {
+			break
+		}
+
+		return e.complexity.District.Name(childComplexity), true
+
+	case "District.provCode":
+		if e.complexity.District.ProvCode == nil {
+			break
+		}
+
+		return e.complexity.District.ProvCode(childComplexity), true
+
+	case "District.province":
+		if e.complexity.District.Province == nil {
+			break
+		}
+
+		return e.complexity.District.Province(childComplexity), true
+
+	case "District.provinceID":
+		if e.complexity.District.ProvinceID == nil {
+			break
+		}
+
+		return e.complexity.District.ProvinceID(childComplexity), true
+
+	case "District.updatedAt":
+		if e.complexity.District.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.District.UpdatedAt(childComplexity), true
+
+	case "DistrictConnection.edges":
+		if e.complexity.DistrictConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.DistrictConnection.Edges(childComplexity), true
+
+	case "DistrictConnection.pageInfo":
+		if e.complexity.DistrictConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.DistrictConnection.PageInfo(childComplexity), true
+
+	case "DistrictConnection.totalCount":
+		if e.complexity.DistrictConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.DistrictConnection.TotalCount(childComplexity), true
+
+	case "DistrictEdge.cursor":
+		if e.complexity.DistrictEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.DistrictEdge.Cursor(childComplexity), true
+
+	case "DistrictEdge.node":
+		if e.complexity.DistrictEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.DistrictEdge.Node(childComplexity), true
+
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
 			break
@@ -440,6 +880,104 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PageInfo.StartCursor(childComplexity), true
 
+	case "Province.adcode":
+		if e.complexity.Province.Adcode == nil {
+			break
+		}
+
+		return e.complexity.Province.Adcode(childComplexity), true
+
+	case "Province.cities":
+		if e.complexity.Province.Cities == nil {
+			break
+		}
+
+		return e.complexity.Province.Cities(childComplexity), true
+
+	case "Province.country":
+		if e.complexity.Province.Country == nil {
+			break
+		}
+
+		return e.complexity.Province.Country(childComplexity), true
+
+	case "Province.countryID":
+		if e.complexity.Province.CountryID == nil {
+			break
+		}
+
+		return e.complexity.Province.CountryID(childComplexity), true
+
+	case "Province.createdAt":
+		if e.complexity.Province.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Province.CreatedAt(childComplexity), true
+
+	case "Province.districts":
+		if e.complexity.Province.Districts == nil {
+			break
+		}
+
+		return e.complexity.Province.Districts(childComplexity), true
+
+	case "Province.id":
+		if e.complexity.Province.ID == nil {
+			break
+		}
+
+		return e.complexity.Province.ID(childComplexity), true
+
+	case "Province.name":
+		if e.complexity.Province.Name == nil {
+			break
+		}
+
+		return e.complexity.Province.Name(childComplexity), true
+
+	case "Province.updatedAt":
+		if e.complexity.Province.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Province.UpdatedAt(childComplexity), true
+
+	case "ProvinceConnection.edges":
+		if e.complexity.ProvinceConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.ProvinceConnection.Edges(childComplexity), true
+
+	case "ProvinceConnection.pageInfo":
+		if e.complexity.ProvinceConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.ProvinceConnection.PageInfo(childComplexity), true
+
+	case "ProvinceConnection.totalCount":
+		if e.complexity.ProvinceConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.ProvinceConnection.TotalCount(childComplexity), true
+
+	case "ProvinceEdge.cursor":
+		if e.complexity.ProvinceEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.ProvinceEdge.Cursor(childComplexity), true
+
+	case "ProvinceEdge.node":
+		if e.complexity.ProvinceEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.ProvinceEdge.Node(childComplexity), true
+
 	case "Query.areas":
 		if e.complexity.Query.Areas == nil {
 			break
@@ -452,6 +990,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Areas(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.AreaWhereInput)), true
 
+	case "Query.cities":
+		if e.complexity.Query.Cities == nil {
+			break
+		}
+
+		args, err := ec.field_Query_cities_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Cities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.CityWhereInput)), true
+
+	case "Query.countries":
+		if e.complexity.Query.Countries == nil {
+			break
+		}
+
+		args, err := ec.field_Query_countries_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Countries(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.CountryWhereInput)), true
+
 	case "Query.customers":
 		if e.complexity.Query.Customers == nil {
 			break
@@ -463,6 +1025,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Customers(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.CustomerWhereInput)), true
+
+	case "Query.districts":
+		if e.complexity.Query.Districts == nil {
+			break
+		}
+
+		args, err := ec.field_Query_districts_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.DistrictWhereInput)), true
 
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
@@ -487,6 +1061,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]*xid.ID)), true
+
+	case "Query.provinces":
+		if e.complexity.Query.Provinces == nil {
+			break
+		}
+
+		args, err := ec.field_Query_provinces_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.ProvinceWhereInput)), true
 
 	case "Query.session":
 		if e.complexity.Query.Session == nil {
@@ -778,12 +1364,47 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TenderEdge.Node(childComplexity), true
 
+	case "User.areas":
+		if e.complexity.User.Areas == nil {
+			break
+		}
+
+		return e.complexity.User.Areas(childComplexity), true
+
+	case "User.avatarURL":
+		if e.complexity.User.AvatarURL == nil {
+			break
+		}
+
+		return e.complexity.User.AvatarURL(childComplexity), true
+
 	case "User.createdAt":
 		if e.complexity.User.CreatedAt == nil {
 			break
 		}
 
 		return e.complexity.User.CreatedAt(childComplexity), true
+
+	case "User.customers":
+		if e.complexity.User.Customers == nil {
+			break
+		}
+
+		return e.complexity.User.Customers(childComplexity), true
+
+	case "User.disabled":
+		if e.complexity.User.Disabled == nil {
+			break
+		}
+
+		return e.complexity.User.Disabled(childComplexity), true
+
+	case "User.email":
+		if e.complexity.User.Email == nil {
+			break
+		}
+
+		return e.complexity.User.Email(childComplexity), true
 
 	case "User.id":
 		if e.complexity.User.ID == nil {
@@ -792,6 +1413,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.ID(childComplexity), true
 
+	case "User.leader":
+		if e.complexity.User.Leader == nil {
+			break
+		}
+
+		return e.complexity.User.Leader(childComplexity), true
+
+	case "User.leaderID":
+		if e.complexity.User.LeaderID == nil {
+			break
+		}
+
+		return e.complexity.User.LeaderID(childComplexity), true
+
 	case "User.name":
 		if e.complexity.User.Name == nil {
 			break
@@ -799,12 +1434,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Name(childComplexity), true
 
+	case "User.openID":
+		if e.complexity.User.OpenID == nil {
+			break
+		}
+
+		return e.complexity.User.OpenID(childComplexity), true
+
+	case "User.teamMembers":
+		if e.complexity.User.TeamMembers == nil {
+			break
+		}
+
+		return e.complexity.User.TeamMembers(childComplexity), true
+
 	case "User.updatedAt":
 		if e.complexity.User.UpdatedAt == nil {
 			break
 		}
 
 		return e.complexity.User.UpdatedAt(childComplexity), true
+
+	case "User.username":
+		if e.complexity.User.Username == nil {
+			break
+		}
+
+		return e.complexity.User.Username(childComplexity), true
 
 	case "UserConnection.edges":
 		if e.complexity.UserConnection.Edges == nil {
@@ -850,14 +1506,26 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputAreaWhereInput,
+		ec.unmarshalInputCityWhereInput,
+		ec.unmarshalInputCountryWhereInput,
 		ec.unmarshalInputCreateAreaInput,
+		ec.unmarshalInputCreateCityInput,
+		ec.unmarshalInputCreateCountryInput,
 		ec.unmarshalInputCreateCustomerInput,
+		ec.unmarshalInputCreateDistrictInput,
+		ec.unmarshalInputCreateProvinceInput,
 		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCustomerWhereInput,
+		ec.unmarshalInputDistrictWhereInput,
+		ec.unmarshalInputProvinceWhereInput,
 		ec.unmarshalInputTenderWhereInput,
 		ec.unmarshalInputUpdateAreaInput,
+		ec.unmarshalInputUpdateCityInput,
+		ec.unmarshalInputUpdateCountryInput,
 		ec.unmarshalInputUpdateCustomerInput,
+		ec.unmarshalInputUpdateDistrictInput,
+		ec.unmarshalInputUpdateProvinceInput,
 		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUserWhereInput,
@@ -953,6 +1621,7 @@ type Area implements Node {
   code: String!
   customers: [Customer!]
   tenders: [Tender!]
+  sales: [User!]
 }
 """
 A connection to a list of items.
@@ -1067,6 +1736,265 @@ input AreaWhereInput {
   """
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
+  """
+  sales edge predicates
+  """
+  hasSales: Boolean
+  hasSalesWith: [UserWhereInput!]
+}
+type City implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  adcode: Int!
+  provCode: Int!
+  name: String!
+  provinceID: ID!
+  districts: [District!]
+  province: Province!
+}
+"""
+A connection to a list of items.
+"""
+type CityConnection {
+  """
+  A list of edges.
+  """
+  edges: [CityEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type CityEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: City
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+CityWhereInput is used for filtering City objects.
+Input was generated by ent.
+"""
+input CityWhereInput {
+  not: CityWhereInput
+  and: [CityWhereInput!]
+  or: [CityWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  adcode field predicates
+  """
+  adcode: Int
+  adcodeNEQ: Int
+  adcodeIn: [Int!]
+  adcodeNotIn: [Int!]
+  adcodeGT: Int
+  adcodeGTE: Int
+  adcodeLT: Int
+  adcodeLTE: Int
+  """
+  prov_code field predicates
+  """
+  provCode: Int
+  provCodeNEQ: Int
+  provCodeIn: [Int!]
+  provCodeNotIn: [Int!]
+  provCodeGT: Int
+  provCodeGTE: Int
+  provCodeLT: Int
+  provCodeLTE: Int
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  province_id field predicates
+  """
+  provinceID: ID
+  provinceIDNEQ: ID
+  provinceIDIn: [ID!]
+  provinceIDNotIn: [ID!]
+  provinceIDGT: ID
+  provinceIDGTE: ID
+  provinceIDLT: ID
+  provinceIDLTE: ID
+  """
+  districts edge predicates
+  """
+  hasDistricts: Boolean
+  hasDistrictsWith: [DistrictWhereInput!]
+  """
+  province edge predicates
+  """
+  hasProvince: Boolean
+  hasProvinceWith: [ProvinceWhereInput!]
+}
+type Country implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  adcode: Int!
+  name: String!
+  provinces: [Province!]
+}
+"""
+A connection to a list of items.
+"""
+type CountryConnection {
+  """
+  A list of edges.
+  """
+  edges: [CountryEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type CountryEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Country
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+CountryWhereInput is used for filtering Country objects.
+Input was generated by ent.
+"""
+input CountryWhereInput {
+  not: CountryWhereInput
+  and: [CountryWhereInput!]
+  or: [CountryWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  adcode field predicates
+  """
+  adcode: Int
+  adcodeNEQ: Int
+  adcodeIn: [Int!]
+  adcodeNotIn: [Int!]
+  adcodeGT: Int
+  adcodeGTE: Int
+  adcodeLT: Int
+  adcodeLTE: Int
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  provinces edge predicates
+  """
+  hasProvinces: Boolean
+  hasProvincesWith: [ProvinceWhereInput!]
 }
 """
 CreateAreaInput is used for create Area object.
@@ -1079,6 +2007,31 @@ input CreateAreaInput {
   code: String!
   customerIDs: [ID!]
   tenderIDs: [ID!]
+  saleIDs: [ID!]
+}
+"""
+CreateCityInput is used for create City object.
+Input was generated by ent.
+"""
+input CreateCityInput {
+  createdAt: Time
+  updatedAt: Time
+  adcode: Int!
+  provCode: Int!
+  name: String!
+  districtIDs: [ID!]
+  provinceID: ID!
+}
+"""
+CreateCountryInput is used for create Country object.
+Input was generated by ent.
+"""
+input CreateCountryInput {
+  createdAt: Time
+  updatedAt: Time
+  adcode: Int!
+  name: String!
+  provinceIDs: [ID!]
 }
 """
 CreateCustomerInput is used for create Customer object.
@@ -1090,13 +2043,42 @@ input CreateCustomerInput {
   name: String!
   ownerType: Int
   industry: Int!
-  status: Int
+  size: Int
   contactPerson: String
   contactPersonPosition: String
   contactPersonPhone: String
   contactPersonEmail: String
   areaID: ID!
   tenderIDs: [ID!]
+  salesID: ID
+  createdByID: ID!
+}
+"""
+CreateDistrictInput is used for create District object.
+Input was generated by ent.
+"""
+input CreateDistrictInput {
+  createdAt: Time
+  updatedAt: Time
+  adcode: Int!
+  provCode: Int!
+  cityCode: Int!
+  name: String!
+  provinceID: ID!
+  cityID: ID
+}
+"""
+CreateProvinceInput is used for create Province object.
+Input was generated by ent.
+"""
+input CreateProvinceInput {
+  createdAt: Time
+  updatedAt: Time
+  adcode: Int!
+  name: String!
+  districtIDs: [ID!]
+  cityIDs: [ID!]
+  countryID: ID!
 }
 """
 CreateTenderInput is used for create Tender object.
@@ -1137,6 +2119,15 @@ input CreateUserInput {
   createdAt: Time
   updatedAt: Time
   name: String!
+  email: String!
+  username: String!
+  openID: String!
+  avatarURL: String!
+  disabled: Boolean
+  areaIDs: [ID!]
+  customerIDs: [ID!]
+  leaderID: ID
+  teamMemberIDs: [ID!]
 }
 """
 Define a Relay Cursor type:
@@ -1150,14 +2141,18 @@ type Customer implements Node {
   name: String!
   ownerType: Int
   industry: Int!
-  status: Int
+  size: Int
   contactPerson: String
   contactPersonPosition: String
   contactPersonPhone: String
   contactPersonEmail: String
   areaID: ID!
+  salesID: ID
+  createdByUserID: ID!
   area: Area!
   tenders: [Tender!]
+  sales: User
+  createdBy: User!
 }
 """
 A connection to a list of items.
@@ -1271,18 +2266,18 @@ input CustomerWhereInput {
   industryLT: Int
   industryLTE: Int
   """
-  status field predicates
+  size field predicates
   """
-  status: Int
-  statusNEQ: Int
-  statusIn: [Int!]
-  statusNotIn: [Int!]
-  statusGT: Int
-  statusGTE: Int
-  statusLT: Int
-  statusLTE: Int
-  statusIsNil: Boolean
-  statusNotNil: Boolean
+  size: Int
+  sizeNEQ: Int
+  sizeIn: [Int!]
+  sizeNotIn: [Int!]
+  sizeGT: Int
+  sizeGTE: Int
+  sizeLT: Int
+  sizeLTE: Int
+  sizeIsNil: Boolean
+  sizeNotNil: Boolean
   """
   contact_person field predicates
   """
@@ -1367,6 +2362,30 @@ input CustomerWhereInput {
   areaIDLT: ID
   areaIDLTE: ID
   """
+  sales_id field predicates
+  """
+  salesID: ID
+  salesIDNEQ: ID
+  salesIDIn: [ID!]
+  salesIDNotIn: [ID!]
+  salesIDGT: ID
+  salesIDGTE: ID
+  salesIDLT: ID
+  salesIDLTE: ID
+  salesIDIsNil: Boolean
+  salesIDNotNil: Boolean
+  """
+  created_by_user_id field predicates
+  """
+  createdByUserID: ID
+  createdByUserIDNEQ: ID
+  createdByUserIDIn: [ID!]
+  createdByUserIDNotIn: [ID!]
+  createdByUserIDGT: ID
+  createdByUserIDGTE: ID
+  createdByUserIDLT: ID
+  createdByUserIDLTE: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -1376,6 +2395,184 @@ input CustomerWhereInput {
   """
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
+  """
+  sales edge predicates
+  """
+  hasSales: Boolean
+  hasSalesWith: [UserWhereInput!]
+  """
+  created_by edge predicates
+  """
+  hasCreatedBy: Boolean
+  hasCreatedByWith: [UserWhereInput!]
+}
+type District implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  adcode: Int!
+  provCode: Int!
+  cityCode: Int!
+  name: String!
+  provinceID: ID!
+  cityID: ID
+  province: Province!
+  city: City
+}
+"""
+A connection to a list of items.
+"""
+type DistrictConnection {
+  """
+  A list of edges.
+  """
+  edges: [DistrictEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type DistrictEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: District
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+DistrictWhereInput is used for filtering District objects.
+Input was generated by ent.
+"""
+input DistrictWhereInput {
+  not: DistrictWhereInput
+  and: [DistrictWhereInput!]
+  or: [DistrictWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  adcode field predicates
+  """
+  adcode: Int
+  adcodeNEQ: Int
+  adcodeIn: [Int!]
+  adcodeNotIn: [Int!]
+  adcodeGT: Int
+  adcodeGTE: Int
+  adcodeLT: Int
+  adcodeLTE: Int
+  """
+  prov_code field predicates
+  """
+  provCode: Int
+  provCodeNEQ: Int
+  provCodeIn: [Int!]
+  provCodeNotIn: [Int!]
+  provCodeGT: Int
+  provCodeGTE: Int
+  provCodeLT: Int
+  provCodeLTE: Int
+  """
+  city_code field predicates
+  """
+  cityCode: Int
+  cityCodeNEQ: Int
+  cityCodeIn: [Int!]
+  cityCodeNotIn: [Int!]
+  cityCodeGT: Int
+  cityCodeGTE: Int
+  cityCodeLT: Int
+  cityCodeLTE: Int
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  province_id field predicates
+  """
+  provinceID: ID
+  provinceIDNEQ: ID
+  provinceIDIn: [ID!]
+  provinceIDNotIn: [ID!]
+  provinceIDGT: ID
+  provinceIDGTE: ID
+  provinceIDLT: ID
+  provinceIDLTE: ID
+  """
+  city_id field predicates
+  """
+  cityID: ID
+  cityIDNEQ: ID
+  cityIDIn: [ID!]
+  cityIDNotIn: [ID!]
+  cityIDGT: ID
+  cityIDGTE: ID
+  cityIDLT: ID
+  cityIDLTE: ID
+  cityIDIsNil: Boolean
+  cityIDNotNil: Boolean
+  """
+  province edge predicates
+  """
+  hasProvince: Boolean
+  hasProvinceWith: [ProvinceWhereInput!]
+  """
+  city edge predicates
+  """
+  hasCity: Boolean
+  hasCityWith: [CityWhereInput!]
 }
 """
 An object with an ID.
@@ -1422,6 +2619,142 @@ type PageInfo {
   """
   endCursor: Cursor
 }
+type Province implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  adcode: Int!
+  name: String!
+  countryID: ID!
+  districts: [District!]
+  cities: [City!]
+  country: Country!
+}
+"""
+A connection to a list of items.
+"""
+type ProvinceConnection {
+  """
+  A list of edges.
+  """
+  edges: [ProvinceEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type ProvinceEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Province
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+ProvinceWhereInput is used for filtering Province objects.
+Input was generated by ent.
+"""
+input ProvinceWhereInput {
+  not: ProvinceWhereInput
+  and: [ProvinceWhereInput!]
+  or: [ProvinceWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  adcode field predicates
+  """
+  adcode: Int
+  adcodeNEQ: Int
+  adcodeIn: [Int!]
+  adcodeNotIn: [Int!]
+  adcodeGT: Int
+  adcodeGTE: Int
+  adcodeLT: Int
+  adcodeLTE: Int
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  country_id field predicates
+  """
+  countryID: ID
+  countryIDNEQ: ID
+  countryIDIn: [ID!]
+  countryIDNotIn: [ID!]
+  countryIDGT: ID
+  countryIDGTE: ID
+  countryIDLT: ID
+  countryIDLTE: ID
+  """
+  districts edge predicates
+  """
+  hasDistricts: Boolean
+  hasDistrictsWith: [DistrictWhereInput!]
+  """
+  cities edge predicates
+  """
+  hasCities: Boolean
+  hasCitiesWith: [CityWhereInput!]
+  """
+  country edge predicates
+  """
+  hasCountry: Boolean
+  hasCountryWith: [CountryWhereInput!]
+}
 type Query {
   """
   Fetches an object given its ID.
@@ -1467,6 +2800,58 @@ type Query {
     """
     where: AreaWhereInput
   ): AreaConnection!
+  cities(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Cities returned from the connection.
+    """
+    where: CityWhereInput
+  ): CityConnection!
+  countries(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Countries returned from the connection.
+    """
+    where: CountryWhereInput
+  ): CountryConnection!
   customers(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1493,6 +2878,58 @@ type Query {
     """
     where: CustomerWhereInput
   ): CustomerConnection!
+  districts(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Districts returned from the connection.
+    """
+    where: DistrictWhereInput
+  ): DistrictConnection!
+  provinces(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Provinces returned from the connection.
+    """
+    where: ProvinceWhereInput
+  ): ProvinceConnection!
   tenders(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1960,6 +3397,35 @@ input UpdateAreaInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+  addSaleIDs: [ID!]
+  removeSaleIDs: [ID!]
+  clearSales: Boolean
+}
+"""
+UpdateCityInput is used for update City object.
+Input was generated by ent.
+"""
+input UpdateCityInput {
+  updatedAt: Time
+  adcode: Int
+  provCode: Int
+  name: String
+  addDistrictIDs: [ID!]
+  removeDistrictIDs: [ID!]
+  clearDistricts: Boolean
+  provinceID: ID
+}
+"""
+UpdateCountryInput is used for update Country object.
+Input was generated by ent.
+"""
+input UpdateCountryInput {
+  updatedAt: Time
+  adcode: Int
+  name: String
+  addProvinceIDs: [ID!]
+  removeProvinceIDs: [ID!]
+  clearProvinces: Boolean
 }
 """
 UpdateCustomerInput is used for update Customer object.
@@ -1971,8 +3437,8 @@ input UpdateCustomerInput {
   ownerType: Int
   clearOwnerType: Boolean
   industry: Int
-  status: Int
-  clearStatus: Boolean
+  size: Int
+  clearSize: Boolean
   contactPerson: String
   clearContactPerson: Boolean
   contactPersonPosition: String
@@ -1985,6 +3451,39 @@ input UpdateCustomerInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+  salesID: ID
+  clearSales: Boolean
+  createdByID: ID
+}
+"""
+UpdateDistrictInput is used for update District object.
+Input was generated by ent.
+"""
+input UpdateDistrictInput {
+  updatedAt: Time
+  adcode: Int
+  provCode: Int
+  cityCode: Int
+  name: String
+  provinceID: ID
+  cityID: ID
+  clearCity: Boolean
+}
+"""
+UpdateProvinceInput is used for update Province object.
+Input was generated by ent.
+"""
+input UpdateProvinceInput {
+  updatedAt: Time
+  adcode: Int
+  name: String
+  addDistrictIDs: [ID!]
+  removeDistrictIDs: [ID!]
+  clearDistricts: Boolean
+  addCityIDs: [ID!]
+  removeCityIDs: [ID!]
+  clearCities: Boolean
+  countryID: ID
 }
 """
 UpdateTenderInput is used for update Tender object.
@@ -2041,12 +3540,38 @@ Input was generated by ent.
 input UpdateUserInput {
   updatedAt: Time
   name: String
+  email: String
+  username: String
+  openID: String
+  avatarURL: String
+  disabled: Boolean
+  addAreaIDs: [ID!]
+  removeAreaIDs: [ID!]
+  clearAreas: Boolean
+  addCustomerIDs: [ID!]
+  removeCustomerIDs: [ID!]
+  clearCustomers: Boolean
+  leaderID: ID
+  clearLeader: Boolean
+  addTeamMemberIDs: [ID!]
+  removeTeamMemberIDs: [ID!]
+  clearTeamMembers: Boolean
 }
 type User implements Node {
   id: ID!
   createdAt: Time!
   updatedAt: Time!
   name: String!
+  email: String!
+  username: String!
+  openID: String!
+  avatarURL: String!
+  disabled: Boolean!
+  leaderID: ID
+  areas: [Area!]
+  customers: [Customer!]
+  leader: User
+  teamMembers: [User!]
 }
 """
 A connection to a list of items.
@@ -2135,6 +3660,108 @@ input UserWhereInput {
   nameHasSuffix: String
   nameEqualFold: String
   nameContainsFold: String
+  """
+  email field predicates
+  """
+  email: String
+  emailNEQ: String
+  emailIn: [String!]
+  emailNotIn: [String!]
+  emailGT: String
+  emailGTE: String
+  emailLT: String
+  emailLTE: String
+  emailContains: String
+  emailHasPrefix: String
+  emailHasSuffix: String
+  emailEqualFold: String
+  emailContainsFold: String
+  """
+  username field predicates
+  """
+  username: String
+  usernameNEQ: String
+  usernameIn: [String!]
+  usernameNotIn: [String!]
+  usernameGT: String
+  usernameGTE: String
+  usernameLT: String
+  usernameLTE: String
+  usernameContains: String
+  usernameHasPrefix: String
+  usernameHasSuffix: String
+  usernameEqualFold: String
+  usernameContainsFold: String
+  """
+  open_id field predicates
+  """
+  openID: String
+  openIDNEQ: String
+  openIDIn: [String!]
+  openIDNotIn: [String!]
+  openIDGT: String
+  openIDGTE: String
+  openIDLT: String
+  openIDLTE: String
+  openIDContains: String
+  openIDHasPrefix: String
+  openIDHasSuffix: String
+  openIDEqualFold: String
+  openIDContainsFold: String
+  """
+  avatar_url field predicates
+  """
+  avatarURL: String
+  avatarURLNEQ: String
+  avatarURLIn: [String!]
+  avatarURLNotIn: [String!]
+  avatarURLGT: String
+  avatarURLGTE: String
+  avatarURLLT: String
+  avatarURLLTE: String
+  avatarURLContains: String
+  avatarURLHasPrefix: String
+  avatarURLHasSuffix: String
+  avatarURLEqualFold: String
+  avatarURLContainsFold: String
+  """
+  disabled field predicates
+  """
+  disabled: Boolean
+  disabledNEQ: Boolean
+  """
+  leader_id field predicates
+  """
+  leaderID: ID
+  leaderIDNEQ: ID
+  leaderIDIn: [ID!]
+  leaderIDNotIn: [ID!]
+  leaderIDGT: ID
+  leaderIDGTE: ID
+  leaderIDLT: ID
+  leaderIDLTE: ID
+  leaderIDIsNil: Boolean
+  leaderIDNotNil: Boolean
+  """
+  areas edge predicates
+  """
+  hasAreas: Boolean
+  hasAreasWith: [AreaWhereInput!]
+  """
+  customers edge predicates
+  """
+  hasCustomers: Boolean
+  hasCustomersWith: [CustomerWhereInput!]
+  """
+  leader edge predicates
+  """
+  hasLeader: Boolean
+  hasLeaderWith: [UserWhereInput!]
+  """
+  team_members edge predicates
+  """
+  hasTeamMembers: Boolean
+  hasTeamMembersWith: [UserWhereInput!]
 }
 `, BuiltIn: false},
 	{Name: "../scalar.graphql", Input: `scalar Time

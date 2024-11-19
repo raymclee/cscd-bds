@@ -15,7 +15,6 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
 		{Name: "code", Type: field.TypeString},
-		{Name: "sales_team_members", Type: field.TypeJSON},
 	}
 	// AreasTable holds the schema information for the "areas" table.
 	AreasTable = &schema.Table{
@@ -23,23 +22,63 @@ var (
 		Columns:    AreasColumns,
 		PrimaryKey: []*schema.Column{AreasColumns[0]},
 	}
+	// CitiesColumns holds the columns for the "cities" table.
+	CitiesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "adcode", Type: field.TypeInt, Unique: true},
+		{Name: "prov_code", Type: field.TypeInt},
+		{Name: "name", Type: field.TypeString},
+		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "province_id", Type: field.TypeString},
+	}
+	// CitiesTable holds the schema information for the "cities" table.
+	CitiesTable = &schema.Table{
+		Name:       "cities",
+		Columns:    CitiesColumns,
+		PrimaryKey: []*schema.Column{CitiesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "cities_provinces_cities",
+				Columns:    []*schema.Column{CitiesColumns[7]},
+				RefColumns: []*schema.Column{ProvincesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
+	// CountriesColumns holds the columns for the "countries" table.
+	CountriesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "adcode", Type: field.TypeInt, Unique: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+	}
+	// CountriesTable holds the schema information for the "countries" table.
+	CountriesTable = &schema.Table{
+		Name:       "countries",
+		Columns:    CountriesColumns,
+		PrimaryKey: []*schema.Column{CountriesColumns[0]},
+	}
 	// CustomersColumns holds the columns for the "customers" table.
 	CustomersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "name", Type: field.TypeString},
-		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
-		{Name: "industry", Type: field.TypeInt},
-		{Name: "status", Type: field.TypeInt, Nullable: true},
+		{Name: "name", Type: field.TypeString, Unique: true},
+		{Name: "owner_type", Type: field.TypeInt8, Nullable: true},
+		{Name: "industry", Type: field.TypeInt8},
+		{Name: "size", Type: field.TypeInt8, Nullable: true},
 		{Name: "contact_person", Type: field.TypeString, Nullable: true},
 		{Name: "contact_person_position", Type: field.TypeString, Nullable: true},
 		{Name: "contact_person_phone", Type: field.TypeString, Nullable: true},
 		{Name: "contact_person_email", Type: field.TypeString, Nullable: true},
-		{Name: "customer_owner", Type: field.TypeJSON, Nullable: true},
-		{Name: "sales_leader", Type: field.TypeJSON, Nullable: true},
-		{Name: "created_by", Type: field.TypeJSON},
+		{Name: "feishu_group", Type: field.TypeJSON, Nullable: true},
 		{Name: "area_id", Type: field.TypeString},
+		{Name: "created_by_user_id", Type: field.TypeString},
+		{Name: "sales_id", Type: field.TypeString, Nullable: true},
 	}
 	// CustomersTable holds the schema information for the "customers" table.
 	CustomersTable = &schema.Table{
@@ -49,8 +88,77 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "customers_areas_customers",
-				Columns:    []*schema.Column{CustomersColumns[14]},
+				Columns:    []*schema.Column{CustomersColumns[12]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "customers_users_created_by",
+				Columns:    []*schema.Column{CustomersColumns[13]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "customers_users_customers",
+				Columns:    []*schema.Column{CustomersColumns[14]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// DistrictsColumns holds the columns for the "districts" table.
+	DistrictsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "adcode", Type: field.TypeInt, Unique: true},
+		{Name: "prov_code", Type: field.TypeInt},
+		{Name: "city_code", Type: field.TypeInt},
+		{Name: "name", Type: field.TypeString},
+		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "city_id", Type: field.TypeString, Nullable: true},
+		{Name: "province_id", Type: field.TypeString},
+	}
+	// DistrictsTable holds the schema information for the "districts" table.
+	DistrictsTable = &schema.Table{
+		Name:       "districts",
+		Columns:    DistrictsColumns,
+		PrimaryKey: []*schema.Column{DistrictsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "districts_cities_districts",
+				Columns:    []*schema.Column{DistrictsColumns[8]},
+				RefColumns: []*schema.Column{CitiesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "districts_provinces_districts",
+				Columns:    []*schema.Column{DistrictsColumns[9]},
+				RefColumns: []*schema.Column{ProvincesColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
+	// ProvincesColumns holds the columns for the "provinces" table.
+	ProvincesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "adcode", Type: field.TypeInt, Unique: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "country_id", Type: field.TypeString},
+	}
+	// ProvincesTable holds the schema information for the "provinces" table.
+	ProvincesTable = &schema.Table{
+		Name:       "provinces",
+		Columns:    ProvincesColumns,
+		PrimaryKey: []*schema.Column{ProvincesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "provinces_countries_provinces",
+				Columns:    []*schema.Column{ProvincesColumns[6]},
+				RefColumns: []*schema.Column{CountriesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 		},
@@ -61,7 +169,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "status", Type: field.TypeInt8, Default: 1},
 		{Name: "name", Type: field.TypeString},
 		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
@@ -69,11 +177,11 @@ var (
 		{Name: "finder", Type: field.TypeJSON},
 		{Name: "created_by", Type: field.TypeJSON},
 		{Name: "following_person", Type: field.TypeJSON, Nullable: true},
-		{Name: "size_and_value_rating", Type: field.TypeInt, Nullable: true},
-		{Name: "credit_and_payment_rating", Type: field.TypeInt, Nullable: true},
-		{Name: "time_limit_rating", Type: field.TypeInt, Nullable: true},
-		{Name: "customer_relationship_rating", Type: field.TypeInt, Nullable: true},
-		{Name: "competitive_partnership_rating", Type: field.TypeInt, Nullable: true},
+		{Name: "size_and_value_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "credit_and_payment_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "time_limit_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "customer_relationship_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "competitive_partnership_rating", Type: field.TypeInt8, Nullable: true},
 		{Name: "prepare_to_bid", Type: field.TypeBool, Default: false},
 		{Name: "project_code", Type: field.TypeString, Nullable: true},
 		{Name: "project_definition", Type: field.TypeString, Nullable: true},
@@ -114,24 +222,77 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
+		{Name: "email", Type: field.TypeString, Unique: true},
+		{Name: "username", Type: field.TypeString, Unique: true},
+		{Name: "open_id", Type: field.TypeString, Unique: true},
+		{Name: "avatar_url", Type: field.TypeString},
+		{Name: "disabled", Type: field.TypeBool, Default: false},
+		{Name: "leader_id", Type: field.TypeString, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
 		Name:       "users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "users_users_team_members",
+				Columns:    []*schema.Column{UsersColumns[9]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// AreaSalesColumns holds the columns for the "area_sales" table.
+	AreaSalesColumns = []*schema.Column{
+		{Name: "area_id", Type: field.TypeString},
+		{Name: "user_id", Type: field.TypeString},
+	}
+	// AreaSalesTable holds the schema information for the "area_sales" table.
+	AreaSalesTable = &schema.Table{
+		Name:       "area_sales",
+		Columns:    AreaSalesColumns,
+		PrimaryKey: []*schema.Column{AreaSalesColumns[0], AreaSalesColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "area_sales_area_id",
+				Columns:    []*schema.Column{AreaSalesColumns[0]},
+				RefColumns: []*schema.Column{AreasColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "area_sales_user_id",
+				Columns:    []*schema.Column{AreaSalesColumns[1]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AreasTable,
+		CitiesTable,
+		CountriesTable,
 		CustomersTable,
+		DistrictsTable,
+		ProvincesTable,
 		TendersTable,
 		UsersTable,
+		AreaSalesTable,
 	}
 )
 
 func init() {
+	CitiesTable.ForeignKeys[0].RefTable = ProvincesTable
 	CustomersTable.ForeignKeys[0].RefTable = AreasTable
+	CustomersTable.ForeignKeys[1].RefTable = UsersTable
+	CustomersTable.ForeignKeys[2].RefTable = UsersTable
+	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
+	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
+	ProvincesTable.ForeignKeys[0].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable
 	TendersTable.ForeignKeys[1].RefTable = CustomersTable
+	UsersTable.ForeignKeys[0].RefTable = UsersTable
+	AreaSalesTable.ForeignKeys[0].RefTable = AreasTable
+	AreaSalesTable.ForeignKeys[1].RefTable = UsersTable
 }

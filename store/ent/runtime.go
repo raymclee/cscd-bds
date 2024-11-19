@@ -4,7 +4,11 @@ package ent
 
 import (
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -37,6 +41,48 @@ func init() {
 	areaDescID := areaMixinFields0[0].Descriptor()
 	// area.DefaultID holds the default value on creation for the id field.
 	area.DefaultID = areaDescID.Default.(func() xid.ID)
+	cityMixin := schema.City{}.Mixin()
+	cityMixinFields0 := cityMixin[0].Fields()
+	_ = cityMixinFields0
+	cityMixinFields1 := cityMixin[1].Fields()
+	_ = cityMixinFields1
+	cityFields := schema.City{}.Fields()
+	_ = cityFields
+	// cityDescCreatedAt is the schema descriptor for created_at field.
+	cityDescCreatedAt := cityMixinFields1[0].Descriptor()
+	// city.DefaultCreatedAt holds the default value on creation for the created_at field.
+	city.DefaultCreatedAt = cityDescCreatedAt.Default.(func() time.Time)
+	// cityDescUpdatedAt is the schema descriptor for updated_at field.
+	cityDescUpdatedAt := cityMixinFields1[1].Descriptor()
+	// city.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	city.DefaultUpdatedAt = cityDescUpdatedAt.Default.(func() time.Time)
+	// city.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	city.UpdateDefaultUpdatedAt = cityDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// cityDescID is the schema descriptor for id field.
+	cityDescID := cityMixinFields0[0].Descriptor()
+	// city.DefaultID holds the default value on creation for the id field.
+	city.DefaultID = cityDescID.Default.(func() xid.ID)
+	countryMixin := schema.Country{}.Mixin()
+	countryMixinFields0 := countryMixin[0].Fields()
+	_ = countryMixinFields0
+	countryMixinFields1 := countryMixin[1].Fields()
+	_ = countryMixinFields1
+	countryFields := schema.Country{}.Fields()
+	_ = countryFields
+	// countryDescCreatedAt is the schema descriptor for created_at field.
+	countryDescCreatedAt := countryMixinFields1[0].Descriptor()
+	// country.DefaultCreatedAt holds the default value on creation for the created_at field.
+	country.DefaultCreatedAt = countryDescCreatedAt.Default.(func() time.Time)
+	// countryDescUpdatedAt is the schema descriptor for updated_at field.
+	countryDescUpdatedAt := countryMixinFields1[1].Descriptor()
+	// country.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	country.DefaultUpdatedAt = countryDescUpdatedAt.Default.(func() time.Time)
+	// country.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	country.UpdateDefaultUpdatedAt = countryDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// countryDescID is the schema descriptor for id field.
+	countryDescID := countryMixinFields0[0].Descriptor()
+	// country.DefaultID holds the default value on creation for the id field.
+	country.DefaultID = countryDescID.Default.(func() xid.ID)
 	customerMixin := schema.Customer{}.Mixin()
 	customerMixinFields0 := customerMixin[0].Fields()
 	_ = customerMixinFields0
@@ -58,6 +104,48 @@ func init() {
 	customerDescID := customerMixinFields0[0].Descriptor()
 	// customer.DefaultID holds the default value on creation for the id field.
 	customer.DefaultID = customerDescID.Default.(func() xid.ID)
+	districtMixin := schema.District{}.Mixin()
+	districtMixinFields0 := districtMixin[0].Fields()
+	_ = districtMixinFields0
+	districtMixinFields1 := districtMixin[1].Fields()
+	_ = districtMixinFields1
+	districtFields := schema.District{}.Fields()
+	_ = districtFields
+	// districtDescCreatedAt is the schema descriptor for created_at field.
+	districtDescCreatedAt := districtMixinFields1[0].Descriptor()
+	// district.DefaultCreatedAt holds the default value on creation for the created_at field.
+	district.DefaultCreatedAt = districtDescCreatedAt.Default.(func() time.Time)
+	// districtDescUpdatedAt is the schema descriptor for updated_at field.
+	districtDescUpdatedAt := districtMixinFields1[1].Descriptor()
+	// district.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	district.DefaultUpdatedAt = districtDescUpdatedAt.Default.(func() time.Time)
+	// district.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	district.UpdateDefaultUpdatedAt = districtDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// districtDescID is the schema descriptor for id field.
+	districtDescID := districtMixinFields0[0].Descriptor()
+	// district.DefaultID holds the default value on creation for the id field.
+	district.DefaultID = districtDescID.Default.(func() xid.ID)
+	provinceMixin := schema.Province{}.Mixin()
+	provinceMixinFields0 := provinceMixin[0].Fields()
+	_ = provinceMixinFields0
+	provinceMixinFields1 := provinceMixin[1].Fields()
+	_ = provinceMixinFields1
+	provinceFields := schema.Province{}.Fields()
+	_ = provinceFields
+	// provinceDescCreatedAt is the schema descriptor for created_at field.
+	provinceDescCreatedAt := provinceMixinFields1[0].Descriptor()
+	// province.DefaultCreatedAt holds the default value on creation for the created_at field.
+	province.DefaultCreatedAt = provinceDescCreatedAt.Default.(func() time.Time)
+	// provinceDescUpdatedAt is the schema descriptor for updated_at field.
+	provinceDescUpdatedAt := provinceMixinFields1[1].Descriptor()
+	// province.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	province.DefaultUpdatedAt = provinceDescUpdatedAt.Default.(func() time.Time)
+	// province.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	province.UpdateDefaultUpdatedAt = provinceDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// provinceDescID is the schema descriptor for id field.
+	provinceDescID := provinceMixinFields0[0].Descriptor()
+	// province.DefaultID holds the default value on creation for the id field.
+	province.DefaultID = provinceDescID.Default.(func() xid.ID)
 	tenderMixin := schema.Tender{}.Mixin()
 	tenderMixinFields0 := tenderMixin[0].Fields()
 	_ = tenderMixinFields0
@@ -78,17 +166,17 @@ func init() {
 	// tenderDescStatus is the schema descriptor for status field.
 	tenderDescStatus := tenderFields[1].Descriptor()
 	// tender.DefaultStatus holds the default value on creation for the status field.
-	tender.DefaultStatus = tenderDescStatus.Default.(int)
+	tender.DefaultStatus = tenderDescStatus.Default.(int8)
 	// tenderDescSizeAndValueRating is the schema descriptor for size_and_value_rating field.
 	tenderDescSizeAndValueRating := tenderFields[9].Descriptor()
 	// tender.SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
-	tender.SizeAndValueRatingValidator = func() func(int) error {
+	tender.SizeAndValueRatingValidator = func() func(int8) error {
 		validators := tenderDescSizeAndValueRating.Validators
-		fns := [...]func(int) error{
-			validators[0].(func(int) error),
-			validators[1].(func(int) error),
+		fns := [...]func(int8) error{
+			validators[0].(func(int8) error),
+			validators[1].(func(int8) error),
 		}
-		return func(size_and_value_rating int) error {
+		return func(size_and_value_rating int8) error {
 			for _, fn := range fns {
 				if err := fn(size_and_value_rating); err != nil {
 					return err
@@ -100,13 +188,13 @@ func init() {
 	// tenderDescCreditAndPaymentRating is the schema descriptor for credit_and_payment_rating field.
 	tenderDescCreditAndPaymentRating := tenderFields[10].Descriptor()
 	// tender.CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
-	tender.CreditAndPaymentRatingValidator = func() func(int) error {
+	tender.CreditAndPaymentRatingValidator = func() func(int8) error {
 		validators := tenderDescCreditAndPaymentRating.Validators
-		fns := [...]func(int) error{
-			validators[0].(func(int) error),
-			validators[1].(func(int) error),
+		fns := [...]func(int8) error{
+			validators[0].(func(int8) error),
+			validators[1].(func(int8) error),
 		}
-		return func(credit_and_payment_rating int) error {
+		return func(credit_and_payment_rating int8) error {
 			for _, fn := range fns {
 				if err := fn(credit_and_payment_rating); err != nil {
 					return err
@@ -118,13 +206,13 @@ func init() {
 	// tenderDescTimeLimitRating is the schema descriptor for time_limit_rating field.
 	tenderDescTimeLimitRating := tenderFields[11].Descriptor()
 	// tender.TimeLimitRatingValidator is a validator for the "time_limit_rating" field. It is called by the builders before save.
-	tender.TimeLimitRatingValidator = func() func(int) error {
+	tender.TimeLimitRatingValidator = func() func(int8) error {
 		validators := tenderDescTimeLimitRating.Validators
-		fns := [...]func(int) error{
-			validators[0].(func(int) error),
-			validators[1].(func(int) error),
+		fns := [...]func(int8) error{
+			validators[0].(func(int8) error),
+			validators[1].(func(int8) error),
 		}
-		return func(time_limit_rating int) error {
+		return func(time_limit_rating int8) error {
 			for _, fn := range fns {
 				if err := fn(time_limit_rating); err != nil {
 					return err
@@ -136,13 +224,13 @@ func init() {
 	// tenderDescCustomerRelationshipRating is the schema descriptor for customer_relationship_rating field.
 	tenderDescCustomerRelationshipRating := tenderFields[12].Descriptor()
 	// tender.CustomerRelationshipRatingValidator is a validator for the "customer_relationship_rating" field. It is called by the builders before save.
-	tender.CustomerRelationshipRatingValidator = func() func(int) error {
+	tender.CustomerRelationshipRatingValidator = func() func(int8) error {
 		validators := tenderDescCustomerRelationshipRating.Validators
-		fns := [...]func(int) error{
-			validators[0].(func(int) error),
-			validators[1].(func(int) error),
+		fns := [...]func(int8) error{
+			validators[0].(func(int8) error),
+			validators[1].(func(int8) error),
 		}
-		return func(customer_relationship_rating int) error {
+		return func(customer_relationship_rating int8) error {
 			for _, fn := range fns {
 				if err := fn(customer_relationship_rating); err != nil {
 					return err
@@ -154,13 +242,13 @@ func init() {
 	// tenderDescCompetitivePartnershipRating is the schema descriptor for competitive_partnership_rating field.
 	tenderDescCompetitivePartnershipRating := tenderFields[13].Descriptor()
 	// tender.CompetitivePartnershipRatingValidator is a validator for the "competitive_partnership_rating" field. It is called by the builders before save.
-	tender.CompetitivePartnershipRatingValidator = func() func(int) error {
+	tender.CompetitivePartnershipRatingValidator = func() func(int8) error {
 		validators := tenderDescCompetitivePartnershipRating.Validators
-		fns := [...]func(int) error{
-			validators[0].(func(int) error),
-			validators[1].(func(int) error),
+		fns := [...]func(int8) error{
+			validators[0].(func(int8) error),
+			validators[1].(func(int8) error),
 		}
-		return func(competitive_partnership_rating int) error {
+		return func(competitive_partnership_rating int8) error {
 			for _, fn := range fns {
 				if err := fn(competitive_partnership_rating); err != nil {
 					return err
@@ -194,6 +282,10 @@ func init() {
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
 	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// userDescDisabled is the schema descriptor for disabled field.
+	userDescDisabled := userFields[5].Descriptor()
+	// user.DefaultDisabled holds the default value on creation for the disabled field.
+	user.DefaultDisabled = userDescDisabled.Default.(bool)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

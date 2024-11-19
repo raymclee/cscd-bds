@@ -4,9 +4,12 @@ package ent
 
 import (
 	"context"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/user"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -19,12 +22,19 @@ import (
 // UserQuery is the builder for querying User entities.
 type UserQuery struct {
 	config
-	ctx        *QueryContext
-	order      []user.OrderOption
-	inters     []Interceptor
-	predicates []predicate.User
-	modifiers  []func(*sql.Selector)
-	loadTotal  []func(context.Context, []*User) error
+	ctx                  *QueryContext
+	order                []user.OrderOption
+	inters               []Interceptor
+	predicates           []predicate.User
+	withAreas            *AreaQuery
+	withCustomers        *CustomerQuery
+	withLeader           *UserQuery
+	withTeamMembers      *UserQuery
+	modifiers            []func(*sql.Selector)
+	loadTotal            []func(context.Context, []*User) error
+	withNamedAreas       map[string]*AreaQuery
+	withNamedCustomers   map[string]*CustomerQuery
+	withNamedTeamMembers map[string]*UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -59,6 +69,94 @@ func (uq *UserQuery) Unique(unique bool) *UserQuery {
 func (uq *UserQuery) Order(o ...user.OrderOption) *UserQuery {
 	uq.order = append(uq.order, o...)
 	return uq
+}
+
+// QueryAreas chains the current query on the "areas" edge.
+func (uq *UserQuery) QueryAreas() *AreaQuery {
+	query := (&AreaClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(area.Table, area.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, user.AreasTable, user.AreasPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCustomers chains the current query on the "customers" edge.
+func (uq *UserQuery) QueryCustomers() *CustomerQuery {
+	query := (&CustomerClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.CustomersTable, user.CustomersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLeader chains the current query on the "leader" edge.
+func (uq *UserQuery) QueryLeader() *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, user.LeaderTable, user.LeaderColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTeamMembers chains the current query on the "team_members" edge.
+func (uq *UserQuery) QueryTeamMembers() *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.TeamMembersTable, user.TeamMembersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first User entity from the query.
@@ -248,15 +346,63 @@ func (uq *UserQuery) Clone() *UserQuery {
 		return nil
 	}
 	return &UserQuery{
-		config:     uq.config,
-		ctx:        uq.ctx.Clone(),
-		order:      append([]user.OrderOption{}, uq.order...),
-		inters:     append([]Interceptor{}, uq.inters...),
-		predicates: append([]predicate.User{}, uq.predicates...),
+		config:          uq.config,
+		ctx:             uq.ctx.Clone(),
+		order:           append([]user.OrderOption{}, uq.order...),
+		inters:          append([]Interceptor{}, uq.inters...),
+		predicates:      append([]predicate.User{}, uq.predicates...),
+		withAreas:       uq.withAreas.Clone(),
+		withCustomers:   uq.withCustomers.Clone(),
+		withLeader:      uq.withLeader.Clone(),
+		withTeamMembers: uq.withTeamMembers.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
 	}
+}
+
+// WithAreas tells the query-builder to eager-load the nodes that are connected to
+// the "areas" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithAreas(opts ...func(*AreaQuery)) *UserQuery {
+	query := (&AreaClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withAreas = query
+	return uq
+}
+
+// WithCustomers tells the query-builder to eager-load the nodes that are connected to
+// the "customers" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithCustomers(opts ...func(*CustomerQuery)) *UserQuery {
+	query := (&CustomerClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withCustomers = query
+	return uq
+}
+
+// WithLeader tells the query-builder to eager-load the nodes that are connected to
+// the "leader" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithLeader(opts ...func(*UserQuery)) *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withLeader = query
+	return uq
+}
+
+// WithTeamMembers tells the query-builder to eager-load the nodes that are connected to
+// the "team_members" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithTeamMembers(opts ...func(*UserQuery)) *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withTeamMembers = query
+	return uq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -335,8 +481,14 @@ func (uq *UserQuery) prepareQuery(ctx context.Context) error {
 
 func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, error) {
 	var (
-		nodes = []*User{}
-		_spec = uq.querySpec()
+		nodes       = []*User{}
+		_spec       = uq.querySpec()
+		loadedTypes = [4]bool{
+			uq.withAreas != nil,
+			uq.withCustomers != nil,
+			uq.withLeader != nil,
+			uq.withTeamMembers != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*User).scanValues(nil, columns)
@@ -344,6 +496,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &User{config: uq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if len(uq.modifiers) > 0 {
@@ -358,12 +511,217 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := uq.withAreas; query != nil {
+		if err := uq.loadAreas(ctx, query, nodes,
+			func(n *User) { n.Edges.Areas = []*Area{} },
+			func(n *User, e *Area) { n.Edges.Areas = append(n.Edges.Areas, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withCustomers; query != nil {
+		if err := uq.loadCustomers(ctx, query, nodes,
+			func(n *User) { n.Edges.Customers = []*Customer{} },
+			func(n *User, e *Customer) { n.Edges.Customers = append(n.Edges.Customers, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withLeader; query != nil {
+		if err := uq.loadLeader(ctx, query, nodes, nil,
+			func(n *User, e *User) { n.Edges.Leader = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withTeamMembers; query != nil {
+		if err := uq.loadTeamMembers(ctx, query, nodes,
+			func(n *User) { n.Edges.TeamMembers = []*User{} },
+			func(n *User, e *User) { n.Edges.TeamMembers = append(n.Edges.TeamMembers, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedAreas {
+		if err := uq.loadAreas(ctx, query, nodes,
+			func(n *User) { n.appendNamedAreas(name) },
+			func(n *User, e *Area) { n.appendNamedAreas(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedCustomers {
+		if err := uq.loadCustomers(ctx, query, nodes,
+			func(n *User) { n.appendNamedCustomers(name) },
+			func(n *User, e *Customer) { n.appendNamedCustomers(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedTeamMembers {
+		if err := uq.loadTeamMembers(ctx, query, nodes,
+			func(n *User) { n.appendNamedTeamMembers(name) },
+			func(n *User, e *User) { n.appendNamedTeamMembers(name, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for i := range uq.loadTotal {
 		if err := uq.loadTotal[i](ctx, nodes); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
+}
+
+func (uq *UserQuery) loadAreas(ctx context.Context, query *AreaQuery, nodes []*User, init func(*User), assign func(*User, *Area)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[xid.ID]*User)
+	nids := make(map[xid.ID]map[*User]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(user.AreasTable)
+		s.Join(joinT).On(s.C(area.FieldID), joinT.C(user.AreasPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(user.AreasPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(user.AreasPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(xid.ID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*xid.ID)
+				inValue := *values[1].(*xid.ID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*User]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*Area](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "areas" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
+func (uq *UserQuery) loadCustomers(ctx context.Context, query *CustomerQuery, nodes []*User, init func(*User), assign func(*User, *Customer)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(customer.FieldSalesID)
+	}
+	query.Where(predicate.Customer(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.CustomersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.SalesID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "sales_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadLeader(ctx context.Context, query *UserQuery, nodes []*User, init func(*User), assign func(*User, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*User)
+	for i := range nodes {
+		if nodes[i].LeaderID == nil {
+			continue
+		}
+		fk := *nodes[i].LeaderID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "leader_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (uq *UserQuery) loadTeamMembers(ctx context.Context, query *UserQuery, nodes []*User, init func(*User), assign func(*User, *User)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(user.FieldLeaderID)
+	}
+	query.Where(predicate.User(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.TeamMembersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.LeaderID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "leader_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "leader_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
 }
 
 func (uq *UserQuery) sqlCount(ctx context.Context) (int, error) {
@@ -393,6 +751,9 @@ func (uq *UserQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != user.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if uq.withLeader != nil {
+			_spec.Node.AddColumnOnce(user.FieldLeaderID)
 		}
 	}
 	if ps := uq.predicates; len(ps) > 0 {
@@ -448,6 +809,48 @@ func (uq *UserQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// WithNamedAreas tells the query-builder to eager-load the nodes that are connected to the "areas"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedAreas(name string, opts ...func(*AreaQuery)) *UserQuery {
+	query := (&AreaClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedAreas == nil {
+		uq.withNamedAreas = make(map[string]*AreaQuery)
+	}
+	uq.withNamedAreas[name] = query
+	return uq
+}
+
+// WithNamedCustomers tells the query-builder to eager-load the nodes that are connected to the "customers"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedCustomers(name string, opts ...func(*CustomerQuery)) *UserQuery {
+	query := (&CustomerClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedCustomers == nil {
+		uq.withNamedCustomers = make(map[string]*CustomerQuery)
+	}
+	uq.withNamedCustomers[name] = query
+	return uq
+}
+
+// WithNamedTeamMembers tells the query-builder to eager-load the nodes that are connected to the "team_members"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedTeamMembers(name string, opts ...func(*UserQuery)) *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedTeamMembers == nil {
+		uq.withNamedTeamMembers = make(map[string]*UserQuery)
+	}
+	uq.withNamedTeamMembers[name] = query
+	return uq
 }
 
 // UserGroupBy is the group-by builder for User entities.

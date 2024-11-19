@@ -29,7 +29,7 @@ func (Tender) Mixin() []ent.Mixin {
 func (Tender) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("code"),
-		field.Int("status").Default(1),
+		field.Int8("status").Default(1),
 		field.String("name"),
 		field.Float("estimated_amount").
 			Optional().
@@ -51,11 +51,11 @@ func (Tender) Fields() []ent.Field {
 			Annotations(
 				entgql.Skip(entgql.SkipAll),
 			),
-		field.Int("size_and_value_rating").Optional().Min(1).Max(5),
-		field.Int("credit_and_payment_rating").Optional().Min(1).Max(5),
-		field.Int("time_limit_rating").Optional().Min(1).Max(5),
-		field.Int("customer_relationship_rating").Optional().Min(1).Max(5),
-		field.Int("competitive_partnership_rating").Optional().Min(1).Max(5),
+		field.Int8("size_and_value_rating").Optional().Min(1).Max(5),
+		field.Int8("credit_and_payment_rating").Optional().Min(1).Max(5),
+		field.Int8("time_limit_rating").Optional().Min(1).Max(5),
+		field.Int8("customer_relationship_rating").Optional().Min(1).Max(5),
+		field.Int8("competitive_partnership_rating").Optional().Min(1).Max(5),
 		field.Bool("prepare_to_bid").Default(false),
 		field.String("project_code").Optional().Nillable(),
 		field.String("project_definition").Optional().Nillable(),

@@ -5,8 +5,6 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -28,8 +26,6 @@ type Area struct {
 	Name string `json:"name,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
-	// SalesTeamMembers holds the value of the "sales_team_members" field.
-	SalesTeamMembers []zht.User `json:"sales_team_members,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AreaQuery when eager-loading is set.
 	Edges        AreaEdges `json:"edges"`
@@ -42,14 +38,17 @@ type AreaEdges struct {
 	Customers []*Customer `json:"customers,omitempty"`
 	// Tenders holds the value of the tenders edge.
 	Tenders []*Tender `json:"tenders,omitempty"`
+	// Sales holds the value of the sales edge.
+	Sales []*User `json:"sales,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
 
 	namedCustomers map[string][]*Customer
 	namedTenders   map[string][]*Tender
+	namedSales     map[string][]*User
 }
 
 // CustomersOrErr returns the Customers value or an error if the edge
@@ -70,13 +69,20 @@ func (e AreaEdges) TendersOrErr() ([]*Tender, error) {
 	return nil, &NotLoadedError{edge: "tenders"}
 }
 
+// SalesOrErr returns the Sales value or an error if the edge
+// was not loaded in eager-loading.
+func (e AreaEdges) SalesOrErr() ([]*User, error) {
+	if e.loadedTypes[2] {
+		return e.Sales, nil
+	}
+	return nil, &NotLoadedError{edge: "sales"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Area) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case area.FieldSalesTeamMembers:
-			values[i] = new([]byte)
 		case area.FieldName, area.FieldCode:
 			values[i] = new(sql.NullString)
 		case area.FieldCreatedAt, area.FieldUpdatedAt:
@@ -128,14 +134,6 @@ func (a *Area) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				a.Code = value.String
 			}
-		case area.FieldSalesTeamMembers:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field sales_team_members", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &a.SalesTeamMembers); err != nil {
-					return fmt.Errorf("unmarshal field sales_team_members: %w", err)
-				}
-			}
 		default:
 			a.selectValues.Set(columns[i], values[i])
 		}
@@ -157,6 +155,11 @@ func (a *Area) QueryCustomers() *CustomerQuery {
 // QueryTenders queries the "tenders" edge of the Area entity.
 func (a *Area) QueryTenders() *TenderQuery {
 	return NewAreaClient(a.config).QueryTenders(a)
+}
+
+// QuerySales queries the "sales" edge of the Area entity.
+func (a *Area) QuerySales() *UserQuery {
+	return NewAreaClient(a.config).QuerySales(a)
 }
 
 // Update returns a builder for updating this Area.
@@ -193,9 +196,6 @@ func (a *Area) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(a.Code)
-	builder.WriteString(", ")
-	builder.WriteString("sales_team_members=")
-	builder.WriteString(fmt.Sprintf("%v", a.SalesTeamMembers))
 	builder.WriteByte(')')
 	return builder.String()
 }
@@ -245,6 +245,30 @@ func (a *Area) appendNamedTenders(name string, edges ...*Tender) {
 		a.Edges.namedTenders[name] = []*Tender{}
 	} else {
 		a.Edges.namedTenders[name] = append(a.Edges.namedTenders[name], edges...)
+	}
+}
+
+// NamedSales returns the Sales named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (a *Area) NamedSales(name string) ([]*User, error) {
+	if a.Edges.namedSales == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := a.Edges.namedSales[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (a *Area) appendNamedSales(name string, edges ...*User) {
+	if a.Edges.namedSales == nil {
+		a.Edges.namedSales = make(map[string][]*User)
+	}
+	if len(edges) == 0 {
+		a.Edges.namedSales[name] = []*User{}
+	} else {
+		a.Edges.namedSales[name] = append(a.Edges.namedSales[name], edges...)
 	}
 }
 

@@ -1,19 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { BadgeJapaneseYen, ChartPie, Layers } from "lucide-react";
-import * as React from "react";
-import { useShallow } from "zustand/shallow";
-import { BidChart } from "~/components/bid-chart";
-import { BusinessChart } from "~/components/business-chart";
-import { PercentageChart } from "~/components/percentage-chart";
+import { createFileRoute } from '@tanstack/react-router'
+import { BadgeJapaneseYen, ChartPie, Layers } from 'lucide-react'
+import * as React from 'react'
+import { useShallow } from 'zustand/shallow'
+import { BidChart } from '~/components/bid-chart'
+import { BusinessChart } from '~/components/business-chart'
+import { PercentageChart } from '~/components/percentage-chart'
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "~/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
+} from '~/components/ui/breadcrumb'
+import { Card, CardContent, CardHeader } from '~/components/ui/card'
+import { ScrollArea } from '~/components/ui/scroll-area'
 import {
   Table,
   TableBody,
@@ -21,28 +21,28 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
-import { getDistrictColor } from "~/lib/color";
-import { cn } from "~/lib/utils";
-import { District, useMapStore } from "~/store/map";
+} from '~/components/ui/table'
+import { getDistrictColor } from '~/lib/color'
+import { cn } from '~/lib/utils'
+import { District, useMapStore } from '~/store/map'
 
-export const Route = createFileRoute("/__map/home")({
+export const Route = createFileRoute('/__map/home')({
   component: RouteComponent,
-});
+})
 
 type Item = {
-  label: string;
-  value: number;
-  children: Item[];
-};
+  label: string
+  value: number
+  children: Item[]
+}
 
 const data = {
-  "1": [0.8, 1, 10],
-  "2": [4, 5, 20],
-  "3": [6, 7, 25],
-  "4": [10, 6, 30],
-  "5": [7, 3, 19],
-};
+  '1': [0.8, 1, 10],
+  '2': [4, 5, 20],
+  '3': [6, 7, 25],
+  '4': [10, 6, 30],
+  '5': [7, 3, 19],
+}
 
 function RouteComponent() {
   const [
@@ -85,80 +85,80 @@ function RouteComponent() {
       state.switch2AreaNode,
       state.renderAreas,
     ]),
-  );
-  const satelliteRef = React.useRef<AMap.TileLayer>();
+  )
+  const satelliteRef = React.useRef<AMap.TileLayer>()
   // const districtExplorerRef = React.useRef<any>();
   // const [visible, setVisible] = React.useState(false);
   // const makersRef = React.useRef<AMap.Marker[]>([]);
-  const polygonsRef = React.useRef<AMap.Polygon[]>([]);
+  const polygonsRef = React.useRef<AMap.Polygon[]>([])
 
   // const data = usePreloadedQuery<MapPageQuery>(query, Route.useLoaderData());
   // const data = useLazyLoadQuery<MapPageQuery>(query, {});
 
   React.useEffect(() => {
-    initMap("map", {
+    initMap('map', {
       zoom: 4,
       // mapStyle: "amap://styles/grey",
-      mapStyle: "amap://styles/darkblue",
+      mapStyle: 'amap://styles/darkblue',
       // viewMode: "3D",
       // pitch: 30,
-    });
-    satelliteRef.current = new AMap.TileLayer.Satellite();
-  }, []);
+    })
+    satelliteRef.current = new AMap.TileLayer.Satellite()
+  }, [])
 
   React.useEffect(() => {
-    map?.on("complete", () => {
+    map?.on('complete', () => {
       //外部区域被点击
-      districtExplorer.on("outsideClick", function (e: any) {
+      districtExplorer.on('outsideClick', function (e: any) {
         districtExplorer.locatePosition(
           e.originalEvent.lnglat,
           (error: any, routeFeatures: any) => {
             if (routeFeatures && routeFeatures.length > 1) {
               //切换到省级区域
-              const props = routeFeatures[1].properties;
+              const props = routeFeatures[1].properties
               const district = districts.find((d) =>
                 d.adcode.includes(props.adcode),
-              );
+              )
               if (district) {
-                setSelectedDistrict(district);
+                setSelectedDistrict(district)
               }
-              switch2AreaNode(props.adcode);
+              switch2AreaNode(props.adcode)
               // switchNavigation({
               //   name: routeFeatures[1].properties.name,
               //   adcode: routeFeatures[1].properties.adcode,
               // });
-              pop(1);
+              pop(1)
             } else {
               //切换到全国
-              switch2AreaNode(100000);
-              resetNaivgation();
-              setSelectedDistrict(null);
+              switch2AreaNode(100000)
+              resetNaivgation()
+              setSelectedDistrict(null)
             }
-            map?.remove(polygonsRef.current);
+            map?.remove(polygonsRef.current)
           },
           {
             levelLimit: 2,
           },
-        );
-        map?.removeLayer(satelliteRef.current!);
-      });
+        )
+        map?.removeLayer(satelliteRef.current!)
+      })
 
-      districtExplorer.on("featureClick", (e: any, feature: any) => {
-        const props = feature.properties;
-        const district = districts.find((d) => d.adcode.includes(props.adcode));
+      districtExplorer.on('featureClick', (e: any, feature: any) => {
+        const props = feature.properties
+        const district = districts.find((d) => d.adcode.includes(props.adcode))
         if (district) {
-          setSelectedDistrict(district);
+          setSelectedDistrict(district)
         }
 
         if (e.target.getZoom() < 5) {
           if (!district) {
-            return;
+            return
           }
 
           // setSelectedDistrict(district);
-          push({ name: district.name });
-          renderArea(district);
-          return;
+          push({ name: district.name })
+          renderArea(district)
+          return
         }
 
         // const district = districts.find((d) => d.adcode.includes(props.adcode));
@@ -169,19 +169,19 @@ function RouteComponent() {
 
         // }
 
-        onFeatureOrMarkerClick(props);
-      });
+        onFeatureOrMarkerClick(props)
+      })
 
       //切换区域
 
       // switch2AreaNode(100000);
-      renderAreas();
-    });
+      renderAreas()
+    })
 
     return () => {
-      map?.destroy();
-    };
-  }, [map, satelliteRef]);
+      map?.destroy()
+    }
+  }, [map, satelliteRef])
 
   // function switch2AreaNode(
   //   adcode: number,
@@ -296,25 +296,25 @@ function RouteComponent() {
     districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
       if (error) {
         if (callback) {
-          callback(error);
+          callback(error)
         }
 
-        console.error(error);
+        console.error(error)
 
-        return;
+        return
       }
 
       if (callback) {
-        callback(null, areaNode);
+        callback(null, areaNode)
       }
-    });
+    })
   }
 
   const onFeatureOrMarkerClick = (props: any) => {
-    switch2AreaNode(props.adcode, props.childrenNum > 0);
+    switch2AreaNode(props.adcode, props.childrenNum > 0)
     if (props.childrenNum == 0) {
       // map?.setZoom(18, true, 200);
-      const polygon = new AMap.Polygon();
+      const polygon = new AMap.Polygon()
       polygon.setPath([
         [114.233116, 22.279279],
         [114.233116, 22.279338],
@@ -328,9 +328,9 @@ function RouteComponent() {
         [114.234137, 22.276996],
         [114.234094, 22.276937],
         [114.233094, 22.276956],
-      ]);
-      polygonsRef.current.push(polygon);
-      const poly2 = new AMap.Polygon();
+      ])
+      polygonsRef.current.push(polygon)
+      const poly2 = new AMap.Polygon()
       poly2.setPath([
         [114.230747, 22.280171],
         [114.230898, 22.28005],
@@ -353,11 +353,11 @@ function RouteComponent() {
         [114.2303, 22.278423],
         [114.230003, 22.278827],
         [114.23009, 22.279543],
-      ]);
-      poly2.setOptions({ fillColor: "red", strokeColor: "red" });
-      polygonsRef.current.push(poly2);
+      ])
+      poly2.setOptions({ fillColor: 'red', strokeColor: 'red' })
+      polygonsRef.current.push(poly2)
 
-      const poly3 = new AMap.Polygon();
+      const poly3 = new AMap.Polygon()
       poly3.setPath([
         [114.229415, 22.281422],
         [114.230694, 22.280218],
@@ -366,19 +366,19 @@ function RouteComponent() {
         [114.228657, 22.279255],
         [114.228463, 22.279372],
         [114.227928, 22.280012],
-      ]);
-      poly3.setOptions({ fillColor: "yellow", strokeColor: "yellow" });
-      polygonsRef.current.push(poly3);
+      ])
+      poly3.setOptions({ fillColor: 'yellow', strokeColor: 'yellow' })
+      polygonsRef.current.push(poly3)
 
-      map?.add(polygon);
-      map?.add(poly2);
-      map?.add(poly3);
+      map?.add(polygon)
+      map?.add(poly2)
+      map?.add(poly3)
 
-      setDashboardVisible(false);
-      map?.setZoomAndCenter(15, props.center, false, 600);
-      map?.addLayer(satelliteRef.current!);
+      setDashboardVisible(false)
+      map?.setZoomAndCenter(15, props.center, false, 600)
+      map?.addLayer(satelliteRef.current!)
     }
-  };
+  }
 
   //绘制某个区域的边界
   function renderAreaPolygons(
@@ -389,50 +389,50 @@ function RouteComponent() {
   ) {
     //更新地图视野
     if (zoomeToNode) {
-      map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);
+      map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20])
     }
 
     if (clear) {
       //清除已有的绘制内容
-      districtExplorer.clearFeaturePolygons();
+      districtExplorer.clearFeaturePolygons()
     }
 
     //绘制子区域
     districtExplorer.renderSubFeatures(
       areaNode,
       function (feature: any, i: number) {
-        const props = feature.properties;
+        const props = feature.properties
 
         if (!topLevel) {
-          renderMarker(props);
+          renderMarker(props)
         }
 
-        const colorIndex = topLevel ? 0 : i;
+        const colorIndex = topLevel ? 0 : i
         const strokeColor = getDistrictColor(
           feature.properties.adcode,
           colorIndex,
-        );
+        )
         const fillColor = getDistrictColor(
           feature.properties.adcode,
           colorIndex,
-        );
+        )
 
         return {
-          cursor: "default",
+          cursor: 'default',
           bubble: true,
           strokeColor: strokeColor, //线颜色
           strokeOpacity: 1, //线透明度
           strokeWeight: 1, //线宽
           fillColor: fillColor, //填充色
           fillOpacity: 0.5, //填充透明度
-        };
+        }
       },
-    );
+    )
 
-    const props = areaNode.getProps();
+    const props = areaNode.getProps()
 
     if (props.adcode !== 100000) {
-      push({ name: props.name, adcode: props.adcode });
+      push({ name: props.name, adcode: props.adcode })
     }
 
     // if (!topLevel) {
@@ -441,32 +441,32 @@ function RouteComponent() {
 
     //绘制父区域;
     districtExplorer.renderParentFeature(areaNode, {
-      cursor: "default",
+      cursor: 'default',
       bubble: true,
       // strokeColor: "white", //线颜色
       strokeColor:
         props.adcode !== 100000 && areaNode.getSubFeatures().length
-          ? ""
-          : "#3cb8e6", //线颜色
+          ? ''
+          : '#3cb8e6', //线颜色
       strokeOpacity: 1, //线透明度
       strokeWeight: 2, //线宽
       // fillColor, //填充色
-      fillColor: "",
+      fillColor: '',
       //   fillColor: "black",
       //   fillColor: areaNode.getParentFeature() ? "black" : null,
       // fillOpacity: 0.5, //填充透明度
-    });
+    })
   }
 
   //绘制marker
   function renderMarker(props: any) {
     if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
-      return;
+      return
     }
     // @ts-expect-error
     const marker = new AMapUI.SimpleMarker({
       // @ts-expect-error
-      iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+      iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles('default'),
       label: {
         content: `
         <div class="flex flex-col">
@@ -486,23 +486,23 @@ function RouteComponent() {
       },
       map,
       position: props.center,
-    });
+    })
 
-    marker.on("click", () => {
-      const district = districts.find((d) => d.adcode.includes(props.adcode));
+    marker.on('click', () => {
+      const district = districts.find((d) => d.adcode.includes(props.adcode))
       if (district) {
-        setSelectedDistrict(district);
+        setSelectedDistrict(district)
       }
-      push({ name: props.name, adcode: props.adcode });
-      onFeatureOrMarkerClick(props);
-    });
-    marker.on("mouseover", () => {
-      marker.setOptions({ zIndex: 13 });
-    });
-    marker.on("mouseout", () => {
-      marker.setOptions({ zIndex: 12 });
-    });
-    addMarker(marker);
+      push({ name: props.name, adcode: props.adcode })
+      onFeatureOrMarkerClick(props)
+    })
+    marker.on('mouseover', () => {
+      marker.setOptions({ zIndex: 13 })
+    })
+    marker.on('mouseout', () => {
+      marker.setOptions({ zIndex: 12 })
+    })
+    addMarker(marker)
   }
 
   //切换区域后刷新显示内容
@@ -511,9 +511,9 @@ function RouteComponent() {
     zoomeToNode: boolean,
     topLevel: boolean,
   ) {
-    districtExplorer.setHoverFeature(null);
+    districtExplorer.setHoverFeature(null)
 
-    renderAreaPolygons(areaNode, zoomeToNode, topLevel);
+    renderAreaPolygons(areaNode, zoomeToNode, topLevel)
   }
 
   // function renderArea(district: District) {
@@ -567,8 +567,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute bottom-6 left-1/2 -translate-x-1/2 transition",
-          navigations.length < 1 && "translate-y-[200%]",
+          'absolute bottom-6 left-1/2 -translate-x-1/2 transition',
+          navigations.length < 1 && 'translate-y-[200%]',
         )}
       >
         <Breadcrumb className="mt-px">
@@ -578,11 +578,11 @@ function RouteComponent() {
                 className="cursor-pointer select-none"
                 onClick={() => {
                   // switch2AreaNode(district.adcode[0]);
-                  setSelectedDistrict(null);
-                  resetNaivgation();
-                  map?.remove(satelliteRef.current!);
-                  map?.remove(polygonsRef.current);
-                  switch2AreaNode(100000);
+                  setSelectedDistrict(null)
+                  resetNaivgation()
+                  map?.remove(satelliteRef.current!)
+                  map?.remove(polygonsRef.current)
+                  switch2AreaNode(100000)
                   // setVisible(!visible);
                 }}
               >
@@ -593,22 +593,22 @@ function RouteComponent() {
             <BreadcrumbItem>
               <BreadcrumbLink
                 className={cn(
-                  "select-none",
-                  navigations.length > 1 && "cursor-pointer",
+                  'select-none',
+                  navigations.length > 1 && 'cursor-pointer',
                 )}
                 onClick={() => {
                   if (navigations.length < 2) {
-                    return;
+                    return
                   }
                   // switch2AreaNode(district.adcode[0]);
                   // setVisible(true);
                   // resetNaivgation();
                   // setCurrentAreaNode(null);
-                  pop(0);
-                  map?.remove(satelliteRef.current!);
-                  map?.remove(polygonsRef.current);
+                  pop(0)
+                  map?.remove(satelliteRef.current!)
+                  map?.remove(polygonsRef.current)
                   // setSelectedDistrict(selectedDistrict);
-                  renderArea(selectedDistrict!);
+                  renderArea(selectedDistrict!)
                 }}
               >
                 {selectedDistrict?.name}
@@ -654,30 +654,30 @@ function RouteComponent() {
                 //   return null;
                 // }
                 return (
-                  <React.Fragment key={[navigation.adcode, i].join("-")}>
+                  <React.Fragment key={[navigation.adcode, i].join('-')}>
                     <BreadcrumbSeparator></BreadcrumbSeparator>
                     <BreadcrumbItem>
                       <BreadcrumbLink
                         // className="max-w-[6rem] cursor-pointer overflow-hidden text-ellipsis text-nowrap"
                         className={cn(
-                          "select-none",
-                          navigations.length != i + 2 && "cursor-pointer",
+                          'select-none',
+                          navigations.length != i + 2 && 'cursor-pointer',
                         )}
                         onClick={() => {
                           if (navigations.length == i + 2) {
-                            return;
+                            return
                           }
-                          map?.remove(polygonsRef.current);
-                          map?.remove(satelliteRef.current!);
-                          pop(i);
-                          switch2AreaNode(navigation.adcode || 100000);
+                          map?.remove(polygonsRef.current)
+                          map?.remove(satelliteRef.current!)
+                          pop(i)
+                          switch2AreaNode(navigation.adcode || 100000)
                         }}
                       >
                         {navigation.name}
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                   </React.Fragment>
-                );
+                )
               })}
             {/* <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem>
@@ -698,8 +698,8 @@ function RouteComponent() {
       <div className="flex gap-2 px-4 pt-14">
         <div
           className={cn(
-            "hidden h-full w-[18vw] space-y-2 transition xl:block",
-            !dashboardVisible && "-translate-x-[110%]",
+            'hidden h-full w-[18vw] space-y-2 transition xl:block',
+            !dashboardVisible && '-translate-x-[110%]',
           )}
         >
           <TenderBoard />
@@ -722,8 +722,8 @@ function RouteComponent() {
 
         <div
           className={cn(
-            "hidden w-[18vw] space-y-2 transition xl:block",
-            !dashboardVisible && "translate-x-[110%]",
+            'hidden w-[18vw] space-y-2 transition xl:block',
+            !dashboardVisible && 'translate-x-[110%]',
           )}
         >
           <DashboardCard title="市场竞争龙虎榜">
@@ -787,19 +787,19 @@ function RouteComponent() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-const statusItems = ["跟進中", "中標", "失標", "估價", "已交標", "停止跟進"];
+const statusItems = ['跟進中', '中標', '失標', '估價', '已交標', '停止跟進']
 
 function getDistrictZoomLevel(id: string) {
-  let zoom = 5;
-  if (id === "5") {
-    zoom = 10;
-  } else if (id === "3" || id === "4") {
-    zoom = 6;
+  let zoom = 5
+  if (id === '5') {
+    zoom = 10
+  } else if (id === '3' || id === '4') {
+    zoom = 6
   }
-  return zoom;
+  return zoom
 }
 
 function DashboardCard({
@@ -807,14 +807,14 @@ function DashboardCard({
   children,
   className,
 }: {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
+  title: string
+  children: React.ReactNode
+  className?: string
 }) {
   return (
     <Card
       className={cn(
-        "h-[17rem] overflow-hidden rounded border border-brand bg-transparent shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        'h-[17rem] overflow-hidden rounded border border-brand bg-transparent shadow-dashboard-card drop-shadow-2xl backdrop-blur',
         className,
       )}
     >
@@ -823,24 +823,24 @@ function DashboardCard({
       </CardHeader>
       <CardContent className="mt-4 h-full">{children}</CardContent>
     </Card>
-  );
+  )
 }
 
 function TenderBoard() {
-  const selectedDistrict = useMapStore((state) => state.selectedDistrict);
+  const selectedDistrict = useMapStore((state) => state.selectedDistrict)
 
   const total = Object.values(data).reduce(
     (acc, cur) => {
       if (selectedDistrict) {
-        return data[selectedDistrict.id as keyof typeof data];
+        return data[selectedDistrict.id as keyof typeof data]
       }
-      acc[0] += cur[0];
-      acc[1] += cur[1];
-      acc[2] += cur[2];
-      return acc;
+      acc[0] += cur[0]
+      acc[1] += cur[1]
+      acc[2] += cur[2]
+      return acc
     },
     [0, 0, 0],
-  );
+  )
 
   return (
     <DashboardCard title="新增商机数">
@@ -877,5 +877,5 @@ function TenderBoard() {
         </div>
       </div>
     </DashboardCard>
-  );
+  )
 }

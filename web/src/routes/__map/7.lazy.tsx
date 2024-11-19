@@ -1,16 +1,16 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import * as React from "react";
-import { useShallow } from "zustand/shallow";
-import { DistrictSelect } from "~/components/district-select";
-import { getDistrictColor } from "~/lib/color";
-import { cn } from "~/lib/utils";
-import { Progress } from "~/components/ui/progress";
-import { BidChart } from "~/components/bid-chart";
-import { BadgeJapaneseYen, ChartPie, Layers, Layers2Icon } from "lucide-react";
-import { BusinessChart } from "~/components/business-chart";
-import { PercentageChart } from "~/components/percentage-chart";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
+import { createLazyFileRoute } from '@tanstack/react-router'
+import * as React from 'react'
+import { useShallow } from 'zustand/shallow'
+import { DistrictSelect } from '~/components/district-select'
+import { getDistrictColor } from '~/lib/color'
+import { cn } from '~/lib/utils'
+import { Progress } from '~/components/ui/progress'
+import { BidChart } from '~/components/bid-chart'
+import { BadgeJapaneseYen, ChartPie, Layers, Layers2Icon } from 'lucide-react'
+import { BusinessChart } from '~/components/business-chart'
+import { PercentageChart } from '~/components/percentage-chart'
+import { Card, CardContent, CardHeader } from '~/components/ui/card'
+import { ScrollArea } from '~/components/ui/scroll-area'
 import {
   Table,
   TableBody,
@@ -19,50 +19,50 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
-import { useMapStore } from "~/store/map";
-import countryTree from "~/lib/country-tree.json";
+} from '~/components/ui/table'
+import { useMapStore } from '~/store/map'
+import countryTree from '~/lib/country-tree.json'
 
-export const Route = createLazyFileRoute("/__map/7")({
+export const Route = createLazyFileRoute('/__map/7')({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
   const [map, initMap, districts] = useMapStore(
     useShallow((state) => [state.map, state.initMap, state.districts]),
-  );
-  const satelliteRef = React.useRef<AMap.TileLayer>();
-  const [visible, setVisible] = React.useState(true);
+  )
+  const satelliteRef = React.useRef<AMap.TileLayer>()
+  const [visible, setVisible] = React.useState(true)
 
   React.useEffect(() => {
-    initMap("map", {
+    initMap('map', {
       zoom: 4,
       // mapStyle: "amap://styles/grey",
-      mapStyle: "amap://styles/darkblue",
+      mapStyle: 'amap://styles/darkblue',
       center: [116.397428, 39.90923],
-    });
-    satelliteRef.current = new AMap.TileLayer.Satellite();
-  }, []);
+    })
+    satelliteRef.current = new AMap.TileLayer.Satellite()
+  }, [])
 
   React.useEffect(() => {
-    map?.on("complete", () => {
+    map?.on('complete', () => {
       for (const [i, district] of districts.entries()) {
         const province = new AMap.DistrictLayer.Province({
           adcode: district.adcode,
           depth: 0,
-        });
-        const color = getDistrictColor(district.adcode[0], i);
+        })
+        const color = getDistrictColor(district.adcode[0], i)
         province.setStyles({
           fill: color,
           // "fill-opacity": 0.5,
-          "nation-stroke": "#c2c2c2",
-          "city-stroke": "#c2c2c2",
-        });
+          'nation-stroke': '#c2c2c2',
+          'city-stroke': '#c2c2c2',
+        })
         // province.setFitViewByAdcode(district.adcode[0], false, [0, 0, 0, 0]);
-        province.on("complete", (e) => {
-          console.log(e, district);
-        });
-        province.setMap(map);
+        province.on('complete', (e) => {
+          console.log(e, district)
+        })
+        province.setMap(map)
       }
       // const city = countryTree.children[1];
       // const dl = new AMap.DistrictLayer.Province({
@@ -88,15 +88,15 @@ function RouteComponent() {
       // });
       // maker.setMap(map);
 
-      map.setZoomAndCenter(5, [116.397428, 39.90923], false, 600);
+      map.setZoomAndCenter(5, [116.397428, 39.90923], false, 600)
 
       // map.setFitView([maker], false, [420, 0, 0, 0], city.idealZoom);
-    });
+    })
 
     return () => {
-      map?.destroy();
-    };
-  }, [map]);
+      map?.destroy()
+    }
+  }, [map])
 
   return (
     <div className="relative min-h-screen bg-dashboard">
@@ -212,24 +212,24 @@ function RouteComponent() {
                   </TableRow>
                 </TableBody>
               </Table>
-            </ScrollArea>{" "}
+            </ScrollArea>{' '}
           </DashboardCard>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-const statusItems = ["跟進中", "中標", "失標", "估價", "已交標", "停止跟進"];
+const statusItems = ['跟進中', '中標', '失標', '估價', '已交標', '停止跟進']
 
 function getDistrictZoomLevel(id: string) {
-  let zoom = 5;
-  if (id === "5") {
-    zoom = 10;
-  } else if (id === "3" || id === "4") {
-    zoom = 6;
+  let zoom = 5
+  if (id === '5') {
+    zoom = 10
+  } else if (id === '3' || id === '4') {
+    zoom = 6
   }
-  return zoom;
+  return zoom
 }
 
 function DashboardCard({
@@ -237,14 +237,14 @@ function DashboardCard({
   children,
   className,
 }: {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
+  title: string
+  children: React.ReactNode
+  className?: string
 }) {
   return (
     <Card
       className={cn(
-        "h-[17.5rem] overflow-hidden rounded border border-brand bg-transparent shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        'h-[17.5rem] overflow-hidden rounded border border-brand bg-transparent shadow-dashboard-card drop-shadow-2xl backdrop-blur',
         className,
       )}
     >
@@ -253,5 +253,5 @@ function DashboardCard({
       </CardHeader>
       <CardContent className="mt-4 h-full">{children}</CardContent>
     </Card>
-  );
+  )
 }

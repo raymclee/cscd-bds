@@ -23,12 +23,12 @@ const (
 	FieldName = "name"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
-	// FieldSalesTeamMembers holds the string denoting the sales_team_members field in the database.
-	FieldSalesTeamMembers = "sales_team_members"
 	// EdgeCustomers holds the string denoting the customers edge name in mutations.
 	EdgeCustomers = "customers"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
+	// EdgeSales holds the string denoting the sales edge name in mutations.
+	EdgeSales = "sales"
 	// Table holds the table name of the area in the database.
 	Table = "areas"
 	// CustomersTable is the table that holds the customers relation/edge.
@@ -45,6 +45,11 @@ const (
 	TendersInverseTable = "tenders"
 	// TendersColumn is the table column denoting the tenders relation/edge.
 	TendersColumn = "area_id"
+	// SalesTable is the table that holds the sales relation/edge. The primary key declared below.
+	SalesTable = "area_sales"
+	// SalesInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	SalesInverseTable = "users"
 )
 
 // Columns holds all SQL columns for area fields.
@@ -54,8 +59,13 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldCode,
-	FieldSalesTeamMembers,
 }
+
+var (
+	// SalesPrimaryKey and SalesColumn2 are the table columns denoting the
+	// primary key for the sales relation (M2M).
+	SalesPrimaryKey = []string{"area_id", "user_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -133,6 +143,20 @@ func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// BySalesCount orders the results by sales count.
+func BySalesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newSalesStep(), opts...)
+	}
+}
+
+// BySales orders the results by sales terms.
+func BySales(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSalesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newCustomersStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -145,5 +169,12 @@ func newTendersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TendersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
+	)
+}
+func newSalesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SalesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, SalesTable, SalesPrimaryKey...),
 	)
 }

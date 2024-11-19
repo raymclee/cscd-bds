@@ -15,6 +15,7 @@ type CreateAreaInput struct {
 	Code        string
 	CustomerIDs []xid.ID
 	TenderIDs   []xid.ID
+	SaleIDs     []xid.ID
 }
 
 // Mutate applies the CreateAreaInput on the AreaMutation builder.
@@ -32,6 +33,9 @@ func (i *CreateAreaInput) Mutate(m *AreaMutation) {
 	}
 	if v := i.TenderIDs; len(v) > 0 {
 		m.AddTenderIDs(v...)
+	}
+	if v := i.SaleIDs; len(v) > 0 {
+		m.AddSaleIDs(v...)
 	}
 }
 
@@ -52,6 +56,9 @@ type UpdateAreaInput struct {
 	ClearTenders      bool
 	AddTenderIDs      []xid.ID
 	RemoveTenderIDs   []xid.ID
+	ClearSales        bool
+	AddSaleIDs        []xid.ID
+	RemoveSaleIDs     []xid.ID
 }
 
 // Mutate applies the UpdateAreaInput on the AreaMutation builder.
@@ -83,6 +90,15 @@ func (i *UpdateAreaInput) Mutate(m *AreaMutation) {
 	if v := i.RemoveTenderIDs; len(v) > 0 {
 		m.RemoveTenderIDs(v...)
 	}
+	if i.ClearSales {
+		m.ClearSales()
+	}
+	if v := i.AddSaleIDs; len(v) > 0 {
+		m.AddSaleIDs(v...)
+	}
+	if v := i.RemoveSaleIDs; len(v) > 0 {
+		m.RemoveSaleIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateAreaInput on the AreaUpdate builder.
@@ -97,20 +113,182 @@ func (c *AreaUpdateOne) SetInput(i UpdateAreaInput) *AreaUpdateOne {
 	return c
 }
 
+// CreateCityInput represents a mutation input for creating cities.
+type CreateCityInput struct {
+	CreatedAt   *time.Time
+	UpdatedAt   *time.Time
+	Adcode      int
+	ProvCode    int
+	Name        string
+	DistrictIDs []xid.ID
+	ProvinceID  xid.ID
+}
+
+// Mutate applies the CreateCityInput on the CityMutation builder.
+func (i *CreateCityInput) Mutate(m *CityMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetAdcode(i.Adcode)
+	m.SetProvCode(i.ProvCode)
+	m.SetName(i.Name)
+	if v := i.DistrictIDs; len(v) > 0 {
+		m.AddDistrictIDs(v...)
+	}
+	m.SetProvinceID(i.ProvinceID)
+}
+
+// SetInput applies the change-set in the CreateCityInput on the CityCreate builder.
+func (c *CityCreate) SetInput(i CreateCityInput) *CityCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateCityInput represents a mutation input for updating cities.
+type UpdateCityInput struct {
+	UpdatedAt         *time.Time
+	Adcode            *int
+	ProvCode          *int
+	Name              *string
+	ClearDistricts    bool
+	AddDistrictIDs    []xid.ID
+	RemoveDistrictIDs []xid.ID
+	ProvinceID        *xid.ID
+}
+
+// Mutate applies the UpdateCityInput on the CityMutation builder.
+func (i *UpdateCityInput) Mutate(m *CityMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Adcode; v != nil {
+		m.SetAdcode(*v)
+	}
+	if v := i.ProvCode; v != nil {
+		m.SetProvCode(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if i.ClearDistricts {
+		m.ClearDistricts()
+	}
+	if v := i.AddDistrictIDs; len(v) > 0 {
+		m.AddDistrictIDs(v...)
+	}
+	if v := i.RemoveDistrictIDs; len(v) > 0 {
+		m.RemoveDistrictIDs(v...)
+	}
+	if v := i.ProvinceID; v != nil {
+		m.SetProvinceID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateCityInput on the CityUpdate builder.
+func (c *CityUpdate) SetInput(i UpdateCityInput) *CityUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateCityInput on the CityUpdateOne builder.
+func (c *CityUpdateOne) SetInput(i UpdateCityInput) *CityUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateCountryInput represents a mutation input for creating countries.
+type CreateCountryInput struct {
+	CreatedAt   *time.Time
+	UpdatedAt   *time.Time
+	Adcode      int
+	Name        string
+	ProvinceIDs []xid.ID
+}
+
+// Mutate applies the CreateCountryInput on the CountryMutation builder.
+func (i *CreateCountryInput) Mutate(m *CountryMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetAdcode(i.Adcode)
+	m.SetName(i.Name)
+	if v := i.ProvinceIDs; len(v) > 0 {
+		m.AddProvinceIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateCountryInput on the CountryCreate builder.
+func (c *CountryCreate) SetInput(i CreateCountryInput) *CountryCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateCountryInput represents a mutation input for updating countries.
+type UpdateCountryInput struct {
+	UpdatedAt         *time.Time
+	Adcode            *int
+	Name              *string
+	ClearProvinces    bool
+	AddProvinceIDs    []xid.ID
+	RemoveProvinceIDs []xid.ID
+}
+
+// Mutate applies the UpdateCountryInput on the CountryMutation builder.
+func (i *UpdateCountryInput) Mutate(m *CountryMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Adcode; v != nil {
+		m.SetAdcode(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if i.ClearProvinces {
+		m.ClearProvinces()
+	}
+	if v := i.AddProvinceIDs; len(v) > 0 {
+		m.AddProvinceIDs(v...)
+	}
+	if v := i.RemoveProvinceIDs; len(v) > 0 {
+		m.RemoveProvinceIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the UpdateCountryInput on the CountryUpdate builder.
+func (c *CountryUpdate) SetInput(i UpdateCountryInput) *CountryUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateCountryInput on the CountryUpdateOne builder.
+func (c *CountryUpdateOne) SetInput(i UpdateCountryInput) *CountryUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // CreateCustomerInput represents a mutation input for creating customers.
 type CreateCustomerInput struct {
 	CreatedAt             *time.Time
 	UpdatedAt             *time.Time
 	Name                  string
-	OwnerType             *int
-	Industry              int
-	Status                *int
+	OwnerType             *int8
+	Industry              int8
+	Size                  *int8
 	ContactPerson         *string
 	ContactPersonPosition *string
 	ContactPersonPhone    *string
 	ContactPersonEmail    *string
 	AreaID                xid.ID
 	TenderIDs             []xid.ID
+	SalesID               *xid.ID
+	CreatedByID           xid.ID
 }
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
@@ -126,8 +304,8 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 		m.SetOwnerType(*v)
 	}
 	m.SetIndustry(i.Industry)
-	if v := i.Status; v != nil {
-		m.SetStatus(*v)
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
 	}
 	if v := i.ContactPerson; v != nil {
 		m.SetContactPerson(*v)
@@ -145,6 +323,10 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.TenderIDs; len(v) > 0 {
 		m.AddTenderIDs(v...)
 	}
+	if v := i.SalesID; v != nil {
+		m.SetSalesID(*v)
+	}
+	m.SetCreatedByID(i.CreatedByID)
 }
 
 // SetInput applies the change-set in the CreateCustomerInput on the CustomerCreate builder.
@@ -158,10 +340,10 @@ type UpdateCustomerInput struct {
 	UpdatedAt                  *time.Time
 	Name                       *string
 	ClearOwnerType             bool
-	OwnerType                  *int
-	Industry                   *int
-	ClearStatus                bool
-	Status                     *int
+	OwnerType                  *int8
+	Industry                   *int8
+	ClearSize                  bool
+	Size                       *int8
 	ClearContactPerson         bool
 	ContactPerson              *string
 	ClearContactPersonPosition bool
@@ -174,6 +356,9 @@ type UpdateCustomerInput struct {
 	ClearTenders               bool
 	AddTenderIDs               []xid.ID
 	RemoveTenderIDs            []xid.ID
+	ClearSales                 bool
+	SalesID                    *xid.ID
+	CreatedByID                *xid.ID
 }
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
@@ -193,11 +378,11 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Industry; v != nil {
 		m.SetIndustry(*v)
 	}
-	if i.ClearStatus {
-		m.ClearStatus()
+	if i.ClearSize {
+		m.ClearSize()
 	}
-	if v := i.Status; v != nil {
-		m.SetStatus(*v)
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
 	}
 	if i.ClearContactPerson {
 		m.ClearContactPerson()
@@ -235,6 +420,15 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.RemoveTenderIDs; len(v) > 0 {
 		m.RemoveTenderIDs(v...)
 	}
+	if i.ClearSales {
+		m.ClearSales()
+	}
+	if v := i.SalesID; v != nil {
+		m.SetSalesID(*v)
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
 }
 
 // SetInput applies the change-set in the UpdateCustomerInput on the CustomerUpdate builder.
@@ -249,21 +443,205 @@ func (c *CustomerUpdateOne) SetInput(i UpdateCustomerInput) *CustomerUpdateOne {
 	return c
 }
 
+// CreateDistrictInput represents a mutation input for creating districts.
+type CreateDistrictInput struct {
+	CreatedAt  *time.Time
+	UpdatedAt  *time.Time
+	Adcode     int
+	ProvCode   int
+	CityCode   int
+	Name       string
+	ProvinceID xid.ID
+	CityID     *xid.ID
+}
+
+// Mutate applies the CreateDistrictInput on the DistrictMutation builder.
+func (i *CreateDistrictInput) Mutate(m *DistrictMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetAdcode(i.Adcode)
+	m.SetProvCode(i.ProvCode)
+	m.SetCityCode(i.CityCode)
+	m.SetName(i.Name)
+	m.SetProvinceID(i.ProvinceID)
+	if v := i.CityID; v != nil {
+		m.SetCityID(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateDistrictInput on the DistrictCreate builder.
+func (c *DistrictCreate) SetInput(i CreateDistrictInput) *DistrictCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateDistrictInput represents a mutation input for updating districts.
+type UpdateDistrictInput struct {
+	UpdatedAt  *time.Time
+	Adcode     *int
+	ProvCode   *int
+	CityCode   *int
+	Name       *string
+	ProvinceID *xid.ID
+	ClearCity  bool
+	CityID     *xid.ID
+}
+
+// Mutate applies the UpdateDistrictInput on the DistrictMutation builder.
+func (i *UpdateDistrictInput) Mutate(m *DistrictMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Adcode; v != nil {
+		m.SetAdcode(*v)
+	}
+	if v := i.ProvCode; v != nil {
+		m.SetProvCode(*v)
+	}
+	if v := i.CityCode; v != nil {
+		m.SetCityCode(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.ProvinceID; v != nil {
+		m.SetProvinceID(*v)
+	}
+	if i.ClearCity {
+		m.ClearCity()
+	}
+	if v := i.CityID; v != nil {
+		m.SetCityID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateDistrictInput on the DistrictUpdate builder.
+func (c *DistrictUpdate) SetInput(i UpdateDistrictInput) *DistrictUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateDistrictInput on the DistrictUpdateOne builder.
+func (c *DistrictUpdateOne) SetInput(i UpdateDistrictInput) *DistrictUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateProvinceInput represents a mutation input for creating provinces.
+type CreateProvinceInput struct {
+	CreatedAt   *time.Time
+	UpdatedAt   *time.Time
+	Adcode      int
+	Name        string
+	DistrictIDs []xid.ID
+	CityIDs     []xid.ID
+	CountryID   xid.ID
+}
+
+// Mutate applies the CreateProvinceInput on the ProvinceMutation builder.
+func (i *CreateProvinceInput) Mutate(m *ProvinceMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetAdcode(i.Adcode)
+	m.SetName(i.Name)
+	if v := i.DistrictIDs; len(v) > 0 {
+		m.AddDistrictIDs(v...)
+	}
+	if v := i.CityIDs; len(v) > 0 {
+		m.AddCityIDs(v...)
+	}
+	m.SetCountryID(i.CountryID)
+}
+
+// SetInput applies the change-set in the CreateProvinceInput on the ProvinceCreate builder.
+func (c *ProvinceCreate) SetInput(i CreateProvinceInput) *ProvinceCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateProvinceInput represents a mutation input for updating provinces.
+type UpdateProvinceInput struct {
+	UpdatedAt         *time.Time
+	Adcode            *int
+	Name              *string
+	ClearDistricts    bool
+	AddDistrictIDs    []xid.ID
+	RemoveDistrictIDs []xid.ID
+	ClearCities       bool
+	AddCityIDs        []xid.ID
+	RemoveCityIDs     []xid.ID
+	CountryID         *xid.ID
+}
+
+// Mutate applies the UpdateProvinceInput on the ProvinceMutation builder.
+func (i *UpdateProvinceInput) Mutate(m *ProvinceMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Adcode; v != nil {
+		m.SetAdcode(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if i.ClearDistricts {
+		m.ClearDistricts()
+	}
+	if v := i.AddDistrictIDs; len(v) > 0 {
+		m.AddDistrictIDs(v...)
+	}
+	if v := i.RemoveDistrictIDs; len(v) > 0 {
+		m.RemoveDistrictIDs(v...)
+	}
+	if i.ClearCities {
+		m.ClearCities()
+	}
+	if v := i.AddCityIDs; len(v) > 0 {
+		m.AddCityIDs(v...)
+	}
+	if v := i.RemoveCityIDs; len(v) > 0 {
+		m.RemoveCityIDs(v...)
+	}
+	if v := i.CountryID; v != nil {
+		m.SetCountryID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateProvinceInput on the ProvinceUpdate builder.
+func (c *ProvinceUpdate) SetInput(i UpdateProvinceInput) *ProvinceUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateProvinceInput on the ProvinceUpdateOne builder.
+func (c *ProvinceUpdateOne) SetInput(i UpdateProvinceInput) *ProvinceUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // CreateTenderInput represents a mutation input for creating tenders.
 type CreateTenderInput struct {
 	CreatedAt                    *time.Time
 	UpdatedAt                    *time.Time
 	Code                         string
-	Status                       *int
+	Status                       *int8
 	Name                         string
 	EstimatedAmount              *float64
 	TenderDate                   *time.Time
 	FindDate                     time.Time
-	SizeAndValueRating           *int
-	CreditAndPaymentRating       *int
-	TimeLimitRating              *int
-	CustomerRelationshipRating   *int
-	CompetitivePartnershipRating *int
+	SizeAndValueRating           *int8
+	CreditAndPaymentRating       *int8
+	TimeLimitRating              *int8
+	CustomerRelationshipRating   *int8
+	CompetitivePartnershipRating *int8
 	PrepareToBid                 *bool
 	ProjectCode                  *string
 	ProjectDefinition            *string
@@ -357,7 +735,7 @@ func (c *TenderCreate) SetInput(i CreateTenderInput) *TenderCreate {
 type UpdateTenderInput struct {
 	UpdatedAt                         *time.Time
 	Code                              *string
-	Status                            *int
+	Status                            *int8
 	Name                              *string
 	ClearEstimatedAmount              bool
 	EstimatedAmount                   *float64
@@ -365,15 +743,15 @@ type UpdateTenderInput struct {
 	TenderDate                        *time.Time
 	FindDate                          *time.Time
 	ClearSizeAndValueRating           bool
-	SizeAndValueRating                *int
+	SizeAndValueRating                *int8
 	ClearCreditAndPaymentRating       bool
-	CreditAndPaymentRating            *int
+	CreditAndPaymentRating            *int8
 	ClearTimeLimitRating              bool
-	TimeLimitRating                   *int
+	TimeLimitRating                   *int8
 	ClearCustomerRelationshipRating   bool
-	CustomerRelationshipRating        *int
+	CustomerRelationshipRating        *int8
 	ClearCompetitivePartnershipRating bool
-	CompetitivePartnershipRating      *int
+	CompetitivePartnershipRating      *int8
 	PrepareToBid                      *bool
 	ClearProjectCode                  bool
 	ProjectCode                       *string
@@ -543,9 +921,18 @@ func (c *TenderUpdateOne) SetInput(i UpdateTenderInput) *TenderUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
-	CreatedAt *time.Time
-	UpdatedAt *time.Time
-	Name      string
+	CreatedAt     *time.Time
+	UpdatedAt     *time.Time
+	Name          string
+	Email         string
+	Username      string
+	OpenID        string
+	AvatarURL     string
+	Disabled      *bool
+	AreaIDs       []xid.ID
+	CustomerIDs   []xid.ID
+	LeaderID      *xid.ID
+	TeamMemberIDs []xid.ID
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
@@ -557,6 +944,25 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 		m.SetUpdatedAt(*v)
 	}
 	m.SetName(i.Name)
+	m.SetEmail(i.Email)
+	m.SetUsername(i.Username)
+	m.SetOpenID(i.OpenID)
+	m.SetAvatarURL(i.AvatarURL)
+	if v := i.Disabled; v != nil {
+		m.SetDisabled(*v)
+	}
+	if v := i.AreaIDs; len(v) > 0 {
+		m.AddAreaIDs(v...)
+	}
+	if v := i.CustomerIDs; len(v) > 0 {
+		m.AddCustomerIDs(v...)
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
+	}
+	if v := i.TeamMemberIDs; len(v) > 0 {
+		m.AddTeamMemberIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateUserInput on the UserCreate builder.
@@ -567,8 +973,24 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
-	UpdatedAt *time.Time
-	Name      *string
+	UpdatedAt           *time.Time
+	Name                *string
+	Email               *string
+	Username            *string
+	OpenID              *string
+	AvatarURL           *string
+	Disabled            *bool
+	ClearAreas          bool
+	AddAreaIDs          []xid.ID
+	RemoveAreaIDs       []xid.ID
+	ClearCustomers      bool
+	AddCustomerIDs      []xid.ID
+	RemoveCustomerIDs   []xid.ID
+	ClearLeader         bool
+	LeaderID            *xid.ID
+	ClearTeamMembers    bool
+	AddTeamMemberIDs    []xid.ID
+	RemoveTeamMemberIDs []xid.ID
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
@@ -578,6 +1000,54 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if v := i.Email; v != nil {
+		m.SetEmail(*v)
+	}
+	if v := i.Username; v != nil {
+		m.SetUsername(*v)
+	}
+	if v := i.OpenID; v != nil {
+		m.SetOpenID(*v)
+	}
+	if v := i.AvatarURL; v != nil {
+		m.SetAvatarURL(*v)
+	}
+	if v := i.Disabled; v != nil {
+		m.SetDisabled(*v)
+	}
+	if i.ClearAreas {
+		m.ClearAreas()
+	}
+	if v := i.AddAreaIDs; len(v) > 0 {
+		m.AddAreaIDs(v...)
+	}
+	if v := i.RemoveAreaIDs; len(v) > 0 {
+		m.RemoveAreaIDs(v...)
+	}
+	if i.ClearCustomers {
+		m.ClearCustomers()
+	}
+	if v := i.AddCustomerIDs; len(v) > 0 {
+		m.AddCustomerIDs(v...)
+	}
+	if v := i.RemoveCustomerIDs; len(v) > 0 {
+		m.RemoveCustomerIDs(v...)
+	}
+	if i.ClearLeader {
+		m.ClearLeader()
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
+	}
+	if i.ClearTeamMembers {
+		m.ClearTeamMembers()
+	}
+	if v := i.AddTeamMemberIDs; len(v) > 0 {
+		m.AddTeamMemberIDs(v...)
+	}
+	if v := i.RemoveTeamMemberIDs; len(v) > 0 {
+		m.RemoveTeamMemberIDs(v...)
 	}
 }
 

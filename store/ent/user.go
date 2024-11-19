@@ -23,8 +23,82 @@ type User struct {
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Name holds the value of the "name" field.
-	Name         string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
+	// Email holds the value of the "email" field.
+	Email string `json:"email,omitempty"`
+	// Username holds the value of the "username" field.
+	Username string `json:"username,omitempty"`
+	// OpenID holds the value of the "open_id" field.
+	OpenID string `json:"open_id,omitempty"`
+	// AvatarURL holds the value of the "avatar_url" field.
+	AvatarURL string `json:"avatar_url,omitempty"`
+	// Disabled holds the value of the "disabled" field.
+	Disabled bool `json:"disabled,omitempty"`
+	// LeaderID holds the value of the "leader_id" field.
+	LeaderID *xid.ID `json:"leader_id,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the UserQuery when eager-loading is set.
+	Edges        UserEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// UserEdges holds the relations/edges for other nodes in the graph.
+type UserEdges struct {
+	// Areas holds the value of the areas edge.
+	Areas []*Area `json:"areas,omitempty"`
+	// Customers holds the value of the customers edge.
+	Customers []*Customer `json:"customers,omitempty"`
+	// Leader holds the value of the leader edge.
+	Leader *User `json:"leader,omitempty"`
+	// TeamMembers holds the value of the team_members edge.
+	TeamMembers []*User `json:"team_members,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [4]bool
+	// totalCount holds the count of the edges above.
+	totalCount [4]map[string]int
+
+	namedAreas       map[string][]*Area
+	namedCustomers   map[string][]*Customer
+	namedTeamMembers map[string][]*User
+}
+
+// AreasOrErr returns the Areas value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) AreasOrErr() ([]*Area, error) {
+	if e.loadedTypes[0] {
+		return e.Areas, nil
+	}
+	return nil, &NotLoadedError{edge: "areas"}
+}
+
+// CustomersOrErr returns the Customers value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) CustomersOrErr() ([]*Customer, error) {
+	if e.loadedTypes[1] {
+		return e.Customers, nil
+	}
+	return nil, &NotLoadedError{edge: "customers"}
+}
+
+// LeaderOrErr returns the Leader value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserEdges) LeaderOrErr() (*User, error) {
+	if e.Leader != nil {
+		return e.Leader, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "leader"}
+}
+
+// TeamMembersOrErr returns the TeamMembers value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) TeamMembersOrErr() ([]*User, error) {
+	if e.loadedTypes[3] {
+		return e.TeamMembers, nil
+	}
+	return nil, &NotLoadedError{edge: "team_members"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -32,7 +106,11 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldName:
+		case user.FieldLeaderID:
+			values[i] = &sql.NullScanner{S: new(xid.ID)}
+		case user.FieldDisabled:
+			values[i] = new(sql.NullBool)
+		case user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldOpenID, user.FieldAvatarURL:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -77,6 +155,43 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Name = value.String
 			}
+		case user.FieldEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field email", values[i])
+			} else if value.Valid {
+				u.Email = value.String
+			}
+		case user.FieldUsername:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field username", values[i])
+			} else if value.Valid {
+				u.Username = value.String
+			}
+		case user.FieldOpenID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field open_id", values[i])
+			} else if value.Valid {
+				u.OpenID = value.String
+			}
+		case user.FieldAvatarURL:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field avatar_url", values[i])
+			} else if value.Valid {
+				u.AvatarURL = value.String
+			}
+		case user.FieldDisabled:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field disabled", values[i])
+			} else if value.Valid {
+				u.Disabled = value.Bool
+			}
+		case user.FieldLeaderID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field leader_id", values[i])
+			} else if value.Valid {
+				u.LeaderID = new(xid.ID)
+				*u.LeaderID = *value.S.(*xid.ID)
+			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
 		}
@@ -88,6 +203,26 @@ func (u *User) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (u *User) Value(name string) (ent.Value, error) {
 	return u.selectValues.Get(name)
+}
+
+// QueryAreas queries the "areas" edge of the User entity.
+func (u *User) QueryAreas() *AreaQuery {
+	return NewUserClient(u.config).QueryAreas(u)
+}
+
+// QueryCustomers queries the "customers" edge of the User entity.
+func (u *User) QueryCustomers() *CustomerQuery {
+	return NewUserClient(u.config).QueryCustomers(u)
+}
+
+// QueryLeader queries the "leader" edge of the User entity.
+func (u *User) QueryLeader() *UserQuery {
+	return NewUserClient(u.config).QueryLeader(u)
+}
+
+// QueryTeamMembers queries the "team_members" edge of the User entity.
+func (u *User) QueryTeamMembers() *UserQuery {
+	return NewUserClient(u.config).QueryTeamMembers(u)
 }
 
 // Update returns a builder for updating this User.
@@ -121,8 +256,100 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(u.Name)
+	builder.WriteString(", ")
+	builder.WriteString("email=")
+	builder.WriteString(u.Email)
+	builder.WriteString(", ")
+	builder.WriteString("username=")
+	builder.WriteString(u.Username)
+	builder.WriteString(", ")
+	builder.WriteString("open_id=")
+	builder.WriteString(u.OpenID)
+	builder.WriteString(", ")
+	builder.WriteString("avatar_url=")
+	builder.WriteString(u.AvatarURL)
+	builder.WriteString(", ")
+	builder.WriteString("disabled=")
+	builder.WriteString(fmt.Sprintf("%v", u.Disabled))
+	builder.WriteString(", ")
+	if v := u.LeaderID; v != nil {
+		builder.WriteString("leader_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedAreas returns the Areas named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedAreas(name string) ([]*Area, error) {
+	if u.Edges.namedAreas == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedAreas[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedAreas(name string, edges ...*Area) {
+	if u.Edges.namedAreas == nil {
+		u.Edges.namedAreas = make(map[string][]*Area)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedAreas[name] = []*Area{}
+	} else {
+		u.Edges.namedAreas[name] = append(u.Edges.namedAreas[name], edges...)
+	}
+}
+
+// NamedCustomers returns the Customers named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedCustomers(name string) ([]*Customer, error) {
+	if u.Edges.namedCustomers == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedCustomers[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedCustomers(name string, edges ...*Customer) {
+	if u.Edges.namedCustomers == nil {
+		u.Edges.namedCustomers = make(map[string][]*Customer)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedCustomers[name] = []*Customer{}
+	} else {
+		u.Edges.namedCustomers[name] = append(u.Edges.namedCustomers[name], edges...)
+	}
+}
+
+// NamedTeamMembers returns the TeamMembers named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedTeamMembers(name string) ([]*User, error) {
+	if u.Edges.namedTeamMembers == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedTeamMembers[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedTeamMembers(name string, edges ...*User) {
+	if u.Edges.namedTeamMembers == nil {
+		u.Edges.namedTeamMembers = make(map[string][]*User)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedTeamMembers[name] = []*User{}
+	} else {
+		u.Edges.namedTeamMembers[name] = append(u.Edges.namedTeamMembers[name], edges...)
+	}
 }
 
 // Users is a parsable slice of User.

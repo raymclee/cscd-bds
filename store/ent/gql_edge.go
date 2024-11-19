@@ -32,6 +32,50 @@ func (a *Area) Tenders(ctx context.Context) (result []*Tender, err error) {
 	return result, err
 }
 
+func (a *Area) Sales(ctx context.Context) (result []*User, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = a.NamedSales(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = a.Edges.SalesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = a.QuerySales().All(ctx)
+	}
+	return result, err
+}
+
+func (c *City) Districts(ctx context.Context) (result []*District, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.DistrictsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryDistricts().All(ctx)
+	}
+	return result, err
+}
+
+func (c *City) Province(ctx context.Context) (*Province, error) {
+	result, err := c.Edges.ProvinceOrErr()
+	if IsNotLoaded(err) {
+		result, err = c.QueryProvince().Only(ctx)
+	}
+	return result, err
+}
+
+func (c *Country) Provinces(ctx context.Context) (result []*Province, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedProvinces(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.ProvincesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryProvinces().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Customer) Area(ctx context.Context) (*Area, error) {
 	result, err := c.Edges.AreaOrErr()
 	if IsNotLoaded(err) {
@@ -52,6 +96,70 @@ func (c *Customer) Tenders(ctx context.Context) (result []*Tender, err error) {
 	return result, err
 }
 
+func (c *Customer) Sales(ctx context.Context) (*User, error) {
+	result, err := c.Edges.SalesOrErr()
+	if IsNotLoaded(err) {
+		result, err = c.QuerySales().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := c.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = c.QueryCreatedBy().Only(ctx)
+	}
+	return result, err
+}
+
+func (d *District) Province(ctx context.Context) (*Province, error) {
+	result, err := d.Edges.ProvinceOrErr()
+	if IsNotLoaded(err) {
+		result, err = d.QueryProvince().Only(ctx)
+	}
+	return result, err
+}
+
+func (d *District) City(ctx context.Context) (*City, error) {
+	result, err := d.Edges.CityOrErr()
+	if IsNotLoaded(err) {
+		result, err = d.QueryCity().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (pr *Province) Districts(ctx context.Context) (result []*District, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pr.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pr.Edges.DistrictsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pr.QueryDistricts().All(ctx)
+	}
+	return result, err
+}
+
+func (pr *Province) Cities(ctx context.Context) (result []*City, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pr.NamedCities(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pr.Edges.CitiesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pr.QueryCities().All(ctx)
+	}
+	return result, err
+}
+
+func (pr *Province) Country(ctx context.Context) (*Country, error) {
+	result, err := pr.Edges.CountryOrErr()
+	if IsNotLoaded(err) {
+		result, err = pr.QueryCountry().Only(ctx)
+	}
+	return result, err
+}
+
 func (t *Tender) Area(ctx context.Context) (*Area, error) {
 	result, err := t.Edges.AreaOrErr()
 	if IsNotLoaded(err) {
@@ -64,6 +172,50 @@ func (t *Tender) Customer(ctx context.Context) (*Customer, error) {
 	result, err := t.Edges.CustomerOrErr()
 	if IsNotLoaded(err) {
 		result, err = t.QueryCustomer().Only(ctx)
+	}
+	return result, err
+}
+
+func (u *User) Areas(ctx context.Context) (result []*Area, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedAreas(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.AreasOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryAreas().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) Customers(ctx context.Context) (result []*Customer, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedCustomers(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.CustomersOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryCustomers().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) Leader(ctx context.Context) (*User, error) {
+	result, err := u.Edges.LeaderOrErr()
+	if IsNotLoaded(err) {
+		result, err = u.QueryLeader().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (u *User) TeamMembers(ctx context.Context) (result []*User, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedTeamMembers(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.TeamMembersOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryTeamMembers().All(ctx)
 	}
 	return result, err
 }

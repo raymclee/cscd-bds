@@ -1,12 +1,12 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { BadgeJapaneseYen, ChartPie, Layers, Layers2Icon } from "lucide-react";
-import { useEffect } from "react";
-import { MyBarChart } from "~/components/bar-chart";
-import { BidChart } from "~/components/bid-chart";
-import { BusinessChart } from "~/components/business-chart";
-import { PercentageChart } from "~/components/percentage-chart";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
+import { createLazyFileRoute } from '@tanstack/react-router'
+import { BadgeJapaneseYen, ChartPie, Layers, Layers2Icon } from 'lucide-react'
+import { useEffect } from 'react'
+import { MyBarChart } from '~/components/bar-chart'
+import { BidChart } from '~/components/bid-chart'
+import { BusinessChart } from '~/components/business-chart'
+import { PercentageChart } from '~/components/percentage-chart'
+import { Card, CardContent, CardHeader } from '~/components/ui/card'
+import { ScrollArea } from '~/components/ui/scroll-area'
 import {
   Table,
   TableBody,
@@ -15,21 +15,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
-import { useMapStore } from "~/store/map";
+} from '~/components/ui/table'
+import { useMapStore } from '~/store/map'
 
-export const Route = createLazyFileRoute("/__map/dashboard")({
+export const Route = createLazyFileRoute('/__map/dashboard')({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const initMap = useMapStore((s) => s.initMap);
+  const initMap = useMapStore((s) => s.initMap)
 
   useEffect(() => {
-    initMap("map", {
-      mapStyle: "amap://styles/darkblue",
-    });
-  }, []);
+    initMap('map', {
+      mapStyle: 'amap://styles/darkblue',
+    })
+  }, [])
 
   return (
     <div className="bg-dashboard min-h-screen relative">
@@ -179,5 +179,5 @@ function RouteComponent() {
         </div>
       </div>
     </div>
-  );
+  )
 }

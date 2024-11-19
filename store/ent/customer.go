@@ -7,6 +7,7 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
+	"cscd-bds/store/ent/user"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -28,11 +29,11 @@ type Customer struct {
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// OwnerType holds the value of the "owner_type" field.
-	OwnerType *int `json:"owner_type,omitempty"`
+	OwnerType *int8 `json:"owner_type,omitempty"`
 	// Industry holds the value of the "industry" field.
-	Industry int `json:"industry,omitempty"`
-	// Status holds the value of the "status" field.
-	Status *int `json:"status,omitempty"`
+	Industry int8 `json:"industry,omitempty"`
+	// Size holds the value of the "size" field.
+	Size *int8 `json:"size,omitempty"`
 	// ContactPerson holds the value of the "contact_person" field.
 	ContactPerson *string `json:"contact_person,omitempty"`
 	// ContactPersonPosition holds the value of the "contact_person_position" field.
@@ -41,14 +42,14 @@ type Customer struct {
 	ContactPersonPhone *string `json:"contact_person_phone,omitempty"`
 	// ContactPersonEmail holds the value of the "contact_person_email" field.
 	ContactPersonEmail *string `json:"contact_person_email,omitempty"`
-	// CustomerOwner holds the value of the "customer_owner" field.
-	CustomerOwner *zht.User `json:"customer_owner,omitempty"`
-	// SalesLeader holds the value of the "sales_leader" field.
-	SalesLeader *zht.User `json:"sales_leader,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy *zht.User `json:"created_by,omitempty"`
+	// FeishuGroup holds the value of the "feishu_group" field.
+	FeishuGroup *zht.Group `json:"feishu_group,omitempty"`
 	// AreaID holds the value of the "area_id" field.
 	AreaID xid.ID `json:"area_id,omitempty"`
+	// SalesID holds the value of the "sales_id" field.
+	SalesID xid.ID `json:"sales_id,omitempty"`
+	// CreatedByUserID holds the value of the "created_by_user_id" field.
+	CreatedByUserID xid.ID `json:"created_by_user_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CustomerQuery when eager-loading is set.
 	Edges        CustomerEdges `json:"edges"`
@@ -61,11 +62,15 @@ type CustomerEdges struct {
 	Area *Area `json:"area,omitempty"`
 	// Tenders holds the value of the tenders edge.
 	Tenders []*Tender `json:"tenders,omitempty"`
+	// Sales holds the value of the sales edge.
+	Sales *User `json:"sales,omitempty"`
+	// CreatedBy holds the value of the created_by edge.
+	CreatedBy *User `json:"created_by,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [4]map[string]int
 
 	namedTenders map[string][]*Tender
 }
@@ -90,20 +95,42 @@ func (e CustomerEdges) TendersOrErr() ([]*Tender, error) {
 	return nil, &NotLoadedError{edge: "tenders"}
 }
 
+// SalesOrErr returns the Sales value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CustomerEdges) SalesOrErr() (*User, error) {
+	if e.Sales != nil {
+		return e.Sales, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "sales"}
+}
+
+// CreatedByOrErr returns the CreatedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CustomerEdges) CreatedByOrErr() (*User, error) {
+	if e.CreatedBy != nil {
+		return e.CreatedBy, nil
+	} else if e.loadedTypes[3] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "created_by"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Customer) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case customer.FieldCustomerOwner, customer.FieldSalesLeader, customer.FieldCreatedBy:
+		case customer.FieldFeishuGroup:
 			values[i] = new([]byte)
-		case customer.FieldOwnerType, customer.FieldIndustry, customer.FieldStatus:
+		case customer.FieldOwnerType, customer.FieldIndustry, customer.FieldSize:
 			values[i] = new(sql.NullInt64)
 		case customer.FieldName, customer.FieldContactPerson, customer.FieldContactPersonPosition, customer.FieldContactPersonPhone, customer.FieldContactPersonEmail:
 			values[i] = new(sql.NullString)
 		case customer.FieldCreatedAt, customer.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case customer.FieldID, customer.FieldAreaID:
+		case customer.FieldID, customer.FieldAreaID, customer.FieldSalesID, customer.FieldCreatedByUserID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -148,21 +175,21 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field owner_type", values[i])
 			} else if value.Valid {
-				c.OwnerType = new(int)
-				*c.OwnerType = int(value.Int64)
+				c.OwnerType = new(int8)
+				*c.OwnerType = int8(value.Int64)
 			}
 		case customer.FieldIndustry:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field industry", values[i])
 			} else if value.Valid {
-				c.Industry = int(value.Int64)
+				c.Industry = int8(value.Int64)
 			}
-		case customer.FieldStatus:
+		case customer.FieldSize:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
+				return fmt.Errorf("unexpected type %T for field size", values[i])
 			} else if value.Valid {
-				c.Status = new(int)
-				*c.Status = int(value.Int64)
+				c.Size = new(int8)
+				*c.Size = int8(value.Int64)
 			}
 		case customer.FieldContactPerson:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -192,28 +219,12 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				c.ContactPersonEmail = new(string)
 				*c.ContactPersonEmail = value.String
 			}
-		case customer.FieldCustomerOwner:
+		case customer.FieldFeishuGroup:
 			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field customer_owner", values[i])
+				return fmt.Errorf("unexpected type %T for field feishu_group", values[i])
 			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &c.CustomerOwner); err != nil {
-					return fmt.Errorf("unmarshal field customer_owner: %w", err)
-				}
-			}
-		case customer.FieldSalesLeader:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field sales_leader", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &c.SalesLeader); err != nil {
-					return fmt.Errorf("unmarshal field sales_leader: %w", err)
-				}
-			}
-		case customer.FieldCreatedBy:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &c.CreatedBy); err != nil {
-					return fmt.Errorf("unmarshal field created_by: %w", err)
+				if err := json.Unmarshal(*value, &c.FeishuGroup); err != nil {
+					return fmt.Errorf("unmarshal field feishu_group: %w", err)
 				}
 			}
 		case customer.FieldAreaID:
@@ -221,6 +232,18 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field area_id", values[i])
 			} else if value != nil {
 				c.AreaID = *value
+			}
+		case customer.FieldSalesID:
+			if value, ok := values[i].(*xid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field sales_id", values[i])
+			} else if value != nil {
+				c.SalesID = *value
+			}
+		case customer.FieldCreatedByUserID:
+			if value, ok := values[i].(*xid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by_user_id", values[i])
+			} else if value != nil {
+				c.CreatedByUserID = *value
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -243,6 +266,16 @@ func (c *Customer) QueryArea() *AreaQuery {
 // QueryTenders queries the "tenders" edge of the Customer entity.
 func (c *Customer) QueryTenders() *TenderQuery {
 	return NewCustomerClient(c.config).QueryTenders(c)
+}
+
+// QuerySales queries the "sales" edge of the Customer entity.
+func (c *Customer) QuerySales() *UserQuery {
+	return NewCustomerClient(c.config).QuerySales(c)
+}
+
+// QueryCreatedBy queries the "created_by" edge of the Customer entity.
+func (c *Customer) QueryCreatedBy() *UserQuery {
+	return NewCustomerClient(c.config).QueryCreatedBy(c)
 }
 
 // Update returns a builder for updating this Customer.
@@ -285,8 +318,8 @@ func (c *Customer) String() string {
 	builder.WriteString("industry=")
 	builder.WriteString(fmt.Sprintf("%v", c.Industry))
 	builder.WriteString(", ")
-	if v := c.Status; v != nil {
-		builder.WriteString("status=")
+	if v := c.Size; v != nil {
+		builder.WriteString("size=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
@@ -310,17 +343,17 @@ func (c *Customer) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("customer_owner=")
-	builder.WriteString(fmt.Sprintf("%v", c.CustomerOwner))
-	builder.WriteString(", ")
-	builder.WriteString("sales_leader=")
-	builder.WriteString(fmt.Sprintf("%v", c.SalesLeader))
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", c.CreatedBy))
+	builder.WriteString("feishu_group=")
+	builder.WriteString(fmt.Sprintf("%v", c.FeishuGroup))
 	builder.WriteString(", ")
 	builder.WriteString("area_id=")
 	builder.WriteString(fmt.Sprintf("%v", c.AreaID))
+	builder.WriteString(", ")
+	builder.WriteString("sales_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.SalesID))
+	builder.WriteString(", ")
+	builder.WriteString("created_by_user_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.CreatedByUserID))
 	builder.WriteByte(')')
 	return builder.String()
 }

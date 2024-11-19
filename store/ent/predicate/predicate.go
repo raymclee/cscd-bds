@@ -9,8 +9,20 @@ import (
 // Area is the predicate function for area builders.
 type Area func(*sql.Selector)
 
+// City is the predicate function for city builders.
+type City func(*sql.Selector)
+
+// Country is the predicate function for country builders.
+type Country func(*sql.Selector)
+
 // Customer is the predicate function for customer builders.
 type Customer func(*sql.Selector)
+
+// District is the predicate function for district builders.
+type District func(*sql.Selector)
+
+// Province is the predicate function for province builders.
+type Province func(*sql.Selector)
 
 // Tender is the predicate function for tender builders.
 type Tender func(*sql.Selector)

@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -62,13 +63,13 @@ func (cc *CustomerCreate) SetName(s string) *CustomerCreate {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (cc *CustomerCreate) SetOwnerType(i int) *CustomerCreate {
+func (cc *CustomerCreate) SetOwnerType(i int8) *CustomerCreate {
 	cc.mutation.SetOwnerType(i)
 	return cc
 }
 
 // SetNillableOwnerType sets the "owner_type" field if the given value is not nil.
-func (cc *CustomerCreate) SetNillableOwnerType(i *int) *CustomerCreate {
+func (cc *CustomerCreate) SetNillableOwnerType(i *int8) *CustomerCreate {
 	if i != nil {
 		cc.SetOwnerType(*i)
 	}
@@ -76,21 +77,21 @@ func (cc *CustomerCreate) SetNillableOwnerType(i *int) *CustomerCreate {
 }
 
 // SetIndustry sets the "industry" field.
-func (cc *CustomerCreate) SetIndustry(i int) *CustomerCreate {
+func (cc *CustomerCreate) SetIndustry(i int8) *CustomerCreate {
 	cc.mutation.SetIndustry(i)
 	return cc
 }
 
-// SetStatus sets the "status" field.
-func (cc *CustomerCreate) SetStatus(i int) *CustomerCreate {
-	cc.mutation.SetStatus(i)
+// SetSize sets the "size" field.
+func (cc *CustomerCreate) SetSize(i int8) *CustomerCreate {
+	cc.mutation.SetSize(i)
 	return cc
 }
 
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (cc *CustomerCreate) SetNillableStatus(i *int) *CustomerCreate {
+// SetNillableSize sets the "size" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableSize(i *int8) *CustomerCreate {
 	if i != nil {
-		cc.SetStatus(*i)
+		cc.SetSize(*i)
 	}
 	return cc
 }
@@ -151,27 +152,35 @@ func (cc *CustomerCreate) SetNillableContactPersonEmail(s *string) *CustomerCrea
 	return cc
 }
 
-// SetCustomerOwner sets the "customer_owner" field.
-func (cc *CustomerCreate) SetCustomerOwner(z *zht.User) *CustomerCreate {
-	cc.mutation.SetCustomerOwner(z)
-	return cc
-}
-
-// SetSalesLeader sets the "sales_leader" field.
-func (cc *CustomerCreate) SetSalesLeader(z *zht.User) *CustomerCreate {
-	cc.mutation.SetSalesLeader(z)
-	return cc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (cc *CustomerCreate) SetCreatedBy(z *zht.User) *CustomerCreate {
-	cc.mutation.SetCreatedBy(z)
+// SetFeishuGroup sets the "feishu_group" field.
+func (cc *CustomerCreate) SetFeishuGroup(z *zht.Group) *CustomerCreate {
+	cc.mutation.SetFeishuGroup(z)
 	return cc
 }
 
 // SetAreaID sets the "area_id" field.
 func (cc *CustomerCreate) SetAreaID(x xid.ID) *CustomerCreate {
 	cc.mutation.SetAreaID(x)
+	return cc
+}
+
+// SetSalesID sets the "sales_id" field.
+func (cc *CustomerCreate) SetSalesID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetSalesID(x)
+	return cc
+}
+
+// SetNillableSalesID sets the "sales_id" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableSalesID(x *xid.ID) *CustomerCreate {
+	if x != nil {
+		cc.SetSalesID(*x)
+	}
+	return cc
+}
+
+// SetCreatedByUserID sets the "created_by_user_id" field.
+func (cc *CustomerCreate) SetCreatedByUserID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetCreatedByUserID(x)
 	return cc
 }
 
@@ -207,6 +216,22 @@ func (cc *CustomerCreate) AddTenders(t ...*Tender) *CustomerCreate {
 		ids[i] = t[i].ID
 	}
 	return cc.AddTenderIDs(ids...)
+}
+
+// SetSales sets the "sales" edge to the User entity.
+func (cc *CustomerCreate) SetSales(u *User) *CustomerCreate {
+	return cc.SetSalesID(u.ID)
+}
+
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
+func (cc *CustomerCreate) SetCreatedByID(id xid.ID) *CustomerCreate {
+	cc.mutation.SetCreatedByID(id)
+	return cc
+}
+
+// SetCreatedBy sets the "created_by" edge to the User entity.
+func (cc *CustomerCreate) SetCreatedBy(u *User) *CustomerCreate {
+	return cc.SetCreatedByID(u.ID)
 }
 
 // Mutation returns the CustomerMutation object of the builder.
@@ -272,14 +297,17 @@ func (cc *CustomerCreate) check() error {
 	if _, ok := cc.mutation.Industry(); !ok {
 		return &ValidationError{Name: "industry", err: errors.New(`ent: missing required field "Customer.industry"`)}
 	}
-	if _, ok := cc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Customer.created_by"`)}
-	}
 	if _, ok := cc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Customer.area_id"`)}
 	}
+	if _, ok := cc.mutation.CreatedByUserID(); !ok {
+		return &ValidationError{Name: "created_by_user_id", err: errors.New(`ent: missing required field "Customer.created_by_user_id"`)}
+	}
 	if len(cc.mutation.AreaIDs()) == 0 {
 		return &ValidationError{Name: "area", err: errors.New(`ent: missing required edge "Customer.area"`)}
+	}
+	if len(cc.mutation.CreatedByIDs()) == 0 {
+		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required edge "Customer.created_by"`)}
 	}
 	return nil
 }
@@ -330,16 +358,16 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		_node.Name = value
 	}
 	if value, ok := cc.mutation.OwnerType(); ok {
-		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
+		_spec.SetField(customer.FieldOwnerType, field.TypeInt8, value)
 		_node.OwnerType = &value
 	}
 	if value, ok := cc.mutation.Industry(); ok {
-		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
+		_spec.SetField(customer.FieldIndustry, field.TypeInt8, value)
 		_node.Industry = value
 	}
-	if value, ok := cc.mutation.Status(); ok {
-		_spec.SetField(customer.FieldStatus, field.TypeInt, value)
-		_node.Status = &value
+	if value, ok := cc.mutation.Size(); ok {
+		_spec.SetField(customer.FieldSize, field.TypeInt8, value)
+		_node.Size = &value
 	}
 	if value, ok := cc.mutation.ContactPerson(); ok {
 		_spec.SetField(customer.FieldContactPerson, field.TypeString, value)
@@ -357,17 +385,9 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		_spec.SetField(customer.FieldContactPersonEmail, field.TypeString, value)
 		_node.ContactPersonEmail = &value
 	}
-	if value, ok := cc.mutation.CustomerOwner(); ok {
-		_spec.SetField(customer.FieldCustomerOwner, field.TypeJSON, value)
-		_node.CustomerOwner = value
-	}
-	if value, ok := cc.mutation.SalesLeader(); ok {
-		_spec.SetField(customer.FieldSalesLeader, field.TypeJSON, value)
-		_node.SalesLeader = value
-	}
-	if value, ok := cc.mutation.CreatedBy(); ok {
-		_spec.SetField(customer.FieldCreatedBy, field.TypeJSON, value)
-		_node.CreatedBy = value
+	if value, ok := cc.mutation.FeishuGroup(); ok {
+		_spec.SetField(customer.FieldFeishuGroup, field.TypeJSON, value)
+		_node.FeishuGroup = value
 	}
 	if nodes := cc.mutation.AreaIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -400,6 +420,40 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.SalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customer.SalesTable,
+			Columns: []string{customer.SalesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.SalesID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.CreatedByTable,
+			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CreatedByUserID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -479,7 +533,7 @@ func (u *CustomerUpsert) UpdateName() *CustomerUpsert {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (u *CustomerUpsert) SetOwnerType(v int) *CustomerUpsert {
+func (u *CustomerUpsert) SetOwnerType(v int8) *CustomerUpsert {
 	u.Set(customer.FieldOwnerType, v)
 	return u
 }
@@ -491,7 +545,7 @@ func (u *CustomerUpsert) UpdateOwnerType() *CustomerUpsert {
 }
 
 // AddOwnerType adds v to the "owner_type" field.
-func (u *CustomerUpsert) AddOwnerType(v int) *CustomerUpsert {
+func (u *CustomerUpsert) AddOwnerType(v int8) *CustomerUpsert {
 	u.Add(customer.FieldOwnerType, v)
 	return u
 }
@@ -503,7 +557,7 @@ func (u *CustomerUpsert) ClearOwnerType() *CustomerUpsert {
 }
 
 // SetIndustry sets the "industry" field.
-func (u *CustomerUpsert) SetIndustry(v int) *CustomerUpsert {
+func (u *CustomerUpsert) SetIndustry(v int8) *CustomerUpsert {
 	u.Set(customer.FieldIndustry, v)
 	return u
 }
@@ -515,32 +569,32 @@ func (u *CustomerUpsert) UpdateIndustry() *CustomerUpsert {
 }
 
 // AddIndustry adds v to the "industry" field.
-func (u *CustomerUpsert) AddIndustry(v int) *CustomerUpsert {
+func (u *CustomerUpsert) AddIndustry(v int8) *CustomerUpsert {
 	u.Add(customer.FieldIndustry, v)
 	return u
 }
 
-// SetStatus sets the "status" field.
-func (u *CustomerUpsert) SetStatus(v int) *CustomerUpsert {
-	u.Set(customer.FieldStatus, v)
+// SetSize sets the "size" field.
+func (u *CustomerUpsert) SetSize(v int8) *CustomerUpsert {
+	u.Set(customer.FieldSize, v)
 	return u
 }
 
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *CustomerUpsert) UpdateStatus() *CustomerUpsert {
-	u.SetExcluded(customer.FieldStatus)
+// UpdateSize sets the "size" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateSize() *CustomerUpsert {
+	u.SetExcluded(customer.FieldSize)
 	return u
 }
 
-// AddStatus adds v to the "status" field.
-func (u *CustomerUpsert) AddStatus(v int) *CustomerUpsert {
-	u.Add(customer.FieldStatus, v)
+// AddSize adds v to the "size" field.
+func (u *CustomerUpsert) AddSize(v int8) *CustomerUpsert {
+	u.Add(customer.FieldSize, v)
 	return u
 }
 
-// ClearStatus clears the value of the "status" field.
-func (u *CustomerUpsert) ClearStatus() *CustomerUpsert {
-	u.SetNull(customer.FieldStatus)
+// ClearSize clears the value of the "size" field.
+func (u *CustomerUpsert) ClearSize() *CustomerUpsert {
+	u.SetNull(customer.FieldSize)
 	return u
 }
 
@@ -616,51 +670,21 @@ func (u *CustomerUpsert) ClearContactPersonEmail() *CustomerUpsert {
 	return u
 }
 
-// SetCustomerOwner sets the "customer_owner" field.
-func (u *CustomerUpsert) SetCustomerOwner(v *zht.User) *CustomerUpsert {
-	u.Set(customer.FieldCustomerOwner, v)
+// SetFeishuGroup sets the "feishu_group" field.
+func (u *CustomerUpsert) SetFeishuGroup(v *zht.Group) *CustomerUpsert {
+	u.Set(customer.FieldFeishuGroup, v)
 	return u
 }
 
-// UpdateCustomerOwner sets the "customer_owner" field to the value that was provided on create.
-func (u *CustomerUpsert) UpdateCustomerOwner() *CustomerUpsert {
-	u.SetExcluded(customer.FieldCustomerOwner)
+// UpdateFeishuGroup sets the "feishu_group" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateFeishuGroup() *CustomerUpsert {
+	u.SetExcluded(customer.FieldFeishuGroup)
 	return u
 }
 
-// ClearCustomerOwner clears the value of the "customer_owner" field.
-func (u *CustomerUpsert) ClearCustomerOwner() *CustomerUpsert {
-	u.SetNull(customer.FieldCustomerOwner)
-	return u
-}
-
-// SetSalesLeader sets the "sales_leader" field.
-func (u *CustomerUpsert) SetSalesLeader(v *zht.User) *CustomerUpsert {
-	u.Set(customer.FieldSalesLeader, v)
-	return u
-}
-
-// UpdateSalesLeader sets the "sales_leader" field to the value that was provided on create.
-func (u *CustomerUpsert) UpdateSalesLeader() *CustomerUpsert {
-	u.SetExcluded(customer.FieldSalesLeader)
-	return u
-}
-
-// ClearSalesLeader clears the value of the "sales_leader" field.
-func (u *CustomerUpsert) ClearSalesLeader() *CustomerUpsert {
-	u.SetNull(customer.FieldSalesLeader)
-	return u
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (u *CustomerUpsert) SetCreatedBy(v *zht.User) *CustomerUpsert {
-	u.Set(customer.FieldCreatedBy, v)
-	return u
-}
-
-// UpdateCreatedBy sets the "created_by" field to the value that was provided on create.
-func (u *CustomerUpsert) UpdateCreatedBy() *CustomerUpsert {
-	u.SetExcluded(customer.FieldCreatedBy)
+// ClearFeishuGroup clears the value of the "feishu_group" field.
+func (u *CustomerUpsert) ClearFeishuGroup() *CustomerUpsert {
+	u.SetNull(customer.FieldFeishuGroup)
 	return u
 }
 
@@ -673,6 +697,36 @@ func (u *CustomerUpsert) SetAreaID(v xid.ID) *CustomerUpsert {
 // UpdateAreaID sets the "area_id" field to the value that was provided on create.
 func (u *CustomerUpsert) UpdateAreaID() *CustomerUpsert {
 	u.SetExcluded(customer.FieldAreaID)
+	return u
+}
+
+// SetSalesID sets the "sales_id" field.
+func (u *CustomerUpsert) SetSalesID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldSalesID, v)
+	return u
+}
+
+// UpdateSalesID sets the "sales_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateSalesID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldSalesID)
+	return u
+}
+
+// ClearSalesID clears the value of the "sales_id" field.
+func (u *CustomerUpsert) ClearSalesID() *CustomerUpsert {
+	u.SetNull(customer.FieldSalesID)
+	return u
+}
+
+// SetCreatedByUserID sets the "created_by_user_id" field.
+func (u *CustomerUpsert) SetCreatedByUserID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldCreatedByUserID, v)
+	return u
+}
+
+// UpdateCreatedByUserID sets the "created_by_user_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateCreatedByUserID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldCreatedByUserID)
 	return u
 }
 
@@ -756,14 +810,14 @@ func (u *CustomerUpsertOne) UpdateName() *CustomerUpsertOne {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (u *CustomerUpsertOne) SetOwnerType(v int) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) SetOwnerType(v int8) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetOwnerType(v)
 	})
 }
 
 // AddOwnerType adds v to the "owner_type" field.
-func (u *CustomerUpsertOne) AddOwnerType(v int) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) AddOwnerType(v int8) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddOwnerType(v)
 	})
@@ -784,14 +838,14 @@ func (u *CustomerUpsertOne) ClearOwnerType() *CustomerUpsertOne {
 }
 
 // SetIndustry sets the "industry" field.
-func (u *CustomerUpsertOne) SetIndustry(v int) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) SetIndustry(v int8) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetIndustry(v)
 	})
 }
 
 // AddIndustry adds v to the "industry" field.
-func (u *CustomerUpsertOne) AddIndustry(v int) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) AddIndustry(v int8) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddIndustry(v)
 	})
@@ -804,31 +858,31 @@ func (u *CustomerUpsertOne) UpdateIndustry() *CustomerUpsertOne {
 	})
 }
 
-// SetStatus sets the "status" field.
-func (u *CustomerUpsertOne) SetStatus(v int) *CustomerUpsertOne {
+// SetSize sets the "size" field.
+func (u *CustomerUpsertOne) SetSize(v int8) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetStatus(v)
+		s.SetSize(v)
 	})
 }
 
-// AddStatus adds v to the "status" field.
-func (u *CustomerUpsertOne) AddStatus(v int) *CustomerUpsertOne {
+// AddSize adds v to the "size" field.
+func (u *CustomerUpsertOne) AddSize(v int8) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.AddStatus(v)
+		s.AddSize(v)
 	})
 }
 
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *CustomerUpsertOne) UpdateStatus() *CustomerUpsertOne {
+// UpdateSize sets the "size" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateSize() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateStatus()
+		s.UpdateSize()
 	})
 }
 
-// ClearStatus clears the value of the "status" field.
-func (u *CustomerUpsertOne) ClearStatus() *CustomerUpsertOne {
+// ClearSize clears the value of the "size" field.
+func (u *CustomerUpsertOne) ClearSize() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.ClearStatus()
+		s.ClearSize()
 	})
 }
 
@@ -916,59 +970,24 @@ func (u *CustomerUpsertOne) ClearContactPersonEmail() *CustomerUpsertOne {
 	})
 }
 
-// SetCustomerOwner sets the "customer_owner" field.
-func (u *CustomerUpsertOne) SetCustomerOwner(v *zht.User) *CustomerUpsertOne {
+// SetFeishuGroup sets the "feishu_group" field.
+func (u *CustomerUpsertOne) SetFeishuGroup(v *zht.Group) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetCustomerOwner(v)
+		s.SetFeishuGroup(v)
 	})
 }
 
-// UpdateCustomerOwner sets the "customer_owner" field to the value that was provided on create.
-func (u *CustomerUpsertOne) UpdateCustomerOwner() *CustomerUpsertOne {
+// UpdateFeishuGroup sets the "feishu_group" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateFeishuGroup() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateCustomerOwner()
+		s.UpdateFeishuGroup()
 	})
 }
 
-// ClearCustomerOwner clears the value of the "customer_owner" field.
-func (u *CustomerUpsertOne) ClearCustomerOwner() *CustomerUpsertOne {
+// ClearFeishuGroup clears the value of the "feishu_group" field.
+func (u *CustomerUpsertOne) ClearFeishuGroup() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
-		s.ClearCustomerOwner()
-	})
-}
-
-// SetSalesLeader sets the "sales_leader" field.
-func (u *CustomerUpsertOne) SetSalesLeader(v *zht.User) *CustomerUpsertOne {
-	return u.Update(func(s *CustomerUpsert) {
-		s.SetSalesLeader(v)
-	})
-}
-
-// UpdateSalesLeader sets the "sales_leader" field to the value that was provided on create.
-func (u *CustomerUpsertOne) UpdateSalesLeader() *CustomerUpsertOne {
-	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateSalesLeader()
-	})
-}
-
-// ClearSalesLeader clears the value of the "sales_leader" field.
-func (u *CustomerUpsertOne) ClearSalesLeader() *CustomerUpsertOne {
-	return u.Update(func(s *CustomerUpsert) {
-		s.ClearSalesLeader()
-	})
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (u *CustomerUpsertOne) SetCreatedBy(v *zht.User) *CustomerUpsertOne {
-	return u.Update(func(s *CustomerUpsert) {
-		s.SetCreatedBy(v)
-	})
-}
-
-// UpdateCreatedBy sets the "created_by" field to the value that was provided on create.
-func (u *CustomerUpsertOne) UpdateCreatedBy() *CustomerUpsertOne {
-	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateCreatedBy()
+		s.ClearFeishuGroup()
 	})
 }
 
@@ -983,6 +1002,41 @@ func (u *CustomerUpsertOne) SetAreaID(v xid.ID) *CustomerUpsertOne {
 func (u *CustomerUpsertOne) UpdateAreaID() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.UpdateAreaID()
+	})
+}
+
+// SetSalesID sets the "sales_id" field.
+func (u *CustomerUpsertOne) SetSalesID(v xid.ID) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetSalesID(v)
+	})
+}
+
+// UpdateSalesID sets the "sales_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateSalesID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateSalesID()
+	})
+}
+
+// ClearSalesID clears the value of the "sales_id" field.
+func (u *CustomerUpsertOne) ClearSalesID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearSalesID()
+	})
+}
+
+// SetCreatedByUserID sets the "created_by_user_id" field.
+func (u *CustomerUpsertOne) SetCreatedByUserID(v xid.ID) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetCreatedByUserID(v)
+	})
+}
+
+// UpdateCreatedByUserID sets the "created_by_user_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateCreatedByUserID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateCreatedByUserID()
 	})
 }
 
@@ -1233,14 +1287,14 @@ func (u *CustomerUpsertBulk) UpdateName() *CustomerUpsertBulk {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (u *CustomerUpsertBulk) SetOwnerType(v int) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) SetOwnerType(v int8) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetOwnerType(v)
 	})
 }
 
 // AddOwnerType adds v to the "owner_type" field.
-func (u *CustomerUpsertBulk) AddOwnerType(v int) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) AddOwnerType(v int8) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddOwnerType(v)
 	})
@@ -1261,14 +1315,14 @@ func (u *CustomerUpsertBulk) ClearOwnerType() *CustomerUpsertBulk {
 }
 
 // SetIndustry sets the "industry" field.
-func (u *CustomerUpsertBulk) SetIndustry(v int) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) SetIndustry(v int8) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetIndustry(v)
 	})
 }
 
 // AddIndustry adds v to the "industry" field.
-func (u *CustomerUpsertBulk) AddIndustry(v int) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) AddIndustry(v int8) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddIndustry(v)
 	})
@@ -1281,31 +1335,31 @@ func (u *CustomerUpsertBulk) UpdateIndustry() *CustomerUpsertBulk {
 	})
 }
 
-// SetStatus sets the "status" field.
-func (u *CustomerUpsertBulk) SetStatus(v int) *CustomerUpsertBulk {
+// SetSize sets the "size" field.
+func (u *CustomerUpsertBulk) SetSize(v int8) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetStatus(v)
+		s.SetSize(v)
 	})
 }
 
-// AddStatus adds v to the "status" field.
-func (u *CustomerUpsertBulk) AddStatus(v int) *CustomerUpsertBulk {
+// AddSize adds v to the "size" field.
+func (u *CustomerUpsertBulk) AddSize(v int8) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.AddStatus(v)
+		s.AddSize(v)
 	})
 }
 
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *CustomerUpsertBulk) UpdateStatus() *CustomerUpsertBulk {
+// UpdateSize sets the "size" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateSize() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateStatus()
+		s.UpdateSize()
 	})
 }
 
-// ClearStatus clears the value of the "status" field.
-func (u *CustomerUpsertBulk) ClearStatus() *CustomerUpsertBulk {
+// ClearSize clears the value of the "size" field.
+func (u *CustomerUpsertBulk) ClearSize() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.ClearStatus()
+		s.ClearSize()
 	})
 }
 
@@ -1393,59 +1447,24 @@ func (u *CustomerUpsertBulk) ClearContactPersonEmail() *CustomerUpsertBulk {
 	})
 }
 
-// SetCustomerOwner sets the "customer_owner" field.
-func (u *CustomerUpsertBulk) SetCustomerOwner(v *zht.User) *CustomerUpsertBulk {
+// SetFeishuGroup sets the "feishu_group" field.
+func (u *CustomerUpsertBulk) SetFeishuGroup(v *zht.Group) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.SetCustomerOwner(v)
+		s.SetFeishuGroup(v)
 	})
 }
 
-// UpdateCustomerOwner sets the "customer_owner" field to the value that was provided on create.
-func (u *CustomerUpsertBulk) UpdateCustomerOwner() *CustomerUpsertBulk {
+// UpdateFeishuGroup sets the "feishu_group" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateFeishuGroup() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateCustomerOwner()
+		s.UpdateFeishuGroup()
 	})
 }
 
-// ClearCustomerOwner clears the value of the "customer_owner" field.
-func (u *CustomerUpsertBulk) ClearCustomerOwner() *CustomerUpsertBulk {
+// ClearFeishuGroup clears the value of the "feishu_group" field.
+func (u *CustomerUpsertBulk) ClearFeishuGroup() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
-		s.ClearCustomerOwner()
-	})
-}
-
-// SetSalesLeader sets the "sales_leader" field.
-func (u *CustomerUpsertBulk) SetSalesLeader(v *zht.User) *CustomerUpsertBulk {
-	return u.Update(func(s *CustomerUpsert) {
-		s.SetSalesLeader(v)
-	})
-}
-
-// UpdateSalesLeader sets the "sales_leader" field to the value that was provided on create.
-func (u *CustomerUpsertBulk) UpdateSalesLeader() *CustomerUpsertBulk {
-	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateSalesLeader()
-	})
-}
-
-// ClearSalesLeader clears the value of the "sales_leader" field.
-func (u *CustomerUpsertBulk) ClearSalesLeader() *CustomerUpsertBulk {
-	return u.Update(func(s *CustomerUpsert) {
-		s.ClearSalesLeader()
-	})
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (u *CustomerUpsertBulk) SetCreatedBy(v *zht.User) *CustomerUpsertBulk {
-	return u.Update(func(s *CustomerUpsert) {
-		s.SetCreatedBy(v)
-	})
-}
-
-// UpdateCreatedBy sets the "created_by" field to the value that was provided on create.
-func (u *CustomerUpsertBulk) UpdateCreatedBy() *CustomerUpsertBulk {
-	return u.Update(func(s *CustomerUpsert) {
-		s.UpdateCreatedBy()
+		s.ClearFeishuGroup()
 	})
 }
 
@@ -1460,6 +1479,41 @@ func (u *CustomerUpsertBulk) SetAreaID(v xid.ID) *CustomerUpsertBulk {
 func (u *CustomerUpsertBulk) UpdateAreaID() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.UpdateAreaID()
+	})
+}
+
+// SetSalesID sets the "sales_id" field.
+func (u *CustomerUpsertBulk) SetSalesID(v xid.ID) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetSalesID(v)
+	})
+}
+
+// UpdateSalesID sets the "sales_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateSalesID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateSalesID()
+	})
+}
+
+// ClearSalesID clears the value of the "sales_id" field.
+func (u *CustomerUpsertBulk) ClearSalesID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearSalesID()
+	})
+}
+
+// SetCreatedByUserID sets the "created_by_user_id" field.
+func (u *CustomerUpsertBulk) SetCreatedByUserID(v xid.ID) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetCreatedByUserID(v)
+	})
+}
+
+// UpdateCreatedByUserID sets the "created_by_user_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateCreatedByUserID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateCreatedByUserID()
 	})
 }
 

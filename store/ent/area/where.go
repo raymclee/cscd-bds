@@ -332,6 +332,29 @@ func HasTendersWith(preds ...predicate.Tender) predicate.Area {
 	})
 }
 
+// HasSales applies the HasEdge predicate on the "sales" edge.
+func HasSales() predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, SalesTable, SalesPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSalesWith applies the HasEdge predicate on the "sales" edge with a given conditions (other predicates).
+func HasSalesWith(preds ...predicate.User) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		step := newSalesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Area) predicate.Area {
 	return predicate.Area(sql.AndPredicates(predicates...))

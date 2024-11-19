@@ -5,7 +5,11 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -15,7 +19,11 @@ import (
 // prefixMap maps xid prefixes to table names.
 var prefixMap = map[xid.ID]string{
 	{V: "AR"}: area.Table,
+	{V: "CI"}: city.Table,
+	{V: "CO"}: country.Table,
 	{V: "CU"}: customer.Table,
+	{V: "DI"}: district.Table,
+	{V: "PR"}: province.Table,
 	{V: "TE"}: tender.Table,
 	{V: "US"}: user.Table,
 }

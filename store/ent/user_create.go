@@ -4,6 +4,8 @@ package ent
 
 import (
 	"context"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/user"
 	"errors"
@@ -58,6 +60,58 @@ func (uc *UserCreate) SetName(s string) *UserCreate {
 	return uc
 }
 
+// SetEmail sets the "email" field.
+func (uc *UserCreate) SetEmail(s string) *UserCreate {
+	uc.mutation.SetEmail(s)
+	return uc
+}
+
+// SetUsername sets the "username" field.
+func (uc *UserCreate) SetUsername(s string) *UserCreate {
+	uc.mutation.SetUsername(s)
+	return uc
+}
+
+// SetOpenID sets the "open_id" field.
+func (uc *UserCreate) SetOpenID(s string) *UserCreate {
+	uc.mutation.SetOpenID(s)
+	return uc
+}
+
+// SetAvatarURL sets the "avatar_url" field.
+func (uc *UserCreate) SetAvatarURL(s string) *UserCreate {
+	uc.mutation.SetAvatarURL(s)
+	return uc
+}
+
+// SetDisabled sets the "disabled" field.
+func (uc *UserCreate) SetDisabled(b bool) *UserCreate {
+	uc.mutation.SetDisabled(b)
+	return uc
+}
+
+// SetNillableDisabled sets the "disabled" field if the given value is not nil.
+func (uc *UserCreate) SetNillableDisabled(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetDisabled(*b)
+	}
+	return uc
+}
+
+// SetLeaderID sets the "leader_id" field.
+func (uc *UserCreate) SetLeaderID(x xid.ID) *UserCreate {
+	uc.mutation.SetLeaderID(x)
+	return uc
+}
+
+// SetNillableLeaderID sets the "leader_id" field if the given value is not nil.
+func (uc *UserCreate) SetNillableLeaderID(x *xid.ID) *UserCreate {
+	if x != nil {
+		uc.SetLeaderID(*x)
+	}
+	return uc
+}
+
 // SetID sets the "id" field.
 func (uc *UserCreate) SetID(x xid.ID) *UserCreate {
 	uc.mutation.SetID(x)
@@ -70,6 +124,56 @@ func (uc *UserCreate) SetNillableID(x *xid.ID) *UserCreate {
 		uc.SetID(*x)
 	}
 	return uc
+}
+
+// AddAreaIDs adds the "areas" edge to the Area entity by IDs.
+func (uc *UserCreate) AddAreaIDs(ids ...xid.ID) *UserCreate {
+	uc.mutation.AddAreaIDs(ids...)
+	return uc
+}
+
+// AddAreas adds the "areas" edges to the Area entity.
+func (uc *UserCreate) AddAreas(a ...*Area) *UserCreate {
+	ids := make([]xid.ID, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uc.AddAreaIDs(ids...)
+}
+
+// AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
+func (uc *UserCreate) AddCustomerIDs(ids ...xid.ID) *UserCreate {
+	uc.mutation.AddCustomerIDs(ids...)
+	return uc
+}
+
+// AddCustomers adds the "customers" edges to the Customer entity.
+func (uc *UserCreate) AddCustomers(c ...*Customer) *UserCreate {
+	ids := make([]xid.ID, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uc.AddCustomerIDs(ids...)
+}
+
+// SetLeader sets the "leader" edge to the User entity.
+func (uc *UserCreate) SetLeader(u *User) *UserCreate {
+	return uc.SetLeaderID(u.ID)
+}
+
+// AddTeamMemberIDs adds the "team_members" edge to the User entity by IDs.
+func (uc *UserCreate) AddTeamMemberIDs(ids ...xid.ID) *UserCreate {
+	uc.mutation.AddTeamMemberIDs(ids...)
+	return uc
+}
+
+// AddTeamMembers adds the "team_members" edges to the User entity.
+func (uc *UserCreate) AddTeamMembers(u ...*User) *UserCreate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return uc.AddTeamMemberIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -115,6 +219,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultUpdatedAt()
 		uc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := uc.mutation.Disabled(); !ok {
+		v := user.DefaultDisabled
+		uc.mutation.SetDisabled(v)
+	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
 		uc.mutation.SetID(v)
@@ -131,6 +239,21 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "User.name"`)}
+	}
+	if _, ok := uc.mutation.Email(); !ok {
+		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
+	}
+	if _, ok := uc.mutation.Username(); !ok {
+		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
+	}
+	if _, ok := uc.mutation.OpenID(); !ok {
+		return &ValidationError{Name: "open_id", err: errors.New(`ent: missing required field "User.open_id"`)}
+	}
+	if _, ok := uc.mutation.AvatarURL(); !ok {
+		return &ValidationError{Name: "avatar_url", err: errors.New(`ent: missing required field "User.avatar_url"`)}
+	}
+	if _, ok := uc.mutation.Disabled(); !ok {
+		return &ValidationError{Name: "disabled", err: errors.New(`ent: missing required field "User.disabled"`)}
 	}
 	return nil
 }
@@ -179,6 +302,91 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := uc.mutation.Email(); ok {
+		_spec.SetField(user.FieldEmail, field.TypeString, value)
+		_node.Email = value
+	}
+	if value, ok := uc.mutation.Username(); ok {
+		_spec.SetField(user.FieldUsername, field.TypeString, value)
+		_node.Username = value
+	}
+	if value, ok := uc.mutation.OpenID(); ok {
+		_spec.SetField(user.FieldOpenID, field.TypeString, value)
+		_node.OpenID = value
+	}
+	if value, ok := uc.mutation.AvatarURL(); ok {
+		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
+		_node.AvatarURL = value
+	}
+	if value, ok := uc.mutation.Disabled(); ok {
+		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+		_node.Disabled = value
+	}
+	if nodes := uc.mutation.AreasIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.CustomersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.LeaderID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.TeamMembersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
@@ -253,6 +461,84 @@ func (u *UserUpsert) SetName(v string) *UserUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *UserUpsert) UpdateName() *UserUpsert {
 	u.SetExcluded(user.FieldName)
+	return u
+}
+
+// SetEmail sets the "email" field.
+func (u *UserUpsert) SetEmail(v string) *UserUpsert {
+	u.Set(user.FieldEmail, v)
+	return u
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *UserUpsert) UpdateEmail() *UserUpsert {
+	u.SetExcluded(user.FieldEmail)
+	return u
+}
+
+// SetUsername sets the "username" field.
+func (u *UserUpsert) SetUsername(v string) *UserUpsert {
+	u.Set(user.FieldUsername, v)
+	return u
+}
+
+// UpdateUsername sets the "username" field to the value that was provided on create.
+func (u *UserUpsert) UpdateUsername() *UserUpsert {
+	u.SetExcluded(user.FieldUsername)
+	return u
+}
+
+// SetOpenID sets the "open_id" field.
+func (u *UserUpsert) SetOpenID(v string) *UserUpsert {
+	u.Set(user.FieldOpenID, v)
+	return u
+}
+
+// UpdateOpenID sets the "open_id" field to the value that was provided on create.
+func (u *UserUpsert) UpdateOpenID() *UserUpsert {
+	u.SetExcluded(user.FieldOpenID)
+	return u
+}
+
+// SetAvatarURL sets the "avatar_url" field.
+func (u *UserUpsert) SetAvatarURL(v string) *UserUpsert {
+	u.Set(user.FieldAvatarURL, v)
+	return u
+}
+
+// UpdateAvatarURL sets the "avatar_url" field to the value that was provided on create.
+func (u *UserUpsert) UpdateAvatarURL() *UserUpsert {
+	u.SetExcluded(user.FieldAvatarURL)
+	return u
+}
+
+// SetDisabled sets the "disabled" field.
+func (u *UserUpsert) SetDisabled(v bool) *UserUpsert {
+	u.Set(user.FieldDisabled, v)
+	return u
+}
+
+// UpdateDisabled sets the "disabled" field to the value that was provided on create.
+func (u *UserUpsert) UpdateDisabled() *UserUpsert {
+	u.SetExcluded(user.FieldDisabled)
+	return u
+}
+
+// SetLeaderID sets the "leader_id" field.
+func (u *UserUpsert) SetLeaderID(v xid.ID) *UserUpsert {
+	u.Set(user.FieldLeaderID, v)
+	return u
+}
+
+// UpdateLeaderID sets the "leader_id" field to the value that was provided on create.
+func (u *UserUpsert) UpdateLeaderID() *UserUpsert {
+	u.SetExcluded(user.FieldLeaderID)
+	return u
+}
+
+// ClearLeaderID clears the value of the "leader_id" field.
+func (u *UserUpsert) ClearLeaderID() *UserUpsert {
+	u.SetNull(user.FieldLeaderID)
 	return u
 }
 
@@ -332,6 +618,97 @@ func (u *UserUpsertOne) SetName(v string) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateName() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetEmail sets the "email" field.
+func (u *UserUpsertOne) SetEmail(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateEmail() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateEmail()
+	})
+}
+
+// SetUsername sets the "username" field.
+func (u *UserUpsertOne) SetUsername(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetUsername(v)
+	})
+}
+
+// UpdateUsername sets the "username" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateUsername() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateUsername()
+	})
+}
+
+// SetOpenID sets the "open_id" field.
+func (u *UserUpsertOne) SetOpenID(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetOpenID(v)
+	})
+}
+
+// UpdateOpenID sets the "open_id" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateOpenID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateOpenID()
+	})
+}
+
+// SetAvatarURL sets the "avatar_url" field.
+func (u *UserUpsertOne) SetAvatarURL(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetAvatarURL(v)
+	})
+}
+
+// UpdateAvatarURL sets the "avatar_url" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateAvatarURL() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateAvatarURL()
+	})
+}
+
+// SetDisabled sets the "disabled" field.
+func (u *UserUpsertOne) SetDisabled(v bool) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetDisabled(v)
+	})
+}
+
+// UpdateDisabled sets the "disabled" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateDisabled() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateDisabled()
+	})
+}
+
+// SetLeaderID sets the "leader_id" field.
+func (u *UserUpsertOne) SetLeaderID(v xid.ID) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetLeaderID(v)
+	})
+}
+
+// UpdateLeaderID sets the "leader_id" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateLeaderID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateLeaderID()
+	})
+}
+
+// ClearLeaderID clears the value of the "leader_id" field.
+func (u *UserUpsertOne) ClearLeaderID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearLeaderID()
 	})
 }
 
@@ -578,6 +955,97 @@ func (u *UserUpsertBulk) SetName(v string) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateName() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetEmail sets the "email" field.
+func (u *UserUpsertBulk) SetEmail(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateEmail() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateEmail()
+	})
+}
+
+// SetUsername sets the "username" field.
+func (u *UserUpsertBulk) SetUsername(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetUsername(v)
+	})
+}
+
+// UpdateUsername sets the "username" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateUsername() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateUsername()
+	})
+}
+
+// SetOpenID sets the "open_id" field.
+func (u *UserUpsertBulk) SetOpenID(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetOpenID(v)
+	})
+}
+
+// UpdateOpenID sets the "open_id" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateOpenID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateOpenID()
+	})
+}
+
+// SetAvatarURL sets the "avatar_url" field.
+func (u *UserUpsertBulk) SetAvatarURL(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetAvatarURL(v)
+	})
+}
+
+// UpdateAvatarURL sets the "avatar_url" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateAvatarURL() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateAvatarURL()
+	})
+}
+
+// SetDisabled sets the "disabled" field.
+func (u *UserUpsertBulk) SetDisabled(v bool) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetDisabled(v)
+	})
+}
+
+// UpdateDisabled sets the "disabled" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateDisabled() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateDisabled()
+	})
+}
+
+// SetLeaderID sets the "leader_id" field.
+func (u *UserUpsertBulk) SetLeaderID(v xid.ID) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetLeaderID(v)
+	})
+}
+
+// UpdateLeaderID sets the "leader_id" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateLeaderID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateLeaderID()
+	})
+}
+
+// ClearLeaderID clears the value of the "leader_id" field.
+func (u *UserUpsertBulk) ClearLeaderID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearLeaderID()
 	})
 }
 

@@ -5,7 +5,11 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"errors"
@@ -77,7 +81,11 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			area.Table:     area.ValidColumn,
+			city.Table:     city.ValidColumn,
+			country.Table:  country.ValidColumn,
 			customer.Table: customer.ValidColumn,
+			district.Table: district.ValidColumn,
+			province.Table: province.ValidColumn,
 			tender.Table:   tender.ValidColumn,
 			user.Table:     user.ValidColumn,
 		})

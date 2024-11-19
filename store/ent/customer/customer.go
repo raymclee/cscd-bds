@@ -25,8 +25,8 @@ const (
 	FieldOwnerType = "owner_type"
 	// FieldIndustry holds the string denoting the industry field in the database.
 	FieldIndustry = "industry"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
+	// FieldSize holds the string denoting the size field in the database.
+	FieldSize = "size"
 	// FieldContactPerson holds the string denoting the contact_person field in the database.
 	FieldContactPerson = "contact_person"
 	// FieldContactPersonPosition holds the string denoting the contact_person_position field in the database.
@@ -35,18 +35,22 @@ const (
 	FieldContactPersonPhone = "contact_person_phone"
 	// FieldContactPersonEmail holds the string denoting the contact_person_email field in the database.
 	FieldContactPersonEmail = "contact_person_email"
-	// FieldCustomerOwner holds the string denoting the customer_owner field in the database.
-	FieldCustomerOwner = "customer_owner"
-	// FieldSalesLeader holds the string denoting the sales_leader field in the database.
-	FieldSalesLeader = "sales_leader"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
+	// FieldFeishuGroup holds the string denoting the feishu_group field in the database.
+	FieldFeishuGroup = "feishu_group"
 	// FieldAreaID holds the string denoting the area_id field in the database.
 	FieldAreaID = "area_id"
+	// FieldSalesID holds the string denoting the sales_id field in the database.
+	FieldSalesID = "sales_id"
+	// FieldCreatedByUserID holds the string denoting the created_by_user_id field in the database.
+	FieldCreatedByUserID = "created_by_user_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
+	// EdgeSales holds the string denoting the sales edge name in mutations.
+	EdgeSales = "sales"
+	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
+	EdgeCreatedBy = "created_by"
 	// Table holds the table name of the customer in the database.
 	Table = "customers"
 	// AreaTable is the table that holds the area relation/edge.
@@ -63,6 +67,20 @@ const (
 	TendersInverseTable = "tenders"
 	// TendersColumn is the table column denoting the tenders relation/edge.
 	TendersColumn = "customer_id"
+	// SalesTable is the table that holds the sales relation/edge.
+	SalesTable = "customers"
+	// SalesInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	SalesInverseTable = "users"
+	// SalesColumn is the table column denoting the sales relation/edge.
+	SalesColumn = "sales_id"
+	// CreatedByTable is the table that holds the created_by relation/edge.
+	CreatedByTable = "customers"
+	// CreatedByInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	CreatedByInverseTable = "users"
+	// CreatedByColumn is the table column denoting the created_by relation/edge.
+	CreatedByColumn = "created_by_user_id"
 )
 
 // Columns holds all SQL columns for customer fields.
@@ -73,15 +91,15 @@ var Columns = []string{
 	FieldName,
 	FieldOwnerType,
 	FieldIndustry,
-	FieldStatus,
+	FieldSize,
 	FieldContactPerson,
 	FieldContactPersonPosition,
 	FieldContactPersonPhone,
 	FieldContactPersonEmail,
-	FieldCustomerOwner,
-	FieldSalesLeader,
-	FieldCreatedBy,
+	FieldFeishuGroup,
 	FieldAreaID,
+	FieldSalesID,
+	FieldCreatedByUserID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -138,9 +156,9 @@ func ByIndustry(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIndustry, opts...).ToFunc()
 }
 
-// ByStatus orders the results by the status field.
-func ByStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+// BySize orders the results by the size field.
+func BySize(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSize, opts...).ToFunc()
 }
 
 // ByContactPerson orders the results by the contact_person field.
@@ -168,6 +186,16 @@ func ByAreaID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAreaID, opts...).ToFunc()
 }
 
+// BySalesID orders the results by the sales_id field.
+func BySalesID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSalesID, opts...).ToFunc()
+}
+
+// ByCreatedByUserID orders the results by the created_by_user_id field.
+func ByCreatedByUserID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedByUserID, opts...).ToFunc()
+}
+
 // ByAreaField orders the results by area field.
 func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -188,6 +216,20 @@ func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// BySalesField orders the results by sales field.
+func BySalesField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSalesStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByCreatedByField orders the results by created_by field.
+func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -200,5 +242,19 @@ func newTendersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TendersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
+	)
+}
+func newSalesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SalesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SalesTable, SalesColumn),
+	)
+}
+func newCreatedByStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CreatedByInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, CreatedByTable, CreatedByColumn),
 	)
 }

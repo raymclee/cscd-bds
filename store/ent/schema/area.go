@@ -1,8 +1,6 @@
 package schema
 
 import (
-	"cscd-bds/store/ent/schema/zht"
-
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
@@ -27,10 +25,6 @@ func (Area) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name"),
 		field.String("code"),
-		field.JSON("sales_team_members", []zht.User{}).
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
 	}
 }
 
@@ -39,6 +33,7 @@ func (Area) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("customers", Customer.Type),
 		edge.To("tenders", Tender.Type),
+		edge.To("sales", User.Type),
 	}
 }
 

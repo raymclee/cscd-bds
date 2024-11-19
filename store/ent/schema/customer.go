@@ -26,12 +26,13 @@ func (Customer) Mixin() []ent.Mixin {
 // Fields of the Customer.
 func (Customer) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name"),
-		field.Int("owner_type").
+		field.String("name").
+			Unique(),
+		field.Int8("owner_type").
 			Optional().
 			Nillable(),
-		field.Int("industry"),
-		field.Int("status").
+		field.Int8("industry"),
+		field.Int8("size").
 			Optional().
 			Nillable(),
 		field.String("contact_person").
@@ -47,22 +48,16 @@ func (Customer) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 
-		field.JSON("customer_owner", &zht.User{}).
+		field.JSON("feishu_group", &zht.Group{}).
 			Optional().
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
-		field.JSON("sales_leader", &zht.User{}).
-			Optional().
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
-		field.JSON("created_by", &zht.User{}).
-			Annotations(
-				entgql.Skip(entgql.SkipAll),
-			),
+			Annotations(entgql.Skip(entgql.SkipAll)),
 
 		field.String("area_id").
+			GoType(xid.ID{}),
+		field.String("sales_id").
+			GoType(xid.ID{}).
+			Optional(),
+		field.String("created_by_user_id").
 			GoType(xid.ID{}),
 	}
 }
@@ -76,6 +71,14 @@ func (Customer) Edges() []ent.Edge {
 			Unique().
 			Required(),
 		edge.To("tenders", Tender.Type),
+		edge.From("sales", User.Type).
+			Field("sales_id").
+			Ref("customers").
+			Unique(),
+		edge.To("created_by", User.Type).
+			Field("created_by_user_id").
+			Unique().
+			Required(),
 	}
 }
 

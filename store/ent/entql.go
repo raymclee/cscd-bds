@@ -4,8 +4,12 @@ package ent
 
 import (
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 
@@ -17,7 +21,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 4)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 8)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -29,14 +33,51 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Area",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			area.FieldCreatedAt:        {Type: field.TypeTime, Column: area.FieldCreatedAt},
-			area.FieldUpdatedAt:        {Type: field.TypeTime, Column: area.FieldUpdatedAt},
-			area.FieldName:             {Type: field.TypeString, Column: area.FieldName},
-			area.FieldCode:             {Type: field.TypeString, Column: area.FieldCode},
-			area.FieldSalesTeamMembers: {Type: field.TypeJSON, Column: area.FieldSalesTeamMembers},
+			area.FieldCreatedAt: {Type: field.TypeTime, Column: area.FieldCreatedAt},
+			area.FieldUpdatedAt: {Type: field.TypeTime, Column: area.FieldUpdatedAt},
+			area.FieldName:      {Type: field.TypeString, Column: area.FieldName},
+			area.FieldCode:      {Type: field.TypeString, Column: area.FieldCode},
 		},
 	}
 	graph.Nodes[1] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   city.Table,
+			Columns: city.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: city.FieldID,
+			},
+		},
+		Type: "City",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			city.FieldCreatedAt:  {Type: field.TypeTime, Column: city.FieldCreatedAt},
+			city.FieldUpdatedAt:  {Type: field.TypeTime, Column: city.FieldUpdatedAt},
+			city.FieldAdcode:     {Type: field.TypeInt, Column: city.FieldAdcode},
+			city.FieldProvCode:   {Type: field.TypeInt, Column: city.FieldProvCode},
+			city.FieldName:       {Type: field.TypeString, Column: city.FieldName},
+			city.FieldCenter:     {Type: field.TypeOther, Column: city.FieldCenter},
+			city.FieldProvinceID: {Type: field.TypeString, Column: city.FieldProvinceID},
+		},
+	}
+	graph.Nodes[2] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   country.Table,
+			Columns: country.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: country.FieldID,
+			},
+		},
+		Type: "Country",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			country.FieldCreatedAt: {Type: field.TypeTime, Column: country.FieldCreatedAt},
+			country.FieldUpdatedAt: {Type: field.TypeTime, Column: country.FieldUpdatedAt},
+			country.FieldAdcode:    {Type: field.TypeInt, Column: country.FieldAdcode},
+			country.FieldName:      {Type: field.TypeString, Column: country.FieldName},
+			country.FieldCenter:    {Type: field.TypeOther, Column: country.FieldCenter},
+		},
+	}
+	graph.Nodes[3] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   customer.Table,
 			Columns: customer.Columns,
@@ -50,20 +91,61 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldCreatedAt:             {Type: field.TypeTime, Column: customer.FieldCreatedAt},
 			customer.FieldUpdatedAt:             {Type: field.TypeTime, Column: customer.FieldUpdatedAt},
 			customer.FieldName:                  {Type: field.TypeString, Column: customer.FieldName},
-			customer.FieldOwnerType:             {Type: field.TypeInt, Column: customer.FieldOwnerType},
-			customer.FieldIndustry:              {Type: field.TypeInt, Column: customer.FieldIndustry},
-			customer.FieldStatus:                {Type: field.TypeInt, Column: customer.FieldStatus},
+			customer.FieldOwnerType:             {Type: field.TypeInt8, Column: customer.FieldOwnerType},
+			customer.FieldIndustry:              {Type: field.TypeInt8, Column: customer.FieldIndustry},
+			customer.FieldSize:                  {Type: field.TypeInt8, Column: customer.FieldSize},
 			customer.FieldContactPerson:         {Type: field.TypeString, Column: customer.FieldContactPerson},
 			customer.FieldContactPersonPosition: {Type: field.TypeString, Column: customer.FieldContactPersonPosition},
 			customer.FieldContactPersonPhone:    {Type: field.TypeString, Column: customer.FieldContactPersonPhone},
 			customer.FieldContactPersonEmail:    {Type: field.TypeString, Column: customer.FieldContactPersonEmail},
-			customer.FieldCustomerOwner:         {Type: field.TypeJSON, Column: customer.FieldCustomerOwner},
-			customer.FieldSalesLeader:           {Type: field.TypeJSON, Column: customer.FieldSalesLeader},
-			customer.FieldCreatedBy:             {Type: field.TypeJSON, Column: customer.FieldCreatedBy},
+			customer.FieldFeishuGroup:           {Type: field.TypeJSON, Column: customer.FieldFeishuGroup},
 			customer.FieldAreaID:                {Type: field.TypeString, Column: customer.FieldAreaID},
+			customer.FieldSalesID:               {Type: field.TypeString, Column: customer.FieldSalesID},
+			customer.FieldCreatedByUserID:       {Type: field.TypeString, Column: customer.FieldCreatedByUserID},
 		},
 	}
-	graph.Nodes[2] = &sqlgraph.Node{
+	graph.Nodes[4] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   district.Table,
+			Columns: district.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: district.FieldID,
+			},
+		},
+		Type: "District",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			district.FieldCreatedAt:  {Type: field.TypeTime, Column: district.FieldCreatedAt},
+			district.FieldUpdatedAt:  {Type: field.TypeTime, Column: district.FieldUpdatedAt},
+			district.FieldAdcode:     {Type: field.TypeInt, Column: district.FieldAdcode},
+			district.FieldProvCode:   {Type: field.TypeInt, Column: district.FieldProvCode},
+			district.FieldCityCode:   {Type: field.TypeInt, Column: district.FieldCityCode},
+			district.FieldName:       {Type: field.TypeString, Column: district.FieldName},
+			district.FieldCenter:     {Type: field.TypeOther, Column: district.FieldCenter},
+			district.FieldProvinceID: {Type: field.TypeString, Column: district.FieldProvinceID},
+			district.FieldCityID:     {Type: field.TypeString, Column: district.FieldCityID},
+		},
+	}
+	graph.Nodes[5] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   province.Table,
+			Columns: province.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: province.FieldID,
+			},
+		},
+		Type: "Province",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			province.FieldCreatedAt: {Type: field.TypeTime, Column: province.FieldCreatedAt},
+			province.FieldUpdatedAt: {Type: field.TypeTime, Column: province.FieldUpdatedAt},
+			province.FieldAdcode:    {Type: field.TypeInt, Column: province.FieldAdcode},
+			province.FieldName:      {Type: field.TypeString, Column: province.FieldName},
+			province.FieldCenter:    {Type: field.TypeOther, Column: province.FieldCenter},
+			province.FieldCountryID: {Type: field.TypeString, Column: province.FieldCountryID},
+		},
+	}
+	graph.Nodes[6] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tender.Table,
 			Columns: tender.Columns,
@@ -77,7 +159,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCreatedAt:                    {Type: field.TypeTime, Column: tender.FieldCreatedAt},
 			tender.FieldUpdatedAt:                    {Type: field.TypeTime, Column: tender.FieldUpdatedAt},
 			tender.FieldCode:                         {Type: field.TypeString, Column: tender.FieldCode},
-			tender.FieldStatus:                       {Type: field.TypeInt, Column: tender.FieldStatus},
+			tender.FieldStatus:                       {Type: field.TypeInt8, Column: tender.FieldStatus},
 			tender.FieldName:                         {Type: field.TypeString, Column: tender.FieldName},
 			tender.FieldEstimatedAmount:              {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
 			tender.FieldTenderDate:                   {Type: field.TypeTime, Column: tender.FieldTenderDate},
@@ -85,11 +167,11 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldFinder:                       {Type: field.TypeJSON, Column: tender.FieldFinder},
 			tender.FieldCreatedBy:                    {Type: field.TypeJSON, Column: tender.FieldCreatedBy},
 			tender.FieldFollowingPerson:              {Type: field.TypeJSON, Column: tender.FieldFollowingPerson},
-			tender.FieldSizeAndValueRating:           {Type: field.TypeInt, Column: tender.FieldSizeAndValueRating},
-			tender.FieldCreditAndPaymentRating:       {Type: field.TypeInt, Column: tender.FieldCreditAndPaymentRating},
-			tender.FieldTimeLimitRating:              {Type: field.TypeInt, Column: tender.FieldTimeLimitRating},
-			tender.FieldCustomerRelationshipRating:   {Type: field.TypeInt, Column: tender.FieldCustomerRelationshipRating},
-			tender.FieldCompetitivePartnershipRating: {Type: field.TypeInt, Column: tender.FieldCompetitivePartnershipRating},
+			tender.FieldSizeAndValueRating:           {Type: field.TypeInt8, Column: tender.FieldSizeAndValueRating},
+			tender.FieldCreditAndPaymentRating:       {Type: field.TypeInt8, Column: tender.FieldCreditAndPaymentRating},
+			tender.FieldTimeLimitRating:              {Type: field.TypeInt8, Column: tender.FieldTimeLimitRating},
+			tender.FieldCustomerRelationshipRating:   {Type: field.TypeInt8, Column: tender.FieldCustomerRelationshipRating},
+			tender.FieldCompetitivePartnershipRating: {Type: field.TypeInt8, Column: tender.FieldCompetitivePartnershipRating},
 			tender.FieldPrepareToBid:                 {Type: field.TypeBool, Column: tender.FieldPrepareToBid},
 			tender.FieldProjectCode:                  {Type: field.TypeString, Column: tender.FieldProjectCode},
 			tender.FieldProjectDefinition:            {Type: field.TypeString, Column: tender.FieldProjectDefinition},
@@ -105,7 +187,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCustomerID:                   {Type: field.TypeString, Column: tender.FieldCustomerID},
 		},
 	}
-	graph.Nodes[3] = &sqlgraph.Node{
+	graph.Nodes[7] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -119,6 +201,12 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldCreatedAt: {Type: field.TypeTime, Column: user.FieldCreatedAt},
 			user.FieldUpdatedAt: {Type: field.TypeTime, Column: user.FieldUpdatedAt},
 			user.FieldName:      {Type: field.TypeString, Column: user.FieldName},
+			user.FieldEmail:     {Type: field.TypeString, Column: user.FieldEmail},
+			user.FieldUsername:  {Type: field.TypeString, Column: user.FieldUsername},
+			user.FieldOpenID:    {Type: field.TypeString, Column: user.FieldOpenID},
+			user.FieldAvatarURL: {Type: field.TypeString, Column: user.FieldAvatarURL},
+			user.FieldDisabled:  {Type: field.TypeBool, Column: user.FieldDisabled},
+			user.FieldLeaderID:  {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
 	graph.MustAddE(
@@ -146,6 +234,54 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"Tender",
 	)
 	graph.MustAddE(
+		"sales",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+		},
+		"Area",
+		"User",
+	)
+	graph.MustAddE(
+		"districts",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.DistrictsTable,
+			Columns: []string{city.DistrictsColumn},
+			Bidi:    false,
+		},
+		"City",
+		"District",
+	)
+	graph.MustAddE(
+		"province",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   city.ProvinceTable,
+			Columns: []string{city.ProvinceColumn},
+			Bidi:    false,
+		},
+		"City",
+		"Province",
+	)
+	graph.MustAddE(
+		"provinces",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   country.ProvincesTable,
+			Columns: []string{country.ProvincesColumn},
+			Bidi:    false,
+		},
+		"Country",
+		"Province",
+	)
+	graph.MustAddE(
 		"area",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -170,6 +306,90 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"Tender",
 	)
 	graph.MustAddE(
+		"sales",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customer.SalesTable,
+			Columns: []string{customer.SalesColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"User",
+	)
+	graph.MustAddE(
+		"created_by",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.CreatedByTable,
+			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"User",
+	)
+	graph.MustAddE(
+		"province",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   district.ProvinceTable,
+			Columns: []string{district.ProvinceColumn},
+			Bidi:    false,
+		},
+		"District",
+		"Province",
+	)
+	graph.MustAddE(
+		"city",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   district.CityTable,
+			Columns: []string{district.CityColumn},
+			Bidi:    false,
+		},
+		"District",
+		"City",
+	)
+	graph.MustAddE(
+		"districts",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   province.DistrictsTable,
+			Columns: []string{province.DistrictsColumn},
+			Bidi:    false,
+		},
+		"Province",
+		"District",
+	)
+	graph.MustAddE(
+		"cities",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   province.CitiesTable,
+			Columns: []string{province.CitiesColumn},
+			Bidi:    false,
+		},
+		"Province",
+		"City",
+	)
+	graph.MustAddE(
+		"country",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.CountryTable,
+			Columns: []string{province.CountryColumn},
+			Bidi:    false,
+		},
+		"Province",
+		"Country",
+	)
+	graph.MustAddE(
 		"area",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -192,6 +412,54 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Tender",
 		"Customer",
+	)
+	graph.MustAddE(
+		"areas",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.AreasTable,
+			Columns: user.AreasPrimaryKey,
+			Bidi:    false,
+		},
+		"User",
+		"Area",
+	)
+	graph.MustAddE(
+		"customers",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CustomersTable,
+			Columns: []string{user.CustomersColumn},
+			Bidi:    false,
+		},
+		"User",
+		"Customer",
+	)
+	graph.MustAddE(
+		"leader",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+		},
+		"User",
+		"User",
+	)
+	graph.MustAddE(
+		"team_members",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.TeamMembersTable,
+			Columns: []string{user.TeamMembersColumn},
+			Bidi:    false,
+		},
+		"User",
+		"User",
 	)
 	return graph
 }()
@@ -262,11 +530,6 @@ func (f *AreaFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(area.FieldCode))
 }
 
-// WhereSalesTeamMembers applies the entql json.RawMessage predicate on the sales_team_members field.
-func (f *AreaFilter) WhereSalesTeamMembers(p entql.BytesP) {
-	f.Where(p.Field(area.FieldSalesTeamMembers))
-}
-
 // WhereHasCustomers applies a predicate to check if query has an edge customers.
 func (f *AreaFilter) WhereHasCustomers() {
 	f.Where(entql.HasEdge("customers"))
@@ -289,6 +552,202 @@ func (f *AreaFilter) WhereHasTenders() {
 // WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
 func (f *AreaFilter) WhereHasTendersWith(preds ...predicate.Tender) {
 	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasSales applies a predicate to check if query has an edge sales.
+func (f *AreaFilter) WhereHasSales() {
+	f.Where(entql.HasEdge("sales"))
+}
+
+// WhereHasSalesWith applies a predicate to check if query has an edge sales with a given conditions (other predicates).
+func (f *AreaFilter) WhereHasSalesWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("sales", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (cq *CityQuery) addPredicate(pred func(s *sql.Selector)) {
+	cq.predicates = append(cq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the CityQuery builder.
+func (cq *CityQuery) Filter() *CityFilter {
+	return &CityFilter{config: cq.config, predicateAdder: cq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *CityMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the CityMutation builder.
+func (m *CityMutation) Filter() *CityFilter {
+	return &CityFilter{config: m.config, predicateAdder: m}
+}
+
+// CityFilter provides a generic filtering capability at runtime for CityQuery.
+type CityFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *CityFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *CityFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(city.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *CityFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(city.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *CityFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(city.FieldUpdatedAt))
+}
+
+// WhereAdcode applies the entql int predicate on the adcode field.
+func (f *CityFilter) WhereAdcode(p entql.IntP) {
+	f.Where(p.Field(city.FieldAdcode))
+}
+
+// WhereProvCode applies the entql int predicate on the prov_code field.
+func (f *CityFilter) WhereProvCode(p entql.IntP) {
+	f.Where(p.Field(city.FieldProvCode))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *CityFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(city.FieldName))
+}
+
+// WhereCenter applies the entql other predicate on the center field.
+func (f *CityFilter) WhereCenter(p entql.OtherP) {
+	f.Where(p.Field(city.FieldCenter))
+}
+
+// WhereProvinceID applies the entql string predicate on the province_id field.
+func (f *CityFilter) WhereProvinceID(p entql.StringP) {
+	f.Where(p.Field(city.FieldProvinceID))
+}
+
+// WhereHasDistricts applies a predicate to check if query has an edge districts.
+func (f *CityFilter) WhereHasDistricts() {
+	f.Where(entql.HasEdge("districts"))
+}
+
+// WhereHasDistrictsWith applies a predicate to check if query has an edge districts with a given conditions (other predicates).
+func (f *CityFilter) WhereHasDistrictsWith(preds ...predicate.District) {
+	f.Where(entql.HasEdgeWith("districts", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasProvince applies a predicate to check if query has an edge province.
+func (f *CityFilter) WhereHasProvince() {
+	f.Where(entql.HasEdge("province"))
+}
+
+// WhereHasProvinceWith applies a predicate to check if query has an edge province with a given conditions (other predicates).
+func (f *CityFilter) WhereHasProvinceWith(preds ...predicate.Province) {
+	f.Where(entql.HasEdgeWith("province", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (cq *CountryQuery) addPredicate(pred func(s *sql.Selector)) {
+	cq.predicates = append(cq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the CountryQuery builder.
+func (cq *CountryQuery) Filter() *CountryFilter {
+	return &CountryFilter{config: cq.config, predicateAdder: cq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *CountryMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the CountryMutation builder.
+func (m *CountryMutation) Filter() *CountryFilter {
+	return &CountryFilter{config: m.config, predicateAdder: m}
+}
+
+// CountryFilter provides a generic filtering capability at runtime for CountryQuery.
+type CountryFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *CountryFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *CountryFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(country.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *CountryFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(country.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *CountryFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(country.FieldUpdatedAt))
+}
+
+// WhereAdcode applies the entql int predicate on the adcode field.
+func (f *CountryFilter) WhereAdcode(p entql.IntP) {
+	f.Where(p.Field(country.FieldAdcode))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *CountryFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(country.FieldName))
+}
+
+// WhereCenter applies the entql other predicate on the center field.
+func (f *CountryFilter) WhereCenter(p entql.OtherP) {
+	f.Where(p.Field(country.FieldCenter))
+}
+
+// WhereHasProvinces applies a predicate to check if query has an edge provinces.
+func (f *CountryFilter) WhereHasProvinces() {
+	f.Where(entql.HasEdge("provinces"))
+}
+
+// WhereHasProvincesWith applies a predicate to check if query has an edge provinces with a given conditions (other predicates).
+func (f *CountryFilter) WhereHasProvincesWith(preds ...predicate.Province) {
+	f.Where(entql.HasEdgeWith("provinces", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -324,7 +783,7 @@ type CustomerFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *CustomerFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -350,19 +809,19 @@ func (f *CustomerFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(customer.FieldName))
 }
 
-// WhereOwnerType applies the entql int predicate on the owner_type field.
-func (f *CustomerFilter) WhereOwnerType(p entql.IntP) {
+// WhereOwnerType applies the entql int8 predicate on the owner_type field.
+func (f *CustomerFilter) WhereOwnerType(p entql.Int8P) {
 	f.Where(p.Field(customer.FieldOwnerType))
 }
 
-// WhereIndustry applies the entql int predicate on the industry field.
-func (f *CustomerFilter) WhereIndustry(p entql.IntP) {
+// WhereIndustry applies the entql int8 predicate on the industry field.
+func (f *CustomerFilter) WhereIndustry(p entql.Int8P) {
 	f.Where(p.Field(customer.FieldIndustry))
 }
 
-// WhereStatus applies the entql int predicate on the status field.
-func (f *CustomerFilter) WhereStatus(p entql.IntP) {
-	f.Where(p.Field(customer.FieldStatus))
+// WhereSize applies the entql int8 predicate on the size field.
+func (f *CustomerFilter) WhereSize(p entql.Int8P) {
+	f.Where(p.Field(customer.FieldSize))
 }
 
 // WhereContactPerson applies the entql string predicate on the contact_person field.
@@ -385,24 +844,24 @@ func (f *CustomerFilter) WhereContactPersonEmail(p entql.StringP) {
 	f.Where(p.Field(customer.FieldContactPersonEmail))
 }
 
-// WhereCustomerOwner applies the entql json.RawMessage predicate on the customer_owner field.
-func (f *CustomerFilter) WhereCustomerOwner(p entql.BytesP) {
-	f.Where(p.Field(customer.FieldCustomerOwner))
-}
-
-// WhereSalesLeader applies the entql json.RawMessage predicate on the sales_leader field.
-func (f *CustomerFilter) WhereSalesLeader(p entql.BytesP) {
-	f.Where(p.Field(customer.FieldSalesLeader))
-}
-
-// WhereCreatedBy applies the entql json.RawMessage predicate on the created_by field.
-func (f *CustomerFilter) WhereCreatedBy(p entql.BytesP) {
-	f.Where(p.Field(customer.FieldCreatedBy))
+// WhereFeishuGroup applies the entql json.RawMessage predicate on the feishu_group field.
+func (f *CustomerFilter) WhereFeishuGroup(p entql.BytesP) {
+	f.Where(p.Field(customer.FieldFeishuGroup))
 }
 
 // WhereAreaID applies the entql string predicate on the area_id field.
 func (f *CustomerFilter) WhereAreaID(p entql.StringP) {
 	f.Where(p.Field(customer.FieldAreaID))
+}
+
+// WhereSalesID applies the entql string predicate on the sales_id field.
+func (f *CustomerFilter) WhereSalesID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldSalesID))
+}
+
+// WhereCreatedByUserID applies the entql string predicate on the created_by_user_id field.
+func (f *CustomerFilter) WhereCreatedByUserID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldCreatedByUserID))
 }
 
 // WhereHasArea applies a predicate to check if query has an edge area.
@@ -427,6 +886,259 @@ func (f *CustomerFilter) WhereHasTenders() {
 // WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
 func (f *CustomerFilter) WhereHasTendersWith(preds ...predicate.Tender) {
 	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasSales applies a predicate to check if query has an edge sales.
+func (f *CustomerFilter) WhereHasSales() {
+	f.Where(entql.HasEdge("sales"))
+}
+
+// WhereHasSalesWith applies a predicate to check if query has an edge sales with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasSalesWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("sales", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCreatedBy applies a predicate to check if query has an edge created_by.
+func (f *CustomerFilter) WhereHasCreatedBy() {
+	f.Where(entql.HasEdge("created_by"))
+}
+
+// WhereHasCreatedByWith applies a predicate to check if query has an edge created_by with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasCreatedByWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("created_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (dq *DistrictQuery) addPredicate(pred func(s *sql.Selector)) {
+	dq.predicates = append(dq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the DistrictQuery builder.
+func (dq *DistrictQuery) Filter() *DistrictFilter {
+	return &DistrictFilter{config: dq.config, predicateAdder: dq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *DistrictMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the DistrictMutation builder.
+func (m *DistrictMutation) Filter() *DistrictFilter {
+	return &DistrictFilter{config: m.config, predicateAdder: m}
+}
+
+// DistrictFilter provides a generic filtering capability at runtime for DistrictQuery.
+type DistrictFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *DistrictFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *DistrictFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(district.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *DistrictFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(district.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *DistrictFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(district.FieldUpdatedAt))
+}
+
+// WhereAdcode applies the entql int predicate on the adcode field.
+func (f *DistrictFilter) WhereAdcode(p entql.IntP) {
+	f.Where(p.Field(district.FieldAdcode))
+}
+
+// WhereProvCode applies the entql int predicate on the prov_code field.
+func (f *DistrictFilter) WhereProvCode(p entql.IntP) {
+	f.Where(p.Field(district.FieldProvCode))
+}
+
+// WhereCityCode applies the entql int predicate on the city_code field.
+func (f *DistrictFilter) WhereCityCode(p entql.IntP) {
+	f.Where(p.Field(district.FieldCityCode))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *DistrictFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(district.FieldName))
+}
+
+// WhereCenter applies the entql other predicate on the center field.
+func (f *DistrictFilter) WhereCenter(p entql.OtherP) {
+	f.Where(p.Field(district.FieldCenter))
+}
+
+// WhereProvinceID applies the entql string predicate on the province_id field.
+func (f *DistrictFilter) WhereProvinceID(p entql.StringP) {
+	f.Where(p.Field(district.FieldProvinceID))
+}
+
+// WhereCityID applies the entql string predicate on the city_id field.
+func (f *DistrictFilter) WhereCityID(p entql.StringP) {
+	f.Where(p.Field(district.FieldCityID))
+}
+
+// WhereHasProvince applies a predicate to check if query has an edge province.
+func (f *DistrictFilter) WhereHasProvince() {
+	f.Where(entql.HasEdge("province"))
+}
+
+// WhereHasProvinceWith applies a predicate to check if query has an edge province with a given conditions (other predicates).
+func (f *DistrictFilter) WhereHasProvinceWith(preds ...predicate.Province) {
+	f.Where(entql.HasEdgeWith("province", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCity applies a predicate to check if query has an edge city.
+func (f *DistrictFilter) WhereHasCity() {
+	f.Where(entql.HasEdge("city"))
+}
+
+// WhereHasCityWith applies a predicate to check if query has an edge city with a given conditions (other predicates).
+func (f *DistrictFilter) WhereHasCityWith(preds ...predicate.City) {
+	f.Where(entql.HasEdgeWith("city", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (pq *ProvinceQuery) addPredicate(pred func(s *sql.Selector)) {
+	pq.predicates = append(pq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the ProvinceQuery builder.
+func (pq *ProvinceQuery) Filter() *ProvinceFilter {
+	return &ProvinceFilter{config: pq.config, predicateAdder: pq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *ProvinceMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the ProvinceMutation builder.
+func (m *ProvinceMutation) Filter() *ProvinceFilter {
+	return &ProvinceFilter{config: m.config, predicateAdder: m}
+}
+
+// ProvinceFilter provides a generic filtering capability at runtime for ProvinceQuery.
+type ProvinceFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *ProvinceFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *ProvinceFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(province.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *ProvinceFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(province.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *ProvinceFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(province.FieldUpdatedAt))
+}
+
+// WhereAdcode applies the entql int predicate on the adcode field.
+func (f *ProvinceFilter) WhereAdcode(p entql.IntP) {
+	f.Where(p.Field(province.FieldAdcode))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *ProvinceFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(province.FieldName))
+}
+
+// WhereCenter applies the entql other predicate on the center field.
+func (f *ProvinceFilter) WhereCenter(p entql.OtherP) {
+	f.Where(p.Field(province.FieldCenter))
+}
+
+// WhereCountryID applies the entql string predicate on the country_id field.
+func (f *ProvinceFilter) WhereCountryID(p entql.StringP) {
+	f.Where(p.Field(province.FieldCountryID))
+}
+
+// WhereHasDistricts applies a predicate to check if query has an edge districts.
+func (f *ProvinceFilter) WhereHasDistricts() {
+	f.Where(entql.HasEdge("districts"))
+}
+
+// WhereHasDistrictsWith applies a predicate to check if query has an edge districts with a given conditions (other predicates).
+func (f *ProvinceFilter) WhereHasDistrictsWith(preds ...predicate.District) {
+	f.Where(entql.HasEdgeWith("districts", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCities applies a predicate to check if query has an edge cities.
+func (f *ProvinceFilter) WhereHasCities() {
+	f.Where(entql.HasEdge("cities"))
+}
+
+// WhereHasCitiesWith applies a predicate to check if query has an edge cities with a given conditions (other predicates).
+func (f *ProvinceFilter) WhereHasCitiesWith(preds ...predicate.City) {
+	f.Where(entql.HasEdgeWith("cities", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCountry applies a predicate to check if query has an edge country.
+func (f *ProvinceFilter) WhereHasCountry() {
+	f.Where(entql.HasEdge("country"))
+}
+
+// WhereHasCountryWith applies a predicate to check if query has an edge country with a given conditions (other predicates).
+func (f *ProvinceFilter) WhereHasCountryWith(preds ...predicate.Country) {
+	f.Where(entql.HasEdgeWith("country", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -462,7 +1174,7 @@ type TenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -488,8 +1200,8 @@ func (f *TenderFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCode))
 }
 
-// WhereStatus applies the entql int predicate on the status field.
-func (f *TenderFilter) WhereStatus(p entql.IntP) {
+// WhereStatus applies the entql int8 predicate on the status field.
+func (f *TenderFilter) WhereStatus(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldStatus))
 }
 
@@ -528,28 +1240,28 @@ func (f *TenderFilter) WhereFollowingPerson(p entql.BytesP) {
 	f.Where(p.Field(tender.FieldFollowingPerson))
 }
 
-// WhereSizeAndValueRating applies the entql int predicate on the size_and_value_rating field.
-func (f *TenderFilter) WhereSizeAndValueRating(p entql.IntP) {
+// WhereSizeAndValueRating applies the entql int8 predicate on the size_and_value_rating field.
+func (f *TenderFilter) WhereSizeAndValueRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldSizeAndValueRating))
 }
 
-// WhereCreditAndPaymentRating applies the entql int predicate on the credit_and_payment_rating field.
-func (f *TenderFilter) WhereCreditAndPaymentRating(p entql.IntP) {
+// WhereCreditAndPaymentRating applies the entql int8 predicate on the credit_and_payment_rating field.
+func (f *TenderFilter) WhereCreditAndPaymentRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldCreditAndPaymentRating))
 }
 
-// WhereTimeLimitRating applies the entql int predicate on the time_limit_rating field.
-func (f *TenderFilter) WhereTimeLimitRating(p entql.IntP) {
+// WhereTimeLimitRating applies the entql int8 predicate on the time_limit_rating field.
+func (f *TenderFilter) WhereTimeLimitRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldTimeLimitRating))
 }
 
-// WhereCustomerRelationshipRating applies the entql int predicate on the customer_relationship_rating field.
-func (f *TenderFilter) WhereCustomerRelationshipRating(p entql.IntP) {
+// WhereCustomerRelationshipRating applies the entql int8 predicate on the customer_relationship_rating field.
+func (f *TenderFilter) WhereCustomerRelationshipRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldCustomerRelationshipRating))
 }
 
-// WhereCompetitivePartnershipRating applies the entql int predicate on the competitive_partnership_rating field.
-func (f *TenderFilter) WhereCompetitivePartnershipRating(p entql.IntP) {
+// WhereCompetitivePartnershipRating applies the entql int8 predicate on the competitive_partnership_rating field.
+func (f *TenderFilter) WhereCompetitivePartnershipRating(p entql.Int8P) {
 	f.Where(p.Field(tender.FieldCompetitivePartnershipRating))
 }
 
@@ -675,7 +1387,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -699,4 +1411,90 @@ func (f *UserFilter) WhereUpdatedAt(p entql.TimeP) {
 // WhereName applies the entql string predicate on the name field.
 func (f *UserFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(user.FieldName))
+}
+
+// WhereEmail applies the entql string predicate on the email field.
+func (f *UserFilter) WhereEmail(p entql.StringP) {
+	f.Where(p.Field(user.FieldEmail))
+}
+
+// WhereUsername applies the entql string predicate on the username field.
+func (f *UserFilter) WhereUsername(p entql.StringP) {
+	f.Where(p.Field(user.FieldUsername))
+}
+
+// WhereOpenID applies the entql string predicate on the open_id field.
+func (f *UserFilter) WhereOpenID(p entql.StringP) {
+	f.Where(p.Field(user.FieldOpenID))
+}
+
+// WhereAvatarURL applies the entql string predicate on the avatar_url field.
+func (f *UserFilter) WhereAvatarURL(p entql.StringP) {
+	f.Where(p.Field(user.FieldAvatarURL))
+}
+
+// WhereDisabled applies the entql bool predicate on the disabled field.
+func (f *UserFilter) WhereDisabled(p entql.BoolP) {
+	f.Where(p.Field(user.FieldDisabled))
+}
+
+// WhereLeaderID applies the entql string predicate on the leader_id field.
+func (f *UserFilter) WhereLeaderID(p entql.StringP) {
+	f.Where(p.Field(user.FieldLeaderID))
+}
+
+// WhereHasAreas applies a predicate to check if query has an edge areas.
+func (f *UserFilter) WhereHasAreas() {
+	f.Where(entql.HasEdge("areas"))
+}
+
+// WhereHasAreasWith applies a predicate to check if query has an edge areas with a given conditions (other predicates).
+func (f *UserFilter) WhereHasAreasWith(preds ...predicate.Area) {
+	f.Where(entql.HasEdgeWith("areas", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCustomers applies a predicate to check if query has an edge customers.
+func (f *UserFilter) WhereHasCustomers() {
+	f.Where(entql.HasEdge("customers"))
+}
+
+// WhereHasCustomersWith applies a predicate to check if query has an edge customers with a given conditions (other predicates).
+func (f *UserFilter) WhereHasCustomersWith(preds ...predicate.Customer) {
+	f.Where(entql.HasEdgeWith("customers", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasLeader applies a predicate to check if query has an edge leader.
+func (f *UserFilter) WhereHasLeader() {
+	f.Where(entql.HasEdge("leader"))
+}
+
+// WhereHasLeaderWith applies a predicate to check if query has an edge leader with a given conditions (other predicates).
+func (f *UserFilter) WhereHasLeaderWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("leader", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasTeamMembers applies a predicate to check if query has an edge team_members.
+func (f *UserFilter) WhereHasTeamMembers() {
+	f.Where(entql.HasEdge("team_members"))
+}
+
+// WhereHasTeamMembersWith applies a predicate to check if query has an edge team_members with a given conditions (other predicates).
+func (f *UserFilter) WhereHasTeamMembersWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("team_members", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
 }

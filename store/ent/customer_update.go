@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -53,14 +54,14 @@ func (cu *CustomerUpdate) SetNillableName(s *string) *CustomerUpdate {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (cu *CustomerUpdate) SetOwnerType(i int) *CustomerUpdate {
+func (cu *CustomerUpdate) SetOwnerType(i int8) *CustomerUpdate {
 	cu.mutation.ResetOwnerType()
 	cu.mutation.SetOwnerType(i)
 	return cu
 }
 
 // SetNillableOwnerType sets the "owner_type" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableOwnerType(i *int) *CustomerUpdate {
+func (cu *CustomerUpdate) SetNillableOwnerType(i *int8) *CustomerUpdate {
 	if i != nil {
 		cu.SetOwnerType(*i)
 	}
@@ -68,7 +69,7 @@ func (cu *CustomerUpdate) SetNillableOwnerType(i *int) *CustomerUpdate {
 }
 
 // AddOwnerType adds i to the "owner_type" field.
-func (cu *CustomerUpdate) AddOwnerType(i int) *CustomerUpdate {
+func (cu *CustomerUpdate) AddOwnerType(i int8) *CustomerUpdate {
 	cu.mutation.AddOwnerType(i)
 	return cu
 }
@@ -80,14 +81,14 @@ func (cu *CustomerUpdate) ClearOwnerType() *CustomerUpdate {
 }
 
 // SetIndustry sets the "industry" field.
-func (cu *CustomerUpdate) SetIndustry(i int) *CustomerUpdate {
+func (cu *CustomerUpdate) SetIndustry(i int8) *CustomerUpdate {
 	cu.mutation.ResetIndustry()
 	cu.mutation.SetIndustry(i)
 	return cu
 }
 
 // SetNillableIndustry sets the "industry" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableIndustry(i *int) *CustomerUpdate {
+func (cu *CustomerUpdate) SetNillableIndustry(i *int8) *CustomerUpdate {
 	if i != nil {
 		cu.SetIndustry(*i)
 	}
@@ -95,35 +96,35 @@ func (cu *CustomerUpdate) SetNillableIndustry(i *int) *CustomerUpdate {
 }
 
 // AddIndustry adds i to the "industry" field.
-func (cu *CustomerUpdate) AddIndustry(i int) *CustomerUpdate {
+func (cu *CustomerUpdate) AddIndustry(i int8) *CustomerUpdate {
 	cu.mutation.AddIndustry(i)
 	return cu
 }
 
-// SetStatus sets the "status" field.
-func (cu *CustomerUpdate) SetStatus(i int) *CustomerUpdate {
-	cu.mutation.ResetStatus()
-	cu.mutation.SetStatus(i)
+// SetSize sets the "size" field.
+func (cu *CustomerUpdate) SetSize(i int8) *CustomerUpdate {
+	cu.mutation.ResetSize()
+	cu.mutation.SetSize(i)
 	return cu
 }
 
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableStatus(i *int) *CustomerUpdate {
+// SetNillableSize sets the "size" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableSize(i *int8) *CustomerUpdate {
 	if i != nil {
-		cu.SetStatus(*i)
+		cu.SetSize(*i)
 	}
 	return cu
 }
 
-// AddStatus adds i to the "status" field.
-func (cu *CustomerUpdate) AddStatus(i int) *CustomerUpdate {
-	cu.mutation.AddStatus(i)
+// AddSize adds i to the "size" field.
+func (cu *CustomerUpdate) AddSize(i int8) *CustomerUpdate {
+	cu.mutation.AddSize(i)
 	return cu
 }
 
-// ClearStatus clears the value of the "status" field.
-func (cu *CustomerUpdate) ClearStatus() *CustomerUpdate {
-	cu.mutation.ClearStatus()
+// ClearSize clears the value of the "size" field.
+func (cu *CustomerUpdate) ClearSize() *CustomerUpdate {
+	cu.mutation.ClearSize()
 	return cu
 }
 
@@ -207,33 +208,15 @@ func (cu *CustomerUpdate) ClearContactPersonEmail() *CustomerUpdate {
 	return cu
 }
 
-// SetCustomerOwner sets the "customer_owner" field.
-func (cu *CustomerUpdate) SetCustomerOwner(z *zht.User) *CustomerUpdate {
-	cu.mutation.SetCustomerOwner(z)
+// SetFeishuGroup sets the "feishu_group" field.
+func (cu *CustomerUpdate) SetFeishuGroup(z *zht.Group) *CustomerUpdate {
+	cu.mutation.SetFeishuGroup(z)
 	return cu
 }
 
-// ClearCustomerOwner clears the value of the "customer_owner" field.
-func (cu *CustomerUpdate) ClearCustomerOwner() *CustomerUpdate {
-	cu.mutation.ClearCustomerOwner()
-	return cu
-}
-
-// SetSalesLeader sets the "sales_leader" field.
-func (cu *CustomerUpdate) SetSalesLeader(z *zht.User) *CustomerUpdate {
-	cu.mutation.SetSalesLeader(z)
-	return cu
-}
-
-// ClearSalesLeader clears the value of the "sales_leader" field.
-func (cu *CustomerUpdate) ClearSalesLeader() *CustomerUpdate {
-	cu.mutation.ClearSalesLeader()
-	return cu
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (cu *CustomerUpdate) SetCreatedBy(z *zht.User) *CustomerUpdate {
-	cu.mutation.SetCreatedBy(z)
+// ClearFeishuGroup clears the value of the "feishu_group" field.
+func (cu *CustomerUpdate) ClearFeishuGroup() *CustomerUpdate {
+	cu.mutation.ClearFeishuGroup()
 	return cu
 }
 
@@ -247,6 +230,40 @@ func (cu *CustomerUpdate) SetAreaID(x xid.ID) *CustomerUpdate {
 func (cu *CustomerUpdate) SetNillableAreaID(x *xid.ID) *CustomerUpdate {
 	if x != nil {
 		cu.SetAreaID(*x)
+	}
+	return cu
+}
+
+// SetSalesID sets the "sales_id" field.
+func (cu *CustomerUpdate) SetSalesID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetSalesID(x)
+	return cu
+}
+
+// SetNillableSalesID sets the "sales_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableSalesID(x *xid.ID) *CustomerUpdate {
+	if x != nil {
+		cu.SetSalesID(*x)
+	}
+	return cu
+}
+
+// ClearSalesID clears the value of the "sales_id" field.
+func (cu *CustomerUpdate) ClearSalesID() *CustomerUpdate {
+	cu.mutation.ClearSalesID()
+	return cu
+}
+
+// SetCreatedByUserID sets the "created_by_user_id" field.
+func (cu *CustomerUpdate) SetCreatedByUserID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetCreatedByUserID(x)
+	return cu
+}
+
+// SetNillableCreatedByUserID sets the "created_by_user_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableCreatedByUserID(x *xid.ID) *CustomerUpdate {
+	if x != nil {
+		cu.SetCreatedByUserID(*x)
 	}
 	return cu
 }
@@ -269,6 +286,22 @@ func (cu *CustomerUpdate) AddTenders(t ...*Tender) *CustomerUpdate {
 		ids[i] = t[i].ID
 	}
 	return cu.AddTenderIDs(ids...)
+}
+
+// SetSales sets the "sales" edge to the User entity.
+func (cu *CustomerUpdate) SetSales(u *User) *CustomerUpdate {
+	return cu.SetSalesID(u.ID)
+}
+
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
+func (cu *CustomerUpdate) SetCreatedByID(id xid.ID) *CustomerUpdate {
+	cu.mutation.SetCreatedByID(id)
+	return cu
+}
+
+// SetCreatedBy sets the "created_by" edge to the User entity.
+func (cu *CustomerUpdate) SetCreatedBy(u *User) *CustomerUpdate {
+	return cu.SetCreatedByID(u.ID)
 }
 
 // Mutation returns the CustomerMutation object of the builder.
@@ -301,6 +334,18 @@ func (cu *CustomerUpdate) RemoveTenders(t ...*Tender) *CustomerUpdate {
 		ids[i] = t[i].ID
 	}
 	return cu.RemoveTenderIDs(ids...)
+}
+
+// ClearSales clears the "sales" edge to the User entity.
+func (cu *CustomerUpdate) ClearSales() *CustomerUpdate {
+	cu.mutation.ClearSales()
+	return cu
+}
+
+// ClearCreatedBy clears the "created_by" edge to the User entity.
+func (cu *CustomerUpdate) ClearCreatedBy() *CustomerUpdate {
+	cu.mutation.ClearCreatedBy()
+	return cu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -344,6 +389,9 @@ func (cu *CustomerUpdate) check() error {
 	if cu.mutation.AreaCleared() && len(cu.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Customer.area"`)
 	}
+	if cu.mutation.CreatedByCleared() && len(cu.mutation.CreatedByIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Customer.created_by"`)
+	}
 	return nil
 }
 
@@ -366,28 +414,28 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.OwnerType(); ok {
-		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
+		_spec.SetField(customer.FieldOwnerType, field.TypeInt8, value)
 	}
 	if value, ok := cu.mutation.AddedOwnerType(); ok {
-		_spec.AddField(customer.FieldOwnerType, field.TypeInt, value)
+		_spec.AddField(customer.FieldOwnerType, field.TypeInt8, value)
 	}
 	if cu.mutation.OwnerTypeCleared() {
-		_spec.ClearField(customer.FieldOwnerType, field.TypeInt)
+		_spec.ClearField(customer.FieldOwnerType, field.TypeInt8)
 	}
 	if value, ok := cu.mutation.Industry(); ok {
-		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
+		_spec.SetField(customer.FieldIndustry, field.TypeInt8, value)
 	}
 	if value, ok := cu.mutation.AddedIndustry(); ok {
-		_spec.AddField(customer.FieldIndustry, field.TypeInt, value)
+		_spec.AddField(customer.FieldIndustry, field.TypeInt8, value)
 	}
-	if value, ok := cu.mutation.Status(); ok {
-		_spec.SetField(customer.FieldStatus, field.TypeInt, value)
+	if value, ok := cu.mutation.Size(); ok {
+		_spec.SetField(customer.FieldSize, field.TypeInt8, value)
 	}
-	if value, ok := cu.mutation.AddedStatus(); ok {
-		_spec.AddField(customer.FieldStatus, field.TypeInt, value)
+	if value, ok := cu.mutation.AddedSize(); ok {
+		_spec.AddField(customer.FieldSize, field.TypeInt8, value)
 	}
-	if cu.mutation.StatusCleared() {
-		_spec.ClearField(customer.FieldStatus, field.TypeInt)
+	if cu.mutation.SizeCleared() {
+		_spec.ClearField(customer.FieldSize, field.TypeInt8)
 	}
 	if value, ok := cu.mutation.ContactPerson(); ok {
 		_spec.SetField(customer.FieldContactPerson, field.TypeString, value)
@@ -413,20 +461,11 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.ContactPersonEmailCleared() {
 		_spec.ClearField(customer.FieldContactPersonEmail, field.TypeString)
 	}
-	if value, ok := cu.mutation.CustomerOwner(); ok {
-		_spec.SetField(customer.FieldCustomerOwner, field.TypeJSON, value)
+	if value, ok := cu.mutation.FeishuGroup(); ok {
+		_spec.SetField(customer.FieldFeishuGroup, field.TypeJSON, value)
 	}
-	if cu.mutation.CustomerOwnerCleared() {
-		_spec.ClearField(customer.FieldCustomerOwner, field.TypeJSON)
-	}
-	if value, ok := cu.mutation.SalesLeader(); ok {
-		_spec.SetField(customer.FieldSalesLeader, field.TypeJSON, value)
-	}
-	if cu.mutation.SalesLeaderCleared() {
-		_spec.ClearField(customer.FieldSalesLeader, field.TypeJSON)
-	}
-	if value, ok := cu.mutation.CreatedBy(); ok {
-		_spec.SetField(customer.FieldCreatedBy, field.TypeJSON, value)
+	if cu.mutation.FeishuGroupCleared() {
+		_spec.ClearField(customer.FieldFeishuGroup, field.TypeJSON)
 	}
 	if cu.mutation.AreaCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -502,6 +541,64 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cu.mutation.SalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customer.SalesTable,
+			Columns: []string{customer.SalesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.SalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customer.SalesTable,
+			Columns: []string{customer.SalesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.CreatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.CreatedByTable,
+			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.CreatedByTable,
+			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{customer.Label}
@@ -543,14 +640,14 @@ func (cuo *CustomerUpdateOne) SetNillableName(s *string) *CustomerUpdateOne {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (cuo *CustomerUpdateOne) SetOwnerType(i int) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetOwnerType(i int8) *CustomerUpdateOne {
 	cuo.mutation.ResetOwnerType()
 	cuo.mutation.SetOwnerType(i)
 	return cuo
 }
 
 // SetNillableOwnerType sets the "owner_type" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableOwnerType(i *int) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetNillableOwnerType(i *int8) *CustomerUpdateOne {
 	if i != nil {
 		cuo.SetOwnerType(*i)
 	}
@@ -558,7 +655,7 @@ func (cuo *CustomerUpdateOne) SetNillableOwnerType(i *int) *CustomerUpdateOne {
 }
 
 // AddOwnerType adds i to the "owner_type" field.
-func (cuo *CustomerUpdateOne) AddOwnerType(i int) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) AddOwnerType(i int8) *CustomerUpdateOne {
 	cuo.mutation.AddOwnerType(i)
 	return cuo
 }
@@ -570,14 +667,14 @@ func (cuo *CustomerUpdateOne) ClearOwnerType() *CustomerUpdateOne {
 }
 
 // SetIndustry sets the "industry" field.
-func (cuo *CustomerUpdateOne) SetIndustry(i int) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetIndustry(i int8) *CustomerUpdateOne {
 	cuo.mutation.ResetIndustry()
 	cuo.mutation.SetIndustry(i)
 	return cuo
 }
 
 // SetNillableIndustry sets the "industry" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int8) *CustomerUpdateOne {
 	if i != nil {
 		cuo.SetIndustry(*i)
 	}
@@ -585,35 +682,35 @@ func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int) *CustomerUpdateOne {
 }
 
 // AddIndustry adds i to the "industry" field.
-func (cuo *CustomerUpdateOne) AddIndustry(i int) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) AddIndustry(i int8) *CustomerUpdateOne {
 	cuo.mutation.AddIndustry(i)
 	return cuo
 }
 
-// SetStatus sets the "status" field.
-func (cuo *CustomerUpdateOne) SetStatus(i int) *CustomerUpdateOne {
-	cuo.mutation.ResetStatus()
-	cuo.mutation.SetStatus(i)
+// SetSize sets the "size" field.
+func (cuo *CustomerUpdateOne) SetSize(i int8) *CustomerUpdateOne {
+	cuo.mutation.ResetSize()
+	cuo.mutation.SetSize(i)
 	return cuo
 }
 
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableStatus(i *int) *CustomerUpdateOne {
+// SetNillableSize sets the "size" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableSize(i *int8) *CustomerUpdateOne {
 	if i != nil {
-		cuo.SetStatus(*i)
+		cuo.SetSize(*i)
 	}
 	return cuo
 }
 
-// AddStatus adds i to the "status" field.
-func (cuo *CustomerUpdateOne) AddStatus(i int) *CustomerUpdateOne {
-	cuo.mutation.AddStatus(i)
+// AddSize adds i to the "size" field.
+func (cuo *CustomerUpdateOne) AddSize(i int8) *CustomerUpdateOne {
+	cuo.mutation.AddSize(i)
 	return cuo
 }
 
-// ClearStatus clears the value of the "status" field.
-func (cuo *CustomerUpdateOne) ClearStatus() *CustomerUpdateOne {
-	cuo.mutation.ClearStatus()
+// ClearSize clears the value of the "size" field.
+func (cuo *CustomerUpdateOne) ClearSize() *CustomerUpdateOne {
+	cuo.mutation.ClearSize()
 	return cuo
 }
 
@@ -697,33 +794,15 @@ func (cuo *CustomerUpdateOne) ClearContactPersonEmail() *CustomerUpdateOne {
 	return cuo
 }
 
-// SetCustomerOwner sets the "customer_owner" field.
-func (cuo *CustomerUpdateOne) SetCustomerOwner(z *zht.User) *CustomerUpdateOne {
-	cuo.mutation.SetCustomerOwner(z)
+// SetFeishuGroup sets the "feishu_group" field.
+func (cuo *CustomerUpdateOne) SetFeishuGroup(z *zht.Group) *CustomerUpdateOne {
+	cuo.mutation.SetFeishuGroup(z)
 	return cuo
 }
 
-// ClearCustomerOwner clears the value of the "customer_owner" field.
-func (cuo *CustomerUpdateOne) ClearCustomerOwner() *CustomerUpdateOne {
-	cuo.mutation.ClearCustomerOwner()
-	return cuo
-}
-
-// SetSalesLeader sets the "sales_leader" field.
-func (cuo *CustomerUpdateOne) SetSalesLeader(z *zht.User) *CustomerUpdateOne {
-	cuo.mutation.SetSalesLeader(z)
-	return cuo
-}
-
-// ClearSalesLeader clears the value of the "sales_leader" field.
-func (cuo *CustomerUpdateOne) ClearSalesLeader() *CustomerUpdateOne {
-	cuo.mutation.ClearSalesLeader()
-	return cuo
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (cuo *CustomerUpdateOne) SetCreatedBy(z *zht.User) *CustomerUpdateOne {
-	cuo.mutation.SetCreatedBy(z)
+// ClearFeishuGroup clears the value of the "feishu_group" field.
+func (cuo *CustomerUpdateOne) ClearFeishuGroup() *CustomerUpdateOne {
+	cuo.mutation.ClearFeishuGroup()
 	return cuo
 }
 
@@ -737,6 +816,40 @@ func (cuo *CustomerUpdateOne) SetAreaID(x xid.ID) *CustomerUpdateOne {
 func (cuo *CustomerUpdateOne) SetNillableAreaID(x *xid.ID) *CustomerUpdateOne {
 	if x != nil {
 		cuo.SetAreaID(*x)
+	}
+	return cuo
+}
+
+// SetSalesID sets the "sales_id" field.
+func (cuo *CustomerUpdateOne) SetSalesID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetSalesID(x)
+	return cuo
+}
+
+// SetNillableSalesID sets the "sales_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableSalesID(x *xid.ID) *CustomerUpdateOne {
+	if x != nil {
+		cuo.SetSalesID(*x)
+	}
+	return cuo
+}
+
+// ClearSalesID clears the value of the "sales_id" field.
+func (cuo *CustomerUpdateOne) ClearSalesID() *CustomerUpdateOne {
+	cuo.mutation.ClearSalesID()
+	return cuo
+}
+
+// SetCreatedByUserID sets the "created_by_user_id" field.
+func (cuo *CustomerUpdateOne) SetCreatedByUserID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetCreatedByUserID(x)
+	return cuo
+}
+
+// SetNillableCreatedByUserID sets the "created_by_user_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableCreatedByUserID(x *xid.ID) *CustomerUpdateOne {
+	if x != nil {
+		cuo.SetCreatedByUserID(*x)
 	}
 	return cuo
 }
@@ -759,6 +872,22 @@ func (cuo *CustomerUpdateOne) AddTenders(t ...*Tender) *CustomerUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return cuo.AddTenderIDs(ids...)
+}
+
+// SetSales sets the "sales" edge to the User entity.
+func (cuo *CustomerUpdateOne) SetSales(u *User) *CustomerUpdateOne {
+	return cuo.SetSalesID(u.ID)
+}
+
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
+func (cuo *CustomerUpdateOne) SetCreatedByID(id xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetCreatedByID(id)
+	return cuo
+}
+
+// SetCreatedBy sets the "created_by" edge to the User entity.
+func (cuo *CustomerUpdateOne) SetCreatedBy(u *User) *CustomerUpdateOne {
+	return cuo.SetCreatedByID(u.ID)
 }
 
 // Mutation returns the CustomerMutation object of the builder.
@@ -791,6 +920,18 @@ func (cuo *CustomerUpdateOne) RemoveTenders(t ...*Tender) *CustomerUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return cuo.RemoveTenderIDs(ids...)
+}
+
+// ClearSales clears the "sales" edge to the User entity.
+func (cuo *CustomerUpdateOne) ClearSales() *CustomerUpdateOne {
+	cuo.mutation.ClearSales()
+	return cuo
+}
+
+// ClearCreatedBy clears the "created_by" edge to the User entity.
+func (cuo *CustomerUpdateOne) ClearCreatedBy() *CustomerUpdateOne {
+	cuo.mutation.ClearCreatedBy()
+	return cuo
 }
 
 // Where appends a list predicates to the CustomerUpdate builder.
@@ -847,6 +988,9 @@ func (cuo *CustomerUpdateOne) check() error {
 	if cuo.mutation.AreaCleared() && len(cuo.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Customer.area"`)
 	}
+	if cuo.mutation.CreatedByCleared() && len(cuo.mutation.CreatedByIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "Customer.created_by"`)
+	}
 	return nil
 }
 
@@ -886,28 +1030,28 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.OwnerType(); ok {
-		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
+		_spec.SetField(customer.FieldOwnerType, field.TypeInt8, value)
 	}
 	if value, ok := cuo.mutation.AddedOwnerType(); ok {
-		_spec.AddField(customer.FieldOwnerType, field.TypeInt, value)
+		_spec.AddField(customer.FieldOwnerType, field.TypeInt8, value)
 	}
 	if cuo.mutation.OwnerTypeCleared() {
-		_spec.ClearField(customer.FieldOwnerType, field.TypeInt)
+		_spec.ClearField(customer.FieldOwnerType, field.TypeInt8)
 	}
 	if value, ok := cuo.mutation.Industry(); ok {
-		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
+		_spec.SetField(customer.FieldIndustry, field.TypeInt8, value)
 	}
 	if value, ok := cuo.mutation.AddedIndustry(); ok {
-		_spec.AddField(customer.FieldIndustry, field.TypeInt, value)
+		_spec.AddField(customer.FieldIndustry, field.TypeInt8, value)
 	}
-	if value, ok := cuo.mutation.Status(); ok {
-		_spec.SetField(customer.FieldStatus, field.TypeInt, value)
+	if value, ok := cuo.mutation.Size(); ok {
+		_spec.SetField(customer.FieldSize, field.TypeInt8, value)
 	}
-	if value, ok := cuo.mutation.AddedStatus(); ok {
-		_spec.AddField(customer.FieldStatus, field.TypeInt, value)
+	if value, ok := cuo.mutation.AddedSize(); ok {
+		_spec.AddField(customer.FieldSize, field.TypeInt8, value)
 	}
-	if cuo.mutation.StatusCleared() {
-		_spec.ClearField(customer.FieldStatus, field.TypeInt)
+	if cuo.mutation.SizeCleared() {
+		_spec.ClearField(customer.FieldSize, field.TypeInt8)
 	}
 	if value, ok := cuo.mutation.ContactPerson(); ok {
 		_spec.SetField(customer.FieldContactPerson, field.TypeString, value)
@@ -933,20 +1077,11 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	if cuo.mutation.ContactPersonEmailCleared() {
 		_spec.ClearField(customer.FieldContactPersonEmail, field.TypeString)
 	}
-	if value, ok := cuo.mutation.CustomerOwner(); ok {
-		_spec.SetField(customer.FieldCustomerOwner, field.TypeJSON, value)
+	if value, ok := cuo.mutation.FeishuGroup(); ok {
+		_spec.SetField(customer.FieldFeishuGroup, field.TypeJSON, value)
 	}
-	if cuo.mutation.CustomerOwnerCleared() {
-		_spec.ClearField(customer.FieldCustomerOwner, field.TypeJSON)
-	}
-	if value, ok := cuo.mutation.SalesLeader(); ok {
-		_spec.SetField(customer.FieldSalesLeader, field.TypeJSON, value)
-	}
-	if cuo.mutation.SalesLeaderCleared() {
-		_spec.ClearField(customer.FieldSalesLeader, field.TypeJSON)
-	}
-	if value, ok := cuo.mutation.CreatedBy(); ok {
-		_spec.SetField(customer.FieldCreatedBy, field.TypeJSON, value)
+	if cuo.mutation.FeishuGroupCleared() {
+		_spec.ClearField(customer.FieldFeishuGroup, field.TypeJSON)
 	}
 	if cuo.mutation.AreaCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1015,6 +1150,64 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.SalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customer.SalesTable,
+			Columns: []string{customer.SalesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.SalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   customer.SalesTable,
+			Columns: []string{customer.SalesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.CreatedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.CreatedByTable,
+			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.CreatedByTable,
+			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

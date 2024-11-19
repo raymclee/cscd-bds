@@ -8,15 +8,14 @@ import (
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -67,18 +66,6 @@ func (au *AreaUpdate) SetNillableCode(s *string) *AreaUpdate {
 	return au
 }
 
-// SetSalesTeamMembers sets the "sales_team_members" field.
-func (au *AreaUpdate) SetSalesTeamMembers(z []zht.User) *AreaUpdate {
-	au.mutation.SetSalesTeamMembers(z)
-	return au
-}
-
-// AppendSalesTeamMembers appends z to the "sales_team_members" field.
-func (au *AreaUpdate) AppendSalesTeamMembers(z []zht.User) *AreaUpdate {
-	au.mutation.AppendSalesTeamMembers(z)
-	return au
-}
-
 // AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
 func (au *AreaUpdate) AddCustomerIDs(ids ...xid.ID) *AreaUpdate {
 	au.mutation.AddCustomerIDs(ids...)
@@ -107,6 +94,21 @@ func (au *AreaUpdate) AddTenders(t ...*Tender) *AreaUpdate {
 		ids[i] = t[i].ID
 	}
 	return au.AddTenderIDs(ids...)
+}
+
+// AddSaleIDs adds the "sales" edge to the User entity by IDs.
+func (au *AreaUpdate) AddSaleIDs(ids ...xid.ID) *AreaUpdate {
+	au.mutation.AddSaleIDs(ids...)
+	return au
+}
+
+// AddSales adds the "sales" edges to the User entity.
+func (au *AreaUpdate) AddSales(u ...*User) *AreaUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return au.AddSaleIDs(ids...)
 }
 
 // Mutation returns the AreaMutation object of the builder.
@@ -154,6 +156,27 @@ func (au *AreaUpdate) RemoveTenders(t ...*Tender) *AreaUpdate {
 		ids[i] = t[i].ID
 	}
 	return au.RemoveTenderIDs(ids...)
+}
+
+// ClearSales clears all "sales" edges to the User entity.
+func (au *AreaUpdate) ClearSales() *AreaUpdate {
+	au.mutation.ClearSales()
+	return au
+}
+
+// RemoveSaleIDs removes the "sales" edge to User entities by IDs.
+func (au *AreaUpdate) RemoveSaleIDs(ids ...xid.ID) *AreaUpdate {
+	au.mutation.RemoveSaleIDs(ids...)
+	return au
+}
+
+// RemoveSales removes "sales" edges to User entities.
+func (au *AreaUpdate) RemoveSales(u ...*User) *AreaUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return au.RemoveSaleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -209,14 +232,6 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
-	}
-	if value, ok := au.mutation.SalesTeamMembers(); ok {
-		_spec.SetField(area.FieldSalesTeamMembers, field.TypeJSON, value)
-	}
-	if value, ok := au.mutation.AppendedSalesTeamMembers(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, area.FieldSalesTeamMembers, value)
-		})
 	}
 	if au.mutation.CustomersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -308,6 +323,51 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if au.mutation.SalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := au.mutation.RemovedSalesIDs(); len(nodes) > 0 && !au.mutation.SalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := au.mutation.SalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{area.Label}
@@ -362,18 +422,6 @@ func (auo *AreaUpdateOne) SetNillableCode(s *string) *AreaUpdateOne {
 	return auo
 }
 
-// SetSalesTeamMembers sets the "sales_team_members" field.
-func (auo *AreaUpdateOne) SetSalesTeamMembers(z []zht.User) *AreaUpdateOne {
-	auo.mutation.SetSalesTeamMembers(z)
-	return auo
-}
-
-// AppendSalesTeamMembers appends z to the "sales_team_members" field.
-func (auo *AreaUpdateOne) AppendSalesTeamMembers(z []zht.User) *AreaUpdateOne {
-	auo.mutation.AppendSalesTeamMembers(z)
-	return auo
-}
-
 // AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
 func (auo *AreaUpdateOne) AddCustomerIDs(ids ...xid.ID) *AreaUpdateOne {
 	auo.mutation.AddCustomerIDs(ids...)
@@ -402,6 +450,21 @@ func (auo *AreaUpdateOne) AddTenders(t ...*Tender) *AreaUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return auo.AddTenderIDs(ids...)
+}
+
+// AddSaleIDs adds the "sales" edge to the User entity by IDs.
+func (auo *AreaUpdateOne) AddSaleIDs(ids ...xid.ID) *AreaUpdateOne {
+	auo.mutation.AddSaleIDs(ids...)
+	return auo
+}
+
+// AddSales adds the "sales" edges to the User entity.
+func (auo *AreaUpdateOne) AddSales(u ...*User) *AreaUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return auo.AddSaleIDs(ids...)
 }
 
 // Mutation returns the AreaMutation object of the builder.
@@ -449,6 +512,27 @@ func (auo *AreaUpdateOne) RemoveTenders(t ...*Tender) *AreaUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return auo.RemoveTenderIDs(ids...)
+}
+
+// ClearSales clears all "sales" edges to the User entity.
+func (auo *AreaUpdateOne) ClearSales() *AreaUpdateOne {
+	auo.mutation.ClearSales()
+	return auo
+}
+
+// RemoveSaleIDs removes the "sales" edge to User entities by IDs.
+func (auo *AreaUpdateOne) RemoveSaleIDs(ids ...xid.ID) *AreaUpdateOne {
+	auo.mutation.RemoveSaleIDs(ids...)
+	return auo
+}
+
+// RemoveSales removes "sales" edges to User entities.
+func (auo *AreaUpdateOne) RemoveSales(u ...*User) *AreaUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return auo.RemoveSaleIDs(ids...)
 }
 
 // Where appends a list predicates to the AreaUpdate builder.
@@ -535,14 +619,6 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 	if value, ok := auo.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.SalesTeamMembers(); ok {
-		_spec.SetField(area.FieldSalesTeamMembers, field.TypeJSON, value)
-	}
-	if value, ok := auo.mutation.AppendedSalesTeamMembers(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, area.FieldSalesTeamMembers, value)
-		})
-	}
 	if auo.mutation.CustomersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -626,6 +702,51 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if auo.mutation.SalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := auo.mutation.RemovedSalesIDs(); len(nodes) > 0 && !auo.mutation.SalesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := auo.mutation.SalesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   area.SalesTable,
+			Columns: area.SalesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

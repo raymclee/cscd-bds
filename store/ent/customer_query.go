@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -28,6 +29,8 @@ type CustomerQuery struct {
 	predicates       []predicate.Customer
 	withArea         *AreaQuery
 	withTenders      *TenderQuery
+	withSales        *UserQuery
+	withCreatedBy    *UserQuery
 	modifiers        []func(*sql.Selector)
 	loadTotal        []func(context.Context, []*Customer) error
 	withNamedTenders map[string]*TenderQuery
@@ -104,6 +107,50 @@ func (cq *CustomerQuery) QueryTenders() *TenderQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(tender.Table, tender.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, customer.TendersTable, customer.TendersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QuerySales chains the current query on the "sales" edge.
+func (cq *CustomerQuery) QuerySales() *UserQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, customer.SalesTable, customer.SalesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCreatedBy chains the current query on the "created_by" edge.
+func (cq *CustomerQuery) QueryCreatedBy() *UserQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.CreatedByTable, customer.CreatedByColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -298,13 +345,15 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		return nil
 	}
 	return &CustomerQuery{
-		config:      cq.config,
-		ctx:         cq.ctx.Clone(),
-		order:       append([]customer.OrderOption{}, cq.order...),
-		inters:      append([]Interceptor{}, cq.inters...),
-		predicates:  append([]predicate.Customer{}, cq.predicates...),
-		withArea:    cq.withArea.Clone(),
-		withTenders: cq.withTenders.Clone(),
+		config:        cq.config,
+		ctx:           cq.ctx.Clone(),
+		order:         append([]customer.OrderOption{}, cq.order...),
+		inters:        append([]Interceptor{}, cq.inters...),
+		predicates:    append([]predicate.Customer{}, cq.predicates...),
+		withArea:      cq.withArea.Clone(),
+		withTenders:   cq.withTenders.Clone(),
+		withSales:     cq.withSales.Clone(),
+		withCreatedBy: cq.withCreatedBy.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -330,6 +379,28 @@ func (cq *CustomerQuery) WithTenders(opts ...func(*TenderQuery)) *CustomerQuery 
 		opt(query)
 	}
 	cq.withTenders = query
+	return cq
+}
+
+// WithSales tells the query-builder to eager-load the nodes that are connected to
+// the "sales" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithSales(opts ...func(*UserQuery)) *CustomerQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withSales = query
+	return cq
+}
+
+// WithCreatedBy tells the query-builder to eager-load the nodes that are connected to
+// the "created_by" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithCreatedBy(opts ...func(*UserQuery)) *CustomerQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withCreatedBy = query
 	return cq
 }
 
@@ -411,9 +482,11 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	var (
 		nodes       = []*Customer{}
 		_spec       = cq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [4]bool{
 			cq.withArea != nil,
 			cq.withTenders != nil,
+			cq.withSales != nil,
+			cq.withCreatedBy != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -447,6 +520,18 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 		if err := cq.loadTenders(ctx, query, nodes,
 			func(n *Customer) { n.Edges.Tenders = []*Tender{} },
 			func(n *Customer, e *Tender) { n.Edges.Tenders = append(n.Edges.Tenders, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withSales; query != nil {
+		if err := cq.loadSales(ctx, query, nodes, nil,
+			func(n *Customer, e *User) { n.Edges.Sales = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withCreatedBy; query != nil {
+		if err := cq.loadCreatedBy(ctx, query, nodes, nil,
+			func(n *Customer, e *User) { n.Edges.CreatedBy = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -524,6 +609,64 @@ func (cq *CustomerQuery) loadTenders(ctx context.Context, query *TenderQuery, no
 	}
 	return nil
 }
+func (cq *CustomerQuery) loadSales(ctx context.Context, query *UserQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Customer)
+	for i := range nodes {
+		fk := nodes[i].SalesID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "sales_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Customer)
+	for i := range nodes {
+		fk := nodes[i].CreatedByUserID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "created_by_user_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (cq *CustomerQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
@@ -555,6 +698,12 @@ func (cq *CustomerQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if cq.withArea != nil {
 			_spec.Node.AddColumnOnce(customer.FieldAreaID)
+		}
+		if cq.withSales != nil {
+			_spec.Node.AddColumnOnce(customer.FieldSalesID)
+		}
+		if cq.withCreatedBy != nil {
+			_spec.Node.AddColumnOnce(customer.FieldCreatedByUserID)
 		}
 	}
 	if ps := cq.predicates; len(ps) > 0 {
