@@ -1030,24 +1030,39 @@ const statusItems = ["跟进中", "停止跟进", "中标", "失标", "估价", 
 
 function AmountBoard() {
   const selectedArea = useMapStore((state) => state.selectedArea);
+  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
 
+  const nodeProps = currentAreaNode?.getProps();
+
+  const adcodes = currentAreaNode
+    ?.getSubFeatures()
+    ?.map((f: any) => f.properties.adcode);
   const data = usePreloadedQuery<MapIndexPageQuery>(
     query,
     Route.useLoaderData(),
   );
+  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
 
-  const tenders = selectedArea
-    ? selectedArea.tenders
-    : data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
+  const tenders =
+    nodeProps?.level === "province" || nodeProps?.level === "city"
+      ? allTenders.filter((t) => {
+          switch (nodeProps?.level) {
+            case "province":
+            case "city":
+              return (
+                adcodes?.includes(t?.city?.adcode) ||
+                adcodes?.includes(t?.district.adcode)
+              );
+          }
+        })
+      : selectedArea
+        ? selectedArea?.tenders
+        : allTenders;
 
-  const totalAmount = selectedArea
-    ? selectedArea?.tenders?.reduce(
-        (acc, inc) => acc + inc.estimatedAmount! / 100000000,
-        0,
-      )
-    : data.areas.edges
-        ?.flatMap((e) => e?.node?.tenders)
-        .reduce((acc, inc) => acc + inc?.estimatedAmount! / 100000000, 0);
+  const totalAmount = tenders?.reduce(
+    (acc, inc) => acc + inc?.estimatedAmount! / 100000000,
+    0,
+  );
 
   const tenderCount = tenders?.length || 0;
 
@@ -1436,6 +1451,14 @@ function TenderList() {
                       <div className="flex items-baseline justify-between text-sm">
                         <div className="text-gray-300">招标形式</div>
                         <div>{tender?.tenderForm || "-"}</div>
+                      </div>
+                      <div className="flex items-baseline justify-between text-sm">
+                        <div className="text-gray-300">预计金额</div>
+                        <div>
+                          {tender?.estimatedAmount
+                            ? `${fixAmount(tender?.estimatedAmount)} 亿`
+                            : "-"}
+                        </div>
                       </div>
                     </div>
                   </div>

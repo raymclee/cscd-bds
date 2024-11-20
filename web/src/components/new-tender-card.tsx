@@ -3,23 +3,51 @@ import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 import { fixAmount } from "~/lib/helper";
+import { useMapStore } from "~/store/map";
 
-export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
+export function NewTenderBoard({ data }: { data: MapIndexPageQuery$data }) {
+  const selectedArea = useMapStore((state) => state.selectedArea);
+  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
+
+  const nodeProps = currentAreaNode?.getProps();
+
+  const adcodes = currentAreaNode
+    ?.getSubFeatures()
+    ?.map((f: any) => f.properties.adcode);
+
+  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
+
+  const tenders =
+    nodeProps?.level === "province" || nodeProps?.level === "city"
+      ? allTenders.filter((t) => {
+          switch (nodeProps?.level) {
+            case "province":
+            case "city":
+              return (
+                adcodes?.includes(t?.city?.adcode) ||
+                adcodes?.includes(t?.district.adcode)
+              );
+          }
+        })
+      : selectedArea
+        ? selectedArea?.tenders
+        : allTenders;
+
   const lastMontDateFormat = `${new Date().getFullYear()}-${new Date().getMonth()}`;
-  const lastMonth = props.data.areas?.edges
-    ?.flatMap((e) => e?.node?.tenders ?? [])
-    .filter((e) => e.createdAt.includes(lastMontDateFormat));
+  const lastMonth = tenders?.filter((e) =>
+    e?.createdAt.includes(lastMontDateFormat),
+  );
   const lastMonthAmount = fixAmount(
     lastMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
   );
   const lastMonthCount = lastMonth?.length ?? 0;
 
   const thisMonthDateFormat = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
-  const thisMonth = props.data.areas?.edges
-    ?.flatMap((e) => e?.node?.tenders ?? [])
-    .filter((e) => e.createdAt.includes(thisMonthDateFormat));
+  const thisMonth = tenders?.filter((e) =>
+    e?.createdAt.includes(thisMonthDateFormat),
+  );
   const thisMonthAmount = fixAmount(
-    thisMonth?.reduce((acc, cur) => acc + (cur.estimatedAmount ?? 0), 0),
+    thisMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
@@ -67,8 +95,9 @@ export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
     },
   } satisfies ColumnConfig;
 
+  const amountPercent = lastMonthAmount / thisMonthAmount;
   const amountConfig = {
-    percent: lastMonthAmount / thisMonthAmount,
+    percent: isFinite(amountPercent) ? amountPercent || 1 : 1,
     width: 80,
     height: 80,
     innerRadius: 0.65,
@@ -77,7 +106,9 @@ export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
       {
         type: "text",
         style: {
-          text: `${Math.round((lastMonthAmount / thisMonthAmount) * 100)}%`,
+          text: isFinite(amountPercent)
+            ? `${Math.round(amountPercent * 100)}%`
+            : "0%",
           x: "50%",
           y: "50%",
           textAlign: "center",
@@ -89,8 +120,9 @@ export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
     ],
   };
 
+  const totalPercent = lastMonthCount / thisMonthCount;
   const totalConfig = {
-    percent: lastMonthCount / thisMonthCount,
+    percent: isFinite(totalPercent) ? totalPercent || 1 : 1,
     width: 80,
     height: 80,
     innerRadius: 0.65,
@@ -99,7 +131,9 @@ export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
       {
         type: "text",
         style: {
-          text: `${Math.round((lastMonthCount / thisMonthCount) * 100)}%`,
+          text: isFinite(totalPercent)
+            ? `${Math.round(totalPercent * 100)}%`
+            : "0%",
           x: "50%",
           y: "50%",
           textAlign: "center",
@@ -111,7 +145,6 @@ export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
     ],
   };
 
-  // t?.filter(e => e)
   return (
     <Card
       className={cn(

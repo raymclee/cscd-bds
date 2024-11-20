@@ -60,19 +60,40 @@ type Props = {
   data: MapIndexPageQuery$data;
 };
 
-export function TenderTypeChart(props: Props) {
+export function TenderTypeChart({ data }: Props) {
   const selectedArea = useMapStore((s) => s.selectedArea);
+  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
+
+  const nodeProps = currentAreaNode?.getProps();
+
+  const adcodes = currentAreaNode
+    ?.getSubFeatures()
+    ?.map((f: any) => f.properties.adcode);
+
+  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
+
   const tenders =
-    (selectedArea
-      ? selectedArea.tenders
-      : props.data?.areas.edges?.flatMap((e) => e?.node?.tenders)) || [];
+    nodeProps?.level === "province" || nodeProps?.level === "city"
+      ? allTenders.filter((t) => {
+          switch (nodeProps?.level) {
+            case "province":
+            case "city":
+              return (
+                adcodes?.includes(t?.city?.adcode) ||
+                adcodes?.includes(t?.district.adcode)
+              );
+          }
+        })
+      : selectedArea
+        ? selectedArea?.tenders
+        : allTenders;
 
   let government = 0;
   let csoe = 0;
   let highTech = 0;
   let other = 0;
 
-  for (const t of tenders) {
+  for (const t of tenders || []) {
     switch (t?.customer.ownerType) {
       case 1:
         government += 1;
@@ -102,7 +123,7 @@ export function TenderTypeChart(props: Props) {
     radius: 0.75,
     // innerRadius: 0.35,
     label: {
-      text: (d: (typeof data)[0]) => `${d.type}\n ${d.value}`,
+      text: (d: { type: string; value: number }) => `${d.type}\n ${d.value}`,
       position: "outside",
     },
     // label: false,
