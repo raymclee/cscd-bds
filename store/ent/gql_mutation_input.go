@@ -16,6 +16,7 @@ type CreateAreaInput struct {
 	CustomerIDs []xid.ID
 	TenderIDs   []xid.ID
 	SaleIDs     []xid.ID
+	ProvinceIDs []xid.ID
 }
 
 // Mutate applies the CreateAreaInput on the AreaMutation builder.
@@ -36,6 +37,9 @@ func (i *CreateAreaInput) Mutate(m *AreaMutation) {
 	}
 	if v := i.SaleIDs; len(v) > 0 {
 		m.AddSaleIDs(v...)
+	}
+	if v := i.ProvinceIDs; len(v) > 0 {
+		m.AddProvinceIDs(v...)
 	}
 }
 
@@ -59,6 +63,9 @@ type UpdateAreaInput struct {
 	ClearSales        bool
 	AddSaleIDs        []xid.ID
 	RemoveSaleIDs     []xid.ID
+	ClearProvinces    bool
+	AddProvinceIDs    []xid.ID
+	RemoveProvinceIDs []xid.ID
 }
 
 // Mutate applies the UpdateAreaInput on the AreaMutation builder.
@@ -98,6 +105,15 @@ func (i *UpdateAreaInput) Mutate(m *AreaMutation) {
 	}
 	if v := i.RemoveSaleIDs; len(v) > 0 {
 		m.RemoveSaleIDs(v...)
+	}
+	if i.ClearProvinces {
+		m.ClearProvinces()
+	}
+	if v := i.AddProvinceIDs; len(v) > 0 {
+		m.AddProvinceIDs(v...)
+	}
+	if v := i.RemoveProvinceIDs; len(v) > 0 {
+		m.RemoveProvinceIDs(v...)
 	}
 }
 
@@ -294,9 +310,9 @@ type CreateCustomerInput struct {
 	CreatedAt             *time.Time
 	UpdatedAt             *time.Time
 	Name                  string
-	OwnerType             *int8
-	Industry              int8
-	Size                  *int8
+	OwnerType             *int
+	Industry              int
+	Size                  *int
 	ContactPerson         *string
 	ContactPersonPosition *string
 	ContactPersonPhone    *string
@@ -356,10 +372,10 @@ type UpdateCustomerInput struct {
 	UpdatedAt                  *time.Time
 	Name                       *string
 	ClearOwnerType             bool
-	OwnerType                  *int8
-	Industry                   *int8
+	OwnerType                  *int
+	Industry                   *int
 	ClearSize                  bool
-	Size                       *int8
+	Size                       *int
 	ClearContactPerson         bool
 	ContactPerson              *string
 	ClearContactPersonPosition bool
@@ -573,6 +589,7 @@ type CreateProvinceInput struct {
 	CityIDs     []xid.ID
 	CountryID   xid.ID
 	TenderIDs   []xid.ID
+	AreaID      *xid.ID
 }
 
 // Mutate applies the CreateProvinceInput on the ProvinceMutation builder.
@@ -594,6 +611,9 @@ func (i *CreateProvinceInput) Mutate(m *ProvinceMutation) {
 	m.SetCountryID(i.CountryID)
 	if v := i.TenderIDs; len(v) > 0 {
 		m.AddTenderIDs(v...)
+	}
+	if v := i.AreaID; v != nil {
+		m.SetAreaID(*v)
 	}
 }
 
@@ -618,6 +638,8 @@ type UpdateProvinceInput struct {
 	ClearTenders      bool
 	AddTenderIDs      []xid.ID
 	RemoveTenderIDs   []xid.ID
+	ClearArea         bool
+	AreaID            *xid.ID
 }
 
 // Mutate applies the UpdateProvinceInput on the ProvinceMutation builder.
@@ -661,6 +683,12 @@ func (i *UpdateProvinceInput) Mutate(m *ProvinceMutation) {
 	if v := i.RemoveTenderIDs; len(v) > 0 {
 		m.RemoveTenderIDs(v...)
 	}
+	if i.ClearArea {
+		m.ClearArea()
+	}
+	if v := i.AreaID; v != nil {
+		m.SetAreaID(*v)
+	}
 }
 
 // SetInput applies the change-set in the UpdateProvinceInput on the ProvinceUpdate builder.
@@ -680,7 +708,7 @@ type CreateTenderInput struct {
 	CreatedAt                            *time.Time
 	UpdatedAt                            *time.Time
 	Code                                 string
-	Status                               *int8
+	Status                               *int
 	Name                                 string
 	EstimatedAmount                      *float64
 	TenderDate                           *time.Time
@@ -688,15 +716,15 @@ type CreateTenderInput struct {
 	Address                              *string
 	FullAddress                          *string
 	Contractor                           *string
-	SizeAndValueRating                   *int8
+	SizeAndValueRating                   *int
 	SizeAndValueRatingOverview           *string
-	CreditAndPaymentRating               *int8
+	CreditAndPaymentRating               *int
 	CreditAndPaymentRatingOverview       *string
-	TimeLimitRating                      *int8
+	TimeLimitRating                      *int
 	TimeLimitRatingOverview              *string
-	CustomerRelationshipRating           *int8
+	CustomerRelationshipRating           *int
 	CustomerRelationshipRatingOverview   *string
-	CompetitivePartnershipRating         *int8
+	CompetitivePartnershipRating         *int
 	CompetitivePartnershipRatingOverview *string
 	PrepareToBid                         *bool
 	ProjectCode                          *string
@@ -883,7 +911,7 @@ func (c *TenderCreate) SetInput(i CreateTenderInput) *TenderCreate {
 type UpdateTenderInput struct {
 	UpdatedAt                                 *time.Time
 	Code                                      *string
-	Status                                    *int8
+	Status                                    *int
 	Name                                      *string
 	ClearEstimatedAmount                      bool
 	EstimatedAmount                           *float64
@@ -897,23 +925,23 @@ type UpdateTenderInput struct {
 	ClearContractor                           bool
 	Contractor                                *string
 	ClearSizeAndValueRating                   bool
-	SizeAndValueRating                        *int8
+	SizeAndValueRating                        *int
 	ClearSizeAndValueRatingOverview           bool
 	SizeAndValueRatingOverview                *string
 	ClearCreditAndPaymentRating               bool
-	CreditAndPaymentRating                    *int8
+	CreditAndPaymentRating                    *int
 	ClearCreditAndPaymentRatingOverview       bool
 	CreditAndPaymentRatingOverview            *string
 	ClearTimeLimitRating                      bool
-	TimeLimitRating                           *int8
+	TimeLimitRating                           *int
 	ClearTimeLimitRatingOverview              bool
 	TimeLimitRatingOverview                   *string
 	ClearCustomerRelationshipRating           bool
-	CustomerRelationshipRating                *int8
+	CustomerRelationshipRating                *int
 	ClearCustomerRelationshipRatingOverview   bool
 	CustomerRelationshipRatingOverview        *string
 	ClearCompetitivePartnershipRating         bool
-	CompetitivePartnershipRating              *int8
+	CompetitivePartnershipRating              *int
 	ClearCompetitivePartnershipRatingOverview bool
 	CompetitivePartnershipRatingOverview      *string
 	PrepareToBid                              *bool

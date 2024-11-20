@@ -7,6 +7,8 @@ import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/province"
+	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -66,6 +68,12 @@ func (au *AreaUpdate) SetNillableCode(s *string) *AreaUpdate {
 	return au
 }
 
+// SetCenter sets the "center" field.
+func (au *AreaUpdate) SetCenter(gj *geo.GeoJson) *AreaUpdate {
+	au.mutation.SetCenter(gj)
+	return au
+}
+
 // AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
 func (au *AreaUpdate) AddCustomerIDs(ids ...xid.ID) *AreaUpdate {
 	au.mutation.AddCustomerIDs(ids...)
@@ -109,6 +117,21 @@ func (au *AreaUpdate) AddSales(u ...*User) *AreaUpdate {
 		ids[i] = u[i].ID
 	}
 	return au.AddSaleIDs(ids...)
+}
+
+// AddProvinceIDs adds the "provinces" edge to the Province entity by IDs.
+func (au *AreaUpdate) AddProvinceIDs(ids ...xid.ID) *AreaUpdate {
+	au.mutation.AddProvinceIDs(ids...)
+	return au
+}
+
+// AddProvinces adds the "provinces" edges to the Province entity.
+func (au *AreaUpdate) AddProvinces(p ...*Province) *AreaUpdate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return au.AddProvinceIDs(ids...)
 }
 
 // Mutation returns the AreaMutation object of the builder.
@@ -179,6 +202,27 @@ func (au *AreaUpdate) RemoveSales(u ...*User) *AreaUpdate {
 	return au.RemoveSaleIDs(ids...)
 }
 
+// ClearProvinces clears all "provinces" edges to the Province entity.
+func (au *AreaUpdate) ClearProvinces() *AreaUpdate {
+	au.mutation.ClearProvinces()
+	return au
+}
+
+// RemoveProvinceIDs removes the "provinces" edge to Province entities by IDs.
+func (au *AreaUpdate) RemoveProvinceIDs(ids ...xid.ID) *AreaUpdate {
+	au.mutation.RemoveProvinceIDs(ids...)
+	return au
+}
+
+// RemoveProvinces removes "provinces" edges to Province entities.
+func (au *AreaUpdate) RemoveProvinces(p ...*Province) *AreaUpdate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return au.RemoveProvinceIDs(ids...)
+}
+
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (au *AreaUpdate) Save(ctx context.Context) (int, error) {
 	au.defaults()
@@ -232,6 +276,9 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
+	}
+	if value, ok := au.mutation.Center(); ok {
+		_spec.SetField(area.FieldCenter, field.TypeOther, value)
 	}
 	if au.mutation.CustomersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -368,6 +415,51 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if au.mutation.ProvincesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := au.mutation.RemovedProvincesIDs(); len(nodes) > 0 && !au.mutation.ProvincesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := au.mutation.ProvincesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{area.Label}
@@ -422,6 +514,12 @@ func (auo *AreaUpdateOne) SetNillableCode(s *string) *AreaUpdateOne {
 	return auo
 }
 
+// SetCenter sets the "center" field.
+func (auo *AreaUpdateOne) SetCenter(gj *geo.GeoJson) *AreaUpdateOne {
+	auo.mutation.SetCenter(gj)
+	return auo
+}
+
 // AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
 func (auo *AreaUpdateOne) AddCustomerIDs(ids ...xid.ID) *AreaUpdateOne {
 	auo.mutation.AddCustomerIDs(ids...)
@@ -465,6 +563,21 @@ func (auo *AreaUpdateOne) AddSales(u ...*User) *AreaUpdateOne {
 		ids[i] = u[i].ID
 	}
 	return auo.AddSaleIDs(ids...)
+}
+
+// AddProvinceIDs adds the "provinces" edge to the Province entity by IDs.
+func (auo *AreaUpdateOne) AddProvinceIDs(ids ...xid.ID) *AreaUpdateOne {
+	auo.mutation.AddProvinceIDs(ids...)
+	return auo
+}
+
+// AddProvinces adds the "provinces" edges to the Province entity.
+func (auo *AreaUpdateOne) AddProvinces(p ...*Province) *AreaUpdateOne {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return auo.AddProvinceIDs(ids...)
 }
 
 // Mutation returns the AreaMutation object of the builder.
@@ -533,6 +646,27 @@ func (auo *AreaUpdateOne) RemoveSales(u ...*User) *AreaUpdateOne {
 		ids[i] = u[i].ID
 	}
 	return auo.RemoveSaleIDs(ids...)
+}
+
+// ClearProvinces clears all "provinces" edges to the Province entity.
+func (auo *AreaUpdateOne) ClearProvinces() *AreaUpdateOne {
+	auo.mutation.ClearProvinces()
+	return auo
+}
+
+// RemoveProvinceIDs removes the "provinces" edge to Province entities by IDs.
+func (auo *AreaUpdateOne) RemoveProvinceIDs(ids ...xid.ID) *AreaUpdateOne {
+	auo.mutation.RemoveProvinceIDs(ids...)
+	return auo
+}
+
+// RemoveProvinces removes "provinces" edges to Province entities.
+func (auo *AreaUpdateOne) RemoveProvinces(p ...*Province) *AreaUpdateOne {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return auo.RemoveProvinceIDs(ids...)
 }
 
 // Where appends a list predicates to the AreaUpdate builder.
@@ -618,6 +752,9 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 	}
 	if value, ok := auo.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
+	}
+	if value, ok := auo.mutation.Center(); ok {
+		_spec.SetField(area.FieldCenter, field.TypeOther, value)
 	}
 	if auo.mutation.CustomersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -747,6 +884,51 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if auo.mutation.ProvincesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := auo.mutation.RemovedProvincesIDs(); len(nodes) > 0 && !auo.mutation.ProvincesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := auo.mutation.ProvincesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

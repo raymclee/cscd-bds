@@ -5,6 +5,8 @@ import (
 	"cscd-bds/handler"
 	"cscd-bds/session"
 	"cscd-bds/store"
+	"cscd-bds/web"
+	"net/http"
 
 	"entgo.io/contrib/entgql"
 	gqlHandler "github.com/99designs/gqlgen/graphql/handler"
@@ -22,7 +24,7 @@ const (
 func main() {
 	e := echo.New()
 	e.Use(
-		// middleware.Recover(),
+		middleware.Recover(),
 		middleware.RequestID(),
 		middleware.Logger(),
 		middleware.CORS(),
@@ -45,6 +47,19 @@ func main() {
 
 	projectedApiV1 := protected.Group("/api/v1")
 	projectedApiV1.GET("/session", h.GetSessionHandler)
+
+	// if config.IsProd {
+	e.Use(
+		middleware.Gzip(),
+		middleware.StaticWithConfig(middleware.StaticConfig{
+			Skipper:    nil,
+			Index:      "index.html",
+			HTML5:      true,
+			Browse:     false,
+			IgnoreBase: false,
+			Filesystem: http.FS(web.DistDirFS),
+		}))
+	// }
 
 	e.Start(":3000")
 }

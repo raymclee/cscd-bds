@@ -44,6 +44,18 @@ func (a *Area) Sales(ctx context.Context) (result []*User, err error) {
 	return result, err
 }
 
+func (a *Area) Provinces(ctx context.Context) (result []*Province, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = a.NamedProvinces(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = a.Edges.ProvincesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = a.QueryProvinces().All(ctx)
+	}
+	return result, err
+}
+
 func (c *City) Districts(ctx context.Context) (result []*District, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)
@@ -194,6 +206,14 @@ func (pr *Province) Tenders(ctx context.Context) (result []*Tender, err error) {
 		result, err = pr.QueryTenders().All(ctx)
 	}
 	return result, err
+}
+
+func (pr *Province) Area(ctx context.Context) (*Area, error) {
+	result, err := pr.Edges.AreaOrErr()
+	if IsNotLoaded(err) {
+		result, err = pr.QueryArea().Only(ctx)
+	}
+	return result, MaskNotFound(err)
 }
 
 func (t *Tender) Area(ctx context.Context) (*Area, error) {

@@ -44,9 +44,9 @@ func main() {
 	client = lark.NewClient(appId, appSecret)
 	s = store.NewStore()
 
-	// fetchArea()
-	// fetchSales()
-	// fetchCustomer()
+	fetchArea()
+	fetchSales()
+	fetchCustomer()
 	fetchTender()
 
 }
@@ -605,7 +605,7 @@ func fetchTender() {
 		q := s.Tender.Create().
 			SetCode(code).
 			SetName(name).
-			SetStatus(int8(status)).
+			SetStatus(status).
 			SetNillableTenderDate(tenderDate).
 			SetDiscoveryDate(discoveryDate).
 			SetNillableAddress(address).
@@ -642,27 +642,13 @@ func fetchTender() {
 			SetArea(are).
 			SetProvince(prov).
 			SetDistrict(distr).
-			SetCustomer(cust)
-		if sizeAndValueRating != nil {
-			v := int8(*sizeAndValueRating)
-			q.SetSizeAndValueRating(v)
-		}
-		if creditAndPaymentRating != nil {
-			v := int8(*creditAndPaymentRating)
-			q.SetCreditAndPaymentRating(v)
-		}
-		if timeLimitRating != nil {
-			v := int8(*timeLimitRating)
-			q.SetTimeLimitRating(v)
-		}
-		if customerRelationshipRating != nil {
-			v := int8(*customerRelationshipRating)
-			q.SetCustomerRelationshipRating(v)
-		}
-		if competitivePartnershipRating != nil {
-			v := int8(*competitivePartnershipRating)
-			q.SetCompetitivePartnershipRating(v)
-		}
+			SetCustomer(cust).
+			SetNillableSizeAndValueRating(sizeAndValueRating).
+			SetNillableCreditAndPaymentRating(creditAndPaymentRating).
+			SetNillableTimeLimitRating(timeLimitRating).
+			SetNillableCustomerRelationshipRating(customerRelationshipRating).
+			SetNillableCompetitivePartnershipRating(competitivePartnershipRating)
+
 		if ownerSituation != nil {
 			q.SetOwnerSituations(*ownerSituation)
 		}
@@ -1043,19 +1029,17 @@ func fetchCustomer() {
 		q := s.Customer.Create().
 			SetArea(area).
 			SetName(name).
-			SetIndustry(int8(industry)).
-			SetOwnerType(int8(ownerType)).
+			SetIndustry(industry).
+			SetOwnerType(ownerType).
 			SetNillableContactPerson(contactPerson).
 			SetNillableContactPersonPosition(contactPersonPosition).
 			SetNillableContactPersonPhone(contactPersonPhone).
 			SetNillableContactPersonEmail(contactPersonEmail).
-			SetCreatedBy(createdBy)
+			SetCreatedBy(createdBy).
+			SetNillableSize(size)
 
 		if sales != nil {
 			q.SetSales(sales)
-		}
-		if size != nil {
-			q.SetSize(int8(*size))
 		}
 		if createdAt != nil {
 			q.SetCreatedAt(*createdAt)
@@ -1084,9 +1068,12 @@ func fetchArea() {
 
 	for _, item := range resp.Data.Items {
 		var (
-			code  string
-			name  string
-			sales []zht.User
+			code      string
+			name      string
+			sales     []zht.User
+			center    *geo.GeoJson
+			prIds     []int
+			provinces []*ent.Province
 		)
 
 		if f, ok := item.Fields["销售区域"]; ok {
@@ -1098,6 +1085,51 @@ func fetchArea() {
 		if f, ok := item.Fields["区域代码"]; ok {
 			if v, ok := f.(string); ok {
 				code = v
+				switch code {
+				case "HD":
+					pt, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{32.688899, 119.008879}).SetSRID(4326))
+					if err != nil {
+						panic(err)
+					}
+					center = &geo.GeoJson{Geometry: pt}
+					prIds = []int{320000, 310000, 340000, 330000, 410000}
+				case "HN":
+					pt, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{28.03419, 112.186512}).SetSRID(4326))
+					if err != nil {
+						panic(err)
+					}
+					center = &geo.GeoJson{Geometry: pt}
+					prIds = []int{
+						430000, 350000, 440000, 450000, 360000, 420000, 460000, 710000,
+					}
+				case "XB":
+					pt, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{36.876121, 90.986153}).SetSRID(4326))
+					if err != nil {
+						panic(err)
+					}
+					center = &geo.GeoJson{Geometry: pt}
+					prIds = []int{
+						540000, 650000, 620000, 630000, 510000, 530000, 640000, 610000, 500000, 520000,
+					}
+				case "HB":
+					pt, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{42.021244, 116.136142}).SetSRID(4326))
+					if err != nil {
+						panic(err)
+					}
+					center = &geo.GeoJson{Geometry: pt}
+					prIds = []int{
+						150000, 230000, 220000, 210000, 110000, 130000, 140000, 120000, 370000,
+					}
+				case "GA":
+					pt, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{22.385247, 114.183583}).SetSRID(4326))
+					if err != nil {
+						panic(err)
+					}
+					center = &geo.GeoJson{Geometry: pt}
+					prIds = []int{
+						810000, 820000,
+					}
+				}
 			}
 		}
 
@@ -1131,7 +1163,11 @@ func fetchArea() {
 			}
 		}
 
-		if err := s.Area.Create().SetCode(code).SetName(name).SaveX(ctx); err != nil {
+		provinces, err := s.Province.Query().Where(province.AdcodeIn(prIds...)).All(ctx)
+		if err != nil {
+			panic(err)
+		}
+		if err := s.Area.Create().SetCode(code).SetName(name).SetCenter(center).AddProvinces(provinces...).SaveX(ctx); err != nil {
 			fmt.Println(err)
 		}
 	}

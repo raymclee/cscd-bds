@@ -63,13 +63,13 @@ func (cc *CustomerCreate) SetName(s string) *CustomerCreate {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (cc *CustomerCreate) SetOwnerType(i int8) *CustomerCreate {
+func (cc *CustomerCreate) SetOwnerType(i int) *CustomerCreate {
 	cc.mutation.SetOwnerType(i)
 	return cc
 }
 
 // SetNillableOwnerType sets the "owner_type" field if the given value is not nil.
-func (cc *CustomerCreate) SetNillableOwnerType(i *int8) *CustomerCreate {
+func (cc *CustomerCreate) SetNillableOwnerType(i *int) *CustomerCreate {
 	if i != nil {
 		cc.SetOwnerType(*i)
 	}
@@ -77,19 +77,19 @@ func (cc *CustomerCreate) SetNillableOwnerType(i *int8) *CustomerCreate {
 }
 
 // SetIndustry sets the "industry" field.
-func (cc *CustomerCreate) SetIndustry(i int8) *CustomerCreate {
+func (cc *CustomerCreate) SetIndustry(i int) *CustomerCreate {
 	cc.mutation.SetIndustry(i)
 	return cc
 }
 
 // SetSize sets the "size" field.
-func (cc *CustomerCreate) SetSize(i int8) *CustomerCreate {
+func (cc *CustomerCreate) SetSize(i int) *CustomerCreate {
 	cc.mutation.SetSize(i)
 	return cc
 }
 
 // SetNillableSize sets the "size" field if the given value is not nil.
-func (cc *CustomerCreate) SetNillableSize(i *int8) *CustomerCreate {
+func (cc *CustomerCreate) SetNillableSize(i *int) *CustomerCreate {
 	if i != nil {
 		cc.SetSize(*i)
 	}
@@ -352,15 +352,15 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		_node.Name = value
 	}
 	if value, ok := cc.mutation.OwnerType(); ok {
-		_spec.SetField(customer.FieldOwnerType, field.TypeInt8, value)
+		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
 		_node.OwnerType = &value
 	}
 	if value, ok := cc.mutation.Industry(); ok {
-		_spec.SetField(customer.FieldIndustry, field.TypeInt8, value)
+		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
 		_node.Industry = value
 	}
 	if value, ok := cc.mutation.Size(); ok {
-		_spec.SetField(customer.FieldSize, field.TypeInt8, value)
+		_spec.SetField(customer.FieldSize, field.TypeInt, value)
 		_node.Size = &value
 	}
 	if value, ok := cc.mutation.ContactPerson(); ok {
@@ -527,7 +527,7 @@ func (u *CustomerUpsert) UpdateName() *CustomerUpsert {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (u *CustomerUpsert) SetOwnerType(v int8) *CustomerUpsert {
+func (u *CustomerUpsert) SetOwnerType(v int) *CustomerUpsert {
 	u.Set(customer.FieldOwnerType, v)
 	return u
 }
@@ -539,7 +539,7 @@ func (u *CustomerUpsert) UpdateOwnerType() *CustomerUpsert {
 }
 
 // AddOwnerType adds v to the "owner_type" field.
-func (u *CustomerUpsert) AddOwnerType(v int8) *CustomerUpsert {
+func (u *CustomerUpsert) AddOwnerType(v int) *CustomerUpsert {
 	u.Add(customer.FieldOwnerType, v)
 	return u
 }
@@ -551,7 +551,7 @@ func (u *CustomerUpsert) ClearOwnerType() *CustomerUpsert {
 }
 
 // SetIndustry sets the "industry" field.
-func (u *CustomerUpsert) SetIndustry(v int8) *CustomerUpsert {
+func (u *CustomerUpsert) SetIndustry(v int) *CustomerUpsert {
 	u.Set(customer.FieldIndustry, v)
 	return u
 }
@@ -563,13 +563,13 @@ func (u *CustomerUpsert) UpdateIndustry() *CustomerUpsert {
 }
 
 // AddIndustry adds v to the "industry" field.
-func (u *CustomerUpsert) AddIndustry(v int8) *CustomerUpsert {
+func (u *CustomerUpsert) AddIndustry(v int) *CustomerUpsert {
 	u.Add(customer.FieldIndustry, v)
 	return u
 }
 
 // SetSize sets the "size" field.
-func (u *CustomerUpsert) SetSize(v int8) *CustomerUpsert {
+func (u *CustomerUpsert) SetSize(v int) *CustomerUpsert {
 	u.Set(customer.FieldSize, v)
 	return u
 }
@@ -581,7 +581,7 @@ func (u *CustomerUpsert) UpdateSize() *CustomerUpsert {
 }
 
 // AddSize adds v to the "size" field.
-func (u *CustomerUpsert) AddSize(v int8) *CustomerUpsert {
+func (u *CustomerUpsert) AddSize(v int) *CustomerUpsert {
 	u.Add(customer.FieldSize, v)
 	return u
 }
@@ -804,14 +804,14 @@ func (u *CustomerUpsertOne) UpdateName() *CustomerUpsertOne {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (u *CustomerUpsertOne) SetOwnerType(v int8) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) SetOwnerType(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetOwnerType(v)
 	})
 }
 
 // AddOwnerType adds v to the "owner_type" field.
-func (u *CustomerUpsertOne) AddOwnerType(v int8) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) AddOwnerType(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddOwnerType(v)
 	})
@@ -832,14 +832,14 @@ func (u *CustomerUpsertOne) ClearOwnerType() *CustomerUpsertOne {
 }
 
 // SetIndustry sets the "industry" field.
-func (u *CustomerUpsertOne) SetIndustry(v int8) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) SetIndustry(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetIndustry(v)
 	})
 }
 
 // AddIndustry adds v to the "industry" field.
-func (u *CustomerUpsertOne) AddIndustry(v int8) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) AddIndustry(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddIndustry(v)
 	})
@@ -853,14 +853,14 @@ func (u *CustomerUpsertOne) UpdateIndustry() *CustomerUpsertOne {
 }
 
 // SetSize sets the "size" field.
-func (u *CustomerUpsertOne) SetSize(v int8) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) SetSize(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetSize(v)
 	})
 }
 
 // AddSize adds v to the "size" field.
-func (u *CustomerUpsertOne) AddSize(v int8) *CustomerUpsertOne {
+func (u *CustomerUpsertOne) AddSize(v int) *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddSize(v)
 	})
@@ -1281,14 +1281,14 @@ func (u *CustomerUpsertBulk) UpdateName() *CustomerUpsertBulk {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (u *CustomerUpsertBulk) SetOwnerType(v int8) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) SetOwnerType(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetOwnerType(v)
 	})
 }
 
 // AddOwnerType adds v to the "owner_type" field.
-func (u *CustomerUpsertBulk) AddOwnerType(v int8) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) AddOwnerType(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddOwnerType(v)
 	})
@@ -1309,14 +1309,14 @@ func (u *CustomerUpsertBulk) ClearOwnerType() *CustomerUpsertBulk {
 }
 
 // SetIndustry sets the "industry" field.
-func (u *CustomerUpsertBulk) SetIndustry(v int8) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) SetIndustry(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetIndustry(v)
 	})
 }
 
 // AddIndustry adds v to the "industry" field.
-func (u *CustomerUpsertBulk) AddIndustry(v int8) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) AddIndustry(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddIndustry(v)
 	})
@@ -1330,14 +1330,14 @@ func (u *CustomerUpsertBulk) UpdateIndustry() *CustomerUpsertBulk {
 }
 
 // SetSize sets the "size" field.
-func (u *CustomerUpsertBulk) SetSize(v int8) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) SetSize(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.SetSize(v)
 	})
 }
 
 // AddSize adds v to the "size" field.
-func (u *CustomerUpsertBulk) AddSize(v int8) *CustomerUpsertBulk {
+func (u *CustomerUpsertBulk) AddSize(v int) *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.AddSize(v)
 	})

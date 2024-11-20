@@ -4,6 +4,7 @@ package area
 
 import (
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"time"
 
@@ -74,6 +75,11 @@ func Name(v string) predicate.Area {
 // Code applies equality check predicate on the "code" field. It's identical to CodeEQ.
 func Code(v string) predicate.Area {
 	return predicate.Area(sql.FieldEQ(FieldCode, v))
+}
+
+// Center applies equality check predicate on the "center" field. It's identical to CenterEQ.
+func Center(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldEQ(FieldCenter, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -286,6 +292,46 @@ func CodeContainsFold(v string) predicate.Area {
 	return predicate.Area(sql.FieldContainsFold(FieldCode, v))
 }
 
+// CenterEQ applies the EQ predicate on the "center" field.
+func CenterEQ(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldEQ(FieldCenter, v))
+}
+
+// CenterNEQ applies the NEQ predicate on the "center" field.
+func CenterNEQ(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldNEQ(FieldCenter, v))
+}
+
+// CenterIn applies the In predicate on the "center" field.
+func CenterIn(vs ...*geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldIn(FieldCenter, vs...))
+}
+
+// CenterNotIn applies the NotIn predicate on the "center" field.
+func CenterNotIn(vs ...*geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldNotIn(FieldCenter, vs...))
+}
+
+// CenterGT applies the GT predicate on the "center" field.
+func CenterGT(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldGT(FieldCenter, v))
+}
+
+// CenterGTE applies the GTE predicate on the "center" field.
+func CenterGTE(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldGTE(FieldCenter, v))
+}
+
+// CenterLT applies the LT predicate on the "center" field.
+func CenterLT(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldLT(FieldCenter, v))
+}
+
+// CenterLTE applies the LTE predicate on the "center" field.
+func CenterLTE(v *geo.GeoJson) predicate.Area {
+	return predicate.Area(sql.FieldLTE(FieldCenter, v))
+}
+
 // HasCustomers applies the HasEdge predicate on the "customers" edge.
 func HasCustomers() predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {
@@ -347,6 +393,29 @@ func HasSales() predicate.Area {
 func HasSalesWith(preds ...predicate.User) predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {
 		step := newSalesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProvinces applies the HasEdge predicate on the "provinces" edge.
+func HasProvinces() predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProvincesTable, ProvincesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProvincesWith applies the HasEdge predicate on the "provinces" edge with a given conditions (other predicates).
+func HasProvincesWith(preds ...predicate.Province) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		step := newProvincesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

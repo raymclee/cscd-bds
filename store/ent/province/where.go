@@ -87,6 +87,11 @@ func CountryID(v xid.ID) predicate.Province {
 	return predicate.Province(sql.FieldEQ(FieldCountryID, v))
 }
 
+// AreaID applies equality check predicate on the "area_id" field. It's identical to AreaIDEQ.
+func AreaID(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldEQ(FieldAreaID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Province {
 	return predicate.Province(sql.FieldEQ(FieldCreatedAt, v))
@@ -382,6 +387,86 @@ func CountryIDContainsFold(v xid.ID) predicate.Province {
 	return predicate.Province(sql.FieldContainsFold(FieldCountryID, vc))
 }
 
+// AreaIDEQ applies the EQ predicate on the "area_id" field.
+func AreaIDEQ(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldEQ(FieldAreaID, v))
+}
+
+// AreaIDNEQ applies the NEQ predicate on the "area_id" field.
+func AreaIDNEQ(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldNEQ(FieldAreaID, v))
+}
+
+// AreaIDIn applies the In predicate on the "area_id" field.
+func AreaIDIn(vs ...xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldIn(FieldAreaID, vs...))
+}
+
+// AreaIDNotIn applies the NotIn predicate on the "area_id" field.
+func AreaIDNotIn(vs ...xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldNotIn(FieldAreaID, vs...))
+}
+
+// AreaIDGT applies the GT predicate on the "area_id" field.
+func AreaIDGT(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldGT(FieldAreaID, v))
+}
+
+// AreaIDGTE applies the GTE predicate on the "area_id" field.
+func AreaIDGTE(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldGTE(FieldAreaID, v))
+}
+
+// AreaIDLT applies the LT predicate on the "area_id" field.
+func AreaIDLT(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldLT(FieldAreaID, v))
+}
+
+// AreaIDLTE applies the LTE predicate on the "area_id" field.
+func AreaIDLTE(v xid.ID) predicate.Province {
+	return predicate.Province(sql.FieldLTE(FieldAreaID, v))
+}
+
+// AreaIDContains applies the Contains predicate on the "area_id" field.
+func AreaIDContains(v xid.ID) predicate.Province {
+	vc := string(v)
+	return predicate.Province(sql.FieldContains(FieldAreaID, vc))
+}
+
+// AreaIDHasPrefix applies the HasPrefix predicate on the "area_id" field.
+func AreaIDHasPrefix(v xid.ID) predicate.Province {
+	vc := string(v)
+	return predicate.Province(sql.FieldHasPrefix(FieldAreaID, vc))
+}
+
+// AreaIDHasSuffix applies the HasSuffix predicate on the "area_id" field.
+func AreaIDHasSuffix(v xid.ID) predicate.Province {
+	vc := string(v)
+	return predicate.Province(sql.FieldHasSuffix(FieldAreaID, vc))
+}
+
+// AreaIDIsNil applies the IsNil predicate on the "area_id" field.
+func AreaIDIsNil() predicate.Province {
+	return predicate.Province(sql.FieldIsNull(FieldAreaID))
+}
+
+// AreaIDNotNil applies the NotNil predicate on the "area_id" field.
+func AreaIDNotNil() predicate.Province {
+	return predicate.Province(sql.FieldNotNull(FieldAreaID))
+}
+
+// AreaIDEqualFold applies the EqualFold predicate on the "area_id" field.
+func AreaIDEqualFold(v xid.ID) predicate.Province {
+	vc := string(v)
+	return predicate.Province(sql.FieldEqualFold(FieldAreaID, vc))
+}
+
+// AreaIDContainsFold applies the ContainsFold predicate on the "area_id" field.
+func AreaIDContainsFold(v xid.ID) predicate.Province {
+	vc := string(v)
+	return predicate.Province(sql.FieldContainsFold(FieldAreaID, vc))
+}
+
 // HasDistricts applies the HasEdge predicate on the "districts" edge.
 func HasDistricts() predicate.Province {
 	return predicate.Province(func(s *sql.Selector) {
@@ -466,6 +551,29 @@ func HasTenders() predicate.Province {
 func HasTendersWith(preds ...predicate.Tender) predicate.Province {
 	return predicate.Province(func(s *sql.Selector) {
 		step := newTendersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasArea applies the HasEdge predicate on the "area" edge.
+func HasArea() predicate.Province {
+	return predicate.Province(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, AreaTable, AreaColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAreaWith applies the HasEdge predicate on the "area" edge with a given conditions (other predicates).
+func HasAreaWith(preds ...predicate.Area) predicate.Province {
+	return predicate.Province(func(s *sql.Selector) {
+		step := newAreaStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

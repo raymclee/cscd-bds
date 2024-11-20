@@ -27,6 +27,8 @@ const (
 	FieldCenter = "center"
 	// FieldCountryID holds the string denoting the country_id field in the database.
 	FieldCountryID = "country_id"
+	// FieldAreaID holds the string denoting the area_id field in the database.
+	FieldAreaID = "area_id"
 	// EdgeDistricts holds the string denoting the districts edge name in mutations.
 	EdgeDistricts = "districts"
 	// EdgeCities holds the string denoting the cities edge name in mutations.
@@ -35,6 +37,8 @@ const (
 	EdgeCountry = "country"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
+	// EdgeArea holds the string denoting the area edge name in mutations.
+	EdgeArea = "area"
 	// Table holds the table name of the province in the database.
 	Table = "provinces"
 	// DistrictsTable is the table that holds the districts relation/edge.
@@ -65,6 +69,13 @@ const (
 	TendersInverseTable = "tenders"
 	// TendersColumn is the table column denoting the tenders relation/edge.
 	TendersColumn = "province_id"
+	// AreaTable is the table that holds the area relation/edge.
+	AreaTable = "provinces"
+	// AreaInverseTable is the table name for the Area entity.
+	// It exists in this package in order to avoid circular dependency with the "area" package.
+	AreaInverseTable = "areas"
+	// AreaColumn is the table column denoting the area relation/edge.
+	AreaColumn = "area_id"
 )
 
 // Columns holds all SQL columns for province fields.
@@ -76,6 +87,7 @@ var Columns = []string{
 	FieldName,
 	FieldCenter,
 	FieldCountryID,
+	FieldAreaID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -137,6 +149,11 @@ func ByCountryID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCountryID, opts...).ToFunc()
 }
 
+// ByAreaID orders the results by the area_id field.
+func ByAreaID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAreaID, opts...).ToFunc()
+}
+
 // ByDistrictsCount orders the results by districts count.
 func ByDistrictsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -185,6 +202,13 @@ func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByAreaField orders the results by area field.
+func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newAreaStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newDistrictsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -211,5 +235,12 @@ func newTendersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TendersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
+	)
+}
+func newAreaStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(AreaInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, AreaTable, AreaColumn),
 	)
 }

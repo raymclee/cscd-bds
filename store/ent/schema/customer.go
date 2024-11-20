@@ -28,11 +28,11 @@ func (Customer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
 			Unique(),
-		field.Int8("owner_type").
+		field.Int("owner_type").
 			Optional().
 			Nillable(),
-		field.Int8("industry"),
-		field.Int8("size").
+		field.Int("industry"),
+		field.Int("size").
 			Optional().
 			Nillable(),
 		field.String("contact_person").

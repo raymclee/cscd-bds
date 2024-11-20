@@ -96,6 +96,10 @@ type AreaWhereInput struct {
 	// "sales" edge predicates.
 	HasSales     *bool             `json:"hasSales,omitempty"`
 	HasSalesWith []*UserWhereInput `json:"hasSalesWith,omitempty"`
+
+	// "provinces" edge predicates.
+	HasProvinces     *bool                 `json:"hasProvinces,omitempty"`
+	HasProvincesWith []*ProvinceWhereInput `json:"hasProvincesWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -373,6 +377,24 @@ func (i *AreaWhereInput) P() (predicate.Area, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, area.HasSalesWith(with...))
+	}
+	if i.HasProvinces != nil {
+		p := area.HasProvinces()
+		if !*i.HasProvinces {
+			p = area.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProvincesWith) > 0 {
+		with := make([]predicate.Province, 0, len(i.HasProvincesWith))
+		for _, w := range i.HasProvincesWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProvincesWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, area.HasProvincesWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -1173,38 +1195,38 @@ type CustomerWhereInput struct {
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
 	// "owner_type" field predicates.
-	OwnerType       *int8  `json:"ownerType,omitempty"`
-	OwnerTypeNEQ    *int8  `json:"ownerTypeNEQ,omitempty"`
-	OwnerTypeIn     []int8 `json:"ownerTypeIn,omitempty"`
-	OwnerTypeNotIn  []int8 `json:"ownerTypeNotIn,omitempty"`
-	OwnerTypeGT     *int8  `json:"ownerTypeGT,omitempty"`
-	OwnerTypeGTE    *int8  `json:"ownerTypeGTE,omitempty"`
-	OwnerTypeLT     *int8  `json:"ownerTypeLT,omitempty"`
-	OwnerTypeLTE    *int8  `json:"ownerTypeLTE,omitempty"`
-	OwnerTypeIsNil  bool   `json:"ownerTypeIsNil,omitempty"`
-	OwnerTypeNotNil bool   `json:"ownerTypeNotNil,omitempty"`
+	OwnerType       *int  `json:"ownerType,omitempty"`
+	OwnerTypeNEQ    *int  `json:"ownerTypeNEQ,omitempty"`
+	OwnerTypeIn     []int `json:"ownerTypeIn,omitempty"`
+	OwnerTypeNotIn  []int `json:"ownerTypeNotIn,omitempty"`
+	OwnerTypeGT     *int  `json:"ownerTypeGT,omitempty"`
+	OwnerTypeGTE    *int  `json:"ownerTypeGTE,omitempty"`
+	OwnerTypeLT     *int  `json:"ownerTypeLT,omitempty"`
+	OwnerTypeLTE    *int  `json:"ownerTypeLTE,omitempty"`
+	OwnerTypeIsNil  bool  `json:"ownerTypeIsNil,omitempty"`
+	OwnerTypeNotNil bool  `json:"ownerTypeNotNil,omitempty"`
 
 	// "industry" field predicates.
-	Industry      *int8  `json:"industry,omitempty"`
-	IndustryNEQ   *int8  `json:"industryNEQ,omitempty"`
-	IndustryIn    []int8 `json:"industryIn,omitempty"`
-	IndustryNotIn []int8 `json:"industryNotIn,omitempty"`
-	IndustryGT    *int8  `json:"industryGT,omitempty"`
-	IndustryGTE   *int8  `json:"industryGTE,omitempty"`
-	IndustryLT    *int8  `json:"industryLT,omitempty"`
-	IndustryLTE   *int8  `json:"industryLTE,omitempty"`
+	Industry      *int  `json:"industry,omitempty"`
+	IndustryNEQ   *int  `json:"industryNEQ,omitempty"`
+	IndustryIn    []int `json:"industryIn,omitempty"`
+	IndustryNotIn []int `json:"industryNotIn,omitempty"`
+	IndustryGT    *int  `json:"industryGT,omitempty"`
+	IndustryGTE   *int  `json:"industryGTE,omitempty"`
+	IndustryLT    *int  `json:"industryLT,omitempty"`
+	IndustryLTE   *int  `json:"industryLTE,omitempty"`
 
 	// "size" field predicates.
-	Size       *int8  `json:"size,omitempty"`
-	SizeNEQ    *int8  `json:"sizeNEQ,omitempty"`
-	SizeIn     []int8 `json:"sizeIn,omitempty"`
-	SizeNotIn  []int8 `json:"sizeNotIn,omitempty"`
-	SizeGT     *int8  `json:"sizeGT,omitempty"`
-	SizeGTE    *int8  `json:"sizeGTE,omitempty"`
-	SizeLT     *int8  `json:"sizeLT,omitempty"`
-	SizeLTE    *int8  `json:"sizeLTE,omitempty"`
-	SizeIsNil  bool   `json:"sizeIsNil,omitempty"`
-	SizeNotNil bool   `json:"sizeNotNil,omitempty"`
+	Size       *int  `json:"size,omitempty"`
+	SizeNEQ    *int  `json:"sizeNEQ,omitempty"`
+	SizeIn     []int `json:"sizeIn,omitempty"`
+	SizeNotIn  []int `json:"sizeNotIn,omitempty"`
+	SizeGT     *int  `json:"sizeGT,omitempty"`
+	SizeGTE    *int  `json:"sizeGTE,omitempty"`
+	SizeLT     *int  `json:"sizeLT,omitempty"`
+	SizeLTE    *int  `json:"sizeLTE,omitempty"`
+	SizeIsNil  bool  `json:"sizeIsNil,omitempty"`
+	SizeNotNil bool  `json:"sizeNotNil,omitempty"`
 
 	// "contact_person" field predicates.
 	ContactPerson             *string  `json:"contactPerson,omitempty"`
@@ -2597,6 +2619,23 @@ type ProvinceWhereInput struct {
 	CountryIDEqualFold    *xid.ID  `json:"countryIDEqualFold,omitempty"`
 	CountryIDContainsFold *xid.ID  `json:"countryIDContainsFold,omitempty"`
 
+	// "area_id" field predicates.
+	AreaID             *xid.ID  `json:"areaID,omitempty"`
+	AreaIDNEQ          *xid.ID  `json:"areaIDNEQ,omitempty"`
+	AreaIDIn           []xid.ID `json:"areaIDIn,omitempty"`
+	AreaIDNotIn        []xid.ID `json:"areaIDNotIn,omitempty"`
+	AreaIDGT           *xid.ID  `json:"areaIDGT,omitempty"`
+	AreaIDGTE          *xid.ID  `json:"areaIDGTE,omitempty"`
+	AreaIDLT           *xid.ID  `json:"areaIDLT,omitempty"`
+	AreaIDLTE          *xid.ID  `json:"areaIDLTE,omitempty"`
+	AreaIDContains     *xid.ID  `json:"areaIDContains,omitempty"`
+	AreaIDHasPrefix    *xid.ID  `json:"areaIDHasPrefix,omitempty"`
+	AreaIDHasSuffix    *xid.ID  `json:"areaIDHasSuffix,omitempty"`
+	AreaIDIsNil        bool     `json:"areaIDIsNil,omitempty"`
+	AreaIDNotNil       bool     `json:"areaIDNotNil,omitempty"`
+	AreaIDEqualFold    *xid.ID  `json:"areaIDEqualFold,omitempty"`
+	AreaIDContainsFold *xid.ID  `json:"areaIDContainsFold,omitempty"`
+
 	// "districts" edge predicates.
 	HasDistricts     *bool                 `json:"hasDistricts,omitempty"`
 	HasDistrictsWith []*DistrictWhereInput `json:"hasDistrictsWith,omitempty"`
@@ -2612,6 +2651,10 @@ type ProvinceWhereInput struct {
 	// "tenders" edge predicates.
 	HasTenders     *bool               `json:"hasTenders,omitempty"`
 	HasTendersWith []*TenderWhereInput `json:"hasTendersWith,omitempty"`
+
+	// "area" edge predicates.
+	HasArea     *bool             `json:"hasArea,omitempty"`
+	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -2859,6 +2902,51 @@ func (i *ProvinceWhereInput) P() (predicate.Province, error) {
 	if i.CountryIDContainsFold != nil {
 		predicates = append(predicates, province.CountryIDContainsFold(*i.CountryIDContainsFold))
 	}
+	if i.AreaID != nil {
+		predicates = append(predicates, province.AreaIDEQ(*i.AreaID))
+	}
+	if i.AreaIDNEQ != nil {
+		predicates = append(predicates, province.AreaIDNEQ(*i.AreaIDNEQ))
+	}
+	if len(i.AreaIDIn) > 0 {
+		predicates = append(predicates, province.AreaIDIn(i.AreaIDIn...))
+	}
+	if len(i.AreaIDNotIn) > 0 {
+		predicates = append(predicates, province.AreaIDNotIn(i.AreaIDNotIn...))
+	}
+	if i.AreaIDGT != nil {
+		predicates = append(predicates, province.AreaIDGT(*i.AreaIDGT))
+	}
+	if i.AreaIDGTE != nil {
+		predicates = append(predicates, province.AreaIDGTE(*i.AreaIDGTE))
+	}
+	if i.AreaIDLT != nil {
+		predicates = append(predicates, province.AreaIDLT(*i.AreaIDLT))
+	}
+	if i.AreaIDLTE != nil {
+		predicates = append(predicates, province.AreaIDLTE(*i.AreaIDLTE))
+	}
+	if i.AreaIDContains != nil {
+		predicates = append(predicates, province.AreaIDContains(*i.AreaIDContains))
+	}
+	if i.AreaIDHasPrefix != nil {
+		predicates = append(predicates, province.AreaIDHasPrefix(*i.AreaIDHasPrefix))
+	}
+	if i.AreaIDHasSuffix != nil {
+		predicates = append(predicates, province.AreaIDHasSuffix(*i.AreaIDHasSuffix))
+	}
+	if i.AreaIDIsNil {
+		predicates = append(predicates, province.AreaIDIsNil())
+	}
+	if i.AreaIDNotNil {
+		predicates = append(predicates, province.AreaIDNotNil())
+	}
+	if i.AreaIDEqualFold != nil {
+		predicates = append(predicates, province.AreaIDEqualFold(*i.AreaIDEqualFold))
+	}
+	if i.AreaIDContainsFold != nil {
+		predicates = append(predicates, province.AreaIDContainsFold(*i.AreaIDContainsFold))
+	}
 
 	if i.HasDistricts != nil {
 		p := province.HasDistricts()
@@ -2932,6 +3020,24 @@ func (i *ProvinceWhereInput) P() (predicate.Province, error) {
 		}
 		predicates = append(predicates, province.HasTendersWith(with...))
 	}
+	if i.HasArea != nil {
+		p := province.HasArea()
+		if !*i.HasArea {
+			p = province.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasAreaWith) > 0 {
+		with := make([]predicate.Area, 0, len(i.HasAreaWith))
+		for _, w := range i.HasAreaWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasAreaWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, province.HasAreaWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyProvinceWhereInput
@@ -2995,14 +3101,14 @@ type TenderWhereInput struct {
 	CodeContainsFold *string  `json:"codeContainsFold,omitempty"`
 
 	// "status" field predicates.
-	Status      *int8  `json:"status,omitempty"`
-	StatusNEQ   *int8  `json:"statusNEQ,omitempty"`
-	StatusIn    []int8 `json:"statusIn,omitempty"`
-	StatusNotIn []int8 `json:"statusNotIn,omitempty"`
-	StatusGT    *int8  `json:"statusGT,omitempty"`
-	StatusGTE   *int8  `json:"statusGTE,omitempty"`
-	StatusLT    *int8  `json:"statusLT,omitempty"`
-	StatusLTE   *int8  `json:"statusLTE,omitempty"`
+	Status      *int  `json:"status,omitempty"`
+	StatusNEQ   *int  `json:"statusNEQ,omitempty"`
+	StatusIn    []int `json:"statusIn,omitempty"`
+	StatusNotIn []int `json:"statusNotIn,omitempty"`
+	StatusGT    *int  `json:"statusGT,omitempty"`
+	StatusGTE   *int  `json:"statusGTE,omitempty"`
+	StatusLT    *int  `json:"statusLT,omitempty"`
+	StatusLTE   *int  `json:"statusLTE,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -3105,16 +3211,16 @@ type TenderWhereInput struct {
 	ContractorContainsFold *string  `json:"contractorContainsFold,omitempty"`
 
 	// "size_and_value_rating" field predicates.
-	SizeAndValueRating       *int8  `json:"sizeAndValueRating,omitempty"`
-	SizeAndValueRatingNEQ    *int8  `json:"sizeAndValueRatingNEQ,omitempty"`
-	SizeAndValueRatingIn     []int8 `json:"sizeAndValueRatingIn,omitempty"`
-	SizeAndValueRatingNotIn  []int8 `json:"sizeAndValueRatingNotIn,omitempty"`
-	SizeAndValueRatingGT     *int8  `json:"sizeAndValueRatingGT,omitempty"`
-	SizeAndValueRatingGTE    *int8  `json:"sizeAndValueRatingGTE,omitempty"`
-	SizeAndValueRatingLT     *int8  `json:"sizeAndValueRatingLT,omitempty"`
-	SizeAndValueRatingLTE    *int8  `json:"sizeAndValueRatingLTE,omitempty"`
-	SizeAndValueRatingIsNil  bool   `json:"sizeAndValueRatingIsNil,omitempty"`
-	SizeAndValueRatingNotNil bool   `json:"sizeAndValueRatingNotNil,omitempty"`
+	SizeAndValueRating       *int  `json:"sizeAndValueRating,omitempty"`
+	SizeAndValueRatingNEQ    *int  `json:"sizeAndValueRatingNEQ,omitempty"`
+	SizeAndValueRatingIn     []int `json:"sizeAndValueRatingIn,omitempty"`
+	SizeAndValueRatingNotIn  []int `json:"sizeAndValueRatingNotIn,omitempty"`
+	SizeAndValueRatingGT     *int  `json:"sizeAndValueRatingGT,omitempty"`
+	SizeAndValueRatingGTE    *int  `json:"sizeAndValueRatingGTE,omitempty"`
+	SizeAndValueRatingLT     *int  `json:"sizeAndValueRatingLT,omitempty"`
+	SizeAndValueRatingLTE    *int  `json:"sizeAndValueRatingLTE,omitempty"`
+	SizeAndValueRatingIsNil  bool  `json:"sizeAndValueRatingIsNil,omitempty"`
+	SizeAndValueRatingNotNil bool  `json:"sizeAndValueRatingNotNil,omitempty"`
 
 	// "size_and_value_rating_overview" field predicates.
 	SizeAndValueRatingOverview             *string  `json:"sizeAndValueRatingOverview,omitempty"`
@@ -3134,16 +3240,16 @@ type TenderWhereInput struct {
 	SizeAndValueRatingOverviewContainsFold *string  `json:"sizeAndValueRatingOverviewContainsFold,omitempty"`
 
 	// "credit_and_payment_rating" field predicates.
-	CreditAndPaymentRating       *int8  `json:"creditAndPaymentRating,omitempty"`
-	CreditAndPaymentRatingNEQ    *int8  `json:"creditAndPaymentRatingNEQ,omitempty"`
-	CreditAndPaymentRatingIn     []int8 `json:"creditAndPaymentRatingIn,omitempty"`
-	CreditAndPaymentRatingNotIn  []int8 `json:"creditAndPaymentRatingNotIn,omitempty"`
-	CreditAndPaymentRatingGT     *int8  `json:"creditAndPaymentRatingGT,omitempty"`
-	CreditAndPaymentRatingGTE    *int8  `json:"creditAndPaymentRatingGTE,omitempty"`
-	CreditAndPaymentRatingLT     *int8  `json:"creditAndPaymentRatingLT,omitempty"`
-	CreditAndPaymentRatingLTE    *int8  `json:"creditAndPaymentRatingLTE,omitempty"`
-	CreditAndPaymentRatingIsNil  bool   `json:"creditAndPaymentRatingIsNil,omitempty"`
-	CreditAndPaymentRatingNotNil bool   `json:"creditAndPaymentRatingNotNil,omitempty"`
+	CreditAndPaymentRating       *int  `json:"creditAndPaymentRating,omitempty"`
+	CreditAndPaymentRatingNEQ    *int  `json:"creditAndPaymentRatingNEQ,omitempty"`
+	CreditAndPaymentRatingIn     []int `json:"creditAndPaymentRatingIn,omitempty"`
+	CreditAndPaymentRatingNotIn  []int `json:"creditAndPaymentRatingNotIn,omitempty"`
+	CreditAndPaymentRatingGT     *int  `json:"creditAndPaymentRatingGT,omitempty"`
+	CreditAndPaymentRatingGTE    *int  `json:"creditAndPaymentRatingGTE,omitempty"`
+	CreditAndPaymentRatingLT     *int  `json:"creditAndPaymentRatingLT,omitempty"`
+	CreditAndPaymentRatingLTE    *int  `json:"creditAndPaymentRatingLTE,omitempty"`
+	CreditAndPaymentRatingIsNil  bool  `json:"creditAndPaymentRatingIsNil,omitempty"`
+	CreditAndPaymentRatingNotNil bool  `json:"creditAndPaymentRatingNotNil,omitempty"`
 
 	// "credit_and_payment_rating_overview" field predicates.
 	CreditAndPaymentRatingOverview             *string  `json:"creditAndPaymentRatingOverview,omitempty"`
@@ -3163,16 +3269,16 @@ type TenderWhereInput struct {
 	CreditAndPaymentRatingOverviewContainsFold *string  `json:"creditAndPaymentRatingOverviewContainsFold,omitempty"`
 
 	// "time_limit_rating" field predicates.
-	TimeLimitRating       *int8  `json:"timeLimitRating,omitempty"`
-	TimeLimitRatingNEQ    *int8  `json:"timeLimitRatingNEQ,omitempty"`
-	TimeLimitRatingIn     []int8 `json:"timeLimitRatingIn,omitempty"`
-	TimeLimitRatingNotIn  []int8 `json:"timeLimitRatingNotIn,omitempty"`
-	TimeLimitRatingGT     *int8  `json:"timeLimitRatingGT,omitempty"`
-	TimeLimitRatingGTE    *int8  `json:"timeLimitRatingGTE,omitempty"`
-	TimeLimitRatingLT     *int8  `json:"timeLimitRatingLT,omitempty"`
-	TimeLimitRatingLTE    *int8  `json:"timeLimitRatingLTE,omitempty"`
-	TimeLimitRatingIsNil  bool   `json:"timeLimitRatingIsNil,omitempty"`
-	TimeLimitRatingNotNil bool   `json:"timeLimitRatingNotNil,omitempty"`
+	TimeLimitRating       *int  `json:"timeLimitRating,omitempty"`
+	TimeLimitRatingNEQ    *int  `json:"timeLimitRatingNEQ,omitempty"`
+	TimeLimitRatingIn     []int `json:"timeLimitRatingIn,omitempty"`
+	TimeLimitRatingNotIn  []int `json:"timeLimitRatingNotIn,omitempty"`
+	TimeLimitRatingGT     *int  `json:"timeLimitRatingGT,omitempty"`
+	TimeLimitRatingGTE    *int  `json:"timeLimitRatingGTE,omitempty"`
+	TimeLimitRatingLT     *int  `json:"timeLimitRatingLT,omitempty"`
+	TimeLimitRatingLTE    *int  `json:"timeLimitRatingLTE,omitempty"`
+	TimeLimitRatingIsNil  bool  `json:"timeLimitRatingIsNil,omitempty"`
+	TimeLimitRatingNotNil bool  `json:"timeLimitRatingNotNil,omitempty"`
 
 	// "time_limit_rating_overview" field predicates.
 	TimeLimitRatingOverview             *string  `json:"timeLimitRatingOverview,omitempty"`
@@ -3192,16 +3298,16 @@ type TenderWhereInput struct {
 	TimeLimitRatingOverviewContainsFold *string  `json:"timeLimitRatingOverviewContainsFold,omitempty"`
 
 	// "customer_relationship_rating" field predicates.
-	CustomerRelationshipRating       *int8  `json:"customerRelationshipRating,omitempty"`
-	CustomerRelationshipRatingNEQ    *int8  `json:"customerRelationshipRatingNEQ,omitempty"`
-	CustomerRelationshipRatingIn     []int8 `json:"customerRelationshipRatingIn,omitempty"`
-	CustomerRelationshipRatingNotIn  []int8 `json:"customerRelationshipRatingNotIn,omitempty"`
-	CustomerRelationshipRatingGT     *int8  `json:"customerRelationshipRatingGT,omitempty"`
-	CustomerRelationshipRatingGTE    *int8  `json:"customerRelationshipRatingGTE,omitempty"`
-	CustomerRelationshipRatingLT     *int8  `json:"customerRelationshipRatingLT,omitempty"`
-	CustomerRelationshipRatingLTE    *int8  `json:"customerRelationshipRatingLTE,omitempty"`
-	CustomerRelationshipRatingIsNil  bool   `json:"customerRelationshipRatingIsNil,omitempty"`
-	CustomerRelationshipRatingNotNil bool   `json:"customerRelationshipRatingNotNil,omitempty"`
+	CustomerRelationshipRating       *int  `json:"customerRelationshipRating,omitempty"`
+	CustomerRelationshipRatingNEQ    *int  `json:"customerRelationshipRatingNEQ,omitempty"`
+	CustomerRelationshipRatingIn     []int `json:"customerRelationshipRatingIn,omitempty"`
+	CustomerRelationshipRatingNotIn  []int `json:"customerRelationshipRatingNotIn,omitempty"`
+	CustomerRelationshipRatingGT     *int  `json:"customerRelationshipRatingGT,omitempty"`
+	CustomerRelationshipRatingGTE    *int  `json:"customerRelationshipRatingGTE,omitempty"`
+	CustomerRelationshipRatingLT     *int  `json:"customerRelationshipRatingLT,omitempty"`
+	CustomerRelationshipRatingLTE    *int  `json:"customerRelationshipRatingLTE,omitempty"`
+	CustomerRelationshipRatingIsNil  bool  `json:"customerRelationshipRatingIsNil,omitempty"`
+	CustomerRelationshipRatingNotNil bool  `json:"customerRelationshipRatingNotNil,omitempty"`
 
 	// "customer_relationship_rating_overview" field predicates.
 	CustomerRelationshipRatingOverview             *string  `json:"customerRelationshipRatingOverview,omitempty"`
@@ -3221,16 +3327,16 @@ type TenderWhereInput struct {
 	CustomerRelationshipRatingOverviewContainsFold *string  `json:"customerRelationshipRatingOverviewContainsFold,omitempty"`
 
 	// "competitive_partnership_rating" field predicates.
-	CompetitivePartnershipRating       *int8  `json:"competitivePartnershipRating,omitempty"`
-	CompetitivePartnershipRatingNEQ    *int8  `json:"competitivePartnershipRatingNEQ,omitempty"`
-	CompetitivePartnershipRatingIn     []int8 `json:"competitivePartnershipRatingIn,omitempty"`
-	CompetitivePartnershipRatingNotIn  []int8 `json:"competitivePartnershipRatingNotIn,omitempty"`
-	CompetitivePartnershipRatingGT     *int8  `json:"competitivePartnershipRatingGT,omitempty"`
-	CompetitivePartnershipRatingGTE    *int8  `json:"competitivePartnershipRatingGTE,omitempty"`
-	CompetitivePartnershipRatingLT     *int8  `json:"competitivePartnershipRatingLT,omitempty"`
-	CompetitivePartnershipRatingLTE    *int8  `json:"competitivePartnershipRatingLTE,omitempty"`
-	CompetitivePartnershipRatingIsNil  bool   `json:"competitivePartnershipRatingIsNil,omitempty"`
-	CompetitivePartnershipRatingNotNil bool   `json:"competitivePartnershipRatingNotNil,omitempty"`
+	CompetitivePartnershipRating       *int  `json:"competitivePartnershipRating,omitempty"`
+	CompetitivePartnershipRatingNEQ    *int  `json:"competitivePartnershipRatingNEQ,omitempty"`
+	CompetitivePartnershipRatingIn     []int `json:"competitivePartnershipRatingIn,omitempty"`
+	CompetitivePartnershipRatingNotIn  []int `json:"competitivePartnershipRatingNotIn,omitempty"`
+	CompetitivePartnershipRatingGT     *int  `json:"competitivePartnershipRatingGT,omitempty"`
+	CompetitivePartnershipRatingGTE    *int  `json:"competitivePartnershipRatingGTE,omitempty"`
+	CompetitivePartnershipRatingLT     *int  `json:"competitivePartnershipRatingLT,omitempty"`
+	CompetitivePartnershipRatingLTE    *int  `json:"competitivePartnershipRatingLTE,omitempty"`
+	CompetitivePartnershipRatingIsNil  bool  `json:"competitivePartnershipRatingIsNil,omitempty"`
+	CompetitivePartnershipRatingNotNil bool  `json:"competitivePartnershipRatingNotNil,omitempty"`
 
 	// "competitive_partnership_rating_overview" field predicates.
 	CompetitivePartnershipRatingOverview             *string  `json:"competitivePartnershipRatingOverview,omitempty"`

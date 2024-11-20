@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"cscd-bds/config"
 	"cscd-bds/session"
+	"cscd-bds/store/ent"
+	"cscd-bds/store/ent/user"
 	"fmt"
 	"net/http"
 	"time"
@@ -53,6 +56,20 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		})
 	}
 
+	fmt.Printf("username: %s, openId: %s\n", *userInfo.Data.EnName, *userInfo.Data.OpenId)
+
+	us, err := h.store.User.Query().Where(user.OpenID(*userInfo.Data.OpenId)).Only(c.Request().Context())
+	if err != nil {
+		if !ent.IsNotFound(err) {
+			return c.JSON(http.StatusInternalServerError, echo.Map{
+				"message": err.Error(),
+			})
+		}
+		return c.JSON(http.StatusUnauthorized, echo.Map{
+			"message": "unauthorized",
+		})
+	}
+
 	// a, err := h.store.Admin.Query().Where(admin.OpenID(*userInfo.Data.OpenId)).Only(c.Request().Context())
 	// if err != nil {
 	// 	if !ent.IsNotFound(err) {
@@ -83,11 +100,18 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		AvatarBig:    *userInfo.Data.AvatarBig,
 		OpenId:       *userInfo.Data.OpenId,
 		UnionId:      *userInfo.Data.UnionId,
+		Email:        us.Email,
 		// Email:        *userInfo.Data.Email,
 		// UserId: *userInfo.Data.UserId,
 		// AdminId:      a.ID.V,
 	}
 	h.session.Put(c.Request().Context(), "user", u)
 
-	return c.Redirect(301, "http://localhost:5173")
+	var url string
+	if config.IsProd {
+		url = "https://mkm.fefacade.com"
+	} else {
+		url = "http://localhost:5173"
+	}
+	return c.Redirect(301, url)
 }

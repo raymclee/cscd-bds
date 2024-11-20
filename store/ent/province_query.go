@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/district"
@@ -32,6 +33,7 @@ type ProvinceQuery struct {
 	withCities         *CityQuery
 	withCountry        *CountryQuery
 	withTenders        *TenderQuery
+	withArea           *AreaQuery
 	modifiers          []func(*sql.Selector)
 	loadTotal          []func(context.Context, []*Province) error
 	withNamedDistricts map[string]*DistrictQuery
@@ -154,6 +156,28 @@ func (pq *ProvinceQuery) QueryTenders() *TenderQuery {
 			sqlgraph.From(province.Table, province.FieldID, selector),
 			sqlgraph.To(tender.Table, tender.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, province.TendersTable, province.TendersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryArea chains the current query on the "area" edge.
+func (pq *ProvinceQuery) QueryArea() *AreaQuery {
+	query := (&AreaClient{config: pq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(province.Table, province.FieldID, selector),
+			sqlgraph.To(area.Table, area.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, province.AreaTable, province.AreaColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -357,6 +381,7 @@ func (pq *ProvinceQuery) Clone() *ProvinceQuery {
 		withCities:    pq.withCities.Clone(),
 		withCountry:   pq.withCountry.Clone(),
 		withTenders:   pq.withTenders.Clone(),
+		withArea:      pq.withArea.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -404,6 +429,17 @@ func (pq *ProvinceQuery) WithTenders(opts ...func(*TenderQuery)) *ProvinceQuery 
 		opt(query)
 	}
 	pq.withTenders = query
+	return pq
+}
+
+// WithArea tells the query-builder to eager-load the nodes that are connected to
+// the "area" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProvinceQuery) WithArea(opts ...func(*AreaQuery)) *ProvinceQuery {
+	query := (&AreaClient{config: pq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withArea = query
 	return pq
 }
 
@@ -485,11 +521,12 @@ func (pq *ProvinceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 	var (
 		nodes       = []*Province{}
 		_spec       = pq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			pq.withDistricts != nil,
 			pq.withCities != nil,
 			pq.withCountry != nil,
 			pq.withTenders != nil,
+			pq.withArea != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -537,6 +574,12 @@ func (pq *ProvinceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 		if err := pq.loadTenders(ctx, query, nodes,
 			func(n *Province) { n.Edges.Tenders = []*Tender{} },
 			func(n *Province, e *Tender) { n.Edges.Tenders = append(n.Edges.Tenders, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := pq.withArea; query != nil {
+		if err := pq.loadArea(ctx, query, nodes, nil,
+			func(n *Province, e *Area) { n.Edges.Area = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -688,6 +731,38 @@ func (pq *ProvinceQuery) loadTenders(ctx context.Context, query *TenderQuery, no
 	}
 	return nil
 }
+func (pq *ProvinceQuery) loadArea(ctx context.Context, query *AreaQuery, nodes []*Province, init func(*Province), assign func(*Province, *Area)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Province)
+	for i := range nodes {
+		if nodes[i].AreaID == nil {
+			continue
+		}
+		fk := *nodes[i].AreaID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(area.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "area_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (pq *ProvinceQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := pq.querySpec()
@@ -719,6 +794,9 @@ func (pq *ProvinceQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if pq.withCountry != nil {
 			_spec.Node.AddColumnOnce(province.FieldCountryID)
+		}
+		if pq.withArea != nil {
+			_spec.Node.AddColumnOnce(province.FieldAreaID)
 		}
 	}
 	if ps := pq.predicates; len(ps) > 0 {

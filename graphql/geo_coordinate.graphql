@@ -1,0 +1,28 @@
+extend type Tender {
+  geoCoordinate: GeoJson
+}
+
+extend type Area {
+  center: GeoJson
+}
+
+extend type Country {
+  center: GeoJson
+}
+
+extend type Province {
+  center: GeoJson
+}
+
+extend type City {
+  center: GeoJson
+}
+
+extend type District {
+  center: GeoJson
+}
+
+type GeoJson {
+  type: String!
+  coordinates: [Float!]!
+}

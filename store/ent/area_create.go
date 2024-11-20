@@ -6,6 +6,8 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
+	"cscd-bds/store/ent/province"
+	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -67,6 +69,12 @@ func (ac *AreaCreate) SetCode(s string) *AreaCreate {
 	return ac
 }
 
+// SetCenter sets the "center" field.
+func (ac *AreaCreate) SetCenter(gj *geo.GeoJson) *AreaCreate {
+	ac.mutation.SetCenter(gj)
+	return ac
+}
+
 // SetID sets the "id" field.
 func (ac *AreaCreate) SetID(x xid.ID) *AreaCreate {
 	ac.mutation.SetID(x)
@@ -124,6 +132,21 @@ func (ac *AreaCreate) AddSales(u ...*User) *AreaCreate {
 		ids[i] = u[i].ID
 	}
 	return ac.AddSaleIDs(ids...)
+}
+
+// AddProvinceIDs adds the "provinces" edge to the Province entity by IDs.
+func (ac *AreaCreate) AddProvinceIDs(ids ...xid.ID) *AreaCreate {
+	ac.mutation.AddProvinceIDs(ids...)
+	return ac
+}
+
+// AddProvinces adds the "provinces" edges to the Province entity.
+func (ac *AreaCreate) AddProvinces(p ...*Province) *AreaCreate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ac.AddProvinceIDs(ids...)
 }
 
 // Mutation returns the AreaMutation object of the builder.
@@ -189,6 +212,9 @@ func (ac *AreaCreate) check() error {
 	if _, ok := ac.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Area.code"`)}
 	}
+	if _, ok := ac.mutation.Center(); !ok {
+		return &ValidationError{Name: "center", err: errors.New(`ent: missing required field "Area.center"`)}
+	}
 	return nil
 }
 
@@ -241,6 +267,10 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
+	if value, ok := ac.mutation.Center(); ok {
+		_spec.SetField(area.FieldCenter, field.TypeOther, value)
+		_node.Center = value
+	}
 	if nodes := ac.mutation.CustomersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -282,6 +312,22 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ac.mutation.ProvincesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(province.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -377,6 +423,18 @@ func (u *AreaUpsert) UpdateCode() *AreaUpsert {
 	return u
 }
 
+// SetCenter sets the "center" field.
+func (u *AreaUpsert) SetCenter(v *geo.GeoJson) *AreaUpsert {
+	u.Set(area.FieldCenter, v)
+	return u
+}
+
+// UpdateCenter sets the "center" field to the value that was provided on create.
+func (u *AreaUpsert) UpdateCenter() *AreaUpsert {
+	u.SetExcluded(area.FieldCenter)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -467,6 +525,20 @@ func (u *AreaUpsertOne) SetCode(v string) *AreaUpsertOne {
 func (u *AreaUpsertOne) UpdateCode() *AreaUpsertOne {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCode()
+	})
+}
+
+// SetCenter sets the "center" field.
+func (u *AreaUpsertOne) SetCenter(v *geo.GeoJson) *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.SetCenter(v)
+	})
+}
+
+// UpdateCenter sets the "center" field to the value that was provided on create.
+func (u *AreaUpsertOne) UpdateCenter() *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.UpdateCenter()
 	})
 }
 
@@ -727,6 +799,20 @@ func (u *AreaUpsertBulk) SetCode(v string) *AreaUpsertBulk {
 func (u *AreaUpsertBulk) UpdateCode() *AreaUpsertBulk {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCode()
+	})
+}
+
+// SetCenter sets the "center" field.
+func (u *AreaUpsertBulk) SetCenter(v *geo.GeoJson) *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.SetCenter(v)
+	})
+}
+
+// UpdateCenter sets the "center" field to the value that was provided on create.
+func (u *AreaUpsertBulk) UpdateCenter() *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.UpdateCenter()
 	})
 }
 

@@ -9,6 +9,7 @@ type Area implements Node {
   customers: [Customer!]
   tenders: [Tender!]
   sales: [User!]
+  provinces: [Province!]
 }
 """
 A connection to a list of items.
@@ -128,6 +129,11 @@ input AreaWhereInput {
   """
   hasSales: Boolean
   hasSalesWith: [UserWhereInput!]
+  """
+  provinces edge predicates
+  """
+  hasProvinces: Boolean
+  hasProvincesWith: [ProvinceWhereInput!]
 }
 type City implements Node {
   id: ID!
@@ -406,6 +412,7 @@ input CreateAreaInput {
   customerIDs: [ID!]
   tenderIDs: [ID!]
   saleIDs: [ID!]
+  provinceIDs: [ID!]
 }
 """
 CreateCityInput is used for create City object.
@@ -480,6 +487,7 @@ input CreateProvinceInput {
   cityIDs: [ID!]
   countryID: ID!
   tenderIDs: [ID!]
+  areaID: ID
 }
 """
 CreateTenderInput is used for create Tender object.
@@ -1086,10 +1094,12 @@ type Province implements Node {
   adcode: Int!
   name: String!
   countryID: ID!
+  areaID: ID
   districts: [District!]
   cities: [City!]
   country: Country!
   tenders: [Tender!]
+  area: Area
 }
 """
 A connection to a list of items.
@@ -1206,6 +1216,24 @@ input ProvinceWhereInput {
   countryIDEqualFold: ID
   countryIDContainsFold: ID
   """
+  area_id field predicates
+  """
+  areaID: ID
+  areaIDNEQ: ID
+  areaIDIn: [ID!]
+  areaIDNotIn: [ID!]
+  areaIDGT: ID
+  areaIDGTE: ID
+  areaIDLT: ID
+  areaIDLTE: ID
+  areaIDContains: ID
+  areaIDHasPrefix: ID
+  areaIDHasSuffix: ID
+  areaIDIsNil: Boolean
+  areaIDNotNil: Boolean
+  areaIDEqualFold: ID
+  areaIDContainsFold: ID
+  """
   districts edge predicates
   """
   hasDistricts: Boolean
@@ -1225,6 +1253,11 @@ input ProvinceWhereInput {
   """
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
+  """
+  area edge predicates
+  """
+  hasArea: Boolean
+  hasAreaWith: [AreaWhereInput!]
 }
 type Query {
   """
@@ -2385,6 +2418,9 @@ input UpdateAreaInput {
   addSaleIDs: [ID!]
   removeSaleIDs: [ID!]
   clearSales: Boolean
+  addProvinceIDs: [ID!]
+  removeProvinceIDs: [ID!]
+  clearProvinces: Boolean
 }
 """
 UpdateCityInput is used for update City object.
@@ -2478,6 +2514,8 @@ input UpdateProvinceInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+  areaID: ID
+  clearArea: Boolean
 }
 """
 UpdateTenderInput is used for update Tender object.

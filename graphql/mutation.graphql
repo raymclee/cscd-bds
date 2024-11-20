@@ -1,0 +1,7 @@
+type Mutation {
+  createArea(input: CreateAreaInput!): Area!
+  updateArea(id: ID!, input: UpdateAreaInput!): Area!
+
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+}

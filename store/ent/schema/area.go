@@ -1,8 +1,11 @@
 package schema
 
 import (
+	"cscd-bds/store/ent/schema/geo"
+
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
@@ -24,7 +27,14 @@ func (Area) Mixin() []ent.Mixin {
 func (Area) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name"),
-		field.String("code"),
+		field.String("code").Unique(),
+		field.Other("center", &geo.GeoJson{}).
+			SchemaType(map[string]string{
+				dialect.Postgres: "geometry(Point,4326)",
+			}).
+			Annotations(
+				entgql.Skip(entgql.SkipAll),
+			),
 	}
 }
 
@@ -34,6 +44,7 @@ func (Area) Edges() []ent.Edge {
 		edge.To("customers", Customer.Type),
 		edge.To("tenders", Tender.Type),
 		edge.To("sales", User.Type),
+		edge.To("provinces", Province.Type),
 	}
 }
 

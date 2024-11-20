@@ -4,6 +4,7 @@ package ent
 
 import (
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"fmt"
 	"strings"
@@ -26,6 +27,8 @@ type Area struct {
 	Name string `json:"name,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
+	// Center holds the value of the "center" field.
+	Center *geo.GeoJson `json:"center,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AreaQuery when eager-loading is set.
 	Edges        AreaEdges `json:"edges"`
@@ -40,15 +43,18 @@ type AreaEdges struct {
 	Tenders []*Tender `json:"tenders,omitempty"`
 	// Sales holds the value of the sales edge.
 	Sales []*User `json:"sales,omitempty"`
+	// Provinces holds the value of the provinces edge.
+	Provinces []*Province `json:"provinces,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [4]map[string]int
 
 	namedCustomers map[string][]*Customer
 	namedTenders   map[string][]*Tender
 	namedSales     map[string][]*User
+	namedProvinces map[string][]*Province
 }
 
 // CustomersOrErr returns the Customers value or an error if the edge
@@ -78,11 +84,22 @@ func (e AreaEdges) SalesOrErr() ([]*User, error) {
 	return nil, &NotLoadedError{edge: "sales"}
 }
 
+// ProvincesOrErr returns the Provinces value or an error if the edge
+// was not loaded in eager-loading.
+func (e AreaEdges) ProvincesOrErr() ([]*Province, error) {
+	if e.loadedTypes[3] {
+		return e.Provinces, nil
+	}
+	return nil, &NotLoadedError{edge: "provinces"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Area) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case area.FieldCenter:
+			values[i] = new(geo.GeoJson)
 		case area.FieldName, area.FieldCode:
 			values[i] = new(sql.NullString)
 		case area.FieldCreatedAt, area.FieldUpdatedAt:
@@ -134,6 +151,12 @@ func (a *Area) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				a.Code = value.String
 			}
+		case area.FieldCenter:
+			if value, ok := values[i].(*geo.GeoJson); !ok {
+				return fmt.Errorf("unexpected type %T for field center", values[i])
+			} else if value != nil {
+				a.Center = value
+			}
 		default:
 			a.selectValues.Set(columns[i], values[i])
 		}
@@ -160,6 +183,11 @@ func (a *Area) QueryTenders() *TenderQuery {
 // QuerySales queries the "sales" edge of the Area entity.
 func (a *Area) QuerySales() *UserQuery {
 	return NewAreaClient(a.config).QuerySales(a)
+}
+
+// QueryProvinces queries the "provinces" edge of the Area entity.
+func (a *Area) QueryProvinces() *ProvinceQuery {
+	return NewAreaClient(a.config).QueryProvinces(a)
 }
 
 // Update returns a builder for updating this Area.
@@ -196,6 +224,9 @@ func (a *Area) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(a.Code)
+	builder.WriteString(", ")
+	builder.WriteString("center=")
+	builder.WriteString(fmt.Sprintf("%v", a.Center))
 	builder.WriteByte(')')
 	return builder.String()
 }
@@ -269,6 +300,30 @@ func (a *Area) appendNamedSales(name string, edges ...*User) {
 		a.Edges.namedSales[name] = []*User{}
 	} else {
 		a.Edges.namedSales[name] = append(a.Edges.namedSales[name], edges...)
+	}
+}
+
+// NamedProvinces returns the Provinces named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (a *Area) NamedProvinces(name string) ([]*Province, error) {
+	if a.Edges.namedProvinces == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := a.Edges.namedProvinces[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (a *Area) appendNamedProvinces(name string, edges ...*Province) {
+	if a.Edges.namedProvinces == nil {
+		a.Edges.namedProvinces = make(map[string][]*Province)
+	}
+	if len(edges) == 0 {
+		a.Edges.namedProvinces[name] = []*Province{}
+	} else {
+		a.Edges.namedProvinces[name] = append(a.Edges.namedProvinces[name], edges...)
 	}
 }
 

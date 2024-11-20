@@ -54,14 +54,14 @@ func (cu *CustomerUpdate) SetNillableName(s *string) *CustomerUpdate {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (cu *CustomerUpdate) SetOwnerType(i int8) *CustomerUpdate {
+func (cu *CustomerUpdate) SetOwnerType(i int) *CustomerUpdate {
 	cu.mutation.ResetOwnerType()
 	cu.mutation.SetOwnerType(i)
 	return cu
 }
 
 // SetNillableOwnerType sets the "owner_type" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableOwnerType(i *int8) *CustomerUpdate {
+func (cu *CustomerUpdate) SetNillableOwnerType(i *int) *CustomerUpdate {
 	if i != nil {
 		cu.SetOwnerType(*i)
 	}
@@ -69,7 +69,7 @@ func (cu *CustomerUpdate) SetNillableOwnerType(i *int8) *CustomerUpdate {
 }
 
 // AddOwnerType adds i to the "owner_type" field.
-func (cu *CustomerUpdate) AddOwnerType(i int8) *CustomerUpdate {
+func (cu *CustomerUpdate) AddOwnerType(i int) *CustomerUpdate {
 	cu.mutation.AddOwnerType(i)
 	return cu
 }
@@ -81,14 +81,14 @@ func (cu *CustomerUpdate) ClearOwnerType() *CustomerUpdate {
 }
 
 // SetIndustry sets the "industry" field.
-func (cu *CustomerUpdate) SetIndustry(i int8) *CustomerUpdate {
+func (cu *CustomerUpdate) SetIndustry(i int) *CustomerUpdate {
 	cu.mutation.ResetIndustry()
 	cu.mutation.SetIndustry(i)
 	return cu
 }
 
 // SetNillableIndustry sets the "industry" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableIndustry(i *int8) *CustomerUpdate {
+func (cu *CustomerUpdate) SetNillableIndustry(i *int) *CustomerUpdate {
 	if i != nil {
 		cu.SetIndustry(*i)
 	}
@@ -96,20 +96,20 @@ func (cu *CustomerUpdate) SetNillableIndustry(i *int8) *CustomerUpdate {
 }
 
 // AddIndustry adds i to the "industry" field.
-func (cu *CustomerUpdate) AddIndustry(i int8) *CustomerUpdate {
+func (cu *CustomerUpdate) AddIndustry(i int) *CustomerUpdate {
 	cu.mutation.AddIndustry(i)
 	return cu
 }
 
 // SetSize sets the "size" field.
-func (cu *CustomerUpdate) SetSize(i int8) *CustomerUpdate {
+func (cu *CustomerUpdate) SetSize(i int) *CustomerUpdate {
 	cu.mutation.ResetSize()
 	cu.mutation.SetSize(i)
 	return cu
 }
 
 // SetNillableSize sets the "size" field if the given value is not nil.
-func (cu *CustomerUpdate) SetNillableSize(i *int8) *CustomerUpdate {
+func (cu *CustomerUpdate) SetNillableSize(i *int) *CustomerUpdate {
 	if i != nil {
 		cu.SetSize(*i)
 	}
@@ -117,7 +117,7 @@ func (cu *CustomerUpdate) SetNillableSize(i *int8) *CustomerUpdate {
 }
 
 // AddSize adds i to the "size" field.
-func (cu *CustomerUpdate) AddSize(i int8) *CustomerUpdate {
+func (cu *CustomerUpdate) AddSize(i int) *CustomerUpdate {
 	cu.mutation.AddSize(i)
 	return cu
 }
@@ -408,28 +408,28 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.OwnerType(); ok {
-		_spec.SetField(customer.FieldOwnerType, field.TypeInt8, value)
+		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
 	}
 	if value, ok := cu.mutation.AddedOwnerType(); ok {
-		_spec.AddField(customer.FieldOwnerType, field.TypeInt8, value)
+		_spec.AddField(customer.FieldOwnerType, field.TypeInt, value)
 	}
 	if cu.mutation.OwnerTypeCleared() {
-		_spec.ClearField(customer.FieldOwnerType, field.TypeInt8)
+		_spec.ClearField(customer.FieldOwnerType, field.TypeInt)
 	}
 	if value, ok := cu.mutation.Industry(); ok {
-		_spec.SetField(customer.FieldIndustry, field.TypeInt8, value)
+		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
 	}
 	if value, ok := cu.mutation.AddedIndustry(); ok {
-		_spec.AddField(customer.FieldIndustry, field.TypeInt8, value)
+		_spec.AddField(customer.FieldIndustry, field.TypeInt, value)
 	}
 	if value, ok := cu.mutation.Size(); ok {
-		_spec.SetField(customer.FieldSize, field.TypeInt8, value)
+		_spec.SetField(customer.FieldSize, field.TypeInt, value)
 	}
 	if value, ok := cu.mutation.AddedSize(); ok {
-		_spec.AddField(customer.FieldSize, field.TypeInt8, value)
+		_spec.AddField(customer.FieldSize, field.TypeInt, value)
 	}
 	if cu.mutation.SizeCleared() {
-		_spec.ClearField(customer.FieldSize, field.TypeInt8)
+		_spec.ClearField(customer.FieldSize, field.TypeInt)
 	}
 	if value, ok := cu.mutation.ContactPerson(); ok {
 		_spec.SetField(customer.FieldContactPerson, field.TypeString, value)
@@ -634,14 +634,14 @@ func (cuo *CustomerUpdateOne) SetNillableName(s *string) *CustomerUpdateOne {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (cuo *CustomerUpdateOne) SetOwnerType(i int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetOwnerType(i int) *CustomerUpdateOne {
 	cuo.mutation.ResetOwnerType()
 	cuo.mutation.SetOwnerType(i)
 	return cuo
 }
 
 // SetNillableOwnerType sets the "owner_type" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableOwnerType(i *int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetNillableOwnerType(i *int) *CustomerUpdateOne {
 	if i != nil {
 		cuo.SetOwnerType(*i)
 	}
@@ -649,7 +649,7 @@ func (cuo *CustomerUpdateOne) SetNillableOwnerType(i *int8) *CustomerUpdateOne {
 }
 
 // AddOwnerType adds i to the "owner_type" field.
-func (cuo *CustomerUpdateOne) AddOwnerType(i int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) AddOwnerType(i int) *CustomerUpdateOne {
 	cuo.mutation.AddOwnerType(i)
 	return cuo
 }
@@ -661,14 +661,14 @@ func (cuo *CustomerUpdateOne) ClearOwnerType() *CustomerUpdateOne {
 }
 
 // SetIndustry sets the "industry" field.
-func (cuo *CustomerUpdateOne) SetIndustry(i int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetIndustry(i int) *CustomerUpdateOne {
 	cuo.mutation.ResetIndustry()
 	cuo.mutation.SetIndustry(i)
 	return cuo
 }
 
 // SetNillableIndustry sets the "industry" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int) *CustomerUpdateOne {
 	if i != nil {
 		cuo.SetIndustry(*i)
 	}
@@ -676,20 +676,20 @@ func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int8) *CustomerUpdateOne {
 }
 
 // AddIndustry adds i to the "industry" field.
-func (cuo *CustomerUpdateOne) AddIndustry(i int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) AddIndustry(i int) *CustomerUpdateOne {
 	cuo.mutation.AddIndustry(i)
 	return cuo
 }
 
 // SetSize sets the "size" field.
-func (cuo *CustomerUpdateOne) SetSize(i int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetSize(i int) *CustomerUpdateOne {
 	cuo.mutation.ResetSize()
 	cuo.mutation.SetSize(i)
 	return cuo
 }
 
 // SetNillableSize sets the "size" field if the given value is not nil.
-func (cuo *CustomerUpdateOne) SetNillableSize(i *int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) SetNillableSize(i *int) *CustomerUpdateOne {
 	if i != nil {
 		cuo.SetSize(*i)
 	}
@@ -697,7 +697,7 @@ func (cuo *CustomerUpdateOne) SetNillableSize(i *int8) *CustomerUpdateOne {
 }
 
 // AddSize adds i to the "size" field.
-func (cuo *CustomerUpdateOne) AddSize(i int8) *CustomerUpdateOne {
+func (cuo *CustomerUpdateOne) AddSize(i int) *CustomerUpdateOne {
 	cuo.mutation.AddSize(i)
 	return cuo
 }
@@ -1018,28 +1018,28 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.OwnerType(); ok {
-		_spec.SetField(customer.FieldOwnerType, field.TypeInt8, value)
+		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
 	}
 	if value, ok := cuo.mutation.AddedOwnerType(); ok {
-		_spec.AddField(customer.FieldOwnerType, field.TypeInt8, value)
+		_spec.AddField(customer.FieldOwnerType, field.TypeInt, value)
 	}
 	if cuo.mutation.OwnerTypeCleared() {
-		_spec.ClearField(customer.FieldOwnerType, field.TypeInt8)
+		_spec.ClearField(customer.FieldOwnerType, field.TypeInt)
 	}
 	if value, ok := cuo.mutation.Industry(); ok {
-		_spec.SetField(customer.FieldIndustry, field.TypeInt8, value)
+		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
 	}
 	if value, ok := cuo.mutation.AddedIndustry(); ok {
-		_spec.AddField(customer.FieldIndustry, field.TypeInt8, value)
+		_spec.AddField(customer.FieldIndustry, field.TypeInt, value)
 	}
 	if value, ok := cuo.mutation.Size(); ok {
-		_spec.SetField(customer.FieldSize, field.TypeInt8, value)
+		_spec.SetField(customer.FieldSize, field.TypeInt, value)
 	}
 	if value, ok := cuo.mutation.AddedSize(); ok {
-		_spec.AddField(customer.FieldSize, field.TypeInt8, value)
+		_spec.AddField(customer.FieldSize, field.TypeInt, value)
 	}
 	if cuo.mutation.SizeCleared() {
-		_spec.ClearField(customer.FieldSize, field.TypeInt8)
+		_spec.ClearField(customer.FieldSize, field.TypeInt)
 	}
 	if value, ok := cuo.mutation.ContactPerson(); ok {
 		_spec.SetField(customer.FieldContactPerson, field.TypeString, value)

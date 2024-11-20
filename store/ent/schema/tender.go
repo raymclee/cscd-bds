@@ -28,7 +28,7 @@ func (Tender) Mixin() []ent.Mixin {
 func (Tender) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("code"),
-		field.Int8("status").Default(1),
+		field.Int("status").Default(1),
 		field.String("name"),
 		field.Float("estimated_amount").
 			Optional().
@@ -41,15 +41,15 @@ func (Tender) Fields() []ent.Field {
 		field.String("full_address").Optional().Nillable(),
 		field.String("contractor").Optional().Nillable(),
 
-		field.Int8("size_and_value_rating").Optional().Nillable().Min(1).Max(5),
+		field.Int("size_and_value_rating").Optional().Nillable().Min(1).Max(5),
 		field.String("size_and_value_rating_overview").Optional().Nillable(),
-		field.Int8("credit_and_payment_rating").Optional().Nillable().Min(1).Max(5),
+		field.Int("credit_and_payment_rating").Optional().Nillable().Min(1).Max(5),
 		field.String("credit_and_payment_rating_overview").Optional().Nillable(),
-		field.Int8("time_limit_rating").Optional().Nillable().Min(1).Max(5),
+		field.Int("time_limit_rating").Optional().Nillable().Min(1).Max(5),
 		field.String("time_limit_rating_overview").Optional().Nillable(),
-		field.Int8("customer_relationship_rating").Optional().Nillable().Min(1).Max(5),
+		field.Int("customer_relationship_rating").Optional().Nillable().Min(1).Max(5),
 		field.String("customer_relationship_rating_overview").Optional().Nillable(),
-		field.Int8("competitive_partnership_rating").Optional().Nillable().Min(1).Max(5),
+		field.Int("competitive_partnership_rating").Optional().Nillable().Min(1).Max(5),
 		field.String("competitive_partnership_rating_overview").Optional().Nillable(),
 
 		field.Bool("prepare_to_bid").Default(false),

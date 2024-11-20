@@ -73,7 +73,7 @@ func Code(v string) predicate.Tender {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int8) predicate.Tender {
+func Status(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldStatus, v))
 }
 
@@ -113,7 +113,7 @@ func Contractor(v string) predicate.Tender {
 }
 
 // SizeAndValueRating applies equality check predicate on the "size_and_value_rating" field. It's identical to SizeAndValueRatingEQ.
-func SizeAndValueRating(v int8) predicate.Tender {
+func SizeAndValueRating(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldSizeAndValueRating, v))
 }
 
@@ -123,7 +123,7 @@ func SizeAndValueRatingOverview(v string) predicate.Tender {
 }
 
 // CreditAndPaymentRating applies equality check predicate on the "credit_and_payment_rating" field. It's identical to CreditAndPaymentRatingEQ.
-func CreditAndPaymentRating(v int8) predicate.Tender {
+func CreditAndPaymentRating(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCreditAndPaymentRating, v))
 }
 
@@ -133,7 +133,7 @@ func CreditAndPaymentRatingOverview(v string) predicate.Tender {
 }
 
 // TimeLimitRating applies equality check predicate on the "time_limit_rating" field. It's identical to TimeLimitRatingEQ.
-func TimeLimitRating(v int8) predicate.Tender {
+func TimeLimitRating(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTimeLimitRating, v))
 }
 
@@ -143,7 +143,7 @@ func TimeLimitRatingOverview(v string) predicate.Tender {
 }
 
 // CustomerRelationshipRating applies equality check predicate on the "customer_relationship_rating" field. It's identical to CustomerRelationshipRatingEQ.
-func CustomerRelationshipRating(v int8) predicate.Tender {
+func CustomerRelationshipRating(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCustomerRelationshipRating, v))
 }
 
@@ -153,7 +153,7 @@ func CustomerRelationshipRatingOverview(v string) predicate.Tender {
 }
 
 // CompetitivePartnershipRating applies equality check predicate on the "competitive_partnership_rating" field. It's identical to CompetitivePartnershipRatingEQ.
-func CompetitivePartnershipRating(v int8) predicate.Tender {
+func CompetitivePartnershipRating(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCompetitivePartnershipRating, v))
 }
 
@@ -453,42 +453,42 @@ func CodeContainsFold(v string) predicate.Tender {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int8) predicate.Tender {
+func StatusEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldStatus, v))
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int8) predicate.Tender {
+func StatusNEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldStatus, v))
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int8) predicate.Tender {
+func StatusIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldStatus, vs...))
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int8) predicate.Tender {
+func StatusNotIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldStatus, vs...))
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int8) predicate.Tender {
+func StatusGT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldStatus, v))
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int8) predicate.Tender {
+func StatusGTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldStatus, v))
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int8) predicate.Tender {
+func StatusLT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldStatus, v))
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int8) predicate.Tender {
+func StatusLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldStatus, v))
 }
 
@@ -923,42 +923,42 @@ func ContractorContainsFold(v string) predicate.Tender {
 }
 
 // SizeAndValueRatingEQ applies the EQ predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingEQ(v int8) predicate.Tender {
+func SizeAndValueRatingEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldSizeAndValueRating, v))
 }
 
 // SizeAndValueRatingNEQ applies the NEQ predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingNEQ(v int8) predicate.Tender {
+func SizeAndValueRatingNEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldSizeAndValueRating, v))
 }
 
 // SizeAndValueRatingIn applies the In predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingIn(vs ...int8) predicate.Tender {
+func SizeAndValueRatingIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldSizeAndValueRating, vs...))
 }
 
 // SizeAndValueRatingNotIn applies the NotIn predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingNotIn(vs ...int8) predicate.Tender {
+func SizeAndValueRatingNotIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldSizeAndValueRating, vs...))
 }
 
 // SizeAndValueRatingGT applies the GT predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingGT(v int8) predicate.Tender {
+func SizeAndValueRatingGT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldSizeAndValueRating, v))
 }
 
 // SizeAndValueRatingGTE applies the GTE predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingGTE(v int8) predicate.Tender {
+func SizeAndValueRatingGTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldSizeAndValueRating, v))
 }
 
 // SizeAndValueRatingLT applies the LT predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingLT(v int8) predicate.Tender {
+func SizeAndValueRatingLT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldSizeAndValueRating, v))
 }
 
 // SizeAndValueRatingLTE applies the LTE predicate on the "size_and_value_rating" field.
-func SizeAndValueRatingLTE(v int8) predicate.Tender {
+func SizeAndValueRatingLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldSizeAndValueRating, v))
 }
 
@@ -1048,42 +1048,42 @@ func SizeAndValueRatingOverviewContainsFold(v string) predicate.Tender {
 }
 
 // CreditAndPaymentRatingEQ applies the EQ predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingEQ(v int8) predicate.Tender {
+func CreditAndPaymentRatingEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCreditAndPaymentRating, v))
 }
 
 // CreditAndPaymentRatingNEQ applies the NEQ predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingNEQ(v int8) predicate.Tender {
+func CreditAndPaymentRatingNEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldCreditAndPaymentRating, v))
 }
 
 // CreditAndPaymentRatingIn applies the In predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingIn(vs ...int8) predicate.Tender {
+func CreditAndPaymentRatingIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldCreditAndPaymentRating, vs...))
 }
 
 // CreditAndPaymentRatingNotIn applies the NotIn predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingNotIn(vs ...int8) predicate.Tender {
+func CreditAndPaymentRatingNotIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldCreditAndPaymentRating, vs...))
 }
 
 // CreditAndPaymentRatingGT applies the GT predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingGT(v int8) predicate.Tender {
+func CreditAndPaymentRatingGT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldCreditAndPaymentRating, v))
 }
 
 // CreditAndPaymentRatingGTE applies the GTE predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingGTE(v int8) predicate.Tender {
+func CreditAndPaymentRatingGTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldCreditAndPaymentRating, v))
 }
 
 // CreditAndPaymentRatingLT applies the LT predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingLT(v int8) predicate.Tender {
+func CreditAndPaymentRatingLT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldCreditAndPaymentRating, v))
 }
 
 // CreditAndPaymentRatingLTE applies the LTE predicate on the "credit_and_payment_rating" field.
-func CreditAndPaymentRatingLTE(v int8) predicate.Tender {
+func CreditAndPaymentRatingLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldCreditAndPaymentRating, v))
 }
 
@@ -1173,42 +1173,42 @@ func CreditAndPaymentRatingOverviewContainsFold(v string) predicate.Tender {
 }
 
 // TimeLimitRatingEQ applies the EQ predicate on the "time_limit_rating" field.
-func TimeLimitRatingEQ(v int8) predicate.Tender {
+func TimeLimitRatingEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTimeLimitRating, v))
 }
 
 // TimeLimitRatingNEQ applies the NEQ predicate on the "time_limit_rating" field.
-func TimeLimitRatingNEQ(v int8) predicate.Tender {
+func TimeLimitRatingNEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldTimeLimitRating, v))
 }
 
 // TimeLimitRatingIn applies the In predicate on the "time_limit_rating" field.
-func TimeLimitRatingIn(vs ...int8) predicate.Tender {
+func TimeLimitRatingIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldTimeLimitRating, vs...))
 }
 
 // TimeLimitRatingNotIn applies the NotIn predicate on the "time_limit_rating" field.
-func TimeLimitRatingNotIn(vs ...int8) predicate.Tender {
+func TimeLimitRatingNotIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldTimeLimitRating, vs...))
 }
 
 // TimeLimitRatingGT applies the GT predicate on the "time_limit_rating" field.
-func TimeLimitRatingGT(v int8) predicate.Tender {
+func TimeLimitRatingGT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldTimeLimitRating, v))
 }
 
 // TimeLimitRatingGTE applies the GTE predicate on the "time_limit_rating" field.
-func TimeLimitRatingGTE(v int8) predicate.Tender {
+func TimeLimitRatingGTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldTimeLimitRating, v))
 }
 
 // TimeLimitRatingLT applies the LT predicate on the "time_limit_rating" field.
-func TimeLimitRatingLT(v int8) predicate.Tender {
+func TimeLimitRatingLT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldTimeLimitRating, v))
 }
 
 // TimeLimitRatingLTE applies the LTE predicate on the "time_limit_rating" field.
-func TimeLimitRatingLTE(v int8) predicate.Tender {
+func TimeLimitRatingLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldTimeLimitRating, v))
 }
 
@@ -1298,42 +1298,42 @@ func TimeLimitRatingOverviewContainsFold(v string) predicate.Tender {
 }
 
 // CustomerRelationshipRatingEQ applies the EQ predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingEQ(v int8) predicate.Tender {
+func CustomerRelationshipRatingEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCustomerRelationshipRating, v))
 }
 
 // CustomerRelationshipRatingNEQ applies the NEQ predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingNEQ(v int8) predicate.Tender {
+func CustomerRelationshipRatingNEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldCustomerRelationshipRating, v))
 }
 
 // CustomerRelationshipRatingIn applies the In predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingIn(vs ...int8) predicate.Tender {
+func CustomerRelationshipRatingIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldCustomerRelationshipRating, vs...))
 }
 
 // CustomerRelationshipRatingNotIn applies the NotIn predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingNotIn(vs ...int8) predicate.Tender {
+func CustomerRelationshipRatingNotIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldCustomerRelationshipRating, vs...))
 }
 
 // CustomerRelationshipRatingGT applies the GT predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingGT(v int8) predicate.Tender {
+func CustomerRelationshipRatingGT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldCustomerRelationshipRating, v))
 }
 
 // CustomerRelationshipRatingGTE applies the GTE predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingGTE(v int8) predicate.Tender {
+func CustomerRelationshipRatingGTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldCustomerRelationshipRating, v))
 }
 
 // CustomerRelationshipRatingLT applies the LT predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingLT(v int8) predicate.Tender {
+func CustomerRelationshipRatingLT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldCustomerRelationshipRating, v))
 }
 
 // CustomerRelationshipRatingLTE applies the LTE predicate on the "customer_relationship_rating" field.
-func CustomerRelationshipRatingLTE(v int8) predicate.Tender {
+func CustomerRelationshipRatingLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldCustomerRelationshipRating, v))
 }
 
@@ -1423,42 +1423,42 @@ func CustomerRelationshipRatingOverviewContainsFold(v string) predicate.Tender {
 }
 
 // CompetitivePartnershipRatingEQ applies the EQ predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingEQ(v int8) predicate.Tender {
+func CompetitivePartnershipRatingEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCompetitivePartnershipRating, v))
 }
 
 // CompetitivePartnershipRatingNEQ applies the NEQ predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingNEQ(v int8) predicate.Tender {
+func CompetitivePartnershipRatingNEQ(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldCompetitivePartnershipRating, v))
 }
 
 // CompetitivePartnershipRatingIn applies the In predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingIn(vs ...int8) predicate.Tender {
+func CompetitivePartnershipRatingIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldCompetitivePartnershipRating, vs...))
 }
 
 // CompetitivePartnershipRatingNotIn applies the NotIn predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingNotIn(vs ...int8) predicate.Tender {
+func CompetitivePartnershipRatingNotIn(vs ...int) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldCompetitivePartnershipRating, vs...))
 }
 
 // CompetitivePartnershipRatingGT applies the GT predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingGT(v int8) predicate.Tender {
+func CompetitivePartnershipRatingGT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldCompetitivePartnershipRating, v))
 }
 
 // CompetitivePartnershipRatingGTE applies the GTE predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingGTE(v int8) predicate.Tender {
+func CompetitivePartnershipRatingGTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldCompetitivePartnershipRating, v))
 }
 
 // CompetitivePartnershipRatingLT applies the LT predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingLT(v int8) predicate.Tender {
+func CompetitivePartnershipRatingLT(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldCompetitivePartnershipRating, v))
 }
 
 // CompetitivePartnershipRatingLTE applies the LTE predicate on the "competitive_partnership_rating" field.
-func CompetitivePartnershipRatingLTE(v int8) predicate.Tender {
+func CompetitivePartnershipRatingLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldCompetitivePartnershipRating, v))
 }
 

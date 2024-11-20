@@ -37,6 +37,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			area.FieldUpdatedAt: {Type: field.TypeTime, Column: area.FieldUpdatedAt},
 			area.FieldName:      {Type: field.TypeString, Column: area.FieldName},
 			area.FieldCode:      {Type: field.TypeString, Column: area.FieldCode},
+			area.FieldCenter:    {Type: field.TypeOther, Column: area.FieldCenter},
 		},
 	}
 	graph.Nodes[1] = &sqlgraph.Node{
@@ -91,9 +92,9 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldCreatedAt:             {Type: field.TypeTime, Column: customer.FieldCreatedAt},
 			customer.FieldUpdatedAt:             {Type: field.TypeTime, Column: customer.FieldUpdatedAt},
 			customer.FieldName:                  {Type: field.TypeString, Column: customer.FieldName},
-			customer.FieldOwnerType:             {Type: field.TypeInt8, Column: customer.FieldOwnerType},
-			customer.FieldIndustry:              {Type: field.TypeInt8, Column: customer.FieldIndustry},
-			customer.FieldSize:                  {Type: field.TypeInt8, Column: customer.FieldSize},
+			customer.FieldOwnerType:             {Type: field.TypeInt, Column: customer.FieldOwnerType},
+			customer.FieldIndustry:              {Type: field.TypeInt, Column: customer.FieldIndustry},
+			customer.FieldSize:                  {Type: field.TypeInt, Column: customer.FieldSize},
 			customer.FieldContactPerson:         {Type: field.TypeString, Column: customer.FieldContactPerson},
 			customer.FieldContactPersonPosition: {Type: field.TypeString, Column: customer.FieldContactPersonPosition},
 			customer.FieldContactPersonPhone:    {Type: field.TypeString, Column: customer.FieldContactPersonPhone},
@@ -143,6 +144,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			province.FieldName:      {Type: field.TypeString, Column: province.FieldName},
 			province.FieldCenter:    {Type: field.TypeOther, Column: province.FieldCenter},
 			province.FieldCountryID: {Type: field.TypeString, Column: province.FieldCountryID},
+			province.FieldAreaID:    {Type: field.TypeString, Column: province.FieldAreaID},
 		},
 	}
 	graph.Nodes[6] = &sqlgraph.Node{
@@ -159,7 +161,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCreatedAt:                            {Type: field.TypeTime, Column: tender.FieldCreatedAt},
 			tender.FieldUpdatedAt:                            {Type: field.TypeTime, Column: tender.FieldUpdatedAt},
 			tender.FieldCode:                                 {Type: field.TypeString, Column: tender.FieldCode},
-			tender.FieldStatus:                               {Type: field.TypeInt8, Column: tender.FieldStatus},
+			tender.FieldStatus:                               {Type: field.TypeInt, Column: tender.FieldStatus},
 			tender.FieldName:                                 {Type: field.TypeString, Column: tender.FieldName},
 			tender.FieldEstimatedAmount:                      {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
 			tender.FieldTenderDate:                           {Type: field.TypeTime, Column: tender.FieldTenderDate},
@@ -167,15 +169,15 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldAddress:                              {Type: field.TypeString, Column: tender.FieldAddress},
 			tender.FieldFullAddress:                          {Type: field.TypeString, Column: tender.FieldFullAddress},
 			tender.FieldContractor:                           {Type: field.TypeString, Column: tender.FieldContractor},
-			tender.FieldSizeAndValueRating:                   {Type: field.TypeInt8, Column: tender.FieldSizeAndValueRating},
+			tender.FieldSizeAndValueRating:                   {Type: field.TypeInt, Column: tender.FieldSizeAndValueRating},
 			tender.FieldSizeAndValueRatingOverview:           {Type: field.TypeString, Column: tender.FieldSizeAndValueRatingOverview},
-			tender.FieldCreditAndPaymentRating:               {Type: field.TypeInt8, Column: tender.FieldCreditAndPaymentRating},
+			tender.FieldCreditAndPaymentRating:               {Type: field.TypeInt, Column: tender.FieldCreditAndPaymentRating},
 			tender.FieldCreditAndPaymentRatingOverview:       {Type: field.TypeString, Column: tender.FieldCreditAndPaymentRatingOverview},
-			tender.FieldTimeLimitRating:                      {Type: field.TypeInt8, Column: tender.FieldTimeLimitRating},
+			tender.FieldTimeLimitRating:                      {Type: field.TypeInt, Column: tender.FieldTimeLimitRating},
 			tender.FieldTimeLimitRatingOverview:              {Type: field.TypeString, Column: tender.FieldTimeLimitRatingOverview},
-			tender.FieldCustomerRelationshipRating:           {Type: field.TypeInt8, Column: tender.FieldCustomerRelationshipRating},
+			tender.FieldCustomerRelationshipRating:           {Type: field.TypeInt, Column: tender.FieldCustomerRelationshipRating},
 			tender.FieldCustomerRelationshipRatingOverview:   {Type: field.TypeString, Column: tender.FieldCustomerRelationshipRatingOverview},
-			tender.FieldCompetitivePartnershipRating:         {Type: field.TypeInt8, Column: tender.FieldCompetitivePartnershipRating},
+			tender.FieldCompetitivePartnershipRating:         {Type: field.TypeInt, Column: tender.FieldCompetitivePartnershipRating},
 			tender.FieldCompetitivePartnershipRatingOverview: {Type: field.TypeString, Column: tender.FieldCompetitivePartnershipRatingOverview},
 			tender.FieldPrepareToBid:                         {Type: field.TypeBool, Column: tender.FieldPrepareToBid},
 			tender.FieldProjectCode:                          {Type: field.TypeString, Column: tender.FieldProjectCode},
@@ -267,6 +269,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Area",
 		"User",
+	)
+	graph.MustAddE(
+		"provinces",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   area.ProvincesTable,
+			Columns: []string{area.ProvincesColumn},
+			Bidi:    false,
+		},
+		"Area",
+		"Province",
 	)
 	graph.MustAddE(
 		"districts",
@@ -447,6 +461,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Province",
 		"Tender",
+	)
+	graph.MustAddE(
+		"area",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.AreaTable,
+			Columns: []string{province.AreaColumn},
+			Bidi:    false,
+		},
+		"Province",
+		"Area",
 	)
 	graph.MustAddE(
 		"area",
@@ -673,6 +699,11 @@ func (f *AreaFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(area.FieldCode))
 }
 
+// WhereCenter applies the entql other predicate on the center field.
+func (f *AreaFilter) WhereCenter(p entql.OtherP) {
+	f.Where(p.Field(area.FieldCenter))
+}
+
 // WhereHasCustomers applies a predicate to check if query has an edge customers.
 func (f *AreaFilter) WhereHasCustomers() {
 	f.Where(entql.HasEdge("customers"))
@@ -709,6 +740,20 @@ func (f *AreaFilter) WhereHasSales() {
 // WhereHasSalesWith applies a predicate to check if query has an edge sales with a given conditions (other predicates).
 func (f *AreaFilter) WhereHasSalesWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("sales", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasProvinces applies a predicate to check if query has an edge provinces.
+func (f *AreaFilter) WhereHasProvinces() {
+	f.Where(entql.HasEdge("provinces"))
+}
+
+// WhereHasProvincesWith applies a predicate to check if query has an edge provinces with a given conditions (other predicates).
+func (f *AreaFilter) WhereHasProvincesWith(preds ...predicate.Province) {
+	f.Where(entql.HasEdgeWith("provinces", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -966,18 +1011,18 @@ func (f *CustomerFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(customer.FieldName))
 }
 
-// WhereOwnerType applies the entql int8 predicate on the owner_type field.
-func (f *CustomerFilter) WhereOwnerType(p entql.Int8P) {
+// WhereOwnerType applies the entql int predicate on the owner_type field.
+func (f *CustomerFilter) WhereOwnerType(p entql.IntP) {
 	f.Where(p.Field(customer.FieldOwnerType))
 }
 
-// WhereIndustry applies the entql int8 predicate on the industry field.
-func (f *CustomerFilter) WhereIndustry(p entql.Int8P) {
+// WhereIndustry applies the entql int predicate on the industry field.
+func (f *CustomerFilter) WhereIndustry(p entql.IntP) {
 	f.Where(p.Field(customer.FieldIndustry))
 }
 
-// WhereSize applies the entql int8 predicate on the size field.
-func (f *CustomerFilter) WhereSize(p entql.Int8P) {
+// WhereSize applies the entql int predicate on the size field.
+func (f *CustomerFilter) WhereSize(p entql.IntP) {
 	f.Where(p.Field(customer.FieldSize))
 }
 
@@ -1274,6 +1319,11 @@ func (f *ProvinceFilter) WhereCountryID(p entql.StringP) {
 	f.Where(p.Field(province.FieldCountryID))
 }
 
+// WhereAreaID applies the entql string predicate on the area_id field.
+func (f *ProvinceFilter) WhereAreaID(p entql.StringP) {
+	f.Where(p.Field(province.FieldAreaID))
+}
+
 // WhereHasDistricts applies a predicate to check if query has an edge districts.
 func (f *ProvinceFilter) WhereHasDistricts() {
 	f.Where(entql.HasEdge("districts"))
@@ -1324,6 +1374,20 @@ func (f *ProvinceFilter) WhereHasTenders() {
 // WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
 func (f *ProvinceFilter) WhereHasTendersWith(preds ...predicate.Tender) {
 	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasArea applies a predicate to check if query has an edge area.
+func (f *ProvinceFilter) WhereHasArea() {
+	f.Where(entql.HasEdge("area"))
+}
+
+// WhereHasAreaWith applies a predicate to check if query has an edge area with a given conditions (other predicates).
+func (f *ProvinceFilter) WhereHasAreaWith(preds ...predicate.Area) {
+	f.Where(entql.HasEdgeWith("area", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -1385,8 +1449,8 @@ func (f *TenderFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCode))
 }
 
-// WhereStatus applies the entql int8 predicate on the status field.
-func (f *TenderFilter) WhereStatus(p entql.Int8P) {
+// WhereStatus applies the entql int predicate on the status field.
+func (f *TenderFilter) WhereStatus(p entql.IntP) {
 	f.Where(p.Field(tender.FieldStatus))
 }
 
@@ -1425,8 +1489,8 @@ func (f *TenderFilter) WhereContractor(p entql.StringP) {
 	f.Where(p.Field(tender.FieldContractor))
 }
 
-// WhereSizeAndValueRating applies the entql int8 predicate on the size_and_value_rating field.
-func (f *TenderFilter) WhereSizeAndValueRating(p entql.Int8P) {
+// WhereSizeAndValueRating applies the entql int predicate on the size_and_value_rating field.
+func (f *TenderFilter) WhereSizeAndValueRating(p entql.IntP) {
 	f.Where(p.Field(tender.FieldSizeAndValueRating))
 }
 
@@ -1435,8 +1499,8 @@ func (f *TenderFilter) WhereSizeAndValueRatingOverview(p entql.StringP) {
 	f.Where(p.Field(tender.FieldSizeAndValueRatingOverview))
 }
 
-// WhereCreditAndPaymentRating applies the entql int8 predicate on the credit_and_payment_rating field.
-func (f *TenderFilter) WhereCreditAndPaymentRating(p entql.Int8P) {
+// WhereCreditAndPaymentRating applies the entql int predicate on the credit_and_payment_rating field.
+func (f *TenderFilter) WhereCreditAndPaymentRating(p entql.IntP) {
 	f.Where(p.Field(tender.FieldCreditAndPaymentRating))
 }
 
@@ -1445,8 +1509,8 @@ func (f *TenderFilter) WhereCreditAndPaymentRatingOverview(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCreditAndPaymentRatingOverview))
 }
 
-// WhereTimeLimitRating applies the entql int8 predicate on the time_limit_rating field.
-func (f *TenderFilter) WhereTimeLimitRating(p entql.Int8P) {
+// WhereTimeLimitRating applies the entql int predicate on the time_limit_rating field.
+func (f *TenderFilter) WhereTimeLimitRating(p entql.IntP) {
 	f.Where(p.Field(tender.FieldTimeLimitRating))
 }
 
@@ -1455,8 +1519,8 @@ func (f *TenderFilter) WhereTimeLimitRatingOverview(p entql.StringP) {
 	f.Where(p.Field(tender.FieldTimeLimitRatingOverview))
 }
 
-// WhereCustomerRelationshipRating applies the entql int8 predicate on the customer_relationship_rating field.
-func (f *TenderFilter) WhereCustomerRelationshipRating(p entql.Int8P) {
+// WhereCustomerRelationshipRating applies the entql int predicate on the customer_relationship_rating field.
+func (f *TenderFilter) WhereCustomerRelationshipRating(p entql.IntP) {
 	f.Where(p.Field(tender.FieldCustomerRelationshipRating))
 }
 
@@ -1465,8 +1529,8 @@ func (f *TenderFilter) WhereCustomerRelationshipRatingOverview(p entql.StringP) 
 	f.Where(p.Field(tender.FieldCustomerRelationshipRatingOverview))
 }
 
-// WhereCompetitivePartnershipRating applies the entql int8 predicate on the competitive_partnership_rating field.
-func (f *TenderFilter) WhereCompetitivePartnershipRating(p entql.Int8P) {
+// WhereCompetitivePartnershipRating applies the entql int predicate on the competitive_partnership_rating field.
+func (f *TenderFilter) WhereCompetitivePartnershipRating(p entql.IntP) {
 	f.Where(p.Field(tender.FieldCompetitivePartnershipRating))
 }
 

@@ -7,6 +7,7 @@ import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -30,11 +31,13 @@ type AreaQuery struct {
 	withCustomers      *CustomerQuery
 	withTenders        *TenderQuery
 	withSales          *UserQuery
+	withProvinces      *ProvinceQuery
 	modifiers          []func(*sql.Selector)
 	loadTotal          []func(context.Context, []*Area) error
 	withNamedCustomers map[string]*CustomerQuery
 	withNamedTenders   map[string]*TenderQuery
 	withNamedSales     map[string]*UserQuery
+	withNamedProvinces map[string]*ProvinceQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -130,6 +133,28 @@ func (aq *AreaQuery) QuerySales() *UserQuery {
 			sqlgraph.From(area.Table, area.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, area.SalesTable, area.SalesPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProvinces chains the current query on the "provinces" edge.
+func (aq *AreaQuery) QueryProvinces() *ProvinceQuery {
+	query := (&ProvinceClient{config: aq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := aq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := aq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(area.Table, area.FieldID, selector),
+			sqlgraph.To(province.Table, province.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, area.ProvincesTable, area.ProvincesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil
@@ -332,6 +357,7 @@ func (aq *AreaQuery) Clone() *AreaQuery {
 		withCustomers: aq.withCustomers.Clone(),
 		withTenders:   aq.withTenders.Clone(),
 		withSales:     aq.withSales.Clone(),
+		withProvinces: aq.withProvinces.Clone(),
 		// clone intermediate query.
 		sql:  aq.sql.Clone(),
 		path: aq.path,
@@ -368,6 +394,17 @@ func (aq *AreaQuery) WithSales(opts ...func(*UserQuery)) *AreaQuery {
 		opt(query)
 	}
 	aq.withSales = query
+	return aq
+}
+
+// WithProvinces tells the query-builder to eager-load the nodes that are connected to
+// the "provinces" edge. The optional arguments are used to configure the query builder of the edge.
+func (aq *AreaQuery) WithProvinces(opts ...func(*ProvinceQuery)) *AreaQuery {
+	query := (&ProvinceClient{config: aq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	aq.withProvinces = query
 	return aq
 }
 
@@ -449,10 +486,11 @@ func (aq *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 	var (
 		nodes       = []*Area{}
 		_spec       = aq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			aq.withCustomers != nil,
 			aq.withTenders != nil,
 			aq.withSales != nil,
+			aq.withProvinces != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -497,6 +535,13 @@ func (aq *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 			return nil, err
 		}
 	}
+	if query := aq.withProvinces; query != nil {
+		if err := aq.loadProvinces(ctx, query, nodes,
+			func(n *Area) { n.Edges.Provinces = []*Province{} },
+			func(n *Area, e *Province) { n.Edges.Provinces = append(n.Edges.Provinces, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range aq.withNamedCustomers {
 		if err := aq.loadCustomers(ctx, query, nodes,
 			func(n *Area) { n.appendNamedCustomers(name) },
@@ -515,6 +560,13 @@ func (aq *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 		if err := aq.loadSales(ctx, query, nodes,
 			func(n *Area) { n.appendNamedSales(name) },
 			func(n *Area, e *User) { n.appendNamedSales(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range aq.withNamedProvinces {
+		if err := aq.loadProvinces(ctx, query, nodes,
+			func(n *Area) { n.appendNamedProvinces(name) },
+			func(n *Area, e *Province) { n.appendNamedProvinces(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -647,6 +699,39 @@ func (aq *AreaQuery) loadSales(ctx context.Context, query *UserQuery, nodes []*A
 	}
 	return nil
 }
+func (aq *AreaQuery) loadProvinces(ctx context.Context, query *ProvinceQuery, nodes []*Area, init func(*Area), assign func(*Area, *Province)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Area)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(province.FieldAreaID)
+	}
+	query.Where(predicate.Province(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(area.ProvincesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.AreaID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "area_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "area_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
 
 func (aq *AreaQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := aq.querySpec()
@@ -771,6 +856,20 @@ func (aq *AreaQuery) WithNamedSales(name string, opts ...func(*UserQuery)) *Area
 		aq.withNamedSales = make(map[string]*UserQuery)
 	}
 	aq.withNamedSales[name] = query
+	return aq
+}
+
+// WithNamedProvinces tells the query-builder to eager-load the nodes that are connected to the "provinces"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (aq *AreaQuery) WithNamedProvinces(name string, opts ...func(*ProvinceQuery)) *AreaQuery {
+	query := (&ProvinceClient{config: aq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if aq.withNamedProvinces == nil {
+		aq.withNamedProvinces = make(map[string]*ProvinceQuery)
+	}
+	aq.withNamedProvinces[name] = query
 	return aq
 }
 

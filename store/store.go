@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"cscd-bds/config"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/migrate"
 	"database/sql"
@@ -27,7 +28,7 @@ func Open(databaseUrl string) *ent.Client {
 	drv := entsql.OpenDB(dialect.Postgres, db)
 	o := []ent.Option{
 		ent.Driver(drv),
-		// ent.Debug(),
+		ent.Debug(),
 	}
 	// if isDev {
 	// 	o = append(o, ent.Debug())
@@ -36,7 +37,8 @@ func Open(databaseUrl string) *ent.Client {
 }
 
 func NewStore() *Store {
-	client := Open("postgresql://postgres:postgres@localhost:5432/cscd_bds?sslmode=disable")
+	// client := Open("postgresql://postgres:postgres@localhost:5432/cscd_bds?sslmode=disable")
+	client := Open(config.DatabaseUrl)
 	if err := client.Schema.Create(
 		context.Background(),
 		migrate.WithGlobalUniqueID(true),

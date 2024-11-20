@@ -58,14 +58,14 @@ func (tu *TenderUpdate) SetNillableCode(s *string) *TenderUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (tu *TenderUpdate) SetStatus(i int8) *TenderUpdate {
+func (tu *TenderUpdate) SetStatus(i int) *TenderUpdate {
 	tu.mutation.ResetStatus()
 	tu.mutation.SetStatus(i)
 	return tu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableStatus(i *int8) *TenderUpdate {
+func (tu *TenderUpdate) SetNillableStatus(i *int) *TenderUpdate {
 	if i != nil {
 		tu.SetStatus(*i)
 	}
@@ -73,7 +73,7 @@ func (tu *TenderUpdate) SetNillableStatus(i *int8) *TenderUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (tu *TenderUpdate) AddStatus(i int8) *TenderUpdate {
+func (tu *TenderUpdate) AddStatus(i int) *TenderUpdate {
 	tu.mutation.AddStatus(i)
 	return tu
 }
@@ -214,14 +214,14 @@ func (tu *TenderUpdate) ClearContractor() *TenderUpdate {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (tu *TenderUpdate) SetSizeAndValueRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) SetSizeAndValueRating(i int) *TenderUpdate {
 	tu.mutation.ResetSizeAndValueRating()
 	tu.mutation.SetSizeAndValueRating(i)
 	return tu
 }
 
 // SetNillableSizeAndValueRating sets the "size_and_value_rating" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableSizeAndValueRating(i *int8) *TenderUpdate {
+func (tu *TenderUpdate) SetNillableSizeAndValueRating(i *int) *TenderUpdate {
 	if i != nil {
 		tu.SetSizeAndValueRating(*i)
 	}
@@ -229,7 +229,7 @@ func (tu *TenderUpdate) SetNillableSizeAndValueRating(i *int8) *TenderUpdate {
 }
 
 // AddSizeAndValueRating adds i to the "size_and_value_rating" field.
-func (tu *TenderUpdate) AddSizeAndValueRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) AddSizeAndValueRating(i int) *TenderUpdate {
 	tu.mutation.AddSizeAndValueRating(i)
 	return tu
 }
@@ -261,14 +261,14 @@ func (tu *TenderUpdate) ClearSizeAndValueRatingOverview() *TenderUpdate {
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (tu *TenderUpdate) SetCreditAndPaymentRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) SetCreditAndPaymentRating(i int) *TenderUpdate {
 	tu.mutation.ResetCreditAndPaymentRating()
 	tu.mutation.SetCreditAndPaymentRating(i)
 	return tu
 }
 
 // SetNillableCreditAndPaymentRating sets the "credit_and_payment_rating" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableCreditAndPaymentRating(i *int8) *TenderUpdate {
+func (tu *TenderUpdate) SetNillableCreditAndPaymentRating(i *int) *TenderUpdate {
 	if i != nil {
 		tu.SetCreditAndPaymentRating(*i)
 	}
@@ -276,7 +276,7 @@ func (tu *TenderUpdate) SetNillableCreditAndPaymentRating(i *int8) *TenderUpdate
 }
 
 // AddCreditAndPaymentRating adds i to the "credit_and_payment_rating" field.
-func (tu *TenderUpdate) AddCreditAndPaymentRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) AddCreditAndPaymentRating(i int) *TenderUpdate {
 	tu.mutation.AddCreditAndPaymentRating(i)
 	return tu
 }
@@ -308,14 +308,14 @@ func (tu *TenderUpdate) ClearCreditAndPaymentRatingOverview() *TenderUpdate {
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (tu *TenderUpdate) SetTimeLimitRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) SetTimeLimitRating(i int) *TenderUpdate {
 	tu.mutation.ResetTimeLimitRating()
 	tu.mutation.SetTimeLimitRating(i)
 	return tu
 }
 
 // SetNillableTimeLimitRating sets the "time_limit_rating" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableTimeLimitRating(i *int8) *TenderUpdate {
+func (tu *TenderUpdate) SetNillableTimeLimitRating(i *int) *TenderUpdate {
 	if i != nil {
 		tu.SetTimeLimitRating(*i)
 	}
@@ -323,7 +323,7 @@ func (tu *TenderUpdate) SetNillableTimeLimitRating(i *int8) *TenderUpdate {
 }
 
 // AddTimeLimitRating adds i to the "time_limit_rating" field.
-func (tu *TenderUpdate) AddTimeLimitRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) AddTimeLimitRating(i int) *TenderUpdate {
 	tu.mutation.AddTimeLimitRating(i)
 	return tu
 }
@@ -355,14 +355,14 @@ func (tu *TenderUpdate) ClearTimeLimitRatingOverview() *TenderUpdate {
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (tu *TenderUpdate) SetCustomerRelationshipRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) SetCustomerRelationshipRating(i int) *TenderUpdate {
 	tu.mutation.ResetCustomerRelationshipRating()
 	tu.mutation.SetCustomerRelationshipRating(i)
 	return tu
 }
 
 // SetNillableCustomerRelationshipRating sets the "customer_relationship_rating" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableCustomerRelationshipRating(i *int8) *TenderUpdate {
+func (tu *TenderUpdate) SetNillableCustomerRelationshipRating(i *int) *TenderUpdate {
 	if i != nil {
 		tu.SetCustomerRelationshipRating(*i)
 	}
@@ -370,7 +370,7 @@ func (tu *TenderUpdate) SetNillableCustomerRelationshipRating(i *int8) *TenderUp
 }
 
 // AddCustomerRelationshipRating adds i to the "customer_relationship_rating" field.
-func (tu *TenderUpdate) AddCustomerRelationshipRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) AddCustomerRelationshipRating(i int) *TenderUpdate {
 	tu.mutation.AddCustomerRelationshipRating(i)
 	return tu
 }
@@ -402,14 +402,14 @@ func (tu *TenderUpdate) ClearCustomerRelationshipRatingOverview() *TenderUpdate 
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (tu *TenderUpdate) SetCompetitivePartnershipRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) SetCompetitivePartnershipRating(i int) *TenderUpdate {
 	tu.mutation.ResetCompetitivePartnershipRating()
 	tu.mutation.SetCompetitivePartnershipRating(i)
 	return tu
 }
 
 // SetNillableCompetitivePartnershipRating sets the "competitive_partnership_rating" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableCompetitivePartnershipRating(i *int8) *TenderUpdate {
+func (tu *TenderUpdate) SetNillableCompetitivePartnershipRating(i *int) *TenderUpdate {
 	if i != nil {
 		tu.SetCompetitivePartnershipRating(*i)
 	}
@@ -417,7 +417,7 @@ func (tu *TenderUpdate) SetNillableCompetitivePartnershipRating(i *int8) *Tender
 }
 
 // AddCompetitivePartnershipRating adds i to the "competitive_partnership_rating" field.
-func (tu *TenderUpdate) AddCompetitivePartnershipRating(i int8) *TenderUpdate {
+func (tu *TenderUpdate) AddCompetitivePartnershipRating(i int) *TenderUpdate {
 	tu.mutation.AddCompetitivePartnershipRating(i)
 	return tu
 }
@@ -1229,10 +1229,10 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(tender.FieldCode, field.TypeString, value)
 	}
 	if value, ok := tu.mutation.Status(); ok {
-		_spec.SetField(tender.FieldStatus, field.TypeInt8, value)
+		_spec.SetField(tender.FieldStatus, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.AddedStatus(); ok {
-		_spec.AddField(tender.FieldStatus, field.TypeInt8, value)
+		_spec.AddField(tender.FieldStatus, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
@@ -1274,13 +1274,13 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(tender.FieldContractor, field.TypeString)
 	}
 	if value, ok := tu.mutation.SizeAndValueRating(); ok {
-		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.AddedSizeAndValueRating(); ok {
-		_spec.AddField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldSizeAndValueRating, field.TypeInt, value)
 	}
 	if tu.mutation.SizeAndValueRatingCleared() {
-		_spec.ClearField(tender.FieldSizeAndValueRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldSizeAndValueRating, field.TypeInt)
 	}
 	if value, ok := tu.mutation.SizeAndValueRatingOverview(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRatingOverview, field.TypeString, value)
@@ -1289,13 +1289,13 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(tender.FieldSizeAndValueRatingOverview, field.TypeString)
 	}
 	if value, ok := tu.mutation.CreditAndPaymentRating(); ok {
-		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.AddedCreditAndPaymentRating(); ok {
-		_spec.AddField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldCreditAndPaymentRating, field.TypeInt, value)
 	}
 	if tu.mutation.CreditAndPaymentRatingCleared() {
-		_spec.ClearField(tender.FieldCreditAndPaymentRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldCreditAndPaymentRating, field.TypeInt)
 	}
 	if value, ok := tu.mutation.CreditAndPaymentRatingOverview(); ok {
 		_spec.SetField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString, value)
@@ -1304,13 +1304,13 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString)
 	}
 	if value, ok := tu.mutation.TimeLimitRating(); ok {
-		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.AddedTimeLimitRating(); ok {
-		_spec.AddField(tender.FieldTimeLimitRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldTimeLimitRating, field.TypeInt, value)
 	}
 	if tu.mutation.TimeLimitRatingCleared() {
-		_spec.ClearField(tender.FieldTimeLimitRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldTimeLimitRating, field.TypeInt)
 	}
 	if value, ok := tu.mutation.TimeLimitRatingOverview(); ok {
 		_spec.SetField(tender.FieldTimeLimitRatingOverview, field.TypeString, value)
@@ -1319,13 +1319,13 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(tender.FieldTimeLimitRatingOverview, field.TypeString)
 	}
 	if value, ok := tu.mutation.CustomerRelationshipRating(); ok {
-		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.AddedCustomerRelationshipRating(); ok {
-		_spec.AddField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldCustomerRelationshipRating, field.TypeInt, value)
 	}
 	if tu.mutation.CustomerRelationshipRatingCleared() {
-		_spec.ClearField(tender.FieldCustomerRelationshipRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldCustomerRelationshipRating, field.TypeInt)
 	}
 	if value, ok := tu.mutation.CustomerRelationshipRatingOverview(); ok {
 		_spec.SetField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString, value)
@@ -1334,13 +1334,13 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString)
 	}
 	if value, ok := tu.mutation.CompetitivePartnershipRating(); ok {
-		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt, value)
 	}
 	if value, ok := tu.mutation.AddedCompetitivePartnershipRating(); ok {
-		_spec.AddField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldCompetitivePartnershipRating, field.TypeInt, value)
 	}
 	if tu.mutation.CompetitivePartnershipRatingCleared() {
-		_spec.ClearField(tender.FieldCompetitivePartnershipRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldCompetitivePartnershipRating, field.TypeInt)
 	}
 	if value, ok := tu.mutation.CompetitivePartnershipRatingOverview(); ok {
 		_spec.SetField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString, value)
@@ -1785,14 +1785,14 @@ func (tuo *TenderUpdateOne) SetNillableCode(s *string) *TenderUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (tuo *TenderUpdateOne) SetStatus(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetStatus(i int) *TenderUpdateOne {
 	tuo.mutation.ResetStatus()
 	tuo.mutation.SetStatus(i)
 	return tuo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableStatus(i *int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetNillableStatus(i *int) *TenderUpdateOne {
 	if i != nil {
 		tuo.SetStatus(*i)
 	}
@@ -1800,7 +1800,7 @@ func (tuo *TenderUpdateOne) SetNillableStatus(i *int8) *TenderUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (tuo *TenderUpdateOne) AddStatus(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) AddStatus(i int) *TenderUpdateOne {
 	tuo.mutation.AddStatus(i)
 	return tuo
 }
@@ -1941,14 +1941,14 @@ func (tuo *TenderUpdateOne) ClearContractor() *TenderUpdateOne {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (tuo *TenderUpdateOne) SetSizeAndValueRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetSizeAndValueRating(i int) *TenderUpdateOne {
 	tuo.mutation.ResetSizeAndValueRating()
 	tuo.mutation.SetSizeAndValueRating(i)
 	return tuo
 }
 
 // SetNillableSizeAndValueRating sets the "size_and_value_rating" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableSizeAndValueRating(i *int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetNillableSizeAndValueRating(i *int) *TenderUpdateOne {
 	if i != nil {
 		tuo.SetSizeAndValueRating(*i)
 	}
@@ -1956,7 +1956,7 @@ func (tuo *TenderUpdateOne) SetNillableSizeAndValueRating(i *int8) *TenderUpdate
 }
 
 // AddSizeAndValueRating adds i to the "size_and_value_rating" field.
-func (tuo *TenderUpdateOne) AddSizeAndValueRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) AddSizeAndValueRating(i int) *TenderUpdateOne {
 	tuo.mutation.AddSizeAndValueRating(i)
 	return tuo
 }
@@ -1988,14 +1988,14 @@ func (tuo *TenderUpdateOne) ClearSizeAndValueRatingOverview() *TenderUpdateOne {
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (tuo *TenderUpdateOne) SetCreditAndPaymentRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetCreditAndPaymentRating(i int) *TenderUpdateOne {
 	tuo.mutation.ResetCreditAndPaymentRating()
 	tuo.mutation.SetCreditAndPaymentRating(i)
 	return tuo
 }
 
 // SetNillableCreditAndPaymentRating sets the "credit_and_payment_rating" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableCreditAndPaymentRating(i *int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetNillableCreditAndPaymentRating(i *int) *TenderUpdateOne {
 	if i != nil {
 		tuo.SetCreditAndPaymentRating(*i)
 	}
@@ -2003,7 +2003,7 @@ func (tuo *TenderUpdateOne) SetNillableCreditAndPaymentRating(i *int8) *TenderUp
 }
 
 // AddCreditAndPaymentRating adds i to the "credit_and_payment_rating" field.
-func (tuo *TenderUpdateOne) AddCreditAndPaymentRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) AddCreditAndPaymentRating(i int) *TenderUpdateOne {
 	tuo.mutation.AddCreditAndPaymentRating(i)
 	return tuo
 }
@@ -2035,14 +2035,14 @@ func (tuo *TenderUpdateOne) ClearCreditAndPaymentRatingOverview() *TenderUpdateO
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (tuo *TenderUpdateOne) SetTimeLimitRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetTimeLimitRating(i int) *TenderUpdateOne {
 	tuo.mutation.ResetTimeLimitRating()
 	tuo.mutation.SetTimeLimitRating(i)
 	return tuo
 }
 
 // SetNillableTimeLimitRating sets the "time_limit_rating" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableTimeLimitRating(i *int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetNillableTimeLimitRating(i *int) *TenderUpdateOne {
 	if i != nil {
 		tuo.SetTimeLimitRating(*i)
 	}
@@ -2050,7 +2050,7 @@ func (tuo *TenderUpdateOne) SetNillableTimeLimitRating(i *int8) *TenderUpdateOne
 }
 
 // AddTimeLimitRating adds i to the "time_limit_rating" field.
-func (tuo *TenderUpdateOne) AddTimeLimitRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) AddTimeLimitRating(i int) *TenderUpdateOne {
 	tuo.mutation.AddTimeLimitRating(i)
 	return tuo
 }
@@ -2082,14 +2082,14 @@ func (tuo *TenderUpdateOne) ClearTimeLimitRatingOverview() *TenderUpdateOne {
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (tuo *TenderUpdateOne) SetCustomerRelationshipRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetCustomerRelationshipRating(i int) *TenderUpdateOne {
 	tuo.mutation.ResetCustomerRelationshipRating()
 	tuo.mutation.SetCustomerRelationshipRating(i)
 	return tuo
 }
 
 // SetNillableCustomerRelationshipRating sets the "customer_relationship_rating" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableCustomerRelationshipRating(i *int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetNillableCustomerRelationshipRating(i *int) *TenderUpdateOne {
 	if i != nil {
 		tuo.SetCustomerRelationshipRating(*i)
 	}
@@ -2097,7 +2097,7 @@ func (tuo *TenderUpdateOne) SetNillableCustomerRelationshipRating(i *int8) *Tend
 }
 
 // AddCustomerRelationshipRating adds i to the "customer_relationship_rating" field.
-func (tuo *TenderUpdateOne) AddCustomerRelationshipRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) AddCustomerRelationshipRating(i int) *TenderUpdateOne {
 	tuo.mutation.AddCustomerRelationshipRating(i)
 	return tuo
 }
@@ -2129,14 +2129,14 @@ func (tuo *TenderUpdateOne) ClearCustomerRelationshipRatingOverview() *TenderUpd
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (tuo *TenderUpdateOne) SetCompetitivePartnershipRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetCompetitivePartnershipRating(i int) *TenderUpdateOne {
 	tuo.mutation.ResetCompetitivePartnershipRating()
 	tuo.mutation.SetCompetitivePartnershipRating(i)
 	return tuo
 }
 
 // SetNillableCompetitivePartnershipRating sets the "competitive_partnership_rating" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableCompetitivePartnershipRating(i *int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) SetNillableCompetitivePartnershipRating(i *int) *TenderUpdateOne {
 	if i != nil {
 		tuo.SetCompetitivePartnershipRating(*i)
 	}
@@ -2144,7 +2144,7 @@ func (tuo *TenderUpdateOne) SetNillableCompetitivePartnershipRating(i *int8) *Te
 }
 
 // AddCompetitivePartnershipRating adds i to the "competitive_partnership_rating" field.
-func (tuo *TenderUpdateOne) AddCompetitivePartnershipRating(i int8) *TenderUpdateOne {
+func (tuo *TenderUpdateOne) AddCompetitivePartnershipRating(i int) *TenderUpdateOne {
 	tuo.mutation.AddCompetitivePartnershipRating(i)
 	return tuo
 }
@@ -2986,10 +2986,10 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		_spec.SetField(tender.FieldCode, field.TypeString, value)
 	}
 	if value, ok := tuo.mutation.Status(); ok {
-		_spec.SetField(tender.FieldStatus, field.TypeInt8, value)
+		_spec.SetField(tender.FieldStatus, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.AddedStatus(); ok {
-		_spec.AddField(tender.FieldStatus, field.TypeInt8, value)
+		_spec.AddField(tender.FieldStatus, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
@@ -3031,13 +3031,13 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		_spec.ClearField(tender.FieldContractor, field.TypeString)
 	}
 	if value, ok := tuo.mutation.SizeAndValueRating(); ok {
-		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.AddedSizeAndValueRating(); ok {
-		_spec.AddField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldSizeAndValueRating, field.TypeInt, value)
 	}
 	if tuo.mutation.SizeAndValueRatingCleared() {
-		_spec.ClearField(tender.FieldSizeAndValueRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldSizeAndValueRating, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.SizeAndValueRatingOverview(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRatingOverview, field.TypeString, value)
@@ -3046,13 +3046,13 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		_spec.ClearField(tender.FieldSizeAndValueRatingOverview, field.TypeString)
 	}
 	if value, ok := tuo.mutation.CreditAndPaymentRating(); ok {
-		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.AddedCreditAndPaymentRating(); ok {
-		_spec.AddField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldCreditAndPaymentRating, field.TypeInt, value)
 	}
 	if tuo.mutation.CreditAndPaymentRatingCleared() {
-		_spec.ClearField(tender.FieldCreditAndPaymentRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldCreditAndPaymentRating, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.CreditAndPaymentRatingOverview(); ok {
 		_spec.SetField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString, value)
@@ -3061,13 +3061,13 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		_spec.ClearField(tender.FieldCreditAndPaymentRatingOverview, field.TypeString)
 	}
 	if value, ok := tuo.mutation.TimeLimitRating(); ok {
-		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.AddedTimeLimitRating(); ok {
-		_spec.AddField(tender.FieldTimeLimitRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldTimeLimitRating, field.TypeInt, value)
 	}
 	if tuo.mutation.TimeLimitRatingCleared() {
-		_spec.ClearField(tender.FieldTimeLimitRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldTimeLimitRating, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.TimeLimitRatingOverview(); ok {
 		_spec.SetField(tender.FieldTimeLimitRatingOverview, field.TypeString, value)
@@ -3076,13 +3076,13 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		_spec.ClearField(tender.FieldTimeLimitRatingOverview, field.TypeString)
 	}
 	if value, ok := tuo.mutation.CustomerRelationshipRating(); ok {
-		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.AddedCustomerRelationshipRating(); ok {
-		_spec.AddField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldCustomerRelationshipRating, field.TypeInt, value)
 	}
 	if tuo.mutation.CustomerRelationshipRatingCleared() {
-		_spec.ClearField(tender.FieldCustomerRelationshipRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldCustomerRelationshipRating, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.CustomerRelationshipRatingOverview(); ok {
 		_spec.SetField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString, value)
@@ -3091,13 +3091,13 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 		_spec.ClearField(tender.FieldCustomerRelationshipRatingOverview, field.TypeString)
 	}
 	if value, ok := tuo.mutation.CompetitivePartnershipRating(); ok {
-		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt, value)
 	}
 	if value, ok := tuo.mutation.AddedCompetitivePartnershipRating(); ok {
-		_spec.AddField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
+		_spec.AddField(tender.FieldCompetitivePartnershipRating, field.TypeInt, value)
 	}
 	if tuo.mutation.CompetitivePartnershipRatingCleared() {
-		_spec.ClearField(tender.FieldCompetitivePartnershipRating, field.TypeInt8)
+		_spec.ClearField(tender.FieldCompetitivePartnershipRating, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.CompetitivePartnershipRatingOverview(); ok {
 		_spec.SetField(tender.FieldCompetitivePartnershipRatingOverview, field.TypeString, value)

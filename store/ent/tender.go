@@ -33,7 +33,7 @@ type Tender struct {
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// EstimatedAmount holds the value of the "estimated_amount" field.
@@ -49,23 +49,23 @@ type Tender struct {
 	// Contractor holds the value of the "contractor" field.
 	Contractor *string `json:"contractor,omitempty"`
 	// SizeAndValueRating holds the value of the "size_and_value_rating" field.
-	SizeAndValueRating *int8 `json:"size_and_value_rating,omitempty"`
+	SizeAndValueRating *int `json:"size_and_value_rating,omitempty"`
 	// SizeAndValueRatingOverview holds the value of the "size_and_value_rating_overview" field.
 	SizeAndValueRatingOverview *string `json:"size_and_value_rating_overview,omitempty"`
 	// CreditAndPaymentRating holds the value of the "credit_and_payment_rating" field.
-	CreditAndPaymentRating *int8 `json:"credit_and_payment_rating,omitempty"`
+	CreditAndPaymentRating *int `json:"credit_and_payment_rating,omitempty"`
 	// CreditAndPaymentRatingOverview holds the value of the "credit_and_payment_rating_overview" field.
 	CreditAndPaymentRatingOverview *string `json:"credit_and_payment_rating_overview,omitempty"`
 	// TimeLimitRating holds the value of the "time_limit_rating" field.
-	TimeLimitRating *int8 `json:"time_limit_rating,omitempty"`
+	TimeLimitRating *int `json:"time_limit_rating,omitempty"`
 	// TimeLimitRatingOverview holds the value of the "time_limit_rating_overview" field.
 	TimeLimitRatingOverview *string `json:"time_limit_rating_overview,omitempty"`
 	// CustomerRelationshipRating holds the value of the "customer_relationship_rating" field.
-	CustomerRelationshipRating *int8 `json:"customer_relationship_rating,omitempty"`
+	CustomerRelationshipRating *int `json:"customer_relationship_rating,omitempty"`
 	// CustomerRelationshipRatingOverview holds the value of the "customer_relationship_rating_overview" field.
 	CustomerRelationshipRatingOverview *string `json:"customer_relationship_rating_overview,omitempty"`
 	// CompetitivePartnershipRating holds the value of the "competitive_partnership_rating" field.
-	CompetitivePartnershipRating *int8 `json:"competitive_partnership_rating,omitempty"`
+	CompetitivePartnershipRating *int `json:"competitive_partnership_rating,omitempty"`
 	// CompetitivePartnershipRatingOverview holds the value of the "competitive_partnership_rating_overview" field.
 	CompetitivePartnershipRatingOverview *string `json:"competitive_partnership_rating_overview,omitempty"`
 	// PrepareToBid holds the value of the "prepare_to_bid" field.
@@ -315,7 +315,7 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				t.Status = int8(value.Int64)
+				t.Status = int(value.Int64)
 			}
 		case tender.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -366,8 +366,8 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field size_and_value_rating", values[i])
 			} else if value.Valid {
-				t.SizeAndValueRating = new(int8)
-				*t.SizeAndValueRating = int8(value.Int64)
+				t.SizeAndValueRating = new(int)
+				*t.SizeAndValueRating = int(value.Int64)
 			}
 		case tender.FieldSizeAndValueRatingOverview:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -380,8 +380,8 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field credit_and_payment_rating", values[i])
 			} else if value.Valid {
-				t.CreditAndPaymentRating = new(int8)
-				*t.CreditAndPaymentRating = int8(value.Int64)
+				t.CreditAndPaymentRating = new(int)
+				*t.CreditAndPaymentRating = int(value.Int64)
 			}
 		case tender.FieldCreditAndPaymentRatingOverview:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -394,8 +394,8 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field time_limit_rating", values[i])
 			} else if value.Valid {
-				t.TimeLimitRating = new(int8)
-				*t.TimeLimitRating = int8(value.Int64)
+				t.TimeLimitRating = new(int)
+				*t.TimeLimitRating = int(value.Int64)
 			}
 		case tender.FieldTimeLimitRatingOverview:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -408,8 +408,8 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field customer_relationship_rating", values[i])
 			} else if value.Valid {
-				t.CustomerRelationshipRating = new(int8)
-				*t.CustomerRelationshipRating = int8(value.Int64)
+				t.CustomerRelationshipRating = new(int)
+				*t.CustomerRelationshipRating = int(value.Int64)
 			}
 		case tender.FieldCustomerRelationshipRatingOverview:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -422,8 +422,8 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field competitive_partnership_rating", values[i])
 			} else if value.Valid {
-				t.CompetitivePartnershipRating = new(int8)
-				*t.CompetitivePartnershipRating = int8(value.Int64)
+				t.CompetitivePartnershipRating = new(int)
+				*t.CompetitivePartnershipRating = int(value.Int64)
 			}
 		case tender.FieldCompetitivePartnershipRatingOverview:
 			if value, ok := values[i].(*sql.NullString); !ok {

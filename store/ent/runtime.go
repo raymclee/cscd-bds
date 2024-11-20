@@ -166,17 +166,17 @@ func init() {
 	// tenderDescStatus is the schema descriptor for status field.
 	tenderDescStatus := tenderFields[1].Descriptor()
 	// tender.DefaultStatus holds the default value on creation for the status field.
-	tender.DefaultStatus = tenderDescStatus.Default.(int8)
+	tender.DefaultStatus = tenderDescStatus.Default.(int)
 	// tenderDescSizeAndValueRating is the schema descriptor for size_and_value_rating field.
 	tenderDescSizeAndValueRating := tenderFields[9].Descriptor()
 	// tender.SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
-	tender.SizeAndValueRatingValidator = func() func(int8) error {
+	tender.SizeAndValueRatingValidator = func() func(int) error {
 		validators := tenderDescSizeAndValueRating.Validators
-		fns := [...]func(int8) error{
-			validators[0].(func(int8) error),
-			validators[1].(func(int8) error),
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
 		}
-		return func(size_and_value_rating int8) error {
+		return func(size_and_value_rating int) error {
 			for _, fn := range fns {
 				if err := fn(size_and_value_rating); err != nil {
 					return err
@@ -188,13 +188,13 @@ func init() {
 	// tenderDescCreditAndPaymentRating is the schema descriptor for credit_and_payment_rating field.
 	tenderDescCreditAndPaymentRating := tenderFields[11].Descriptor()
 	// tender.CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
-	tender.CreditAndPaymentRatingValidator = func() func(int8) error {
+	tender.CreditAndPaymentRatingValidator = func() func(int) error {
 		validators := tenderDescCreditAndPaymentRating.Validators
-		fns := [...]func(int8) error{
-			validators[0].(func(int8) error),
-			validators[1].(func(int8) error),
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
 		}
-		return func(credit_and_payment_rating int8) error {
+		return func(credit_and_payment_rating int) error {
 			for _, fn := range fns {
 				if err := fn(credit_and_payment_rating); err != nil {
 					return err
@@ -206,13 +206,13 @@ func init() {
 	// tenderDescTimeLimitRating is the schema descriptor for time_limit_rating field.
 	tenderDescTimeLimitRating := tenderFields[13].Descriptor()
 	// tender.TimeLimitRatingValidator is a validator for the "time_limit_rating" field. It is called by the builders before save.
-	tender.TimeLimitRatingValidator = func() func(int8) error {
+	tender.TimeLimitRatingValidator = func() func(int) error {
 		validators := tenderDescTimeLimitRating.Validators
-		fns := [...]func(int8) error{
-			validators[0].(func(int8) error),
-			validators[1].(func(int8) error),
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
 		}
-		return func(time_limit_rating int8) error {
+		return func(time_limit_rating int) error {
 			for _, fn := range fns {
 				if err := fn(time_limit_rating); err != nil {
 					return err
@@ -224,13 +224,13 @@ func init() {
 	// tenderDescCustomerRelationshipRating is the schema descriptor for customer_relationship_rating field.
 	tenderDescCustomerRelationshipRating := tenderFields[15].Descriptor()
 	// tender.CustomerRelationshipRatingValidator is a validator for the "customer_relationship_rating" field. It is called by the builders before save.
-	tender.CustomerRelationshipRatingValidator = func() func(int8) error {
+	tender.CustomerRelationshipRatingValidator = func() func(int) error {
 		validators := tenderDescCustomerRelationshipRating.Validators
-		fns := [...]func(int8) error{
-			validators[0].(func(int8) error),
-			validators[1].(func(int8) error),
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
 		}
-		return func(customer_relationship_rating int8) error {
+		return func(customer_relationship_rating int) error {
 			for _, fn := range fns {
 				if err := fn(customer_relationship_rating); err != nil {
 					return err
@@ -242,13 +242,13 @@ func init() {
 	// tenderDescCompetitivePartnershipRating is the schema descriptor for competitive_partnership_rating field.
 	tenderDescCompetitivePartnershipRating := tenderFields[17].Descriptor()
 	// tender.CompetitivePartnershipRatingValidator is a validator for the "competitive_partnership_rating" field. It is called by the builders before save.
-	tender.CompetitivePartnershipRatingValidator = func() func(int8) error {
+	tender.CompetitivePartnershipRatingValidator = func() func(int) error {
 		validators := tenderDescCompetitivePartnershipRating.Validators
-		fns := [...]func(int8) error{
-			validators[0].(func(int8) error),
-			validators[1].(func(int8) error),
+		fns := [...]func(int) error{
+			validators[0].(func(int) error),
+			validators[1].(func(int) error),
 		}
-		return func(competitive_partnership_rating int8) error {
+		return func(competitive_partnership_rating int) error {
 			for _, fn := range fns {
 				if err := fn(competitive_partnership_rating); err != nil {
 					return err

@@ -274,17 +274,17 @@ var (
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int8
+	DefaultStatus int
 	// SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
-	SizeAndValueRatingValidator func(int8) error
+	SizeAndValueRatingValidator func(int) error
 	// CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
-	CreditAndPaymentRatingValidator func(int8) error
+	CreditAndPaymentRatingValidator func(int) error
 	// TimeLimitRatingValidator is a validator for the "time_limit_rating" field. It is called by the builders before save.
-	TimeLimitRatingValidator func(int8) error
+	TimeLimitRatingValidator func(int) error
 	// CustomerRelationshipRatingValidator is a validator for the "customer_relationship_rating" field. It is called by the builders before save.
-	CustomerRelationshipRatingValidator func(int8) error
+	CustomerRelationshipRatingValidator func(int) error
 	// CompetitivePartnershipRatingValidator is a validator for the "competitive_partnership_rating" field. It is called by the builders before save.
-	CompetitivePartnershipRatingValidator func(int8) error
+	CompetitivePartnershipRatingValidator func(int) error
 	// DefaultPrepareToBid holds the default value on creation for the "prepare_to_bid" field.
 	DefaultPrepareToBid bool
 	// DefaultKeyProject holds the default value on creation for the "key_project" field.

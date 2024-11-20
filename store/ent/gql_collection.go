@@ -76,6 +76,19 @@ func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 			a.WithNamedSales(alias, func(wq *UserQuery) {
 				*wq = *query
 			})
+
+		case "provinces":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProvinceClient{config: a.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, provinceImplementors)...); err != nil {
+				return err
+			}
+			a.WithNamedProvinces(alias, func(wq *ProvinceQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[area.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, area.FieldCreatedAt)
@@ -770,6 +783,21 @@ func (pr *ProvinceQuery) collectField(ctx context.Context, oneNode bool, opCtx *
 			pr.WithNamedTenders(alias, func(wq *TenderQuery) {
 				*wq = *query
 			})
+
+		case "area":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&AreaClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, areaImplementors)...); err != nil {
+				return err
+			}
+			pr.withArea = query
+			if _, ok := fieldSeen[province.FieldAreaID]; !ok {
+				selectedFields = append(selectedFields, province.FieldAreaID)
+				fieldSeen[province.FieldAreaID] = struct{}{}
+			}
 		case "createdAt":
 			if _, ok := fieldSeen[province.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, province.FieldCreatedAt)
@@ -794,6 +822,11 @@ func (pr *ProvinceQuery) collectField(ctx context.Context, oneNode bool, opCtx *
 			if _, ok := fieldSeen[province.FieldCountryID]; !ok {
 				selectedFields = append(selectedFields, province.FieldCountryID)
 				fieldSeen[province.FieldCountryID] = struct{}{}
+			}
+		case "areaID":
+			if _, ok := fieldSeen[province.FieldAreaID]; !ok {
+				selectedFields = append(selectedFields, province.FieldAreaID)
+				fieldSeen[province.FieldAreaID] = struct{}{}
 			}
 		case "id":
 		case "__typename":

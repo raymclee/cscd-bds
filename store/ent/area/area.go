@@ -23,12 +23,16 @@ const (
 	FieldName = "name"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
+	// FieldCenter holds the string denoting the center field in the database.
+	FieldCenter = "center"
 	// EdgeCustomers holds the string denoting the customers edge name in mutations.
 	EdgeCustomers = "customers"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
 	// EdgeSales holds the string denoting the sales edge name in mutations.
 	EdgeSales = "sales"
+	// EdgeProvinces holds the string denoting the provinces edge name in mutations.
+	EdgeProvinces = "provinces"
 	// Table holds the table name of the area in the database.
 	Table = "areas"
 	// CustomersTable is the table that holds the customers relation/edge.
@@ -50,6 +54,13 @@ const (
 	// SalesInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	SalesInverseTable = "users"
+	// ProvincesTable is the table that holds the provinces relation/edge.
+	ProvincesTable = "provinces"
+	// ProvincesInverseTable is the table name for the Province entity.
+	// It exists in this package in order to avoid circular dependency with the "province" package.
+	ProvincesInverseTable = "provinces"
+	// ProvincesColumn is the table column denoting the provinces relation/edge.
+	ProvincesColumn = "area_id"
 )
 
 // Columns holds all SQL columns for area fields.
@@ -59,6 +70,7 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldCode,
+	FieldCenter,
 }
 
 var (
@@ -116,6 +128,11 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
 }
 
+// ByCenter orders the results by the center field.
+func ByCenter(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCenter, opts...).ToFunc()
+}
+
 // ByCustomersCount orders the results by customers count.
 func ByCustomersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -157,6 +174,20 @@ func BySales(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newSalesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByProvincesCount orders the results by provinces count.
+func ByProvincesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newProvincesStep(), opts...)
+	}
+}
+
+// ByProvinces orders the results by provinces terms.
+func ByProvinces(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProvincesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newCustomersStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -176,5 +207,12 @@ func newSalesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(SalesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2M, false, SalesTable, SalesPrimaryKey...),
+	)
+}
+func newProvincesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProvincesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ProvincesTable, ProvincesColumn),
 	)
 }

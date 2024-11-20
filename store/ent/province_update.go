@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/district"
@@ -95,6 +96,26 @@ func (pu *ProvinceUpdate) SetNillableCountryID(x *xid.ID) *ProvinceUpdate {
 	return pu
 }
 
+// SetAreaID sets the "area_id" field.
+func (pu *ProvinceUpdate) SetAreaID(x xid.ID) *ProvinceUpdate {
+	pu.mutation.SetAreaID(x)
+	return pu
+}
+
+// SetNillableAreaID sets the "area_id" field if the given value is not nil.
+func (pu *ProvinceUpdate) SetNillableAreaID(x *xid.ID) *ProvinceUpdate {
+	if x != nil {
+		pu.SetAreaID(*x)
+	}
+	return pu
+}
+
+// ClearAreaID clears the value of the "area_id" field.
+func (pu *ProvinceUpdate) ClearAreaID() *ProvinceUpdate {
+	pu.mutation.ClearAreaID()
+	return pu
+}
+
 // AddDistrictIDs adds the "districts" edge to the District entity by IDs.
 func (pu *ProvinceUpdate) AddDistrictIDs(ids ...xid.ID) *ProvinceUpdate {
 	pu.mutation.AddDistrictIDs(ids...)
@@ -143,6 +164,11 @@ func (pu *ProvinceUpdate) AddTenders(t ...*Tender) *ProvinceUpdate {
 		ids[i] = t[i].ID
 	}
 	return pu.AddTenderIDs(ids...)
+}
+
+// SetArea sets the "area" edge to the Area entity.
+func (pu *ProvinceUpdate) SetArea(a *Area) *ProvinceUpdate {
+	return pu.SetAreaID(a.ID)
 }
 
 // Mutation returns the ProvinceMutation object of the builder.
@@ -217,6 +243,12 @@ func (pu *ProvinceUpdate) RemoveTenders(t ...*Tender) *ProvinceUpdate {
 		ids[i] = t[i].ID
 	}
 	return pu.RemoveTenderIDs(ids...)
+}
+
+// ClearArea clears the "area" edge to the Area entity.
+func (pu *ProvinceUpdate) ClearArea() *ProvinceUpdate {
+	pu.mutation.ClearArea()
+	return pu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -454,6 +486,35 @@ func (pu *ProvinceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if pu.mutation.AreaCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.AreaTable,
+			Columns: []string{province.AreaColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.AreaIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.AreaTable,
+			Columns: []string{province.AreaColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{province.Label}
@@ -535,6 +596,26 @@ func (puo *ProvinceUpdateOne) SetNillableCountryID(x *xid.ID) *ProvinceUpdateOne
 	return puo
 }
 
+// SetAreaID sets the "area_id" field.
+func (puo *ProvinceUpdateOne) SetAreaID(x xid.ID) *ProvinceUpdateOne {
+	puo.mutation.SetAreaID(x)
+	return puo
+}
+
+// SetNillableAreaID sets the "area_id" field if the given value is not nil.
+func (puo *ProvinceUpdateOne) SetNillableAreaID(x *xid.ID) *ProvinceUpdateOne {
+	if x != nil {
+		puo.SetAreaID(*x)
+	}
+	return puo
+}
+
+// ClearAreaID clears the value of the "area_id" field.
+func (puo *ProvinceUpdateOne) ClearAreaID() *ProvinceUpdateOne {
+	puo.mutation.ClearAreaID()
+	return puo
+}
+
 // AddDistrictIDs adds the "districts" edge to the District entity by IDs.
 func (puo *ProvinceUpdateOne) AddDistrictIDs(ids ...xid.ID) *ProvinceUpdateOne {
 	puo.mutation.AddDistrictIDs(ids...)
@@ -583,6 +664,11 @@ func (puo *ProvinceUpdateOne) AddTenders(t ...*Tender) *ProvinceUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return puo.AddTenderIDs(ids...)
+}
+
+// SetArea sets the "area" edge to the Area entity.
+func (puo *ProvinceUpdateOne) SetArea(a *Area) *ProvinceUpdateOne {
+	return puo.SetAreaID(a.ID)
 }
 
 // Mutation returns the ProvinceMutation object of the builder.
@@ -657,6 +743,12 @@ func (puo *ProvinceUpdateOne) RemoveTenders(t ...*Tender) *ProvinceUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return puo.RemoveTenderIDs(ids...)
+}
+
+// ClearArea clears the "area" edge to the Area entity.
+func (puo *ProvinceUpdateOne) ClearArea() *ProvinceUpdateOne {
+	puo.mutation.ClearArea()
+	return puo
 }
 
 // Where appends a list predicates to the ProvinceUpdate builder.
@@ -917,6 +1009,35 @@ func (puo *ProvinceUpdateOne) sqlSave(ctx context.Context) (_node *Province, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.AreaCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.AreaTable,
+			Columns: []string{province.AreaColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.AreaIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.AreaTable,
+			Columns: []string{province.AreaColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

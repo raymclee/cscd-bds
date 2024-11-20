@@ -15,22 +15,20 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AboutImport } from './routes/about'
-import { Route as mapImport } from './routes/__map'
-import { Route as imapImport } from './routes/__imap'
 import { Route as authImport } from './routes/__auth'
-import { Route as mapIndexImport } from './routes/__map/index'
-import { Route as mapHomeImport } from './routes/__map/home'
-import { Route as mapEditImport } from './routes/__map/edit'
-import { Route as imapH2Import } from './routes/__imap/h2'
 import { Route as authSessionImport } from './routes/__auth/session'
+import { Route as authmapImport } from './routes/__auth/__map'
+import { Route as authimapImport } from './routes/__auth/__imap'
+import { Route as authmapIndexImport } from './routes/__auth/__map/index'
+import { Route as authmapHomeImport } from './routes/__auth/__map/home'
+import { Route as authmapEditImport } from './routes/__auth/__map/edit'
+import { Route as authimapH2Import } from './routes/__auth/__imap/h2'
 
 // Create Virtual Routes
 
-const mapDashboardLazyImport = createFileRoute('/__map/dashboard')()
-const mapAreaMapLazyImport = createFileRoute('/__map/area-map')()
-const map7LazyImport = createFileRoute('/__map/7')()
-const map4LazyImport = createFileRoute('/__map/4')()
-const imapH3LazyImport = createFileRoute('/__imap/h3')()
+const authmapDashboardLazyImport = createFileRoute('/__auth/__map/dashboard')()
+const authmapAreaMapLazyImport = createFileRoute('/__auth/__map/area-map')()
+const authimapH3LazyImport = createFileRoute('/__auth/__imap/h3')()
 
 // Create/Update Routes
 
@@ -46,18 +44,6 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const mapRoute = mapImport.update({
-  id: '/__map',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const imapRoute = imapImport
-  .update({
-    id: '/__imap',
-    getParentRoute: () => rootRoute,
-  } as any)
-  .lazy(() => import('./routes/__imap.lazy').then((d) => d.Route))
-
 const authRoute = authImport
   .update({
     id: '/__auth',
@@ -65,81 +51,81 @@ const authRoute = authImport
   } as any)
   .lazy(() => import('./routes/__auth.lazy').then((d) => d.Route))
 
-const mapIndexRoute = mapIndexImport
-  .update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/index.lazy').then((d) => d.Route))
-
-const mapDashboardLazyRoute = mapDashboardLazyImport
-  .update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/dashboard.lazy').then((d) => d.Route))
-
-const mapAreaMapLazyRoute = mapAreaMapLazyImport
-  .update({
-    id: '/area-map',
-    path: '/area-map',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/area-map.lazy').then((d) => d.Route))
-
-const map7LazyRoute = map7LazyImport
-  .update({
-    id: '/7',
-    path: '/7',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/7.lazy').then((d) => d.Route))
-
-const map4LazyRoute = map4LazyImport
-  .update({
-    id: '/4',
-    path: '/4',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/4.lazy').then((d) => d.Route))
-
-const imapH3LazyRoute = imapH3LazyImport
-  .update({
-    id: '/h3',
-    path: '/h3',
-    getParentRoute: () => imapRoute,
-  } as any)
-  .lazy(() => import('./routes/__imap/h3.lazy').then((d) => d.Route))
-
-const mapHomeRoute = mapHomeImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => mapRoute,
-} as any)
-
-const mapEditRoute = mapEditImport
-  .update({
-    id: '/edit',
-    path: '/edit',
-    getParentRoute: () => mapRoute,
-  } as any)
-  .lazy(() => import('./routes/__map/edit.lazy').then((d) => d.Route))
-
-const imapH2Route = imapH2Import
-  .update({
-    id: '/h2',
-    path: '/h2',
-    getParentRoute: () => imapRoute,
-  } as any)
-  .lazy(() => import('./routes/__imap/h2.lazy').then((d) => d.Route))
-
 const authSessionRoute = authSessionImport.update({
   id: '/session',
   path: '/session',
   getParentRoute: () => authRoute,
 } as any)
+
+const authmapRoute = authmapImport.update({
+  id: '/__map',
+  getParentRoute: () => authRoute,
+} as any)
+
+const authimapRoute = authimapImport
+  .update({
+    id: '/__imap',
+    getParentRoute: () => authRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__imap.lazy').then((d) => d.Route))
+
+const authmapIndexRoute = authmapIndexImport
+  .update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => authmapRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__map/index.lazy').then((d) => d.Route))
+
+const authmapDashboardLazyRoute = authmapDashboardLazyImport
+  .update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => authmapRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__map/dashboard.lazy').then((d) => d.Route),
+  )
+
+const authmapAreaMapLazyRoute = authmapAreaMapLazyImport
+  .update({
+    id: '/area-map',
+    path: '/area-map',
+    getParentRoute: () => authmapRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__map/area-map.lazy').then((d) => d.Route),
+  )
+
+const authimapH3LazyRoute = authimapH3LazyImport
+  .update({
+    id: '/h3',
+    path: '/h3',
+    getParentRoute: () => authimapRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__imap/h3.lazy').then((d) => d.Route))
+
+const authmapHomeRoute = authmapHomeImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => authmapRoute,
+} as any)
+
+const authmapEditRoute = authmapEditImport
+  .update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => authmapRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__map/edit.lazy').then((d) => d.Route))
+
+const authimapH2Route = authimapH2Import
+  .update({
+    id: '/h2',
+    path: '/h2',
+    getParentRoute: () => authimapRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__imap/h2.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -150,20 +136,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authImport
-      parentRoute: typeof rootRoute
-    }
-    '/__imap': {
-      id: '/__imap'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof imapImport
-      parentRoute: typeof rootRoute
-    }
-    '/__map': {
-      id: '/__map'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof mapImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -180,6 +152,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/__auth/__imap': {
+      id: '/__auth/__imap'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authimapImport
+      parentRoute: typeof authImport
+    }
+    '/__auth/__map': {
+      id: '/__auth/__map'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authmapImport
+      parentRoute: typeof authImport
+    }
     '/__auth/session': {
       id: '/__auth/session'
       path: '/session'
@@ -187,167 +173,150 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSessionImport
       parentRoute: typeof authImport
     }
-    '/__imap/h2': {
-      id: '/__imap/h2'
+    '/__auth/__imap/h2': {
+      id: '/__auth/__imap/h2'
       path: '/h2'
       fullPath: '/h2'
-      preLoaderRoute: typeof imapH2Import
-      parentRoute: typeof imapImport
+      preLoaderRoute: typeof authimapH2Import
+      parentRoute: typeof authimapImport
     }
-    '/__map/edit': {
-      id: '/__map/edit'
+    '/__auth/__map/edit': {
+      id: '/__auth/__map/edit'
       path: '/edit'
       fullPath: '/edit'
-      preLoaderRoute: typeof mapEditImport
-      parentRoute: typeof mapImport
+      preLoaderRoute: typeof authmapEditImport
+      parentRoute: typeof authmapImport
     }
-    '/__map/home': {
-      id: '/__map/home'
+    '/__auth/__map/home': {
+      id: '/__auth/__map/home'
       path: '/home'
       fullPath: '/home'
-      preLoaderRoute: typeof mapHomeImport
-      parentRoute: typeof mapImport
+      preLoaderRoute: typeof authmapHomeImport
+      parentRoute: typeof authmapImport
     }
-    '/__imap/h3': {
-      id: '/__imap/h3'
+    '/__auth/__imap/h3': {
+      id: '/__auth/__imap/h3'
       path: '/h3'
       fullPath: '/h3'
-      preLoaderRoute: typeof imapH3LazyImport
-      parentRoute: typeof imapImport
+      preLoaderRoute: typeof authimapH3LazyImport
+      parentRoute: typeof authimapImport
     }
-    '/__map/4': {
-      id: '/__map/4'
-      path: '/4'
-      fullPath: '/4'
-      preLoaderRoute: typeof map4LazyImport
-      parentRoute: typeof mapImport
-    }
-    '/__map/7': {
-      id: '/__map/7'
-      path: '/7'
-      fullPath: '/7'
-      preLoaderRoute: typeof map7LazyImport
-      parentRoute: typeof mapImport
-    }
-    '/__map/area-map': {
-      id: '/__map/area-map'
+    '/__auth/__map/area-map': {
+      id: '/__auth/__map/area-map'
       path: '/area-map'
       fullPath: '/area-map'
-      preLoaderRoute: typeof mapAreaMapLazyImport
-      parentRoute: typeof mapImport
+      preLoaderRoute: typeof authmapAreaMapLazyImport
+      parentRoute: typeof authmapImport
     }
-    '/__map/dashboard': {
-      id: '/__map/dashboard'
+    '/__auth/__map/dashboard': {
+      id: '/__auth/__map/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof mapDashboardLazyImport
-      parentRoute: typeof mapImport
+      preLoaderRoute: typeof authmapDashboardLazyImport
+      parentRoute: typeof authmapImport
     }
-    '/__map/': {
-      id: '/__map/'
+    '/__auth/__map/': {
+      id: '/__auth/__map/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof mapIndexImport
-      parentRoute: typeof mapImport
+      preLoaderRoute: typeof authmapIndexImport
+      parentRoute: typeof authmapImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface authimapRouteChildren {
+  authimapH2Route: typeof authimapH2Route
+  authimapH3LazyRoute: typeof authimapH3LazyRoute
+}
+
+const authimapRouteChildren: authimapRouteChildren = {
+  authimapH2Route: authimapH2Route,
+  authimapH3LazyRoute: authimapH3LazyRoute,
+}
+
+const authimapRouteWithChildren = authimapRoute._addFileChildren(
+  authimapRouteChildren,
+)
+
+interface authmapRouteChildren {
+  authmapEditRoute: typeof authmapEditRoute
+  authmapHomeRoute: typeof authmapHomeRoute
+  authmapAreaMapLazyRoute: typeof authmapAreaMapLazyRoute
+  authmapDashboardLazyRoute: typeof authmapDashboardLazyRoute
+  authmapIndexRoute: typeof authmapIndexRoute
+}
+
+const authmapRouteChildren: authmapRouteChildren = {
+  authmapEditRoute: authmapEditRoute,
+  authmapHomeRoute: authmapHomeRoute,
+  authmapAreaMapLazyRoute: authmapAreaMapLazyRoute,
+  authmapDashboardLazyRoute: authmapDashboardLazyRoute,
+  authmapIndexRoute: authmapIndexRoute,
+}
+
+const authmapRouteWithChildren =
+  authmapRoute._addFileChildren(authmapRouteChildren)
+
 interface authRouteChildren {
+  authimapRoute: typeof authimapRouteWithChildren
+  authmapRoute: typeof authmapRouteWithChildren
   authSessionRoute: typeof authSessionRoute
 }
 
 const authRouteChildren: authRouteChildren = {
+  authimapRoute: authimapRouteWithChildren,
+  authmapRoute: authmapRouteWithChildren,
   authSessionRoute: authSessionRoute,
 }
 
 const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
-interface imapRouteChildren {
-  imapH2Route: typeof imapH2Route
-  imapH3LazyRoute: typeof imapH3LazyRoute
-}
-
-const imapRouteChildren: imapRouteChildren = {
-  imapH2Route: imapH2Route,
-  imapH3LazyRoute: imapH3LazyRoute,
-}
-
-const imapRouteWithChildren = imapRoute._addFileChildren(imapRouteChildren)
-
-interface mapRouteChildren {
-  mapEditRoute: typeof mapEditRoute
-  mapHomeRoute: typeof mapHomeRoute
-  map4LazyRoute: typeof map4LazyRoute
-  map7LazyRoute: typeof map7LazyRoute
-  mapAreaMapLazyRoute: typeof mapAreaMapLazyRoute
-  mapDashboardLazyRoute: typeof mapDashboardLazyRoute
-  mapIndexRoute: typeof mapIndexRoute
-}
-
-const mapRouteChildren: mapRouteChildren = {
-  mapEditRoute: mapEditRoute,
-  mapHomeRoute: mapHomeRoute,
-  map4LazyRoute: map4LazyRoute,
-  map7LazyRoute: map7LazyRoute,
-  mapAreaMapLazyRoute: mapAreaMapLazyRoute,
-  mapDashboardLazyRoute: mapDashboardLazyRoute,
-  mapIndexRoute: mapIndexRoute,
-}
-
-const mapRouteWithChildren = mapRoute._addFileChildren(mapRouteChildren)
-
 export interface FileRoutesByFullPath {
-  '': typeof mapRouteWithChildren
+  '': typeof authmapRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/session': typeof authSessionRoute
-  '/h2': typeof imapH2Route
-  '/edit': typeof mapEditRoute
-  '/home': typeof mapHomeRoute
-  '/h3': typeof imapH3LazyRoute
-  '/4': typeof map4LazyRoute
-  '/7': typeof map7LazyRoute
-  '/area-map': typeof mapAreaMapLazyRoute
-  '/dashboard': typeof mapDashboardLazyRoute
-  '/': typeof mapIndexRoute
+  '/h2': typeof authimapH2Route
+  '/edit': typeof authmapEditRoute
+  '/home': typeof authmapHomeRoute
+  '/h3': typeof authimapH3LazyRoute
+  '/area-map': typeof authmapAreaMapLazyRoute
+  '/dashboard': typeof authmapDashboardLazyRoute
+  '/': typeof authmapIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '': typeof imapRouteWithChildren
+  '': typeof authimapRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/session': typeof authSessionRoute
-  '/h2': typeof imapH2Route
-  '/edit': typeof mapEditRoute
-  '/home': typeof mapHomeRoute
-  '/h3': typeof imapH3LazyRoute
-  '/4': typeof map4LazyRoute
-  '/7': typeof map7LazyRoute
-  '/area-map': typeof mapAreaMapLazyRoute
-  '/dashboard': typeof mapDashboardLazyRoute
-  '/': typeof mapIndexRoute
+  '/h2': typeof authimapH2Route
+  '/edit': typeof authmapEditRoute
+  '/home': typeof authmapHomeRoute
+  '/h3': typeof authimapH3LazyRoute
+  '/area-map': typeof authmapAreaMapLazyRoute
+  '/dashboard': typeof authmapDashboardLazyRoute
+  '/': typeof authmapIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/__auth': typeof authRouteWithChildren
-  '/__imap': typeof imapRouteWithChildren
-  '/__map': typeof mapRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
+  '/__auth/__imap': typeof authimapRouteWithChildren
+  '/__auth/__map': typeof authmapRouteWithChildren
   '/__auth/session': typeof authSessionRoute
-  '/__imap/h2': typeof imapH2Route
-  '/__map/edit': typeof mapEditRoute
-  '/__map/home': typeof mapHomeRoute
-  '/__imap/h3': typeof imapH3LazyRoute
-  '/__map/4': typeof map4LazyRoute
-  '/__map/7': typeof map7LazyRoute
-  '/__map/area-map': typeof mapAreaMapLazyRoute
-  '/__map/dashboard': typeof mapDashboardLazyRoute
-  '/__map/': typeof mapIndexRoute
+  '/__auth/__imap/h2': typeof authimapH2Route
+  '/__auth/__map/edit': typeof authmapEditRoute
+  '/__auth/__map/home': typeof authmapHomeRoute
+  '/__auth/__imap/h3': typeof authimapH3LazyRoute
+  '/__auth/__map/area-map': typeof authmapAreaMapLazyRoute
+  '/__auth/__map/dashboard': typeof authmapDashboardLazyRoute
+  '/__auth/__map/': typeof authmapIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -361,8 +330,6 @@ export interface FileRouteTypes {
     | '/edit'
     | '/home'
     | '/h3'
-    | '/4'
-    | '/7'
     | '/area-map'
     | '/dashboard'
     | '/'
@@ -376,43 +343,35 @@ export interface FileRouteTypes {
     | '/edit'
     | '/home'
     | '/h3'
-    | '/4'
-    | '/7'
     | '/area-map'
     | '/dashboard'
     | '/'
   id:
     | '__root__'
     | '/__auth'
-    | '/__imap'
-    | '/__map'
     | '/about'
     | '/login'
+    | '/__auth/__imap'
+    | '/__auth/__map'
     | '/__auth/session'
-    | '/__imap/h2'
-    | '/__map/edit'
-    | '/__map/home'
-    | '/__imap/h3'
-    | '/__map/4'
-    | '/__map/7'
-    | '/__map/area-map'
-    | '/__map/dashboard'
-    | '/__map/'
+    | '/__auth/__imap/h2'
+    | '/__auth/__map/edit'
+    | '/__auth/__map/home'
+    | '/__auth/__imap/h3'
+    | '/__auth/__map/area-map'
+    | '/__auth/__map/dashboard'
+    | '/__auth/__map/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   authRoute: typeof authRouteWithChildren
-  imapRoute: typeof imapRouteWithChildren
-  mapRoute: typeof mapRouteWithChildren
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   authRoute: authRouteWithChildren,
-  imapRoute: imapRouteWithChildren,
-  mapRoute: mapRouteWithChildren,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
 }
@@ -428,8 +387,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/__auth",
-        "/__imap",
-        "/__map",
         "/about",
         "/login"
       ]
@@ -437,26 +394,9 @@ export const routeTree = rootRoute
     "/__auth": {
       "filePath": "__auth.tsx",
       "children": [
+        "/__auth/__imap",
+        "/__auth/__map",
         "/__auth/session"
-      ]
-    },
-    "/__imap": {
-      "filePath": "__imap.tsx",
-      "children": [
-        "/__imap/h2",
-        "/__imap/h3"
-      ]
-    },
-    "/__map": {
-      "filePath": "__map.tsx",
-      "children": [
-        "/__map/edit",
-        "/__map/home",
-        "/__map/4",
-        "/__map/7",
-        "/__map/area-map",
-        "/__map/dashboard",
-        "/__map/"
       ]
     },
     "/about": {
@@ -465,45 +405,56 @@ export const routeTree = rootRoute
     "/login": {
       "filePath": "login.tsx"
     },
+    "/__auth/__imap": {
+      "filePath": "__auth/__imap.tsx",
+      "parent": "/__auth",
+      "children": [
+        "/__auth/__imap/h2",
+        "/__auth/__imap/h3"
+      ]
+    },
+    "/__auth/__map": {
+      "filePath": "__auth/__map.tsx",
+      "parent": "/__auth",
+      "children": [
+        "/__auth/__map/edit",
+        "/__auth/__map/home",
+        "/__auth/__map/area-map",
+        "/__auth/__map/dashboard",
+        "/__auth/__map/"
+      ]
+    },
     "/__auth/session": {
       "filePath": "__auth/session.tsx",
       "parent": "/__auth"
     },
-    "/__imap/h2": {
-      "filePath": "__imap/h2.tsx",
-      "parent": "/__imap"
+    "/__auth/__imap/h2": {
+      "filePath": "__auth/__imap/h2.tsx",
+      "parent": "/__auth/__imap"
     },
-    "/__map/edit": {
-      "filePath": "__map/edit.tsx",
-      "parent": "/__map"
+    "/__auth/__map/edit": {
+      "filePath": "__auth/__map/edit.tsx",
+      "parent": "/__auth/__map"
     },
-    "/__map/home": {
-      "filePath": "__map/home.tsx",
-      "parent": "/__map"
+    "/__auth/__map/home": {
+      "filePath": "__auth/__map/home.tsx",
+      "parent": "/__auth/__map"
     },
-    "/__imap/h3": {
-      "filePath": "__imap/h3.lazy.tsx",
-      "parent": "/__imap"
+    "/__auth/__imap/h3": {
+      "filePath": "__auth/__imap/h3.lazy.tsx",
+      "parent": "/__auth/__imap"
     },
-    "/__map/4": {
-      "filePath": "__map/4.lazy.tsx",
-      "parent": "/__map"
+    "/__auth/__map/area-map": {
+      "filePath": "__auth/__map/area-map.lazy.tsx",
+      "parent": "/__auth/__map"
     },
-    "/__map/7": {
-      "filePath": "__map/7.lazy.tsx",
-      "parent": "/__map"
+    "/__auth/__map/dashboard": {
+      "filePath": "__auth/__map/dashboard.lazy.tsx",
+      "parent": "/__auth/__map"
     },
-    "/__map/area-map": {
-      "filePath": "__map/area-map.lazy.tsx",
-      "parent": "/__map"
-    },
-    "/__map/dashboard": {
-      "filePath": "__map/dashboard.lazy.tsx",
-      "parent": "/__map"
-    },
-    "/__map/": {
-      "filePath": "__map/index.tsx",
-      "parent": "/__map"
+    "/__auth/__map/": {
+      "filePath": "__auth/__map/index.tsx",
+      "parent": "/__auth/__map"
     }
   }
 }

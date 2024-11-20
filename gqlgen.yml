@@ -33,11 +33,6 @@ autobind:
   - cscd-bds/store/ent/province
   - cscd-bds/store/ent/tender
   - cscd-bds/store/ent/user
-  # - cscd-bds/store/ent/assetcategory
-  # - cscd-bds/store/ent/admin
-  # - cscd-bds/store/ent/site
-  # - cscd-attendance/ent/attendance
-  # - cscd-attendance/ent/site
 
 # This section declares type mapping between the GraphQL and Go type systems.
 models:

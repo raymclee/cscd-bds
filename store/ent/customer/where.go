@@ -72,17 +72,17 @@ func Name(v string) predicate.Customer {
 }
 
 // OwnerType applies equality check predicate on the "owner_type" field. It's identical to OwnerTypeEQ.
-func OwnerType(v int8) predicate.Customer {
+func OwnerType(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldOwnerType, v))
 }
 
 // Industry applies equality check predicate on the "industry" field. It's identical to IndustryEQ.
-func Industry(v int8) predicate.Customer {
+func Industry(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldIndustry, v))
 }
 
 // Size applies equality check predicate on the "size" field. It's identical to SizeEQ.
-func Size(v int8) predicate.Customer {
+func Size(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldSize, v))
 }
 
@@ -267,42 +267,42 @@ func NameContainsFold(v string) predicate.Customer {
 }
 
 // OwnerTypeEQ applies the EQ predicate on the "owner_type" field.
-func OwnerTypeEQ(v int8) predicate.Customer {
+func OwnerTypeEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldOwnerType, v))
 }
 
 // OwnerTypeNEQ applies the NEQ predicate on the "owner_type" field.
-func OwnerTypeNEQ(v int8) predicate.Customer {
+func OwnerTypeNEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldOwnerType, v))
 }
 
 // OwnerTypeIn applies the In predicate on the "owner_type" field.
-func OwnerTypeIn(vs ...int8) predicate.Customer {
+func OwnerTypeIn(vs ...int) predicate.Customer {
 	return predicate.Customer(sql.FieldIn(FieldOwnerType, vs...))
 }
 
 // OwnerTypeNotIn applies the NotIn predicate on the "owner_type" field.
-func OwnerTypeNotIn(vs ...int8) predicate.Customer {
+func OwnerTypeNotIn(vs ...int) predicate.Customer {
 	return predicate.Customer(sql.FieldNotIn(FieldOwnerType, vs...))
 }
 
 // OwnerTypeGT applies the GT predicate on the "owner_type" field.
-func OwnerTypeGT(v int8) predicate.Customer {
+func OwnerTypeGT(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldGT(FieldOwnerType, v))
 }
 
 // OwnerTypeGTE applies the GTE predicate on the "owner_type" field.
-func OwnerTypeGTE(v int8) predicate.Customer {
+func OwnerTypeGTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldGTE(FieldOwnerType, v))
 }
 
 // OwnerTypeLT applies the LT predicate on the "owner_type" field.
-func OwnerTypeLT(v int8) predicate.Customer {
+func OwnerTypeLT(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLT(FieldOwnerType, v))
 }
 
 // OwnerTypeLTE applies the LTE predicate on the "owner_type" field.
-func OwnerTypeLTE(v int8) predicate.Customer {
+func OwnerTypeLTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldOwnerType, v))
 }
 
@@ -317,82 +317,82 @@ func OwnerTypeNotNil() predicate.Customer {
 }
 
 // IndustryEQ applies the EQ predicate on the "industry" field.
-func IndustryEQ(v int8) predicate.Customer {
+func IndustryEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldIndustry, v))
 }
 
 // IndustryNEQ applies the NEQ predicate on the "industry" field.
-func IndustryNEQ(v int8) predicate.Customer {
+func IndustryNEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldIndustry, v))
 }
 
 // IndustryIn applies the In predicate on the "industry" field.
-func IndustryIn(vs ...int8) predicate.Customer {
+func IndustryIn(vs ...int) predicate.Customer {
 	return predicate.Customer(sql.FieldIn(FieldIndustry, vs...))
 }
 
 // IndustryNotIn applies the NotIn predicate on the "industry" field.
-func IndustryNotIn(vs ...int8) predicate.Customer {
+func IndustryNotIn(vs ...int) predicate.Customer {
 	return predicate.Customer(sql.FieldNotIn(FieldIndustry, vs...))
 }
 
 // IndustryGT applies the GT predicate on the "industry" field.
-func IndustryGT(v int8) predicate.Customer {
+func IndustryGT(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldGT(FieldIndustry, v))
 }
 
 // IndustryGTE applies the GTE predicate on the "industry" field.
-func IndustryGTE(v int8) predicate.Customer {
+func IndustryGTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldGTE(FieldIndustry, v))
 }
 
 // IndustryLT applies the LT predicate on the "industry" field.
-func IndustryLT(v int8) predicate.Customer {
+func IndustryLT(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLT(FieldIndustry, v))
 }
 
 // IndustryLTE applies the LTE predicate on the "industry" field.
-func IndustryLTE(v int8) predicate.Customer {
+func IndustryLTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldIndustry, v))
 }
 
 // SizeEQ applies the EQ predicate on the "size" field.
-func SizeEQ(v int8) predicate.Customer {
+func SizeEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldSize, v))
 }
 
 // SizeNEQ applies the NEQ predicate on the "size" field.
-func SizeNEQ(v int8) predicate.Customer {
+func SizeNEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldSize, v))
 }
 
 // SizeIn applies the In predicate on the "size" field.
-func SizeIn(vs ...int8) predicate.Customer {
+func SizeIn(vs ...int) predicate.Customer {
 	return predicate.Customer(sql.FieldIn(FieldSize, vs...))
 }
 
 // SizeNotIn applies the NotIn predicate on the "size" field.
-func SizeNotIn(vs ...int8) predicate.Customer {
+func SizeNotIn(vs ...int) predicate.Customer {
 	return predicate.Customer(sql.FieldNotIn(FieldSize, vs...))
 }
 
 // SizeGT applies the GT predicate on the "size" field.
-func SizeGT(v int8) predicate.Customer {
+func SizeGT(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldGT(FieldSize, v))
 }
 
 // SizeGTE applies the GTE predicate on the "size" field.
-func SizeGTE(v int8) predicate.Customer {
+func SizeGTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldGTE(FieldSize, v))
 }
 
 // SizeLT applies the LT predicate on the "size" field.
-func SizeLT(v int8) predicate.Customer {
+func SizeLT(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLT(FieldSize, v))
 }
 
 // SizeLTE applies the LTE predicate on the "size" field.
-func SizeLTE(v int8) predicate.Customer {
+func SizeLTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldSize, v))
 }
 

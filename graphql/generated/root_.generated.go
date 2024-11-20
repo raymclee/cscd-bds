@@ -35,15 +35,14 @@ type Config struct {
 }
 
 type ResolverRoot interface {
-	Customer() CustomerResolver
+	Area() AreaResolver
+	City() CityResolver
+	Country() CountryResolver
+	District() DistrictResolver
+	Mutation() MutationResolver
+	Province() ProvinceResolver
 	Query() QueryResolver
 	Tender() TenderResolver
-	CreateCustomerInput() CreateCustomerInputResolver
-	CreateTenderInput() CreateTenderInputResolver
-	CustomerWhereInput() CustomerWhereInputResolver
-	TenderWhereInput() TenderWhereInputResolver
-	UpdateCustomerInput() UpdateCustomerInputResolver
-	UpdateTenderInput() UpdateTenderInputResolver
 }
 
 type DirectiveRoot struct {
@@ -51,11 +50,13 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Area struct {
+		Center    func(childComplexity int) int
 		Code      func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
 		Customers func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
+		Provinces func(childComplexity int) int
 		Sales     func(childComplexity int) int
 		Tenders   func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
@@ -74,6 +75,7 @@ type ComplexityRoot struct {
 
 	City struct {
 		Adcode     func(childComplexity int) int
+		Center     func(childComplexity int) int
 		CreatedAt  func(childComplexity int) int
 		Districts  func(childComplexity int) int
 		ID         func(childComplexity int) int
@@ -98,6 +100,7 @@ type ComplexityRoot struct {
 
 	Country struct {
 		Adcode    func(childComplexity int) int
+		Center    func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
@@ -150,6 +153,7 @@ type ComplexityRoot struct {
 
 	District struct {
 		Adcode     func(childComplexity int) int
+		Center     func(childComplexity int) int
 		City       func(childComplexity int) int
 		CityCode   func(childComplexity int) int
 		CityID     func(childComplexity int) int
@@ -179,6 +183,13 @@ type ComplexityRoot struct {
 		Type        func(childComplexity int) int
 	}
 
+	Mutation struct {
+		CreateArea func(childComplexity int, input ent.CreateAreaInput) int
+		CreateUser func(childComplexity int, input ent.CreateUserInput) int
+		UpdateArea func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateUser func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+	}
+
 	PageInfo struct {
 		EndCursor       func(childComplexity int) int
 		HasNextPage     func(childComplexity int) int
@@ -188,6 +199,9 @@ type ComplexityRoot struct {
 
 	Province struct {
 		Adcode    func(childComplexity int) int
+		Area      func(childComplexity int) int
+		AreaID    func(childComplexity int) int
+		Center    func(childComplexity int) int
 		Cities    func(childComplexity int) int
 		Country   func(childComplexity int) int
 		CountryID func(childComplexity int) int
@@ -355,6 +369,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
+	case "Area.center":
+		if e.complexity.Area.Center == nil {
+			break
+		}
+
+		return e.complexity.Area.Center(childComplexity), true
+
 	case "Area.code":
 		if e.complexity.Area.Code == nil {
 			break
@@ -389,6 +410,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Area.Name(childComplexity), true
+
+	case "Area.provinces":
+		if e.complexity.Area.Provinces == nil {
+			break
+		}
+
+		return e.complexity.Area.Provinces(childComplexity), true
 
 	case "Area.sales":
 		if e.complexity.Area.Sales == nil {
@@ -452,6 +480,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.City.Adcode(childComplexity), true
+
+	case "City.center":
+		if e.complexity.City.Center == nil {
+			break
+		}
+
+		return e.complexity.City.Center(childComplexity), true
 
 	case "City.createdAt":
 		if e.complexity.City.CreatedAt == nil {
@@ -557,6 +592,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Country.Adcode(childComplexity), true
+
+	case "Country.center":
+		if e.complexity.Country.Center == nil {
+			break
+		}
+
+		return e.complexity.Country.Center(childComplexity), true
 
 	case "Country.createdAt":
 		if e.complexity.Country.CreatedAt == nil {
@@ -796,6 +838,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.District.Adcode(childComplexity), true
 
+	case "District.center":
+		if e.complexity.District.Center == nil {
+			break
+		}
+
+		return e.complexity.District.Center(childComplexity), true
+
 	case "District.city":
 		if e.complexity.District.City == nil {
 			break
@@ -922,6 +971,54 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GeoJson.Type(childComplexity), true
 
+	case "Mutation.createArea":
+		if e.complexity.Mutation.CreateArea == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createArea_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateArea(childComplexity, args["input"].(ent.CreateAreaInput)), true
+
+	case "Mutation.createUser":
+		if e.complexity.Mutation.CreateUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(ent.CreateUserInput)), true
+
+	case "Mutation.updateArea":
+		if e.complexity.Mutation.UpdateArea == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateArea_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateArea(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateAreaInput)), true
+
+	case "Mutation.updateUser":
+		if e.complexity.Mutation.UpdateUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateUserInput)), true
+
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
 			break
@@ -956,6 +1053,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Province.Adcode(childComplexity), true
+
+	case "Province.area":
+		if e.complexity.Province.Area == nil {
+			break
+		}
+
+		return e.complexity.Province.Area(childComplexity), true
+
+	case "Province.areaID":
+		if e.complexity.Province.AreaID == nil {
+			break
+		}
+
+		return e.complexity.Province.AreaID(childComplexity), true
+
+	case "Province.center":
+		if e.complexity.Province.Center == nil {
+			break
+		}
+
+		return e.complexity.Province.Center(childComplexity), true
 
 	case "Province.cities":
 		if e.complexity.Province.Cities == nil {
@@ -1878,6 +1996,21 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 
 			return &response
 		}
+	case ast.Mutation:
+		return func(ctx context.Context) *graphql.Response {
+			if !first {
+				return nil
+			}
+			first = false
+			ctx = graphql.WithUnmarshalerMap(ctx, inputUnmarshalMap)
+			data := ec._Mutation(ctx, opCtx.Operation.SelectionSet)
+			var buf bytes.Buffer
+			data.MarshalGQL(&buf)
+
+			return &graphql.Response{
+				Data: buf.Bytes(),
+			}
+		}
 
 	default:
 		return graphql.OneShot(graphql.ErrorResponse(ctx, "unsupported GraphQL operation"))
@@ -1937,6 +2070,7 @@ type Area implements Node {
   customers: [Customer!]
   tenders: [Tender!]
   sales: [User!]
+  provinces: [Province!]
 }
 """
 A connection to a list of items.
@@ -2056,6 +2190,11 @@ input AreaWhereInput {
   """
   hasSales: Boolean
   hasSalesWith: [UserWhereInput!]
+  """
+  provinces edge predicates
+  """
+  hasProvinces: Boolean
+  hasProvincesWith: [ProvinceWhereInput!]
 }
 type City implements Node {
   id: ID!
@@ -2334,6 +2473,7 @@ input CreateAreaInput {
   customerIDs: [ID!]
   tenderIDs: [ID!]
   saleIDs: [ID!]
+  provinceIDs: [ID!]
 }
 """
 CreateCityInput is used for create City object.
@@ -2408,6 +2548,7 @@ input CreateProvinceInput {
   cityIDs: [ID!]
   countryID: ID!
   tenderIDs: [ID!]
+  areaID: ID
 }
 """
 CreateTenderInput is used for create Tender object.
@@ -3014,10 +3155,12 @@ type Province implements Node {
   adcode: Int!
   name: String!
   countryID: ID!
+  areaID: ID
   districts: [District!]
   cities: [City!]
   country: Country!
   tenders: [Tender!]
+  area: Area
 }
 """
 A connection to a list of items.
@@ -3134,6 +3277,24 @@ input ProvinceWhereInput {
   countryIDEqualFold: ID
   countryIDContainsFold: ID
   """
+  area_id field predicates
+  """
+  areaID: ID
+  areaIDNEQ: ID
+  areaIDIn: [ID!]
+  areaIDNotIn: [ID!]
+  areaIDGT: ID
+  areaIDGTE: ID
+  areaIDLT: ID
+  areaIDLTE: ID
+  areaIDContains: ID
+  areaIDHasPrefix: ID
+  areaIDHasSuffix: ID
+  areaIDIsNil: Boolean
+  areaIDNotNil: Boolean
+  areaIDEqualFold: ID
+  areaIDContainsFold: ID
+  """
   districts edge predicates
   """
   hasDistricts: Boolean
@@ -3153,6 +3314,11 @@ input ProvinceWhereInput {
   """
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
+  """
+  area edge predicates
+  """
+  hasArea: Boolean
+  hasAreaWith: [AreaWhereInput!]
 }
 type Query {
   """
@@ -4313,6 +4479,9 @@ input UpdateAreaInput {
   addSaleIDs: [ID!]
   removeSaleIDs: [ID!]
   clearSales: Boolean
+  addProvinceIDs: [ID!]
+  removeProvinceIDs: [ID!]
+  clearProvinces: Boolean
 }
 """
 UpdateCityInput is used for update City object.
@@ -4406,6 +4575,8 @@ input UpdateProvinceInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+  areaID: ID
+  clearArea: Boolean
 }
 """
 UpdateTenderInput is used for update Tender object.
@@ -4750,7 +4921,44 @@ input UserWhereInput {
   hasTendersWith: [TenderWhereInput!]
 }
 `, BuiltIn: false},
-	{Name: "../scalar.graphql", Input: `scalar Time
+	{Name: "../geo_coordinate.graphql", Input: `extend type Tender {
+  geoCoordinate: GeoJson
+}
+
+extend type Area {
+  center: GeoJson
+}
+
+extend type Country {
+  center: GeoJson
+}
+
+extend type Province {
+  center: GeoJson
+}
+
+extend type City {
+  center: GeoJson
+}
+
+extend type District {
+  center: GeoJson
+}
+
+type GeoJson {
+  type: String!
+  coordinates: [Float!]!
+}
+`, BuiltIn: false},
+	{Name: "../mutation.graphql", Input: `type Mutation {
+  createArea(input: CreateAreaInput!): Area!
+  updateArea(id: ID!, input: UpdateAreaInput!): Area!
+
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+}
+`, BuiltIn: false},
+	{Name: "../scaler.graphql", Input: `scalar Time
 `, BuiltIn: false},
 	{Name: "../session.graphql", Input: `type Session {
   name: String!
@@ -4761,15 +4969,6 @@ input UserWhereInput {
 
 extend type Query {
   session: Session!
-}
-`, BuiltIn: false},
-	{Name: "../tender.graphql", Input: `extend type Tender {
-  geoCoordinate: GeoJson
-}
-
-type GeoJson {
-  type: String!
-  coordinates: [Float!]!
 }
 `, BuiltIn: false},
 }

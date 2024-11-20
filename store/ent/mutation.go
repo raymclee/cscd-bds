@@ -54,6 +54,7 @@ type AreaMutation struct {
 	updated_at       *time.Time
 	name             *string
 	code             *string
+	center           **geo.GeoJson
 	clearedFields    map[string]struct{}
 	customers        map[xid.ID]struct{}
 	removedcustomers map[xid.ID]struct{}
@@ -64,6 +65,9 @@ type AreaMutation struct {
 	sales            map[xid.ID]struct{}
 	removedsales     map[xid.ID]struct{}
 	clearedsales     bool
+	provinces        map[xid.ID]struct{}
+	removedprovinces map[xid.ID]struct{}
+	clearedprovinces bool
 	done             bool
 	oldValue         func(context.Context) (*Area, error)
 	predicates       []predicate.Area
@@ -317,6 +321,42 @@ func (m *AreaMutation) ResetCode() {
 	m.code = nil
 }
 
+// SetCenter sets the "center" field.
+func (m *AreaMutation) SetCenter(gj *geo.GeoJson) {
+	m.center = &gj
+}
+
+// Center returns the value of the "center" field in the mutation.
+func (m *AreaMutation) Center() (r *geo.GeoJson, exists bool) {
+	v := m.center
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCenter returns the old "center" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldCenter(ctx context.Context) (v *geo.GeoJson, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCenter is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCenter requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCenter: %w", err)
+	}
+	return oldValue.Center, nil
+}
+
+// ResetCenter resets all changes to the "center" field.
+func (m *AreaMutation) ResetCenter() {
+	m.center = nil
+}
+
 // AddCustomerIDs adds the "customers" edge to the Customer entity by ids.
 func (m *AreaMutation) AddCustomerIDs(ids ...xid.ID) {
 	if m.customers == nil {
@@ -479,6 +519,60 @@ func (m *AreaMutation) ResetSales() {
 	m.removedsales = nil
 }
 
+// AddProvinceIDs adds the "provinces" edge to the Province entity by ids.
+func (m *AreaMutation) AddProvinceIDs(ids ...xid.ID) {
+	if m.provinces == nil {
+		m.provinces = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.provinces[ids[i]] = struct{}{}
+	}
+}
+
+// ClearProvinces clears the "provinces" edge to the Province entity.
+func (m *AreaMutation) ClearProvinces() {
+	m.clearedprovinces = true
+}
+
+// ProvincesCleared reports if the "provinces" edge to the Province entity was cleared.
+func (m *AreaMutation) ProvincesCleared() bool {
+	return m.clearedprovinces
+}
+
+// RemoveProvinceIDs removes the "provinces" edge to the Province entity by IDs.
+func (m *AreaMutation) RemoveProvinceIDs(ids ...xid.ID) {
+	if m.removedprovinces == nil {
+		m.removedprovinces = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.provinces, ids[i])
+		m.removedprovinces[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProvinces returns the removed IDs of the "provinces" edge to the Province entity.
+func (m *AreaMutation) RemovedProvincesIDs() (ids []xid.ID) {
+	for id := range m.removedprovinces {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ProvincesIDs returns the "provinces" edge IDs in the mutation.
+func (m *AreaMutation) ProvincesIDs() (ids []xid.ID) {
+	for id := range m.provinces {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetProvinces resets all changes to the "provinces" edge.
+func (m *AreaMutation) ResetProvinces() {
+	m.provinces = nil
+	m.clearedprovinces = false
+	m.removedprovinces = nil
+}
+
 // Where appends a list predicates to the AreaMutation builder.
 func (m *AreaMutation) Where(ps ...predicate.Area) {
 	m.predicates = append(m.predicates, ps...)
@@ -513,7 +607,7 @@ func (m *AreaMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AreaMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.created_at != nil {
 		fields = append(fields, area.FieldCreatedAt)
 	}
@@ -525,6 +619,9 @@ func (m *AreaMutation) Fields() []string {
 	}
 	if m.code != nil {
 		fields = append(fields, area.FieldCode)
+	}
+	if m.center != nil {
+		fields = append(fields, area.FieldCenter)
 	}
 	return fields
 }
@@ -542,6 +639,8 @@ func (m *AreaMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case area.FieldCode:
 		return m.Code()
+	case area.FieldCenter:
+		return m.Center()
 	}
 	return nil, false
 }
@@ -559,6 +658,8 @@ func (m *AreaMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldName(ctx)
 	case area.FieldCode:
 		return m.OldCode(ctx)
+	case area.FieldCenter:
+		return m.OldCenter(ctx)
 	}
 	return nil, fmt.Errorf("unknown Area field %s", name)
 }
@@ -595,6 +696,13 @@ func (m *AreaMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCode(v)
+		return nil
+	case area.FieldCenter:
+		v, ok := value.(*geo.GeoJson)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCenter(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Area field %s", name)
@@ -657,13 +765,16 @@ func (m *AreaMutation) ResetField(name string) error {
 	case area.FieldCode:
 		m.ResetCode()
 		return nil
+	case area.FieldCenter:
+		m.ResetCenter()
+		return nil
 	}
 	return fmt.Errorf("unknown Area field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *AreaMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.customers != nil {
 		edges = append(edges, area.EdgeCustomers)
 	}
@@ -672,6 +783,9 @@ func (m *AreaMutation) AddedEdges() []string {
 	}
 	if m.sales != nil {
 		edges = append(edges, area.EdgeSales)
+	}
+	if m.provinces != nil {
+		edges = append(edges, area.EdgeProvinces)
 	}
 	return edges
 }
@@ -698,13 +812,19 @@ func (m *AreaMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case area.EdgeProvinces:
+		ids := make([]ent.Value, 0, len(m.provinces))
+		for id := range m.provinces {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *AreaMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.removedcustomers != nil {
 		edges = append(edges, area.EdgeCustomers)
 	}
@@ -713,6 +833,9 @@ func (m *AreaMutation) RemovedEdges() []string {
 	}
 	if m.removedsales != nil {
 		edges = append(edges, area.EdgeSales)
+	}
+	if m.removedprovinces != nil {
+		edges = append(edges, area.EdgeProvinces)
 	}
 	return edges
 }
@@ -739,13 +862,19 @@ func (m *AreaMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case area.EdgeProvinces:
+		ids := make([]ent.Value, 0, len(m.removedprovinces))
+		for id := range m.removedprovinces {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *AreaMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedcustomers {
 		edges = append(edges, area.EdgeCustomers)
 	}
@@ -754,6 +883,9 @@ func (m *AreaMutation) ClearedEdges() []string {
 	}
 	if m.clearedsales {
 		edges = append(edges, area.EdgeSales)
+	}
+	if m.clearedprovinces {
+		edges = append(edges, area.EdgeProvinces)
 	}
 	return edges
 }
@@ -768,6 +900,8 @@ func (m *AreaMutation) EdgeCleared(name string) bool {
 		return m.clearedtenders
 	case area.EdgeSales:
 		return m.clearedsales
+	case area.EdgeProvinces:
+		return m.clearedprovinces
 	}
 	return false
 }
@@ -792,6 +926,9 @@ func (m *AreaMutation) ResetEdge(name string) error {
 		return nil
 	case area.EdgeSales:
 		m.ResetSales()
+		return nil
+	case area.EdgeProvinces:
+		m.ResetProvinces()
 		return nil
 	}
 	return fmt.Errorf("unknown Area edge %s", name)
@@ -2430,12 +2567,12 @@ type CustomerMutation struct {
 	created_at              *time.Time
 	updated_at              *time.Time
 	name                    *string
-	owner_type              *int8
-	addowner_type           *int8
-	industry                *int8
-	addindustry             *int8
-	size                    *int8
-	addsize                 *int8
+	owner_type              *int
+	addowner_type           *int
+	industry                *int
+	addindustry             *int
+	size                    *int
+	addsize                 *int
 	contact_person          *string
 	contact_person_position *string
 	contact_person_phone    *string
@@ -2669,13 +2806,13 @@ func (m *CustomerMutation) ResetName() {
 }
 
 // SetOwnerType sets the "owner_type" field.
-func (m *CustomerMutation) SetOwnerType(i int8) {
+func (m *CustomerMutation) SetOwnerType(i int) {
 	m.owner_type = &i
 	m.addowner_type = nil
 }
 
 // OwnerType returns the value of the "owner_type" field in the mutation.
-func (m *CustomerMutation) OwnerType() (r int8, exists bool) {
+func (m *CustomerMutation) OwnerType() (r int, exists bool) {
 	v := m.owner_type
 	if v == nil {
 		return
@@ -2686,7 +2823,7 @@ func (m *CustomerMutation) OwnerType() (r int8, exists bool) {
 // OldOwnerType returns the old "owner_type" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldOwnerType(ctx context.Context) (v *int8, err error) {
+func (m *CustomerMutation) OldOwnerType(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldOwnerType is only allowed on UpdateOne operations")
 	}
@@ -2701,7 +2838,7 @@ func (m *CustomerMutation) OldOwnerType(ctx context.Context) (v *int8, err error
 }
 
 // AddOwnerType adds i to the "owner_type" field.
-func (m *CustomerMutation) AddOwnerType(i int8) {
+func (m *CustomerMutation) AddOwnerType(i int) {
 	if m.addowner_type != nil {
 		*m.addowner_type += i
 	} else {
@@ -2710,7 +2847,7 @@ func (m *CustomerMutation) AddOwnerType(i int8) {
 }
 
 // AddedOwnerType returns the value that was added to the "owner_type" field in this mutation.
-func (m *CustomerMutation) AddedOwnerType() (r int8, exists bool) {
+func (m *CustomerMutation) AddedOwnerType() (r int, exists bool) {
 	v := m.addowner_type
 	if v == nil {
 		return
@@ -2739,13 +2876,13 @@ func (m *CustomerMutation) ResetOwnerType() {
 }
 
 // SetIndustry sets the "industry" field.
-func (m *CustomerMutation) SetIndustry(i int8) {
+func (m *CustomerMutation) SetIndustry(i int) {
 	m.industry = &i
 	m.addindustry = nil
 }
 
 // Industry returns the value of the "industry" field in the mutation.
-func (m *CustomerMutation) Industry() (r int8, exists bool) {
+func (m *CustomerMutation) Industry() (r int, exists bool) {
 	v := m.industry
 	if v == nil {
 		return
@@ -2756,7 +2893,7 @@ func (m *CustomerMutation) Industry() (r int8, exists bool) {
 // OldIndustry returns the old "industry" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldIndustry(ctx context.Context) (v int8, err error) {
+func (m *CustomerMutation) OldIndustry(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldIndustry is only allowed on UpdateOne operations")
 	}
@@ -2771,7 +2908,7 @@ func (m *CustomerMutation) OldIndustry(ctx context.Context) (v int8, err error) 
 }
 
 // AddIndustry adds i to the "industry" field.
-func (m *CustomerMutation) AddIndustry(i int8) {
+func (m *CustomerMutation) AddIndustry(i int) {
 	if m.addindustry != nil {
 		*m.addindustry += i
 	} else {
@@ -2780,7 +2917,7 @@ func (m *CustomerMutation) AddIndustry(i int8) {
 }
 
 // AddedIndustry returns the value that was added to the "industry" field in this mutation.
-func (m *CustomerMutation) AddedIndustry() (r int8, exists bool) {
+func (m *CustomerMutation) AddedIndustry() (r int, exists bool) {
 	v := m.addindustry
 	if v == nil {
 		return
@@ -2795,13 +2932,13 @@ func (m *CustomerMutation) ResetIndustry() {
 }
 
 // SetSize sets the "size" field.
-func (m *CustomerMutation) SetSize(i int8) {
+func (m *CustomerMutation) SetSize(i int) {
 	m.size = &i
 	m.addsize = nil
 }
 
 // Size returns the value of the "size" field in the mutation.
-func (m *CustomerMutation) Size() (r int8, exists bool) {
+func (m *CustomerMutation) Size() (r int, exists bool) {
 	v := m.size
 	if v == nil {
 		return
@@ -2812,7 +2949,7 @@ func (m *CustomerMutation) Size() (r int8, exists bool) {
 // OldSize returns the old "size" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldSize(ctx context.Context) (v *int8, err error) {
+func (m *CustomerMutation) OldSize(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldSize is only allowed on UpdateOne operations")
 	}
@@ -2827,7 +2964,7 @@ func (m *CustomerMutation) OldSize(ctx context.Context) (v *int8, err error) {
 }
 
 // AddSize adds i to the "size" field.
-func (m *CustomerMutation) AddSize(i int8) {
+func (m *CustomerMutation) AddSize(i int) {
 	if m.addsize != nil {
 		*m.addsize += i
 	} else {
@@ -2836,7 +2973,7 @@ func (m *CustomerMutation) AddSize(i int8) {
 }
 
 // AddedSize returns the value that was added to the "size" field in this mutation.
-func (m *CustomerMutation) AddedSize() (r int8, exists bool) {
+func (m *CustomerMutation) AddedSize() (r int, exists bool) {
 	v := m.addsize
 	if v == nil {
 		return
@@ -3546,21 +3683,21 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		m.SetName(v)
 		return nil
 	case customer.FieldOwnerType:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetOwnerType(v)
 		return nil
 	case customer.FieldIndustry:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIndustry(v)
 		return nil
 	case customer.FieldSize:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3663,21 +3800,21 @@ func (m *CustomerMutation) AddedField(name string) (ent.Value, bool) {
 func (m *CustomerMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case customer.FieldOwnerType:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddOwnerType(v)
 		return nil
 	case customer.FieldIndustry:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddIndustry(v)
 		return nil
 	case customer.FieldSize:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5042,6 +5179,8 @@ type ProvinceMutation struct {
 	tenders          map[xid.ID]struct{}
 	removedtenders   map[xid.ID]struct{}
 	clearedtenders   bool
+	area             *xid.ID
+	clearedarea      bool
 	done             bool
 	oldValue         func(context.Context) (*Province, error)
 	predicates       []predicate.Province
@@ -5387,6 +5526,55 @@ func (m *ProvinceMutation) ResetCountryID() {
 	m.country = nil
 }
 
+// SetAreaID sets the "area_id" field.
+func (m *ProvinceMutation) SetAreaID(x xid.ID) {
+	m.area = &x
+}
+
+// AreaID returns the value of the "area_id" field in the mutation.
+func (m *ProvinceMutation) AreaID() (r xid.ID, exists bool) {
+	v := m.area
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAreaID returns the old "area_id" field's value of the Province entity.
+// If the Province object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProvinceMutation) OldAreaID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAreaID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAreaID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAreaID: %w", err)
+	}
+	return oldValue.AreaID, nil
+}
+
+// ClearAreaID clears the value of the "area_id" field.
+func (m *ProvinceMutation) ClearAreaID() {
+	m.area = nil
+	m.clearedFields[province.FieldAreaID] = struct{}{}
+}
+
+// AreaIDCleared returns if the "area_id" field was cleared in this mutation.
+func (m *ProvinceMutation) AreaIDCleared() bool {
+	_, ok := m.clearedFields[province.FieldAreaID]
+	return ok
+}
+
+// ResetAreaID resets all changes to the "area_id" field.
+func (m *ProvinceMutation) ResetAreaID() {
+	m.area = nil
+	delete(m.clearedFields, province.FieldAreaID)
+}
+
 // AddDistrictIDs adds the "districts" edge to the District entity by ids.
 func (m *ProvinceMutation) AddDistrictIDs(ids ...xid.ID) {
 	if m.districts == nil {
@@ -5576,6 +5764,33 @@ func (m *ProvinceMutation) ResetTenders() {
 	m.removedtenders = nil
 }
 
+// ClearArea clears the "area" edge to the Area entity.
+func (m *ProvinceMutation) ClearArea() {
+	m.clearedarea = true
+	m.clearedFields[province.FieldAreaID] = struct{}{}
+}
+
+// AreaCleared reports if the "area" edge to the Area entity was cleared.
+func (m *ProvinceMutation) AreaCleared() bool {
+	return m.AreaIDCleared() || m.clearedarea
+}
+
+// AreaIDs returns the "area" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// AreaID instead. It exists only for internal usage by the builders.
+func (m *ProvinceMutation) AreaIDs() (ids []xid.ID) {
+	if id := m.area; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetArea resets all changes to the "area" edge.
+func (m *ProvinceMutation) ResetArea() {
+	m.area = nil
+	m.clearedarea = false
+}
+
 // Where appends a list predicates to the ProvinceMutation builder.
 func (m *ProvinceMutation) Where(ps ...predicate.Province) {
 	m.predicates = append(m.predicates, ps...)
@@ -5610,7 +5825,7 @@ func (m *ProvinceMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProvinceMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.created_at != nil {
 		fields = append(fields, province.FieldCreatedAt)
 	}
@@ -5628,6 +5843,9 @@ func (m *ProvinceMutation) Fields() []string {
 	}
 	if m.country != nil {
 		fields = append(fields, province.FieldCountryID)
+	}
+	if m.area != nil {
+		fields = append(fields, province.FieldAreaID)
 	}
 	return fields
 }
@@ -5649,6 +5867,8 @@ func (m *ProvinceMutation) Field(name string) (ent.Value, bool) {
 		return m.Center()
 	case province.FieldCountryID:
 		return m.CountryID()
+	case province.FieldAreaID:
+		return m.AreaID()
 	}
 	return nil, false
 }
@@ -5670,6 +5890,8 @@ func (m *ProvinceMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldCenter(ctx)
 	case province.FieldCountryID:
 		return m.OldCountryID(ctx)
+	case province.FieldAreaID:
+		return m.OldAreaID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Province field %s", name)
 }
@@ -5721,6 +5943,13 @@ func (m *ProvinceMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCountryID(v)
 		return nil
+	case province.FieldAreaID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAreaID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Province field %s", name)
 }
@@ -5765,7 +5994,11 @@ func (m *ProvinceMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *ProvinceMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(province.FieldAreaID) {
+		fields = append(fields, province.FieldAreaID)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -5778,6 +6011,11 @@ func (m *ProvinceMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *ProvinceMutation) ClearField(name string) error {
+	switch name {
+	case province.FieldAreaID:
+		m.ClearAreaID()
+		return nil
+	}
 	return fmt.Errorf("unknown Province nullable field %s", name)
 }
 
@@ -5803,13 +6041,16 @@ func (m *ProvinceMutation) ResetField(name string) error {
 	case province.FieldCountryID:
 		m.ResetCountryID()
 		return nil
+	case province.FieldAreaID:
+		m.ResetAreaID()
+		return nil
 	}
 	return fmt.Errorf("unknown Province field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProvinceMutation) AddedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.districts != nil {
 		edges = append(edges, province.EdgeDistricts)
 	}
@@ -5821,6 +6062,9 @@ func (m *ProvinceMutation) AddedEdges() []string {
 	}
 	if m.tenders != nil {
 		edges = append(edges, province.EdgeTenders)
+	}
+	if m.area != nil {
+		edges = append(edges, province.EdgeArea)
 	}
 	return edges
 }
@@ -5851,13 +6095,17 @@ func (m *ProvinceMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case province.EdgeArea:
+		if id := m.area; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProvinceMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.removeddistricts != nil {
 		edges = append(edges, province.EdgeDistricts)
 	}
@@ -5898,7 +6146,7 @@ func (m *ProvinceMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProvinceMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.cleareddistricts {
 		edges = append(edges, province.EdgeDistricts)
 	}
@@ -5910,6 +6158,9 @@ func (m *ProvinceMutation) ClearedEdges() []string {
 	}
 	if m.clearedtenders {
 		edges = append(edges, province.EdgeTenders)
+	}
+	if m.clearedarea {
+		edges = append(edges, province.EdgeArea)
 	}
 	return edges
 }
@@ -5926,6 +6177,8 @@ func (m *ProvinceMutation) EdgeCleared(name string) bool {
 		return m.clearedcountry
 	case province.EdgeTenders:
 		return m.clearedtenders
+	case province.EdgeArea:
+		return m.clearedarea
 	}
 	return false
 }
@@ -5936,6 +6189,9 @@ func (m *ProvinceMutation) ClearEdge(name string) error {
 	switch name {
 	case province.EdgeCountry:
 		m.ClearCountry()
+		return nil
+	case province.EdgeArea:
+		m.ClearArea()
 		return nil
 	}
 	return fmt.Errorf("unknown Province unique edge %s", name)
@@ -5957,6 +6213,9 @@ func (m *ProvinceMutation) ResetEdge(name string) error {
 	case province.EdgeTenders:
 		m.ResetTenders()
 		return nil
+	case province.EdgeArea:
+		m.ResetArea()
+		return nil
 	}
 	return fmt.Errorf("unknown Province edge %s", name)
 }
@@ -5970,8 +6229,8 @@ type TenderMutation struct {
 	created_at                              *time.Time
 	updated_at                              *time.Time
 	code                                    *string
-	status                                  *int8
-	addstatus                               *int8
+	status                                  *int
+	addstatus                               *int
 	name                                    *string
 	estimated_amount                        *float64
 	addestimated_amount                     *float64
@@ -5980,20 +6239,20 @@ type TenderMutation struct {
 	address                                 *string
 	full_address                            *string
 	contractor                              *string
-	size_and_value_rating                   *int8
-	addsize_and_value_rating                *int8
+	size_and_value_rating                   *int
+	addsize_and_value_rating                *int
 	size_and_value_rating_overview          *string
-	credit_and_payment_rating               *int8
-	addcredit_and_payment_rating            *int8
+	credit_and_payment_rating               *int
+	addcredit_and_payment_rating            *int
 	credit_and_payment_rating_overview      *string
-	time_limit_rating                       *int8
-	addtime_limit_rating                    *int8
+	time_limit_rating                       *int
+	addtime_limit_rating                    *int
 	time_limit_rating_overview              *string
-	customer_relationship_rating            *int8
-	addcustomer_relationship_rating         *int8
+	customer_relationship_rating            *int
+	addcustomer_relationship_rating         *int
 	customer_relationship_rating_overview   *string
-	competitive_partnership_rating          *int8
-	addcompetitive_partnership_rating       *int8
+	competitive_partnership_rating          *int
+	addcompetitive_partnership_rating       *int
 	competitive_partnership_rating_overview *string
 	prepare_to_bid                          *bool
 	project_code                            *string
@@ -6257,13 +6516,13 @@ func (m *TenderMutation) ResetCode() {
 }
 
 // SetStatus sets the "status" field.
-func (m *TenderMutation) SetStatus(i int8) {
+func (m *TenderMutation) SetStatus(i int) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *TenderMutation) Status() (r int8, exists bool) {
+func (m *TenderMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -6274,7 +6533,7 @@ func (m *TenderMutation) Status() (r int8, exists bool) {
 // OldStatus returns the old "status" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldStatus(ctx context.Context) (v int8, err error) {
+func (m *TenderMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -6289,7 +6548,7 @@ func (m *TenderMutation) OldStatus(ctx context.Context) (v int8, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *TenderMutation) AddStatus(i int8) {
+func (m *TenderMutation) AddStatus(i int) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -6298,7 +6557,7 @@ func (m *TenderMutation) AddStatus(i int8) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *TenderMutation) AddedStatus() (r int8, exists bool) {
+func (m *TenderMutation) AddedStatus() (r int, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -6651,13 +6910,13 @@ func (m *TenderMutation) ResetContractor() {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (m *TenderMutation) SetSizeAndValueRating(i int8) {
+func (m *TenderMutation) SetSizeAndValueRating(i int) {
 	m.size_and_value_rating = &i
 	m.addsize_and_value_rating = nil
 }
 
 // SizeAndValueRating returns the value of the "size_and_value_rating" field in the mutation.
-func (m *TenderMutation) SizeAndValueRating() (r int8, exists bool) {
+func (m *TenderMutation) SizeAndValueRating() (r int, exists bool) {
 	v := m.size_and_value_rating
 	if v == nil {
 		return
@@ -6668,7 +6927,7 @@ func (m *TenderMutation) SizeAndValueRating() (r int8, exists bool) {
 // OldSizeAndValueRating returns the old "size_and_value_rating" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldSizeAndValueRating(ctx context.Context) (v *int8, err error) {
+func (m *TenderMutation) OldSizeAndValueRating(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldSizeAndValueRating is only allowed on UpdateOne operations")
 	}
@@ -6683,7 +6942,7 @@ func (m *TenderMutation) OldSizeAndValueRating(ctx context.Context) (v *int8, er
 }
 
 // AddSizeAndValueRating adds i to the "size_and_value_rating" field.
-func (m *TenderMutation) AddSizeAndValueRating(i int8) {
+func (m *TenderMutation) AddSizeAndValueRating(i int) {
 	if m.addsize_and_value_rating != nil {
 		*m.addsize_and_value_rating += i
 	} else {
@@ -6692,7 +6951,7 @@ func (m *TenderMutation) AddSizeAndValueRating(i int8) {
 }
 
 // AddedSizeAndValueRating returns the value that was added to the "size_and_value_rating" field in this mutation.
-func (m *TenderMutation) AddedSizeAndValueRating() (r int8, exists bool) {
+func (m *TenderMutation) AddedSizeAndValueRating() (r int, exists bool) {
 	v := m.addsize_and_value_rating
 	if v == nil {
 		return
@@ -6770,13 +7029,13 @@ func (m *TenderMutation) ResetSizeAndValueRatingOverview() {
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (m *TenderMutation) SetCreditAndPaymentRating(i int8) {
+func (m *TenderMutation) SetCreditAndPaymentRating(i int) {
 	m.credit_and_payment_rating = &i
 	m.addcredit_and_payment_rating = nil
 }
 
 // CreditAndPaymentRating returns the value of the "credit_and_payment_rating" field in the mutation.
-func (m *TenderMutation) CreditAndPaymentRating() (r int8, exists bool) {
+func (m *TenderMutation) CreditAndPaymentRating() (r int, exists bool) {
 	v := m.credit_and_payment_rating
 	if v == nil {
 		return
@@ -6787,7 +7046,7 @@ func (m *TenderMutation) CreditAndPaymentRating() (r int8, exists bool) {
 // OldCreditAndPaymentRating returns the old "credit_and_payment_rating" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldCreditAndPaymentRating(ctx context.Context) (v *int8, err error) {
+func (m *TenderMutation) OldCreditAndPaymentRating(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreditAndPaymentRating is only allowed on UpdateOne operations")
 	}
@@ -6802,7 +7061,7 @@ func (m *TenderMutation) OldCreditAndPaymentRating(ctx context.Context) (v *int8
 }
 
 // AddCreditAndPaymentRating adds i to the "credit_and_payment_rating" field.
-func (m *TenderMutation) AddCreditAndPaymentRating(i int8) {
+func (m *TenderMutation) AddCreditAndPaymentRating(i int) {
 	if m.addcredit_and_payment_rating != nil {
 		*m.addcredit_and_payment_rating += i
 	} else {
@@ -6811,7 +7070,7 @@ func (m *TenderMutation) AddCreditAndPaymentRating(i int8) {
 }
 
 // AddedCreditAndPaymentRating returns the value that was added to the "credit_and_payment_rating" field in this mutation.
-func (m *TenderMutation) AddedCreditAndPaymentRating() (r int8, exists bool) {
+func (m *TenderMutation) AddedCreditAndPaymentRating() (r int, exists bool) {
 	v := m.addcredit_and_payment_rating
 	if v == nil {
 		return
@@ -6889,13 +7148,13 @@ func (m *TenderMutation) ResetCreditAndPaymentRatingOverview() {
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (m *TenderMutation) SetTimeLimitRating(i int8) {
+func (m *TenderMutation) SetTimeLimitRating(i int) {
 	m.time_limit_rating = &i
 	m.addtime_limit_rating = nil
 }
 
 // TimeLimitRating returns the value of the "time_limit_rating" field in the mutation.
-func (m *TenderMutation) TimeLimitRating() (r int8, exists bool) {
+func (m *TenderMutation) TimeLimitRating() (r int, exists bool) {
 	v := m.time_limit_rating
 	if v == nil {
 		return
@@ -6906,7 +7165,7 @@ func (m *TenderMutation) TimeLimitRating() (r int8, exists bool) {
 // OldTimeLimitRating returns the old "time_limit_rating" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldTimeLimitRating(ctx context.Context) (v *int8, err error) {
+func (m *TenderMutation) OldTimeLimitRating(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldTimeLimitRating is only allowed on UpdateOne operations")
 	}
@@ -6921,7 +7180,7 @@ func (m *TenderMutation) OldTimeLimitRating(ctx context.Context) (v *int8, err e
 }
 
 // AddTimeLimitRating adds i to the "time_limit_rating" field.
-func (m *TenderMutation) AddTimeLimitRating(i int8) {
+func (m *TenderMutation) AddTimeLimitRating(i int) {
 	if m.addtime_limit_rating != nil {
 		*m.addtime_limit_rating += i
 	} else {
@@ -6930,7 +7189,7 @@ func (m *TenderMutation) AddTimeLimitRating(i int8) {
 }
 
 // AddedTimeLimitRating returns the value that was added to the "time_limit_rating" field in this mutation.
-func (m *TenderMutation) AddedTimeLimitRating() (r int8, exists bool) {
+func (m *TenderMutation) AddedTimeLimitRating() (r int, exists bool) {
 	v := m.addtime_limit_rating
 	if v == nil {
 		return
@@ -7008,13 +7267,13 @@ func (m *TenderMutation) ResetTimeLimitRatingOverview() {
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (m *TenderMutation) SetCustomerRelationshipRating(i int8) {
+func (m *TenderMutation) SetCustomerRelationshipRating(i int) {
 	m.customer_relationship_rating = &i
 	m.addcustomer_relationship_rating = nil
 }
 
 // CustomerRelationshipRating returns the value of the "customer_relationship_rating" field in the mutation.
-func (m *TenderMutation) CustomerRelationshipRating() (r int8, exists bool) {
+func (m *TenderMutation) CustomerRelationshipRating() (r int, exists bool) {
 	v := m.customer_relationship_rating
 	if v == nil {
 		return
@@ -7025,7 +7284,7 @@ func (m *TenderMutation) CustomerRelationshipRating() (r int8, exists bool) {
 // OldCustomerRelationshipRating returns the old "customer_relationship_rating" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldCustomerRelationshipRating(ctx context.Context) (v *int8, err error) {
+func (m *TenderMutation) OldCustomerRelationshipRating(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCustomerRelationshipRating is only allowed on UpdateOne operations")
 	}
@@ -7040,7 +7299,7 @@ func (m *TenderMutation) OldCustomerRelationshipRating(ctx context.Context) (v *
 }
 
 // AddCustomerRelationshipRating adds i to the "customer_relationship_rating" field.
-func (m *TenderMutation) AddCustomerRelationshipRating(i int8) {
+func (m *TenderMutation) AddCustomerRelationshipRating(i int) {
 	if m.addcustomer_relationship_rating != nil {
 		*m.addcustomer_relationship_rating += i
 	} else {
@@ -7049,7 +7308,7 @@ func (m *TenderMutation) AddCustomerRelationshipRating(i int8) {
 }
 
 // AddedCustomerRelationshipRating returns the value that was added to the "customer_relationship_rating" field in this mutation.
-func (m *TenderMutation) AddedCustomerRelationshipRating() (r int8, exists bool) {
+func (m *TenderMutation) AddedCustomerRelationshipRating() (r int, exists bool) {
 	v := m.addcustomer_relationship_rating
 	if v == nil {
 		return
@@ -7127,13 +7386,13 @@ func (m *TenderMutation) ResetCustomerRelationshipRatingOverview() {
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (m *TenderMutation) SetCompetitivePartnershipRating(i int8) {
+func (m *TenderMutation) SetCompetitivePartnershipRating(i int) {
 	m.competitive_partnership_rating = &i
 	m.addcompetitive_partnership_rating = nil
 }
 
 // CompetitivePartnershipRating returns the value of the "competitive_partnership_rating" field in the mutation.
-func (m *TenderMutation) CompetitivePartnershipRating() (r int8, exists bool) {
+func (m *TenderMutation) CompetitivePartnershipRating() (r int, exists bool) {
 	v := m.competitive_partnership_rating
 	if v == nil {
 		return
@@ -7144,7 +7403,7 @@ func (m *TenderMutation) CompetitivePartnershipRating() (r int8, exists bool) {
 // OldCompetitivePartnershipRating returns the old "competitive_partnership_rating" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldCompetitivePartnershipRating(ctx context.Context) (v *int8, err error) {
+func (m *TenderMutation) OldCompetitivePartnershipRating(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCompetitivePartnershipRating is only allowed on UpdateOne operations")
 	}
@@ -7159,7 +7418,7 @@ func (m *TenderMutation) OldCompetitivePartnershipRating(ctx context.Context) (v
 }
 
 // AddCompetitivePartnershipRating adds i to the "competitive_partnership_rating" field.
-func (m *TenderMutation) AddCompetitivePartnershipRating(i int8) {
+func (m *TenderMutation) AddCompetitivePartnershipRating(i int) {
 	if m.addcompetitive_partnership_rating != nil {
 		*m.addcompetitive_partnership_rating += i
 	} else {
@@ -7168,7 +7427,7 @@ func (m *TenderMutation) AddCompetitivePartnershipRating(i int8) {
 }
 
 // AddedCompetitivePartnershipRating returns the value that was added to the "competitive_partnership_rating" field in this mutation.
-func (m *TenderMutation) AddedCompetitivePartnershipRating() (r int8, exists bool) {
+func (m *TenderMutation) AddedCompetitivePartnershipRating() (r int, exists bool) {
 	v := m.addcompetitive_partnership_rating
 	if v == nil {
 		return
@@ -9382,7 +9641,7 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		m.SetCode(v)
 		return nil
 	case tender.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9438,7 +9697,7 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		m.SetContractor(v)
 		return nil
 	case tender.FieldSizeAndValueRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9452,7 +9711,7 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		m.SetSizeAndValueRatingOverview(v)
 		return nil
 	case tender.FieldCreditAndPaymentRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9466,7 +9725,7 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		m.SetCreditAndPaymentRatingOverview(v)
 		return nil
 	case tender.FieldTimeLimitRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9480,7 +9739,7 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		m.SetTimeLimitRatingOverview(v)
 		return nil
 	case tender.FieldCustomerRelationshipRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9494,7 +9753,7 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		m.SetCustomerRelationshipRatingOverview(v)
 		return nil
 	case tender.FieldCompetitivePartnershipRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9785,7 +10044,7 @@ func (m *TenderMutation) AddedField(name string) (ent.Value, bool) {
 func (m *TenderMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case tender.FieldStatus:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9799,35 +10058,35 @@ func (m *TenderMutation) AddField(name string, value ent.Value) error {
 		m.AddEstimatedAmount(v)
 		return nil
 	case tender.FieldSizeAndValueRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSizeAndValueRating(v)
 		return nil
 	case tender.FieldCreditAndPaymentRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreditAndPaymentRating(v)
 		return nil
 	case tender.FieldTimeLimitRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddTimeLimitRating(v)
 		return nil
 	case tender.FieldCustomerRelationshipRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCustomerRelationshipRating(v)
 		return nil
 	case tender.FieldCompetitivePartnershipRating:
-		v, ok := value.(int8)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

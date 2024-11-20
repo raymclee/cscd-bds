@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/district"
@@ -81,6 +82,20 @@ func (pc *ProvinceCreate) SetCountryID(x xid.ID) *ProvinceCreate {
 	return pc
 }
 
+// SetAreaID sets the "area_id" field.
+func (pc *ProvinceCreate) SetAreaID(x xid.ID) *ProvinceCreate {
+	pc.mutation.SetAreaID(x)
+	return pc
+}
+
+// SetNillableAreaID sets the "area_id" field if the given value is not nil.
+func (pc *ProvinceCreate) SetNillableAreaID(x *xid.ID) *ProvinceCreate {
+	if x != nil {
+		pc.SetAreaID(*x)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProvinceCreate) SetID(x xid.ID) *ProvinceCreate {
 	pc.mutation.SetID(x)
@@ -143,6 +158,11 @@ func (pc *ProvinceCreate) AddTenders(t ...*Tender) *ProvinceCreate {
 		ids[i] = t[i].ID
 	}
 	return pc.AddTenderIDs(ids...)
+}
+
+// SetArea sets the "area" edge to the Area entity.
+func (pc *ProvinceCreate) SetArea(a *Area) *ProvinceCreate {
+	return pc.SetAreaID(a.ID)
 }
 
 // Mutation returns the ProvinceMutation object of the builder.
@@ -338,6 +358,23 @@ func (pc *ProvinceCreate) createSpec() (*Province, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+	if nodes := pc.mutation.AreaIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   province.AreaTable,
+			Columns: []string{province.AreaColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(area.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.AreaID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -453,6 +490,24 @@ func (u *ProvinceUpsert) SetCountryID(v xid.ID) *ProvinceUpsert {
 // UpdateCountryID sets the "country_id" field to the value that was provided on create.
 func (u *ProvinceUpsert) UpdateCountryID() *ProvinceUpsert {
 	u.SetExcluded(province.FieldCountryID)
+	return u
+}
+
+// SetAreaID sets the "area_id" field.
+func (u *ProvinceUpsert) SetAreaID(v xid.ID) *ProvinceUpsert {
+	u.Set(province.FieldAreaID, v)
+	return u
+}
+
+// UpdateAreaID sets the "area_id" field to the value that was provided on create.
+func (u *ProvinceUpsert) UpdateAreaID() *ProvinceUpsert {
+	u.SetExcluded(province.FieldAreaID)
+	return u
+}
+
+// ClearAreaID clears the value of the "area_id" field.
+func (u *ProvinceUpsert) ClearAreaID() *ProvinceUpsert {
+	u.SetNull(province.FieldAreaID)
 	return u
 }
 
@@ -581,6 +636,27 @@ func (u *ProvinceUpsertOne) SetCountryID(v xid.ID) *ProvinceUpsertOne {
 func (u *ProvinceUpsertOne) UpdateCountryID() *ProvinceUpsertOne {
 	return u.Update(func(s *ProvinceUpsert) {
 		s.UpdateCountryID()
+	})
+}
+
+// SetAreaID sets the "area_id" field.
+func (u *ProvinceUpsertOne) SetAreaID(v xid.ID) *ProvinceUpsertOne {
+	return u.Update(func(s *ProvinceUpsert) {
+		s.SetAreaID(v)
+	})
+}
+
+// UpdateAreaID sets the "area_id" field to the value that was provided on create.
+func (u *ProvinceUpsertOne) UpdateAreaID() *ProvinceUpsertOne {
+	return u.Update(func(s *ProvinceUpsert) {
+		s.UpdateAreaID()
+	})
+}
+
+// ClearAreaID clears the value of the "area_id" field.
+func (u *ProvinceUpsertOne) ClearAreaID() *ProvinceUpsertOne {
+	return u.Update(func(s *ProvinceUpsert) {
+		s.ClearAreaID()
 	})
 }
 
@@ -876,6 +952,27 @@ func (u *ProvinceUpsertBulk) SetCountryID(v xid.ID) *ProvinceUpsertBulk {
 func (u *ProvinceUpsertBulk) UpdateCountryID() *ProvinceUpsertBulk {
 	return u.Update(func(s *ProvinceUpsert) {
 		s.UpdateCountryID()
+	})
+}
+
+// SetAreaID sets the "area_id" field.
+func (u *ProvinceUpsertBulk) SetAreaID(v xid.ID) *ProvinceUpsertBulk {
+	return u.Update(func(s *ProvinceUpsert) {
+		s.SetAreaID(v)
+	})
+}
+
+// UpdateAreaID sets the "area_id" field to the value that was provided on create.
+func (u *ProvinceUpsertBulk) UpdateAreaID() *ProvinceUpsertBulk {
+	return u.Update(func(s *ProvinceUpsert) {
+		s.UpdateAreaID()
+	})
+}
+
+// ClearAreaID clears the value of the "area_id" field.
+func (u *ProvinceUpsertBulk) ClearAreaID() *ProvinceUpsertBulk {
+	return u.Update(func(s *ProvinceUpsert) {
+		s.ClearAreaID()
 	})
 }
 

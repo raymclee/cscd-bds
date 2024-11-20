@@ -66,13 +66,13 @@ func (tc *TenderCreate) SetCode(s string) *TenderCreate {
 }
 
 // SetStatus sets the "status" field.
-func (tc *TenderCreate) SetStatus(i int8) *TenderCreate {
+func (tc *TenderCreate) SetStatus(i int) *TenderCreate {
 	tc.mutation.SetStatus(i)
 	return tc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableStatus(i *int8) *TenderCreate {
+func (tc *TenderCreate) SetNillableStatus(i *int) *TenderCreate {
 	if i != nil {
 		tc.SetStatus(*i)
 	}
@@ -162,13 +162,13 @@ func (tc *TenderCreate) SetNillableContractor(s *string) *TenderCreate {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (tc *TenderCreate) SetSizeAndValueRating(i int8) *TenderCreate {
+func (tc *TenderCreate) SetSizeAndValueRating(i int) *TenderCreate {
 	tc.mutation.SetSizeAndValueRating(i)
 	return tc
 }
 
 // SetNillableSizeAndValueRating sets the "size_and_value_rating" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableSizeAndValueRating(i *int8) *TenderCreate {
+func (tc *TenderCreate) SetNillableSizeAndValueRating(i *int) *TenderCreate {
 	if i != nil {
 		tc.SetSizeAndValueRating(*i)
 	}
@@ -190,13 +190,13 @@ func (tc *TenderCreate) SetNillableSizeAndValueRatingOverview(s *string) *Tender
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (tc *TenderCreate) SetCreditAndPaymentRating(i int8) *TenderCreate {
+func (tc *TenderCreate) SetCreditAndPaymentRating(i int) *TenderCreate {
 	tc.mutation.SetCreditAndPaymentRating(i)
 	return tc
 }
 
 // SetNillableCreditAndPaymentRating sets the "credit_and_payment_rating" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableCreditAndPaymentRating(i *int8) *TenderCreate {
+func (tc *TenderCreate) SetNillableCreditAndPaymentRating(i *int) *TenderCreate {
 	if i != nil {
 		tc.SetCreditAndPaymentRating(*i)
 	}
@@ -218,13 +218,13 @@ func (tc *TenderCreate) SetNillableCreditAndPaymentRatingOverview(s *string) *Te
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (tc *TenderCreate) SetTimeLimitRating(i int8) *TenderCreate {
+func (tc *TenderCreate) SetTimeLimitRating(i int) *TenderCreate {
 	tc.mutation.SetTimeLimitRating(i)
 	return tc
 }
 
 // SetNillableTimeLimitRating sets the "time_limit_rating" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableTimeLimitRating(i *int8) *TenderCreate {
+func (tc *TenderCreate) SetNillableTimeLimitRating(i *int) *TenderCreate {
 	if i != nil {
 		tc.SetTimeLimitRating(*i)
 	}
@@ -246,13 +246,13 @@ func (tc *TenderCreate) SetNillableTimeLimitRatingOverview(s *string) *TenderCre
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (tc *TenderCreate) SetCustomerRelationshipRating(i int8) *TenderCreate {
+func (tc *TenderCreate) SetCustomerRelationshipRating(i int) *TenderCreate {
 	tc.mutation.SetCustomerRelationshipRating(i)
 	return tc
 }
 
 // SetNillableCustomerRelationshipRating sets the "customer_relationship_rating" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableCustomerRelationshipRating(i *int8) *TenderCreate {
+func (tc *TenderCreate) SetNillableCustomerRelationshipRating(i *int) *TenderCreate {
 	if i != nil {
 		tc.SetCustomerRelationshipRating(*i)
 	}
@@ -274,13 +274,13 @@ func (tc *TenderCreate) SetNillableCustomerRelationshipRatingOverview(s *string)
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (tc *TenderCreate) SetCompetitivePartnershipRating(i int8) *TenderCreate {
+func (tc *TenderCreate) SetCompetitivePartnershipRating(i int) *TenderCreate {
 	tc.mutation.SetCompetitivePartnershipRating(i)
 	return tc
 }
 
 // SetNillableCompetitivePartnershipRating sets the "competitive_partnership_rating" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableCompetitivePartnershipRating(i *int8) *TenderCreate {
+func (tc *TenderCreate) SetNillableCompetitivePartnershipRating(i *int) *TenderCreate {
 	if i != nil {
 		tc.SetCompetitivePartnershipRating(*i)
 	}
@@ -924,7 +924,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.Code = value
 	}
 	if value, ok := tc.mutation.Status(); ok {
-		_spec.SetField(tender.FieldStatus, field.TypeInt8, value)
+		_spec.SetField(tender.FieldStatus, field.TypeInt, value)
 		_node.Status = value
 	}
 	if value, ok := tc.mutation.Name(); ok {
@@ -956,7 +956,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.Contractor = &value
 	}
 	if value, ok := tc.mutation.SizeAndValueRating(); ok {
-		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt, value)
 		_node.SizeAndValueRating = &value
 	}
 	if value, ok := tc.mutation.SizeAndValueRatingOverview(); ok {
@@ -964,7 +964,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.SizeAndValueRatingOverview = &value
 	}
 	if value, ok := tc.mutation.CreditAndPaymentRating(); ok {
-		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCreditAndPaymentRating, field.TypeInt, value)
 		_node.CreditAndPaymentRating = &value
 	}
 	if value, ok := tc.mutation.CreditAndPaymentRatingOverview(); ok {
@@ -972,7 +972,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.CreditAndPaymentRatingOverview = &value
 	}
 	if value, ok := tc.mutation.TimeLimitRating(); ok {
-		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldTimeLimitRating, field.TypeInt, value)
 		_node.TimeLimitRating = &value
 	}
 	if value, ok := tc.mutation.TimeLimitRatingOverview(); ok {
@@ -980,7 +980,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.TimeLimitRatingOverview = &value
 	}
 	if value, ok := tc.mutation.CustomerRelationshipRating(); ok {
-		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCustomerRelationshipRating, field.TypeInt, value)
 		_node.CustomerRelationshipRating = &value
 	}
 	if value, ok := tc.mutation.CustomerRelationshipRatingOverview(); ok {
@@ -988,7 +988,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.CustomerRelationshipRatingOverview = &value
 	}
 	if value, ok := tc.mutation.CompetitivePartnershipRating(); ok {
-		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt8, value)
+		_spec.SetField(tender.FieldCompetitivePartnershipRating, field.TypeInt, value)
 		_node.CompetitivePartnershipRating = &value
 	}
 	if value, ok := tc.mutation.CompetitivePartnershipRatingOverview(); ok {
@@ -1303,7 +1303,7 @@ func (u *TenderUpsert) UpdateCode() *TenderUpsert {
 }
 
 // SetStatus sets the "status" field.
-func (u *TenderUpsert) SetStatus(v int8) *TenderUpsert {
+func (u *TenderUpsert) SetStatus(v int) *TenderUpsert {
 	u.Set(tender.FieldStatus, v)
 	return u
 }
@@ -1315,7 +1315,7 @@ func (u *TenderUpsert) UpdateStatus() *TenderUpsert {
 }
 
 // AddStatus adds v to the "status" field.
-func (u *TenderUpsert) AddStatus(v int8) *TenderUpsert {
+func (u *TenderUpsert) AddStatus(v int) *TenderUpsert {
 	u.Add(tender.FieldStatus, v)
 	return u
 }
@@ -1441,7 +1441,7 @@ func (u *TenderUpsert) ClearContractor() *TenderUpsert {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (u *TenderUpsert) SetSizeAndValueRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) SetSizeAndValueRating(v int) *TenderUpsert {
 	u.Set(tender.FieldSizeAndValueRating, v)
 	return u
 }
@@ -1453,7 +1453,7 @@ func (u *TenderUpsert) UpdateSizeAndValueRating() *TenderUpsert {
 }
 
 // AddSizeAndValueRating adds v to the "size_and_value_rating" field.
-func (u *TenderUpsert) AddSizeAndValueRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) AddSizeAndValueRating(v int) *TenderUpsert {
 	u.Add(tender.FieldSizeAndValueRating, v)
 	return u
 }
@@ -1483,7 +1483,7 @@ func (u *TenderUpsert) ClearSizeAndValueRatingOverview() *TenderUpsert {
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (u *TenderUpsert) SetCreditAndPaymentRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) SetCreditAndPaymentRating(v int) *TenderUpsert {
 	u.Set(tender.FieldCreditAndPaymentRating, v)
 	return u
 }
@@ -1495,7 +1495,7 @@ func (u *TenderUpsert) UpdateCreditAndPaymentRating() *TenderUpsert {
 }
 
 // AddCreditAndPaymentRating adds v to the "credit_and_payment_rating" field.
-func (u *TenderUpsert) AddCreditAndPaymentRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) AddCreditAndPaymentRating(v int) *TenderUpsert {
 	u.Add(tender.FieldCreditAndPaymentRating, v)
 	return u
 }
@@ -1525,7 +1525,7 @@ func (u *TenderUpsert) ClearCreditAndPaymentRatingOverview() *TenderUpsert {
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (u *TenderUpsert) SetTimeLimitRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) SetTimeLimitRating(v int) *TenderUpsert {
 	u.Set(tender.FieldTimeLimitRating, v)
 	return u
 }
@@ -1537,7 +1537,7 @@ func (u *TenderUpsert) UpdateTimeLimitRating() *TenderUpsert {
 }
 
 // AddTimeLimitRating adds v to the "time_limit_rating" field.
-func (u *TenderUpsert) AddTimeLimitRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) AddTimeLimitRating(v int) *TenderUpsert {
 	u.Add(tender.FieldTimeLimitRating, v)
 	return u
 }
@@ -1567,7 +1567,7 @@ func (u *TenderUpsert) ClearTimeLimitRatingOverview() *TenderUpsert {
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (u *TenderUpsert) SetCustomerRelationshipRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) SetCustomerRelationshipRating(v int) *TenderUpsert {
 	u.Set(tender.FieldCustomerRelationshipRating, v)
 	return u
 }
@@ -1579,7 +1579,7 @@ func (u *TenderUpsert) UpdateCustomerRelationshipRating() *TenderUpsert {
 }
 
 // AddCustomerRelationshipRating adds v to the "customer_relationship_rating" field.
-func (u *TenderUpsert) AddCustomerRelationshipRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) AddCustomerRelationshipRating(v int) *TenderUpsert {
 	u.Add(tender.FieldCustomerRelationshipRating, v)
 	return u
 }
@@ -1609,7 +1609,7 @@ func (u *TenderUpsert) ClearCustomerRelationshipRatingOverview() *TenderUpsert {
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (u *TenderUpsert) SetCompetitivePartnershipRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) SetCompetitivePartnershipRating(v int) *TenderUpsert {
 	u.Set(tender.FieldCompetitivePartnershipRating, v)
 	return u
 }
@@ -1621,7 +1621,7 @@ func (u *TenderUpsert) UpdateCompetitivePartnershipRating() *TenderUpsert {
 }
 
 // AddCompetitivePartnershipRating adds v to the "competitive_partnership_rating" field.
-func (u *TenderUpsert) AddCompetitivePartnershipRating(v int8) *TenderUpsert {
+func (u *TenderUpsert) AddCompetitivePartnershipRating(v int) *TenderUpsert {
 	u.Add(tender.FieldCompetitivePartnershipRating, v)
 	return u
 }
@@ -2240,14 +2240,14 @@ func (u *TenderUpsertOne) UpdateCode() *TenderUpsertOne {
 }
 
 // SetStatus sets the "status" field.
-func (u *TenderUpsertOne) SetStatus(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetStatus(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *TenderUpsertOne) AddStatus(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) AddStatus(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddStatus(v)
 	})
@@ -2401,14 +2401,14 @@ func (u *TenderUpsertOne) ClearContractor() *TenderUpsertOne {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (u *TenderUpsertOne) SetSizeAndValueRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetSizeAndValueRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetSizeAndValueRating(v)
 	})
 }
 
 // AddSizeAndValueRating adds v to the "size_and_value_rating" field.
-func (u *TenderUpsertOne) AddSizeAndValueRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) AddSizeAndValueRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddSizeAndValueRating(v)
 	})
@@ -2450,14 +2450,14 @@ func (u *TenderUpsertOne) ClearSizeAndValueRatingOverview() *TenderUpsertOne {
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (u *TenderUpsertOne) SetCreditAndPaymentRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetCreditAndPaymentRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetCreditAndPaymentRating(v)
 	})
 }
 
 // AddCreditAndPaymentRating adds v to the "credit_and_payment_rating" field.
-func (u *TenderUpsertOne) AddCreditAndPaymentRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) AddCreditAndPaymentRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddCreditAndPaymentRating(v)
 	})
@@ -2499,14 +2499,14 @@ func (u *TenderUpsertOne) ClearCreditAndPaymentRatingOverview() *TenderUpsertOne
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (u *TenderUpsertOne) SetTimeLimitRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetTimeLimitRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetTimeLimitRating(v)
 	})
 }
 
 // AddTimeLimitRating adds v to the "time_limit_rating" field.
-func (u *TenderUpsertOne) AddTimeLimitRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) AddTimeLimitRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddTimeLimitRating(v)
 	})
@@ -2548,14 +2548,14 @@ func (u *TenderUpsertOne) ClearTimeLimitRatingOverview() *TenderUpsertOne {
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (u *TenderUpsertOne) SetCustomerRelationshipRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetCustomerRelationshipRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetCustomerRelationshipRating(v)
 	})
 }
 
 // AddCustomerRelationshipRating adds v to the "customer_relationship_rating" field.
-func (u *TenderUpsertOne) AddCustomerRelationshipRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) AddCustomerRelationshipRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddCustomerRelationshipRating(v)
 	})
@@ -2597,14 +2597,14 @@ func (u *TenderUpsertOne) ClearCustomerRelationshipRatingOverview() *TenderUpser
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (u *TenderUpsertOne) SetCompetitivePartnershipRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetCompetitivePartnershipRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetCompetitivePartnershipRating(v)
 	})
 }
 
 // AddCompetitivePartnershipRating adds v to the "competitive_partnership_rating" field.
-func (u *TenderUpsertOne) AddCompetitivePartnershipRating(v int8) *TenderUpsertOne {
+func (u *TenderUpsertOne) AddCompetitivePartnershipRating(v int) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddCompetitivePartnershipRating(v)
 	})
@@ -3487,14 +3487,14 @@ func (u *TenderUpsertBulk) UpdateCode() *TenderUpsertBulk {
 }
 
 // SetStatus sets the "status" field.
-func (u *TenderUpsertBulk) SetStatus(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetStatus(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetStatus(v)
 	})
 }
 
 // AddStatus adds v to the "status" field.
-func (u *TenderUpsertBulk) AddStatus(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) AddStatus(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddStatus(v)
 	})
@@ -3648,14 +3648,14 @@ func (u *TenderUpsertBulk) ClearContractor() *TenderUpsertBulk {
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
-func (u *TenderUpsertBulk) SetSizeAndValueRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetSizeAndValueRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetSizeAndValueRating(v)
 	})
 }
 
 // AddSizeAndValueRating adds v to the "size_and_value_rating" field.
-func (u *TenderUpsertBulk) AddSizeAndValueRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) AddSizeAndValueRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddSizeAndValueRating(v)
 	})
@@ -3697,14 +3697,14 @@ func (u *TenderUpsertBulk) ClearSizeAndValueRatingOverview() *TenderUpsertBulk {
 }
 
 // SetCreditAndPaymentRating sets the "credit_and_payment_rating" field.
-func (u *TenderUpsertBulk) SetCreditAndPaymentRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetCreditAndPaymentRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetCreditAndPaymentRating(v)
 	})
 }
 
 // AddCreditAndPaymentRating adds v to the "credit_and_payment_rating" field.
-func (u *TenderUpsertBulk) AddCreditAndPaymentRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) AddCreditAndPaymentRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddCreditAndPaymentRating(v)
 	})
@@ -3746,14 +3746,14 @@ func (u *TenderUpsertBulk) ClearCreditAndPaymentRatingOverview() *TenderUpsertBu
 }
 
 // SetTimeLimitRating sets the "time_limit_rating" field.
-func (u *TenderUpsertBulk) SetTimeLimitRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetTimeLimitRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetTimeLimitRating(v)
 	})
 }
 
 // AddTimeLimitRating adds v to the "time_limit_rating" field.
-func (u *TenderUpsertBulk) AddTimeLimitRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) AddTimeLimitRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddTimeLimitRating(v)
 	})
@@ -3795,14 +3795,14 @@ func (u *TenderUpsertBulk) ClearTimeLimitRatingOverview() *TenderUpsertBulk {
 }
 
 // SetCustomerRelationshipRating sets the "customer_relationship_rating" field.
-func (u *TenderUpsertBulk) SetCustomerRelationshipRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetCustomerRelationshipRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetCustomerRelationshipRating(v)
 	})
 }
 
 // AddCustomerRelationshipRating adds v to the "customer_relationship_rating" field.
-func (u *TenderUpsertBulk) AddCustomerRelationshipRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) AddCustomerRelationshipRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddCustomerRelationshipRating(v)
 	})
@@ -3844,14 +3844,14 @@ func (u *TenderUpsertBulk) ClearCustomerRelationshipRatingOverview() *TenderUpse
 }
 
 // SetCompetitivePartnershipRating sets the "competitive_partnership_rating" field.
-func (u *TenderUpsertBulk) SetCompetitivePartnershipRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetCompetitivePartnershipRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetCompetitivePartnershipRating(v)
 	})
 }
 
 // AddCompetitivePartnershipRating adds v to the "competitive_partnership_rating" field.
-func (u *TenderUpsertBulk) AddCompetitivePartnershipRating(v int8) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) AddCompetitivePartnershipRating(v int) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.AddCompetitivePartnershipRating(v)
 	})

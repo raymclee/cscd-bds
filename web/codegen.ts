@@ -5,12 +5,12 @@ const config: CodegenConfig = {
   documents: ["src/**/*.ts"],
   ignoreNoDocuments: true,
   generates: {
-    // "./src/graphql/": {
-    //   preset: "client",
-    //   config: {
-    //     documentMode: "string",
-    //   },
-    // },
+    "./src/graphql/": {
+      preset: "client",
+      config: {
+        documentMode: "string",
+      },
+    },
     "./schema.graphql": {
       plugins: ["schema-ast"],
       config: {

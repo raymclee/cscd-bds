@@ -14,7 +14,8 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
-		{Name: "code", Type: field.TypeString},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
 	}
 	// AreasTable holds the schema information for the "areas" table.
 	AreasTable = &schema.Table{
@@ -68,9 +69,9 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Unique: true},
-		{Name: "owner_type", Type: field.TypeInt8, Nullable: true},
-		{Name: "industry", Type: field.TypeInt8},
-		{Name: "size", Type: field.TypeInt8, Nullable: true},
+		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
+		{Name: "industry", Type: field.TypeInt},
+		{Name: "size", Type: field.TypeInt, Nullable: true},
 		{Name: "contact_person", Type: field.TypeString, Nullable: true},
 		{Name: "contact_person_position", Type: field.TypeString, Nullable: true},
 		{Name: "contact_person_phone", Type: field.TypeString, Nullable: true},
@@ -147,6 +148,7 @@ var (
 		{Name: "adcode", Type: field.TypeInt, Unique: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "area_id", Type: field.TypeString, Nullable: true},
 		{Name: "country_id", Type: field.TypeString},
 	}
 	// ProvincesTable holds the schema information for the "provinces" table.
@@ -156,8 +158,14 @@ var (
 		PrimaryKey: []*schema.Column{ProvincesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "provinces_countries_provinces",
+				Symbol:     "provinces_areas_provinces",
 				Columns:    []*schema.Column{ProvincesColumns[6]},
+				RefColumns: []*schema.Column{AreasColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "provinces_countries_provinces",
+				Columns:    []*schema.Column{ProvincesColumns[7]},
 				RefColumns: []*schema.Column{CountriesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -169,7 +177,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt8, Default: 1},
+		{Name: "status", Type: field.TypeInt, Default: 1},
 		{Name: "name", Type: field.TypeString},
 		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
@@ -177,15 +185,15 @@ var (
 		{Name: "address", Type: field.TypeString, Nullable: true},
 		{Name: "full_address", Type: field.TypeString, Nullable: true},
 		{Name: "contractor", Type: field.TypeString, Nullable: true},
-		{Name: "size_and_value_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "size_and_value_rating", Type: field.TypeInt, Nullable: true},
 		{Name: "size_and_value_rating_overview", Type: field.TypeString, Nullable: true},
-		{Name: "credit_and_payment_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "credit_and_payment_rating", Type: field.TypeInt, Nullable: true},
 		{Name: "credit_and_payment_rating_overview", Type: field.TypeString, Nullable: true},
-		{Name: "time_limit_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "time_limit_rating", Type: field.TypeInt, Nullable: true},
 		{Name: "time_limit_rating_overview", Type: field.TypeString, Nullable: true},
-		{Name: "customer_relationship_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "customer_relationship_rating", Type: field.TypeInt, Nullable: true},
 		{Name: "customer_relationship_rating_overview", Type: field.TypeString, Nullable: true},
-		{Name: "competitive_partnership_rating", Type: field.TypeInt8, Nullable: true},
+		{Name: "competitive_partnership_rating", Type: field.TypeInt, Nullable: true},
 		{Name: "competitive_partnership_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "prepare_to_bid", Type: field.TypeBool, Default: false},
 		{Name: "project_code", Type: field.TypeString, Nullable: true},
@@ -368,7 +376,8 @@ func init() {
 	CustomersTable.ForeignKeys[2].RefTable = UsersTable
 	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
-	ProvincesTable.ForeignKeys[0].RefTable = CountriesTable
+	ProvincesTable.ForeignKeys[0].RefTable = AreasTable
+	ProvincesTable.ForeignKeys[1].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable
 	TendersTable.ForeignKeys[1].RefTable = CitiesTable
 	TendersTable.ForeignKeys[2].RefTable = CustomersTable

@@ -419,6 +419,22 @@ func (c *AreaClient) QuerySales(a *Area) *UserQuery {
 	return query
 }
 
+// QueryProvinces queries the provinces edge of a Area.
+func (c *AreaClient) QueryProvinces(a *Area) *ProvinceQuery {
+	query := (&ProvinceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(area.Table, area.FieldID, id),
+			sqlgraph.To(province.Table, province.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, area.ProvincesTable, area.ProvincesColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *AreaClient) Hooks() []Hook {
 	return c.hooks.Area
@@ -1317,6 +1333,22 @@ func (c *ProvinceClient) QueryTenders(pr *Province) *TenderQuery {
 			sqlgraph.From(province.Table, province.FieldID, id),
 			sqlgraph.To(tender.Table, tender.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, province.TendersTable, province.TendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryArea queries the area edge of a Province.
+func (c *ProvinceClient) QueryArea(pr *Province) *AreaQuery {
+	query := (&AreaClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(province.Table, province.FieldID, id),
+			sqlgraph.To(area.Table, area.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, province.AreaTable, province.AreaColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil

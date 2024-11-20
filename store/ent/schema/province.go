@@ -38,6 +38,10 @@ func (Province) Fields() []ent.Field {
 			),
 		field.String("country_id").
 			GoType(xid.ID("")),
+		field.String("area_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -52,6 +56,10 @@ func (Province) Edges() []ent.Edge {
 			Field("country_id").
 			Unique(),
 		edge.To("tenders", Tender.Type),
+		edge.From("area", Area.Type).
+			Ref("provinces").
+			Field("area_id").
+			Unique(),
 	}
 }
 
