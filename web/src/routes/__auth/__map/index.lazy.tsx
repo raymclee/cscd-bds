@@ -122,14 +122,11 @@ function RouteComponent() {
     setCurrentAreaNode,
     dashboardVisible,
     setDashboardVisible,
-    // districts,
     selectedArea,
     setSelectedArea,
     navigations,
     push,
     pop,
-    resetNaivgation,
-    mapCircles,
   ] = useMapStore(
     useShallow((state) => [
       state.map,
@@ -144,8 +141,6 @@ function RouteComponent() {
       state.navigations,
       state.push,
       state.pop,
-      state.resetNavigation,
-      state.mapCircles,
     ]),
   );
   const satelliteRef = React.useRef<AMap.TileLayer>();
@@ -181,101 +176,100 @@ function RouteComponent() {
     }
 
     map?.on("complete", () => {
-      console.log("comp", areas);
       //外部区域被点击
-      districtExplorer.on("outsideClick", function (e: any) {
-        // districtExplorer.locatePosition(
-        //   e.originalEvent.lnglat,
-        //   (error: any, routeFeatures: any) => {
-        //     if (routeFeatures && routeFeatures.length > 1) {
-        //       //切换到省级区域
-        //       const props = routeFeatures[1].properties;
-        //       const area = areas?.find((a) =>
-        //         a?.provinces?.map((p) => p.adcode).includes(props.adcode),
-        //       ) as StoreArea;
-        //       if (area) {
-        //         setSelectedArea(area);
-        //       }
-        //       switch2AreaNode(props.adcode);
-        //       // switchNavigation({
-        //       //   name: routeFeatures[1].properties.name,
-        //       //   adcode: routeFeatures[1].properties.adcode,
-        //       // });
-        //       pop(1);
-        //     } else {
-        //       //切换到全国
-        //       switch2AreaNode(100000);
-        //       resetNaivgation();
-        //       setSelectedArea(null);
-        //       useMapStore.setState((state) => {
-        //         for (const cir of state.mapCircles) {
-        //           cir.remove();
-        //         }
-        //         return {
-        //           tenderListVisible: false,
-        //           tenderList: [],
-        //           mapCircles: [],
-        //         };
-        //       });
-        //     }
-        //     // map?.remove(polygonsRef.current);
-        //   },
-        //   {
-        //     levelLimit: 2,
-        //   },
-        // );
-        // map?.removeLayer(satelliteRef.current!);
-      });
+      // districtExplorer.on("outsideClick", function (e: any) {
+      // districtExplorer.locatePosition(
+      //   e.originalEvent.lnglat,
+      //   (error: any, routeFeatures: any) => {
+      //     if (routeFeatures && routeFeatures.length > 1) {
+      //       //切换到省级区域
+      //       const props = routeFeatures[1].properties;
+      //       const area = areas?.find((a) =>
+      //         a?.provinces?.map((p) => p.adcode).includes(props.adcode),
+      //       ) as StoreArea;
+      //       if (area) {
+      //         setSelectedArea(area);
+      //       }
+      //       switch2AreaNode(props.adcode);
+      //       // switchNavigation({
+      //       //   name: routeFeatures[1].properties.name,
+      //       //   adcode: routeFeatures[1].properties.adcode,
+      //       // });
+      //       pop(1);
+      //     } else {
+      //       //切换到全国
+      //       switch2AreaNode(100000);
+      //       resetNaivgation();
+      //       setSelectedArea(null);
+      //       useMapStore.setState((state) => {
+      //         for (const cir of state.mapCircles) {
+      //           cir.remove();
+      //         }
+      //         return {
+      //           tenderListVisible: false,
+      //           tenderList: [],
+      //           mapCircles: [],
+      //         };
+      //       });
+      //     }
+      //     // map?.remove(polygonsRef.current);
+      //   },
+      //   {
+      //     levelLimit: 2,
+      //   },
+      // );
+      // map?.removeLayer(satelliteRef.current!);
+      // });
 
-      districtExplorer.on("featureMouseover", (e: any, feature: any) => {
-        // makersRef.current.forEach((marker) => {
-        //   if (
-        //     marker.getExtData()?.hidable &&
-        //     !marker.getExtData()?.home &&
-        //     marker.getExtData()?.adcode !== feature.properties.adcode
-        //   ) {
-        //     // marker.hide();
-        //     marker.getContentDom().style.opacity = "0";
-        //   }
-        // });
-      });
+      // districtExplorer.on("featureMouseover", (e: any, feature: any) => {
+      // makersRef.current.forEach((marker) => {
+      //   if (
+      //     marker.getExtData()?.hidable &&
+      //     !marker.getExtData()?.home &&
+      //     marker.getExtData()?.adcode !== feature.properties.adcode
+      //   ) {
+      //     // marker.hide();
+      //     marker.getContentDom().style.opacity = "0";
+      //   }
+      // });
+      // });
 
-      districtExplorer.on("featureMouseout", (e: any, feature: any) => {
-        // makersRef.current.forEach((marker) => {
-        //   // marker.show();
-        //   marker.getContentDom().style.opacity = "1";
-        // });
-      });
+      // districtExplorer.on("featureMouseout", (e: any, feature: any) => {
+      // makersRef.current.forEach((marker) => {
+      //   // marker.show();
+      //   marker.getContentDom().style.opacity = "1";
+      // });
+      // });
 
-      districtExplorer.on("featureClick", (e: any, feature: any) => {
-        // const props = feature.properties;
-        // const area = areas?.find((d) =>
-        //   d?.provinces?.map((p) => p.adcode).includes(props.adcode),
-        // ) as StoreArea;
-        // // if (!area) {
-        // //   console.log("not area");
-        // //   return;
-        // // }
-        // if (area) {
-        //   setSelectedArea(area);
-        // }
-        // if (e.target.getZoom() < 5) {
-        //   if (!area) {
-        //     return;
-        //   }
-        //   // setSelectedDistrict(district);
-        //   push({ name: area.name });
-        //   renderArea(area);
-        //   return;
-        // }
-        // // const district = districts.find((d) => d.adcode.includes(props.adcode));
-        // // setSelectedDistrict(district ?? null);
-        // // 如果存在子节点
-        // // if (props.childrenNum > 0) {
-        // // 切换聚焦区域
-        // // }
-        // onFeatureOrMarkerClick(props);
-      });
+      // districtExplorer.on("featureClick", (e: any, feature: any) => {
+      // const props = feature.properties;
+      // const area = areas?.find((d) =>
+      //   d?.provinces?.map((p) => p.adcode).includes(props.adcode),
+      // ) as StoreArea;
+      // // if (!area) {
+      // //   console.log("not area");
+      // //   return;
+      // // }
+      // if (area) {
+      //   setSelectedArea(area);
+      // }
+      // if (e.target.getZoom() < 5) {
+      //   if (!area) {
+      //     return;
+      //   }
+      //   // setSelectedDistrict(district);
+      //   push({ name: area.name });
+      //   renderArea(area);
+      //   return;
+      // }
+      // // const district = districts.find((d) => d.adcode.includes(props.adcode));
+      // // setSelectedDistrict(district ?? null);
+      // // 如果存在子节点
+      // // if (props.childrenNum > 0) {
+      // // 切换聚焦区域
+      // // }
+      // onFeatureOrMarkerClick(props);
+      // });
 
       //切换区域
 
@@ -457,11 +451,11 @@ function RouteComponent() {
               tender.geoCoordinate?.coordinates[1],
             ),
             radius: 30 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
-            strokeColor: "white",
+            strokeColor: colors[i],
             strokeWeight: 2,
             strokeOpacity: 0.5,
             fillColor: colors[i],
-            fillOpacity: 0.8,
+            fillOpacity: 0.5,
             zIndex: 10,
             bubble: false,
             // bubble: true,
@@ -802,6 +796,7 @@ function RouteComponent() {
                       cir.remove();
                     }
                     return {
+                      selectedTender: null,
                       tenderListVisible: false,
                       tenderList: [],
                       selectedArea: null,
@@ -835,6 +830,7 @@ function RouteComponent() {
                   // setSelectedDistrict(selectedDistrict);
                   renderArea(selectedArea!);
                   useMapStore.setState({
+                    selectedTender: null,
                     tenderListVisible: false,
                     tenderList: [],
                     currentAreaNode: null,
@@ -902,6 +898,7 @@ function RouteComponent() {
                           pop(i);
                           switch2AreaNode(navigation.adcode || 100000);
                           useMapStore.setState({
+                            selectedTender: null,
                             tenderListVisible: false,
                             tenderList: [],
                           });
@@ -1172,10 +1169,8 @@ function TenderList() {
   const [hovering, setHovering] = React.useState(0);
 
   React.useEffect(() => {
-    return () => {
-      setHovering(0);
-    };
-  }, []);
+    setHovering(0);
+  }, [tenderList.length]);
 
   return (
     <>
