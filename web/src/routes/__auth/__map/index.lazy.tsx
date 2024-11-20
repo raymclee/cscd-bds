@@ -29,7 +29,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { Maybe, Tender } from "~/graphql/graphql";
+import { Tender } from "~/graphql/graphql";
 import { colors, getDistrictColor } from "~/lib/color";
 import { fixAmount, ownerType } from "~/lib/helper";
 import { cn } from "~/lib/utils";
