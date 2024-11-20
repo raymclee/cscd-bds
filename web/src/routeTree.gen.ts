@@ -13,8 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as AboutImport } from './routes/about'
 import { Route as authImport } from './routes/__auth'
 import { Route as authSessionImport } from './routes/__auth/session'
 import { Route as authmapImport } from './routes/__auth/__map'
@@ -26,23 +24,18 @@ import { Route as authimapH2Import } from './routes/__auth/__imap/h2'
 
 // Create Virtual Routes
 
+const LoginLazyImport = createFileRoute('/login')()
 const authmapDashboardLazyImport = createFileRoute('/__auth/__map/dashboard')()
 const authmapAreaMapLazyImport = createFileRoute('/__auth/__map/area-map')()
 const authimapH3LazyImport = createFileRoute('/__auth/__imap/h3')()
 
 // Create/Update Routes
 
-const LoginRoute = LoginImport.update({
+const LoginLazyRoute = LoginLazyImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRoute,
-} as any)
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
 const authRoute = authImport
   .update({
@@ -138,18 +131,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+      preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
     '/__auth/__imap': {
@@ -276,8 +262,7 @@ const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof authmapRouteWithChildren
-  '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginLazyRoute
   '/session': typeof authSessionRoute
   '/h2': typeof authimapH2Route
   '/edit': typeof authmapEditRoute
@@ -290,8 +275,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof authimapRouteWithChildren
-  '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginLazyRoute
   '/session': typeof authSessionRoute
   '/h2': typeof authimapH2Route
   '/edit': typeof authmapEditRoute
@@ -305,8 +289,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/__auth': typeof authRouteWithChildren
-  '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
+  '/login': typeof LoginLazyRoute
   '/__auth/__imap': typeof authimapRouteWithChildren
   '/__auth/__map': typeof authmapRouteWithChildren
   '/__auth/session': typeof authSessionRoute
@@ -323,7 +306,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
-    | '/about'
     | '/login'
     | '/session'
     | '/h2'
@@ -336,7 +318,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
-    | '/about'
     | '/login'
     | '/session'
     | '/h2'
@@ -349,7 +330,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/__auth'
-    | '/about'
     | '/login'
     | '/__auth/__imap'
     | '/__auth/__map'
@@ -366,14 +346,12 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   authRoute: typeof authRouteWithChildren
-  AboutRoute: typeof AboutRoute
-  LoginRoute: typeof LoginRoute
+  LoginLazyRoute: typeof LoginLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   authRoute: authRouteWithChildren,
-  AboutRoute: AboutRoute,
-  LoginRoute: LoginRoute,
+  LoginLazyRoute: LoginLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -387,7 +365,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/__auth",
-        "/about",
         "/login"
       ]
     },
@@ -399,11 +376,8 @@ export const routeTree = rootRoute
         "/__auth/session"
       ]
     },
-    "/about": {
-      "filePath": "about.tsx"
-    },
     "/login": {
-      "filePath": "login.tsx"
+      "filePath": "login.lazy.tsx"
     },
     "/__auth/__imap": {
       "filePath": "__auth/__imap.tsx",

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cscd-bds/config"
 	"cscd-bds/graphql"
 	"cscd-bds/handler"
 	"cscd-bds/session"
@@ -30,6 +31,19 @@ func main() {
 		middleware.CORS(),
 	)
 
+	if config.IsProd {
+		e.Use(
+			middleware.Gzip(),
+			middleware.StaticWithConfig(middleware.StaticConfig{
+				Skipper:    nil,
+				Index:      "index.html",
+				HTML5:      true,
+				Browse:     false,
+				IgnoreBase: false,
+				Filesystem: http.FS(web.DistDirFS),
+			}))
+	}
+
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.NewStore()
 	sm := session.NewSession(lc)
@@ -47,19 +61,6 @@ func main() {
 
 	projectedApiV1 := protected.Group("/api/v1")
 	projectedApiV1.GET("/session", h.GetSessionHandler)
-
-	// if config.IsProd {
-	e.Use(
-		middleware.Gzip(),
-		middleware.StaticWithConfig(middleware.StaticConfig{
-			Skipper:    nil,
-			Index:      "index.html",
-			HTML5:      true,
-			Browse:     false,
-			IgnoreBase: false,
-			Filesystem: http.FS(web.DistDirFS),
-		}))
-	// }
 
 	e.Start(":3000")
 }
