@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Pie, PieConfig, Tiny } from "@ant-design/plots";
 import { Tender } from "~/graphql/graphql";
 import { useMapStore } from "~/store/map";
+import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 
 const data = [
   { type: "央企国企", value: 40 },
@@ -56,12 +57,15 @@ const loseConfig = {
 };
 
 type Props = {
-  tenders: ReadonlyArray<Tender>;
+  data: MapIndexPageQuery$data;
 };
 
 export function TenderTypeChart(props: Props) {
   const selectedArea = useMapStore((s) => s.selectedArea);
-  const tenders = (selectedArea ? selectedArea.tenders : props.tenders) || [];
+  const tenders =
+    (selectedArea
+      ? selectedArea.tenders
+      : props.data?.areas.edges?.flatMap((e) => e?.node?.tenders)) || [];
 
   let government = 0;
   let csoe = 0;
@@ -69,7 +73,7 @@ export function TenderTypeChart(props: Props) {
   let other = 0;
 
   for (const t of tenders) {
-    switch (t.customer.ownerType) {
+    switch (t?.customer.ownerType) {
       case 1:
         government += 1;
         break;

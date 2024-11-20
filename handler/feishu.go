@@ -3,10 +3,8 @@ package handler
 import (
 	"cscd-bds/config"
 	"cscd-bds/session"
-	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/user"
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -15,11 +13,16 @@ import (
 )
 
 func (h handler) AuthFeishuCallback(c echo.Context) error {
+	var url string
+	if config.IsProd {
+		url = "https://mkm.fefacade.com"
+	} else {
+		url = "http://localhost:5173"
+	}
+
 	code := c.QueryParam("code")
 	if code == "" {
-		return c.JSON(http.StatusBadRequest, echo.Map{
-			"message": "code is required",
-		})
+		return c.Redirect(301, url+"/access-denied")
 	}
 
 	req := larkauthen.NewCreateOidcAccessTokenReqBuilder().
@@ -32,42 +35,28 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	// 发起请求
 	resp, err := h.feishu.Authen.OidcAccessToken.Create(c.Request().Context(), req)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{
-			"message": err.Error(),
-		})
+		fmt.Println(err)
+		return c.Redirect(301, url+"/access-denied")
 	}
 	if !resp.Success() {
 		fmt.Println(resp.Code, resp.Msg, resp.Data)
-		return c.JSON(http.StatusInternalServerError, echo.Map{
-			"message": "feishu auth failed",
-		})
+		return c.Redirect(301, url+"/access-denied")
 	}
 	userInfo, err := h.feishu.Authen.UserInfo.Get(c.Request().Context(), larkcore.WithUserAccessToken(*resp.Data.AccessToken))
 	if err != nil {
 		fmt.Println(err)
-		return c.JSON(http.StatusInternalServerError, echo.Map{
-			"message": err.Error(),
-		})
+		return c.Redirect(301, url+"/access-denied")
 	}
 	if !userInfo.Success() {
 		fmt.Println(userInfo.Code, userInfo.Msg, userInfo.Data)
-		return c.JSON(http.StatusInternalServerError, echo.Map{
-			"message": "feishu auth user info failed",
-		})
+		return c.Redirect(301, url+"/access-denied")
 	}
 
 	fmt.Printf("username: %s, openId: %s\n", *userInfo.Data.EnName, *userInfo.Data.OpenId)
 
 	us, err := h.store.User.Query().Where(user.OpenID(*userInfo.Data.OpenId)).Only(c.Request().Context())
 	if err != nil {
-		if !ent.IsNotFound(err) {
-			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"message": err.Error(),
-			})
-		}
-		return c.JSON(http.StatusUnauthorized, echo.Map{
-			"message": "unauthorized",
-		})
+		return c.Redirect(301, url+"/access-denied")
 	}
 
 	// a, err := h.store.Admin.Query().Where(admin.OpenID(*userInfo.Data.OpenId)).Only(c.Request().Context())
@@ -83,9 +72,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	// }
 
 	if err := h.session.RenewToken(c.Request().Context()); err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{
-			"message": err.Error(),
-		})
+		return c.Redirect(301, url+"/access-denied")
 	}
 
 	u := session.User{
@@ -107,11 +94,5 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	}
 	h.session.Put(c.Request().Context(), "user", u)
 
-	var url string
-	if config.IsProd {
-		url = "https://mkm.fefacade.com"
-	} else {
-		url = "http://localhost:5173"
-	}
 	return c.Redirect(301, url)
 }

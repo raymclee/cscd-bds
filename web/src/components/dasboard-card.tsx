@@ -20,7 +20,7 @@ export function DashboardCard({
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
         {title}
       </CardHeader>
-      <CardContent className="h-full">{children}</CardContent>
+      <CardContent className="h-full px-0">{children}</CardContent>
     </Card>
   );
 }

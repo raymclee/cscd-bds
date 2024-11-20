@@ -1,101 +1,117 @@
 import { Column, ColumnConfig, Tiny } from "@ant-design/plots";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "./ui/card";
+import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
+import { fixAmount } from "~/lib/helper";
 
-const monthAdded = 34;
-const mountAddedAmount = 18;
-const lastMonthAdded = 28;
-const lastMonthAddedAmount = 15;
+export function NewTenderBoard(props: { data: MapIndexPageQuery$data }) {
+  const lastMontDateFormat = `${new Date().getFullYear()}-${new Date().getMonth()}`;
+  const lastMonth = props.data.areas?.edges
+    ?.flatMap((e) => e?.node?.tenders ?? [])
+    .filter((e) => e.createdAt.includes(lastMontDateFormat));
+  const lastMonthAmount = fixAmount(
+    lastMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
+  );
+  const lastMonthCount = lastMonth?.length ?? 0;
 
-const barConfig = {
-  data: [
-    {
-      name: "金额(亿)",
-      月份: "本月",
-      數量: mountAddedAmount,
+  const thisMonthDateFormat = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
+  const thisMonth = props.data.areas?.edges
+    ?.flatMap((e) => e?.node?.tenders ?? [])
+    .filter((e) => e.createdAt.includes(thisMonthDateFormat));
+  const thisMonthAmount = fixAmount(
+    thisMonth?.reduce((acc, cur) => acc + (cur.estimatedAmount ?? 0), 0),
+  );
+  const thisMonthCount = thisMonth?.length ?? 0;
+
+  const barConfig = {
+    data: [
+      {
+        name: "金额(亿)",
+        月份: "本月",
+        數量: thisMonthAmount,
+      },
+      {
+        name: "金额(亿)",
+        月份: "上月",
+        數量: lastMonthAmount,
+      },
+      {
+        name: "数量(个)",
+        月份: "本月",
+        數量: thisMonthCount,
+      },
+      {
+        name: "数量(个)",
+        月份: "上月",
+        數量: lastMonthCount,
+      },
+    ],
+    xField: "月份",
+    yField: "數量",
+    theme: "classicDark",
+    colorField: "name",
+    group: true,
+    style: {
+      inset: 5,
+      width: 20,
+      // color: "white",
     },
-    {
-      name: "金额(亿)",
-      月份: "上月",
-      數量: lastMonthAddedAmount,
-    },
-    {
-      name: "数量(个)",
-      月份: "本月",
-      數量: monthAdded,
-    },
-    {
-      name: "数量(个)",
-      月份: "上月",
-      數量: lastMonthAdded,
-    },
-  ],
-  xField: "月份",
-  yField: "數量",
-  theme: "classicDark",
-  colorField: "name",
-  group: true,
-  style: {
-    inset: 5,
-    width: 20,
-    // color: "white",
-  },
-  legend: {
-    color: {
-      layout: {
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
+    legend: {
+      color: {
+        layout: {
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        },
       },
     },
-  },
-} satisfies ColumnConfig;
+  } satisfies ColumnConfig;
 
-const amountConfig = {
-  percent: lastMonthAddedAmount / mountAddedAmount,
-  width: 80,
-  height: 80,
-  innerRadius: 0.65,
-  color: ["#E8EFF5", "#dc2626"],
-  annotations: [
-    {
-      type: "text",
-      style: {
-        text: `${Math.round((lastMonthAddedAmount / mountAddedAmount) * 100)}%`,
-        x: "50%",
-        y: "50%",
-        textAlign: "center",
-        fontSize: 16,
-        fontStyle: "bold",
-        fill: "white",
+  const amountConfig = {
+    percent: lastMonthAmount / thisMonthAmount,
+    width: 80,
+    height: 80,
+    innerRadius: 0.65,
+    color: ["#E8EFF5", "#dc2626"],
+    annotations: [
+      {
+        type: "text",
+        style: {
+          text: `${Math.round((lastMonthAmount / thisMonthAmount) * 100)}%`,
+          x: "50%",
+          y: "50%",
+          textAlign: "center",
+          fontSize: 16,
+          fontStyle: "bold",
+          fill: "white",
+        },
       },
-    },
-  ],
-};
+    ],
+  };
 
-const totalConfig = {
-  percent: lastMonthAdded / monthAdded,
-  width: 80,
-  height: 80,
-  innerRadius: 0.65,
-  color: ["#E8EFF5", "#109618"],
-  annotations: [
-    {
-      type: "text",
-      style: {
-        text: `${Math.round((lastMonthAdded / monthAdded) * 100)}%`,
-        x: "50%",
-        y: "50%",
-        textAlign: "center",
-        fontSize: 16,
-        fontStyle: "bold",
-        fill: "white",
+  const totalConfig = {
+    percent: lastMonthCount / thisMonthCount,
+    width: 80,
+    height: 80,
+    innerRadius: 0.65,
+    color: ["#E8EFF5", "#109618"],
+    annotations: [
+      {
+        type: "text",
+        style: {
+          text: `${Math.round((lastMonthCount / thisMonthCount) * 100)}%`,
+          x: "50%",
+          y: "50%",
+          textAlign: "center",
+          fontSize: 16,
+          fontStyle: "bold",
+          fill: "white",
+        },
       },
-    },
-  ],
-};
+    ],
+  };
 
-export function NewTenderBoard() {
+  // t?.filter(e => e)
   return (
     <Card
       className={cn(

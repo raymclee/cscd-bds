@@ -106,6 +106,8 @@ type MapState = {
   dashboardVisible: boolean;
   tenderListVisible: boolean;
   tenderList: Array<Partial<Tender>>;
+  selectedTender: Partial<Tender> | null;
+  mapCircles: AMap.CircleMarker[];
 };
 
 type Action = {
@@ -126,6 +128,7 @@ type Action = {
   onFeatureOrMarkerClick: (props: any) => void;
   setTenderListVisible: (visible: boolean) => void;
   setTenderList: (tenders: Array<Partial<Tender>>) => void;
+  setSelectedTender: (tender: Partial<Tender> | null) => void;
   // navigate:
 };
 
@@ -137,11 +140,13 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   polygonEditor: null,
   currentAreaNode: null,
   makers: [],
+  mapCircles: [],
   navigations: [],
   breadcrumb: [],
   selectedArea: null,
   tenderListVisible: false,
   tenderList: [],
+  selectedTender: null,
   // districts,
   initMap: (container, opts) => {
     const map = new AMap.Map(container, { ...opts });
@@ -191,8 +196,12 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
         },
         [],
       );
+      for (const circle of state.mapCircles) {
+        circle.remove();
+      }
       return {
         navigations,
+        mapCircles: [],
       };
     });
   },
@@ -386,6 +395,9 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   },
   setTenderList(tenders) {
     set({ tenderList: tenders });
+  },
+  setSelectedTender(tender) {
+    set({ selectedTender: tender });
   },
 }));
 

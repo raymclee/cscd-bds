@@ -1,15 +1,14 @@
-import { Tiny } from "@ant-design/plots";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
-import { Wallet } from "lucide-react";
+import { Wallet, X } from "lucide-react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
-import { Pie } from "recharts";
 import { graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
 import { DashboardCard } from "~/components/dasboard-card";
 import { NewTenderBoard } from "~/components/new-tender-card";
 import { RankingListChart } from "~/components/ranking-list-chart";
+import { TenderRatingChart } from "~/components/tender-rating-chart";
 import { TenderTypeChart } from "~/components/tender-type-chart";
 import {
   Breadcrumb,
@@ -29,8 +28,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Tender } from "~/graphql/graphql";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Maybe, Tender } from "~/graphql/graphql";
 import { colors, getDistrictColor } from "~/lib/color";
+import { fixAmount, ownerType } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
 
@@ -70,10 +71,12 @@ const query = graphql`
             id
             name
             status
+            createdAt
             estimatedAmount
             customer {
               ownerType
             }
+            fullAddress
             tenderDate
             discoveryDate
             contractor
@@ -119,8 +122,6 @@ function RouteComponent() {
     setCurrentAreaNode,
     dashboardVisible,
     setDashboardVisible,
-    tenderListVisible,
-    setTenderListVisible,
     // districts,
     selectedArea,
     setSelectedArea,
@@ -128,8 +129,7 @@ function RouteComponent() {
     push,
     pop,
     resetNaivgation,
-    tenderList,
-    setTenderList,
+    mapCircles,
   ] = useMapStore(
     useShallow((state) => [
       state.map,
@@ -138,8 +138,6 @@ function RouteComponent() {
       state.setCurrentAreaNode,
       state.dashboardVisible,
       state.setDashboardVisible,
-      state.tenderListVisible,
-      state.setTenderListVisible,
       // state.districts,
       state.selectedArea,
       state.setSelectedArea,
@@ -147,15 +145,14 @@ function RouteComponent() {
       state.push,
       state.pop,
       state.resetNavigation,
-      state.tenderList,
-      state.setTenderList,
+      state.mapCircles,
     ]),
   );
   const satelliteRef = React.useRef<AMap.TileLayer>();
   // const districtExplorerRef = React.useRef<any>();
   // const [visible, setVisible] = React.useState(false);
   const makersRef = React.useRef<AMap.Marker[]>([]);
-  const polygonsRef = React.useRef<AMap.Polygon[]>([]);
+  // const polygonsRef = React.useRef<AMap.Polygon[]>([]);
 
   const data = usePreloadedQuery<MapIndexPageQuery>(
     query,
@@ -187,38 +184,47 @@ function RouteComponent() {
       console.log("comp", areas);
       //外部区域被点击
       districtExplorer.on("outsideClick", function (e: any) {
-        districtExplorer.locatePosition(
-          e.originalEvent.lnglat,
-          (error: any, routeFeatures: any) => {
-            if (routeFeatures && routeFeatures.length > 1) {
-              //切换到省级区域
-              const props = routeFeatures[1].properties;
-              const area = areas?.find((a) =>
-                a?.provinces?.map((p) => p.adcode).includes(props.adcode),
-              ) as StoreArea;
-              if (area) {
-                setSelectedArea(area);
-              }
-              switch2AreaNode(props.adcode);
-              // switchNavigation({
-              //   name: routeFeatures[1].properties.name,
-              //   adcode: routeFeatures[1].properties.adcode,
-              // });
-              pop(1);
-            } else {
-              //切换到全国
-              switch2AreaNode(100000);
-              resetNaivgation();
-              setSelectedArea(null);
-              useMapStore.setState({ tenderListVisible: false });
-            }
-            map?.remove(polygonsRef.current);
-          },
-          {
-            levelLimit: 2,
-          },
-        );
-        map?.removeLayer(satelliteRef.current!);
+        // districtExplorer.locatePosition(
+        //   e.originalEvent.lnglat,
+        //   (error: any, routeFeatures: any) => {
+        //     if (routeFeatures && routeFeatures.length > 1) {
+        //       //切换到省级区域
+        //       const props = routeFeatures[1].properties;
+        //       const area = areas?.find((a) =>
+        //         a?.provinces?.map((p) => p.adcode).includes(props.adcode),
+        //       ) as StoreArea;
+        //       if (area) {
+        //         setSelectedArea(area);
+        //       }
+        //       switch2AreaNode(props.adcode);
+        //       // switchNavigation({
+        //       //   name: routeFeatures[1].properties.name,
+        //       //   adcode: routeFeatures[1].properties.adcode,
+        //       // });
+        //       pop(1);
+        //     } else {
+        //       //切换到全国
+        //       switch2AreaNode(100000);
+        //       resetNaivgation();
+        //       setSelectedArea(null);
+        //       useMapStore.setState((state) => {
+        //         for (const cir of state.mapCircles) {
+        //           cir.remove();
+        //         }
+        //         return {
+        //           tenderListVisible: false,
+        //           tenderList: [],
+        //           mapCircles: [],
+        //         };
+        //       });
+        //     }
+        //     // map?.remove(polygonsRef.current);
+        //   },
+        //   {
+        //     levelLimit: 2,
+        //   },
+        // );
+        // map?.removeLayer(satelliteRef.current!);
       });
 
       districtExplorer.on("featureMouseover", (e: any, feature: any) => {
@@ -242,33 +248,33 @@ function RouteComponent() {
       });
 
       districtExplorer.on("featureClick", (e: any, feature: any) => {
-        const props = feature.properties;
-        const area = areas?.find((d) =>
-          d?.provinces?.map((p) => p.adcode).includes(props.adcode),
-        ) as StoreArea;
-        // if (!area) {
-        //   console.log("not area");
+        // const props = feature.properties;
+        // const area = areas?.find((d) =>
+        //   d?.provinces?.map((p) => p.adcode).includes(props.adcode),
+        // ) as StoreArea;
+        // // if (!area) {
+        // //   console.log("not area");
+        // //   return;
+        // // }
+        // if (area) {
+        //   setSelectedArea(area);
+        // }
+        // if (e.target.getZoom() < 5) {
+        //   if (!area) {
+        //     return;
+        //   }
+        //   // setSelectedDistrict(district);
+        //   push({ name: area.name });
+        //   renderArea(area);
         //   return;
         // }
-        if (area) {
-          setSelectedArea(area);
-        }
-        if (e.target.getZoom() < 5) {
-          if (!area) {
-            return;
-          }
-          // setSelectedDistrict(district);
-          push({ name: area.name });
-          renderArea(area);
-          return;
-        }
-        // const district = districts.find((d) => d.adcode.includes(props.adcode));
-        // setSelectedDistrict(district ?? null);
-        // 如果存在子节点
-        // if (props.childrenNum > 0) {
-        // 切换聚焦区域
-        // }
-        onFeatureOrMarkerClick(props);
+        // // const district = districts.find((d) => d.adcode.includes(props.adcode));
+        // // setSelectedDistrict(district ?? null);
+        // // 如果存在子节点
+        // // if (props.childrenNum > 0) {
+        // // 切换聚焦区域
+        // // }
+        // onFeatureOrMarkerClick(props);
       });
 
       //切换区域
@@ -278,8 +284,13 @@ function RouteComponent() {
 
     return () => {
       map?.destroy();
-      setSelectedArea(null);
-      setCurrentAreaNode(null);
+      useMapStore.setState({
+        selectedArea: null,
+        currentAreaNode: null,
+        navigations: [],
+        selectedTender: null,
+        tenderListVisible: false,
+      });
     };
   }, [data, map, satelliteRef]);
 
@@ -437,6 +448,7 @@ function RouteComponent() {
           props.level,
           selectedArea?.tenders!,
         ) || [];
+      const mapCircles: AMap.CircleMarker[] = [];
       for (const [i, tender] of tenders.entries()) {
         if (tender.geoCoordinate?.coordinates) {
           const circleMarker = new AMap.CircleMarker({
@@ -451,17 +463,12 @@ function RouteComponent() {
             fillColor: colors[i],
             fillOpacity: 0.8,
             zIndex: 10,
+            bubble: false,
             // bubble: true,
             // cursor: "pointer",
-            // clickable: true,
           });
-          const polygon = new AMap.Polygon();
-          polygon.setPath([
-            tender.geoCoordinate.coordinates as AMap.LngLatLike,
-          ]);
-          polygonsRef?.current.push(polygon);
-          map?.add(polygon);
-          map?.add(circleMarker);
+          mapCircles.push(circleMarker);
+          // map?.add(circleMarker);
         }
       }
       // map?.setZoom(18, true, 200);
@@ -531,10 +538,14 @@ function RouteComponent() {
           : props.center;
       map?.setZoomAndCenter(15, center, false, 600);
       map?.addLayer(satelliteRef.current!);
+      for (const circle of mapCircles) {
+        circle.setMap(map);
+      }
       useMapStore.setState({
         tenderListVisible: true,
         tenderList: tenders,
         dashboardVisible: false,
+        mapCircles,
       });
     }
   };
@@ -784,13 +795,19 @@ function RouteComponent() {
                   // setSelectedArea(null);
                   // resetNaivgation();
                   map?.remove(satelliteRef.current!);
-                  map?.remove(polygonsRef.current);
+                  // map?.remove(polygonsRef.current);
                   switch2AreaNode(100000);
-                  useMapStore.setState({
-                    tenderListVisible: false,
-                    tenderList: [],
-                    selectedArea: null,
-                    navigations: [],
+                  useMapStore.setState((state) => {
+                    for (const cir of state.mapCircles) {
+                      cir.remove();
+                    }
+                    return {
+                      tenderListVisible: false,
+                      tenderList: [],
+                      selectedArea: null,
+                      navigations: [],
+                      mapCircles: [],
+                    };
                   });
                   // setVisible(!visible);
                 }}
@@ -814,7 +831,7 @@ function RouteComponent() {
                   // resetNaivgation();
                   pop(0);
                   map?.remove(satelliteRef.current!);
-                  map?.remove(polygonsRef.current);
+                  // map?.remove(polygonsRef.current);
                   // setSelectedDistrict(selectedDistrict);
                   renderArea(selectedArea!);
                   useMapStore.setState({
@@ -880,7 +897,7 @@ function RouteComponent() {
                           if (navigations.length == i + 2) {
                             return;
                           }
-                          map?.remove(polygonsRef.current);
+                          // map?.remove(polygonsRef.current);
                           map?.remove(satelliteRef.current!);
                           pop(i);
                           switch2AreaNode(navigation.adcode || 100000);
@@ -923,7 +940,7 @@ function RouteComponent() {
         >
           <AmountBoard />
 
-          <NewTenderBoard />
+          <NewTenderBoard data={data} />
         </div>
 
         <div className="flex-1 space-y-2"></div>
@@ -934,14 +951,12 @@ function RouteComponent() {
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
-          <TenderTypeChart
-            tenders={data?.areas.edges?.flatMap((e) => e?.node?.tenders)}
-          />
+          <TenderTypeChart data={data} />
 
           <RankingListChart />
 
           <DashboardCard title="项目例表">
-            <ScrollArea className="h-full">
+            <ScrollArea className="h-full px-4">
               <Table className="my-4 h-full">
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="bg-brand/10">
@@ -982,7 +997,7 @@ function RouteComponent() {
                             compactDisplay: "short",
                             unitDisplay: "short",
                           }).format(tender?.estimatedAmount! / 100000000)} */}
-                        {wacky_round(tender?.estimatedAmount! / 100000000, 2)}
+                        {fixAmount(tender?.estimatedAmount)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -1045,86 +1060,92 @@ function AmountBoard() {
       .reduce((acc, inc) => acc + inc?.estimatedAmount! / 100000000, 0) || 0;
 
   return (
-    <DashboardCard
-      title="商机汇总总金额"
-      className="h-[clamp(33.5rem,59dvh,33.5rem)]"
+    <Card
+      className={cn(
+        "h-[clamp(33.5rem,59dvh,33.5rem)]overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+      )}
     >
-      <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
-        <div className="flex items-center justify-between rounded px-6 py-4">
-          <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-black text-white">¥</span>
-            <span className="text-4xl font-black text-white">
-              {wacky_round(totalAmount || 0, 2)}
-            </span>
-            <span className="hidden font-medium text-brand large-screen:block">
-              亿元
-            </span>
-          </div>
-
-          <div className="rounded-full bg-brand/30 p-2">
-            <Wallet className="h-10 w-10 text-brand" />
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
-        <div className="mt-2 space-y-4 text-sm text-brand">
-          {statusItems.map((status, i) => {
-            const tends = tenders?.filter((t) => t?.status === i + 1);
-            const percentage =
-              tends?.length && tenders?.length
-                ? Math.floor((tends?.length / tenders?.length) * 100)
-                : 0;
-            const count = tends?.length || 0;
-            return (
-              <div
-                key={status}
-                className="mt-2 flex items-center justify-between gap-x-4"
-              >
-                <div className="w-[5rem]">{status}</div>
-                <div className="text-white">{count}</div>
-                <Progress
-                  value={percentage}
-                  className="h-2 w-[70%] text-brand"
-                />
-                <div>{percentage}%</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="mt-6 h-[6rem]">
-        <div className="flex h-full items-center justify-between gap-6">
-          <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-            <div className="flex h-full flex-col rounded">
-              <div className="flex flex-1 items-center justify-center gap-1">
-                <span className="text-3xl font-bold">
-                  {wacky_round(processingAmount, 2)}
-                </span>
-                <span className="pt-2 font-medium text-brand">亿元</span>
-              </div>
-              <div className="bg-gray-500/50 py-1 text-center text-xs">
-                实施中的金额(亿元)
-              </div>
+      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+        商机汇总总金额
+      </CardHeader>
+      <CardContent className="h-full">
+        <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
+          <div className="flex items-center justify-between rounded px-6 py-4">
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-black text-white">¥</span>
+              <span className="text-4xl font-black text-white">
+                {wacky_round(totalAmount || 0, 2)}
+              </span>
+              <span className="hidden font-medium text-brand large-screen:block">
+                亿元
+              </span>
             </div>
-          </div>
 
-          <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-            <div className="flex h-full flex-col rounded">
-              <div className="flex flex-1 items-center justify-center gap-1">
-                <span className="text-3xl font-bold">{tenderCount}</span>
-                <span className="pt-2 font-medium text-brand">个项目</span>
-              </div>
-              <div className="bg-gray-500/50 py-1 text-center text-xs">
-                总体情况
-              </div>
+            <div className="rounded-full bg-brand/30 p-2">
+              <Wallet className="h-10 w-10 text-brand" />
             </div>
           </div>
         </div>
-      </div>
-    </DashboardCard>
+
+        <div className="mt-6">
+          <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
+          <div className="mt-2 space-y-4 text-sm text-brand">
+            {statusItems.map((status, i) => {
+              const tends = tenders?.filter((t) => t?.status === i + 1);
+              const percentage =
+                tends?.length && tenders?.length
+                  ? Math.floor((tends?.length / tenders?.length) * 100)
+                  : 0;
+              const count = tends?.length || 0;
+              return (
+                <div
+                  key={status}
+                  className="mt-2 flex items-center justify-between gap-x-4"
+                >
+                  <div className="w-[5rem]">{status}</div>
+                  <div className="text-white">{count}</div>
+                  <Progress
+                    value={percentage}
+                    className="h-2 w-[70%] text-brand"
+                  />
+                  <div>{percentage}%</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-6 h-[6rem]">
+          <div className="flex h-full items-center justify-between gap-6">
+            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+              <div className="flex h-full flex-col rounded">
+                <div className="flex flex-1 items-center justify-center gap-1">
+                  <span className="text-3xl font-bold">
+                    {wacky_round(processingAmount, 2)}
+                  </span>
+                  <span className="pt-2 font-medium text-brand">亿元</span>
+                </div>
+                <div className="bg-gray-500/50 py-1 text-center text-xs">
+                  实施中的金额(亿元)
+                </div>
+              </div>
+            </div>
+
+            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+              <div className="flex h-full flex-col rounded">
+                <div className="flex flex-1 items-center justify-center gap-1">
+                  <span className="text-3xl font-bold">{tenderCount}</span>
+                  <span className="pt-2 font-medium text-brand">个项目</span>
+                </div>
+                <div className="bg-gray-500/50 py-1 text-center text-xs">
+                  总体情况
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -1147,72 +1168,288 @@ function TenderList() {
   const tenderList = useMapStore((state) => state.tenderList);
   const tenderListVisible = useMapStore((state) => state.tenderListVisible);
   const map = useMapStore((state) => state.map);
+  const selectedTender = useMapStore((state) => state.selectedTender);
+  const [hovering, setHovering] = React.useState(0);
+
+  React.useEffect(() => {
+    return () => {
+      setHovering(0);
+    };
+  }, []);
 
   return (
-    <div
-      className={cn(
-        "absolute left-4 top-14 h-full w-[440px] space-y-2 transition",
-        !tenderListVisible && "-translate-x-[110%]",
-      )}
-    >
-      <Card
+    <>
+      <div
         className={cn(
-          "h-[91.5dvh] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+          "absolute left-4 top-14 h-full w-[440px] space-y-2 transition",
+          !selectedTender && "-translate-x-[110%]",
         )}
       >
-        <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-          項目列表
-        </CardHeader>
+        <Card
+          className={cn(
+            "h-[90vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+          )}
+        >
+          <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+            <div className="flex items-center justify-between">
+              项目明细
+              <button
+                onClick={() => {
+                  useMapStore.setState({
+                    selectedTender: null,
+                    tenderListVisible: true,
+                  });
+                }}
+              >
+                <X />
+              </button>
+            </div>
+          </CardHeader>
 
-        <CardContent className="h-full">
-          <ScrollArea className="h-full pb-6 pt-4">
-            <div className="space-y-4 pr-2">
-              {tenderList.map((tender) => (
-                <div
-                  key={tender?.id}
-                  className="flex cursor-pointer gap-x-4 rounded-md p-2 hover:bg-brand/50"
+          <CardContent className="h-full py-4">
+            <img
+              src={
+                "https://830bi.3311csci.com/images/%E5%95%86%E6%9C%BA-20241028-148-1037085765626.png"
+              }
+              className="aspect-[16/9] rounded"
+              alt={selectedTender?.name}
+            />
+            <Tabs
+              key={selectedTender?.id}
+              defaultValue="detail"
+              className="mt-4 w-full"
+            >
+              <TabsList className="grid w-full grid-cols-3 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 text-white">
+                <TabsTrigger
+                  value="detail"
+                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
                 >
-                  <div className="w-[40%]">
-                    <img
-                      src={
-                        "https://830bi.3311csci.com/images/%E5%95%86%E6%9C%BA-20241028-148-1037085765626.png"
-                      }
-                      alt={tender?.name}
-                      className="aspect-[16/9] rounded"
-                    />
+                  基本信息
+                </TabsTrigger>
+                <TabsTrigger
+                  value="rating"
+                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
+                >
+                  项目评分
+                </TabsTrigger>
+                <TabsTrigger
+                  value="follow-up"
+                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
+                >
+                  跟进情况
+                </TabsTrigger>
+              </TabsList>
+              <ScrollArea className="h-[500px]">
+                <TabsContent value="detail" className="mt-4 space-y-2">
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">项目名称</div>
+                    <div className="col-span-2">{selectedTender?.name}</div>
                   </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">项目地址</div>
+                    <div className="col-span-2">
+                      {selectedTender?.fullAddress}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">业主单位</div>
+                    <div className="col-span-2">
+                      {selectedTender?.customer?.name || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">总包单位</div>
+                    <div className="col-span-2">
+                      {selectedTender?.contractor || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">业主类型</div>
+                    <div className="col-span-2">
+                      {ownerType(selectedTender?.customer?.ownerType) || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">设计单位</div>
+                    <div className="col-span-2">
+                      {selectedTender?.designUnit || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">预计金额</div>
+                    <div className="col-span-2">
+                      {selectedTender?.estimatedAmount
+                        ? `${fixAmount(selectedTender?.estimatedAmount)} 亿`
+                        : "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">幕墙顾问</div>
+                    <div className="col-span-2">
+                      {selectedTender?.facadeConsultant || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">咨询公司</div>
+                    <div className="col-span-2">
+                      {selectedTender?.consultingFirm || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">招标代理</div>
+                    <div className="col-span-2">
+                      {selectedTender?.tenderingAgency || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">招标形式</div>
+                    <div className="col-span-2">
+                      {selectedTender?.tenderForm || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">预计招标日期</div>
+                    <div className="col-span-2">
+                      {selectedTender?.tenderDate
+                        ? new Date(
+                            selectedTender.tenderDate,
+                          ).toLocaleDateString()
+                        : "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">合同形式</div>
+                    <div className="col-span-2">
+                      {selectedTender?.contractForm || "-"}
+                    </div>
+                  </div>
+                </TabsContent>
+                <TabsContent value="rating" className="mt-4 space-y-2">
+                  <TenderRatingChart
+                    sizeAndValueRating={selectedTender?.sizeAndValueRating}
+                    creditAndPaymentRating={
+                      selectedTender?.creditAndPaymentRating
+                    }
+                    timeLimitRating={selectedTender?.timeLimitRating}
+                    customerRelationshipRating={
+                      selectedTender?.customerRelationshipRating
+                    }
+                    competitivePartnershipRating={
+                      selectedTender?.competitivePartnershipRating
+                    }
+                  />
+                  <div className="mt-8 grid grid-cols-3">
+                    <div className="text-gray-400">规模及价值</div>
+                    <div className="col-span-2 text-right">
+                      {selectedTender?.sizeAndValueRating || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">资信及付款</div>
+                    <div className="col-span-2 text-right">
+                      {selectedTender?.creditAndPaymentRating || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">中标原则及时限</div>
+                    <div className="col-span-2 text-right">
+                      {selectedTender?.timeLimitRating || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">客情关系</div>
+                    <div className="col-span-2 text-right">
+                      {selectedTender?.customerRelationshipRating || "-"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="text-gray-400">竞争合作关系</div>
+                    <div className="col-span-2 text-right">
+                      {selectedTender?.competitivePartnershipRating || "-"}
+                    </div>
+                  </div>
+                </TabsContent>
+              </ScrollArea>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div
+        className={cn(
+          "absolute left-4 top-14 h-full w-[440px] space-y-2 transition",
+          !tenderListVisible && "-translate-x-[110%]",
+        )}
+      >
+        <Card
+          className={cn(
+            "h-[90vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+          )}
+        >
+          <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+            项目例表
+          </CardHeader>
+
+          <CardContent className="h-full px-0">
+            <ScrollArea className="h-full pb-6 pt-2">
+              <div className="space-y-4 px-4 pt-2">
+                {tenderList.map((tender, i) => (
                   <div
-                    className="w-[60%] space-y-2 py-1"
-                    onMouseEnter={(e) => {
-                      if (tender.geoCoordinate?.coordinates) {
-                        map?.setCenter(
-                          tender.geoCoordinate.coordinates as AMap.LngLatLike,
-                          false,
-                          600,
-                        );
-                      }
-                    }}
+                    key={tender?.id}
+                    className={cn(
+                      "flex cursor-pointer items-center gap-x-4 rounded-md p-2 hover:bg-brand/50",
+                      hovering === i && "ring ring-white",
+                    )}
                   >
-                    <h3 className="line-clamp-1 font-bold">{tender?.name}</h3>
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="text-gray-300">預計招標日期</div>
-                      <div>
-                        {tender?.tenderDate
-                          ? new Date(tender?.tenderDate).toLocaleDateString()
-                          : "-"}
+                    <div className="w-[40%]">
+                      <img
+                        src={
+                          "https://830bi.3311csci.com/images/%E5%95%86%E6%9C%BA-20241028-148-1037085765626.png"
+                        }
+                        alt={tender?.name}
+                        className="aspect-[16/9] rounded"
+                      />
+                    </div>
+                    <div
+                      className="w-[60%] space-y-2 py-1"
+                      onMouseEnter={(e) => {
+                        if (tender.geoCoordinate?.coordinates) {
+                          map?.setCenter(
+                            tender.geoCoordinate.coordinates as AMap.LngLatLike,
+                            false,
+                            600,
+                          );
+                          setHovering(i);
+                        }
+                      }}
+                      onClick={() => {
+                        useMapStore.setState({
+                          tenderListVisible: false,
+                          selectedTender: tender,
+                        });
+                      }}
+                    >
+                      <h3 className="line-clamp-1 font-bold">{tender?.name}</h3>
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="text-gray-300">预计招标日期</div>
+                        <div>
+                          {tender?.tenderDate
+                            ? new Date(tender?.tenderDate).toLocaleDateString()
+                            : "-"}
+                        </div>
+                      </div>
+                      <div className="flex items-baseline justify-between text-sm">
+                        <div className="text-gray-300">招标形式</div>
+                        <div>{tender?.tenderForm || "-"}</div>
                       </div>
                     </div>
-                    <div className="flex items-baseline justify-between text-sm">
-                      <div className="text-gray-300">招標形式</div>
-                      <div>{tender?.tenderForm || "-"}</div>
-                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
-    </div>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

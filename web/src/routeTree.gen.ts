@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AccessDeniedImport } from './routes/access-denied'
 import { Route as authImport } from './routes/__auth'
 import { Route as authSessionImport } from './routes/__auth/session'
 import { Route as authmapImport } from './routes/__auth/__map'
@@ -36,6 +37,12 @@ const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+
+const AccessDeniedRoute = AccessDeniedImport.update({
+  id: '/access-denied',
+  path: '/access-denied',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const authRoute = authImport
   .update({
@@ -129,6 +136,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authImport
+      parentRoute: typeof rootRoute
+    }
+    '/access-denied': {
+      id: '/access-denied'
+      path: '/access-denied'
+      fullPath: '/access-denied'
+      preLoaderRoute: typeof AccessDeniedImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -262,6 +276,7 @@ const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof authmapRouteWithChildren
+  '/access-denied': typeof AccessDeniedRoute
   '/login': typeof LoginLazyRoute
   '/session': typeof authSessionRoute
   '/h2': typeof authimapH2Route
@@ -275,6 +290,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof authimapRouteWithChildren
+  '/access-denied': typeof AccessDeniedRoute
   '/login': typeof LoginLazyRoute
   '/session': typeof authSessionRoute
   '/h2': typeof authimapH2Route
@@ -289,6 +305,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/__auth': typeof authRouteWithChildren
+  '/access-denied': typeof AccessDeniedRoute
   '/login': typeof LoginLazyRoute
   '/__auth/__imap': typeof authimapRouteWithChildren
   '/__auth/__map': typeof authmapRouteWithChildren
@@ -306,6 +323,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/access-denied'
     | '/login'
     | '/session'
     | '/h2'
@@ -318,6 +336,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
+    | '/access-denied'
     | '/login'
     | '/session'
     | '/h2'
@@ -330,6 +349,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/__auth'
+    | '/access-denied'
     | '/login'
     | '/__auth/__imap'
     | '/__auth/__map'
@@ -346,11 +366,13 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   authRoute: typeof authRouteWithChildren
+  AccessDeniedRoute: typeof AccessDeniedRoute
   LoginLazyRoute: typeof LoginLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   authRoute: authRouteWithChildren,
+  AccessDeniedRoute: AccessDeniedRoute,
   LoginLazyRoute: LoginLazyRoute,
 }
 
@@ -365,6 +387,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/__auth",
+        "/access-denied",
         "/login"
       ]
     },
@@ -375,6 +398,9 @@ export const routeTree = rootRoute
         "/__auth/__map",
         "/__auth/session"
       ]
+    },
+    "/access-denied": {
+      "filePath": "access-denied.tsx"
     },
     "/login": {
       "filePath": "login.lazy.tsx"
