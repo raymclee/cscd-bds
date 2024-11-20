@@ -1056,7 +1056,7 @@ function AmountBoard() {
             <span className="text-4xl font-black text-white">
               {wacky_round(totalAmount || 0, 2)}
             </span>
-            <span className="large-screen:block hidden font-medium text-brand">
+            <span className="hidden font-medium text-brand large-screen:block">
               亿元
             </span>
           </div>
@@ -1194,7 +1194,7 @@ function TenderList() {
                     }}
                   >
                     <h3 className="line-clamp-1 font-bold">{tender?.name}</h3>
-                    <div className="flex items-baseline justify-between text-sm">
+                    <div className="flex items-center justify-between text-sm">
                       <div className="text-gray-300">預計招標日期</div>
                       <div>
                         {tender?.tenderDate

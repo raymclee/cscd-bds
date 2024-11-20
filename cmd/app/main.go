@@ -7,6 +7,7 @@ import (
 	"cscd-bds/session"
 	"cscd-bds/store"
 	"cscd-bds/web"
+	"fmt"
 	"net/http"
 
 	"entgo.io/contrib/entgql"
@@ -32,6 +33,7 @@ func main() {
 	)
 
 	if config.IsProd {
+		e.Use(middleware.Secure())
 		e.Use(
 			middleware.Gzip(),
 			middleware.StaticWithConfig(middleware.StaticConfig{
@@ -62,5 +64,6 @@ func main() {
 	projectedApiV1 := protected.Group("/api/v1")
 	projectedApiV1.GET("/session", h.GetSessionHandler)
 
+	fmt.Println("isProd:", config.IsProd)
 	e.Start(":3000")
 }
