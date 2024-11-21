@@ -1,4 +1,4 @@
-import { Maybe } from "~/graphql/graphql";
+import { Maybe, Tender } from "~/graphql/graphql";
 
 export function ownerType(typ: Maybe<number> | undefined): string {
   if (!typ) {
@@ -23,4 +23,19 @@ export function fixAmount(amount: Maybe<number> | undefined): number {
     return 0;
   }
   return Number((Math.abs(Number(amount)) / 1.0e8).toFixed(2));
+}
+
+export function findTenderWithLevel(
+  adcode: number,
+  level: string,
+  tenders: Partial<Tender>[],
+) {
+  switch (level) {
+    case "province":
+      return tenders.filter((t) => t.province?.adcode === adcode);
+    case "city":
+      return tenders.filter((t) => t.city?.adcode === adcode);
+    case "district":
+      return tenders.filter((t) => t.district?.adcode === adcode);
+  }
 }

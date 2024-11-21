@@ -5,7 +5,7 @@ import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
-import { DashboardCard } from "~/components/dasboard-card";
+import { DashboardTenderList } from "~/components/dashboard-tender-list";
 import { NewTenderBoard } from "~/components/new-tender-card";
 import { RankingListChart } from "~/components/ranking-list-chart";
 import { TenderRatingChart } from "~/components/tender-rating-chart";
@@ -20,32 +20,16 @@ import {
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Tender } from "~/graphql/graphql";
 import { colors, getDistrictColor } from "~/lib/color";
-import { fixAmount, ownerType } from "~/lib/helper";
+import { findTenderWithLevel, fixAmount, ownerType } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
 
 export const Route = createLazyFileRoute("/__auth/__map/")({
   component: RouteComponent,
 });
-
-const data = {
-  "1": [0.8, 1, 10],
-  "2": [4, 5, 20],
-  "3": [6, 7, 25],
-  "4": [10, 6, 30],
-  "5": [7, 3, 19],
-};
 
 const query = graphql`
   query MapIndexPageQuery {
@@ -306,11 +290,13 @@ function RouteComponent() {
 
     if (adcode === 100000) {
       for (const area of data.areas?.edges?.map((e) => e?.node) || []) {
-        const amount =
+        const amount = fixAmount(
           area?.tenders?.reduce(
-            (acc, inc) => acc + inc.estimatedAmount! / 100000000,
+            (acc, inc) =>
+              inc?.estimatedAmount ? acc + inc.estimatedAmount : acc,
             0,
-          ) || 0;
+          ),
+        );
 
         //@ts-expect-error
         const marker = new AMapUI.SimpleMarker({
@@ -325,7 +311,7 @@ function RouteComponent() {
                     项目:<span class="ml-1 font-bold text-lg">${area?.tenders?.length}</span>
                   </div>
                   <div>
-                    金额:<span class="mx-1 font-bold text-lg">${wacky_round(amount, 2)}</span>亿
+                    金额:<span class="mx-1 font-bold text-lg">${amount}</span>亿
                   </div>
                 </div>
                 <div></div>
@@ -656,12 +642,11 @@ function RouteComponent() {
       .filter(Boolean);
 
     const projectCount = tenderWithInLocation?.length || 0;
-    const projectAmount = wacky_round(
+    const projectAmount = fixAmount(
       tenderWithInLocation?.reduce(
-        (acc, inc) => acc + inc?.estimatedAmount! / 100000000,
+        (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
         0,
-      ) || 0,
-      2,
+      ),
     );
 
     // if (projectCount < 0) {
@@ -764,7 +749,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="relative max-h-dvh min-h-dvh overflow-hidden bg-dashboard bg-no-repeat">
+    <div className="relative min-h-screen overflow-hidden">
       <div id="map" className="absolute inset-0"></div>
 
       <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
@@ -952,68 +937,11 @@ function RouteComponent() {
 
           <RankingListChart />
 
-          <DashboardCard title="项目例表">
-            <ScrollArea className="h-full px-4">
-              <Table className="my-4 h-full">
-                {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-                <TableHeader className="bg-brand/10">
-                  <TableRow className="items-center">
-                    <TableHead className="w-[55px] text-[0.7rem] text-gray-300">
-                      序号
-                    </TableHead>
-                    <TableHead className="text-[0.7rem] text-gray-300">
-                      名称
-                    </TableHead>
-                    <TableHead className="w-[80px] text-[0.7rem] text-gray-300">
-                      区域
-                    </TableHead>
-                    <TableHead className="w-[60px] text-right text-[0.7rem] text-gray-300">
-                      金额
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody className="text-xs text-white">
-                  {(selectedArea
-                    ? selectedArea.tenders || []
-                    : data?.areas?.edges
-                      ? data.areas.edges?.flatMap((e) => e?.node?.tenders) || []
-                      : []
-                  ).map((tender, i) => (
-                    <TableRow key={tender?.id}>
-                      <TableCell>{i + 1}</TableCell>
-                      <TableCell className="line-clamp-1 flex items-center text-ellipsis font-medium">
-                        {tender?.name}
-                      </TableCell>
-                      <TableCell>{tender?.area.name}</TableCell>
-                      <TableCell className="text-right">
-                        {/* {new Intl.NumberFormat("zh-Hans-CN", {
-                            style: "currency",
-                            currency: "CNY",
-                            trailingZeroDisplay: "auto",
-                            maximumSignificantDigits: 2,
-                            compactDisplay: "short",
-                            unitDisplay: "short",
-                          }).format(tender?.estimatedAmount! / 100000000)} */}
-                        {fixAmount(tender?.estimatedAmount)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
-          </DashboardCard>
+          <DashboardTenderList data={data} />
         </div>
       </div>
     </div>
   );
-}
-
-function wacky_round(number: number, places: number) {
-  let multiplier = Math.pow(10, places + 2); // get two extra digits
-  let fixed = Math.floor(number * multiplier); // convert to integer
-  fixed += 44; // round down on anything less than x.xxx56
-  fixed = Math.floor(fixed / 100); // chop off last 2 digits
-  return fixed / Math.pow(10, places);
 }
 
 function getDistrictZoomLevel(id: string) {
@@ -1059,9 +987,11 @@ function AmountBoard() {
         ? selectedArea?.tenders
         : allTenders;
 
-  const totalAmount = tenders?.reduce(
-    (acc, inc) => acc + inc?.estimatedAmount! / 100000000,
-    0,
+  const totalAmount = fixAmount(
+    tenders?.reduce(
+      (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
+      0,
+    ),
   );
 
   const tenderCount = tenders?.length || 0;
@@ -1086,7 +1016,7 @@ function AmountBoard() {
             <div className="flex items-baseline gap-1">
               <span className="text-4xl font-black text-white">¥</span>
               <span className="text-4xl font-black text-white">
-                {wacky_round(totalAmount || 0, 2)}
+                {totalAmount}
               </span>
               <span className="hidden font-medium text-brand large-screen:block">
                 亿元
@@ -1114,13 +1044,13 @@ function AmountBoard() {
                   key={status}
                   className="mt-2 flex items-center justify-between gap-x-4"
                 >
-                  <div className="w-[5rem]">{status}</div>
-                  <div className="text-white">{count}</div>
+                  <div className="w-24">{status}</div>
+                  <div className="w-8 text-white">{count}</div>
                   <Progress
                     value={percentage}
-                    className="h-2 w-[70%] text-brand"
+                    className="h-2 w-[80%] text-brand"
                   />
-                  <div>{percentage}%</div>
+                  <div className="w-12 text-right">{percentage}%</div>
                 </div>
               );
             })}
@@ -1133,7 +1063,7 @@ function AmountBoard() {
               <div className="flex h-full flex-col rounded">
                 <div className="flex flex-1 items-center justify-center gap-1">
                   <span className="text-3xl font-bold">
-                    {wacky_round(processingAmount, 2)}
+                    {fixAmount(processingAmount)}
                   </span>
                   <span className="pt-2 font-medium text-brand">亿元</span>
                 </div>
@@ -1159,21 +1089,6 @@ function AmountBoard() {
       </CardContent>
     </Card>
   );
-}
-
-function findTenderWithLevel(
-  adcode: number,
-  level: string,
-  tenders: Partial<Tender>[],
-) {
-  switch (level) {
-    case "province":
-      return tenders.filter((t) => t.province?.adcode === adcode);
-    case "city":
-      return tenders.filter((t) => t.city?.adcode === adcode);
-    case "district":
-      return tenders.filter((t) => t.district?.adcode === adcode);
-  }
 }
 
 function TenderList() {
@@ -1402,12 +1317,12 @@ function TenderList() {
 
           <CardContent className="h-full px-0">
             <ScrollArea className="h-full pb-6 pt-2">
-              <div className="space-y-4 px-4 pt-2">
+              <div className="space-y-4 px-4 py-2">
                 {tenderList.map((tender, i) => (
                   <div
                     key={tender?.id}
                     className={cn(
-                      "flex cursor-pointer items-center gap-x-4 rounded-md p-2 hover:bg-brand/50",
+                      "flex cursor-pointer items-center gap-x-4 rounded-md p-2 transition-shadow hover:bg-brand/50",
                       hovering === i && "ring ring-white",
                     )}
                   >
