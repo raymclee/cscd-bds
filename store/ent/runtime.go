@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"time"
 )
 
@@ -294,4 +295,37 @@ func init() {
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.
 	user.DefaultID = userDescID.Default.(func() xid.ID)
+	visitrecordMixin := schema.VisitRecord{}.Mixin()
+	visitrecordMixinFields0 := visitrecordMixin[0].Fields()
+	_ = visitrecordMixinFields0
+	visitrecordMixinFields1 := visitrecordMixin[1].Fields()
+	_ = visitrecordMixinFields1
+	visitrecordFields := schema.VisitRecord{}.Fields()
+	_ = visitrecordFields
+	// visitrecordDescCreatedAt is the schema descriptor for created_at field.
+	visitrecordDescCreatedAt := visitrecordMixinFields1[0].Descriptor()
+	// visitrecord.DefaultCreatedAt holds the default value on creation for the created_at field.
+	visitrecord.DefaultCreatedAt = visitrecordDescCreatedAt.Default.(func() time.Time)
+	// visitrecordDescUpdatedAt is the schema descriptor for updated_at field.
+	visitrecordDescUpdatedAt := visitrecordMixinFields1[1].Descriptor()
+	// visitrecord.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	visitrecord.DefaultUpdatedAt = visitrecordDescUpdatedAt.Default.(func() time.Time)
+	// visitrecord.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	visitrecord.UpdateDefaultUpdatedAt = visitrecordDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// visitrecordDescVisitType is the schema descriptor for visit_type field.
+	visitrecordDescVisitType := visitrecordFields[0].Descriptor()
+	// visitrecord.DefaultVisitType holds the default value on creation for the visit_type field.
+	visitrecord.DefaultVisitType = visitrecordDescVisitType.Default.(int)
+	// visitrecordDescCommPeople is the schema descriptor for comm_people field.
+	visitrecordDescCommPeople := visitrecordFields[1].Descriptor()
+	// visitrecord.CommPeopleValidator is a validator for the "comm_people" field. It is called by the builders before save.
+	visitrecord.CommPeopleValidator = visitrecordDescCommPeople.Validators[0].(func(string) error)
+	// visitrecordDescCommContent is the schema descriptor for comm_content field.
+	visitrecordDescCommContent := visitrecordFields[2].Descriptor()
+	// visitrecord.CommContentValidator is a validator for the "comm_content" field. It is called by the builders before save.
+	visitrecord.CommContentValidator = visitrecordDescCommContent.Validators[0].(func(string) error)
+	// visitrecordDescID is the schema descriptor for id field.
+	visitrecordDescID := visitrecordMixinFields0[0].Descriptor()
+	// visitrecord.DefaultID holds the default value on creation for the id field.
+	visitrecord.DefaultID = visitrecordDescID.Default.(func() xid.ID)
 }

@@ -138,6 +138,7 @@ type ComplexityRoot struct {
 		Size                  func(childComplexity int) int
 		Tenders               func(childComplexity int) int
 		UpdatedAt             func(childComplexity int) int
+		VisitRecords          func(childComplexity int) int
 	}
 
 	CustomerConnection struct {
@@ -225,17 +226,18 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Areas     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
-		Cities    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) int
-		Countries func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) int
-		Customers func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
-		Districts func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) int
-		Node      func(childComplexity int, id xid.ID) int
-		Nodes     func(childComplexity int, ids []xid.ID) int
-		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) int
-		Session   func(childComplexity int) int
-		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
-		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
+		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
+		Cities       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) int
+		Countries    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) int
+		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) int
+		Districts    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) int
+		Node         func(childComplexity int, id xid.ID) int
+		Nodes        func(childComplexity int, ids []xid.ID) int
+		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) int
+		Session      func(childComplexity int) int
+		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
+		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
+		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.VisitRecordWhereInput) int
 	}
 
 	Session struct {
@@ -307,6 +309,7 @@ type ComplexityRoot struct {
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
 		UpdatedAt                            func(childComplexity int) int
+		VisitRecords                         func(childComplexity int) int
 	}
 
 	TenderConnection struct {
@@ -321,21 +324,22 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
-		Areas       func(childComplexity int) int
-		AvatarURL   func(childComplexity int) int
-		CreatedAt   func(childComplexity int) int
-		Customers   func(childComplexity int) int
-		Disabled    func(childComplexity int) int
-		Email       func(childComplexity int) int
-		ID          func(childComplexity int) int
-		Leader      func(childComplexity int) int
-		LeaderID    func(childComplexity int) int
-		Name        func(childComplexity int) int
-		OpenID      func(childComplexity int) int
-		TeamMembers func(childComplexity int) int
-		Tenders     func(childComplexity int) int
-		UpdatedAt   func(childComplexity int) int
-		Username    func(childComplexity int) int
+		Areas        func(childComplexity int) int
+		AvatarURL    func(childComplexity int) int
+		CreatedAt    func(childComplexity int) int
+		Customers    func(childComplexity int) int
+		Disabled     func(childComplexity int) int
+		Email        func(childComplexity int) int
+		ID           func(childComplexity int) int
+		Leader       func(childComplexity int) int
+		LeaderID     func(childComplexity int) int
+		Name         func(childComplexity int) int
+		OpenID       func(childComplexity int) int
+		TeamMembers  func(childComplexity int) int
+		Tenders      func(childComplexity int) int
+		UpdatedAt    func(childComplexity int) int
+		Username     func(childComplexity int) int
+		VisitRecords func(childComplexity int) int
 	}
 
 	UserConnection struct {
@@ -345,6 +349,33 @@ type ComplexityRoot struct {
 	}
 
 	UserEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	VisitRecord struct {
+		CommContent func(childComplexity int) int
+		CommPeople  func(childComplexity int) int
+		CreatedAt   func(childComplexity int) int
+		Customer    func(childComplexity int) int
+		CustomerID  func(childComplexity int) int
+		Date        func(childComplexity int) int
+		FollowUpBys func(childComplexity int) int
+		ID          func(childComplexity int) int
+		NextStep    func(childComplexity int) int
+		Tender      func(childComplexity int) int
+		TenderID    func(childComplexity int) int
+		UpdatedAt   func(childComplexity int) int
+		VisitType   func(childComplexity int) int
+	}
+
+	VisitRecordConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	VisitRecordEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
 	}
@@ -795,6 +826,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Customer.UpdatedAt(childComplexity), true
+
+	case "Customer.visitRecords":
+		if e.complexity.Customer.VisitRecords == nil {
+			break
+		}
+
+		return e.complexity.Customer.VisitRecords(childComplexity), true
 
 	case "CustomerConnection.edges":
 		if e.complexity.CustomerConnection.Edges == nil {
@@ -1300,6 +1338,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.UserWhereInput)), true
 
+	case "Query.visitRecords":
+		if e.complexity.Query.VisitRecords == nil {
+			break
+		}
+
+		args, err := ec.field_Query_visitRecords_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.VisitRecordWhereInput)), true
+
 	case "Session.avatarUrl":
 		if e.complexity.Session.AvatarURL == nil {
 			break
@@ -1755,6 +1805,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.UpdatedAt(childComplexity), true
 
+	case "Tender.visitRecords":
+		if e.complexity.Tender.VisitRecords == nil {
+			break
+		}
+
+		return e.complexity.Tender.VisitRecords(childComplexity), true
+
 	case "TenderConnection.edges":
 		if e.complexity.TenderConnection.Edges == nil {
 			break
@@ -1895,6 +1952,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Username(childComplexity), true
 
+	case "User.visitRecords":
+		if e.complexity.User.VisitRecords == nil {
+			break
+		}
+
+		return e.complexity.User.VisitRecords(childComplexity), true
+
 	case "UserConnection.edges":
 		if e.complexity.UserConnection.Edges == nil {
 			break
@@ -1930,6 +1994,132 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.UserEdge.Node(childComplexity), true
 
+	case "VisitRecord.commContent":
+		if e.complexity.VisitRecord.CommContent == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.CommContent(childComplexity), true
+
+	case "VisitRecord.commPeople":
+		if e.complexity.VisitRecord.CommPeople == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.CommPeople(childComplexity), true
+
+	case "VisitRecord.createdAt":
+		if e.complexity.VisitRecord.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.CreatedAt(childComplexity), true
+
+	case "VisitRecord.customer":
+		if e.complexity.VisitRecord.Customer == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.Customer(childComplexity), true
+
+	case "VisitRecord.customerID":
+		if e.complexity.VisitRecord.CustomerID == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.CustomerID(childComplexity), true
+
+	case "VisitRecord.date":
+		if e.complexity.VisitRecord.Date == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.Date(childComplexity), true
+
+	case "VisitRecord.followupbys":
+		if e.complexity.VisitRecord.FollowUpBys == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.FollowUpBys(childComplexity), true
+
+	case "VisitRecord.id":
+		if e.complexity.VisitRecord.ID == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.ID(childComplexity), true
+
+	case "VisitRecord.nextStep":
+		if e.complexity.VisitRecord.NextStep == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.NextStep(childComplexity), true
+
+	case "VisitRecord.tender":
+		if e.complexity.VisitRecord.Tender == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.Tender(childComplexity), true
+
+	case "VisitRecord.tenderID":
+		if e.complexity.VisitRecord.TenderID == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.TenderID(childComplexity), true
+
+	case "VisitRecord.updatedAt":
+		if e.complexity.VisitRecord.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.UpdatedAt(childComplexity), true
+
+	case "VisitRecord.visitType":
+		if e.complexity.VisitRecord.VisitType == nil {
+			break
+		}
+
+		return e.complexity.VisitRecord.VisitType(childComplexity), true
+
+	case "VisitRecordConnection.edges":
+		if e.complexity.VisitRecordConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.VisitRecordConnection.Edges(childComplexity), true
+
+	case "VisitRecordConnection.pageInfo":
+		if e.complexity.VisitRecordConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.VisitRecordConnection.PageInfo(childComplexity), true
+
+	case "VisitRecordConnection.totalCount":
+		if e.complexity.VisitRecordConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.VisitRecordConnection.TotalCount(childComplexity), true
+
+	case "VisitRecordEdge.cursor":
+		if e.complexity.VisitRecordEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.VisitRecordEdge.Cursor(childComplexity), true
+
+	case "VisitRecordEdge.node":
+		if e.complexity.VisitRecordEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.VisitRecordEdge.Node(childComplexity), true
+
 	}
 	return 0, false
 }
@@ -1949,6 +2139,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateProvinceInput,
 		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
+		ec.unmarshalInputCreateVisitRecordInput,
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputDistrictWhereInput,
 		ec.unmarshalInputProvinceWhereInput,
@@ -1961,7 +2152,9 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateProvinceInput,
 		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
+		ec.unmarshalInputUpdateVisitRecordInput,
 		ec.unmarshalInputUserWhereInput,
+		ec.unmarshalInputVisitRecordWhereInput,
 	)
 	first := true
 
@@ -2519,6 +2712,7 @@ input CreateCustomerInput {
   tenderIDs: [ID!]
   salesID: ID
   createdByID: ID!
+  visitRecordIDs: [ID!]
 }
 """
 CreateDistrictInput is used for create District object.
@@ -2607,6 +2801,7 @@ input CreateTenderInput {
   provinceID: ID!
   cityID: ID
   districtID: ID!
+  visitRecordIDs: [ID!]
 }
 """
 CreateUserInput is used for create User object.
@@ -2626,6 +2821,23 @@ input CreateUserInput {
   leaderID: ID
   teamMemberIDs: [ID!]
   tenderIDs: [ID!]
+  visitRecordIDs: [ID!]
+}
+"""
+CreateVisitRecordInput is used for create VisitRecord object.
+Input was generated by ent.
+"""
+input CreateVisitRecordInput {
+  createdAt: Time
+  updatedAt: Time
+  visitType: Int
+  commPeople: String!
+  commContent: String!
+  nextStep: String
+  date: Time!
+  tenderID: ID
+  customerID: ID
+  followupbyIDs: [ID!]
 }
 """
 Define a Relay Cursor type:
@@ -2651,6 +2863,7 @@ type Customer implements Node {
   tenders: [Tender!]
   sales: User
   createdBy: User!
+  visitRecords: [VisitRecord!]
 }
 """
 A connection to a list of items.
@@ -2918,6 +3131,11 @@ input CustomerWhereInput {
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
+  """
+  visit_records edge predicates
+  """
+  hasVisitRecords: Boolean
+  hasVisitRecordsWith: [VisitRecordWhereInput!]
 }
 type District implements Node {
   id: ID!
@@ -3547,6 +3765,32 @@ type Query {
     """
     where: UserWhereInput
   ): UserConnection!
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 type Tender implements Node {
   id: ID!
@@ -3609,6 +3853,7 @@ type Tender implements Node {
   province: Province!
   city: City
   district: District!
+  visitRecords: [VisitRecord!]
 }
 """
 A connection to a list of items.
@@ -4461,6 +4706,11 @@ input TenderWhereInput {
   """
   hasDistrict: Boolean
   hasDistrictWith: [DistrictWhereInput!]
+  """
+  visit_records edge predicates
+  """
+  hasVisitRecords: Boolean
+  hasVisitRecordsWith: [VisitRecordWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -4539,6 +4789,9 @@ input UpdateCustomerInput {
   salesID: ID
   clearSales: Boolean
   createdByID: ID
+  addVisitRecordIDs: [ID!]
+  removeVisitRecordIDs: [ID!]
+  clearVisitRecords: Boolean
 }
 """
 UpdateDistrictInput is used for update District object.
@@ -4675,6 +4928,9 @@ input UpdateTenderInput {
   cityID: ID
   clearCity: Boolean
   districtID: ID
+  addVisitRecordIDs: [ID!]
+  removeVisitRecordIDs: [ID!]
+  clearVisitRecords: Boolean
 }
 """
 UpdateUserInput is used for update User object.
@@ -4702,6 +4958,29 @@ input UpdateUserInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+  addVisitRecordIDs: [ID!]
+  removeVisitRecordIDs: [ID!]
+  clearVisitRecords: Boolean
+}
+"""
+UpdateVisitRecordInput is used for update VisitRecord object.
+Input was generated by ent.
+"""
+input UpdateVisitRecordInput {
+  updatedAt: Time
+  visitType: Int
+  commPeople: String
+  commContent: String
+  nextStep: String
+  clearNextStep: Boolean
+  date: Time
+  tenderID: ID
+  clearTender: Boolean
+  customerID: ID
+  clearCustomer: Boolean
+  addFollowUpByIDs: [ID!]
+  removeFollowUpByIDs: [ID!]
+  clearFollowUpBys: Boolean
 }
 type User implements Node {
   id: ID!
@@ -4719,6 +4998,7 @@ type User implements Node {
   leader: User
   teamMembers: [User!]
   tenders: [Tender!]
+  visitRecords: [VisitRecord!]
 }
 """
 A connection to a list of items.
@@ -4919,6 +5199,221 @@ input UserWhereInput {
   """
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
+  """
+  visit_records edge predicates
+  """
+  hasVisitRecords: Boolean
+  hasVisitRecordsWith: [VisitRecordWhereInput!]
+}
+type VisitRecord implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  visitType: Int!
+  commPeople: String!
+  commContent: String!
+  nextStep: String
+  date: Time!
+  tenderID: ID
+  customerID: ID
+  tender: Tender
+  customer: Customer
+  followupbys: [User!] @goField(name: "FollowUpBys", forceResolver: false)
+}
+"""
+A connection to a list of items.
+"""
+type VisitRecordConnection {
+  """
+  A list of edges.
+  """
+  edges: [VisitRecordEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type VisitRecordEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: VisitRecord
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+VisitRecordWhereInput is used for filtering VisitRecord objects.
+Input was generated by ent.
+"""
+input VisitRecordWhereInput {
+  not: VisitRecordWhereInput
+  and: [VisitRecordWhereInput!]
+  or: [VisitRecordWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  visit_type field predicates
+  """
+  visitType: Int
+  visitTypeNEQ: Int
+  visitTypeIn: [Int!]
+  visitTypeNotIn: [Int!]
+  visitTypeGT: Int
+  visitTypeGTE: Int
+  visitTypeLT: Int
+  visitTypeLTE: Int
+  """
+  comm_people field predicates
+  """
+  commPeople: String
+  commPeopleNEQ: String
+  commPeopleIn: [String!]
+  commPeopleNotIn: [String!]
+  commPeopleGT: String
+  commPeopleGTE: String
+  commPeopleLT: String
+  commPeopleLTE: String
+  commPeopleContains: String
+  commPeopleHasPrefix: String
+  commPeopleHasSuffix: String
+  commPeopleEqualFold: String
+  commPeopleContainsFold: String
+  """
+  comm_content field predicates
+  """
+  commContent: String
+  commContentNEQ: String
+  commContentIn: [String!]
+  commContentNotIn: [String!]
+  commContentGT: String
+  commContentGTE: String
+  commContentLT: String
+  commContentLTE: String
+  commContentContains: String
+  commContentHasPrefix: String
+  commContentHasSuffix: String
+  commContentEqualFold: String
+  commContentContainsFold: String
+  """
+  next_step field predicates
+  """
+  nextStep: String
+  nextStepNEQ: String
+  nextStepIn: [String!]
+  nextStepNotIn: [String!]
+  nextStepGT: String
+  nextStepGTE: String
+  nextStepLT: String
+  nextStepLTE: String
+  nextStepContains: String
+  nextStepHasPrefix: String
+  nextStepHasSuffix: String
+  nextStepIsNil: Boolean
+  nextStepNotNil: Boolean
+  nextStepEqualFold: String
+  nextStepContainsFold: String
+  """
+  date field predicates
+  """
+  date: Time
+  dateNEQ: Time
+  dateIn: [Time!]
+  dateNotIn: [Time!]
+  dateGT: Time
+  dateGTE: Time
+  dateLT: Time
+  dateLTE: Time
+  """
+  tender_id field predicates
+  """
+  tenderID: ID
+  tenderIDNEQ: ID
+  tenderIDIn: [ID!]
+  tenderIDNotIn: [ID!]
+  tenderIDGT: ID
+  tenderIDGTE: ID
+  tenderIDLT: ID
+  tenderIDLTE: ID
+  tenderIDContains: ID
+  tenderIDHasPrefix: ID
+  tenderIDHasSuffix: ID
+  tenderIDIsNil: Boolean
+  tenderIDNotNil: Boolean
+  tenderIDEqualFold: ID
+  tenderIDContainsFold: ID
+  """
+  customer_id field predicates
+  """
+  customerID: ID
+  customerIDNEQ: ID
+  customerIDIn: [ID!]
+  customerIDNotIn: [ID!]
+  customerIDGT: ID
+  customerIDGTE: ID
+  customerIDLT: ID
+  customerIDLTE: ID
+  customerIDContains: ID
+  customerIDHasPrefix: ID
+  customerIDHasSuffix: ID
+  customerIDIsNil: Boolean
+  customerIDNotNil: Boolean
+  customerIDEqualFold: ID
+  customerIDContainsFold: ID
+  """
+  tender edge predicates
+  """
+  hasTender: Boolean
+  hasTenderWith: [TenderWhereInput!]
+  """
+  customer edge predicates
+  """
+  hasCustomer: Boolean
+  hasCustomerWith: [CustomerWhereInput!]
+  """
+  followUpBys edge predicates
+  """
+  hasFollowUpBys: Boolean
+  hasFollowUpBysWith: [UserWhereInput!]
 }
 `, BuiltIn: false},
 	{Name: "../geo_coordinate.graphql", Input: `extend type Tender {

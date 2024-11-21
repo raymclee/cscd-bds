@@ -16,6 +16,7 @@ import (
 	"cscd-bds/store/ent/schema/zht"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"sync"
@@ -34,14 +35,15 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeArea     = "Area"
-	TypeCity     = "City"
-	TypeCountry  = "Country"
-	TypeCustomer = "Customer"
-	TypeDistrict = "District"
-	TypeProvince = "Province"
-	TypeTender   = "Tender"
-	TypeUser     = "User"
+	TypeArea        = "Area"
+	TypeCity        = "City"
+	TypeCountry     = "Country"
+	TypeCustomer    = "Customer"
+	TypeDistrict    = "District"
+	TypeProvince    = "Province"
+	TypeTender      = "Tender"
+	TypeUser        = "User"
+	TypeVisitRecord = "VisitRecord"
 )
 
 // AreaMutation represents an operation that mutates the Area nodes in the graph.
@@ -2588,6 +2590,9 @@ type CustomerMutation struct {
 	clearedsales            bool
 	created_by              *xid.ID
 	clearedcreated_by       bool
+	visit_records           map[xid.ID]struct{}
+	removedvisit_records    map[xid.ID]struct{}
+	clearedvisit_records    bool
 	done                    bool
 	oldValue                func(context.Context) (*Customer, error)
 	predicates              []predicate.Customer
@@ -3502,6 +3507,60 @@ func (m *CustomerMutation) ResetCreatedBy() {
 	m.clearedcreated_by = false
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by ids.
+func (m *CustomerMutation) AddVisitRecordIDs(ids ...xid.ID) {
+	if m.visit_records == nil {
+		m.visit_records = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.visit_records[ids[i]] = struct{}{}
+	}
+}
+
+// ClearVisitRecords clears the "visit_records" edge to the VisitRecord entity.
+func (m *CustomerMutation) ClearVisitRecords() {
+	m.clearedvisit_records = true
+}
+
+// VisitRecordsCleared reports if the "visit_records" edge to the VisitRecord entity was cleared.
+func (m *CustomerMutation) VisitRecordsCleared() bool {
+	return m.clearedvisit_records
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to the VisitRecord entity by IDs.
+func (m *CustomerMutation) RemoveVisitRecordIDs(ids ...xid.ID) {
+	if m.removedvisit_records == nil {
+		m.removedvisit_records = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.visit_records, ids[i])
+		m.removedvisit_records[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedVisitRecords returns the removed IDs of the "visit_records" edge to the VisitRecord entity.
+func (m *CustomerMutation) RemovedVisitRecordsIDs() (ids []xid.ID) {
+	for id := range m.removedvisit_records {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// VisitRecordsIDs returns the "visit_records" edge IDs in the mutation.
+func (m *CustomerMutation) VisitRecordsIDs() (ids []xid.ID) {
+	for id := range m.visit_records {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetVisitRecords resets all changes to the "visit_records" edge.
+func (m *CustomerMutation) ResetVisitRecords() {
+	m.visit_records = nil
+	m.clearedvisit_records = false
+	m.removedvisit_records = nil
+}
+
 // Where appends a list predicates to the CustomerMutation builder.
 func (m *CustomerMutation) Where(ps ...predicate.Customer) {
 	m.predicates = append(m.predicates, ps...)
@@ -3946,7 +4005,7 @@ func (m *CustomerMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CustomerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.area != nil {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -3958,6 +4017,9 @@ func (m *CustomerMutation) AddedEdges() []string {
 	}
 	if m.created_by != nil {
 		edges = append(edges, customer.EdgeCreatedBy)
+	}
+	if m.visit_records != nil {
+		edges = append(edges, customer.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -3984,15 +4046,24 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.created_by; id != nil {
 			return []ent.Value{*id}
 		}
+	case customer.EdgeVisitRecords:
+		ids := make([]ent.Value, 0, len(m.visit_records))
+		for id := range m.visit_records {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CustomerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.removedtenders != nil {
 		edges = append(edges, customer.EdgeTenders)
+	}
+	if m.removedvisit_records != nil {
+		edges = append(edges, customer.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -4007,13 +4078,19 @@ func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case customer.EdgeVisitRecords:
+		ids := make([]ent.Value, 0, len(m.removedvisit_records))
+		for id := range m.removedvisit_records {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CustomerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.clearedarea {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -4025,6 +4102,9 @@ func (m *CustomerMutation) ClearedEdges() []string {
 	}
 	if m.clearedcreated_by {
 		edges = append(edges, customer.EdgeCreatedBy)
+	}
+	if m.clearedvisit_records {
+		edges = append(edges, customer.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -4041,6 +4121,8 @@ func (m *CustomerMutation) EdgeCleared(name string) bool {
 		return m.clearedsales
 	case customer.EdgeCreatedBy:
 		return m.clearedcreated_by
+	case customer.EdgeVisitRecords:
+		return m.clearedvisit_records
 	}
 	return false
 }
@@ -4077,6 +4159,9 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 		return nil
 	case customer.EdgeCreatedBy:
 		m.ResetCreatedBy()
+		return nil
+	case customer.EdgeVisitRecords:
+		m.ResetVisitRecords()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer edge %s", name)
@@ -6298,6 +6383,9 @@ type TenderMutation struct {
 	clearedcity                             bool
 	district                                *xid.ID
 	cleareddistrict                         bool
+	visit_records                           map[xid.ID]struct{}
+	removedvisit_records                    map[xid.ID]struct{}
+	clearedvisit_records                    bool
 	done                                    bool
 	oldValue                                func(context.Context) (*Tender, error)
 	predicates                              []predicate.Tender
@@ -9194,6 +9282,60 @@ func (m *TenderMutation) ResetDistrict() {
 	m.cleareddistrict = false
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by ids.
+func (m *TenderMutation) AddVisitRecordIDs(ids ...xid.ID) {
+	if m.visit_records == nil {
+		m.visit_records = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.visit_records[ids[i]] = struct{}{}
+	}
+}
+
+// ClearVisitRecords clears the "visit_records" edge to the VisitRecord entity.
+func (m *TenderMutation) ClearVisitRecords() {
+	m.clearedvisit_records = true
+}
+
+// VisitRecordsCleared reports if the "visit_records" edge to the VisitRecord entity was cleared.
+func (m *TenderMutation) VisitRecordsCleared() bool {
+	return m.clearedvisit_records
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to the VisitRecord entity by IDs.
+func (m *TenderMutation) RemoveVisitRecordIDs(ids ...xid.ID) {
+	if m.removedvisit_records == nil {
+		m.removedvisit_records = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.visit_records, ids[i])
+		m.removedvisit_records[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedVisitRecords returns the removed IDs of the "visit_records" edge to the VisitRecord entity.
+func (m *TenderMutation) RemovedVisitRecordsIDs() (ids []xid.ID) {
+	for id := range m.removedvisit_records {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// VisitRecordsIDs returns the "visit_records" edge IDs in the mutation.
+func (m *TenderMutation) VisitRecordsIDs() (ids []xid.ID) {
+	for id := range m.visit_records {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetVisitRecords resets all changes to the "visit_records" edge.
+func (m *TenderMutation) ResetVisitRecords() {
+	m.visit_records = nil
+	m.clearedvisit_records = false
+	m.removedvisit_records = nil
+}
+
 // Where appends a list predicates to the TenderMutation builder.
 func (m *TenderMutation) Where(ps ...predicate.Tender) {
 	m.predicates = append(m.predicates, ps...)
@@ -10512,7 +10654,7 @@ func (m *TenderMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TenderMutation) AddedEdges() []string {
-	edges := make([]string, 0, 8)
+	edges := make([]string, 0, 9)
 	if m.area != nil {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -10536,6 +10678,9 @@ func (m *TenderMutation) AddedEdges() []string {
 	}
 	if m.district != nil {
 		edges = append(edges, tender.EdgeDistrict)
+	}
+	if m.visit_records != nil {
+		edges = append(edges, tender.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -10578,15 +10723,24 @@ func (m *TenderMutation) AddedIDs(name string) []ent.Value {
 		if id := m.district; id != nil {
 			return []ent.Value{*id}
 		}
+	case tender.EdgeVisitRecords:
+		ids := make([]ent.Value, 0, len(m.visit_records))
+		for id := range m.visit_records {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TenderMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 8)
+	edges := make([]string, 0, 9)
 	if m.removedfollowing_sales != nil {
 		edges = append(edges, tender.EdgeFollowingSales)
+	}
+	if m.removedvisit_records != nil {
+		edges = append(edges, tender.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -10601,13 +10755,19 @@ func (m *TenderMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case tender.EdgeVisitRecords:
+		ids := make([]ent.Value, 0, len(m.removedvisit_records))
+		for id := range m.removedvisit_records {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TenderMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 8)
+	edges := make([]string, 0, 9)
 	if m.clearedarea {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -10632,6 +10792,9 @@ func (m *TenderMutation) ClearedEdges() []string {
 	if m.cleareddistrict {
 		edges = append(edges, tender.EdgeDistrict)
 	}
+	if m.clearedvisit_records {
+		edges = append(edges, tender.EdgeVisitRecords)
+	}
 	return edges
 }
 
@@ -10655,6 +10818,8 @@ func (m *TenderMutation) EdgeCleared(name string) bool {
 		return m.clearedcity
 	case tender.EdgeDistrict:
 		return m.cleareddistrict
+	case tender.EdgeVisitRecords:
+		return m.clearedvisit_records
 	}
 	return false
 }
@@ -10716,6 +10881,9 @@ func (m *TenderMutation) ResetEdge(name string) error {
 	case tender.EdgeDistrict:
 		m.ResetDistrict()
 		return nil
+	case tender.EdgeVisitRecords:
+		m.ResetVisitRecords()
+		return nil
 	}
 	return fmt.Errorf("unknown Tender edge %s", name)
 }
@@ -10723,35 +10891,38 @@ func (m *TenderMutation) ResetEdge(name string) error {
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op                  Op
-	typ                 string
-	id                  *xid.ID
-	created_at          *time.Time
-	updated_at          *time.Time
-	name                *string
-	email               *string
-	username            *string
-	open_id             *string
-	avatar_url          *string
-	disabled            *bool
-	clearedFields       map[string]struct{}
-	areas               map[xid.ID]struct{}
-	removedareas        map[xid.ID]struct{}
-	clearedareas        bool
-	customers           map[xid.ID]struct{}
-	removedcustomers    map[xid.ID]struct{}
-	clearedcustomers    bool
-	leader              *xid.ID
-	clearedleader       bool
-	team_members        map[xid.ID]struct{}
-	removedteam_members map[xid.ID]struct{}
-	clearedteam_members bool
-	tenders             map[xid.ID]struct{}
-	removedtenders      map[xid.ID]struct{}
-	clearedtenders      bool
-	done                bool
-	oldValue            func(context.Context) (*User, error)
-	predicates          []predicate.User
+	op                   Op
+	typ                  string
+	id                   *xid.ID
+	created_at           *time.Time
+	updated_at           *time.Time
+	name                 *string
+	email                *string
+	username             *string
+	open_id              *string
+	avatar_url           *string
+	disabled             *bool
+	clearedFields        map[string]struct{}
+	areas                map[xid.ID]struct{}
+	removedareas         map[xid.ID]struct{}
+	clearedareas         bool
+	customers            map[xid.ID]struct{}
+	removedcustomers     map[xid.ID]struct{}
+	clearedcustomers     bool
+	leader               *xid.ID
+	clearedleader        bool
+	team_members         map[xid.ID]struct{}
+	removedteam_members  map[xid.ID]struct{}
+	clearedteam_members  bool
+	tenders              map[xid.ID]struct{}
+	removedtenders       map[xid.ID]struct{}
+	clearedtenders       bool
+	visit_records        map[xid.ID]struct{}
+	removedvisit_records map[xid.ID]struct{}
+	clearedvisit_records bool
+	done                 bool
+	oldValue             func(context.Context) (*User, error)
+	predicates           []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -11438,6 +11609,60 @@ func (m *UserMutation) ResetTenders() {
 	m.removedtenders = nil
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by ids.
+func (m *UserMutation) AddVisitRecordIDs(ids ...xid.ID) {
+	if m.visit_records == nil {
+		m.visit_records = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.visit_records[ids[i]] = struct{}{}
+	}
+}
+
+// ClearVisitRecords clears the "visit_records" edge to the VisitRecord entity.
+func (m *UserMutation) ClearVisitRecords() {
+	m.clearedvisit_records = true
+}
+
+// VisitRecordsCleared reports if the "visit_records" edge to the VisitRecord entity was cleared.
+func (m *UserMutation) VisitRecordsCleared() bool {
+	return m.clearedvisit_records
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to the VisitRecord entity by IDs.
+func (m *UserMutation) RemoveVisitRecordIDs(ids ...xid.ID) {
+	if m.removedvisit_records == nil {
+		m.removedvisit_records = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.visit_records, ids[i])
+		m.removedvisit_records[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedVisitRecords returns the removed IDs of the "visit_records" edge to the VisitRecord entity.
+func (m *UserMutation) RemovedVisitRecordsIDs() (ids []xid.ID) {
+	for id := range m.removedvisit_records {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// VisitRecordsIDs returns the "visit_records" edge IDs in the mutation.
+func (m *UserMutation) VisitRecordsIDs() (ids []xid.ID) {
+	for id := range m.visit_records {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetVisitRecords resets all changes to the "visit_records" edge.
+func (m *UserMutation) ResetVisitRecords() {
+	m.visit_records = nil
+	m.clearedvisit_records = false
+	m.removedvisit_records = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -11716,7 +11941,7 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.areas != nil {
 		edges = append(edges, user.EdgeAreas)
 	}
@@ -11731,6 +11956,9 @@ func (m *UserMutation) AddedEdges() []string {
 	}
 	if m.tenders != nil {
 		edges = append(edges, user.EdgeTenders)
+	}
+	if m.visit_records != nil {
+		edges = append(edges, user.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -11767,13 +11995,19 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeVisitRecords:
+		ids := make([]ent.Value, 0, len(m.visit_records))
+		for id := range m.visit_records {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedareas != nil {
 		edges = append(edges, user.EdgeAreas)
 	}
@@ -11785,6 +12019,9 @@ func (m *UserMutation) RemovedEdges() []string {
 	}
 	if m.removedtenders != nil {
 		edges = append(edges, user.EdgeTenders)
+	}
+	if m.removedvisit_records != nil {
+		edges = append(edges, user.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -11817,13 +12054,19 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeVisitRecords:
+		ids := make([]ent.Value, 0, len(m.removedvisit_records))
+		for id := range m.removedvisit_records {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.clearedareas {
 		edges = append(edges, user.EdgeAreas)
 	}
@@ -11838,6 +12081,9 @@ func (m *UserMutation) ClearedEdges() []string {
 	}
 	if m.clearedtenders {
 		edges = append(edges, user.EdgeTenders)
+	}
+	if m.clearedvisit_records {
+		edges = append(edges, user.EdgeVisitRecords)
 	}
 	return edges
 }
@@ -11856,6 +12102,8 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedteam_members
 	case user.EdgeTenders:
 		return m.clearedtenders
+	case user.EdgeVisitRecords:
+		return m.clearedvisit_records
 	}
 	return false
 }
@@ -11890,6 +12138,1054 @@ func (m *UserMutation) ResetEdge(name string) error {
 	case user.EdgeTenders:
 		m.ResetTenders()
 		return nil
+	case user.EdgeVisitRecords:
+		m.ResetVisitRecords()
+		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)
+}
+
+// VisitRecordMutation represents an operation that mutates the VisitRecord nodes in the graph.
+type VisitRecordMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *xid.ID
+	created_at         *time.Time
+	updated_at         *time.Time
+	visit_type         *int
+	addvisit_type      *int
+	comm_people        *string
+	comm_content       *string
+	next_step          *string
+	date               *time.Time
+	clearedFields      map[string]struct{}
+	tender             *xid.ID
+	clearedtender      bool
+	customer           *xid.ID
+	clearedcustomer    bool
+	followUpBys        map[xid.ID]struct{}
+	removedfollowUpBys map[xid.ID]struct{}
+	clearedfollowUpBys bool
+	done               bool
+	oldValue           func(context.Context) (*VisitRecord, error)
+	predicates         []predicate.VisitRecord
+}
+
+var _ ent.Mutation = (*VisitRecordMutation)(nil)
+
+// visitrecordOption allows management of the mutation configuration using functional options.
+type visitrecordOption func(*VisitRecordMutation)
+
+// newVisitRecordMutation creates new mutation for the VisitRecord entity.
+func newVisitRecordMutation(c config, op Op, opts ...visitrecordOption) *VisitRecordMutation {
+	m := &VisitRecordMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeVisitRecord,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withVisitRecordID sets the ID field of the mutation.
+func withVisitRecordID(id xid.ID) visitrecordOption {
+	return func(m *VisitRecordMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *VisitRecord
+		)
+		m.oldValue = func(ctx context.Context) (*VisitRecord, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().VisitRecord.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withVisitRecord sets the old VisitRecord of the mutation.
+func withVisitRecord(node *VisitRecord) visitrecordOption {
+	return func(m *VisitRecordMutation) {
+		m.oldValue = func(context.Context) (*VisitRecord, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m VisitRecordMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m VisitRecordMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of VisitRecord entities.
+func (m *VisitRecordMutation) SetID(id xid.ID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *VisitRecordMutation) ID() (id xid.ID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *VisitRecordMutation) IDs(ctx context.Context) ([]xid.ID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []xid.ID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().VisitRecord.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *VisitRecordMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *VisitRecordMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *VisitRecordMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *VisitRecordMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *VisitRecordMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *VisitRecordMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetVisitType sets the "visit_type" field.
+func (m *VisitRecordMutation) SetVisitType(i int) {
+	m.visit_type = &i
+	m.addvisit_type = nil
+}
+
+// VisitType returns the value of the "visit_type" field in the mutation.
+func (m *VisitRecordMutation) VisitType() (r int, exists bool) {
+	v := m.visit_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldVisitType returns the old "visit_type" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldVisitType(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldVisitType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldVisitType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldVisitType: %w", err)
+	}
+	return oldValue.VisitType, nil
+}
+
+// AddVisitType adds i to the "visit_type" field.
+func (m *VisitRecordMutation) AddVisitType(i int) {
+	if m.addvisit_type != nil {
+		*m.addvisit_type += i
+	} else {
+		m.addvisit_type = &i
+	}
+}
+
+// AddedVisitType returns the value that was added to the "visit_type" field in this mutation.
+func (m *VisitRecordMutation) AddedVisitType() (r int, exists bool) {
+	v := m.addvisit_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetVisitType resets all changes to the "visit_type" field.
+func (m *VisitRecordMutation) ResetVisitType() {
+	m.visit_type = nil
+	m.addvisit_type = nil
+}
+
+// SetCommPeople sets the "comm_people" field.
+func (m *VisitRecordMutation) SetCommPeople(s string) {
+	m.comm_people = &s
+}
+
+// CommPeople returns the value of the "comm_people" field in the mutation.
+func (m *VisitRecordMutation) CommPeople() (r string, exists bool) {
+	v := m.comm_people
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCommPeople returns the old "comm_people" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldCommPeople(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCommPeople is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCommPeople requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCommPeople: %w", err)
+	}
+	return oldValue.CommPeople, nil
+}
+
+// ResetCommPeople resets all changes to the "comm_people" field.
+func (m *VisitRecordMutation) ResetCommPeople() {
+	m.comm_people = nil
+}
+
+// SetCommContent sets the "comm_content" field.
+func (m *VisitRecordMutation) SetCommContent(s string) {
+	m.comm_content = &s
+}
+
+// CommContent returns the value of the "comm_content" field in the mutation.
+func (m *VisitRecordMutation) CommContent() (r string, exists bool) {
+	v := m.comm_content
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCommContent returns the old "comm_content" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldCommContent(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCommContent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCommContent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCommContent: %w", err)
+	}
+	return oldValue.CommContent, nil
+}
+
+// ResetCommContent resets all changes to the "comm_content" field.
+func (m *VisitRecordMutation) ResetCommContent() {
+	m.comm_content = nil
+}
+
+// SetNextStep sets the "next_step" field.
+func (m *VisitRecordMutation) SetNextStep(s string) {
+	m.next_step = &s
+}
+
+// NextStep returns the value of the "next_step" field in the mutation.
+func (m *VisitRecordMutation) NextStep() (r string, exists bool) {
+	v := m.next_step
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNextStep returns the old "next_step" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldNextStep(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldNextStep is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldNextStep requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNextStep: %w", err)
+	}
+	return oldValue.NextStep, nil
+}
+
+// ClearNextStep clears the value of the "next_step" field.
+func (m *VisitRecordMutation) ClearNextStep() {
+	m.next_step = nil
+	m.clearedFields[visitrecord.FieldNextStep] = struct{}{}
+}
+
+// NextStepCleared returns if the "next_step" field was cleared in this mutation.
+func (m *VisitRecordMutation) NextStepCleared() bool {
+	_, ok := m.clearedFields[visitrecord.FieldNextStep]
+	return ok
+}
+
+// ResetNextStep resets all changes to the "next_step" field.
+func (m *VisitRecordMutation) ResetNextStep() {
+	m.next_step = nil
+	delete(m.clearedFields, visitrecord.FieldNextStep)
+}
+
+// SetDate sets the "date" field.
+func (m *VisitRecordMutation) SetDate(t time.Time) {
+	m.date = &t
+}
+
+// Date returns the value of the "date" field in the mutation.
+func (m *VisitRecordMutation) Date() (r time.Time, exists bool) {
+	v := m.date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDate returns the old "date" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+	}
+	return oldValue.Date, nil
+}
+
+// ResetDate resets all changes to the "date" field.
+func (m *VisitRecordMutation) ResetDate() {
+	m.date = nil
+}
+
+// SetTenderID sets the "tender_id" field.
+func (m *VisitRecordMutation) SetTenderID(x xid.ID) {
+	m.tender = &x
+}
+
+// TenderID returns the value of the "tender_id" field in the mutation.
+func (m *VisitRecordMutation) TenderID() (r xid.ID, exists bool) {
+	v := m.tender
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTenderID returns the old "tender_id" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTenderID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTenderID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTenderID: %w", err)
+	}
+	return oldValue.TenderID, nil
+}
+
+// ClearTenderID clears the value of the "tender_id" field.
+func (m *VisitRecordMutation) ClearTenderID() {
+	m.tender = nil
+	m.clearedFields[visitrecord.FieldTenderID] = struct{}{}
+}
+
+// TenderIDCleared returns if the "tender_id" field was cleared in this mutation.
+func (m *VisitRecordMutation) TenderIDCleared() bool {
+	_, ok := m.clearedFields[visitrecord.FieldTenderID]
+	return ok
+}
+
+// ResetTenderID resets all changes to the "tender_id" field.
+func (m *VisitRecordMutation) ResetTenderID() {
+	m.tender = nil
+	delete(m.clearedFields, visitrecord.FieldTenderID)
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (m *VisitRecordMutation) SetCustomerID(x xid.ID) {
+	m.customer = &x
+}
+
+// CustomerID returns the value of the "customer_id" field in the mutation.
+func (m *VisitRecordMutation) CustomerID() (r xid.ID, exists bool) {
+	v := m.customer
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCustomerID returns the old "customer_id" field's value of the VisitRecord entity.
+// If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VisitRecordMutation) OldCustomerID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCustomerID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCustomerID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCustomerID: %w", err)
+	}
+	return oldValue.CustomerID, nil
+}
+
+// ClearCustomerID clears the value of the "customer_id" field.
+func (m *VisitRecordMutation) ClearCustomerID() {
+	m.customer = nil
+	m.clearedFields[visitrecord.FieldCustomerID] = struct{}{}
+}
+
+// CustomerIDCleared returns if the "customer_id" field was cleared in this mutation.
+func (m *VisitRecordMutation) CustomerIDCleared() bool {
+	_, ok := m.clearedFields[visitrecord.FieldCustomerID]
+	return ok
+}
+
+// ResetCustomerID resets all changes to the "customer_id" field.
+func (m *VisitRecordMutation) ResetCustomerID() {
+	m.customer = nil
+	delete(m.clearedFields, visitrecord.FieldCustomerID)
+}
+
+// ClearTender clears the "tender" edge to the Tender entity.
+func (m *VisitRecordMutation) ClearTender() {
+	m.clearedtender = true
+	m.clearedFields[visitrecord.FieldTenderID] = struct{}{}
+}
+
+// TenderCleared reports if the "tender" edge to the Tender entity was cleared.
+func (m *VisitRecordMutation) TenderCleared() bool {
+	return m.TenderIDCleared() || m.clearedtender
+}
+
+// TenderIDs returns the "tender" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// TenderID instead. It exists only for internal usage by the builders.
+func (m *VisitRecordMutation) TenderIDs() (ids []xid.ID) {
+	if id := m.tender; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetTender resets all changes to the "tender" edge.
+func (m *VisitRecordMutation) ResetTender() {
+	m.tender = nil
+	m.clearedtender = false
+}
+
+// ClearCustomer clears the "customer" edge to the Customer entity.
+func (m *VisitRecordMutation) ClearCustomer() {
+	m.clearedcustomer = true
+	m.clearedFields[visitrecord.FieldCustomerID] = struct{}{}
+}
+
+// CustomerCleared reports if the "customer" edge to the Customer entity was cleared.
+func (m *VisitRecordMutation) CustomerCleared() bool {
+	return m.CustomerIDCleared() || m.clearedcustomer
+}
+
+// CustomerIDs returns the "customer" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CustomerID instead. It exists only for internal usage by the builders.
+func (m *VisitRecordMutation) CustomerIDs() (ids []xid.ID) {
+	if id := m.customer; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCustomer resets all changes to the "customer" edge.
+func (m *VisitRecordMutation) ResetCustomer() {
+	m.customer = nil
+	m.clearedcustomer = false
+}
+
+// AddFollowUpByIDs adds the "followUpBys" edge to the User entity by ids.
+func (m *VisitRecordMutation) AddFollowUpByIDs(ids ...xid.ID) {
+	if m.followUpBys == nil {
+		m.followUpBys = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.followUpBys[ids[i]] = struct{}{}
+	}
+}
+
+// ClearFollowUpBys clears the "followUpBys" edge to the User entity.
+func (m *VisitRecordMutation) ClearFollowUpBys() {
+	m.clearedfollowUpBys = true
+}
+
+// FollowUpBysCleared reports if the "followUpBys" edge to the User entity was cleared.
+func (m *VisitRecordMutation) FollowUpBysCleared() bool {
+	return m.clearedfollowUpBys
+}
+
+// RemoveFollowUpByIDs removes the "followUpBys" edge to the User entity by IDs.
+func (m *VisitRecordMutation) RemoveFollowUpByIDs(ids ...xid.ID) {
+	if m.removedfollowUpBys == nil {
+		m.removedfollowUpBys = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.followUpBys, ids[i])
+		m.removedfollowUpBys[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedFollowUpBys returns the removed IDs of the "followUpBys" edge to the User entity.
+func (m *VisitRecordMutation) RemovedFollowUpBysIDs() (ids []xid.ID) {
+	for id := range m.removedfollowUpBys {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// FollowUpBysIDs returns the "followUpBys" edge IDs in the mutation.
+func (m *VisitRecordMutation) FollowUpBysIDs() (ids []xid.ID) {
+	for id := range m.followUpBys {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetFollowUpBys resets all changes to the "followUpBys" edge.
+func (m *VisitRecordMutation) ResetFollowUpBys() {
+	m.followUpBys = nil
+	m.clearedfollowUpBys = false
+	m.removedfollowUpBys = nil
+}
+
+// Where appends a list predicates to the VisitRecordMutation builder.
+func (m *VisitRecordMutation) Where(ps ...predicate.VisitRecord) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the VisitRecordMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *VisitRecordMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.VisitRecord, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *VisitRecordMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *VisitRecordMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (VisitRecord).
+func (m *VisitRecordMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *VisitRecordMutation) Fields() []string {
+	fields := make([]string, 0, 9)
+	if m.created_at != nil {
+		fields = append(fields, visitrecord.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, visitrecord.FieldUpdatedAt)
+	}
+	if m.visit_type != nil {
+		fields = append(fields, visitrecord.FieldVisitType)
+	}
+	if m.comm_people != nil {
+		fields = append(fields, visitrecord.FieldCommPeople)
+	}
+	if m.comm_content != nil {
+		fields = append(fields, visitrecord.FieldCommContent)
+	}
+	if m.next_step != nil {
+		fields = append(fields, visitrecord.FieldNextStep)
+	}
+	if m.date != nil {
+		fields = append(fields, visitrecord.FieldDate)
+	}
+	if m.tender != nil {
+		fields = append(fields, visitrecord.FieldTenderID)
+	}
+	if m.customer != nil {
+		fields = append(fields, visitrecord.FieldCustomerID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *VisitRecordMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case visitrecord.FieldCreatedAt:
+		return m.CreatedAt()
+	case visitrecord.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case visitrecord.FieldVisitType:
+		return m.VisitType()
+	case visitrecord.FieldCommPeople:
+		return m.CommPeople()
+	case visitrecord.FieldCommContent:
+		return m.CommContent()
+	case visitrecord.FieldNextStep:
+		return m.NextStep()
+	case visitrecord.FieldDate:
+		return m.Date()
+	case visitrecord.FieldTenderID:
+		return m.TenderID()
+	case visitrecord.FieldCustomerID:
+		return m.CustomerID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *VisitRecordMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case visitrecord.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case visitrecord.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case visitrecord.FieldVisitType:
+		return m.OldVisitType(ctx)
+	case visitrecord.FieldCommPeople:
+		return m.OldCommPeople(ctx)
+	case visitrecord.FieldCommContent:
+		return m.OldCommContent(ctx)
+	case visitrecord.FieldNextStep:
+		return m.OldNextStep(ctx)
+	case visitrecord.FieldDate:
+		return m.OldDate(ctx)
+	case visitrecord.FieldTenderID:
+		return m.OldTenderID(ctx)
+	case visitrecord.FieldCustomerID:
+		return m.OldCustomerID(ctx)
+	}
+	return nil, fmt.Errorf("unknown VisitRecord field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VisitRecordMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case visitrecord.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case visitrecord.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case visitrecord.FieldVisitType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetVisitType(v)
+		return nil
+	case visitrecord.FieldCommPeople:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCommPeople(v)
+		return nil
+	case visitrecord.FieldCommContent:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCommContent(v)
+		return nil
+	case visitrecord.FieldNextStep:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNextStep(v)
+		return nil
+	case visitrecord.FieldDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDate(v)
+		return nil
+	case visitrecord.FieldTenderID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTenderID(v)
+		return nil
+	case visitrecord.FieldCustomerID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCustomerID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VisitRecord field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *VisitRecordMutation) AddedFields() []string {
+	var fields []string
+	if m.addvisit_type != nil {
+		fields = append(fields, visitrecord.FieldVisitType)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *VisitRecordMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case visitrecord.FieldVisitType:
+		return m.AddedVisitType()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VisitRecordMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case visitrecord.FieldVisitType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddVisitType(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VisitRecord numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *VisitRecordMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(visitrecord.FieldNextStep) {
+		fields = append(fields, visitrecord.FieldNextStep)
+	}
+	if m.FieldCleared(visitrecord.FieldTenderID) {
+		fields = append(fields, visitrecord.FieldTenderID)
+	}
+	if m.FieldCleared(visitrecord.FieldCustomerID) {
+		fields = append(fields, visitrecord.FieldCustomerID)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *VisitRecordMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *VisitRecordMutation) ClearField(name string) error {
+	switch name {
+	case visitrecord.FieldNextStep:
+		m.ClearNextStep()
+		return nil
+	case visitrecord.FieldTenderID:
+		m.ClearTenderID()
+		return nil
+	case visitrecord.FieldCustomerID:
+		m.ClearCustomerID()
+		return nil
+	}
+	return fmt.Errorf("unknown VisitRecord nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *VisitRecordMutation) ResetField(name string) error {
+	switch name {
+	case visitrecord.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case visitrecord.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case visitrecord.FieldVisitType:
+		m.ResetVisitType()
+		return nil
+	case visitrecord.FieldCommPeople:
+		m.ResetCommPeople()
+		return nil
+	case visitrecord.FieldCommContent:
+		m.ResetCommContent()
+		return nil
+	case visitrecord.FieldNextStep:
+		m.ResetNextStep()
+		return nil
+	case visitrecord.FieldDate:
+		m.ResetDate()
+		return nil
+	case visitrecord.FieldTenderID:
+		m.ResetTenderID()
+		return nil
+	case visitrecord.FieldCustomerID:
+		m.ResetCustomerID()
+		return nil
+	}
+	return fmt.Errorf("unknown VisitRecord field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *VisitRecordMutation) AddedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m.tender != nil {
+		edges = append(edges, visitrecord.EdgeTender)
+	}
+	if m.customer != nil {
+		edges = append(edges, visitrecord.EdgeCustomer)
+	}
+	if m.followUpBys != nil {
+		edges = append(edges, visitrecord.EdgeFollowUpBys)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *VisitRecordMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case visitrecord.EdgeTender:
+		if id := m.tender; id != nil {
+			return []ent.Value{*id}
+		}
+	case visitrecord.EdgeCustomer:
+		if id := m.customer; id != nil {
+			return []ent.Value{*id}
+		}
+	case visitrecord.EdgeFollowUpBys:
+		ids := make([]ent.Value, 0, len(m.followUpBys))
+		for id := range m.followUpBys {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *VisitRecordMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m.removedfollowUpBys != nil {
+		edges = append(edges, visitrecord.EdgeFollowUpBys)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *VisitRecordMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case visitrecord.EdgeFollowUpBys:
+		ids := make([]ent.Value, 0, len(m.removedfollowUpBys))
+		for id := range m.removedfollowUpBys {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *VisitRecordMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m.clearedtender {
+		edges = append(edges, visitrecord.EdgeTender)
+	}
+	if m.clearedcustomer {
+		edges = append(edges, visitrecord.EdgeCustomer)
+	}
+	if m.clearedfollowUpBys {
+		edges = append(edges, visitrecord.EdgeFollowUpBys)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *VisitRecordMutation) EdgeCleared(name string) bool {
+	switch name {
+	case visitrecord.EdgeTender:
+		return m.clearedtender
+	case visitrecord.EdgeCustomer:
+		return m.clearedcustomer
+	case visitrecord.EdgeFollowUpBys:
+		return m.clearedfollowUpBys
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *VisitRecordMutation) ClearEdge(name string) error {
+	switch name {
+	case visitrecord.EdgeTender:
+		m.ClearTender()
+		return nil
+	case visitrecord.EdgeCustomer:
+		m.ClearCustomer()
+		return nil
+	}
+	return fmt.Errorf("unknown VisitRecord unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *VisitRecordMutation) ResetEdge(name string) error {
+	switch name {
+	case visitrecord.EdgeTender:
+		m.ResetTender()
+		return nil
+	case visitrecord.EdgeCustomer:
+		m.ResetCustomer()
+		return nil
+	case visitrecord.EdgeFollowUpBys:
+		m.ResetFollowUpBys()
+		return nil
+	}
+	return fmt.Errorf("unknown VisitRecord edge %s", name)
 }

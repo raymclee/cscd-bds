@@ -54,16 +54,19 @@ type UserEdges struct {
 	TeamMembers []*User `json:"team_members,omitempty"`
 	// Tenders holds the value of the tenders edge.
 	Tenders []*Tender `json:"tenders,omitempty"`
+	// VisitRecords holds the value of the visit_records edge.
+	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
+	loadedTypes [6]bool
 	// totalCount holds the count of the edges above.
-	totalCount [5]map[string]int
+	totalCount [6]map[string]int
 
-	namedAreas       map[string][]*Area
-	namedCustomers   map[string][]*Customer
-	namedTeamMembers map[string][]*User
-	namedTenders     map[string][]*Tender
+	namedAreas        map[string][]*Area
+	namedCustomers    map[string][]*Customer
+	namedTeamMembers  map[string][]*User
+	namedTenders      map[string][]*Tender
+	namedVisitRecords map[string][]*VisitRecord
 }
 
 // AreasOrErr returns the Areas value or an error if the edge
@@ -111,6 +114,15 @@ func (e UserEdges) TendersOrErr() ([]*Tender, error) {
 		return e.Tenders, nil
 	}
 	return nil, &NotLoadedError{edge: "tenders"}
+}
+
+// VisitRecordsOrErr returns the VisitRecords value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
+	if e.loadedTypes[5] {
+		return e.VisitRecords, nil
+	}
+	return nil, &NotLoadedError{edge: "visit_records"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -240,6 +252,11 @@ func (u *User) QueryTeamMembers() *UserQuery {
 // QueryTenders queries the "tenders" edge of the User entity.
 func (u *User) QueryTenders() *TenderQuery {
 	return NewUserClient(u.config).QueryTenders(u)
+}
+
+// QueryVisitRecords queries the "visit_records" edge of the User entity.
+func (u *User) QueryVisitRecords() *VisitRecordQuery {
+	return NewUserClient(u.config).QueryVisitRecords(u)
 }
 
 // Update returns a builder for updating this User.
@@ -390,6 +407,30 @@ func (u *User) appendNamedTenders(name string, edges ...*Tender) {
 		u.Edges.namedTenders[name] = []*Tender{}
 	} else {
 		u.Edges.namedTenders[name] = append(u.Edges.namedTenders[name], edges...)
+	}
+}
+
+// NamedVisitRecords returns the VisitRecords named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedVisitRecords(name string) ([]*VisitRecord, error) {
+	if u.Edges.namedVisitRecords == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedVisitRecords[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedVisitRecords(name string, edges ...*VisitRecord) {
+	if u.Edges.namedVisitRecords == nil {
+		u.Edges.namedVisitRecords = make(map[string][]*VisitRecord)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedVisitRecords[name] = []*VisitRecord{}
+	} else {
+		u.Edges.namedVisitRecords[name] = append(u.Edges.namedVisitRecords[name], edges...)
 	}
 }
 

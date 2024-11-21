@@ -176,7 +176,7 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "code", Type: field.TypeString},
+		{Name: "code", Type: field.TypeString, Unique: true},
 		{Name: "status", Type: field.TypeInt, Default: 1},
 		{Name: "name", Type: field.TypeString},
 		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
@@ -304,6 +304,39 @@ var (
 			},
 		},
 	}
+	// VisitRecordsColumns holds the columns for the "visit_records" table.
+	VisitRecordsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "visit_type", Type: field.TypeInt, Default: 1},
+		{Name: "comm_people", Type: field.TypeString},
+		{Name: "comm_content", Type: field.TypeString},
+		{Name: "next_step", Type: field.TypeString, Nullable: true},
+		{Name: "date", Type: field.TypeTime},
+		{Name: "customer_id", Type: field.TypeString, Nullable: true},
+		{Name: "tender_id", Type: field.TypeString, Nullable: true},
+	}
+	// VisitRecordsTable holds the schema information for the "visit_records" table.
+	VisitRecordsTable = &schema.Table{
+		Name:       "visit_records",
+		Columns:    VisitRecordsColumns,
+		PrimaryKey: []*schema.Column{VisitRecordsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "visit_records_customers_visit_records",
+				Columns:    []*schema.Column{VisitRecordsColumns[8]},
+				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "visit_records_tenders_visit_records",
+				Columns:    []*schema.Column{VisitRecordsColumns[9]},
+				RefColumns: []*schema.Column{TendersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// AreaSalesColumns holds the columns for the "area_sales" table.
 	AreaSalesColumns = []*schema.Column{
 		{Name: "area_id", Type: field.TypeString},
@@ -354,6 +387,31 @@ var (
 			},
 		},
 	}
+	// UserVisitRecordsColumns holds the columns for the "user_visit_records" table.
+	UserVisitRecordsColumns = []*schema.Column{
+		{Name: "user_id", Type: field.TypeString},
+		{Name: "visit_record_id", Type: field.TypeString},
+	}
+	// UserVisitRecordsTable holds the schema information for the "user_visit_records" table.
+	UserVisitRecordsTable = &schema.Table{
+		Name:       "user_visit_records",
+		Columns:    UserVisitRecordsColumns,
+		PrimaryKey: []*schema.Column{UserVisitRecordsColumns[0], UserVisitRecordsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "user_visit_records_user_id",
+				Columns:    []*schema.Column{UserVisitRecordsColumns[0]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "user_visit_records_visit_record_id",
+				Columns:    []*schema.Column{UserVisitRecordsColumns[1]},
+				RefColumns: []*schema.Column{VisitRecordsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AreasTable,
@@ -364,8 +422,10 @@ var (
 		ProvincesTable,
 		TendersTable,
 		UsersTable,
+		VisitRecordsTable,
 		AreaSalesTable,
 		TenderFollowingSalesTable,
+		UserVisitRecordsTable,
 	}
 )
 
@@ -386,8 +446,12 @@ func init() {
 	TendersTable.ForeignKeys[5].RefTable = UsersTable
 	TendersTable.ForeignKeys[6].RefTable = UsersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
+	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
+	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable
 	AreaSalesTable.ForeignKeys[0].RefTable = AreasTable
 	AreaSalesTable.ForeignKeys[1].RefTable = UsersTable
 	TenderFollowingSalesTable.ForeignKeys[0].RefTable = TendersTable
 	TenderFollowingSalesTable.ForeignKeys[1].RefTable = UsersTable
+	UserVisitRecordsTable.ForeignKeys[0].RefTable = UsersTable
+	UserVisitRecordsTable.ForeignKeys[1].RefTable = VisitRecordsTable
 }

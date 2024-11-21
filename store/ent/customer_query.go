@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -23,17 +24,19 @@ import (
 // CustomerQuery is the builder for querying Customer entities.
 type CustomerQuery struct {
 	config
-	ctx              *QueryContext
-	order            []customer.OrderOption
-	inters           []Interceptor
-	predicates       []predicate.Customer
-	withArea         *AreaQuery
-	withTenders      *TenderQuery
-	withSales        *UserQuery
-	withCreatedBy    *UserQuery
-	modifiers        []func(*sql.Selector)
-	loadTotal        []func(context.Context, []*Customer) error
-	withNamedTenders map[string]*TenderQuery
+	ctx                   *QueryContext
+	order                 []customer.OrderOption
+	inters                []Interceptor
+	predicates            []predicate.Customer
+	withArea              *AreaQuery
+	withTenders           *TenderQuery
+	withSales             *UserQuery
+	withCreatedBy         *UserQuery
+	withVisitRecords      *VisitRecordQuery
+	modifiers             []func(*sql.Selector)
+	loadTotal             []func(context.Context, []*Customer) error
+	withNamedTenders      map[string]*TenderQuery
+	withNamedVisitRecords map[string]*VisitRecordQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -151,6 +154,28 @@ func (cq *CustomerQuery) QueryCreatedBy() *UserQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, false, customer.CreatedByTable, customer.CreatedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryVisitRecords chains the current query on the "visit_records" edge.
+func (cq *CustomerQuery) QueryVisitRecords() *VisitRecordQuery {
+	query := (&VisitRecordClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.VisitRecordsTable, customer.VisitRecordsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -345,15 +370,16 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		return nil
 	}
 	return &CustomerQuery{
-		config:        cq.config,
-		ctx:           cq.ctx.Clone(),
-		order:         append([]customer.OrderOption{}, cq.order...),
-		inters:        append([]Interceptor{}, cq.inters...),
-		predicates:    append([]predicate.Customer{}, cq.predicates...),
-		withArea:      cq.withArea.Clone(),
-		withTenders:   cq.withTenders.Clone(),
-		withSales:     cq.withSales.Clone(),
-		withCreatedBy: cq.withCreatedBy.Clone(),
+		config:           cq.config,
+		ctx:              cq.ctx.Clone(),
+		order:            append([]customer.OrderOption{}, cq.order...),
+		inters:           append([]Interceptor{}, cq.inters...),
+		predicates:       append([]predicate.Customer{}, cq.predicates...),
+		withArea:         cq.withArea.Clone(),
+		withTenders:      cq.withTenders.Clone(),
+		withSales:        cq.withSales.Clone(),
+		withCreatedBy:    cq.withCreatedBy.Clone(),
+		withVisitRecords: cq.withVisitRecords.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -401,6 +427,17 @@ func (cq *CustomerQuery) WithCreatedBy(opts ...func(*UserQuery)) *CustomerQuery 
 		opt(query)
 	}
 	cq.withCreatedBy = query
+	return cq
+}
+
+// WithVisitRecords tells the query-builder to eager-load the nodes that are connected to
+// the "visit_records" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithVisitRecords(opts ...func(*VisitRecordQuery)) *CustomerQuery {
+	query := (&VisitRecordClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withVisitRecords = query
 	return cq
 }
 
@@ -482,11 +519,12 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	var (
 		nodes       = []*Customer{}
 		_spec       = cq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			cq.withArea != nil,
 			cq.withTenders != nil,
 			cq.withSales != nil,
 			cq.withCreatedBy != nil,
+			cq.withVisitRecords != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -535,10 +573,24 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 			return nil, err
 		}
 	}
+	if query := cq.withVisitRecords; query != nil {
+		if err := cq.loadVisitRecords(ctx, query, nodes,
+			func(n *Customer) { n.Edges.VisitRecords = []*VisitRecord{} },
+			func(n *Customer, e *VisitRecord) { n.Edges.VisitRecords = append(n.Edges.VisitRecords, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range cq.withNamedTenders {
 		if err := cq.loadTenders(ctx, query, nodes,
 			func(n *Customer) { n.appendNamedTenders(name) },
 			func(n *Customer, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedVisitRecords {
+		if err := cq.loadVisitRecords(ctx, query, nodes,
+			func(n *Customer) { n.appendNamedVisitRecords(name) },
+			func(n *Customer, e *VisitRecord) { n.appendNamedVisitRecords(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -670,6 +722,39 @@ func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, no
 	}
 	return nil
 }
+func (cq *CustomerQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *VisitRecord)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Customer)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(visitrecord.FieldCustomerID)
+	}
+	query.Where(predicate.VisitRecord(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(customer.VisitRecordsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.CustomerID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "customer_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "customer_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
 
 func (cq *CustomerQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
@@ -775,6 +860,20 @@ func (cq *CustomerQuery) WithNamedTenders(name string, opts ...func(*TenderQuery
 		cq.withNamedTenders = make(map[string]*TenderQuery)
 	}
 	cq.withNamedTenders[name] = query
+	return cq
+}
+
+// WithNamedVisitRecords tells the query-builder to eager-load the nodes that are connected to the "visit_records"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithNamedVisitRecords(name string, opts ...func(*VisitRecordQuery)) *CustomerQuery {
+	query := (&VisitRecordClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedVisitRecords == nil {
+		cq.withNamedVisitRecords = make(map[string]*VisitRecordQuery)
+	}
+	cq.withNamedVisitRecords[name] = query
 	return cq
 }
 

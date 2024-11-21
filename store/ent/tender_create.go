@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"time"
@@ -727,6 +728,21 @@ func (tc *TenderCreate) SetDistrict(d *District) *TenderCreate {
 	return tc.SetDistrictID(d.ID)
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
+func (tc *TenderCreate) AddVisitRecordIDs(ids ...xid.ID) *TenderCreate {
+	tc.mutation.AddVisitRecordIDs(ids...)
+	return tc
+}
+
+// AddVisitRecords adds the "visit_records" edges to the VisitRecord entity.
+func (tc *TenderCreate) AddVisitRecords(v ...*VisitRecord) *TenderCreate {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return tc.AddVisitRecordIDs(ids...)
+}
+
 // Mutation returns the TenderMutation object of the builder.
 func (tc *TenderCreate) Mutation() *TenderMutation {
 	return tc.mutation
@@ -1224,6 +1240,22 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.DistrictID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.VisitRecordsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

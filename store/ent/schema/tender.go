@@ -27,7 +27,7 @@ func (Tender) Mixin() []ent.Mixin {
 // Fields of the Tender.
 func (Tender) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("code"),
+		field.String("code").Unique(),
 		field.Int("status").Default(1),
 		field.String("name"),
 		field.Float("estimated_amount").
@@ -140,6 +140,7 @@ func (Tender) Edges() []ent.Edge {
 			Field("district_id").
 			Required().
 			Unique(),
+		edge.To("visit_records", VisitRecord.Type),
 	}
 }
 

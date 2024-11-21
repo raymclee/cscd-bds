@@ -154,13 +154,16 @@ type TenderEdges struct {
 	City *City `json:"city,omitempty"`
 	// District holds the value of the district edge.
 	District *District `json:"district,omitempty"`
+	// VisitRecords holds the value of the visit_records edge.
+	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [8]bool
+	loadedTypes [9]bool
 	// totalCount holds the count of the edges above.
-	totalCount [8]map[string]int
+	totalCount [9]map[string]int
 
 	namedFollowingSales map[string][]*User
+	namedVisitRecords   map[string][]*VisitRecord
 }
 
 // AreaOrErr returns the Area value or an error if the edge
@@ -247,6 +250,15 @@ func (e TenderEdges) DistrictOrErr() (*District, error) {
 		return nil, &NotFoundError{label: district.Label}
 	}
 	return nil, &NotLoadedError{edge: "district"}
+}
+
+// VisitRecordsOrErr returns the VisitRecords value or an error if the edge
+// was not loaded in eager-loading.
+func (e TenderEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
+	if e.loadedTypes[8] {
+		return e.VisitRecords, nil
+	}
+	return nil, &NotLoadedError{edge: "visit_records"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -694,6 +706,11 @@ func (t *Tender) QueryDistrict() *DistrictQuery {
 	return NewTenderClient(t.config).QueryDistrict(t)
 }
 
+// QueryVisitRecords queries the "visit_records" edge of the Tender entity.
+func (t *Tender) QueryVisitRecords() *VisitRecordQuery {
+	return NewTenderClient(t.config).QueryVisitRecords(t)
+}
+
 // Update returns a builder for updating this Tender.
 // Note that you need to call Tender.Unwrap() before calling this method if this Tender
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -963,6 +980,30 @@ func (t *Tender) appendNamedFollowingSales(name string, edges ...*User) {
 		t.Edges.namedFollowingSales[name] = []*User{}
 	} else {
 		t.Edges.namedFollowingSales[name] = append(t.Edges.namedFollowingSales[name], edges...)
+	}
+}
+
+// NamedVisitRecords returns the VisitRecords named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (t *Tender) NamedVisitRecords(name string) ([]*VisitRecord, error) {
+	if t.Edges.namedVisitRecords == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := t.Edges.namedVisitRecords[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (t *Tender) appendNamedVisitRecords(name string, edges ...*VisitRecord) {
+	if t.Edges.namedVisitRecords == nil {
+		t.Edges.namedVisitRecords = make(map[string][]*VisitRecord)
+	}
+	if len(edges) == 0 {
+		t.Edges.namedVisitRecords[name] = []*VisitRecord{}
+	} else {
+		t.Edges.namedVisitRecords[name] = append(t.Edges.namedVisitRecords[name], edges...)
 	}
 }
 

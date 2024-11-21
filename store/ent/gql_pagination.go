@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 
 	"entgo.io/contrib/entgql"
@@ -2092,5 +2093,254 @@ func (u *User) ToEdge(order *UserOrder) *UserEdge {
 	return &UserEdge{
 		Node:   u,
 		Cursor: order.Field.toCursor(u),
+	}
+}
+
+// VisitRecordEdge is the edge representation of VisitRecord.
+type VisitRecordEdge struct {
+	Node   *VisitRecord `json:"node"`
+	Cursor Cursor       `json:"cursor"`
+}
+
+// VisitRecordConnection is the connection containing edges to VisitRecord.
+type VisitRecordConnection struct {
+	Edges      []*VisitRecordEdge `json:"edges"`
+	PageInfo   PageInfo           `json:"pageInfo"`
+	TotalCount int                `json:"totalCount"`
+}
+
+func (c *VisitRecordConnection) build(nodes []*VisitRecord, pager *visitrecordPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *VisitRecord
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *VisitRecord {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *VisitRecord {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*VisitRecordEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &VisitRecordEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// VisitRecordPaginateOption enables pagination customization.
+type VisitRecordPaginateOption func(*visitrecordPager) error
+
+// WithVisitRecordOrder configures pagination ordering.
+func WithVisitRecordOrder(order *VisitRecordOrder) VisitRecordPaginateOption {
+	if order == nil {
+		order = DefaultVisitRecordOrder
+	}
+	o := *order
+	return func(pager *visitrecordPager) error {
+		if err := o.Direction.Validate(); err != nil {
+			return err
+		}
+		if o.Field == nil {
+			o.Field = DefaultVisitRecordOrder.Field
+		}
+		pager.order = &o
+		return nil
+	}
+}
+
+// WithVisitRecordFilter configures pagination filter.
+func WithVisitRecordFilter(filter func(*VisitRecordQuery) (*VisitRecordQuery, error)) VisitRecordPaginateOption {
+	return func(pager *visitrecordPager) error {
+		if filter == nil {
+			return errors.New("VisitRecordQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type visitrecordPager struct {
+	reverse bool
+	order   *VisitRecordOrder
+	filter  func(*VisitRecordQuery) (*VisitRecordQuery, error)
+}
+
+func newVisitRecordPager(opts []VisitRecordPaginateOption, reverse bool) (*visitrecordPager, error) {
+	pager := &visitrecordPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	if pager.order == nil {
+		pager.order = DefaultVisitRecordOrder
+	}
+	return pager, nil
+}
+
+func (p *visitrecordPager) applyFilter(query *VisitRecordQuery) (*VisitRecordQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *visitrecordPager) toCursor(vr *VisitRecord) Cursor {
+	return p.order.Field.toCursor(vr)
+}
+
+func (p *visitrecordPager) applyCursors(query *VisitRecordQuery, after, before *Cursor) (*VisitRecordQuery, error) {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultVisitRecordOrder.Field.column, p.order.Field.column, direction) {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *visitrecordPager) applyOrder(query *VisitRecordQuery) *VisitRecordQuery {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
+	if p.order.Field != DefaultVisitRecordOrder.Field {
+		query = query.Order(DefaultVisitRecordOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return query
+}
+
+func (p *visitrecordPager) orderExpr(query *VisitRecordQuery) sql.Querier {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
+		if p.order.Field != DefaultVisitRecordOrder.Field {
+			b.Comma().Ident(DefaultVisitRecordOrder.Field.column).Pad().WriteString(string(direction))
+		}
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to VisitRecord.
+func (vr *VisitRecordQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...VisitRecordPaginateOption,
+) (*VisitRecordConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newVisitRecordPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if vr, err = pager.applyFilter(vr); err != nil {
+		return nil, err
+	}
+	conn := &VisitRecordConnection{Edges: []*VisitRecordEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			c := vr.Clone()
+			c.ctx.Fields = nil
+			if conn.TotalCount, err = c.Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if vr, err = pager.applyCursors(vr, after, before); err != nil {
+		return nil, err
+	}
+	limit := paginateLimit(first, last)
+	if limit != 0 {
+		vr.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := vr.collectField(ctx, limit == 1, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	vr = pager.applyOrder(vr)
+	nodes, err := vr.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+// VisitRecordOrderField defines the ordering field of VisitRecord.
+type VisitRecordOrderField struct {
+	// Value extracts the ordering value from the given VisitRecord.
+	Value    func(*VisitRecord) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) visitrecord.OrderOption
+	toCursor func(*VisitRecord) Cursor
+}
+
+// VisitRecordOrder defines the ordering of VisitRecord.
+type VisitRecordOrder struct {
+	Direction OrderDirection         `json:"direction"`
+	Field     *VisitRecordOrderField `json:"field"`
+}
+
+// DefaultVisitRecordOrder is the default ordering of VisitRecord.
+var DefaultVisitRecordOrder = &VisitRecordOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &VisitRecordOrderField{
+		Value: func(vr *VisitRecord) (ent.Value, error) {
+			return vr.ID, nil
+		},
+		column: visitrecord.FieldID,
+		toTerm: visitrecord.ByID,
+		toCursor: func(vr *VisitRecord) Cursor {
+			return Cursor{ID: vr.ID}
+		},
+	},
+}
+
+// ToEdge converts VisitRecord into VisitRecordEdge.
+func (vr *VisitRecord) ToEdge(order *VisitRecordOrder) *VisitRecordEdge {
+	if order == nil {
+		order = DefaultVisitRecordOrder
+	}
+	return &VisitRecordEdge{
+		Node:   vr,
+		Cursor: order.Field.toCursor(vr),
 	}
 }

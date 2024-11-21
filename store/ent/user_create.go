@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"time"
@@ -190,6 +191,21 @@ func (uc *UserCreate) AddTenders(t ...*Tender) *UserCreate {
 		ids[i] = t[i].ID
 	}
 	return uc.AddTenderIDs(ids...)
+}
+
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
+func (uc *UserCreate) AddVisitRecordIDs(ids ...xid.ID) *UserCreate {
+	uc.mutation.AddVisitRecordIDs(ids...)
+	return uc
+}
+
+// AddVisitRecords adds the "visit_records" edges to the VisitRecord entity.
+func (uc *UserCreate) AddVisitRecords(v ...*VisitRecord) *UserCreate {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uc.AddVisitRecordIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -413,6 +429,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.VisitRecordsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

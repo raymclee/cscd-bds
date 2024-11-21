@@ -51,6 +51,8 @@ const (
 	EdgeSales = "sales"
 	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
 	EdgeCreatedBy = "created_by"
+	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
+	EdgeVisitRecords = "visit_records"
 	// Table holds the table name of the customer in the database.
 	Table = "customers"
 	// AreaTable is the table that holds the area relation/edge.
@@ -81,6 +83,13 @@ const (
 	CreatedByInverseTable = "users"
 	// CreatedByColumn is the table column denoting the created_by relation/edge.
 	CreatedByColumn = "created_by_id"
+	// VisitRecordsTable is the table that holds the visit_records relation/edge.
+	VisitRecordsTable = "visit_records"
+	// VisitRecordsInverseTable is the table name for the VisitRecord entity.
+	// It exists in this package in order to avoid circular dependency with the "visitrecord" package.
+	VisitRecordsInverseTable = "visit_records"
+	// VisitRecordsColumn is the table column denoting the visit_records relation/edge.
+	VisitRecordsColumn = "customer_id"
 )
 
 // Columns holds all SQL columns for customer fields.
@@ -230,6 +239,20 @@ func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByVisitRecordsCount orders the results by visit_records count.
+func ByVisitRecordsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newVisitRecordsStep(), opts...)
+	}
+}
+
+// ByVisitRecords orders the results by visit_records terms.
+func ByVisitRecords(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newVisitRecordsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -256,5 +279,12 @@ func newCreatedByStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CreatedByInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, false, CreatedByTable, CreatedByColumn),
+	)
+}
+func newVisitRecordsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(VisitRecordsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, VisitRecordsTable, VisitRecordsColumn),
 	)
 }

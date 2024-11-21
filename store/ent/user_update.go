@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"time"
@@ -207,6 +208,21 @@ func (uu *UserUpdate) AddTenders(t ...*Tender) *UserUpdate {
 	return uu.AddTenderIDs(ids...)
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
+func (uu *UserUpdate) AddVisitRecordIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.AddVisitRecordIDs(ids...)
+	return uu
+}
+
+// AddVisitRecords adds the "visit_records" edges to the VisitRecord entity.
+func (uu *UserUpdate) AddVisitRecords(v ...*VisitRecord) *UserUpdate {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uu.AddVisitRecordIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -300,6 +316,27 @@ func (uu *UserUpdate) RemoveTenders(t ...*Tender) *UserUpdate {
 		ids[i] = t[i].ID
 	}
 	return uu.RemoveTenderIDs(ids...)
+}
+
+// ClearVisitRecords clears all "visit_records" edges to the VisitRecord entity.
+func (uu *UserUpdate) ClearVisitRecords() *UserUpdate {
+	uu.mutation.ClearVisitRecords()
+	return uu
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to VisitRecord entities by IDs.
+func (uu *UserUpdate) RemoveVisitRecordIDs(ids ...xid.ID) *UserUpdate {
+	uu.mutation.RemoveVisitRecordIDs(ids...)
+	return uu
+}
+
+// RemoveVisitRecords removes "visit_records" edges to VisitRecord entities.
+func (uu *UserUpdate) RemoveVisitRecords(v ...*VisitRecord) *UserUpdate {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uu.RemoveVisitRecordIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -577,6 +614,51 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedVisitRecordsIDs(); len(nodes) > 0 && !uu.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.VisitRecordsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -772,6 +854,21 @@ func (uuo *UserUpdateOne) AddTenders(t ...*Tender) *UserUpdateOne {
 	return uuo.AddTenderIDs(ids...)
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
+func (uuo *UserUpdateOne) AddVisitRecordIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.AddVisitRecordIDs(ids...)
+	return uuo
+}
+
+// AddVisitRecords adds the "visit_records" edges to the VisitRecord entity.
+func (uuo *UserUpdateOne) AddVisitRecords(v ...*VisitRecord) *UserUpdateOne {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uuo.AddVisitRecordIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -865,6 +962,27 @@ func (uuo *UserUpdateOne) RemoveTenders(t ...*Tender) *UserUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return uuo.RemoveTenderIDs(ids...)
+}
+
+// ClearVisitRecords clears all "visit_records" edges to the VisitRecord entity.
+func (uuo *UserUpdateOne) ClearVisitRecords() *UserUpdateOne {
+	uuo.mutation.ClearVisitRecords()
+	return uuo
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to VisitRecord entities by IDs.
+func (uuo *UserUpdateOne) RemoveVisitRecordIDs(ids ...xid.ID) *UserUpdateOne {
+	uuo.mutation.RemoveVisitRecordIDs(ids...)
+	return uuo
+}
+
+// RemoveVisitRecords removes "visit_records" edges to VisitRecord entities.
+func (uuo *UserUpdateOne) RemoveVisitRecords(v ...*VisitRecord) *UserUpdateOne {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uuo.RemoveVisitRecordIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -1165,6 +1283,51 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedVisitRecordsIDs(); len(nodes) > 0 && !uuo.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.VisitRecordsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

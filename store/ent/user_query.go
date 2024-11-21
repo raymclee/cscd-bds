@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -23,21 +24,23 @@ import (
 // UserQuery is the builder for querying User entities.
 type UserQuery struct {
 	config
-	ctx                  *QueryContext
-	order                []user.OrderOption
-	inters               []Interceptor
-	predicates           []predicate.User
-	withAreas            *AreaQuery
-	withCustomers        *CustomerQuery
-	withLeader           *UserQuery
-	withTeamMembers      *UserQuery
-	withTenders          *TenderQuery
-	modifiers            []func(*sql.Selector)
-	loadTotal            []func(context.Context, []*User) error
-	withNamedAreas       map[string]*AreaQuery
-	withNamedCustomers   map[string]*CustomerQuery
-	withNamedTeamMembers map[string]*UserQuery
-	withNamedTenders     map[string]*TenderQuery
+	ctx                   *QueryContext
+	order                 []user.OrderOption
+	inters                []Interceptor
+	predicates            []predicate.User
+	withAreas             *AreaQuery
+	withCustomers         *CustomerQuery
+	withLeader            *UserQuery
+	withTeamMembers       *UserQuery
+	withTenders           *TenderQuery
+	withVisitRecords      *VisitRecordQuery
+	modifiers             []func(*sql.Selector)
+	loadTotal             []func(context.Context, []*User) error
+	withNamedAreas        map[string]*AreaQuery
+	withNamedCustomers    map[string]*CustomerQuery
+	withNamedTeamMembers  map[string]*UserQuery
+	withNamedTenders      map[string]*TenderQuery
+	withNamedVisitRecords map[string]*VisitRecordQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -177,6 +180,28 @@ func (uq *UserQuery) QueryTenders() *TenderQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(tender.Table, tender.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, user.TendersTable, user.TendersPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryVisitRecords chains the current query on the "visit_records" edge.
+func (uq *UserQuery) QueryVisitRecords() *VisitRecordQuery {
+	query := (&VisitRecordClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, user.VisitRecordsTable, user.VisitRecordsPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -371,16 +396,17 @@ func (uq *UserQuery) Clone() *UserQuery {
 		return nil
 	}
 	return &UserQuery{
-		config:          uq.config,
-		ctx:             uq.ctx.Clone(),
-		order:           append([]user.OrderOption{}, uq.order...),
-		inters:          append([]Interceptor{}, uq.inters...),
-		predicates:      append([]predicate.User{}, uq.predicates...),
-		withAreas:       uq.withAreas.Clone(),
-		withCustomers:   uq.withCustomers.Clone(),
-		withLeader:      uq.withLeader.Clone(),
-		withTeamMembers: uq.withTeamMembers.Clone(),
-		withTenders:     uq.withTenders.Clone(),
+		config:           uq.config,
+		ctx:              uq.ctx.Clone(),
+		order:            append([]user.OrderOption{}, uq.order...),
+		inters:           append([]Interceptor{}, uq.inters...),
+		predicates:       append([]predicate.User{}, uq.predicates...),
+		withAreas:        uq.withAreas.Clone(),
+		withCustomers:    uq.withCustomers.Clone(),
+		withLeader:       uq.withLeader.Clone(),
+		withTeamMembers:  uq.withTeamMembers.Clone(),
+		withTenders:      uq.withTenders.Clone(),
+		withVisitRecords: uq.withVisitRecords.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
@@ -439,6 +465,17 @@ func (uq *UserQuery) WithTenders(opts ...func(*TenderQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withTenders = query
+	return uq
+}
+
+// WithVisitRecords tells the query-builder to eager-load the nodes that are connected to
+// the "visit_records" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithVisitRecords(opts ...func(*VisitRecordQuery)) *UserQuery {
+	query := (&VisitRecordClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withVisitRecords = query
 	return uq
 }
 
@@ -520,12 +557,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [5]bool{
+		loadedTypes = [6]bool{
 			uq.withAreas != nil,
 			uq.withCustomers != nil,
 			uq.withLeader != nil,
 			uq.withTeamMembers != nil,
 			uq.withTenders != nil,
+			uq.withVisitRecords != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -583,6 +621,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	if query := uq.withVisitRecords; query != nil {
+		if err := uq.loadVisitRecords(ctx, query, nodes,
+			func(n *User) { n.Edges.VisitRecords = []*VisitRecord{} },
+			func(n *User, e *VisitRecord) { n.Edges.VisitRecords = append(n.Edges.VisitRecords, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range uq.withNamedAreas {
 		if err := uq.loadAreas(ctx, query, nodes,
 			func(n *User) { n.appendNamedAreas(name) },
@@ -608,6 +653,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadTenders(ctx, query, nodes,
 			func(n *User) { n.appendNamedTenders(name) },
 			func(n *User, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedVisitRecords {
+		if err := uq.loadVisitRecords(ctx, query, nodes,
+			func(n *User) { n.appendNamedVisitRecords(name) },
+			func(n *User, e *VisitRecord) { n.appendNamedVisitRecords(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -839,6 +891,67 @@ func (uq *UserQuery) loadTenders(ctx context.Context, query *TenderQuery, nodes 
 	}
 	return nil
 }
+func (uq *UserQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQuery, nodes []*User, init func(*User), assign func(*User, *VisitRecord)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[xid.ID]*User)
+	nids := make(map[xid.ID]map[*User]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(user.VisitRecordsTable)
+		s.Join(joinT).On(s.C(visitrecord.FieldID), joinT.C(user.VisitRecordsPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(user.VisitRecordsPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(user.VisitRecordsPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(xid.ID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*xid.ID)
+				inValue := *values[1].(*xid.ID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*User]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*VisitRecord](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "visit_records" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
 
 func (uq *UserQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := uq.querySpec()
@@ -980,6 +1093,20 @@ func (uq *UserQuery) WithNamedTenders(name string, opts ...func(*TenderQuery)) *
 		uq.withNamedTenders = make(map[string]*TenderQuery)
 	}
 	uq.withNamedTenders[name] = query
+	return uq
+}
+
+// WithNamedVisitRecords tells the query-builder to eager-load the nodes that are connected to the "visit_records"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedVisitRecords(name string, opts ...func(*VisitRecordQuery)) *UserQuery {
+	query := (&VisitRecordClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedVisitRecords == nil {
+		uq.withNamedVisitRecords = make(map[string]*VisitRecordQuery)
+	}
+	uq.withNamedVisitRecords[name] = query
 	return uq
 }
 

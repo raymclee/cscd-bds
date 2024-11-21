@@ -12,50 +12,6 @@ const data = [
   { type: "其他企业", value: 15 },
 ];
 
-const winConfig = {
-  percent: 0.6,
-  width: 70,
-  height: 70,
-  innerRadius: 0.65,
-  color: ["#E8EFF5", "#3cb8e6"],
-  annotations: [
-    {
-      type: "text",
-      style: {
-        text: `赢单率\n${60}%`,
-        x: "50%",
-        y: "50%",
-        textAlign: "center",
-        fontSize: 10,
-        // fontStyle: "bold",
-        fill: "white",
-      },
-    },
-  ],
-};
-
-const loseConfig = {
-  percent: 0.4,
-  width: 70,
-  height: 70,
-  innerRadius: 0.65,
-  color: ["#E8EFF5", "#3cb8e6"],
-  annotations: [
-    {
-      type: "text",
-      style: {
-        text: `丢单率\n${40}%`,
-        x: "50%",
-        y: "50%",
-        textAlign: "center",
-        fontSize: 10,
-        // fontStyle: "bold",
-        fill: "white",
-      },
-    },
-  ],
-};
-
 type Props = {
   data: MapIndexPageQuery$data;
 };
@@ -87,6 +43,61 @@ export function TenderTypeChart({ data }: Props) {
       : selectedArea
         ? selectedArea?.tenders
         : allTenders;
+
+  const totalTenders = tenders?.length || 0;
+  const winTendersCount = tenders?.filter((t) => t?.status === 3).length || 0;
+
+  const winPercent = isFinite(winTendersCount / totalTenders)
+    ? winTendersCount / totalTenders || 1
+    : 1;
+  const winConfig = {
+    percent: winPercent,
+    width: 70,
+    height: 70,
+    innerRadius: 0.65,
+    color: ["#E8EFF5", "#3cb8e6"],
+    annotations: [
+      {
+        type: "text",
+        style: {
+          text: `赢单率\n${winPercent === 1 ? "0%" : Math.round(winPercent * 100)}%`,
+          x: "50%",
+          y: "50%",
+          textAlign: "center",
+          fontSize: 10,
+          // fontStyle: "bold",
+          fill: "white",
+        },
+      },
+    ],
+  };
+
+  const lostTendersCount = tenders?.filter((t) => t?.status === 4).length || 0;
+  const lostPercent = isFinite(lostTendersCount / totalTenders)
+    ? lostTendersCount / totalTenders || 1
+    : 1;
+
+  const loseConfig = {
+    percent: lostPercent,
+    width: 70,
+    height: 70,
+    innerRadius: 0.65,
+    color: ["#E8EFF5", "#3cb8e6"],
+    annotations: [
+      {
+        type: "text",
+        style: {
+          text: `丢单率\n${lostPercent === 1 ? "0%" : Math.round(lostPercent * 100)}%`,
+          x: "50%",
+          y: "50%",
+          textAlign: "center",
+          fontSize: 10,
+          // fontStyle: "bold",
+          fill: "white",
+        },
+      },
+    ],
+  };
 
   let government = 0;
   let csoe = 0;

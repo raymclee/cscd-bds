@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"fmt"
 
 	"entgo.io/contrib/entgql"
@@ -64,6 +65,11 @@ var userImplementors = []string{"User", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*User) IsNode() {}
+
+var visitrecordImplementors = []string{"VisitRecord", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*VisitRecord) IsNode() {}
 
 var errNodeInvalidID = &NotFoundError{"node"}
 
@@ -223,6 +229,19 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(user.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, userImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case visitrecord.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.VisitRecord.Query().
+			Where(visitrecord.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, visitrecordImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -416,6 +435,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		query := c.User.Query().
 			Where(user.IDIn(ids...))
 		query, err := query.CollectFields(ctx, userImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case visitrecord.Table:
+		query := c.VisitRecord.Query().
+			Where(visitrecord.IDIn(ids...))
+		query, err := query.CollectFields(ctx, visitrecordImplementors...)
 		if err != nil {
 			return nil, err
 		}

@@ -136,6 +136,18 @@ func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
 	return result, err
 }
 
+func (c *Customer) VisitRecords(ctx context.Context) (result []*VisitRecord, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedVisitRecords(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.VisitRecordsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryVisitRecords().All(ctx)
+	}
+	return result, err
+}
+
 func (d *District) Province(ctx context.Context) (*Province, error) {
 	result, err := d.Edges.ProvinceOrErr()
 	if IsNotLoaded(err) {
@@ -284,6 +296,18 @@ func (t *Tender) District(ctx context.Context) (*District, error) {
 	return result, err
 }
 
+func (t *Tender) VisitRecords(ctx context.Context) (result []*VisitRecord, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = t.NamedVisitRecords(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = t.Edges.VisitRecordsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = t.QueryVisitRecords().All(ctx)
+	}
+	return result, err
+}
+
 func (u *User) Areas(ctx context.Context) (result []*Area, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = u.NamedAreas(graphql.GetFieldContext(ctx).Field.Alias)
@@ -336,6 +360,46 @@ func (u *User) Tenders(ctx context.Context) (result []*Tender, err error) {
 	}
 	if IsNotLoaded(err) {
 		result, err = u.QueryTenders().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) VisitRecords(ctx context.Context) (result []*VisitRecord, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedVisitRecords(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.VisitRecordsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryVisitRecords().All(ctx)
+	}
+	return result, err
+}
+
+func (vr *VisitRecord) Tender(ctx context.Context) (*Tender, error) {
+	result, err := vr.Edges.TenderOrErr()
+	if IsNotLoaded(err) {
+		result, err = vr.QueryTender().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (vr *VisitRecord) Customer(ctx context.Context) (*Customer, error) {
+	result, err := vr.Edges.CustomerOrErr()
+	if IsNotLoaded(err) {
+		result, err = vr.QueryCustomer().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (vr *VisitRecord) FollowUpBys(ctx context.Context) (result []*User, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = vr.NamedFollowUpBys(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = vr.Edges.FollowUpBysOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = vr.QueryFollowUpBys().All(ctx)
 	}
 	return result, err
 }

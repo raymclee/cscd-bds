@@ -15,11 +15,6 @@ const router = createRouter({
   context: {
     RelayEnvironment,
   },
-  Wrap: ({ children }) => (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      {children}
-    </RelayEnvironmentProvider>
-  ),
 });
 
 // Register things for typesafety

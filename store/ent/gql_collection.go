@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 
 	"github.com/99designs/gqlgen/graphql"
 )
@@ -457,6 +458,19 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, customer.FieldCreatedByID)
 				fieldSeen[customer.FieldCreatedByID] = struct{}{}
 			}
+
+		case "visitRecords":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&VisitRecordClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, visitrecordImplementors)...); err != nil {
+				return err
+			}
+			c.WithNamedVisitRecords(alias, func(wq *VisitRecordQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[customer.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, customer.FieldCreatedAt)
@@ -1008,6 +1022,19 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldDistrictID)
 				fieldSeen[tender.FieldDistrictID] = struct{}{}
 			}
+
+		case "visitRecords":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&VisitRecordClient{config: t.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, visitrecordImplementors)...); err != nil {
+				return err
+			}
+			t.WithNamedVisitRecords(alias, func(wq *VisitRecordQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[tender.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, tender.FieldCreatedAt)
@@ -1392,6 +1419,19 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 			u.WithNamedTenders(alias, func(wq *TenderQuery) {
 				*wq = *query
 			})
+
+		case "visitRecords":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&VisitRecordClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, visitrecordImplementors)...); err != nil {
+				return err
+			}
+			u.WithNamedVisitRecords(alias, func(wq *VisitRecordQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[user.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldCreatedAt)
@@ -1474,6 +1514,156 @@ func newUserPaginateArgs(rv map[string]any) *userPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*UserWhereInput); ok {
 		args.opts = append(args.opts, WithUserFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (vr *VisitRecordQuery) CollectFields(ctx context.Context, satisfies ...string) (*VisitRecordQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return vr, nil
+	}
+	if err := vr.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return vr, nil
+}
+
+func (vr *VisitRecordQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(visitrecord.Columns))
+		selectedFields = []string{visitrecord.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+
+		case "tender":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TenderClient{config: vr.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, tenderImplementors)...); err != nil {
+				return err
+			}
+			vr.withTender = query
+			if _, ok := fieldSeen[visitrecord.FieldTenderID]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldTenderID)
+				fieldSeen[visitrecord.FieldTenderID] = struct{}{}
+			}
+
+		case "customer":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CustomerClient{config: vr.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, customerImplementors)...); err != nil {
+				return err
+			}
+			vr.withCustomer = query
+			if _, ok := fieldSeen[visitrecord.FieldCustomerID]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldCustomerID)
+				fieldSeen[visitrecord.FieldCustomerID] = struct{}{}
+			}
+
+		case "followupbys":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: vr.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+				return err
+			}
+			vr.WithNamedFollowUpBys(alias, func(wq *UserQuery) {
+				*wq = *query
+			})
+		case "createdAt":
+			if _, ok := fieldSeen[visitrecord.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldCreatedAt)
+				fieldSeen[visitrecord.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[visitrecord.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldUpdatedAt)
+				fieldSeen[visitrecord.FieldUpdatedAt] = struct{}{}
+			}
+		case "visitType":
+			if _, ok := fieldSeen[visitrecord.FieldVisitType]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldVisitType)
+				fieldSeen[visitrecord.FieldVisitType] = struct{}{}
+			}
+		case "commPeople":
+			if _, ok := fieldSeen[visitrecord.FieldCommPeople]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldCommPeople)
+				fieldSeen[visitrecord.FieldCommPeople] = struct{}{}
+			}
+		case "commContent":
+			if _, ok := fieldSeen[visitrecord.FieldCommContent]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldCommContent)
+				fieldSeen[visitrecord.FieldCommContent] = struct{}{}
+			}
+		case "nextStep":
+			if _, ok := fieldSeen[visitrecord.FieldNextStep]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldNextStep)
+				fieldSeen[visitrecord.FieldNextStep] = struct{}{}
+			}
+		case "date":
+			if _, ok := fieldSeen[visitrecord.FieldDate]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldDate)
+				fieldSeen[visitrecord.FieldDate] = struct{}{}
+			}
+		case "tenderID":
+			if _, ok := fieldSeen[visitrecord.FieldTenderID]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldTenderID)
+				fieldSeen[visitrecord.FieldTenderID] = struct{}{}
+			}
+		case "customerID":
+			if _, ok := fieldSeen[visitrecord.FieldCustomerID]; !ok {
+				selectedFields = append(selectedFields, visitrecord.FieldCustomerID)
+				fieldSeen[visitrecord.FieldCustomerID] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		vr.Select(selectedFields...)
+	}
+	return nil
+}
+
+type visitrecordPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []VisitRecordPaginateOption
+}
+
+func newVisitRecordPaginateArgs(rv map[string]any) *visitrecordPaginateArgs {
+	args := &visitrecordPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*VisitRecordWhereInput); ok {
+		args.opts = append(args.opts, WithVisitRecordFilter(v.Filter))
 	}
 	return args
 }

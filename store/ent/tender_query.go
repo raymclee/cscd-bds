@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -38,9 +39,11 @@ type TenderQuery struct {
 	withProvince            *ProvinceQuery
 	withCity                *CityQuery
 	withDistrict            *DistrictQuery
+	withVisitRecords        *VisitRecordQuery
 	modifiers               []func(*sql.Selector)
 	loadTotal               []func(context.Context, []*Tender) error
 	withNamedFollowingSales map[string]*UserQuery
+	withNamedVisitRecords   map[string]*VisitRecordQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -253,6 +256,28 @@ func (tq *TenderQuery) QueryDistrict() *DistrictQuery {
 	return query
 }
 
+// QueryVisitRecords chains the current query on the "visit_records" edge.
+func (tq *TenderQuery) QueryVisitRecords() *VisitRecordQuery {
+	query := (&VisitRecordClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, selector),
+			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tender.VisitRecordsTable, tender.VisitRecordsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first Tender entity from the query.
 // Returns a *NotFoundError when no Tender was found.
 func (tq *TenderQuery) First(ctx context.Context) (*Tender, error) {
@@ -453,6 +478,7 @@ func (tq *TenderQuery) Clone() *TenderQuery {
 		withProvince:       tq.withProvince.Clone(),
 		withCity:           tq.withCity.Clone(),
 		withDistrict:       tq.withDistrict.Clone(),
+		withVisitRecords:   tq.withVisitRecords.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
@@ -547,6 +573,17 @@ func (tq *TenderQuery) WithDistrict(opts ...func(*DistrictQuery)) *TenderQuery {
 	return tq
 }
 
+// WithVisitRecords tells the query-builder to eager-load the nodes that are connected to
+// the "visit_records" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithVisitRecords(opts ...func(*VisitRecordQuery)) *TenderQuery {
+	query := (&VisitRecordClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withVisitRecords = query
+	return tq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -625,7 +662,7 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 	var (
 		nodes       = []*Tender{}
 		_spec       = tq.querySpec()
-		loadedTypes = [8]bool{
+		loadedTypes = [9]bool{
 			tq.withArea != nil,
 			tq.withCustomer != nil,
 			tq.withFinder != nil,
@@ -634,6 +671,7 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			tq.withProvince != nil,
 			tq.withCity != nil,
 			tq.withDistrict != nil,
+			tq.withVisitRecords != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -706,10 +744,24 @@ func (tq *TenderQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tende
 			return nil, err
 		}
 	}
+	if query := tq.withVisitRecords; query != nil {
+		if err := tq.loadVisitRecords(ctx, query, nodes,
+			func(n *Tender) { n.Edges.VisitRecords = []*VisitRecord{} },
+			func(n *Tender, e *VisitRecord) { n.Edges.VisitRecords = append(n.Edges.VisitRecords, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range tq.withNamedFollowingSales {
 		if err := tq.loadFollowingSales(ctx, query, nodes,
 			func(n *Tender) { n.appendNamedFollowingSales(name) },
 			func(n *Tender, e *User) { n.appendNamedFollowingSales(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range tq.withNamedVisitRecords {
+		if err := tq.loadVisitRecords(ctx, query, nodes,
+			func(n *Tender) { n.appendNamedVisitRecords(name) },
+			func(n *Tender, e *VisitRecord) { n.appendNamedVisitRecords(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -988,6 +1040,39 @@ func (tq *TenderQuery) loadDistrict(ctx context.Context, query *DistrictQuery, n
 	}
 	return nil
 }
+func (tq *TenderQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQuery, nodes []*Tender, init func(*Tender), assign func(*Tender, *VisitRecord)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Tender)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(visitrecord.FieldTenderID)
+	}
+	query.Where(predicate.VisitRecord(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(tender.VisitRecordsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.TenderID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "tender_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "tender_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
 
 func (tq *TenderQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
@@ -1105,6 +1190,20 @@ func (tq *TenderQuery) WithNamedFollowingSales(name string, opts ...func(*UserQu
 		tq.withNamedFollowingSales = make(map[string]*UserQuery)
 	}
 	tq.withNamedFollowingSales[name] = query
+	return tq
+}
+
+// WithNamedVisitRecords tells the query-builder to eager-load the nodes that are connected to the "visit_records"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (tq *TenderQuery) WithNamedVisitRecords(name string, opts ...func(*VisitRecordQuery)) *TenderQuery {
+	query := (&VisitRecordClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if tq.withNamedVisitRecords == nil {
+		tq.withNamedVisitRecords = make(map[string]*VisitRecordQuery)
+	}
+	tq.withNamedVisitRecords[name] = query
 	return tq
 }
 

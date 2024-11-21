@@ -28,6 +28,8 @@ type Tx struct {
 	Tender *TenderClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// VisitRecord is the client for interacting with the VisitRecord builders.
+	VisitRecord *VisitRecordClient
 
 	// lazily loaded.
 	client     *Client
@@ -167,6 +169,7 @@ func (tx *Tx) init() {
 	tx.Province = NewProvinceClient(tx.config)
 	tx.Tender = NewTenderClient(tx.config)
 	tx.User = NewUserClient(tx.config)
+	tx.VisitRecord = NewVisitRecordClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

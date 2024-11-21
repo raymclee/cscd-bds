@@ -2,25 +2,34 @@ package main
 
 import (
 	"context"
+	"cscd-bds/config"
 	"cscd-bds/store"
 	"cscd-bds/store/ent"
+	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/enum"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/zht"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"encoding/json"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
 
-	"entgo.io/ent/dialect/sql"
 	lark "github.com/larksuite/oapi-sdk-go/v3"
-	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
+	larkauth "github.com/larksuite/oapi-sdk-go/v3/service/auth/v3"
 	larkbitable "github.com/larksuite/oapi-sdk-go/v3/service/bitable/v1"
+	"github.com/rs/xid"
 	"github.com/twpayne/go-geom"
 	"github.com/twpayne/go-geom/encoding/geojson"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -44,14 +53,220 @@ func main() {
 	client = lark.NewClient(appId, appSecret)
 	s = store.NewStore()
 
-	fetchArea()
-	fetchSales()
-	fetchCustomer()
+	// fetchArea()
+	// fetchSales()
+	// fetchCustomer()
 	fetchTender()
+	// fetchVisitRecord()
 
 }
 
+func fetchVisitRecord() {
+	req := larkbitable.NewListAppTableRecordReqBuilder().AppToken(appToken).TableId(visitRecordTid).Build()
+	resp, err := client.Bitable.AppTableRecord.List(ctx, req)
+	if err != nil {
+		panic(err)
+	}
+	if !resp.Success() {
+		panic(resp.Error())
+	}
+	// fmt.Println(larkcore.Prettify(resp.Data))
+
+	for _, item := range resp.Data.Items {
+		if f, ok := item.Fields["删除标识"]; ok && f != nil {
+			continue
+		}
+
+		var (
+			commPeople string
+			visitType  int
+			date       time.Time
+			tend       *ent.Tender
+			cust       *ent.Customer
+			content    string
+			nextStep   *string
+			updatedAt  *time.Time
+			createdAt  *time.Time
+			users      []*ent.User
+		)
+
+		if f, ok := item.Fields["沟通对象"]; ok {
+			if v, ok := f.(string); ok {
+				commPeople = v
+			}
+		}
+
+		if commPeople == "" {
+			continue
+		}
+
+		if f, ok := item.Fields["跟进形式"]; ok {
+			if v, ok := f.(string); ok {
+				if v == "现场拜访" {
+					visitType = 1
+				}
+				if v == "线上会议" {
+					visitType = 2
+				}
+			}
+		}
+
+		if f, ok := item.Fields["跟进时间"]; ok {
+			if v, ok := f.(float64); ok {
+				date = time.UnixMilli(int64(v))
+			}
+		}
+
+		if f, ok := item.Fields["备案编码"]; ok {
+			if v, ok := f.([]interface{}); ok {
+				for _, i := range v {
+					if i, ok := i.(map[string]interface{}); ok {
+						if v, ok := i["text"]; ok {
+							if v, ok := v.(string); ok {
+								req := larkbitable.NewSearchAppTableRecordReqBuilder().
+									AppToken(appToken).
+									TableId(tenderTid).
+									Body(larkbitable.NewSearchAppTableRecordReqBodyBuilder().
+										FieldNames([]string{`备案编码`}).
+										Filter(larkbitable.NewFilterInfoBuilder().
+											Conjunction(`and`).
+											Conditions([]*larkbitable.Condition{
+												larkbitable.NewConditionBuilder().
+													FieldName(`数据ID`).
+													Operator(`is`).
+													Value([]string{v[len(v)-3:]}).
+													Build(),
+											}).
+											Build()).
+										Build()).
+									Build()
+								resp, err := client.Bitable.AppTableRecord.Search(ctx, req)
+								if err != nil {
+									fmt.Println(err)
+									continue
+								}
+								if !resp.Success() {
+									fmt.Println(resp.Error())
+									continue
+								}
+
+								var code string
+								for _, item := range resp.Data.Items {
+									if f, ok := item.Fields["备案编码"]; ok {
+										if v, ok := f.([]interface{}); ok {
+											for _, i := range v {
+												if i, ok := i.(map[string]interface{}); ok {
+													if v, ok := i["text"]; ok {
+														if v, ok := v.(string); ok {
+															code = v
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+
+								tend, err = s.Tender.Query().Where(tender.CodeEQ(code)).Only(ctx)
+								if err != nil {
+									continue
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if f, ok := item.Fields["沟通内容"]; ok {
+			if v, ok := f.(string); ok {
+				content = v
+			}
+		}
+
+		if f, ok := item.Fields["跟进客户"]; ok {
+			if v, ok := f.([]interface{}); ok {
+				for _, i := range v {
+					if i, ok := i.(map[string]interface{}); ok {
+						if v, ok := i["text"]; ok {
+							if v, ok := v.(string); ok {
+								cust, err = s.Customer.Query().Where(customer.NameEQ(v)).Only(ctx)
+								if err != nil {
+									fmt.Println(err)
+									continue
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if f, ok := item.Fields["下一步计划"]; ok {
+			if v, ok := f.(string); ok {
+				nextStep = &v
+			}
+		}
+
+		if f, ok := item.Fields["更新时间"]; ok {
+			if v, ok := f.(float64); ok {
+				t := time.UnixMilli(int64(v))
+				updatedAt = &t
+				createdAt = &t
+			}
+		}
+
+		if f, ok := item.Fields["跟进人员"]; ok {
+			if v, ok := f.([]interface{}); ok {
+				u, err := processUser(v)
+				if err != nil {
+					fmt.Println(err)
+					panic(err)
+				}
+				if u != nil {
+					users = append(users, u)
+				}
+			}
+		}
+
+		// fmt.Println(commPeople, visitType, date, are, tend, content, nextStep, updatedAt, createdAt, users, cust)
+		q := s.VisitRecord.Create().SetCommContent(content).SetCommPeople(commPeople).SetVisitType(visitType).SetDate(date).SetNillableNextStep(nextStep).SetNillableUpdatedAt(updatedAt).SetNillableCreatedAt(createdAt)
+
+		if tend != nil {
+			q.SetTender(tend)
+		}
+		if cust != nil {
+			q.SetCustomer(cust)
+		}
+		if len(users) > 0 {
+			q.AddFollowUpBys(users...)
+		}
+		if err := q.Exec(ctx); err != nil {
+			// panic(err)
+			fmt.Println(err)
+		}
+
+	}
+}
+
 func fetchTender() {
+	httpClient := &http.Client{}
+
+	token, err := client.Auth.TenantAccessToken.Internal(ctx,
+		larkauth.NewInternalTenantAccessTokenReqBuilder().Body(
+			larkauth.NewInternalTenantAccessTokenReqBodyBuilder().AppId(appId).AppSecret(appSecret).Build(),
+		).Build(),
+	)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	var out struct {
+		TenantAccessToken string `json:"tenant_access_token"`
+	}
+	if err := json.Unmarshal(token.RawBody, &out); err != nil {
+		log.Fatal(err)
+	}
+
 	req := larkbitable.NewListAppTableRecordReqBuilder().AppToken(appToken).TableId(tenderTid).Build()
 	resp, err := client.Bitable.AppTableRecord.List(ctx, req)
 	if err != nil {
@@ -60,7 +275,6 @@ func fetchTender() {
 	if !resp.Success() {
 		panic(resp.Error())
 	}
-	fmt.Println(larkcore.Prettify(resp.Data))
 
 	areas, err := s.Area.Query().All(ctx)
 	if err != nil {
@@ -121,9 +335,11 @@ func fetchTender() {
 			cust                                 *ent.Customer
 			finder                               *ent.User
 			createdBy                            *ent.User
+
+			images []string
 		)
 
-		if f, ok := item.Fields["数据有效"]; ok && f != nil {
+		if f, ok := item.Fields["数据有效"]; ok {
 			if v, ok := f.(map[string]interface{}); ok {
 				if v, ok := v["text"].(string); ok {
 					if v != "✅" {
@@ -139,15 +355,8 @@ func fetchTender() {
 
 		if f, ok := item.Fields["备案编码"]; ok {
 			if v, ok := f.(string); ok {
-				if v == "HN20241113001" {
-					continue
-				}
 				code = v
-			} else {
-				continue
 			}
-		} else {
-			continue
 		}
 
 		if f, ok := item.Fields["商机发现日期"]; ok {
@@ -597,8 +806,61 @@ func fetchTender() {
 			continue
 		}
 
-		// if f, ok := item.Fields["效果图"]; ok {
-		// }
+		if f, ok := item.Fields["效果图"]; ok {
+			photos, ok := f.([]interface{})
+			if !ok {
+				continue
+			}
+			wg := errgroup.Group{}
+			for _, photo := range photos {
+				wg.Go(func() error {
+					id := xid.New().String()
+					p := photo.(map[string]interface{})
+					if !ok {
+						return nil
+					}
+					url, ok := p["url"].(string)
+					if !ok {
+						return nil
+					}
+					name, ok := p["name"].(string)
+					if !ok {
+						return nil
+					}
+
+					req, err := http.NewRequest("GET", url, nil)
+					if err != nil {
+						log.Fatal(err)
+					}
+					req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
+					res, err := httpClient.Do(req)
+					if err != nil {
+						log.Fatal(err)
+					}
+					defer res.Body.Close()
+
+					splited := strings.Split(name, ".")
+					file, err := os.Create(config.FilePath + id + "." + splited[len(splited)-1])
+					if err != nil {
+						log.Fatal(err)
+					}
+					defer file.Close()
+
+					_, err = io.Copy(file, res.Body)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Println(id + "-" + name + " Success!")
+
+					images = append(images, fmt.Sprintf("/static/%s.%s", id, splited[len(splited)-1]))
+					return nil
+				})
+			}
+			if err := wg.Wait(); err != nil {
+				panic(err)
+			}
+
+		}
 
 		// fmt.Println(code, status, name, estimatedAmount, tenderDate, discoveryDate, prov, cit, distr)
 
@@ -669,9 +931,12 @@ func fetchTender() {
 		if cit != nil {
 			q.SetCity(cit)
 		}
+		if len(images) > 0 {
+			q.SetImages(images)
+		}
 
-		if err := q.Exec(ctx); err != nil {
-			panic(err)
+		if err := q.OnConflictColumns(tender.FieldCode).UpdateNewValues().Exec(ctx); err != nil {
+			fmt.Println(err)
 		}
 
 	}
@@ -786,12 +1051,12 @@ func fetchSales() {
 							SetEmail(zhtUser.Email).
 							SetAvatarURL(zhtUser.AvatarUrl).
 							AddAreas(area)
-						// if leader != nil {
-						// 	q.SetLeader(leader)
-						// }
-						fmt.Println(leader)
+						if leader != nil {
+							q.SetLeader(leader)
+						}
 						if err := q.
-							OnConflict(sql.DoNothing()).
+							OnConflictColumns(user.FieldOpenID).
+							UpdateNewValues().
 							Exec(ctx); err != nil {
 							fmt.Println(err)
 						}
@@ -811,7 +1076,7 @@ func fetchCustomer() {
 	if !resp.Success() {
 		panic(resp.Error())
 	}
-	fmt.Println(larkcore.Prettify(resp.Data))
+	// fmt.Println(larkcore.Prettify(resp.Data))
 
 	areas, err := s.Area.Query().All(ctx)
 	if err != nil {
@@ -1047,8 +1312,8 @@ func fetchCustomer() {
 		if updatedAt != nil {
 			q.SetUpdatedAt(*updatedAt)
 		}
-		if err := q.
-			SaveX(ctx); err != nil {
+		if err := q.OnConflictColumns(customer.FieldName).UpdateNewValues().
+			Exec(ctx); err != nil {
 			fmt.Println(err)
 		}
 	}
@@ -1064,7 +1329,7 @@ func fetchArea() {
 	if !resp.Success() {
 		panic(resp.Error())
 	}
-	fmt.Println(larkcore.Prettify(resp.Data))
+	// fmt.Println(larkcore.Prettify(resp.Data))
 
 	for _, item := range resp.Data.Items {
 		var (
@@ -1167,7 +1432,7 @@ func fetchArea() {
 		if err != nil {
 			panic(err)
 		}
-		if err := s.Area.Create().SetCode(code).SetName(name).SetCenter(center).AddProvinces(provinces...).SaveX(ctx); err != nil {
+		if err := s.Area.Create().SetCode(code).SetName(name).SetCenter(center).AddProvinces(provinces...).OnConflictColumns(area.FieldCode).UpdateNewValues().Exec(ctx); err != nil {
 			fmt.Println(err)
 		}
 	}

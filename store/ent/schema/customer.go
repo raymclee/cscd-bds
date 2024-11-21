@@ -80,6 +80,7 @@ func (Customer) Edges() []ent.Edge {
 			Field("created_by_id").
 			Unique().
 			Required(),
+		edge.To("visit_records", VisitRecord.Type),
 	}
 }
 

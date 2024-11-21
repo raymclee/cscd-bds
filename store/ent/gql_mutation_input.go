@@ -321,6 +321,7 @@ type CreateCustomerInput struct {
 	TenderIDs             []xid.ID
 	SalesID               *xid.ID
 	CreatedByID           xid.ID
+	VisitRecordIDs        []xid.ID
 }
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
@@ -359,6 +360,9 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 		m.SetSalesID(*v)
 	}
 	m.SetCreatedByID(i.CreatedByID)
+	if v := i.VisitRecordIDs; len(v) > 0 {
+		m.AddVisitRecordIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateCustomerInput on the CustomerCreate builder.
@@ -391,6 +395,9 @@ type UpdateCustomerInput struct {
 	ClearSales                 bool
 	SalesID                    *xid.ID
 	CreatedByID                *xid.ID
+	ClearVisitRecords          bool
+	AddVisitRecordIDs          []xid.ID
+	RemoveVisitRecordIDs       []xid.ID
 }
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
@@ -460,6 +467,15 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)
+	}
+	if i.ClearVisitRecords {
+		m.ClearVisitRecords()
+	}
+	if v := i.AddVisitRecordIDs; len(v) > 0 {
+		m.AddVisitRecordIDs(v...)
+	}
+	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
+		m.RemoveVisitRecordIDs(v...)
 	}
 }
 
@@ -757,6 +773,7 @@ type CreateTenderInput struct {
 	ProvinceID                           xid.ID
 	CityID                               *xid.ID
 	DistrictID                           xid.ID
+	VisitRecordIDs                       []xid.ID
 }
 
 // Mutate applies the CreateTenderInput on the TenderMutation builder.
@@ -899,6 +916,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 		m.SetCityID(*v)
 	}
 	m.SetDistrictID(i.DistrictID)
+	if v := i.VisitRecordIDs; len(v) > 0 {
+		m.AddVisitRecordIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateTenderInput on the TenderCreate builder.
@@ -1001,6 +1021,9 @@ type UpdateTenderInput struct {
 	ClearCity                                 bool
 	CityID                                    *xid.ID
 	DistrictID                                *xid.ID
+	ClearVisitRecords                         bool
+	AddVisitRecordIDs                         []xid.ID
+	RemoveVisitRecordIDs                      []xid.ID
 }
 
 // Mutate applies the UpdateTenderInput on the TenderMutation builder.
@@ -1281,6 +1304,15 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.DistrictID; v != nil {
 		m.SetDistrictID(*v)
 	}
+	if i.ClearVisitRecords {
+		m.ClearVisitRecords()
+	}
+	if v := i.AddVisitRecordIDs; len(v) > 0 {
+		m.AddVisitRecordIDs(v...)
+	}
+	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
+		m.RemoveVisitRecordIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateTenderInput on the TenderUpdate builder.
@@ -1297,19 +1329,20 @@ func (c *TenderUpdateOne) SetInput(i UpdateTenderInput) *TenderUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
-	CreatedAt     *time.Time
-	UpdatedAt     *time.Time
-	Name          string
-	Email         string
-	Username      string
-	OpenID        string
-	AvatarURL     string
-	Disabled      *bool
-	AreaIDs       []xid.ID
-	CustomerIDs   []xid.ID
-	LeaderID      *xid.ID
-	TeamMemberIDs []xid.ID
-	TenderIDs     []xid.ID
+	CreatedAt      *time.Time
+	UpdatedAt      *time.Time
+	Name           string
+	Email          string
+	Username       string
+	OpenID         string
+	AvatarURL      string
+	Disabled       *bool
+	AreaIDs        []xid.ID
+	CustomerIDs    []xid.ID
+	LeaderID       *xid.ID
+	TeamMemberIDs  []xid.ID
+	TenderIDs      []xid.ID
+	VisitRecordIDs []xid.ID
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
@@ -1343,6 +1376,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.TenderIDs; len(v) > 0 {
 		m.AddTenderIDs(v...)
 	}
+	if v := i.VisitRecordIDs; len(v) > 0 {
+		m.AddVisitRecordIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateUserInput on the UserCreate builder.
@@ -1353,27 +1389,30 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
-	UpdatedAt           *time.Time
-	Name                *string
-	Email               *string
-	Username            *string
-	OpenID              *string
-	AvatarURL           *string
-	Disabled            *bool
-	ClearAreas          bool
-	AddAreaIDs          []xid.ID
-	RemoveAreaIDs       []xid.ID
-	ClearCustomers      bool
-	AddCustomerIDs      []xid.ID
-	RemoveCustomerIDs   []xid.ID
-	ClearLeader         bool
-	LeaderID            *xid.ID
-	ClearTeamMembers    bool
-	AddTeamMemberIDs    []xid.ID
-	RemoveTeamMemberIDs []xid.ID
-	ClearTenders        bool
-	AddTenderIDs        []xid.ID
-	RemoveTenderIDs     []xid.ID
+	UpdatedAt            *time.Time
+	Name                 *string
+	Email                *string
+	Username             *string
+	OpenID               *string
+	AvatarURL            *string
+	Disabled             *bool
+	ClearAreas           bool
+	AddAreaIDs           []xid.ID
+	RemoveAreaIDs        []xid.ID
+	ClearCustomers       bool
+	AddCustomerIDs       []xid.ID
+	RemoveCustomerIDs    []xid.ID
+	ClearLeader          bool
+	LeaderID             *xid.ID
+	ClearTeamMembers     bool
+	AddTeamMemberIDs     []xid.ID
+	RemoveTeamMemberIDs  []xid.ID
+	ClearTenders         bool
+	AddTenderIDs         []xid.ID
+	RemoveTenderIDs      []xid.ID
+	ClearVisitRecords    bool
+	AddVisitRecordIDs    []xid.ID
+	RemoveVisitRecordIDs []xid.ID
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
@@ -1441,6 +1480,15 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.RemoveTenderIDs; len(v) > 0 {
 		m.RemoveTenderIDs(v...)
 	}
+	if i.ClearVisitRecords {
+		m.ClearVisitRecords()
+	}
+	if v := i.AddVisitRecordIDs; len(v) > 0 {
+		m.AddVisitRecordIDs(v...)
+	}
+	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
+		m.RemoveVisitRecordIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateUserInput on the UserUpdate builder.
@@ -1451,6 +1499,130 @@ func (c *UserUpdate) SetInput(i UpdateUserInput) *UserUpdate {
 
 // SetInput applies the change-set in the UpdateUserInput on the UserUpdateOne builder.
 func (c *UserUpdateOne) SetInput(i UpdateUserInput) *UserUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateVisitRecordInput represents a mutation input for creating visitrecords.
+type CreateVisitRecordInput struct {
+	CreatedAt     *time.Time
+	UpdatedAt     *time.Time
+	VisitType     *int
+	CommPeople    string
+	CommContent   string
+	NextStep      *string
+	Date          time.Time
+	TenderID      *xid.ID
+	CustomerID    *xid.ID
+	FollowUpByIDs []xid.ID
+}
+
+// Mutate applies the CreateVisitRecordInput on the VisitRecordMutation builder.
+func (i *CreateVisitRecordInput) Mutate(m *VisitRecordMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.VisitType; v != nil {
+		m.SetVisitType(*v)
+	}
+	m.SetCommPeople(i.CommPeople)
+	m.SetCommContent(i.CommContent)
+	if v := i.NextStep; v != nil {
+		m.SetNextStep(*v)
+	}
+	m.SetDate(i.Date)
+	if v := i.TenderID; v != nil {
+		m.SetTenderID(*v)
+	}
+	if v := i.CustomerID; v != nil {
+		m.SetCustomerID(*v)
+	}
+	if v := i.FollowUpByIDs; len(v) > 0 {
+		m.AddFollowUpByIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateVisitRecordInput on the VisitRecordCreate builder.
+func (c *VisitRecordCreate) SetInput(i CreateVisitRecordInput) *VisitRecordCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateVisitRecordInput represents a mutation input for updating visitrecords.
+type UpdateVisitRecordInput struct {
+	UpdatedAt           *time.Time
+	VisitType           *int
+	CommPeople          *string
+	CommContent         *string
+	ClearNextStep       bool
+	NextStep            *string
+	Date                *time.Time
+	ClearTender         bool
+	TenderID            *xid.ID
+	ClearCustomer       bool
+	CustomerID          *xid.ID
+	ClearFollowUpBys    bool
+	AddFollowUpByIDs    []xid.ID
+	RemoveFollowUpByIDs []xid.ID
+}
+
+// Mutate applies the UpdateVisitRecordInput on the VisitRecordMutation builder.
+func (i *UpdateVisitRecordInput) Mutate(m *VisitRecordMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.VisitType; v != nil {
+		m.SetVisitType(*v)
+	}
+	if v := i.CommPeople; v != nil {
+		m.SetCommPeople(*v)
+	}
+	if v := i.CommContent; v != nil {
+		m.SetCommContent(*v)
+	}
+	if i.ClearNextStep {
+		m.ClearNextStep()
+	}
+	if v := i.NextStep; v != nil {
+		m.SetNextStep(*v)
+	}
+	if v := i.Date; v != nil {
+		m.SetDate(*v)
+	}
+	if i.ClearTender {
+		m.ClearTender()
+	}
+	if v := i.TenderID; v != nil {
+		m.SetTenderID(*v)
+	}
+	if i.ClearCustomer {
+		m.ClearCustomer()
+	}
+	if v := i.CustomerID; v != nil {
+		m.SetCustomerID(*v)
+	}
+	if i.ClearFollowUpBys {
+		m.ClearFollowUpBys()
+	}
+	if v := i.AddFollowUpByIDs; len(v) > 0 {
+		m.AddFollowUpByIDs(v...)
+	}
+	if v := i.RemoveFollowUpByIDs; len(v) > 0 {
+		m.RemoveFollowUpByIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the UpdateVisitRecordInput on the VisitRecordUpdate builder.
+func (c *VisitRecordUpdate) SetInput(i UpdateVisitRecordInput) *VisitRecordUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateVisitRecordInput on the VisitRecordUpdateOne builder.
+func (c *VisitRecordUpdateOne) SetInput(i UpdateVisitRecordInput) *VisitRecordUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }

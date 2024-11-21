@@ -106,6 +106,7 @@ type MapState = {
   dashboardVisible: boolean;
   tenderListVisible: boolean;
   tenderList: Array<Partial<Tender>>;
+  tenderListHovering: string | number;
   selectedTender: Partial<Tender> | null;
   mapCircles: AMap.CircleMarker[];
 };
@@ -128,6 +129,7 @@ type Action = {
   onFeatureOrMarkerClick: (props: any) => void;
   setTenderListVisible: (visible: boolean) => void;
   setTenderList: (tenders: Array<Partial<Tender>>) => void;
+  setTenderListHovering: (tenderId: string | number) => void;
   setSelectedTender: (tender: Partial<Tender> | null) => void;
   // navigate:
 };
@@ -146,6 +148,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   selectedArea: null,
   tenderListVisible: false,
   tenderList: [],
+  tenderListHovering: 0,
   selectedTender: null,
   // districts,
   initMap: (container, opts) => {
@@ -155,6 +158,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
     const districtExplorer = new AMapUI.DistrictExplorer({
       eventSupport: true,
       map: map,
+      preload: [100000],
     });
     set({ map, districtExplorer, satelliteLayer });
   },
@@ -395,6 +399,9 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   },
   setTenderList(tenders) {
     set({ tenderList: tenders });
+  },
+  setTenderListHovering(hovering) {
+    set({ tenderListHovering: hovering });
   },
   setSelectedTender(tender) {
     set({ selectedTender: tender });

@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"fmt"
 )
 
@@ -26,6 +27,7 @@ var prefixMap = map[xid.ID]string{
 	"PR": province.Table,
 	"TE": tender.Table,
 	"US": user.Table,
+	"VR": visitrecord.Table,
 }
 
 // IDToType maps a xid.ID to the underlying table.

@@ -51,6 +51,7 @@ func (User) Edges() []ent.Edge {
 			Unique(),
 		edge.From("tenders", Tender.Type).
 			Ref("following_sales"),
+		edge.To("visit_records", VisitRecord.Type),
 	}
 }
 

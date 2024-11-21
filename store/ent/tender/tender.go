@@ -135,6 +135,8 @@ const (
 	EdgeCity = "city"
 	// EdgeDistrict holds the string denoting the district edge name in mutations.
 	EdgeDistrict = "district"
+	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
+	EdgeVisitRecords = "visit_records"
 	// Table holds the table name of the tender in the database.
 	Table = "tenders"
 	// AreaTable is the table that holds the area relation/edge.
@@ -191,6 +193,13 @@ const (
 	DistrictInverseTable = "districts"
 	// DistrictColumn is the table column denoting the district relation/edge.
 	DistrictColumn = "district_id"
+	// VisitRecordsTable is the table that holds the visit_records relation/edge.
+	VisitRecordsTable = "visit_records"
+	// VisitRecordsInverseTable is the table name for the VisitRecord entity.
+	// It exists in this package in order to avoid circular dependency with the "visitrecord" package.
+	VisitRecordsInverseTable = "visit_records"
+	// VisitRecordsColumn is the table column denoting the visit_records relation/edge.
+	VisitRecordsColumn = "tender_id"
 )
 
 // Columns holds all SQL columns for tender fields.
@@ -613,6 +622,20 @@ func ByDistrictField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newDistrictStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByVisitRecordsCount orders the results by visit_records count.
+func ByVisitRecordsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newVisitRecordsStep(), opts...)
+	}
+}
+
+// ByVisitRecords orders the results by visit_records terms.
+func ByVisitRecords(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newVisitRecordsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -667,5 +690,12 @@ func newDistrictStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(DistrictInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, DistrictTable, DistrictColumn),
+	)
+}
+func newVisitRecordsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(VisitRecordsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, VisitRecordsTable, VisitRecordsColumn),
 	)
 }

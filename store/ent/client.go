@@ -20,6 +20,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -48,6 +49,8 @@ type Client struct {
 	Tender *TenderClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// VisitRecord is the client for interacting with the VisitRecord builders.
+	VisitRecord *VisitRecordClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -67,6 +70,7 @@ func (c *Client) init() {
 	c.Province = NewProvinceClient(c.config)
 	c.Tender = NewTenderClient(c.config)
 	c.User = NewUserClient(c.config)
+	c.VisitRecord = NewVisitRecordClient(c.config)
 }
 
 type (
@@ -157,16 +161,17 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:      ctx,
-		config:   cfg,
-		Area:     NewAreaClient(cfg),
-		City:     NewCityClient(cfg),
-		Country:  NewCountryClient(cfg),
-		Customer: NewCustomerClient(cfg),
-		District: NewDistrictClient(cfg),
-		Province: NewProvinceClient(cfg),
-		Tender:   NewTenderClient(cfg),
-		User:     NewUserClient(cfg),
+		ctx:         ctx,
+		config:      cfg,
+		Area:        NewAreaClient(cfg),
+		City:        NewCityClient(cfg),
+		Country:     NewCountryClient(cfg),
+		Customer:    NewCustomerClient(cfg),
+		District:    NewDistrictClient(cfg),
+		Province:    NewProvinceClient(cfg),
+		Tender:      NewTenderClient(cfg),
+		User:        NewUserClient(cfg),
+		VisitRecord: NewVisitRecordClient(cfg),
 	}, nil
 }
 
@@ -184,16 +189,17 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:      ctx,
-		config:   cfg,
-		Area:     NewAreaClient(cfg),
-		City:     NewCityClient(cfg),
-		Country:  NewCountryClient(cfg),
-		Customer: NewCustomerClient(cfg),
-		District: NewDistrictClient(cfg),
-		Province: NewProvinceClient(cfg),
-		Tender:   NewTenderClient(cfg),
-		User:     NewUserClient(cfg),
+		ctx:         ctx,
+		config:      cfg,
+		Area:        NewAreaClient(cfg),
+		City:        NewCityClient(cfg),
+		Country:     NewCountryClient(cfg),
+		Customer:    NewCustomerClient(cfg),
+		District:    NewDistrictClient(cfg),
+		Province:    NewProvinceClient(cfg),
+		Tender:      NewTenderClient(cfg),
+		User:        NewUserClient(cfg),
+		VisitRecord: NewVisitRecordClient(cfg),
 	}, nil
 }
 
@@ -224,6 +230,7 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Area, c.City, c.Country, c.Customer, c.District, c.Province, c.Tender, c.User,
+		c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -234,6 +241,7 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Area, c.City, c.Country, c.Customer, c.District, c.Province, c.Tender, c.User,
+		c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -258,6 +266,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Tender.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
+	case *VisitRecordMutation:
+		return c.VisitRecord.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -962,6 +972,22 @@ func (c *CustomerClient) QueryCreatedBy(cu *Customer) *UserQuery {
 	return query
 }
 
+// QueryVisitRecords queries the visit_records edge of a Customer.
+func (c *CustomerClient) QueryVisitRecords(cu *Customer) *VisitRecordQuery {
+	query := (&VisitRecordClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.VisitRecordsTable, customer.VisitRecordsColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CustomerClient) Hooks() []Hook {
 	return c.hooks.Customer
@@ -1617,6 +1643,22 @@ func (c *TenderClient) QueryDistrict(t *Tender) *DistrictQuery {
 	return query
 }
 
+// QueryVisitRecords queries the visit_records edge of a Tender.
+func (c *TenderClient) QueryVisitRecords(t *Tender) *VisitRecordQuery {
+	query := (&VisitRecordClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, tender.VisitRecordsTable, tender.VisitRecordsColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *TenderClient) Hooks() []Hook {
 	return c.hooks.Tender
@@ -1830,6 +1872,22 @@ func (c *UserClient) QueryTenders(u *User) *TenderQuery {
 	return query
 }
 
+// QueryVisitRecords queries the visit_records edge of a User.
+func (c *UserClient) QueryVisitRecords(u *User) *VisitRecordQuery {
+	query := (&VisitRecordClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, user.VisitRecordsTable, user.VisitRecordsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
 	return c.hooks.User
@@ -1855,13 +1913,195 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 	}
 }
 
+// VisitRecordClient is a client for the VisitRecord schema.
+type VisitRecordClient struct {
+	config
+}
+
+// NewVisitRecordClient returns a client for the VisitRecord from the given config.
+func NewVisitRecordClient(c config) *VisitRecordClient {
+	return &VisitRecordClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `visitrecord.Hooks(f(g(h())))`.
+func (c *VisitRecordClient) Use(hooks ...Hook) {
+	c.hooks.VisitRecord = append(c.hooks.VisitRecord, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `visitrecord.Intercept(f(g(h())))`.
+func (c *VisitRecordClient) Intercept(interceptors ...Interceptor) {
+	c.inters.VisitRecord = append(c.inters.VisitRecord, interceptors...)
+}
+
+// Create returns a builder for creating a VisitRecord entity.
+func (c *VisitRecordClient) Create() *VisitRecordCreate {
+	mutation := newVisitRecordMutation(c.config, OpCreate)
+	return &VisitRecordCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of VisitRecord entities.
+func (c *VisitRecordClient) CreateBulk(builders ...*VisitRecordCreate) *VisitRecordCreateBulk {
+	return &VisitRecordCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *VisitRecordClient) MapCreateBulk(slice any, setFunc func(*VisitRecordCreate, int)) *VisitRecordCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &VisitRecordCreateBulk{err: fmt.Errorf("calling to VisitRecordClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*VisitRecordCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &VisitRecordCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for VisitRecord.
+func (c *VisitRecordClient) Update() *VisitRecordUpdate {
+	mutation := newVisitRecordMutation(c.config, OpUpdate)
+	return &VisitRecordUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *VisitRecordClient) UpdateOne(vr *VisitRecord) *VisitRecordUpdateOne {
+	mutation := newVisitRecordMutation(c.config, OpUpdateOne, withVisitRecord(vr))
+	return &VisitRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *VisitRecordClient) UpdateOneID(id xid.ID) *VisitRecordUpdateOne {
+	mutation := newVisitRecordMutation(c.config, OpUpdateOne, withVisitRecordID(id))
+	return &VisitRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for VisitRecord.
+func (c *VisitRecordClient) Delete() *VisitRecordDelete {
+	mutation := newVisitRecordMutation(c.config, OpDelete)
+	return &VisitRecordDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *VisitRecordClient) DeleteOne(vr *VisitRecord) *VisitRecordDeleteOne {
+	return c.DeleteOneID(vr.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *VisitRecordClient) DeleteOneID(id xid.ID) *VisitRecordDeleteOne {
+	builder := c.Delete().Where(visitrecord.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &VisitRecordDeleteOne{builder}
+}
+
+// Query returns a query builder for VisitRecord.
+func (c *VisitRecordClient) Query() *VisitRecordQuery {
+	return &VisitRecordQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeVisitRecord},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a VisitRecord entity by its id.
+func (c *VisitRecordClient) Get(ctx context.Context, id xid.ID) (*VisitRecord, error) {
+	return c.Query().Where(visitrecord.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *VisitRecordClient) GetX(ctx context.Context, id xid.ID) *VisitRecord {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryTender queries the tender edge of a VisitRecord.
+func (c *VisitRecordClient) QueryTender(vr *VisitRecord) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := vr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(visitrecord.Table, visitrecord.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, visitrecord.TenderTable, visitrecord.TenderColumn),
+		)
+		fromV = sqlgraph.Neighbors(vr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCustomer queries the customer edge of a VisitRecord.
+func (c *VisitRecordClient) QueryCustomer(vr *VisitRecord) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := vr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(visitrecord.Table, visitrecord.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, visitrecord.CustomerTable, visitrecord.CustomerColumn),
+		)
+		fromV = sqlgraph.Neighbors(vr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryFollowUpBys queries the followUpBys edge of a VisitRecord.
+func (c *VisitRecordClient) QueryFollowUpBys(vr *VisitRecord) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := vr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(visitrecord.Table, visitrecord.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, visitrecord.FollowUpBysTable, visitrecord.FollowUpBysPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(vr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *VisitRecordClient) Hooks() []Hook {
+	return c.hooks.VisitRecord
+}
+
+// Interceptors returns the client interceptors.
+func (c *VisitRecordClient) Interceptors() []Interceptor {
+	return c.inters.VisitRecord
+}
+
+func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&VisitRecordCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&VisitRecordUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&VisitRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&VisitRecordDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown VisitRecord mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Area, City, Country, Customer, District, Province, Tender, User []ent.Hook
+		Area, City, Country, Customer, District, Province, Tender, User,
+		VisitRecord []ent.Hook
 	}
 	inters struct {
-		Area, City, Country, Customer, District, Province, Tender,
-		User []ent.Interceptor
+		Area, City, Country, Customer, District, Province, Tender, User,
+		VisitRecord []ent.Interceptor
 	}
 )

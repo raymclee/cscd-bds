@@ -14,6 +14,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"time"
@@ -1058,6 +1059,21 @@ func (tu *TenderUpdate) SetDistrict(d *District) *TenderUpdate {
 	return tu.SetDistrictID(d.ID)
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
+func (tu *TenderUpdate) AddVisitRecordIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.AddVisitRecordIDs(ids...)
+	return tu
+}
+
+// AddVisitRecords adds the "visit_records" edges to the VisitRecord entity.
+func (tu *TenderUpdate) AddVisitRecords(v ...*VisitRecord) *TenderUpdate {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return tu.AddVisitRecordIDs(ids...)
+}
+
 // Mutation returns the TenderMutation object of the builder.
 func (tu *TenderUpdate) Mutation() *TenderMutation {
 	return tu.mutation
@@ -1124,6 +1140,27 @@ func (tu *TenderUpdate) ClearCity() *TenderUpdate {
 func (tu *TenderUpdate) ClearDistrict() *TenderUpdate {
 	tu.mutation.ClearDistrict()
 	return tu
+}
+
+// ClearVisitRecords clears all "visit_records" edges to the VisitRecord entity.
+func (tu *TenderUpdate) ClearVisitRecords() *TenderUpdate {
+	tu.mutation.ClearVisitRecords()
+	return tu
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to VisitRecord entities by IDs.
+func (tu *TenderUpdate) RemoveVisitRecordIDs(ids ...xid.ID) *TenderUpdate {
+	tu.mutation.RemoveVisitRecordIDs(ids...)
+	return tu
+}
+
+// RemoveVisitRecords removes "visit_records" edges to VisitRecord entities.
+func (tu *TenderUpdate) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdate {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return tu.RemoveVisitRecordIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -1737,6 +1774,51 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedVisitRecordsIDs(); len(nodes) > 0 && !tu.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.VisitRecordsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -2785,6 +2867,21 @@ func (tuo *TenderUpdateOne) SetDistrict(d *District) *TenderUpdateOne {
 	return tuo.SetDistrictID(d.ID)
 }
 
+// AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
+func (tuo *TenderUpdateOne) AddVisitRecordIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.AddVisitRecordIDs(ids...)
+	return tuo
+}
+
+// AddVisitRecords adds the "visit_records" edges to the VisitRecord entity.
+func (tuo *TenderUpdateOne) AddVisitRecords(v ...*VisitRecord) *TenderUpdateOne {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return tuo.AddVisitRecordIDs(ids...)
+}
+
 // Mutation returns the TenderMutation object of the builder.
 func (tuo *TenderUpdateOne) Mutation() *TenderMutation {
 	return tuo.mutation
@@ -2851,6 +2948,27 @@ func (tuo *TenderUpdateOne) ClearCity() *TenderUpdateOne {
 func (tuo *TenderUpdateOne) ClearDistrict() *TenderUpdateOne {
 	tuo.mutation.ClearDistrict()
 	return tuo
+}
+
+// ClearVisitRecords clears all "visit_records" edges to the VisitRecord entity.
+func (tuo *TenderUpdateOne) ClearVisitRecords() *TenderUpdateOne {
+	tuo.mutation.ClearVisitRecords()
+	return tuo
+}
+
+// RemoveVisitRecordIDs removes the "visit_records" edge to VisitRecord entities by IDs.
+func (tuo *TenderUpdateOne) RemoveVisitRecordIDs(ids ...xid.ID) *TenderUpdateOne {
+	tuo.mutation.RemoveVisitRecordIDs(ids...)
+	return tuo
+}
+
+// RemoveVisitRecords removes "visit_records" edges to VisitRecord entities.
+func (tuo *TenderUpdateOne) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdateOne {
+	ids := make([]xid.ID, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return tuo.RemoveVisitRecordIDs(ids...)
 }
 
 // Where appends a list predicates to the TenderUpdate builder.
@@ -3494,6 +3612,51 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(district.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedVisitRecordsIDs(); len(nodes) > 0 && !tuo.mutation.VisitRecordsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.VisitRecordsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

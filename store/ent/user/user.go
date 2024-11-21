@@ -43,6 +43,8 @@ const (
 	EdgeTeamMembers = "team_members"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
+	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
+	EdgeVisitRecords = "visit_records"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// AreasTable is the table that holds the areas relation/edge. The primary key declared below.
@@ -70,6 +72,11 @@ const (
 	// TendersInverseTable is the table name for the Tender entity.
 	// It exists in this package in order to avoid circular dependency with the "tender" package.
 	TendersInverseTable = "tenders"
+	// VisitRecordsTable is the table that holds the visit_records relation/edge. The primary key declared below.
+	VisitRecordsTable = "user_visit_records"
+	// VisitRecordsInverseTable is the table name for the VisitRecord entity.
+	// It exists in this package in order to avoid circular dependency with the "visitrecord" package.
+	VisitRecordsInverseTable = "visit_records"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -93,6 +100,9 @@ var (
 	// TendersPrimaryKey and TendersColumn2 are the table columns denoting the
 	// primary key for the tenders relation (M2M).
 	TendersPrimaryKey = []string{"tender_id", "user_id"}
+	// VisitRecordsPrimaryKey and VisitRecordsColumn2 are the table columns denoting the
+	// primary key for the visit_records relation (M2M).
+	VisitRecordsPrimaryKey = []string{"user_id", "visit_record_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -233,6 +243,20 @@ func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByVisitRecordsCount orders the results by visit_records count.
+func ByVisitRecordsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newVisitRecordsStep(), opts...)
+	}
+}
+
+// ByVisitRecords orders the results by visit_records terms.
+func ByVisitRecords(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newVisitRecordsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newAreasStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -266,5 +290,12 @@ func newTendersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TendersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2M, true, TendersTable, TendersPrimaryKey...),
+	)
+}
+func newVisitRecordsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(VisitRecordsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, VisitRecordsTable, VisitRecordsPrimaryKey...),
 	)
 }

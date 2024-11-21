@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"reflect"
@@ -80,14 +81,15 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			area.Table:     area.ValidColumn,
-			city.Table:     city.ValidColumn,
-			country.Table:  country.ValidColumn,
-			customer.Table: customer.ValidColumn,
-			district.Table: district.ValidColumn,
-			province.Table: province.ValidColumn,
-			tender.Table:   tender.ValidColumn,
-			user.Table:     user.ValidColumn,
+			area.Table:        area.ValidColumn,
+			city.Table:        city.ValidColumn,
+			country.Table:     country.ValidColumn,
+			customer.Table:    customer.ValidColumn,
+			district.Table:    district.ValidColumn,
+			province.Table:    province.ValidColumn,
+			tender.Table:      tender.ValidColumn,
+			user.Table:        user.ValidColumn,
+			visitrecord.Table: visitrecord.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

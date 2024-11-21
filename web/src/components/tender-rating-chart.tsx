@@ -74,20 +74,46 @@ export function TenderRatingChart({
               wrapperClassName="text-white"
               content={
                 <ChartTooltipContent
-                  //   hideLabel
+                  cursor={false}
                   className="border-0 bg-black/70 text-white"
                 />
               }
             />
             <PolarGrid className="fill-[--brand] opacity-20" />
-            <PolarAngleAxis dataKey="month" />
+            <PolarAngleAxis
+              dataKey="month"
+              tick={({ x, y, textAnchor, value, index, ...props }) => {
+                const data = chartData[index];
+                return (
+                  <text
+                    x={x}
+                    y={index === 0 ? y - 8 : y}
+                    textAnchor={textAnchor}
+                    fontSize={13}
+                    fontWeight={500}
+                    {...props}
+                    className="flex flex-col"
+                  >
+                    <tspan className="fill-gray-300">{data.rating}</tspan>
+                    <tspan
+                      x={x}
+                      dy={"1rem"}
+                      fontSize={12}
+                      className="fill-gray-300"
+                    >
+                      {data.month}
+                    </tspan>
+                  </text>
+                );
+              }}
+            />
             <Radar dataKey="rating" fill="var(--brand)" fillOpacity={0.5} />
           </RadarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none text-white">
-          总分:{" "}
+      <CardFooter className="flex-col gap-2 text-xl">
+        <div className="flex items-center gap-2 font-bold leading-none text-white">
+          <span className="text-xl">总分:</span>{" "}
           {(sizeAndValueRating || 0) +
             (timeLimitRating || 0) +
             (creditAndPaymentRating || 0) +

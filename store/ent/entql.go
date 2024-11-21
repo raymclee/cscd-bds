@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -21,7 +22,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 8)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 9)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -234,6 +235,28 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:  {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
+	graph.Nodes[8] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   visitrecord.Table,
+			Columns: visitrecord.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: visitrecord.FieldID,
+			},
+		},
+		Type: "VisitRecord",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			visitrecord.FieldCreatedAt:   {Type: field.TypeTime, Column: visitrecord.FieldCreatedAt},
+			visitrecord.FieldUpdatedAt:   {Type: field.TypeTime, Column: visitrecord.FieldUpdatedAt},
+			visitrecord.FieldVisitType:   {Type: field.TypeInt, Column: visitrecord.FieldVisitType},
+			visitrecord.FieldCommPeople:  {Type: field.TypeString, Column: visitrecord.FieldCommPeople},
+			visitrecord.FieldCommContent: {Type: field.TypeString, Column: visitrecord.FieldCommContent},
+			visitrecord.FieldNextStep:    {Type: field.TypeString, Column: visitrecord.FieldNextStep},
+			visitrecord.FieldDate:        {Type: field.TypeTime, Column: visitrecord.FieldDate},
+			visitrecord.FieldTenderID:    {Type: field.TypeString, Column: visitrecord.FieldTenderID},
+			visitrecord.FieldCustomerID:  {Type: field.TypeString, Column: visitrecord.FieldCustomerID},
+		},
+	}
 	graph.MustAddE(
 		"customers",
 		&sqlgraph.EdgeSpec{
@@ -377,6 +400,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Customer",
 		"User",
+	)
+	graph.MustAddE(
+		"visit_records",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.VisitRecordsTable,
+			Columns: []string{customer.VisitRecordsColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"VisitRecord",
 	)
 	graph.MustAddE(
 		"province",
@@ -571,6 +606,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"District",
 	)
 	graph.MustAddE(
+		"visit_records",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   tender.VisitRecordsTable,
+			Columns: []string{tender.VisitRecordsColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"VisitRecord",
+	)
+	graph.MustAddE(
 		"areas",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -629,6 +676,54 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"User",
 		"Tender",
+	)
+	graph.MustAddE(
+		"visit_records",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.VisitRecordsTable,
+			Columns: user.VisitRecordsPrimaryKey,
+			Bidi:    false,
+		},
+		"User",
+		"VisitRecord",
+	)
+	graph.MustAddE(
+		"tender",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   visitrecord.TenderTable,
+			Columns: []string{visitrecord.TenderColumn},
+			Bidi:    false,
+		},
+		"VisitRecord",
+		"Tender",
+	)
+	graph.MustAddE(
+		"customer",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   visitrecord.CustomerTable,
+			Columns: []string{visitrecord.CustomerColumn},
+			Bidi:    false,
+		},
+		"VisitRecord",
+		"Customer",
+	)
+	graph.MustAddE(
+		"followUpBys",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   visitrecord.FollowUpBysTable,
+			Columns: visitrecord.FollowUpBysPrimaryKey,
+			Bidi:    false,
+		},
+		"VisitRecord",
+		"User",
 	)
 	return graph
 }()
@@ -1116,6 +1211,20 @@ func (f *CustomerFilter) WhereHasCreatedBy() {
 // WhereHasCreatedByWith applies a predicate to check if query has an edge created_by with a given conditions (other predicates).
 func (f *CustomerFilter) WhereHasCreatedByWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("created_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasVisitRecords applies a predicate to check if query has an edge visit_records.
+func (f *CustomerFilter) WhereHasVisitRecords() {
+	f.Where(entql.HasEdge("visit_records"))
+}
+
+// WhereHasVisitRecordsWith applies a predicate to check if query has an edge visit_records with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord) {
+	f.Where(entql.HasEdgeWith("visit_records", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -1806,6 +1915,20 @@ func (f *TenderFilter) WhereHasDistrictWith(preds ...predicate.District) {
 	})))
 }
 
+// WhereHasVisitRecords applies a predicate to check if query has an edge visit_records.
+func (f *TenderFilter) WhereHasVisitRecords() {
+	f.Where(entql.HasEdge("visit_records"))
+}
+
+// WhereHasVisitRecordsWith applies a predicate to check if query has an edge visit_records with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord) {
+	f.Where(entql.HasEdgeWith("visit_records", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (uq *UserQuery) addPredicate(pred func(s *sql.Selector)) {
 	uq.predicates = append(uq.predicates, pred)
@@ -1955,6 +2078,147 @@ func (f *UserFilter) WhereHasTenders() {
 // WhereHasTendersWith applies a predicate to check if query has an edge tenders with a given conditions (other predicates).
 func (f *UserFilter) WhereHasTendersWith(preds ...predicate.Tender) {
 	f.Where(entql.HasEdgeWith("tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasVisitRecords applies a predicate to check if query has an edge visit_records.
+func (f *UserFilter) WhereHasVisitRecords() {
+	f.Where(entql.HasEdge("visit_records"))
+}
+
+// WhereHasVisitRecordsWith applies a predicate to check if query has an edge visit_records with a given conditions (other predicates).
+func (f *UserFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord) {
+	f.Where(entql.HasEdgeWith("visit_records", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (vrq *VisitRecordQuery) addPredicate(pred func(s *sql.Selector)) {
+	vrq.predicates = append(vrq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the VisitRecordQuery builder.
+func (vrq *VisitRecordQuery) Filter() *VisitRecordFilter {
+	return &VisitRecordFilter{config: vrq.config, predicateAdder: vrq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *VisitRecordMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the VisitRecordMutation builder.
+func (m *VisitRecordMutation) Filter() *VisitRecordFilter {
+	return &VisitRecordFilter{config: m.config, predicateAdder: m}
+}
+
+// VisitRecordFilter provides a generic filtering capability at runtime for VisitRecordQuery.
+type VisitRecordFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *VisitRecordFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *VisitRecordFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(visitrecord.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *VisitRecordFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(visitrecord.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *VisitRecordFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(visitrecord.FieldUpdatedAt))
+}
+
+// WhereVisitType applies the entql int predicate on the visit_type field.
+func (f *VisitRecordFilter) WhereVisitType(p entql.IntP) {
+	f.Where(p.Field(visitrecord.FieldVisitType))
+}
+
+// WhereCommPeople applies the entql string predicate on the comm_people field.
+func (f *VisitRecordFilter) WhereCommPeople(p entql.StringP) {
+	f.Where(p.Field(visitrecord.FieldCommPeople))
+}
+
+// WhereCommContent applies the entql string predicate on the comm_content field.
+func (f *VisitRecordFilter) WhereCommContent(p entql.StringP) {
+	f.Where(p.Field(visitrecord.FieldCommContent))
+}
+
+// WhereNextStep applies the entql string predicate on the next_step field.
+func (f *VisitRecordFilter) WhereNextStep(p entql.StringP) {
+	f.Where(p.Field(visitrecord.FieldNextStep))
+}
+
+// WhereDate applies the entql time.Time predicate on the date field.
+func (f *VisitRecordFilter) WhereDate(p entql.TimeP) {
+	f.Where(p.Field(visitrecord.FieldDate))
+}
+
+// WhereTenderID applies the entql string predicate on the tender_id field.
+func (f *VisitRecordFilter) WhereTenderID(p entql.StringP) {
+	f.Where(p.Field(visitrecord.FieldTenderID))
+}
+
+// WhereCustomerID applies the entql string predicate on the customer_id field.
+func (f *VisitRecordFilter) WhereCustomerID(p entql.StringP) {
+	f.Where(p.Field(visitrecord.FieldCustomerID))
+}
+
+// WhereHasTender applies a predicate to check if query has an edge tender.
+func (f *VisitRecordFilter) WhereHasTender() {
+	f.Where(entql.HasEdge("tender"))
+}
+
+// WhereHasTenderWith applies a predicate to check if query has an edge tender with a given conditions (other predicates).
+func (f *VisitRecordFilter) WhereHasTenderWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("tender", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasCustomer applies a predicate to check if query has an edge customer.
+func (f *VisitRecordFilter) WhereHasCustomer() {
+	f.Where(entql.HasEdge("customer"))
+}
+
+// WhereHasCustomerWith applies a predicate to check if query has an edge customer with a given conditions (other predicates).
+func (f *VisitRecordFilter) WhereHasCustomerWith(preds ...predicate.Customer) {
+	f.Where(entql.HasEdgeWith("customer", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasFollowUpBys applies a predicate to check if query has an edge followUpBys.
+func (f *VisitRecordFilter) WhereHasFollowUpBys() {
+	f.Where(entql.HasEdge("followUpBys"))
+}
+
+// WhereHasFollowUpBysWith applies a predicate to check if query has an edge followUpBys with a given conditions (other predicates).
+func (f *VisitRecordFilter) WhereHasFollowUpBysWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("followUpBys", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

@@ -1,6 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
-import { Wallet, X } from "lucide-react";
+import { ImageOff, Undo2, Wallet } from "lucide-react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -21,11 +21,17 @@ import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { Tender } from "~/graphql/graphql";
 import { colors, getDistrictColor } from "~/lib/color";
 import { findTenderWithLevel, fixAmount, ownerType } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "~/components/ui/carousel";
 
 export const Route = createLazyFileRoute("/__auth/__map/")({
   component: RouteComponent,
@@ -60,6 +66,7 @@ const query = graphql`
             customer {
               ownerType
             }
+            images
             fullAddress
             tenderDate
             discoveryDate
@@ -76,6 +83,11 @@ const query = graphql`
             creditAndPaymentRating
             customerRelationshipRating
             competitivePartnershipRating
+            timeLimitRatingOverview
+            sizeAndValueRatingOverview
+            creditAndPaymentRatingOverview
+            customerRelationshipRatingOverview
+            competitivePartnershipRatingOverview
             area {
               name
             }
@@ -90,6 +102,16 @@ const query = graphql`
             }
             geoCoordinate {
               coordinates
+            }
+            visitRecords {
+              visitType
+              nextStep
+              commPeople
+              commContent
+              date
+              customer {
+                name
+              }
             }
           }
         }
@@ -428,26 +450,65 @@ function RouteComponent() {
           props.level,
           selectedArea?.tenders!,
         ) || [];
-      const mapCircles: AMap.CircleMarker[] = [];
+      const mapCircles: AMap.CircleMarker[] | any[] = [];
       for (const [i, tender] of tenders.entries()) {
         if (tender.geoCoordinate?.coordinates) {
+          const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+          // @ts-expect-error
+          const label = new AMapUI.SimpleMarker({
+            // @ts-expect-error
+            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+            label: {
+              content: `
+              <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+              </div>
+              `,
+              offset: new AMap.Pixel(-80, offsetY),
+            },
+            map,
+            position: new AMap.LngLat(
+              tender.geoCoordinate?.coordinates[0],
+              tender.geoCoordinate?.coordinates[1],
+            ),
+            extData: {
+              tenderId: tender.id,
+            },
+          });
+          label.on("click", () => {
+            useMapStore.setState({
+              tenderListHovering: i,
+              selectedTender: tender,
+              tenderListVisible: false,
+            });
+          });
+          label.on("mouseover", () => {
+            label.setOptions({ zIndex: 13 });
+            useMapStore.setState({
+              tenderListHovering: i,
+            });
+          });
+          label.on("mouseout", () => {
+            label.setOptions({ zIndex: 12 });
+          });
+
           const circleMarker = new AMap.CircleMarker({
             center: new AMap.LngLat(
               tender.geoCoordinate?.coordinates[0],
               tender.geoCoordinate?.coordinates[1],
             ),
-            radius: 30 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
+            radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
             strokeColor: colors[i],
             strokeWeight: 2,
-            strokeOpacity: 0.5,
+            strokeOpacity: 1,
             fillColor: colors[i],
             fillOpacity: 0.5,
-            zIndex: 10,
-            bubble: false,
-            // bubble: true,
-            // cursor: "pointer",
+            zIndex: 15,
+            bubble: true,
+            cursor: "pointer",
           });
           mapCircles.push(circleMarker);
+          mapCircles.push(label);
           // map?.add(circleMarker);
         }
       }
@@ -519,7 +580,8 @@ function RouteComponent() {
       map?.setZoomAndCenter(15, center, false, 600);
       map?.addLayer(satelliteRef.current!);
       for (const circle of mapCircles) {
-        circle.setMap(map);
+        // circle.setMap(map);
+        map?.add(circle);
       }
       useMapStore.setState({
         tenderListVisible: true,
@@ -783,6 +845,7 @@ function RouteComponent() {
                     return {
                       selectedTender: null,
                       tenderListVisible: false,
+                      tenderListHovering: 0,
                       tenderList: [],
                       selectedArea: null,
                       navigations: [],
@@ -817,6 +880,7 @@ function RouteComponent() {
                   useMapStore.setState({
                     selectedTender: null,
                     tenderListVisible: false,
+                    tenderListHovering: 0,
                     tenderList: [],
                     currentAreaNode: null,
                   });
@@ -886,6 +950,7 @@ function RouteComponent() {
                             selectedTender: null,
                             tenderListVisible: false,
                             tenderList: [],
+                            tenderListHovering: 0,
                           });
                         }}
                       >
@@ -996,10 +1061,14 @@ function AmountBoard() {
 
   const tenderCount = tenders?.length || 0;
 
-  const processingAmount =
+  const processingAmount = fixAmount(
     tenders
       ?.filter((t) => t?.status === 1)
-      .reduce((acc, inc) => acc + inc?.estimatedAmount! / 100000000, 0) || 0;
+      .reduce(
+        (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
+        0,
+      ),
+  );
 
   return (
     <Card
@@ -1062,9 +1131,7 @@ function AmountBoard() {
             <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
               <div className="flex h-full flex-col rounded">
                 <div className="flex flex-1 items-center justify-center gap-1">
-                  <span className="text-3xl font-bold">
-                    {fixAmount(processingAmount)}
-                  </span>
+                  <span className="text-3xl font-bold">{processingAmount}</span>
                   <span className="pt-2 font-medium text-brand">亿元</span>
                 </div>
                 <div className="bg-gray-500/50 py-1 text-center text-xs">
@@ -1096,11 +1163,15 @@ function TenderList() {
   const tenderListVisible = useMapStore((state) => state.tenderListVisible);
   const map = useMapStore((state) => state.map);
   const selectedTender = useMapStore((state) => state.selectedTender);
-  const [hovering, setHovering] = React.useState(0);
+  const tenderListHovering = useMapStore((state) => state.tenderListHovering);
+  const setTenderListHovering = useMapStore(
+    (state) => state.setTenderListHovering,
+  );
+  const markers = useMapStore((state) => state.mapCircles);
 
-  React.useEffect(() => {
-    setHovering(0);
-  }, [tenderList.length]);
+  // React.useEffect(() => {
+  //   setHovering(0);
+  // }, [tenderList.length]);
 
   return (
     <>
@@ -1117,7 +1188,7 @@ function TenderList() {
         >
           <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
             <div className="flex items-center justify-between">
-              项目明细
+              <div className="line-clamp-1">{selectedTender?.name}</div>
               <button
                 onClick={() => {
                   useMapStore.setState({
@@ -1126,19 +1197,33 @@ function TenderList() {
                   });
                 }}
               >
-                <X />
+                <Undo2 />
               </button>
             </div>
           </CardHeader>
 
           <CardContent className="h-full py-4">
-            <img
-              src={
-                "https://830bi.3311csci.com/images/%E5%95%86%E6%9C%BA-20241028-148-1037085765626.png"
-              }
-              className="aspect-[16/9] rounded"
-              alt={selectedTender?.name}
-            />
+            {selectedTender?.images && selectedTender?.images?.length > 0 ? (
+              <Carousel>
+                <CarouselContent className="min-h-[220px]">
+                  {selectedTender?.images?.map((image, i) => (
+                    <CarouselItem key={i}>
+                      <img
+                        src={image}
+                        className="aspect-[16/9] rounded"
+                        alt={selectedTender?.name}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            ) : (
+              <div className="flex aspect-[16/9] flex-col items-center justify-center text-white">
+                <ImageOff className="mb-2 h-16 w-16" />
+                暂没图片
+              </div>
+            )}
+
             <Tabs
               key={selectedTender?.id}
               defaultValue="detail"
@@ -1164,7 +1249,7 @@ function TenderList() {
                   跟进情况
                 </TabsTrigger>
               </TabsList>
-              <ScrollArea className="h-[500px]">
+              <ScrollArea className="h-[460px]">
                 <TabsContent value="detail" className="mt-4 space-y-2">
                   <div className="grid grid-cols-3">
                     <div className="text-gray-400">项目名称</div>
@@ -1249,7 +1334,41 @@ function TenderList() {
                     </div>
                   </div>
                 </TabsContent>
-                <TabsContent value="rating" className="mt-4 space-y-2">
+                <TabsContent value="rating" className="mt-4">
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-3">
+                      <div className="text-gray-400">规模及价值</div>
+                      <div className="col-span-2">
+                        {selectedTender?.sizeAndValueRatingOverview || "-"}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3">
+                      <div className="text-gray-400">资信及付款</div>
+                      <div className="col-span-2">
+                        {selectedTender?.creditAndPaymentRatingOverview || "-"}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3">
+                      <div className="text-gray-400">中标原则及时限</div>
+                      <div className="col-span-2">
+                        {selectedTender?.timeLimitRatingOverview || "-"}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3">
+                      <div className="text-gray-400">客情关系</div>
+                      <div className="col-span-2">
+                        {selectedTender?.customerRelationshipRatingOverview ||
+                          "-"}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3">
+                      <div className="text-gray-400">竞争合作关系</div>
+                      <div className="col-span-2">
+                        {selectedTender?.competitivePartnershipRatingOverview ||
+                          "-"}
+                      </div>
+                    </div>
+                  </div>
                   <TenderRatingChart
                     sizeAndValueRating={selectedTender?.sizeAndValueRating}
                     creditAndPaymentRating={
@@ -1263,36 +1382,41 @@ function TenderList() {
                       selectedTender?.competitivePartnershipRating
                     }
                   />
-                  <div className="mt-8 grid grid-cols-3">
-                    <div className="text-gray-400">规模及价值</div>
-                    <div className="col-span-2 text-right">
-                      {selectedTender?.sizeAndValueRating || "-"}
+                </TabsContent>
+                <TabsContent value="follow-up" className="">
+                  {selectedTender?.visitRecords &&
+                  selectedTender?.visitRecords?.length < 1 ? (
+                    <div className="mt-8 flex items-center justify-center">
+                      没有拜访记录
                     </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">资信及付款</div>
-                    <div className="col-span-2 text-right">
-                      {selectedTender?.creditAndPaymentRating || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">中标原则及时限</div>
-                    <div className="col-span-2 text-right">
-                      {selectedTender?.timeLimitRating || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">客情关系</div>
-                    <div className="col-span-2 text-right">
-                      {selectedTender?.customerRelationshipRating || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">竞争合作关系</div>
-                    <div className="col-span-2 text-right">
-                      {selectedTender?.competitivePartnershipRating || "-"}
-                    </div>
-                  </div>
+                  ) : (
+                    selectedTender?.visitRecords?.map((record) => (
+                      <div className="mt-4 space-y-2">
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">沟通对象</div>
+                          <div className="col-span-2">{record?.commPeople}</div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">沟通形式</div>
+                          <div className="col-span-2">
+                            {record?.visitType == 1 ? "现场拜访" : "沟通内容"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">沟通内容</div>
+                          <div className="col-span-2">
+                            {record?.commContent}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">下一步计划</div>
+                          <div className="col-span-2">
+                            {record?.nextStep || "-"}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </TabsContent>
               </ScrollArea>
             </Tabs>
@@ -1316,44 +1440,67 @@ function TenderList() {
           </CardHeader>
 
           <CardContent className="h-full px-0">
-            <ScrollArea className="h-full pb-6 pt-2">
+            <ScrollArea className="h-full pb-6">
               <div className="space-y-4 px-4 py-2">
                 {tenderList.map((tender, i) => (
                   <div
                     key={tender?.id}
                     className={cn(
                       "flex cursor-pointer items-center gap-x-4 rounded-md p-2 transition-shadow hover:bg-brand/50",
-                      hovering === i && "ring ring-white",
+                      (tenderListHovering === i ||
+                        tenderListHovering === tender.id) &&
+                        "ring ring-white",
                     )}
+                    onClick={() => {
+                      useMapStore.setState({
+                        tenderListVisible: false,
+                        selectedTender: tender,
+                      });
+                    }}
+                    onMouseEnter={(e) => {
+                      if (tender.geoCoordinate?.coordinates) {
+                        map?.setCenter(
+                          tender.geoCoordinate.coordinates as AMap.LngLatLike,
+                          false,
+                          600,
+                        );
+                        for (const m of markers) {
+                          if (m instanceof AMap.CircleMarker) {
+                            continue;
+                          }
+                          // @ts-expect-error
+                          const ext = m.getExtData();
+                          if (ext?.tenderId === tender.id) {
+                            (m as any).getContentDom().focus();
+                          }
+                        }
+                        setTenderListHovering(tender?.id || 0);
+                      }
+                    }}
                   >
                     <div className="w-[40%]">
-                      <img
-                        src={
-                          "https://830bi.3311csci.com/images/%E5%95%86%E6%9C%BA-20241028-148-1037085765626.png"
-                        }
-                        alt={tender?.name}
-                        className="aspect-[16/9] rounded"
-                      />
+                      {tender?.images && tender.images.length > 0 ? (
+                        <Carousel>
+                          <CarouselContent>
+                            {tender?.images?.map((image, i) => (
+                              <CarouselItem key={["list", i].join("-")}>
+                                <img
+                                  src={image}
+                                  className="aspect-[4/3] h-full w-full rounded"
+                                  alt={tender?.name}
+                                />
+                              </CarouselItem>
+                            ))}
+                          </CarouselContent>
+                        </Carousel>
+                      ) : (
+                        <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-md bg-gray-300 text-gray-600">
+                          <ImageOff className="mb-2" />
+                          暂没图片
+                        </div>
+                      )}
                     </div>
-                    <div
-                      className="w-[60%] space-y-2 py-1"
-                      onMouseEnter={(e) => {
-                        if (tender.geoCoordinate?.coordinates) {
-                          map?.setCenter(
-                            tender.geoCoordinate.coordinates as AMap.LngLatLike,
-                            false,
-                            600,
-                          );
-                          setHovering(i);
-                        }
-                      }}
-                      onClick={() => {
-                        useMapStore.setState({
-                          tenderListVisible: false,
-                          selectedTender: tender,
-                        });
-                      }}
-                    >
+                    <div className="w-[60%] space-y-2 py-1">
                       <h3 className="line-clamp-1 font-bold">{tender?.name}</h3>
                       <div className="flex items-center justify-between text-sm">
                         <div className="text-gray-300">预计招标日期</div>

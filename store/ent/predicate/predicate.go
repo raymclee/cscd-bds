@@ -29,3 +29,6 @@ type Tender func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
+
+// VisitRecord is the predicate function for visitrecord builders.
+type VisitRecord func(*sql.Selector)

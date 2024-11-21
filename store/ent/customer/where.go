@@ -1028,6 +1028,29 @@ func HasCreatedByWith(preds ...predicate.User) predicate.Customer {
 	})
 }
 
+// HasVisitRecords applies the HasEdge predicate on the "visit_records" edge.
+func HasVisitRecords() predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, VisitRecordsTable, VisitRecordsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasVisitRecordsWith applies the HasEdge predicate on the "visit_records" edge with a given conditions (other predicates).
+func HasVisitRecordsWith(preds ...predicate.VisitRecord) predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := newVisitRecordsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Customer) predicate.Customer {
 	return predicate.Customer(sql.AndPredicates(predicates...))

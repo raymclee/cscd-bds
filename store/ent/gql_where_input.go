@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"errors"
 	"fmt"
 	"time"
@@ -1358,6 +1359,10 @@ type CustomerWhereInput struct {
 	// "created_by" edge predicates.
 	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
 	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
+
+	// "visit_records" edge predicates.
+	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
+	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -2001,6 +2006,24 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, customer.HasCreatedByWith(with...))
+	}
+	if i.HasVisitRecords != nil {
+		p := customer.HasVisitRecords()
+		if !*i.HasVisitRecords {
+			p = customer.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasVisitRecordsWith) > 0 {
+		with := make([]predicate.VisitRecord, 0, len(i.HasVisitRecordsWith))
+		for _, w := range i.HasVisitRecordsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasVisitRecordsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customer.HasVisitRecordsWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -3809,6 +3832,10 @@ type TenderWhereInput struct {
 	// "district" edge predicates.
 	HasDistrict     *bool                 `json:"hasDistrict,omitempty"`
 	HasDistrictWith []*DistrictWhereInput `json:"hasDistrictWith,omitempty"`
+
+	// "visit_records" edge predicates.
+	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
+	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -5896,6 +5923,24 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 		}
 		predicates = append(predicates, tender.HasDistrictWith(with...))
 	}
+	if i.HasVisitRecords != nil {
+		p := tender.HasVisitRecords()
+		if !*i.HasVisitRecords {
+			p = tender.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasVisitRecordsWith) > 0 {
+		with := make([]predicate.VisitRecord, 0, len(i.HasVisitRecordsWith))
+		for _, w := range i.HasVisitRecordsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasVisitRecordsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tender.HasVisitRecordsWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyTenderWhereInput
@@ -6058,6 +6103,10 @@ type UserWhereInput struct {
 	// "tenders" edge predicates.
 	HasTenders     *bool               `json:"hasTenders,omitempty"`
 	HasTendersWith []*TenderWhereInput `json:"hasTendersWith,omitempty"`
+
+	// "visit_records" edge predicates.
+	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
+	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -6540,6 +6589,24 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 		}
 		predicates = append(predicates, user.HasTendersWith(with...))
 	}
+	if i.HasVisitRecords != nil {
+		p := user.HasVisitRecords()
+		if !*i.HasVisitRecords {
+			p = user.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasVisitRecordsWith) > 0 {
+		with := make([]predicate.VisitRecord, 0, len(i.HasVisitRecordsWith))
+		for _, w := range i.HasVisitRecordsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasVisitRecordsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, user.HasVisitRecordsWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyUserWhereInput
@@ -6547,5 +6614,625 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 		return predicates[0], nil
 	default:
 		return user.And(predicates...), nil
+	}
+}
+
+// VisitRecordWhereInput represents a where input for filtering VisitRecord queries.
+type VisitRecordWhereInput struct {
+	Predicates []predicate.VisitRecord  `json:"-"`
+	Not        *VisitRecordWhereInput   `json:"not,omitempty"`
+	Or         []*VisitRecordWhereInput `json:"or,omitempty"`
+	And        []*VisitRecordWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "visit_type" field predicates.
+	VisitType      *int  `json:"visitType,omitempty"`
+	VisitTypeNEQ   *int  `json:"visitTypeNEQ,omitempty"`
+	VisitTypeIn    []int `json:"visitTypeIn,omitempty"`
+	VisitTypeNotIn []int `json:"visitTypeNotIn,omitempty"`
+	VisitTypeGT    *int  `json:"visitTypeGT,omitempty"`
+	VisitTypeGTE   *int  `json:"visitTypeGTE,omitempty"`
+	VisitTypeLT    *int  `json:"visitTypeLT,omitempty"`
+	VisitTypeLTE   *int  `json:"visitTypeLTE,omitempty"`
+
+	// "comm_people" field predicates.
+	CommPeople             *string  `json:"commPeople,omitempty"`
+	CommPeopleNEQ          *string  `json:"commPeopleNEQ,omitempty"`
+	CommPeopleIn           []string `json:"commPeopleIn,omitempty"`
+	CommPeopleNotIn        []string `json:"commPeopleNotIn,omitempty"`
+	CommPeopleGT           *string  `json:"commPeopleGT,omitempty"`
+	CommPeopleGTE          *string  `json:"commPeopleGTE,omitempty"`
+	CommPeopleLT           *string  `json:"commPeopleLT,omitempty"`
+	CommPeopleLTE          *string  `json:"commPeopleLTE,omitempty"`
+	CommPeopleContains     *string  `json:"commPeopleContains,omitempty"`
+	CommPeopleHasPrefix    *string  `json:"commPeopleHasPrefix,omitempty"`
+	CommPeopleHasSuffix    *string  `json:"commPeopleHasSuffix,omitempty"`
+	CommPeopleEqualFold    *string  `json:"commPeopleEqualFold,omitempty"`
+	CommPeopleContainsFold *string  `json:"commPeopleContainsFold,omitempty"`
+
+	// "comm_content" field predicates.
+	CommContent             *string  `json:"commContent,omitempty"`
+	CommContentNEQ          *string  `json:"commContentNEQ,omitempty"`
+	CommContentIn           []string `json:"commContentIn,omitempty"`
+	CommContentNotIn        []string `json:"commContentNotIn,omitempty"`
+	CommContentGT           *string  `json:"commContentGT,omitempty"`
+	CommContentGTE          *string  `json:"commContentGTE,omitempty"`
+	CommContentLT           *string  `json:"commContentLT,omitempty"`
+	CommContentLTE          *string  `json:"commContentLTE,omitempty"`
+	CommContentContains     *string  `json:"commContentContains,omitempty"`
+	CommContentHasPrefix    *string  `json:"commContentHasPrefix,omitempty"`
+	CommContentHasSuffix    *string  `json:"commContentHasSuffix,omitempty"`
+	CommContentEqualFold    *string  `json:"commContentEqualFold,omitempty"`
+	CommContentContainsFold *string  `json:"commContentContainsFold,omitempty"`
+
+	// "next_step" field predicates.
+	NextStep             *string  `json:"nextStep,omitempty"`
+	NextStepNEQ          *string  `json:"nextStepNEQ,omitempty"`
+	NextStepIn           []string `json:"nextStepIn,omitempty"`
+	NextStepNotIn        []string `json:"nextStepNotIn,omitempty"`
+	NextStepGT           *string  `json:"nextStepGT,omitempty"`
+	NextStepGTE          *string  `json:"nextStepGTE,omitempty"`
+	NextStepLT           *string  `json:"nextStepLT,omitempty"`
+	NextStepLTE          *string  `json:"nextStepLTE,omitempty"`
+	NextStepContains     *string  `json:"nextStepContains,omitempty"`
+	NextStepHasPrefix    *string  `json:"nextStepHasPrefix,omitempty"`
+	NextStepHasSuffix    *string  `json:"nextStepHasSuffix,omitempty"`
+	NextStepIsNil        bool     `json:"nextStepIsNil,omitempty"`
+	NextStepNotNil       bool     `json:"nextStepNotNil,omitempty"`
+	NextStepEqualFold    *string  `json:"nextStepEqualFold,omitempty"`
+	NextStepContainsFold *string  `json:"nextStepContainsFold,omitempty"`
+
+	// "date" field predicates.
+	Date      *time.Time  `json:"date,omitempty"`
+	DateNEQ   *time.Time  `json:"dateNEQ,omitempty"`
+	DateIn    []time.Time `json:"dateIn,omitempty"`
+	DateNotIn []time.Time `json:"dateNotIn,omitempty"`
+	DateGT    *time.Time  `json:"dateGT,omitempty"`
+	DateGTE   *time.Time  `json:"dateGTE,omitempty"`
+	DateLT    *time.Time  `json:"dateLT,omitempty"`
+	DateLTE   *time.Time  `json:"dateLTE,omitempty"`
+
+	// "tender_id" field predicates.
+	TenderID             *xid.ID  `json:"tenderID,omitempty"`
+	TenderIDNEQ          *xid.ID  `json:"tenderIDNEQ,omitempty"`
+	TenderIDIn           []xid.ID `json:"tenderIDIn,omitempty"`
+	TenderIDNotIn        []xid.ID `json:"tenderIDNotIn,omitempty"`
+	TenderIDGT           *xid.ID  `json:"tenderIDGT,omitempty"`
+	TenderIDGTE          *xid.ID  `json:"tenderIDGTE,omitempty"`
+	TenderIDLT           *xid.ID  `json:"tenderIDLT,omitempty"`
+	TenderIDLTE          *xid.ID  `json:"tenderIDLTE,omitempty"`
+	TenderIDContains     *xid.ID  `json:"tenderIDContains,omitempty"`
+	TenderIDHasPrefix    *xid.ID  `json:"tenderIDHasPrefix,omitempty"`
+	TenderIDHasSuffix    *xid.ID  `json:"tenderIDHasSuffix,omitempty"`
+	TenderIDIsNil        bool     `json:"tenderIDIsNil,omitempty"`
+	TenderIDNotNil       bool     `json:"tenderIDNotNil,omitempty"`
+	TenderIDEqualFold    *xid.ID  `json:"tenderIDEqualFold,omitempty"`
+	TenderIDContainsFold *xid.ID  `json:"tenderIDContainsFold,omitempty"`
+
+	// "customer_id" field predicates.
+	CustomerID             *xid.ID  `json:"customerID,omitempty"`
+	CustomerIDNEQ          *xid.ID  `json:"customerIDNEQ,omitempty"`
+	CustomerIDIn           []xid.ID `json:"customerIDIn,omitempty"`
+	CustomerIDNotIn        []xid.ID `json:"customerIDNotIn,omitempty"`
+	CustomerIDGT           *xid.ID  `json:"customerIDGT,omitempty"`
+	CustomerIDGTE          *xid.ID  `json:"customerIDGTE,omitempty"`
+	CustomerIDLT           *xid.ID  `json:"customerIDLT,omitempty"`
+	CustomerIDLTE          *xid.ID  `json:"customerIDLTE,omitempty"`
+	CustomerIDContains     *xid.ID  `json:"customerIDContains,omitempty"`
+	CustomerIDHasPrefix    *xid.ID  `json:"customerIDHasPrefix,omitempty"`
+	CustomerIDHasSuffix    *xid.ID  `json:"customerIDHasSuffix,omitempty"`
+	CustomerIDIsNil        bool     `json:"customerIDIsNil,omitempty"`
+	CustomerIDNotNil       bool     `json:"customerIDNotNil,omitempty"`
+	CustomerIDEqualFold    *xid.ID  `json:"customerIDEqualFold,omitempty"`
+	CustomerIDContainsFold *xid.ID  `json:"customerIDContainsFold,omitempty"`
+
+	// "tender" edge predicates.
+	HasTender     *bool               `json:"hasTender,omitempty"`
+	HasTenderWith []*TenderWhereInput `json:"hasTenderWith,omitempty"`
+
+	// "customer" edge predicates.
+	HasCustomer     *bool                 `json:"hasCustomer,omitempty"`
+	HasCustomerWith []*CustomerWhereInput `json:"hasCustomerWith,omitempty"`
+
+	// "followUpBys" edge predicates.
+	HasFollowUpBys     *bool             `json:"hasFollowUpBys,omitempty"`
+	HasFollowUpBysWith []*UserWhereInput `json:"hasFollowUpBysWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *VisitRecordWhereInput) AddPredicates(predicates ...predicate.VisitRecord) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the VisitRecordWhereInput filter on the VisitRecordQuery builder.
+func (i *VisitRecordWhereInput) Filter(q *VisitRecordQuery) (*VisitRecordQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyVisitRecordWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyVisitRecordWhereInput is returned in case the VisitRecordWhereInput is empty.
+var ErrEmptyVisitRecordWhereInput = errors.New("ent: empty predicate VisitRecordWhereInput")
+
+// P returns a predicate for filtering visitrecords.
+// An error is returned if the input is empty or invalid.
+func (i *VisitRecordWhereInput) P() (predicate.VisitRecord, error) {
+	var predicates []predicate.VisitRecord
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, visitrecord.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.VisitRecord, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, visitrecord.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.VisitRecord, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, visitrecord.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, visitrecord.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, visitrecord.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, visitrecord.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, visitrecord.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, visitrecord.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, visitrecord.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, visitrecord.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, visitrecord.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, visitrecord.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, visitrecord.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, visitrecord.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, visitrecord.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, visitrecord.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, visitrecord.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, visitrecord.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, visitrecord.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, visitrecord.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, visitrecord.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, visitrecord.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, visitrecord.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, visitrecord.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, visitrecord.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, visitrecord.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, visitrecord.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.VisitType != nil {
+		predicates = append(predicates, visitrecord.VisitTypeEQ(*i.VisitType))
+	}
+	if i.VisitTypeNEQ != nil {
+		predicates = append(predicates, visitrecord.VisitTypeNEQ(*i.VisitTypeNEQ))
+	}
+	if len(i.VisitTypeIn) > 0 {
+		predicates = append(predicates, visitrecord.VisitTypeIn(i.VisitTypeIn...))
+	}
+	if len(i.VisitTypeNotIn) > 0 {
+		predicates = append(predicates, visitrecord.VisitTypeNotIn(i.VisitTypeNotIn...))
+	}
+	if i.VisitTypeGT != nil {
+		predicates = append(predicates, visitrecord.VisitTypeGT(*i.VisitTypeGT))
+	}
+	if i.VisitTypeGTE != nil {
+		predicates = append(predicates, visitrecord.VisitTypeGTE(*i.VisitTypeGTE))
+	}
+	if i.VisitTypeLT != nil {
+		predicates = append(predicates, visitrecord.VisitTypeLT(*i.VisitTypeLT))
+	}
+	if i.VisitTypeLTE != nil {
+		predicates = append(predicates, visitrecord.VisitTypeLTE(*i.VisitTypeLTE))
+	}
+	if i.CommPeople != nil {
+		predicates = append(predicates, visitrecord.CommPeopleEQ(*i.CommPeople))
+	}
+	if i.CommPeopleNEQ != nil {
+		predicates = append(predicates, visitrecord.CommPeopleNEQ(*i.CommPeopleNEQ))
+	}
+	if len(i.CommPeopleIn) > 0 {
+		predicates = append(predicates, visitrecord.CommPeopleIn(i.CommPeopleIn...))
+	}
+	if len(i.CommPeopleNotIn) > 0 {
+		predicates = append(predicates, visitrecord.CommPeopleNotIn(i.CommPeopleNotIn...))
+	}
+	if i.CommPeopleGT != nil {
+		predicates = append(predicates, visitrecord.CommPeopleGT(*i.CommPeopleGT))
+	}
+	if i.CommPeopleGTE != nil {
+		predicates = append(predicates, visitrecord.CommPeopleGTE(*i.CommPeopleGTE))
+	}
+	if i.CommPeopleLT != nil {
+		predicates = append(predicates, visitrecord.CommPeopleLT(*i.CommPeopleLT))
+	}
+	if i.CommPeopleLTE != nil {
+		predicates = append(predicates, visitrecord.CommPeopleLTE(*i.CommPeopleLTE))
+	}
+	if i.CommPeopleContains != nil {
+		predicates = append(predicates, visitrecord.CommPeopleContains(*i.CommPeopleContains))
+	}
+	if i.CommPeopleHasPrefix != nil {
+		predicates = append(predicates, visitrecord.CommPeopleHasPrefix(*i.CommPeopleHasPrefix))
+	}
+	if i.CommPeopleHasSuffix != nil {
+		predicates = append(predicates, visitrecord.CommPeopleHasSuffix(*i.CommPeopleHasSuffix))
+	}
+	if i.CommPeopleEqualFold != nil {
+		predicates = append(predicates, visitrecord.CommPeopleEqualFold(*i.CommPeopleEqualFold))
+	}
+	if i.CommPeopleContainsFold != nil {
+		predicates = append(predicates, visitrecord.CommPeopleContainsFold(*i.CommPeopleContainsFold))
+	}
+	if i.CommContent != nil {
+		predicates = append(predicates, visitrecord.CommContentEQ(*i.CommContent))
+	}
+	if i.CommContentNEQ != nil {
+		predicates = append(predicates, visitrecord.CommContentNEQ(*i.CommContentNEQ))
+	}
+	if len(i.CommContentIn) > 0 {
+		predicates = append(predicates, visitrecord.CommContentIn(i.CommContentIn...))
+	}
+	if len(i.CommContentNotIn) > 0 {
+		predicates = append(predicates, visitrecord.CommContentNotIn(i.CommContentNotIn...))
+	}
+	if i.CommContentGT != nil {
+		predicates = append(predicates, visitrecord.CommContentGT(*i.CommContentGT))
+	}
+	if i.CommContentGTE != nil {
+		predicates = append(predicates, visitrecord.CommContentGTE(*i.CommContentGTE))
+	}
+	if i.CommContentLT != nil {
+		predicates = append(predicates, visitrecord.CommContentLT(*i.CommContentLT))
+	}
+	if i.CommContentLTE != nil {
+		predicates = append(predicates, visitrecord.CommContentLTE(*i.CommContentLTE))
+	}
+	if i.CommContentContains != nil {
+		predicates = append(predicates, visitrecord.CommContentContains(*i.CommContentContains))
+	}
+	if i.CommContentHasPrefix != nil {
+		predicates = append(predicates, visitrecord.CommContentHasPrefix(*i.CommContentHasPrefix))
+	}
+	if i.CommContentHasSuffix != nil {
+		predicates = append(predicates, visitrecord.CommContentHasSuffix(*i.CommContentHasSuffix))
+	}
+	if i.CommContentEqualFold != nil {
+		predicates = append(predicates, visitrecord.CommContentEqualFold(*i.CommContentEqualFold))
+	}
+	if i.CommContentContainsFold != nil {
+		predicates = append(predicates, visitrecord.CommContentContainsFold(*i.CommContentContainsFold))
+	}
+	if i.NextStep != nil {
+		predicates = append(predicates, visitrecord.NextStepEQ(*i.NextStep))
+	}
+	if i.NextStepNEQ != nil {
+		predicates = append(predicates, visitrecord.NextStepNEQ(*i.NextStepNEQ))
+	}
+	if len(i.NextStepIn) > 0 {
+		predicates = append(predicates, visitrecord.NextStepIn(i.NextStepIn...))
+	}
+	if len(i.NextStepNotIn) > 0 {
+		predicates = append(predicates, visitrecord.NextStepNotIn(i.NextStepNotIn...))
+	}
+	if i.NextStepGT != nil {
+		predicates = append(predicates, visitrecord.NextStepGT(*i.NextStepGT))
+	}
+	if i.NextStepGTE != nil {
+		predicates = append(predicates, visitrecord.NextStepGTE(*i.NextStepGTE))
+	}
+	if i.NextStepLT != nil {
+		predicates = append(predicates, visitrecord.NextStepLT(*i.NextStepLT))
+	}
+	if i.NextStepLTE != nil {
+		predicates = append(predicates, visitrecord.NextStepLTE(*i.NextStepLTE))
+	}
+	if i.NextStepContains != nil {
+		predicates = append(predicates, visitrecord.NextStepContains(*i.NextStepContains))
+	}
+	if i.NextStepHasPrefix != nil {
+		predicates = append(predicates, visitrecord.NextStepHasPrefix(*i.NextStepHasPrefix))
+	}
+	if i.NextStepHasSuffix != nil {
+		predicates = append(predicates, visitrecord.NextStepHasSuffix(*i.NextStepHasSuffix))
+	}
+	if i.NextStepIsNil {
+		predicates = append(predicates, visitrecord.NextStepIsNil())
+	}
+	if i.NextStepNotNil {
+		predicates = append(predicates, visitrecord.NextStepNotNil())
+	}
+	if i.NextStepEqualFold != nil {
+		predicates = append(predicates, visitrecord.NextStepEqualFold(*i.NextStepEqualFold))
+	}
+	if i.NextStepContainsFold != nil {
+		predicates = append(predicates, visitrecord.NextStepContainsFold(*i.NextStepContainsFold))
+	}
+	if i.Date != nil {
+		predicates = append(predicates, visitrecord.DateEQ(*i.Date))
+	}
+	if i.DateNEQ != nil {
+		predicates = append(predicates, visitrecord.DateNEQ(*i.DateNEQ))
+	}
+	if len(i.DateIn) > 0 {
+		predicates = append(predicates, visitrecord.DateIn(i.DateIn...))
+	}
+	if len(i.DateNotIn) > 0 {
+		predicates = append(predicates, visitrecord.DateNotIn(i.DateNotIn...))
+	}
+	if i.DateGT != nil {
+		predicates = append(predicates, visitrecord.DateGT(*i.DateGT))
+	}
+	if i.DateGTE != nil {
+		predicates = append(predicates, visitrecord.DateGTE(*i.DateGTE))
+	}
+	if i.DateLT != nil {
+		predicates = append(predicates, visitrecord.DateLT(*i.DateLT))
+	}
+	if i.DateLTE != nil {
+		predicates = append(predicates, visitrecord.DateLTE(*i.DateLTE))
+	}
+	if i.TenderID != nil {
+		predicates = append(predicates, visitrecord.TenderIDEQ(*i.TenderID))
+	}
+	if i.TenderIDNEQ != nil {
+		predicates = append(predicates, visitrecord.TenderIDNEQ(*i.TenderIDNEQ))
+	}
+	if len(i.TenderIDIn) > 0 {
+		predicates = append(predicates, visitrecord.TenderIDIn(i.TenderIDIn...))
+	}
+	if len(i.TenderIDNotIn) > 0 {
+		predicates = append(predicates, visitrecord.TenderIDNotIn(i.TenderIDNotIn...))
+	}
+	if i.TenderIDGT != nil {
+		predicates = append(predicates, visitrecord.TenderIDGT(*i.TenderIDGT))
+	}
+	if i.TenderIDGTE != nil {
+		predicates = append(predicates, visitrecord.TenderIDGTE(*i.TenderIDGTE))
+	}
+	if i.TenderIDLT != nil {
+		predicates = append(predicates, visitrecord.TenderIDLT(*i.TenderIDLT))
+	}
+	if i.TenderIDLTE != nil {
+		predicates = append(predicates, visitrecord.TenderIDLTE(*i.TenderIDLTE))
+	}
+	if i.TenderIDContains != nil {
+		predicates = append(predicates, visitrecord.TenderIDContains(*i.TenderIDContains))
+	}
+	if i.TenderIDHasPrefix != nil {
+		predicates = append(predicates, visitrecord.TenderIDHasPrefix(*i.TenderIDHasPrefix))
+	}
+	if i.TenderIDHasSuffix != nil {
+		predicates = append(predicates, visitrecord.TenderIDHasSuffix(*i.TenderIDHasSuffix))
+	}
+	if i.TenderIDIsNil {
+		predicates = append(predicates, visitrecord.TenderIDIsNil())
+	}
+	if i.TenderIDNotNil {
+		predicates = append(predicates, visitrecord.TenderIDNotNil())
+	}
+	if i.TenderIDEqualFold != nil {
+		predicates = append(predicates, visitrecord.TenderIDEqualFold(*i.TenderIDEqualFold))
+	}
+	if i.TenderIDContainsFold != nil {
+		predicates = append(predicates, visitrecord.TenderIDContainsFold(*i.TenderIDContainsFold))
+	}
+	if i.CustomerID != nil {
+		predicates = append(predicates, visitrecord.CustomerIDEQ(*i.CustomerID))
+	}
+	if i.CustomerIDNEQ != nil {
+		predicates = append(predicates, visitrecord.CustomerIDNEQ(*i.CustomerIDNEQ))
+	}
+	if len(i.CustomerIDIn) > 0 {
+		predicates = append(predicates, visitrecord.CustomerIDIn(i.CustomerIDIn...))
+	}
+	if len(i.CustomerIDNotIn) > 0 {
+		predicates = append(predicates, visitrecord.CustomerIDNotIn(i.CustomerIDNotIn...))
+	}
+	if i.CustomerIDGT != nil {
+		predicates = append(predicates, visitrecord.CustomerIDGT(*i.CustomerIDGT))
+	}
+	if i.CustomerIDGTE != nil {
+		predicates = append(predicates, visitrecord.CustomerIDGTE(*i.CustomerIDGTE))
+	}
+	if i.CustomerIDLT != nil {
+		predicates = append(predicates, visitrecord.CustomerIDLT(*i.CustomerIDLT))
+	}
+	if i.CustomerIDLTE != nil {
+		predicates = append(predicates, visitrecord.CustomerIDLTE(*i.CustomerIDLTE))
+	}
+	if i.CustomerIDContains != nil {
+		predicates = append(predicates, visitrecord.CustomerIDContains(*i.CustomerIDContains))
+	}
+	if i.CustomerIDHasPrefix != nil {
+		predicates = append(predicates, visitrecord.CustomerIDHasPrefix(*i.CustomerIDHasPrefix))
+	}
+	if i.CustomerIDHasSuffix != nil {
+		predicates = append(predicates, visitrecord.CustomerIDHasSuffix(*i.CustomerIDHasSuffix))
+	}
+	if i.CustomerIDIsNil {
+		predicates = append(predicates, visitrecord.CustomerIDIsNil())
+	}
+	if i.CustomerIDNotNil {
+		predicates = append(predicates, visitrecord.CustomerIDNotNil())
+	}
+	if i.CustomerIDEqualFold != nil {
+		predicates = append(predicates, visitrecord.CustomerIDEqualFold(*i.CustomerIDEqualFold))
+	}
+	if i.CustomerIDContainsFold != nil {
+		predicates = append(predicates, visitrecord.CustomerIDContainsFold(*i.CustomerIDContainsFold))
+	}
+
+	if i.HasTender != nil {
+		p := visitrecord.HasTender()
+		if !*i.HasTender {
+			p = visitrecord.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasTenderWith) > 0 {
+		with := make([]predicate.Tender, 0, len(i.HasTenderWith))
+		for _, w := range i.HasTenderWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasTenderWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, visitrecord.HasTenderWith(with...))
+	}
+	if i.HasCustomer != nil {
+		p := visitrecord.HasCustomer()
+		if !*i.HasCustomer {
+			p = visitrecord.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCustomerWith) > 0 {
+		with := make([]predicate.Customer, 0, len(i.HasCustomerWith))
+		for _, w := range i.HasCustomerWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCustomerWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, visitrecord.HasCustomerWith(with...))
+	}
+	if i.HasFollowUpBys != nil {
+		p := visitrecord.HasFollowUpBys()
+		if !*i.HasFollowUpBys {
+			p = visitrecord.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasFollowUpBysWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasFollowUpBysWith))
+		for _, w := range i.HasFollowUpBysWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasFollowUpBysWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, visitrecord.HasFollowUpBysWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyVisitRecordWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return visitrecord.And(predicates...), nil
 	}
 }

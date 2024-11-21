@@ -26,6 +26,7 @@ import { Route as authimapH2Import } from './routes/__auth/__imap/h2'
 // Create Virtual Routes
 
 const LoginLazyImport = createFileRoute('/login')()
+const GoogleLazyImport = createFileRoute('/google')()
 const antdLazyImport = createFileRoute('/__antd')()
 const authmapDashboardLazyImport = createFileRoute('/__auth/__map/dashboard')()
 const authmapAreaMapLazyImport = createFileRoute('/__auth/__map/area-map')()
@@ -38,6 +39,12 @@ const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+
+const GoogleLazyRoute = GoogleLazyImport.update({
+  id: '/google',
+  path: '/google',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/google.lazy').then((d) => d.Route))
 
 const antdLazyRoute = antdLazyImport
   .update({
@@ -151,6 +158,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof antdLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/google': {
+      id: '/google'
+      path: '/google'
+      fullPath: '/google'
+      preLoaderRoute: typeof GoogleLazyImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -303,6 +317,7 @@ const antdLazyRouteWithChildren = antdLazyRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '': typeof authmapRouteWithChildren
+  '/google': typeof GoogleLazyRoute
   '/login': typeof LoginLazyRoute
   '/access-denied': typeof antdAccessDeniedRoute
   '/session': typeof authSessionRoute
@@ -317,6 +332,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof authimapRouteWithChildren
+  '/google': typeof GoogleLazyRoute
   '/login': typeof LoginLazyRoute
   '/access-denied': typeof antdAccessDeniedRoute
   '/session': typeof authSessionRoute
@@ -333,6 +349,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/__auth': typeof authRouteWithChildren
   '/__antd': typeof antdLazyRouteWithChildren
+  '/google': typeof GoogleLazyRoute
   '/login': typeof LoginLazyRoute
   '/__antd/access-denied': typeof antdAccessDeniedRoute
   '/__auth/__imap': typeof authimapRouteWithChildren
@@ -351,6 +368,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/google'
     | '/login'
     | '/access-denied'
     | '/session'
@@ -364,6 +382,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
+    | '/google'
     | '/login'
     | '/access-denied'
     | '/session'
@@ -378,6 +397,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/__auth'
     | '/__antd'
+    | '/google'
     | '/login'
     | '/__antd/access-denied'
     | '/__auth/__imap'
@@ -396,12 +416,14 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   authRoute: typeof authRouteWithChildren
   antdLazyRoute: typeof antdLazyRouteWithChildren
+  GoogleLazyRoute: typeof GoogleLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   authRoute: authRouteWithChildren,
   antdLazyRoute: antdLazyRouteWithChildren,
+  GoogleLazyRoute: GoogleLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
 }
 
@@ -417,6 +439,7 @@ export const routeTree = rootRoute
       "children": [
         "/__auth",
         "/__antd",
+        "/google",
         "/login"
       ]
     },
@@ -433,6 +456,9 @@ export const routeTree = rootRoute
       "children": [
         "/__antd/access-denied"
       ]
+    },
+    "/google": {
+      "filePath": "google.lazy.tsx"
     },
     "/login": {
       "filePath": "login.lazy.tsx"

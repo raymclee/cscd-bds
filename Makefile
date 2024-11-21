@@ -2,6 +2,9 @@ build: export CGO_ENABLED=0
 build: export GOOS=linux
 build: export VITE_HOST=http://10.106.189.10:8081
 
+build-pull: export CGO_ENABLED=0
+build-pull: export GOOS=linux
+
 create:
 	go run -mod=mod entgo.io/ent/cmd/ent new --target store/ent/schema
 
@@ -19,3 +22,6 @@ build:
 
 uat:
 	go run -tags prod ./cmd/app/main.go
+
+build-pull:
+	go build -tags prod -o ./bin/pull-image ./cmd/pull/.
