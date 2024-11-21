@@ -1249,7 +1249,7 @@ function TenderList() {
                   跟进情况
                 </TabsTrigger>
               </TabsList>
-              <ScrollArea className="h-[460px]">
+              <ScrollArea className="h-[480px]">
                 <TabsContent value="detail" className="mt-4 space-y-2">
                   <div className="grid grid-cols-3">
                     <div className="text-gray-400">项目名称</div>
@@ -1496,7 +1496,7 @@ function TenderList() {
                       ) : (
                         <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-md bg-gray-300 text-gray-600">
                           <ImageOff className="mb-2" />
-                          暂没图片
+                          <span className="text-xs">暂没图片</span>
                         </div>
                       )}
                     </div>

@@ -88,6 +88,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		OpenId:       *userInfo.Data.OpenId,
 		UnionId:      *userInfo.Data.UnionId,
 		Email:        us.Email,
+		UserId:       string(us.ID),
 		// Email:        *userInfo.Data.Email,
 		// UserId: *userInfo.Data.UserId,
 		// AdminId:      a.ID.V,

@@ -185,10 +185,12 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateArea func(childComplexity int, input ent.CreateAreaInput) int
-		CreateUser func(childComplexity int, input ent.CreateUserInput) int
-		UpdateArea func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdateUser func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		CreateArea   func(childComplexity int, input ent.CreateAreaInput) int
+		CreateTender func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64) int
+		CreateUser   func(childComplexity int, input ent.CreateUserInput) int
+		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) int
+		UpdateUser   func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 	}
 
 	PageInfo struct {
@@ -243,7 +245,10 @@ type ComplexityRoot struct {
 	Session struct {
 		AvatarURL func(childComplexity int) int
 		Email     func(childComplexity int) int
+		IsAdmin   func(childComplexity int) int
+		IsLeader  func(childComplexity int) int
 		Name      func(childComplexity int) int
+		UserID    func(childComplexity int) int
 		Username  func(childComplexity int) int
 	}
 
@@ -285,6 +290,7 @@ type ComplexityRoot struct {
 		FinderID                             func(childComplexity int) int
 		FollowingSales                       func(childComplexity int) int
 		FullAddress                          func(childComplexity int) int
+		GeoBounds                            func(childComplexity int) int
 		GeoCoordinate                        func(childComplexity int) int
 		ID                                   func(childComplexity int) int
 		Images                               func(childComplexity int) int
@@ -331,6 +337,8 @@ type ComplexityRoot struct {
 		Disabled     func(childComplexity int) int
 		Email        func(childComplexity int) int
 		ID           func(childComplexity int) int
+		IsAdmin      func(childComplexity int) int
+		IsLeader     func(childComplexity int) int
 		Leader       func(childComplexity int) int
 		LeaderID     func(childComplexity int) int
 		Name         func(childComplexity int) int
@@ -1021,6 +1029,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateArea(childComplexity, args["input"].(ent.CreateAreaInput)), true
 
+	case "Mutation.createTender":
+		if e.complexity.Mutation.CreateTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64)), true
+
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
 			break
@@ -1044,6 +1064,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateArea(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateAreaInput)), true
+
+	case "Mutation.updateTender":
+		if e.complexity.Mutation.UpdateTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -1364,12 +1396,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.Email(childComplexity), true
 
+	case "Session.isAdmin":
+		if e.complexity.Session.IsAdmin == nil {
+			break
+		}
+
+		return e.complexity.Session.IsAdmin(childComplexity), true
+
+	case "Session.isLeader":
+		if e.complexity.Session.IsLeader == nil {
+			break
+		}
+
+		return e.complexity.Session.IsLeader(childComplexity), true
+
 	case "Session.name":
 		if e.complexity.Session.Name == nil {
 			break
 		}
 
 		return e.complexity.Session.Name(childComplexity), true
+
+	case "Session.userId":
+		if e.complexity.Session.UserID == nil {
+			break
+		}
+
+		return e.complexity.Session.UserID(childComplexity), true
 
 	case "Session.username":
 		if e.complexity.Session.Username == nil {
@@ -1637,6 +1690,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.FullAddress(childComplexity), true
 
+	case "Tender.geoBounds":
+		if e.complexity.Tender.GeoBounds == nil {
+			break
+		}
+
+		return e.complexity.Tender.GeoBounds(childComplexity), true
+
 	case "Tender.geoCoordinate":
 		if e.complexity.Tender.GeoCoordinate == nil {
 			break
@@ -1895,6 +1955,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.ID(childComplexity), true
+
+	case "User.isAdmin":
+		if e.complexity.User.IsAdmin == nil {
+			break
+		}
+
+		return e.complexity.User.IsAdmin(childComplexity), true
+
+	case "User.isLeader":
+		if e.complexity.User.IsLeader == nil {
+			break
+		}
+
+		return e.complexity.User.IsLeader(childComplexity), true
 
 	case "User.leader":
 		if e.complexity.User.Leader == nil {
@@ -2816,6 +2890,8 @@ input CreateUserInput {
   openID: String!
   avatarURL: String!
   disabled: Boolean
+  isAdmin: Boolean
+  isLeader: Boolean
   areaIDs: [ID!]
   customerIDs: [ID!]
   leaderID: ID
@@ -4944,6 +5020,8 @@ input UpdateUserInput {
   openID: String
   avatarURL: String
   disabled: Boolean
+  isAdmin: Boolean
+  isLeader: Boolean
   addAreaIDs: [ID!]
   removeAreaIDs: [ID!]
   clearAreas: Boolean
@@ -4992,6 +5070,8 @@ type User implements Node {
   openID: String!
   avatarURL: String!
   disabled: Boolean!
+  isAdmin: Boolean!
+  isLeader: Boolean!
   leaderID: ID
   areas: [Area!]
   customers: [Customer!]
@@ -5156,6 +5236,16 @@ input UserWhereInput {
   """
   disabled: Boolean
   disabledNEQ: Boolean
+  """
+  is_admin field predicates
+  """
+  isAdmin: Boolean
+  isAdminNEQ: Boolean
+  """
+  is_leader field predicates
+  """
+  isLeader: Boolean
+  isLeaderNEQ: Boolean
   """
   leader_id field predicates
   """
@@ -5418,6 +5508,7 @@ input VisitRecordWhereInput {
 `, BuiltIn: false},
 	{Name: "../geo_coordinate.graphql", Input: `extend type Tender {
   geoCoordinate: GeoJson
+  geoBounds: [[Float]]
 }
 
 extend type Area {
@@ -5451,15 +5542,25 @@ type GeoJson {
 
   createUser(input: CreateUserInput!): User!
   updateUser(id: ID!, input: UpdateUserInput!): User!
+
+  createTender(input: CreateTenderInput!, geoBounds: [[Float!]!]): Tender!
+  updateTender(
+    id: ID!
+    input: UpdateTenderInput!
+    geoBounds: [[Float!]!]
+  ): Tender!
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time
 `, BuiltIn: false},
 	{Name: "../session.graphql", Input: `type Session {
+  userId: String!
   name: String!
   username: String!
   email: String!
   avatarUrl: String!
+  isAdmin: Boolean!
+  isLeader: Boolean!
 }
 
 extend type Query {

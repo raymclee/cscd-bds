@@ -73,6 +73,8 @@ const (
 	FieldAttachements = "attachements"
 	// FieldGeoCoordinate holds the string denoting the geo_coordinate field in the database.
 	FieldGeoCoordinate = "geo_coordinate"
+	// FieldGeoBounds holds the string denoting the geo_bounds field in the database.
+	FieldGeoBounds = "geo_bounds"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
 	// FieldImages holds the string denoting the images field in the database.
@@ -234,6 +236,7 @@ var Columns = []string{
 	FieldProjectType,
 	FieldAttachements,
 	FieldGeoCoordinate,
+	FieldGeoBounds,
 	FieldRemark,
 	FieldImages,
 	FieldTenderSituations,

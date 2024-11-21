@@ -4,4 +4,11 @@ type Mutation {
 
   createUser(input: CreateUserInput!): User!
   updateUser(id: ID!, input: UpdateUserInput!): User!
+
+  createTender(input: CreateTenderInput!, geoBounds: [[Float!]!]): Tender!
+  updateTender(
+    id: ID!
+    input: UpdateTenderInput!
+    geoBounds: [[Float!]!]
+  ): Tender!
 }

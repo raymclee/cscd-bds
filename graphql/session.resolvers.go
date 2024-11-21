@@ -18,6 +18,7 @@ func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
 		return nil, fmt.Errorf("session not found")
 	}
 	return &model.Session{
+		UserID:    user.UserId,
 		Name:      user.Name,
 		Email:     user.Email,
 		Username:  user.Username,

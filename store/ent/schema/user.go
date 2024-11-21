@@ -31,6 +31,8 @@ func (User) Fields() []ent.Field {
 		field.String("open_id").Unique(),
 		field.String("avatar_url"),
 		field.Bool("disabled").Default(false),
+		field.Bool("is_admin").Default(false),
+		field.Bool("is_leader").Default(false),
 
 		field.String("leader_id").
 			GoType(xid.ID("")).

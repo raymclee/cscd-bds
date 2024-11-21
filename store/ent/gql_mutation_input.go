@@ -1337,6 +1337,8 @@ type CreateUserInput struct {
 	OpenID         string
 	AvatarURL      string
 	Disabled       *bool
+	IsAdmin        *bool
+	IsLeader       *bool
 	AreaIDs        []xid.ID
 	CustomerIDs    []xid.ID
 	LeaderID       *xid.ID
@@ -1360,6 +1362,12 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	m.SetAvatarURL(i.AvatarURL)
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
+	}
+	if v := i.IsAdmin; v != nil {
+		m.SetIsAdmin(*v)
+	}
+	if v := i.IsLeader; v != nil {
+		m.SetIsLeader(*v)
 	}
 	if v := i.AreaIDs; len(v) > 0 {
 		m.AddAreaIDs(v...)
@@ -1396,6 +1404,8 @@ type UpdateUserInput struct {
 	OpenID               *string
 	AvatarURL            *string
 	Disabled             *bool
+	IsAdmin              *bool
+	IsLeader             *bool
 	ClearAreas           bool
 	AddAreaIDs           []xid.ID
 	RemoveAreaIDs        []xid.ID
@@ -1437,6 +1447,12 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
+	}
+	if v := i.IsAdmin; v != nil {
+		m.SetIsAdmin(*v)
+	}
+	if v := i.IsLeader; v != nil {
+		m.SetIsLeader(*v)
 	}
 	if i.ClearAreas {
 		m.ClearAreas()

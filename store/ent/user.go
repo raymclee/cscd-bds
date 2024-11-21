@@ -34,6 +34,10 @@ type User struct {
 	AvatarURL string `json:"avatar_url,omitempty"`
 	// Disabled holds the value of the "disabled" field.
 	Disabled bool `json:"disabled,omitempty"`
+	// IsAdmin holds the value of the "is_admin" field.
+	IsAdmin bool `json:"is_admin,omitempty"`
+	// IsLeader holds the value of the "is_leader" field.
+	IsLeader bool `json:"is_leader,omitempty"`
 	// LeaderID holds the value of the "leader_id" field.
 	LeaderID *xid.ID `json:"leader_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -132,7 +136,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldLeaderID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
-		case user.FieldDisabled:
+		case user.FieldDisabled, user.FieldIsAdmin, user.FieldIsLeader:
 			values[i] = new(sql.NullBool)
 		case user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldOpenID, user.FieldAvatarURL:
 			values[i] = new(sql.NullString)
@@ -208,6 +212,18 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field disabled", values[i])
 			} else if value.Valid {
 				u.Disabled = value.Bool
+			}
+		case user.FieldIsAdmin:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_admin", values[i])
+			} else if value.Valid {
+				u.IsAdmin = value.Bool
+			}
+		case user.FieldIsLeader:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_leader", values[i])
+			} else if value.Valid {
+				u.IsLeader = value.Bool
 			}
 		case user.FieldLeaderID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -305,6 +321,12 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("disabled=")
 	builder.WriteString(fmt.Sprintf("%v", u.Disabled))
+	builder.WriteString(", ")
+	builder.WriteString("is_admin=")
+	builder.WriteString(fmt.Sprintf("%v", u.IsAdmin))
+	builder.WriteString(", ")
+	builder.WriteString("is_leader=")
+	builder.WriteString(fmt.Sprintf("%v", u.IsLeader))
 	builder.WriteString(", ")
 	if v := u.LeaderID; v != nil {
 		builder.WriteString("leader_id=")

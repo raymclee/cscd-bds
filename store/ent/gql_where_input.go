@@ -6067,6 +6067,14 @@ type UserWhereInput struct {
 	Disabled    *bool `json:"disabled,omitempty"`
 	DisabledNEQ *bool `json:"disabledNEQ,omitempty"`
 
+	// "is_admin" field predicates.
+	IsAdmin    *bool `json:"isAdmin,omitempty"`
+	IsAdminNEQ *bool `json:"isAdminNEQ,omitempty"`
+
+	// "is_leader" field predicates.
+	IsLeader    *bool `json:"isLeader,omitempty"`
+	IsLeaderNEQ *bool `json:"isLeaderNEQ,omitempty"`
+
 	// "leader_id" field predicates.
 	LeaderID             *xid.ID  `json:"leaderID,omitempty"`
 	LeaderIDNEQ          *xid.ID  `json:"leaderIDNEQ,omitempty"`
@@ -6452,6 +6460,18 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	}
 	if i.DisabledNEQ != nil {
 		predicates = append(predicates, user.DisabledNEQ(*i.DisabledNEQ))
+	}
+	if i.IsAdmin != nil {
+		predicates = append(predicates, user.IsAdminEQ(*i.IsAdmin))
+	}
+	if i.IsAdminNEQ != nil {
+		predicates = append(predicates, user.IsAdminNEQ(*i.IsAdminNEQ))
+	}
+	if i.IsLeader != nil {
+		predicates = append(predicates, user.IsLeaderEQ(*i.IsLeader))
+	}
+	if i.IsLeaderNEQ != nil {
+		predicates = append(predicates, user.IsLeaderNEQ(*i.IsLeaderNEQ))
 	}
 	if i.LeaderID != nil {
 		predicates = append(predicates, user.LeaderIDEQ(*i.LeaderID))

@@ -263,7 +263,7 @@ func init() {
 	// tender.DefaultPrepareToBid holds the default value on creation for the prepare_to_bid field.
 	tender.DefaultPrepareToBid = tenderDescPrepareToBid.Default.(bool)
 	// tenderDescKeyProject is the schema descriptor for key_project field.
-	tenderDescKeyProject := tenderFields[42].Descriptor()
+	tenderDescKeyProject := tenderFields[43].Descriptor()
 	// tender.DefaultKeyProject holds the default value on creation for the key_project field.
 	tender.DefaultKeyProject = tenderDescKeyProject.Default.(bool)
 	// tenderDescID is the schema descriptor for id field.
@@ -291,6 +291,14 @@ func init() {
 	userDescDisabled := userFields[5].Descriptor()
 	// user.DefaultDisabled holds the default value on creation for the disabled field.
 	user.DefaultDisabled = userDescDisabled.Default.(bool)
+	// userDescIsAdmin is the schema descriptor for is_admin field.
+	userDescIsAdmin := userFields[6].Descriptor()
+	// user.DefaultIsAdmin holds the default value on creation for the is_admin field.
+	user.DefaultIsAdmin = userDescIsAdmin.Default.(bool)
+	// userDescIsLeader is the schema descriptor for is_leader field.
+	userDescIsLeader := userFields[7].Descriptor()
+	// user.DefaultIsLeader holds the default value on creation for the is_leader field.
+	user.DefaultIsLeader = userDescIsLeader.Default.(bool)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

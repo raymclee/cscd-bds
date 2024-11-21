@@ -24,6 +24,9 @@ func (Tender) Mixin() []ent.Mixin {
 	}
 }
 
+type name struct {
+}
+
 // Fields of the Tender.
 func (Tender) Fields() []ent.Field {
 	return []ent.Field{
@@ -64,6 +67,11 @@ func (Tender) Fields() []ent.Field {
 				dialect.Postgres: "geometry(Point,4326)",
 			}).
 			Nillable().
+			Optional().
+			Annotations(
+				entgql.Skip(entgql.SkipAll),
+			),
+		field.JSON("geo_bounds", [][]float64{}).
 			Optional().
 			Annotations(
 				entgql.Skip(entgql.SkipAll),

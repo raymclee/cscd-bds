@@ -94,7 +94,7 @@ export function TenderRatingChart({
                     {...props}
                     className="flex flex-col"
                   >
-                    <tspan className="fill-gray-300">{data.rating}</tspan>
+                    <tspan className="fill-gray-300">{data.rating || 0}</tspan>
                     <tspan
                       x={x}
                       dy={"1rem"}

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2ce95fc816d6deda158b053a8740c97e>>
+ * @generated SignedSource<<1ab732bfae383bd18c3a66359ed73dfd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type AuthSessionQuery$data = {
     readonly avatarUrl: string;
     readonly email: string;
     readonly name: string;
+    readonly userId: string;
     readonly username: string;
   };
 };
@@ -33,6 +34,13 @@ var v0 = [
     "name": "session",
     "plural": false,
     "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "userId",
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": null,
@@ -83,16 +91,16 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "f29c30d76ac620a4f6f6903bef1b8721",
+    "cacheID": "3d9dee28a87ff0dc512227ddae4518a6",
     "id": null,
     "metadata": {},
     "name": "AuthSessionQuery",
     "operationKind": "query",
-    "text": "query AuthSessionQuery {\n  session {\n    name\n    username\n    email\n    avatarUrl\n  }\n}\n"
+    "text": "query AuthSessionQuery {\n  session {\n    userId\n    name\n    username\n    email\n    avatarUrl\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "33b3e005f317fef07951bdcc629ae6a5";
+(node as any).hash = "ff6fb4abfba27d59fea0d4d60474923a";
 
 export default node;

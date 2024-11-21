@@ -31,6 +31,10 @@ const (
 	FieldAvatarURL = "avatar_url"
 	// FieldDisabled holds the string denoting the disabled field in the database.
 	FieldDisabled = "disabled"
+	// FieldIsAdmin holds the string denoting the is_admin field in the database.
+	FieldIsAdmin = "is_admin"
+	// FieldIsLeader holds the string denoting the is_leader field in the database.
+	FieldIsLeader = "is_leader"
 	// FieldLeaderID holds the string denoting the leader_id field in the database.
 	FieldLeaderID = "leader_id"
 	// EdgeAreas holds the string denoting the areas edge name in mutations.
@@ -90,6 +94,8 @@ var Columns = []string{
 	FieldOpenID,
 	FieldAvatarURL,
 	FieldDisabled,
+	FieldIsAdmin,
+	FieldIsLeader,
 	FieldLeaderID,
 }
 
@@ -124,6 +130,10 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled bool
+	// DefaultIsAdmin holds the default value on creation for the "is_admin" field.
+	DefaultIsAdmin bool
+	// DefaultIsLeader holds the default value on creation for the "is_leader" field.
+	DefaultIsLeader bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -174,6 +184,16 @@ func ByAvatarURL(opts ...sql.OrderTermOption) OrderOption {
 // ByDisabled orders the results by the disabled field.
 func ByDisabled(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDisabled, opts...).ToFunc()
+}
+
+// ByIsAdmin orders the results by the is_admin field.
+func ByIsAdmin(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsAdmin, opts...).ToFunc()
+}
+
+// ByIsLeader orders the results by the is_leader field.
+func ByIsLeader(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsLeader, opts...).ToFunc()
 }
 
 // ByLeaderID orders the results by the leader_id field.

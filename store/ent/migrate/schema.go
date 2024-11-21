@@ -203,6 +203,7 @@ var (
 		{Name: "project_type", Type: field.TypeString, Nullable: true},
 		{Name: "attachements", Type: field.TypeJSON, Nullable: true},
 		{Name: "geo_coordinate", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "geo_bounds", Type: field.TypeJSON, Nullable: true},
 		{Name: "remark", Type: field.TypeString, Nullable: true},
 		{Name: "images", Type: field.TypeJSON, Nullable: true},
 		{Name: "tender_situations", Type: field.TypeString, Nullable: true},
@@ -235,43 +236,43 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tenders_areas_tenders",
-				Columns:    []*schema.Column{TendersColumns[46]},
+				Columns:    []*schema.Column{TendersColumns[47]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_cities_tenders",
-				Columns:    []*schema.Column{TendersColumns[47]},
+				Columns:    []*schema.Column{TendersColumns[48]},
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_customers_tenders",
-				Columns:    []*schema.Column{TendersColumns[48]},
+				Columns:    []*schema.Column{TendersColumns[49]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
-				Columns:    []*schema.Column{TendersColumns[49]},
+				Columns:    []*schema.Column{TendersColumns[50]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
-				Columns:    []*schema.Column{TendersColumns[50]},
+				Columns:    []*schema.Column{TendersColumns[51]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_users_finder",
-				Columns:    []*schema.Column{TendersColumns[51]},
+				Columns:    []*schema.Column{TendersColumns[52]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
-				Columns:    []*schema.Column{TendersColumns[52]},
+				Columns:    []*schema.Column{TendersColumns[53]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -288,6 +289,8 @@ var (
 		{Name: "open_id", Type: field.TypeString, Unique: true},
 		{Name: "avatar_url", Type: field.TypeString},
 		{Name: "disabled", Type: field.TypeBool, Default: false},
+		{Name: "is_admin", Type: field.TypeBool, Default: false},
+		{Name: "is_leader", Type: field.TypeBool, Default: false},
 		{Name: "leader_id", Type: field.TypeString, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
@@ -298,7 +301,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_team_members",
-				Columns:    []*schema.Column{UsersColumns[9]},
+				Columns:    []*schema.Column{UsersColumns[11]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

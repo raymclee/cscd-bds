@@ -562,6 +562,8 @@ input CreateUserInput {
   openID: String!
   avatarURL: String!
   disabled: Boolean
+  isAdmin: Boolean
+  isLeader: Boolean
   areaIDs: [ID!]
   customerIDs: [ID!]
   leaderID: ID
@@ -2690,6 +2692,8 @@ input UpdateUserInput {
   openID: String
   avatarURL: String
   disabled: Boolean
+  isAdmin: Boolean
+  isLeader: Boolean
   addAreaIDs: [ID!]
   removeAreaIDs: [ID!]
   clearAreas: Boolean
@@ -2738,6 +2742,8 @@ type User implements Node {
   openID: String!
   avatarURL: String!
   disabled: Boolean!
+  isAdmin: Boolean!
+  isLeader: Boolean!
   leaderID: ID
   areas: [Area!]
   customers: [Customer!]
@@ -2902,6 +2908,16 @@ input UserWhereInput {
   """
   disabled: Boolean
   disabledNEQ: Boolean
+  """
+  is_admin field predicates
+  """
+  isAdmin: Boolean
+  isAdminNEQ: Boolean
+  """
+  is_leader field predicates
+  """
+  isLeader: Boolean
+  isLeaderNEQ: Boolean
   """
   leader_id field predicates
   """

@@ -123,6 +123,34 @@ func (uu *UserUpdate) SetNillableDisabled(b *bool) *UserUpdate {
 	return uu
 }
 
+// SetIsAdmin sets the "is_admin" field.
+func (uu *UserUpdate) SetIsAdmin(b bool) *UserUpdate {
+	uu.mutation.SetIsAdmin(b)
+	return uu
+}
+
+// SetNillableIsAdmin sets the "is_admin" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsAdmin(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsAdmin(*b)
+	}
+	return uu
+}
+
+// SetIsLeader sets the "is_leader" field.
+func (uu *UserUpdate) SetIsLeader(b bool) *UserUpdate {
+	uu.mutation.SetIsLeader(b)
+	return uu
+}
+
+// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsLeader(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsLeader(*b)
+	}
+	return uu
+}
+
 // SetLeaderID sets the "leader_id" field.
 func (uu *UserUpdate) SetLeaderID(x xid.ID) *UserUpdate {
 	uu.mutation.SetLeaderID(x)
@@ -404,6 +432,12 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+	}
+	if value, ok := uu.mutation.IsAdmin(); ok {
+		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
+	}
+	if value, ok := uu.mutation.IsLeader(); ok {
+		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
 	}
 	if uu.mutation.AreasCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -769,6 +803,34 @@ func (uuo *UserUpdateOne) SetNillableDisabled(b *bool) *UserUpdateOne {
 	return uuo
 }
 
+// SetIsAdmin sets the "is_admin" field.
+func (uuo *UserUpdateOne) SetIsAdmin(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsAdmin(b)
+	return uuo
+}
+
+// SetNillableIsAdmin sets the "is_admin" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsAdmin(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsAdmin(*b)
+	}
+	return uuo
+}
+
+// SetIsLeader sets the "is_leader" field.
+func (uuo *UserUpdateOne) SetIsLeader(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsLeader(b)
+	return uuo
+}
+
+// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsLeader(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsLeader(*b)
+	}
+	return uuo
+}
+
 // SetLeaderID sets the "leader_id" field.
 func (uuo *UserUpdateOne) SetLeaderID(x xid.ID) *UserUpdateOne {
 	uuo.mutation.SetLeaderID(x)
@@ -1080,6 +1142,12 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+	}
+	if value, ok := uuo.mutation.IsAdmin(); ok {
+		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
+	}
+	if value, ok := uuo.mutation.IsLeader(); ok {
+		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
 	}
 	if uuo.mutation.AreasCleared() {
 		edge := &sqlgraph.EdgeSpec{

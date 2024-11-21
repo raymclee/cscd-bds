@@ -188,6 +188,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldProjectType:                          {Type: field.TypeString, Column: tender.FieldProjectType},
 			tender.FieldAttachements:                         {Type: field.TypeJSON, Column: tender.FieldAttachements},
 			tender.FieldGeoCoordinate:                        {Type: field.TypeOther, Column: tender.FieldGeoCoordinate},
+			tender.FieldGeoBounds:                            {Type: field.TypeJSON, Column: tender.FieldGeoBounds},
 			tender.FieldRemark:                               {Type: field.TypeString, Column: tender.FieldRemark},
 			tender.FieldImages:                               {Type: field.TypeJSON, Column: tender.FieldImages},
 			tender.FieldTenderSituations:                     {Type: field.TypeString, Column: tender.FieldTenderSituations},
@@ -232,6 +233,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldOpenID:    {Type: field.TypeString, Column: user.FieldOpenID},
 			user.FieldAvatarURL: {Type: field.TypeString, Column: user.FieldAvatarURL},
 			user.FieldDisabled:  {Type: field.TypeBool, Column: user.FieldDisabled},
+			user.FieldIsAdmin:   {Type: field.TypeBool, Column: user.FieldIsAdmin},
+			user.FieldIsLeader:  {Type: field.TypeBool, Column: user.FieldIsLeader},
 			user.FieldLeaderID:  {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
@@ -1688,6 +1691,11 @@ func (f *TenderFilter) WhereGeoCoordinate(p entql.OtherP) {
 	f.Where(p.Field(tender.FieldGeoCoordinate))
 }
 
+// WhereGeoBounds applies the entql json.RawMessage predicate on the geo_bounds field.
+func (f *TenderFilter) WhereGeoBounds(p entql.BytesP) {
+	f.Where(p.Field(tender.FieldGeoBounds))
+}
+
 // WhereRemark applies the entql string predicate on the remark field.
 func (f *TenderFilter) WhereRemark(p entql.StringP) {
 	f.Where(p.Field(tender.FieldRemark))
@@ -2007,6 +2015,16 @@ func (f *UserFilter) WhereAvatarURL(p entql.StringP) {
 // WhereDisabled applies the entql bool predicate on the disabled field.
 func (f *UserFilter) WhereDisabled(p entql.BoolP) {
 	f.Where(p.Field(user.FieldDisabled))
+}
+
+// WhereIsAdmin applies the entql bool predicate on the is_admin field.
+func (f *UserFilter) WhereIsAdmin(p entql.BoolP) {
+	f.Where(p.Field(user.FieldIsAdmin))
+}
+
+// WhereIsLeader applies the entql bool predicate on the is_leader field.
+func (f *UserFilter) WhereIsLeader(p entql.BoolP) {
+	f.Where(p.Field(user.FieldIsLeader))
 }
 
 // WhereLeaderID applies the entql string predicate on the leader_id field.

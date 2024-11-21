@@ -6,6 +6,7 @@ import { AuthenticationError, AuthorizationError } from "~/lib/relay";
 graphql`
   query AuthSessionQuery {
     session {
+      userId
       name
       username
       email
@@ -15,7 +16,7 @@ graphql`
 `;
 
 export const Route = createFileRoute("/__auth")({
-  async beforeLoad({ context: { RelayEnvironment } }) {
+  async beforeLoad({ context: { RelayEnvironment }, location }) {
     const data = await fetchQuery<AuthSessionQuery>(
       RelayEnvironment,
       node,
@@ -23,7 +24,11 @@ export const Route = createFileRoute("/__auth")({
       { fetchPolicy: "store-or-network" },
     ).toPromise();
     if (!data?.session) {
-      return { redirectTo: "/login" };
+      throw redirect({
+        to: "/login",
+        from: location.pathname,
+        params: { search: location.pathname },
+      });
     }
     return { session: data.session };
   },

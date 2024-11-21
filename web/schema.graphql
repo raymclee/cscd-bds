@@ -497,6 +497,8 @@ input CreateUserInput {
   customerIDs: [ID!]
   disabled: Boolean
   email: String!
+  isAdmin: Boolean
+  isLeader: Boolean
   leaderID: ID
   name: String!
   openID: String!
@@ -933,8 +935,10 @@ type GeoJson {
 
 type Mutation {
   createArea(input: CreateAreaInput!): Area!
+  createTender(geoBounds: [[Float!]!], input: CreateTenderInput!): Tender!
   createUser(input: CreateUserInput!): User!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
+  updateTender(geoBounds: [[Float!]!], id: ID!, input: UpdateTenderInput!): Tender!
   updateUser(id: ID!, input: UpdateUserInput!): User!
 }
 
@@ -1254,7 +1258,10 @@ type Query {
 type Session {
   avatarUrl: String!
   email: String!
+  isAdmin: Boolean!
+  isLeader: Boolean!
   name: String!
+  userId: String!
   username: String!
 }
 
@@ -1296,6 +1303,7 @@ type Tender implements Node {
   finderID: ID!
   followingSales: [User!]
   fullAddress: String
+  geoBounds: [[Float]]
   geoCoordinate: GeoJson
   id: ID!
   images: [String!]
@@ -2299,6 +2307,8 @@ input UpdateUserInput {
   clearVisitRecords: Boolean
   disabled: Boolean
   email: String
+  isAdmin: Boolean
+  isLeader: Boolean
   leaderID: ID
   name: String
   openID: String
@@ -2340,6 +2350,8 @@ type User implements Node {
   disabled: Boolean!
   email: String!
   id: ID!
+  isAdmin: Boolean!
+  isLeader: Boolean!
   leader: User
   leaderID: ID
   name: String!
@@ -2442,6 +2454,12 @@ input UserWhereInput {
   idLTE: ID
   idNEQ: ID
   idNotIn: [ID!]
+  """is_admin field predicates"""
+  isAdmin: Boolean
+  isAdminNEQ: Boolean
+  """is_leader field predicates"""
+  isLeader: Boolean
+  isLeaderNEQ: Boolean
   """leader_id field predicates"""
   leaderID: ID
   leaderIDContains: ID

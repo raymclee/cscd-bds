@@ -1884,6 +1884,8 @@ func (ec *executionContext) fieldContext_Area_tenders(_ context.Context, field g
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -1945,6 +1947,10 @@ func (ec *executionContext) fieldContext_Area_sales(_ context.Context, field gra
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -2943,6 +2949,8 @@ func (ec *executionContext) fieldContext_City_tenders(_ context.Context, field g
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -4654,6 +4662,8 @@ func (ec *executionContext) fieldContext_Customer_tenders(_ context.Context, fie
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -4715,6 +4725,10 @@ func (ec *executionContext) fieldContext_Customer_sales(_ context.Context, field
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -4793,6 +4807,10 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -5843,6 +5861,8 @@ func (ec *executionContext) fieldContext_District_tenders(_ context.Context, fie
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -6984,6 +7004,8 @@ func (ec *executionContext) fieldContext_Province_tenders(_ context.Context, fie
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -8072,6 +8094,8 @@ func (ec *executionContext) fieldContext_Query_session(_ context.Context, field 
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
+			case "userId":
+				return ec.fieldContext_Session_userId(ctx, field)
 			case "name":
 				return ec.fieldContext_Session_name(ctx, field)
 			case "username":
@@ -8080,6 +8104,10 @@ func (ec *executionContext) fieldContext_Query_session(_ context.Context, field 
 				return ec.fieldContext_Session_email(ctx, field)
 			case "avatarUrl":
 				return ec.fieldContext_Session_avatarUrl(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_Session_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_Session_isLeader(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Session", field.Name)
 		},
@@ -10600,6 +10628,10 @@ func (ec *executionContext) fieldContext_Tender_finder(_ context.Context, field 
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -10678,6 +10710,10 @@ func (ec *executionContext) fieldContext_Tender_createdBy(_ context.Context, fie
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -10753,6 +10789,10 @@ func (ec *executionContext) fieldContext_Tender_followingSales(_ context.Context
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -11099,6 +11139,47 @@ func (ec *executionContext) fieldContext_Tender_geoCoordinate(_ context.Context,
 	return fc, nil
 }
 
+func (ec *executionContext) _Tender_geoBounds(ctx context.Context, field graphql.CollectedField, obj *ent.Tender) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tender_geoBounds(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.GeoBounds, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([][]float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚕᚕfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tender_geoBounds(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tender",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _TenderConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.TenderConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_TenderConnection_edges(ctx, field)
 	if err != nil {
@@ -11404,6 +11485,8 @@ func (ec *executionContext) fieldContext_TenderEdge_node(_ context.Context, fiel
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -11851,6 +11934,94 @@ func (ec *executionContext) fieldContext_User_disabled(_ context.Context, field 
 	return fc, nil
 }
 
+func (ec *executionContext) _User_isAdmin(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_isAdmin(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsAdmin, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_isAdmin(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_isLeader(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_isLeader(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsLeader, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_isLeader(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _User_leaderID(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_leaderID(ctx, field)
 	if err != nil {
@@ -12090,6 +12261,10 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -12165,6 +12340,10 @@ func (ec *executionContext) fieldContext_User_teamMembers(_ context.Context, fie
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -12346,6 +12525,8 @@ func (ec *executionContext) fieldContext_User_tenders(_ context.Context, field g
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -12621,6 +12802,10 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -13277,6 +13462,8 @@ func (ec *executionContext) fieldContext_VisitRecord_tender(_ context.Context, f
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Tender_geoBounds(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
 		},
@@ -13419,6 +13606,10 @@ func (ec *executionContext) fieldContext_VisitRecord_followupbys(_ context.Conte
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isAdmin":
+				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -15960,7 +16151,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs", "visitRecordIDs"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "isAdmin", "isLeader", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs", "visitRecordIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16023,6 +16214,20 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Disabled = data
+		case "isAdmin":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isAdmin"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsAdmin = data
+		case "isLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isLeader"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsLeader = data
 		case "areaIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDs"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
@@ -24683,7 +24888,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
+	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "isAdmin", "isLeader", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -24739,6 +24944,20 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Disabled = data
+		case "isAdmin":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isAdmin"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsAdmin = data
+		case "isLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isLeader"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsLeader = data
 		case "addAreaIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAreaIDs"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
@@ -24989,7 +25208,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith", "hasVisitRecords", "hasVisitRecordsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "isAdmin", "isAdminNEQ", "isLeader", "isLeaderNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith", "hasVisitRecords", "hasVisitRecordsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -25654,6 +25873,34 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.DisabledNEQ = data
+		case "isAdmin":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isAdmin"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsAdmin = data
+		case "isAdminNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isAdminNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsAdminNEQ = data
+		case "isLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isLeader"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsLeader = data
+		case "isLeaderNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isLeaderNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsLeaderNEQ = data
 		case "leaderID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -29445,6 +29692,8 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "geoBounds":
+			out.Values[i] = ec._Tender_geoBounds(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -29608,6 +29857,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "disabled":
 			out.Values[i] = ec._User_disabled(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "isAdmin":
+			out.Values[i] = ec._User_isAdmin(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "isLeader":
+			out.Values[i] = ec._User_isLeader(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
@@ -30282,6 +30541,11 @@ func (ec *executionContext) unmarshalNCreateAreaInput2cscdᚑbdsᚋstoreᚋent�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNCreateTenderInput2cscdᚑbdsᚋstoreᚋentᚐCreateTenderInput(ctx context.Context, v interface{}) (ent.CreateTenderInput, error) {
+	res, err := ec.unmarshalInputCreateTenderInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNCreateUserInput2cscdᚑbdsᚋstoreᚋentᚐCreateUserInput(ctx context.Context, v interface{}) (ent.CreateUserInput, error) {
 	res, err := ec.unmarshalInputCreateUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -30426,6 +30690,10 @@ func (ec *executionContext) unmarshalNProvinceWhereInput2ᚖcscdᚑbdsᚋstore�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNTender2cscdᚑbdsᚋstoreᚋentᚐTender(ctx context.Context, sel ast.SelectionSet, v ent.Tender) graphql.Marshaler {
+	return ec._Tender(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx context.Context, sel ast.SelectionSet, v *ent.Tender) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -30457,6 +30725,11 @@ func (ec *executionContext) unmarshalNTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋe
 
 func (ec *executionContext) unmarshalNUpdateAreaInput2cscdᚑbdsᚋstoreᚋentᚐUpdateAreaInput(ctx context.Context, v interface{}) (ent.UpdateAreaInput, error) {
 	res, err := ec.unmarshalInputUpdateAreaInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNUpdateTenderInput2cscdᚑbdsᚋstoreᚋentᚐUpdateTenderInput(ctx context.Context, v interface{}) (ent.UpdateTenderInput, error) {
+	res, err := ec.unmarshalInputUpdateTenderInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 

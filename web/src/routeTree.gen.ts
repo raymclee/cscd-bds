@@ -15,19 +15,20 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as authImport } from './routes/__auth'
 import { Route as authSessionImport } from './routes/__auth/session'
+import { Route as authportalImport } from './routes/__auth/__portal'
 import { Route as authmapImport } from './routes/__auth/__map'
 import { Route as authimapImport } from './routes/__auth/__imap'
-import { Route as antdAccessDeniedImport } from './routes/__antd/access-denied'
 import { Route as authmapIndexImport } from './routes/__auth/__map/index'
 import { Route as authmapHomeImport } from './routes/__auth/__map/home'
 import { Route as authmapEditImport } from './routes/__auth/__map/edit'
 import { Route as authimapH2Import } from './routes/__auth/__imap/h2'
+import { Route as authportalPortalTendersIndexImport } from './routes/__auth/__portal/portal/tenders.index'
+import { Route as authportalPortalTendersIdImport } from './routes/__auth/__portal/portal/tenders.$id'
 
 // Create Virtual Routes
 
 const LoginLazyImport = createFileRoute('/login')()
-const GoogleLazyImport = createFileRoute('/google')()
-const antdLazyImport = createFileRoute('/__antd')()
+const AccessDeniedLazyImport = createFileRoute('/access-denied')()
 const authmapDashboardLazyImport = createFileRoute('/__auth/__map/dashboard')()
 const authmapAreaMapLazyImport = createFileRoute('/__auth/__map/area-map')()
 const authimapH3LazyImport = createFileRoute('/__auth/__imap/h3')()
@@ -40,18 +41,11 @@ const LoginLazyRoute = LoginLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
-const GoogleLazyRoute = GoogleLazyImport.update({
-  id: '/google',
-  path: '/google',
+const AccessDeniedLazyRoute = AccessDeniedLazyImport.update({
+  id: '/access-denied',
+  path: '/access-denied',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/google.lazy').then((d) => d.Route))
-
-const antdLazyRoute = antdLazyImport
-  .update({
-    id: '/__antd',
-    getParentRoute: () => rootRoute,
-  } as any)
-  .lazy(() => import('./routes/__antd.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/access-denied.lazy').then((d) => d.Route))
 
 const authRoute = authImport
   .update({
@@ -66,6 +60,13 @@ const authSessionRoute = authSessionImport.update({
   getParentRoute: () => authRoute,
 } as any)
 
+const authportalRoute = authportalImport
+  .update({
+    id: '/__portal',
+    getParentRoute: () => authRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__portal.lazy').then((d) => d.Route))
+
 const authmapRoute = authmapImport.update({
   id: '/__map',
   getParentRoute: () => authRoute,
@@ -77,12 +78,6 @@ const authimapRoute = authimapImport
     getParentRoute: () => authRoute,
   } as any)
   .lazy(() => import('./routes/__auth/__imap.lazy').then((d) => d.Route))
-
-const antdAccessDeniedRoute = antdAccessDeniedImport.update({
-  id: '/access-denied',
-  path: '/access-denied',
-  getParentRoute: () => antdLazyRoute,
-} as any)
 
 const authmapIndexRoute = authmapIndexImport
   .update({
@@ -142,6 +137,30 @@ const authimapH2Route = authimapH2Import
   } as any)
   .lazy(() => import('./routes/__auth/__imap/h2.lazy').then((d) => d.Route))
 
+const authportalPortalTendersIndexRoute = authportalPortalTendersIndexImport
+  .update({
+    id: '/portal/tenders/',
+    path: '/portal/tenders/',
+    getParentRoute: () => authportalRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__portal/portal/tenders.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const authportalPortalTendersIdRoute = authportalPortalTendersIdImport
+  .update({
+    id: '/portal/tenders/$id',
+    path: '/portal/tenders/$id',
+    getParentRoute: () => authportalRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__portal/portal/tenders.$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -153,18 +172,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authImport
       parentRoute: typeof rootRoute
     }
-    '/__antd': {
-      id: '/__antd'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof antdLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/google': {
-      id: '/google'
-      path: '/google'
-      fullPath: '/google'
-      preLoaderRoute: typeof GoogleLazyImport
+    '/access-denied': {
+      id: '/access-denied'
+      path: '/access-denied'
+      fullPath: '/access-denied'
+      preLoaderRoute: typeof AccessDeniedLazyImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -173,13 +185,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
-    }
-    '/__antd/access-denied': {
-      id: '/__antd/access-denied'
-      path: '/access-denied'
-      fullPath: '/access-denied'
-      preLoaderRoute: typeof antdAccessDeniedImport
-      parentRoute: typeof antdLazyImport
     }
     '/__auth/__imap': {
       id: '/__auth/__imap'
@@ -193,6 +198,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authmapImport
+      parentRoute: typeof authImport
+    }
+    '/__auth/__portal': {
+      id: '/__auth/__portal'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authportalImport
       parentRoute: typeof authImport
     }
     '/__auth/session': {
@@ -251,6 +263,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authmapIndexImport
       parentRoute: typeof authmapImport
     }
+    '/__auth/__portal/portal/tenders/$id': {
+      id: '/__auth/__portal/portal/tenders/$id'
+      path: '/portal/tenders/$id'
+      fullPath: '/portal/tenders/$id'
+      preLoaderRoute: typeof authportalPortalTendersIdImport
+      parentRoute: typeof authportalImport
+    }
+    '/__auth/__portal/portal/tenders/': {
+      id: '/__auth/__portal/portal/tenders/'
+      path: '/portal/tenders'
+      fullPath: '/portal/tenders'
+      preLoaderRoute: typeof authportalPortalTendersIndexImport
+      parentRoute: typeof authportalImport
+    }
   }
 }
 
@@ -289,37 +315,40 @@ const authmapRouteChildren: authmapRouteChildren = {
 const authmapRouteWithChildren =
   authmapRoute._addFileChildren(authmapRouteChildren)
 
+interface authportalRouteChildren {
+  authportalPortalTendersIdRoute: typeof authportalPortalTendersIdRoute
+  authportalPortalTendersIndexRoute: typeof authportalPortalTendersIndexRoute
+}
+
+const authportalRouteChildren: authportalRouteChildren = {
+  authportalPortalTendersIdRoute: authportalPortalTendersIdRoute,
+  authportalPortalTendersIndexRoute: authportalPortalTendersIndexRoute,
+}
+
+const authportalRouteWithChildren = authportalRoute._addFileChildren(
+  authportalRouteChildren,
+)
+
 interface authRouteChildren {
   authimapRoute: typeof authimapRouteWithChildren
   authmapRoute: typeof authmapRouteWithChildren
+  authportalRoute: typeof authportalRouteWithChildren
   authSessionRoute: typeof authSessionRoute
 }
 
 const authRouteChildren: authRouteChildren = {
   authimapRoute: authimapRouteWithChildren,
   authmapRoute: authmapRouteWithChildren,
+  authportalRoute: authportalRouteWithChildren,
   authSessionRoute: authSessionRoute,
 }
 
 const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
-interface antdLazyRouteChildren {
-  antdAccessDeniedRoute: typeof antdAccessDeniedRoute
-}
-
-const antdLazyRouteChildren: antdLazyRouteChildren = {
-  antdAccessDeniedRoute: antdAccessDeniedRoute,
-}
-
-const antdLazyRouteWithChildren = antdLazyRoute._addFileChildren(
-  antdLazyRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
-  '': typeof authmapRouteWithChildren
-  '/google': typeof GoogleLazyRoute
+  '': typeof authportalRouteWithChildren
+  '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
-  '/access-denied': typeof antdAccessDeniedRoute
   '/session': typeof authSessionRoute
   '/h2': typeof authimapH2Route
   '/edit': typeof authmapEditRoute
@@ -328,13 +357,14 @@ export interface FileRoutesByFullPath {
   '/area-map': typeof authmapAreaMapLazyRoute
   '/dashboard': typeof authmapDashboardLazyRoute
   '/': typeof authmapIndexRoute
+  '/portal/tenders/$id': typeof authportalPortalTendersIdRoute
+  '/portal/tenders': typeof authportalPortalTendersIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '': typeof authimapRouteWithChildren
-  '/google': typeof GoogleLazyRoute
+  '': typeof authportalRouteWithChildren
+  '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
-  '/access-denied': typeof antdAccessDeniedRoute
   '/session': typeof authSessionRoute
   '/h2': typeof authimapH2Route
   '/edit': typeof authmapEditRoute
@@ -343,17 +373,18 @@ export interface FileRoutesByTo {
   '/area-map': typeof authmapAreaMapLazyRoute
   '/dashboard': typeof authmapDashboardLazyRoute
   '/': typeof authmapIndexRoute
+  '/portal/tenders/$id': typeof authportalPortalTendersIdRoute
+  '/portal/tenders': typeof authportalPortalTendersIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/__auth': typeof authRouteWithChildren
-  '/__antd': typeof antdLazyRouteWithChildren
-  '/google': typeof GoogleLazyRoute
+  '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
-  '/__antd/access-denied': typeof antdAccessDeniedRoute
   '/__auth/__imap': typeof authimapRouteWithChildren
   '/__auth/__map': typeof authmapRouteWithChildren
+  '/__auth/__portal': typeof authportalRouteWithChildren
   '/__auth/session': typeof authSessionRoute
   '/__auth/__imap/h2': typeof authimapH2Route
   '/__auth/__map/edit': typeof authmapEditRoute
@@ -362,15 +393,16 @@ export interface FileRoutesById {
   '/__auth/__map/area-map': typeof authmapAreaMapLazyRoute
   '/__auth/__map/dashboard': typeof authmapDashboardLazyRoute
   '/__auth/__map/': typeof authmapIndexRoute
+  '/__auth/__portal/portal/tenders/$id': typeof authportalPortalTendersIdRoute
+  '/__auth/__portal/portal/tenders/': typeof authportalPortalTendersIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
-    | '/google'
-    | '/login'
     | '/access-denied'
+    | '/login'
     | '/session'
     | '/h2'
     | '/edit'
@@ -379,12 +411,13 @@ export interface FileRouteTypes {
     | '/area-map'
     | '/dashboard'
     | '/'
+    | '/portal/tenders/$id'
+    | '/portal/tenders'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
-    | '/google'
-    | '/login'
     | '/access-denied'
+    | '/login'
     | '/session'
     | '/h2'
     | '/edit'
@@ -393,15 +426,16 @@ export interface FileRouteTypes {
     | '/area-map'
     | '/dashboard'
     | '/'
+    | '/portal/tenders/$id'
+    | '/portal/tenders'
   id:
     | '__root__'
     | '/__auth'
-    | '/__antd'
-    | '/google'
+    | '/access-denied'
     | '/login'
-    | '/__antd/access-denied'
     | '/__auth/__imap'
     | '/__auth/__map'
+    | '/__auth/__portal'
     | '/__auth/session'
     | '/__auth/__imap/h2'
     | '/__auth/__map/edit'
@@ -410,20 +444,20 @@ export interface FileRouteTypes {
     | '/__auth/__map/area-map'
     | '/__auth/__map/dashboard'
     | '/__auth/__map/'
+    | '/__auth/__portal/portal/tenders/$id'
+    | '/__auth/__portal/portal/tenders/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   authRoute: typeof authRouteWithChildren
-  antdLazyRoute: typeof antdLazyRouteWithChildren
-  GoogleLazyRoute: typeof GoogleLazyRoute
+  AccessDeniedLazyRoute: typeof AccessDeniedLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   authRoute: authRouteWithChildren,
-  antdLazyRoute: antdLazyRouteWithChildren,
-  GoogleLazyRoute: GoogleLazyRoute,
+  AccessDeniedLazyRoute: AccessDeniedLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
 }
 
@@ -438,8 +472,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/__auth",
-        "/__antd",
-        "/google",
+        "/access-denied",
         "/login"
       ]
     },
@@ -448,24 +481,15 @@ export const routeTree = rootRoute
       "children": [
         "/__auth/__imap",
         "/__auth/__map",
+        "/__auth/__portal",
         "/__auth/session"
       ]
     },
-    "/__antd": {
-      "filePath": "__antd.lazy.tsx",
-      "children": [
-        "/__antd/access-denied"
-      ]
-    },
-    "/google": {
-      "filePath": "google.lazy.tsx"
+    "/access-denied": {
+      "filePath": "access-denied.lazy.tsx"
     },
     "/login": {
       "filePath": "login.lazy.tsx"
-    },
-    "/__antd/access-denied": {
-      "filePath": "__antd/access-denied.tsx",
-      "parent": "/__antd"
     },
     "/__auth/__imap": {
       "filePath": "__auth/__imap.tsx",
@@ -484,6 +508,14 @@ export const routeTree = rootRoute
         "/__auth/__map/area-map",
         "/__auth/__map/dashboard",
         "/__auth/__map/"
+      ]
+    },
+    "/__auth/__portal": {
+      "filePath": "__auth/__portal.tsx",
+      "parent": "/__auth",
+      "children": [
+        "/__auth/__portal/portal/tenders/$id",
+        "/__auth/__portal/portal/tenders/"
       ]
     },
     "/__auth/session": {
@@ -517,6 +549,14 @@ export const routeTree = rootRoute
     "/__auth/__map/": {
       "filePath": "__auth/__map/index.tsx",
       "parent": "/__auth/__map"
+    },
+    "/__auth/__portal/portal/tenders/$id": {
+      "filePath": "__auth/__portal/portal/tenders.$id.tsx",
+      "parent": "/__auth/__portal"
+    },
+    "/__auth/__portal/portal/tenders/": {
+      "filePath": "__auth/__portal/portal/tenders.index.tsx",
+      "parent": "/__auth/__portal"
     }
   }
 }

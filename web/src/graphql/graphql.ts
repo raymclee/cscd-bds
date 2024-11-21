@@ -520,6 +520,8 @@ export type CreateUserInput = {
   customerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email: Scalars['String']['input'];
+  isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
   openID: Scalars['String']['input'];
@@ -958,14 +960,22 @@ export type GeoJson = {
 export type Mutation = {
   __typename?: 'Mutation';
   createArea: Area;
+  createTender: Tender;
   createUser: User;
   updateArea: Area;
+  updateTender: Tender;
   updateUser: User;
 };
 
 
 export type MutationCreateAreaArgs = {
   input: CreateAreaInput;
+};
+
+
+export type MutationCreateTenderArgs = {
+  geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
+  input: CreateTenderInput;
 };
 
 
@@ -977,6 +987,13 @@ export type MutationCreateUserArgs = {
 export type MutationUpdateAreaArgs = {
   id: Scalars['ID']['input'];
   input: UpdateAreaInput;
+};
+
+
+export type MutationUpdateTenderArgs = {
+  geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
+  id: Scalars['ID']['input'];
+  input: UpdateTenderInput;
 };
 
 
@@ -1273,7 +1290,10 @@ export type Session = {
   __typename?: 'Session';
   avatarUrl: Scalars['String']['output'];
   email: Scalars['String']['output'];
+  isAdmin: Scalars['Boolean']['output'];
+  isLeader: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
   username: Scalars['String']['output'];
 };
 
@@ -1316,6 +1336,7 @@ export type Tender = Node & {
   finderID: Scalars['ID']['output'];
   followingSales?: Maybe<Array<User>>;
   fullAddress?: Maybe<Scalars['String']['output']>;
+  geoBounds?: Maybe<Array<Maybe<Array<Maybe<Scalars['Float']['output']>>>>>;
   geoCoordinate?: Maybe<GeoJson>;
   id: Scalars['ID']['output'];
   images?: Maybe<Array<Scalars['String']['output']>>;
@@ -2319,6 +2340,8 @@ export type UpdateUserInput = {
   clearVisitRecords?: InputMaybe<Scalars['Boolean']['input']>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -2361,6 +2384,8 @@ export type User = Node & {
   disabled: Scalars['Boolean']['output'];
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  isAdmin: Scalars['Boolean']['output'];
+  isLeader: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
   name: Scalars['String']['output'];
@@ -2465,6 +2490,12 @@ export type UserWhereInput = {
   idLTE?: InputMaybe<Scalars['ID']['input']>;
   idNEQ?: InputMaybe<Scalars['ID']['input']>;
   idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** is_admin field predicates */
+  isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_leader field predicates */
+  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
+  isLeaderNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** leader_id field predicates */
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   leaderIDContains?: InputMaybe<Scalars['ID']['input']>;

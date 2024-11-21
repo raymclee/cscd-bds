@@ -1,5 +1,6 @@
 extend type Tender {
   geoCoordinate: GeoJson
+  geoBounds: [[Float]]
 }
 
 extend type Area {

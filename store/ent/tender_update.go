@@ -593,6 +593,24 @@ func (tu *TenderUpdate) ClearGeoCoordinate() *TenderUpdate {
 	return tu
 }
 
+// SetGeoBounds sets the "geo_bounds" field.
+func (tu *TenderUpdate) SetGeoBounds(f [][]float64) *TenderUpdate {
+	tu.mutation.SetGeoBounds(f)
+	return tu
+}
+
+// AppendGeoBounds appends f to the "geo_bounds" field.
+func (tu *TenderUpdate) AppendGeoBounds(f [][]float64) *TenderUpdate {
+	tu.mutation.AppendGeoBounds(f)
+	return tu
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (tu *TenderUpdate) ClearGeoBounds() *TenderUpdate {
+	tu.mutation.ClearGeoBounds()
+	return tu
+}
+
 // SetRemark sets the "remark" field.
 func (tu *TenderUpdate) SetRemark(s string) *TenderUpdate {
 	tu.mutation.SetRemark(s)
@@ -1434,6 +1452,17 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.GeoCoordinateCleared() {
 		_spec.ClearField(tender.FieldGeoCoordinate, field.TypeOther)
+	}
+	if value, ok := tu.mutation.GeoBounds(); ok {
+		_spec.SetField(tender.FieldGeoBounds, field.TypeJSON, value)
+	}
+	if value, ok := tu.mutation.AppendedGeoBounds(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, tender.FieldGeoBounds, value)
+		})
+	}
+	if tu.mutation.GeoBoundsCleared() {
+		_spec.ClearField(tender.FieldGeoBounds, field.TypeJSON)
 	}
 	if value, ok := tu.mutation.Remark(); ok {
 		_spec.SetField(tender.FieldRemark, field.TypeString, value)
@@ -2401,6 +2430,24 @@ func (tuo *TenderUpdateOne) ClearGeoCoordinate() *TenderUpdateOne {
 	return tuo
 }
 
+// SetGeoBounds sets the "geo_bounds" field.
+func (tuo *TenderUpdateOne) SetGeoBounds(f [][]float64) *TenderUpdateOne {
+	tuo.mutation.SetGeoBounds(f)
+	return tuo
+}
+
+// AppendGeoBounds appends f to the "geo_bounds" field.
+func (tuo *TenderUpdateOne) AppendGeoBounds(f [][]float64) *TenderUpdateOne {
+	tuo.mutation.AppendGeoBounds(f)
+	return tuo
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (tuo *TenderUpdateOne) ClearGeoBounds() *TenderUpdateOne {
+	tuo.mutation.ClearGeoBounds()
+	return tuo
+}
+
 // SetRemark sets the "remark" field.
 func (tuo *TenderUpdateOne) SetRemark(s string) *TenderUpdateOne {
 	tuo.mutation.SetRemark(s)
@@ -3272,6 +3319,17 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.GeoCoordinateCleared() {
 		_spec.ClearField(tender.FieldGeoCoordinate, field.TypeOther)
+	}
+	if value, ok := tuo.mutation.GeoBounds(); ok {
+		_spec.SetField(tender.FieldGeoBounds, field.TypeJSON, value)
+	}
+	if value, ok := tuo.mutation.AppendedGeoBounds(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, tender.FieldGeoBounds, value)
+		})
+	}
+	if tuo.mutation.GeoBoundsCleared() {
+		_spec.ClearField(tender.FieldGeoBounds, field.TypeJSON)
 	}
 	if value, ok := tuo.mutation.Remark(); ok {
 		_spec.SetField(tender.FieldRemark, field.TypeString, value)

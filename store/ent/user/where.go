@@ -96,6 +96,16 @@ func Disabled(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDisabled, v))
 }
 
+// IsAdmin applies equality check predicate on the "is_admin" field. It's identical to IsAdminEQ.
+func IsAdmin(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsAdmin, v))
+}
+
+// IsLeader applies equality check predicate on the "is_leader" field. It's identical to IsLeaderEQ.
+func IsLeader(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsLeader, v))
+}
+
 // LeaderID applies equality check predicate on the "leader_id" field. It's identical to LeaderIDEQ.
 func LeaderID(v xid.ID) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldLeaderID, v))
@@ -514,6 +524,26 @@ func DisabledEQ(v bool) predicate.User {
 // DisabledNEQ applies the NEQ predicate on the "disabled" field.
 func DisabledNEQ(v bool) predicate.User {
 	return predicate.User(sql.FieldNEQ(FieldDisabled, v))
+}
+
+// IsAdminEQ applies the EQ predicate on the "is_admin" field.
+func IsAdminEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsAdmin, v))
+}
+
+// IsAdminNEQ applies the NEQ predicate on the "is_admin" field.
+func IsAdminNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldIsAdmin, v))
+}
+
+// IsLeaderEQ applies the EQ predicate on the "is_leader" field.
+func IsLeaderEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsLeader, v))
+}
+
+// IsLeaderNEQ applies the NEQ predicate on the "is_leader" field.
+func IsLeaderNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldIsLeader, v))
 }
 
 // LeaderIDEQ applies the EQ predicate on the "leader_id" field.

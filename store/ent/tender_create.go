@@ -398,6 +398,12 @@ func (tc *TenderCreate) SetGeoCoordinate(gj *geo.GeoJson) *TenderCreate {
 	return tc
 }
 
+// SetGeoBounds sets the "geo_bounds" field.
+func (tc *TenderCreate) SetGeoBounds(f [][]float64) *TenderCreate {
+	tc.mutation.SetGeoBounds(f)
+	return tc
+}
+
 // SetRemark sets the "remark" field.
 func (tc *TenderCreate) SetRemark(s string) *TenderCreate {
 	tc.mutation.SetRemark(s)
@@ -1042,6 +1048,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.GeoCoordinate(); ok {
 		_spec.SetField(tender.FieldGeoCoordinate, field.TypeOther, value)
 		_node.GeoCoordinate = value
+	}
+	if value, ok := tc.mutation.GeoBounds(); ok {
+		_spec.SetField(tender.FieldGeoBounds, field.TypeJSON, value)
+		_node.GeoBounds = value
 	}
 	if value, ok := tc.mutation.Remark(); ok {
 		_spec.SetField(tender.FieldRemark, field.TypeString, value)
@@ -1817,6 +1827,24 @@ func (u *TenderUpsert) UpdateGeoCoordinate() *TenderUpsert {
 // ClearGeoCoordinate clears the value of the "geo_coordinate" field.
 func (u *TenderUpsert) ClearGeoCoordinate() *TenderUpsert {
 	u.SetNull(tender.FieldGeoCoordinate)
+	return u
+}
+
+// SetGeoBounds sets the "geo_bounds" field.
+func (u *TenderUpsert) SetGeoBounds(v [][]float64) *TenderUpsert {
+	u.Set(tender.FieldGeoBounds, v)
+	return u
+}
+
+// UpdateGeoBounds sets the "geo_bounds" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateGeoBounds() *TenderUpsert {
+	u.SetExcluded(tender.FieldGeoBounds)
+	return u
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (u *TenderUpsert) ClearGeoBounds() *TenderUpsert {
+	u.SetNull(tender.FieldGeoBounds)
 	return u
 }
 
@@ -2835,6 +2863,27 @@ func (u *TenderUpsertOne) UpdateGeoCoordinate() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearGeoCoordinate() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearGeoCoordinate()
+	})
+}
+
+// SetGeoBounds sets the "geo_bounds" field.
+func (u *TenderUpsertOne) SetGeoBounds(v [][]float64) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetGeoBounds(v)
+	})
+}
+
+// UpdateGeoBounds sets the "geo_bounds" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateGeoBounds() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateGeoBounds()
+	})
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (u *TenderUpsertOne) ClearGeoBounds() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearGeoBounds()
 	})
 }
 
@@ -4082,6 +4131,27 @@ func (u *TenderUpsertBulk) UpdateGeoCoordinate() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearGeoCoordinate() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearGeoCoordinate()
+	})
+}
+
+// SetGeoBounds sets the "geo_bounds" field.
+func (u *TenderUpsertBulk) SetGeoBounds(v [][]float64) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetGeoBounds(v)
+	})
+}
+
+// UpdateGeoBounds sets the "geo_bounds" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateGeoBounds() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateGeoBounds()
+	})
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (u *TenderUpsertBulk) ClearGeoBounds() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearGeoBounds()
 	})
 }
 

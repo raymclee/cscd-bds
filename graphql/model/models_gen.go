@@ -8,8 +8,11 @@ type GeoJSON struct {
 }
 
 type Session struct {
+	UserID    string `json:"userId"`
 	Name      string `json:"name"`
 	Username  string `json:"username"`
 	Email     string `json:"email"`
 	AvatarURL string `json:"avatarUrl"`
+	IsAdmin   bool   `json:"isAdmin"`
+	IsLeader  bool   `json:"isLeader"`
 }

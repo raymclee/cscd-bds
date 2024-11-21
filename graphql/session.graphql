@@ -1,8 +1,11 @@
 type Session {
+  userId: String!
   name: String!
   username: String!
   email: String!
   avatarUrl: String!
+  isAdmin: Boolean!
+  isLeader: Boolean!
 }
 
 extend type Query {

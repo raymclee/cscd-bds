@@ -6348,6 +6348,8 @@ type TenderMutation struct {
 	attachements                            *[]string
 	appendattachements                      []string
 	geo_coordinate                          **geo.GeoJson
+	geo_bounds                              *[][]float64
+	appendgeo_bounds                        [][]float64
 	remark                                  *string
 	images                                  *[]string
 	appendimages                            []string
@@ -7987,6 +7989,71 @@ func (m *TenderMutation) ResetGeoCoordinate() {
 	delete(m.clearedFields, tender.FieldGeoCoordinate)
 }
 
+// SetGeoBounds sets the "geo_bounds" field.
+func (m *TenderMutation) SetGeoBounds(f [][]float64) {
+	m.geo_bounds = &f
+	m.appendgeo_bounds = nil
+}
+
+// GeoBounds returns the value of the "geo_bounds" field in the mutation.
+func (m *TenderMutation) GeoBounds() (r [][]float64, exists bool) {
+	v := m.geo_bounds
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGeoBounds returns the old "geo_bounds" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldGeoBounds(ctx context.Context) (v [][]float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGeoBounds is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGeoBounds requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGeoBounds: %w", err)
+	}
+	return oldValue.GeoBounds, nil
+}
+
+// AppendGeoBounds adds f to the "geo_bounds" field.
+func (m *TenderMutation) AppendGeoBounds(f [][]float64) {
+	m.appendgeo_bounds = append(m.appendgeo_bounds, f...)
+}
+
+// AppendedGeoBounds returns the list of values that were appended to the "geo_bounds" field in this mutation.
+func (m *TenderMutation) AppendedGeoBounds() ([][]float64, bool) {
+	if len(m.appendgeo_bounds) == 0 {
+		return nil, false
+	}
+	return m.appendgeo_bounds, true
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (m *TenderMutation) ClearGeoBounds() {
+	m.geo_bounds = nil
+	m.appendgeo_bounds = nil
+	m.clearedFields[tender.FieldGeoBounds] = struct{}{}
+}
+
+// GeoBoundsCleared returns if the "geo_bounds" field was cleared in this mutation.
+func (m *TenderMutation) GeoBoundsCleared() bool {
+	_, ok := m.clearedFields[tender.FieldGeoBounds]
+	return ok
+}
+
+// ResetGeoBounds resets all changes to the "geo_bounds" field.
+func (m *TenderMutation) ResetGeoBounds() {
+	m.geo_bounds = nil
+	m.appendgeo_bounds = nil
+	delete(m.clearedFields, tender.FieldGeoBounds)
+}
+
 // SetRemark sets the "remark" field.
 func (m *TenderMutation) SetRemark(s string) {
 	m.remark = &s
@@ -9370,7 +9437,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 52)
+	fields := make([]string, 0, 53)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -9457,6 +9524,9 @@ func (m *TenderMutation) Fields() []string {
 	}
 	if m.geo_coordinate != nil {
 		fields = append(fields, tender.FieldGeoCoordinate)
+	}
+	if m.geo_bounds != nil {
+		fields = append(fields, tender.FieldGeoBounds)
 	}
 	if m.remark != nil {
 		fields = append(fields, tender.FieldRemark)
@@ -9593,6 +9663,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.Attachements()
 	case tender.FieldGeoCoordinate:
 		return m.GeoCoordinate()
+	case tender.FieldGeoBounds:
+		return m.GeoBounds()
 	case tender.FieldRemark:
 		return m.Remark()
 	case tender.FieldImages:
@@ -9706,6 +9778,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldAttachements(ctx)
 	case tender.FieldGeoCoordinate:
 		return m.OldGeoCoordinate(ctx)
+	case tender.FieldGeoBounds:
+		return m.OldGeoBounds(ctx)
 	case tender.FieldRemark:
 		return m.OldRemark(ctx)
 	case tender.FieldImages:
@@ -9963,6 +10037,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetGeoCoordinate(v)
+		return nil
+	case tender.FieldGeoBounds:
+		v, ok := value.([][]float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGeoBounds(v)
 		return nil
 	case tender.FieldRemark:
 		v, ok := value.(string)
@@ -10308,6 +10389,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldGeoCoordinate) {
 		fields = append(fields, tender.FieldGeoCoordinate)
 	}
+	if m.FieldCleared(tender.FieldGeoBounds) {
+		fields = append(fields, tender.FieldGeoBounds)
+	}
 	if m.FieldCleared(tender.FieldRemark) {
 		fields = append(fields, tender.FieldRemark)
 	}
@@ -10435,6 +10519,9 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldGeoCoordinate:
 		m.ClearGeoCoordinate()
+		return nil
+	case tender.FieldGeoBounds:
+		m.ClearGeoBounds()
 		return nil
 	case tender.FieldRemark:
 		m.ClearRemark()
@@ -10578,6 +10665,9 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldGeoCoordinate:
 		m.ResetGeoCoordinate()
+		return nil
+	case tender.FieldGeoBounds:
+		m.ResetGeoBounds()
 		return nil
 	case tender.FieldRemark:
 		m.ResetRemark()
@@ -10902,6 +10992,8 @@ type UserMutation struct {
 	open_id              *string
 	avatar_url           *string
 	disabled             *bool
+	is_admin             *bool
+	is_leader            *bool
 	clearedFields        map[string]struct{}
 	areas                map[xid.ID]struct{}
 	removedareas         map[xid.ID]struct{}
@@ -11317,6 +11409,78 @@ func (m *UserMutation) ResetDisabled() {
 	m.disabled = nil
 }
 
+// SetIsAdmin sets the "is_admin" field.
+func (m *UserMutation) SetIsAdmin(b bool) {
+	m.is_admin = &b
+}
+
+// IsAdmin returns the value of the "is_admin" field in the mutation.
+func (m *UserMutation) IsAdmin() (r bool, exists bool) {
+	v := m.is_admin
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsAdmin returns the old "is_admin" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsAdmin(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsAdmin is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsAdmin requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsAdmin: %w", err)
+	}
+	return oldValue.IsAdmin, nil
+}
+
+// ResetIsAdmin resets all changes to the "is_admin" field.
+func (m *UserMutation) ResetIsAdmin() {
+	m.is_admin = nil
+}
+
+// SetIsLeader sets the "is_leader" field.
+func (m *UserMutation) SetIsLeader(b bool) {
+	m.is_leader = &b
+}
+
+// IsLeader returns the value of the "is_leader" field in the mutation.
+func (m *UserMutation) IsLeader() (r bool, exists bool) {
+	v := m.is_leader
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsLeader returns the old "is_leader" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsLeader(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsLeader is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsLeader requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsLeader: %w", err)
+	}
+	return oldValue.IsLeader, nil
+}
+
+// ResetIsLeader resets all changes to the "is_leader" field.
+func (m *UserMutation) ResetIsLeader() {
+	m.is_leader = nil
+}
+
 // SetLeaderID sets the "leader_id" field.
 func (m *UserMutation) SetLeaderID(x xid.ID) {
 	m.leader = &x
@@ -11697,7 +11861,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 11)
 	if m.created_at != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -11721,6 +11885,12 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.disabled != nil {
 		fields = append(fields, user.FieldDisabled)
+	}
+	if m.is_admin != nil {
+		fields = append(fields, user.FieldIsAdmin)
+	}
+	if m.is_leader != nil {
+		fields = append(fields, user.FieldIsLeader)
 	}
 	if m.leader != nil {
 		fields = append(fields, user.FieldLeaderID)
@@ -11749,6 +11919,10 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.AvatarURL()
 	case user.FieldDisabled:
 		return m.Disabled()
+	case user.FieldIsAdmin:
+		return m.IsAdmin()
+	case user.FieldIsLeader:
+		return m.IsLeader()
 	case user.FieldLeaderID:
 		return m.LeaderID()
 	}
@@ -11776,6 +11950,10 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldAvatarURL(ctx)
 	case user.FieldDisabled:
 		return m.OldDisabled(ctx)
+	case user.FieldIsAdmin:
+		return m.OldIsAdmin(ctx)
+	case user.FieldIsLeader:
+		return m.OldIsLeader(ctx)
 	case user.FieldLeaderID:
 		return m.OldLeaderID(ctx)
 	}
@@ -11842,6 +12020,20 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDisabled(v)
+		return nil
+	case user.FieldIsAdmin:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsAdmin(v)
+		return nil
+	case user.FieldIsLeader:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsLeader(v)
 		return nil
 	case user.FieldLeaderID:
 		v, ok := value.(xid.ID)
@@ -11931,6 +12123,12 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldDisabled:
 		m.ResetDisabled()
+		return nil
+	case user.FieldIsAdmin:
+		m.ResetIsAdmin()
+		return nil
+	case user.FieldIsLeader:
+		m.ResetIsLeader()
 		return nil
 	case user.FieldLeaderID:
 		m.ResetLeaderID()

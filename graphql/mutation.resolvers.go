@@ -31,6 +31,24 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id xid.ID, input ent.
 	return r.store.User.UpdateOneID(id).SetInput(input).Save(ctx)
 }
 
+// CreateTender is the resolver for the createTender field.
+func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.Tender, error) {
+	q := r.store.Tender.Create().SetInput(input)
+	if len(geoBounds) > 0 {
+		q.SetGeoBounds(geoBounds)
+	}
+	return q.Save(ctx)
+}
+
+// UpdateTender is the resolver for the updateTender field.
+func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error) {
+	q := r.store.Tender.UpdateOneID(id).SetInput(input)
+	if len(geoBounds) > 0 {
+		q.SetGeoBounds(geoBounds)
+	}
+	return q.Save(ctx)
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

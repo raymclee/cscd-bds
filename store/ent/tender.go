@@ -84,6 +84,8 @@ type Tender struct {
 	Attachements []string `json:"attachements,omitempty"`
 	// GeoCoordinate holds the value of the "geo_coordinate" field.
 	GeoCoordinate *geo.GeoJson `json:"geo_coordinate,omitempty"`
+	// GeoBounds holds the value of the "geo_bounds" field.
+	GeoBounds [][]float64 `json:"geo_bounds,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// Images holds the value of the "images" field.
@@ -270,7 +272,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
 		case tender.FieldCityID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
-		case tender.FieldAttachements, tender.FieldImages:
+		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
 		case tender.FieldPrepareToBid, tender.FieldKeyProject:
 			values[i] = new(sql.NullBool)
@@ -498,6 +500,14 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field geo_coordinate", values[i])
 			} else if value.Valid {
 				t.GeoCoordinate = value.S.(*geo.GeoJson)
+			}
+		case tender.FieldGeoBounds:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field geo_bounds", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &t.GeoBounds); err != nil {
+					return fmt.Errorf("unmarshal field geo_bounds: %w", err)
+				}
 			}
 		case tender.FieldRemark:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -858,6 +868,9 @@ func (t *Tender) String() string {
 		builder.WriteString("geo_coordinate=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
+	builder.WriteString(", ")
+	builder.WriteString("geo_bounds=")
+	builder.WriteString(fmt.Sprintf("%v", t.GeoBounds))
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(t.Remark)

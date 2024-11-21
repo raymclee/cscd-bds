@@ -1942,6 +1942,16 @@ func GeoCoordinateNotNil() predicate.Tender {
 	return predicate.Tender(sql.FieldNotNull(FieldGeoCoordinate))
 }
 
+// GeoBoundsIsNil applies the IsNil predicate on the "geo_bounds" field.
+func GeoBoundsIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldGeoBounds))
+}
+
+// GeoBoundsNotNil applies the NotNil predicate on the "geo_bounds" field.
+func GeoBoundsNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldGeoBounds))
+}
+
 // RemarkEQ applies the EQ predicate on the "remark" field.
 func RemarkEQ(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldRemark, v))
