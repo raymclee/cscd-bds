@@ -103,6 +103,6 @@ export function tenderStatusBoundColor(tender: Partial<Tender>): string {
     case 3:
       return "#f54a45";
     default:
-      return "#646a73";
+      return "#000";
   }
 }
