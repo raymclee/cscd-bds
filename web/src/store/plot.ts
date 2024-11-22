@@ -76,7 +76,7 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
       const { polygonEditor } = get();
       polygonEditor?.setTarget(polygon);
       polygonEditor?.open();
-      usePlotStore.setState({ selectedPlot: plot?.id, isEditing: true });
+      set({ selectedPlot: plot?.id, isEditing: true });
     });
 
     polygon.on("rightclick", (e) => {
