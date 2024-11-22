@@ -1,9 +1,8 @@
-import { create } from "zustand";
-import { Plot } from "~/graphql/graphql";
-import { useMapStore } from "./map";
-import { UseMutationConfig } from "react-relay";
 import { plotsDeletePlotMutation } from "__generated__/plotsDeletePlotMutation.graphql";
 import { Modal } from "antd";
+import { UseMutationConfig } from "react-relay";
+import { create } from "zustand";
+import { useMapStore } from "./map";
 
 type State = {
   isAdding: boolean;

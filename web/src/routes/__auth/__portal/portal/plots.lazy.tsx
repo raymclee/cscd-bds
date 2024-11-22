@@ -10,7 +10,6 @@ import {
   Form,
   Input,
   Modal,
-  Popconfirm,
   Radio,
   TreeSelect,
   Typography,
@@ -19,7 +18,6 @@ import { DataNode } from "antd/es/tree";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
-import { create } from "zustand";
 import { useMapStore } from "~/store/map";
 import { usePlotStore } from "~/store/plot";
 
@@ -144,7 +142,6 @@ function EditorContainer() {
   const selectedDistrict = usePlotStore((state) => state.selectedDistrict);
   const [commitMutation, isMutationInFlight] =
     useMutation<plotsDeletePlotMutation>(deletePlotMutation);
-  const { modal } = App.useApp();
   const createPlot = usePlotStore((state) => state.createPlot);
 
   const treeData: DataNode[] | undefined = React.useMemo(
@@ -159,6 +156,7 @@ function EditorContainer() {
               value: c!.id,
               key: c!.id,
               adcode: c?.adcode,
+              disabled: true,
               children: c.districts?.map((d) => ({
                 title: d?.name,
                 value: d!.id,
@@ -226,7 +224,6 @@ type Values = {
 };
 
 function Editor() {
-  const map = useMapStore((state) => state.map);
   const polygonEditor = usePlotStore((state) => state.polygonEditor);
   const isAdding = usePlotStore((state) => state.isAdding);
   const isEditing = usePlotStore((state) => state.isEditing);

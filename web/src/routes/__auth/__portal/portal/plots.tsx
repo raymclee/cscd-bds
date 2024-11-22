@@ -1,8 +1,7 @@
-import * as React from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { loadQuery } from "react-relay";
-import node, { plotsPageQuery } from "__generated__/plotsPageQuery.graphql";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import { createFileRoute } from "@tanstack/react-router";
+import node, { plotsPageQuery } from "__generated__/plotsPageQuery.graphql";
+import { loadQuery } from "react-relay";
 
 export const Route = createFileRoute("/__auth/__portal/portal/plots")({
   async loader({ context }) {
