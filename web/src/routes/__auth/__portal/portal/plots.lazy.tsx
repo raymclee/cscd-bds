@@ -79,6 +79,7 @@ const createPlotMutation = graphql`
       id
       name
       geoBounds
+      colorHex
     }
   }
 `;
@@ -93,6 +94,7 @@ const updatePlotMutation = graphql`
       id
       name
       geoBounds
+      colorHex
     }
   }
 `;
@@ -109,11 +111,6 @@ function RouteComponent() {
   const map = useMapStore((state) => state.map);
   const initMap = useMapStore((state) => state.initMap);
   const [isReady, setIsReady] = React.useState(false);
-  const data = usePreloadedQuery<plotsPageQuery>(query, Route.useLoaderData());
-  const [commitMutation, isMutationInFlight] =
-    useMutation<plotsDeletePlotMutation>(deletePlotMutation);
-  const setPolygonEditor = usePlotStore((state) => state.setPolygonEditor);
-  const { modal } = App.useApp();
 
   React.useEffect(() => {
     initMap("map", {});
@@ -123,56 +120,7 @@ function RouteComponent() {
     map?.on("complete", () => {
       setIsReady(true);
       map.addLayer(new AMap.TileLayer.Satellite());
-      setPolygonEditor(new AMap.PolygonEditor(map));
-
-      for (const plot of data.plots?.edges?.map((e) => e?.node) || []) {
-        const polygon = new AMap.Polygon();
-
-        polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
-        polygon.setOptions({
-          fillColor: plot?.colorHex,
-          fillOpacity: 0.35,
-          strokeColor: plot?.colorHex,
-          strokeWeight: 2,
-        });
-
-        // @ts-expect-error
-        const label = new AMapUI.SimpleMarker({
-          // @ts-expect-error
-          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-          label: {
-            content: `
-                <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                  <div class="font-medium text-center text-sm text-wrap">${plot?.name}</div>
-                </div>
-                `,
-            offset: new AMap.Pixel(-100, 30),
-          },
-          map,
-          position: polygon.getBounds()?.getCenter(),
-        });
-
-        polygon.on("dblclick", (e) => {
-          usePlotStore.getState().polygonEditor?.setTarget(polygon);
-          usePlotStore.getState().polygonEditor?.open();
-          usePlotStore.setState({ selectedPlot: plot?.id, isEditing: true });
-        });
-
-        polygon.on("rightclick", (e) => {
-          if (!plot?.id) return;
-          // usePlotStore.setState({ deletingPlot: plot?.id });
-          modal.confirm({
-            title: "確認刪除",
-            content: "確認刪除地塊？",
-            onOk: () => {
-              polygon.remove();
-              label.remove();
-              commitMutation({ variables: { id: plot?.id } });
-            },
-          });
-        });
-        polygon.setMap(map);
-      }
+      usePlotStore.setState({ polygonEditor: new AMap.PolygonEditor(map) });
     });
 
     return () => {
@@ -193,9 +141,11 @@ function EditorContainer() {
   const map = useMapStore((state) => state.map);
   const districtExplorer = useMapStore((state) => state.districtExplorer);
   const provinces = data.node?.areas?.flatMap((area) => area.provinces);
-  const navigate = Route.useNavigate();
-  const search = Route.useSearch();
   const selectedDistrict = usePlotStore((state) => state.selectedDistrict);
+  const [commitMutation, isMutationInFlight] =
+    useMutation<plotsDeletePlotMutation>(deletePlotMutation);
+  const { modal } = App.useApp();
+  const createPlot = usePlotStore((state) => state.createPlot);
 
   const treeData: DataNode[] | undefined = React.useMemo(
     () =>
@@ -225,6 +175,13 @@ function EditorContainer() {
       })),
     [],
   );
+
+  React.useEffect(() => {
+    console.log("running");
+    for (const plot of data.plots?.edges?.map((e) => e?.node) || []) {
+      createPlot(plot, commitMutation);
+    }
+  }, []);
 
   return (
     <>
@@ -281,6 +238,9 @@ function Editor() {
     useMutation<plotsCreatePlotMutation>(createPlotMutation);
   const [commitUpdateMutation, isUpdateMutationInFlight] =
     useMutation<plotsUpdatePlotMutation>(updatePlotMutation);
+  const createPlot = usePlotStore((state) => state.createPlot);
+  const [commitDeleteMutation, isDeleteMutationInFlight] =
+    useMutation<plotsDeletePlotMutation>(deletePlotMutation);
 
   React.useEffect(() => {
     return () => {
@@ -293,6 +253,11 @@ function Editor() {
   }, []);
 
   function handleNewClick() {
+    if (!districtID) {
+      message.error("請選擇地區");
+      return;
+    }
+
     if (isEditing) {
       endAdding();
     } else {
@@ -302,12 +267,11 @@ function Editor() {
 
   function startAdding() {
     usePlotStore.setState({ isAdding: true, isEditing: false });
-    // polygonEditorRef.current?.setTarget(polygonRef.current);
     polygonEditor?.open();
   }
 
   function endAdding() {
-    polygonEditor?.setTarget(null);
+    polygonEditor?.getTarget()?.remove();
     polygonEditor?.close();
     usePlotStore.setState({
       isAdding: false,
@@ -321,8 +285,6 @@ function Editor() {
       <Modal
         open={open}
         title="請輸入地塊名稱"
-        okText="Create"
-        cancelText="Cancel"
         okButtonProps={{ autoFocus: true, htmlType: "submit" }}
         onCancel={() => setOpen(false)}
         destroyOnClose
@@ -331,7 +293,6 @@ function Editor() {
             layout="vertical"
             form={form}
             name="form_in_modal"
-            initialValues={{ modifier: "public" }}
             clearOnDestroy
             onFinish={(values) => {
               if (!districtID) {
@@ -360,33 +321,34 @@ function Editor() {
                 onCompleted: (res) => {
                   endAdding();
                   message.success("地塊新增成功");
-                  const polygon = new AMap.Polygon();
-                  polygon.setPath(
-                    res.createPlot.geoBounds as AMap.LngLatLike[],
-                  );
-                  polygon.setOptions({
-                    fillColor: values.colorHex,
-                    fillOpacity: 0.35,
-                    strokeColor: values.colorHex,
-                    strokeWeight: 2,
-                  });
-                  polygon.setMap(map);
-                  // @ts-expect-error
-                  const label = new AMapUI.SimpleMarker({
-                    iconStyle:
-                      // @ts-expect-error
-                      AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-                    label: {
-                      content: `
-                        <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                          <div class="font-medium text-center text-sm text-wrap">${values?.name}</div>
-                        </div>
-                        `,
-                      offset: new AMap.Pixel(-100, 30),
-                    },
-                    map,
-                    position: polygon.getBounds()?.getCenter(),
-                  });
+                  createPlot(res.createPlot, commitDeleteMutation);
+                  // const polygon = new AMap.Polygon();
+                  // polygon.setPath(
+                  //   res.createPlot.geoBounds as AMap.LngLatLike[],
+                  // );
+                  // polygon.setOptions({
+                  //   fillColor: values.colorHex,
+                  //   fillOpacity: 0.35,
+                  //   strokeColor: values.colorHex,
+                  //   strokeWeight: 2,
+                  // });
+                  // polygon.setMap(map);
+                  // // @ts-expect-error
+                  // const label = new AMapUI.SimpleMarker({
+                  //   iconStyle:
+                  //     // @ts-expect-error
+                  //     AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+                  //   label: {
+                  //     content: `
+                  //       <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                  //         <div class="font-medium text-center text-sm text-wrap">${values?.name}</div>
+                  //       </div>
+                  //       `,
+                  //     offset: new AMap.Pixel(-100, 30),
+                  //   },
+                  //   map,
+                  //   position: polygon.getBounds()?.getCenter(),
+                  // });
 
                   setOpen(false);
                 },
@@ -404,10 +366,15 @@ function Editor() {
           </Form>
         )}
       >
-        <Form.Item className="mt-6" name="name" label="名稱" required>
+        <Form.Item
+          className="mt-6"
+          name="name"
+          label="名稱"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item label="顏色" name="colorHex" required>
+        <Form.Item label="顏色" name="colorHex" rules={[{ required: true }]}>
           <Radio.Group>
             <Radio.Button value="#ffc60a" type="primary">
               黃色
@@ -416,78 +383,84 @@ function Editor() {
           </Radio.Group>
         </Form.Item>
       </Modal>
-      {districtID && (
-        <div className="absolute right-4 top-4 flex gap-2">
-          {isAdding && (
-            <>
-              <Button
-                icon={<SaveOutlined />}
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                存储
-              </Button>
-              <Button
-                danger
-                onClick={endAdding}
-                disabled={isMutationInFlight}
-                icon={<StopOutlined />}
-              >
-                取消
-              </Button>
-            </>
-          )}
 
-          {!isEditing && !isAdding && (
-            <Button onClick={handleNewClick} icon={<PlusOutlined />}>
-              新增
+      <div className="absolute right-4 top-4 flex gap-2">
+        {isAdding && (
+          <>
+            <Button
+              icon={<SaveOutlined />}
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              存储
             </Button>
-          )}
+            <Button
+              danger
+              onClick={endAdding}
+              disabled={isMutationInFlight}
+              icon={<StopOutlined />}
+            >
+              取消
+            </Button>
+          </>
+        )}
 
-          {isEditing && (
-            <>
-              <Button
-                icon={<SaveOutlined />}
-                onClick={async () => {
-                  const { polygonEditor, selectedPlot } =
-                    usePlotStore.getState();
-                  const geoBounds = polygonEditor
-                    ?.getTarget()
-                    ?.getPath()
-                    ?.map((item: any) => [item.lng, item.lat]);
-                  commitUpdateMutation({
-                    variables: {
-                      id: selectedPlot!,
-                      input: {},
-                      geoBounds,
-                    },
-                    onCompleted: () => {
-                      usePlotStore.setState({
-                        selectedPlot: null,
-                        isEditing: false,
-                      });
-                      usePlotStore.getState().polygonEditor?.setTarget(null);
-                      usePlotStore.getState().polygonEditor?.close();
-                      message.success("地塊更新成功");
-                    },
-                  });
-                }}
-              >
-                存储
-              </Button>
-              <Button
-                danger
-                onClick={endAdding}
-                disabled={isMutationInFlight}
-                icon={<StopOutlined />}
-              >
-                取消
-              </Button>
-            </>
-          )}
-        </div>
-      )}
+        {!isEditing && !isAdding && (
+          <Button onClick={handleNewClick} icon={<PlusOutlined />}>
+            新增
+          </Button>
+        )}
+
+        {isEditing && (
+          <>
+            <Button
+              icon={<SaveOutlined />}
+              onClick={async () => {
+                const { polygonEditor, selectedPlot } = usePlotStore.getState();
+                const geoBounds = polygonEditor
+                  ?.getTarget()
+                  ?.getPath()
+                  ?.map((item: any) => [item.lng, item.lat]);
+                commitUpdateMutation({
+                  variables: {
+                    id: selectedPlot!,
+                    input: {},
+                    geoBounds,
+                  },
+                  onCompleted: () => {
+                    usePlotStore.setState({
+                      selectedPlot: null,
+                      isEditing: false,
+                    });
+                    usePlotStore.getState().polygonEditor?.setTarget(null);
+                    usePlotStore.getState().polygonEditor?.close();
+                    message.success("地塊更新成功");
+                  },
+                });
+              }}
+            >
+              存储
+            </Button>
+            <Button
+              danger
+              onClick={() => {
+                usePlotStore.getState().polygonEditor?.setTarget(null);
+                usePlotStore.setState({
+                  selectedPlot: null,
+                  isEditing: false,
+                });
+              }}
+              disabled={isMutationInFlight}
+              icon={<StopOutlined />}
+            >
+              取消
+            </Button>
+          </>
+        )}
+      </div>
     </>
   );
 }
+
+function createPlot() {}

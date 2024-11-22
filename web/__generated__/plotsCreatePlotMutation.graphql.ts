@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ddb87e3a79bbc85fdd411e70f6858b6b>>
+ * @generated SignedSource<<e86ea20a853bf091cb40bc28cc1fa176>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -22,6 +22,7 @@ export type plotsCreatePlotMutation$variables = {
 };
 export type plotsCreatePlotMutation$data = {
   readonly createPlot: {
+    readonly colorHex: string;
     readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
     readonly id: string;
     readonly name: string;
@@ -83,6 +84,13 @@ v2 = [
         "kind": "ScalarField",
         "name": "geoBounds",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "colorHex",
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -112,16 +120,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "811ebecd56efb741b413b6fca37ed9ed",
+    "cacheID": "da6ef2de7090efebb78e7111f460f7b2",
     "id": null,
     "metadata": {},
     "name": "plotsCreatePlotMutation",
     "operationKind": "mutation",
-    "text": "mutation plotsCreatePlotMutation(\n  $input: CreatePlotInput!\n  $geoBounds: [[Float!]!]\n) {\n  createPlot(input: $input, geoBounds: $geoBounds) {\n    id\n    name\n    geoBounds\n  }\n}\n"
+    "text": "mutation plotsCreatePlotMutation(\n  $input: CreatePlotInput!\n  $geoBounds: [[Float!]!]\n) {\n  createPlot(input: $input, geoBounds: $geoBounds) {\n    id\n    name\n    geoBounds\n    colorHex\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6588423d908db49cfd4c54320ecf9d73";
+(node as any).hash = "fbbaacda7cd3fc4beb2c2ec892342693";
 
 export default node;
