@@ -176,6 +176,26 @@ func (d *District) Tenders(ctx context.Context) (result []*Tender, err error) {
 	return result, err
 }
 
+func (d *District) Plots(ctx context.Context) (result []*Plot, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = d.NamedPlots(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = d.Edges.PlotsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = d.QueryPlots().All(ctx)
+	}
+	return result, err
+}
+
+func (pl *Plot) District(ctx context.Context) (*District, error) {
+	result, err := pl.Edges.DistrictOrErr()
+	if IsNotLoaded(err) {
+		result, err = pl.QueryDistrict().Only(ctx)
+	}
+	return result, err
+}
+
 func (pr *Province) Districts(ctx context.Context) (result []*District, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = pr.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)

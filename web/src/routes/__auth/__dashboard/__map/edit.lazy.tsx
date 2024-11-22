@@ -2,7 +2,7 @@ import * as React from 'react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useMapStore } from '~/store/map'
 
-export const Route = createLazyFileRoute('/__auth/__map/edit')({
+export const Route = createLazyFileRoute('/__auth/__dashboard/__map/edit')({
   component: RouteComponent,
 })
 

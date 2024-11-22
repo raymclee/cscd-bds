@@ -626,6 +626,29 @@ func HasTendersWith(preds ...predicate.Tender) predicate.District {
 	})
 }
 
+// HasPlots applies the HasEdge predicate on the "plots" edge.
+func HasPlots() predicate.District {
+	return predicate.District(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PlotsTable, PlotsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPlotsWith applies the HasEdge predicate on the "plots" edge with a given conditions (other predicates).
+func HasPlotsWith(preds ...predicate.Plot) predicate.District {
+	return predicate.District(func(s *sql.Selector) {
+		step := newPlotsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.District) predicate.District {
 	return predicate.District(sql.AndPredicates(predicates...))

@@ -231,6 +231,30 @@ func (f DistrictMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutati
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.DistrictMutation", m)
 }
 
+// The PlotQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type PlotQueryRuleFunc func(context.Context, *ent.PlotQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f PlotQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PlotQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PlotQuery", q)
+}
+
+// The PlotMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type PlotMutationRuleFunc func(context.Context, *ent.PlotMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f PlotMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PlotMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlotMutation", m)
+}
+
 // The ProvinceQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type ProvinceQueryRuleFunc func(context.Context, *ent.ProvinceQuery) error
@@ -372,6 +396,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.DistrictQuery:
 		return q.Filter(), nil
+	case *ent.PlotQuery:
+		return q.Filter(), nil
 	case *ent.ProvinceQuery:
 		return q.Filter(), nil
 	case *ent.TenderQuery:
@@ -396,6 +422,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.CustomerMutation:
 		return m.Filter(), nil
 	case *ent.DistrictMutation:
+		return m.Filter(), nil
+	case *ent.PlotMutation:
 		return m.Filter(), nil
 	case *ent.ProvinceMutation:
 		return m.Filter(), nil

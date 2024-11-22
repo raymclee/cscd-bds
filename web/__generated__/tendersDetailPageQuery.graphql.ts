@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5a2172868bd9466b5b35c624219273e9>>
+ * @generated SignedSource<<368b4aae0caaa6fdf58a86b38918b0be>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,11 @@ export type tendersDetailPageQuery$variables = {
 };
 export type tendersDetailPageQuery$data = {
   readonly node: {
+    readonly geoBounds?: ReadonlyArray<ReadonlyArray<number | null | undefined> | null | undefined> | null | undefined;
+    readonly geoCoordinate?: {
+      readonly coordinates: ReadonlyArray<number>;
+    } | null | undefined;
+    readonly id?: string;
     readonly name?: string;
   } | null | undefined;
 };
@@ -38,18 +43,43 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "InlineFragment",
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "GeoJson",
+  "kind": "LinkedField",
+  "name": "geoCoordinate",
+  "plural": false,
   "selections": [
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "name",
+      "name": "coordinates",
       "storageKey": null
     }
   ],
-  "type": "Tender",
-  "abstractKey": null
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "geoBounds",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -66,7 +96,17 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v2/*: any*/)
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              (v5/*: any*/)
+            ],
+            "type": "Tender",
+            "abstractKey": null
+          }
         ],
         "storageKey": null
       }
@@ -97,11 +137,14 @@ return {
           },
           (v2/*: any*/),
           {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
+            "kind": "InlineFragment",
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
+              (v5/*: any*/)
+            ],
+            "type": "Tender",
+            "abstractKey": null
           }
         ],
         "storageKey": null
@@ -109,16 +152,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9ada44dc9036e1507ed0eba8d42661c2",
+    "cacheID": "1094dc1b3868376f3b063a9c5e77d508",
     "id": null,
     "metadata": {},
     "name": "tendersDetailPageQuery",
     "operationKind": "query",
-    "text": "query tendersDetailPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      name\n    }\n    id\n  }\n}\n"
+    "text": "query tendersDetailPageQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      geoCoordinate {\n        coordinates\n      }\n      geoBounds\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "53e64d7f89a8708652917e1a73c8261e";
+(node as any).hash = "0fded266ad945022047b4fd6e709159e";
 
 export default node;

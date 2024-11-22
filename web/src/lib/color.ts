@@ -1,3 +1,5 @@
+import { Tender } from "~/graphql/graphql";
+
 export const colors = [
   "#3366cc",
   "#dc3912",
@@ -87,4 +89,17 @@ export function getDistrictColor(code: number, i?: number): string {
   }
 
   return fillColor;
+}
+
+export function tenderStatusBoundColor(tender: Partial<Tender>): string {
+  switch (tender.status) {
+    case 1:
+    case 4:
+    case 6:
+      return "#35bd4b";
+    case 3:
+      return "#f54a45";
+    default:
+      return "#646a73";
+  }
 }

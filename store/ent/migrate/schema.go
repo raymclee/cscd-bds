@@ -140,6 +140,30 @@ var (
 			},
 		},
 	}
+	// PlotsColumns holds the columns for the "plots" table.
+	PlotsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString},
+		{Name: "color_hex", Type: field.TypeString},
+		{Name: "geo_bounds", Type: field.TypeJSON, Nullable: true},
+		{Name: "district_id", Type: field.TypeString},
+	}
+	// PlotsTable holds the schema information for the "plots" table.
+	PlotsTable = &schema.Table{
+		Name:       "plots",
+		Columns:    PlotsColumns,
+		PrimaryKey: []*schema.Column{PlotsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "plots_districts_plots",
+				Columns:    []*schema.Column{PlotsColumns[6]},
+				RefColumns: []*schema.Column{DistrictsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
 	// ProvincesColumns holds the columns for the "provinces" table.
 	ProvincesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
@@ -422,6 +446,7 @@ var (
 		CountriesTable,
 		CustomersTable,
 		DistrictsTable,
+		PlotsTable,
 		ProvincesTable,
 		TendersTable,
 		UsersTable,
@@ -439,6 +464,7 @@ func init() {
 	CustomersTable.ForeignKeys[2].RefTable = UsersTable
 	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
+	PlotsTable.ForeignKeys[0].RefTable = DistrictsTable
 	ProvincesTable.ForeignKeys[0].RefTable = AreasTable
 	ProvincesTable.ForeignKeys[1].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable

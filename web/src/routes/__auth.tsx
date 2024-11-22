@@ -11,6 +11,8 @@ graphql`
       username
       email
       avatarUrl
+      isAdmin
+      isLeader
     }
   }
 `;
@@ -30,6 +32,9 @@ export const Route = createFileRoute("/__auth")({
         params: { search: location.pathname },
       });
     }
+    // if (!data.session.isAdmin && !data.session.isLeader) {
+    //   throw redirect({ to: "/portal/tenders" });
+    // }
     return { session: data.session };
   },
   onError(error) {

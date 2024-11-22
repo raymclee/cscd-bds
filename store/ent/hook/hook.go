@@ -68,6 +68,18 @@ func (f DistrictFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DistrictMutation", m)
 }
 
+// The PlotFunc type is an adapter to allow the use of ordinary
+// function as Plot mutator.
+type PlotFunc func(context.Context, *ent.PlotMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PlotFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.PlotMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlotMutation", m)
+}
+
 // The ProvinceFunc type is an adapter to allow the use of ordinary
 // function as Province mutator.
 type ProvinceFunc func(context.Context, *ent.ProvinceMutation) (ent.Value, error)

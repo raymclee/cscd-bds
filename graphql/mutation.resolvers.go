@@ -9,6 +9,7 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
+	"fmt"
 )
 
 // CreateArea is the resolver for the createArea field.
@@ -45,8 +46,38 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	q := r.store.Tender.UpdateOneID(id).SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
+	} else {
+		q.ClearGeoBounds()
 	}
 	return q.Save(ctx)
+}
+
+// CreatePlot is the resolver for the createPlot field.
+func (r *mutationResolver) CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.Plot, error) {
+	return r.store.Plot.Create().SetInput(input).SetGeoBounds(geoBounds).Save(ctx)
+}
+
+// UpdatePlot is the resolver for the updatePlot field.
+func (r *mutationResolver) UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error) {
+	q := r.store.Plot.UpdateOneID(id).SetInput(input)
+	if len(geoBounds) > 0 {
+		q.SetGeoBounds(geoBounds)
+	} else {
+		q.ClearGeoBounds()
+	}
+	return q.Save(ctx)
+}
+
+// DeletePlot is the resolver for the deletePlot field.
+func (r *mutationResolver) DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot, error) {
+	p, err := r.store.Plot.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get plot: %w", err)
+	}
+	if err := r.store.Plot.DeleteOne(p).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to delete plot: %w", err)
+	}
+	return p, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

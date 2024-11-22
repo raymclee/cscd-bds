@@ -1,6 +1,5 @@
-import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { RelayEnvironmentProvider } from "react-relay";
+import ReactDOM from "react-dom/client";
 import { RelayEnvironment } from "~/lib/relay";
 
 import { routeTree } from "./routeTree.gen";

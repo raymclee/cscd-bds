@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -30,9 +31,11 @@ type DistrictQuery struct {
 	withProvince     *ProvinceQuery
 	withCity         *CityQuery
 	withTenders      *TenderQuery
+	withPlots        *PlotQuery
 	modifiers        []func(*sql.Selector)
 	loadTotal        []func(context.Context, []*District) error
 	withNamedTenders map[string]*TenderQuery
+	withNamedPlots   map[string]*PlotQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -128,6 +131,28 @@ func (dq *DistrictQuery) QueryTenders() *TenderQuery {
 			sqlgraph.From(district.Table, district.FieldID, selector),
 			sqlgraph.To(tender.Table, tender.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, district.TendersTable, district.TendersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPlots chains the current query on the "plots" edge.
+func (dq *DistrictQuery) QueryPlots() *PlotQuery {
+	query := (&PlotClient{config: dq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := dq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := dq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(district.Table, district.FieldID, selector),
+			sqlgraph.To(plot.Table, plot.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, district.PlotsTable, district.PlotsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
@@ -330,6 +355,7 @@ func (dq *DistrictQuery) Clone() *DistrictQuery {
 		withProvince: dq.withProvince.Clone(),
 		withCity:     dq.withCity.Clone(),
 		withTenders:  dq.withTenders.Clone(),
+		withPlots:    dq.withPlots.Clone(),
 		// clone intermediate query.
 		sql:  dq.sql.Clone(),
 		path: dq.path,
@@ -366,6 +392,17 @@ func (dq *DistrictQuery) WithTenders(opts ...func(*TenderQuery)) *DistrictQuery 
 		opt(query)
 	}
 	dq.withTenders = query
+	return dq
+}
+
+// WithPlots tells the query-builder to eager-load the nodes that are connected to
+// the "plots" edge. The optional arguments are used to configure the query builder of the edge.
+func (dq *DistrictQuery) WithPlots(opts ...func(*PlotQuery)) *DistrictQuery {
+	query := (&PlotClient{config: dq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	dq.withPlots = query
 	return dq
 }
 
@@ -447,10 +484,11 @@ func (dq *DistrictQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Dis
 	var (
 		nodes       = []*District{}
 		_spec       = dq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			dq.withProvince != nil,
 			dq.withCity != nil,
 			dq.withTenders != nil,
+			dq.withPlots != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -493,10 +531,24 @@ func (dq *DistrictQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Dis
 			return nil, err
 		}
 	}
+	if query := dq.withPlots; query != nil {
+		if err := dq.loadPlots(ctx, query, nodes,
+			func(n *District) { n.Edges.Plots = []*Plot{} },
+			func(n *District, e *Plot) { n.Edges.Plots = append(n.Edges.Plots, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range dq.withNamedTenders {
 		if err := dq.loadTenders(ctx, query, nodes,
 			func(n *District) { n.appendNamedTenders(name) },
 			func(n *District, e *Tender) { n.appendNamedTenders(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range dq.withNamedPlots {
+		if err := dq.loadPlots(ctx, query, nodes,
+			func(n *District) { n.appendNamedPlots(name) },
+			func(n *District, e *Plot) { n.appendNamedPlots(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -584,6 +636,36 @@ func (dq *DistrictQuery) loadTenders(ctx context.Context, query *TenderQuery, no
 	}
 	query.Where(predicate.Tender(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(district.TendersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.DistrictID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "district_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (dq *DistrictQuery) loadPlots(ctx context.Context, query *PlotQuery, nodes []*District, init func(*District), assign func(*District, *Plot)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*District)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(plot.FieldDistrictID)
+	}
+	query.Where(predicate.Plot(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(district.PlotsColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
@@ -701,6 +783,20 @@ func (dq *DistrictQuery) WithNamedTenders(name string, opts ...func(*TenderQuery
 		dq.withNamedTenders = make(map[string]*TenderQuery)
 	}
 	dq.withNamedTenders[name] = query
+	return dq
+}
+
+// WithNamedPlots tells the query-builder to eager-load the nodes that are connected to the "plots"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (dq *DistrictQuery) WithNamedPlots(name string, opts ...func(*PlotQuery)) *DistrictQuery {
+	query := (&PlotClient{config: dq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if dq.withNamedPlots == nil {
+		dq.withNamedPlots = make(map[string]*PlotQuery)
+	}
+	dq.withNamedPlots[name] = query
 	return dq
 }
 

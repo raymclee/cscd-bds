@@ -18,6 +18,30 @@ export function ownerType(typ: Maybe<number> | undefined): string {
   }
 }
 
+export function tenderStatus(status: Maybe<number> | undefined): string {
+  if (!status) {
+    return "";
+  }
+  switch (status) {
+    case 1:
+      return "跟进中";
+    case 2:
+      return "停止跟进";
+    case 3:
+      return "中标";
+    case 4:
+      return "失标";
+    case 5:
+      return "估价";
+    case 6:
+      return "已交标";
+    case 7:
+      return "数据作废";
+    default:
+      return "";
+  }
+}
+
 export function fixAmount(amount: Maybe<number> | undefined): number {
   if (!amount) {
     return 0;

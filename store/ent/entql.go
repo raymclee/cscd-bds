@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
@@ -22,7 +23,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 9)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 10)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -130,6 +131,25 @@ var schemaGraph = func() *sqlgraph.Schema {
 	}
 	graph.Nodes[5] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
+			Table:   plot.Table,
+			Columns: plot.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: plot.FieldID,
+			},
+		},
+		Type: "Plot",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			plot.FieldCreatedAt:  {Type: field.TypeTime, Column: plot.FieldCreatedAt},
+			plot.FieldUpdatedAt:  {Type: field.TypeTime, Column: plot.FieldUpdatedAt},
+			plot.FieldName:       {Type: field.TypeString, Column: plot.FieldName},
+			plot.FieldColorHex:   {Type: field.TypeString, Column: plot.FieldColorHex},
+			plot.FieldGeoBounds:  {Type: field.TypeJSON, Column: plot.FieldGeoBounds},
+			plot.FieldDistrictID: {Type: field.TypeString, Column: plot.FieldDistrictID},
+		},
+	}
+	graph.Nodes[6] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
 			Table:   province.Table,
 			Columns: province.Columns,
 			ID: &sqlgraph.FieldSpec{
@@ -148,7 +168,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			province.FieldAreaID:    {Type: field.TypeString, Column: province.FieldAreaID},
 		},
 	}
-	graph.Nodes[6] = &sqlgraph.Node{
+	graph.Nodes[7] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tender.Table,
 			Columns: tender.Columns,
@@ -214,7 +234,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
 		},
 	}
-	graph.Nodes[7] = &sqlgraph.Node{
+	graph.Nodes[8] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -238,7 +258,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:  {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
-	graph.Nodes[8] = &sqlgraph.Node{
+	graph.Nodes[9] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   visitrecord.Table,
 			Columns: visitrecord.Columns,
@@ -451,6 +471,30 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"District",
 		"Tender",
+	)
+	graph.MustAddE(
+		"plots",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+		},
+		"District",
+		"Plot",
+	)
+	graph.MustAddE(
+		"district",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   plot.DistrictTable,
+			Columns: []string{plot.DistrictColumn},
+			Bidi:    false,
+		},
+		"Plot",
+		"District",
 	)
 	graph.MustAddE(
 		"districts",
@@ -1361,6 +1405,104 @@ func (f *DistrictFilter) WhereHasTendersWith(preds ...predicate.Tender) {
 	})))
 }
 
+// WhereHasPlots applies a predicate to check if query has an edge plots.
+func (f *DistrictFilter) WhereHasPlots() {
+	f.Where(entql.HasEdge("plots"))
+}
+
+// WhereHasPlotsWith applies a predicate to check if query has an edge plots with a given conditions (other predicates).
+func (f *DistrictFilter) WhereHasPlotsWith(preds ...predicate.Plot) {
+	f.Where(entql.HasEdgeWith("plots", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (pq *PlotQuery) addPredicate(pred func(s *sql.Selector)) {
+	pq.predicates = append(pq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the PlotQuery builder.
+func (pq *PlotQuery) Filter() *PlotFilter {
+	return &PlotFilter{config: pq.config, predicateAdder: pq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *PlotMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the PlotMutation builder.
+func (m *PlotMutation) Filter() *PlotFilter {
+	return &PlotFilter{config: m.config, predicateAdder: m}
+}
+
+// PlotFilter provides a generic filtering capability at runtime for PlotQuery.
+type PlotFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *PlotFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *PlotFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(plot.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *PlotFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(plot.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *PlotFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(plot.FieldUpdatedAt))
+}
+
+// WhereName applies the entql string predicate on the name field.
+func (f *PlotFilter) WhereName(p entql.StringP) {
+	f.Where(p.Field(plot.FieldName))
+}
+
+// WhereColorHex applies the entql string predicate on the color_hex field.
+func (f *PlotFilter) WhereColorHex(p entql.StringP) {
+	f.Where(p.Field(plot.FieldColorHex))
+}
+
+// WhereGeoBounds applies the entql json.RawMessage predicate on the geo_bounds field.
+func (f *PlotFilter) WhereGeoBounds(p entql.BytesP) {
+	f.Where(p.Field(plot.FieldGeoBounds))
+}
+
+// WhereDistrictID applies the entql string predicate on the district_id field.
+func (f *PlotFilter) WhereDistrictID(p entql.StringP) {
+	f.Where(p.Field(plot.FieldDistrictID))
+}
+
+// WhereHasDistrict applies a predicate to check if query has an edge district.
+func (f *PlotFilter) WhereHasDistrict() {
+	f.Where(entql.HasEdge("district"))
+}
+
+// WhereHasDistrictWith applies a predicate to check if query has an edge district with a given conditions (other predicates).
+func (f *PlotFilter) WhereHasDistrictWith(preds ...predicate.District) {
+	f.Where(entql.HasEdgeWith("district", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (pq *ProvinceQuery) addPredicate(pred func(s *sql.Selector)) {
 	pq.predicates = append(pq.predicates, pred)
@@ -1390,7 +1532,7 @@ type ProvinceFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProvinceFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -1535,7 +1677,7 @@ type TenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -1966,7 +2108,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2145,7 +2287,7 @@ type VisitRecordFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *VisitRecordFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

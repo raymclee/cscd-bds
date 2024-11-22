@@ -23,6 +23,9 @@ type MutationResolver interface {
 	UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error)
 	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
+	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
+	UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
+	DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot, error)
 }
 
 // endregion ************************** generated!.gotpl **************************
@@ -58,6 +61,65 @@ func (ec *executionContext) field_Mutation_createArea_argsInput(
 	}
 
 	var zeroVal ent.CreateAreaInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createPlot_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_createPlot_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	arg1, err := ec.field_Mutation_createPlot_argsGeoBounds(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["geoBounds"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createPlot_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.CreatePlotInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.CreatePlotInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreatePlotInput2cscdᚑbdsᚋstoreᚋentᚐCreatePlotInput(ctx, tmp)
+	}
+
+	var zeroVal ent.CreatePlotInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createPlot_argsGeoBounds(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([][]float64, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["geoBounds"]
+	if !ok {
+		var zeroVal [][]float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoBounds"))
+	if tmp, ok := rawArgs["geoBounds"]; ok {
+		return ec.unmarshalOFloat2ᚕᚕfloat64ᚄ(ctx, tmp)
+	}
+
+	var zeroVal [][]float64
 	return zeroVal, nil
 }
 
@@ -152,6 +214,38 @@ func (ec *executionContext) field_Mutation_createUser_argsInput(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_deletePlot_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_deletePlot_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_deletePlot_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_updateArea_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -208,6 +302,92 @@ func (ec *executionContext) field_Mutation_updateArea_argsInput(
 	}
 
 	var zeroVal ent.UpdateAreaInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updatePlot_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_updatePlot_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	arg1, err := ec.field_Mutation_updatePlot_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg1
+	arg2, err := ec.field_Mutation_updatePlot_argsGeoBounds(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["geoBounds"] = arg2
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_updatePlot_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updatePlot_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.UpdatePlotInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.UpdatePlotInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNUpdatePlotInput2cscdᚑbdsᚋstoreᚋentᚐUpdatePlotInput(ctx, tmp)
+	}
+
+	var zeroVal ent.UpdatePlotInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updatePlot_argsGeoBounds(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([][]float64, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["geoBounds"]
+	if !ok {
+		var zeroVal [][]float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoBounds"))
+	if tmp, ok := rawArgs["geoBounds"]; ok {
+		return ec.unmarshalOFloat2ᚕᚕfloat64ᚄ(ctx, tmp)
+	}
+
+	var zeroVal [][]float64
 	return zeroVal, nil
 }
 
@@ -1070,6 +1250,225 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_createPlot(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createPlot(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreatePlot(rctx, fc.Args["input"].(ent.CreatePlotInput), fc.Args["geoBounds"].([][]float64))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Plot)
+	fc.Result = res
+	return ec.marshalNPlot2ᚖcscdᚑbdsᚋstoreᚋentᚐPlot(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createPlot(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Plot_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Plot_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Plot_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_Plot_name(ctx, field)
+			case "colorHex":
+				return ec.fieldContext_Plot_colorHex(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Plot_districtID(ctx, field)
+			case "district":
+				return ec.fieldContext_Plot_district(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Plot_geoBounds(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Plot", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createPlot_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updatePlot(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updatePlot(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdatePlot(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdatePlotInput), fc.Args["geoBounds"].([][]float64))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Plot)
+	fc.Result = res
+	return ec.marshalNPlot2ᚖcscdᚑbdsᚋstoreᚋentᚐPlot(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updatePlot(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Plot_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Plot_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Plot_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_Plot_name(ctx, field)
+			case "colorHex":
+				return ec.fieldContext_Plot_colorHex(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Plot_districtID(ctx, field)
+			case "district":
+				return ec.fieldContext_Plot_district(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Plot_geoBounds(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Plot", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updatePlot_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deletePlot(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deletePlot(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeletePlot(rctx, fc.Args["id"].(xid.ID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Plot)
+	fc.Result = res
+	return ec.marshalNPlot2ᚖcscdᚑbdsᚋstoreᚋentᚐPlot(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deletePlot(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Plot_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Plot_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Plot_updatedAt(ctx, field)
+			case "name":
+				return ec.fieldContext_Plot_name(ctx, field)
+			case "colorHex":
+				return ec.fieldContext_Plot_colorHex(ctx, field)
+			case "districtID":
+				return ec.fieldContext_Plot_districtID(ctx, field)
+			case "district":
+				return ec.fieldContext_Plot_district(ctx, field)
+			case "geoBounds":
+				return ec.fieldContext_Plot_geoBounds(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Plot", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deletePlot_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
@@ -1139,6 +1538,27 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "updateTender":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_updateTender(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createPlot":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createPlot(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "updatePlot":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updatePlot(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deletePlot":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deletePlot(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

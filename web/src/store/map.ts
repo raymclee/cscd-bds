@@ -108,7 +108,7 @@ type MapState = {
   tenderList: Array<Partial<Tender>>;
   tenderListHovering: string | number;
   selectedTender: Partial<Tender> | null;
-  mapCircles: AMap.CircleMarker[];
+  mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
 };
 
 type Action = {

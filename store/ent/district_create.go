@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
@@ -143,6 +144,21 @@ func (dc *DistrictCreate) AddTenders(t ...*Tender) *DistrictCreate {
 		ids[i] = t[i].ID
 	}
 	return dc.AddTenderIDs(ids...)
+}
+
+// AddPlotIDs adds the "plots" edge to the Plot entity by IDs.
+func (dc *DistrictCreate) AddPlotIDs(ids ...xid.ID) *DistrictCreate {
+	dc.mutation.AddPlotIDs(ids...)
+	return dc
+}
+
+// AddPlots adds the "plots" edges to the Plot entity.
+func (dc *DistrictCreate) AddPlots(p ...*Plot) *DistrictCreate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return dc.AddPlotIDs(ids...)
 }
 
 // Mutation returns the DistrictMutation object of the builder.
@@ -330,6 +346,22 @@ func (dc *DistrictCreate) createSpec() (*District, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := dc.mutation.PlotsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

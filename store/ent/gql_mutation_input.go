@@ -502,6 +502,7 @@ type CreateDistrictInput struct {
 	ProvinceID xid.ID
 	CityID     *xid.ID
 	TenderIDs  []xid.ID
+	PlotIDs    []xid.ID
 }
 
 // Mutate applies the CreateDistrictInput on the DistrictMutation builder.
@@ -522,6 +523,9 @@ func (i *CreateDistrictInput) Mutate(m *DistrictMutation) {
 	}
 	if v := i.TenderIDs; len(v) > 0 {
 		m.AddTenderIDs(v...)
+	}
+	if v := i.PlotIDs; len(v) > 0 {
+		m.AddPlotIDs(v...)
 	}
 }
 
@@ -544,6 +548,9 @@ type UpdateDistrictInput struct {
 	ClearTenders    bool
 	AddTenderIDs    []xid.ID
 	RemoveTenderIDs []xid.ID
+	ClearPlots      bool
+	AddPlotIDs      []xid.ID
+	RemovePlotIDs   []xid.ID
 }
 
 // Mutate applies the UpdateDistrictInput on the DistrictMutation builder.
@@ -581,6 +588,15 @@ func (i *UpdateDistrictInput) Mutate(m *DistrictMutation) {
 	if v := i.RemoveTenderIDs; len(v) > 0 {
 		m.RemoveTenderIDs(v...)
 	}
+	if i.ClearPlots {
+		m.ClearPlots()
+	}
+	if v := i.AddPlotIDs; len(v) > 0 {
+		m.AddPlotIDs(v...)
+	}
+	if v := i.RemovePlotIDs; len(v) > 0 {
+		m.RemovePlotIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateDistrictInput on the DistrictUpdate builder.
@@ -591,6 +607,70 @@ func (c *DistrictUpdate) SetInput(i UpdateDistrictInput) *DistrictUpdate {
 
 // SetInput applies the change-set in the UpdateDistrictInput on the DistrictUpdateOne builder.
 func (c *DistrictUpdateOne) SetInput(i UpdateDistrictInput) *DistrictUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreatePlotInput represents a mutation input for creating plots.
+type CreatePlotInput struct {
+	CreatedAt  *time.Time
+	UpdatedAt  *time.Time
+	Name       string
+	ColorHex   string
+	DistrictID xid.ID
+}
+
+// Mutate applies the CreatePlotInput on the PlotMutation builder.
+func (i *CreatePlotInput) Mutate(m *PlotMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetName(i.Name)
+	m.SetColorHex(i.ColorHex)
+	m.SetDistrictID(i.DistrictID)
+}
+
+// SetInput applies the change-set in the CreatePlotInput on the PlotCreate builder.
+func (c *PlotCreate) SetInput(i CreatePlotInput) *PlotCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdatePlotInput represents a mutation input for updating plots.
+type UpdatePlotInput struct {
+	UpdatedAt  *time.Time
+	Name       *string
+	ColorHex   *string
+	DistrictID *xid.ID
+}
+
+// Mutate applies the UpdatePlotInput on the PlotMutation builder.
+func (i *UpdatePlotInput) Mutate(m *PlotMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.ColorHex; v != nil {
+		m.SetColorHex(*v)
+	}
+	if v := i.DistrictID; v != nil {
+		m.SetDistrictID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdatePlotInput on the PlotUpdate builder.
+func (c *PlotUpdate) SetInput(i UpdatePlotInput) *PlotUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdatePlotInput on the PlotUpdateOne builder.
+func (c *PlotUpdateOne) SetInput(i UpdatePlotInput) *PlotUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }

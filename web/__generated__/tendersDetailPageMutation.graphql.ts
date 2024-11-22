@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9157392de75ae0992a63f52d3590003b>>
+ * @generated SignedSource<<77edeff767e35f832b7760c43d831d66>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -107,12 +107,18 @@ export type UpdateTenderInput = {
   updatedAt?: any | null | undefined;
 };
 export type tendersDetailPageMutation$variables = {
+  geoBounds?: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
   id: string;
   input: UpdateTenderInput;
 };
 export type tendersDetailPageMutation$data = {
   readonly updateTender: {
+    readonly geoBounds: ReadonlyArray<ReadonlyArray<number | null | undefined> | null | undefined> | null | undefined;
+    readonly geoCoordinate: {
+      readonly coordinates: ReadonlyArray<number>;
+    } | null | undefined;
     readonly id: string;
+    readonly name: string;
   };
 };
 export type tendersDetailPageMutation = {
@@ -121,22 +127,30 @@ export type tendersDetailPageMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "id"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "geoBounds"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "id"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v3 = [
   {
     "alias": null,
     "args": [
+      {
+        "kind": "Variable",
+        "name": "geoBounds",
+        "variableName": "geoBounds"
+      },
       {
         "kind": "Variable",
         "name": "id",
@@ -159,6 +173,38 @@ v1 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "GeoJson",
+        "kind": "LinkedField",
+        "name": "geoCoordinate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "coordinates",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "geoBounds",
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -166,32 +212,40 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "tendersDetailPageMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v3/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "tendersDetailPageMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "4e209580faebd2eb35d4c777099ecfe2",
+    "cacheID": "a50ab33495a3de0f866114d84fd29832",
     "id": null,
     "metadata": {},
     "name": "tendersDetailPageMutation",
     "operationKind": "mutation",
-    "text": "mutation tendersDetailPageMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n) {\n  updateTender(id: $id, input: $input) {\n    id\n  }\n}\n"
+    "text": "mutation tendersDetailPageMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $geoBounds: [[Float!]!]\n) {\n  updateTender(id: $id, input: $input, geoBounds: $geoBounds) {\n    id\n    name\n    geoCoordinate {\n      coordinates\n    }\n    geoBounds\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5e1caaf9765d17cfb2dac8854d922c30";
+(node as any).hash = "a4135ff44031084bcbb3848758fc42ea";
 
 export default node;

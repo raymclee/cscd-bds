@@ -5,13 +5,6 @@ import { Tender } from "~/graphql/graphql";
 import { useMapStore } from "~/store/map";
 import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 
-const data = [
-  { type: "央企国企", value: 40 },
-  { type: "高科技企业", value: 21 },
-  { type: "政府平台", value: 30 },
-  { type: "其他企业", value: 15 },
-];
-
 type Props = {
   data: MapIndexPageQuery$data;
 };
@@ -60,7 +53,7 @@ export function TenderTypeChart({ data }: Props) {
       {
         type: "text",
         style: {
-          text: `赢单率\n${winPercent === 1 ? "0%" : Math.round(winPercent * 100)}%`,
+          text: `赢单率\n${winPercent === 1 ? "0" : Math.round(winPercent * 100)}%`,
           x: "50%",
           y: "50%",
           textAlign: "center",
@@ -87,7 +80,7 @@ export function TenderTypeChart({ data }: Props) {
       {
         type: "text",
         style: {
-          text: `丢单率\n${lostPercent === 1 ? "0%" : Math.round(lostPercent * 100)}%`,
+          text: `丢单率\n${lostPercent === 1 ? "0" : Math.round(lostPercent * 100)}%`,
           x: "50%",
           y: "50%",
           textAlign: "center",
@@ -134,11 +127,16 @@ export function TenderTypeChart({ data }: Props) {
     radius: 0.75,
     // innerRadius: 0.35,
     label: {
-      text: (d: { type: string; value: number }) => `${d.type}\n ${d.value}`,
+      text: (d: { type: string; value: number }) => `${d.type}\n ${d.value}个`,
       position: "outside",
     },
     // label: false,
-    // legend: false,
+    // legend: {
+    //   color: {
+    //     title: false,
+    //     position: "right",
+    //   },
+    // },
     tooltip: {
       name: "数量",
       field: "value",
@@ -156,12 +154,12 @@ export function TenderTypeChart({ data }: Props) {
       </CardHeader>
 
       <CardContent className="flex h-full items-center justify-center gap-2">
-        <div className="w-[24%] rounded bg-gradient-to-b from-brand/40 to-transparent p-6">
+        {/* <div className="w-[24%] rounded bg-gradient-to-b from-brand/40 to-transparent p-6">
           <div className="flex flex-col items-center justify-evenly gap-4">
             <Tiny.Ring {...winConfig} />
             <Tiny.Ring {...loseConfig} />
           </div>
-        </div>
+        </div> */}
         <div className="h-full flex-1">
           <Pie {...config} />
         </div>

@@ -54,9 +54,15 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 
 	fmt.Printf("username: %s, openId: %s\n", *userInfo.Data.EnName, *userInfo.Data.OpenId)
 
-	us, err := h.store.User.Query().Where(user.OpenID(*userInfo.Data.OpenId)).Only(c.Request().Context())
+	us, err := h.store.User.Query().Where(user.Username(*userInfo.Data.EnName)).Only(c.Request().Context())
 	if err != nil {
+		h.session.Clear(c.Request().Context())
+		h.session.RenewToken(c.Request().Context())
 		return c.Redirect(301, url+"/access-denied")
+	}
+
+	if err := h.store.User.UpdateOne(us).SetOpenID(*userInfo.Data.OpenId).Exec(c.Request().Context()); err != nil {
+		fmt.Println("update openid error: ", err)
 	}
 
 	// a, err := h.store.Admin.Query().Where(admin.OpenID(*userInfo.Data.OpenId)).Only(c.Request().Context())
@@ -89,6 +95,8 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		UnionId:      *userInfo.Data.UnionId,
 		Email:        us.Email,
 		UserId:       string(us.ID),
+		IsAdmin:      us.IsAdmin,
+		IsLeader:     us.IsLeader,
 		// Email:        *userInfo.Data.Email,
 		// UserId: *userInfo.Data.UserId,
 		// AdminId:      a.ID.V,

@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -86,6 +87,7 @@ func checkColumn(table, column string) error {
 			country.Table:     country.ValidColumn,
 			customer.Table:    customer.ValidColumn,
 			district.Table:    district.ValidColumn,
+			plot.Table:        plot.ValidColumn,
 			province.Table:    province.ValidColumn,
 			tender.Table:      tender.ValidColumn,
 			user.Table:        user.ValidColumn,

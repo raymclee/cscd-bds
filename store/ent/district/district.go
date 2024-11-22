@@ -39,6 +39,8 @@ const (
 	EdgeCity = "city"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
+	// EdgePlots holds the string denoting the plots edge name in mutations.
+	EdgePlots = "plots"
 	// Table holds the table name of the district in the database.
 	Table = "districts"
 	// ProvinceTable is the table that holds the province relation/edge.
@@ -62,6 +64,13 @@ const (
 	TendersInverseTable = "tenders"
 	// TendersColumn is the table column denoting the tenders relation/edge.
 	TendersColumn = "district_id"
+	// PlotsTable is the table that holds the plots relation/edge.
+	PlotsTable = "plots"
+	// PlotsInverseTable is the table name for the Plot entity.
+	// It exists in this package in order to avoid circular dependency with the "plot" package.
+	PlotsInverseTable = "plots"
+	// PlotsColumn is the table column denoting the plots relation/edge.
+	PlotsColumn = "district_id"
 )
 
 // Columns holds all SQL columns for district fields.
@@ -179,6 +188,20 @@ func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByPlotsCount orders the results by plots count.
+func ByPlotsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newPlotsStep(), opts...)
+	}
+}
+
+// ByPlots orders the results by plots terms.
+func ByPlots(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newPlotsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newProvinceStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -198,5 +221,12 @@ func newTendersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TendersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
+	)
+}
+func newPlotsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(PlotsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, PlotsTable, PlotsColumn),
 	)
 }

@@ -21,6 +21,9 @@ type Customer func(*sql.Selector)
 // District is the predicate function for district builders.
 type District func(*sql.Selector)
 
+// Plot is the predicate function for plot builders.
+type Plot func(*sql.Selector)
+
 // Province is the predicate function for province builders.
 type Province func(*sql.Selector)
 

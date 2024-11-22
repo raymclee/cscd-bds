@@ -24,9 +24,6 @@ func (Tender) Mixin() []ent.Mixin {
 	}
 }
 
-type name struct {
-}
-
 // Fields of the Tender.
 func (Tender) Fields() []ent.Field {
 	return []ent.Field{

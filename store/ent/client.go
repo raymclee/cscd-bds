@@ -17,6 +17,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -43,6 +44,8 @@ type Client struct {
 	Customer *CustomerClient
 	// District is the client for interacting with the District builders.
 	District *DistrictClient
+	// Plot is the client for interacting with the Plot builders.
+	Plot *PlotClient
 	// Province is the client for interacting with the Province builders.
 	Province *ProvinceClient
 	// Tender is the client for interacting with the Tender builders.
@@ -67,6 +70,7 @@ func (c *Client) init() {
 	c.Country = NewCountryClient(c.config)
 	c.Customer = NewCustomerClient(c.config)
 	c.District = NewDistrictClient(c.config)
+	c.Plot = NewPlotClient(c.config)
 	c.Province = NewProvinceClient(c.config)
 	c.Tender = NewTenderClient(c.config)
 	c.User = NewUserClient(c.config)
@@ -168,6 +172,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Country:     NewCountryClient(cfg),
 		Customer:    NewCustomerClient(cfg),
 		District:    NewDistrictClient(cfg),
+		Plot:        NewPlotClient(cfg),
 		Province:    NewProvinceClient(cfg),
 		Tender:      NewTenderClient(cfg),
 		User:        NewUserClient(cfg),
@@ -196,6 +201,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Country:     NewCountryClient(cfg),
 		Customer:    NewCustomerClient(cfg),
 		District:    NewDistrictClient(cfg),
+		Plot:        NewPlotClient(cfg),
 		Province:    NewProvinceClient(cfg),
 		Tender:      NewTenderClient(cfg),
 		User:        NewUserClient(cfg),
@@ -229,8 +235,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Area, c.City, c.Country, c.Customer, c.District, c.Province, c.Tender, c.User,
-		c.VisitRecord,
+		c.Area, c.City, c.Country, c.Customer, c.District, c.Plot, c.Province, c.Tender,
+		c.User, c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -240,8 +246,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Area, c.City, c.Country, c.Customer, c.District, c.Province, c.Tender, c.User,
-		c.VisitRecord,
+		c.Area, c.City, c.Country, c.Customer, c.District, c.Plot, c.Province, c.Tender,
+		c.User, c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -260,6 +266,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Customer.mutate(ctx, m)
 	case *DistrictMutation:
 		return c.District.mutate(ctx, m)
+	case *PlotMutation:
+		return c.Plot.mutate(ctx, m)
 	case *ProvinceMutation:
 		return c.Province.mutate(ctx, m)
 	case *TenderMutation:
@@ -1169,6 +1177,22 @@ func (c *DistrictClient) QueryTenders(d *District) *TenderQuery {
 	return query
 }
 
+// QueryPlots queries the plots edge of a District.
+func (c *DistrictClient) QueryPlots(d *District) *PlotQuery {
+	query := (&PlotClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := d.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(district.Table, district.FieldID, id),
+			sqlgraph.To(plot.Table, plot.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, district.PlotsTable, district.PlotsColumn),
+		)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *DistrictClient) Hooks() []Hook {
 	return c.hooks.District
@@ -1191,6 +1215,155 @@ func (c *DistrictClient) mutate(ctx context.Context, m *DistrictMutation) (Value
 		return (&DistrictDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown District mutation op: %q", m.Op())
+	}
+}
+
+// PlotClient is a client for the Plot schema.
+type PlotClient struct {
+	config
+}
+
+// NewPlotClient returns a client for the Plot from the given config.
+func NewPlotClient(c config) *PlotClient {
+	return &PlotClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `plot.Hooks(f(g(h())))`.
+func (c *PlotClient) Use(hooks ...Hook) {
+	c.hooks.Plot = append(c.hooks.Plot, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `plot.Intercept(f(g(h())))`.
+func (c *PlotClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Plot = append(c.inters.Plot, interceptors...)
+}
+
+// Create returns a builder for creating a Plot entity.
+func (c *PlotClient) Create() *PlotCreate {
+	mutation := newPlotMutation(c.config, OpCreate)
+	return &PlotCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Plot entities.
+func (c *PlotClient) CreateBulk(builders ...*PlotCreate) *PlotCreateBulk {
+	return &PlotCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *PlotClient) MapCreateBulk(slice any, setFunc func(*PlotCreate, int)) *PlotCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &PlotCreateBulk{err: fmt.Errorf("calling to PlotClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*PlotCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &PlotCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Plot.
+func (c *PlotClient) Update() *PlotUpdate {
+	mutation := newPlotMutation(c.config, OpUpdate)
+	return &PlotUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PlotClient) UpdateOne(pl *Plot) *PlotUpdateOne {
+	mutation := newPlotMutation(c.config, OpUpdateOne, withPlot(pl))
+	return &PlotUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PlotClient) UpdateOneID(id xid.ID) *PlotUpdateOne {
+	mutation := newPlotMutation(c.config, OpUpdateOne, withPlotID(id))
+	return &PlotUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Plot.
+func (c *PlotClient) Delete() *PlotDelete {
+	mutation := newPlotMutation(c.config, OpDelete)
+	return &PlotDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *PlotClient) DeleteOne(pl *Plot) *PlotDeleteOne {
+	return c.DeleteOneID(pl.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *PlotClient) DeleteOneID(id xid.ID) *PlotDeleteOne {
+	builder := c.Delete().Where(plot.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PlotDeleteOne{builder}
+}
+
+// Query returns a query builder for Plot.
+func (c *PlotClient) Query() *PlotQuery {
+	return &PlotQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypePlot},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Plot entity by its id.
+func (c *PlotClient) Get(ctx context.Context, id xid.ID) (*Plot, error) {
+	return c.Query().Where(plot.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PlotClient) GetX(ctx context.Context, id xid.ID) *Plot {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryDistrict queries the district edge of a Plot.
+func (c *PlotClient) QueryDistrict(pl *Plot) *DistrictQuery {
+	query := (&DistrictClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pl.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(plot.Table, plot.FieldID, id),
+			sqlgraph.To(district.Table, district.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, plot.DistrictTable, plot.DistrictColumn),
+		)
+		fromV = sqlgraph.Neighbors(pl.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PlotClient) Hooks() []Hook {
+	return c.hooks.Plot
+}
+
+// Interceptors returns the client interceptors.
+func (c *PlotClient) Interceptors() []Interceptor {
+	return c.inters.Plot
+}
+
+func (c *PlotClient) mutate(ctx context.Context, m *PlotMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&PlotCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&PlotUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&PlotUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&PlotDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Plot mutation op: %q", m.Op())
 	}
 }
 
@@ -2097,11 +2270,11 @@ func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Area, City, Country, Customer, District, Province, Tender, User,
+		Area, City, Country, Customer, District, Plot, Province, Tender, User,
 		VisitRecord []ent.Hook
 	}
 	inters struct {
-		Area, City, Country, Customer, District, Province, Tender, User,
+		Area, City, Country, Customer, District, Plot, Province, Tender, User,
 		VisitRecord []ent.Interceptor
 	}
 )

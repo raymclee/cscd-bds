@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -641,6 +642,19 @@ func (d *DistrictQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 			d.WithNamedTenders(alias, func(wq *TenderQuery) {
 				*wq = *query
 			})
+
+		case "plots":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&PlotClient{config: d.config}).Query()
+			)
+			if err := query.collectField(ctx, false, opCtx, field, path, mayAddCondition(satisfies, plotImplementors)...); err != nil {
+				return err
+			}
+			d.WithNamedPlots(alias, func(wq *PlotQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[district.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, district.FieldCreatedAt)
@@ -718,6 +732,108 @@ func newDistrictPaginateArgs(rv map[string]any) *districtPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*DistrictWhereInput); ok {
 		args.opts = append(args.opts, WithDistrictFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (pl *PlotQuery) CollectFields(ctx context.Context, satisfies ...string) (*PlotQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return pl, nil
+	}
+	if err := pl.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return pl, nil
+}
+
+func (pl *PlotQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(plot.Columns))
+		selectedFields = []string{plot.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+
+		case "district":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&DistrictClient{config: pl.config}).Query()
+			)
+			if err := query.collectField(ctx, oneNode, opCtx, field, path, mayAddCondition(satisfies, districtImplementors)...); err != nil {
+				return err
+			}
+			pl.withDistrict = query
+			if _, ok := fieldSeen[plot.FieldDistrictID]; !ok {
+				selectedFields = append(selectedFields, plot.FieldDistrictID)
+				fieldSeen[plot.FieldDistrictID] = struct{}{}
+			}
+		case "createdAt":
+			if _, ok := fieldSeen[plot.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, plot.FieldCreatedAt)
+				fieldSeen[plot.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[plot.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, plot.FieldUpdatedAt)
+				fieldSeen[plot.FieldUpdatedAt] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[plot.FieldName]; !ok {
+				selectedFields = append(selectedFields, plot.FieldName)
+				fieldSeen[plot.FieldName] = struct{}{}
+			}
+		case "colorHex":
+			if _, ok := fieldSeen[plot.FieldColorHex]; !ok {
+				selectedFields = append(selectedFields, plot.FieldColorHex)
+				fieldSeen[plot.FieldColorHex] = struct{}{}
+			}
+		case "districtID":
+			if _, ok := fieldSeen[plot.FieldDistrictID]; !ok {
+				selectedFields = append(selectedFields, plot.FieldDistrictID)
+				fieldSeen[plot.FieldDistrictID] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		pl.Select(selectedFields...)
+	}
+	return nil
+}
+
+type plotPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []PlotPaginateOption
+}
+
+func newPlotPaginateArgs(rv map[string]any) *plotPaginateArgs {
+	args := &plotPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*PlotWhereInput); ok {
+		args.opts = append(args.opts, WithPlotFilter(v.Filter))
 	}
 	return args
 }

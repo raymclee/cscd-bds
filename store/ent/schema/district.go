@@ -60,6 +60,7 @@ func (District) Edges() []ent.Edge {
 			Field("city_id").
 			Unique(),
 		edge.To("tenders", Tender.Type),
+		edge.To("plots", Plot.Type),
 	}
 }
 

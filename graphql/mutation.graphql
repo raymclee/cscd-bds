@@ -11,4 +11,8 @@ type Mutation {
     input: UpdateTenderInput!
     geoBounds: [[Float!]!]
   ): Tender!
+
+  createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): Plot!
+  updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
+  deletePlot(id: ID!): Plot!
 }

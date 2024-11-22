@@ -10,6 +10,7 @@ import { Badge, Button, Form, Input, List, Tag, Typography } from "antd";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
+import { tenderStatus } from "~/lib/helper";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
@@ -81,18 +82,23 @@ function TenderList({
     );
 
   return (
-    <>
-      <Typography.Title level={2}>商机</Typography.Title>
+    <div className="my-4 min-h-80 rounded-lg bg-white p-6">
+      <div className="flex items-center justify-between">
+        <Typography.Title level={2}>商机</Typography.Title>
+      </div>
       <div className="mt-8">
         <Form.Item className="max-w-sm">
           <Input.Search
             placeholder="搜索"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
+            allowClear
+            type="search"
           />
         </Form.Item>
       </div>
       <List
+        pagination={{ pageSize: 20, position: "both" }}
         itemLayout="vertical"
         dataSource={dataSource}
         renderItem={(item) => (
@@ -114,12 +120,20 @@ function TenderList({
                 params={{ id: item!.id }}
               >
                 <Button type="link" size="small">
-                  画线
+                  地塊
                 </Button>
               </Link>,
               // <a key="list-loadmore-more">more</a>,
             ]}
-            extra={<img alt={item?.name} src={item?.images?.[0] || ""} />}
+            extra={
+              <div className="aspect-[4/3] max-w-[180px]">
+                <img
+                  alt={item?.name}
+                  className="h-full w-full rounded-lg"
+                  src={item?.images?.[0] || ""}
+                />
+              </div>
+            }
           >
             {/* <Skeleton avatar title={false} loading={item.loading} active> */}
             <List.Item.Meta
@@ -128,11 +142,12 @@ function TenderList({
             />
             <div>
               <Tag>{item?.area.name}</Tag>
+              <Tag>{tenderStatus(item?.status)}</Tag>
             </div>
             {/* </Skeleton> */}
           </List.Item>
         )}
       />
-    </>
+    </div>
   );
 }

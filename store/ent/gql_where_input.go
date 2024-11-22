@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -2160,6 +2161,10 @@ type DistrictWhereInput struct {
 	// "tenders" edge predicates.
 	HasTenders     *bool               `json:"hasTenders,omitempty"`
 	HasTendersWith []*TenderWhereInput `json:"hasTendersWith,omitempty"`
+
+	// "plots" edge predicates.
+	HasPlots     *bool             `json:"hasPlots,omitempty"`
+	HasPlotsWith []*PlotWhereInput `json:"hasPlotsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -2555,6 +2560,24 @@ func (i *DistrictWhereInput) P() (predicate.District, error) {
 		}
 		predicates = append(predicates, district.HasTendersWith(with...))
 	}
+	if i.HasPlots != nil {
+		p := district.HasPlots()
+		if !*i.HasPlots {
+			p = district.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasPlotsWith) > 0 {
+		with := make([]predicate.Plot, 0, len(i.HasPlotsWith))
+		for _, w := range i.HasPlotsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasPlotsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, district.HasPlotsWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyDistrictWhereInput
@@ -2562,6 +2585,382 @@ func (i *DistrictWhereInput) P() (predicate.District, error) {
 		return predicates[0], nil
 	default:
 		return district.And(predicates...), nil
+	}
+}
+
+// PlotWhereInput represents a where input for filtering Plot queries.
+type PlotWhereInput struct {
+	Predicates []predicate.Plot  `json:"-"`
+	Not        *PlotWhereInput   `json:"not,omitempty"`
+	Or         []*PlotWhereInput `json:"or,omitempty"`
+	And        []*PlotWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
+	// "color_hex" field predicates.
+	ColorHex             *string  `json:"colorHex,omitempty"`
+	ColorHexNEQ          *string  `json:"colorHexNEQ,omitempty"`
+	ColorHexIn           []string `json:"colorHexIn,omitempty"`
+	ColorHexNotIn        []string `json:"colorHexNotIn,omitempty"`
+	ColorHexGT           *string  `json:"colorHexGT,omitempty"`
+	ColorHexGTE          *string  `json:"colorHexGTE,omitempty"`
+	ColorHexLT           *string  `json:"colorHexLT,omitempty"`
+	ColorHexLTE          *string  `json:"colorHexLTE,omitempty"`
+	ColorHexContains     *string  `json:"colorHexContains,omitempty"`
+	ColorHexHasPrefix    *string  `json:"colorHexHasPrefix,omitempty"`
+	ColorHexHasSuffix    *string  `json:"colorHexHasSuffix,omitempty"`
+	ColorHexEqualFold    *string  `json:"colorHexEqualFold,omitempty"`
+	ColorHexContainsFold *string  `json:"colorHexContainsFold,omitempty"`
+
+	// "district_id" field predicates.
+	DistrictID             *xid.ID  `json:"districtID,omitempty"`
+	DistrictIDNEQ          *xid.ID  `json:"districtIDNEQ,omitempty"`
+	DistrictIDIn           []xid.ID `json:"districtIDIn,omitempty"`
+	DistrictIDNotIn        []xid.ID `json:"districtIDNotIn,omitempty"`
+	DistrictIDGT           *xid.ID  `json:"districtIDGT,omitempty"`
+	DistrictIDGTE          *xid.ID  `json:"districtIDGTE,omitempty"`
+	DistrictIDLT           *xid.ID  `json:"districtIDLT,omitempty"`
+	DistrictIDLTE          *xid.ID  `json:"districtIDLTE,omitempty"`
+	DistrictIDContains     *xid.ID  `json:"districtIDContains,omitempty"`
+	DistrictIDHasPrefix    *xid.ID  `json:"districtIDHasPrefix,omitempty"`
+	DistrictIDHasSuffix    *xid.ID  `json:"districtIDHasSuffix,omitempty"`
+	DistrictIDEqualFold    *xid.ID  `json:"districtIDEqualFold,omitempty"`
+	DistrictIDContainsFold *xid.ID  `json:"districtIDContainsFold,omitempty"`
+
+	// "district" edge predicates.
+	HasDistrict     *bool                 `json:"hasDistrict,omitempty"`
+	HasDistrictWith []*DistrictWhereInput `json:"hasDistrictWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *PlotWhereInput) AddPredicates(predicates ...predicate.Plot) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the PlotWhereInput filter on the PlotQuery builder.
+func (i *PlotWhereInput) Filter(q *PlotQuery) (*PlotQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyPlotWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyPlotWhereInput is returned in case the PlotWhereInput is empty.
+var ErrEmptyPlotWhereInput = errors.New("ent: empty predicate PlotWhereInput")
+
+// P returns a predicate for filtering plots.
+// An error is returned if the input is empty or invalid.
+func (i *PlotWhereInput) P() (predicate.Plot, error) {
+	var predicates []predicate.Plot
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, plot.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.Plot, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, plot.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.Plot, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, plot.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, plot.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, plot.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, plot.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, plot.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, plot.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, plot.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, plot.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, plot.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, plot.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, plot.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, plot.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, plot.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, plot.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, plot.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, plot.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, plot.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, plot.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, plot.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, plot.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, plot.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, plot.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, plot.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, plot.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, plot.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.Name != nil {
+		predicates = append(predicates, plot.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, plot.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, plot.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, plot.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, plot.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, plot.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, plot.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, plot.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, plot.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, plot.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, plot.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, plot.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, plot.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.ColorHex != nil {
+		predicates = append(predicates, plot.ColorHexEQ(*i.ColorHex))
+	}
+	if i.ColorHexNEQ != nil {
+		predicates = append(predicates, plot.ColorHexNEQ(*i.ColorHexNEQ))
+	}
+	if len(i.ColorHexIn) > 0 {
+		predicates = append(predicates, plot.ColorHexIn(i.ColorHexIn...))
+	}
+	if len(i.ColorHexNotIn) > 0 {
+		predicates = append(predicates, plot.ColorHexNotIn(i.ColorHexNotIn...))
+	}
+	if i.ColorHexGT != nil {
+		predicates = append(predicates, plot.ColorHexGT(*i.ColorHexGT))
+	}
+	if i.ColorHexGTE != nil {
+		predicates = append(predicates, plot.ColorHexGTE(*i.ColorHexGTE))
+	}
+	if i.ColorHexLT != nil {
+		predicates = append(predicates, plot.ColorHexLT(*i.ColorHexLT))
+	}
+	if i.ColorHexLTE != nil {
+		predicates = append(predicates, plot.ColorHexLTE(*i.ColorHexLTE))
+	}
+	if i.ColorHexContains != nil {
+		predicates = append(predicates, plot.ColorHexContains(*i.ColorHexContains))
+	}
+	if i.ColorHexHasPrefix != nil {
+		predicates = append(predicates, plot.ColorHexHasPrefix(*i.ColorHexHasPrefix))
+	}
+	if i.ColorHexHasSuffix != nil {
+		predicates = append(predicates, plot.ColorHexHasSuffix(*i.ColorHexHasSuffix))
+	}
+	if i.ColorHexEqualFold != nil {
+		predicates = append(predicates, plot.ColorHexEqualFold(*i.ColorHexEqualFold))
+	}
+	if i.ColorHexContainsFold != nil {
+		predicates = append(predicates, plot.ColorHexContainsFold(*i.ColorHexContainsFold))
+	}
+	if i.DistrictID != nil {
+		predicates = append(predicates, plot.DistrictIDEQ(*i.DistrictID))
+	}
+	if i.DistrictIDNEQ != nil {
+		predicates = append(predicates, plot.DistrictIDNEQ(*i.DistrictIDNEQ))
+	}
+	if len(i.DistrictIDIn) > 0 {
+		predicates = append(predicates, plot.DistrictIDIn(i.DistrictIDIn...))
+	}
+	if len(i.DistrictIDNotIn) > 0 {
+		predicates = append(predicates, plot.DistrictIDNotIn(i.DistrictIDNotIn...))
+	}
+	if i.DistrictIDGT != nil {
+		predicates = append(predicates, plot.DistrictIDGT(*i.DistrictIDGT))
+	}
+	if i.DistrictIDGTE != nil {
+		predicates = append(predicates, plot.DistrictIDGTE(*i.DistrictIDGTE))
+	}
+	if i.DistrictIDLT != nil {
+		predicates = append(predicates, plot.DistrictIDLT(*i.DistrictIDLT))
+	}
+	if i.DistrictIDLTE != nil {
+		predicates = append(predicates, plot.DistrictIDLTE(*i.DistrictIDLTE))
+	}
+	if i.DistrictIDContains != nil {
+		predicates = append(predicates, plot.DistrictIDContains(*i.DistrictIDContains))
+	}
+	if i.DistrictIDHasPrefix != nil {
+		predicates = append(predicates, plot.DistrictIDHasPrefix(*i.DistrictIDHasPrefix))
+	}
+	if i.DistrictIDHasSuffix != nil {
+		predicates = append(predicates, plot.DistrictIDHasSuffix(*i.DistrictIDHasSuffix))
+	}
+	if i.DistrictIDEqualFold != nil {
+		predicates = append(predicates, plot.DistrictIDEqualFold(*i.DistrictIDEqualFold))
+	}
+	if i.DistrictIDContainsFold != nil {
+		predicates = append(predicates, plot.DistrictIDContainsFold(*i.DistrictIDContainsFold))
+	}
+
+	if i.HasDistrict != nil {
+		p := plot.HasDistrict()
+		if !*i.HasDistrict {
+			p = plot.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasDistrictWith) > 0 {
+		with := make([]predicate.District, 0, len(i.HasDistrictWith))
+		for _, w := range i.HasDistrictWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasDistrictWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, plot.HasDistrictWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyPlotWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return plot.And(predicates...), nil
 	}
 }
 

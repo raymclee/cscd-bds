@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<eb40afc5df5e098dbd26db3cee2957fd>>
+ * @generated SignedSource<<1147fb434fab4a2c7bf5c57bb0a15de1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,9 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-export type MapIndexPageDistrictQuery$variables = Record<PropertyKey, never>;
+export type MapIndexPageDistrictQuery$variables = {
+  adcode: number;
+};
 export type MapIndexPageDistrictQuery$data = {
   readonly districts: {
     readonly edges: ReadonlyArray<{
@@ -32,21 +34,32 @@ export type MapIndexPageDistrictQuery = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "where",
-    "value": {
-      "adcode": 1
-    }
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "adcode"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "adcode",
+        "variableName": "adcode"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "where"
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "concreteType": "Plot",
@@ -54,7 +67,7 @@ v2 = {
   "name": "plots",
   "plural": true,
   "selections": [
-    (v1/*: any*/),
+    (v2/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -81,14 +94,14 @@ v2 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "MapIndexPageDistrictQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "DistrictConnection",
         "kind": "LinkedField",
         "name": "districts",
@@ -110,6 +123,51 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v3/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ],
+    "type": "Query",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Operation",
+    "name": "MapIndexPageDistrictQuery",
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "DistrictConnection",
+        "kind": "LinkedField",
+        "name": "districts",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "DistrictEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "District",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/),
                   (v2/*: any*/)
                 ],
                 "storageKey": null
@@ -118,66 +176,21 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "districts(where:{\"adcode\":1})"
-      }
-    ],
-    "type": "Query",
-    "abstractKey": null
-  },
-  "kind": "Request",
-  "operation": {
-    "argumentDefinitions": [],
-    "kind": "Operation",
-    "name": "MapIndexPageDistrictQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v0/*: any*/),
-        "concreteType": "DistrictConnection",
-        "kind": "LinkedField",
-        "name": "districts",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "DistrictEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "District",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v2/*: any*/),
-                  (v1/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": "districts(where:{\"adcode\":1})"
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "41c96192cdfde26919ed971c08e42d7c",
+    "cacheID": "176dac56823832b93eb15e5031d57737",
     "id": null,
     "metadata": {},
     "name": "MapIndexPageDistrictQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageDistrictQuery {\n  districts(where: {adcode: 1}) {\n    edges {\n      node {\n        plots {\n          id\n          name\n          geoBounds\n          colorHex\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query MapIndexPageDistrictQuery(\n  $adcode: Int!\n) {\n  districts(where: {adcode: $adcode}) {\n    edges {\n      node {\n        plots {\n          id\n          name\n          geoBounds\n          colorHex\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "71785a811fc54ed7238388e35b4f3e00";
+(node as any).hash = "2f9789c111b3e6042a26848b143cb452";
 
 export default node;

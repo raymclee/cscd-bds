@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/city"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
@@ -181,6 +182,21 @@ func (du *DistrictUpdate) AddTenders(t ...*Tender) *DistrictUpdate {
 	return du.AddTenderIDs(ids...)
 }
 
+// AddPlotIDs adds the "plots" edge to the Plot entity by IDs.
+func (du *DistrictUpdate) AddPlotIDs(ids ...xid.ID) *DistrictUpdate {
+	du.mutation.AddPlotIDs(ids...)
+	return du
+}
+
+// AddPlots adds the "plots" edges to the Plot entity.
+func (du *DistrictUpdate) AddPlots(p ...*Plot) *DistrictUpdate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return du.AddPlotIDs(ids...)
+}
+
 // Mutation returns the DistrictMutation object of the builder.
 func (du *DistrictUpdate) Mutation() *DistrictMutation {
 	return du.mutation
@@ -217,6 +233,27 @@ func (du *DistrictUpdate) RemoveTenders(t ...*Tender) *DistrictUpdate {
 		ids[i] = t[i].ID
 	}
 	return du.RemoveTenderIDs(ids...)
+}
+
+// ClearPlots clears all "plots" edges to the Plot entity.
+func (du *DistrictUpdate) ClearPlots() *DistrictUpdate {
+	du.mutation.ClearPlots()
+	return du
+}
+
+// RemovePlotIDs removes the "plots" edge to Plot entities by IDs.
+func (du *DistrictUpdate) RemovePlotIDs(ids ...xid.ID) *DistrictUpdate {
+	du.mutation.RemovePlotIDs(ids...)
+	return du
+}
+
+// RemovePlots removes "plots" edges to Plot entities.
+func (du *DistrictUpdate) RemovePlots(p ...*Plot) *DistrictUpdate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return du.RemovePlotIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -405,6 +442,51 @@ func (du *DistrictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if du.mutation.PlotsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := du.mutation.RemovedPlotsIDs(); len(nodes) > 0 && !du.mutation.PlotsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := du.mutation.PlotsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, du.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{district.Label}
@@ -573,6 +655,21 @@ func (duo *DistrictUpdateOne) AddTenders(t ...*Tender) *DistrictUpdateOne {
 	return duo.AddTenderIDs(ids...)
 }
 
+// AddPlotIDs adds the "plots" edge to the Plot entity by IDs.
+func (duo *DistrictUpdateOne) AddPlotIDs(ids ...xid.ID) *DistrictUpdateOne {
+	duo.mutation.AddPlotIDs(ids...)
+	return duo
+}
+
+// AddPlots adds the "plots" edges to the Plot entity.
+func (duo *DistrictUpdateOne) AddPlots(p ...*Plot) *DistrictUpdateOne {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return duo.AddPlotIDs(ids...)
+}
+
 // Mutation returns the DistrictMutation object of the builder.
 func (duo *DistrictUpdateOne) Mutation() *DistrictMutation {
 	return duo.mutation
@@ -609,6 +706,27 @@ func (duo *DistrictUpdateOne) RemoveTenders(t ...*Tender) *DistrictUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return duo.RemoveTenderIDs(ids...)
+}
+
+// ClearPlots clears all "plots" edges to the Plot entity.
+func (duo *DistrictUpdateOne) ClearPlots() *DistrictUpdateOne {
+	duo.mutation.ClearPlots()
+	return duo
+}
+
+// RemovePlotIDs removes the "plots" edge to Plot entities by IDs.
+func (duo *DistrictUpdateOne) RemovePlotIDs(ids ...xid.ID) *DistrictUpdateOne {
+	duo.mutation.RemovePlotIDs(ids...)
+	return duo
+}
+
+// RemovePlots removes "plots" edges to Plot entities.
+func (duo *DistrictUpdateOne) RemovePlots(p ...*Plot) *DistrictUpdateOne {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return duo.RemovePlotIDs(ids...)
 }
 
 // Where appends a list predicates to the DistrictUpdate builder.
@@ -820,6 +938,51 @@ func (duo *DistrictUpdateOne) sqlSave(ctx context.Context) (_node *District, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if duo.mutation.PlotsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := duo.mutation.RemovedPlotsIDs(); len(nodes) > 0 && !duo.mutation.PlotsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := duo.mutation.PlotsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   district.PlotsTable,
+			Columns: []string{district.PlotsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(plot.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

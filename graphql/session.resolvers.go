@@ -23,5 +23,7 @@ func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
 		Email:     user.Email,
 		Username:  user.Username,
 		AvatarURL: user.AvatarUrl,
+		IsAdmin:   user.IsAdmin,
+		IsLeader:  user.IsLeader,
 	}, nil
 }

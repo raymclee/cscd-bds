@@ -55,23 +55,23 @@ export function NewTenderBoard({ data }: { data: MapIndexPageQuery$data }) {
     data: [
       {
         name: "金额(亿)",
-        月份: "本月",
-        數量: thisMonthAmount,
-      },
-      {
-        name: "金额(亿)",
         月份: "上月",
         數量: lastMonthAmount,
       },
       {
-        name: "数量(个)",
+        name: "金额(亿)",
         月份: "本月",
-        數量: thisMonthCount,
+        數量: thisMonthAmount,
       },
       {
         name: "数量(个)",
         月份: "上月",
         數量: lastMonthCount,
+      },
+      {
+        name: "数量(个)",
+        月份: "本月",
+        數量: thisMonthCount,
       },
     ],
     xField: "月份",
@@ -95,7 +95,7 @@ export function NewTenderBoard({ data }: { data: MapIndexPageQuery$data }) {
     },
   } satisfies ColumnConfig;
 
-  const amountPercent = lastMonthAmount / thisMonthAmount;
+  const amountPercent = thisMonthAmount / lastMonthAmount;
   const amountConfig = {
     percent: isFinite(amountPercent) ? amountPercent || 1 : 1,
     width: 80,

@@ -48,6 +48,11 @@ func (r *queryResolver) Districts(ctx context.Context, after *entgql.Cursor[xid.
 	return r.store.District.Query().Paginate(ctx, after, first, before, last, ent.WithDistrictFilter(where.Filter))
 }
 
+// Plots is the resolver for the plots field.
+func (r *queryResolver) Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.PlotWhereInput) (*ent.PlotConnection, error) {
+	return r.store.Plot.Query().Paginate(ctx, after, first, before, last, ent.WithPlotFilter(where.Filter))
+}
+
 // Provinces is the resolver for the provinces field.
 func (r *queryResolver) Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error) {
 	return r.store.Province.Query().Paginate(ctx, after, first, before, last, ent.WithProvinceFilter(where.Filter))

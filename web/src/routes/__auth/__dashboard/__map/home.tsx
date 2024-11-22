@@ -26,7 +26,7 @@ import { getDistrictColor } from '~/lib/color'
 import { cn } from '~/lib/utils'
 import { StoreArea, useMapStore } from '~/store/map'
 
-export const Route = createFileRoute('/__auth/__map/home')({
+export const Route = createFileRoute('/__auth/__dashboard/__map/home')({
   component: RouteComponent,
 })
 

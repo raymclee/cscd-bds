@@ -53,13 +53,16 @@ type DistrictEdges struct {
 	City *City `json:"city,omitempty"`
 	// Tenders holds the value of the tenders edge.
 	Tenders []*Tender `json:"tenders,omitempty"`
+	// Plots holds the value of the plots edge.
+	Plots []*Plot `json:"plots,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [4]map[string]int
 
 	namedTenders map[string][]*Tender
+	namedPlots   map[string][]*Plot
 }
 
 // ProvinceOrErr returns the Province value or an error if the edge
@@ -91,6 +94,15 @@ func (e DistrictEdges) TendersOrErr() ([]*Tender, error) {
 		return e.Tenders, nil
 	}
 	return nil, &NotLoadedError{edge: "tenders"}
+}
+
+// PlotsOrErr returns the Plots value or an error if the edge
+// was not loaded in eager-loading.
+func (e DistrictEdges) PlotsOrErr() ([]*Plot, error) {
+	if e.loadedTypes[3] {
+		return e.Plots, nil
+	}
+	return nil, &NotLoadedError{edge: "plots"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -214,6 +226,11 @@ func (d *District) QueryTenders() *TenderQuery {
 	return NewDistrictClient(d.config).QueryTenders(d)
 }
 
+// QueryPlots queries the "plots" edge of the District entity.
+func (d *District) QueryPlots() *PlotQuery {
+	return NewDistrictClient(d.config).QueryPlots(d)
+}
+
 // Update returns a builder for updating this District.
 // Note that you need to call District.Unwrap() before calling this method if this District
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -290,6 +307,30 @@ func (d *District) appendNamedTenders(name string, edges ...*Tender) {
 		d.Edges.namedTenders[name] = []*Tender{}
 	} else {
 		d.Edges.namedTenders[name] = append(d.Edges.namedTenders[name], edges...)
+	}
+}
+
+// NamedPlots returns the Plots named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (d *District) NamedPlots(name string) ([]*Plot, error) {
+	if d.Edges.namedPlots == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := d.Edges.namedPlots[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (d *District) appendNamedPlots(name string, edges ...*Plot) {
+	if d.Edges.namedPlots == nil {
+		d.Edges.namedPlots = make(map[string][]*Plot)
+	}
+	if len(edges) == 0 {
+		d.Edges.namedPlots[name] = []*Plot{}
+	} else {
+		d.Edges.namedPlots[name] = append(d.Edges.namedPlots[name], edges...)
 	}
 }
 

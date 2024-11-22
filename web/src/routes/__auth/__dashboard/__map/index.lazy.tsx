@@ -2,8 +2,13 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
 import { ImageOff, Undo2, Wallet } from "lucide-react";
 import * as React from "react";
-import { usePreloadedQuery } from "react-relay";
-import { graphql } from "relay-runtime";
+import {
+  useLazyLoadQuery,
+  usePreloadedQuery,
+  useQueryLoader,
+  useRelayEnvironment,
+} from "react-relay";
+import { fetchQuery, graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
 import { DashboardTenderList } from "~/components/dashboard-tender-list";
 import { NewTenderBoard } from "~/components/new-tender-card";
@@ -21,7 +26,7 @@ import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { colors, getDistrictColor } from "~/lib/color";
+import { colors, getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
 import { findTenderWithLevel, fixAmount, ownerType } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
@@ -29,11 +34,10 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "~/components/ui/carousel";
+import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
 
-export const Route = createLazyFileRoute("/__auth/__map/")({
+export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
 });
 
@@ -103,6 +107,7 @@ const query = graphql`
             geoCoordinate {
               coordinates
             }
+            geoBounds
             visitRecords {
               visitType
               nextStep
@@ -113,6 +118,23 @@ const query = graphql`
                 name
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const districtsQuery = graphql`
+  query MapIndexPageDistrictQuery($adcode: Int!) {
+    districts(where: { adcode: $adcode }) {
+      edges {
+        node {
+          plots {
+            id
+            name
+            geoBounds
+            colorHex
           }
         }
       }
@@ -154,6 +176,7 @@ function RouteComponent() {
   // const [visible, setVisible] = React.useState(false);
   const makersRef = React.useRef<AMap.Marker[]>([]);
   // const polygonsRef = React.useRef<AMap.Polygon[]>([]);
+  const environment = Route.useRouteContext().RelayEnvironment;
 
   const data = usePreloadedQuery<MapIndexPageQuery>(
     query,
@@ -439,20 +462,109 @@ function RouteComponent() {
     });
   }
 
-  const onFeatureOrMarkerClick = (props: any) => {
+  const onFeatureOrMarkerClick = async (props: any) => {
     const selectedArea = useMapStore.getState().selectedArea;
 
     switch2AreaNode(props.adcode, props.childrenNum > 0);
     if (props.childrenNum == 0) {
+      const districts = await fetchQuery<MapIndexPageDistrictQuery>(
+        environment,
+        districtsQuery,
+        {
+          adcode: props.adcode,
+        },
+      ).toPromise();
+
+      for (const plot of districts?.districts.edges
+        ?.map((e) => e?.node)
+        .flatMap((d) => d?.plots) || []) {
+        const polygon = new AMap.Polygon();
+
+        polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
+        polygon.setOptions({
+          fillColor: plot?.colorHex,
+          fillOpacity: 0.35,
+          strokeColor: plot?.colorHex,
+          strokeWeight: 2,
+        });
+        //   map?.add(polygon);
+        polygon.on("rightclick", (e) => {
+          polygon.setMap(null);
+        });
+        polygon.setMap(map);
+
+        // @ts-expect-error
+        new AMapUI.SimpleMarker({
+          // @ts-expect-error
+          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+          label: {
+            content: `
+            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+              <div class="font-medium text-center text-sm text-wrap">${plot?.name}</div>
+            </div>
+            `,
+            offset: new AMap.Pixel(-100, 30),
+          },
+          map,
+          position: polygon.getBounds()?.getCenter(),
+        });
+      }
+
       const tenders =
         findTenderWithLevel(
           props.adcode,
           props.level,
           selectedArea?.tenders!,
         ) || [];
-      const mapCircles: AMap.CircleMarker[] | any[] = [];
+      const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
       for (const [i, tender] of tenders.entries()) {
-        if (tender.geoCoordinate?.coordinates) {
+        if (tender.geoBounds) {
+          const polygon = new AMap.Polygon();
+          polygon.setOptions({
+            fillColor: tenderStatusBoundColor(tender!),
+            strokeColor: tenderStatusBoundColor(tender!),
+            fillOpacity: 0.35,
+          });
+          polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
+          const pBounds = polygon.getBounds();
+          const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+          // @ts-expect-error
+          const label = new AMapUI.SimpleMarker({
+            // @ts-expect-error
+            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+            label: {
+              content: `
+              <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+              </div>
+              `,
+              offset: new AMap.Pixel(-80, offsetY),
+            },
+            map,
+            position: pBounds?.getCenter(),
+            extData: {
+              tenderId: tender.id,
+            },
+          });
+          label.on("click", () => {
+            useMapStore.setState({
+              tenderListHovering: i,
+              selectedTender: tender,
+              tenderListVisible: false,
+            });
+          });
+          label.on("mouseover", () => {
+            label.setOptions({ zIndex: 13 });
+            useMapStore.setState({
+              tenderListHovering: i,
+            });
+          });
+          label.on("mouseout", () => {
+            label.setOptions({ zIndex: 12 });
+          });
+          mapCircles.push(polygon);
+          mapCircles.push(label);
+        } else if (tender.geoCoordinate?.coordinates) {
           const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
           // @ts-expect-error
           const label = new AMapUI.SimpleMarker({
@@ -1019,7 +1131,7 @@ function getDistrictZoomLevel(id: string) {
   return zoom;
 }
 
-const statusItems = ["跟进中", "停止跟进", "中标", "失标", "估价", "已交标"];
+const statusItems = ["跟进中", "停止跟进", "估价", "已交标", "中标", "失标"];
 
 function AmountBoard() {
   const selectedArea = useMapStore((state) => state.selectedArea);
@@ -1087,7 +1199,7 @@ function AmountBoard() {
               <span className="text-4xl font-black text-white">
                 {totalAmount}
               </span>
-              <span className="hidden font-medium text-brand large-screen:block">
+              <span className="hidden font-medium text-brand lg:block">
                 亿元
               </span>
             </div>
@@ -1135,7 +1247,7 @@ function AmountBoard() {
                   <span className="pt-2 font-medium text-brand">亿元</span>
                 </div>
                 <div className="bg-gray-500/50 py-1 text-center text-xs">
-                  实施中的金额(亿元)
+                  跟进中的金额(亿元)
                 </div>
               </div>
             </div>
@@ -1468,7 +1580,6 @@ function TenderList() {
                           if (m instanceof AMap.CircleMarker) {
                             continue;
                           }
-                          // @ts-expect-error
                           const ext = m.getExtData();
                           if (ext?.tenderId === tender.id) {
                             (m as any).getContentDom().focus();

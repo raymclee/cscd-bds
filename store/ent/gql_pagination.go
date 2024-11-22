@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -1346,6 +1347,255 @@ func (d *District) ToEdge(order *DistrictOrder) *DistrictEdge {
 	return &DistrictEdge{
 		Node:   d,
 		Cursor: order.Field.toCursor(d),
+	}
+}
+
+// PlotEdge is the edge representation of Plot.
+type PlotEdge struct {
+	Node   *Plot  `json:"node"`
+	Cursor Cursor `json:"cursor"`
+}
+
+// PlotConnection is the connection containing edges to Plot.
+type PlotConnection struct {
+	Edges      []*PlotEdge `json:"edges"`
+	PageInfo   PageInfo    `json:"pageInfo"`
+	TotalCount int         `json:"totalCount"`
+}
+
+func (c *PlotConnection) build(nodes []*Plot, pager *plotPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *Plot
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *Plot {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *Plot {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*PlotEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &PlotEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// PlotPaginateOption enables pagination customization.
+type PlotPaginateOption func(*plotPager) error
+
+// WithPlotOrder configures pagination ordering.
+func WithPlotOrder(order *PlotOrder) PlotPaginateOption {
+	if order == nil {
+		order = DefaultPlotOrder
+	}
+	o := *order
+	return func(pager *plotPager) error {
+		if err := o.Direction.Validate(); err != nil {
+			return err
+		}
+		if o.Field == nil {
+			o.Field = DefaultPlotOrder.Field
+		}
+		pager.order = &o
+		return nil
+	}
+}
+
+// WithPlotFilter configures pagination filter.
+func WithPlotFilter(filter func(*PlotQuery) (*PlotQuery, error)) PlotPaginateOption {
+	return func(pager *plotPager) error {
+		if filter == nil {
+			return errors.New("PlotQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type plotPager struct {
+	reverse bool
+	order   *PlotOrder
+	filter  func(*PlotQuery) (*PlotQuery, error)
+}
+
+func newPlotPager(opts []PlotPaginateOption, reverse bool) (*plotPager, error) {
+	pager := &plotPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	if pager.order == nil {
+		pager.order = DefaultPlotOrder
+	}
+	return pager, nil
+}
+
+func (p *plotPager) applyFilter(query *PlotQuery) (*PlotQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *plotPager) toCursor(pl *Plot) Cursor {
+	return p.order.Field.toCursor(pl)
+}
+
+func (p *plotPager) applyCursors(query *PlotQuery, after, before *Cursor) (*PlotQuery, error) {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultPlotOrder.Field.column, p.order.Field.column, direction) {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *plotPager) applyOrder(query *PlotQuery) *PlotQuery {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
+	if p.order.Field != DefaultPlotOrder.Field {
+		query = query.Order(DefaultPlotOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return query
+}
+
+func (p *plotPager) orderExpr(query *PlotQuery) sql.Querier {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
+		if p.order.Field != DefaultPlotOrder.Field {
+			b.Comma().Ident(DefaultPlotOrder.Field.column).Pad().WriteString(string(direction))
+		}
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to Plot.
+func (pl *PlotQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...PlotPaginateOption,
+) (*PlotConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newPlotPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if pl, err = pager.applyFilter(pl); err != nil {
+		return nil, err
+	}
+	conn := &PlotConnection{Edges: []*PlotEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			c := pl.Clone()
+			c.ctx.Fields = nil
+			if conn.TotalCount, err = c.Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if pl, err = pager.applyCursors(pl, after, before); err != nil {
+		return nil, err
+	}
+	limit := paginateLimit(first, last)
+	if limit != 0 {
+		pl.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := pl.collectField(ctx, limit == 1, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	pl = pager.applyOrder(pl)
+	nodes, err := pl.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+// PlotOrderField defines the ordering field of Plot.
+type PlotOrderField struct {
+	// Value extracts the ordering value from the given Plot.
+	Value    func(*Plot) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) plot.OrderOption
+	toCursor func(*Plot) Cursor
+}
+
+// PlotOrder defines the ordering of Plot.
+type PlotOrder struct {
+	Direction OrderDirection  `json:"direction"`
+	Field     *PlotOrderField `json:"field"`
+}
+
+// DefaultPlotOrder is the default ordering of Plot.
+var DefaultPlotOrder = &PlotOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &PlotOrderField{
+		Value: func(pl *Plot) (ent.Value, error) {
+			return pl.ID, nil
+		},
+		column: plot.FieldID,
+		toTerm: plot.ByID,
+		toCursor: func(pl *Plot) Cursor {
+			return Cursor{ID: pl.ID}
+		},
+	},
+}
+
+// ToEdge converts Plot into PlotEdge.
+func (pl *Plot) ToEdge(order *PlotOrder) *PlotEdge {
+	if order == nil {
+		order = DefaultPlotOrder
+	}
+	return &PlotEdge{
+		Node:   pl,
+		Cursor: order.Field.toCursor(pl),
 	}
 }
 

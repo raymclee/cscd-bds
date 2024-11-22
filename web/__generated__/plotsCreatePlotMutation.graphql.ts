@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3660b3caafd07e4793fbc9c5abdf7111>>
+ * @generated SignedSource<<ddb87e3a79bbc85fdd411e70f6858b6b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,6 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type CreatePlotInput = {
+  colorHex: string;
   createdAt?: any | null | undefined;
   districtID: string;
   name: string;

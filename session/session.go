@@ -88,6 +88,8 @@ func (s Session) GetAccessToken(ctx context.Context, user User) (string, error) 
 			UnionId:      user.UnionId,
 			Email:        user.Email,
 			UserId:       user.UserId,
+			IsAdmin:      user.IsAdmin,
+			IsLeader:     user.IsLeader,
 			// AdminId:      user.AdminId,
 		})
 	}

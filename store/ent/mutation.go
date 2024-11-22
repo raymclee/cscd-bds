@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
@@ -40,6 +41,7 @@ const (
 	TypeCountry     = "Country"
 	TypeCustomer    = "Customer"
 	TypeDistrict    = "District"
+	TypePlot        = "Plot"
 	TypeProvince    = "Province"
 	TypeTender      = "Tender"
 	TypeUser        = "User"
@@ -4191,6 +4193,9 @@ type DistrictMutation struct {
 	tenders         map[xid.ID]struct{}
 	removedtenders  map[xid.ID]struct{}
 	clearedtenders  bool
+	plots           map[xid.ID]struct{}
+	removedplots    map[xid.ID]struct{}
+	clearedplots    bool
 	done            bool
 	oldValue        func(context.Context) (*District, error)
 	predicates      []predicate.District
@@ -4805,6 +4810,60 @@ func (m *DistrictMutation) ResetTenders() {
 	m.removedtenders = nil
 }
 
+// AddPlotIDs adds the "plots" edge to the Plot entity by ids.
+func (m *DistrictMutation) AddPlotIDs(ids ...xid.ID) {
+	if m.plots == nil {
+		m.plots = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.plots[ids[i]] = struct{}{}
+	}
+}
+
+// ClearPlots clears the "plots" edge to the Plot entity.
+func (m *DistrictMutation) ClearPlots() {
+	m.clearedplots = true
+}
+
+// PlotsCleared reports if the "plots" edge to the Plot entity was cleared.
+func (m *DistrictMutation) PlotsCleared() bool {
+	return m.clearedplots
+}
+
+// RemovePlotIDs removes the "plots" edge to the Plot entity by IDs.
+func (m *DistrictMutation) RemovePlotIDs(ids ...xid.ID) {
+	if m.removedplots == nil {
+		m.removedplots = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.plots, ids[i])
+		m.removedplots[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedPlots returns the removed IDs of the "plots" edge to the Plot entity.
+func (m *DistrictMutation) RemovedPlotsIDs() (ids []xid.ID) {
+	for id := range m.removedplots {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// PlotsIDs returns the "plots" edge IDs in the mutation.
+func (m *DistrictMutation) PlotsIDs() (ids []xid.ID) {
+	for id := range m.plots {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetPlots resets all changes to the "plots" edge.
+func (m *DistrictMutation) ResetPlots() {
+	m.plots = nil
+	m.clearedplots = false
+	m.removedplots = nil
+}
+
 // Where appends a list predicates to the DistrictMutation builder.
 func (m *DistrictMutation) Where(ps ...predicate.District) {
 	m.predicates = append(m.predicates, ps...)
@@ -5122,7 +5181,7 @@ func (m *DistrictMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *DistrictMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.province != nil {
 		edges = append(edges, district.EdgeProvince)
 	}
@@ -5131,6 +5190,9 @@ func (m *DistrictMutation) AddedEdges() []string {
 	}
 	if m.tenders != nil {
 		edges = append(edges, district.EdgeTenders)
+	}
+	if m.plots != nil {
+		edges = append(edges, district.EdgePlots)
 	}
 	return edges
 }
@@ -5153,15 +5215,24 @@ func (m *DistrictMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case district.EdgePlots:
+		ids := make([]ent.Value, 0, len(m.plots))
+		for id := range m.plots {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *DistrictMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.removedtenders != nil {
 		edges = append(edges, district.EdgeTenders)
+	}
+	if m.removedplots != nil {
+		edges = append(edges, district.EdgePlots)
 	}
 	return edges
 }
@@ -5176,13 +5247,19 @@ func (m *DistrictMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case district.EdgePlots:
+		ids := make([]ent.Value, 0, len(m.removedplots))
+		for id := range m.removedplots {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *DistrictMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedprovince {
 		edges = append(edges, district.EdgeProvince)
 	}
@@ -5191,6 +5268,9 @@ func (m *DistrictMutation) ClearedEdges() []string {
 	}
 	if m.clearedtenders {
 		edges = append(edges, district.EdgeTenders)
+	}
+	if m.clearedplots {
+		edges = append(edges, district.EdgePlots)
 	}
 	return edges
 }
@@ -5205,6 +5285,8 @@ func (m *DistrictMutation) EdgeCleared(name string) bool {
 		return m.clearedcity
 	case district.EdgeTenders:
 		return m.clearedtenders
+	case district.EdgePlots:
+		return m.clearedplots
 	}
 	return false
 }
@@ -5236,8 +5318,706 @@ func (m *DistrictMutation) ResetEdge(name string) error {
 	case district.EdgeTenders:
 		m.ResetTenders()
 		return nil
+	case district.EdgePlots:
+		m.ResetPlots()
+		return nil
 	}
 	return fmt.Errorf("unknown District edge %s", name)
+}
+
+// PlotMutation represents an operation that mutates the Plot nodes in the graph.
+type PlotMutation struct {
+	config
+	op               Op
+	typ              string
+	id               *xid.ID
+	created_at       *time.Time
+	updated_at       *time.Time
+	name             *string
+	color_hex        *string
+	geo_bounds       *[][]float64
+	appendgeo_bounds [][]float64
+	clearedFields    map[string]struct{}
+	district         *xid.ID
+	cleareddistrict  bool
+	done             bool
+	oldValue         func(context.Context) (*Plot, error)
+	predicates       []predicate.Plot
+}
+
+var _ ent.Mutation = (*PlotMutation)(nil)
+
+// plotOption allows management of the mutation configuration using functional options.
+type plotOption func(*PlotMutation)
+
+// newPlotMutation creates new mutation for the Plot entity.
+func newPlotMutation(c config, op Op, opts ...plotOption) *PlotMutation {
+	m := &PlotMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePlot,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPlotID sets the ID field of the mutation.
+func withPlotID(id xid.ID) plotOption {
+	return func(m *PlotMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Plot
+		)
+		m.oldValue = func(ctx context.Context) (*Plot, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Plot.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPlot sets the old Plot of the mutation.
+func withPlot(node *Plot) plotOption {
+	return func(m *PlotMutation) {
+		m.oldValue = func(context.Context) (*Plot, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PlotMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PlotMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Plot entities.
+func (m *PlotMutation) SetID(id xid.ID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *PlotMutation) ID() (id xid.ID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *PlotMutation) IDs(ctx context.Context) ([]xid.ID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []xid.ID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Plot.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *PlotMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *PlotMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the Plot entity.
+// If the Plot object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlotMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *PlotMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *PlotMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *PlotMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the Plot entity.
+// If the Plot object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlotMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *PlotMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetName sets the "name" field.
+func (m *PlotMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *PlotMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Plot entity.
+// If the Plot object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlotMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *PlotMutation) ResetName() {
+	m.name = nil
+}
+
+// SetColorHex sets the "color_hex" field.
+func (m *PlotMutation) SetColorHex(s string) {
+	m.color_hex = &s
+}
+
+// ColorHex returns the value of the "color_hex" field in the mutation.
+func (m *PlotMutation) ColorHex() (r string, exists bool) {
+	v := m.color_hex
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldColorHex returns the old "color_hex" field's value of the Plot entity.
+// If the Plot object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlotMutation) OldColorHex(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldColorHex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldColorHex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldColorHex: %w", err)
+	}
+	return oldValue.ColorHex, nil
+}
+
+// ResetColorHex resets all changes to the "color_hex" field.
+func (m *PlotMutation) ResetColorHex() {
+	m.color_hex = nil
+}
+
+// SetGeoBounds sets the "geo_bounds" field.
+func (m *PlotMutation) SetGeoBounds(f [][]float64) {
+	m.geo_bounds = &f
+	m.appendgeo_bounds = nil
+}
+
+// GeoBounds returns the value of the "geo_bounds" field in the mutation.
+func (m *PlotMutation) GeoBounds() (r [][]float64, exists bool) {
+	v := m.geo_bounds
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGeoBounds returns the old "geo_bounds" field's value of the Plot entity.
+// If the Plot object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlotMutation) OldGeoBounds(ctx context.Context) (v [][]float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGeoBounds is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGeoBounds requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGeoBounds: %w", err)
+	}
+	return oldValue.GeoBounds, nil
+}
+
+// AppendGeoBounds adds f to the "geo_bounds" field.
+func (m *PlotMutation) AppendGeoBounds(f [][]float64) {
+	m.appendgeo_bounds = append(m.appendgeo_bounds, f...)
+}
+
+// AppendedGeoBounds returns the list of values that were appended to the "geo_bounds" field in this mutation.
+func (m *PlotMutation) AppendedGeoBounds() ([][]float64, bool) {
+	if len(m.appendgeo_bounds) == 0 {
+		return nil, false
+	}
+	return m.appendgeo_bounds, true
+}
+
+// ClearGeoBounds clears the value of the "geo_bounds" field.
+func (m *PlotMutation) ClearGeoBounds() {
+	m.geo_bounds = nil
+	m.appendgeo_bounds = nil
+	m.clearedFields[plot.FieldGeoBounds] = struct{}{}
+}
+
+// GeoBoundsCleared returns if the "geo_bounds" field was cleared in this mutation.
+func (m *PlotMutation) GeoBoundsCleared() bool {
+	_, ok := m.clearedFields[plot.FieldGeoBounds]
+	return ok
+}
+
+// ResetGeoBounds resets all changes to the "geo_bounds" field.
+func (m *PlotMutation) ResetGeoBounds() {
+	m.geo_bounds = nil
+	m.appendgeo_bounds = nil
+	delete(m.clearedFields, plot.FieldGeoBounds)
+}
+
+// SetDistrictID sets the "district_id" field.
+func (m *PlotMutation) SetDistrictID(x xid.ID) {
+	m.district = &x
+}
+
+// DistrictID returns the value of the "district_id" field in the mutation.
+func (m *PlotMutation) DistrictID() (r xid.ID, exists bool) {
+	v := m.district
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDistrictID returns the old "district_id" field's value of the Plot entity.
+// If the Plot object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlotMutation) OldDistrictID(ctx context.Context) (v xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDistrictID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDistrictID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDistrictID: %w", err)
+	}
+	return oldValue.DistrictID, nil
+}
+
+// ResetDistrictID resets all changes to the "district_id" field.
+func (m *PlotMutation) ResetDistrictID() {
+	m.district = nil
+}
+
+// ClearDistrict clears the "district" edge to the District entity.
+func (m *PlotMutation) ClearDistrict() {
+	m.cleareddistrict = true
+	m.clearedFields[plot.FieldDistrictID] = struct{}{}
+}
+
+// DistrictCleared reports if the "district" edge to the District entity was cleared.
+func (m *PlotMutation) DistrictCleared() bool {
+	return m.cleareddistrict
+}
+
+// DistrictIDs returns the "district" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// DistrictID instead. It exists only for internal usage by the builders.
+func (m *PlotMutation) DistrictIDs() (ids []xid.ID) {
+	if id := m.district; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetDistrict resets all changes to the "district" edge.
+func (m *PlotMutation) ResetDistrict() {
+	m.district = nil
+	m.cleareddistrict = false
+}
+
+// Where appends a list predicates to the PlotMutation builder.
+func (m *PlotMutation) Where(ps ...predicate.Plot) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the PlotMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *PlotMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Plot, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *PlotMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *PlotMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Plot).
+func (m *PlotMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *PlotMutation) Fields() []string {
+	fields := make([]string, 0, 6)
+	if m.created_at != nil {
+		fields = append(fields, plot.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, plot.FieldUpdatedAt)
+	}
+	if m.name != nil {
+		fields = append(fields, plot.FieldName)
+	}
+	if m.color_hex != nil {
+		fields = append(fields, plot.FieldColorHex)
+	}
+	if m.geo_bounds != nil {
+		fields = append(fields, plot.FieldGeoBounds)
+	}
+	if m.district != nil {
+		fields = append(fields, plot.FieldDistrictID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *PlotMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case plot.FieldCreatedAt:
+		return m.CreatedAt()
+	case plot.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case plot.FieldName:
+		return m.Name()
+	case plot.FieldColorHex:
+		return m.ColorHex()
+	case plot.FieldGeoBounds:
+		return m.GeoBounds()
+	case plot.FieldDistrictID:
+		return m.DistrictID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *PlotMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case plot.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case plot.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case plot.FieldName:
+		return m.OldName(ctx)
+	case plot.FieldColorHex:
+		return m.OldColorHex(ctx)
+	case plot.FieldGeoBounds:
+		return m.OldGeoBounds(ctx)
+	case plot.FieldDistrictID:
+		return m.OldDistrictID(ctx)
+	}
+	return nil, fmt.Errorf("unknown Plot field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PlotMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case plot.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case plot.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case plot.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case plot.FieldColorHex:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetColorHex(v)
+		return nil
+	case plot.FieldGeoBounds:
+		v, ok := value.([][]float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGeoBounds(v)
+		return nil
+	case plot.FieldDistrictID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDistrictID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Plot field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *PlotMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *PlotMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PlotMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Plot numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *PlotMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(plot.FieldGeoBounds) {
+		fields = append(fields, plot.FieldGeoBounds)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *PlotMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PlotMutation) ClearField(name string) error {
+	switch name {
+	case plot.FieldGeoBounds:
+		m.ClearGeoBounds()
+		return nil
+	}
+	return fmt.Errorf("unknown Plot nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *PlotMutation) ResetField(name string) error {
+	switch name {
+	case plot.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case plot.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case plot.FieldName:
+		m.ResetName()
+		return nil
+	case plot.FieldColorHex:
+		m.ResetColorHex()
+		return nil
+	case plot.FieldGeoBounds:
+		m.ResetGeoBounds()
+		return nil
+	case plot.FieldDistrictID:
+		m.ResetDistrictID()
+		return nil
+	}
+	return fmt.Errorf("unknown Plot field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *PlotMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.district != nil {
+		edges = append(edges, plot.EdgeDistrict)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *PlotMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case plot.EdgeDistrict:
+		if id := m.district; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *PlotMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *PlotMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *PlotMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleareddistrict {
+		edges = append(edges, plot.EdgeDistrict)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *PlotMutation) EdgeCleared(name string) bool {
+	switch name {
+	case plot.EdgeDistrict:
+		return m.cleareddistrict
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *PlotMutation) ClearEdge(name string) error {
+	switch name {
+	case plot.EdgeDistrict:
+		m.ClearDistrict()
+		return nil
+	}
+	return fmt.Errorf("unknown Plot unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *PlotMutation) ResetEdge(name string) error {
+	switch name {
+	case plot.EdgeDistrict:
+		m.ResetDistrict()
+		return nil
+	}
+	return fmt.Errorf("unknown Plot edge %s", name)
 }
 
 // ProvinceMutation represents an operation that mutates the Province nodes in the graph.

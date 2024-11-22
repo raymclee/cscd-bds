@@ -161,6 +161,7 @@ type ComplexityRoot struct {
 		CreatedAt  func(childComplexity int) int
 		ID         func(childComplexity int) int
 		Name       func(childComplexity int) int
+		Plots      func(childComplexity int) int
 		ProvCode   func(childComplexity int) int
 		Province   func(childComplexity int) int
 		ProvinceID func(childComplexity int) int
@@ -186,9 +187,12 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		CreateArea   func(childComplexity int, input ent.CreateAreaInput) int
+		CreatePlot   func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
 		CreateTender func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64) int
 		CreateUser   func(childComplexity int, input ent.CreateUserInput) int
+		DeletePlot   func(childComplexity int, id xid.ID) int
 		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdatePlot   func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) int
 		UpdateUser   func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 	}
@@ -198,6 +202,28 @@ type ComplexityRoot struct {
 		HasNextPage     func(childComplexity int) int
 		HasPreviousPage func(childComplexity int) int
 		StartCursor     func(childComplexity int) int
+	}
+
+	Plot struct {
+		ColorHex   func(childComplexity int) int
+		CreatedAt  func(childComplexity int) int
+		District   func(childComplexity int) int
+		DistrictID func(childComplexity int) int
+		GeoBounds  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Name       func(childComplexity int) int
+		UpdatedAt  func(childComplexity int) int
+	}
+
+	PlotConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	PlotEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 
 	Province struct {
@@ -235,6 +261,7 @@ type ComplexityRoot struct {
 		Districts    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) int
 		Node         func(childComplexity int, id xid.ID) int
 		Nodes        func(childComplexity int, ids []xid.ID) int
+		Plots        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.PlotWhereInput) int
 		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) int
 		Session      func(childComplexity int) int
 		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) int
@@ -933,6 +960,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.District.Name(childComplexity), true
 
+	case "District.plots":
+		if e.complexity.District.Plots == nil {
+			break
+		}
+
+		return e.complexity.District.Plots(childComplexity), true
+
 	case "District.provCode":
 		if e.complexity.District.ProvCode == nil {
 			break
@@ -1029,6 +1063,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateArea(childComplexity, args["input"].(ent.CreateAreaInput)), true
 
+	case "Mutation.createPlot":
+		if e.complexity.Mutation.CreatePlot == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createPlot_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreatePlot(childComplexity, args["input"].(ent.CreatePlotInput), args["geoBounds"].([][]float64)), true
+
 	case "Mutation.createTender":
 		if e.complexity.Mutation.CreateTender == nil {
 			break
@@ -1053,6 +1099,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(ent.CreateUserInput)), true
 
+	case "Mutation.deletePlot":
+		if e.complexity.Mutation.DeletePlot == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deletePlot_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeletePlot(childComplexity, args["id"].(xid.ID)), true
+
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
 			break
@@ -1064,6 +1122,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateArea(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateAreaInput)), true
+
+	case "Mutation.updatePlot":
+		if e.complexity.Mutation.UpdatePlot == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updatePlot_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdatePlot(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdatePlotInput), args["geoBounds"].([][]float64)), true
 
 	case "Mutation.updateTender":
 		if e.complexity.Mutation.UpdateTender == nil {
@@ -1116,6 +1186,97 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.PageInfo.StartCursor(childComplexity), true
+
+	case "Plot.colorHex":
+		if e.complexity.Plot.ColorHex == nil {
+			break
+		}
+
+		return e.complexity.Plot.ColorHex(childComplexity), true
+
+	case "Plot.createdAt":
+		if e.complexity.Plot.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Plot.CreatedAt(childComplexity), true
+
+	case "Plot.district":
+		if e.complexity.Plot.District == nil {
+			break
+		}
+
+		return e.complexity.Plot.District(childComplexity), true
+
+	case "Plot.districtID":
+		if e.complexity.Plot.DistrictID == nil {
+			break
+		}
+
+		return e.complexity.Plot.DistrictID(childComplexity), true
+
+	case "Plot.geoBounds":
+		if e.complexity.Plot.GeoBounds == nil {
+			break
+		}
+
+		return e.complexity.Plot.GeoBounds(childComplexity), true
+
+	case "Plot.id":
+		if e.complexity.Plot.ID == nil {
+			break
+		}
+
+		return e.complexity.Plot.ID(childComplexity), true
+
+	case "Plot.name":
+		if e.complexity.Plot.Name == nil {
+			break
+		}
+
+		return e.complexity.Plot.Name(childComplexity), true
+
+	case "Plot.updatedAt":
+		if e.complexity.Plot.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Plot.UpdatedAt(childComplexity), true
+
+	case "PlotConnection.edges":
+		if e.complexity.PlotConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.PlotConnection.Edges(childComplexity), true
+
+	case "PlotConnection.pageInfo":
+		if e.complexity.PlotConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.PlotConnection.PageInfo(childComplexity), true
+
+	case "PlotConnection.totalCount":
+		if e.complexity.PlotConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.PlotConnection.TotalCount(childComplexity), true
+
+	case "PlotEdge.cursor":
+		if e.complexity.PlotEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.PlotEdge.Cursor(childComplexity), true
+
+	case "PlotEdge.node":
+		if e.complexity.PlotEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.PlotEdge.Node(childComplexity), true
 
 	case "Province.adcode":
 		if e.complexity.Province.Adcode == nil {
@@ -1326,6 +1487,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]xid.ID)), true
+
+	case "Query.plots":
+		if e.complexity.Query.Plots == nil {
+			break
+		}
+
+		args, err := ec.field_Query_plots_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.PlotWhereInput)), true
 
 	case "Query.provinces":
 		if e.complexity.Query.Provinces == nil {
@@ -2210,12 +2383,14 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateCountryInput,
 		ec.unmarshalInputCreateCustomerInput,
 		ec.unmarshalInputCreateDistrictInput,
+		ec.unmarshalInputCreatePlotInput,
 		ec.unmarshalInputCreateProvinceInput,
 		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCreateVisitRecordInput,
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputDistrictWhereInput,
+		ec.unmarshalInputPlotWhereInput,
 		ec.unmarshalInputProvinceWhereInput,
 		ec.unmarshalInputTenderWhereInput,
 		ec.unmarshalInputUpdateAreaInput,
@@ -2223,6 +2398,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateCountryInput,
 		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateDistrictInput,
+		ec.unmarshalInputUpdatePlotInput,
 		ec.unmarshalInputUpdateProvinceInput,
 		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
@@ -2802,6 +2978,18 @@ input CreateDistrictInput {
   provinceID: ID!
   cityID: ID
   tenderIDs: [ID!]
+  plotIDs: [ID!]
+}
+"""
+CreatePlotInput is used for create Plot object.
+Input was generated by ent.
+"""
+input CreatePlotInput {
+  createdAt: Time
+  updatedAt: Time
+  name: String!
+  colorHex: String!
+  districtID: ID!
 }
 """
 CreateProvinceInput is used for create Province object.
@@ -3226,6 +3414,7 @@ type District implements Node {
   province: Province!
   city: City
   tenders: [Tender!]
+  plots: [Plot!]
 }
 """
 A connection to a list of items.
@@ -3396,6 +3585,11 @@ input DistrictWhereInput {
   """
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
+  """
+  plots edge predicates
+  """
+  hasPlots: Boolean
+  hasPlotsWith: [PlotWhereInput!]
 }
 """
 An object with an ID.
@@ -3441,6 +3635,140 @@ type PageInfo {
   When paginating forwards, the cursor to continue.
   """
   endCursor: Cursor
+}
+type Plot implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  name: String!
+  colorHex: String!
+  districtID: ID!
+  district: District!
+}
+"""
+A connection to a list of items.
+"""
+type PlotConnection {
+  """
+  A list of edges.
+  """
+  edges: [PlotEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type PlotEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Plot
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+PlotWhereInput is used for filtering Plot objects.
+Input was generated by ent.
+"""
+input PlotWhereInput {
+  not: PlotWhereInput
+  and: [PlotWhereInput!]
+  or: [PlotWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  color_hex field predicates
+  """
+  colorHex: String
+  colorHexNEQ: String
+  colorHexIn: [String!]
+  colorHexNotIn: [String!]
+  colorHexGT: String
+  colorHexGTE: String
+  colorHexLT: String
+  colorHexLTE: String
+  colorHexContains: String
+  colorHexHasPrefix: String
+  colorHexHasSuffix: String
+  colorHexEqualFold: String
+  colorHexContainsFold: String
+  """
+  district_id field predicates
+  """
+  districtID: ID
+  districtIDNEQ: ID
+  districtIDIn: [ID!]
+  districtIDNotIn: [ID!]
+  districtIDGT: ID
+  districtIDGTE: ID
+  districtIDLT: ID
+  districtIDLTE: ID
+  districtIDContains: ID
+  districtIDHasPrefix: ID
+  districtIDHasSuffix: ID
+  districtIDEqualFold: ID
+  districtIDContainsFold: ID
+  """
+  district edge predicates
+  """
+  hasDistrict: Boolean
+  hasDistrictWith: [DistrictWhereInput!]
 }
 type Province implements Node {
   id: ID!
@@ -3763,6 +4091,32 @@ type Query {
     """
     where: DistrictWhereInput
   ): DistrictConnection!
+  plots(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Filtering options for Plots returned from the connection.
+    """
+    where: PlotWhereInput
+  ): PlotConnection!
   provinces(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -4885,6 +5239,19 @@ input UpdateDistrictInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+  addPlotIDs: [ID!]
+  removePlotIDs: [ID!]
+  clearPlots: Boolean
+}
+"""
+UpdatePlotInput is used for update Plot object.
+Input was generated by ent.
+"""
+input UpdatePlotInput {
+  updatedAt: Time
+  name: String
+  colorHex: String
+  districtID: ID
 }
 """
 UpdateProvinceInput is used for update Province object.
@@ -5549,6 +5916,14 @@ type GeoJson {
     input: UpdateTenderInput!
     geoBounds: [[Float!]!]
   ): Tender!
+
+  createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): Plot!
+  updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
+  deletePlot(id: ID!): Plot!
+}
+`, BuiltIn: false},
+	{Name: "../plot.graphql", Input: `extend type Plot {
+  geoBounds: [[Float!]!]
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time
