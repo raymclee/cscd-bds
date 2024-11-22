@@ -113,7 +113,7 @@ function RouteComponent() {
   const [commitMutation, isMutationInFlight] =
     useMutation<plotsDeletePlotMutation>(deletePlotMutation);
   const setPolygonEditor = usePlotStore((state) => state.setPolygonEditor);
-  const { message, modal } = App.useApp();
+  const { modal } = App.useApp();
 
   React.useEffect(() => {
     initMap("map", {});
@@ -195,6 +195,7 @@ function EditorContainer() {
   const provinces = data.node?.areas?.flatMap((area) => area.provinces);
   const navigate = Route.useNavigate();
   const search = Route.useSearch();
+  const selectedDistrict = usePlotStore((state) => state.selectedDistrict);
 
   const treeData: DataNode[] | undefined = React.useMemo(
     () =>
@@ -231,15 +232,15 @@ function EditorContainer() {
         <Typography.Title level={2}>商机</Typography.Title>
       </div>
       <TreeSelect
-        value={search.districtID}
+        value={selectedDistrict || ""}
         variant="outlined"
         className="absolute left-4 top-4 w-64"
-        treeDefaultExpandAll
         treeData={treeData}
         onSelect={(value: string, node) => {
           if (!("adcode" in node)) {
             return;
           }
+          usePlotStore.setState({ selectedDistrict: value });
           districtExplorer.loadAreaNode(
             node.adcode,
             (err: any, areaNode: any) => {
@@ -247,7 +248,6 @@ function EditorContainer() {
                 console.error(err);
                 return;
               }
-              navigate({ search: { districtID: value }, replace: true });
               map?.setZoomAndCenter(
                 15,
                 areaNode.getBounds().getCenter(),
@@ -269,24 +269,28 @@ type Values = {
 };
 
 function Editor() {
-  const search = Route.useSearch();
   const map = useMapStore((state) => state.map);
-  const polygonEditorRef = React.useRef<AMap.PolygonEditor>(
-    new AMap.PolygonEditor(map!),
-  );
+  const polygonEditor = usePlotStore((state) => state.polygonEditor);
   const isAdding = usePlotStore((state) => state.isAdding);
   const isEditing = usePlotStore((state) => state.isEditing);
-  const setIsAdding = usePlotStore((state) => state.setIsAdding);
-  const deletingPlotId = usePlotStore((state) => state.deletingPlot);
+  const districtID = usePlotStore((state) => state.selectedDistrict);
   const [open, setOpen] = React.useState(false);
   const [form] = Form.useForm();
-  const { message, modal } = App.useApp();
+  const { message } = App.useApp();
   const [commitMutation, isMutationInFlight] =
     useMutation<plotsCreatePlotMutation>(createPlotMutation);
   const [commitUpdateMutation, isUpdateMutationInFlight] =
     useMutation<plotsUpdatePlotMutation>(updatePlotMutation);
-  const [commitDeleteMutation, isDeleteMutationInFlight] =
-    useMutation<plotsDeletePlotMutation>(deletePlotMutation);
+
+  React.useEffect(() => {
+    return () => {
+      usePlotStore.setState({
+        isAdding: false,
+        isEditing: false,
+        selectedPlot: null,
+      });
+    };
+  }, []);
 
   function handleNewClick() {
     if (isEditing) {
@@ -297,15 +301,19 @@ function Editor() {
   }
 
   function startAdding() {
-    setIsAdding(true);
+    usePlotStore.setState({ isAdding: true, isEditing: false });
     // polygonEditorRef.current?.setTarget(polygonRef.current);
-    polygonEditorRef.current?.open();
+    polygonEditor?.open();
   }
 
   function endAdding() {
-    setIsAdding(false);
-    polygonEditorRef.current.setTarget(null);
-    polygonEditorRef.current?.close();
+    polygonEditor?.setTarget(null);
+    polygonEditor?.close();
+    usePlotStore.setState({
+      isAdding: false,
+      isEditing: false,
+      selectedPlot: null,
+    });
   }
 
   return (
@@ -326,7 +334,11 @@ function Editor() {
             initialValues={{ modifier: "public" }}
             clearOnDestroy
             onFinish={(values) => {
-              const geoBounds = polygonEditorRef.current
+              if (!districtID) {
+                message.error("請選擇地區");
+                return;
+              }
+              const geoBounds = polygonEditor
                 ?.getTarget()
                 ?.getPath()
                 ?.map((item: any) => [item.lng, item.lat]);
@@ -341,7 +353,7 @@ function Editor() {
                   input: {
                     name: values.name,
                     colorHex: values.colorHex,
-                    districtID: search.districtID,
+                    districtID,
                   },
                   geoBounds: geoBounds,
                 },
@@ -366,10 +378,10 @@ function Editor() {
                       AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
                     label: {
                       content: `
-                <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                  <div class="font-medium text-center text-sm text-wrap">${values?.name}</div>
-                </div>
-                `,
+                        <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                          <div class="font-medium text-center text-sm text-wrap">${values?.name}</div>
+                        </div>
+                        `,
                       offset: new AMap.Pixel(-100, 30),
                     },
                     map,
@@ -377,7 +389,6 @@ function Editor() {
                   });
 
                   setOpen(false);
-                  // map?.add(polygon);
                 },
                 onError(error) {
                   console.error(error);
@@ -405,82 +416,78 @@ function Editor() {
           </Radio.Group>
         </Form.Item>
       </Modal>
-      <div className="absolute right-4 top-4 flex gap-2">
-        {isAdding && (
-          <>
-            <Button
-              icon={<SaveOutlined />}
-              onClick={async () => {
-                if (!search.districtID) {
-                  return;
-                }
-                setOpen(true);
-                return;
-              }}
-            >
-              存储
-            </Button>
-            <Button
-              danger
-              onClick={endAdding}
-              disabled={isMutationInFlight}
-              icon={<StopOutlined />}
-            >
-              取消
-            </Button>
-          </>
-        )}
+      {districtID && (
+        <div className="absolute right-4 top-4 flex gap-2">
+          {isAdding && (
+            <>
+              <Button
+                icon={<SaveOutlined />}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                存储
+              </Button>
+              <Button
+                danger
+                onClick={endAdding}
+                disabled={isMutationInFlight}
+                icon={<StopOutlined />}
+              >
+                取消
+              </Button>
+            </>
+          )}
 
-        {!isEditing && !isAdding && (
-          <Button onClick={handleNewClick} icon={<PlusOutlined />}>
-            新增
-          </Button>
-        )}
+          {!isEditing && !isAdding && (
+            <Button onClick={handleNewClick} icon={<PlusOutlined />}>
+              新增
+            </Button>
+          )}
 
-        {isEditing && (
-          <>
-            <Button
-              icon={<SaveOutlined />}
-              onClick={async () => {
-                if (!search.districtID) {
-                  return;
-                }
-                const { polygonEditor, selectedPlot } = usePlotStore.getState();
-                const geoBounds = polygonEditor
-                  ?.getTarget()
-                  ?.getPath()
-                  ?.map((item: any) => [item.lng, item.lat]);
-                commitUpdateMutation({
-                  variables: {
-                    id: selectedPlot!,
-                    input: {},
-                    geoBounds,
-                  },
-                  onCompleted: () => {
-                    usePlotStore.setState({
-                      selectedPlot: null,
-                      isEditing: false,
-                    });
-                    usePlotStore.getState().polygonEditor?.setTarget(null);
-                    usePlotStore.getState().polygonEditor?.close();
-                    message.success("地塊更新成功");
-                  },
-                });
-              }}
-            >
-              存储
-            </Button>
-            <Button
-              danger
-              onClick={endAdding}
-              disabled={isMutationInFlight}
-              icon={<StopOutlined />}
-            >
-              取消
-            </Button>
-          </>
-        )}
-      </div>
+          {isEditing && (
+            <>
+              <Button
+                icon={<SaveOutlined />}
+                onClick={async () => {
+                  const { polygonEditor, selectedPlot } =
+                    usePlotStore.getState();
+                  const geoBounds = polygonEditor
+                    ?.getTarget()
+                    ?.getPath()
+                    ?.map((item: any) => [item.lng, item.lat]);
+                  commitUpdateMutation({
+                    variables: {
+                      id: selectedPlot!,
+                      input: {},
+                      geoBounds,
+                    },
+                    onCompleted: () => {
+                      usePlotStore.setState({
+                        selectedPlot: null,
+                        isEditing: false,
+                      });
+                      usePlotStore.getState().polygonEditor?.setTarget(null);
+                      usePlotStore.getState().polygonEditor?.close();
+                      message.success("地塊更新成功");
+                    },
+                  });
+                }}
+              >
+                存储
+              </Button>
+              <Button
+                danger
+                onClick={endAdding}
+                disabled={isMutationInFlight}
+                icon={<StopOutlined />}
+              >
+                取消
+              </Button>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }

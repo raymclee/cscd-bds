@@ -6,10 +6,9 @@ type State = {
   selectedPlot: string | null;
   polygonEditor: AMap.PolygonEditor | null;
   deletingPlot: string | null;
+  selectedDistrict: string | null;
 };
 type Action = {
-  setIsAdding: (isAdding: boolean) => void;
-  setIsEditing: (isEditing: boolean) => void;
   setSelectedPlot: (selectedPlot: string | null) => void;
   setPolygonEditor: (polygonEditor: AMap.PolygonEditor) => void;
 };
@@ -20,8 +19,7 @@ export const usePlotStore = create<State & Action>()((set) => ({
   selectedPlot: null,
   polygonEditor: null,
   deletingPlot: null,
-  setIsAdding: (isAdding) => set({ isAdding }),
-  setIsEditing: (isEditing) => set({ isEditing }),
+  selectedDistrict: null,
   setSelectedPlot: (selectedPlot) => set({ selectedPlot }),
   setPolygonEditor: (polygonEditor) => set({ polygonEditor }),
 }));

@@ -21,9 +21,4 @@ export const Route = createFileRoute("/__auth/__portal/portal/plots")({
       userId: context.session.userId,
     });
   },
-  validateSearch: (search) => {
-    return {
-      districtID: (search.districtID as string) || "",
-    };
-  },
 });

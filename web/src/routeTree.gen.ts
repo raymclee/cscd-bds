@@ -16,7 +16,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as authImport } from './routes/__auth'
 import { Route as authdashboardImport } from './routes/__auth/__dashboard'
 import { Route as authdashboardmapImport } from './routes/__auth/__dashboard/__map'
-import { Route as authdashboard1Import } from './routes/__auth/__dashboard/1'
 import { Route as authportalPortalIndexImport } from './routes/__auth/__portal/portal/index'
 import { Route as authdashboardmapIndexImport } from './routes/__auth/__dashboard/__map/index'
 import { Route as authportalPortalPlotsImport } from './routes/__auth/__portal/portal/plots'
@@ -79,12 +78,6 @@ const authdashboardRoute = authdashboardImport.update({
 
 const authdashboardmapRoute = authdashboardmapImport.update({
   id: '/__map',
-  getParentRoute: () => authdashboardRoute,
-} as any)
-
-const authdashboard1Route = authdashboard1Import.update({
-  id: '/1',
-  path: '/1',
   getParentRoute: () => authdashboardRoute,
 } as any)
 
@@ -225,13 +218,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalLazyImport
       parentRoute: typeof authImport
     }
-    '/__auth/__dashboard/1': {
-      id: '/__auth/__dashboard/1'
-      path: '/1'
-      fullPath: '/1'
-      preLoaderRoute: typeof authdashboard1Import
-      parentRoute: typeof authdashboardImport
-    }
     '/__auth/__dashboard/__map': {
       id: '/__auth/__dashboard/__map'
       path: ''
@@ -323,12 +309,10 @@ const authdashboardmapRouteWithChildren =
   authdashboardmapRoute._addFileChildren(authdashboardmapRouteChildren)
 
 interface authdashboardRouteChildren {
-  authdashboard1Route: typeof authdashboard1Route
   authdashboardmapRoute: typeof authdashboardmapRouteWithChildren
 }
 
 const authdashboardRouteChildren: authdashboardRouteChildren = {
-  authdashboard1Route: authdashboard1Route,
   authdashboardmapRoute: authdashboardmapRouteWithChildren,
 }
 
@@ -375,7 +359,6 @@ export interface FileRoutesByFullPath {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
-  '/1': typeof authdashboard1Route
   '/edit': typeof authdashboardmapEditRoute
   '/home': typeof authdashboardmapHomeRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
@@ -392,7 +375,6 @@ export interface FileRoutesByTo {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
-  '/1': typeof authdashboard1Route
   '/edit': typeof authdashboardmapEditRoute
   '/home': typeof authdashboardmapHomeRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
@@ -412,7 +394,6 @@ export interface FileRoutesById {
   '/logout': typeof LogoutLazyRoute
   '/__auth/__dashboard': typeof authdashboardRouteWithChildren
   '/__auth/__portal': typeof authportalLazyRouteWithChildren
-  '/__auth/__dashboard/1': typeof authdashboard1Route
   '/__auth/__dashboard/__map': typeof authdashboardmapRouteWithChildren
   '/__auth/__dashboard/__map/edit': typeof authdashboardmapEditRoute
   '/__auth/__dashboard/__map/home': typeof authdashboardmapHomeRoute
@@ -432,7 +413,6 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
-    | '/1'
     | '/edit'
     | '/home'
     | '/portal/plots'
@@ -448,7 +428,6 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
-    | '/1'
     | '/edit'
     | '/home'
     | '/portal/plots'
@@ -466,7 +445,6 @@ export interface FileRouteTypes {
     | '/logout'
     | '/__auth/__dashboard'
     | '/__auth/__portal'
-    | '/__auth/__dashboard/1'
     | '/__auth/__dashboard/__map'
     | '/__auth/__dashboard/__map/edit'
     | '/__auth/__dashboard/__map/home'
@@ -530,7 +508,6 @@ export const routeTree = rootRoute
       "filePath": "__auth/__dashboard.tsx",
       "parent": "/__auth",
       "children": [
-        "/__auth/__dashboard/1",
         "/__auth/__dashboard/__map"
       ]
     },
@@ -545,10 +522,6 @@ export const routeTree = rootRoute
         "/__auth/__portal/portal/tenders/$id",
         "/__auth/__portal/portal/tenders/"
       ]
-    },
-    "/__auth/__dashboard/1": {
-      "filePath": "__auth/__dashboard/1.tsx",
-      "parent": "/__auth/__dashboard"
     },
     "/__auth/__dashboard/__map": {
       "filePath": "__auth/__dashboard/__map.tsx",
