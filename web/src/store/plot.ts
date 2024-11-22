@@ -33,7 +33,8 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
   setSelectedPlot: (selectedPlot) => set({ selectedPlot }),
   setPolygonEditor: (polygonEditor) => set({ polygonEditor }),
   createPlot(plot, commitMutation) {
-    const { map, polygonEditor } = useMapStore.getState();
+    const { map } = useMapStore.getState();
+
     const polygon = new AMap.Polygon();
     polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
     polygon.setOptions({
@@ -61,15 +62,18 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
 
     label.on("click", () => {
       const center = polygon.getBounds()?.getCenter();
-      map?.setZoomAndCenter(
-        16,
-        [center?.getLng() || 0, center?.getLat() || 0],
-        false,
-        600,
-      );
+      if (center?.lng && center?.lat) {
+        map?.setZoomAndCenter(
+          16,
+          [center?.getLng(), center?.getLat()],
+          false,
+          600,
+        );
+      }
     });
 
     polygon.on("dblclick", (e) => {
+      const { polygonEditor } = get();
       polygonEditor?.setTarget(polygon);
       polygonEditor?.open();
       usePlotStore.setState({ selectedPlot: plot?.id, isEditing: true });

@@ -175,7 +175,6 @@ function EditorContainer() {
   );
 
   React.useEffect(() => {
-    console.log("running");
     for (const plot of data.plots?.edges?.map((e) => e?.node) || []) {
       createPlot(plot, commitMutation);
     }
@@ -283,7 +282,10 @@ function Editor() {
         open={open}
         title="請輸入地塊名稱"
         okButtonProps={{ autoFocus: true, htmlType: "submit" }}
-        onCancel={() => setOpen(false)}
+        onCancel={() => {
+          setOpen(false);
+          endAdding();
+        }}
         destroyOnClose
         modalRender={(dom) => (
           <Form<Values>
@@ -319,33 +321,6 @@ function Editor() {
                   endAdding();
                   message.success("地塊新增成功");
                   createPlot(res.createPlot, commitDeleteMutation);
-                  // const polygon = new AMap.Polygon();
-                  // polygon.setPath(
-                  //   res.createPlot.geoBounds as AMap.LngLatLike[],
-                  // );
-                  // polygon.setOptions({
-                  //   fillColor: values.colorHex,
-                  //   fillOpacity: 0.35,
-                  //   strokeColor: values.colorHex,
-                  //   strokeWeight: 2,
-                  // });
-                  // polygon.setMap(map);
-                  // // @ts-expect-error
-                  // const label = new AMapUI.SimpleMarker({
-                  //   iconStyle:
-                  //     // @ts-expect-error
-                  //     AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-                  //   label: {
-                  //     content: `
-                  //       <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                  //         <div class="font-medium text-center text-sm text-wrap">${values?.name}</div>
-                  //       </div>
-                  //       `,
-                  //     offset: new AMap.Pixel(-100, 30),
-                  //   },
-                  //   map,
-                  //   position: polygon.getBounds()?.getCenter(),
-                  // });
 
                   setOpen(false);
                 },
