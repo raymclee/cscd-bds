@@ -77,6 +77,7 @@ const query = graphql`
             contractor
             designUnit
             tenderForm
+            keyProject
             contractForm
             tenderingAgency
             consultingFirm
@@ -524,6 +525,7 @@ function RouteComponent() {
             fillColor: tenderStatusBoundColor(tender!),
             strokeColor: tenderStatusBoundColor(tender!),
             fillOpacity: 0.35,
+            strokeWeight: 2,
           });
           polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
           const pBounds = polygon.getBounds();
@@ -610,11 +612,11 @@ function RouteComponent() {
               tender.geoCoordinate?.coordinates[1],
             ),
             radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
-            strokeColor: colors[i],
+            fillColor: tenderStatusBoundColor(tender!),
+            strokeColor: tenderStatusBoundColor(tender!),
+            fillOpacity: 0.35,
             strokeWeight: 2,
             strokeOpacity: 1,
-            fillColor: colors[i],
-            fillOpacity: 0.5,
             zIndex: 15,
             bubble: true,
             cursor: "pointer",
