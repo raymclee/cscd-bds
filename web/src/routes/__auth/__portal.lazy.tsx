@@ -42,9 +42,7 @@ function RouteComponent() {
         <Building2 size={16} />,
       ),
       getItem(
-        <Link to="/portal/plots" search={{ districtID: "" }}>
-          區域地塊
-        </Link>,
+        <Link to="/portal/plots">區域地塊</Link>,
         "plots",
         <Map size={16} />,
       ),
