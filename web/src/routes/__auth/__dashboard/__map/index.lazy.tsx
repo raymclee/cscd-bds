@@ -1133,7 +1133,14 @@ function getDistrictZoomLevel(id: string) {
   return zoom;
 }
 
-const statusItems = ["跟进中", "停止跟进", "估价", "已交标", "中标", "失标"];
+const statusItems = [
+  { status: "跟进中", value: 1 },
+  { status: "停止跟进", value: 2 },
+  { status: "估价", value: 5 },
+  { status: "已交标", value: 6 },
+  { status: "中标", value: 3 },
+  { status: "失标", value: 4 },
+];
 
 function AmountBoard() {
   const selectedArea = useMapStore((state) => state.selectedArea);
@@ -1215,11 +1222,11 @@ function AmountBoard() {
         <div className="mt-6">
           <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
           <div className="mt-2 space-y-4 text-sm text-brand">
-            {statusItems.map((status, i) => {
-              const tends = tenders?.filter((t) => t?.status === i + 1);
+            {statusItems.map(({ status, value }) => {
+              const tends = tenders?.filter((t) => t?.status === value);
               const percentage =
                 tends?.length && tenders?.length
-                  ? Math.floor((tends?.length / tenders?.length) * 100)
+                  ? Math.round((tends?.length / tenders?.length) * 100)
                   : 0;
               const count = tends?.length || 0;
               return (
