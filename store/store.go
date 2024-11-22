@@ -28,11 +28,10 @@ func Open(databaseUrl string) *ent.Client {
 	drv := entsql.OpenDB(dialect.Postgres, db)
 	o := []ent.Option{
 		ent.Driver(drv),
-		ent.Debug(),
 	}
-	// if isDev {
-	// 	o = append(o, ent.Debug())
-	// }
+	if !config.IsProd {
+		o = append(o, ent.Debug())
+	}
 	return ent.NewClient(o...)
 }
 
