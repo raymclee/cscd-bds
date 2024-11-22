@@ -19,8 +19,6 @@ import { Route as authdashboardmapImport } from './routes/__auth/__dashboard/__m
 import { Route as authportalPortalIndexImport } from './routes/__auth/__portal/portal/index'
 import { Route as authdashboardmapIndexImport } from './routes/__auth/__dashboard/__map/index'
 import { Route as authportalPortalPlotsImport } from './routes/__auth/__portal/portal/plots'
-import { Route as authdashboardmapHomeImport } from './routes/__auth/__dashboard/__map/home'
-import { Route as authdashboardmapEditImport } from './routes/__auth/__dashboard/__map/edit'
 import { Route as authportalPortalTendersIndexImport } from './routes/__auth/__portal/portal/tenders.index'
 import { Route as authportalPortalTendersIdImport } from './routes/__auth/__portal/portal/tenders.$id'
 
@@ -132,22 +130,6 @@ const authportalPortalPlotsRoute = authportalPortalPlotsImport
     import('./routes/__auth/__portal/portal/plots.lazy').then((d) => d.Route),
   )
 
-const authdashboardmapHomeRoute = authdashboardmapHomeImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => authdashboardmapRoute,
-} as any)
-
-const authdashboardmapEditRoute = authdashboardmapEditImport
-  .update({
-    id: '/edit',
-    path: '/edit',
-    getParentRoute: () => authdashboardmapRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/__map/edit.lazy').then((d) => d.Route),
-  )
-
 const authportalPortalTendersIndexRoute = authportalPortalTendersIndexImport
   .update({
     id: '/portal/tenders/',
@@ -225,20 +207,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authdashboardmapImport
       parentRoute: typeof authdashboardImport
     }
-    '/__auth/__dashboard/__map/edit': {
-      id: '/__auth/__dashboard/__map/edit'
-      path: '/edit'
-      fullPath: '/edit'
-      preLoaderRoute: typeof authdashboardmapEditImport
-      parentRoute: typeof authdashboardmapImport
-    }
-    '/__auth/__dashboard/__map/home': {
-      id: '/__auth/__dashboard/__map/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof authdashboardmapHomeImport
-      parentRoute: typeof authdashboardmapImport
-    }
     '/__auth/__portal/portal/plots': {
       id: '/__auth/__portal/portal/plots'
       path: '/portal/plots'
@@ -294,14 +262,10 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface authdashboardmapRouteChildren {
-  authdashboardmapEditRoute: typeof authdashboardmapEditRoute
-  authdashboardmapHomeRoute: typeof authdashboardmapHomeRoute
   authdashboardmapIndexRoute: typeof authdashboardmapIndexRoute
 }
 
 const authdashboardmapRouteChildren: authdashboardmapRouteChildren = {
-  authdashboardmapEditRoute: authdashboardmapEditRoute,
-  authdashboardmapHomeRoute: authdashboardmapHomeRoute,
   authdashboardmapIndexRoute: authdashboardmapIndexRoute,
 }
 
@@ -359,8 +323,6 @@ export interface FileRoutesByFullPath {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
-  '/edit': typeof authdashboardmapEditRoute
-  '/home': typeof authdashboardmapHomeRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/customers': typeof authportalPortalCustomersLazyRoute
   '/portal/visit-records': typeof authportalPortalVisitRecordsLazyRoute
@@ -375,8 +337,6 @@ export interface FileRoutesByTo {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
-  '/edit': typeof authdashboardmapEditRoute
-  '/home': typeof authdashboardmapHomeRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/customers': typeof authportalPortalCustomersLazyRoute
   '/portal/visit-records': typeof authportalPortalVisitRecordsLazyRoute
@@ -395,8 +355,6 @@ export interface FileRoutesById {
   '/__auth/__dashboard': typeof authdashboardRouteWithChildren
   '/__auth/__portal': typeof authportalLazyRouteWithChildren
   '/__auth/__dashboard/__map': typeof authdashboardmapRouteWithChildren
-  '/__auth/__dashboard/__map/edit': typeof authdashboardmapEditRoute
-  '/__auth/__dashboard/__map/home': typeof authdashboardmapHomeRoute
   '/__auth/__portal/portal/plots': typeof authportalPortalPlotsRoute
   '/__auth/__portal/portal/customers': typeof authportalPortalCustomersLazyRoute
   '/__auth/__portal/portal/visit-records': typeof authportalPortalVisitRecordsLazyRoute
@@ -413,8 +371,6 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
-    | '/edit'
-    | '/home'
     | '/portal/plots'
     | '/portal/customers'
     | '/portal/visit-records'
@@ -428,8 +384,6 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
-    | '/edit'
-    | '/home'
     | '/portal/plots'
     | '/portal/customers'
     | '/portal/visit-records'
@@ -446,8 +400,6 @@ export interface FileRouteTypes {
     | '/__auth/__dashboard'
     | '/__auth/__portal'
     | '/__auth/__dashboard/__map'
-    | '/__auth/__dashboard/__map/edit'
-    | '/__auth/__dashboard/__map/home'
     | '/__auth/__portal/portal/plots'
     | '/__auth/__portal/portal/customers'
     | '/__auth/__portal/portal/visit-records'
@@ -527,18 +479,8 @@ export const routeTree = rootRoute
       "filePath": "__auth/__dashboard/__map.tsx",
       "parent": "/__auth/__dashboard",
       "children": [
-        "/__auth/__dashboard/__map/edit",
-        "/__auth/__dashboard/__map/home",
         "/__auth/__dashboard/__map/"
       ]
-    },
-    "/__auth/__dashboard/__map/edit": {
-      "filePath": "__auth/__dashboard/__map/edit.tsx",
-      "parent": "/__auth/__dashboard/__map"
-    },
-    "/__auth/__dashboard/__map/home": {
-      "filePath": "__auth/__dashboard/__map/home.tsx",
-      "parent": "/__auth/__dashboard/__map"
     },
     "/__auth/__portal/portal/plots": {
       "filePath": "__auth/__portal/portal/plots.tsx",

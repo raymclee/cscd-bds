@@ -12,14 +12,22 @@ import {
 import { fixAmount } from "~/lib/helper";
 import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 import { useMapStore } from "~/store/map";
+import {
+  MapIndexPageDistrictQuery,
+  MapIndexPageDistrictQuery$data,
+} from "__generated__/MapIndexPageDistrictQuery.graphql";
+import { fetchQuery, useRelayEnvironment } from "react-relay";
+import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
 
 export function DashboardTenderList({
   data,
 }: {
   data: MapIndexPageQuery$data;
 }) {
+  const navigateToTender = useMapStore((state) => state.navigateToTender);
   const selectedArea = useMapStore((state) => state.selectedArea);
   const currentAreaNode = useMapStore((state) => state.currentAreaNode);
+  const environment = useRelayEnvironment();
 
   const nodeProps = currentAreaNode?.getProps();
 
@@ -44,6 +52,7 @@ export function DashboardTenderList({
       : selectedArea
         ? selectedArea?.tenders
         : allTenders;
+
   return (
     <Card
       className={cn(
@@ -76,7 +85,25 @@ export function DashboardTenderList({
             </TableHeader>
             <TableBody className="text-xs text-white">
               {tenders?.map((tender, i) => (
-                <TableRow key={tender?.id}>
+                <TableRow
+                  className="cursor-pointer"
+                  key={tender?.id}
+                  onClick={async () => {
+                    const districts =
+                      await fetchQuery<MapIndexPageDistrictQuery>(
+                        environment,
+                        districtsQuery,
+                        {
+                          adcode: tender?.district.adcode!,
+                        },
+                      ).toPromise();
+                    const plots =
+                      districts?.districts.edges?.flatMap(
+                        (e) => e?.node?.plots,
+                      ) || [];
+                    navigateToTender(tender, plots);
+                  }}
+                >
                   <TableCell className="text-center">{i + 1}</TableCell>
                   <TableCell>{tender?.name}</TableCell>
                   <TableCell>{tender?.area.name}</TableCell>

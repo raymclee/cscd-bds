@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a8593981f5bd3cbb87e157627afbbc43>>
+ * @generated SignedSource<<4daa61ec7ca80c475a318b5ba6f53739>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,13 +28,14 @@ export type MapIndexPageQuery$data = {
           };
           readonly id: string;
           readonly name: string;
-        }> | null | undefined;
+        } | null | undefined> | null | undefined;
         readonly tenders: ReadonlyArray<{
           readonly area: {
             readonly name: string;
           };
           readonly city: {
             readonly adcode: number;
+            readonly name: string;
           } | null | undefined;
           readonly competitivePartnershipRating: number | null | undefined;
           readonly competitivePartnershipRatingOverview: string | null | undefined;
@@ -53,6 +54,7 @@ export type MapIndexPageQuery$data = {
           readonly discoveryDate: any;
           readonly district: {
             readonly adcode: number;
+            readonly name: string;
           };
           readonly estimatedAmount: number | null | undefined;
           readonly facadeConsultant: string | null | undefined;
@@ -67,6 +69,7 @@ export type MapIndexPageQuery$data = {
           readonly name: string;
           readonly province: {
             readonly adcode: number;
+            readonly name: string;
           };
           readonly sizeAndValueRating: number | null | undefined;
           readonly sizeAndValueRatingOverview: string | null | undefined;
@@ -330,6 +333,7 @@ v32 = [
   (v1/*: any*/)
 ],
 v33 = [
+  (v1/*: any*/),
   (v6/*: any*/)
 ],
 v34 = {
@@ -389,6 +393,7 @@ v41 = [
   (v0/*: any*/)
 ],
 v42 = [
+  (v1/*: any*/),
   (v6/*: any*/),
   (v0/*: any*/)
 ];
@@ -424,7 +429,12 @@ return {
                 "plural": false,
                 "selections": [
                   (v0/*: any*/),
-                  (v1/*: any*/),
+                  {
+                    "kind": "RequiredField",
+                    "field": (v1/*: any*/),
+                    "action": "NONE",
+                    "path": "areas.edges.node.name"
+                  },
                   (v2/*: any*/),
                   (v3/*: any*/),
                   (v5/*: any*/),
@@ -442,7 +452,7 @@ return {
                       {
                         "kind": "RequiredField",
                         "field": (v5/*: any*/),
-                        "action": "THROW",
+                        "action": "NONE",
                         "path": "areas.edges.node.provinces.center"
                       }
                     ],
@@ -512,7 +522,10 @@ return {
                         "kind": "LinkedField",
                         "name": "province",
                         "plural": false,
-                        "selections": (v33/*: any*/),
+                        "selections": [
+                          (v6/*: any*/),
+                          (v1/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -694,7 +707,11 @@ return {
                         "kind": "LinkedField",
                         "name": "province",
                         "plural": false,
-                        "selections": (v42/*: any*/),
+                        "selections": [
+                          (v6/*: any*/),
+                          (v1/*: any*/),
+                          (v0/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -761,16 +778,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "05eec7157bd0f6c1d26d183598384b4f",
+    "cacheID": "29f9ea8828f0deeadaac69dc3722d3ef",
     "id": null,
     "metadata": {},
     "name": "MapIndexPageQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageQuery {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        createdAt\n        center {\n          coordinates\n        }\n        provinces {\n          id\n          name\n          adcode\n          center {\n            coordinates\n          }\n        }\n        tenders {\n          id\n          name\n          status\n          createdAt\n          estimatedAmount\n          customer {\n            ownerType\n            id\n          }\n          images\n          fullAddress\n          tenderDate\n          discoveryDate\n          contractor\n          designUnit\n          tenderForm\n          keyProject\n          contractForm\n          tenderingAgency\n          consultingFirm\n          facadeConsultant\n          timeLimitRating\n          sizeAndValueRating\n          creditAndPaymentRating\n          customerRelationshipRating\n          competitivePartnershipRating\n          timeLimitRatingOverview\n          sizeAndValueRatingOverview\n          creditAndPaymentRatingOverview\n          customerRelationshipRatingOverview\n          competitivePartnershipRatingOverview\n          area {\n            name\n            id\n          }\n          province {\n            adcode\n            id\n          }\n          city {\n            adcode\n            id\n          }\n          district {\n            adcode\n            id\n          }\n          geoCoordinate {\n            coordinates\n          }\n          geoBounds\n          visitRecords {\n            visitType\n            nextStep\n            commPeople\n            commContent\n            date\n            customer {\n              name\n              id\n            }\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query MapIndexPageQuery {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        createdAt\n        center {\n          coordinates\n        }\n        provinces {\n          id\n          name\n          adcode\n          center {\n            coordinates\n          }\n        }\n        tenders {\n          id\n          name\n          status\n          createdAt\n          estimatedAmount\n          customer {\n            ownerType\n            id\n          }\n          images\n          fullAddress\n          tenderDate\n          discoveryDate\n          contractor\n          designUnit\n          tenderForm\n          keyProject\n          contractForm\n          tenderingAgency\n          consultingFirm\n          facadeConsultant\n          timeLimitRating\n          sizeAndValueRating\n          creditAndPaymentRating\n          customerRelationshipRating\n          competitivePartnershipRating\n          timeLimitRatingOverview\n          sizeAndValueRatingOverview\n          creditAndPaymentRatingOverview\n          customerRelationshipRatingOverview\n          competitivePartnershipRatingOverview\n          area {\n            name\n            id\n          }\n          province {\n            adcode\n            name\n            id\n          }\n          city {\n            name\n            adcode\n            id\n          }\n          district {\n            name\n            adcode\n            id\n          }\n          geoCoordinate {\n            coordinates\n          }\n          geoBounds\n          visitRecords {\n            visitType\n            nextStep\n            commPeople\n            commContent\n            date\n            customer {\n              name\n              id\n            }\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6de88e91ad14afb423940af625de4130";
+(node as any).hash = "da7c5f90cd8f3a817248f2d4d47a230c";
 
 export default node;

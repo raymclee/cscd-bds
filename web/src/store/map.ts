@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { Area as GraphqlArea, Tender } from "~/graphql/graphql";
-import { getDistrictColor } from "~/lib/color";
+import { Area as GraphqlArea, Plot, Tender } from "~/graphql/graphql";
+import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
 
 // export type District = {
 //   id: string;
@@ -97,7 +97,7 @@ type MapState = {
   // selectedDistrict: Area | null;
   selectedArea: StoreArea | null;
   // districts: District[];
-  makers: AMap.Marker[];
+  markers: AMap.Marker[];
   currentAreaNode: any | null;
   satelliteLayer: AMap.TileLayer | null;
   districtExplorer: any;
@@ -109,6 +109,7 @@ type MapState = {
   tenderListHovering: string | number;
   selectedTender: Partial<Tender> | null;
   mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
+  tenderViewTender: Tender | null;
 };
 
 type Action = {
@@ -120,7 +121,6 @@ type Action = {
   setDashboardVisible: (visible: boolean) => void;
   pop: (i: number) => void;
   push: (navigation: Navigation) => void;
-  switch2AreaNode: (adcode: number) => void;
   setPolygonEditor: (editor: AMap.PolygonEditor) => void;
   renderArea: (district: StoreArea) => void;
   renderAreas: () => void;
@@ -131,7 +131,7 @@ type Action = {
   setTenderList: (tenders: Array<Partial<Tender>>) => void;
   setTenderListHovering: (tenderId: string | number) => void;
   setSelectedTender: (tender: Partial<Tender> | null) => void;
-  // navigate:
+  navigateToTender: (tender: Tender, plots: Partial<Plot>[]) => void;
 };
 
 export const useMapStore = create<MapState & Action>()((set, get) => ({
@@ -141,7 +141,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   districtExplorer: null,
   polygonEditor: null,
   currentAreaNode: null,
-  makers: [],
+  markers: [],
   mapCircles: [],
   navigations: [],
   breadcrumb: [],
@@ -150,6 +150,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   tenderList: [],
   tenderListHovering: 0,
   selectedTender: null,
+  tenderViewTender: null,
   // districts,
   initMap: (container, opts) => {
     const map = new AMap.Map(container, { ...opts });
@@ -212,84 +213,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   setPolygonEditor: (editor) => {
     set({ polygonEditor: editor });
   },
-  switch2AreaNode(adcode) {
-    const { districtExplorer, map, satelliteLayer, makers } = get();
-    map?.removeLayer(satelliteLayer!);
-    map?.remove(makers);
 
-    districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      set({ currentAreaNode: areaNode });
-      districtExplorer.setAreaNodesForLocating([areaNode]);
-      districtExplorer.setHoverFeature(null);
-
-      const bounds = areaNode.getBounds();
-      map?.setBounds(bounds, false, [140, 0, 20, 20]);
-
-      districtExplorer.clearFeaturePolygons();
-
-      districtExplorer.renderSubFeatures(
-        areaNode,
-        (feature: any, i: number) => {
-          const props = feature.properties;
-
-          // if (!topLevel) {
-          //   renderMarker(props);
-          // }
-
-          // const colorIndex = topLevel ? 0 : i;
-          // const strokeColor = getDistrictColor(
-          //   feature.properties.adcode,
-          //   colorIndex,
-          // );
-          // const fillColor = getDistrictColor(
-          //   feature.properties.adcode,
-          //   colorIndex,
-          // );
-          const strokeColor = "#3cb8e6";
-          const fillColor = "#3cb8e6";
-
-          return {
-            cursor: "default",
-            bubble: true,
-            strokeColor: strokeColor, //线颜色
-            strokeOpacity: 1, //线透明度
-            strokeWeight: 1, //线宽
-            fillColor: fillColor, //填充色
-            fillOpacity: 0.35, //填充透明度
-          };
-        },
-      );
-
-      const props = areaNode.getProps();
-
-      if (props.adcode !== 100000) {
-        get().push({ name: props.name, adcode: props.adcode });
-      }
-
-      //绘制父区域;
-      districtExplorer.renderParentFeature(areaNode, {
-        cursor: "default",
-        bubble: true,
-        // strokeColor: "white", //线颜色
-        strokeColor:
-          props.adcode !== 100000 && areaNode.getSubFeatures().length
-            ? ""
-            : "#3cb8e6", //线颜色
-        strokeOpacity: 1, //线透明度
-        strokeWeight: 2, //线宽
-        // fillColor, //填充色
-        fillColor: "",
-        //   fillColor: "black",
-        //   fillColor: areaNode.getParentFeature() ? "black" : null,
-        fillOpacity: 0.35, //填充透明度
-      });
-    });
-  },
   renderAreas() {
     // const { districts, renderArea } = get();
     // renderArea({ adcode: [100000] });
@@ -297,7 +221,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   renderArea(area) {
     set({ dashboardVisible: false });
     const map = get().map;
-    map?.remove(get().makers);
+    map?.remove(get().markers);
 
     const districtExplorer = get().districtExplorer;
     districtExplorer.clearFeaturePolygons();
@@ -391,7 +315,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   onFeatureOrMarkerClick(props) {},
   addMarker(marker) {
     set((state) => {
-      return { makers: [...state.makers, marker] };
+      return { markers: [...state.markers, marker] };
     });
   },
   setTenderListVisible(visible) {
@@ -405,6 +329,157 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   },
   setSelectedTender(tender) {
     set({ selectedTender: tender });
+  },
+  async navigateToTender(tender, plots) {
+    const { map, districtExplorer, satelliteLayer, markers } = get();
+
+    for (const marker of markers) {
+      marker.remove();
+    }
+
+    districtExplorer.clearFeaturePolygons();
+
+    const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
+
+    for (const plot of plots) {
+      const polygon = new AMap.Polygon();
+
+      polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
+      polygon.setOptions({
+        fillColor: plot?.colorHex,
+        fillOpacity: 0.35,
+        strokeColor: plot?.colorHex,
+        strokeWeight: 2,
+      });
+
+      // @ts-expect-error
+      const label = new AMapUI.SimpleMarker({
+        // @ts-expect-error
+        iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+        label: {
+          content: `
+          <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+            <div class="font-medium text-center text-sm text-wrap">${plot?.name}</div>
+          </div>
+          `,
+          offset: new AMap.Pixel(-100, 30),
+        },
+        position: polygon.getBounds()?.getCenter(),
+      });
+
+      mapCircles.push(polygon);
+      mapCircles.push(label);
+    }
+
+    if (tender.geoBounds) {
+      const polygon = new AMap.Polygon();
+      polygon.setOptions({
+        fillColor: tenderStatusBoundColor(tender!),
+        strokeColor: tenderStatusBoundColor(tender!),
+        fillOpacity: 0.35,
+        strokeWeight: 2,
+      });
+      polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
+      const pBounds = polygon.getBounds();
+      const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+      // @ts-expect-error
+      const label = new AMapUI.SimpleMarker({
+        // @ts-expect-error
+        iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+        label: {
+          content: `
+          <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+            <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+          </div>
+          `,
+          offset: new AMap.Pixel(-80, offsetY),
+        },
+        map,
+        position: pBounds?.getCenter(),
+        extData: {
+          tenderId: tender.id,
+        },
+      });
+
+      label.on("mouseover", () => {
+        label.setOptions({ zIndex: 13 });
+      });
+      label.on("mouseout", () => {
+        label.setOptions({ zIndex: 12 });
+      });
+      mapCircles.push(polygon);
+      mapCircles.push(label);
+    } else if (tender.geoCoordinate?.coordinates) {
+      const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+      // @ts-expect-error
+      const label = new AMapUI.SimpleMarker({
+        // @ts-expect-error
+        iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+        label: {
+          content: `
+          <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+            <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+          </div>
+          `,
+          offset: new AMap.Pixel(-80, offsetY),
+        },
+        map,
+        position: new AMap.LngLat(
+          tender.geoCoordinate?.coordinates[0],
+          tender.geoCoordinate?.coordinates[1],
+        ),
+        extData: {
+          tenderId: tender.id,
+        },
+      });
+
+      label.on("mouseover", () => {
+        label.setOptions({ zIndex: 13 });
+      });
+      label.on("mouseout", () => {
+        label.setOptions({ zIndex: 12 });
+      });
+
+      const circleMarker = new AMap.CircleMarker({
+        center: new AMap.LngLat(
+          tender.geoCoordinate?.coordinates[0],
+          tender.geoCoordinate?.coordinates[1],
+        ),
+        radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
+        fillColor: tenderStatusBoundColor(tender!),
+        strokeColor: tenderStatusBoundColor(tender!),
+        fillOpacity: 0.35,
+        strokeWeight: 2,
+        strokeOpacity: 1,
+        zIndex: 15,
+        bubble: true,
+        cursor: "pointer",
+      });
+      mapCircles.push(circleMarker);
+      mapCircles.push(label);
+    }
+
+    for (const circle of mapCircles) {
+      map?.add(circle);
+    }
+
+    map?.addLayer(satelliteLayer!);
+    if (tender.geoBounds?.length) {
+      map?.setFitView(tender.geoBounds as any[]);
+    } else if (tender.geoCoordinate?.coordinates) {
+      map?.setZoomAndCenter(14, [
+        tender.geoCoordinate.coordinates[0],
+        tender.geoCoordinate.coordinates[1],
+      ]);
+    }
+
+    set({
+      mapCircles,
+      selectedArea: tender.area,
+      dashboardVisible: false,
+      tenderListVisible: false,
+      tenderViewTender: tender,
+    });
   },
 }));
 

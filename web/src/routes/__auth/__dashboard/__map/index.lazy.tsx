@@ -47,7 +47,7 @@ const query = graphql`
       edges {
         node {
           id
-          name
+          name @required(action: NONE)
           code
           createdAt
           center {
@@ -57,7 +57,7 @@ const query = graphql`
             id
             name
             adcode
-            center @required(action: THROW) {
+            center @required(action: NONE) {
               coordinates
             }
           }
@@ -98,11 +98,14 @@ const query = graphql`
             }
             province {
               adcode
+              name
             }
             city {
+              name
               adcode
             }
             district {
+              name
               adcode
             }
             geoCoordinate {
@@ -126,7 +129,7 @@ const query = graphql`
   }
 `;
 
-const districtsQuery = graphql`
+export const districtsQuery = graphql`
   query MapIndexPageDistrictQuery($adcode: Int!) {
     districts(where: { adcode: $adcode }) {
       edges {
@@ -172,12 +175,12 @@ function RouteComponent() {
       state.pop,
     ]),
   );
-  const satelliteRef = React.useRef<AMap.TileLayer>();
+  const satelliteLayer = useMapStore((state) => state.satelliteLayer);
   // const districtExplorerRef = React.useRef<any>();
   // const [visible, setVisible] = React.useState(false);
-  const makersRef = React.useRef<AMap.Marker[]>([]);
   // const polygonsRef = React.useRef<AMap.Polygon[]>([]);
   const environment = Route.useRouteContext().RelayEnvironment;
+  const tenderViewTender = useMapStore((state) => state.tenderViewTender);
 
   const data = usePreloadedQuery<MapIndexPageQuery>(
     query,
@@ -196,7 +199,6 @@ function RouteComponent() {
       // viewMode: "3D",
       // pitch: 30,
     });
-    satelliteRef.current = new AMap.TileLayer.Satellite();
   }, []);
 
   React.useEffect(() => {
@@ -206,101 +208,6 @@ function RouteComponent() {
     }
 
     map?.on("complete", () => {
-      //外部区域被点击
-      // districtExplorer.on("outsideClick", function (e: any) {
-      // districtExplorer.locatePosition(
-      //   e.originalEvent.lnglat,
-      //   (error: any, routeFeatures: any) => {
-      //     if (routeFeatures && routeFeatures.length > 1) {
-      //       //切换到省级区域
-      //       const props = routeFeatures[1].properties;
-      //       const area = areas?.find((a) =>
-      //         a?.provinces?.map((p) => p.adcode).includes(props.adcode),
-      //       ) as StoreArea;
-      //       if (area) {
-      //         setSelectedArea(area);
-      //       }
-      //       switch2AreaNode(props.adcode);
-      //       // switchNavigation({
-      //       //   name: routeFeatures[1].properties.name,
-      //       //   adcode: routeFeatures[1].properties.adcode,
-      //       // });
-      //       pop(1);
-      //     } else {
-      //       //切换到全国
-      //       switch2AreaNode(100000);
-      //       resetNaivgation();
-      //       setSelectedArea(null);
-      //       useMapStore.setState((state) => {
-      //         for (const cir of state.mapCircles) {
-      //           cir.remove();
-      //         }
-      //         return {
-      //           tenderListVisible: false,
-      //           tenderList: [],
-      //           mapCircles: [],
-      //         };
-      //       });
-      //     }
-      //     // map?.remove(polygonsRef.current);
-      //   },
-      //   {
-      //     levelLimit: 2,
-      //   },
-      // );
-      // map?.removeLayer(satelliteRef.current!);
-      // });
-
-      // districtExplorer.on("featureMouseover", (e: any, feature: any) => {
-      // makersRef.current.forEach((marker) => {
-      //   if (
-      //     marker.getExtData()?.hidable &&
-      //     !marker.getExtData()?.home &&
-      //     marker.getExtData()?.adcode !== feature.properties.adcode
-      //   ) {
-      //     // marker.hide();
-      //     marker.getContentDom().style.opacity = "0";
-      //   }
-      // });
-      // });
-
-      // districtExplorer.on("featureMouseout", (e: any, feature: any) => {
-      // makersRef.current.forEach((marker) => {
-      //   // marker.show();
-      //   marker.getContentDom().style.opacity = "1";
-      // });
-      // });
-
-      // districtExplorer.on("featureClick", (e: any, feature: any) => {
-      // const props = feature.properties;
-      // const area = areas?.find((d) =>
-      //   d?.provinces?.map((p) => p.adcode).includes(props.adcode),
-      // ) as StoreArea;
-      // // if (!area) {
-      // //   console.log("not area");
-      // //   return;
-      // // }
-      // if (area) {
-      //   setSelectedArea(area);
-      // }
-      // if (e.target.getZoom() < 5) {
-      //   if (!area) {
-      //     return;
-      //   }
-      //   // setSelectedDistrict(district);
-      //   push({ name: area.name });
-      //   renderArea(area);
-      //   return;
-      // }
-      // // const district = districts.find((d) => d.adcode.includes(props.adcode));
-      // // setSelectedDistrict(district ?? null);
-      // // 如果存在子节点
-      // // if (props.childrenNum > 0) {
-      // // 切换聚焦区域
-      // // }
-      // onFeatureOrMarkerClick(props);
-      // });
-
       //切换区域
 
       switch2AreaNode(100000);
@@ -314,9 +221,10 @@ function RouteComponent() {
         navigations: [],
         selectedTender: null,
         tenderListVisible: false,
+        tenderViewTender: null,
       });
     };
-  }, [data, map, satelliteRef]);
+  }, [data, map]);
 
   function switch2AreaNode(
     adcode: number,
@@ -330,11 +238,12 @@ function RouteComponent() {
     //   return;
     // }
 
-    map?.removeLayer(satelliteRef.current!);
+    map?.removeLayer(satelliteLayer!);
     setDashboardVisible(true);
-    map?.remove(makersRef.current);
+    map?.remove(useMapStore.getState().markers);
 
     if (adcode === 100000) {
+      const markers: AMap.Marker[] = [];
       for (const area of data.areas?.edges?.map((e) => e?.node) || []) {
         const amount = fixAmount(
           area?.tenders?.reduce(
@@ -372,7 +281,7 @@ function RouteComponent() {
           },
         });
         marker.on("click", () => {
-          map?.remove(makersRef.current);
+          map?.remove(markers);
 
           districtExplorer.clearFeaturePolygons();
 
@@ -422,8 +331,9 @@ function RouteComponent() {
             );
           }
         });
-        makersRef.current.push(marker);
+        markers.push(marker);
       }
+      useMapStore.setState({ markers });
     }
 
     loadAreaNode(adcode, function (error: any, areaNode: any) {
@@ -476,6 +386,8 @@ function RouteComponent() {
         },
       ).toPromise();
 
+      const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
+
       for (const plot of districts?.districts.edges
         ?.map((e) => e?.node)
         .flatMap((d) => d?.plots) || []) {
@@ -488,14 +400,11 @@ function RouteComponent() {
           strokeColor: plot?.colorHex,
           strokeWeight: 2,
         });
-        //   map?.add(polygon);
-        polygon.on("rightclick", (e) => {
-          polygon.setMap(null);
-        });
+
         polygon.setMap(map);
 
         // @ts-expect-error
-        new AMapUI.SimpleMarker({
+        const label = new AMapUI.SimpleMarker({
           // @ts-expect-error
           iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
           label: {
@@ -509,6 +418,9 @@ function RouteComponent() {
           map,
           position: polygon.getBounds()?.getCenter(),
         });
+
+        mapCircles.push(polygon);
+        mapCircles.push(label);
       }
 
       const tenders =
@@ -517,7 +429,7 @@ function RouteComponent() {
           props.level,
           selectedArea?.tenders!,
         ) || [];
-      const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
+
       for (const [i, tender] of tenders.entries()) {
         if (tender.geoBounds) {
           const polygon = new AMap.Polygon();
@@ -626,73 +538,13 @@ function RouteComponent() {
           // map?.add(circleMarker);
         }
       }
-      // map?.setZoom(18, true, 200);
-      // const polygon = new AMap.Polygon();
-      // polygon.setPath([
-      //   [114.233116, 22.279279],
-      //   [114.233116, 22.279338],
-      //   [114.234902, 22.279259],
-      //   [114.234987, 22.279082],
-      //   [114.234945, 22.278885],
-      //   [114.23486, 22.27861],
-      //   [114.234796, 22.278374],
-      //   [114.234732, 22.278078],
-      //   [114.234477, 22.277527],
-      //   [114.234137, 22.276996],
-      //   [114.234094, 22.276937],
-      //   [114.233094, 22.276956],
-      // ]);
-      // polygonsRef.current.push(polygon);
-      // const poly2 = new AMap.Polygon();
-      // poly2.setPath([
-      //   [114.230747, 22.280171],
-      //   [114.230898, 22.28005],
-      //   [114.231043, 22.279986],
-      //   [114.232733, 22.279985],
-      //   [114.23281, 22.27997],
-      //   [114.232862, 22.279943],
-      //   [114.2329, 22.27992],
-      //   [114.232932, 22.279869],
-      //   [114.232977, 22.279393],
-      //   [114.232929, 22.279254],
-      //   [114.232921, 22.276892],
-      //   [114.232573, 22.276895],
-      //   [114.232337, 22.276902],
-      //   [114.232225, 22.276926],
-      //   [114.232142, 22.276961],
-      //   [114.231989, 22.277065],
-      //   [114.231262, 22.277748],
-      //   [114.23094, 22.27808],
-      //   [114.2303, 22.278423],
-      //   [114.230003, 22.278827],
-      //   [114.23009, 22.279543],
-      // ]);
-      // poly2.setOptions({ fillColor: "red", strokeColor: "red" });
-      // polygonsRef.current.push(poly2);
-
-      // const poly3 = new AMap.Polygon();
-      // poly3.setPath([
-      //   [114.229415, 22.281422],
-      //   [114.230694, 22.280218],
-      //   [114.229326, 22.27889],
-      //   [114.22885, 22.279186],
-      //   [114.228657, 22.279255],
-      //   [114.228463, 22.279372],
-      //   [114.227928, 22.280012],
-      // ]);
-      // poly3.setOptions({ fillColor: "yellow", strokeColor: "yellow" });
-      // polygonsRef.current.push(poly3);
-
-      // map?.add(polygon);
-      // map?.add(poly2);
-      // map?.add(poly3);
 
       const center =
         tenders?.length > 0
           ? tenders[0].geoCoordinate?.coordinates
           : props.center;
       map?.setZoomAndCenter(15, center, false, 600);
-      map?.addLayer(satelliteRef.current!);
+      map?.addLayer(satelliteLayer!);
       for (const circle of mapCircles) {
         // circle.setMap(map);
         map?.add(circle);
@@ -865,7 +717,10 @@ function RouteComponent() {
     marker.on("mouseout", () => {
       marker.setOptions({ zIndex: 12 });
     });
-    makersRef.current.push(marker);
+    useMapStore.setState((state) => ({
+      ...state,
+      markers: [...state.markers, marker],
+    }));
   }
 
   //切换区域后刷新显示内容
@@ -881,7 +736,7 @@ function RouteComponent() {
 
   function renderArea(area: StoreArea) {
     setDashboardVisible(true);
-    map?.remove(makersRef.current);
+    map?.remove(useMapStore.getState().markers);
     districtExplorer.clearFeaturePolygons();
     districtExplorer.setHoverFeature(null);
 
@@ -925,7 +780,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-dvh overflow-hidden">
       <div id="map" className="absolute inset-0"></div>
 
       <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
@@ -936,8 +791,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute bottom-6 left-1/2 -translate-x-1/2 transition",
-          navigations.length < 1 && "translate-y-[200%]",
+          "absolute bottom-[5vh] left-1/2 -translate-x-1/2 transition",
+          !tenderViewTender && "translate-y-[10vh]",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -949,7 +804,60 @@ function RouteComponent() {
                   // switch2AreaNode(district.adcode[0]);
                   // setSelectedArea(null);
                   // resetNaivgation();
-                  map?.remove(satelliteRef.current!);
+                  map?.remove(satelliteLayer!);
+                  // map?.remove(polygonsRef.current);
+                  switch2AreaNode(100000);
+                  useMapStore.setState((state) => {
+                    for (const cir of state.mapCircles) {
+                      cir.remove();
+                    }
+                    return {
+                      tenderViewTender: null,
+                      selectedTender: null,
+                      tenderListVisible: false,
+                      tenderListHovering: 0,
+                      tenderList: [],
+                      selectedArea: null,
+                      navigations: [],
+                      mapCircles: [],
+                    };
+                  });
+                  // setVisible(!visible);
+                }}
+              >
+                全国
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {tenderViewTender && (
+              <>
+                <BreadcrumbSeparator></BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbLink className="cursor-pointer select-none">
+                    {tenderViewTender?.name}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </>
+            )}
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+
+      <div
+        className={cn(
+          "absolute bottom-[5vh] left-1/2 -translate-x-1/2 transition",
+          navigations.length < 1 && "translate-y-[10vh]",
+        )}
+      >
+        <Breadcrumb className="mt-px">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                className="cursor-pointer select-none"
+                onClick={() => {
+                  // switch2AreaNode(district.adcode[0]);
+                  // setSelectedArea(null);
+                  // resetNaivgation();
+                  map?.remove(satelliteLayer!);
                   // map?.remove(polygonsRef.current);
                   switch2AreaNode(100000);
                   useMapStore.setState((state) => {
@@ -987,7 +895,7 @@ function RouteComponent() {
                   // setVisible(true);
                   // resetNaivgation();
                   pop(0);
-                  map?.remove(satelliteRef.current!);
+                  map?.remove(satelliteLayer!);
                   // map?.remove(polygonsRef.current);
                   // setSelectedDistrict(selectedDistrict);
                   renderArea(selectedArea!);
@@ -1020,7 +928,7 @@ function RouteComponent() {
                         // switch2AreaNode(district.adcode[0]);
                         // setVisible(true);
                         resetNaivgation();
-                        map?.remove(satelliteRef.current!);
+                        map?.remove(satelliteLayer!);
                         setSelectedDistrict(district);
                         renderArea(district);
                       }}
@@ -1057,7 +965,7 @@ function RouteComponent() {
                             return;
                           }
                           // map?.remove(polygonsRef.current);
-                          map?.remove(satelliteRef.current!);
+                          map?.remove(satelliteLayer!);
                           pop(i);
                           switch2AreaNode(navigation.adcode || 100000);
                           useMapStore.setState({
