@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"cscd-bds/config"
 	"cscd-bds/store"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
@@ -15,10 +14,7 @@ import (
 	"cscd-bds/store/ent/user"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -26,10 +22,8 @@ import (
 	lark "github.com/larksuite/oapi-sdk-go/v3"
 	larkauth "github.com/larksuite/oapi-sdk-go/v3/service/auth/v3"
 	larkbitable "github.com/larksuite/oapi-sdk-go/v3/service/bitable/v1"
-	"github.com/rs/xid"
 	"github.com/twpayne/go-geom"
 	"github.com/twpayne/go-geom/encoding/geojson"
-	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -250,7 +244,7 @@ func fetchVisitRecord() {
 }
 
 func fetchTender() {
-	httpClient := &http.Client{}
+	// httpClient := &http.Client{}
 
 	token, err := client.Auth.TenantAccessToken.Internal(ctx,
 		larkauth.NewInternalTenantAccessTokenReqBuilder().Body(
@@ -806,61 +800,61 @@ func fetchTender() {
 			continue
 		}
 
-		if f, ok := item.Fields["效果图"]; ok {
-			photos, ok := f.([]interface{})
-			if !ok {
-				continue
-			}
-			wg := errgroup.Group{}
-			for _, photo := range photos {
-				wg.Go(func() error {
-					id := xid.New().String()
-					p := photo.(map[string]interface{})
-					if !ok {
-						return nil
-					}
-					url, ok := p["url"].(string)
-					if !ok {
-						return nil
-					}
-					name, ok := p["name"].(string)
-					if !ok {
-						return nil
-					}
+		// if f, ok := item.Fields["效果图"]; ok {
+		// 	photos, ok := f.([]interface{})
+		// 	if !ok {
+		// 		continue
+		// 	}
+		// 	wg := errgroup.Group{}
+		// 	for _, photo := range photos {
+		// 		wg.Go(func() error {
+		// 			id := xid.New().String()
+		// 			p := photo.(map[string]interface{})
+		// 			if !ok {
+		// 				return nil
+		// 			}
+		// 			url, ok := p["url"].(string)
+		// 			if !ok {
+		// 				return nil
+		// 			}
+		// 			name, ok := p["name"].(string)
+		// 			if !ok {
+		// 				return nil
+		// 			}
 
-					req, err := http.NewRequest("GET", url, nil)
-					if err != nil {
-						log.Fatal(err)
-					}
-					req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
-					res, err := httpClient.Do(req)
-					if err != nil {
-						log.Fatal(err)
-					}
-					defer res.Body.Close()
+		// 			req, err := http.NewRequest("GET", url, nil)
+		// 			if err != nil {
+		// 				log.Fatal(err)
+		// 			}
+		// 			req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
+		// 			res, err := httpClient.Do(req)
+		// 			if err != nil {
+		// 				log.Fatal(err)
+		// 			}
+		// 			defer res.Body.Close()
 
-					splited := strings.Split(name, ".")
-					file, err := os.Create(config.FilePath + id + "." + splited[len(splited)-1])
-					if err != nil {
-						log.Fatal(err)
-					}
-					defer file.Close()
+		// 			splited := strings.Split(name, ".")
+		// 			file, err := os.Create(config.FilePath + id + "." + splited[len(splited)-1])
+		// 			if err != nil {
+		// 				log.Fatal(err)
+		// 			}
+		// 			defer file.Close()
 
-					_, err = io.Copy(file, res.Body)
-					if err != nil {
-						log.Fatal(err)
-					}
-					fmt.Println(id + "-" + name + " Success!")
+		// 			_, err = io.Copy(file, res.Body)
+		// 			if err != nil {
+		// 				log.Fatal(err)
+		// 			}
+		// 			fmt.Println(id + "-" + name + " Success!")
 
-					images = append(images, fmt.Sprintf("/static/%s.%s", id, splited[len(splited)-1]))
-					return nil
-				})
-			}
-			if err := wg.Wait(); err != nil {
-				panic(err)
-			}
+		// 			images = append(images, fmt.Sprintf("/static/%s.%s", id, splited[len(splited)-1]))
+		// 			return nil
+		// 		})
+		// 	}
+		// 	if err := wg.Wait(); err != nil {
+		// 		panic(err)
+		// 	}
 
-		}
+		// }
 
 		// fmt.Println(code, status, name, estimatedAmount, tenderDate, discoveryDate, prov, cit, distr)
 
