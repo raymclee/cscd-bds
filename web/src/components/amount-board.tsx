@@ -49,9 +49,9 @@ export function AmountBoard({ data }: { data: MapIndexPageQuery$data }) {
         <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
           <div className="flex items-center justify-between">
             商机汇总总金额
-            <Link to="/tenders">
+            {/* <Link to="/tenders">
               <RectangleEllipsis />
-            </Link>
+            </Link> */}
           </div>
         </CardHeader>
         <CardContent className="h-full">
