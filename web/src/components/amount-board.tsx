@@ -1,12 +1,12 @@
-import {
-  MapIndexPageQuery,
-  MapIndexPageQuery$data,
-} from "__generated__/MapIndexPageQuery.graphql";
+import { Link } from "@tanstack/react-router";
+import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
+import { RectangleEllipsis, Wallet } from "lucide-react";
+import { motion } from "motion/react";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import { CardContent, CardHeader, Card } from "./ui/card";
-import { Wallet } from "lucide-react";
+import { useMapStore } from "~/store/map";
+import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
 
 const statusItems = [
@@ -40,89 +40,116 @@ export function AmountBoard({ data }: { data: MapIndexPageQuery$data }) {
   );
 
   return (
-    <Card
-      className={cn(
-        "h-[clamp(33.5rem,59dvh,33.5rem)]overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-      )}
-    >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        商机汇总总金额
-      </CardHeader>
-      <CardContent className="h-full">
-        <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
-          <div className="flex items-center justify-between rounded px-6 py-4">
-            <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-black text-white">¥</span>
-              <span className="text-4xl font-black text-white">
-                {totalAmount}
-              </span>
-              <span className="hidden font-medium text-brand lg:block">
-                亿元
-              </span>
-            </div>
-
-            <div className="rounded-full bg-brand/30 p-2">
-              <Wallet className="h-10 w-10 text-brand" />
-            </div>
+    <>
+      <Card
+        className={cn(
+          "h-[clamp(34rem,60dvh,34rem)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        )}
+      >
+        <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+          <div className="flex items-center justify-between">
+            商机汇总总金额
+            <Link to="/tenders">
+              <RectangleEllipsis />
+            </Link>
           </div>
-        </div>
-
-        <div className="mt-6">
-          <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
-          <div className="mt-2 space-y-4 text-sm text-brand">
-            {statusItems.map(({ status, value }) => {
-              const tends = tenders?.filter((t) => t?.status === value);
-              const percentage =
-                tends?.length && tenders?.length
-                  ? Math.round((tends?.length / tenders?.length) * 100)
-                  : 0;
-              const count = tends?.length || 0;
-              return (
-                <div
-                  key={status}
-                  className="mt-2 flex items-center justify-between gap-x-4"
-                >
-                  <div className="w-24">{status}</div>
-                  <div className="w-8 text-white">{count}</div>
-                  <Progress
-                    value={percentage}
-                    className="h-2 w-[80%] text-brand"
-                  />
-                  <div className="w-12 text-right">{percentage}%</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-6 h-[6rem]">
-          <div className="flex h-full items-center justify-between gap-6">
-            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-              <div className="flex h-full flex-col rounded">
-                <div className="flex flex-1 items-center justify-center gap-1">
-                  <span className="text-3xl font-bold">{processingAmount}</span>
-                  <span className="pt-2 font-medium text-brand">亿元</span>
-                </div>
-                <div className="bg-gray-500/50 py-1 text-center text-xs">
-                  跟进中的金额(亿元)
-                </div>
+        </CardHeader>
+        <CardContent className="h-full">
+          <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
+            <div className="flex items-center justify-between rounded px-6 py-4">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-white">¥</span>
+                <span className="text-4xl font-black text-white">
+                  {totalAmount}
+                </span>
+                <span className="hidden font-medium text-brand lg:block">
+                  亿元
+                </span>
               </div>
-            </div>
 
-            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-              <div className="flex h-full flex-col rounded">
-                <div className="flex flex-1 items-center justify-center gap-1">
-                  <span className="text-3xl font-bold">{tenderCount}</span>
-                  <span className="pt-2 font-medium text-brand">个项目</span>
-                </div>
-                <div className="bg-gray-500/50 py-1 text-center text-xs">
-                  总体情况
-                </div>
+              <div className="rounded-full bg-brand/30 p-2">
+                <Wallet className="h-10 w-10 text-brand" />
               </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+
+          <div className="mt-6">
+            <div className="text-right text-xs text-brand/70">
+              单位: 项目数量
+            </div>
+            <div className="mt-2 space-y-4 text-sm text-brand">
+              {statusItems.map(({ status, value }) => {
+                const tends = tenders?.filter((t) => t?.status === value);
+                const percentage =
+                  tends?.length && tenders?.length
+                    ? Math.round((tends?.length / tenders?.length) * 100)
+                    : 0;
+                const count = tends?.length || 0;
+                return (
+                  <motion.div
+                    layoutId={`tender-status-${value}`}
+                    key={status}
+                    className="mt-2 flex items-center justify-between gap-x-4"
+                    onClick={() => {
+                      useMapStore.setState({
+                        selectedTenderStatus: { status, value },
+                      });
+                    }}
+                  >
+                    <motion.div
+                      className="w-24"
+                      layoutId={`tender-status-${value}-status`}
+                    >
+                      {status}
+                    </motion.div>
+                    <motion.div
+                      className="w-8 text-white"
+                      layoutId={`tender-status-${value}-count`}
+                    >
+                      {count}
+                    </motion.div>
+                    <Progress
+                      value={percentage}
+                      className="h-2 w-[80%] text-brand"
+                    />
+                    <div className="w-12 text-right">{percentage}%</div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-6 h-[6rem]">
+            <div className="flex h-full items-center justify-between gap-6">
+              <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+                <div className="flex h-full flex-col rounded">
+                  <div className="flex flex-1 items-center justify-center gap-1">
+                    <span className="text-3xl font-bold">
+                      {processingAmount}
+                    </span>
+                    <span className="pt-2 font-medium text-brand">亿元</span>
+                  </div>
+                  <div className="bg-gray-500/50 py-1 text-center text-xs">
+                    跟进中的金额(亿元)
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
+                <div className="flex h-full flex-col rounded">
+                  <div className="flex flex-1 items-center justify-center gap-1">
+                    <span className="text-3xl font-bold">{tenderCount}</span>
+                    <span className="pt-2 font-medium text-brand">个项目</span>
+                  </div>
+                  <div className="bg-gray-500/50 py-1 text-center text-xs">
+                    总体情况
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </>
   );
 }

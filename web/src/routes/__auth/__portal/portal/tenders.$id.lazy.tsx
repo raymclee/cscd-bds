@@ -167,7 +167,7 @@ function Editor() {
   }
 
   return (
-    <div className="absolute right-6 top-6 flex gap-4">
+    <div className="absolute right-6 top-6 flex gap-2">
       {!isEditing && data.node && !data.node?.geoBounds && (
         <Button onClick={handleNewClick} icon={<PlusOutlined />}>
           新增

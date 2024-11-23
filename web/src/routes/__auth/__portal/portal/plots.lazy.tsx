@@ -273,6 +273,7 @@ function Editor() {
 
   function endAdding() {
     polygonEditor?.getTarget()?.remove();
+    polygonEditor?.setTarget(null);
     polygonEditor?.close();
     usePlotStore.setState({
       isAdding: false,
@@ -439,5 +440,3 @@ function Editor() {
     </>
   );
 }
-
-function createPlot() {}

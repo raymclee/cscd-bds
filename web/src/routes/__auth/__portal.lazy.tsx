@@ -77,7 +77,7 @@ function RouteComponent() {
       input={{ variant: "filled" }}
       treeSelect={{ variant: "filled" }}
       select={{ variant: "filled" }}
-      componentSize="large"
+      // componentSize="large"
     >
       <App>
         <Layout hasSider style={{ minHeight: "100vh" }}>

@@ -63,3 +63,13 @@ export function findTenderWithLevel(
       return tenders.filter((t) => t.district?.adcode === adcode);
   }
 }
+
+export function getDistrictZoomLevel(id: string) {
+  let zoom = 5;
+  if (id === "GA") {
+    zoom = 10;
+  } else if (id === "HD" || id === "HN") {
+    zoom = 6;
+  }
+  return zoom;
+}

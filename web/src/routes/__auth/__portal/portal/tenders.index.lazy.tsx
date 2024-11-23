@@ -104,7 +104,6 @@ function TenderList({
         dataSource={dataSource}
         renderItem={(item) => (
           <List.Item
-            className="-mx-6"
             actions={[
               <Link
                 key="edit-link"

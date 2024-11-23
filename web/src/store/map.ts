@@ -87,6 +87,11 @@ type Navigation = {
   adcode?: number;
 };
 
+type TenderStatus = {
+  status: string;
+  value: number;
+};
+
 export type StoreArea = Pick<
   GraphqlArea,
   "id" | "name" | "center" | "provinces" | "tenders" | "code"
@@ -108,6 +113,7 @@ type MapState = {
   tenderList: Array<Partial<Tender>>;
   tenderListHovering: string | number;
   selectedTender: Partial<Tender> | null;
+  selectedTenderStatus: TenderStatus | null;
   mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
   tenderViewTender: Tender | null;
 };
@@ -151,6 +157,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   tenderListHovering: 0,
   selectedTender: null,
   tenderViewTender: null,
+  selectedTenderStatus: null,
   // districts,
   initMap: (container, opts) => {
     const map = new AMap.Map(container, { ...opts });

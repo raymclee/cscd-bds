@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
 import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
 import { ImageOff, Undo2 } from "lucide-react";
@@ -28,9 +28,16 @@ import {
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
-import { findTenderWithLevel, fixAmount, ownerType } from "~/lib/helper";
+import {
+  findTenderWithLevel,
+  fixAmount,
+  getDistrictZoomLevel,
+  ownerType,
+} from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
+import { TenderStatusList } from "~/components/tender-status-list";
+import { AnimatePresence } from "motion/react";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
@@ -144,7 +151,6 @@ export const districtsQuery = graphql`
 function RouteComponent() {
   const [
     map,
-    initMap,
     districtExplorer,
     setCurrentAreaNode,
     dashboardVisible,
@@ -154,26 +160,23 @@ function RouteComponent() {
     navigations,
     push,
     pop,
+    selectedTenderStatus,
   ] = useMapStore(
     useShallow((state) => [
       state.map,
-      state.initMap,
       state.districtExplorer,
       state.setCurrentAreaNode,
       state.dashboardVisible,
       state.setDashboardVisible,
-      // state.districts,
       state.selectedArea,
       state.setSelectedArea,
       state.navigations,
       state.push,
       state.pop,
+      state.selectedTenderStatus,
     ]),
   );
   const satelliteLayer = useMapStore((state) => state.satelliteLayer);
-  // const districtExplorerRef = React.useRef<any>();
-  // const [visible, setVisible] = React.useState(false);
-  // const polygonsRef = React.useRef<AMap.Polygon[]>([]);
   const environment = Route.useRouteContext().RelayEnvironment;
   const tenderViewTender = useMapStore((state) => state.tenderViewTender);
 
@@ -182,44 +185,15 @@ function RouteComponent() {
     Route.useLoaderData(),
   );
 
-  // const districts = data.areas.edges?.flatMap((e) => e?.node?.provinces) || [];
   const areas = data.areas.edges?.map((e) => e?.node);
-  // const data = useLazyLoadQuery<MapPageQuery>(query, {});
 
   React.useEffect(() => {
-    initMap("map", {
-      zoom: 4,
-      // mapStyle: "amap://styles/grey",
-      mapStyle: "amap://styles/darkblue",
-      // viewMode: "3D",
-      // pitch: 30,
-    });
-  }, []);
-
-  React.useEffect(() => {
-    const areas = data.areas.edges?.map((e) => e?.node);
-    if (!areas?.length) {
-      return;
-    }
-
     map?.on("complete", () => {
       //切换区域
 
       switch2AreaNode(100000);
     });
-
-    return () => {
-      map?.destroy();
-      useMapStore.setState({
-        selectedArea: null,
-        currentAreaNode: null,
-        navigations: [],
-        selectedTender: null,
-        tenderListVisible: false,
-        tenderViewTender: null,
-      });
-    };
-  }, [data, map]);
+  }, [map]);
 
   function switch2AreaNode(
     adcode: number,
@@ -395,8 +369,6 @@ function RouteComponent() {
           strokeColor: plot?.colorHex,
           strokeWeight: 2,
         });
-
-        polygon.setMap(map);
 
         // @ts-expect-error
         const label = new AMapUI.SimpleMarker({
@@ -775,14 +747,12 @@ function RouteComponent() {
   }
 
   return (
-    <div className="relative min-h-dvh overflow-hidden">
-      <div id="map" className="absolute inset-0"></div>
-
-      <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
+    <>
+      {/* <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
         <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
           远东幕墙市场拓展地图
         </div>
-      </div>
+      </div> */}
 
       <div
         className={cn(
@@ -999,7 +969,7 @@ function RouteComponent() {
       <div className="flex gap-2 px-4 pt-14">
         <div
           className={cn(
-            "hidden h-full w-[380px] space-y-2 transition xl:block",
+            "hidden h-full w-[clamp(380px,20vw,380px)] space-y-2 transition xl:block",
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
@@ -1012,7 +982,7 @@ function RouteComponent() {
 
         <div
           className={cn(
-            "hidden w-[380px] space-y-2 transition xl:block",
+            "hidden w-[clamp(380px,20vw,380px)] space-y-2 transition xl:block",
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
@@ -1023,18 +993,12 @@ function RouteComponent() {
           <DashboardTenderList data={data} />
         </div>
       </div>
-    </div>
-  );
-}
 
-function getDistrictZoomLevel(id: string) {
-  let zoom = 5;
-  if (id === "GA") {
-    zoom = 10;
-  } else if (id === "HD" || id === "HN") {
-    zoom = 6;
-  }
-  return zoom;
+      <AnimatePresence>
+        {selectedTenderStatus && <TenderStatusList data={data} />}
+      </AnimatePresence>
+    </>
+  );
 }
 
 function TenderList() {

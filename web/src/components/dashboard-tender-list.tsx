@@ -1,4 +1,11 @@
+import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
+import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
+import { fetchQuery, useRelayEnvironment } from "react-relay";
+import { useAreaTenders } from "~/hooks/use-area-tenders";
+import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
+import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { useMapStore } from "~/store/map";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import {
@@ -9,16 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { fixAmount } from "~/lib/helper";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
-import { useMapStore } from "~/store/map";
-import {
-  MapIndexPageDistrictQuery,
-  MapIndexPageDistrictQuery$data,
-} from "__generated__/MapIndexPageDistrictQuery.graphql";
-import { fetchQuery, useRelayEnvironment } from "react-relay";
-import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
-import { useAreaTenders } from "~/hooks/use-area-tenders";
 
 export function DashboardTenderList({
   data,
@@ -38,7 +35,7 @@ export function DashboardTenderList({
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
         项目例表
       </CardHeader>
-      <CardContent className="h-full px-0">
+      <CardContent className="h-full px-0 pb-8">
         <ScrollArea className="h-full px-4">
           <Table className="my-4 h-full">
             {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
