@@ -34,6 +34,7 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
   setPolygonEditor: (polygonEditor) => set({ polygonEditor }),
   createPlot(plot, commitMutation) {
     const { map } = useMapStore.getState();
+    if (!map || !plot.geoBounds) return;
 
     const polygon = new AMap.Polygon();
     polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
@@ -92,6 +93,7 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
         },
       });
     });
-    polygon.setMap(map);
+    map.add(polygon);
+    // polygon.setMap(map);
   },
 }));

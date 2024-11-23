@@ -1,15 +1,12 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
-import { ImageOff, Undo2, Wallet } from "lucide-react";
+import { ImageOff, Undo2 } from "lucide-react";
 import * as React from "react";
-import {
-  useLazyLoadQuery,
-  usePreloadedQuery,
-  useQueryLoader,
-  useRelayEnvironment,
-} from "react-relay";
+import { usePreloadedQuery } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
+import { AmountBoard } from "~/components/amount-board";
 import { DashboardTenderList } from "~/components/dashboard-tender-list";
 import { NewTenderBoard } from "~/components/new-tender-card";
 import { RankingListChart } from "~/components/ranking-list-chart";
@@ -23,19 +20,17 @@ import {
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { Progress } from "~/components/ui/progress";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { colors, getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
-import { findTenderWithLevel, fixAmount, ownerType } from "~/lib/helper";
-import { cn } from "~/lib/utils";
-import { StoreArea, useMapStore } from "~/store/map";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "~/components/ui/carousel";
-import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
+import { findTenderWithLevel, fixAmount, ownerType } from "~/lib/helper";
+import { cn } from "~/lib/utils";
+import { StoreArea, useMapStore } from "~/store/map";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
@@ -1008,7 +1003,7 @@ function RouteComponent() {
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
-          <AmountBoard />
+          <AmountBoard data={data} />
 
           <NewTenderBoard data={data} />
         </div>
@@ -1040,152 +1035,6 @@ function getDistrictZoomLevel(id: string) {
     zoom = 6;
   }
   return zoom;
-}
-
-const statusItems = [
-  { status: "跟进中", value: 1 },
-  { status: "停止跟进", value: 2 },
-  { status: "估价", value: 5 },
-  { status: "已交标", value: 6 },
-  { status: "中标", value: 3 },
-  { status: "失标", value: 4 },
-];
-
-function AmountBoard() {
-  const selectedArea = useMapStore((state) => state.selectedArea);
-  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
-
-  const nodeProps = currentAreaNode?.getProps();
-
-  const adcodes = currentAreaNode
-    ?.getSubFeatures()
-    ?.map((f: any) => f.properties.adcode);
-  const data = usePreloadedQuery<MapIndexPageQuery>(
-    query,
-    Route.useLoaderData(),
-  );
-  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
-
-  const tenders =
-    nodeProps?.level === "province" || nodeProps?.level === "city"
-      ? allTenders.filter((t) => {
-          switch (nodeProps?.level) {
-            case "province":
-            case "city":
-              return (
-                adcodes?.includes(t?.city?.adcode) ||
-                adcodes?.includes(t?.district.adcode)
-              );
-          }
-        })
-      : selectedArea
-        ? selectedArea?.tenders
-        : allTenders;
-
-  const totalAmount = fixAmount(
-    tenders?.reduce(
-      (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
-      0,
-    ),
-  );
-
-  const tenderCount = tenders?.length || 0;
-
-  const processingAmount = fixAmount(
-    tenders
-      ?.filter((t) => t?.status === 1)
-      .reduce(
-        (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
-        0,
-      ),
-  );
-
-  return (
-    <Card
-      className={cn(
-        "h-[clamp(33.5rem,59dvh,33.5rem)]overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-      )}
-    >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        商机汇总总金额
-      </CardHeader>
-      <CardContent className="h-full">
-        <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
-          <div className="flex items-center justify-between rounded px-6 py-4">
-            <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-black text-white">¥</span>
-              <span className="text-4xl font-black text-white">
-                {totalAmount}
-              </span>
-              <span className="hidden font-medium text-brand lg:block">
-                亿元
-              </span>
-            </div>
-
-            <div className="rounded-full bg-brand/30 p-2">
-              <Wallet className="h-10 w-10 text-brand" />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <div className="text-right text-xs text-brand/70">单位: 项目数量</div>
-          <div className="mt-2 space-y-4 text-sm text-brand">
-            {statusItems.map(({ status, value }) => {
-              const tends = tenders?.filter((t) => t?.status === value);
-              const percentage =
-                tends?.length && tenders?.length
-                  ? Math.round((tends?.length / tenders?.length) * 100)
-                  : 0;
-              const count = tends?.length || 0;
-              return (
-                <div
-                  key={status}
-                  className="mt-2 flex items-center justify-between gap-x-4"
-                >
-                  <div className="w-24">{status}</div>
-                  <div className="w-8 text-white">{count}</div>
-                  <Progress
-                    value={percentage}
-                    className="h-2 w-[80%] text-brand"
-                  />
-                  <div className="w-12 text-right">{percentage}%</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-6 h-[6rem]">
-          <div className="flex h-full items-center justify-between gap-6">
-            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-              <div className="flex h-full flex-col rounded">
-                <div className="flex flex-1 items-center justify-center gap-1">
-                  <span className="text-3xl font-bold">{processingAmount}</span>
-                  <span className="pt-2 font-medium text-brand">亿元</span>
-                </div>
-                <div className="bg-gray-500/50 py-1 text-center text-xs">
-                  跟进中的金额(亿元)
-                </div>
-              </div>
-            </div>
-
-            <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
-              <div className="flex h-full flex-col rounded">
-                <div className="flex flex-1 items-center justify-center gap-1">
-                  <span className="text-3xl font-bold">{tenderCount}</span>
-                  <span className="pt-2 font-medium text-brand">个项目</span>
-                </div>
-                <div className="bg-gray-500/50 py-1 text-center text-xs">
-                  总体情况
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 }
 
 function TenderList() {

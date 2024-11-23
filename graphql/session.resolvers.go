@@ -8,22 +8,29 @@ import (
 	"context"
 	"cscd-bds/graphql/model"
 	"cscd-bds/session"
+	"cscd-bds/store/ent/schema/xid"
 	"fmt"
 )
 
 // Session is the resolver for the session field.
 func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
-	user, ok := r.session.Get(ctx, "user").(session.User)
+	su, ok := r.session.Get(ctx, "user").(session.User)
 	if !ok {
 		return nil, fmt.Errorf("session not found")
 	}
+	u, err := r.store.User.Get(ctx, xid.ID(su.UserId))
+	if err != nil {
+		return nil, err
+	}
 	return &model.Session{
-		UserID:    user.UserId,
-		Name:      user.Name,
-		Email:     user.Email,
-		Username:  user.Username,
-		AvatarURL: user.AvatarUrl,
-		IsAdmin:   user.IsAdmin,
-		IsLeader:  user.IsLeader,
+		UserID:    su.UserId,
+		Name:      su.Name,
+		Email:     su.Email,
+		Username:  su.Username,
+		AvatarURL: su.AvatarUrl,
+		// IsAdmin:   su.IsAdmin,
+		// IsLeader:  su.IsLeader,
+		IsAdmin:  u.IsAdmin,
+		IsLeader: u.IsLeader,
 	}, nil
 }

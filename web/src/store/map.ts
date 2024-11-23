@@ -480,6 +480,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
       tenderListVisible: false,
       tenderViewTender: tender,
       selectedTender: tender,
+      navigations: [],
     });
   },
 }));

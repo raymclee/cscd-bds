@@ -18,6 +18,7 @@ import {
 } from "__generated__/MapIndexPageDistrictQuery.graphql";
 import { fetchQuery, useRelayEnvironment } from "react-relay";
 import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { useAreaTenders } from "~/hooks/use-area-tenders";
 
 export function DashboardTenderList({
   data,
@@ -25,33 +26,8 @@ export function DashboardTenderList({
   data: MapIndexPageQuery$data;
 }) {
   const navigateToTender = useMapStore((state) => state.navigateToTender);
-  const selectedArea = useMapStore((state) => state.selectedArea);
-  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
   const environment = useRelayEnvironment();
-
-  const nodeProps = currentAreaNode?.getProps();
-
-  const adcodes = currentAreaNode
-    ?.getSubFeatures()
-    ?.map((f: any) => f.properties.adcode);
-
-  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
-
-  const tenders =
-    nodeProps?.level === "province" || nodeProps?.level === "city"
-      ? allTenders.filter((t) => {
-          switch (nodeProps?.level) {
-            case "province":
-            case "city":
-              return (
-                adcodes?.includes(t?.city?.adcode) ||
-                adcodes?.includes(t?.district.adcode)
-              );
-          }
-        })
-      : selectedArea
-        ? selectedArea?.tenders
-        : allTenders;
+  const tenders = useAreaTenders(data);
 
   return (
     <Card

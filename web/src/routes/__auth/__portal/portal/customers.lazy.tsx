@@ -7,9 +7,5 @@ export const Route = createLazyFileRoute("/__auth/__portal/portal/customers")({
 });
 
 function RouteComponent() {
-  return (
-    <div className="my-4 min-h-80 rounded-lg bg-white p-6">
-      <Typography.Title level={2}>客戶</Typography.Title>
-    </div>
-  );
+  return <div className="my-4 min-h-80 rounded-lg bg-white p-6"></div>;
 }

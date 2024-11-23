@@ -1,14 +1,6 @@
-import { TrendingUp } from "lucide-react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -16,15 +8,6 @@ import {
   ChartTooltipContent,
 } from "~/components/ui/chart";
 import { Tender } from "~/graphql/graphql";
-
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 285 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 203 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 264 },
-];
 
 const chartConfig = {
   rating: {

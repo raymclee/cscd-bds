@@ -83,10 +83,10 @@ function TenderList({
 
   return (
     <div className="my-4 min-h-80 rounded-lg bg-white p-6">
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Typography.Title level={2}>商机</Typography.Title>
-      </div>
-      <div className="mt-8">
+      </div> */}
+      <div>
         <Form.Item className="max-w-sm">
           <Input.Search
             placeholder="搜索"

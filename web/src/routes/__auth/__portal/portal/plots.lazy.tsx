@@ -175,10 +175,14 @@ function EditorContainer() {
   );
 
   React.useEffect(() => {
-    for (const plot of data.plots?.edges?.map((e) => e?.node) || []) {
+    const plots = data.plots?.edges?.map((e) => e?.node) || [];
+    if (!plots.length) {
+      return;
+    }
+    for (const plot of plots) {
       createPlot(plot, commitMutation);
     }
-  }, []);
+  }, [data]);
 
   return (
     <>
@@ -187,7 +191,7 @@ function EditorContainer() {
       </div>
       <TreeSelect
         placeholder="請選擇地區"
-        value={selectedDistrict || ""}
+        value={selectedDistrict ?? undefined}
         variant="outlined"
         className="absolute left-4 top-4 w-64"
         treeData={treeData}

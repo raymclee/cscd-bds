@@ -12,7 +12,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/rs/xid v1.6.0
 	github.com/vektah/gqlparser/v2 v2.5.19
-	golang.org/x/sync v0.9.0
 )
 
 require (
@@ -30,6 +29,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.29.0 // indirect
 	golang.org/x/net v0.31.0 // indirect
+	golang.org/x/sync v0.9.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 )

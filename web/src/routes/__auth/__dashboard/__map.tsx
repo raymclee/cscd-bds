@@ -2,11 +2,6 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
 export const Route = createFileRoute("/__auth/__dashboard/__map")({
-  beforeLoad(ctx) {
-    if (!ctx.context.session.isAdmin && !ctx.context.session.isLeader) {
-      throw redirect({ to: "/portal/tenders" });
-    }
-  },
   loader: async () => {
     // await AMapLoader.load({
     //   key: "28982eb1a6a3cd956e0e0614c2fb131b",

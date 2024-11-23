@@ -1,37 +1,12 @@
 import { Column, ColumnConfig, Tiny } from "@ant-design/plots";
+import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
+import { useAreaTenders } from "~/hooks/use-area-tenders";
+import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "./ui/card";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
-import { fixAmount } from "~/lib/helper";
-import { useMapStore } from "~/store/map";
 
 export function NewTenderBoard({ data }: { data: MapIndexPageQuery$data }) {
-  const selectedArea = useMapStore((state) => state.selectedArea);
-  const currentAreaNode = useMapStore((state) => state.currentAreaNode);
-
-  const nodeProps = currentAreaNode?.getProps();
-
-  const adcodes = currentAreaNode
-    ?.getSubFeatures()
-    ?.map((f: any) => f.properties.adcode);
-
-  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
-
-  const tenders =
-    nodeProps?.level === "province" || nodeProps?.level === "city"
-      ? allTenders.filter((t) => {
-          switch (nodeProps?.level) {
-            case "province":
-            case "city":
-              return (
-                adcodes?.includes(t?.city?.adcode) ||
-                adcodes?.includes(t?.district.adcode)
-              );
-          }
-        })
-      : selectedArea
-        ? selectedArea?.tenders
-        : allTenders;
+  const tenders = useAreaTenders(data);
 
   const lastMontDateFormat = `${new Date().getFullYear()}-${new Date().getMonth()}`;
   const lastMonth = tenders?.filter((e) =>
