@@ -60,7 +60,7 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
         <MotionCard
           layoutId={`tender-status-${selectedTenderStatus?.value}`}
           className={cn(
-            "mx-4 block h-[80vh] w-[clamp(400px,40vw)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[80vh] w-[clamp(400px,40vw,600px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
           <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
