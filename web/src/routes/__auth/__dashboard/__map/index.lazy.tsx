@@ -815,6 +815,7 @@ function RouteComponent() {
                       tenderViewVisible: null,
                       selectedTender: null,
                       tenderListVisible: false,
+                      tenderViewTender: null,
                       tenderListHovering: 0,
                       tenderList: [],
                       selectedArea: null,
@@ -831,7 +832,7 @@ function RouteComponent() {
             {tenderViewTender && (
               <>
                 <BreadcrumbSeparator></BreadcrumbSeparator>
-                <BreadcrumbItem>
+                <BreadcrumbItem className="line-clamp-1 max-w-48">
                   <BreadcrumbLink className="cursor-pointer select-none">
                     {tenderViewTender?.name}
                   </BreadcrumbLink>
