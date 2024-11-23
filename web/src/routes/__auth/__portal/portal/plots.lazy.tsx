@@ -186,6 +186,7 @@ function EditorContainer() {
         <Typography.Title level={2}>商机</Typography.Title>
       </div>
       <TreeSelect
+        placeholder="請選擇地區"
         value={selectedDistrict || ""}
         variant="outlined"
         className="absolute left-4 top-4 w-64"
