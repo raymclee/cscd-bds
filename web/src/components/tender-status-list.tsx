@@ -9,6 +9,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -29,6 +30,12 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
   );
   const environment = useRelayEnvironment();
   const navigateToTender = useMapStore((state) => state.navigateToTender);
+  const total = fixAmount(
+    filteredTenders?.reduce(
+      (acc, inc) => (inc?.estimatedAmount ? acc + inc.estimatedAmount : acc),
+      0,
+    ) || 0,
+  );
 
   return (
     <>
@@ -75,7 +82,7 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
               共{filteredTenders?.length || 0}个
             </m.div>
           </CardHeader>
-          <CardContent className="h-full px-0 pb-8">
+          <CardContent className="h-full px-0 pb-16">
             <ScrollArea className="h-full px-4">
               <Table className="my-4 h-full">
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
@@ -137,6 +144,10 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
                   ))}
                 </TableBody>
               </Table>
+              <div className="flex w-full justify-end gap-x-4 pr-4 text-sm">
+                <div>合计: </div>
+                <div>{total}亿元</div>
+              </div>
             </ScrollArea>
           </CardContent>
         </MotionCard>

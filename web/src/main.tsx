@@ -14,6 +14,7 @@ const router = createRouter({
   context: {
     RelayEnvironment,
   },
+  defaultPreloadStaleTime: 0,
 });
 
 // Register things for typesafety
