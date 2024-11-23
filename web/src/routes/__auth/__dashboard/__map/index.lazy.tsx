@@ -286,7 +286,7 @@ function RouteComponent() {
           districtExplorer.clearFeaturePolygons();
 
           districtExplorer.loadMultiAreaNodes(
-            area?.provinces?.map((p) => p.adcode),
+            area?.provinces?.map((p) => p?.adcode),
             (error: any, areaNodes: any) => {
               for (const [i, areaNode] of areaNodes.entries()) {
                 const props = areaNode.getProps();
@@ -703,7 +703,7 @@ function RouteComponent() {
 
     marker.on("click", () => {
       const area = areas?.find((d) =>
-        d?.provinces?.map((p) => p.adcode).includes(props.adcode),
+        d?.provinces?.map((p) => p?.adcode).includes(props.adcode),
       ) as StoreArea;
       if (area) {
         setSelectedArea(area);
@@ -812,7 +812,7 @@ function RouteComponent() {
                       cir.remove();
                     }
                     return {
-                      tenderViewTender: null,
+                      tenderViewVisible: null,
                       selectedTender: null,
                       tenderListVisible: false,
                       tenderListHovering: 0,
@@ -1192,6 +1192,7 @@ function TenderList() {
   const tenderListVisible = useMapStore((state) => state.tenderListVisible);
   const map = useMapStore((state) => state.map);
   const selectedTender = useMapStore((state) => state.selectedTender);
+  const tenderViewTender = useMapStore((state) => state.tenderViewTender);
   const tenderListHovering = useMapStore((state) => state.tenderListHovering);
   const setTenderListHovering = useMapStore(
     (state) => state.setTenderListHovering,
@@ -1218,16 +1219,18 @@ function TenderList() {
           <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
             <div className="flex items-center justify-between">
               <div className="line-clamp-1">{selectedTender?.name}</div>
-              <button
-                onClick={() => {
-                  useMapStore.setState({
-                    selectedTender: null,
-                    tenderListVisible: true,
-                  });
-                }}
-              >
-                <Undo2 />
-              </button>
+              {!tenderViewTender && (
+                <button
+                  onClick={() => {
+                    useMapStore.setState({
+                      selectedTender: null,
+                      tenderListVisible: true,
+                    });
+                  }}
+                >
+                  <Undo2 />
+                </button>
+              )}
             </div>
           </CardHeader>
 

@@ -479,6 +479,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
       dashboardVisible: false,
       tenderListVisible: false,
       tenderViewTender: tender,
+      selectedTender: tender,
     });
   },
 }));

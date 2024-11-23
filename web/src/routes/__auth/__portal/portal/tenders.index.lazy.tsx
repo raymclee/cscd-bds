@@ -98,7 +98,8 @@ function TenderList({
         </Form.Item>
       </div>
       <List
-        pagination={{ pageSize: 20, position: "both" }}
+        // pagination={{ pageSize: 20, position: "both" }}
+        pagination={{ position: "both" }}
         itemLayout="vertical"
         dataSource={dataSource}
         renderItem={(item) => (

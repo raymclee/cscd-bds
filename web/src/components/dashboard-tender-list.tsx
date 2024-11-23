@@ -101,6 +101,7 @@ export function DashboardTenderList({
                       districts?.districts.edges?.flatMap(
                         (e) => e?.node?.plots,
                       ) || [];
+                    // @ts-expect-error
                     navigateToTender(tender, plots);
                   }}
                 >
