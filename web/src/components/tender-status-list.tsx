@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useMapStore } from "~/store/map";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
@@ -19,8 +19,7 @@ import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
 import { fixAmount } from "~/lib/helper";
 import { useRelayEnvironment } from "react-relay";
 
-const MotionCard = motion(Card);
-const MotionCardHeader = motion(CardHeader);
+const MotionCard = m.create(Card);
 
 export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
   const tenders = useAreaTenders(data);
@@ -44,7 +43,7 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
           useMapStore.setState({ selectedTenderStatus: null });
         }}
       ></motion.div> */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -64,18 +63,18 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
             "mx-auto my-auto block h-[80vh] w-[40vw] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
-          <MotionCardHeader className="flex flex-row items-center justify-between bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-            <motion.div
+          <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+            <m.div
               layoutId={`tender-status-${selectedTenderStatus?.value}-status`}
             >
               {selectedTenderStatus?.status}项目
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               layoutId={`tender-status-${selectedTenderStatus?.value}-count`}
             >
               共{filteredTenders?.length || 0}个
-            </motion.div>
-          </MotionCardHeader>
+            </m.div>
+          </CardHeader>
           <CardContent className="h-full px-0 pb-8">
             <ScrollArea className="h-full px-4">
               <Table className="my-4 h-full">
@@ -142,7 +141,7 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
           </CardContent>
         </MotionCard>
         {/* </motion.div> */}
-      </motion.div>
+      </m.div>
     </>
   );
 }

@@ -72,10 +72,12 @@ const authportalLazyRoute = authportalLazyImport
   } as any)
   .lazy(() => import('./routes/__auth/__portal.lazy').then((d) => d.Route))
 
-const authdashboardRoute = authdashboardImport.update({
-  id: '/__dashboard',
-  getParentRoute: () => authRoute,
-} as any)
+const authdashboardRoute = authdashboardImport
+  .update({
+    id: '/__dashboard',
+    getParentRoute: () => authRoute,
+  } as any)
+  .lazy(() => import('./routes/__auth/__dashboard.lazy').then((d) => d.Route))
 
 const authdashboardmapRoute = authdashboardmapImport
   .update({
