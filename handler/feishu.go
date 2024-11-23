@@ -61,7 +61,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		return c.Redirect(301, url+"/access-denied")
 	}
 
-	if err := h.store.User.UpdateOne(us).SetOpenID(*userInfo.Data.OpenId).Exec(c.Request().Context()); err != nil {
+	if err := h.store.User.UpdateOne(us).SetOpenID(*userInfo.Data.OpenId).SetAvatarURL(*userInfo.Data.AvatarUrl).Exec(c.Request().Context()); err != nil {
 		fmt.Println("update openid error: ", err)
 	}
 
