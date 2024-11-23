@@ -89,7 +89,7 @@ export function AmountBoard({ data }: { data: MapIndexPageQuery$data }) {
                   <motion.div
                     layoutId={`tender-status-${value}`}
                     key={status}
-                    className="mt-2 flex items-center justify-between gap-x-4"
+                    className="mt-2 flex cursor-pointer items-center justify-between gap-x-4"
                     onClick={() => {
                       useMapStore.setState({
                         selectedTenderStatus: { status, value },
