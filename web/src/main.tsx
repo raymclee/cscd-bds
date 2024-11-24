@@ -1,6 +1,12 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 import { RelayEnvironment } from "~/lib/relay";
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/zh-cn";
+
+dayjs.locale("zh-cn");
+dayjs.extend(LocalizedFormat);
 
 import { routeTree } from "./routeTree.gen";
 

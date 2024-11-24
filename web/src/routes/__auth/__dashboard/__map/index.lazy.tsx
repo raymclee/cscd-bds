@@ -38,6 +38,7 @@ import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
 import { TenderStatusList } from "~/components/tender-status-list";
 import { AnimatePresence } from "motion/react";
+import dayjs from "dayjs";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
@@ -1241,7 +1242,7 @@ function TenderList() {
                         <div className="grid grid-cols-3">
                           <div className="text-gray-400">日期</div>
                           <div className="col-span-2">
-                            {new Date(record?.date).toLocaleDateString()}
+                            {dayjs(record?.date).format("LL")}
                           </div>
                         </div>
                         <div className="grid grid-cols-3">
