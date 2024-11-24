@@ -5,3 +5,7 @@
 }
 @tailwind components;
 @tailwind utilities;
+
+.ant-select-tree-treenode-disabled > .ant-select-tree-title {
+  color: #000 !important;
+}

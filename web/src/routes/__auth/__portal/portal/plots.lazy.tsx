@@ -127,7 +127,7 @@ function RouteComponent() {
   }, [map]);
 
   return (
-    <div className="relative -mx-4 min-h-dvh">
+    <div className="relative -mx-4 min-h-[calc(100dvh-64px)]">
       <div id="map" className="absolute inset-0"></div>
       {isReady && <EditorContainer />}
     </div>
@@ -150,6 +150,7 @@ function EditorContainer() {
         title: p?.name,
         value: p!.id,
         key: p!.id,
+        disabled: true,
         children: p?.cities?.length
           ? p?.cities?.map((c) => ({
               title: c?.name,
@@ -193,6 +194,7 @@ function EditorContainer() {
         placeholder="請選擇地區"
         value={selectedDistrict ?? undefined}
         variant="outlined"
+        treeDefaultExpandAll
         className="absolute left-4 top-4 w-64"
         treeData={treeData}
         onSelect={(value: string, node) => {
