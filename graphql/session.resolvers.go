@@ -8,7 +8,7 @@ import (
 	"context"
 	"cscd-bds/graphql/model"
 	"cscd-bds/session"
-	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/schema/xid"
 	"fmt"
 )
 
@@ -18,9 +18,9 @@ func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
 	if !ok {
 		return nil, fmt.Errorf("session not found")
 	}
-	u, err := r.store.User.Query().Where(user.Username(su.Username)).Only(ctx)
+	u, err := r.store.User.Get(ctx, xid.ID(su.UserId))
 	if err != nil {
-		return nil, fmt.Errorf("user not found")
+		return nil, fmt.Errorf("session not found")
 	}
 	return &model.Session{
 		UserID:    su.UserId,
