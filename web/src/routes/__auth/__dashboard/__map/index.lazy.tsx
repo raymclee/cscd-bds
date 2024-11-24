@@ -1239,6 +1239,12 @@ function TenderList() {
                     selectedTender?.visitRecords?.map((record) => (
                       <div className="mt-4 space-y-2">
                         <div className="grid grid-cols-3">
+                          <div className="text-gray-400">日期</div>
+                          <div className="col-span-2">
+                            {new Date(record?.date).toDateString()}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3">
                           <div className="text-gray-400">沟通对象</div>
                           <div className="col-span-2">{record?.commPeople}</div>
                         </div>

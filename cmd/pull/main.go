@@ -50,8 +50,8 @@ func main() {
 	// fetchArea()
 	// fetchSales()
 	// fetchCustomer()
-	fetchTender()
-	// fetchVisitRecord()
+	// fetchTender()
+	fetchVisitRecord()
 
 }
 
