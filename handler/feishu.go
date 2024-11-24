@@ -88,8 +88,6 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		UnionId:      *userInfo.Data.UnionId,
 		Email:        us.Email,
 		UserId:       string(us.ID),
-		IsAdmin:      us.IsAdmin,
-		IsLeader:     us.IsLeader,
 	}
 	h.session.Put(c.Request().Context(), "user", u)
 

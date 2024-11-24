@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c345a6b7af7c03d2c9f59d272b42c813>>
+ * @generated SignedSource<<c52b9b3c1c48b9e0a2dc61f89042a705>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,18 +14,10 @@ export type useDeleteTenderMutation$variables = {
 };
 export type useDeleteTenderMutation$data = {
   readonly deleteTender: {
-    readonly area: {
-      readonly name: string;
-    };
     readonly createdAt: any;
-    readonly customer: {
-      readonly name: string;
-    };
     readonly discoveryDate: any;
-    readonly estimatedAmount: number | null | undefined;
     readonly fullAddress: string | null | undefined;
     readonly id: string;
-    readonly images: ReadonlyArray<string> | null | undefined;
     readonly name: string;
     readonly status: number;
     readonly tenderDate: any | null | undefined;
@@ -46,80 +38,71 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "id"
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "id"
+      }
+    ],
+    "concreteType": "Tender",
+    "kind": "LinkedField",
+    "name": "deleteTender",
+    "plural": false,
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "status",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "createdAt",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "fullAddress",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "tenderDate",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "discoveryDate",
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "status",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "estimatedAmount",
-  "storageKey": null
-},
-v7 = [
-  (v3/*: any*/)
-],
-v8 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "images",
-  "storageKey": null
-},
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "fullAddress",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "tenderDate",
-  "storageKey": null
-},
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "discoveryDate",
-  "storageKey": null
-},
-v12 = [
-  (v3/*: any*/),
-  (v2/*: any*/)
 ];
 return {
   "fragment": {
@@ -127,48 +110,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "useDeleteTenderMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Tender",
-        "kind": "LinkedField",
-        "name": "deleteTender",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
-          (v5/*: any*/),
-          (v6/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Customer",
-            "kind": "LinkedField",
-            "name": "customer",
-            "plural": false,
-            "selections": (v7/*: any*/),
-            "storageKey": null
-          },
-          (v8/*: any*/),
-          (v9/*: any*/),
-          (v10/*: any*/),
-          (v11/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Area",
-            "kind": "LinkedField",
-            "name": "area",
-            "plural": false,
-            "selections": (v7/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ],
+    "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -177,60 +119,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useDeleteTenderMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Tender",
-        "kind": "LinkedField",
-        "name": "deleteTender",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
-          (v5/*: any*/),
-          (v6/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Customer",
-            "kind": "LinkedField",
-            "name": "customer",
-            "plural": false,
-            "selections": (v12/*: any*/),
-            "storageKey": null
-          },
-          (v8/*: any*/),
-          (v9/*: any*/),
-          (v10/*: any*/),
-          (v11/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Area",
-            "kind": "LinkedField",
-            "name": "area",
-            "plural": false,
-            "selections": (v12/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "6249545e190432ae2ee7269fbae1ec0a",
+    "cacheID": "238b11024fc19c6a38b7b11e13457a42",
     "id": null,
     "metadata": {},
     "name": "useDeleteTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useDeleteTenderMutation(\n  $id: ID!\n) {\n  deleteTender(id: $id) {\n    id\n    name\n    status\n    createdAt\n    estimatedAmount\n    customer {\n      name\n      id\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    area {\n      name\n      id\n    }\n  }\n}\n"
+    "text": "mutation useDeleteTenderMutation(\n  $id: ID!\n) {\n  deleteTender(id: $id) {\n    id\n    name\n    status\n    createdAt\n    fullAddress\n    tenderDate\n    discoveryDate\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "676c6ddaf532334892aaf202318aecb5";
+(node as any).hash = "d7d0a4f92df6333549fc44f8d47c7379";
 
 export default node;

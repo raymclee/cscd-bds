@@ -956,6 +956,7 @@ type Mutation {
   createTender(geoBounds: [[Float!]!], input: CreateTenderInput!): Tender!
   createUser(input: CreateUserInput!): User!
   deletePlot(id: ID!): Plot!
+  deleteTender(id: ID!): Tender!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
   updatePlot(geoBounds: [[Float!]!], id: ID!, input: UpdatePlotInput!): Plot!
   updateTender(geoBounds: [[Float!]!], id: ID!, input: UpdateTenderInput!): Tender!

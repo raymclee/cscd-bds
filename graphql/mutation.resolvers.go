@@ -52,6 +52,18 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	return q.Save(ctx)
 }
 
+// DeleteTender is the resolver for the deleteTender field.
+func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
+	t, err := r.store.Tender.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+	if err := r.store.Tender.DeleteOne(t).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to delete tender: %w", err)
+	}
+	return t, nil
+}
+
 // CreatePlot is the resolver for the createPlot field.
 func (r *mutationResolver) CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.Plot, error) {
 	return r.store.Plot.Create().SetInput(input).SetGeoBounds(geoBounds).Save(ctx)

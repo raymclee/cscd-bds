@@ -981,6 +981,7 @@ export type Mutation = {
   createTender: Tender;
   createUser: User;
   deletePlot: Plot;
+  deleteTender: Tender;
   updateArea: Area;
   updatePlot: Plot;
   updateTender: Tender;
@@ -1011,6 +1012,11 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationDeletePlotArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteTenderArgs = {
   id: Scalars['ID']['input'];
 };
 

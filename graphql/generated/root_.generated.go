@@ -191,6 +191,7 @@ type ComplexityRoot struct {
 		CreateTender func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64) int
 		CreateUser   func(childComplexity int, input ent.CreateUserInput) int
 		DeletePlot   func(childComplexity int, id xid.ID) int
+		DeleteTender func(childComplexity int, id xid.ID) int
 		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdatePlot   func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) int
@@ -1110,6 +1111,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.DeletePlot(childComplexity, args["id"].(xid.ID)), true
+
+	case "Mutation.deleteTender":
+		if e.complexity.Mutation.DeleteTender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteTender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteTender(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
@@ -5916,6 +5929,7 @@ type GeoJson {
     input: UpdateTenderInput!
     geoBounds: [[Float!]!]
   ): Tender!
+  deleteTender(id: ID!): Tender!
 
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): Plot!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!

@@ -10,6 +10,7 @@ import { Badge, Button, Form, Input, List, Tag, Typography } from "antd";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
+import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
 import { tenderStatus } from "~/lib/helper";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
@@ -86,9 +87,10 @@ function TenderList({
       {/* <div className="flex items-center justify-between">
         <Typography.Title level={2}>商机</Typography.Title>
       </div> */}
-      <div>
-        <Form.Item className="max-w-sm">
+      <div className="flex items-center justify-between">
+        <Form.Item noStyle>
           <Input.Search
+            className="w-72"
             placeholder="搜索"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -96,6 +98,9 @@ function TenderList({
             type="search"
           />
         </Form.Item>
+        <Link to="/portal/tenders/new">
+          <Button type="primary">新增</Button>
+        </Link>
       </div>
       <List
         // pagination={{ pageSize: 20, position: "both" }}
@@ -123,6 +128,7 @@ function TenderList({
                   地塊
                 </Button>
               </Link>,
+              <DeleteButton key="delete" id={item?.id} />,
               // <a key="list-loadmore-more">more</a>,
             ]}
             extra={
@@ -149,5 +155,25 @@ function TenderList({
         )}
       />
     </div>
+  );
+}
+
+function DeleteButton({ id }: { id?: string }) {
+  const [commit, inFlight] = useDeleteTenderMutation();
+  return (
+    <Button
+      disabled={inFlight}
+      onClick={() => {
+        if (!id) return;
+        commit({
+          variables: { id },
+          updater: (store) => {
+            store.delete(id);
+          },
+        });
+      }}
+    >
+      删除
+    </Button>
   );
 }
