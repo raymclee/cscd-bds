@@ -1241,7 +1241,7 @@ function TenderList() {
                         <div className="grid grid-cols-3">
                           <div className="text-gray-400">日期</div>
                           <div className="col-span-2">
-                            {new Date(record?.date).toDateString()}
+                            {new Date(record?.date).toLocaleDateString()}
                           </div>
                         </div>
                         <div className="grid grid-cols-3">
