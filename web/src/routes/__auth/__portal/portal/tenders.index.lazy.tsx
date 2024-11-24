@@ -6,7 +6,16 @@ import {
 } from "@tanstack/react-router";
 import { tendersAreaTenderListFragment$key } from "__generated__/tendersAreaTenderListFragment.graphql";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
-import { Badge, Button, Form, Input, List, Tag, Typography } from "antd";
+import {
+  Badge,
+  Button,
+  Form,
+  Input,
+  List,
+  Popconfirm,
+  Tag,
+  Typography,
+} from "antd";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -161,9 +170,9 @@ function TenderList({
 function DeleteButton({ id }: { id?: string }) {
   const [commit, inFlight] = useDeleteTenderMutation();
   return (
-    <Button
-      disabled={inFlight}
-      onClick={() => {
+    <Popconfirm
+      title="确定要删除吗？"
+      onConfirm={() => {
         if (!id) return;
         commit({
           variables: { id },
@@ -173,7 +182,9 @@ function DeleteButton({ id }: { id?: string }) {
         });
       }}
     >
-      删除
-    </Button>
+      <Button disabled={inFlight} danger type="link" size="small">
+        删除
+      </Button>
+    </Popconfirm>
   );
 }
