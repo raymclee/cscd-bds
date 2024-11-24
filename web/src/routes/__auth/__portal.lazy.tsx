@@ -15,8 +15,17 @@ import {
   Typography,
 } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
-import { Building2, ContactRound, FileClock, Map } from "lucide-react";
+import {
+  Building2,
+  ContactRound,
+  FileClock,
+  Map,
+  SlidersHorizontal,
+  Users,
+} from "lucide-react";
 import * as React from "react";
+import logoImg from "~/assets/logo.jpg";
+import { cn } from "~/lib/utils";
 
 export const Route = createLazyFileRoute("/__auth/__portal")({
   component: RouteComponent,
@@ -44,6 +53,7 @@ function RouteComponent() {
   const navigate = Route.useNavigate();
   const { pathname } = useLocation();
   const { session } = Route.useRouteContext();
+  const [collapsed, setCollapsed] = React.useState(false);
 
   const items: MenuItem[] = React.useMemo(
     () => [
@@ -53,7 +63,7 @@ function RouteComponent() {
         <Building2 size={16} />,
       ),
       getItem(
-        <Link to="/portal/plots">區域地塊</Link>,
+        <Link to="/portal/plots">区域地块</Link>,
         "plots",
         <Map size={16} />,
       ),
@@ -62,14 +72,21 @@ function RouteComponent() {
         "customers",
         <ContactRound size={16} />,
       ),
-      getItem(
-        <Link to="/portal/visit-records">拜访记录</Link>,
-        "visit-records",
-        <FileClock size={16} />,
-      ),
     ],
     [],
   );
+
+  if (session.isAdmin) {
+    items.push(
+      getItem("管理员", "admins", <SlidersHorizontal size={16} />, [
+        getItem(
+          <Link to="/portal/users">用户</Link>,
+          "users",
+          <Users size={16} />,
+        ),
+      ]),
+    );
+  }
 
   return (
     <ConfigProvider
@@ -81,16 +98,27 @@ function RouteComponent() {
     >
       <App>
         <Layout hasSider style={{ minHeight: "100vh" }}>
-          <Sider className="fixed bottom-0 start-0 top-0 h-screen" collapsible>
-            <div className="m-4 h-8" />
+          <Sider
+            className="fixed bottom-0 start-0 top-0 h-screen"
+            collapsible
+            collapsed={collapsed}
+            onCollapse={(collapsed) => setCollapsed(collapsed)}
+          >
+            <div className="m-4 flex h-10 items-center justify-center gap-2">
+              <img src={logoImg} alt="logo" className="h-full" />
+              {/* <span className="text-lg font-bold text-white">远东幕墙</span> */}
+            </div>
             <Menu
               theme="dark"
               defaultSelectedKeys={[pathname.split("/")[2]]}
+              defaultOpenKeys={["admins"]}
               mode="inline"
               items={items}
             />
           </Sider>
-          <Layout className="ms-[200px]">
+          <Layout
+            className={cn("transition-all", collapsed ? "ms-20" : "ms-[200px]")}
+          >
             <Header className="flex items-center justify-between bg-white px-4">
               <Typography.Title className="!mb-0" level={3}>
                 {pageTitle(pathname)}
@@ -132,14 +160,17 @@ function RouteComponent() {
 function pageTitle(pathname: string) {
   switch (pathname.split("/")[2]) {
     case "tenders":
+      if (pathname.split("/")?.[3] === "new") {
+        return "新建商机";
+      }
       return "商机";
     case "plots":
-      return "區域地塊";
+      return "区域地块";
     case "customers":
       return "客户";
     case "visit-records":
       return "拜访记录";
     default:
-      return "商机";
+      return "";
   }
 }

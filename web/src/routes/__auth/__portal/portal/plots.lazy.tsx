@@ -43,25 +43,26 @@ const query = graphql`
                 id
                 name
                 adcode
+                plots {
+                  id
+                  name
+                  geoBounds
+                  colorHex
+                }
               }
             }
             districts {
               id
               name
               adcode
+              plots {
+                id
+                name
+                geoBounds
+                colorHex
+              }
             }
           }
-        }
-      }
-    }
-
-    plots {
-      edges {
-        node {
-          id
-          name
-          geoBounds
-          colorHex
         }
       }
     }
@@ -123,6 +124,14 @@ function RouteComponent() {
 
     return () => {
       map?.destroy();
+      usePlotStore.setState({
+        isAdding: false,
+        isEditing: false,
+        selectedPlot: null,
+        polygonEditor: null,
+        selectedDistrict: null,
+        markers: [],
+      });
     };
   }, [map]);
 
@@ -176,13 +185,22 @@ function EditorContainer() {
   );
 
   React.useEffect(() => {
-    const plots = data.plots?.edges?.map((e) => e?.node) || [];
-    if (!plots.length) {
-      return;
-    }
-    for (const plot of plots) {
-      createPlot(plot, commitMutation);
-    }
+    data.node?.areas?.forEach((area) => {
+      area.provinces?.forEach((province) => {
+        province.cities?.forEach((city) => {
+          city.districts?.forEach((district) => {
+            district.plots?.forEach((plot) => {
+              createPlot(plot, commitMutation);
+            });
+          });
+        });
+        province.districts?.forEach((district) => {
+          district.plots?.forEach((plot) => {
+            createPlot(plot, commitMutation);
+          });
+        });
+      });
+    });
   }, [data]);
 
   return (

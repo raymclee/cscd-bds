@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<11b5e976b04d073d1c1fb47650e69871>>
+ * @generated SignedSource<<c1fe1f14026f068d24ab7c7f606c8bce>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,6 +23,12 @@ export type plotsPageQuery$data = {
             readonly adcode: number;
             readonly id: string;
             readonly name: string;
+            readonly plots: ReadonlyArray<{
+              readonly colorHex: string;
+              readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
+              readonly id: string;
+              readonly name: string;
+            }> | null | undefined;
           }> | null | undefined;
           readonly id: string;
           readonly name: string;
@@ -31,6 +37,12 @@ export type plotsPageQuery$data = {
           readonly adcode: number;
           readonly id: string;
           readonly name: string;
+          readonly plots: ReadonlyArray<{
+            readonly colorHex: string;
+            readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
+            readonly id: string;
+            readonly name: string;
+          }> | null | undefined;
         }> | null | undefined;
         readonly id: string;
         readonly name: string;
@@ -38,16 +50,6 @@ export type plotsPageQuery$data = {
     }> | null | undefined;
     readonly id: string;
   } | null | undefined;
-  readonly plots: {
-    readonly edges: ReadonlyArray<{
-      readonly node: {
-        readonly colorHex: string;
-        readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
-        readonly id: string;
-        readonly name: string;
-      } | null | undefined;
-    } | null | undefined> | null | undefined;
-  };
 };
 export type plotsPageQuery = {
   response: plotsPageQuery$data;
@@ -100,7 +102,34 @@ v5 = {
   "selections": [
     (v2/*: any*/),
     (v3/*: any*/),
-    (v4/*: any*/)
+    (v4/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Plot",
+      "kind": "LinkedField",
+      "name": "plots",
+      "plural": true,
+      "selections": [
+        (v2/*: any*/),
+        (v3/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "geoBounds",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "colorHex",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
   ],
   "storageKey": null
 },
@@ -131,55 +160,6 @@ v6 = {
       "storageKey": null
     },
     (v5/*: any*/)
-  ],
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "PlotConnection",
-  "kind": "LinkedField",
-  "name": "plots",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "PlotEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "Plot",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v2/*: any*/),
-            (v3/*: any*/),
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "geoBounds",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "colorHex",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
   ],
   "storageKey": null
 };
@@ -220,8 +200,7 @@ return {
           }
         ],
         "storageKey": null
-      },
-      (v7/*: any*/)
+      }
     ],
     "type": "Query",
     "abstractKey": null
@@ -270,21 +249,20 @@ return {
           }
         ],
         "storageKey": null
-      },
-      (v7/*: any*/)
+      }
     ]
   },
   "params": {
-    "cacheID": "dfbd6106e8727c403689a2bbbddea541",
+    "cacheID": "0c19a5c3053adaf31dd3678a0803af77",
     "id": null,
     "metadata": {},
     "name": "plotsPageQuery",
     "operationKind": "query",
-    "text": "query plotsPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    id\n    ... on User {\n      areas {\n        provinces {\n          id\n          name\n          adcode\n          cities {\n            id\n            name\n            adcode\n            districts {\n              id\n              name\n              adcode\n            }\n          }\n          districts {\n            id\n            name\n            adcode\n          }\n        }\n        id\n      }\n    }\n  }\n  plots {\n    edges {\n      node {\n        id\n        name\n        geoBounds\n        colorHex\n      }\n    }\n  }\n}\n"
+    "text": "query plotsPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    id\n    ... on User {\n      areas {\n        provinces {\n          id\n          name\n          adcode\n          cities {\n            id\n            name\n            adcode\n            districts {\n              id\n              name\n              adcode\n              plots {\n                id\n                name\n                geoBounds\n                colorHex\n              }\n            }\n          }\n          districts {\n            id\n            name\n            adcode\n            plots {\n              id\n              name\n              geoBounds\n              colorHex\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "1e33bac7755d801e17f54152eb6c82ab";
+(node as any).hash = "281f093347a8742ad48a498f57c98113";
 
 export default node;

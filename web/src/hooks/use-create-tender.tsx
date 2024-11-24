@@ -2,13 +2,13 @@ import { useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 
 const mutation = graphql`
-  mutation useDeleteTenderMutation($id: ID!) {
-    deleteTender(id: $id) {
+  mutation useCreateTenderMutation($input: CreateTenderInput!) {
+    createTender(input: $input) {
       id
     }
   }
 `;
 
-export function useDeleteTenderMutation() {
+export function useCreateTenderMutation() {
   return useMutation(mutation);
 }

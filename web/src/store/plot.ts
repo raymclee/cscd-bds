@@ -34,7 +34,7 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
   setPolygonEditor: (polygonEditor) => set({ polygonEditor }),
   createPlot(plot, commitMutation) {
     const { map } = useMapStore.getState();
-    if (!map || !plot.geoBounds) return;
+    if (!map || !plot?.geoBounds) return;
 
     const polygon = new AMap.Polygon();
     polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
@@ -89,7 +89,12 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
         onOk: () => {
           polygon.remove();
           label.remove();
-          commitMutation({ variables: { id: plot?.id! } });
+          commitMutation({
+            variables: { id: plot?.id! },
+            updater: (store) => {
+              store.delete(plot?.id!);
+            },
+          });
         },
       });
     });

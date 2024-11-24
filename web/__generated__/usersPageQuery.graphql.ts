@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<eb68dc5e57825ecc506a543d6f86ea2e>>
+ * @generated SignedSource<<31019ddb68901db9bae08566957efeea>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,8 @@ export type usersPageQuery$data = {
           readonly name: string;
         }> | null | undefined;
         readonly id: string;
+        readonly isAdmin: boolean;
+        readonly isLeader: boolean;
         readonly name: string;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -41,6 +43,20 @@ v1 = {
   "args": null,
   "kind": "ScalarField",
   "name": "name",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "isAdmin",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "isLeader",
   "storageKey": null
 };
 return {
@@ -87,7 +103,9 @@ return {
                       (v1/*: any*/)
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v2/*: any*/),
+                  (v3/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -145,7 +163,9 @@ return {
                       (v0/*: any*/)
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v2/*: any*/),
+                  (v3/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -158,16 +178,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "93c23d91c19a49033c1ebede4c982201",
+    "cacheID": "567d3fc9f28afe89b0fb78e9a926dee1",
     "id": null,
     "metadata": {},
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery {\n  users {\n    edges {\n      node {\n        id\n        name\n        areas {\n          name\n          id\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query usersPageQuery {\n  users {\n    edges {\n      node {\n        id\n        name\n        areas {\n          name\n          id\n        }\n        isAdmin\n        isLeader\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e9b467f314acc2b80dff9a871d8500c8";
+(node as any).hash = "590726f35178fc2c6011b2645662c9d7";
 
 export default node;

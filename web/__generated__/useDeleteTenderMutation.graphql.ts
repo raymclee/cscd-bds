@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c52b9b3c1c48b9e0a2dc61f89042a705>>
+ * @generated SignedSource<<faeaa53e47d00fa4139b75d3eb660766>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,13 +14,7 @@ export type useDeleteTenderMutation$variables = {
 };
 export type useDeleteTenderMutation$data = {
   readonly deleteTender: {
-    readonly createdAt: any;
-    readonly discoveryDate: any;
-    readonly fullAddress: string | null | undefined;
     readonly id: string;
-    readonly name: string;
-    readonly status: number;
-    readonly tenderDate: any | null | undefined;
   };
 };
 export type useDeleteTenderMutation = {
@@ -57,48 +51,6 @@ v1 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "name",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "status",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "createdAt",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "fullAddress",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "tenderDate",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "discoveryDate",
-        "storageKey": null
       }
     ],
     "storageKey": null
@@ -122,16 +74,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "238b11024fc19c6a38b7b11e13457a42",
+    "cacheID": "64bbb7fde8cc5e20b44dc83881133a1b",
     "id": null,
     "metadata": {},
     "name": "useDeleteTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useDeleteTenderMutation(\n  $id: ID!\n) {\n  deleteTender(id: $id) {\n    id\n    name\n    status\n    createdAt\n    fullAddress\n    tenderDate\n    discoveryDate\n  }\n}\n"
+    "text": "mutation useDeleteTenderMutation(\n  $id: ID!\n) {\n  deleteTender(id: $id) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d7d0a4f92df6333549fc44f8d47c7379";
+(node as any).hash = "797a0dc698973a1b636f12b79ee30d65";
 
 export default node;
