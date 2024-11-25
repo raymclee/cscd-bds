@@ -1,16 +1,18 @@
-import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
-import { ImageOff, Undo2 } from "lucide-react";
+import { AnimatePresence } from "motion/react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
 import { AmountBoard } from "~/components/amount-board";
 import { DashboardTenderList } from "~/components/dashboard-tender-list";
+import { MapTenderDetail } from "~/components/map-tender-detail";
+import { MapTenderList } from "~/components/map-tender-list";
 import { NewTenderBoard } from "~/components/new-tender-card";
 import { RankingListChart } from "~/components/ranking-list-chart";
-import { TenderRatingChart } from "~/components/tender-rating-chart";
+import { TenderStatusList } from "~/components/tender-status-list";
 import { TenderTypeChart } from "~/components/tender-type-chart";
 import {
   Breadcrumb,
@@ -19,32 +21,20 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "~/components/ui/carousel";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
 import {
   findTenderWithLevel,
   fixAmount,
   getDistrictZoomLevel,
-  ownerType,
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { StoreArea, useMapStore } from "~/store/map";
-import { TenderStatusList } from "~/components/tender-status-list";
-import { AnimatePresence } from "motion/react";
-import dayjs from "dayjs";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
 });
 
-const query = graphql`
+export const mapIndexPageQuery = graphql`
   query MapIndexPageQuery {
     areas {
       edges {
@@ -182,7 +172,7 @@ function RouteComponent() {
   const tenderViewTender = useMapStore((state) => state.tenderViewTender);
 
   const data = usePreloadedQuery<MapIndexPageQuery>(
-    query,
+    mapIndexPageQuery,
     Route.useLoaderData(),
   );
 
@@ -877,34 +867,6 @@ function RouteComponent() {
               >
                 {selectedArea?.name}
               </BreadcrumbLink>
-              {/* <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1">
-                  {selectedDistrict?.name || "全国"}
-                  <ChevronUp className="h-4 w-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="center"
-                  sideOffset={20}
-                  className="rouned-lg overflow-hidden bg-black/20 text-white backdrop-blur"
-                >
-                  {districts.map((district) => (
-                    <DropdownMenuItem
-                      key={district.id}
-                      className="hover:bg-black/60"
-                      onSelect={() => {
-                        // switch2AreaNode(district.adcode[0]);
-                        // setVisible(true);
-                        resetNaivgation();
-                        map?.remove(satelliteLayer!);
-                        setSelectedDistrict(district);
-                        renderArea(district);
-                      }}
-                    >
-                      {district.name}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu> */}
             </BreadcrumbItem>
             {navigations
               .filter((n) => !!n.adcode)
@@ -949,23 +911,12 @@ function RouteComponent() {
                   </React.Fragment>
                 );
               })}
-            {/* <BreadcrumbSeparator></BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/components">
-                {countryTree.children[4].name}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator></BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/components">
-                {countryTree.children[4].children?.[0].name}
-              </BreadcrumbLink>
-            </BreadcrumbItem> */}
           </BreadcrumbList>
         </Breadcrumb>
       </div>
 
-      <TenderList />
+      <MapTenderList />
+      <MapTenderDetail />
 
       <div className="flex gap-2 px-4 pt-14">
         <div
@@ -974,9 +925,9 @@ function RouteComponent() {
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
-          <AmountBoard data={data} />
+          <AmountBoard />
 
-          <NewTenderBoard data={data} />
+          <NewTenderBoard />
         </div>
 
         <div className="flex-1 space-y-2"></div>
@@ -987,411 +938,17 @@ function RouteComponent() {
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
-          <TenderTypeChart data={data} />
+          <TenderTypeChart />
 
           <RankingListChart />
 
-          <DashboardTenderList data={data} />
+          <DashboardTenderList />
         </div>
       </div>
 
       <AnimatePresence>
-        {selectedTenderStatus && <TenderStatusList data={data} />}
+        {selectedTenderStatus && <TenderStatusList />}
       </AnimatePresence>
-    </>
-  );
-}
-
-function TenderList() {
-  const tenderList = useMapStore((state) => state.tenderList);
-  const tenderListVisible = useMapStore((state) => state.tenderListVisible);
-  const map = useMapStore((state) => state.map);
-  const selectedTender = useMapStore((state) => state.selectedTender);
-  const tenderViewTender = useMapStore((state) => state.tenderViewTender);
-  const tenderListHovering = useMapStore((state) => state.tenderListHovering);
-  const setTenderListHovering = useMapStore(
-    (state) => state.setTenderListHovering,
-  );
-
-  // React.useEffect(() => {
-  //   setHovering(0);
-  // }, [tenderList.length]);
-
-  return (
-    <>
-      <div
-        className={cn(
-          "absolute left-4 top-14 h-full w-[440px] space-y-2 transition",
-          !selectedTender && "-translate-x-[110%]",
-        )}
-      >
-        <Card
-          className={cn(
-            "h-[90vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
-          )}
-        >
-          <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-            <div className="flex items-center justify-between">
-              <div className="line-clamp-1">{selectedTender?.name}</div>
-              {!tenderViewTender && (
-                <button
-                  onClick={() => {
-                    useMapStore.setState({
-                      selectedTender: null,
-                      tenderListVisible: true,
-                    });
-                  }}
-                >
-                  <Undo2 />
-                </button>
-              )}
-            </div>
-          </CardHeader>
-
-          <CardContent className="h-full py-4">
-            {selectedTender?.images && selectedTender?.images?.length > 0 ? (
-              <Carousel>
-                <CarouselContent className="min-h-[220px]">
-                  {selectedTender?.images?.map((image, i) => (
-                    <CarouselItem key={i}>
-                      <img
-                        src={image}
-                        className="aspect-[16/9] rounded"
-                        alt={selectedTender?.name}
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            ) : (
-              <div className="flex aspect-[16/9] flex-col items-center justify-center text-white">
-                <ImageOff className="mb-2 h-16 w-16" />
-                暂没图片
-              </div>
-            )}
-
-            <Tabs
-              key={selectedTender?.id}
-              defaultValue="detail"
-              className="mt-4 w-full"
-            >
-              <TabsList className="grid w-full grid-cols-3 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 text-white">
-                <TabsTrigger
-                  value="detail"
-                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
-                >
-                  基本信息
-                </TabsTrigger>
-                <TabsTrigger
-                  value="rating"
-                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
-                >
-                  项目评分
-                </TabsTrigger>
-                <TabsTrigger
-                  value="follow-up"
-                  className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
-                >
-                  跟进情况
-                </TabsTrigger>
-              </TabsList>
-              <ScrollArea className="h-[480px]">
-                <TabsContent value="detail" className="mt-4 space-y-2">
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">项目名称</div>
-                    <div className="col-span-2">{selectedTender?.name}</div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">项目地址</div>
-                    <div className="col-span-2">
-                      {selectedTender?.fullAddress}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">业主单位</div>
-                    <div className="col-span-2">
-                      {selectedTender?.customer?.name || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">总包单位</div>
-                    <div className="col-span-2">
-                      {selectedTender?.contractor || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">业主类型</div>
-                    <div className="col-span-2">
-                      {ownerType(selectedTender?.customer?.ownerType) || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">设计单位</div>
-                    <div className="col-span-2">
-                      {selectedTender?.designUnit || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">预计金额</div>
-                    <div className="col-span-2">
-                      {selectedTender?.estimatedAmount
-                        ? `${fixAmount(selectedTender?.estimatedAmount)} 亿`
-                        : "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">幕墙顾问</div>
-                    <div className="col-span-2">
-                      {selectedTender?.facadeConsultant || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">咨询公司</div>
-                    <div className="col-span-2">
-                      {selectedTender?.consultingFirm || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">招标代理</div>
-                    <div className="col-span-2">
-                      {selectedTender?.tenderingAgency || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">招标形式</div>
-                    <div className="col-span-2">
-                      {selectedTender?.tenderForm || "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">预计招标日期</div>
-                    <div className="col-span-2">
-                      {selectedTender?.tenderDate
-                        ? new Date(
-                            selectedTender.tenderDate,
-                          ).toLocaleDateString()
-                        : "-"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="text-gray-400">合同形式</div>
-                    <div className="col-span-2">
-                      {selectedTender?.contractForm || "-"}
-                    </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value="rating" className="mt-4">
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-3">
-                      <div className="text-gray-400">规模及价值</div>
-                      <div className="col-span-2">
-                        {selectedTender?.sizeAndValueRatingOverview || "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3">
-                      <div className="text-gray-400">资信及付款</div>
-                      <div className="col-span-2">
-                        {selectedTender?.creditAndPaymentRatingOverview || "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3">
-                      <div className="text-gray-400">中标原则及时限</div>
-                      <div className="col-span-2">
-                        {selectedTender?.timeLimitRatingOverview || "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3">
-                      <div className="text-gray-400">客情关系</div>
-                      <div className="col-span-2">
-                        {selectedTender?.customerRelationshipRatingOverview ||
-                          "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3">
-                      <div className="text-gray-400">竞争合作关系</div>
-                      <div className="col-span-2">
-                        {selectedTender?.competitivePartnershipRatingOverview ||
-                          "-"}
-                      </div>
-                    </div>
-                  </div>
-                  <TenderRatingChart
-                    sizeAndValueRating={selectedTender?.sizeAndValueRating}
-                    creditAndPaymentRating={
-                      selectedTender?.creditAndPaymentRating
-                    }
-                    timeLimitRating={selectedTender?.timeLimitRating}
-                    customerRelationshipRating={
-                      selectedTender?.customerRelationshipRating
-                    }
-                    competitivePartnershipRating={
-                      selectedTender?.competitivePartnershipRating
-                    }
-                  />
-                </TabsContent>
-                <TabsContent value="follow-up" className="">
-                  {selectedTender?.visitRecords &&
-                  selectedTender?.visitRecords?.length < 1 ? (
-                    <div className="mt-8 flex items-center justify-center">
-                      没有拜访记录
-                    </div>
-                  ) : (
-                    selectedTender?.visitRecords?.map((record) => (
-                      <div className="mt-4 space-y-2">
-                        <div className="grid grid-cols-3">
-                          <div className="text-gray-400">日期</div>
-                          <div className="col-span-2">
-                            {dayjs(record?.date).format("LL")}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3">
-                          <div className="text-gray-400">沟通对象</div>
-                          <div className="col-span-2">{record?.commPeople}</div>
-                        </div>
-                        <div className="grid grid-cols-3">
-                          <div className="text-gray-400">沟通形式</div>
-                          <div className="col-span-2">
-                            {record?.visitType == 1 ? "现场拜访" : "沟通内容"}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3">
-                          <div className="text-gray-400">沟通内容</div>
-                          <div className="col-span-2">
-                            {record?.commContent}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3">
-                          <div className="text-gray-400">下一步计划</div>
-                          <div className="col-span-2">
-                            {record?.nextStep || "-"}
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </TabsContent>
-              </ScrollArea>
-            </Tabs>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div
-        className={cn(
-          "absolute left-4 top-14 h-full w-[440px] space-y-2 transition",
-          !tenderListVisible && "-translate-x-[110%]",
-        )}
-      >
-        <Card
-          className={cn(
-            "h-[90vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
-          )}
-        >
-          <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-            项目例表
-          </CardHeader>
-
-          <CardContent className="h-full px-0">
-            <ScrollArea className="h-full pb-6">
-              <div className="space-y-4 px-4 py-2">
-                {tenderList.map((tender, i) => (
-                  <div
-                    key={tender?.id}
-                    className={cn(
-                      "flex cursor-pointer items-center gap-x-4 rounded-md p-2 transition-shadow hover:bg-brand/50",
-                      (tenderListHovering === i ||
-                        tenderListHovering === tender.id) &&
-                        "ring ring-white",
-                    )}
-                    onClick={() => {
-                      useMapStore.setState({
-                        tenderListVisible: false,
-                        selectedTender: tender,
-                      });
-                    }}
-                    onMouseEnter={(e) => {
-                      if (tender.geoBounds) {
-                        const polygon = new AMap.Polygon();
-                        polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
-                        const bounds = polygon.getBounds();
-                        if (bounds) {
-                          map?.setCenter(bounds.getCenter(), false, 600);
-                        }
-                      } else if (tender.geoCoordinate?.coordinates) {
-                        map?.setCenter(
-                          tender.geoCoordinate.coordinates as AMap.LngLatLike,
-                          false,
-                          600,
-                        );
-                      }
-                      const a = document.querySelector("#marker-" + tender.id);
-                      const b = a?.closest(".amap-marker-label");
-                      if (b instanceof HTMLElement) {
-                        b.style.background = "#dc2626";
-                      }
-                      setTenderListHovering(tender?.id || 0);
-                    }}
-                    onMouseLeave={(e) => {
-                      const a = document.querySelector("#marker-" + tender.id);
-                      const b = a?.closest(".amap-marker-label");
-                      if (b instanceof HTMLElement) {
-                        b.style.background = "";
-                      }
-                      // setTenderListHovering(null);
-                    }}
-                  >
-                    <div className="w-[40%]">
-                      {tender?.images && tender.images.length > 0 ? (
-                        <Carousel>
-                          <CarouselContent>
-                            {tender?.images?.map((image, i) => (
-                              <CarouselItem key={["list", i].join("-")}>
-                                <img
-                                  src={image}
-                                  className="aspect-[4/3] h-full w-full rounded"
-                                  alt={tender?.name}
-                                />
-                              </CarouselItem>
-                            ))}
-                          </CarouselContent>
-                        </Carousel>
-                      ) : (
-                        <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-md bg-gray-300 text-gray-600">
-                          <ImageOff className="mb-2" />
-                          <span className="text-xs">暂没图片</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-[60%] space-y-2 py-1">
-                      <h3 className="line-clamp-1 font-bold">{tender?.name}</h3>
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="text-gray-300">预计招标日期</div>
-                        <div>
-                          {tender?.tenderDate
-                            ? new Date(tender?.tenderDate).toLocaleDateString()
-                            : "-"}
-                        </div>
-                      </div>
-                      <div className="flex items-baseline justify-between text-sm">
-                        <div className="text-gray-300">招标形式</div>
-                        <div>{tender?.tenderForm || "-"}</div>
-                      </div>
-                      <div className="flex items-baseline justify-between text-sm">
-                        <div className="text-gray-300">预计金额</div>
-                        <div>
-                          {tender?.estimatedAmount
-                            ? `${fixAmount(tender?.estimatedAmount)} 亿`
-                            : "-"}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </CardContent>
-        </Card>
-      </div>
     </>
   );
 }

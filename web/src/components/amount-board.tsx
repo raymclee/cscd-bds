@@ -18,8 +18,8 @@ const statusItems = [
   { status: "失标", value: 4 },
 ];
 
-export function AmountBoard({ data }: { data: MapIndexPageQuery$data }) {
-  const tenders = useAreaTenders(data);
+export function AmountBoard() {
+  const tenders = useAreaTenders();
 
   const totalAmount = fixAmount(
     tenders?.reduce(

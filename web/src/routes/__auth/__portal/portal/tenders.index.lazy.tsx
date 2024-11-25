@@ -4,9 +4,13 @@ import {
   notFound,
   useRouterState,
 } from "@tanstack/react-router";
-import { tendersAreaTenderListFragment$key } from "__generated__/tendersAreaTenderListFragment.graphql";
+import {
+  tendersAreaTenderListFragment$data,
+  tendersAreaTenderListFragment$key,
+} from "__generated__/tendersAreaTenderListFragment.graphql";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
 import {
+  App,
   Badge,
   Button,
   Form,
@@ -20,7 +24,7 @@ import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
-import { tenderStatus } from "~/lib/helper";
+import { tenderStatusText } from "~/lib/helper";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
@@ -30,7 +34,7 @@ const query = graphql`
   query tendersPageQuery($userId: ID!) {
     node(id: $userId) {
       ... on User {
-        ...tendersAreaTenderListFragment
+        ...tendersAreaTenderListFragment @alias(as: "areaTenders")
       }
     }
   }
@@ -42,18 +46,18 @@ function RouteComponent() {
     Route.useLoaderData(),
   );
 
-  if (!data.node) {
+  if (!data.node?.areaTenders) {
     return <List />;
   }
 
   return (
     <>
-      <TenderList dataRef={data.node} />
+      <TenderList dataRef={data.node.areaTenders} />
     </>
   );
 }
 
-const tenderFragment = graphql`
+export const TendersAreaTenderListFragment = graphql`
   fragment tendersAreaTenderListFragment on User {
     areas {
       tenders {
@@ -82,7 +86,7 @@ function TenderList({
 }: {
   dataRef?: tendersAreaTenderListFragment$key;
 }) {
-  const data = useFragment(tenderFragment, dataRef);
+  const data = useFragment(TendersAreaTenderListFragment, dataRef);
   const [searchText, setSearchText] = useState("");
 
   const dataSource = data?.areas
@@ -157,7 +161,7 @@ function TenderList({
             />
             <div>
               <Tag>{item?.area.name}</Tag>
-              <Tag>{tenderStatus(item?.status)}</Tag>
+              <Tag>{tenderStatusText(item?.status)}</Tag>
             </div>
             {/* </Skeleton> */}
           </List.Item>
@@ -168,6 +172,7 @@ function TenderList({
 }
 
 function DeleteButton({ id }: { id?: string }) {
+  const { message } = App.useApp();
   const [commit, inFlight] = useDeleteTenderMutation();
   return (
     <Popconfirm
@@ -176,6 +181,12 @@ function DeleteButton({ id }: { id?: string }) {
         if (!id) return;
         commit({
           variables: { id },
+          onCompleted() {
+            message.success("删除成功");
+          },
+          onError() {
+            message.error("删除失败");
+          },
           updater: (store) => {
             store.delete(id);
           },

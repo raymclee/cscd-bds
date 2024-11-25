@@ -1,4 +1,9 @@
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
+import { useCreateTenderMutation$data } from "__generated__/useCreateTenderMutation.graphql";
 import {
+  App,
+  Button,
   Col,
   DatePicker,
   Form,
@@ -9,10 +14,59 @@ import {
   Switch,
   Upload,
 } from "antd";
+import { useWatch } from "antd/es/form/Form";
+import { useFragment, graphql } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
+import { useCreateTender } from "~/hooks/use-create-tender";
+import { TendersAreaTenderListFragment } from "~/routes/__auth/__portal/portal/tenders.index.lazy";
 
-export function TenderForm<T>() {
+const fragment = graphql`
+  fragment tenderFormFragment on User {
+    areas {
+      id
+      name
+      provinces {
+        id
+        name
+        adcode
+        cities {
+          id
+          name
+          adcode
+          districts {
+            id
+            name
+            adcode
+          }
+        }
+        districts {
+          id
+          name
+          adcode
+        }
+      }
+    }
+  }
+`;
+
+export function TenderForm<T>({
+  queryRef,
+}: {
+  queryRef: tenderFormFragment$key;
+}) {
+  const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
+  const data = useFragment(fragment, queryRef);
+  const provinceID = Form.useWatch("provinceID", form);
+  const cityID = Form.useWatch("cityID", form);
+  const [commitCreateMutation, isCreateInFlight] = useCreateTender();
+  const navigate = useNavigate({ from: "/portal/tenders/new" });
+
+  const provinces = data.areas?.flatMap((a) => a.provinces);
+  const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
+  const districts = cityID
+    ? cities?.find((c) => c?.id === cityID)?.districts
+    : provinces?.find((p) => p?.id === provinceID)?.districts;
 
   return (
     <Form<CreateTenderInput>
@@ -21,6 +75,33 @@ export function TenderForm<T>() {
       layout="vertical"
       onFinish={(values) => {
         // values
+        commitCreateMutation({
+          variables: { input: values },
+          onCompleted(response, errors) {
+            console.log({ response, errors });
+            navigate({ to: "/portal/tenders" });
+            message.success("创建成功");
+          },
+          onError(error) {
+            console.error({ error });
+            message.error("创建失败");
+          },
+          updater(store, data) {
+            if (!data?.createTender) return;
+
+            store
+              .get(data.createTender.area.id)
+              ?.setLinkedRecords(
+                [
+                  ...(store
+                    .get(data.createTender.area.id)
+                    ?.getLinkedRecords("tenders") || []),
+                  store.getRootField("createTender"),
+                ],
+                "tenders",
+              );
+          },
+        });
       }}
     >
       <Row gutter={16}>
@@ -35,7 +116,7 @@ export function TenderForm<T>() {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name={"type"} label="状态" rules={[{ required: true }]}>
+          <Form.Item name={"status"} label="状态" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -171,61 +252,65 @@ export function TenderForm<T>() {
       <Form.Item name="ownerSituations" label="业主主要情况">
         <Input.TextArea />
       </Form.Item>
-      <Form.Item name="biddingInstructions" label="biddingInstructions">
+      <Form.Item name="biddingInstructions" label="立项/投标说明">
         <Input />
       </Form.Item>
-      <Form.Item name="competitorSituations" label="competitorSituations">
+      <Form.Item name="competitorSituations" label="竞争对手情况">
         <Input />
       </Form.Item>
-      <Form.Item name="costEngineer" label="costEngineer">
+      <Form.Item name="costEngineer" label="造价师">
         <Input />
       </Form.Item>
-      <Form.Item name="tenderForm" label="tenderForm">
+      <Form.Item name="tenderForm" label="招采形式">
         <Input />
       </Form.Item>
-      <Form.Item name="contractForm" label="contractForm">
+      <Form.Item name="contractForm" label="合同形式">
         <Input />
       </Form.Item>
-      <Form.Item name="managementCompany" label="managementCompany">
+      <Form.Item name="managementCompany" label="管理公司">
         <Input />
       </Form.Item>
-      <Form.Item name="tenderingAgency" label="tenderingAgency">
+      <Form.Item name="tenderingAgency" label="招标代理">
         <Input />
       </Form.Item>
-      <Form.Item name="biddingDate" label="biddingDate">
+      <Form.Item name="biddingDate" label="投标时间">
         <DatePicker />
       </Form.Item>
-      <Form.Item name="facadeConsultant" label="facadeConsultant">
+      <Form.Item name="facadeConsultant" label="幕墙顾问">
         <Input />
       </Form.Item>
-      <Form.Item name="designUnit" label="designUnit">
+      <Form.Item name="designUnit" label="设计单位">
         <Input />
       </Form.Item>
-      <Form.Item name="consultingFirm" label="consultingFirm">
+      <Form.Item name="consultingFirm" label="咨询公司">
         <Input />
       </Form.Item>
-      <Form.Item name="keyProject" label="keyProject">
+      <Form.Item name="keyProject" label="重点跟进项目">
         <Input />
       </Form.Item>
       <Form.Item name="areaID" label="业务区域" rules={[{ required: true }]}>
-        <Input />
+        <Select
+          options={data.areas?.map((a) => ({ label: a.name, value: a.id }))}
+        />
       </Form.Item>
-      <Form.Item
-        name="provinceID"
-        label="provinceID"
-        rules={[{ required: true }]}
-      >
-        <Input />
+      <Form.Item name="provinceID" label="省" rules={[{ required: true }]}>
+        <Select
+          options={provinces?.map((p) => ({ label: p?.name, value: p?.id }))}
+          onSelect={() => {
+            form.resetFields(["cityID", "districtID"]);
+          }}
+        />
       </Form.Item>
-      <Form.Item name="cityID" label="cityID" rules={[{ required: true }]}>
-        <Input />
+      <Form.Item name="cityID" label="市">
+        <Select
+          disabled={cities?.length === 0}
+          options={cities?.map((c) => ({ label: c?.name, value: c?.id }))}
+        />
       </Form.Item>
-      <Form.Item
-        name="districtID"
-        label="districtID"
-        rules={[{ required: true }]}
-      >
-        <Input />
+      <Form.Item name="districtID" label="区" rules={[{ required: true }]}>
+        <Select
+          options={districts?.map((d) => ({ label: d.name, value: d.id }))}
+        />
       </Form.Item>
       <Form.Item
         name="customerID"
@@ -253,6 +338,10 @@ export function TenderForm<T>() {
       <Form.Item name="geoBounds" label="geoBounds">
         <Input />
       </Form.Item>
+
+      <Button type="primary" htmlType="submit">
+        提交
+      </Button>
     </Form>
   );
 }

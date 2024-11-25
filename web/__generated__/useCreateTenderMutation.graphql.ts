@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<25d0693452bf686522e2a9492f07ba28>>
+ * @generated SignedSource<<db34e3f18ee78ad44f8f9388ffbde792>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -69,7 +69,22 @@ export type useCreateTenderMutation$variables = {
 };
 export type useCreateTenderMutation$data = {
   readonly createTender: {
+    readonly area: {
+      readonly id: string;
+      readonly name: string;
+    };
+    readonly createdAt: any;
+    readonly customer: {
+      readonly name: string;
+    };
+    readonly discoveryDate: any;
+    readonly estimatedAmount: number | null | undefined;
+    readonly fullAddress: string | null | undefined;
     readonly id: string;
+    readonly images: ReadonlyArray<string> | null | undefined;
+    readonly name: string;
+    readonly status: number;
+    readonly tenderDate: any | null | undefined;
   };
 };
 export type useCreateTenderMutation = {
@@ -87,37 +102,128 @@ var v0 = [
 ],
 v1 = [
   {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "Tender",
-    "kind": "LinkedField",
-    "name": "createTender",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "status",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "estimatedAmount",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "images",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "fullAddress",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "tenderDate",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "discoveryDate",
+  "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Area",
+  "kind": "LinkedField",
+  "name": "area",
+  "plural": false,
+  "selections": [
+    (v2/*: any*/),
+    (v3/*: any*/)
+  ],
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateTenderMutation",
-    "selections": (v1/*: any*/),
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Tender",
+        "kind": "LinkedField",
+        "name": "createTender",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v6/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Customer",
+            "kind": "LinkedField",
+            "name": "customer",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
+          (v10/*: any*/),
+          (v11/*: any*/)
+        ],
+        "storageKey": null
+      }
+    ],
     "type": "Mutation",
     "abstractKey": null
   },
@@ -126,19 +232,54 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useCreateTenderMutation",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Tender",
+        "kind": "LinkedField",
+        "name": "createTender",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v6/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Customer",
+            "kind": "LinkedField",
+            "name": "customer",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
+          (v10/*: any*/),
+          (v11/*: any*/)
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "0f9a958bbd5313228e46ecac51b7c9d3",
+    "cacheID": "68967037149e6b33445c3231dd84ff1f",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n) {\n  createTender(input: $input) {\n    id\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n) {\n  createTender(input: $input) {\n    id\n    name\n    status\n    createdAt\n    estimatedAmount\n    customer {\n      name\n      id\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    area {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "36210bca6da95e0dd0c4d4eef0e536b3";
+(node as any).hash = "229fb6e28cb4191269882f884ef7cd59";
 
 export default node;

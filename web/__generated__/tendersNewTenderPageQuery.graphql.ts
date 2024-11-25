@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<950aa72dec96d3128c7ec90da299018f>>
+ * @generated SignedSource<<e86e916695f4a09a31b987f6231b1700>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -43,6 +43,34 @@ v2 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "adcode",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "District",
+  "kind": "LinkedField",
+  "name": "districts",
+  "plural": true,
+  "selections": [
+    (v2/*: any*/),
+    (v3/*: any*/),
+    (v4/*: any*/)
+  ],
   "storageKey": null
 };
 return {
@@ -105,11 +133,35 @@ return {
                 "plural": true,
                 "selections": [
                   (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
+                    "concreteType": "Province",
+                    "kind": "LinkedField",
+                    "name": "provinces",
+                    "plural": true,
+                    "selections": [
+                      (v2/*: any*/),
+                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "City",
+                        "kind": "LinkedField",
+                        "name": "cities",
+                        "plural": true,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v4/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v5/*: any*/)
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -126,12 +178,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ec59431d5eb2d89cbdb2e69ae21b77ed",
+    "cacheID": "6a6b83a6d9ad2ff2ba6d6723d43fc6e5",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    id\n    name\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    id\n    name\n    provinces {\n      id\n      name\n      adcode\n      cities {\n        id\n        name\n        adcode\n        districts {\n          id\n          name\n          adcode\n        }\n      }\n      districts {\n        id\n        name\n        adcode\n      }\n    }\n  }\n}\n"
   }
 };
 })();

@@ -147,9 +147,6 @@ function RouteComponent() {
               <Outlet />
               {/* </div> */}
             </Content>
-            {/* <Footer className="text-center">
-              Ant Design ©{new Date().getFullYear()} Created by Ant UED
-            </Footer> */}
           </Layout>
         </Layout>
       </App>

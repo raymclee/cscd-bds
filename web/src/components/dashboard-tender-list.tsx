@@ -1,5 +1,4 @@
 import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 import { fetchQuery, useRelayEnvironment } from "react-relay";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
@@ -17,14 +16,10 @@ import {
   TableRow,
 } from "./ui/table";
 
-export function DashboardTenderList({
-  data,
-}: {
-  data: MapIndexPageQuery$data;
-}) {
+export function DashboardTenderList() {
   const navigateToTender = useMapStore((state) => state.navigateToTender);
   const environment = useRelayEnvironment();
-  const tenders = useAreaTenders(data);
+  const tenders = useAreaTenders();
 
   return (
     <Card

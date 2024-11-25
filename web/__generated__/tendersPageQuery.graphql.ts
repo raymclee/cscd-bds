@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8c788bbd32168b2b0b2bd256f7861c31>>
+ * @generated SignedSource<<270e540f7a8e2bd48493595ed18d6991>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,9 @@ export type tendersPageQuery$variables = {
 };
 export type tendersPageQuery$data = {
   readonly node: {
-    readonly " $fragmentSpreads": FragmentRefs<"tendersAreaTenderListFragment">;
+    readonly areaTenders?: {
+      readonly " $fragmentSpreads": FragmentRefs<"tendersAreaTenderListFragment">;
+    } | null | undefined;
   } | null | undefined;
 };
 export type tendersPageQuery = {
@@ -75,9 +77,20 @@ return {
             "kind": "InlineFragment",
             "selections": [
               {
-                "args": null,
-                "kind": "FragmentSpread",
-                "name": "tendersAreaTenderListFragment"
+                "fragment": {
+                  "kind": "InlineFragment",
+                  "selections": [
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "tendersAreaTenderListFragment"
+                    }
+                  ],
+                  "type": "User",
+                  "abstractKey": null
+                },
+                "kind": "AliasedInlineFragmentSpread",
+                "name": "areaTenders"
               }
             ],
             "type": "User",
@@ -229,6 +242,6 @@ return {
 };
 })();
 
-(node as any).hash = "b4c088fa0b558477e841e18857a8f8de";
+(node as any).hash = "8913109556aad78c6f401bc6b2004bd2";
 
 export default node;

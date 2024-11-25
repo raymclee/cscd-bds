@@ -1,6 +1,6 @@
 import { Maybe, Tender } from "~/graphql/graphql";
 
-export function ownerType(typ: Maybe<number> | undefined): string {
+export function ownerTypeText(typ: Maybe<number> | undefined): string {
   if (!typ) {
     return "";
   }
@@ -18,7 +18,7 @@ export function ownerType(typ: Maybe<number> | undefined): string {
   }
 }
 
-export function tenderStatus(status: Maybe<number> | undefined): string {
+export function tenderStatusText(status: Maybe<number> | undefined): string {
   if (!status) {
     return "";
   }

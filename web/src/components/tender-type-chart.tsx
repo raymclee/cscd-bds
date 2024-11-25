@@ -1,15 +1,10 @@
 import { Pie, PieConfig } from "@ant-design/plots";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
-type Props = {
-  data: MapIndexPageQuery$data;
-};
-
-export function TenderTypeChart({ data }: Props) {
-  const tenders = useAreaTenders(data);
+export function TenderTypeChart() {
+  const tenders = useAreaTenders();
 
   const totalTenders = tenders?.length || 0;
   const winTendersCount = tenders?.filter((t) => t?.status === 3).length || 0;

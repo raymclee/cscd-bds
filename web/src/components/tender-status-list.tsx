@@ -1,29 +1,27 @@
+import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
 import { m } from "motion/react";
-import { useMapStore } from "~/store/map";
+import { useRelayEnvironment } from "react-relay";
+import { fetchQuery } from "relay-runtime";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
+import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { useMapStore } from "~/store/map";
+import { Card, CardContent, CardHeader } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { fetchQuery } from "relay-runtime";
-import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
-import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
-import { fixAmount } from "~/lib/helper";
-import { useRelayEnvironment } from "react-relay";
 
 const MotionCard = m.create(Card);
 
-export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
-  const tenders = useAreaTenders(data);
+export function TenderStatusList() {
+  const tenders = useAreaTenders();
   const selectedTenderStatus = useMapStore((s) => s.selectedTenderStatus);
   const filteredTenders = tenders?.filter(
     (t) => t?.status === selectedTenderStatus?.value,
@@ -61,7 +59,7 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
             "mx-4 block h-[80vh] w-[clamp(400px,40vw,600px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
-          <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+          <CardHeader className="flex flex-row items-center justify-between overflow-hidden bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
             <m.div
               layoutId={`tender-status-${selectedTenderStatus?.value}-status`}
             >
@@ -79,22 +77,20 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="bg-brand/10">
                   <TableRow className="items-center">
-                    <TableHead className="w-[55px] text-center text-[0.7rem] text-gray-300">
+                    <TableHead className="w-[4rem] text-center text-gray-300">
                       序号
                     </TableHead>
-                    <TableHead className="text-[0.7rem] text-gray-300">
-                      名称
-                    </TableHead>
-                    <TableHead className="w-[80px] text-center text-[0.7rem] text-gray-300">
+                    <TableHead className="text-gray-300">名称</TableHead>
+                    <TableHead className="w-[6rem] text-center text-gray-300">
                       区域
                     </TableHead>
-                    <TableHead className="w-[70px] text-center text-[0.7rem] text-gray-300">
+                    <TableHead className="w-[6rem] text-center text-gray-300">
                       <div>金额</div>
                       (亿元)
                     </TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody className="text-xs text-white">
+                <TableBody className="text-white">
                   {filteredTenders?.map((tender, i) => (
                     <TableRow
                       className="cursor-pointer"

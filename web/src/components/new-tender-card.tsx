@@ -1,12 +1,11 @@
 import { Column, ColumnConfig, Tiny } from "@ant-design/plots";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
-export function NewTenderBoard({ data }: { data: MapIndexPageQuery$data }) {
-  const tenders = useAreaTenders(data);
+export function NewTenderBoard() {
+  const tenders = useAreaTenders();
 
   const lastMontDateFormat = `${new Date().getFullYear()}-${new Date().getMonth()}`;
   const lastMonth = tenders?.filter((e) =>

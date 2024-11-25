@@ -49,7 +49,7 @@ function RouteComponent() {
     {
       dataIndex: "isLeader",
       title: "大地图权限",
-      render: (isLeader) => (isLeader ? "是" : "否"),
+      render: (isLeader, record) => (record.isAdmin || isLeader ? "是" : "否"),
     },
     {
       dataIndex: "isAdmin",

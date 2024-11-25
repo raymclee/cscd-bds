@@ -1,7 +1,12 @@
 import * as React from "react";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, notFound } from "@tanstack/react-router";
 import { TenderForm } from "~/components/tender-form";
 import { CreateTenderInput } from "~/graphql/graphql";
+import { usePreloadedQuery, graphql } from "react-relay";
+import {
+  tendersNewTenderPageQuery,
+  tendersNewTenderPageQuery$data,
+} from "__generated__/tendersNewTenderPageQuery.graphql";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/new")(
   {
@@ -9,11 +14,27 @@ export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/new")(
   },
 );
 
+const TendersNewTenderPageQuery = graphql`
+  query tendersNewTenderPageQuery($userId: ID!) {
+    node(id: $userId) {
+      ...tenderFormFragment
+    }
+  }
+`;
+
 function RouteComponent() {
+  const preload = Route.useLoaderData();
+  const data = usePreloadedQuery<tendersNewTenderPageQuery>(
+    TendersNewTenderPageQuery,
+    preload,
+  );
+
+  if (!data.node) throw notFound();
+
   return (
     <>
       <div className="my-4 min-h-80 rounded-lg bg-white p-6">
-        <TenderForm<CreateTenderInput> />
+        <TenderForm queryRef={data?.node} />
       </div>
     </>
   );
