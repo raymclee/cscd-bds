@@ -86,10 +86,12 @@ export function TenderForm<T>({
   const navigate = useNavigate({ from: "/portal/tenders/new" });
   const sidebarCollapsed = usePortalStore((s) => s.sidebarCollapsed);
 
-  const provinces = data.areas?.flatMap((a) => a.provinces);
+  const provinces = data.areas?.edges?.flatMap((a) =>
+    a?.node?.provinces.edges?.map((p) => p?.node),
+  );
   const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
   const districts = cityID
-    ? cities?.find((c) => c?.id === cityID)?.districts
+    ? cities?.edges?.find((c) => c?.node?.id === cityID)?.node?.districts
     : provinces?.find((p) => p?.id === provinceID)?.districts;
 
   return (
@@ -313,7 +315,9 @@ export function TenderForm<T>({
       </Form.Item>
       <Form.Item name="areaID" label="业务区域" rules={[{ required: true }]}>
         <Select
-          options={data.areas?.map((a) => ({ label: a.name, value: a.id }))}
+          options={data.areas?.edges
+            ?.map((e) => e?.node)
+            .map((a) => ({ label: a?.name, value: a?.id }))}
         />
       </Form.Item>
       <Form.Item name="provinceID" label="省" rules={[{ required: true }]}>
@@ -327,16 +331,20 @@ export function TenderForm<T>({
       <Form.Item
         name="cityID"
         label="市"
-        rules={[{ required: cities?.length != 0 }]}
+        rules={[{ required: cities?.edges?.length != 0 }]}
       >
         <Select
-          disabled={cities?.length === 0}
-          options={cities?.map((c) => ({ label: c?.name, value: c?.id }))}
+          disabled={cities?.edges?.length === 0}
+          options={cities?.edges
+            ?.map((c) => c?.node)
+            .map((c) => ({ label: c?.name, value: c?.id }))}
         />
       </Form.Item>
       <Form.Item name="districtID" label="区" rules={[{ required: true }]}>
         <Select
-          options={districts?.map((d) => ({ label: d.name, value: d.id }))}
+          options={districts?.edges
+            ?.map((e) => e?.node)
+            .map((d) => ({ label: d?.name, value: d?.id }))}
         />
       </Form.Item>
       <Form.Item
