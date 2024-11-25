@@ -15,6 +15,7 @@ import {
   Upload,
 } from "antd";
 import { useWatch } from "antd/es/form/Form";
+import dayjs from "dayjs";
 import { useFragment, graphql } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
@@ -72,6 +73,7 @@ export function TenderForm<T>({
     <Form<CreateTenderInput>
       form={form}
       requiredMark="optional"
+      initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
       onFinish={(values) => {
         // values
@@ -89,17 +91,16 @@ export function TenderForm<T>({
           updater(store, data) {
             if (!data?.createTender) return;
 
-            store
-              .get(data.createTender.area.id)
-              ?.setLinkedRecords(
+            const area = store.get(data.createTender.area.id);
+            if (area) {
+              area.setLinkedRecords(
                 [
-                  ...(store
-                    .get(data.createTender.area.id)
-                    ?.getLinkedRecords("tenders") || []),
+                  ...(area.getLinkedRecords("tenders") || []),
                   store.getRootField("createTender"),
                 ],
                 "tenders",
               );
+            }
           },
         });
       }}
@@ -301,7 +302,11 @@ export function TenderForm<T>({
           }}
         />
       </Form.Item>
-      <Form.Item name="cityID" label="市">
+      <Form.Item
+        name="cityID"
+        label="市"
+        rules={[{ required: cities?.length != 0 }]}
+      >
         <Select
           disabled={cities?.length === 0}
           options={cities?.map((c) => ({ label: c?.name, value: c?.id }))}
