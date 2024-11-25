@@ -12,13 +12,13 @@ import {
   ConfigProvider,
   Layout,
   Menu,
+  Result,
   Typography,
 } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import {
   Building2,
   ContactRound,
-  FileClock,
   Map,
   SlidersHorizontal,
   Users,
@@ -30,6 +30,12 @@ import { usePortalStore } from "~/store/portal";
 
 export const Route = createLazyFileRoute("/__auth/__portal")({
   component: RouteComponent,
+  errorComponent: ({ error }) => {
+    console.error(error);
+    return (
+      <Result status="500" title="500" subTitle={"手有点抖，等等再试试吧"} />
+    );
+  },
 });
 
 const { Header, Content, Sider } = Layout;

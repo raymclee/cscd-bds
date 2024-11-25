@@ -1,25 +1,7 @@
-import {
-  createLazyFileRoute,
-  Link,
-  notFound,
-  useRouterState,
-} from "@tanstack/react-router";
-import {
-  tendersAreaTenderListFragment$data,
-  tendersAreaTenderListFragment$key,
-} from "__generated__/tendersAreaTenderListFragment.graphql";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { tendersAreaTenderListFragment$key } from "__generated__/tendersAreaTenderListFragment.graphql";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
-import {
-  App,
-  Badge,
-  Button,
-  Form,
-  Input,
-  List,
-  Popconfirm,
-  Tag,
-  Typography,
-} from "antd";
+import { App, Button, Form, Input, List, Popconfirm, Tag } from "antd";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -62,13 +44,16 @@ export const TendersAreaTenderListFragment = graphql`
   @argumentDefinitions(
     orderBy: {
       type: "TenderOrder"
-      defaultValue: { field: CREATED_AT, direction: ASC }
+      defaultValue: { field: CREATED_AT, direction: DESC }
     }
+    first: { type: "Int" }
+    last: { type: "Int" }
   ) {
     areas {
       edges {
         node {
-          tenders(orderBy: $orderBy) {
+          tenders(orderBy: $orderBy, first: $first, last: $last)
+            @connection(key: "TendersAreaTenderListFragment_tenders") {
             edges {
               node {
                 id

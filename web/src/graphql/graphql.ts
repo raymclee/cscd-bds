@@ -1155,7 +1155,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createArea: Area;
   createPlot: Plot;
-  createTender: Tender;
+  createTender: TenderConnection;
   createUser: User;
   deletePlot: Plot;
   deleteTender: Tender;

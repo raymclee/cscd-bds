@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<db34e3f18ee78ad44f8f9388ffbde792>>
+ * @generated SignedSource<<b69f223dc4dec15aa68961920831cbad>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -65,26 +65,31 @@ export type CreateTenderInput = {
   visitRecordIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateTenderMutation$variables = {
+  connections: ReadonlyArray<string>;
   input: CreateTenderInput;
 };
 export type useCreateTenderMutation$data = {
   readonly createTender: {
-    readonly area: {
-      readonly id: string;
-      readonly name: string;
-    };
-    readonly createdAt: any;
-    readonly customer: {
-      readonly name: string;
-    };
-    readonly discoveryDate: any;
-    readonly estimatedAmount: number | null | undefined;
-    readonly fullAddress: string | null | undefined;
-    readonly id: string;
-    readonly images: ReadonlyArray<string> | null | undefined;
-    readonly name: string;
-    readonly status: number;
-    readonly tenderDate: any | null | undefined;
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly area: {
+          readonly id: string;
+          readonly name: string;
+        };
+        readonly createdAt: any;
+        readonly customer: {
+          readonly name: string;
+        };
+        readonly discoveryDate: any;
+        readonly estimatedAmount: number | null | undefined;
+        readonly fullAddress: string | null | undefined;
+        readonly id: string;
+        readonly images: ReadonlyArray<string> | null | undefined;
+        readonly name: string;
+        readonly status: number;
+        readonly tenderDate: any | null | undefined;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
   };
 };
 export type useCreateTenderMutation = {
@@ -93,84 +98,87 @@ export type useCreateTenderMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "status",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "estimatedAmount",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "images",
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "fullAddress",
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "tenderDate",
   "storageKey": null
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "discoveryDate",
   "storageKey": null
 },
-v11 = {
+v12 = {
   "alias": null,
   "args": null,
   "concreteType": "Area",
@@ -178,48 +186,73 @@ v11 = {
   "name": "area",
   "plural": false,
   "selections": [
-    (v2/*: any*/),
-    (v3/*: any*/)
+    (v3/*: any*/),
+    (v4/*: any*/)
   ],
   "storageKey": null
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Tender",
+        "args": (v2/*: any*/),
+        "concreteType": "TenderConnection",
         "kind": "LinkedField",
         "name": "createTender",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
-          (v5/*: any*/),
-          (v6/*: any*/),
           {
             "alias": null,
             "args": null,
-            "concreteType": "Customer",
+            "concreteType": "TenderEdge",
             "kind": "LinkedField",
-            "name": "customer",
-            "plural": false,
+            "name": "edges",
+            "plural": true,
             "selections": [
-              (v3/*: any*/)
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Tender",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Customer",
+                    "kind": "LinkedField",
+                    "name": "customer",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/)
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
-          },
-          (v7/*: any*/),
-          (v8/*: any*/),
-          (v9/*: any*/),
-          (v10/*: any*/),
-          (v11/*: any*/)
+          }
         ],
         "storageKey": null
       }
@@ -229,57 +262,103 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useCreateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Tender",
+        "args": (v2/*: any*/),
+        "concreteType": "TenderConnection",
         "kind": "LinkedField",
         "name": "createTender",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
-          (v5/*: any*/),
-          (v6/*: any*/),
           {
             "alias": null,
             "args": null,
-            "concreteType": "Customer",
+            "concreteType": "TenderEdge",
             "kind": "LinkedField",
-            "name": "customer",
-            "plural": false,
+            "name": "edges",
+            "plural": true,
             "selections": [
-              (v3/*: any*/),
-              (v2/*: any*/)
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Tender",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Customer",
+                    "kind": "LinkedField",
+                    "name": "customer",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      (v3/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/)
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
           },
-          (v7/*: any*/),
-          (v8/*: any*/),
-          (v9/*: any*/),
-          (v10/*: any*/),
-          (v11/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "prependNode",
+            "key": "",
+            "kind": "LinkedHandle",
+            "name": "edges",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              },
+              {
+                "kind": "Literal",
+                "name": "edgeTypeName",
+                "value": "TenderEdge"
+              }
+            ]
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "68967037149e6b33445c3231dd84ff1f",
+    "cacheID": "04d2b9cd5e30228982f2f1c311d7619c",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n) {\n  createTender(input: $input) {\n    id\n    name\n    status\n    createdAt\n    estimatedAmount\n    customer {\n      name\n      id\n    }\n    images\n    fullAddress\n    tenderDate\n    discoveryDate\n    area {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n) {\n  createTender(input: $input) {\n    edges {\n      node {\n        id\n        name\n        status\n        createdAt\n        estimatedAmount\n        customer {\n          name\n          id\n        }\n        images\n        fullAddress\n        tenderDate\n        discoveryDate\n        area {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "229fb6e28cb4191269882f884ef7cd59";
+(node as any).hash = "04c837a5b17dbce253e9e30f1056c0e1";
 
 export default node;

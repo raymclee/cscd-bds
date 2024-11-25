@@ -6876,7 +6876,10 @@ type GeoJson {
   createUser(input: CreateUserInput!): User!
   updateUser(id: ID!, input: UpdateUserInput!): User!
 
-  createTender(input: CreateTenderInput!, geoBounds: [[Float!]!]): Tender!
+  createTender(
+    input: CreateTenderInput!
+    geoBounds: [[Float!]!]
+  ): TenderConnection!
   updateTender(
     id: ID!
     input: UpdateTenderInput!

@@ -50,9 +50,13 @@ function RouteComponent() {
 
   return (
     <div className="my-4 min-h-80 rounded-lg bg-white p-6">
-      {/*
-      @ts-ignore */}
-      <Table pagination={{}} dataSource={dataSource} columns={columns} />
+      <Table
+        pagination={{}}
+        dataSource={dataSource}
+        // @ts-ignore
+        columns={columns}
+        rowKey={"id"}
+      />
     </div>
   );
 }

@@ -3,23 +3,31 @@ import { useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 
 const mutation = graphql`
-  mutation useCreateTenderMutation($input: CreateTenderInput!) {
+  mutation useCreateTenderMutation(
+    $input: CreateTenderInput!
+    $connections: [ID!]!
+  ) {
     createTender(input: $input) {
-      id
-      name
-      status
-      createdAt
-      estimatedAmount
-      customer {
-        name
-      }
-      images
-      fullAddress
-      tenderDate
-      discoveryDate
-      area {
-        id
-        name
+      edges
+        @prependNode(connections: $connections, edgeTypeName: "TenderEdge") {
+        node {
+          id
+          name
+          status
+          createdAt
+          estimatedAmount
+          customer {
+            name
+          }
+          images
+          fullAddress
+          tenderDate
+          discoveryDate
+          area {
+            id
+            name
+          }
+        }
       }
     }
   }

@@ -21,7 +21,7 @@ type MutationResolver interface {
 	UpdateArea(ctx context.Context, id xid.ID, input ent.UpdateAreaInput) (*ent.Area, error)
 	CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.User, error)
 	UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error)
-	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
+	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.TenderConnection, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
@@ -943,9 +943,9 @@ func (ec *executionContext) _Mutation_createTender(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTender(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -956,134 +956,14 @@ func (ec *executionContext) fieldContext_Mutation_createTender(ctx context.Conte
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
 	}
 	defer func() {

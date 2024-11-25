@@ -33,12 +33,20 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id xid.ID, input ent.
 }
 
 // CreateTender is the resolver for the createTender field.
-func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.Tender, error) {
+func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.TenderConnection, error) {
 	q := r.store.Tender.Create().SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
 	}
-	return q.Save(ctx)
+	t, err := q.Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create tender: %w", err)
+	}
+	return &ent.TenderConnection{
+		Edges: []*ent.TenderEdge{
+			{Node: t},
+		},
+	}, nil
 }
 
 // UpdateTender is the resolver for the updateTender field.

@@ -1,6 +1,5 @@
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
-import { useCreateTenderMutation$data } from "__generated__/useCreateTenderMutation.graphql";
 import {
   App,
   Button,
@@ -14,13 +13,10 @@ import {
   Switch,
   Upload,
 } from "antd";
-import { useWatch } from "antd/es/form/Form";
 import dayjs from "dayjs";
-import { useFragment, graphql } from "react-relay";
+import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
-import { TendersAreaTenderListFragment } from "~/routes/__auth/__portal/portal/tenders.index.lazy";
-import { usePortalStore } from "~/store/portal";
 import { FixedToolbar } from "./fixed-toolbar";
 
 const fragment = graphql`
@@ -84,7 +80,6 @@ export function TenderForm<T>({
   const cityID = Form.useWatch("cityID", form);
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const navigate = useNavigate({ from: "/portal/tenders/new" });
-  const sidebarCollapsed = usePortalStore((s) => s.sidebarCollapsed);
 
   const provinces = data.areas?.edges?.flatMap((a) =>
     a?.node?.provinces.edges?.map((p) => p?.node),
@@ -99,14 +94,19 @@ export function TenderForm<T>({
       form={form}
       className="relative pb-24"
       requiredMark="optional"
+      disabled={isCreateInFlight}
       initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
       onFinish={(values) => {
         // values
+        const connectionID = ConnectionHandler.getConnectionID(
+          values.areaID,
+          "TendersAreaTenderListFragment_tenders",
+          { orderBy: { field: "CREATED_AT", direction: "DESC" } },
+        );
         commitCreateMutation({
-          variables: { input: values },
-          onCompleted(response, errors) {
-            console.log({ response, errors });
+          variables: { input: values, connections: [connectionID] },
+          onCompleted() {
             navigate({ to: "/portal/tenders" });
             message.success("创建成功");
           },
@@ -114,18 +114,48 @@ export function TenderForm<T>({
             console.error({ error });
             message.error("创建失败");
           },
-          updater(store, data) {
-            if (!data?.createTender) return;
+          // updater(store, data) {
+          //   if (!data?.createTender) return;
 
-            const node = store.get(data.createTender.area.id);
-            if (!node) return;
-            const tenders = node.getLinkedRecords("tenders");
-            if (!tenders) return;
-            const newTenderRecord = store.get(data.createTender.id);
-            if (newTenderRecord) {
-              node.setLinkedRecords([...tenders, newTenderRecord], "tenders");
-            }
-          },
+          //   const node = store.get(data.createTender.area.id);
+          //   if (!node) {
+          //     console.log("no node");
+          //     return;
+          //   }
+          //   console.log({ node });
+          //   const tendersConnection = ConnectionHandler.getConnection(
+          //     node,
+          //     "TendersAreaTenderListFragment_tenders",
+          //   );
+          //   const newTender = store.get(data.createTender.id);
+          //   console.log({ tendersConnection, newTender });
+          //   if (!tendersConnection || !newTender) return;
+          //   const newTenderEdge = ConnectionHandler.createEdge(
+          //     store,
+          //     tendersConnection,
+          //     newTender,
+          //     "Tender",
+          //   );
+          //   ConnectionHandler.insertEdgeAfter(tendersConnection, newTenderEdge);
+          //   // const tenders = node.getLinkedRecords("tenders");
+          //   // if (!tenders) return;
+          //   // const newTenderRecord = store.get(data.createTender.id);
+          //   // if (newTenderRecord) {
+          //   //   node.setLinkedRecords([...tenders, newTenderRecord], "tenders");
+          //   // }
+          // },
+          // updater(store, data) {
+          //   if (!data?.createTender) return;
+
+          //   const node = store.get(data.createTender.area.id);
+          //   if (!node) return;
+          //   const tenders = node.getLinkedRecords("tenders");
+          //   if (!tenders) return;
+          //   const newTenderRecord = store.get(data.createTender.id);
+          //   if (newTenderRecord) {
+          //     node.setLinkedRecords([...tenders, newTenderRecord], "tenders");
+          //   }
+          // },
         });
       }}
     >

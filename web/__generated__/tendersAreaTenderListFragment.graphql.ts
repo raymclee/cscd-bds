@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dca71a7b20a0406c08052c60604c45d3>>
+ * @generated SignedSource<<ad0ed3c4773af8a8121ddd76f0fac5ee>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -59,8 +59,18 @@ v1 = [
 return {
   "argumentDefinitions": [
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "first"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "last"
+    },
+    {
       "defaultValue": {
-        "direction": "ASC",
+        "direction": "DESC",
         "field": "CREATED_AT"
       },
       "kind": "LocalArgument",
@@ -68,7 +78,16 @@ return {
     }
   ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "bidirectional",
+        "path": null
+      }
+    ]
+  },
   "name": "tendersAreaTenderListFragment",
   "selections": [
     {
@@ -96,7 +115,7 @@ return {
               "plural": false,
               "selections": [
                 {
-                  "alias": null,
+                  "alias": "tenders",
                   "args": [
                     {
                       "kind": "Variable",
@@ -106,7 +125,7 @@ return {
                   ],
                   "concreteType": "TenderConnection",
                   "kind": "LinkedField",
-                  "name": "tenders",
+                  "name": "__TendersAreaTenderListFragment_tenders_connection",
                   "plural": false,
                   "selections": [
                     {
@@ -201,8 +220,61 @@ return {
                               "plural": false,
                               "selections": (v1/*: any*/),
                               "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "__typename",
+                              "storageKey": null
                             }
                           ],
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "cursor",
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "PageInfo",
+                      "kind": "LinkedField",
+                      "name": "pageInfo",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "endCursor",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "hasNextPage",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "hasPreviousPage",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "startCursor",
                           "storageKey": null
                         }
                       ],
@@ -226,6 +298,6 @@ return {
 };
 })();
 
-(node as any).hash = "cee46926b8c0c9f11811e190f5d6cccd";
+(node as any).hash = "9b27ac6677eda7ed410d3a6f296115fe";
 
 export default node;

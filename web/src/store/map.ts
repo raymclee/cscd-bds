@@ -343,7 +343,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   setSelectedTender(tender) {
     set({ selectedTender: tender });
   },
-  async navigateToTender(tender, plots) {
+  navigateToTender(tender, plots) {
     const { map, districtExplorer, satelliteLayer, markers } = get();
 
     for (const marker of markers) {

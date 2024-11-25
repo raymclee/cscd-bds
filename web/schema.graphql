@@ -1185,7 +1185,7 @@ type GeoJson {
 type Mutation {
   createArea(input: CreateAreaInput!): Area!
   createPlot(geoBounds: [[Float!]!], input: CreatePlotInput!): Plot!
-  createTender(geoBounds: [[Float!]!], input: CreateTenderInput!): Tender!
+  createTender(geoBounds: [[Float!]!], input: CreateTenderInput!): TenderConnection!
   createUser(input: CreateUserInput!): User!
   deletePlot(id: ID!): Plot!
   deleteTender(id: ID!): Tender!
