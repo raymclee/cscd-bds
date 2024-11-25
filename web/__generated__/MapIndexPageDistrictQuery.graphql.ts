@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1147fb434fab4a2c7bf5c57bb0a15de1>>
+ * @generated SignedSource<<092293f8deb591c7de3f65321886f1f6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,12 +16,16 @@ export type MapIndexPageDistrictQuery$data = {
   readonly districts: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly plots: ReadonlyArray<{
-          readonly colorHex: string;
-          readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
-          readonly id: string;
-          readonly name: string;
-        }> | null | undefined;
+        readonly plots: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly colorHex: string;
+              readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
+              readonly id: string;
+              readonly name: string;
+            } | null | undefined;
+          } | null | undefined> | null | undefined;
+        };
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -62,31 +66,53 @@ v2 = {
 v3 = {
   "alias": null,
   "args": null,
-  "concreteType": "Plot",
+  "concreteType": "PlotConnection",
   "kind": "LinkedField",
   "name": "plots",
-  "plural": true,
+  "plural": false,
   "selections": [
-    (v2/*: any*/),
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "geoBounds",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "colorHex",
+      "concreteType": "PlotEdge",
+      "kind": "LinkedField",
+      "name": "edges",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Plot",
+          "kind": "LinkedField",
+          "name": "node",
+          "plural": false,
+          "selections": [
+            (v2/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "name",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "geoBounds",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "colorHex",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     }
   ],
@@ -181,16 +207,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "176dac56823832b93eb15e5031d57737",
+    "cacheID": "da5747560d98b49f203f19ca44b3daec",
     "id": null,
     "metadata": {},
     "name": "MapIndexPageDistrictQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageDistrictQuery(\n  $adcode: Int!\n) {\n  districts(where: {adcode: $adcode}) {\n    edges {\n      node {\n        plots {\n          id\n          name\n          geoBounds\n          colorHex\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query MapIndexPageDistrictQuery(\n  $adcode: Int!\n) {\n  districts(where: {adcode: $adcode}) {\n    edges {\n      node {\n        plots {\n          edges {\n            node {\n              id\n              name\n              geoBounds\n              colorHex\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "2f9789c111b3e6042a26848b143cb452";
+(node as any).hash = "5b7c21f1bb00ae80334b78edcec12c6a";
 
 export default node;

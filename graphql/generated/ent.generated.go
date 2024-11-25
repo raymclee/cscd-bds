@@ -40,16 +40,16 @@ type ProvinceResolver interface {
 type QueryResolver interface {
 	Node(ctx context.Context, id xid.ID) (ent.Noder, error)
 	Nodes(ctx context.Context, ids []xid.ID) ([]ent.Noder, error)
-	Areas(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) (*ent.AreaConnection, error)
-	Cities(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) (*ent.CityConnection, error)
-	Countries(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) (*ent.CountryConnection, error)
+	Areas(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) (*ent.AreaConnection, error)
+	Cities(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) (*ent.CityConnection, error)
+	Countries(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) (*ent.CountryConnection, error)
 	Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error)
-	Districts(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) (*ent.DistrictConnection, error)
-	Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.PlotWhereInput) (*ent.PlotConnection, error)
-	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
+	Districts(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) (*ent.DistrictConnection, error)
+	Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) (*ent.PlotConnection, error)
+	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
 	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
-	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) (*ent.UserConnection, error)
-	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
+	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error)
+	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	Session(ctx context.Context) (*model.Session, error)
 }
 type TenderResolver interface {
@@ -59,6 +59,2344 @@ type TenderResolver interface {
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) field_Area_customers_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Area_customers_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Area_customers_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Area_customers_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Area_customers_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Area_customers_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Area_customers_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Area_customers_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_customers_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_customers_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_customers_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_customers_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CustomerOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.CustomerOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOCustomerOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.CustomerOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_customers_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CustomerWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.CustomerWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOCustomerWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.CustomerWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_provinces_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Area_provinces_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Area_provinces_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Area_provinces_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Area_provinces_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Area_provinces_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Area_provinces_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Area_provinces_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_provinces_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_provinces_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_provinces_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_provinces_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.ProvinceOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.ProvinceOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOProvinceOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.ProvinceOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_provinces_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.ProvinceWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.ProvinceWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOProvinceWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.ProvinceWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_sales_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Area_sales_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Area_sales_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Area_sales_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Area_sales_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Area_sales_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Area_sales_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Area_sales_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_sales_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_sales_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_sales_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_sales_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.UserOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOUserOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_sales_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.UserWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Area_tenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Area_tenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Area_tenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Area_tenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Area_tenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Area_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Area_tenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_tenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_tenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_tenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Area_tenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_districts_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_City_districts_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_City_districts_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_City_districts_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_City_districts_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_City_districts_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_City_districts_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_City_districts_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_districts_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_districts_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_districts_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_districts_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.DistrictOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.DistrictOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalODistrictOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.DistrictOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_districts_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.DistrictWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.DistrictWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalODistrictWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.DistrictWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_City_tenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_City_tenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_City_tenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_City_tenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_City_tenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_City_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_City_tenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_tenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_tenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_tenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_City_tenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Country_provinces_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Country_provinces_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Country_provinces_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Country_provinces_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Country_provinces_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Country_provinces_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Country_provinces_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Country_provinces_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Country_provinces_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Country_provinces_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Country_provinces_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Country_provinces_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.ProvinceOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.ProvinceOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOProvinceOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.ProvinceOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Country_provinces_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.ProvinceWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.ProvinceWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOProvinceWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.ProvinceWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Customer_tenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Customer_tenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Customer_tenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Customer_tenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Customer_tenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Customer_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Customer_tenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_tenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_tenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_tenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_tenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_visitRecords_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Customer_visitRecords_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Customer_visitRecords_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Customer_visitRecords_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Customer_visitRecords_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Customer_visitRecords_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Customer_visitRecords_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Customer_visitRecords_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_visitRecords_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_visitRecords_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_visitRecords_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_visitRecords_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.VisitRecordOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Customer_visitRecords_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.VisitRecordWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOVisitRecordWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_plots_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_District_plots_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_District_plots_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_District_plots_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_District_plots_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_District_plots_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_District_plots_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_District_plots_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_plots_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_plots_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_plots_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_plots_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.PlotOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.PlotOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOPlotOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.PlotOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_plots_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.PlotWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.PlotWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOPlotWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.PlotWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_District_tenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_District_tenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_District_tenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_District_tenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_District_tenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_District_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_District_tenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_tenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_tenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_tenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_District_tenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_cities_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Province_cities_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Province_cities_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Province_cities_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Province_cities_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Province_cities_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Province_cities_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Province_cities_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_cities_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_cities_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_cities_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_cities_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CityOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.CityOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOCityOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCityOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.CityOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_cities_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CityWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.CityWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOCityWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐCityWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.CityWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_districts_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Province_districts_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Province_districts_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Province_districts_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Province_districts_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Province_districts_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Province_districts_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Province_districts_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_districts_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_districts_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_districts_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_districts_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.DistrictOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.DistrictOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalODistrictOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.DistrictOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_districts_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.DistrictWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.DistrictWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalODistrictWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.DistrictWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Province_tenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Province_tenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Province_tenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Province_tenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Province_tenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Province_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Province_tenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_tenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_tenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_tenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Province_tenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
 
 func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -115,11 +2453,16 @@ func (ec *executionContext) field_Query_areas_args(ctx context.Context, rawArgs 
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_areas_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_areas_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_areas_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_areas_argsAfter(
@@ -210,6 +2553,28 @@ func (ec *executionContext) field_Query_areas_argsLast(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_areas_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.AreaOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.AreaOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOAreaOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.AreaOrder
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_areas_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
@@ -255,11 +2620,16 @@ func (ec *executionContext) field_Query_cities_args(ctx context.Context, rawArgs
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_cities_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_cities_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_cities_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_cities_argsAfter(
@@ -350,6 +2720,28 @@ func (ec *executionContext) field_Query_cities_argsLast(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_cities_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CityOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.CityOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOCityOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCityOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.CityOrder
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_cities_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
@@ -395,11 +2787,16 @@ func (ec *executionContext) field_Query_countries_args(ctx context.Context, rawA
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_countries_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_countries_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_countries_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_countries_argsAfter(
@@ -487,6 +2884,28 @@ func (ec *executionContext) field_Query_countries_argsLast(
 	}
 
 	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_countries_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CountryOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.CountryOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOCountryOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCountryOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.CountryOrder
 	return zeroVal, nil
 }
 
@@ -702,11 +3121,16 @@ func (ec *executionContext) field_Query_districts_args(ctx context.Context, rawA
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_districts_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_districts_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_districts_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_districts_argsAfter(
@@ -794,6 +3218,28 @@ func (ec *executionContext) field_Query_districts_argsLast(
 	}
 
 	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_districts_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.DistrictOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.DistrictOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalODistrictOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.DistrictOrder
 	return zeroVal, nil
 }
 
@@ -906,11 +3352,16 @@ func (ec *executionContext) field_Query_plots_args(ctx context.Context, rawArgs 
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_plots_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_plots_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_plots_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_plots_argsAfter(
@@ -1001,6 +3452,28 @@ func (ec *executionContext) field_Query_plots_argsLast(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_plots_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.PlotOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.PlotOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOPlotOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.PlotOrder
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_plots_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
@@ -1046,11 +3519,16 @@ func (ec *executionContext) field_Query_provinces_args(ctx context.Context, rawA
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_provinces_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_provinces_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_provinces_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_provinces_argsAfter(
@@ -1138,6 +3616,28 @@ func (ec *executionContext) field_Query_provinces_argsLast(
 	}
 
 	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_provinces_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.ProvinceOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.ProvinceOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOProvinceOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.ProvinceOrder
 	return zeroVal, nil
 }
 
@@ -1353,11 +3853,16 @@ func (ec *executionContext) field_Query_users_args(ctx context.Context, rawArgs 
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_users_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_users_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_users_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_users_argsAfter(
@@ -1448,6 +3953,28 @@ func (ec *executionContext) field_Query_users_argsLast(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_users_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.UserOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOUserOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserOrder
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_users_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
@@ -1493,11 +4020,16 @@ func (ec *executionContext) field_Query_visitRecords_args(ctx context.Context, r
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_visitRecords_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_visitRecords_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_visitRecords_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_visitRecords_argsAfter(
@@ -1588,6 +4120,28 @@ func (ec *executionContext) field_Query_visitRecords_argsLast(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_visitRecords_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.VisitRecordOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordOrder
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_visitRecords_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
@@ -1607,6 +4161,1008 @@ func (ec *executionContext) field_Query_visitRecords_argsWhere(
 	}
 
 	var zeroVal *ent.VisitRecordWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_visitRecords_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Tender_visitRecords_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Tender_visitRecords_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Tender_visitRecords_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Tender_visitRecords_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Tender_visitRecords_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Tender_visitRecords_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Tender_visitRecords_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_visitRecords_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_visitRecords_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_visitRecords_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_visitRecords_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.VisitRecordOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Tender_visitRecords_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.VisitRecordWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOVisitRecordWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_areas_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_areas_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_areas_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_areas_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_areas_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_areas_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_areas_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_areas_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_areas_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_areas_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_areas_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_areas_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.AreaOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.AreaOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOAreaOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.AreaOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_areas_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.AreaWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.AreaWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOAreaWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.AreaWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_customers_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_customers_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_customers_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_customers_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_customers_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_customers_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_customers_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_customers_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_customers_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_customers_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_customers_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_customers_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CustomerOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.CustomerOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOCustomerOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.CustomerOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_customers_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CustomerWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.CustomerWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOCustomerWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.CustomerWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_tenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_tenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_tenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_tenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_tenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_tenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_tenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_tenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_tenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_tenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_tenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_visitRecords_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_visitRecords_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_visitRecords_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_visitRecords_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_visitRecords_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_visitRecords_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_visitRecords_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_visitRecords_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_visitRecords_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_visitRecords_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_visitRecords_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_visitRecords_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.VisitRecordOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_visitRecords_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.VisitRecordWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOVisitRecordWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_VisitRecord_followupbys_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_VisitRecord_followupbys_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_VisitRecord_followupbys_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_VisitRecord_followupbys_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_VisitRecord_followupbys_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_VisitRecord_followupbys_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_VisitRecord_followupbys_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_VisitRecord_followupbys_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_VisitRecord_followupbys_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_VisitRecord_followupbys_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_VisitRecord_followupbys_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_VisitRecord_followupbys_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.UserOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOUserOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_VisitRecord_followupbys_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.UserWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserWhereInput
 	return zeroVal, nil
 }
 
@@ -1852,21 +5408,24 @@ func (ec *executionContext) _Area_customers(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Customers(ctx)
+		return obj.Customers(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.CustomerOrder), fc.Args["where"].(*ent.CustomerWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Customer)
+	res := resTmp.(*ent.CustomerConnection)
 	fc.Result = res
-	return ec.marshalOCustomer2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCustomerᚄ(ctx, field.Selections, res)
+	return ec.marshalNCustomerConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Area_customers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Area_customers(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Area",
 		Field:      field,
@@ -1874,47 +5433,26 @@ func (ec *executionContext) fieldContext_Area_customers(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Customer_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Customer_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Customer_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_Customer_name(ctx, field)
-			case "ownerType":
-				return ec.fieldContext_Customer_ownerType(ctx, field)
-			case "industry":
-				return ec.fieldContext_Customer_industry(ctx, field)
-			case "size":
-				return ec.fieldContext_Customer_size(ctx, field)
-			case "contactPerson":
-				return ec.fieldContext_Customer_contactPerson(ctx, field)
-			case "contactPersonPosition":
-				return ec.fieldContext_Customer_contactPersonPosition(ctx, field)
-			case "contactPersonPhone":
-				return ec.fieldContext_Customer_contactPersonPhone(ctx, field)
-			case "contactPersonEmail":
-				return ec.fieldContext_Customer_contactPersonEmail(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Customer_areaID(ctx, field)
-			case "salesID":
-				return ec.fieldContext_Customer_salesID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Customer_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Customer_area(ctx, field)
-			case "tenders":
-				return ec.fieldContext_Customer_tenders(ctx, field)
-			case "sales":
-				return ec.fieldContext_Customer_sales(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Customer_createdBy(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "edges":
+				return ec.fieldContext_CustomerConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_CustomerConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_CustomerConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type CustomerConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Area_customers_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -1933,21 +5471,24 @@ func (ec *executionContext) _Area_tenders(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx)
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Area_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Area_tenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Area",
 		Field:      field,
@@ -1955,135 +5496,26 @@ func (ec *executionContext) fieldContext_Area_tenders(_ context.Context, field g
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Area_tenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -2102,21 +5534,24 @@ func (ec *executionContext) _Area_sales(ctx context.Context, field graphql.Colle
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Sales(ctx)
+		return obj.Sales(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.UserOrder), fc.Args["where"].(*ent.UserWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.User)
+	res := resTmp.(*ent.UserConnection)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalNUserConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐUserConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Area_sales(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Area_sales(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Area",
 		Field:      field,
@@ -2124,45 +5559,26 @@ func (ec *executionContext) fieldContext_Area_sales(_ context.Context, field gra
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_User_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_User_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
-			case "email":
-				return ec.fieldContext_User_email(ctx, field)
-			case "username":
-				return ec.fieldContext_User_username(ctx, field)
-			case "openID":
-				return ec.fieldContext_User_openID(ctx, field)
-			case "avatarURL":
-				return ec.fieldContext_User_avatarURL(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "isAdmin":
-				return ec.fieldContext_User_isAdmin(ctx, field)
-			case "isLeader":
-				return ec.fieldContext_User_isLeader(ctx, field)
-			case "leaderID":
-				return ec.fieldContext_User_leaderID(ctx, field)
-			case "areas":
-				return ec.fieldContext_User_areas(ctx, field)
-			case "customers":
-				return ec.fieldContext_User_customers(ctx, field)
-			case "leader":
-				return ec.fieldContext_User_leader(ctx, field)
-			case "teamMembers":
-				return ec.fieldContext_User_teamMembers(ctx, field)
-			case "tenders":
-				return ec.fieldContext_User_tenders(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "edges":
+				return ec.fieldContext_UserConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_UserConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_UserConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UserConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Area_sales_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -2181,21 +5597,24 @@ func (ec *executionContext) _Area_provinces(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Provinces(ctx)
+		return obj.Provinces(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.ProvinceOrder), fc.Args["where"].(*ent.ProvinceWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Province)
+	res := resTmp.(*ent.ProvinceConnection)
 	fc.Result = res
-	return ec.marshalOProvince2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProvinceᚄ(ctx, field.Selections, res)
+	return ec.marshalNProvinceConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Area_provinces(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Area_provinces(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Area",
 		Field:      field,
@@ -2203,35 +5622,26 @@ func (ec *executionContext) fieldContext_Area_provinces(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Province_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Province_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Province_updatedAt(ctx, field)
-			case "adcode":
-				return ec.fieldContext_Province_adcode(ctx, field)
-			case "name":
-				return ec.fieldContext_Province_name(ctx, field)
-			case "countryID":
-				return ec.fieldContext_Province_countryID(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Province_areaID(ctx, field)
-			case "districts":
-				return ec.fieldContext_Province_districts(ctx, field)
-			case "cities":
-				return ec.fieldContext_Province_cities(ctx, field)
-			case "country":
-				return ec.fieldContext_Province_country(ctx, field)
-			case "tenders":
-				return ec.fieldContext_Province_tenders(ctx, field)
-			case "area":
-				return ec.fieldContext_Province_area(ctx, field)
-			case "center":
-				return ec.fieldContext_Province_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_ProvinceConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_ProvinceConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_ProvinceConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ProvinceConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Area_provinces_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -2857,21 +6267,24 @@ func (ec *executionContext) _City_districts(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Districts(ctx)
+		return obj.Districts(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.DistrictOrder), fc.Args["where"].(*ent.DistrictWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.District)
+	res := resTmp.(*ent.DistrictConnection)
 	fc.Result = res
-	return ec.marshalODistrict2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐDistrictᚄ(ctx, field.Selections, res)
+	return ec.marshalNDistrictConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_City_districts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_City_districts(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "City",
 		Field:      field,
@@ -2879,37 +6292,26 @@ func (ec *executionContext) fieldContext_City_districts(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_District_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_District_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_District_updatedAt(ctx, field)
-			case "adcode":
-				return ec.fieldContext_District_adcode(ctx, field)
-			case "provCode":
-				return ec.fieldContext_District_provCode(ctx, field)
-			case "cityCode":
-				return ec.fieldContext_District_cityCode(ctx, field)
-			case "name":
-				return ec.fieldContext_District_name(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_District_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_District_cityID(ctx, field)
-			case "province":
-				return ec.fieldContext_District_province(ctx, field)
-			case "city":
-				return ec.fieldContext_District_city(ctx, field)
-			case "tenders":
-				return ec.fieldContext_District_tenders(ctx, field)
-			case "plots":
-				return ec.fieldContext_District_plots(ctx, field)
-			case "center":
-				return ec.fieldContext_District_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_DistrictConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_DistrictConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_DistrictConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type DistrictConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_City_districts_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -3000,21 +6402,24 @@ func (ec *executionContext) _City_tenders(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx)
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_City_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_City_tenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "City",
 		Field:      field,
@@ -3022,135 +6427,26 @@ func (ec *executionContext) fieldContext_City_tenders(_ context.Context, field g
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_City_tenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -3690,21 +6986,24 @@ func (ec *executionContext) _Country_provinces(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Provinces(ctx)
+		return obj.Provinces(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.ProvinceOrder), fc.Args["where"].(*ent.ProvinceWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Province)
+	res := resTmp.(*ent.ProvinceConnection)
 	fc.Result = res
-	return ec.marshalOProvince2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProvinceᚄ(ctx, field.Selections, res)
+	return ec.marshalNProvinceConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Country_provinces(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Country_provinces(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Country",
 		Field:      field,
@@ -3712,35 +7011,26 @@ func (ec *executionContext) fieldContext_Country_provinces(_ context.Context, fi
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Province_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Province_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Province_updatedAt(ctx, field)
-			case "adcode":
-				return ec.fieldContext_Province_adcode(ctx, field)
-			case "name":
-				return ec.fieldContext_Province_name(ctx, field)
-			case "countryID":
-				return ec.fieldContext_Province_countryID(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Province_areaID(ctx, field)
-			case "districts":
-				return ec.fieldContext_Province_districts(ctx, field)
-			case "cities":
-				return ec.fieldContext_Province_cities(ctx, field)
-			case "country":
-				return ec.fieldContext_Province_country(ctx, field)
-			case "tenders":
-				return ec.fieldContext_Province_tenders(ctx, field)
-			case "area":
-				return ec.fieldContext_Province_area(ctx, field)
-			case "center":
-				return ec.fieldContext_Province_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_ProvinceConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_ProvinceConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_ProvinceConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ProvinceConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Country_provinces_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -4713,21 +8003,24 @@ func (ec *executionContext) _Customer_tenders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx)
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Customer_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Customer_tenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Customer",
 		Field:      field,
@@ -4735,135 +8028,26 @@ func (ec *executionContext) fieldContext_Customer_tenders(_ context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Customer_tenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -5043,21 +8227,24 @@ func (ec *executionContext) _Customer_visitRecords(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx)
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.VisitRecord)
+	res := resTmp.(*ent.VisitRecordConnection)
 	fc.Result = res
-	return ec.marshalOVisitRecord2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordᚄ(ctx, field.Selections, res)
+	return ec.marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Customer_visitRecords(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Customer_visitRecords(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Customer",
 		Field:      field,
@@ -5065,35 +8252,26 @@ func (ec *executionContext) fieldContext_Customer_visitRecords(_ context.Context
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_VisitRecord_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_VisitRecord_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_VisitRecord_updatedAt(ctx, field)
-			case "visitType":
-				return ec.fieldContext_VisitRecord_visitType(ctx, field)
-			case "commPeople":
-				return ec.fieldContext_VisitRecord_commPeople(ctx, field)
-			case "commContent":
-				return ec.fieldContext_VisitRecord_commContent(ctx, field)
-			case "nextStep":
-				return ec.fieldContext_VisitRecord_nextStep(ctx, field)
-			case "date":
-				return ec.fieldContext_VisitRecord_date(ctx, field)
-			case "tenderID":
-				return ec.fieldContext_VisitRecord_tenderID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_VisitRecord_customerID(ctx, field)
-			case "tender":
-				return ec.fieldContext_VisitRecord_tender(ctx, field)
-			case "customer":
-				return ec.fieldContext_VisitRecord_customer(ctx, field)
-			case "followupbys":
-				return ec.fieldContext_VisitRecord_followupbys(ctx, field)
+			case "edges":
+				return ec.fieldContext_VisitRecordConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_VisitRecordConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_VisitRecordConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type VisitRecord", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecordConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Customer_visitRecords_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -5912,21 +9090,24 @@ func (ec *executionContext) _District_tenders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx)
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_District_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_District_tenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "District",
 		Field:      field,
@@ -5934,135 +9115,26 @@ func (ec *executionContext) fieldContext_District_tenders(_ context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_District_tenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -6081,21 +9153,24 @@ func (ec *executionContext) _District_plots(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Plots(ctx)
+		return obj.Plots(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.PlotOrder), fc.Args["where"].(*ent.PlotWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Plot)
+	res := resTmp.(*ent.PlotConnection)
 	fc.Result = res
-	return ec.marshalOPlot2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐPlotᚄ(ctx, field.Selections, res)
+	return ec.marshalNPlotConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_District_plots(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_District_plots(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "District",
 		Field:      field,
@@ -6103,25 +9178,26 @@ func (ec *executionContext) fieldContext_District_plots(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Plot_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Plot_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Plot_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_Plot_name(ctx, field)
-			case "colorHex":
-				return ec.fieldContext_Plot_colorHex(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Plot_districtID(ctx, field)
-			case "district":
-				return ec.fieldContext_Plot_district(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Plot_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_PlotConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_PlotConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_PlotConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Plot", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type PlotConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_District_plots_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -7549,21 +10625,24 @@ func (ec *executionContext) _Province_districts(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Districts(ctx)
+		return obj.Districts(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.DistrictOrder), fc.Args["where"].(*ent.DistrictWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.District)
+	res := resTmp.(*ent.DistrictConnection)
 	fc.Result = res
-	return ec.marshalODistrict2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐDistrictᚄ(ctx, field.Selections, res)
+	return ec.marshalNDistrictConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Province_districts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Province_districts(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Province",
 		Field:      field,
@@ -7571,37 +10650,26 @@ func (ec *executionContext) fieldContext_Province_districts(_ context.Context, f
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_District_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_District_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_District_updatedAt(ctx, field)
-			case "adcode":
-				return ec.fieldContext_District_adcode(ctx, field)
-			case "provCode":
-				return ec.fieldContext_District_provCode(ctx, field)
-			case "cityCode":
-				return ec.fieldContext_District_cityCode(ctx, field)
-			case "name":
-				return ec.fieldContext_District_name(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_District_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_District_cityID(ctx, field)
-			case "province":
-				return ec.fieldContext_District_province(ctx, field)
-			case "city":
-				return ec.fieldContext_District_city(ctx, field)
-			case "tenders":
-				return ec.fieldContext_District_tenders(ctx, field)
-			case "plots":
-				return ec.fieldContext_District_plots(ctx, field)
-			case "center":
-				return ec.fieldContext_District_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_DistrictConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_DistrictConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_DistrictConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type DistrictConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Province_districts_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -7620,21 +10688,24 @@ func (ec *executionContext) _Province_cities(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Cities(ctx)
+		return obj.Cities(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.CityOrder), fc.Args["where"].(*ent.CityWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.City)
+	res := resTmp.(*ent.CityConnection)
 	fc.Result = res
-	return ec.marshalOCity2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCityᚄ(ctx, field.Selections, res)
+	return ec.marshalNCityConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐCityConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Province_cities(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Province_cities(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Province",
 		Field:      field,
@@ -7642,31 +10713,26 @@ func (ec *executionContext) fieldContext_Province_cities(_ context.Context, fiel
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_City_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_City_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_City_updatedAt(ctx, field)
-			case "adcode":
-				return ec.fieldContext_City_adcode(ctx, field)
-			case "provCode":
-				return ec.fieldContext_City_provCode(ctx, field)
-			case "name":
-				return ec.fieldContext_City_name(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_City_provinceID(ctx, field)
-			case "districts":
-				return ec.fieldContext_City_districts(ctx, field)
-			case "province":
-				return ec.fieldContext_City_province(ctx, field)
-			case "tenders":
-				return ec.fieldContext_City_tenders(ctx, field)
-			case "center":
-				return ec.fieldContext_City_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_CityConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_CityConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_CityConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type City", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type CityConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Province_cities_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -7745,21 +10811,24 @@ func (ec *executionContext) _Province_tenders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx)
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Province_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Province_tenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Province",
 		Field:      field,
@@ -7767,135 +10836,26 @@ func (ec *executionContext) fieldContext_Province_tenders(_ context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Province_tenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -8389,7 +11349,7 @@ func (ec *executionContext) _Query_areas(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Areas(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.AreaWhereInput))
+		return ec.resolvers.Query().Areas(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.AreaOrder), fc.Args["where"].(*ent.AreaWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8452,7 +11412,7 @@ func (ec *executionContext) _Query_cities(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Cities(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.CityWhereInput))
+		return ec.resolvers.Query().Cities(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.CityOrder), fc.Args["where"].(*ent.CityWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8515,7 +11475,7 @@ func (ec *executionContext) _Query_countries(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Countries(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.CountryWhereInput))
+		return ec.resolvers.Query().Countries(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.CountryOrder), fc.Args["where"].(*ent.CountryWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8641,7 +11601,7 @@ func (ec *executionContext) _Query_districts(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Districts(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.DistrictWhereInput))
+		return ec.resolvers.Query().Districts(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.DistrictOrder), fc.Args["where"].(*ent.DistrictWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8704,7 +11664,7 @@ func (ec *executionContext) _Query_plots(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Plots(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.PlotWhereInput))
+		return ec.resolvers.Query().Plots(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.PlotOrder), fc.Args["where"].(*ent.PlotWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8767,7 +11727,7 @@ func (ec *executionContext) _Query_provinces(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Provinces(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.ProvinceWhereInput))
+		return ec.resolvers.Query().Provinces(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.ProvinceOrder), fc.Args["where"].(*ent.ProvinceWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8893,7 +11853,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Users(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.UserWhereInput))
+		return ec.resolvers.Query().Users(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.UserOrder), fc.Args["where"].(*ent.UserWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8956,7 +11916,7 @@ func (ec *executionContext) _Query_visitRecords(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().VisitRecords(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return ec.resolvers.Query().VisitRecords(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11989,21 +14949,24 @@ func (ec *executionContext) _Tender_visitRecords(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx)
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.VisitRecord)
+	res := resTmp.(*ent.VisitRecordConnection)
 	fc.Result = res
-	return ec.marshalOVisitRecord2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordᚄ(ctx, field.Selections, res)
+	return ec.marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Tender_visitRecords(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Tender_visitRecords(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tender",
 		Field:      field,
@@ -12011,35 +14974,26 @@ func (ec *executionContext) fieldContext_Tender_visitRecords(_ context.Context, 
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_VisitRecord_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_VisitRecord_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_VisitRecord_updatedAt(ctx, field)
-			case "visitType":
-				return ec.fieldContext_VisitRecord_visitType(ctx, field)
-			case "commPeople":
-				return ec.fieldContext_VisitRecord_commPeople(ctx, field)
-			case "commContent":
-				return ec.fieldContext_VisitRecord_commContent(ctx, field)
-			case "nextStep":
-				return ec.fieldContext_VisitRecord_nextStep(ctx, field)
-			case "date":
-				return ec.fieldContext_VisitRecord_date(ctx, field)
-			case "tenderID":
-				return ec.fieldContext_VisitRecord_tenderID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_VisitRecord_customerID(ctx, field)
-			case "tender":
-				return ec.fieldContext_VisitRecord_tender(ctx, field)
-			case "customer":
-				return ec.fieldContext_VisitRecord_customer(ctx, field)
-			case "followupbys":
-				return ec.fieldContext_VisitRecord_followupbys(ctx, field)
+			case "edges":
+				return ec.fieldContext_VisitRecordConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_VisitRecordConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_VisitRecordConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type VisitRecord", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecordConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Tender_visitRecords_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -13029,21 +15983,24 @@ func (ec *executionContext) _User_areas(ctx context.Context, field graphql.Colle
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Areas(ctx)
+		return obj.Areas(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.AreaOrder), fc.Args["where"].(*ent.AreaWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Area)
+	res := resTmp.(*ent.AreaConnection)
 	fc.Result = res
-	return ec.marshalOArea2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐAreaᚄ(ctx, field.Selections, res)
+	return ec.marshalNAreaConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_areas(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_areas(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -13051,29 +16008,26 @@ func (ec *executionContext) fieldContext_User_areas(_ context.Context, field gra
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Area_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Area_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Area_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_Area_name(ctx, field)
-			case "code":
-				return ec.fieldContext_Area_code(ctx, field)
-			case "customers":
-				return ec.fieldContext_Area_customers(ctx, field)
-			case "tenders":
-				return ec.fieldContext_Area_tenders(ctx, field)
-			case "sales":
-				return ec.fieldContext_Area_sales(ctx, field)
-			case "provinces":
-				return ec.fieldContext_Area_provinces(ctx, field)
-			case "center":
-				return ec.fieldContext_Area_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_AreaConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_AreaConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_AreaConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Area", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type AreaConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_areas_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -13092,21 +16046,24 @@ func (ec *executionContext) _User_customers(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Customers(ctx)
+		return obj.Customers(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.CustomerOrder), fc.Args["where"].(*ent.CustomerWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Customer)
+	res := resTmp.(*ent.CustomerConnection)
 	fc.Result = res
-	return ec.marshalOCustomer2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCustomerᚄ(ctx, field.Selections, res)
+	return ec.marshalNCustomerConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_customers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_customers(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -13114,47 +16071,26 @@ func (ec *executionContext) fieldContext_User_customers(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Customer_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Customer_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Customer_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_Customer_name(ctx, field)
-			case "ownerType":
-				return ec.fieldContext_Customer_ownerType(ctx, field)
-			case "industry":
-				return ec.fieldContext_Customer_industry(ctx, field)
-			case "size":
-				return ec.fieldContext_Customer_size(ctx, field)
-			case "contactPerson":
-				return ec.fieldContext_Customer_contactPerson(ctx, field)
-			case "contactPersonPosition":
-				return ec.fieldContext_Customer_contactPersonPosition(ctx, field)
-			case "contactPersonPhone":
-				return ec.fieldContext_Customer_contactPersonPhone(ctx, field)
-			case "contactPersonEmail":
-				return ec.fieldContext_Customer_contactPersonEmail(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Customer_areaID(ctx, field)
-			case "salesID":
-				return ec.fieldContext_Customer_salesID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Customer_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Customer_area(ctx, field)
-			case "tenders":
-				return ec.fieldContext_Customer_tenders(ctx, field)
-			case "sales":
-				return ec.fieldContext_Customer_sales(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Customer_createdBy(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Customer_visitRecords(ctx, field)
+			case "edges":
+				return ec.fieldContext_CustomerConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_CustomerConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_CustomerConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Customer", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type CustomerConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_customers_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -13331,21 +16267,24 @@ func (ec *executionContext) _User_tenders(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx)
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Tender)
+	res := resTmp.(*ent.TenderConnection)
 	fc.Result = res
-	return ec.marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx, field.Selections, res)
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_tenders(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_tenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -13353,135 +16292,26 @@ func (ec *executionContext) fieldContext_User_tenders(_ context.Context, field g
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Tender_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Tender_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Tender_updatedAt(ctx, field)
-			case "code":
-				return ec.fieldContext_Tender_code(ctx, field)
-			case "status":
-				return ec.fieldContext_Tender_status(ctx, field)
-			case "name":
-				return ec.fieldContext_Tender_name(ctx, field)
-			case "estimatedAmount":
-				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
-			case "tenderDate":
-				return ec.fieldContext_Tender_tenderDate(ctx, field)
-			case "discoveryDate":
-				return ec.fieldContext_Tender_discoveryDate(ctx, field)
-			case "address":
-				return ec.fieldContext_Tender_address(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Tender_fullAddress(ctx, field)
-			case "contractor":
-				return ec.fieldContext_Tender_contractor(ctx, field)
-			case "sizeAndValueRating":
-				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
-			case "sizeAndValueRatingOverview":
-				return ec.fieldContext_Tender_sizeAndValueRatingOverview(ctx, field)
-			case "creditAndPaymentRating":
-				return ec.fieldContext_Tender_creditAndPaymentRating(ctx, field)
-			case "creditAndPaymentRatingOverview":
-				return ec.fieldContext_Tender_creditAndPaymentRatingOverview(ctx, field)
-			case "timeLimitRating":
-				return ec.fieldContext_Tender_timeLimitRating(ctx, field)
-			case "timeLimitRatingOverview":
-				return ec.fieldContext_Tender_timeLimitRatingOverview(ctx, field)
-			case "customerRelationshipRating":
-				return ec.fieldContext_Tender_customerRelationshipRating(ctx, field)
-			case "customerRelationshipRatingOverview":
-				return ec.fieldContext_Tender_customerRelationshipRatingOverview(ctx, field)
-			case "competitivePartnershipRating":
-				return ec.fieldContext_Tender_competitivePartnershipRating(ctx, field)
-			case "competitivePartnershipRatingOverview":
-				return ec.fieldContext_Tender_competitivePartnershipRatingOverview(ctx, field)
-			case "prepareToBid":
-				return ec.fieldContext_Tender_prepareToBid(ctx, field)
-			case "projectCode":
-				return ec.fieldContext_Tender_projectCode(ctx, field)
-			case "projectDefinition":
-				return ec.fieldContext_Tender_projectDefinition(ctx, field)
-			case "estimatedProjectStartDate":
-				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
-			case "estimatedProjectEndDate":
-				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
-			case "attachements":
-				return ec.fieldContext_Tender_attachements(ctx, field)
-			case "remark":
-				return ec.fieldContext_Tender_remark(ctx, field)
-			case "images":
-				return ec.fieldContext_Tender_images(ctx, field)
-			case "tenderSituations":
-				return ec.fieldContext_Tender_tenderSituations(ctx, field)
-			case "ownerSituations":
-				return ec.fieldContext_Tender_ownerSituations(ctx, field)
-			case "biddingInstructions":
-				return ec.fieldContext_Tender_biddingInstructions(ctx, field)
-			case "competitorSituations":
-				return ec.fieldContext_Tender_competitorSituations(ctx, field)
-			case "costEngineer":
-				return ec.fieldContext_Tender_costEngineer(ctx, field)
-			case "tenderForm":
-				return ec.fieldContext_Tender_tenderForm(ctx, field)
-			case "contractForm":
-				return ec.fieldContext_Tender_contractForm(ctx, field)
-			case "managementCompany":
-				return ec.fieldContext_Tender_managementCompany(ctx, field)
-			case "tenderingAgency":
-				return ec.fieldContext_Tender_tenderingAgency(ctx, field)
-			case "biddingDate":
-				return ec.fieldContext_Tender_biddingDate(ctx, field)
-			case "facadeConsultant":
-				return ec.fieldContext_Tender_facadeConsultant(ctx, field)
-			case "designUnit":
-				return ec.fieldContext_Tender_designUnit(ctx, field)
-			case "consultingFirm":
-				return ec.fieldContext_Tender_consultingFirm(ctx, field)
-			case "keyProject":
-				return ec.fieldContext_Tender_keyProject(ctx, field)
-			case "areaID":
-				return ec.fieldContext_Tender_areaID(ctx, field)
-			case "provinceID":
-				return ec.fieldContext_Tender_provinceID(ctx, field)
-			case "cityID":
-				return ec.fieldContext_Tender_cityID(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Tender_districtID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_Tender_customerID(ctx, field)
-			case "finderID":
-				return ec.fieldContext_Tender_finderID(ctx, field)
-			case "createdByID":
-				return ec.fieldContext_Tender_createdByID(ctx, field)
-			case "area":
-				return ec.fieldContext_Tender_area(ctx, field)
-			case "customer":
-				return ec.fieldContext_Tender_customer(ctx, field)
-			case "finder":
-				return ec.fieldContext_Tender_finder(ctx, field)
-			case "createdBy":
-				return ec.fieldContext_Tender_createdBy(ctx, field)
-			case "followingSales":
-				return ec.fieldContext_Tender_followingSales(ctx, field)
-			case "province":
-				return ec.fieldContext_Tender_province(ctx, field)
-			case "city":
-				return ec.fieldContext_Tender_city(ctx, field)
-			case "district":
-				return ec.fieldContext_Tender_district(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_Tender_visitRecords(ctx, field)
-			case "geoCoordinate":
-				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Tender_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Tender", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_tenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -13500,21 +16330,24 @@ func (ec *executionContext) _User_visitRecords(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx)
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.VisitRecord)
+	res := resTmp.(*ent.VisitRecordConnection)
 	fc.Result = res
-	return ec.marshalOVisitRecord2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordᚄ(ctx, field.Selections, res)
+	return ec.marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_visitRecords(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_visitRecords(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -13522,35 +16355,26 @@ func (ec *executionContext) fieldContext_User_visitRecords(_ context.Context, fi
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_VisitRecord_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_VisitRecord_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_VisitRecord_updatedAt(ctx, field)
-			case "visitType":
-				return ec.fieldContext_VisitRecord_visitType(ctx, field)
-			case "commPeople":
-				return ec.fieldContext_VisitRecord_commPeople(ctx, field)
-			case "commContent":
-				return ec.fieldContext_VisitRecord_commContent(ctx, field)
-			case "nextStep":
-				return ec.fieldContext_VisitRecord_nextStep(ctx, field)
-			case "date":
-				return ec.fieldContext_VisitRecord_date(ctx, field)
-			case "tenderID":
-				return ec.fieldContext_VisitRecord_tenderID(ctx, field)
-			case "customerID":
-				return ec.fieldContext_VisitRecord_customerID(ctx, field)
-			case "tender":
-				return ec.fieldContext_VisitRecord_tender(ctx, field)
-			case "customer":
-				return ec.fieldContext_VisitRecord_customer(ctx, field)
-			case "followupbys":
-				return ec.fieldContext_VisitRecord_followupbys(ctx, field)
+			case "edges":
+				return ec.fieldContext_VisitRecordConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_VisitRecordConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_VisitRecordConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type VisitRecord", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecordConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_visitRecords_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -14518,21 +17342,24 @@ func (ec *executionContext) _VisitRecord_followupbys(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.FollowUpBys(ctx)
+		return obj.FollowUpBys(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.UserOrder), fc.Args["where"].(*ent.UserWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.User)
+	res := resTmp.(*ent.UserConnection)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalNUserConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐUserConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_VisitRecord_followupbys(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_VisitRecord_followupbys(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "VisitRecord",
 		Field:      field,
@@ -14540,45 +17367,26 @@ func (ec *executionContext) fieldContext_VisitRecord_followupbys(_ context.Conte
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_User_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_User_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
-			case "email":
-				return ec.fieldContext_User_email(ctx, field)
-			case "username":
-				return ec.fieldContext_User_username(ctx, field)
-			case "openID":
-				return ec.fieldContext_User_openID(ctx, field)
-			case "avatarURL":
-				return ec.fieldContext_User_avatarURL(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "isAdmin":
-				return ec.fieldContext_User_isAdmin(ctx, field)
-			case "isLeader":
-				return ec.fieldContext_User_isLeader(ctx, field)
-			case "leaderID":
-				return ec.fieldContext_User_leaderID(ctx, field)
-			case "areas":
-				return ec.fieldContext_User_areas(ctx, field)
-			case "customers":
-				return ec.fieldContext_User_customers(ctx, field)
-			case "leader":
-				return ec.fieldContext_User_leader(ctx, field)
-			case "teamMembers":
-				return ec.fieldContext_User_teamMembers(ctx, field)
-			case "tenders":
-				return ec.fieldContext_User_tenders(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "edges":
+				return ec.fieldContext_UserConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_UserConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_UserConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UserConnection", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_VisitRecord_followupbys_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -14844,6 +17652,44 @@ func (ec *executionContext) fieldContext_VisitRecordEdge_cursor(_ context.Contex
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
+
+func (ec *executionContext) unmarshalInputAreaOrder(ctx context.Context, obj interface{}) (ent.AreaOrder, error) {
+	var it ent.AreaOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNAreaOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
+		}
+	}
+
+	return it, nil
+}
 
 func (ec *executionContext) unmarshalInputAreaWhereInput(ctx context.Context, obj interface{}) (ent.AreaWhereInput, error) {
 	var it ent.AreaWhereInput
@@ -15286,6 +18132,44 @@ func (ec *executionContext) unmarshalInputAreaWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasProvincesWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputCityOrder(ctx context.Context, obj interface{}) (ent.CityOrder, error) {
+	var it ent.CityOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNCityOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCityOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
 		}
 	}
 
@@ -15831,6 +18715,44 @@ func (ec *executionContext) unmarshalInputCityWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasTendersWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputCountryOrder(ctx context.Context, obj interface{}) (ent.CountryOrder, error) {
+	var it ent.CountryOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNCountryOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCountryOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
 		}
 	}
 
@@ -18691,6 +21613,44 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputDistrictOrder(ctx context.Context, obj interface{}) (ent.DistrictOrder, error) {
+	var it ent.DistrictOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNDistrictOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context, obj interface{}) (ent.DistrictWhereInput, error) {
 	var it ent.DistrictWhereInput
 	asMap := map[string]interface{}{}
@@ -19411,6 +22371,44 @@ func (ec *executionContext) unmarshalInputDistrictWhereInput(ctx context.Context
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputPlotOrder(ctx context.Context, obj interface{}) (ent.PlotOrder, error) {
+	var it ent.PlotOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNPlotOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputPlotWhereInput(ctx context.Context, obj interface{}) (ent.PlotWhereInput, error) {
 	var it ent.PlotWhereInput
 	asMap := map[string]interface{}{}
@@ -19901,6 +22899,44 @@ func (ec *executionContext) unmarshalInputPlotWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasDistrictWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputProvinceOrder(ctx context.Context, obj interface{}) (ent.ProvinceOrder, error) {
+	var it ent.ProvinceOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNProvinceOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
 		}
 	}
 
@@ -26870,6 +29906,44 @@ func (ec *executionContext) unmarshalInputUpdateVisitRecordInput(ctx context.Con
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUserOrder(ctx context.Context, obj interface{}) (ent.UserOrder, error) {
+	var it ent.UserOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNUserOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, obj interface{}) (ent.UserWhereInput, error) {
 	var it ent.UserWhereInput
 	asMap := map[string]interface{}{}
@@ -27759,6 +30833,44 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasVisitRecordsWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputVisitRecordOrder(ctx context.Context, obj interface{}) (ent.VisitRecordOrder, error) {
+	var it ent.VisitRecordOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNVisitRecordOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
 		}
 	}
 
@@ -28731,13 +31843,16 @@ func (ec *executionContext) _Area(ctx context.Context, sel ast.SelectionSet, obj
 		case "customers":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Area_customers(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -28764,13 +31879,16 @@ func (ec *executionContext) _Area(ctx context.Context, sel ast.SelectionSet, obj
 		case "tenders":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Area_tenders(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -28797,13 +31915,16 @@ func (ec *executionContext) _Area(ctx context.Context, sel ast.SelectionSet, obj
 		case "sales":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Area_sales(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -28830,13 +31951,16 @@ func (ec *executionContext) _Area(ctx context.Context, sel ast.SelectionSet, obj
 		case "provinces":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Area_provinces(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -29052,13 +32176,16 @@ func (ec *executionContext) _City(ctx context.Context, sel ast.SelectionSet, obj
 		case "districts":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._City_districts(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -29121,13 +32248,16 @@ func (ec *executionContext) _City(ctx context.Context, sel ast.SelectionSet, obj
 		case "tenders":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._City_tenders(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -29333,13 +32463,16 @@ func (ec *executionContext) _Country(ctx context.Context, sel ast.SelectionSet, 
 		case "provinces":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Country_provinces(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -29605,13 +32738,16 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 		case "tenders":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Customer_tenders(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -29707,13 +32843,16 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 		case "visitRecords":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Customer_visitRecords(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -29972,13 +33111,16 @@ func (ec *executionContext) _District(ctx context.Context, sel ast.SelectionSet,
 		case "tenders":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._District_tenders(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -30005,13 +33147,16 @@ func (ec *executionContext) _District(ctx context.Context, sel ast.SelectionSet,
 		case "plots":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._District_plots(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -30461,13 +33606,16 @@ func (ec *executionContext) _Province(ctx context.Context, sel ast.SelectionSet,
 		case "districts":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Province_districts(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -30494,13 +33642,16 @@ func (ec *executionContext) _Province(ctx context.Context, sel ast.SelectionSet,
 		case "cities":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Province_cities(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -30563,13 +33714,16 @@ func (ec *executionContext) _Province(ctx context.Context, sel ast.SelectionSet,
 		case "tenders":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Province_tenders(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -31547,13 +34701,16 @@ func (ec *executionContext) _Tender(ctx context.Context, sel ast.SelectionSet, o
 		case "visitRecords":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._Tender_visitRecords(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -31793,13 +34950,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "areas":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._User_areas(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -31826,13 +34986,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "customers":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._User_customers(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -31925,13 +35088,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "tenders":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._User_tenders(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -31958,13 +35124,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "visitRecords":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._User_visitRecords(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -32219,13 +35388,16 @@ func (ec *executionContext) _VisitRecord(ctx context.Context, sel ast.SelectionS
 		case "followupbys":
 			field := field
 
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._VisitRecord_followupbys(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
 				return res
 			}
 
@@ -32391,19 +35563,25 @@ func (ec *executionContext) marshalNAreaConnection2ᚖcscdᚑbdsᚋstoreᚋent�
 	return ec._AreaConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNAreaWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaWhereInput(ctx context.Context, v interface{}) (*ent.AreaWhereInput, error) {
-	res, err := ec.unmarshalInputAreaWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+func (ec *executionContext) unmarshalNAreaOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaOrderField(ctx context.Context, v interface{}) (*ent.AreaOrderField, error) {
+	var res = new(ent.AreaOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNCity2ᚖcscdᚑbdsᚋstoreᚋentᚐCity(ctx context.Context, sel ast.SelectionSet, v *ent.City) graphql.Marshaler {
+func (ec *executionContext) marshalNAreaOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.AreaOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._City(ctx, sel, v)
+	return v
+}
+
+func (ec *executionContext) unmarshalNAreaWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaWhereInput(ctx context.Context, v interface{}) (*ent.AreaWhereInput, error) {
+	res, err := ec.unmarshalInputAreaWhereInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNCityConnection2cscdᚑbdsᚋstoreᚋentᚐCityConnection(ctx context.Context, sel ast.SelectionSet, v ent.CityConnection) graphql.Marshaler {
@@ -32418,6 +35596,22 @@ func (ec *executionContext) marshalNCityConnection2ᚖcscdᚑbdsᚋstoreᚋent�
 		return graphql.Null
 	}
 	return ec._CityConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNCityOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCityOrderField(ctx context.Context, v interface{}) (*ent.CityOrderField, error) {
+	var res = new(ent.CityOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNCityOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCityOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.CityOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalNCityWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐCityWhereInput(ctx context.Context, v interface{}) (*ent.CityWhereInput, error) {
@@ -32447,6 +35641,22 @@ func (ec *executionContext) marshalNCountryConnection2ᚖcscdᚑbdsᚋstoreᚋen
 		return graphql.Null
 	}
 	return ec._CountryConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNCountryOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCountryOrderField(ctx context.Context, v interface{}) (*ent.CountryOrderField, error) {
+	var res = new(ent.CountryOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNCountryOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCountryOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.CountryOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalNCountryWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐCountryWhereInput(ctx context.Context, v interface{}) (*ent.CountryWhereInput, error) {
@@ -32553,6 +35763,22 @@ func (ec *executionContext) marshalNDistrictConnection2ᚖcscdᚑbdsᚋstoreᚋe
 	return ec._DistrictConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNDistrictOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrderField(ctx context.Context, v interface{}) (*ent.DistrictOrderField, error) {
+	var res = new(ent.DistrictOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNDistrictOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.DistrictOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalNDistrictWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictWhereInput(ctx context.Context, v interface{}) (*ent.DistrictWhereInput, error) {
 	res, err := ec.unmarshalInputDistrictWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
@@ -32638,6 +35864,22 @@ func (ec *executionContext) marshalNPlotConnection2ᚖcscdᚑbdsᚋstoreᚋent�
 	return ec._PlotConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNPlotOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotOrderField(ctx context.Context, v interface{}) (*ent.PlotOrderField, error) {
+	var res = new(ent.PlotOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNPlotOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.PlotOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalNPlotWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotWhereInput(ctx context.Context, v interface{}) (*ent.PlotWhereInput, error) {
 	res, err := ec.unmarshalInputPlotWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
@@ -32665,6 +35907,22 @@ func (ec *executionContext) marshalNProvinceConnection2ᚖcscdᚑbdsᚋstoreᚋe
 		return graphql.Null
 	}
 	return ec._ProvinceConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNProvinceOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrderField(ctx context.Context, v interface{}) (*ent.ProvinceOrderField, error) {
+	var res = new(ent.ProvinceOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNProvinceOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.ProvinceOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalNProvinceWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceWhereInput(ctx context.Context, v interface{}) (*ent.ProvinceWhereInput, error) {
@@ -32769,19 +36027,25 @@ func (ec *executionContext) marshalNUserConnection2ᚖcscdᚑbdsᚋstoreᚋent�
 	return ec._UserConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInput(ctx context.Context, v interface{}) (*ent.UserWhereInput, error) {
-	res, err := ec.unmarshalInputUserWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+func (ec *executionContext) unmarshalNUserOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrderField(ctx context.Context, v interface{}) (*ent.UserOrderField, error) {
+	var res = new(ent.UserOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNVisitRecord2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx context.Context, sel ast.SelectionSet, v *ent.VisitRecord) graphql.Marshaler {
+func (ec *executionContext) marshalNUserOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.UserOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._VisitRecord(ctx, sel, v)
+	return v
+}
+
+func (ec *executionContext) unmarshalNUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInput(ctx context.Context, v interface{}) (*ent.UserWhereInput, error) {
+	res, err := ec.unmarshalInputUserWhereInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNVisitRecordConnection2cscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx context.Context, sel ast.SelectionSet, v ent.VisitRecordConnection) graphql.Marshaler {
@@ -32798,56 +36062,25 @@ func (ec *executionContext) marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstore�
 	return ec._VisitRecordConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNVisitRecordOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderField(ctx context.Context, v interface{}) (*ent.VisitRecordOrderField, error) {
+	var res = new(ent.VisitRecordOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNVisitRecordOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.VisitRecordOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalNVisitRecordWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInput(ctx context.Context, v interface{}) (*ent.VisitRecordWhereInput, error) {
 	res, err := ec.unmarshalInputVisitRecordWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOArea2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐAreaᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Area) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNArea2ᚖcscdᚑbdsᚋstoreᚋentᚐArea(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOArea2ᚖcscdᚑbdsᚋstoreᚋentᚐArea(ctx context.Context, sel ast.SelectionSet, v *ent.Area) graphql.Marshaler {
@@ -32905,6 +36138,14 @@ func (ec *executionContext) marshalOAreaEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaE
 	return ec._AreaEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOAreaOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaOrder(ctx context.Context, v interface{}) (*ent.AreaOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputAreaOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOAreaWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐAreaWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.AreaWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -32931,53 +36172,6 @@ func (ec *executionContext) unmarshalOAreaWhereInput2ᚖcscdᚑbdsᚋstoreᚋent
 	}
 	res, err := ec.unmarshalInputAreaWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOCity2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCityᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.City) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNCity2ᚖcscdᚑbdsᚋstoreᚋentᚐCity(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOCity2ᚖcscdᚑbdsᚋstoreᚋentᚐCity(ctx context.Context, sel ast.SelectionSet, v *ent.City) graphql.Marshaler {
@@ -33033,6 +36227,14 @@ func (ec *executionContext) marshalOCityEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐCityE
 		return graphql.Null
 	}
 	return ec._CityEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOCityOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCityOrder(ctx context.Context, v interface{}) (*ent.CityOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputCityOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOCityWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCityWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.CityWhereInput, error) {
@@ -33118,6 +36320,14 @@ func (ec *executionContext) marshalOCountryEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐCo
 	return ec._CountryEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOCountryOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCountryOrder(ctx context.Context, v interface{}) (*ent.CountryOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputCountryOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOCountryWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCountryWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.CountryWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -33160,53 +36370,6 @@ func (ec *executionContext) marshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCu
 		return graphql.Null
 	}
 	return v
-}
-
-func (ec *executionContext) marshalOCustomer2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCustomerᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Customer) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNCustomer2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomer(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOCustomer2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomer(ctx context.Context, sel ast.SelectionSet, v *ent.Customer) graphql.Marshaler {
@@ -33300,53 +36463,6 @@ func (ec *executionContext) unmarshalOCustomerWhereInput2ᚖcscdᚑbdsᚋstore�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalODistrict2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐDistrictᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.District) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNDistrict2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrict(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
 func (ec *executionContext) marshalODistrict2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrict(ctx context.Context, sel ast.SelectionSet, v *ent.District) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -33402,6 +36518,14 @@ func (ec *executionContext) marshalODistrictEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐD
 	return ec._DistrictEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalODistrictOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrictOrder(ctx context.Context, v interface{}) (*ent.DistrictOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputDistrictOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalODistrictWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐDistrictWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.DistrictWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -33435,53 +36559,6 @@ func (ec *executionContext) marshalONode2cscdᚑbdsᚋstoreᚋentᚐNoder(ctx co
 		return graphql.Null
 	}
 	return ec._Node(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOPlot2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐPlotᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Plot) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNPlot2ᚖcscdᚑbdsᚋstoreᚋentᚐPlot(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOPlot2ᚖcscdᚑbdsᚋstoreᚋentᚐPlot(ctx context.Context, sel ast.SelectionSet, v *ent.Plot) graphql.Marshaler {
@@ -33539,6 +36616,14 @@ func (ec *executionContext) marshalOPlotEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotE
 	return ec._PlotEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOPlotOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotOrder(ctx context.Context, v interface{}) (*ent.PlotOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputPlotOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOPlotWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐPlotWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.PlotWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -33565,53 +36650,6 @@ func (ec *executionContext) unmarshalOPlotWhereInput2ᚖcscdᚑbdsᚋstoreᚋent
 	}
 	res, err := ec.unmarshalInputPlotWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOProvince2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProvinceᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Province) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNProvince2ᚖcscdᚑbdsᚋstoreᚋentᚐProvince(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOProvince2ᚖcscdᚑbdsᚋstoreᚋentᚐProvince(ctx context.Context, sel ast.SelectionSet, v *ent.Province) graphql.Marshaler {
@@ -33669,6 +36707,14 @@ func (ec *executionContext) marshalOProvinceEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐP
 	return ec._ProvinceEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOProvinceOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProvinceOrder(ctx context.Context, v interface{}) (*ent.ProvinceOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputProvinceOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOProvinceWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProvinceWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.ProvinceWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -33695,53 +36741,6 @@ func (ec *executionContext) unmarshalOProvinceWhereInput2ᚖcscdᚑbdsᚋstore�
 	}
 	res, err := ec.unmarshalInputProvinceWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOTender2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Tender) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx context.Context, sel ast.SelectionSet, v *ent.Tender) graphql.Marshaler {
@@ -33937,6 +36936,14 @@ func (ec *executionContext) marshalOUserEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐUserE
 	return ec._UserEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOUserOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrder(ctx context.Context, v interface{}) (*ent.UserOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputUserOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.UserWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -33963,53 +36970,6 @@ func (ec *executionContext) unmarshalOUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋent
 	}
 	res, err := ec.unmarshalInputUserWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOVisitRecord2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.VisitRecord) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNVisitRecord2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalOVisitRecord2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx context.Context, sel ast.SelectionSet, v *ent.VisitRecord) graphql.Marshaler {
@@ -34065,6 +37025,14 @@ func (ec *executionContext) marshalOVisitRecordEdge2ᚖcscdᚑbdsᚋstoreᚋent�
 		return graphql.Null
 	}
 	return ec._VisitRecordEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx context.Context, v interface{}) (*ent.VisitRecordOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputVisitRecordOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOVisitRecordWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.VisitRecordWhereInput, error) {

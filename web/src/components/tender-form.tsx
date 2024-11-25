@@ -20,30 +20,52 @@ import { useFragment, graphql } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { TendersAreaTenderListFragment } from "~/routes/__auth/__portal/portal/tenders.index.lazy";
+import { usePortalStore } from "~/store/portal";
+import { FixedToolbar } from "./fixed-toolbar";
 
 const fragment = graphql`
   fragment tenderFormFragment on User {
     areas {
-      id
-      name
-      provinces {
-        id
-        name
-        adcode
-        cities {
+      edges {
+        node {
           id
           name
-          adcode
-          districts {
-            id
-            name
-            adcode
+          provinces {
+            edges {
+              node {
+                id
+                name
+                adcode
+                cities {
+                  edges {
+                    node {
+                      id
+                      name
+                      adcode
+                      districts {
+                        edges {
+                          node {
+                            id
+                            name
+                            adcode
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                districts {
+                  edges {
+                    node {
+                      id
+                      name
+                      adcode
+                    }
+                  }
+                }
+              }
+            }
           }
-        }
-        districts {
-          id
-          name
-          adcode
         }
       }
     }
@@ -62,6 +84,7 @@ export function TenderForm<T>({
   const cityID = Form.useWatch("cityID", form);
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const navigate = useNavigate({ from: "/portal/tenders/new" });
+  const sidebarCollapsed = usePortalStore((s) => s.sidebarCollapsed);
 
   const provinces = data.areas?.flatMap((a) => a.provinces);
   const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
@@ -72,6 +95,7 @@ export function TenderForm<T>({
   return (
     <Form<CreateTenderInput>
       form={form}
+      className="relative pb-24"
       requiredMark="optional"
       initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
@@ -91,15 +115,13 @@ export function TenderForm<T>({
           updater(store, data) {
             if (!data?.createTender) return;
 
-            const area = store.get(data.createTender.area.id);
-            if (area) {
-              area.setLinkedRecords(
-                [
-                  ...(area.getLinkedRecords("tenders") || []),
-                  store.getRootField("createTender"),
-                ],
-                "tenders",
-              );
+            const node = store.get(data.createTender.area.id);
+            if (!node) return;
+            const tenders = node.getLinkedRecords("tenders");
+            if (!tenders) return;
+            const newTenderRecord = store.get(data.createTender.id);
+            if (newTenderRecord) {
+              node.setLinkedRecords([...tenders, newTenderRecord], "tenders");
             }
           },
         });
@@ -344,9 +366,19 @@ export function TenderForm<T>({
         <Input />
       </Form.Item>
 
-      <Button type="primary" htmlType="submit">
-        提交
-      </Button>
+      <FixedToolbar>
+        <Button
+          danger
+          onClick={() => {
+            navigate({ to: ".." });
+          }}
+        >
+          取消
+        </Button>
+        <Button type="primary" htmlType="submit">
+          提交
+        </Button>
+      </FixedToolbar>
     </Form>
   );
 }

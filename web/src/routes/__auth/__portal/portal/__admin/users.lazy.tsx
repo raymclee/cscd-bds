@@ -20,7 +20,11 @@ const query = graphql`
           id
           name
           areas {
-            name
+            edges {
+              node {
+                name
+              }
+            }
           }
           isAdmin
           isLeader
@@ -42,8 +46,8 @@ function RouteComponent() {
     {
       title: "区域",
       render: (_, record) =>
-        record.areas && record.areas?.length > 0
-          ? record.areas?.map((a) => a.name).join(", ")
+        record.areas.edges && record.areas.edges?.length > 0
+          ? record.areas?.edges?.map((a) => a?.node?.name).join(", ")
           : "无",
     },
     {

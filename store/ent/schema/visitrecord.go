@@ -48,7 +48,10 @@ func (VisitRecord) Edges() []ent.Edge {
 			Ref("visit_records").
 			Unique(),
 		edge.From("followUpBys", User.Type).
-			Ref("visit_records"),
+			Ref("visit_records").
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

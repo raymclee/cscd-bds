@@ -42,7 +42,7 @@ function createRelayEnvironment() {
   return new Environment({
     network: Network.create(fetchFn),
     store: new Store(new RecordSource(), {
-      // queryCacheExpirationTime: 1 * 60 * 1000,
+      queryCacheExpirationTime: 1 * 60 * 1000,
     }),
   });
 }

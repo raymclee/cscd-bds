@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { Area as GraphqlArea, Plot, Tender } from "~/graphql/graphql";
+import {
+  Area,
+  Area as GraphqlArea,
+  Maybe,
+  Plot,
+  Tender,
+} from "~/graphql/graphql";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
 
 // export type District = {
@@ -92,15 +98,15 @@ type TenderStatus = {
   value: number;
 };
 
-export type StoreArea = Pick<
-  GraphqlArea,
-  "id" | "name" | "center" | "provinces" | "tenders" | "code"
->;
+// export type StoreArea = Pick<
+//   GraphqlArea,
+//   "id" | "name" | "center" | "provinces" | "tenders" | "code"
+// >;
 
 type MapState = {
   map: AMap.Map | null;
   // selectedDistrict: Area | null;
-  selectedArea: StoreArea | null;
+  selectedArea: Area | null;
   // districts: District[];
   markers: AMap.Marker[];
   currentAreaNode: any | null;
@@ -110,7 +116,7 @@ type MapState = {
   navigations: Navigation[];
   dashboardVisible: boolean;
   tenderListVisible: boolean;
-  tenderList: Array<Partial<Tender>>;
+  tenderList: (Maybe<Tender> | undefined)[];
   tenderListHovering: string | number | null;
   selectedTender: Partial<Tender> | null;
   selectedTenderStatus: TenderStatus | null;
@@ -123,18 +129,18 @@ type Action = {
   setCurrentAreaNode: (node: any) => void;
   resetNavigation: () => void;
   // setSelectedDistrict: (district: Area | null) => void;
-  setSelectedArea: (area: StoreArea | null) => void;
+  setSelectedArea: (area: Area | null) => void;
   setDashboardVisible: (visible: boolean) => void;
   pop: (i: number) => void;
   push: (navigation: Navigation) => void;
   setPolygonEditor: (editor: AMap.PolygonEditor) => void;
-  renderArea: (district: StoreArea) => void;
+  renderArea: (district: Area) => void;
   renderAreas: () => void;
   renderMarker: (props: any) => void;
   addMarker: (marker: AMap.Marker) => void;
   onFeatureOrMarkerClick: (props: any) => void;
   setTenderListVisible: (visible: boolean) => void;
-  setTenderList: (tenders: Array<Partial<Tender>>) => void;
+  setTenderList: (tenders: (Maybe<Tender> | undefined)[]) => void;
   setTenderListHovering: (tenderId: string | number | null) => void;
   setSelectedTender: (tender: Partial<Tender> | null) => void;
   navigateToTender: (tender: Tender, plots: Partial<Plot>[]) => void;
@@ -233,7 +239,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
     const districtExplorer = get().districtExplorer;
     districtExplorer.clearFeaturePolygons();
     districtExplorer.loadMultiAreaNodes(
-      area.provinces?.map((p) => p.adcode),
+      area.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
       (error: any, areaNodes: any) => {
         if (error) {
           console.error(error);

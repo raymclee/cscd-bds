@@ -8,64 +8,109 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 )
 
-func (a *Area) Customers(ctx context.Context) (result []*Customer, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = a.NamedCustomers(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = a.Edges.CustomersOrErr()
+func (a *Area) Customers(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *CustomerOrder, where *CustomerWhereInput,
+) (*CustomerConnection, error) {
+	opts := []CustomerPaginateOption{
+		WithCustomerOrder(orderBy),
+		WithCustomerFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = a.QueryCustomers().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := a.Edges.totalCount[0][alias]
+	if nodes, err := a.NamedCustomers(alias); err == nil || hasTotalCount {
+		pager, err := newCustomerPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &CustomerConnection{Edges: []*CustomerEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return a.QueryCustomers().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (a *Area) Tenders(ctx context.Context) (result []*Tender, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = a.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = a.Edges.TendersOrErr()
+func (a *Area) Tenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = a.QueryTenders().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := a.Edges.totalCount[1][alias]
+	if nodes, err := a.NamedTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return a.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (a *Area) Sales(ctx context.Context) (result []*User, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = a.NamedSales(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = a.Edges.SalesOrErr()
+func (a *Area) Sales(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *UserOrder, where *UserWhereInput,
+) (*UserConnection, error) {
+	opts := []UserPaginateOption{
+		WithUserOrder(orderBy),
+		WithUserFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = a.QuerySales().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := a.Edges.totalCount[2][alias]
+	if nodes, err := a.NamedSales(alias); err == nil || hasTotalCount {
+		pager, err := newUserPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &UserConnection{Edges: []*UserEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return a.QuerySales().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (a *Area) Provinces(ctx context.Context) (result []*Province, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = a.NamedProvinces(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = a.Edges.ProvincesOrErr()
+func (a *Area) Provinces(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *ProvinceOrder, where *ProvinceWhereInput,
+) (*ProvinceConnection, error) {
+	opts := []ProvincePaginateOption{
+		WithProvinceOrder(orderBy),
+		WithProvinceFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = a.QueryProvinces().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := a.Edges.totalCount[3][alias]
+	if nodes, err := a.NamedProvinces(alias); err == nil || hasTotalCount {
+		pager, err := newProvincePager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &ProvinceConnection{Edges: []*ProvinceEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return a.QueryProvinces().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (c *City) Districts(ctx context.Context) (result []*District, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.DistrictsOrErr()
+func (c *City) Districts(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *DistrictOrder, where *DistrictWhereInput,
+) (*DistrictConnection, error) {
+	opts := []DistrictPaginateOption{
+		WithDistrictOrder(orderBy),
+		WithDistrictFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryDistricts().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[0][alias]
+	if nodes, err := c.NamedDistricts(alias); err == nil || hasTotalCount {
+		pager, err := newDistrictPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &DistrictConnection{Edges: []*DistrictEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return c.QueryDistricts().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (c *City) Province(ctx context.Context) (*Province, error) {
@@ -76,28 +121,46 @@ func (c *City) Province(ctx context.Context) (*Province, error) {
 	return result, err
 }
 
-func (c *City) Tenders(ctx context.Context) (result []*Tender, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.TendersOrErr()
+func (c *City) Tenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryTenders().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[2][alias]
+	if nodes, err := c.NamedTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return c.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (c *Country) Provinces(ctx context.Context) (result []*Province, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedProvinces(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.ProvincesOrErr()
+func (c *Country) Provinces(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *ProvinceOrder, where *ProvinceWhereInput,
+) (*ProvinceConnection, error) {
+	opts := []ProvincePaginateOption{
+		WithProvinceOrder(orderBy),
+		WithProvinceFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryProvinces().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[0][alias]
+	if nodes, err := c.NamedProvinces(alias); err == nil || hasTotalCount {
+		pager, err := newProvincePager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &ProvinceConnection{Edges: []*ProvinceEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return c.QueryProvinces().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (c *Customer) Area(ctx context.Context) (*Area, error) {
@@ -108,16 +171,25 @@ func (c *Customer) Area(ctx context.Context) (*Area, error) {
 	return result, err
 }
 
-func (c *Customer) Tenders(ctx context.Context) (result []*Tender, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.TendersOrErr()
+func (c *Customer) Tenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryTenders().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[1][alias]
+	if nodes, err := c.NamedTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return c.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (c *Customer) Sales(ctx context.Context) (*User, error) {
@@ -136,16 +208,25 @@ func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
 	return result, err
 }
 
-func (c *Customer) VisitRecords(ctx context.Context) (result []*VisitRecord, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedVisitRecords(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.VisitRecordsOrErr()
+func (c *Customer) VisitRecords(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
+) (*VisitRecordConnection, error) {
+	opts := []VisitRecordPaginateOption{
+		WithVisitRecordOrder(orderBy),
+		WithVisitRecordFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryVisitRecords().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[4][alias]
+	if nodes, err := c.NamedVisitRecords(alias); err == nil || hasTotalCount {
+		pager, err := newVisitRecordPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &VisitRecordConnection{Edges: []*VisitRecordEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return c.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (d *District) Province(ctx context.Context) (*Province, error) {
@@ -164,28 +245,46 @@ func (d *District) City(ctx context.Context) (*City, error) {
 	return result, MaskNotFound(err)
 }
 
-func (d *District) Tenders(ctx context.Context) (result []*Tender, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = d.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = d.Edges.TendersOrErr()
+func (d *District) Tenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = d.QueryTenders().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := d.Edges.totalCount[2][alias]
+	if nodes, err := d.NamedTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return d.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (d *District) Plots(ctx context.Context) (result []*Plot, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = d.NamedPlots(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = d.Edges.PlotsOrErr()
+func (d *District) Plots(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *PlotOrder, where *PlotWhereInput,
+) (*PlotConnection, error) {
+	opts := []PlotPaginateOption{
+		WithPlotOrder(orderBy),
+		WithPlotFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = d.QueryPlots().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := d.Edges.totalCount[3][alias]
+	if nodes, err := d.NamedPlots(alias); err == nil || hasTotalCount {
+		pager, err := newPlotPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &PlotConnection{Edges: []*PlotEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return d.QueryPlots().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (pl *Plot) District(ctx context.Context) (*District, error) {
@@ -196,28 +295,46 @@ func (pl *Plot) District(ctx context.Context) (*District, error) {
 	return result, err
 }
 
-func (pr *Province) Districts(ctx context.Context) (result []*District, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = pr.NamedDistricts(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = pr.Edges.DistrictsOrErr()
+func (pr *Province) Districts(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *DistrictOrder, where *DistrictWhereInput,
+) (*DistrictConnection, error) {
+	opts := []DistrictPaginateOption{
+		WithDistrictOrder(orderBy),
+		WithDistrictFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = pr.QueryDistricts().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := pr.Edges.totalCount[0][alias]
+	if nodes, err := pr.NamedDistricts(alias); err == nil || hasTotalCount {
+		pager, err := newDistrictPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &DistrictConnection{Edges: []*DistrictEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return pr.QueryDistricts().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (pr *Province) Cities(ctx context.Context) (result []*City, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = pr.NamedCities(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = pr.Edges.CitiesOrErr()
+func (pr *Province) Cities(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *CityOrder, where *CityWhereInput,
+) (*CityConnection, error) {
+	opts := []CityPaginateOption{
+		WithCityOrder(orderBy),
+		WithCityFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = pr.QueryCities().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := pr.Edges.totalCount[1][alias]
+	if nodes, err := pr.NamedCities(alias); err == nil || hasTotalCount {
+		pager, err := newCityPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &CityConnection{Edges: []*CityEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return pr.QueryCities().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (pr *Province) Country(ctx context.Context) (*Country, error) {
@@ -228,16 +345,25 @@ func (pr *Province) Country(ctx context.Context) (*Country, error) {
 	return result, err
 }
 
-func (pr *Province) Tenders(ctx context.Context) (result []*Tender, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = pr.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = pr.Edges.TendersOrErr()
+func (pr *Province) Tenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = pr.QueryTenders().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := pr.Edges.totalCount[3][alias]
+	if nodes, err := pr.NamedTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return pr.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (pr *Province) Area(ctx context.Context) (*Area, error) {
@@ -316,40 +442,67 @@ func (t *Tender) District(ctx context.Context) (*District, error) {
 	return result, err
 }
 
-func (t *Tender) VisitRecords(ctx context.Context) (result []*VisitRecord, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = t.NamedVisitRecords(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = t.Edges.VisitRecordsOrErr()
+func (t *Tender) VisitRecords(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
+) (*VisitRecordConnection, error) {
+	opts := []VisitRecordPaginateOption{
+		WithVisitRecordOrder(orderBy),
+		WithVisitRecordFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = t.QueryVisitRecords().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := t.Edges.totalCount[8][alias]
+	if nodes, err := t.NamedVisitRecords(alias); err == nil || hasTotalCount {
+		pager, err := newVisitRecordPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &VisitRecordConnection{Edges: []*VisitRecordEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return t.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (u *User) Areas(ctx context.Context) (result []*Area, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = u.NamedAreas(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = u.Edges.AreasOrErr()
+func (u *User) Areas(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *AreaOrder, where *AreaWhereInput,
+) (*AreaConnection, error) {
+	opts := []AreaPaginateOption{
+		WithAreaOrder(orderBy),
+		WithAreaFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = u.QueryAreas().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := u.Edges.totalCount[0][alias]
+	if nodes, err := u.NamedAreas(alias); err == nil || hasTotalCount {
+		pager, err := newAreaPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &AreaConnection{Edges: []*AreaEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return u.QueryAreas().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (u *User) Customers(ctx context.Context) (result []*Customer, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = u.NamedCustomers(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = u.Edges.CustomersOrErr()
+func (u *User) Customers(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *CustomerOrder, where *CustomerWhereInput,
+) (*CustomerConnection, error) {
+	opts := []CustomerPaginateOption{
+		WithCustomerOrder(orderBy),
+		WithCustomerFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = u.QueryCustomers().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := u.Edges.totalCount[1][alias]
+	if nodes, err := u.NamedCustomers(alias); err == nil || hasTotalCount {
+		pager, err := newCustomerPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &CustomerConnection{Edges: []*CustomerEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return u.QueryCustomers().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (u *User) Leader(ctx context.Context) (*User, error) {
@@ -372,28 +525,46 @@ func (u *User) TeamMembers(ctx context.Context) (result []*User, err error) {
 	return result, err
 }
 
-func (u *User) Tenders(ctx context.Context) (result []*Tender, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = u.NamedTenders(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = u.Edges.TendersOrErr()
+func (u *User) Tenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = u.QueryTenders().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := u.Edges.totalCount[4][alias]
+	if nodes, err := u.NamedTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return u.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (u *User) VisitRecords(ctx context.Context) (result []*VisitRecord, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = u.NamedVisitRecords(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = u.Edges.VisitRecordsOrErr()
+func (u *User) VisitRecords(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
+) (*VisitRecordConnection, error) {
+	opts := []VisitRecordPaginateOption{
+		WithVisitRecordOrder(orderBy),
+		WithVisitRecordFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = u.QueryVisitRecords().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := u.Edges.totalCount[5][alias]
+	if nodes, err := u.NamedVisitRecords(alias); err == nil || hasTotalCount {
+		pager, err := newVisitRecordPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &VisitRecordConnection{Edges: []*VisitRecordEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return u.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (vr *VisitRecord) Tender(ctx context.Context) (*Tender, error) {
@@ -412,14 +583,23 @@ func (vr *VisitRecord) Customer(ctx context.Context) (*Customer, error) {
 	return result, MaskNotFound(err)
 }
 
-func (vr *VisitRecord) FollowUpBys(ctx context.Context) (result []*User, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = vr.NamedFollowUpBys(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = vr.Edges.FollowUpBysOrErr()
+func (vr *VisitRecord) FollowUpBys(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *UserOrder, where *UserWhereInput,
+) (*UserConnection, error) {
+	opts := []UserPaginateOption{
+		WithUserOrder(orderBy),
+		WithUserFilter(where.Filter),
 	}
-	if IsNotLoaded(err) {
-		result, err = vr.QueryFollowUpBys().All(ctx)
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := vr.Edges.totalCount[2][alias]
+	if nodes, err := vr.NamedFollowUpBys(alias); err == nil || hasTotalCount {
+		pager, err := newUserPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &UserConnection{Edges: []*UserEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
 	}
-	return result, err
+	return vr.QueryFollowUpBys().Paginate(ctx, after, first, before, last, opts...)
 }

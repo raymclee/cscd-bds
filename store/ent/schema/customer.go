@@ -77,7 +77,10 @@ func (Customer) Edges() []ent.Edge {
 			Field("area_id").
 			Unique().
 			Required(),
-		edge.To("tenders", Tender.Type),
+		edge.To("tenders", Tender.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 		edge.From("sales", User.Type).
 			Field("sales_id").
 			Ref("customers").
@@ -86,7 +89,10 @@ func (Customer) Edges() []ent.Edge {
 			Field("created_by_id").
 			Unique().
 			Required(),
-		edge.To("visit_records", VisitRecord.Type),
+		edge.To("visit_records", VisitRecord.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

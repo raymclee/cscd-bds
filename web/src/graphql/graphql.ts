@@ -26,13 +26,53 @@ export type Area = Node & {
   center?: Maybe<GeoJson>;
   code: Scalars['String']['output'];
   createdAt: Scalars['Time']['output'];
-  customers?: Maybe<Array<Customer>>;
+  customers: CustomerConnection;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  provinces?: Maybe<Array<Province>>;
-  sales?: Maybe<Array<User>>;
-  tenders?: Maybe<Array<Tender>>;
+  provinces: ProvinceConnection;
+  sales: UserConnection;
+  tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
+};
+
+
+export type AreaCustomersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<CustomerOrder>;
+  where?: InputMaybe<CustomerWhereInput>;
+};
+
+
+export type AreaProvincesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ProvinceOrder>;
+  where?: InputMaybe<ProvinceWhereInput>;
+};
+
+
+export type AreaSalesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserOrder>;
+  where?: InputMaybe<UserWhereInput>;
+};
+
+
+export type AreaTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TenderOrder>;
+  where?: InputMaybe<TenderWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -54,6 +94,19 @@ export type AreaEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<Area>;
 };
+
+/** Ordering options for Area connections */
+export type AreaOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Areas. */
+  field: AreaOrderField;
+};
+
+/** Properties by which Area connections can be ordered. */
+export enum AreaOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * AreaWhereInput is used for filtering Area objects.
@@ -137,14 +190,34 @@ export type City = Node & {
   adcode: Scalars['Int']['output'];
   center?: Maybe<GeoJson>;
   createdAt: Scalars['Time']['output'];
-  districts?: Maybe<Array<District>>;
+  districts: DistrictConnection;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   provCode: Scalars['Int']['output'];
   province: Province;
   provinceID: Scalars['ID']['output'];
-  tenders?: Maybe<Array<Tender>>;
+  tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
+};
+
+
+export type CityDistrictsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<DistrictOrder>;
+  where?: InputMaybe<DistrictWhereInput>;
+};
+
+
+export type CityTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TenderOrder>;
+  where?: InputMaybe<TenderWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -166,6 +239,19 @@ export type CityEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<City>;
 };
+
+/** Ordering options for City connections */
+export type CityOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Cities. */
+  field: CityOrderField;
+};
+
+/** Properties by which City connections can be ordered. */
+export enum CityOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * CityWhereInput is used for filtering City objects.
@@ -266,8 +352,18 @@ export type Country = Node & {
   createdAt: Scalars['Time']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  provinces?: Maybe<Array<Province>>;
+  provinces: ProvinceConnection;
   updatedAt: Scalars['Time']['output'];
+};
+
+
+export type CountryProvincesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ProvinceOrder>;
+  where?: InputMaybe<ProvinceWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -289,6 +385,19 @@ export type CountryEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<Country>;
 };
+
+/** Ordering options for Country connections */
+export type CountryOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Countries. */
+  field: CountryOrderField;
+};
+
+/** Properties by which Country connections can be ordered. */
+export enum CountryOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * CountryWhereInput is used for filtering Country objects.
@@ -580,9 +689,29 @@ export type Customer = Node & {
   sales?: Maybe<User>;
   salesID?: Maybe<Scalars['ID']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
-  tenders?: Maybe<Array<Tender>>;
+  tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
-  visitRecords?: Maybe<Array<VisitRecord>>;
+  visitRecords: VisitRecordConnection;
+};
+
+
+export type CustomerTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TenderOrder>;
+  where?: InputMaybe<TenderWhereInput>;
+};
+
+
+export type CustomerVisitRecordsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
+  where?: InputMaybe<VisitRecordWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -615,6 +744,7 @@ export type CustomerOrder = {
 
 /** Properties by which Customer connections can be ordered. */
 export enum CustomerOrderField {
+  CreatedAt = 'CREATED_AT',
   Name = 'NAME',
   OwnerType = 'OWNER_TYPE'
 }
@@ -834,12 +964,32 @@ export type District = Node & {
   createdAt: Scalars['Time']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  plots?: Maybe<Array<Plot>>;
+  plots: PlotConnection;
   provCode: Scalars['Int']['output'];
   province: Province;
   provinceID: Scalars['ID']['output'];
-  tenders?: Maybe<Array<Tender>>;
+  tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
+};
+
+
+export type DistrictPlotsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PlotOrder>;
+  where?: InputMaybe<PlotWhereInput>;
+};
+
+
+export type DistrictTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TenderOrder>;
+  where?: InputMaybe<TenderWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -861,6 +1011,19 @@ export type DistrictEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<District>;
 };
+
+/** Ordering options for District connections */
+export type DistrictOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Districts. */
+  field: DistrictOrderField;
+};
+
+/** Properties by which District connections can be ordered. */
+export enum DistrictOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * DistrictWhereInput is used for filtering District objects.
@@ -1125,6 +1288,19 @@ export type PlotEdge = {
   node?: Maybe<Plot>;
 };
 
+/** Ordering options for Plot connections */
+export type PlotOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Plots. */
+  field: PlotOrderField;
+};
+
+/** Properties by which Plot connections can be ordered. */
+export enum PlotOrderField {
+  CreatedAt = 'CREATED_AT'
+}
+
 /**
  * PlotWhereInput is used for filtering Plot objects.
  * Input was generated by ent.
@@ -1213,15 +1389,45 @@ export type Province = Node & {
   area?: Maybe<Area>;
   areaID?: Maybe<Scalars['ID']['output']>;
   center?: Maybe<GeoJson>;
-  cities?: Maybe<Array<City>>;
+  cities: CityConnection;
   country: Country;
   countryID: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
-  districts?: Maybe<Array<District>>;
+  districts: DistrictConnection;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  tenders?: Maybe<Array<Tender>>;
+  tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
+};
+
+
+export type ProvinceCitiesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<CityOrder>;
+  where?: InputMaybe<CityWhereInput>;
+};
+
+
+export type ProvinceDistrictsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<DistrictOrder>;
+  where?: InputMaybe<DistrictWhereInput>;
+};
+
+
+export type ProvinceTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TenderOrder>;
+  where?: InputMaybe<TenderWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -1243,6 +1449,19 @@ export type ProvinceEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<Province>;
 };
+
+/** Ordering options for Province connections */
+export type ProvinceOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Provinces. */
+  field: ProvinceOrderField;
+};
+
+/** Properties by which Province connections can be ordered. */
+export enum ProvinceOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * ProvinceWhereInput is used for filtering Province objects.
@@ -1374,6 +1593,7 @@ export type QueryAreasArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AreaOrder>;
   where?: InputMaybe<AreaWhereInput>;
 };
 
@@ -1383,6 +1603,7 @@ export type QueryCitiesArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<CityOrder>;
   where?: InputMaybe<CityWhereInput>;
 };
 
@@ -1392,6 +1613,7 @@ export type QueryCountriesArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<CountryOrder>;
   where?: InputMaybe<CountryWhereInput>;
 };
 
@@ -1411,6 +1633,7 @@ export type QueryDistrictsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<DistrictOrder>;
   where?: InputMaybe<DistrictWhereInput>;
 };
 
@@ -1430,6 +1653,7 @@ export type QueryPlotsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PlotOrder>;
   where?: InputMaybe<PlotWhereInput>;
 };
 
@@ -1439,6 +1663,7 @@ export type QueryProvincesArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ProvinceOrder>;
   where?: InputMaybe<ProvinceWhereInput>;
 };
 
@@ -1458,6 +1683,7 @@ export type QueryUsersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserOrder>;
   where?: InputMaybe<UserWhereInput>;
 };
 
@@ -1467,6 +1693,7 @@ export type QueryVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -1545,7 +1772,17 @@ export type Tender = Node & {
   timeLimitRating?: Maybe<Scalars['Int']['output']>;
   timeLimitRatingOverview?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Time']['output'];
-  visitRecords?: Maybe<Array<VisitRecord>>;
+  visitRecords: VisitRecordConnection;
+};
+
+
+export type TenderVisitRecordsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
+  where?: InputMaybe<VisitRecordWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -1578,6 +1815,7 @@ export type TenderOrder = {
 
 /** Properties by which Tender connections can be ordered. */
 export enum TenderOrderField {
+  CreatedAt = 'CREATED_AT',
   Name = 'NAME'
 }
 
@@ -2588,10 +2826,10 @@ export type UpdateVisitRecordInput = {
 
 export type User = Node & {
   __typename?: 'User';
-  areas?: Maybe<Array<Area>>;
+  areas: AreaConnection;
   avatarURL: Scalars['String']['output'];
   createdAt: Scalars['Time']['output'];
-  customers?: Maybe<Array<Customer>>;
+  customers: CustomerConnection;
   disabled: Scalars['Boolean']['output'];
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -2602,10 +2840,50 @@ export type User = Node & {
   name: Scalars['String']['output'];
   openID: Scalars['String']['output'];
   teamMembers?: Maybe<Array<User>>;
-  tenders?: Maybe<Array<Tender>>;
+  tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
   username: Scalars['String']['output'];
-  visitRecords?: Maybe<Array<VisitRecord>>;
+  visitRecords: VisitRecordConnection;
+};
+
+
+export type UserAreasArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AreaOrder>;
+  where?: InputMaybe<AreaWhereInput>;
+};
+
+
+export type UserCustomersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<CustomerOrder>;
+  where?: InputMaybe<CustomerWhereInput>;
+};
+
+
+export type UserTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TenderOrder>;
+  where?: InputMaybe<TenderWhereInput>;
+};
+
+
+export type UserVisitRecordsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
+  where?: InputMaybe<VisitRecordWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -2627,6 +2905,19 @@ export type UserEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<User>;
 };
+
+/** Ordering options for User connections */
+export type UserOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order Users. */
+  field: UserOrderField;
+};
+
+/** Properties by which User connections can be ordered. */
+export enum UserOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * UserWhereInput is used for filtering User objects.
@@ -2786,13 +3077,23 @@ export type VisitRecord = Node & {
   customer?: Maybe<Customer>;
   customerID?: Maybe<Scalars['ID']['output']>;
   date: Scalars['Time']['output'];
-  followupbys?: Maybe<Array<User>>;
+  followupbys: UserConnection;
   id: Scalars['ID']['output'];
   nextStep?: Maybe<Scalars['String']['output']>;
   tender?: Maybe<Tender>;
   tenderID?: Maybe<Scalars['ID']['output']>;
   updatedAt: Scalars['Time']['output'];
   visitType: Scalars['Int']['output'];
+};
+
+
+export type VisitRecordFollowupbysArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserOrder>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -2814,6 +3115,19 @@ export type VisitRecordEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<VisitRecord>;
 };
+
+/** Ordering options for VisitRecord connections */
+export type VisitRecordOrder = {
+  /** The ordering direction. */
+  direction?: OrderDirection;
+  /** The field by which to order VisitRecords. */
+  field: VisitRecordOrderField;
+};
+
+/** Properties by which VisitRecord connections can be ordered. */
+export enum VisitRecordOrderField {
+  CreatedAt = 'CREATED_AT'
+}
 
 /**
  * VisitRecordWhereInput is used for filtering VisitRecord objects.

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e86e916695f4a09a31b987f6231b1700>>
+ * @generated SignedSource<<8cff2599096bf2dae4ea98b522eb28e9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -62,14 +62,36 @@ v4 = {
 v5 = {
   "alias": null,
   "args": null,
-  "concreteType": "District",
+  "concreteType": "DistrictConnection",
   "kind": "LinkedField",
   "name": "districts",
-  "plural": true,
+  "plural": false,
   "selections": [
-    (v2/*: any*/),
-    (v3/*: any*/),
-    (v4/*: any*/)
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "DistrictEdge",
+      "kind": "LinkedField",
+      "name": "edges",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "District",
+          "kind": "LinkedField",
+          "name": "node",
+          "plural": false,
+          "selections": [
+            (v2/*: any*/),
+            (v3/*: any*/),
+            (v4/*: any*/)
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
   ],
   "storageKey": null
 };
@@ -127,40 +149,106 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Area",
+                "concreteType": "AreaConnection",
                 "kind": "LinkedField",
                 "name": "areas",
-                "plural": true,
+                "plural": false,
                 "selections": [
-                  (v2/*: any*/),
-                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Province",
+                    "concreteType": "AreaEdge",
                     "kind": "LinkedField",
-                    "name": "provinces",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/),
-                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "City",
+                        "concreteType": "Area",
                         "kind": "LinkedField",
-                        "name": "cities",
-                        "plural": true,
+                        "name": "node",
+                        "plural": false,
                         "selections": [
                           (v2/*: any*/),
                           (v3/*: any*/),
-                          (v4/*: any*/),
-                          (v5/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ProvinceConnection",
+                            "kind": "LinkedField",
+                            "name": "provinces",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ProvinceEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Province",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v3/*: any*/),
+                                      (v4/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CityConnection",
+                                        "kind": "LinkedField",
+                                        "name": "cities",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "CityEdge",
+                                            "kind": "LinkedField",
+                                            "name": "edges",
+                                            "plural": true,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "concreteType": "City",
+                                                "kind": "LinkedField",
+                                                "name": "node",
+                                                "plural": false,
+                                                "selections": [
+                                                  (v2/*: any*/),
+                                                  (v3/*: any*/),
+                                                  (v4/*: any*/),
+                                                  (v5/*: any*/)
+                                                ],
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      (v5/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
-                      },
-                      (v5/*: any*/)
+                      }
                     ],
                     "storageKey": null
                   }
@@ -178,12 +266,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6a6b83a6d9ad2ff2ba6d6723d43fc6e5",
+    "cacheID": "2b5d32146f2e23a052ee2252f900a834",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    id\n    name\n    provinces {\n      id\n      name\n      adcode\n      cities {\n        id\n        name\n        adcode\n        districts {\n          id\n          name\n          adcode\n        }\n      }\n      districts {\n        id\n        name\n        adcode\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

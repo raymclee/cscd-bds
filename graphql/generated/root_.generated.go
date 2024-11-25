@@ -53,12 +53,12 @@ type ComplexityRoot struct {
 		Center    func(childComplexity int) int
 		Code      func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
-		Customers func(childComplexity int) int
+		Customers func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
-		Provinces func(childComplexity int) int
-		Sales     func(childComplexity int) int
-		Tenders   func(childComplexity int) int
+		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
+		Sales     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
+		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt func(childComplexity int) int
 	}
 
@@ -77,13 +77,13 @@ type ComplexityRoot struct {
 		Adcode     func(childComplexity int) int
 		Center     func(childComplexity int) int
 		CreatedAt  func(childComplexity int) int
-		Districts  func(childComplexity int) int
+		Districts  func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
 		ID         func(childComplexity int) int
 		Name       func(childComplexity int) int
 		ProvCode   func(childComplexity int) int
 		Province   func(childComplexity int) int
 		ProvinceID func(childComplexity int) int
-		Tenders    func(childComplexity int) int
+		Tenders    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt  func(childComplexity int) int
 	}
 
@@ -104,7 +104,7 @@ type ComplexityRoot struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
-		Provinces func(childComplexity int) int
+		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		UpdatedAt func(childComplexity int) int
 	}
 
@@ -136,9 +136,9 @@ type ComplexityRoot struct {
 		Sales                 func(childComplexity int) int
 		SalesID               func(childComplexity int) int
 		Size                  func(childComplexity int) int
-		Tenders               func(childComplexity int) int
+		Tenders               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt             func(childComplexity int) int
-		VisitRecords          func(childComplexity int) int
+		VisitRecords          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	CustomerConnection struct {
@@ -161,11 +161,11 @@ type ComplexityRoot struct {
 		CreatedAt  func(childComplexity int) int
 		ID         func(childComplexity int) int
 		Name       func(childComplexity int) int
-		Plots      func(childComplexity int) int
+		Plots      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
 		ProvCode   func(childComplexity int) int
 		Province   func(childComplexity int) int
 		ProvinceID func(childComplexity int) int
-		Tenders    func(childComplexity int) int
+		Tenders    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt  func(childComplexity int) int
 	}
 
@@ -232,14 +232,14 @@ type ComplexityRoot struct {
 		Area      func(childComplexity int) int
 		AreaID    func(childComplexity int) int
 		Center    func(childComplexity int) int
-		Cities    func(childComplexity int) int
+		Cities    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
 		Country   func(childComplexity int) int
 		CountryID func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
-		Districts func(childComplexity int) int
+		Districts func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
-		Tenders   func(childComplexity int) int
+		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt func(childComplexity int) int
 	}
 
@@ -255,19 +255,19 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) int
-		Cities       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) int
-		Countries    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) int
+		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
+		Cities       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
+		Countries    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
 		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) int
-		Districts    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) int
+		Districts    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
 		Node         func(childComplexity int, id xid.ID) int
 		Nodes        func(childComplexity int, ids []xid.ID) int
-		Plots        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.PlotWhereInput) int
-		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) int
+		Plots        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		Session      func(childComplexity int) int
 		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
-		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) int
-		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.VisitRecordWhereInput) int
+		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
+		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	Session struct {
@@ -343,7 +343,7 @@ type ComplexityRoot struct {
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
 		UpdatedAt                            func(childComplexity int) int
-		VisitRecords                         func(childComplexity int) int
+		VisitRecords                         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	TenderConnection struct {
@@ -358,10 +358,10 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
-		Areas        func(childComplexity int) int
+		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
 		AvatarURL    func(childComplexity int) int
 		CreatedAt    func(childComplexity int) int
-		Customers    func(childComplexity int) int
+		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Disabled     func(childComplexity int) int
 		Email        func(childComplexity int) int
 		ID           func(childComplexity int) int
@@ -372,10 +372,10 @@ type ComplexityRoot struct {
 		Name         func(childComplexity int) int
 		OpenID       func(childComplexity int) int
 		TeamMembers  func(childComplexity int) int
-		Tenders      func(childComplexity int) int
+		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt    func(childComplexity int) int
 		Username     func(childComplexity int) int
-		VisitRecords func(childComplexity int) int
+		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	UserConnection struct {
@@ -396,7 +396,7 @@ type ComplexityRoot struct {
 		Customer    func(childComplexity int) int
 		CustomerID  func(childComplexity int) int
 		Date        func(childComplexity int) int
-		FollowUpBys func(childComplexity int) int
+		FollowUpBys func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 		ID          func(childComplexity int) int
 		NextStep    func(childComplexity int) int
 		Tender      func(childComplexity int) int
@@ -462,7 +462,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Area.Customers(childComplexity), true
+		args, err := ec.field_Area_customers_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Area.Customers(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CustomerOrder), args["where"].(*ent.CustomerWhereInput)), true
 
 	case "Area.id":
 		if e.complexity.Area.ID == nil {
@@ -483,21 +488,36 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Area.Provinces(childComplexity), true
+		args, err := ec.field_Area_provinces_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Area.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProvinceOrder), args["where"].(*ent.ProvinceWhereInput)), true
 
 	case "Area.sales":
 		if e.complexity.Area.Sales == nil {
 			break
 		}
 
-		return e.complexity.Area.Sales(childComplexity), true
+		args, err := ec.field_Area_sales_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Area.Sales(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.UserOrder), args["where"].(*ent.UserWhereInput)), true
 
 	case "Area.tenders":
 		if e.complexity.Area.Tenders == nil {
 			break
 		}
 
-		return e.complexity.Area.Tenders(childComplexity), true
+		args, err := ec.field_Area_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Area.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Area.updatedAt":
 		if e.complexity.Area.UpdatedAt == nil {
@@ -567,7 +587,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.City.Districts(childComplexity), true
+		args, err := ec.field_City_districts_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.City.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.DistrictOrder), args["where"].(*ent.DistrictWhereInput)), true
 
 	case "City.id":
 		if e.complexity.City.ID == nil {
@@ -609,7 +634,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.City.Tenders(childComplexity), true
+		args, err := ec.field_City_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.City.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "City.updatedAt":
 		if e.complexity.City.UpdatedAt == nil {
@@ -693,7 +723,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Country.Provinces(childComplexity), true
+		args, err := ec.field_Country_provinces_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Country.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProvinceOrder), args["where"].(*ent.ProvinceWhereInput)), true
 
 	case "Country.updatedAt":
 		if e.complexity.Country.UpdatedAt == nil {
@@ -854,7 +889,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Customer.Tenders(childComplexity), true
+		args, err := ec.field_Customer_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Customer.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Customer.updatedAt":
 		if e.complexity.Customer.UpdatedAt == nil {
@@ -868,7 +908,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Customer.VisitRecords(childComplexity), true
+		args, err := ec.field_Customer_visitRecords_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Customer.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "CustomerConnection.edges":
 		if e.complexity.CustomerConnection.Edges == nil {
@@ -966,7 +1011,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.District.Plots(childComplexity), true
+		args, err := ec.field_District_plots_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.District.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.PlotOrder), args["where"].(*ent.PlotWhereInput)), true
 
 	case "District.provCode":
 		if e.complexity.District.ProvCode == nil {
@@ -994,7 +1044,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.District.Tenders(childComplexity), true
+		args, err := ec.field_District_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.District.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "District.updatedAt":
 		if e.complexity.District.UpdatedAt == nil {
@@ -1324,7 +1379,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Province.Cities(childComplexity), true
+		args, err := ec.field_Province_cities_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Province.Cities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CityOrder), args["where"].(*ent.CityWhereInput)), true
 
 	case "Province.country":
 		if e.complexity.Province.Country == nil {
@@ -1352,7 +1412,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Province.Districts(childComplexity), true
+		args, err := ec.field_Province_districts_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Province.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.DistrictOrder), args["where"].(*ent.DistrictWhereInput)), true
 
 	case "Province.id":
 		if e.complexity.Province.ID == nil {
@@ -1373,7 +1438,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Province.Tenders(childComplexity), true
+		args, err := ec.field_Province_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Province.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Province.updatedAt":
 		if e.complexity.Province.UpdatedAt == nil {
@@ -1427,7 +1497,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Areas(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.AreaWhereInput)), true
+		return e.complexity.Query.Areas(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.AreaOrder), args["where"].(*ent.AreaWhereInput)), true
 
 	case "Query.cities":
 		if e.complexity.Query.Cities == nil {
@@ -1439,7 +1509,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Cities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.CityWhereInput)), true
+		return e.complexity.Query.Cities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CityOrder), args["where"].(*ent.CityWhereInput)), true
 
 	case "Query.countries":
 		if e.complexity.Query.Countries == nil {
@@ -1451,7 +1521,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Countries(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.CountryWhereInput)), true
+		return e.complexity.Query.Countries(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CountryOrder), args["where"].(*ent.CountryWhereInput)), true
 
 	case "Query.customers":
 		if e.complexity.Query.Customers == nil {
@@ -1475,7 +1545,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.DistrictWhereInput)), true
+		return e.complexity.Query.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.DistrictOrder), args["where"].(*ent.DistrictWhereInput)), true
 
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
@@ -1511,7 +1581,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.PlotWhereInput)), true
+		return e.complexity.Query.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.PlotOrder), args["where"].(*ent.PlotWhereInput)), true
 
 	case "Query.provinces":
 		if e.complexity.Query.Provinces == nil {
@@ -1523,7 +1593,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.ProvinceWhereInput)), true
+		return e.complexity.Query.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProvinceOrder), args["where"].(*ent.ProvinceWhereInput)), true
 
 	case "Query.session":
 		if e.complexity.Query.Session == nil {
@@ -1554,7 +1624,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.UserWhereInput)), true
+		return e.complexity.Query.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.UserOrder), args["where"].(*ent.UserWhereInput)), true
 
 	case "Query.visitRecords":
 		if e.complexity.Query.VisitRecords == nil {
@@ -1566,7 +1636,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["where"].(*ent.VisitRecordWhereInput)), true
+		return e.complexity.Query.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "Session.avatarUrl":
 		if e.complexity.Session.AvatarURL == nil {
@@ -2056,7 +2126,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Tender.VisitRecords(childComplexity), true
+		args, err := ec.field_Tender_visitRecords_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Tender.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "TenderConnection.edges":
 		if e.complexity.TenderConnection.Edges == nil {
@@ -2098,7 +2173,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.User.Areas(childComplexity), true
+		args, err := ec.field_User_areas_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Areas(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.AreaOrder), args["where"].(*ent.AreaWhereInput)), true
 
 	case "User.avatarURL":
 		if e.complexity.User.AvatarURL == nil {
@@ -2119,7 +2199,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.User.Customers(childComplexity), true
+		args, err := ec.field_User_customers_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Customers(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CustomerOrder), args["where"].(*ent.CustomerWhereInput)), true
 
 	case "User.disabled":
 		if e.complexity.User.Disabled == nil {
@@ -2196,7 +2281,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.User.Tenders(childComplexity), true
+		args, err := ec.field_User_tenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "User.updatedAt":
 		if e.complexity.User.UpdatedAt == nil {
@@ -2217,7 +2307,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.User.VisitRecords(childComplexity), true
+		args, err := ec.field_User_visitRecords_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "UserConnection.edges":
 		if e.complexity.UserConnection.Edges == nil {
@@ -2301,7 +2396,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.VisitRecord.FollowUpBys(childComplexity), true
+		args, err := ec.field_VisitRecord_followupbys_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.VisitRecord.FollowUpBys(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.UserOrder), args["where"].(*ent.UserWhereInput)), true
 
 	case "VisitRecord.id":
 		if e.complexity.VisitRecord.ID == nil {
@@ -2388,8 +2488,11 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputAreaOrder,
 		ec.unmarshalInputAreaWhereInput,
+		ec.unmarshalInputCityOrder,
 		ec.unmarshalInputCityWhereInput,
+		ec.unmarshalInputCountryOrder,
 		ec.unmarshalInputCountryWhereInput,
 		ec.unmarshalInputCreateAreaInput,
 		ec.unmarshalInputCreateCityInput,
@@ -2403,8 +2506,11 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateVisitRecordInput,
 		ec.unmarshalInputCustomerOrder,
 		ec.unmarshalInputCustomerWhereInput,
+		ec.unmarshalInputDistrictOrder,
 		ec.unmarshalInputDistrictWhereInput,
+		ec.unmarshalInputPlotOrder,
 		ec.unmarshalInputPlotWhereInput,
+		ec.unmarshalInputProvinceOrder,
 		ec.unmarshalInputProvinceWhereInput,
 		ec.unmarshalInputTenderOrder,
 		ec.unmarshalInputTenderWhereInput,
@@ -2418,7 +2524,9 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateTenderInput,
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUpdateVisitRecordInput,
+		ec.unmarshalInputUserOrder,
 		ec.unmarshalInputUserWhereInput,
+		ec.unmarshalInputVisitRecordOrder,
 		ec.unmarshalInputVisitRecordWhereInput,
 	)
 	first := true
@@ -2525,10 +2633,130 @@ type Area implements Node {
   updatedAt: Time!
   name: String!
   code: String!
-  customers: [Customer!]
-  tenders: [Tender!]
-  sales: [User!]
-  provinces: [Province!]
+  customers(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Customers returned from the connection.
+    """
+    orderBy: CustomerOrder
+
+    """
+    Filtering options for Customers returned from the connection.
+    """
+    where: CustomerWhereInput
+  ): CustomerConnection!
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
+  sales(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
+    Filtering options for Users returned from the connection.
+    """
+    where: UserWhereInput
+  ): UserConnection!
+  provinces(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Provinces returned from the connection.
+    """
+    orderBy: ProvinceOrder
+
+    """
+    Filtering options for Provinces returned from the connection.
+    """
+    where: ProvinceWhereInput
+  ): ProvinceConnection!
 }
 """
 A connection to a list of items.
@@ -2559,6 +2787,25 @@ type AreaEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Area connections
+"""
+input AreaOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Areas.
+  """
+  field: AreaOrderField!
+}
+"""
+Properties by which Area connections can be ordered.
+"""
+enum AreaOrderField {
+  CREATED_AT
 }
 """
 AreaWhereInput is used for filtering Area objects.
@@ -2662,9 +2909,69 @@ type City implements Node {
   provCode: Int!
   name: String!
   provinceID: ID!
-  districts: [District!]
+  districts(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Districts returned from the connection.
+    """
+    orderBy: DistrictOrder
+
+    """
+    Filtering options for Districts returned from the connection.
+    """
+    where: DistrictWhereInput
+  ): DistrictConnection!
   province: Province!
-  tenders: [Tender!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
 }
 """
 A connection to a list of items.
@@ -2695,6 +3002,25 @@ type CityEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for City connections
+"""
+input CityOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Cities.
+  """
+  field: CityOrderField!
+}
+"""
+Properties by which City connections can be ordered.
+"""
+enum CityOrderField {
+  CREATED_AT
 }
 """
 CityWhereInput is used for filtering City objects.
@@ -2813,7 +3139,37 @@ type Country implements Node {
   updatedAt: Time!
   adcode: Int!
   name: String!
-  provinces: [Province!]
+  provinces(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Provinces returned from the connection.
+    """
+    orderBy: ProvinceOrder
+
+    """
+    Filtering options for Provinces returned from the connection.
+    """
+    where: ProvinceWhereInput
+  ): ProvinceConnection!
 }
 """
 A connection to a list of items.
@@ -2844,6 +3200,25 @@ type CountryEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Country connections
+"""
+input CountryOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Countries.
+  """
+  field: CountryOrderField!
+}
+"""
+Properties by which Country connections can be ordered.
+"""
+enum CountryOrderField {
+  CREATED_AT
 }
 """
 CountryWhereInput is used for filtering Country objects.
@@ -3139,10 +3514,70 @@ type Customer implements Node {
   salesID: ID
   createdByID: ID!
   area: Area!
-  tenders: [Tender!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
   sales: User
   createdBy: User!
-  visitRecords: [VisitRecord!]
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 """
 A connection to a list of items.
@@ -3191,6 +3626,7 @@ input CustomerOrder {
 Properties by which Customer connections can be ordered.
 """
 enum CustomerOrderField {
+  CREATED_AT
   NAME
   OWNER_TYPE
 }
@@ -3448,8 +3884,68 @@ type District implements Node {
   cityID: ID
   province: Province!
   city: City
-  tenders: [Tender!]
-  plots: [Plot!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
+  plots(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Plots returned from the connection.
+    """
+    orderBy: PlotOrder
+
+    """
+    Filtering options for Plots returned from the connection.
+    """
+    where: PlotWhereInput
+  ): PlotConnection!
 }
 """
 A connection to a list of items.
@@ -3480,6 +3976,25 @@ type DistrictEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for District connections
+"""
+input DistrictOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Districts.
+  """
+  field: DistrictOrderField!
+}
+"""
+Properties by which District connections can be ordered.
+"""
+enum DistrictOrderField {
+  CREATED_AT
 }
 """
 DistrictWhereInput is used for filtering District objects.
@@ -3711,6 +4226,25 @@ type PlotEdge {
   cursor: Cursor!
 }
 """
+Ordering options for Plot connections
+"""
+input PlotOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Plots.
+  """
+  field: PlotOrderField!
+}
+"""
+Properties by which Plot connections can be ordered.
+"""
+enum PlotOrderField {
+  CREATED_AT
+}
+"""
 PlotWhereInput is used for filtering Plot objects.
 Input was generated by ent.
 """
@@ -3813,10 +4347,100 @@ type Province implements Node {
   name: String!
   countryID: ID!
   areaID: ID
-  districts: [District!]
-  cities: [City!]
+  districts(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Districts returned from the connection.
+    """
+    orderBy: DistrictOrder
+
+    """
+    Filtering options for Districts returned from the connection.
+    """
+    where: DistrictWhereInput
+  ): DistrictConnection!
+  cities(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Cities returned from the connection.
+    """
+    orderBy: CityOrder
+
+    """
+    Filtering options for Cities returned from the connection.
+    """
+    where: CityWhereInput
+  ): CityConnection!
   country: Country!
-  tenders: [Tender!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
   area: Area
 }
 """
@@ -3848,6 +4472,25 @@ type ProvinceEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Province connections
+"""
+input ProvinceOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Provinces.
+  """
+  field: ProvinceOrderField!
+}
+"""
+Properties by which Province connections can be ordered.
+"""
+enum ProvinceOrderField {
+  CREATED_AT
 }
 """
 ProvinceWhereInput is used for filtering Province objects.
@@ -4018,6 +4661,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Areas returned from the connection.
+    """
+    orderBy: AreaOrder
+
+    """
     Filtering options for Areas returned from the connection.
     """
     where: AreaWhereInput
@@ -4044,6 +4692,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Cities returned from the connection.
+    """
+    orderBy: CityOrder
+
+    """
     Filtering options for Cities returned from the connection.
     """
     where: CityWhereInput
@@ -4068,6 +4721,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Ordering options for Countries returned from the connection.
+    """
+    orderBy: CountryOrder
 
     """
     Filtering options for Countries returned from the connection.
@@ -4127,6 +4785,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Districts returned from the connection.
+    """
+    orderBy: DistrictOrder
+
+    """
     Filtering options for Districts returned from the connection.
     """
     where: DistrictWhereInput
@@ -4153,6 +4816,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Plots returned from the connection.
+    """
+    orderBy: PlotOrder
+
+    """
     Filtering options for Plots returned from the connection.
     """
     where: PlotWhereInput
@@ -4177,6 +4845,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Ordering options for Provinces returned from the connection.
+    """
+    orderBy: ProvinceOrder
 
     """
     Filtering options for Provinces returned from the connection.
@@ -4236,6 +4909,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
     Filtering options for Users returned from the connection.
     """
     where: UserWhereInput
@@ -4260,6 +4938,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -4328,7 +5011,37 @@ type Tender implements Node {
   province: Province!
   city: City
   district: District!
-  visitRecords: [VisitRecord!]
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 """
 A connection to a list of items.
@@ -4377,6 +5090,7 @@ input TenderOrder {
 Properties by which Tender connections can be ordered.
 """
 enum TenderOrderField {
+  CREATED_AT
   NAME
 }
 """
@@ -5504,12 +6218,132 @@ type User implements Node {
   isAdmin: Boolean!
   isLeader: Boolean!
   leaderID: ID
-  areas: [Area!]
-  customers: [Customer!]
+  areas(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Areas returned from the connection.
+    """
+    orderBy: AreaOrder
+
+    """
+    Filtering options for Areas returned from the connection.
+    """
+    where: AreaWhereInput
+  ): AreaConnection!
+  customers(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Customers returned from the connection.
+    """
+    orderBy: CustomerOrder
+
+    """
+    Filtering options for Customers returned from the connection.
+    """
+    where: CustomerWhereInput
+  ): CustomerConnection!
   leader: User
   teamMembers: [User!]
-  tenders: [Tender!]
-  visitRecords: [VisitRecord!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 """
 A connection to a list of items.
@@ -5540,6 +6374,25 @@ type UserEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for User connections
+"""
+input UserOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Users.
+  """
+  field: UserOrderField!
+}
+"""
+Properties by which User connections can be ordered.
+"""
+enum UserOrderField {
+  CREATED_AT
 }
 """
 UserWhereInput is used for filtering User objects.
@@ -5739,7 +6592,37 @@ type VisitRecord implements Node {
   customerID: ID
   tender: Tender
   customer: Customer
-  followupbys: [User!] @goField(name: "FollowUpBys", forceResolver: false)
+  followupbys(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
+    Filtering options for Users returned from the connection.
+    """
+    where: UserWhereInput
+  ): UserConnection! @goField(name: "FollowUpBys", forceResolver: false)
 }
 """
 A connection to a list of items.
@@ -5770,6 +6653,25 @@ type VisitRecordEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for VisitRecord connections
+"""
+input VisitRecordOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order VisitRecords.
+  """
+  field: VisitRecordOrderField!
+}
+"""
+Properties by which VisitRecord connections can be ordered.
+"""
+enum VisitRecordOrderField {
+  CREATED_AT
 }
 """
 VisitRecordWhereInput is used for filtering VisitRecord objects.

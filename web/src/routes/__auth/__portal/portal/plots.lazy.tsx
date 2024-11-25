@@ -31,35 +31,63 @@ const query = graphql`
       id
       ... on User {
         areas {
-          provinces {
-            id
-            name
-            adcode
-            cities {
-              id
-              name
-              adcode
-              districts {
-                id
-                name
-                adcode
-                plots {
-                  id
-                  name
-                  geoBounds
-                  colorHex
+          edges {
+            node {
+              provinces {
+                edges {
+                  node {
+                    id @required(action: NONE)
+                    name
+                    adcode
+                    cities {
+                      edges {
+                        node {
+                          id @required(action: NONE)
+                          name
+                          adcode
+                          districts {
+                            edges {
+                              node {
+                                id @required(action: NONE)
+                                name
+                                adcode
+                                plots {
+                                  edges {
+                                    node {
+                                      id
+                                      name
+                                      geoBounds
+                                      colorHex
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    districts {
+                      edges {
+                        node {
+                          id @required(action: NONE)
+                          name
+                          adcode
+                          plots {
+                            edges {
+                              node {
+                                id
+                                name
+                                geoBounds
+                                colorHex
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
-              }
-            }
-            districts {
-              id
-              name
-              adcode
-              plots {
-                id
-                name
-                geoBounds
-                colorHex
               }
             }
           }
@@ -147,7 +175,9 @@ function EditorContainer() {
   const data = usePreloadedQuery<plotsPageQuery>(query, Route.useLoaderData());
   const map = useMapStore((state) => state.map);
   const districtExplorer = useMapStore((state) => state.districtExplorer);
-  const provinces = data.node?.areas?.flatMap((area) => area.provinces);
+  const provinces = data.node?.areas?.edges?.flatMap((area) =>
+    area?.node?.provinces?.edges?.map((p) => p?.node),
+  );
   const selectedDistrict = usePlotStore((state) => state.selectedDistrict);
   const [commitMutation, isMutationInFlight] =
     useMutation<plotsDeletePlotMutation>(deletePlotMutation);
@@ -157,46 +187,46 @@ function EditorContainer() {
     () =>
       provinces?.map((p) => ({
         title: p?.name,
-        value: p!.id,
+        value: p?.id,
         key: p!.id,
         disabled: true,
-        children: p?.cities?.length
-          ? p?.cities?.map((c) => ({
-              title: c?.name,
-              value: c!.id,
-              key: c!.id,
-              adcode: c?.adcode,
+        children: p?.cities?.edges?.length
+          ? p?.cities?.edges?.map((c) => ({
+              title: c?.node?.name,
+              value: c!.node?.id,
+              key: c!.node!.id,
+              adcode: c?.node?.adcode,
               disabled: true,
-              children: c.districts?.map((d) => ({
-                title: d?.name,
-                value: d!.id,
-                key: d!.id,
-                adcode: d?.adcode,
+              children: c?.node?.districts?.edges?.map((d) => ({
+                title: d?.node?.name,
+                value: d!.node?.id,
+                key: d!.node!.id,
+                adcode: d?.node?.adcode,
               })),
             }))
-          : p?.districts?.map((d) => ({
-              title: d?.name,
-              value: d!.id,
-              key: d!.id,
-              adcode: d?.adcode,
+          : p?.districts.edges?.map((d) => ({
+              title: d?.node?.name,
+              value: d?.node?.id,
+              key: d!.node!.id,
+              adcode: d?.node?.adcode,
             })),
       })),
     [],
   );
 
   React.useEffect(() => {
-    data.node?.areas?.forEach((area) => {
-      area.provinces?.forEach((province) => {
-        province.cities?.forEach((city) => {
-          city.districts?.forEach((district) => {
-            district.plots?.forEach((plot) => {
+    data.node?.areas?.edges?.forEach((area) => {
+      area?.node?.provinces?.edges?.forEach((province) => {
+        province?.node?.cities?.edges?.forEach((city) => {
+          city?.node?.districts?.edges?.forEach((district) => {
+            district?.node?.plots?.edges?.forEach((plot) => {
               createPlot(plot, commitMutation);
             });
           });
         });
-        province.districts?.forEach((district) => {
-          district.plots?.forEach((plot) => {
-            createPlot(plot, commitMutation);
+        province?.node?.districts?.edges?.forEach((district) => {
+          district?.node?.plots?.edges?.forEach((plot) => {
+            createPlot(plot?.node, commitMutation);
           });
         });
       });
@@ -357,6 +387,18 @@ function Editor() {
                     duration: 5,
                   });
                 },
+                // updater(store, data) {
+                //   if (!data?.createPlot) return;
+
+                //   const node = store.get(districtID);
+                //   if (!node) return;
+                //   const plots = node.getLinkedRecords("plots");
+                //   if (!plots) return;
+                //   const newPlotRecord = store.get(data.createPlot.id);
+                //   if (newPlotRecord) {
+                //     node.setLinkedRecords([...plots, newPlotRecord], "plots");
+                //   }
+                // },
               });
             }}
           >

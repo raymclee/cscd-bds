@@ -59,8 +59,14 @@ func (District) Edges() []ent.Edge {
 			Ref("districts").
 			Field("city_id").
 			Unique(),
-		edge.To("tenders", Tender.Type),
-		edge.To("plots", Plot.Type),
+		edge.To("tenders", Tender.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("plots", Plot.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

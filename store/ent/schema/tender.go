@@ -148,7 +148,10 @@ func (Tender) Edges() []ent.Edge {
 			Field("district_id").
 			Required().
 			Unique(),
-		edge.To("visit_records", VisitRecord.Type),
+		edge.To("visit_records", VisitRecord.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

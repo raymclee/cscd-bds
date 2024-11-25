@@ -15,9 +15,17 @@ const query = graphql`
     node(id: $userId) {
       ... on User {
         areas {
-          customers {
-            id
-            name
+          edges {
+            node {
+              customers {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -31,7 +39,10 @@ function RouteComponent() {
     Route.useLoaderData(),
   );
 
-  const dataSource = data.node?.areas?.flatMap((a) => a.customers);
+  const dataSource =
+    data.node?.areas?.edges?.flatMap((a) =>
+      a?.node?.customers?.edges?.map((c) => c?.node),
+    ) ?? [];
 
   const columns: TableProps<Partial<Customer>>["columns"] = [
     { dataIndex: "name", title: "名称" },

@@ -58,23 +58,37 @@ function RouteComponent() {
 }
 
 export const TendersAreaTenderListFragment = graphql`
-  fragment tendersAreaTenderListFragment on User {
+  fragment tendersAreaTenderListFragment on User
+  @argumentDefinitions(
+    orderBy: {
+      type: "TenderOrder"
+      defaultValue: { field: CREATED_AT, direction: ASC }
+    }
+  ) {
     areas {
-      tenders {
-        id
-        name
-        status
-        createdAt
-        estimatedAmount
-        customer {
-          name
-        }
-        images
-        fullAddress
-        tenderDate
-        discoveryDate
-        area {
-          name
+      edges {
+        node {
+          tenders(orderBy: $orderBy) {
+            edges {
+              node {
+                id
+                name
+                status
+                createdAt
+                estimatedAmount
+                customer {
+                  name
+                }
+                images
+                fullAddress
+                tenderDate
+                discoveryDate
+                area {
+                  name
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -89,8 +103,8 @@ function TenderList({
   const data = useFragment(TendersAreaTenderListFragment, dataRef);
   const [searchText, setSearchText] = useState("");
 
-  const dataSource = data?.areas
-    ?.flatMap((area) => area.tenders)
+  const dataSource = data?.areas.edges
+    ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
     .filter((t) =>
       t?.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
     );

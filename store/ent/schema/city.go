@@ -45,13 +45,19 @@ func (City) Fields() []ent.Field {
 // Edges of the City.
 func (City) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("districts", District.Type),
+		edge.To("districts", District.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 		edge.From("province", Province.Type).
 			Ref("cities").
 			Required().
 			Field("province_id").
 			Unique(),
-		edge.To("tenders", Tender.Type),
+		edge.To("tenders", Tender.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

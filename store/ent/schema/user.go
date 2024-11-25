@@ -45,15 +45,27 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("areas", Area.Type).
-			Ref("sales"),
-		edge.To("customers", Customer.Type),
+			Ref("sales").
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("customers", Customer.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 		edge.To("team_members", User.Type).
 			From("leader").
 			Field("leader_id").
 			Unique(),
 		edge.From("tenders", Tender.Type).
-			Ref("following_sales"),
-		edge.To("visit_records", VisitRecord.Type),
+			Ref("following_sales").
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("visit_records", VisitRecord.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

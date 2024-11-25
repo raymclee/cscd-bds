@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<31019ddb68901db9bae08566957efeea>>
+ * @generated SignedSource<<a5b5cb4a350c2c6eb630aa5e957f958a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,9 +14,13 @@ export type usersPageQuery$data = {
   readonly users: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly areas: ReadonlyArray<{
-          readonly name: string;
-        }> | null | undefined;
+        readonly areas: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly name: string;
+            } | null | undefined;
+          } | null | undefined> | null | undefined;
+        };
         readonly id: string;
         readonly isAdmin: boolean;
         readonly isLeader: boolean;
@@ -95,12 +99,34 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Area",
+                    "concreteType": "AreaConnection",
                     "kind": "LinkedField",
                     "name": "areas",
-                    "plural": true,
+                    "plural": false,
                     "selections": [
-                      (v1/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AreaEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Area",
+                            "kind": "LinkedField",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              (v1/*: any*/)
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   },
@@ -154,13 +180,35 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Area",
+                    "concreteType": "AreaConnection",
                     "kind": "LinkedField",
                     "name": "areas",
-                    "plural": true,
+                    "plural": false,
                     "selections": [
-                      (v1/*: any*/),
-                      (v0/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AreaEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Area",
+                            "kind": "LinkedField",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              (v1/*: any*/),
+                              (v0/*: any*/)
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   },
@@ -178,16 +226,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "567d3fc9f28afe89b0fb78e9a926dee1",
+    "cacheID": "6d769c57a460f771b518040f8ac0befb",
     "id": null,
     "metadata": {},
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery {\n  users {\n    edges {\n      node {\n        id\n        name\n        areas {\n          name\n          id\n        }\n        isAdmin\n        isLeader\n      }\n    }\n  }\n}\n"
+    "text": "query usersPageQuery {\n  users {\n    edges {\n      node {\n        id\n        name\n        areas {\n          edges {\n            node {\n              name\n              id\n            }\n          }\n        }\n        isAdmin\n        isLeader\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "590726f35178fc2c6011b2645662c9d7";
+(node as any).hash = "681d2c11208a2195232ec9b82bfafad2";
 
 export default node;

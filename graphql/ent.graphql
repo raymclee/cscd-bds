@@ -6,10 +6,130 @@ type Area implements Node {
   updatedAt: Time!
   name: String!
   code: String!
-  customers: [Customer!]
-  tenders: [Tender!]
-  sales: [User!]
-  provinces: [Province!]
+  customers(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Customers returned from the connection.
+    """
+    orderBy: CustomerOrder
+
+    """
+    Filtering options for Customers returned from the connection.
+    """
+    where: CustomerWhereInput
+  ): CustomerConnection!
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
+  sales(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
+    Filtering options for Users returned from the connection.
+    """
+    where: UserWhereInput
+  ): UserConnection!
+  provinces(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Provinces returned from the connection.
+    """
+    orderBy: ProvinceOrder
+
+    """
+    Filtering options for Provinces returned from the connection.
+    """
+    where: ProvinceWhereInput
+  ): ProvinceConnection!
 }
 """
 A connection to a list of items.
@@ -40,6 +160,25 @@ type AreaEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Area connections
+"""
+input AreaOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Areas.
+  """
+  field: AreaOrderField!
+}
+"""
+Properties by which Area connections can be ordered.
+"""
+enum AreaOrderField {
+  CREATED_AT
 }
 """
 AreaWhereInput is used for filtering Area objects.
@@ -143,9 +282,69 @@ type City implements Node {
   provCode: Int!
   name: String!
   provinceID: ID!
-  districts: [District!]
+  districts(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Districts returned from the connection.
+    """
+    orderBy: DistrictOrder
+
+    """
+    Filtering options for Districts returned from the connection.
+    """
+    where: DistrictWhereInput
+  ): DistrictConnection!
   province: Province!
-  tenders: [Tender!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
 }
 """
 A connection to a list of items.
@@ -176,6 +375,25 @@ type CityEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for City connections
+"""
+input CityOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Cities.
+  """
+  field: CityOrderField!
+}
+"""
+Properties by which City connections can be ordered.
+"""
+enum CityOrderField {
+  CREATED_AT
 }
 """
 CityWhereInput is used for filtering City objects.
@@ -294,7 +512,37 @@ type Country implements Node {
   updatedAt: Time!
   adcode: Int!
   name: String!
-  provinces: [Province!]
+  provinces(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Provinces returned from the connection.
+    """
+    orderBy: ProvinceOrder
+
+    """
+    Filtering options for Provinces returned from the connection.
+    """
+    where: ProvinceWhereInput
+  ): ProvinceConnection!
 }
 """
 A connection to a list of items.
@@ -325,6 +573,25 @@ type CountryEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Country connections
+"""
+input CountryOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Countries.
+  """
+  field: CountryOrderField!
+}
+"""
+Properties by which Country connections can be ordered.
+"""
+enum CountryOrderField {
+  CREATED_AT
 }
 """
 CountryWhereInput is used for filtering Country objects.
@@ -620,10 +887,70 @@ type Customer implements Node {
   salesID: ID
   createdByID: ID!
   area: Area!
-  tenders: [Tender!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
   sales: User
   createdBy: User!
-  visitRecords: [VisitRecord!]
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 """
 A connection to a list of items.
@@ -672,6 +999,7 @@ input CustomerOrder {
 Properties by which Customer connections can be ordered.
 """
 enum CustomerOrderField {
+  CREATED_AT
   NAME
   OWNER_TYPE
 }
@@ -929,8 +1257,68 @@ type District implements Node {
   cityID: ID
   province: Province!
   city: City
-  tenders: [Tender!]
-  plots: [Plot!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
+  plots(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Plots returned from the connection.
+    """
+    orderBy: PlotOrder
+
+    """
+    Filtering options for Plots returned from the connection.
+    """
+    where: PlotWhereInput
+  ): PlotConnection!
 }
 """
 A connection to a list of items.
@@ -961,6 +1349,25 @@ type DistrictEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for District connections
+"""
+input DistrictOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Districts.
+  """
+  field: DistrictOrderField!
+}
+"""
+Properties by which District connections can be ordered.
+"""
+enum DistrictOrderField {
+  CREATED_AT
 }
 """
 DistrictWhereInput is used for filtering District objects.
@@ -1192,6 +1599,25 @@ type PlotEdge {
   cursor: Cursor!
 }
 """
+Ordering options for Plot connections
+"""
+input PlotOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Plots.
+  """
+  field: PlotOrderField!
+}
+"""
+Properties by which Plot connections can be ordered.
+"""
+enum PlotOrderField {
+  CREATED_AT
+}
+"""
 PlotWhereInput is used for filtering Plot objects.
 Input was generated by ent.
 """
@@ -1294,10 +1720,100 @@ type Province implements Node {
   name: String!
   countryID: ID!
   areaID: ID
-  districts: [District!]
-  cities: [City!]
+  districts(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Districts returned from the connection.
+    """
+    orderBy: DistrictOrder
+
+    """
+    Filtering options for Districts returned from the connection.
+    """
+    where: DistrictWhereInput
+  ): DistrictConnection!
+  cities(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Cities returned from the connection.
+    """
+    orderBy: CityOrder
+
+    """
+    Filtering options for Cities returned from the connection.
+    """
+    where: CityWhereInput
+  ): CityConnection!
   country: Country!
-  tenders: [Tender!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
   area: Area
 }
 """
@@ -1329,6 +1845,25 @@ type ProvinceEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Province connections
+"""
+input ProvinceOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Provinces.
+  """
+  field: ProvinceOrderField!
+}
+"""
+Properties by which Province connections can be ordered.
+"""
+enum ProvinceOrderField {
+  CREATED_AT
 }
 """
 ProvinceWhereInput is used for filtering Province objects.
@@ -1499,6 +2034,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Areas returned from the connection.
+    """
+    orderBy: AreaOrder
+
+    """
     Filtering options for Areas returned from the connection.
     """
     where: AreaWhereInput
@@ -1525,6 +2065,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Cities returned from the connection.
+    """
+    orderBy: CityOrder
+
+    """
     Filtering options for Cities returned from the connection.
     """
     where: CityWhereInput
@@ -1549,6 +2094,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Ordering options for Countries returned from the connection.
+    """
+    orderBy: CountryOrder
 
     """
     Filtering options for Countries returned from the connection.
@@ -1608,6 +2158,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Districts returned from the connection.
+    """
+    orderBy: DistrictOrder
+
+    """
     Filtering options for Districts returned from the connection.
     """
     where: DistrictWhereInput
@@ -1634,6 +2189,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Plots returned from the connection.
+    """
+    orderBy: PlotOrder
+
+    """
     Filtering options for Plots returned from the connection.
     """
     where: PlotWhereInput
@@ -1658,6 +2218,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Ordering options for Provinces returned from the connection.
+    """
+    orderBy: ProvinceOrder
 
     """
     Filtering options for Provinces returned from the connection.
@@ -1717,6 +2282,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
     Filtering options for Users returned from the connection.
     """
     where: UserWhereInput
@@ -1741,6 +2311,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -1809,7 +2384,37 @@ type Tender implements Node {
   province: Province!
   city: City
   district: District!
-  visitRecords: [VisitRecord!]
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 """
 A connection to a list of items.
@@ -1858,6 +2463,7 @@ input TenderOrder {
 Properties by which Tender connections can be ordered.
 """
 enum TenderOrderField {
+  CREATED_AT
   NAME
 }
 """
@@ -2985,12 +3591,132 @@ type User implements Node {
   isAdmin: Boolean!
   isLeader: Boolean!
   leaderID: ID
-  areas: [Area!]
-  customers: [Customer!]
+  areas(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Areas returned from the connection.
+    """
+    orderBy: AreaOrder
+
+    """
+    Filtering options for Areas returned from the connection.
+    """
+    where: AreaWhereInput
+  ): AreaConnection!
+  customers(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Customers returned from the connection.
+    """
+    orderBy: CustomerOrder
+
+    """
+    Filtering options for Customers returned from the connection.
+    """
+    where: CustomerWhereInput
+  ): CustomerConnection!
   leader: User
   teamMembers: [User!]
-  tenders: [Tender!]
-  visitRecords: [VisitRecord!]
+  tenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: TenderOrder
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
+  visitRecords(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for VisitRecords returned from the connection.
+    """
+    orderBy: VisitRecordOrder
+
+    """
+    Filtering options for VisitRecords returned from the connection.
+    """
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 """
 A connection to a list of items.
@@ -3021,6 +3747,25 @@ type UserEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for User connections
+"""
+input UserOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Users.
+  """
+  field: UserOrderField!
+}
+"""
+Properties by which User connections can be ordered.
+"""
+enum UserOrderField {
+  CREATED_AT
 }
 """
 UserWhereInput is used for filtering User objects.
@@ -3220,7 +3965,37 @@ type VisitRecord implements Node {
   customerID: ID
   tender: Tender
   customer: Customer
-  followupbys: [User!] @goField(name: "FollowUpBys", forceResolver: false)
+  followupbys(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
+    Filtering options for Users returned from the connection.
+    """
+    where: UserWhereInput
+  ): UserConnection! @goField(name: "FollowUpBys", forceResolver: false)
 }
 """
 A connection to a list of items.
@@ -3251,6 +4026,25 @@ type VisitRecordEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for VisitRecord connections
+"""
+input VisitRecordOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order VisitRecords.
+  """
+  field: VisitRecordOrderField!
+}
+"""
+Properties by which VisitRecord connections can be ordered.
+"""
+enum VisitRecordOrderField {
+  CREATED_AT
 }
 """
 VisitRecordWhereInput is used for filtering VisitRecord objects.

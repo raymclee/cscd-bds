@@ -41,10 +41,22 @@ func (Area) Fields() []ent.Field {
 // Edges of the Area.
 func (Area) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("customers", Customer.Type),
-		edge.To("tenders", Tender.Type),
-		edge.To("sales", User.Type),
-		edge.To("provinces", Province.Type),
+		edge.To("customers", Customer.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("tenders", Tender.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("sales", User.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("provinces", Province.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

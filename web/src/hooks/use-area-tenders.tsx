@@ -16,7 +16,10 @@ export function useAreaTenders() {
     ?.getSubFeatures()
     ?.map((f: any) => f.properties.adcode);
 
-  const allTenders = data.areas.edges?.flatMap((e) => e?.node?.tenders) || [];
+  const allTenders =
+    data.areas.edges?.flatMap((e) =>
+      e?.node?.tenders.edges?.map((e) => e?.node),
+    ) || [];
 
   const tenders =
     nodeProps?.level === "province" || nodeProps?.level === "city"
@@ -28,10 +31,17 @@ export function useAreaTenders() {
                 adcodes?.includes(t?.city?.adcode) ||
                 adcodes?.includes(t?.district.adcode)
               );
+            // return t?.map(
+            //   (e) =>
+            //     adcodes?.includes(e?.node?.city?.adcode) ||
+            //     adcodes?.includes(e?.node?.district.adcode),
+            // );
+            // adcodes?.includes(t?.node?.city?.adcode) ||
+            // adcodes?.includes(t?.node?.district.adcode)
           }
         })
       : selectedArea
-        ? selectedArea?.tenders
+        ? selectedArea?.tenders.edges?.map((e) => e?.node)
         : allTenders;
 
   return tenders;

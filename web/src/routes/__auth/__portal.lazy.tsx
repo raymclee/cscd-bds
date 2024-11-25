@@ -26,6 +26,7 @@ import {
 import * as React from "react";
 import logoImg from "~/assets/logo.jpg";
 import { cn } from "~/lib/utils";
+import { usePortalStore } from "~/store/portal";
 
 export const Route = createLazyFileRoute("/__auth/__portal")({
   component: RouteComponent,
@@ -53,7 +54,7 @@ function RouteComponent() {
   const navigate = Route.useNavigate();
   const { pathname } = useLocation();
   const { session } = Route.useRouteContext();
-  const [collapsed, setCollapsed] = React.useState(false);
+  const sidebarCollapsed = usePortalStore((s) => s.sidebarCollapsed);
 
   const items: MenuItem[] = React.useMemo(
     () => [
@@ -101,8 +102,10 @@ function RouteComponent() {
           <Sider
             className="fixed bottom-0 start-0 top-0 h-screen"
             collapsible
-            collapsed={collapsed}
-            onCollapse={(collapsed) => setCollapsed(collapsed)}
+            collapsed={sidebarCollapsed}
+            onCollapse={(collapsed) =>
+              usePortalStore.setState({ sidebarCollapsed: collapsed })
+            }
           >
             <div className="m-4 flex h-10 items-center justify-center gap-2">
               <img src={logoImg} alt="logo" className="h-full" />
@@ -117,7 +120,10 @@ function RouteComponent() {
             />
           </Sider>
           <Layout
-            className={cn("transition-all", collapsed ? "ms-20" : "ms-[200px]")}
+            className={cn(
+              "transition-all",
+              sidebarCollapsed ? "ms-20" : "ms-[200px]",
+            )}
           >
             <Header className="flex items-center justify-between bg-white px-4">
               <Typography.Title className="!mb-0" level={3}>
@@ -141,7 +147,7 @@ function RouteComponent() {
                 <Avatar src={session.avatarUrl} />
               </div>
             </Header>
-            <Content className="mx-4">
+            <Content className="relative mx-4">
               {/* <Breadcrumb className="my-4" items={[]} /> */}
               {/* <div className="my-4 min-h-80 rounded-lg bg-white p-6"> */}
               <Outlet />

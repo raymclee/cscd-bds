@@ -21,6 +21,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
+import { Area } from "~/graphql/graphql";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
 import {
   findTenderWithLevel,
@@ -28,7 +29,7 @@ import {
   getDistrictZoomLevel,
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import { StoreArea, useMapStore } from "~/store/map";
+import { useMapStore } from "~/store/map";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
@@ -47,72 +48,84 @@ export const mapIndexPageQuery = graphql`
             coordinates
           }
           provinces {
-            id
-            name
-            adcode
-            center @required(action: NONE) {
-              coordinates
+            edges {
+              node {
+                id
+                name
+                adcode
+                center {
+                  coordinates
+                }
+              }
             }
           }
           tenders {
-            id
-            name
-            status
-            createdAt
-            estimatedAmount
-            customer {
-              ownerType
-            }
-            images
-            fullAddress
-            tenderDate
-            discoveryDate
-            contractor
-            designUnit
-            tenderForm
-            keyProject
-            contractForm
-            tenderingAgency
-            consultingFirm
-            facadeConsultant
-            contractForm
-            timeLimitRating
-            sizeAndValueRating
-            creditAndPaymentRating
-            customerRelationshipRating
-            competitivePartnershipRating
-            timeLimitRatingOverview
-            sizeAndValueRatingOverview
-            creditAndPaymentRatingOverview
-            customerRelationshipRatingOverview
-            competitivePartnershipRatingOverview
-            area {
-              name
-            }
-            province {
-              adcode
-              name
-            }
-            city {
-              name
-              adcode
-            }
-            district {
-              name
-              adcode
-            }
-            geoCoordinate {
-              coordinates
-            }
-            geoBounds
-            visitRecords {
-              visitType
-              nextStep
-              commPeople
-              commContent
-              date
-              customer {
+            edges {
+              node {
+                id
                 name
+                status
+                createdAt
+                estimatedAmount
+                customer {
+                  ownerType
+                }
+                images
+                fullAddress
+                tenderDate
+                discoveryDate
+                contractor
+                designUnit
+                tenderForm
+                keyProject
+                contractForm
+                tenderingAgency
+                consultingFirm
+                facadeConsultant
+                contractForm
+                timeLimitRating
+                sizeAndValueRating
+                creditAndPaymentRating
+                customerRelationshipRating
+                competitivePartnershipRating
+                timeLimitRatingOverview
+                sizeAndValueRatingOverview
+                creditAndPaymentRatingOverview
+                customerRelationshipRatingOverview
+                competitivePartnershipRatingOverview
+                area {
+                  name
+                }
+                province {
+                  adcode
+                  name
+                }
+                city {
+                  name
+                  adcode
+                }
+                district {
+                  name
+                  adcode
+                }
+                geoCoordinate {
+                  coordinates
+                }
+                geoBounds
+                visitRecords {
+                  edges {
+                    node {
+                      visitType
+                      nextStep
+                      commPeople
+                      commContent
+                      date
+                      customer {
+                        name
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -128,10 +141,14 @@ export const districtsQuery = graphql`
       edges {
         node {
           plots {
-            id
-            name
-            geoBounds
-            colorHex
+            edges {
+              node {
+                id
+                name
+                geoBounds
+                colorHex
+              }
+            }
           }
         }
       }
@@ -206,11 +223,13 @@ function RouteComponent() {
       const markers: AMap.Marker[] = [];
       for (const area of data.areas?.edges?.map((e) => e?.node) || []) {
         const amount = fixAmount(
-          area?.tenders?.reduce(
-            (acc, inc) =>
-              inc?.estimatedAmount ? acc + inc.estimatedAmount : acc,
-            0,
-          ),
+          area?.tenders?.edges
+            ?.map((e) => e?.node)
+            .reduce(
+              (acc, inc) =>
+                inc?.estimatedAmount ? acc + inc.estimatedAmount : acc,
+              0,
+            ),
         );
 
         //@ts-expect-error
@@ -223,7 +242,7 @@ function RouteComponent() {
                 <div class="text-lg font-bold">${area?.name}</div>
                 <div class="flex items-baseline gap-3">
                   <div>
-                    项目:<span class="ml-1 font-bold text-lg">${area?.tenders?.length}</span>
+                    项目:<span class="ml-1 font-bold text-lg">${area?.tenders?.edges?.length}</span>
                   </div>
                   <div>
                     金额:<span class="mx-1 font-bold text-lg">${amount}</span>亿
@@ -246,7 +265,7 @@ function RouteComponent() {
           districtExplorer.clearFeaturePolygons();
 
           districtExplorer.loadMultiAreaNodes(
-            area?.provinces?.map((p) => p?.adcode),
+            area?.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
             (error: any, areaNodes: any) => {
               for (const [i, areaNode] of areaNodes.entries()) {
                 const props = areaNode.getProps();
@@ -281,7 +300,7 @@ function RouteComponent() {
 
           if (area) {
             const zoom = getDistrictZoomLevel(area?.code);
-            setSelectedArea(area as StoreArea);
+            setSelectedArea(area as Area);
             push({ name: area.name });
             map?.setZoomAndCenter(
               zoom,
@@ -350,7 +369,8 @@ function RouteComponent() {
 
       for (const plot of districts?.districts.edges
         ?.map((e) => e?.node)
-        .flatMap((d) => d?.plots) || []) {
+        .flatMap((d) => d?.plots.edges)
+        .map((e) => e?.node) || []) {
         const polygon = new AMap.Polygon();
 
         polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
@@ -389,7 +409,7 @@ function RouteComponent() {
         ) || [];
 
       for (const [i, tender] of tenders.entries()) {
-        if (tender.geoBounds) {
+        if (tender?.geoBounds) {
           const polygon = new AMap.Polygon();
           polygon.setOptions({
             fillColor: tenderStatusBoundColor(tender!),
@@ -436,7 +456,7 @@ function RouteComponent() {
           });
           mapCircles.push(polygon);
           mapCircles.push(label);
-        } else if (tender.geoCoordinate?.coordinates) {
+        } else if (tender?.geoCoordinate?.coordinates) {
           const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
           // @ts-expect-error
           const label = new AMapUI.SimpleMarker({
@@ -498,8 +518,8 @@ function RouteComponent() {
       }
 
       const center =
-        tenders?.length > 0
-          ? tenders[0].geoCoordinate?.coordinates
+        tenders?.length > 0 && tenders[0]?.geoCoordinate
+          ? tenders[0]?.geoCoordinate?.coordinates
           : props.center;
       map?.setZoomAndCenter(15, center, false, 600);
       map?.addLayer(satelliteLayer!);
@@ -601,7 +621,7 @@ function RouteComponent() {
     }
 
     const selectedArea = useMapStore.getState().selectedArea;
-    const tendersWithinArea = selectedArea?.tenders;
+    const tendersWithinArea = selectedArea?.tenders.edges?.map((e) => e?.node);
 
     const adcodes = [
       ...(tendersWithinArea?.map((t) => t?.province.adcode) || []),
@@ -618,11 +638,11 @@ function RouteComponent() {
       ?.map((t) => {
         switch (props.level) {
           case "province":
-            if (t.province.adcode === props.adcode) return t;
+            if (t?.province.adcode === props.adcode) return t;
           case "city":
-            if (t.city?.adcode === props.adcode) return t;
+            if (t?.city?.adcode === props.adcode) return t;
           case "district":
-            if (t.district.adcode === props.adcode) return t;
+            if (t?.district.adcode === props.adcode) return t;
         }
       })
       .filter(Boolean);
@@ -661,8 +681,11 @@ function RouteComponent() {
 
     marker.on("click", () => {
       const area = areas?.find((d) =>
-        d?.provinces?.map((p) => p?.adcode).includes(props.adcode),
-      ) as StoreArea;
+        d?.provinces?.edges
+          ?.map((e) => e?.node)
+          .map((p) => p?.adcode)
+          .includes(props.adcode),
+      ) as Area;
       if (area) {
         setSelectedArea(area);
       }
@@ -692,14 +715,14 @@ function RouteComponent() {
     renderAreaPolygons(areaNode, zoomeToNode, topLevel);
   }
 
-  function renderArea(area: StoreArea) {
+  function renderArea(area: Area) {
     setDashboardVisible(true);
     map?.remove(useMapStore.getState().markers);
     districtExplorer.clearFeaturePolygons();
     districtExplorer.setHoverFeature(null);
 
     districtExplorer.loadMultiAreaNodes(
-      area.provinces?.map((p) => p.adcode),
+      area.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
       (error: any, areaNodes: any) => {
         for (const [i, areaNode] of areaNodes.entries()) {
           const props = areaNode.getProps();

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c1fe1f14026f068d24ab7c7f606c8bce>>
+ * @generated SignedSource<<b6da770fd43717bbf54dd3553f34397e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,40 +14,68 @@ export type plotsPageQuery$variables = {
 };
 export type plotsPageQuery$data = {
   readonly node: {
-    readonly areas?: ReadonlyArray<{
-      readonly provinces: ReadonlyArray<{
-        readonly adcode: number;
-        readonly cities: ReadonlyArray<{
-          readonly adcode: number;
-          readonly districts: ReadonlyArray<{
-            readonly adcode: number;
-            readonly id: string;
-            readonly name: string;
-            readonly plots: ReadonlyArray<{
-              readonly colorHex: string;
-              readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
-              readonly id: string;
-              readonly name: string;
-            }> | null | undefined;
-          }> | null | undefined;
-          readonly id: string;
-          readonly name: string;
-        }> | null | undefined;
-        readonly districts: ReadonlyArray<{
-          readonly adcode: number;
-          readonly id: string;
-          readonly name: string;
-          readonly plots: ReadonlyArray<{
-            readonly colorHex: string;
-            readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
-            readonly id: string;
-            readonly name: string;
-          }> | null | undefined;
-        }> | null | undefined;
-        readonly id: string;
-        readonly name: string;
-      }> | null | undefined;
-    }> | null | undefined;
+    readonly areas?: {
+      readonly edges: ReadonlyArray<{
+        readonly node: {
+          readonly provinces: {
+            readonly edges: ReadonlyArray<{
+              readonly node: {
+                readonly adcode: number;
+                readonly cities: {
+                  readonly edges: ReadonlyArray<{
+                    readonly node: {
+                      readonly adcode: number;
+                      readonly districts: {
+                        readonly edges: ReadonlyArray<{
+                          readonly node: {
+                            readonly adcode: number;
+                            readonly id: string;
+                            readonly name: string;
+                            readonly plots: {
+                              readonly edges: ReadonlyArray<{
+                                readonly node: {
+                                  readonly colorHex: string;
+                                  readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
+                                  readonly id: string;
+                                  readonly name: string;
+                                } | null | undefined;
+                              } | null | undefined> | null | undefined;
+                            };
+                          } | null | undefined;
+                        } | null | undefined> | null | undefined;
+                      };
+                      readonly id: string;
+                      readonly name: string;
+                    } | null | undefined;
+                  } | null | undefined> | null | undefined;
+                };
+                readonly districts: {
+                  readonly edges: ReadonlyArray<{
+                    readonly node: {
+                      readonly adcode: number;
+                      readonly id: string;
+                      readonly name: string;
+                      readonly plots: {
+                        readonly edges: ReadonlyArray<{
+                          readonly node: {
+                            readonly colorHex: string;
+                            readonly geoBounds: ReadonlyArray<ReadonlyArray<number>> | null | undefined;
+                            readonly id: string;
+                            readonly name: string;
+                          } | null | undefined;
+                        } | null | undefined> | null | undefined;
+                      };
+                    } | null | undefined;
+                  } | null | undefined> | null | undefined;
+                };
+                readonly id: string;
+                readonly name: string;
+              } | null | undefined;
+            } | null | undefined> | null | undefined;
+          };
+        } | null | undefined;
+      } | null | undefined> | null | undefined;
+    };
     readonly id: string;
   } | null | undefined;
 };
@@ -95,36 +123,44 @@ v4 = {
 v5 = {
   "alias": null,
   "args": null,
-  "concreteType": "District",
+  "concreteType": "PlotConnection",
   "kind": "LinkedField",
-  "name": "districts",
-  "plural": true,
+  "name": "plots",
+  "plural": false,
   "selections": [
-    (v2/*: any*/),
-    (v3/*: any*/),
-    (v4/*: any*/),
     {
       "alias": null,
       "args": null,
-      "concreteType": "Plot",
+      "concreteType": "PlotEdge",
       "kind": "LinkedField",
-      "name": "plots",
+      "name": "edges",
       "plural": true,
       "selections": [
-        (v2/*: any*/),
-        (v3/*: any*/),
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "geoBounds",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "colorHex",
+          "concreteType": "Plot",
+          "kind": "LinkedField",
+          "name": "node",
+          "plural": false,
+          "selections": [
+            (v2/*: any*/),
+            (v3/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "geoBounds",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "colorHex",
+              "storageKey": null
+            }
+          ],
           "storageKey": null
         }
       ],
@@ -136,30 +172,37 @@ v5 = {
 v6 = {
   "alias": null,
   "args": null,
-  "concreteType": "Province",
+  "concreteType": "DistrictConnection",
   "kind": "LinkedField",
-  "name": "provinces",
-  "plural": true,
+  "name": "districts",
+  "plural": false,
   "selections": [
-    (v2/*: any*/),
-    (v3/*: any*/),
-    (v4/*: any*/),
     {
       "alias": null,
       "args": null,
-      "concreteType": "City",
+      "concreteType": "DistrictEdge",
       "kind": "LinkedField",
-      "name": "cities",
+      "name": "edges",
       "plural": true,
       "selections": [
-        (v2/*: any*/),
-        (v3/*: any*/),
-        (v4/*: any*/),
-        (v5/*: any*/)
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "District",
+          "kind": "LinkedField",
+          "name": "node",
+          "plural": false,
+          "selections": [
+            (v2/*: any*/),
+            (v3/*: any*/),
+            (v4/*: any*/),
+            (v5/*: any*/)
+          ],
+          "storageKey": null
+        }
       ],
       "storageKey": null
-    },
-    (v5/*: any*/)
+    }
   ],
   "storageKey": null
 };
@@ -185,12 +228,199 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Area",
+                "concreteType": "AreaConnection",
                 "kind": "LinkedField",
                 "name": "areas",
-                "plural": true,
+                "plural": false,
                 "selections": [
-                  (v6/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "AreaEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Area",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ProvinceConnection",
+                            "kind": "LinkedField",
+                            "name": "provinces",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ProvinceEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Province",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "kind": "RequiredField",
+                                        "field": (v2/*: any*/),
+                                        "action": "NONE",
+                                        "path": "node.areas.edges.node.provinces.edges.node.id"
+                                      },
+                                      (v3/*: any*/),
+                                      (v4/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CityConnection",
+                                        "kind": "LinkedField",
+                                        "name": "cities",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "CityEdge",
+                                            "kind": "LinkedField",
+                                            "name": "edges",
+                                            "plural": true,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "concreteType": "City",
+                                                "kind": "LinkedField",
+                                                "name": "node",
+                                                "plural": false,
+                                                "selections": [
+                                                  {
+                                                    "kind": "RequiredField",
+                                                    "field": (v2/*: any*/),
+                                                    "action": "NONE",
+                                                    "path": "node.areas.edges.node.provinces.edges.node.cities.edges.node.id"
+                                                  },
+                                                  (v3/*: any*/),
+                                                  (v4/*: any*/),
+                                                  {
+                                                    "alias": null,
+                                                    "args": null,
+                                                    "concreteType": "DistrictConnection",
+                                                    "kind": "LinkedField",
+                                                    "name": "districts",
+                                                    "plural": false,
+                                                    "selections": [
+                                                      {
+                                                        "alias": null,
+                                                        "args": null,
+                                                        "concreteType": "DistrictEdge",
+                                                        "kind": "LinkedField",
+                                                        "name": "edges",
+                                                        "plural": true,
+                                                        "selections": [
+                                                          {
+                                                            "alias": null,
+                                                            "args": null,
+                                                            "concreteType": "District",
+                                                            "kind": "LinkedField",
+                                                            "name": "node",
+                                                            "plural": false,
+                                                            "selections": [
+                                                              {
+                                                                "kind": "RequiredField",
+                                                                "field": (v2/*: any*/),
+                                                                "action": "NONE",
+                                                                "path": "node.areas.edges.node.provinces.edges.node.cities.edges.node.districts.edges.node.id"
+                                                              },
+                                                              (v3/*: any*/),
+                                                              (v4/*: any*/),
+                                                              (v5/*: any*/)
+                                                            ],
+                                                            "storageKey": null
+                                                          }
+                                                        ],
+                                                        "storageKey": null
+                                                      }
+                                                    ],
+                                                    "storageKey": null
+                                                  }
+                                                ],
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "DistrictConnection",
+                                        "kind": "LinkedField",
+                                        "name": "districts",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "DistrictEdge",
+                                            "kind": "LinkedField",
+                                            "name": "edges",
+                                            "plural": true,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "concreteType": "District",
+                                                "kind": "LinkedField",
+                                                "name": "node",
+                                                "plural": false,
+                                                "selections": [
+                                                  {
+                                                    "kind": "RequiredField",
+                                                    "field": (v2/*: any*/),
+                                                    "action": "NONE",
+                                                    "path": "node.areas.edges.node.provinces.edges.node.districts.edges.node.id"
+                                                  },
+                                                  (v3/*: any*/),
+                                                  (v4/*: any*/),
+                                                  (v5/*: any*/)
+                                                ],
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -233,13 +463,108 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Area",
+                "concreteType": "AreaConnection",
                 "kind": "LinkedField",
                 "name": "areas",
-                "plural": true,
+                "plural": false,
                 "selections": [
-                  (v6/*: any*/),
-                  (v2/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "AreaEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Area",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ProvinceConnection",
+                            "kind": "LinkedField",
+                            "name": "provinces",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ProvinceEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Province",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v3/*: any*/),
+                                      (v4/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CityConnection",
+                                        "kind": "LinkedField",
+                                        "name": "cities",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "CityEdge",
+                                            "kind": "LinkedField",
+                                            "name": "edges",
+                                            "plural": true,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "concreteType": "City",
+                                                "kind": "LinkedField",
+                                                "name": "node",
+                                                "plural": false,
+                                                "selections": [
+                                                  (v2/*: any*/),
+                                                  (v3/*: any*/),
+                                                  (v4/*: any*/),
+                                                  (v6/*: any*/)
+                                                ],
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      (v6/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -253,16 +578,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0c19a5c3053adaf31dd3678a0803af77",
+    "cacheID": "a16b74306e039442bbabae05c78d1e74",
     "id": null,
     "metadata": {},
     "name": "plotsPageQuery",
     "operationKind": "query",
-    "text": "query plotsPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    id\n    ... on User {\n      areas {\n        provinces {\n          id\n          name\n          adcode\n          cities {\n            id\n            name\n            adcode\n            districts {\n              id\n              name\n              adcode\n              plots {\n                id\n                name\n                geoBounds\n                colorHex\n              }\n            }\n          }\n          districts {\n            id\n            name\n            adcode\n            plots {\n              id\n              name\n              geoBounds\n              colorHex\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query plotsPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    id\n    ... on User {\n      areas {\n        edges {\n          node {\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  cities {\n                    edges {\n                      node {\n                        id\n                        name\n                        adcode\n                        districts {\n                          edges {\n                            node {\n                              id\n                              name\n                              adcode\n                              plots {\n                                edges {\n                                  node {\n                                    id\n                                    name\n                                    geoBounds\n                                    colorHex\n                                  }\n                                }\n                              }\n                            }\n                          }\n                        }\n                      }\n                    }\n                  }\n                  districts {\n                    edges {\n                      node {\n                        id\n                        name\n                        adcode\n                        plots {\n                          edges {\n                            node {\n                              id\n                              name\n                              geoBounds\n                              colorHex\n                            }\n                          }\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "281f093347a8742ad48a498f57c98113";
+(node as any).hash = "42820ecfb67d3c68c3cd44362017209a";
 
 export default node;

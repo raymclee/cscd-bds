@@ -41,7 +41,10 @@ func (Country) Fields() []ent.Field {
 // Edges of the Country.
 func (Country) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("provinces", Province.Type),
+		edge.To("provinces", Province.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

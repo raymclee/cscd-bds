@@ -1,4 +1,4 @@
-import { Maybe, Tender } from "~/graphql/graphql";
+import { Maybe, Tender, TenderConnection } from "~/graphql/graphql";
 
 export function ownerTypeText(typ: Maybe<number> | undefined): string {
   if (!typ) {
@@ -52,15 +52,21 @@ export function fixAmount(amount: Maybe<number> | undefined): number {
 export function findTenderWithLevel(
   adcode: number,
   level: string,
-  tenders: Partial<Tender>[],
+  tenders: TenderConnection,
 ) {
   switch (level) {
     case "province":
-      return tenders.filter((t) => t.province?.adcode === adcode);
+      return tenders.edges
+        ?.map((e) => e?.node)
+        .filter((t) => t?.province?.adcode === adcode);
     case "city":
-      return tenders.filter((t) => t.city?.adcode === adcode);
+      return tenders.edges
+        ?.map((e) => e?.node)
+        .filter((t) => t?.city?.adcode === adcode);
     case "district":
-      return tenders.filter((t) => t.district?.adcode === adcode);
+      return tenders.edges
+        ?.map((e) => e?.node)
+        .filter((t) => t?.district?.adcode === adcode);
   }
 }
 
