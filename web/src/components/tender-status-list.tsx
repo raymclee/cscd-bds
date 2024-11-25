@@ -39,32 +39,23 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
 
   return (
     <>
-      {/* <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2, delay: 0.1 }}
-        // className="absolute inset-0 flex items-center justify-center bg-black/50"
-        className="fixed inset-0 bg-black/50"
-        onClick={() => {
-          useMapStore.setState({ selectedTenderStatus: null });
-        }}
-      ></motion.div> */}
-      <m.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2, delay: 0.1 }}
-        className="fixed inset-0 flex items-center justify-center overflow-hidden bg-black/80 backdrop-blur"
-        onClick={() => {
-          useMapStore.setState({ selectedTenderStatus: null });
-        }}
-      >
-        {/* <motion.div
-          className="relative mx-auto h-full w-full overflow-hidden rounded-lg bg-white"
-          layoutId={`tender-status-${selectedTenderStatus}`}
-        > */}
+      <div className="fixed inset-0 flex items-center justify-center">
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+          className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur"
+          onClick={() => {
+            useMapStore.setState({ selectedTenderStatus: null });
+          }}
+        ></m.div>
+
         <MotionCard
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
           layoutId={`tender-status-${selectedTenderStatus?.value}`}
           className={cn(
             "mx-4 block h-[80vh] w-[clamp(400px,40vw,600px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
@@ -151,8 +142,7 @@ export function TenderStatusList({ data }: { data: MapIndexPageQuery$data }) {
             </ScrollArea>
           </CardContent>
         </MotionCard>
-        {/* </motion.div> */}
-      </m.div>
+      </div>
     </>
   );
 }

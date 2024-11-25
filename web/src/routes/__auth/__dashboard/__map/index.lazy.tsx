@@ -416,7 +416,7 @@ function RouteComponent() {
             iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
             label: {
               content: `
-              <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+              <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
                 <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
               </div>
               `,
@@ -454,7 +454,7 @@ function RouteComponent() {
             iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
             label: {
               content: `
-              <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+              <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
                 <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
               </div>
               `,
@@ -1012,7 +1012,6 @@ function TenderList() {
   const setTenderListHovering = useMapStore(
     (state) => state.setTenderListHovering,
   );
-  const markers = useMapStore((state) => state.mapCircles);
 
   // React.useEffect(() => {
   //   setHovering(0);
@@ -1311,23 +1310,34 @@ function TenderList() {
                       });
                     }}
                     onMouseEnter={(e) => {
-                      if (tender.geoCoordinate?.coordinates) {
+                      if (tender.geoBounds) {
+                        const polygon = new AMap.Polygon();
+                        polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
+                        const bounds = polygon.getBounds();
+                        if (bounds) {
+                          map?.setCenter(bounds.getCenter(), false, 600);
+                        }
+                      } else if (tender.geoCoordinate?.coordinates) {
                         map?.setCenter(
                           tender.geoCoordinate.coordinates as AMap.LngLatLike,
                           false,
                           600,
                         );
-                        for (const m of markers) {
-                          if (m instanceof AMap.CircleMarker) {
-                            continue;
-                          }
-                          const ext = m.getExtData();
-                          if (ext?.tenderId === tender.id) {
-                            (m as any).getContentDom().focus();
-                          }
-                        }
-                        setTenderListHovering(tender?.id || 0);
                       }
+                      const a = document.querySelector("#marker-" + tender.id);
+                      const b = a?.closest(".amap-marker-label");
+                      if (b instanceof HTMLElement) {
+                        b.style.background = "#dc2626";
+                      }
+                      setTenderListHovering(tender?.id || 0);
+                    }}
+                    onMouseLeave={(e) => {
+                      const a = document.querySelector("#marker-" + tender.id);
+                      const b = a?.closest(".amap-marker-label");
+                      if (b instanceof HTMLElement) {
+                        b.style.background = "";
+                      }
+                      // setTenderListHovering(null);
                     }}
                   >
                     <div className="w-[40%]">

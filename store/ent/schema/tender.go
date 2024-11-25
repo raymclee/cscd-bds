@@ -29,7 +29,10 @@ func (Tender) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("code").Unique(),
 		field.Int("status").Default(1),
-		field.String("name"),
+		field.String("name").
+			Annotations(
+				entgql.OrderField("NAME"),
+			),
 		field.Float("estimated_amount").
 			Optional().
 			SchemaType(map[string]string{

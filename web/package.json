@@ -16,6 +16,7 @@
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.15",
     "@graphql-codegen/cli": "^5.0.3",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@tanstack/router-plugin": "^1.79.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

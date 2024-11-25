@@ -27,10 +27,16 @@ func (Customer) Mixin() []ent.Mixin {
 func (Customer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
-			Unique(),
+			Unique().
+			Annotations(
+				entgql.OrderField("NAME"),
+			),
 		field.Int("owner_type").
 			Optional().
-			Nillable(),
+			Nillable().
+			Annotations(
+				entgql.OrderField("OWNER_TYPE"),
+			),
 		field.Int("industry"),
 		field.Int("size").
 			Optional().

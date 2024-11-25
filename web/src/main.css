@@ -85,6 +85,4 @@
   @apply cursor-pointer rounded border-0 bg-gradient-to-r from-sky-900 to-sky-700 px-2 py-1 text-white transition-shadow hover:ring hover:ring-white;
 }
 
-.ant-select-tree-treenode-disabled {
-  color: #000 !important;
-}
+

@@ -48,7 +48,6 @@ func main() {
 	protected.Static("/static", "static")
 
 	projectedApiV1 := protected.Group("/api/v1")
-	projectedApiV1.GET("/session", h.GetSessionHandler)
 	projectedApiV1.GET("/logout", func(c echo.Context) error {
 		if err := sm.Destroy(c.Request().Context()); err != nil {
 			return err

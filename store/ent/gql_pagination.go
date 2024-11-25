@@ -16,6 +16,9 @@ import (
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 	"errors"
+	"fmt"
+	"io"
+	"strconv"
 
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
@@ -1060,6 +1063,71 @@ func (c *CustomerQuery) Paginate(
 	return conn, nil
 }
 
+var (
+	// CustomerOrderFieldName orders Customer by name.
+	CustomerOrderFieldName = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.Name, nil
+		},
+		column: customer.FieldName,
+		toTerm: customer.ByName,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.Name,
+			}
+		},
+	}
+	// CustomerOrderFieldOwnerType orders Customer by owner_type.
+	CustomerOrderFieldOwnerType = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.OwnerType, nil
+		},
+		column: customer.FieldOwnerType,
+		toTerm: customer.ByOwnerType,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.OwnerType,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f CustomerOrderField) String() string {
+	var str string
+	switch f.column {
+	case CustomerOrderFieldName.column:
+		str = "NAME"
+	case CustomerOrderFieldOwnerType.column:
+		str = "OWNER_TYPE"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f CustomerOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("CustomerOrderField %T must be a string", v)
+	}
+	switch str {
+	case "NAME":
+		*f = *CustomerOrderFieldName
+	case "OWNER_TYPE":
+		*f = *CustomerOrderFieldOwnerType
+	default:
+		return fmt.Errorf("%s is not a valid CustomerOrderField", str)
+	}
+	return nil
+}
+
 // CustomerOrderField defines the ordering field of Customer.
 type CustomerOrderField struct {
 	// Value extracts the ordering value from the given Customer.
@@ -2054,6 +2122,53 @@ func (t *TenderQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// TenderOrderFieldName orders Tender by name.
+	TenderOrderFieldName = &TenderOrderField{
+		Value: func(t *Tender) (ent.Value, error) {
+			return t.Name, nil
+		},
+		column: tender.FieldName,
+		toTerm: tender.ByName,
+		toCursor: func(t *Tender) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.Name,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f TenderOrderField) String() string {
+	var str string
+	switch f.column {
+	case TenderOrderFieldName.column:
+		str = "NAME"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f TenderOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *TenderOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("TenderOrderField %T must be a string", v)
+	}
+	switch str {
+	case "NAME":
+		*f = *TenderOrderFieldName
+	default:
+		return fmt.Errorf("%s is not a valid TenderOrderField", str)
+	}
+	return nil
 }
 
 // TenderOrderField defines the ordering field of Tender.

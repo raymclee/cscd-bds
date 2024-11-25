@@ -111,7 +111,7 @@ type MapState = {
   dashboardVisible: boolean;
   tenderListVisible: boolean;
   tenderList: Array<Partial<Tender>>;
-  tenderListHovering: string | number;
+  tenderListHovering: string | number | null;
   selectedTender: Partial<Tender> | null;
   selectedTenderStatus: TenderStatus | null;
   mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
@@ -135,7 +135,7 @@ type Action = {
   onFeatureOrMarkerClick: (props: any) => void;
   setTenderListVisible: (visible: boolean) => void;
   setTenderList: (tenders: Array<Partial<Tender>>) => void;
-  setTenderListHovering: (tenderId: string | number) => void;
+  setTenderListHovering: (tenderId: string | number | null) => void;
   setSelectedTender: (tender: Partial<Tender> | null) => void;
   navigateToTender: (tender: Tender, plots: Partial<Plot>[]) => void;
 };

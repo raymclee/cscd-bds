@@ -39,7 +39,7 @@ func (r *queryResolver) Countries(ctx context.Context, after *entgql.Cursor[xid.
 }
 
 // Customers is the resolver for the customers field.
-func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
+func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
 	return r.store.Customer.Query().Paginate(ctx, after, first, before, last, ent.WithCustomerFilter(where.Filter))
 }
 
@@ -59,7 +59,7 @@ func (r *queryResolver) Provinces(ctx context.Context, after *entgql.Cursor[xid.
 }
 
 // Tenders is the resolver for the tenders field.
-func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
+func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
 	return r.store.Tender.Query().Paginate(ctx, after, first, before, last, ent.WithTenderFilter(where.Filter))
 }
 

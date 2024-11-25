@@ -43,11 +43,11 @@ type QueryResolver interface {
 	Areas(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.AreaWhereInput) (*ent.AreaConnection, error)
 	Cities(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CityWhereInput) (*ent.CityConnection, error)
 	Countries(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CountryWhereInput) (*ent.CountryConnection, error)
-	Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error)
+	Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error)
 	Districts(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.DistrictWhereInput) (*ent.DistrictConnection, error)
 	Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.PlotWhereInput) (*ent.PlotConnection, error)
 	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
-	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
+	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
 	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.UserWhereInput) (*ent.UserConnection, error)
 	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	Session(ctx context.Context) (*model.Session, error)
@@ -535,11 +535,16 @@ func (ec *executionContext) field_Query_customers_args(ctx context.Context, rawA
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_customers_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_customers_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_customers_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_customers_argsAfter(
@@ -627,6 +632,28 @@ func (ec *executionContext) field_Query_customers_argsLast(
 	}
 
 	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_customers_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.CustomerOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.CustomerOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOCustomerOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.CustomerOrder
 	return zeroVal, nil
 }
 
@@ -1159,11 +1186,16 @@ func (ec *executionContext) field_Query_tenders_args(ctx context.Context, rawArg
 		return nil, err
 	}
 	args["last"] = arg3
-	arg4, err := ec.field_Query_tenders_argsWhere(ctx, rawArgs)
+	arg4, err := ec.field_Query_tenders_argsOrderBy(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["where"] = arg4
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_tenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
 	return args, nil
 }
 func (ec *executionContext) field_Query_tenders_argsAfter(
@@ -1251,6 +1283,28 @@ func (ec *executionContext) field_Query_tenders_argsLast(
 	}
 
 	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_tenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -8524,7 +8578,7 @@ func (ec *executionContext) _Query_customers(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Customers(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.CustomerWhereInput))
+		return ec.resolvers.Query().Customers(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.CustomerOrder), fc.Args["where"].(*ent.CustomerWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8776,7 +8830,7 @@ func (ec *executionContext) _Query_tenders(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Tenders(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["where"].(*ent.TenderWhereInput))
+		return ec.resolvers.Query().Tenders(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -17326,6 +17380,44 @@ func (ec *executionContext) unmarshalInputCreateVisitRecordInput(ctx context.Con
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputCustomerOrder(ctx context.Context, obj interface{}) (ent.CustomerOrder, error) {
+	var it ent.CustomerOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNCustomerOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context, obj interface{}) (ent.CustomerWhereInput, error) {
 	var it ent.CustomerWhereInput
 	asMap := map[string]interface{}{}
@@ -20431,6 +20523,44 @@ func (ec *executionContext) unmarshalInputProvinceWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasAreaWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTenderOrder(ctx context.Context, obj interface{}) (ent.TenderOrder, error) {
+	var it ent.TenderOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNTenderOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
 		}
 	}
 
@@ -32378,6 +32508,22 @@ func (ec *executionContext) marshalNCustomerConnection2ᚖcscdᚑbdsᚋstoreᚋe
 	return ec._CustomerConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNCustomerOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrderField(ctx context.Context, v interface{}) (*ent.CustomerOrderField, error) {
+	var res = new(ent.CustomerOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNCustomerOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.CustomerOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalNCustomerWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerWhereInput(ctx context.Context, v interface{}) (*ent.CustomerWhereInput, error) {
 	res, err := ec.unmarshalInputCustomerWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
@@ -32448,6 +32594,16 @@ func (ec *executionContext) marshalNNode2ᚕcscdᚑbdsᚋstoreᚋentᚐNoder(ctx
 	wg.Wait()
 
 	return ret
+}
+
+func (ec *executionContext) unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx context.Context, v interface{}) (entgql.OrderDirection, error) {
+	var res entgql.OrderDirection
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx context.Context, sel ast.SelectionSet, v entgql.OrderDirection) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalNPageInfo2entgoᚗioᚋcontribᚋentgqlᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v entgql.PageInfo[xid.ID]) graphql.Marshaler {
@@ -32542,6 +32698,22 @@ func (ec *executionContext) marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋent
 		return graphql.Null
 	}
 	return ec._TenderConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTenderOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderField(ctx context.Context, v interface{}) (*ent.TenderOrderField, error) {
+	var res = new(ent.TenderOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNTenderOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.TenderOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalNTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx context.Context, v interface{}) (*ent.TenderWhereInput, error) {
@@ -33092,6 +33264,14 @@ func (ec *executionContext) marshalOCustomerEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐC
 	return ec._CustomerEdge(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOCustomerOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐCustomerOrder(ctx context.Context, v interface{}) (*ent.CustomerOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputCustomerOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOCustomerWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐCustomerWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.CustomerWhereInput, error) {
 	if v == nil {
 		return nil, nil
@@ -33617,6 +33797,14 @@ func (ec *executionContext) marshalOTenderEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐTen
 		return graphql.Null
 	}
 	return ec._TenderEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx context.Context, v interface{}) (*ent.TenderOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputTenderOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOTenderWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.TenderWhereInput, error) {

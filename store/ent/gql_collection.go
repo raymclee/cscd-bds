@@ -15,6 +15,7 @@ import (
 	"cscd-bds/store/ent/user"
 	"cscd-bds/store/ent/visitrecord"
 
+	"entgo.io/contrib/entgql"
 	"github.com/99designs/gqlgen/graphql"
 )
 
@@ -571,6 +572,28 @@ func newCustomerPaginateArgs(rv map[string]any) *customerPaginateArgs {
 	}
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &CustomerOrder{Field: &CustomerOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithCustomerOrder(order))
+			}
+		case *CustomerOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithCustomerOrder(v))
+			}
+		}
 	}
 	if v, ok := rv[whereField].(*CustomerWhereInput); ok {
 		args.opts = append(args.opts, WithCustomerFilter(v.Filter))
@@ -1440,6 +1463,28 @@ func newTenderPaginateArgs(rv map[string]any) *tenderPaginateArgs {
 	}
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &TenderOrder{Field: &TenderOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithTenderOrder(order))
+			}
+		case *TenderOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithTenderOrder(v))
+			}
+		}
 	}
 	if v, ok := rv[whereField].(*TenderWhereInput); ok {
 		args.opts = append(args.opts, WithTenderFilter(v.Filter))
