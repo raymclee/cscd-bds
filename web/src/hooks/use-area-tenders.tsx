@@ -41,7 +41,7 @@ export function useAreaTenders() {
           }
         })
       : selectedArea
-        ? selectedArea?.tenders.edges?.map((e) => e?.node)
+        ? selectedArea?.tenders?.edges?.map((e) => e?.node)
         : allTenders;
 
   return tenders;
