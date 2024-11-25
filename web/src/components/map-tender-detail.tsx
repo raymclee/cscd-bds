@@ -222,42 +222,46 @@ export function MapTenderDetail() {
                 />
               </TabsContent>
               <TabsContent value="follow-up" className="">
-                {selectedTender?.visitRecords &&
-                selectedTender?.visitRecords?.length < 1 ? (
+                {selectedTender?.visitRecords?.edges &&
+                selectedTender?.visitRecords?.edges?.length < 1 ? (
                   <div className="mt-8 flex items-center justify-center">
                     没有拜访记录
                   </div>
                 ) : (
-                  selectedTender?.visitRecords?.map((record) => (
-                    <div className="mt-4 space-y-2">
-                      <div className="grid grid-cols-3">
-                        <div className="text-gray-400">日期</div>
-                        <div className="col-span-2">
-                          {dayjs(record?.date).format("LL")}
+                  selectedTender?.visitRecords?.edges
+                    ?.map((e) => e?.node)
+                    .map((record) => (
+                      <div className="mt-4 space-y-2">
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">日期</div>
+                          <div className="col-span-2">
+                            {dayjs(record?.date).format("LL")}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">沟通对象</div>
+                          <div className="col-span-2">{record?.commPeople}</div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">沟通形式</div>
+                          <div className="col-span-2">
+                            {record?.visitType == 1 ? "现场拜访" : "沟通内容"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">沟通内容</div>
+                          <div className="col-span-2">
+                            {record?.commContent}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3">
+                          <div className="text-gray-400">下一步计划</div>
+                          <div className="col-span-2">
+                            {record?.nextStep || "-"}
+                          </div>
                         </div>
                       </div>
-                      <div className="grid grid-cols-3">
-                        <div className="text-gray-400">沟通对象</div>
-                        <div className="col-span-2">{record?.commPeople}</div>
-                      </div>
-                      <div className="grid grid-cols-3">
-                        <div className="text-gray-400">沟通形式</div>
-                        <div className="col-span-2">
-                          {record?.visitType == 1 ? "现场拜访" : "沟通内容"}
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-3">
-                        <div className="text-gray-400">沟通内容</div>
-                        <div className="col-span-2">{record?.commContent}</div>
-                      </div>
-                      <div className="grid grid-cols-3">
-                        <div className="text-gray-400">下一步计划</div>
-                        <div className="col-span-2">
-                          {record?.nextStep || "-"}
-                        </div>
-                      </div>
-                    </div>
-                  ))
+                    ))
                 )}
               </TabsContent>
             </ScrollArea>
