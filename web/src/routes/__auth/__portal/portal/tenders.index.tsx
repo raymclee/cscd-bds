@@ -7,6 +7,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/tenders/")({
   async loader({ context: { RelayEnvironment, session } }) {
     return loadQuery<tendersPageQuery>(RelayEnvironment, node, {
       userId: session?.userId,
+      orderBy: { field: "CREATED_AT", direction: "DESC" },
     });
   },
 });

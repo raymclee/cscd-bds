@@ -101,25 +101,38 @@ export function TenderForm<T>({
   const provinceID = Form.useWatch("provinceID", form);
   const cityID = Form.useWatch("cityID", form);
 
-  console.log(cityID);
+  const area = useMemo(
+    () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
+    [data, areaID],
+  );
 
-  const provinces = data.areas?.edges
-    ?.filter((e) => e?.node?.id === areaID)
-    .flatMap((a) => a?.node?.provinces.edges?.map((p) => p?.node));
+  const provinces = useMemo(
+    () =>
+      data.areas?.edges
+        ?.filter((e) => e?.node?.id === areaID)
+        .flatMap((a) => a?.node?.provinces.edges?.map((p) => p?.node)),
+    [data, areaID],
+  );
   const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
   const districts = cityID
     ? cities?.edges?.find((c) => c?.node?.id === cityID)?.node?.districts
     : provinces?.find((p) => p?.id === provinceID)?.districts;
 
-  const customerOptions = data.areas.edges
-    ?.filter((e) => e?.node?.id === areaID)
-    ?.flatMap((e) => e?.node?.customers.edges)
-    .map((c) => ({ label: c?.node?.name, value: c?.node?.id }));
+  const customerOptions = useMemo(
+    () =>
+      area
+        ?.flatMap((e) => e?.node?.customers.edges)
+        .map((c) => ({ label: c?.node?.name, value: c?.node?.id })),
+    [area],
+  );
 
-  const salesOptions = data?.areas.edges
-    ?.filter((e) => e?.node?.id === areaID)
-    .flatMap((e) => e?.node?.sales.edges)
-    .map((s) => ({ label: s?.node?.name, value: s?.node?.id }));
+  const salesOptions = useMemo(
+    () =>
+      area
+        ?.flatMap((e) => e?.node?.sales.edges)
+        .map((s) => ({ label: s?.node?.name, value: s?.node?.id })),
+    [area],
+  );
 
   return (
     <Form<CreateTenderInput>
@@ -136,6 +149,7 @@ export function TenderForm<T>({
           "TendersTenderListFragment_tenders",
           { orderBy: { field: "CREATED_AT", direction: "DESC" } },
         );
+
         commitCreateMutation({
           variables: { input: values, connections: [connectionID] },
           onCompleted() {

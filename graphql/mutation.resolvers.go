@@ -73,8 +73,16 @@ func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Te
 }
 
 // CreatePlot is the resolver for the createPlot field.
-func (r *mutationResolver) CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.Plot, error) {
-	return r.store.Plot.Create().SetInput(input).SetGeoBounds(geoBounds).Save(ctx)
+func (r *mutationResolver) CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error) {
+	p, err := r.store.Plot.Create().SetInput(input).SetGeoBounds(geoBounds).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create plot: %w", err)
+	}
+	return &ent.PlotConnection{
+		Edges: []*ent.PlotEdge{
+			{Node: p},
+		},
+	}, nil
 }
 
 // UpdatePlot is the resolver for the updatePlot field.

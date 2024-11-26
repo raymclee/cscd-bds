@@ -24,7 +24,7 @@ type MutationResolver interface {
 	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.TenderConnection, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
-	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
+	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error)
 	UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
 	DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot, error)
 }
@@ -1372,9 +1372,9 @@ func (ec *executionContext) _Mutation_createPlot(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Plot)
+	res := resTmp.(*ent.PlotConnection)
 	fc.Result = res
-	return ec.marshalNPlot2ᚖcscdᚑbdsᚋstoreᚋentᚐPlot(ctx, field.Selections, res)
+	return ec.marshalNPlotConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐPlotConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createPlot(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1385,24 +1385,14 @@ func (ec *executionContext) fieldContext_Mutation_createPlot(ctx context.Context
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Plot_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Plot_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Plot_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_Plot_name(ctx, field)
-			case "colorHex":
-				return ec.fieldContext_Plot_colorHex(ctx, field)
-			case "districtID":
-				return ec.fieldContext_Plot_districtID(ctx, field)
-			case "district":
-				return ec.fieldContext_Plot_district(ctx, field)
-			case "geoBounds":
-				return ec.fieldContext_Plot_geoBounds(ctx, field)
+			case "edges":
+				return ec.fieldContext_PlotConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_PlotConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_PlotConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Plot", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type PlotConnection", field.Name)
 		},
 	}
 	defer func() {

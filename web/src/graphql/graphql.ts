@@ -1154,7 +1154,7 @@ export type GeoJson = {
 export type Mutation = {
   __typename?: 'Mutation';
   createArea: Area;
-  createPlot: Plot;
+  createPlot: PlotConnection;
   createTender: TenderConnection;
   createUser: User;
   deletePlot: Plot;

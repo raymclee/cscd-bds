@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b69f223dc4dec15aa68961920831cbad>>
+ * @generated SignedSource<<da7a58685449f194666244e3457271f0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type CreateTenderInput = {
   address?: string | null | undefined;
   areaID: string;
@@ -72,22 +73,7 @@ export type useCreateTenderMutation$data = {
   readonly createTender: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly area: {
-          readonly id: string;
-          readonly name: string;
-        };
-        readonly createdAt: any;
-        readonly customer: {
-          readonly name: string;
-        };
-        readonly discoveryDate: any;
-        readonly estimatedAmount: number | null | undefined;
-        readonly fullAddress: string | null | undefined;
-        readonly id: string;
-        readonly images: ReadonlyArray<string> | null | undefined;
-        readonly name: string;
-        readonly status: number;
-        readonly tenderDate: any | null | undefined;
+        readonly " $fragmentSpreads": FragmentRefs<"tendersTenderListItemFragment">;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -129,68 +115,10 @@ v4 = {
   "name": "name",
   "storageKey": null
 },
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "status",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "estimatedAmount",
-  "storageKey": null
-},
-v8 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "images",
-  "storageKey": null
-},
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "fullAddress",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "tenderDate",
-  "storageKey": null
-},
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "discoveryDate",
-  "storageKey": null
-},
-v12 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Area",
-  "kind": "LinkedField",
-  "name": "area",
-  "plural": false,
-  "selections": [
-    (v3/*: any*/),
-    (v4/*: any*/)
-  ],
-  "storageKey": null
-};
+v5 = [
+  (v4/*: any*/),
+  (v3/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -225,28 +153,11 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  (v5/*: any*/),
-                  (v6/*: any*/),
-                  (v7/*: any*/),
                   {
-                    "alias": null,
                     "args": null,
-                    "concreteType": "Customer",
-                    "kind": "LinkedField",
-                    "name": "customer",
-                    "plural": false,
-                    "selections": [
-                      (v4/*: any*/)
-                    ],
-                    "storageKey": null
-                  },
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  (v10/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/)
+                    "kind": "FragmentSpread",
+                    "name": "tendersTenderListItemFragment"
+                  }
                 ],
                 "storageKey": null
               }
@@ -295,9 +206,27 @@ return {
                 "selections": [
                   (v3/*: any*/),
                   (v4/*: any*/),
-                  (v5/*: any*/),
-                  (v6/*: any*/),
-                  (v7/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "status",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "createdAt",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "estimatedAmount",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -305,17 +234,47 @@ return {
                     "kind": "LinkedField",
                     "name": "customer",
                     "plural": false,
-                    "selections": [
-                      (v4/*: any*/),
-                      (v3/*: any*/)
-                    ],
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   },
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  (v10/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "images",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "fullAddress",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "tenderDate",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "discoveryDate",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Area",
+                    "kind": "LinkedField",
+                    "name": "area",
+                    "plural": false,
+                    "selections": (v5/*: any*/),
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -349,16 +308,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "04d2b9cd5e30228982f2f1c311d7619c",
+    "cacheID": "7f37f8dbde67f8e66a2f6675e9d7f8e2",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n) {\n  createTender(input: $input) {\n    edges {\n      node {\n        id\n        name\n        status\n        createdAt\n        estimatedAmount\n        customer {\n          name\n          id\n        }\n        images\n        fullAddress\n        tenderDate\n        discoveryDate\n        area {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n) {\n  createTender(input: $input) {\n    edges {\n      node {\n        ...tendersTenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tendersTenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "04c837a5b17dbce253e9e30f1056c0e1";
+(node as any).hash = "4aa77ae6b1e610d65d2c8070a02f8c73";
 
 export default node;

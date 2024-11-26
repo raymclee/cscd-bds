@@ -6887,7 +6887,7 @@ type GeoJson {
   ): Tender!
   deleteTender(id: ID!): Tender!
 
-  createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): Plot!
+  createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
   deletePlot(id: ID!): Plot!
 }

@@ -3,6 +3,7 @@ import { Modal } from "antd";
 import { UseMutationConfig } from "react-relay";
 import { create } from "zustand";
 import { useMapStore } from "./map";
+import { Plot, PlotEdge } from "~/graphql/graphql";
 
 type State = {
   isAdding: boolean;
@@ -16,7 +17,15 @@ type Action = {
   setSelectedPlot: (selectedPlot: string | null) => void;
   setPolygonEditor: (polygonEditor: AMap.PolygonEditor) => void;
   createPlot: (
-    plot: any,
+    plot: {
+      readonly colorHex: string;
+      readonly geoBounds:
+        | ReadonlyArray<ReadonlyArray<number>>
+        | null
+        | undefined;
+      readonly id: string;
+      readonly name: string;
+    },
     commitMutation?: (
       config: UseMutationConfig<plotsDeletePlotMutation>,
     ) => void,
@@ -45,6 +54,8 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
       strokeWeight: 2,
     });
 
+    // @ts-expect-error
+    if (!AMapUI) return;
     // @ts-expect-error
     const label = new AMapUI.SimpleMarker({
       // @ts-expect-error

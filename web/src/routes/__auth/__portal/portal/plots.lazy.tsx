@@ -17,7 +17,7 @@ import {
 import { DataNode } from "antd/es/tree";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
-import { graphql } from "relay-runtime";
+import { ConnectionHandler, graphql } from "relay-runtime";
 import { useMapStore } from "~/store/map";
 import { usePlotStore } from "~/store/plot";
 
@@ -26,7 +26,7 @@ export const Route = createLazyFileRoute("/__auth/__portal/portal/plots")({
 });
 
 const query = graphql`
-  query plotsPageQuery($userId: ID!) {
+  query plotsPageQuery($userId: ID!, $first: Int, $last: Int) {
     node(id: $userId) {
       id
       ... on User {
@@ -51,7 +51,8 @@ const query = graphql`
                                 id @required(action: NONE)
                                 name
                                 adcode
-                                plots {
+                                plots(first: $first, last: $last)
+                                  @connection(key: "PlotsPageQuery_plots") {
                                   edges {
                                     node {
                                       id
@@ -73,7 +74,8 @@ const query = graphql`
                           id @required(action: NONE)
                           name
                           adcode
-                          plots {
+                          plots(first: $first, last: $last)
+                            @connection(key: "PlotsPageQuery_plots") {
                             edges {
                               node {
                                 id
@@ -101,12 +103,17 @@ const createPlotMutation = graphql`
   mutation plotsCreatePlotMutation(
     $input: CreatePlotInput!
     $geoBounds: [[Float!]!]
+    $connections: [ID!]!
   ) {
     createPlot(input: $input, geoBounds: $geoBounds) {
-      id
-      name
-      geoBounds
-      colorHex
+      edges @prependNode(connections: $connections, edgeTypeName: "PlotEdge") {
+        node {
+          id
+          name
+          geoBounds
+          colorHex
+        }
+      }
     }
   }
 `;
@@ -220,13 +227,17 @@ function EditorContainer() {
         province?.node?.cities?.edges?.forEach((city) => {
           city?.node?.districts?.edges?.forEach((district) => {
             district?.node?.plots?.edges?.forEach((plot) => {
-              createPlot(plot, commitMutation);
+              if (plot?.node?.geoBounds) {
+                createPlot(plot.node, commitMutation);
+              }
             });
           });
         });
         province?.node?.districts?.edges?.forEach((district) => {
           district?.node?.plots?.edges?.forEach((plot) => {
-            createPlot(plot?.node, commitMutation);
+            if (plot?.node?.geoBounds) {
+              createPlot(plot?.node, commitMutation);
+            }
           });
         });
       });
@@ -285,7 +296,7 @@ function Editor() {
   const [open, setOpen] = React.useState(false);
   const [form] = Form.useForm();
   const { message } = App.useApp();
-  const [commitMutation, isMutationInFlight] =
+  const [commitCreateMutation, isCreateMutationInFlight] =
     useMutation<plotsCreatePlotMutation>(createPlotMutation);
   const [commitUpdateMutation, isUpdateMutationInFlight] =
     useMutation<plotsUpdatePlotMutation>(updatePlotMutation);
@@ -364,7 +375,14 @@ function Editor() {
                 return;
               }
 
-              commitMutation({
+              const connectionID = ConnectionHandler.getConnectionID(
+                districtID,
+                "PlotsPageQuery_plots",
+              );
+
+              console.log(connectionID);
+
+              commitCreateMutation({
                 variables: {
                   input: {
                     name: values.name,
@@ -372,11 +390,15 @@ function Editor() {
                     districtID,
                   },
                   geoBounds: geoBounds,
+                  connections: [connectionID],
                 },
                 onCompleted: (res) => {
                   endAdding();
                   message.success("地塊新增成功");
-                  createPlot(res.createPlot, commitDeleteMutation);
+                  res.createPlot.edges?.forEach((edge) => {
+                    if (!edge?.node) return;
+                    createPlot(edge.node, commitDeleteMutation);
+                  });
 
                   setOpen(false);
                 },
@@ -438,7 +460,7 @@ function Editor() {
             <Button
               danger
               onClick={endAdding}
-              disabled={isMutationInFlight}
+              disabled={isCreateMutationInFlight}
               icon={<StopOutlined />}
             >
               取消
@@ -491,7 +513,7 @@ function Editor() {
                   isEditing: false,
                 });
               }}
-              disabled={isMutationInFlight}
+              disabled={isCreateMutationInFlight}
               icon={<StopOutlined />}
             >
               取消

@@ -11,22 +11,7 @@ const mutation = graphql`
       edges
         @prependNode(connections: $connections, edgeTypeName: "TenderEdge") {
         node {
-          id
-          name
-          status
-          createdAt
-          estimatedAmount
-          customer {
-            name
-          }
-          images
-          fullAddress
-          tenderDate
-          discoveryDate
-          area {
-            id
-            name
-          }
+          ...tendersTenderListItemFragment
         }
       }
     }
