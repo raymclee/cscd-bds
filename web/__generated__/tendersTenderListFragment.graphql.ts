@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0133fc6b678f6869c001e607c533cb61>>
+ * @generated SignedSource<<cd714edfd4243bf0729f9f58a2ac8e42>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type tendersTenderListFragment$data = {
         readonly tenders: {
           readonly edges: ReadonlyArray<{
             readonly node: {
+              readonly id: string;
               readonly name: string;
               readonly tender: {
                 readonly " $fragmentSpreads": FragmentRefs<"tendersTenderListItemFragment">;
@@ -126,6 +127,13 @@ const node: ReaderFragment = {
                               "alias": null,
                               "args": null,
                               "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
                               "name": "name",
                               "storageKey": null
                             },
@@ -221,6 +229,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "62e01300df3ba53a37100105e40e6107";
+(node as any).hash = "fdb6a0d9e8690660bee00dbbf188b628";
 
 export default node;

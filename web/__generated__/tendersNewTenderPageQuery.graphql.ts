@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8cff2599096bf2dae4ea98b522eb28e9>>
+ * @generated SignedSource<<6db43a299a973528a5d0f3037413a484>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -52,14 +52,18 @@ v3 = {
   "name": "name",
   "storageKey": null
 },
-v4 = {
+v4 = [
+  (v2/*: any*/),
+  (v3/*: any*/)
+],
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "adcode",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "DistrictConnection",
@@ -85,7 +89,7 @@ v5 = {
           "selections": [
             (v2/*: any*/),
             (v3/*: any*/),
-            (v4/*: any*/)
+            (v5/*: any*/)
           ],
           "storageKey": null
         }
@@ -175,6 +179,70 @@ return {
                           {
                             "alias": null,
                             "args": null,
+                            "concreteType": "CustomerConnection",
+                            "kind": "LinkedField",
+                            "name": "customers",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CustomerEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Customer",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": (v4/*: any*/),
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "UserConnection",
+                            "kind": "LinkedField",
+                            "name": "sales",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "UserEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "User",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": (v4/*: any*/),
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
                             "concreteType": "ProvinceConnection",
                             "kind": "LinkedField",
                             "name": "provinces",
@@ -198,7 +266,7 @@ return {
                                     "selections": [
                                       (v2/*: any*/),
                                       (v3/*: any*/),
-                                      (v4/*: any*/),
+                                      (v5/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -225,8 +293,8 @@ return {
                                                 "selections": [
                                                   (v2/*: any*/),
                                                   (v3/*: any*/),
-                                                  (v4/*: any*/),
-                                                  (v5/*: any*/)
+                                                  (v5/*: any*/),
+                                                  (v6/*: any*/)
                                                 ],
                                                 "storageKey": null
                                               }
@@ -236,7 +304,7 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v5/*: any*/)
+                                      (v6/*: any*/)
                                     ],
                                     "storageKey": null
                                   }
@@ -266,12 +334,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2b5d32146f2e23a052ee2252f900a834",
+    "cacheID": "2eb829349e38c82dc3b9c56aa32c231e",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        sales {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

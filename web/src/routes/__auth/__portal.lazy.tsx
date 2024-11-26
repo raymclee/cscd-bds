@@ -101,12 +101,15 @@ function RouteComponent() {
       input={{ variant: "filled" }}
       treeSelect={{ variant: "filled" }}
       select={{ variant: "filled" }}
+      datePicker={{ variant: "filled" }}
+      textArea={{ variant: "filled" }}
       // componentSize="large"
     >
       <App>
         <Layout hasSider style={{ minHeight: "100vh" }}>
           <Sider
             className="fixed bottom-0 start-0 top-0 h-screen"
+            breakpoint="lg"
             collapsible
             collapsed={sidebarCollapsed}
             onCollapse={(collapsed) =>

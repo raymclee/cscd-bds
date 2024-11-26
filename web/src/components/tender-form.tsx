@@ -18,6 +18,7 @@ import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { FixedToolbar } from "./fixed-toolbar";
+import { useMemo } from "react";
 
 const fragment = graphql`
   fragment tenderFormFragment on User {
@@ -26,6 +27,22 @@ const fragment = graphql`
         node {
           id
           name
+          customers {
+            edges {
+              node {
+                id
+                name
+              }
+            }
+          }
+          sales {
+            edges {
+              node {
+                id
+                name
+              }
+            }
+          }
           provinces {
             edges {
               node {
@@ -76,18 +93,33 @@ export function TenderForm<T>({
   const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
   const data = useFragment(fragment, queryRef);
-  const provinceID = Form.useWatch("provinceID", form);
-  const cityID = Form.useWatch("cityID", form);
+
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const navigate = useNavigate({ from: "/portal/tenders/new" });
 
-  const provinces = data.areas?.edges?.flatMap((a) =>
-    a?.node?.provinces.edges?.map((p) => p?.node),
-  );
+  const areaID = Form.useWatch("areaID", form);
+  const provinceID = Form.useWatch("provinceID", form);
+  const cityID = Form.useWatch("cityID", form);
+
+  console.log(cityID);
+
+  const provinces = data.areas?.edges
+    ?.filter((e) => e?.node?.id === areaID)
+    .flatMap((a) => a?.node?.provinces.edges?.map((p) => p?.node));
   const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
   const districts = cityID
     ? cities?.edges?.find((c) => c?.node?.id === cityID)?.node?.districts
     : provinces?.find((p) => p?.id === provinceID)?.districts;
+
+  const customerOptions = data.areas.edges
+    ?.filter((e) => e?.node?.id === areaID)
+    ?.flatMap((e) => e?.node?.customers.edges)
+    .map((c) => ({ label: c?.node?.name, value: c?.node?.id }));
+
+  const salesOptions = data?.areas.edges
+    ?.filter((e) => e?.node?.id === areaID)
+    .flatMap((e) => e?.node?.sales.edges)
+    .map((s) => ({ label: s?.node?.name, value: s?.node?.id }));
 
   return (
     <Form<CreateTenderInput>
@@ -101,7 +133,7 @@ export function TenderForm<T>({
         // values
         const connectionID = ConnectionHandler.getConnectionID(
           values.areaID,
-          "TendersAreaTenderListFragment_tenders",
+          "TendersTenderListFragment_tenders",
           { orderBy: { field: "CREATED_AT", direction: "DESC" } },
         );
         commitCreateMutation({
@@ -159,41 +191,183 @@ export function TenderForm<T>({
         });
       }}
     >
-      <Row gutter={16}>
-        <Col span={8}>
-          <Form.Item name={"code"} label="编码" rules={[{ required: true }]}>
+      <Row gutter={[8, 16]}>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name={"code"}
+            label="备案编码"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
         </Col>
-        <Col span={8}>
-          <Form.Item name={"name"} label="名称" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
+        <Col sm={24} md={8}>
           <Form.Item name={"status"} label="状态" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
         </Col>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name={"name"}
+            label="项目名称"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
       </Row>
+      <Row gutter={[8, 16]}>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name="areaID"
+            label="业务区域"
+            rules={[{ required: true }]}
+          >
+            <Select
+              options={data.areas?.edges
+                ?.map((e) => e?.node)
+                .map((a) => ({ label: a?.name, value: a?.id }))}
+              onSelect={() => {
+                form.resetFields([
+                  "provinceID",
+                  "cityID",
+                  "districtID",
+                  "finderID",
+                  "createdByID",
+                  "customerID",
+                  "followingSaleIDs",
+                ]);
+              }}
+            />
+          </Form.Item>
+        </Col>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name="customerID"
+            label="业主名称"
+            rules={[{ required: true }]}
+          >
+            <Select options={customerOptions} />
+          </Form.Item>
+        </Col>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name="finderID"
+            label="发现人"
+            rules={[{ required: true }]}
+          >
+            <Select options={salesOptions} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={[8, 16]}>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name="discoveryDate"
+            label="发现日"
+            rules={[{ required: true }]}
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
+        </Col>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name="createdByID"
+            label="创建人"
+            rules={[{ required: true }]}
+          >
+            <Select options={salesOptions} />
+          </Form.Item>
+        </Col>
+        <Col sm={24} md={8}>
+          <Form.Item name="followingSaleIDs" label="当前跟踪人">
+            <Select
+              options={salesOptions}
+              mode="multiple"
+              maxTagCount={3}
+              allowClear
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={[8, 16]}>
+        <Col sm={24} md={8}>
+          <Form.Item name="provinceID" label="省" rules={[{ required: true }]}>
+            <Select
+              options={provinces?.map((p) => ({
+                label: p?.name,
+                value: p?.id,
+              }))}
+              onSelect={() => {
+                form.resetFields(["cityID", "districtID"]);
+              }}
+            />
+          </Form.Item>
+        </Col>
+        <Col sm={24} md={8}>
+          <Form.Item
+            name="cityID"
+            label="市"
+            rules={[{ required: cities?.edges?.length != 0 }]}
+          >
+            <Select
+              disabled={cities?.edges?.length === 0}
+              options={cities?.edges
+                ?.map((c) => c?.node)
+                .map((c) => ({ label: c?.name, value: c?.id }))}
+              onSelect={() => {
+                form.resetFields(["districtID"]);
+              }}
+            />
+          </Form.Item>
+        </Col>
+        <Col sm={24} md={8}>
+          <Form.Item name="districtID" label="区" rules={[{ required: true }]}>
+            <Select
+              options={districts?.edges
+                ?.map((e) => e && e.node)
+                .map((n) => ({
+                  label: n?.name,
+                  value: n?.id,
+                }))}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={[8, 16]}>
+        <Col sm={24}>
+          <Form.Item name="tenderSituations" label="项目主要情况">
+            <Input.TextArea />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={[8, 16]}>
+        <Col sm={24}>
+          <Form.Item name="ownerSituations" label="业主主要情况">
+            <Input.TextArea />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={[8, 16]}>
+        <Col sm={24}>
+          <Form.Item name="competitorSituations" label="竞争对手情况">
+            <Input.TextArea />
+          </Form.Item>
+        </Col>
+      </Row>
+
       <Form.Item name="estimatedAmount" label="预计金额">
         <Input />
       </Form.Item>
       <Form.Item name="tenderDate" label="招标日">
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="discoveryDate"
-        label="发现日"
-        rules={[{ required: true }]}
-      >
         <DatePicker />
       </Form.Item>
+
       <Form.Item name="address" label="地址">
         <Input />
       </Form.Item>
       <Form.Item name="fullAddress" label="详细地址" rules={[]}>
-        <DatePicker />
+        <Input />
       </Form.Item>
       <Form.Item name="contractor" label="总包单位" rules={[]}>
         <Input />
@@ -293,26 +467,19 @@ export function TenderForm<T>({
         />
       </Form.Item>
       <Form.Item name="attachements" label="附件">
-        <Upload />
+        <Upload fileList={[]} />
       </Form.Item>
       <Form.Item name="remark" label="备注">
         <Input.TextArea />
       </Form.Item>
       <Form.Item name="images" label="效果图">
-        <Upload />
+        <Upload fileList={[]} />
       </Form.Item>
-      <Form.Item name="tenderSituations" label="项目主要情况">
-        <Input.TextArea />
-      </Form.Item>
-      <Form.Item name="ownerSituations" label="业主主要情况">
-        <Input.TextArea />
-      </Form.Item>
+
       <Form.Item name="biddingInstructions" label="立项/投标说明">
         <Input />
       </Form.Item>
-      <Form.Item name="competitorSituations" label="竞争对手情况">
-        <Input />
-      </Form.Item>
+
       <Form.Item name="costEngineer" label="造价师">
         <Input />
       </Form.Item>
@@ -343,60 +510,7 @@ export function TenderForm<T>({
       <Form.Item name="keyProject" label="重点跟进项目">
         <Input />
       </Form.Item>
-      <Form.Item name="areaID" label="业务区域" rules={[{ required: true }]}>
-        <Select
-          options={data.areas?.edges
-            ?.map((e) => e?.node)
-            .map((a) => ({ label: a?.name, value: a?.id }))}
-        />
-      </Form.Item>
-      <Form.Item name="provinceID" label="省" rules={[{ required: true }]}>
-        <Select
-          options={provinces?.map((p) => ({ label: p?.name, value: p?.id }))}
-          onSelect={() => {
-            form.resetFields(["cityID", "districtID"]);
-          }}
-        />
-      </Form.Item>
-      <Form.Item
-        name="cityID"
-        label="市"
-        rules={[{ required: cities?.edges?.length != 0 }]}
-      >
-        <Select
-          disabled={cities?.edges?.length === 0}
-          options={cities?.edges
-            ?.map((c) => c?.node)
-            .map((c) => ({ label: c?.name, value: c?.id }))}
-        />
-      </Form.Item>
-      <Form.Item name="districtID" label="区" rules={[{ required: true }]}>
-        <Select
-          options={districts?.edges
-            ?.map((e) => e?.node)
-            .map((d) => ({ label: d?.name, value: d?.id }))}
-        />
-      </Form.Item>
-      <Form.Item
-        name="customerID"
-        label="customerID"
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item name="finderID" label="finderID" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="createdByID"
-        label="createdByID"
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item name="followingSales" label="followingSales">
-        <Input />
-      </Form.Item>
+
       <Form.Item name="geoCoordinate" label="geoCoordinate">
         <Input />
       </Form.Item>

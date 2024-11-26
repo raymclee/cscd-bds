@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ef7bc6854a7219b54ae727c8fa4fe0ac>>
+ * @generated SignedSource<<815e46a67980d685170327d4cf00aa22>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,14 @@ export type tenderFormFragment$data = {
   readonly areas: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly customers: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly id: string;
+              readonly name: string;
+            } | null | undefined;
+          } | null | undefined> | null | undefined;
+        };
         readonly id: string;
         readonly name: string;
         readonly provinces: {
@@ -52,6 +60,14 @@ export type tenderFormFragment$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
+        readonly sales: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly id: string;
+              readonly name: string;
+            } | null | undefined;
+          } | null | undefined> | null | undefined;
+        };
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -77,14 +93,18 @@ v1 = {
   "name": "name",
   "storageKey": null
 },
-v2 = {
+v2 = [
+  (v0/*: any*/),
+  (v1/*: any*/)
+],
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "adcode",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "concreteType": "DistrictConnection",
@@ -110,7 +130,7 @@ v3 = {
           "selections": [
             (v0/*: any*/),
             (v1/*: any*/),
-            (v2/*: any*/)
+            (v3/*: any*/)
           ],
           "storageKey": null
         }
@@ -155,6 +175,70 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "concreteType": "CustomerConnection",
+                  "kind": "LinkedField",
+                  "name": "customers",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "CustomerEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "Customer",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": (v2/*: any*/),
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "UserConnection",
+                  "kind": "LinkedField",
+                  "name": "sales",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "UserEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "User",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": (v2/*: any*/),
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "ProvinceConnection",
                   "kind": "LinkedField",
                   "name": "provinces",
@@ -178,7 +262,7 @@ return {
                           "selections": [
                             (v0/*: any*/),
                             (v1/*: any*/),
-                            (v2/*: any*/),
+                            (v3/*: any*/),
                             {
                               "alias": null,
                               "args": null,
@@ -205,8 +289,8 @@ return {
                                       "selections": [
                                         (v0/*: any*/),
                                         (v1/*: any*/),
-                                        (v2/*: any*/),
-                                        (v3/*: any*/)
+                                        (v3/*: any*/),
+                                        (v4/*: any*/)
                                       ],
                                       "storageKey": null
                                     }
@@ -216,7 +300,7 @@ return {
                               ],
                               "storageKey": null
                             },
-                            (v3/*: any*/)
+                            (v4/*: any*/)
                           ],
                           "storageKey": null
                         }
@@ -241,6 +325,6 @@ return {
 };
 })();
 
-(node as any).hash = "28634b8be907978d1664ccaff2b6251b";
+(node as any).hash = "cf6cb49127ad62c10b73cd9268d2c776";
 
 export default node;
