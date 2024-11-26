@@ -16,7 +16,7 @@ type State = {
 type Action = {
   setSelectedPlot: (selectedPlot: string | null) => void;
   setPolygonEditor: (polygonEditor: AMap.PolygonEditor) => void;
-  createPlot: (
+  renderPlot: (
     plot: {
       readonly colorHex: string;
       readonly geoBounds:
@@ -41,7 +41,7 @@ export const usePlotStore = create<State & Action>()((set, get) => ({
   markers: [],
   setSelectedPlot: (selectedPlot) => set({ selectedPlot }),
   setPolygonEditor: (polygonEditor) => set({ polygonEditor }),
-  createPlot(plot, commitMutation) {
+  renderPlot(plot, commitMutation) {
     const { map } = useMapStore.getState();
     if (!map || !plot?.geoBounds) return;
 

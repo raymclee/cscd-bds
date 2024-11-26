@@ -1,6 +1,5 @@
 import { PlusOutlined, SaveOutlined, StopOutlined } from "@ant-design/icons";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { plotsCreatePlotMutation } from "__generated__/plotsCreatePlotMutation.graphql";
 import { plotsDeletePlotMutation } from "__generated__/plotsDeletePlotMutation.graphql";
 import { plotsPageQuery } from "__generated__/plotsPageQuery.graphql";
 import { plotsUpdatePlotMutation } from "__generated__/plotsUpdatePlotMutation.graphql";
@@ -18,6 +17,7 @@ import { DataNode } from "antd/es/tree";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
+import { useCreatePlot } from "~/hooks/use-create-plot";
 import { useMapStore } from "~/store/map";
 import { usePlotStore } from "~/store/plot";
 
@@ -188,7 +188,7 @@ function EditorContainer() {
   const selectedDistrict = usePlotStore((state) => state.selectedDistrict);
   const [commitMutation, isMutationInFlight] =
     useMutation<plotsDeletePlotMutation>(deletePlotMutation);
-  const createPlot = usePlotStore((state) => state.createPlot);
+  const renderPlot = usePlotStore((state) => state.renderPlot);
 
   const treeData: DataNode[] | undefined = React.useMemo(
     () =>
@@ -228,7 +228,7 @@ function EditorContainer() {
           city?.node?.districts?.edges?.forEach((district) => {
             district?.node?.plots?.edges?.forEach((plot) => {
               if (plot?.node?.geoBounds) {
-                createPlot(plot.node, commitMutation);
+                renderPlot(plot.node, commitMutation);
               }
             });
           });
@@ -236,7 +236,7 @@ function EditorContainer() {
         province?.node?.districts?.edges?.forEach((district) => {
           district?.node?.plots?.edges?.forEach((plot) => {
             if (plot?.node?.geoBounds) {
-              createPlot(plot?.node, commitMutation);
+              renderPlot(plot?.node, commitMutation);
             }
           });
         });
@@ -296,11 +296,10 @@ function Editor() {
   const [open, setOpen] = React.useState(false);
   const [form] = Form.useForm();
   const { message } = App.useApp();
-  const [commitCreateMutation, isCreateMutationInFlight] =
-    useMutation<plotsCreatePlotMutation>(createPlotMutation);
+  const [commitCreateMutation, isCreateMutationInFlight] = useCreatePlot();
   const [commitUpdateMutation, isUpdateMutationInFlight] =
     useMutation<plotsUpdatePlotMutation>(updatePlotMutation);
-  const createPlot = usePlotStore((state) => state.createPlot);
+  const renderPlot = usePlotStore((state) => state.renderPlot);
   const [commitDeleteMutation, isDeleteMutationInFlight] =
     useMutation<plotsDeletePlotMutation>(deletePlotMutation);
 
@@ -397,7 +396,7 @@ function Editor() {
                   message.success("地塊新增成功");
                   res.createPlot.edges?.forEach((edge) => {
                     if (!edge?.node) return;
-                    createPlot(edge.node, commitDeleteMutation);
+                    renderPlot(edge.node, commitDeleteMutation);
                   });
 
                   setOpen(false);
