@@ -171,7 +171,7 @@ function RouteComponent() {
   }, [map]);
 
   return (
-    <div className="relative -mx-4 min-h-[calc(100dvh-64px)]">
+    <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
       <div id="map" className="absolute inset-0"></div>
       {isReady && <EditorContainer />}
     </div>

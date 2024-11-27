@@ -107,7 +107,7 @@ function TenderList({
   //  data?.areas.edges.map(e => e?.node).map(t => t?.tenders.edges?.map(e => e?.node))
 
   return (
-    <div className="my-4 min-h-80 rounded-lg bg-white p-6">
+    <div className="min-h-80 rounded-lg bg-white p-6">
       {/* <div className="flex items-center justify-between">
     <Typography.Title level={2}>商机</Typography.Title>
   </div> */}

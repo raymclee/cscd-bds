@@ -76,11 +76,11 @@ function RouteComponent() {
   }, [map]);
 
   return (
-    <>
+    <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
       {/* <Input value={data?.node?.name} /> */}
       <div id="map" className="absolute inset-0"></div>
       {ready && <Editor />}
-    </>
+    </div>
   );
 }
 
@@ -167,7 +167,7 @@ function Editor() {
   }
 
   return (
-    <div className="absolute right-6 top-6 flex gap-2">
+    <div className="absolute right-4 top-4 flex gap-2">
       {!isEditing && data.node && !data.node?.geoBounds && (
         <Button onClick={handleNewClick} icon={<PlusOutlined />}>
           新增

@@ -33,7 +33,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="my-4 min-h-80 rounded-lg bg-white p-6">
+      <div className="min-h-80">
         <TenderForm queryRef={data?.node} />
       </div>
     </>

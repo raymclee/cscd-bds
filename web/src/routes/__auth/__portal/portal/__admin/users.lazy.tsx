@@ -63,7 +63,7 @@ function RouteComponent() {
   ];
 
   return (
-    <div className="my-4 min-h-80 rounded-lg bg-white p-6">
+    <div className="min-h-80 rounded-lg bg-white">
       {/* 
       // @ts-ignore */}
       <Table dataSource={dataSource} columns={columns} rowKey={"id"} />

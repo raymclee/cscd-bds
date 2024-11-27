@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8108211f6a7c94f7b28cf4b46c9cf07e>>
+ * @generated SignedSource<<e85a300d38a3cb37676bc9ed6205ce35>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,6 +20,9 @@ export type customersPageQuery$data = {
           readonly customers: {
             readonly edges: ReadonlyArray<{
               readonly node: {
+                readonly area: {
+                  readonly name: string;
+                };
                 readonly id: string;
                 readonly name: string;
               } | null | undefined;
@@ -60,42 +63,8 @@ v2 = {
 v3 = {
   "alias": null,
   "args": null,
-  "concreteType": "CustomerConnection",
-  "kind": "LinkedField",
-  "name": "customers",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "CustomerEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "Customer",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v2/*: any*/),
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "name",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -140,7 +109,53 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CustomerConnection",
+                            "kind": "LinkedField",
+                            "name": "customers",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CustomerEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Customer",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v3/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "Area",
+                                        "kind": "LinkedField",
+                                        "name": "area",
+                                        "plural": false,
+                                        "selections": [
+                                          (v3/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       }
@@ -209,7 +224,54 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CustomerConnection",
+                            "kind": "LinkedField",
+                            "name": "customers",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CustomerEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Customer",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v3/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "Area",
+                                        "kind": "LinkedField",
+                                        "name": "area",
+                                        "plural": false,
+                                        "selections": [
+                                          (v3/*: any*/),
+                                          (v2/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -231,16 +293,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "915b3664280c45be1b391af13c6ea917",
+    "cacheID": "7a4064f1985af1f45ef761c9e7787efb",
     "id": null,
     "metadata": {},
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers {\n              edges {\n                node {\n                  id\n                  name\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers {\n              edges {\n                node {\n                  id\n                  name\n                  area {\n                    name\n                    id\n                  }\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "76af1067fa93b996aa99372de545c0d4";
+(node as any).hash = "b2159b6e7e0df5b51e3bbf4d8b1560dc";
 
 export default node;

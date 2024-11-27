@@ -21,7 +21,7 @@ type MutationResolver interface {
 	UpdateArea(ctx context.Context, id xid.ID, input ent.UpdateAreaInput) (*ent.Area, error)
 	CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.User, error)
 	UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error)
-	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.TenderConnection, error)
+	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, images []*graphql.Upload) (*ent.TenderConnection, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error)
@@ -137,6 +137,11 @@ func (ec *executionContext) field_Mutation_createTender_args(ctx context.Context
 		return nil, err
 	}
 	args["geoBounds"] = arg1
+	arg2, err := ec.field_Mutation_createTender_argsImages(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["images"] = arg2
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_createTender_argsInput(
@@ -180,6 +185,28 @@ func (ec *executionContext) field_Mutation_createTender_argsGeoBounds(
 	}
 
 	var zeroVal [][]float64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createTender_argsImages(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*graphql.Upload, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["images"]
+	if !ok {
+		var zeroVal []*graphql.Upload
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("images"))
+	if tmp, ok := rawArgs["images"]; ok {
+		return ec.unmarshalOUpload2ᚕᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUploadᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*graphql.Upload
 	return zeroVal, nil
 }
 
@@ -931,7 +958,7 @@ func (ec *executionContext) _Mutation_createTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64))
+		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["images"].([]*graphql.Upload))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

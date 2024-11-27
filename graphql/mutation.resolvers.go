@@ -10,6 +10,8 @@ import (
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
 	"fmt"
+
+	"github.com/99designs/gqlgen/graphql"
 )
 
 // CreateArea is the resolver for the createArea field.
@@ -33,11 +35,29 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id xid.ID, input ent.
 }
 
 // CreateTender is the resolver for the createTender field.
-func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64) (*ent.TenderConnection, error) {
+func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, images []*graphql.Upload) (*ent.TenderConnection, error) {
 	q := r.store.Tender.Create().SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
 	}
+	// if len(images) > 0 {
+	// 	fmt.Println("images", images)
+	// var imgs []string
+	// for _, img := range images {
+	// 	fn := fmt.Sprintf("%s-%s", rsxid.New(), img.Filename)
+	// 	stream, err := io.ReadAll(img.File)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to read image file: %w", err)
+	// 	}
+	// 	if err := os.WriteFile(fmt.Sprintf("static/%s", fn), stream, 0644); err != nil {
+	// 		return nil, fmt.Errorf("failed to save image file: %w", err)
+	// 	}
+	// 	imgs = append(imgs, "/static/"+fn)
+	// }
+	// if len(imgs) > 0 {
+	// 	q.SetImages(imgs)
+	// }
+	// }
 	t, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create tender: %w", err)

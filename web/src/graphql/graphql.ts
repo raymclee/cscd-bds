@@ -19,6 +19,7 @@ export type Scalars = {
    */
   Cursor: { input: any; output: any; }
   Time: { input: any; output: any; }
+  Upload: { input: any; output: any; }
 };
 
 export type Area = Node & {
@@ -1179,6 +1180,7 @@ export type MutationCreatePlotArgs = {
 
 export type MutationCreateTenderArgs = {
   geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
+  images?: InputMaybe<Array<Scalars['Upload']['input']>>;
   input: CreateTenderInput;
 };
 

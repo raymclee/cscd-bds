@@ -8,6 +8,7 @@ type Mutation {
   createTender(
     input: CreateTenderInput!
     geoBounds: [[Float!]!]
+    images: [Upload!]
   ): TenderConnection!
   updateTender(
     id: ID!

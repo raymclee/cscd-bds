@@ -103,6 +103,7 @@ function RouteComponent() {
       select={{ variant: "filled" }}
       datePicker={{ variant: "filled" }}
       textArea={{ variant: "filled" }}
+      inputNumber={{ variant: "filled" }}
       // componentSize="large"
     >
       <App>
@@ -156,7 +157,7 @@ function RouteComponent() {
                 <Avatar src={session.avatarUrl} />
               </div>
             </Header>
-            <Content className="relative mx-4">
+            <Content className="relative m-4">
               {/* <Breadcrumb className="my-4" items={[]} /> */}
               {/* <div className="my-4 min-h-80 rounded-lg bg-white p-6"> */}
               <Outlet />

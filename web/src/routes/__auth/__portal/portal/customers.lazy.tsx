@@ -22,6 +22,9 @@ const query = graphql`
                   node {
                     id
                     name
+                    area {
+                      name
+                    }
                   }
                 }
               }
@@ -46,11 +49,13 @@ function RouteComponent() {
 
   const columns: TableProps<Partial<Customer>>["columns"] = [
     { dataIndex: "name", title: "名称" },
+    { dataIndex: ["area", "name"], title: "区域" },
   ];
 
   return (
-    <div className="my-4 min-h-80 rounded-lg bg-white p-6">
+    <div className="min-h-80">
       <Table
+        className="rounded-lg"
         pagination={{}}
         dataSource={dataSource}
         // @ts-ignore
