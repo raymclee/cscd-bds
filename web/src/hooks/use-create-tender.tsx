@@ -6,8 +6,14 @@ const mutation = graphql`
   mutation useCreateTenderMutation(
     $input: CreateTenderInput!
     $connections: [ID!]!
+    $imageFileNames: [String!]!
+    $attachmentFileNames: [String!]!
   ) {
-    createTender(input: $input) {
+    createTender(
+      input: $input
+      imageFileNames: $imageFileNames
+      attachmentFileNames: $attachmentFileNames
+    ) {
       edges
         @prependNode(connections: $connections, edgeTypeName: "TenderEdge") {
         node {

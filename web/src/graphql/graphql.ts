@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -19,7 +20,6 @@ export type Scalars = {
    */
   Cursor: { input: any; output: any; }
   Time: { input: any; output: any; }
-  Upload: { input: any; output: any; }
 };
 
 export type Area = Node & {
@@ -1179,8 +1179,9 @@ export type MutationCreatePlotArgs = {
 
 
 export type MutationCreateTenderArgs = {
+  attachmentFileNames: Array<Scalars['String']['input']>;
   geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
-  images?: InputMaybe<Array<Scalars['Upload']['input']>>;
+  imageFileNames: Array<Scalars['String']['input']>;
   input: CreateTenderInput;
 };
 
@@ -3271,6 +3272,22 @@ export type VisitRecordWhereInput = {
   visitTypeNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type UseCreatePlotMutationMutationVariables = Exact<{
+  input: CreatePlotInput;
+  geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']> | Scalars['Float']['input']> | Array<Scalars['Float']['input']> | Scalars['Float']['input']>;
+  connections: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+}>;
+
+
+export type UseCreatePlotMutationMutation = { __typename?: 'Mutation', createPlot: { __typename?: 'PlotConnection', edges?: Array<{ __typename?: 'PlotEdge', node?: { __typename?: 'Plot', id: string, name: string, geoBounds?: Array<Array<number>> | null, colorHex: string } | null } | null> | null } };
+
+export type UseDeleteTenderMutationMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type UseDeleteTenderMutationMutation = { __typename?: 'Mutation', deleteTender: { __typename?: 'Tender', id: string } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -3285,3 +3302,25 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+
+export const UseCreatePlotMutationDocument = new TypedDocumentString(`
+    mutation useCreatePlotMutation($input: CreatePlotInput!, $geoBounds: [[Float!]!], $connections: [ID!]!) {
+  createPlot(input: $input, geoBounds: $geoBounds) {
+    edges @prependNode(connections: $connections, edgeTypeName: "PlotEdge") {
+      node {
+        id
+        name
+        geoBounds
+        colorHex
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<UseCreatePlotMutationMutation, UseCreatePlotMutationMutationVariables>;
+export const UseDeleteTenderMutationDocument = new TypedDocumentString(`
+    mutation useDeleteTenderMutation($id: ID!) {
+  deleteTender(id: $id) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<UseDeleteTenderMutationMutation, UseDeleteTenderMutationMutationVariables>;

@@ -20,7 +20,7 @@ import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { FixedToolbar } from "./fixed-toolbar";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { UploadableMap } from "relay-runtime";
 
@@ -107,6 +107,9 @@ export function TenderForm<T>({
   const provinceID = Form.useWatch("provinceID", form);
   const cityID = Form.useWatch("cityID", form);
 
+  const [imageFileNames, setImageFileNames] = useState<string[]>([]);
+  const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
+
   const area = useMemo(
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
     [data, areaID],
@@ -154,7 +157,7 @@ export function TenderForm<T>({
       initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
       onFinish={(values) => {
-        // values
+        const { images, attachements, ...input } = values;
         const connectionID = ConnectionHandler.getConnectionID(
           values.areaID,
           "TendersTenderListFragment_tenders",
@@ -163,9 +166,10 @@ export function TenderForm<T>({
 
         commitCreateMutation({
           variables: {
-            input: values,
+            input,
             connections: [connectionID],
-            // images: (images as any).fileList,
+            imageFileNames,
+            attachmentFileNames,
           },
           onCompleted() {
             navigate({ to: "/portal/tenders" });
@@ -224,6 +228,15 @@ export function TenderForm<T>({
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
+              name={"name"}
+              label="项目名称"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item
               name={"code"}
               label="备案编码"
               rules={[{ required: true }]}
@@ -240,16 +253,8 @@ export function TenderForm<T>({
               <Input />
             </Form.Item>
           </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={"name"}
-              label="项目名称"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
         </Row>
+
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
@@ -395,13 +400,9 @@ export function TenderForm<T>({
           </Col>
         </Row>
 
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="fullAddress" label="详细地址" rules={[]}>
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Form.Item name="fullAddress" label="详细地址" rules={[]}>
+          <Input />
+        </Form.Item>
 
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
@@ -415,8 +416,8 @@ export function TenderForm<T>({
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>
-            <Form.Item name="projectDefinition" label="项目定义">
-              <Input />
+            <Form.Item name="biddingDate" label="投标时间">
+              <DatePicker className="w-full" />
             </Form.Item>
           </Col>
         </Row>
@@ -448,40 +449,129 @@ export function TenderForm<T>({
           </Col>
         </Row>
 
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="remark" label="备注">
-              <Input.TextArea />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Form.Item name="projectDefinition" label="项目定义">
+          <Input />
+        </Form.Item>
+
+        <Form.Item name="remark" label="备注">
+          <Input.TextArea />
+        </Form.Item>
 
         <Row>
           <Col sm={24}>
             <Form.Item name="attachements" label="附件">
-              <Upload fileList={[]} />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="images" label="效果图">
-              <Dragger multiple>
+              <Dragger
+                multiple
+                name="files"
+                action="/api/v1/file/upload"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
+                onChange={(info) => {
+                  for (const file of info.fileList) {
+                    if (file.status === "done") {
+                      setAttachmentFileNames((prev) => [...prev, file.name]);
+                    }
+                    if (file.status === "error" || file.status === "removed") {
+                      setAttachmentFileNames((prev) =>
+                        prev.filter((name) => name !== file.name),
+                      );
+                    }
+                  }
+                }}
+              >
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload. Strictly prohibited from
-                  uploading company data or other banned files.
-                </p>
+                <p className="ant-upload-text">点击或拖动文件到此区域上传</p>
+                <p className="ant-upload-hint">支持单个或批量上传。</p>
               </Dragger>
             </Form.Item>
           </Col>
         </Row>
+
+        <Form.Item name="images" label="效果图">
+          <Dragger
+            multiple
+            name="files"
+            action="/api/v1/file/upload"
+            accept=".jpg,.jpeg,.png,.gif"
+            listType="picture-card"
+            onChange={(info) => {
+              for (const file of info.fileList) {
+                if (file.status === "done") {
+                  setImageFileNames((prev) => [...prev, file.name]);
+                }
+                if (file.status === "error" || file.status === "removed") {
+                  setImageFileNames((prev) =>
+                    prev.filter((name) => name !== file.name),
+                  );
+                }
+              }
+            }}
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">点击或拖动文件到此区域上传</p>
+            <p className="ant-upload-hint">支持单个或批量上传。</p>
+          </Dragger>
+        </Form.Item>
+
+        <Form.Item name="biddingInstructions" label="立项/投标说明">
+          <Input.TextArea />
+        </Form.Item>
+
+        <Row gutter={{ xs: 8, sm: 64 }}>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="costEngineer" label="造价师">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="tenderForm" label="招采形式">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="contractForm" label="合同形式">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={{ xs: 8, sm: 64 }}>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="managementCompany" label="管理公司">
+              <Input />
+            </Form.Item>
+          </Col>
+
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="tenderingAgency" label="招标代理">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={{ xs: 8, sm: 64 }}>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="designUnit" label="设计单位">
+              <Input />
+            </Form.Item>
+          </Col>
+
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="consultingFirm" label="咨询公司">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* <Form.Item name="geoCoordinate" label="geoCoordinate">
+          <Input />
+        </Form.Item>
+        <Form.Item name="geoBounds" label="geoBounds">
+          <Input />
+        </Form.Item> */}
       </Card>
 
       <Card className="mt-4" title="情况">
@@ -592,45 +682,6 @@ export function TenderForm<T>({
           <Input.TextArea />
         </Form.Item>
       </Card>
-
-      <Form.Item name="biddingInstructions" label="立项/投标说明">
-        <Input />
-      </Form.Item>
-
-      <Form.Item name="costEngineer" label="造价师">
-        <Input />
-      </Form.Item>
-      <Form.Item name="tenderForm" label="招采形式">
-        <Input />
-      </Form.Item>
-      <Form.Item name="contractForm" label="合同形式">
-        <Input />
-      </Form.Item>
-      <Form.Item name="managementCompany" label="管理公司">
-        <Input />
-      </Form.Item>
-      <Form.Item name="tenderingAgency" label="招标代理">
-        <Input />
-      </Form.Item>
-      <Form.Item name="biddingDate" label="投标时间">
-        <DatePicker />
-      </Form.Item>
-      <Form.Item name="facadeConsultant" label="幕墙顾问">
-        <Input />
-      </Form.Item>
-      <Form.Item name="designUnit" label="设计单位">
-        <Input />
-      </Form.Item>
-      <Form.Item name="consultingFirm" label="咨询公司">
-        <Input />
-      </Form.Item>
-
-      <Form.Item name="geoCoordinate" label="geoCoordinate">
-        <Input />
-      </Form.Item>
-      <Form.Item name="geoBounds" label="geoBounds">
-        <Input />
-      </Form.Item>
 
       <FixedToolbar>
         <Button

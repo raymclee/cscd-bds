@@ -1,9 +1,14 @@
 package handler
 
 import (
+	"cscd-bds/config"
 	"cscd-bds/session"
 	"cscd-bds/store"
+	"fmt"
+	"io"
+	"os"
 
+	"github.com/labstack/echo/v4"
 	lark "github.com/larksuite/oapi-sdk-go/v3"
 )
 
@@ -19,4 +24,36 @@ func NewHandler(store *store.Store, feishu *lark.Client, session *session.Sessio
 		feishu:  feishu,
 		session: session,
 	}
+}
+
+func (h handler) UploadFile(c echo.Context) error {
+	form, err := c.MultipartForm()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	files := form.File["files"]
+	for _, file := range files {
+		src, err := file.Open()
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+		defer src.Close()
+
+		// Destination
+		dst, err := os.Create(config.FilePath + "tmp/" + file.Filename)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+		// Copy
+		if _, err = io.Copy(dst, src); err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+	}
+	return nil
 }

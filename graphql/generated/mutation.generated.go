@@ -21,7 +21,7 @@ type MutationResolver interface {
 	UpdateArea(ctx context.Context, id xid.ID, input ent.UpdateAreaInput) (*ent.Area, error)
 	CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.User, error)
 	UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error)
-	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, images []*graphql.Upload) (*ent.TenderConnection, error)
+	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.TenderConnection, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error)
@@ -137,11 +137,16 @@ func (ec *executionContext) field_Mutation_createTender_args(ctx context.Context
 		return nil, err
 	}
 	args["geoBounds"] = arg1
-	arg2, err := ec.field_Mutation_createTender_argsImages(ctx, rawArgs)
+	arg2, err := ec.field_Mutation_createTender_argsImageFileNames(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["images"] = arg2
+	args["imageFileNames"] = arg2
+	arg3, err := ec.field_Mutation_createTender_argsAttachmentFileNames(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["attachmentFileNames"] = arg3
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_createTender_argsInput(
@@ -188,25 +193,47 @@ func (ec *executionContext) field_Mutation_createTender_argsGeoBounds(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_createTender_argsImages(
+func (ec *executionContext) field_Mutation_createTender_argsImageFileNames(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) ([]*graphql.Upload, error) {
+) ([]string, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["images"]
+	_, ok := rawArgs["imageFileNames"]
 	if !ok {
-		var zeroVal []*graphql.Upload
+		var zeroVal []string
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("images"))
-	if tmp, ok := rawArgs["images"]; ok {
-		return ec.unmarshalOUpload2ᚕᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUploadᚄ(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("imageFileNames"))
+	if tmp, ok := rawArgs["imageFileNames"]; ok {
+		return ec.unmarshalNString2ᚕstringᚄ(ctx, tmp)
 	}
 
-	var zeroVal []*graphql.Upload
+	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createTender_argsAttachmentFileNames(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["attachmentFileNames"]
+	if !ok {
+		var zeroVal []string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("attachmentFileNames"))
+	if tmp, ok := rawArgs["attachmentFileNames"]; ok {
+		return ec.unmarshalNString2ᚕstringᚄ(ctx, tmp)
+	}
+
+	var zeroVal []string
 	return zeroVal, nil
 }
 
@@ -958,7 +985,7 @@ func (ec *executionContext) _Mutation_createTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["images"].([]*graphql.Upload))
+		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

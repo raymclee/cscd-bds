@@ -1185,7 +1185,7 @@ type GeoJson {
 type Mutation {
   createArea(input: CreateAreaInput!): Area!
   createPlot(geoBounds: [[Float!]!], input: CreatePlotInput!): PlotConnection!
-  createTender(geoBounds: [[Float!]!], images: [Upload!], input: CreateTenderInput!): TenderConnection!
+  createTender(attachmentFileNames: [String!]!, geoBounds: [[Float!]!], imageFileNames: [String!]!, input: CreateTenderInput!): TenderConnection!
   createUser(input: CreateUserInput!): User!
   deletePlot(id: ID!): Plot!
   deleteTender(id: ID!): Tender!
@@ -2853,8 +2853,6 @@ input UpdateVisitRecordInput {
   updatedAt: Time
   visitType: Int
 }
-
-scalar Upload
 
 type User implements Node {
   areas(

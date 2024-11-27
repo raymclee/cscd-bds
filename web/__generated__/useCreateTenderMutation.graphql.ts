@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<67c299d07377912417d8c211e099a7fb>>
+ * @generated SignedSource<<c2fcfbf4e3d1646b1e7238058eeba056>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -66,6 +66,7 @@ export type CreateTenderInput = {
   visitRecordIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateTenderMutation$variables = {
+  attachmentFileNames: ReadonlyArray<string>;
   connections: ReadonlyArray<string>;
   imageFileNames: ReadonlyArray<string>;
   input: CreateTenderInput;
@@ -88,19 +89,29 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "connections"
+  "name": "attachmentFileNames"
 },
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "imageFileNames"
+  "name": "connections"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "imageFileNames"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "input"
 },
-v3 = [
+v4 = [
+  {
+    "kind": "Variable",
+    "name": "attachmentFileNames",
+    "variableName": "attachmentFileNames"
+  },
   {
     "kind": "Variable",
     "name": "imageFileNames",
@@ -112,30 +123,31 @@ v3 = [
     "variableName": "input"
   }
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = [
-  (v5/*: any*/),
-  (v4/*: any*/)
+v7 = [
+  (v6/*: any*/),
+  (v5/*: any*/)
 ];
 return {
   "fragment": {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/)
+      (v2/*: any*/),
+      (v3/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -143,7 +155,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "TenderConnection",
         "kind": "LinkedField",
         "name": "createTender",
@@ -186,16 +198,17 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
+      (v3/*: any*/),
+      (v1/*: any*/),
       (v2/*: any*/),
-      (v0/*: any*/),
-      (v1/*: any*/)
+      (v0/*: any*/)
     ],
     "kind": "Operation",
     "name": "useCreateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "TenderConnection",
         "kind": "LinkedField",
         "name": "createTender",
@@ -217,8 +230,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
                   (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -247,7 +260,7 @@ return {
                     "kind": "LinkedField",
                     "name": "customer",
                     "plural": false,
-                    "selections": (v6/*: any*/),
+                    "selections": (v7/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -285,7 +298,7 @@ return {
                     "kind": "LinkedField",
                     "name": "area",
                     "plural": false,
-                    "selections": (v6/*: any*/),
+                    "selections": (v7/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -321,16 +334,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7795d1805a0094f10e77999c47b870b9",
+    "cacheID": "cc60e7b5e6b38cc024d21217775ae92f",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames) {\n    edges {\n      node {\n        ...tendersTenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tendersTenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tendersTenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tendersTenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e8a29435dd570b65ebbbf62840dc4b79";
+(node as any).hash = "6684e91dda3e6d7979dfcb94a3472651";
 
 export default node;

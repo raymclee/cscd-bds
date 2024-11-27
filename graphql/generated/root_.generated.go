@@ -188,7 +188,7 @@ type ComplexityRoot struct {
 	Mutation struct {
 		CreateArea   func(childComplexity int, input ent.CreateAreaInput) int
 		CreatePlot   func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, images []*graphql.Upload) int
+		CreateTender func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
 		CreateUser   func(childComplexity int, input ent.CreateUserInput) int
 		DeletePlot   func(childComplexity int, id xid.ID) int
 		DeleteTender func(childComplexity int, id xid.ID) int
@@ -1141,7 +1141,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64), args["images"].([]*graphql.Upload)), true
+		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
 
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
@@ -6879,7 +6879,8 @@ type GeoJson {
   createTender(
     input: CreateTenderInput!
     geoBounds: [[Float!]!]
-    images: [Upload!]
+    imageFileNames: [String!]!
+    attachmentFileNames: [String!]!
   ): TenderConnection!
   updateTender(
     id: ID!
@@ -6898,7 +6899,6 @@ type GeoJson {
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time
-scalar Upload
 `, BuiltIn: false},
 	{Name: "../session.graphql", Input: `type Session {
   userId: String!
