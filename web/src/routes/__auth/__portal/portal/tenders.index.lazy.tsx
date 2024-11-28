@@ -1,7 +1,7 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
 import { tendersTenderListFragment$key } from "__generated__/tendersTenderListFragment.graphql";
-import { Button, Form, Input, List, Pagination } from "antd";
+import { Button, Form, Input, List } from "antd";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
@@ -61,7 +61,7 @@ export const TendersTenderListFragment = graphql`
               node {
                 id
                 name
-                ...tenderListItemFragment @alias(as: "tender")
+                ...tenderListItemFragment
               }
             }
           }
@@ -117,14 +117,15 @@ function TenderList({
       </div>
 
       <List
-        pagination={{ position: "both", showSizeChanger: true }}
+        pagination={{
+          position: "both",
+          showSizeChanger: true,
+        }}
         dataSource={dataSource}
         itemLayout="vertical"
         className="rounded-lg bg-white px-4 pb-6 pt-px"
         renderItem={(node) =>
-          node?.tender && (
-            <TenderListItem key={node?.id} queryRef={node?.tender} />
-          )
+          node && <TenderListItem key={node?.id} queryRef={node} />
         }
       />
     </div>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f2227aa9fe731eb7201c2a4355f9a392>>
+ * @generated SignedSource<<a29bffab28026f91ea9f139cd611d4c4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,9 +19,7 @@ export type tendersTenderListFragment$data = {
             readonly node: {
               readonly id: string;
               readonly name: string;
-              readonly tender: {
-                readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
-              };
+              readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
             } | null | undefined;
           } | null | undefined> | null | undefined;
           readonly totalCount: number;
@@ -146,20 +144,9 @@ const node: ReaderFragment = {
                               "storageKey": null
                             },
                             {
-                              "fragment": {
-                                "kind": "InlineFragment",
-                                "selections": [
-                                  {
-                                    "args": null,
-                                    "kind": "FragmentSpread",
-                                    "name": "tenderListItemFragment"
-                                  }
-                                ],
-                                "type": "Tender",
-                                "abstractKey": null
-                              },
-                              "kind": "AliasedInlineFragmentSpread",
-                              "name": "tender"
+                              "args": null,
+                              "kind": "FragmentSpread",
+                              "name": "tenderListItemFragment"
                             },
                             {
                               "alias": null,
@@ -237,6 +224,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "5d2864ac782c8651d9ffc92ea0780648";
+(node as any).hash = "094a36e4c3bf32ee3252779c9a9317a1";
 
 export default node;

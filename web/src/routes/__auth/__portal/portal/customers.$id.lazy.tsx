@@ -1,14 +1,14 @@
-import * as React from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Button, Card, Descriptions, List, Result, Table, Tabs } from "antd";
-import { graphql } from "relay-runtime";
-import { useFragment, usePreloadedQuery } from "react-relay";
 import { customersDetailPageQuery } from "__generated__/customersDetailPageQuery.graphql";
-import dayjs from "dayjs";
-import { customersVisitRecordListFragment$key } from "__generated__/customersVisitRecordListFragment.graphql";
 import { customersTenderListFragment$key } from "__generated__/customersTenderListFragment.graphql";
-import { industryText, ownerTypeText, visitTypeText } from "~/lib/helper";
+import { customersVisitRecordListFragment$key } from "__generated__/customersVisitRecordListFragment.graphql";
+import { Card, Descriptions, List, Result } from "antd";
+import dayjs from "dayjs";
+import * as React from "react";
+import { useFragment, usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
 import { TenderListItem } from "~/components/portal/tender-list-item";
+import { industryText, ownerTypeText, visitTypeText } from "~/lib/helper";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/customers/$id",
@@ -196,14 +196,13 @@ function TenderList({
 }) {
   const data = useFragment(TenderListFragment, queryRef);
   return (
-    <List itemLayout="vertical">
-      {data.tenders.edges?.map(
-        (edge) =>
-          edge?.node && (
-            <TenderListItem key={edge.node.id} queryRef={edge.node} />
-          ),
-      )}
-    </List>
+    <List
+      itemLayout="vertical"
+      dataSource={data.tenders.edges?.map((e) => e?.node)}
+      renderItem={(node) =>
+        node && <TenderListItem key={node.id} queryRef={node} />
+      }
+    />
   );
 }
 
@@ -215,48 +214,49 @@ function VisitRecordList({
   const data = useFragment(VisitRecordListFragment, queryRef);
   return (
     <div className="space-y-6">
-      {data.visitRecords.edges && data.visitRecords.edges?.length > 0 ? (
-        data.visitRecords.edges?.map(
-          (edge) =>
-            edge?.node && (
-              <Descriptions
-                layout="vertical"
-                bordered
-                items={[
-                  {
-                    key: "date",
-                    label: "日期",
-                    children: dayjs(edge.node.date).format("LL"),
-                  },
-                  {
-                    key: "visitType",
-                    label: "拜訪類型",
-                    children: visitTypeText(edge.node.visitType),
-                  },
-                  {
-                    key: "commPeople",
-                    label: "溝通人員",
-                    children: edge.node.commPeople,
-                  },
-                  {
-                    key: "commContent",
-                    label: "溝通內容",
-                    children: edge.node.commContent,
-                    span: 3,
-                  },
-                  {
-                    key: "nextStep",
-                    label: "下一步",
-                    children: edge.node.nextStep,
-                    span: 3,
-                  },
-                ]}
-              />
-            ),
-        )
-      ) : (
-        <p>没有记录</p>
-      )}
+      <List
+        dataSource={data.visitRecords.edges?.map((e) => e?.node)}
+        rowKey={(node) => node?.id!}
+        renderItem={(node) =>
+          node && (
+            <Descriptions
+              key={node.id}
+              layout="vertical"
+              bordered
+              className="py-4"
+              items={[
+                {
+                  key: "date",
+                  label: "日期",
+                  children: dayjs(node.date).format("LL"),
+                },
+                {
+                  key: "visitType",
+                  label: "拜訪類型",
+                  children: visitTypeText(node.visitType),
+                },
+                {
+                  key: "commPeople",
+                  label: "溝通人員",
+                  children: node.commPeople,
+                },
+                {
+                  key: "commContent",
+                  label: "溝通內容",
+                  children: node.commContent,
+                  span: 3,
+                },
+                {
+                  key: "nextStep",
+                  label: "下一步",
+                  children: node.nextStep,
+                  span: 3,
+                },
+              ]}
+            />
+          )
+        }
+      />
     </div>
   );
 }
