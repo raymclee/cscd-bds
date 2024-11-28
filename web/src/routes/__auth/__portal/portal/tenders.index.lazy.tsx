@@ -12,21 +12,19 @@ export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
 });
 
-const query = graphql`
-  query tendersPageQuery($userId: ID!, $orderBy: TenderOrder, $first: Int) {
-    node(id: $userId) {
-      ... on User {
-        ...tendersTenderListFragment
-          @alias(as: "areaTenders")
-          @arguments(orderBy: $orderBy, first: $first)
-      }
-    }
-  }
-`;
-
 function RouteComponent() {
   const data = usePreloadedQuery<tendersPageQuery>(
-    query,
+    graphql`
+      query tendersPageQuery($userId: ID!, $orderBy: TenderOrder, $first: Int) {
+        node(id: $userId) {
+          ... on User {
+            ...tendersTenderListFragment
+              @alias(as: "areaTenders")
+              @arguments(orderBy: $orderBy, first: $first)
+          }
+        }
+      }
+    `,
     Route.useLoaderData(),
   );
 
@@ -41,46 +39,48 @@ function RouteComponent() {
   );
 }
 
-export const TendersTenderListFragment = graphql`
-  fragment tendersTenderListFragment on User
-  @argumentDefinitions(
-    orderBy: {
-      type: "TenderOrder"
-      defaultValue: { field: CREATED_AT, direction: DESC }
-    }
-    first: { type: "Int" }
-    last: { type: "Int" }
-  ) {
-    areas {
-      edges {
-        node {
-          tenders(orderBy: $orderBy, first: $first, last: $last)
-            @connection(key: "TendersTenderListFragment_tenders") {
-            totalCount
-            edges {
-              node {
-                id
-                name
-                ...tenderListItemFragment
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 function TenderList({
   queryRef,
 }: {
   queryRef?: tendersTenderListFragment$key;
 }) {
+  const data = useFragment(
+    graphql`
+      fragment tendersTenderListFragment on User
+      @argumentDefinitions(
+        orderBy: {
+          type: "TenderOrder"
+          defaultValue: { field: CREATED_AT, direction: DESC }
+        }
+        first: { type: "Int" }
+        last: { type: "Int" }
+      ) {
+        areas {
+          edges {
+            node {
+              tenders(orderBy: $orderBy, first: $first, last: $last)
+                @connection(key: "TendersTenderListFragment_tenders") {
+                totalCount
+                edges {
+                  node {
+                    id
+                    name
+                    ...tenderListItemFragment
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+    queryRef,
+  );
+
   const [searchText, setSearchText] = useState("");
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
 
-  const data = useFragment(TendersTenderListFragment, queryRef);
   const totalCount =
     data?.areas.edges?.reduce(
       (acc, inc) => acc + (inc?.node?.tenders.totalCount || 0),
