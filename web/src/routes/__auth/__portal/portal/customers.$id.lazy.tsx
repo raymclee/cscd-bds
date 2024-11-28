@@ -215,43 +215,47 @@ function VisitRecordList({
   const data = useFragment(VisitRecordListFragment, queryRef);
   return (
     <div className="space-y-6">
-      {data.visitRecords.edges?.map(
-        (edge) =>
-          edge?.node && (
-            <Descriptions
-              layout="vertical"
-              bordered
-              items={[
-                {
-                  key: "date",
-                  label: "日期",
-                  children: dayjs(edge.node.date).format("LL"),
-                },
-                {
-                  key: "visitType",
-                  label: "拜訪類型",
-                  children: visitTypeText(edge.node.visitType),
-                },
-                {
-                  key: "commPeople",
-                  label: "溝通人員",
-                  children: edge.node.commPeople,
-                },
-                {
-                  key: "commContent",
-                  label: "溝通內容",
-                  children: edge.node.commContent,
-                  span: 3,
-                },
-                {
-                  key: "nextStep",
-                  label: "下一步",
-                  children: edge.node.nextStep,
-                  span: 3,
-                },
-              ]}
-            />
-          ),
+      {data.visitRecords.edges && data.visitRecords.edges?.length > 0 ? (
+        data.visitRecords.edges?.map(
+          (edge) =>
+            edge?.node && (
+              <Descriptions
+                layout="vertical"
+                bordered
+                items={[
+                  {
+                    key: "date",
+                    label: "日期",
+                    children: dayjs(edge.node.date).format("LL"),
+                  },
+                  {
+                    key: "visitType",
+                    label: "拜訪類型",
+                    children: visitTypeText(edge.node.visitType),
+                  },
+                  {
+                    key: "commPeople",
+                    label: "溝通人員",
+                    children: edge.node.commPeople,
+                  },
+                  {
+                    key: "commContent",
+                    label: "溝通內容",
+                    children: edge.node.commContent,
+                    span: 3,
+                  },
+                  {
+                    key: "nextStep",
+                    label: "下一步",
+                    children: edge.node.nextStep,
+                    span: 3,
+                  },
+                ]}
+              />
+            ),
+        )
+      ) : (
+        <p>没有记录</p>
       )}
     </div>
   );
