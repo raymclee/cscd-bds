@@ -3,29 +3,27 @@ package util
 import (
 	"cscd-bds/config"
 	"fmt"
-	"image"
-	"image/jpeg"
-	"image/png"
-
 	"io"
 	"mime"
-	"os"
+	"runtime"
 	"strings"
 
-	"github.com/nfnt/resize"
+	"os"
+
+	"github.com/davidbyttow/govips/v2/vips"
 	"github.com/rs/xid"
 )
 
 func SaveStaticFile(filename string, shouldResize bool) (string, error) {
-	sourcePath := fmt.Sprintf("%stmp/%s", config.FilePath, filename)
+	var sourcePath string
+	if runtime.GOOS == "windows" {
+		sourcePath = fmt.Sprintf("%stmp\\%s", config.FilePath, filename)
+	} else {
+		sourcePath = fmt.Sprintf("%stmp/%s", config.FilePath, filename)
+	}
 	tf, err := os.Open(sourcePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to open file: %w", err)
-	}
-	defer tf.Close()
-	img, _, err := image.Decode(tf)
-	if err != nil {
-		return "", fmt.Errorf("failed to decode image: %w", err)
 	}
 
 	fn := fmt.Sprintf("%s-%s", xid.New(), filename)
@@ -33,24 +31,42 @@ func SaveStaticFile(filename string, shouldResize bool) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to create file: %w", err)
 	}
-	defer out.Close()
 
-	if shouldResize {
-		ri := resize.Thumbnail(800, 0, img, resize.Lanczos3)
-		// handle different image types
-		fmt.Println(mime.TypeByExtension(filename))
+	if runtime.GOOS == "linux" && config.IsProd {
+		vips.Startup(&vips.Config{})
+
+		inputImage, err := vips.NewImageFromFile(sourcePath)
+		if err != nil {
+			return "", fmt.Errorf("failed to open image: %w", err)
+		}
+		defer inputImage.Close()
+
 		switch {
 		case strings.HasSuffix(filename, ".png"):
-			if err := png.Encode(out, ri); err != nil {
-				return "", fmt.Errorf("failed to encode image: %w", err)
+			ep := vips.NewJpegExportParams()
+			// ep.StripMetadata = true
+			ep.Quality = 75
+			// ep.Interlace = true
+			ep.OptimizeCoding = true
+			// ep.SubsampleMode = vips.VipsForeignSubsampleAuto
+			// ep.TrellisQuant = true
+			// ep.OvershootDeringing = true
+			// ep.OptimizeScans = true
+			// ep.QuantTable = 3
+			mageBytes, _, err := inputImage.ExportJpeg(ep)
+			if err != nil {
+				return "", fmt.Errorf("failed to export image: %w", err)
+			}
+			if err := os.WriteFile(fmt.Sprintf("/%s%s", config.FilePath, fn), mageBytes, 0644); err != nil {
+				return "", fmt.Errorf("failed to write file: %w", err)
 			}
 		case strings.HasSuffix(filename, ".jpeg"), strings.HasSuffix(filename, ".jpg"):
-			if err := jpeg.Encode(out, ri, nil); err != nil {
-				return "", fmt.Errorf("failed to encode image: %w", err)
-			}
+
 		default:
 			return "", fmt.Errorf("unsupported image type: %s", mime.TypeByExtension(filename))
 		}
+
+		vips.Shutdown()
 
 	} else {
 		if _, err := io.Copy(out, tf); err != nil {
@@ -58,6 +74,8 @@ func SaveStaticFile(filename string, shouldResize bool) (string, error) {
 		}
 	}
 
+	tf.Close()
+	out.Close()
 	if err = os.Remove(sourcePath); err != nil {
 		return "", fmt.Errorf("failed to remove file: %w", err)
 	}

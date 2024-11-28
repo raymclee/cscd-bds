@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<18a60a8e88b0ff5fa0d4d2eab5503f01>>
+ * @generated SignedSource<<9fc56a9bb6ccabee68f7ee99c3e5b494>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -358,12 +358,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2c5cf7d86df6ffedfd06ca0a29f769a9",
+    "cacheID": "b7517dea52ddaf9cc52a5dfeac203b74",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_7FfCv\n    }\n    id\n  }\n}\n\nfragment tendersTenderListFragment_7FfCv on User {\n  areas {\n    edges {\n      node {\n        tenders(orderBy: $orderBy) {\n          edges {\n            node {\n              id\n              name\n              ...tendersTenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment tendersTenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_7FfCv\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n\nfragment tendersTenderListFragment_7FfCv on User {\n  areas {\n    edges {\n      node {\n        tenders(orderBy: $orderBy) {\n          edges {\n            node {\n              id\n              name\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

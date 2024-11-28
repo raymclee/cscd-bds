@@ -25,14 +25,28 @@ func (VisitRecord) Mixin() []ent.Mixin {
 // Fields of the VisitRecord.
 func (VisitRecord) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("visit_type").Default(1),
-		field.String("comm_people").NotEmpty(),
-		field.String("comm_content").NotEmpty(),
-		field.String("next_step").Optional().Nillable(),
-		field.Time("date"),
+		field.Int("visit_type").
+			Default(1),
+		field.String("comm_people").
+			NotEmpty(),
+		field.String("comm_content").
+			NotEmpty(),
+		field.String("next_step").
+			Optional().
+			Nillable(),
+		field.Time("date").
+			Annotations(
+				entgql.OrderField("DATE"),
+			),
 
-		field.String("tender_id").GoType(xid.ID("")).Optional().Nillable(),
-		field.String("customer_id").GoType(xid.ID("")).Optional().Nillable(),
+		field.String("tender_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
+		field.String("customer_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -59,6 +73,7 @@ func (VisitRecord) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),
 		entgql.QueryField(),
+		entgql.MultiOrder(),
 		entgql.Mutations(
 			entgql.MutationCreate(),
 			entgql.MutationUpdate(),

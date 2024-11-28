@@ -138,7 +138,7 @@ type ComplexityRoot struct {
 		Size                  func(childComplexity int) int
 		Tenders               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt             func(childComplexity int) int
-		VisitRecords          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		VisitRecords          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	CustomerConnection struct {
@@ -267,7 +267,7 @@ type ComplexityRoot struct {
 		Session      func(childComplexity int) int
 		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
-		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	Session struct {
@@ -343,7 +343,7 @@ type ComplexityRoot struct {
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
 		UpdatedAt                            func(childComplexity int) int
-		VisitRecords                         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		VisitRecords                         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	TenderConnection struct {
@@ -375,7 +375,7 @@ type ComplexityRoot struct {
 		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt    func(childComplexity int) int
 		Username     func(childComplexity int) int
-		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	UserConnection struct {
@@ -913,7 +913,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Customer.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
+		return e.complexity.Customer.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "CustomerConnection.edges":
 		if e.complexity.CustomerConnection.Edges == nil {
@@ -1636,7 +1636,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
+		return e.complexity.Query.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "Session.avatarUrl":
 		if e.complexity.Session.AvatarURL == nil {
@@ -2131,7 +2131,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Tender.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
+		return e.complexity.Tender.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "TenderConnection.edges":
 		if e.complexity.TenderConnection.Edges == nil {
@@ -2312,7 +2312,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.User.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
+		return e.complexity.User.VisitRecords(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.VisitRecordOrder), args["where"].(*ent.VisitRecordWhereInput)), true
 
 	case "UserConnection.edges":
 		if e.complexity.UserConnection.Edges == nil {
@@ -3571,7 +3571,7 @@ type Customer implements Node {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -4942,7 +4942,7 @@ type Query {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -5035,7 +5035,7 @@ type Tender implements Node {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -6337,7 +6337,7 @@ type User implements Node {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -6672,6 +6672,7 @@ Properties by which VisitRecord connections can be ordered.
 """
 enum VisitRecordOrderField {
   CREATED_AT
+  VISIT_DATE
 }
 """
 VisitRecordWhereInput is used for filtering VisitRecord objects.

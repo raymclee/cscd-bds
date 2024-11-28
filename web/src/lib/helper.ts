@@ -79,3 +79,49 @@ export function getDistrictZoomLevel(id: string) {
   }
   return zoom;
 }
+
+export function visitTypeText(type: Maybe<number> | undefined): string {
+  if (!type) {
+    return "";
+  }
+  switch (type) {
+    case 1:
+      return "现场拜访";
+    case 2:
+      return "线上会议";
+    default:
+      return "";
+  }
+}
+
+export function industryText(industry: Maybe<number> | undefined): string {
+  if (!industry) {
+    return "";
+  }
+  switch (industry) {
+    case 1:
+      return "互联网";
+    case 2:
+      return "金融";
+    case 3:
+      return "医疗";
+    case 4:
+      return "餐饮";
+    case 5:
+      return "制造";
+    case 6:
+      return "电商";
+    case 7:
+      return "科技";
+    case 8:
+      return "其他";
+    case 9:
+      return "物流";
+    case 10:
+      return "地产";
+    case 11:
+      return "政府";
+    default:
+      return "";
+  }
+}

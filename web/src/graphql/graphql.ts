@@ -711,7 +711,7 @@ export type CustomerVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -1696,7 +1696,7 @@ export type QueryVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -1784,7 +1784,7 @@ export type TenderVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -2885,7 +2885,7 @@ export type UserVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -3129,7 +3129,8 @@ export type VisitRecordOrder = {
 
 /** Properties by which VisitRecord connections can be ordered. */
 export enum VisitRecordOrderField {
-  CreatedAt = 'CREATED_AT'
+  CreatedAt = 'CREATED_AT',
+  VisitDate = 'VISIT_DATE'
 }
 
 /**

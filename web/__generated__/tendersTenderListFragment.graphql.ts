@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<cd714edfd4243bf0729f9f58a2ac8e42>>
+ * @generated SignedSource<<c5074a5d419fd1a34ff1a301bd8e4616>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,7 +20,7 @@ export type tendersTenderListFragment$data = {
               readonly id: string;
               readonly name: string;
               readonly tender: {
-                readonly " $fragmentSpreads": FragmentRefs<"tendersTenderListItemFragment">;
+                readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
               };
             } | null | undefined;
           } | null | undefined> | null | undefined;
@@ -144,7 +144,7 @@ const node: ReaderFragment = {
                                   {
                                     "args": null,
                                     "kind": "FragmentSpread",
-                                    "name": "tendersTenderListItemFragment"
+                                    "name": "tenderListItemFragment"
                                   }
                                 ],
                                 "type": "Tender",
@@ -229,6 +229,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "fdb6a0d9e8690660bee00dbbf188b628";
+(node as any).hash = "7ece2500770957ded79ae44cbc00126f";
 
 export default node;

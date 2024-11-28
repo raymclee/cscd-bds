@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c2fcfbf4e3d1646b1e7238058eeba056>>
+ * @generated SignedSource<<942ab427348ab02ccded7b29ff3d8db3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -75,7 +75,7 @@ export type useCreateTenderMutation$data = {
   readonly createTender: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly " $fragmentSpreads": FragmentRefs<"tendersTenderListItemFragment">;
+        readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -180,7 +180,7 @@ return {
                   {
                     "args": null,
                     "kind": "FragmentSpread",
-                    "name": "tendersTenderListItemFragment"
+                    "name": "tenderListItemFragment"
                   }
                 ],
                 "storageKey": null
@@ -334,16 +334,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "cc60e7b5e6b38cc024d21217775ae92f",
+    "cacheID": "250eaffabcb6c0e53abf40658d7c303f",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tendersTenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tendersTenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6684e91dda3e6d7979dfcb94a3472651";
+(node as any).hash = "d70fd5299ce276b665e8a61ec24a22c2";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2e665deb0739f66f3378a6d3be5574c4>>
+ * @generated SignedSource<<b22cf7e2058c40259685f2e4b3e8ba13>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -43,14 +43,25 @@ var v0 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "RootArgument",
+      "name": "orderBy"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "customersVisitRecordListFragment",
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "orderBy",
+          "variableName": "orderBy"
+        }
+      ],
       "concreteType": "VisitRecordConnection",
       "kind": "LinkedField",
       "name": "visitRecords",
@@ -142,6 +153,6 @@ return {
 };
 })();
 
-(node as any).hash = "9dabe53b7e18c412fee47bef88a509c0";
+(node as any).hash = "50442c84733dc4449a240b6e15654cf5";
 
 export default node;

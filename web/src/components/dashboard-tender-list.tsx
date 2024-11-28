@@ -28,7 +28,7 @@ export function DashboardTenderList() {
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        项目例表
+        项目列表
       </CardHeader>
       <CardContent className="h-full px-0 pb-8">
         <ScrollArea className="h-full px-4">

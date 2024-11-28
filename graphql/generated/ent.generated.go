@@ -49,7 +49,7 @@ type QueryResolver interface {
 	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
 	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
 	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error)
-	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
+	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	Session(ctx context.Context) (*model.Session, error)
 }
 type TenderResolver interface {
@@ -1522,22 +1522,22 @@ func (ec *executionContext) field_Customer_visitRecords_argsLast(
 func (ec *executionContext) field_Customer_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -4123,22 +4123,22 @@ func (ec *executionContext) field_Query_visitRecords_argsLast(
 func (ec *executionContext) field_Query_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -4290,22 +4290,22 @@ func (ec *executionContext) field_Tender_visitRecords_argsLast(
 func (ec *executionContext) field_Tender_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -4958,22 +4958,22 @@ func (ec *executionContext) field_User_visitRecords_argsLast(
 func (ec *executionContext) field_User_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -8227,7 +8227,7 @@ func (ec *executionContext) _Customer_visitRecords(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11916,7 +11916,7 @@ func (ec *executionContext) _Query_visitRecords(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().VisitRecords(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return ec.resolvers.Query().VisitRecords(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14949,7 +14949,7 @@ func (ec *executionContext) _Tender_visitRecords(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -16330,7 +16330,7 @@ func (ec *executionContext) _User_visitRecords(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -36062,6 +36062,11 @@ func (ec *executionContext) marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstore�
 	return ec._VisitRecordConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx context.Context, v interface{}) (*ent.VisitRecordOrder, error) {
+	res, err := ec.unmarshalInputVisitRecordOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNVisitRecordOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderField(ctx context.Context, v interface{}) (*ent.VisitRecordOrderField, error) {
 	var res = new(ent.VisitRecordOrderField)
 	err := res.UnmarshalGQL(v)
@@ -37027,12 +37032,24 @@ func (ec *executionContext) marshalOVisitRecordEdge2ᚖcscdᚑbdsᚋstoreᚋent�
 	return ec._VisitRecordEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx context.Context, v interface{}) (*ent.VisitRecordOrder, error) {
+func (ec *executionContext) unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx context.Context, v interface{}) ([]*ent.VisitRecordOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalInputVisitRecordOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*ent.VisitRecordOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOVisitRecordWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.VisitRecordWhereInput, error) {

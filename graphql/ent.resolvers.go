@@ -9,6 +9,7 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
+	"fmt"
 
 	"entgo.io/contrib/entgql"
 )
@@ -69,8 +70,8 @@ func (r *queryResolver) Users(ctx context.Context, after *entgql.Cursor[xid.ID],
 }
 
 // VisitRecords is the resolver for the visitRecords field.
-func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
-	return r.store.VisitRecord.Query().Paginate(ctx, after, first, before, last, ent.WithVisitRecordFilter(where.Filter))
+func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
+	panic(fmt.Errorf("not implemented: VisitRecords - visitRecords"))
 }
 
 // Area returns generated.AreaResolver implementation.

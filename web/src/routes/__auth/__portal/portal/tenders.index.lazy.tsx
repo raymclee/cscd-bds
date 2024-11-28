@@ -1,11 +1,11 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
 import { tendersTenderListFragment$key } from "__generated__/tendersTenderListFragment.graphql";
-import { tendersTenderListItemFragment$key } from "__generated__/tendersTenderListItemFragment.graphql";
 import { App, Button, Form, Input, List, Popconfirm, Tag } from "antd";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
+import { TenderListItem } from "~/components/tender-list-item";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
 import { tenderStatusText } from "~/lib/helper";
 
@@ -61,32 +61,12 @@ export const TendersTenderListFragment = graphql`
               node {
                 id
                 name
-                ...tendersTenderListItemFragment @alias(as: "tender")
+                ...tenderListItemFragment @alias(as: "tender")
               }
             }
           }
         }
       }
-    }
-  }
-`;
-
-const TendersTenderListItemFragment = graphql`
-  fragment tendersTenderListItemFragment on Tender {
-    id
-    name
-    status
-    createdAt
-    estimatedAmount
-    customer {
-      name
-    }
-    images
-    fullAddress
-    tenderDate
-    discoveryDate
-    area {
-      name
     }
   }
 `;
@@ -126,98 +106,18 @@ function TenderList({
           <Button type="primary">新增</Button>
         </Link>
       </div>
-      <List pagination={{ position: "both" }} itemLayout="vertical">
-        {dataSource?.map(
-          (node) =>
-            node?.tender && (
-              <TenderListItem key={node?.id} queryRef={node?.tender} />
-            ),
-        )}
-      </List>
+      {dataSource && dataSource?.length > 0 ? (
+        <List pagination={{ position: "both" }} itemLayout="vertical">
+          {dataSource?.map(
+            (node) =>
+              node?.tender && (
+                <TenderListItem key={node?.id} queryRef={node?.tender} />
+              ),
+          )}
+        </List>
+      ) : (
+        <List />
+      )}
     </div>
-  );
-}
-
-function TenderListItem({
-  queryRef,
-}: {
-  queryRef: tendersTenderListItemFragment$key;
-}) {
-  const item = useFragment(TendersTenderListItemFragment, queryRef);
-
-  return (
-    <List.Item
-      actions={[
-        <Link
-          key="edit-link"
-          to="/portal/tenders/$id"
-          params={{ id: item!.id }}
-        >
-          <Button type="link" size="small" disabled>
-            修改
-          </Button>
-        </Link>,
-        <Link
-          key="draw-link"
-          to="/portal/tenders/$id"
-          params={{ id: item!.id }}
-        >
-          <Button type="link" size="small">
-            地塊
-          </Button>
-        </Link>,
-        <DeleteButton key="delete" id={item?.id} />,
-        // <a key="list-loadmore-more">more</a>,
-      ]}
-      extra={
-        <div className="aspect-[4/3] max-w-[180px]">
-          <img
-            alt={item?.name}
-            className="h-full w-full rounded-lg"
-            src={item?.images?.[0] || ""}
-          />
-        </div>
-      }
-    >
-      {/* <Skeleton avatar title={false} loading={item.loading} active> */}
-      <List.Item.Meta
-        title={<div>{item?.name}</div>}
-        description={item?.fullAddress}
-      />
-      <div>
-        <Tag>{item?.area.name}</Tag>
-        <Tag>{tenderStatusText(item?.status)}</Tag>
-      </div>
-      {/* </Skeleton> */}
-    </List.Item>
-  );
-}
-
-function DeleteButton({ id }: { id?: string }) {
-  const { message } = App.useApp();
-  const [commit, inFlight] = useDeleteTenderMutation();
-  return (
-    <Popconfirm
-      title="确定要删除吗？"
-      onConfirm={() => {
-        if (!id) return;
-        commit({
-          variables: { id },
-          onCompleted() {
-            message.success("删除成功");
-          },
-          onError() {
-            message.error("删除失败");
-          },
-          updater: (store) => {
-            store.delete(id);
-          },
-        });
-      }}
-    >
-      <Button disabled={inFlight} danger type="link" size="small">
-        删除
-      </Button>
-    </Popconfirm>
   );
 }

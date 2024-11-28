@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5e64b3bfcdd02419beba4a805dfc0ba9>>
+ * @generated SignedSource<<8a74b0c70a8c207c0d3cba2c53fbb9a7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,10 +14,8 @@ export type customersTenderListFragment$data = {
   readonly tenders: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly estimatedAmount: number | null | undefined;
         readonly id: string;
-        readonly name: string;
-        readonly status: number;
+        readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -66,25 +64,9 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
-                  "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "status",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "estimatedAmount",
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "tenderListItemFragment"
                 }
               ],
               "storageKey": null
@@ -100,6 +82,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "03185c4a4283c3159ccfb08edb9ea04d";
+(node as any).hash = "83a4f82ef7927178d1b56301e6570d48";
 
 export default node;
