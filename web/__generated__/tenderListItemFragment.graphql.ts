@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<add86e4e5c828a23cb277b0f00eb6f22>>
+ * @generated SignedSource<<ba9fa7547d67c55dab4988c692fdf8cb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type tendersTenderListItemFragment$data = {
+export type tenderListItemFragment$data = {
   readonly area: {
     readonly name: string;
   };
@@ -26,11 +26,11 @@ export type tendersTenderListItemFragment$data = {
   readonly name: string;
   readonly status: number;
   readonly tenderDate: any | null | undefined;
-  readonly " $fragmentType": "tendersTenderListItemFragment";
+  readonly " $fragmentType": "tenderListItemFragment";
 };
-export type tendersTenderListItemFragment$key = {
-  readonly " $data"?: tendersTenderListItemFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"tendersTenderListItemFragment">;
+export type tenderListItemFragment$key = {
+  readonly " $data"?: tenderListItemFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
 };
 
 const node: ReaderFragment = (function(){
@@ -48,7 +48,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "tendersTenderListItemFragment",
+  "name": "tenderListItemFragment",
   "selections": [
     {
       "alias": null,
@@ -133,6 +133,6 @@ return {
 };
 })();
 
-(node as any).hash = "29dad7bfeb23f6e718cb25ee3e10be4b";
+(node as any).hash = "7c9d2c2d1e2df8811432eacc4132b544";
 
 export default node;
