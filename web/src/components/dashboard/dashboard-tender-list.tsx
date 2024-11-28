@@ -5,8 +5,8 @@ import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
 import { useMapStore } from "~/store/map";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { ScrollArea } from "./ui/scroll-area";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { ScrollArea } from "../ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "../ui/table";
 
 export function DashboardTenderList() {
   const navigateToTender = useMapStore((state) => state.navigateToTender);

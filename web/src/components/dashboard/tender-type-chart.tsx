@@ -1,7 +1,7 @@
 import { Pie, PieConfig } from "@ant-design/plots";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 export function TenderTypeChart() {
   const tenders = useAreaTenders();

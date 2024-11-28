@@ -17,7 +17,7 @@ export function useAreaTenders() {
     ?.map((f: any) => f.properties.adcode);
 
   const allTenders =
-    data.areas.edges?.flatMap((e) =>
+    data.node?.areas?.edges?.flatMap((e) =>
       e?.node?.tenders.edges?.map((e) => e?.node),
     ) || [];
 

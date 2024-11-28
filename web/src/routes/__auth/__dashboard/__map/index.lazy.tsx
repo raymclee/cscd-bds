@@ -6,14 +6,14 @@ import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
-import { AmountBoard } from "~/components/amount-board";
-import { DashboardTenderList } from "~/components/dashboard-tender-list";
-import { MapTenderDetail } from "~/components/map-tender-detail";
-import { MapTenderList } from "~/components/map-tender-list";
-import { NewTenderBoard } from "~/components/new-tender-card";
-import { RankingListChart } from "~/components/ranking-list-chart";
-import { TenderStatusList } from "~/components/tender-status-list";
-import { TenderTypeChart } from "~/components/tender-type-chart";
+import { AmountBoard } from "~/components/dashboard/amount-board";
+import { DashboardTenderList } from "~/components/dashboard/dashboard-tender-list";
+import { MapTenderDetail } from "~/components/dashboard/map-tender-detail";
+import { MapTenderList } from "~/components/dashboard/map-tender-list";
+import { NewTenderBoard } from "~/components/dashboard/new-tender-card";
+import { RankingListChart } from "~/components/dashboard/ranking-list-chart";
+import { TenderStatusList } from "~/components/dashboard/tender-status-list";
+import { TenderTypeChart } from "~/components/dashboard/tender-type-chart";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,92 +36,96 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
 });
 
 export const mapIndexPageQuery = graphql`
-  query MapIndexPageQuery {
-    areas {
-      edges {
-        node {
-          id
-          name @required(action: NONE)
-          code
-          createdAt
-          center {
-            coordinates
-          }
-          provinces {
-            edges {
-              node {
-                id
-                name
-                adcode
-                center {
-                  coordinates
+  query MapIndexPageQuery($userId: ID!) {
+    node(id: $userId) {
+      ... on User {
+        areas {
+          edges {
+            node {
+              id
+              name @required(action: NONE)
+              code
+              createdAt
+              center {
+                coordinates
+              }
+              provinces {
+                edges {
+                  node {
+                    id
+                    name
+                    adcode
+                    center {
+                      coordinates
+                    }
+                  }
                 }
               }
-            }
-          }
-          tenders {
-            edges {
-              node {
-                id
-                name
-                status
-                createdAt
-                estimatedAmount
-                customer {
-                  ownerType
-                }
-                images
-                fullAddress
-                tenderDate
-                discoveryDate
-                contractor
-                designUnit
-                tenderForm
-                keyProject
-                contractForm
-                tenderingAgency
-                consultingFirm
-                facadeConsultant
-                contractForm
-                timeLimitRating
-                sizeAndValueRating
-                creditAndPaymentRating
-                customerRelationshipRating
-                competitivePartnershipRating
-                timeLimitRatingOverview
-                sizeAndValueRatingOverview
-                creditAndPaymentRatingOverview
-                customerRelationshipRatingOverview
-                competitivePartnershipRatingOverview
-                area {
-                  name
-                }
-                province {
-                  adcode
-                  name
-                }
-                city {
-                  name
-                  adcode
-                }
-                district {
-                  name
-                  adcode
-                }
-                geoCoordinate {
-                  coordinates
-                }
-                geoBounds
-                visitRecords {
-                  edges {
-                    node {
-                      visitType
-                      nextStep
-                      commPeople
-                      commContent
-                      date
-                      customer {
-                        name
+              tenders {
+                edges {
+                  node {
+                    id
+                    name
+                    status
+                    createdAt
+                    estimatedAmount
+                    customer {
+                      ownerType
+                    }
+                    images
+                    fullAddress
+                    tenderDate
+                    discoveryDate
+                    contractor
+                    designUnit
+                    tenderForm
+                    keyProject
+                    contractForm
+                    tenderingAgency
+                    consultingFirm
+                    facadeConsultant
+                    contractForm
+                    timeLimitRating
+                    sizeAndValueRating
+                    creditAndPaymentRating
+                    customerRelationshipRating
+                    competitivePartnershipRating
+                    timeLimitRatingOverview
+                    sizeAndValueRatingOverview
+                    creditAndPaymentRatingOverview
+                    customerRelationshipRatingOverview
+                    competitivePartnershipRatingOverview
+                    area {
+                      name
+                    }
+                    province {
+                      adcode
+                      name
+                    }
+                    city {
+                      name
+                      adcode
+                    }
+                    district {
+                      name
+                      adcode
+                    }
+                    geoCoordinate {
+                      coordinates
+                    }
+                    geoBounds
+                    visitRecords {
+                      edges {
+                        node {
+                          visitType
+                          nextStep
+                          commPeople
+                          commContent
+                          date
+                          customer {
+                            name
+                          }
+                        }
                       }
                     }
                   }
@@ -193,7 +197,7 @@ function RouteComponent() {
     Route.useLoaderData(),
   );
 
-  const areas = data.areas.edges?.map((e) => e?.node);
+  const areas = data.node?.areas?.edges?.map((e) => e?.node);
 
   React.useEffect(() => {
     map?.on("complete", () => {
@@ -221,7 +225,7 @@ function RouteComponent() {
 
     if (adcode === 100000) {
       const markers: AMap.Marker[] = [];
-      for (const area of data.areas?.edges?.map((e) => e?.node) || []) {
+      for (const area of data.node?.areas?.edges?.map((e) => e?.node) || []) {
         const amount = fixAmount(
           area?.tenders?.edges
             ?.map((e) => e?.node)

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createLazyFileRoute, notFound } from "@tanstack/react-router";
-import { TenderForm } from "~/components/tender-form";
+import { TenderForm } from "~/components/portal/tender-form";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { usePreloadedQuery, graphql } from "react-relay";
 import {

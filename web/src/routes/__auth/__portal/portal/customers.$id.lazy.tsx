@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { customersVisitRecordListFragment$key } from "__generated__/customersVisitRecordListFragment.graphql";
 import { customersTenderListFragment$key } from "__generated__/customersTenderListFragment.graphql";
 import { industryText, ownerTypeText, visitTypeText } from "~/lib/helper";
-import { TenderListItem } from "~/components/tender-list-item";
+import { TenderListItem } from "~/components/portal/tender-list-item";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/customers/$id",
@@ -20,7 +20,7 @@ const query = graphql`
   query customersDetailPageQuery(
     $userId: ID!
     $id: ID!
-    $orderBy: VisitRecordOrder
+    $orderBy: [VisitRecordOrder!]
   ) {
     node(id: $userId) {
       ... on User {

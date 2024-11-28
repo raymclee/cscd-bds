@@ -183,6 +183,8 @@ function pageTitle(pathname: string) {
       return "客户";
     case "visit-records":
       return "拜访记录";
+    case "users":
+      return "用户";
     default:
       return "";
   }

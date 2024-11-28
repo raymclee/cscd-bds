@@ -1,4 +1,9 @@
-import { PlusOutlined, SaveOutlined, StopOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  PlusOutlined,
+  SaveOutlined,
+  StopOutlined,
+} from "@ant-design/icons";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { plotsDeletePlotMutation } from "__generated__/plotsDeletePlotMutation.graphql";
 import { plotsPageQuery } from "__generated__/plotsPageQuery.graphql";
@@ -14,6 +19,7 @@ import {
   Typography,
 } from "antd";
 import { DataNode } from "antd/es/tree";
+import { Loader } from "lucide-react";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
@@ -99,25 +105,6 @@ const query = graphql`
   }
 `;
 
-const createPlotMutation = graphql`
-  mutation plotsCreatePlotMutation(
-    $input: CreatePlotInput!
-    $geoBounds: [[Float!]!]
-    $connections: [ID!]!
-  ) {
-    createPlot(input: $input, geoBounds: $geoBounds) {
-      edges @prependNode(connections: $connections, edgeTypeName: "PlotEdge") {
-        node {
-          id
-          name
-          geoBounds
-          colorHex
-        }
-      }
-    }
-  }
-`;
-
 const updatePlotMutation = graphql`
   mutation plotsUpdatePlotMutation(
     $id: ID!
@@ -173,7 +160,13 @@ function RouteComponent() {
   return (
     <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
       <div id="map" className="absolute inset-0"></div>
-      {isReady && <EditorContainer />}
+      {map || isReady ? (
+        <EditorContainer />
+      ) : (
+        <div className="flex min-h-80 items-center justify-center">
+          <LoadingOutlined className="text-3xl" />
+        </div>
+      )}
     </div>
   );
 }
@@ -250,11 +243,11 @@ function EditorContainer() {
         <Typography.Title level={2}>商机</Typography.Title>
       </div>
       <TreeSelect
-        placeholder="請選擇地區"
+        placeholder="请选择地区"
         value={selectedDistrict ?? undefined}
         variant="outlined"
         treeDefaultExpandAll
-        className="absolute left-4 top-4 w-64"
+        className="absolute left-4 top-4 w-72"
         treeData={treeData}
         onSelect={(value: string, node) => {
           if (!("adcode" in node)) {
@@ -346,7 +339,7 @@ function Editor() {
     <>
       <Modal
         open={open}
-        title="請輸入地塊名稱"
+        title="请输入地块名称"
         okButtonProps={{ autoFocus: true, htmlType: "submit" }}
         onCancel={() => {
           setOpen(false);
@@ -361,7 +354,7 @@ function Editor() {
             clearOnDestroy
             onFinish={(values) => {
               if (!districtID) {
-                message.error("請選擇地區");
+                message.error("请选择地区");
                 return;
               }
               const geoBounds = polygonEditor
@@ -370,7 +363,7 @@ function Editor() {
                 ?.map((item: any) => [item.lng, item.lat]);
 
               if (!geoBounds?.length) {
-                message.error("請繪製地塊");
+                message.error("请绘制地块");
                 return;
               }
 
@@ -393,7 +386,7 @@ function Editor() {
                 },
                 onCompleted: (res) => {
                   endAdding();
-                  message.success("地塊新增成功");
+                  message.success("地块添加成功");
                   res.createPlot.edges?.forEach((edge) => {
                     if (!edge?.node) return;
                     renderPlot(edge.node, commitDeleteMutation);
@@ -404,7 +397,7 @@ function Editor() {
                 onError(error) {
                   console.error(error);
                   message.error({
-                    content: "地塊更新失敗",
+                    content: "地块添加失败",
                     duration: 5,
                   });
                 },
@@ -430,17 +423,17 @@ function Editor() {
         <Form.Item
           className="mt-6"
           name="name"
-          label="名稱"
+          label="名称"
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item label="顏色" name="colorHex" rules={[{ required: true }]}>
+        <Form.Item label="颜色" name="colorHex" rules={[{ required: true }]}>
           <Radio.Group>
             <Radio.Button value="#ffc60a" type="primary">
-              黃色
+              黄色
             </Radio.Button>
-            <Radio.Button value="#32a645">綠色</Radio.Button>
+            <Radio.Button value="#32a645">绿色</Radio.Button>
           </Radio.Group>
         </Form.Item>
       </Modal>
@@ -469,7 +462,7 @@ function Editor() {
 
         {!isEditing && !isAdding && (
           <Button onClick={handleNewClick} icon={<PlusOutlined />}>
-            新增
+            添加地块
           </Button>
         )}
 
@@ -496,7 +489,7 @@ function Editor() {
                     });
                     usePlotStore.getState().polygonEditor?.setTarget(null);
                     usePlotStore.getState().polygonEditor?.close();
-                    message.success("地塊更新成功");
+                    message.success("地块更新成功");
                   },
                 });
               }}

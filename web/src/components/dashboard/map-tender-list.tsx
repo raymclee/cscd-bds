@@ -1,8 +1,8 @@
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { ScrollArea } from "./ui/scroll-area";
-import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { ScrollArea } from "../ui/scroll-area";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ImageOff } from "lucide-react";
 import dayjs from "dayjs";
 import { fixAmount } from "~/lib/helper";
@@ -47,7 +47,7 @@ export function MapTenderList() {
                     className={cn(
                       "flex cursor-pointer items-center gap-x-4 rounded-md p-2 transition-shadow hover:bg-brand/50",
                       (tenderListHovering === i ||
-                        tenderListHovering === tender.id) &&
+                        tenderListHovering === tender?.id) &&
                         "ring ring-white",
                     )}
                     onClick={() => {
@@ -57,21 +57,21 @@ export function MapTenderList() {
                       });
                     }}
                     onMouseEnter={(e) => {
-                      if (tender.geoBounds) {
+                      if (tender?.geoBounds) {
                         const polygon = new AMap.Polygon();
                         polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
                         const bounds = polygon.getBounds();
                         if (bounds) {
                           map?.setCenter(bounds.getCenter(), false, 600);
                         }
-                      } else if (tender.geoCoordinate?.coordinates) {
+                      } else if (tender?.geoCoordinate?.coordinates) {
                         map?.setCenter(
                           tender.geoCoordinate.coordinates as AMap.LngLatLike,
                           false,
                           600,
                         );
                       }
-                      const a = document.querySelector("#marker-" + tender.id);
+                      const a = document.querySelector("#marker-" + tender?.id);
                       const b = a?.closest(".amap-marker-label");
                       if (b instanceof HTMLElement) {
                         b.style.background = "#dc2626";
@@ -79,7 +79,7 @@ export function MapTenderList() {
                       setTenderListHovering(tender?.id || 0);
                     }}
                     onMouseLeave={(e) => {
-                      const a = document.querySelector("#marker-" + tender.id);
+                      const a = document.querySelector("#marker-" + tender?.id);
                       const b = a?.closest(".amap-marker-label");
                       if (b instanceof HTMLElement) {
                         b.style.background = "";

@@ -3108,7 +3108,7 @@ func (f VisitRecordOrderField) String() string {
 	case VisitRecordOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
 	case VisitRecordOrderFieldDate.column:
-		str = "VISIT_DATE"
+		str = "DATE"
 	}
 	return str
 }
@@ -3127,7 +3127,7 @@ func (f *VisitRecordOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *VisitRecordOrderFieldCreatedAt
-	case "VISIT_DATE":
+	case "DATE":
 		*f = *VisitRecordOrderFieldDate
 	default:
 		return fmt.Errorf("%s is not a valid VisitRecordOrderField", str)

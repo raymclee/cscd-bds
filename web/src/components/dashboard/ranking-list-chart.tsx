@@ -1,5 +1,5 @@
 import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import { Tiny } from "@ant-design/plots";
 
 const percent = 25.68;

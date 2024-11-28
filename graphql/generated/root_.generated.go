@@ -6672,7 +6672,7 @@ Properties by which VisitRecord connections can be ordered.
 """
 enum VisitRecordOrderField {
   CREATED_AT
-  VISIT_DATE
+  DATE
 }
 """
 VisitRecordWhereInput is used for filtering VisitRecord objects.

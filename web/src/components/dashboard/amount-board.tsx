@@ -6,8 +6,8 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { Progress } from "./ui/progress";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { Progress } from "../ui/progress";
 
 const statusItems = [
   { status: "跟进中", value: 1 },

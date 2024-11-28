@@ -1,12 +1,12 @@
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { ScrollArea } from "./ui/scroll-area";
-import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { ScrollArea } from "../ui/scroll-area";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ImageOff, Undo2 } from "lucide-react";
 import { fixAmount, ownerTypeText } from "~/lib/helper";
 import dayjs from "dayjs";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { TenderRatingChart } from "./tender-rating-chart";
 
 export function MapTenderDetail() {

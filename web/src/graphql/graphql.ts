@@ -3130,7 +3130,7 @@ export type VisitRecordOrder = {
 /** Properties by which VisitRecord connections can be ordered. */
 export enum VisitRecordOrderField {
   CreatedAt = 'CREATED_AT',
-  VisitDate = 'VISIT_DATE'
+  Date = 'DATE'
 }
 
 /**

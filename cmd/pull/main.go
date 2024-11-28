@@ -54,8 +54,8 @@ func main() {
 	s = store.NewStore()
 
 	// fetchArea()
-	// fetchSales()
-	// fetchCustomer()
+	fetchSales()
+	fetchCustomer()
 	fetchTender()
 	fetchVisitRecord()
 
@@ -1108,9 +1108,11 @@ func fetchCustomer() {
 					area = a
 					break
 				}
-			} else {
-				panic("地区字段不存在")
 			}
+		}
+
+		if area == nil {
+			continue
 		}
 
 		if v, ok := item.Fields["是否重复客户"]; ok {

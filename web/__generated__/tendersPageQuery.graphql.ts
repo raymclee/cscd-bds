@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9fc56a9bb6ccabee68f7ee99c3e5b494>>
+ * @generated SignedSource<<2caac07b2303a4e49b062f2d8f37b231>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type TenderOrder = {
   field: TenderOrderField;
 };
 export type tendersPageQuery$variables = {
+  first?: number | null | undefined;
   orderBy?: TenderOrder | null | undefined;
   userId: string;
 };
@@ -36,57 +37,68 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "orderBy"
+  "name": "first"
 },
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "orderBy"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "userId"
 },
-v2 = [
+v3 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "userId"
   }
 ],
-v3 = [
+v4 = [
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  },
   {
     "kind": "Variable",
     "name": "orderBy",
     "variableName": "orderBy"
   }
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = [
-  (v6/*: any*/),
-  (v5/*: any*/)
+v8 = [
+  (v7/*: any*/),
+  (v6/*: any*/)
 ];
 return {
   "fragment": {
     "argumentDefinitions": [
       (v0/*: any*/),
-      (v1/*: any*/)
+      (v1/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -94,7 +106,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "node",
@@ -108,7 +120,7 @@ return {
                   "kind": "InlineFragment",
                   "selections": [
                     {
-                      "args": (v3/*: any*/),
+                      "args": (v4/*: any*/),
                       "kind": "FragmentSpread",
                       "name": "tendersTenderListFragment"
                     }
@@ -133,6 +145,7 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
+      (v2/*: any*/),
       (v1/*: any*/),
       (v0/*: any*/)
     ],
@@ -141,13 +154,13 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "node",
         "plural": false,
         "selections": [
-          (v4/*: any*/),
+          (v5/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -177,12 +190,19 @@ return {
                         "selections": [
                           {
                             "alias": null,
-                            "args": (v3/*: any*/),
+                            "args": (v4/*: any*/),
                             "concreteType": "TenderConnection",
                             "kind": "LinkedField",
                             "name": "tenders",
                             "plural": false,
                             "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "totalCount",
+                                "storageKey": null
+                              },
                               {
                                 "alias": null,
                                 "args": null,
@@ -199,8 +219,8 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v5/*: any*/),
                                       (v6/*: any*/),
+                                      (v7/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -229,7 +249,7 @@ return {
                                         "kind": "LinkedField",
                                         "name": "customer",
                                         "plural": false,
-                                        "selections": (v7/*: any*/),
+                                        "selections": (v8/*: any*/),
                                         "storageKey": null
                                       },
                                       {
@@ -267,10 +287,10 @@ return {
                                         "kind": "LinkedField",
                                         "name": "area",
                                         "plural": false,
-                                        "selections": (v7/*: any*/),
+                                        "selections": (v8/*: any*/),
                                         "storageKey": null
                                       },
-                                      (v4/*: any*/)
+                                      (v5/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
@@ -328,7 +348,7 @@ return {
                           },
                           {
                             "alias": null,
-                            "args": (v3/*: any*/),
+                            "args": (v4/*: any*/),
                             "filters": [
                               "orderBy"
                             ],
@@ -337,7 +357,7 @@ return {
                             "kind": "LinkedHandle",
                             "name": "tenders"
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -351,23 +371,23 @@ return {
             "type": "User",
             "abstractKey": null
           },
-          (v5/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "b7517dea52ddaf9cc52a5dfeac203b74",
+    "cacheID": "e6b85299c2ad3d464f7d8ab87e558c93",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_7FfCv\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n\nfragment tendersTenderListFragment_7FfCv on User {\n  areas {\n    edges {\n      node {\n        tenders(orderBy: $orderBy) {\n          edges {\n            node {\n              id\n              name\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        tenders(orderBy: $orderBy, first: $first) {\n          totalCount\n          edges {\n            node {\n              id\n              name\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "af36f3a3cdf541532adcb003ac719073";
+(node as any).hash = "8b7c20d8fc7d22983adfdc5d23f47585";
 
 export default node;

@@ -1,25 +1,24 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
 import { tendersTenderListFragment$key } from "__generated__/tendersTenderListFragment.graphql";
-import { App, Button, Form, Input, List, Popconfirm, Tag } from "antd";
+import { Button, Form, Input, List, Pagination } from "antd";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
-import { TenderListItem } from "~/components/tender-list-item";
-import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
-import { tenderStatusText } from "~/lib/helper";
+import { TenderListItem } from "~/components/portal/tender-list-item";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
 });
 
 const query = graphql`
-  query tendersPageQuery($userId: ID!, $orderBy: TenderOrder) {
+  query tendersPageQuery($userId: ID!, $orderBy: TenderOrder, $first: Int) {
     node(id: $userId) {
       ... on User {
         ...tendersTenderListFragment
           @alias(as: "areaTenders")
-          @arguments(orderBy: $orderBy)
+          @arguments(orderBy: $orderBy, first: $first)
       }
     }
   }
@@ -57,6 +56,7 @@ export const TendersTenderListFragment = graphql`
         node {
           tenders(orderBy: $orderBy, first: $first, last: $last)
             @connection(key: "TendersTenderListFragment_tenders") {
+            totalCount
             edges {
               node {
                 id
@@ -77,8 +77,15 @@ function TenderList({
   queryRef?: tendersTenderListFragment$key;
 }) {
   const [searchText, setSearchText] = useState("");
+  const searchParams = Route.useSearch();
+  const navigate = Route.useNavigate();
 
   const data = useFragment(TendersTenderListFragment, queryRef);
+  const totalCount =
+    data?.areas.edges?.reduce(
+      (acc, inc) => acc + (inc?.node?.tenders.totalCount || 0),
+      0,
+    ) ?? 0;
   const dataSource = data?.areas.edges
     ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
     .filter((t) =>
@@ -87,11 +94,11 @@ function TenderList({
   //  data?.areas.edges.map(e => e?.node).map(t => t?.tenders.edges?.map(e => e?.node))
 
   return (
-    <div className="min-h-80 rounded-lg bg-white p-6">
+    <div className="min-h-80">
       {/* <div className="flex items-center justify-between">
     <Typography.Title level={2}>商机</Typography.Title>
   </div> */}
-      <div className="flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <Form.Item noStyle>
           <Input.Search
             className="w-72"
@@ -103,21 +110,23 @@ function TenderList({
           />
         </Form.Item>
         <Link to="/portal/tenders/new">
-          <Button type="primary">新增</Button>
+          <Button type="primary" icon={<Plus size={16} />}>
+            添加商机
+          </Button>
         </Link>
       </div>
-      {dataSource && dataSource?.length > 0 ? (
-        <List pagination={{ position: "both" }} itemLayout="vertical">
-          {dataSource?.map(
-            (node) =>
-              node?.tender && (
-                <TenderListItem key={node?.id} queryRef={node?.tender} />
-              ),
-          )}
-        </List>
-      ) : (
-        <List />
-      )}
+
+      <List
+        pagination={{ position: "both", showSizeChanger: true }}
+        dataSource={dataSource}
+        itemLayout="vertical"
+        className="rounded-lg bg-white px-4 pb-6 pt-px"
+        renderItem={(node) =>
+          node?.tender && (
+            <TenderListItem key={node?.id} queryRef={node?.tender} />
+          )
+        }
+      />
     </div>
   );
 }

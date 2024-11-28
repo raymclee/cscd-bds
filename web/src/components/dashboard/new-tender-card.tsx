@@ -2,7 +2,7 @@ import { Column, ColumnConfig, Tiny } from "@ant-design/plots";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 export function NewTenderBoard() {
   const tenders = useAreaTenders();

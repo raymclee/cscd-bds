@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<96ddc13142b98d2a115bd3b324e02deb>>
+ * @generated SignedSource<<13b4e67c9b2a4adf4a3956facfeba208>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,14 +11,14 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type OrderDirection = "ASC" | "DESC" | "%future added value";
-export type VisitRecordOrderField = "CREATED_AT" | "VISIT_DATE" | "%future added value";
+export type VisitRecordOrderField = "CREATED_AT" | "DATE" | "%future added value";
 export type VisitRecordOrder = {
   direction?: OrderDirection;
   field: VisitRecordOrderField;
 };
 export type customersDetailPageQuery$variables = {
   id: string;
-  orderBy?: VisitRecordOrder | null | undefined;
+  orderBy?: ReadonlyArray<VisitRecordOrder> | null | undefined;
   userId: string;
 };
 export type customersDetailPageQuery$data = {
@@ -724,16 +724,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1a8365de9410705991b0ad1533e76b95",
+    "cacheID": "f240ec7552afce4e96e853596217a29a",
     "id": null,
     "metadata": {},
     "name": "customersDetailPageQuery",
     "operationKind": "query",
-    "text": "query customersDetailPageQuery(\n  $userId: ID!\n  $id: ID!\n  $orderBy: VisitRecordOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers(where: {id: $id}) {\n              edges {\n                node {\n                  id\n                  name\n                  createdBy {\n                    name\n                    id\n                  }\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  contactPerson\n                  contactPersonPosition\n                  contactPersonPhone\n                  contactPersonEmail\n                  sales {\n                    name\n                    id\n                  }\n                  area {\n                    name\n                    id\n                  }\n                  ...customersVisitRecordListFragment\n                  ...customersTenderListFragment\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment customersTenderListFragment on Customer {\n  tenders {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n      }\n    }\n  }\n}\n\nfragment customersVisitRecordListFragment on Customer {\n  visitRecords(orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        date\n        visitType\n        commPeople\n        commContent\n        nextStep\n        tender {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "query customersDetailPageQuery(\n  $userId: ID!\n  $id: ID!\n  $orderBy: [VisitRecordOrder!]\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers(where: {id: $id}) {\n              edges {\n                node {\n                  id\n                  name\n                  createdBy {\n                    name\n                    id\n                  }\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  contactPerson\n                  contactPersonPosition\n                  contactPersonPhone\n                  contactPersonEmail\n                  sales {\n                    name\n                    id\n                  }\n                  area {\n                    name\n                    id\n                  }\n                  ...customersVisitRecordListFragment\n                  ...customersTenderListFragment\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment customersTenderListFragment on Customer {\n  tenders {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n      }\n    }\n  }\n}\n\nfragment customersVisitRecordListFragment on Customer {\n  visitRecords(orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        date\n        visitType\n        commPeople\n        commContent\n        nextStep\n        tender {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "891e0bea259d5ad0da0a2b7a984ccb62";
+(node as any).hash = "15b627a94a19ecb34581d96fad81122f";
 
 export default node;

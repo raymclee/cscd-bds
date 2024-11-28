@@ -1,12 +1,13 @@
 import * as React from "react";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { Button, Table, TableProps, Typography } from "antd";
+import { Button, Form, Input, Table, TableProps, Typography } from "antd";
 import { graphql } from "relay-runtime";
 import { usePreloadedQuery } from "react-relay";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
 import { Customer } from "~/graphql/graphql";
 import dayjs from "dayjs";
 import { industryText, ownerTypeText } from "~/lib/helper";
+import { Plus } from "lucide-react";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/customers/")({
   component: RouteComponent,
@@ -43,6 +44,7 @@ const query = graphql`
 `;
 
 function RouteComponent() {
+  const [searchText, setSearchText] = React.useState("");
   const data = usePreloadedQuery<customersPageQuery>(
     query,
     Route.useLoaderData(),
@@ -50,7 +52,11 @@ function RouteComponent() {
 
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>
-      a?.node?.customers?.edges?.map((c) => c?.node),
+      a?.node?.customers?.edges
+        ?.map((c) => c?.node)
+        .filter((n) =>
+          n?.name.toLowerCase().includes(searchText.toLowerCase()),
+        ),
     ) ?? [];
 
   const columns: TableProps<Partial<Customer>>["columns"] = [
@@ -91,6 +97,23 @@ function RouteComponent() {
 
   return (
     <div className="min-h-80">
+      <div className="mb-4 flex items-center justify-between">
+        <Form.Item noStyle>
+          <Input.Search
+            className="w-72"
+            placeholder="搜索"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            allowClear
+            type="search"
+          />
+        </Form.Item>
+        <Link to="/portal/tenders/new">
+          <Button type="primary" icon={<Plus size={16} />}>
+            添加商机
+          </Button>
+        </Link>
+      </div>
       <Table
         className="rounded-lg"
         pagination={{}}
