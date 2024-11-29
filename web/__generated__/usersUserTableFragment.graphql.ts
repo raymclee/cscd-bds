@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bb3eb5873a5f5e395aac9e83cf267314>>
+ * @generated SignedSource<<772167484e0269d56cae6bc1f55d4de7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -36,6 +36,7 @@ export type usersUserTableFragment$data = {
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
+  readonly " $fragmentSpreads": FragmentRefs<"userFormFragment">;
   readonly " $fragmentType": "usersUserTableFragment";
 };
 export type usersUserTableFragment$key = {
@@ -274,6 +275,11 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "userFormFragment"
     }
   ],
   "type": "Query",
@@ -281,6 +287,6 @@ return {
 };
 })();
 
-(node as any).hash = "28c8e8f107aee94e52a36c7816623ab4";
+(node as any).hash = "a18770870e146fa78156075d260d02e3";
 
 export default node;

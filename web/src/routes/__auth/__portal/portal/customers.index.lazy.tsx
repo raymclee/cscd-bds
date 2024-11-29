@@ -8,6 +8,7 @@ import { Customer } from "~/graphql/graphql";
 import dayjs from "dayjs";
 import { industryText, ownerTypeText, customerSizeText } from "~/lib/helper";
 import { Plus } from "lucide-react";
+import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/customers/")({
   component: RouteComponent,
@@ -51,6 +52,7 @@ function RouteComponent() {
   );
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
+  const { session } = Route.useRouteContext();
 
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>
@@ -103,7 +105,7 @@ function RouteComponent() {
 
   return (
     <div className="min-h-80">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <Form.Item noStyle>
           <Input.Search
             className="w-72"
@@ -114,11 +116,11 @@ function RouteComponent() {
             type="search"
           />
         </Form.Item>
-        {/* <Link to="/portal/tenders/new"> */}
-        <Button type="primary" icon={<Plus size={16} />}>
-          添加商机
-        </Button>
-        {/* </Link> */}
+        {canEdit(session) && (
+          <Button type="primary" icon={<Plus size={16} />}>
+            添加客户
+          </Button>
+        )}
       </div>
       <Table
         className="rounded-lg"

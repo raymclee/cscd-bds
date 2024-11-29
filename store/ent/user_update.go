@@ -95,6 +95,12 @@ func (uu *UserUpdate) SetNillableOpenID(s *string) *UserUpdate {
 	return uu
 }
 
+// ClearOpenID clears the value of the "open_id" field.
+func (uu *UserUpdate) ClearOpenID() *UserUpdate {
+	uu.mutation.ClearOpenID()
+	return uu
+}
+
 // SetAvatarURL sets the "avatar_url" field.
 func (uu *UserUpdate) SetAvatarURL(s string) *UserUpdate {
 	uu.mutation.SetAvatarURL(s)
@@ -106,6 +112,12 @@ func (uu *UserUpdate) SetNillableAvatarURL(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetAvatarURL(*s)
 	}
+	return uu
+}
+
+// ClearAvatarURL clears the value of the "avatar_url" field.
+func (uu *UserUpdate) ClearAvatarURL() *UserUpdate {
+	uu.mutation.ClearAvatarURL()
 	return uu
 }
 
@@ -137,16 +149,30 @@ func (uu *UserUpdate) SetNillableIsAdmin(b *bool) *UserUpdate {
 	return uu
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (uu *UserUpdate) SetIsLeader(b bool) *UserUpdate {
-	uu.mutation.SetIsLeader(b)
+// SetHasMapAccess sets the "has_map_access" field.
+func (uu *UserUpdate) SetHasMapAccess(b bool) *UserUpdate {
+	uu.mutation.SetHasMapAccess(b)
 	return uu
 }
 
-// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableIsLeader(b *bool) *UserUpdate {
+// SetNillableHasMapAccess sets the "has_map_access" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableHasMapAccess(b *bool) *UserUpdate {
 	if b != nil {
-		uu.SetIsLeader(*b)
+		uu.SetHasMapAccess(*b)
+	}
+	return uu
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (uu *UserUpdate) SetIsEditor(b bool) *UserUpdate {
+	uu.mutation.SetIsEditor(b)
+	return uu
+}
+
+// SetNillableIsEditor sets the "is_editor" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsEditor(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsEditor(*b)
 	}
 	return uu
 }
@@ -427,8 +453,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.OpenID(); ok {
 		_spec.SetField(user.FieldOpenID, field.TypeString, value)
 	}
+	if uu.mutation.OpenIDCleared() {
+		_spec.ClearField(user.FieldOpenID, field.TypeString)
+	}
 	if value, ok := uu.mutation.AvatarURL(); ok {
 		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
+	}
+	if uu.mutation.AvatarURLCleared() {
+		_spec.ClearField(user.FieldAvatarURL, field.TypeString)
 	}
 	if value, ok := uu.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
@@ -436,8 +468,11 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
 	}
-	if value, ok := uu.mutation.IsLeader(); ok {
-		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
+	if value, ok := uu.mutation.HasMapAccess(); ok {
+		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
+	}
+	if value, ok := uu.mutation.IsEditor(); ok {
+		_spec.SetField(user.FieldIsEditor, field.TypeBool, value)
 	}
 	if uu.mutation.AreasCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -775,6 +810,12 @@ func (uuo *UserUpdateOne) SetNillableOpenID(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// ClearOpenID clears the value of the "open_id" field.
+func (uuo *UserUpdateOne) ClearOpenID() *UserUpdateOne {
+	uuo.mutation.ClearOpenID()
+	return uuo
+}
+
 // SetAvatarURL sets the "avatar_url" field.
 func (uuo *UserUpdateOne) SetAvatarURL(s string) *UserUpdateOne {
 	uuo.mutation.SetAvatarURL(s)
@@ -786,6 +827,12 @@ func (uuo *UserUpdateOne) SetNillableAvatarURL(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetAvatarURL(*s)
 	}
+	return uuo
+}
+
+// ClearAvatarURL clears the value of the "avatar_url" field.
+func (uuo *UserUpdateOne) ClearAvatarURL() *UserUpdateOne {
+	uuo.mutation.ClearAvatarURL()
 	return uuo
 }
 
@@ -817,16 +864,30 @@ func (uuo *UserUpdateOne) SetNillableIsAdmin(b *bool) *UserUpdateOne {
 	return uuo
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (uuo *UserUpdateOne) SetIsLeader(b bool) *UserUpdateOne {
-	uuo.mutation.SetIsLeader(b)
+// SetHasMapAccess sets the "has_map_access" field.
+func (uuo *UserUpdateOne) SetHasMapAccess(b bool) *UserUpdateOne {
+	uuo.mutation.SetHasMapAccess(b)
 	return uuo
 }
 
-// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableIsLeader(b *bool) *UserUpdateOne {
+// SetNillableHasMapAccess sets the "has_map_access" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableHasMapAccess(b *bool) *UserUpdateOne {
 	if b != nil {
-		uuo.SetIsLeader(*b)
+		uuo.SetHasMapAccess(*b)
+	}
+	return uuo
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (uuo *UserUpdateOne) SetIsEditor(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsEditor(b)
+	return uuo
+}
+
+// SetNillableIsEditor sets the "is_editor" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsEditor(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsEditor(*b)
 	}
 	return uuo
 }
@@ -1137,8 +1198,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.OpenID(); ok {
 		_spec.SetField(user.FieldOpenID, field.TypeString, value)
 	}
+	if uuo.mutation.OpenIDCleared() {
+		_spec.ClearField(user.FieldOpenID, field.TypeString)
+	}
 	if value, ok := uuo.mutation.AvatarURL(); ok {
 		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
+	}
+	if uuo.mutation.AvatarURLCleared() {
+		_spec.ClearField(user.FieldAvatarURL, field.TypeString)
 	}
 	if value, ok := uuo.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
@@ -1146,8 +1213,11 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
 	}
-	if value, ok := uuo.mutation.IsLeader(); ok {
-		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
+	if value, ok := uuo.mutation.HasMapAccess(); ok {
+		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
+	}
+	if value, ok := uuo.mutation.IsEditor(); ok {
+		_spec.SetField(user.FieldIsEditor, field.TypeBool, value)
 	}
 	if uuo.mutation.AreasCleared() {
 		edge := &sqlgraph.EdgeSpec{

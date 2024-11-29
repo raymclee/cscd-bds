@@ -12,7 +12,8 @@ graphql`
       email
       avatarUrl
       isAdmin
-      isLeader
+      isEditor
+      hasMapAccess
     }
   }
 `;
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/__auth")({
       RelayEnvironment,
       node,
       {},
-      { fetchPolicy: "store-or-network" },
+      { fetchPolicy: "store-or-network", networkCacheConfig: { force: true } },
     ).toPromise();
     if (!data?.session) {
       throw redirect({

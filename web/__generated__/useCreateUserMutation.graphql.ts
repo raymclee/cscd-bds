@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2b440d88ce1fd226da543ae85f86c1e0>>
+ * @generated SignedSource<<6ffae489f98d1c200000244e4db52783>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,16 +11,17 @@
 import { ConcreteRequest } from 'relay-runtime';
 export type CreateUserInput = {
   areaIDs?: ReadonlyArray<string> | null | undefined;
-  avatarURL: string;
+  avatarURL?: string | null | undefined;
   createdAt?: any | null | undefined;
   customerIDs?: ReadonlyArray<string> | null | undefined;
   disabled?: boolean | null | undefined;
   email: string;
+  hasMapAccess?: boolean | null | undefined;
   isAdmin?: boolean | null | undefined;
-  isLeader?: boolean | null | undefined;
+  isEditor?: boolean | null | undefined;
   leaderID?: string | null | undefined;
   name: string;
-  openID: string;
+  openID?: string | null | undefined;
   teamMemberIDs?: ReadonlyArray<string> | null | undefined;
   tenderIDs?: ReadonlyArray<string> | null | undefined;
   updatedAt?: any | null | undefined;
@@ -38,14 +39,21 @@ export type useCreateUserMutation$data = {
         readonly areas: {
           readonly edges: ReadonlyArray<{
             readonly node: {
+              readonly id: string;
               readonly name: string;
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
+        readonly avatarURL: string | null | undefined;
+        readonly disabled: boolean;
+        readonly email: string;
+        readonly hasMapAccess: boolean;
         readonly id: string;
         readonly isAdmin: boolean;
-        readonly isLeader: boolean;
+        readonly isEditor: boolean;
         readonly name: string;
+        readonly openID: string | null | undefined;
+        readonly username: string;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -90,15 +98,116 @@ v4 = {
 v5 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "isAdmin",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "isLeader",
+  "concreteType": "UserEdge",
+  "kind": "LinkedField",
+  "name": "edges",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "User",
+      "kind": "LinkedField",
+      "name": "node",
+      "plural": false,
+      "selections": [
+        (v3/*: any*/),
+        (v4/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "email",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "username",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "openID",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "avatarURL",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "disabled",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "AreaConnection",
+          "kind": "LinkedField",
+          "name": "areas",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "AreaEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Area",
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    (v3/*: any*/),
+                    (v4/*: any*/)
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isAdmin",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isEditor",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "hasMapAccess",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -119,66 +228,7 @@ return {
         "name": "createUser",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "UserEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "User",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "AreaConnection",
-                    "kind": "LinkedField",
-                    "name": "areas",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "AreaEdge",
-                        "kind": "LinkedField",
-                        "name": "edges",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Area",
-                            "kind": "LinkedField",
-                            "name": "node",
-                            "plural": false,
-                            "selections": [
-                              (v4/*: any*/)
-                            ],
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  (v5/*: any*/),
-                  (v6/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
@@ -203,72 +253,12 @@ return {
         "name": "createUser",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "UserEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "User",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "AreaConnection",
-                    "kind": "LinkedField",
-                    "name": "areas",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "AreaEdge",
-                        "kind": "LinkedField",
-                        "name": "edges",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Area",
-                            "kind": "LinkedField",
-                            "name": "node",
-                            "plural": false,
-                            "selections": [
-                              (v4/*: any*/),
-                              (v3/*: any*/)
-                            ],
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  (v5/*: any*/),
-                  (v6/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
+          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
             "filters": null,
-            "handle": "appendNode",
+            "handle": "prependNode",
             "key": "",
             "kind": "LinkedHandle",
             "name": "edges",
@@ -291,16 +281,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "635f3156e469c4766f65b7361ef059c6",
+    "cacheID": "758ffb437a4e3617da22015ff897663f",
     "id": null,
     "metadata": {},
     "name": "useCreateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        areas {\n          edges {\n            node {\n              name\n              id\n            }\n          }\n        }\n        isAdmin\n        isLeader\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isAdmin\n        isEditor\n        hasMapAccess\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "bcbcd4de9c2d1e17863faf50f824cb4e";
+(node as any).hash = "be4332b6d632e8917934213559c5a6d0";
 
 export default node;

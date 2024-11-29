@@ -4,7 +4,7 @@ import { graphql } from "relay-runtime";
 const mutation = graphql`
   mutation useDeleteTenderMutation($id: ID!) {
     deleteTender(id: $id) {
-      id
+      id @deleteRecord
     }
   }
 `;

@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import logoImg from "~/assets/logo.jpg";
+import { canEdit } from "~/lib/permission";
 import { cn } from "~/lib/utils";
 import { usePortalStore } from "~/store/portal";
 
@@ -70,11 +71,6 @@ function RouteComponent() {
         <Building2 size={16} />,
       ),
       getItem(
-        <Link to="/portal/plots">区域地块</Link>,
-        "plots",
-        <Map size={16} />,
-      ),
-      getItem(
         <Link to="/portal/customers">客户</Link>,
         "customers",
         <ContactRound size={16} />,
@@ -83,6 +79,16 @@ function RouteComponent() {
     [],
   );
 
+  if (canEdit(session)) {
+    items.push(
+      getItem(
+        <Link to="/portal/plots">区域地块</Link>,
+        "plots",
+        <Map size={16} />,
+      ),
+    );
+  }
+
   if (session.isAdmin) {
     items.push(
       getItem("管理员", "admins", <SlidersHorizontal size={16} />, [
@@ -90,6 +96,11 @@ function RouteComponent() {
           <Link to="/portal/users">用户</Link>,
           "users",
           <Users size={16} />,
+        ),
+        getItem(
+          <Link to="/portal/areas">区域</Link>,
+          "areas",
+          <Map size={16} />,
         ),
       ]),
     );
@@ -159,7 +170,7 @@ function RouteComponent() {
             </Header>
             <Content className="relative m-4">
               {/* <Breadcrumb className="my-4" items={[]} /> */}
-              {/* <div className="my-4 min-h-80 rounded-lg bg-white p-6"> */}
+              {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
               <Outlet />
               {/* </div> */}
             </Content>

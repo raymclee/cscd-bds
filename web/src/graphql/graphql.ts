@@ -578,6 +578,8 @@ export type CreateProvinceInput = {
  */
 export type CreateTenderInput = {
   address?: InputMaybe<Scalars['String']['input']>;
+  /** 則師，只限港澳 */
+  architect?: InputMaybe<Scalars['String']['input']>;
   areaID: Scalars['ID']['input'];
   attachements?: InputMaybe<Array<Scalars['String']['input']>>;
   biddingDate?: InputMaybe<Scalars['Time']['input']>;
@@ -587,6 +589,8 @@ export type CreateTenderInput = {
   competitivePartnershipRating?: InputMaybe<Scalars['Int']['input']>;
   competitivePartnershipRatingOverview?: InputMaybe<Scalars['String']['input']>;
   competitorSituations?: InputMaybe<Scalars['String']['input']>;
+  /** 施工面積，只限港澳 */
+  constructionArea?: InputMaybe<Scalars['String']['input']>;
   consultingFirm?: InputMaybe<Scalars['String']['input']>;
   contractForm?: InputMaybe<Scalars['String']['input']>;
   contractor?: InputMaybe<Scalars['String']['input']>;
@@ -610,6 +614,8 @@ export type CreateTenderInput = {
   fullAddress?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 最後一次投標金額，只限港澳 */
+  lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
   managementCompany?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   ownerSituations?: InputMaybe<Scalars['String']['input']>;
@@ -622,9 +628,17 @@ export type CreateTenderInput = {
   sizeAndValueRating?: InputMaybe<Scalars['Int']['input']>;
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['Int']['input']>;
+  /** 交標日期，只限港澳 */
+  tenderClosingDate?: InputMaybe<Scalars['String']['input']>;
+  /** 投標編號，只限港澳 */
+  tenderCode?: InputMaybe<Scalars['String']['input']>;
   tenderDate?: InputMaybe<Scalars['Time']['input']>;
   tenderForm?: InputMaybe<Scalars['String']['input']>;
   tenderSituations?: InputMaybe<Scalars['String']['input']>;
+  /** 得標金額，只限港澳 */
+  tenderWinAmount?: InputMaybe<Scalars['String']['input']>;
+  /** 得標日期，只限港澳 */
+  tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
   tenderingAgency?: InputMaybe<Scalars['String']['input']>;
   timeLimitRating?: InputMaybe<Scalars['Int']['input']>;
   timeLimitRatingOverview?: InputMaybe<Scalars['String']['input']>;
@@ -638,16 +652,17 @@ export type CreateTenderInput = {
  */
 export type CreateUserInput = {
   areaIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  avatarURL: Scalars['String']['input'];
+  avatarURL?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Time']['input']>;
   customerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email: Scalars['String']['input'];
+  hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
-  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
+  isEditor?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
-  openID: Scalars['String']['input'];
+  openID?: InputMaybe<Scalars['String']['input']>;
   teamMemberIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   tenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
@@ -1160,6 +1175,7 @@ export type Mutation = {
   createUser: UserConnection;
   deletePlot: Plot;
   deleteTender: Tender;
+  deleteUser: User;
   updateArea: Area;
   updatePlot: Plot;
   updateTender: Tender;
@@ -1197,6 +1213,11 @@ export type MutationDeletePlotArgs = {
 
 
 export type MutationDeleteTenderArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -1704,8 +1725,9 @@ export type Session = {
   __typename?: 'Session';
   avatarUrl: Scalars['String']['output'];
   email: Scalars['String']['output'];
+  hasMapAccess: Scalars['Boolean']['output'];
   isAdmin: Scalars['Boolean']['output'];
-  isLeader: Scalars['Boolean']['output'];
+  isEditor: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   userId: Scalars['String']['output'];
   username: Scalars['String']['output'];
@@ -1714,6 +1736,8 @@ export type Session = {
 export type Tender = Node & {
   __typename?: 'Tender';
   address?: Maybe<Scalars['String']['output']>;
+  /** 則師，只限港澳 */
+  architect?: Maybe<Scalars['String']['output']>;
   area: Area;
   areaID: Scalars['ID']['output'];
   attachements?: Maybe<Array<Scalars['String']['output']>>;
@@ -1725,6 +1749,8 @@ export type Tender = Node & {
   competitivePartnershipRating?: Maybe<Scalars['Int']['output']>;
   competitivePartnershipRatingOverview?: Maybe<Scalars['String']['output']>;
   competitorSituations?: Maybe<Scalars['String']['output']>;
+  /** 施工面積，只限港澳 */
+  constructionArea?: Maybe<Scalars['String']['output']>;
   consultingFirm?: Maybe<Scalars['String']['output']>;
   contractForm?: Maybe<Scalars['String']['output']>;
   contractor?: Maybe<Scalars['String']['output']>;
@@ -1755,6 +1781,8 @@ export type Tender = Node & {
   id: Scalars['ID']['output'];
   images?: Maybe<Array<Scalars['String']['output']>>;
   keyProject: Scalars['Boolean']['output'];
+  /** 最後一次投標金額，只限港澳 */
+  lastTenderAmount?: Maybe<Scalars['Float']['output']>;
   managementCompany?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   ownerSituations?: Maybe<Scalars['String']['output']>;
@@ -1768,9 +1796,17 @@ export type Tender = Node & {
   sizeAndValueRating?: Maybe<Scalars['Int']['output']>;
   sizeAndValueRatingOverview?: Maybe<Scalars['String']['output']>;
   status: Scalars['Int']['output'];
+  /** 交標日期，只限港澳 */
+  tenderClosingDate?: Maybe<Scalars['String']['output']>;
+  /** 投標編號，只限港澳 */
+  tenderCode?: Maybe<Scalars['String']['output']>;
   tenderDate?: Maybe<Scalars['Time']['output']>;
   tenderForm?: Maybe<Scalars['String']['output']>;
   tenderSituations?: Maybe<Scalars['String']['output']>;
+  /** 得標金額，只限港澳 */
+  tenderWinAmount?: Maybe<Scalars['String']['output']>;
+  /** 得標日期，只限港澳 */
+  tenderWinDate?: Maybe<Scalars['Time']['output']>;
   tenderingAgency?: Maybe<Scalars['String']['output']>;
   timeLimitRating?: Maybe<Scalars['Int']['output']>;
   timeLimitRatingOverview?: Maybe<Scalars['String']['output']>;
@@ -1844,6 +1880,22 @@ export type TenderWhereInput = {
   addressNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   addressNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   and?: InputMaybe<Array<TenderWhereInput>>;
+  /** architect field predicates */
+  architect?: InputMaybe<Scalars['String']['input']>;
+  architectContains?: InputMaybe<Scalars['String']['input']>;
+  architectContainsFold?: InputMaybe<Scalars['String']['input']>;
+  architectEqualFold?: InputMaybe<Scalars['String']['input']>;
+  architectGT?: InputMaybe<Scalars['String']['input']>;
+  architectGTE?: InputMaybe<Scalars['String']['input']>;
+  architectHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  architectHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  architectIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  architectIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  architectLT?: InputMaybe<Scalars['String']['input']>;
+  architectLTE?: InputMaybe<Scalars['String']['input']>;
+  architectNEQ?: InputMaybe<Scalars['String']['input']>;
+  architectNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  architectNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** area_id field predicates */
   areaID?: InputMaybe<Scalars['ID']['input']>;
   areaIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -1958,6 +2010,22 @@ export type TenderWhereInput = {
   competitorSituationsNEQ?: InputMaybe<Scalars['String']['input']>;
   competitorSituationsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   competitorSituationsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** construction_area field predicates */
+  constructionArea?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaContains?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaContainsFold?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaEqualFold?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaGT?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaGTE?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  constructionAreaIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  constructionAreaLT?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaLTE?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaNEQ?: InputMaybe<Scalars['String']['input']>;
+  constructionAreaNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  constructionAreaNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** consulting_firm field predicates */
   consultingFirm?: InputMaybe<Scalars['String']['input']>;
   consultingFirmContains?: InputMaybe<Scalars['String']['input']>;
@@ -2270,6 +2338,17 @@ export type TenderWhereInput = {
   /** key_project field predicates */
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
   keyProjectNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** last_tender_amount field predicates */
+  lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountGT?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountGTE?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lastTenderAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  lastTenderAmountLT?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountLTE?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
+  lastTenderAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  lastTenderAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** management_company field predicates */
   managementCompany?: InputMaybe<Scalars['String']['input']>;
   managementCompanyContains?: InputMaybe<Scalars['String']['input']>;
@@ -2435,6 +2514,38 @@ export type TenderWhereInput = {
   statusLTE?: InputMaybe<Scalars['Int']['input']>;
   statusNEQ?: InputMaybe<Scalars['Int']['input']>;
   statusNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** tender_closing_date field predicates */
+  tenderClosingDate?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateContains?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateGT?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderClosingDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderClosingDateLT?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDateNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderClosingDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_code field predicates */
+  tenderCode?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeContains?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeGT?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderCodeIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderCodeLT?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderCodeNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderCodeNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** tender_date field predicates */
   tenderDate?: InputMaybe<Scalars['Time']['input']>;
   tenderDateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -2478,6 +2589,33 @@ export type TenderWhereInput = {
   tenderSituationsNEQ?: InputMaybe<Scalars['String']['input']>;
   tenderSituationsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   tenderSituationsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_win_amount field predicates */
+  tenderWinAmount?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountContains?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountGT?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderWinAmountLT?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmountNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_win_date field predicates */
+  tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateGT?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderWinDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderWinDateLT?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  tenderWinDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  tenderWinDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** tendering_agency field predicates */
   tenderingAgency?: InputMaybe<Scalars['String']['input']>;
   tenderingAgencyContains?: InputMaybe<Scalars['String']['input']>;
@@ -2681,12 +2819,15 @@ export type UpdateTenderInput = {
   address?: InputMaybe<Scalars['String']['input']>;
   appendAttachements?: InputMaybe<Array<Scalars['String']['input']>>;
   appendImages?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** 則師，只限港澳 */
+  architect?: InputMaybe<Scalars['String']['input']>;
   areaID?: InputMaybe<Scalars['ID']['input']>;
   attachements?: InputMaybe<Array<Scalars['String']['input']>>;
   biddingDate?: InputMaybe<Scalars['Time']['input']>;
   biddingInstructions?: InputMaybe<Scalars['String']['input']>;
   cityID?: InputMaybe<Scalars['ID']['input']>;
   clearAddress?: InputMaybe<Scalars['Boolean']['input']>;
+  clearArchitect?: InputMaybe<Scalars['Boolean']['input']>;
   clearAttachements?: InputMaybe<Scalars['Boolean']['input']>;
   clearBiddingDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearBiddingInstructions?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2694,6 +2835,7 @@ export type UpdateTenderInput = {
   clearCompetitivePartnershipRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCompetitivePartnershipRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
   clearCompetitorSituations?: InputMaybe<Scalars['Boolean']['input']>;
+  clearConstructionArea?: InputMaybe<Scalars['Boolean']['input']>;
   clearConsultingFirm?: InputMaybe<Scalars['Boolean']['input']>;
   clearContractForm?: InputMaybe<Scalars['Boolean']['input']>;
   clearContractor?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2710,6 +2852,7 @@ export type UpdateTenderInput = {
   clearFollowingSales?: InputMaybe<Scalars['Boolean']['input']>;
   clearFullAddress?: InputMaybe<Scalars['Boolean']['input']>;
   clearImages?: InputMaybe<Scalars['Boolean']['input']>;
+  clearLastTenderAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearManagementCompany?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerSituations?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectCode?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2718,9 +2861,13 @@ export type UpdateTenderInput = {
   clearRemark?: InputMaybe<Scalars['Boolean']['input']>;
   clearSizeAndValueRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearSizeAndValueRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
+  clearTenderClosingDate?: InputMaybe<Scalars['Boolean']['input']>;
+  clearTenderCode?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderForm?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderSituations?: InputMaybe<Scalars['Boolean']['input']>;
+  clearTenderWinAmount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearTenderWinDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderingAgency?: InputMaybe<Scalars['Boolean']['input']>;
   clearTimeLimitRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearTimeLimitRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2729,6 +2876,8 @@ export type UpdateTenderInput = {
   competitivePartnershipRating?: InputMaybe<Scalars['Int']['input']>;
   competitivePartnershipRatingOverview?: InputMaybe<Scalars['String']['input']>;
   competitorSituations?: InputMaybe<Scalars['String']['input']>;
+  /** 施工面積，只限港澳 */
+  constructionArea?: InputMaybe<Scalars['String']['input']>;
   consultingFirm?: InputMaybe<Scalars['String']['input']>;
   contractForm?: InputMaybe<Scalars['String']['input']>;
   contractor?: InputMaybe<Scalars['String']['input']>;
@@ -2750,6 +2899,8 @@ export type UpdateTenderInput = {
   fullAddress?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 最後一次投標金額，只限港澳 */
+  lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
   managementCompany?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   ownerSituations?: InputMaybe<Scalars['String']['input']>;
@@ -2764,9 +2915,17 @@ export type UpdateTenderInput = {
   sizeAndValueRating?: InputMaybe<Scalars['Int']['input']>;
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['Int']['input']>;
+  /** 交標日期，只限港澳 */
+  tenderClosingDate?: InputMaybe<Scalars['String']['input']>;
+  /** 投標編號，只限港澳 */
+  tenderCode?: InputMaybe<Scalars['String']['input']>;
   tenderDate?: InputMaybe<Scalars['Time']['input']>;
   tenderForm?: InputMaybe<Scalars['String']['input']>;
   tenderSituations?: InputMaybe<Scalars['String']['input']>;
+  /** 得標金額，只限港澳 */
+  tenderWinAmount?: InputMaybe<Scalars['String']['input']>;
+  /** 得標日期，只限港澳 */
+  tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
   tenderingAgency?: InputMaybe<Scalars['String']['input']>;
   timeLimitRating?: InputMaybe<Scalars['Int']['input']>;
   timeLimitRatingOverview?: InputMaybe<Scalars['String']['input']>;
@@ -2785,15 +2944,18 @@ export type UpdateUserInput = {
   addVisitRecordIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   avatarURL?: InputMaybe<Scalars['String']['input']>;
   clearAreas?: InputMaybe<Scalars['Boolean']['input']>;
+  clearAvatarURL?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomers?: InputMaybe<Scalars['Boolean']['input']>;
   clearLeader?: InputMaybe<Scalars['Boolean']['input']>;
+  clearOpenID?: InputMaybe<Scalars['Boolean']['input']>;
   clearTeamMembers?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenders?: InputMaybe<Scalars['Boolean']['input']>;
   clearVisitRecords?: InputMaybe<Scalars['Boolean']['input']>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
-  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
+  isEditor?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -2830,18 +2992,19 @@ export type UpdateVisitRecordInput = {
 export type User = Node & {
   __typename?: 'User';
   areas: AreaConnection;
-  avatarURL: Scalars['String']['output'];
+  avatarURL?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Time']['output'];
   customers: CustomerConnection;
   disabled: Scalars['Boolean']['output'];
   email: Scalars['String']['output'];
+  hasMapAccess: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   isAdmin: Scalars['Boolean']['output'];
-  isLeader: Scalars['Boolean']['output'];
+  isEditor: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
   name: Scalars['String']['output'];
-  openID: Scalars['String']['output'];
+  openID?: Maybe<Scalars['String']['output']>;
   teamMembers?: Maybe<Array<User>>;
   tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
@@ -2938,10 +3101,12 @@ export type UserWhereInput = {
   avatarURLHasPrefix?: InputMaybe<Scalars['String']['input']>;
   avatarURLHasSuffix?: InputMaybe<Scalars['String']['input']>;
   avatarURLIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  avatarURLIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   avatarURLLT?: InputMaybe<Scalars['String']['input']>;
   avatarURLLTE?: InputMaybe<Scalars['String']['input']>;
   avatarURLNEQ?: InputMaybe<Scalars['String']['input']>;
   avatarURLNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  avatarURLNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** created_at field predicates */
   createdAt?: InputMaybe<Scalars['Time']['input']>;
   createdAtGT?: InputMaybe<Scalars['Time']['input']>;
@@ -2977,6 +3142,9 @@ export type UserWhereInput = {
   /** leader edge predicates */
   hasLeader?: InputMaybe<Scalars['Boolean']['input']>;
   hasLeaderWith?: InputMaybe<Array<UserWhereInput>>;
+  /** has_map_access field predicates */
+  hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
+  hasMapAccessNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** team_members edge predicates */
   hasTeamMembers?: InputMaybe<Scalars['Boolean']['input']>;
   hasTeamMembersWith?: InputMaybe<Array<UserWhereInput>>;
@@ -2998,9 +3166,9 @@ export type UserWhereInput = {
   /** is_admin field predicates */
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
-  /** is_leader field predicates */
-  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
-  isLeaderNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_editor field predicates */
+  isEditor?: InputMaybe<Scalars['Boolean']['input']>;
+  isEditorNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** leader_id field predicates */
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   leaderIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -3042,10 +3210,12 @@ export type UserWhereInput = {
   openIDHasPrefix?: InputMaybe<Scalars['String']['input']>;
   openIDHasSuffix?: InputMaybe<Scalars['String']['input']>;
   openIDIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  openIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   openIDLT?: InputMaybe<Scalars['String']['input']>;
   openIDLTE?: InputMaybe<Scalars['String']['input']>;
   openIDNEQ?: InputMaybe<Scalars['String']['input']>;
   openIDNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  openIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   or?: InputMaybe<Array<UserWhereInput>>;
   /** updated_at field predicates */
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
@@ -3288,7 +3458,7 @@ export type UseCreateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, isAdmin: boolean, isLeader: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', name: string } | null } | null> | null } } | null } | null> | null } };
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, isAdmin: boolean, isEditor: boolean, hasMapAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', name: string } | null } | null> | null } } | null } | null> | null } };
 
 export type UseDeleteTenderMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3296,6 +3466,21 @@ export type UseDeleteTenderMutationMutationVariables = Exact<{
 
 
 export type UseDeleteTenderMutationMutation = { __typename?: 'Mutation', deleteTender: { __typename?: 'Tender', id: string } };
+
+export type UseDeleteUserMutationMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type UseDeleteUserMutationMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: string } };
+
+export type UseUpdateUserMutationMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateUserInput;
+}>;
+
+
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isEditor: boolean, hasMapAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -3341,7 +3526,8 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
           }
         }
         isAdmin
-        isLeader
+        isEditor
+        hasMapAccess
       }
     }
   }
@@ -3350,7 +3536,38 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
 export const UseDeleteTenderMutationDocument = new TypedDocumentString(`
     mutation useDeleteTenderMutation($id: ID!) {
   deleteTender(id: $id) {
-    id
+    id @deleteRecord
   }
 }
     `) as unknown as TypedDocumentString<UseDeleteTenderMutationMutation, UseDeleteTenderMutationMutationVariables>;
+export const UseDeleteUserMutationDocument = new TypedDocumentString(`
+    mutation useDeleteUserMutation($id: ID!) {
+  deleteUser(id: $id) {
+    id @deleteRecord
+  }
+}
+    `) as unknown as TypedDocumentString<UseDeleteUserMutationMutation, UseDeleteUserMutationMutationVariables>;
+export const UseUpdateUserMutationDocument = new TypedDocumentString(`
+    mutation useUpdateUserMutation($id: ID!, $input: UpdateUserInput!) {
+  updateUser(id: $id, input: $input) {
+    id
+    name
+    email
+    username
+    openID
+    avatarURL
+    disabled
+    areas {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    isAdmin
+    isEditor
+    hasMapAccess
+  }
+}
+    `) as unknown as TypedDocumentString<UseUpdateUserMutationMutation, UseUpdateUserMutationMutationVariables>;

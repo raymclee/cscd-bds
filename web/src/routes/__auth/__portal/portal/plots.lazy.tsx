@@ -15,6 +15,7 @@ import {
   Input,
   Modal,
   Radio,
+  Spin,
   TreeSelect,
   Typography,
 } from "antd";
@@ -134,13 +135,14 @@ function RouteComponent() {
   const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
-    initMap("map", {});
+    initMap("map", {
+      layers: [AMap.createDefaultLayer(), new AMap.TileLayer.Satellite()],
+    });
   }, []);
 
   React.useEffect(() => {
     map?.on("complete", () => {
       setIsReady(true);
-      map.addLayer(new AMap.TileLayer.Satellite());
       usePlotStore.setState({ polygonEditor: new AMap.PolygonEditor(map) });
     });
 
@@ -164,7 +166,7 @@ function RouteComponent() {
         <EditorContainer />
       ) : (
         <div className="flex min-h-80 items-center justify-center">
-          <LoadingOutlined className="text-3xl" />
+          <Spin />
         </div>
       )}
     </div>
@@ -308,6 +310,7 @@ function Editor() {
 
   function handleNewClick() {
     if (!districtID) {
+      message.destroy();
       message.error("請選擇地區");
       return;
     }
@@ -372,8 +375,6 @@ function Editor() {
                 "PlotsPageQuery_plots",
               );
 
-              console.log(connectionID);
-
               commitCreateMutation({
                 variables: {
                   input: {
@@ -401,18 +402,6 @@ function Editor() {
                     duration: 5,
                   });
                 },
-                // updater(store, data) {
-                //   if (!data?.createPlot) return;
-
-                //   const node = store.get(districtID);
-                //   if (!node) return;
-                //   const plots = node.getLinkedRecords("plots");
-                //   if (!plots) return;
-                //   const newPlotRecord = store.get(data.createPlot.id);
-                //   if (newPlotRecord) {
-                //     node.setLinkedRecords([...plots, newPlotRecord], "plots");
-                //   }
-                // },
               });
             }}
           >
@@ -446,6 +435,7 @@ function Editor() {
               onClick={() => {
                 setOpen(true);
               }}
+              loading={isCreateMutationInFlight}
             >
               存储
             </Button>
@@ -470,6 +460,7 @@ function Editor() {
           <>
             <Button
               icon={<SaveOutlined />}
+              loading={isUpdateMutationInFlight}
               onClick={async () => {
                 const { polygonEditor, selectedPlot } = usePlotStore.getState();
                 const geoBounds = polygonEditor

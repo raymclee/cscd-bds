@@ -8,19 +8,27 @@ export function useCreateUser() {
       $connections: [ID!]!
     ) {
       createUser(input: $input) {
-        edges @appendNode(connections: $connections, edgeTypeName: "UserEdge") {
+        edges
+          @prependNode(connections: $connections, edgeTypeName: "UserEdge") {
           node {
             id
             name
+            email
+            username
+            openID
+            avatarURL
+            disabled
             areas {
               edges {
                 node {
+                  id
                   name
                 }
               }
             }
             isAdmin
-            isLeader
+            isEditor
+            hasMapAccess
           }
         }
       }

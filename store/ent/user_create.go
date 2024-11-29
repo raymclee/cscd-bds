@@ -80,9 +80,25 @@ func (uc *UserCreate) SetOpenID(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableOpenID sets the "open_id" field if the given value is not nil.
+func (uc *UserCreate) SetNillableOpenID(s *string) *UserCreate {
+	if s != nil {
+		uc.SetOpenID(*s)
+	}
+	return uc
+}
+
 // SetAvatarURL sets the "avatar_url" field.
 func (uc *UserCreate) SetAvatarURL(s string) *UserCreate {
 	uc.mutation.SetAvatarURL(s)
+	return uc
+}
+
+// SetNillableAvatarURL sets the "avatar_url" field if the given value is not nil.
+func (uc *UserCreate) SetNillableAvatarURL(s *string) *UserCreate {
+	if s != nil {
+		uc.SetAvatarURL(*s)
+	}
 	return uc
 }
 
@@ -114,16 +130,30 @@ func (uc *UserCreate) SetNillableIsAdmin(b *bool) *UserCreate {
 	return uc
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (uc *UserCreate) SetIsLeader(b bool) *UserCreate {
-	uc.mutation.SetIsLeader(b)
+// SetHasMapAccess sets the "has_map_access" field.
+func (uc *UserCreate) SetHasMapAccess(b bool) *UserCreate {
+	uc.mutation.SetHasMapAccess(b)
 	return uc
 }
 
-// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
-func (uc *UserCreate) SetNillableIsLeader(b *bool) *UserCreate {
+// SetNillableHasMapAccess sets the "has_map_access" field if the given value is not nil.
+func (uc *UserCreate) SetNillableHasMapAccess(b *bool) *UserCreate {
 	if b != nil {
-		uc.SetIsLeader(*b)
+		uc.SetHasMapAccess(*b)
+	}
+	return uc
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (uc *UserCreate) SetIsEditor(b bool) *UserCreate {
+	uc.mutation.SetIsEditor(b)
+	return uc
+}
+
+// SetNillableIsEditor sets the "is_editor" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsEditor(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetIsEditor(*b)
 	}
 	return uc
 }
@@ -287,9 +317,13 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultIsAdmin
 		uc.mutation.SetIsAdmin(v)
 	}
-	if _, ok := uc.mutation.IsLeader(); !ok {
-		v := user.DefaultIsLeader
-		uc.mutation.SetIsLeader(v)
+	if _, ok := uc.mutation.HasMapAccess(); !ok {
+		v := user.DefaultHasMapAccess
+		uc.mutation.SetHasMapAccess(v)
+	}
+	if _, ok := uc.mutation.IsEditor(); !ok {
+		v := user.DefaultIsEditor
+		uc.mutation.SetIsEditor(v)
 	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
@@ -314,20 +348,17 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
 	}
-	if _, ok := uc.mutation.OpenID(); !ok {
-		return &ValidationError{Name: "open_id", err: errors.New(`ent: missing required field "User.open_id"`)}
-	}
-	if _, ok := uc.mutation.AvatarURL(); !ok {
-		return &ValidationError{Name: "avatar_url", err: errors.New(`ent: missing required field "User.avatar_url"`)}
-	}
 	if _, ok := uc.mutation.Disabled(); !ok {
 		return &ValidationError{Name: "disabled", err: errors.New(`ent: missing required field "User.disabled"`)}
 	}
 	if _, ok := uc.mutation.IsAdmin(); !ok {
 		return &ValidationError{Name: "is_admin", err: errors.New(`ent: missing required field "User.is_admin"`)}
 	}
-	if _, ok := uc.mutation.IsLeader(); !ok {
-		return &ValidationError{Name: "is_leader", err: errors.New(`ent: missing required field "User.is_leader"`)}
+	if _, ok := uc.mutation.HasMapAccess(); !ok {
+		return &ValidationError{Name: "has_map_access", err: errors.New(`ent: missing required field "User.has_map_access"`)}
+	}
+	if _, ok := uc.mutation.IsEditor(); !ok {
+		return &ValidationError{Name: "is_editor", err: errors.New(`ent: missing required field "User.is_editor"`)}
 	}
 	return nil
 }
@@ -401,9 +432,13 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
 		_node.IsAdmin = value
 	}
-	if value, ok := uc.mutation.IsLeader(); ok {
-		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
-		_node.IsLeader = value
+	if value, ok := uc.mutation.HasMapAccess(); ok {
+		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
+		_node.HasMapAccess = value
+	}
+	if value, ok := uc.mutation.IsEditor(); ok {
+		_spec.SetField(user.FieldIsEditor, field.TypeBool, value)
+		_node.IsEditor = value
 	}
 	if nodes := uc.mutation.AreasIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -614,6 +649,12 @@ func (u *UserUpsert) UpdateOpenID() *UserUpsert {
 	return u
 }
 
+// ClearOpenID clears the value of the "open_id" field.
+func (u *UserUpsert) ClearOpenID() *UserUpsert {
+	u.SetNull(user.FieldOpenID)
+	return u
+}
+
 // SetAvatarURL sets the "avatar_url" field.
 func (u *UserUpsert) SetAvatarURL(v string) *UserUpsert {
 	u.Set(user.FieldAvatarURL, v)
@@ -623,6 +664,12 @@ func (u *UserUpsert) SetAvatarURL(v string) *UserUpsert {
 // UpdateAvatarURL sets the "avatar_url" field to the value that was provided on create.
 func (u *UserUpsert) UpdateAvatarURL() *UserUpsert {
 	u.SetExcluded(user.FieldAvatarURL)
+	return u
+}
+
+// ClearAvatarURL clears the value of the "avatar_url" field.
+func (u *UserUpsert) ClearAvatarURL() *UserUpsert {
+	u.SetNull(user.FieldAvatarURL)
 	return u
 }
 
@@ -650,15 +697,27 @@ func (u *UserUpsert) UpdateIsAdmin() *UserUpsert {
 	return u
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (u *UserUpsert) SetIsLeader(v bool) *UserUpsert {
-	u.Set(user.FieldIsLeader, v)
+// SetHasMapAccess sets the "has_map_access" field.
+func (u *UserUpsert) SetHasMapAccess(v bool) *UserUpsert {
+	u.Set(user.FieldHasMapAccess, v)
 	return u
 }
 
-// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
-func (u *UserUpsert) UpdateIsLeader() *UserUpsert {
-	u.SetExcluded(user.FieldIsLeader)
+// UpdateHasMapAccess sets the "has_map_access" field to the value that was provided on create.
+func (u *UserUpsert) UpdateHasMapAccess() *UserUpsert {
+	u.SetExcluded(user.FieldHasMapAccess)
+	return u
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (u *UserUpsert) SetIsEditor(v bool) *UserUpsert {
+	u.Set(user.FieldIsEditor, v)
+	return u
+}
+
+// UpdateIsEditor sets the "is_editor" field to the value that was provided on create.
+func (u *UserUpsert) UpdateIsEditor() *UserUpsert {
+	u.SetExcluded(user.FieldIsEditor)
 	return u
 }
 
@@ -801,6 +860,13 @@ func (u *UserUpsertOne) UpdateOpenID() *UserUpsertOne {
 	})
 }
 
+// ClearOpenID clears the value of the "open_id" field.
+func (u *UserUpsertOne) ClearOpenID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearOpenID()
+	})
+}
+
 // SetAvatarURL sets the "avatar_url" field.
 func (u *UserUpsertOne) SetAvatarURL(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
@@ -812,6 +878,13 @@ func (u *UserUpsertOne) SetAvatarURL(v string) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateAvatarURL() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateAvatarURL()
+	})
+}
+
+// ClearAvatarURL clears the value of the "avatar_url" field.
+func (u *UserUpsertOne) ClearAvatarURL() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearAvatarURL()
 	})
 }
 
@@ -843,17 +916,31 @@ func (u *UserUpsertOne) UpdateIsAdmin() *UserUpsertOne {
 	})
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (u *UserUpsertOne) SetIsLeader(v bool) *UserUpsertOne {
+// SetHasMapAccess sets the "has_map_access" field.
+func (u *UserUpsertOne) SetHasMapAccess(v bool) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetIsLeader(v)
+		s.SetHasMapAccess(v)
 	})
 }
 
-// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateIsLeader() *UserUpsertOne {
+// UpdateHasMapAccess sets the "has_map_access" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateHasMapAccess() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsLeader()
+		s.UpdateHasMapAccess()
+	})
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (u *UserUpsertOne) SetIsEditor(v bool) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsEditor(v)
+	})
+}
+
+// UpdateIsEditor sets the "is_editor" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateIsEditor() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsEditor()
 	})
 }
 
@@ -1166,6 +1253,13 @@ func (u *UserUpsertBulk) UpdateOpenID() *UserUpsertBulk {
 	})
 }
 
+// ClearOpenID clears the value of the "open_id" field.
+func (u *UserUpsertBulk) ClearOpenID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearOpenID()
+	})
+}
+
 // SetAvatarURL sets the "avatar_url" field.
 func (u *UserUpsertBulk) SetAvatarURL(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
@@ -1177,6 +1271,13 @@ func (u *UserUpsertBulk) SetAvatarURL(v string) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateAvatarURL() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateAvatarURL()
+	})
+}
+
+// ClearAvatarURL clears the value of the "avatar_url" field.
+func (u *UserUpsertBulk) ClearAvatarURL() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearAvatarURL()
 	})
 }
 
@@ -1208,17 +1309,31 @@ func (u *UserUpsertBulk) UpdateIsAdmin() *UserUpsertBulk {
 	})
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (u *UserUpsertBulk) SetIsLeader(v bool) *UserUpsertBulk {
+// SetHasMapAccess sets the "has_map_access" field.
+func (u *UserUpsertBulk) SetHasMapAccess(v bool) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetIsLeader(v)
+		s.SetHasMapAccess(v)
 	})
 }
 
-// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateIsLeader() *UserUpsertBulk {
+// UpdateHasMapAccess sets the "has_map_access" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateHasMapAccess() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsLeader()
+		s.UpdateHasMapAccess()
+	})
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (u *UserUpsertBulk) SetIsEditor(v bool) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsEditor(v)
+	})
+}
+
+// UpdateIsEditor sets the "is_editor" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateIsEditor() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsEditor()
 	})
 }
 

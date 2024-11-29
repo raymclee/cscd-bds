@@ -3,11 +3,26 @@ import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { graphql } from "relay-runtime";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
-import { Button, Drawer, Form, Input, Space, Table, TableProps } from "antd";
+import {
+  App,
+  Button,
+  Drawer,
+  Form,
+  Input,
+  Popconfirm,
+  Space,
+  Table,
+  TableProps,
+} from "antd";
 import { User } from "~/graphql/graphql";
 import { Plus } from "lucide-react";
 import { UserForm } from "~/components/portal/user-form";
 import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
+import { useDeleteUser } from "~/hooks/use-delete-user";
+import {
+  usersUserTableFragment$data,
+  usersUserTableFragment$key,
+} from "__generated__/usersUserTableFragment.graphql";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/__admin/users",
@@ -17,41 +32,59 @@ export const Route = createLazyFileRoute(
 
 const query = graphql`
   query usersPageQuery($first: Int, $last: Int) {
-    users(first: $first, last: $last) @connection(key: "usersPageQuery_users") {
-      __id
-      edges {
-        node {
-          id
-          name
-          email
-          username
-          openID
-          avatarURL
-          disabled
-          areas {
-            edges {
-              node {
-                id
-                name
-              }
-            }
-          }
-          isAdmin
-          isLeader
-        }
-      }
-    }
-
-    ...userFormFragment
+    ...usersUserTableFragment
   }
 `;
 
 function RouteComponent() {
-  const [searchText, setSearchText] = React.useState("");
   const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData());
+  return <UserTable queryRef={data} />;
+}
+
+function UserTable({ queryRef }: { queryRef: usersUserTableFragment$key }) {
+  const [searchText, setSearchText] = React.useState("");
+  // const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData());
+  const data = useFragment(
+    graphql`
+      fragment usersUserTableFragment on Query {
+        users(first: $first, last: $last)
+          @connection(key: "usersPageQuery_users") {
+          __id
+          edges {
+            node {
+              id
+              name
+              email
+              username
+              openID
+              avatarURL
+              disabled
+              areas {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+              isAdmin
+              isEditor
+              hasMapAccess
+            }
+          }
+        }
+
+        ...userFormFragment
+      }
+    `,
+    queryRef,
+  );
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+  const [commitDeleteUser, isDeleteUserInFlight] = useDeleteUser();
+  const { message } = App.useApp();
+  const { session } = Route.useRouteContext();
 
   const dataSource =
     data.users.edges
@@ -82,14 +115,51 @@ function RouteComponent() {
           : "无",
     },
     {
-      dataIndex: "isLeader",
+      dataIndex: "hasMapAccess",
       title: "大地图",
-      render: (isLeader, record) => (record.isAdmin || isLeader ? "是" : "否"),
+      render: (hasMapAccess, record) =>
+        record.isAdmin || hasMapAccess ? "是" : "否",
+    },
+    {
+      dataIndex: "isEditor",
+      title: "编辑",
+      render: (isEditor, record) => (record.isAdmin || isEditor ? "是" : "否"),
     },
     {
       dataIndex: "isAdmin",
       title: "管理员",
       render: (isAdmin) => (isAdmin ? "是" : "否"),
+    },
+    {
+      title: "操作",
+      render: (_, record) => (
+        <Popconfirm
+          title="确定删除吗？"
+          onConfirm={() => {
+            commitDeleteUser({
+              variables: { id: record.id },
+              onCompleted() {
+                message.success("删除成功");
+              },
+              onError(error) {
+                console.error(error);
+                message.error(`删除失败`);
+              },
+            });
+          }}
+        >
+          <Button
+            type="link"
+            size="small"
+            danger
+            className="-ml-2"
+            disabled={session?.userId === record.id}
+            loading={isDeleteUserInFlight}
+          >
+            删除
+          </Button>
+        </Popconfirm>
+      ),
     },
   ];
 
@@ -159,10 +229,10 @@ function UserFormDrawer({
         icon={<Plus size={16} />}
         onClick={() => setOpen(true)}
       >
-        添加商机
+        添加用户
       </Button>
       <Drawer
-        title="添加用户"
+        title={selectedUser ? "编辑用户" : "添加用户"}
         open={open || !!selectedUser}
         onClose={onClose}
         width={480}

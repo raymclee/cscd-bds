@@ -818,6 +818,34 @@ input CreateTenderInput {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  """
+  則師，只限港澳
+  """
+  architect: String
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: String
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  """
+  得標金額，只限港澳
+  """
+  tenderWinAmount: String
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
   areaID: ID!
   customerID: ID!
   finderID: ID!
@@ -838,11 +866,12 @@ input CreateUserInput {
   name: String!
   email: String!
   username: String!
-  openID: String!
-  avatarURL: String!
+  openID: String
+  avatarURL: String
   disabled: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  hasMapAccess: Boolean
+  isEditor: Boolean
   areaIDs: [ID!]
   customerIDs: [ID!]
   leaderID: ID
@@ -2369,6 +2398,34 @@ type Tender implements Node {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean!
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  """
+  則師，只限港澳
+  """
+  architect: String
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: String
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  """
+  得標金額，只限港澳
+  """
+  tenderWinAmount: String
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
   areaID: ID!
   provinceID: ID!
   cityID: ID
@@ -3134,6 +3191,122 @@ input TenderWhereInput {
   keyProject: Boolean
   keyProjectNEQ: Boolean
   """
+  tender_code field predicates
+  """
+  tenderCode: String
+  tenderCodeNEQ: String
+  tenderCodeIn: [String!]
+  tenderCodeNotIn: [String!]
+  tenderCodeGT: String
+  tenderCodeGTE: String
+  tenderCodeLT: String
+  tenderCodeLTE: String
+  tenderCodeContains: String
+  tenderCodeHasPrefix: String
+  tenderCodeHasSuffix: String
+  tenderCodeIsNil: Boolean
+  tenderCodeNotNil: Boolean
+  tenderCodeEqualFold: String
+  tenderCodeContainsFold: String
+  """
+  architect field predicates
+  """
+  architect: String
+  architectNEQ: String
+  architectIn: [String!]
+  architectNotIn: [String!]
+  architectGT: String
+  architectGTE: String
+  architectLT: String
+  architectLTE: String
+  architectContains: String
+  architectHasPrefix: String
+  architectHasSuffix: String
+  architectIsNil: Boolean
+  architectNotNil: Boolean
+  architectEqualFold: String
+  architectContainsFold: String
+  """
+  tender_closing_date field predicates
+  """
+  tenderClosingDate: String
+  tenderClosingDateNEQ: String
+  tenderClosingDateIn: [String!]
+  tenderClosingDateNotIn: [String!]
+  tenderClosingDateGT: String
+  tenderClosingDateGTE: String
+  tenderClosingDateLT: String
+  tenderClosingDateLTE: String
+  tenderClosingDateContains: String
+  tenderClosingDateHasPrefix: String
+  tenderClosingDateHasSuffix: String
+  tenderClosingDateIsNil: Boolean
+  tenderClosingDateNotNil: Boolean
+  tenderClosingDateEqualFold: String
+  tenderClosingDateContainsFold: String
+  """
+  construction_area field predicates
+  """
+  constructionArea: String
+  constructionAreaNEQ: String
+  constructionAreaIn: [String!]
+  constructionAreaNotIn: [String!]
+  constructionAreaGT: String
+  constructionAreaGTE: String
+  constructionAreaLT: String
+  constructionAreaLTE: String
+  constructionAreaContains: String
+  constructionAreaHasPrefix: String
+  constructionAreaHasSuffix: String
+  constructionAreaIsNil: Boolean
+  constructionAreaNotNil: Boolean
+  constructionAreaEqualFold: String
+  constructionAreaContainsFold: String
+  """
+  tender_win_date field predicates
+  """
+  tenderWinDate: Time
+  tenderWinDateNEQ: Time
+  tenderWinDateIn: [Time!]
+  tenderWinDateNotIn: [Time!]
+  tenderWinDateGT: Time
+  tenderWinDateGTE: Time
+  tenderWinDateLT: Time
+  tenderWinDateLTE: Time
+  tenderWinDateIsNil: Boolean
+  tenderWinDateNotNil: Boolean
+  """
+  tender_win_amount field predicates
+  """
+  tenderWinAmount: String
+  tenderWinAmountNEQ: String
+  tenderWinAmountIn: [String!]
+  tenderWinAmountNotIn: [String!]
+  tenderWinAmountGT: String
+  tenderWinAmountGTE: String
+  tenderWinAmountLT: String
+  tenderWinAmountLTE: String
+  tenderWinAmountContains: String
+  tenderWinAmountHasPrefix: String
+  tenderWinAmountHasSuffix: String
+  tenderWinAmountIsNil: Boolean
+  tenderWinAmountNotNil: Boolean
+  tenderWinAmountEqualFold: String
+  tenderWinAmountContainsFold: String
+  """
+  last_tender_amount field predicates
+  """
+  lastTenderAmount: Float
+  lastTenderAmountNEQ: Float
+  lastTenderAmountIn: [Float!]
+  lastTenderAmountNotIn: [Float!]
+  lastTenderAmountGT: Float
+  lastTenderAmountGTE: Float
+  lastTenderAmountLT: Float
+  lastTenderAmountLTE: Float
+  lastTenderAmountIsNil: Boolean
+  lastTenderAmountNotNil: Boolean
+  """
   area_id field predicates
   """
   areaID: ID
@@ -3511,6 +3684,41 @@ input UpdateTenderInput {
   consultingFirm: String
   clearConsultingFirm: Boolean
   keyProject: Boolean
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  clearTenderCode: Boolean
+  """
+  則師，只限港澳
+  """
+  architect: String
+  clearArchitect: Boolean
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: String
+  clearTenderClosingDate: Boolean
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  clearConstructionArea: Boolean
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  clearTenderWinDate: Boolean
+  """
+  得標金額，只限港澳
+  """
+  tenderWinAmount: String
+  clearTenderWinAmount: Boolean
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
+  clearLastTenderAmount: Boolean
   areaID: ID
   customerID: ID
   finderID: ID
@@ -3536,10 +3744,13 @@ input UpdateUserInput {
   email: String
   username: String
   openID: String
+  clearOpenID: Boolean
   avatarURL: String
+  clearAvatarURL: Boolean
   disabled: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  hasMapAccess: Boolean
+  isEditor: Boolean
   addAreaIDs: [ID!]
   removeAreaIDs: [ID!]
   clearAreas: Boolean
@@ -3585,11 +3796,12 @@ type User implements Node {
   name: String!
   email: String!
   username: String!
-  openID: String!
-  avatarURL: String!
+  openID: String
+  avatarURL: String
   disabled: Boolean!
   isAdmin: Boolean!
-  isLeader: Boolean!
+  hasMapAccess: Boolean!
+  isEditor: Boolean!
   leaderID: ID
   areas(
     """
@@ -3870,6 +4082,8 @@ input UserWhereInput {
   openIDContains: String
   openIDHasPrefix: String
   openIDHasSuffix: String
+  openIDIsNil: Boolean
+  openIDNotNil: Boolean
   openIDEqualFold: String
   openIDContainsFold: String
   """
@@ -3886,6 +4100,8 @@ input UserWhereInput {
   avatarURLContains: String
   avatarURLHasPrefix: String
   avatarURLHasSuffix: String
+  avatarURLIsNil: Boolean
+  avatarURLNotNil: Boolean
   avatarURLEqualFold: String
   avatarURLContainsFold: String
   """
@@ -3899,10 +4115,15 @@ input UserWhereInput {
   isAdmin: Boolean
   isAdminNEQ: Boolean
   """
-  is_leader field predicates
+  has_map_access field predicates
   """
-  isLeader: Boolean
-  isLeaderNEQ: Boolean
+  hasMapAccess: Boolean
+  hasMapAccessNEQ: Boolean
+  """
+  is_editor field predicates
+  """
+  isEditor: Boolean
+  isEditorNEQ: Boolean
   """
   leader_id field predicates
   """

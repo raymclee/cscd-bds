@@ -28,11 +28,12 @@ func (User) Fields() []ent.Field {
 		field.String("name"),
 		field.String("email").Unique(),
 		field.String("username").Unique(),
-		field.String("open_id").Unique(),
-		field.String("avatar_url"),
+		field.String("open_id").Unique().Optional(),
+		field.String("avatar_url").Optional(),
 		field.Bool("disabled").Default(false),
 		field.Bool("is_admin").Default(false),
-		field.Bool("is_leader").Default(false),
+		field.Bool("has_map_access").Default(false),
+		field.Bool("is_editor").Default(false),
 
 		field.String("leader_id").
 			GoType(xid.ID("")).

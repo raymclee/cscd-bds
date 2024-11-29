@@ -107,6 +107,20 @@ const (
 	FieldConsultingFirm = "consulting_firm"
 	// FieldKeyProject holds the string denoting the key_project field in the database.
 	FieldKeyProject = "key_project"
+	// FieldTenderCode holds the string denoting the tender_code field in the database.
+	FieldTenderCode = "tender_code"
+	// FieldArchitect holds the string denoting the architect field in the database.
+	FieldArchitect = "architect"
+	// FieldTenderClosingDate holds the string denoting the tender_closing_date field in the database.
+	FieldTenderClosingDate = "tender_closing_date"
+	// FieldConstructionArea holds the string denoting the construction_area field in the database.
+	FieldConstructionArea = "construction_area"
+	// FieldTenderWinDate holds the string denoting the tender_win_date field in the database.
+	FieldTenderWinDate = "tender_win_date"
+	// FieldTenderWinAmount holds the string denoting the tender_win_amount field in the database.
+	FieldTenderWinAmount = "tender_win_amount"
+	// FieldLastTenderAmount holds the string denoting the last_tender_amount field in the database.
+	FieldLastTenderAmount = "last_tender_amount"
 	// FieldAreaID holds the string denoting the area_id field in the database.
 	FieldAreaID = "area_id"
 	// FieldProvinceID holds the string denoting the province_id field in the database.
@@ -253,6 +267,13 @@ var Columns = []string{
 	FieldDesignUnit,
 	FieldConsultingFirm,
 	FieldKeyProject,
+	FieldTenderCode,
+	FieldArchitect,
+	FieldTenderClosingDate,
+	FieldConstructionArea,
+	FieldTenderWinDate,
+	FieldTenderWinAmount,
+	FieldLastTenderAmount,
 	FieldAreaID,
 	FieldProvinceID,
 	FieldCityID,
@@ -526,6 +547,41 @@ func ByConsultingFirm(opts ...sql.OrderTermOption) OrderOption {
 // ByKeyProject orders the results by the key_project field.
 func ByKeyProject(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldKeyProject, opts...).ToFunc()
+}
+
+// ByTenderCode orders the results by the tender_code field.
+func ByTenderCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderCode, opts...).ToFunc()
+}
+
+// ByArchitect orders the results by the architect field.
+func ByArchitect(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldArchitect, opts...).ToFunc()
+}
+
+// ByTenderClosingDate orders the results by the tender_closing_date field.
+func ByTenderClosingDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderClosingDate, opts...).ToFunc()
+}
+
+// ByConstructionArea orders the results by the construction_area field.
+func ByConstructionArea(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldConstructionArea, opts...).ToFunc()
+}
+
+// ByTenderWinDate orders the results by the tender_win_date field.
+func ByTenderWinDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderWinDate, opts...).ToFunc()
+}
+
+// ByTenderWinAmount orders the results by the tender_win_amount field.
+func ByTenderWinAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderWinAmount, opts...).ToFunc()
+}
+
+// ByLastTenderAmount orders the results by the last_tender_amount field.
+func ByLastTenderAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastTenderAmount, opts...).ToFunc()
 }
 
 // ByAreaID orders the results by the area_id field.

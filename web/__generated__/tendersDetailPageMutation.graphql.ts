@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<77edeff767e35f832b7760c43d831d66>>
+ * @generated SignedSource<<d9f63bea66a7bb02246fd2531f5ce4ce>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,12 +15,14 @@ export type UpdateTenderInput = {
   address?: string | null | undefined;
   appendAttachements?: ReadonlyArray<string> | null | undefined;
   appendImages?: ReadonlyArray<string> | null | undefined;
+  architect?: string | null | undefined;
   areaID?: string | null | undefined;
   attachements?: ReadonlyArray<string> | null | undefined;
   biddingDate?: any | null | undefined;
   biddingInstructions?: string | null | undefined;
   cityID?: string | null | undefined;
   clearAddress?: boolean | null | undefined;
+  clearArchitect?: boolean | null | undefined;
   clearAttachements?: boolean | null | undefined;
   clearBiddingDate?: boolean | null | undefined;
   clearBiddingInstructions?: boolean | null | undefined;
@@ -28,6 +30,7 @@ export type UpdateTenderInput = {
   clearCompetitivePartnershipRating?: boolean | null | undefined;
   clearCompetitivePartnershipRatingOverview?: boolean | null | undefined;
   clearCompetitorSituations?: boolean | null | undefined;
+  clearConstructionArea?: boolean | null | undefined;
   clearConsultingFirm?: boolean | null | undefined;
   clearContractForm?: boolean | null | undefined;
   clearContractor?: boolean | null | undefined;
@@ -44,6 +47,7 @@ export type UpdateTenderInput = {
   clearFollowingSales?: boolean | null | undefined;
   clearFullAddress?: boolean | null | undefined;
   clearImages?: boolean | null | undefined;
+  clearLastTenderAmount?: boolean | null | undefined;
   clearManagementCompany?: boolean | null | undefined;
   clearOwnerSituations?: boolean | null | undefined;
   clearProjectCode?: boolean | null | undefined;
@@ -52,9 +56,13 @@ export type UpdateTenderInput = {
   clearRemark?: boolean | null | undefined;
   clearSizeAndValueRating?: boolean | null | undefined;
   clearSizeAndValueRatingOverview?: boolean | null | undefined;
+  clearTenderClosingDate?: boolean | null | undefined;
+  clearTenderCode?: boolean | null | undefined;
   clearTenderDate?: boolean | null | undefined;
   clearTenderForm?: boolean | null | undefined;
   clearTenderSituations?: boolean | null | undefined;
+  clearTenderWinAmount?: boolean | null | undefined;
+  clearTenderWinDate?: boolean | null | undefined;
   clearTenderingAgency?: boolean | null | undefined;
   clearTimeLimitRating?: boolean | null | undefined;
   clearTimeLimitRatingOverview?: boolean | null | undefined;
@@ -63,6 +71,7 @@ export type UpdateTenderInput = {
   competitivePartnershipRating?: number | null | undefined;
   competitivePartnershipRatingOverview?: string | null | undefined;
   competitorSituations?: string | null | undefined;
+  constructionArea?: string | null | undefined;
   consultingFirm?: string | null | undefined;
   contractForm?: string | null | undefined;
   contractor?: string | null | undefined;
@@ -84,6 +93,7 @@ export type UpdateTenderInput = {
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
   keyProject?: boolean | null | undefined;
+  lastTenderAmount?: number | null | undefined;
   managementCompany?: string | null | undefined;
   name?: string | null | undefined;
   ownerSituations?: string | null | undefined;
@@ -98,9 +108,13 @@ export type UpdateTenderInput = {
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;
   status?: number | null | undefined;
+  tenderClosingDate?: string | null | undefined;
+  tenderCode?: string | null | undefined;
   tenderDate?: any | null | undefined;
   tenderForm?: string | null | undefined;
   tenderSituations?: string | null | undefined;
+  tenderWinAmount?: string | null | undefined;
+  tenderWinDate?: any | null | undefined;
   tenderingAgency?: string | null | undefined;
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;

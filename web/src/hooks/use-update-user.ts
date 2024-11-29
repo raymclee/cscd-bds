@@ -21,7 +21,8 @@ export function useUpdateUser() {
           }
         }
         isAdmin
-        isLeader
+        isEditor
+        hasMapAccess
       }
     }
   `);

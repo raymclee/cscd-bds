@@ -5,6 +5,8 @@ import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
 import { tenderStatusText } from "~/lib/helper";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { ImageOff } from "lucide-react";
 
 export function TenderListItem({
   queryRef,
@@ -37,20 +39,12 @@ export function TenderListItem({
   return (
     <List.Item
       actions={[
-        <Link
-          key="edit-link"
-          to="/portal/tenders/$id"
-          params={{ id: item!.id }}
-        >
+        <Link key="edit-link" to="/portal/tenders/$id" params={{ id: item.id }}>
           <Button type="link" size="small" disabled>
             修改
           </Button>
         </Link>,
-        <Link
-          key="draw-link"
-          to="/portal/tenders/$id"
-          params={{ id: item!.id }}
-        >
+        <Link key="draw-link" to="/portal/tenders/$id" params={{ id: item.id }}>
           <Button type="link" size="small">
             地塊
           </Button>
@@ -59,12 +53,32 @@ export function TenderListItem({
         // <a key="list-loadmore-more">more</a>,
       ]}
       extra={
-        <div className="aspect-[4/3] max-w-[180px]">
-          <img
+        <div className="aspect-[16/9] max-w-[280px]">
+          {/* <img
             alt={item?.name}
-            className="h-full w-full rounded-lg"
+            className="w-full h-full rounded-lg"
             src={item?.images?.[0] || ""}
-          />
+          /> */}
+          {item?.images && item?.images?.length > 0 ? (
+            <Carousel>
+              <CarouselContent>
+                {item?.images?.map((image, i) => (
+                  <CarouselItem key={[item.id, "image", i].join("-")}>
+                    <img
+                      src={image}
+                      className="aspect-[16/9] rounded-lg"
+                      alt={item?.name}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          ) : (
+            <div className="flex aspect-[16/9] h-full w-[280px] flex-col items-center justify-center rounded-lg bg-gray-100">
+              <ImageOff className="w-12 h-12 mb-2" />
+              暂没图片
+            </div>
+          )}
         </div>
       }
     >
@@ -97,9 +111,6 @@ function DeleteButton({ id }: { id?: string }) {
           },
           onError() {
             message.error("删除失败");
-          },
-          updater: (store) => {
-            store.delete(id);
           },
         });
       }}

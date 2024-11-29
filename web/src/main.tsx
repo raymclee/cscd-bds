@@ -21,6 +21,8 @@ const router = createRouter({
     RelayEnvironment,
   },
   defaultPreloadStaleTime: 0,
+  // defaultPendingMs: 5000,
+  // defaultPendingMinMs: 5000,
 });
 
 // Register things for typesafety

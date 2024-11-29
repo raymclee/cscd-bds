@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<942ab427348ab02ccded7b29ff3d8db3>>
+ * @generated SignedSource<<d52d16c9da00ffadb106645f463dd1ed>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type CreateTenderInput = {
   address?: string | null | undefined;
+  architect?: string | null | undefined;
   areaID: string;
   attachements?: ReadonlyArray<string> | null | undefined;
   biddingDate?: any | null | undefined;
@@ -21,6 +22,7 @@ export type CreateTenderInput = {
   competitivePartnershipRating?: number | null | undefined;
   competitivePartnershipRatingOverview?: string | null | undefined;
   competitorSituations?: string | null | undefined;
+  constructionArea?: string | null | undefined;
   consultingFirm?: string | null | undefined;
   contractForm?: string | null | undefined;
   contractor?: string | null | undefined;
@@ -44,6 +46,7 @@ export type CreateTenderInput = {
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
   keyProject?: boolean | null | undefined;
+  lastTenderAmount?: number | null | undefined;
   managementCompany?: string | null | undefined;
   name: string;
   ownerSituations?: string | null | undefined;
@@ -56,9 +59,13 @@ export type CreateTenderInput = {
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;
   status?: number | null | undefined;
+  tenderClosingDate?: string | null | undefined;
+  tenderCode?: string | null | undefined;
   tenderDate?: any | null | undefined;
   tenderForm?: string | null | undefined;
   tenderSituations?: string | null | undefined;
+  tenderWinAmount?: string | null | undefined;
+  tenderWinDate?: any | null | undefined;
   tenderingAgency?: string | null | undefined;
   timeLimitRating?: number | null | undefined;
   timeLimitRatingOverview?: string | null | undefined;

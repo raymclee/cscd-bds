@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a29bffab28026f91ea9f139cd611d4c4>>
+ * @generated SignedSource<<e03da008372e0facd70b0f620ebd217e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -22,7 +22,6 @@ export type tendersTenderListFragment$data = {
               readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
             } | null | undefined;
           } | null | undefined> | null | undefined;
-          readonly totalCount: number;
         };
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -106,13 +105,6 @@ const node: ReaderFragment = {
                   "name": "__TendersTenderListFragment_tenders_connection",
                   "plural": false,
                   "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "totalCount",
-                      "storageKey": null
-                    },
                     {
                       "alias": null,
                       "args": null,
@@ -224,6 +216,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "094a36e4c3bf32ee3252779c9a9317a1";
+(node as any).hash = "f2927ba10cd533630d19499dd20b84e5";
 
 export default node;

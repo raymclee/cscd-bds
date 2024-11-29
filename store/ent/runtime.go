@@ -317,10 +317,14 @@ func init() {
 	userDescIsAdmin := userFields[6].Descriptor()
 	// user.DefaultIsAdmin holds the default value on creation for the is_admin field.
 	user.DefaultIsAdmin = userDescIsAdmin.Default.(bool)
-	// userDescIsLeader is the schema descriptor for is_leader field.
-	userDescIsLeader := userFields[7].Descriptor()
-	// user.DefaultIsLeader holds the default value on creation for the is_leader field.
-	user.DefaultIsLeader = userDescIsLeader.Default.(bool)
+	// userDescHasMapAccess is the schema descriptor for has_map_access field.
+	userDescHasMapAccess := userFields[7].Descriptor()
+	// user.DefaultHasMapAccess holds the default value on creation for the has_map_access field.
+	user.DefaultHasMapAccess = userDescHasMapAccess.Default.(bool)
+	// userDescIsEditor is the schema descriptor for is_editor field.
+	userDescIsEditor := userFields[8].Descriptor()
+	// user.DefaultIsEditor holds the default value on creation for the is_editor field.
+	user.DefaultIsEditor = userDescIsEditor.Default.(bool)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

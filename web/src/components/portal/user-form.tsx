@@ -3,17 +3,13 @@ import {
   useCreateUserMutation$variables,
 } from "__generated__/useCreateUserMutation.graphql";
 import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
-import {
-  UpdateUserInput,
-  useUpdateUserMutation$variables,
-} from "__generated__/useUpdateUserMutation.graphql";
+import { useUpdateUserMutation$variables } from "__generated__/useUpdateUserMutation.graphql";
 import { App, Button, Form, Input, Select, Space, Switch } from "antd";
 import { useEffect } from "react";
 import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
-import { FixedToolbar } from "./fixed-toolbar";
 
 export function UserForm({
   onClose,
@@ -60,7 +56,8 @@ export function UserForm({
         areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
         disabled: selectedUser.disabled,
         isAdmin: selectedUser.isAdmin,
-        isLeader: selectedUser.isLeader,
+        isEditor: selectedUser.isEditor,
+        hasMapAccess: selectedUser.hasMapAccess,
       });
     }
   }, [selectedUser]);
@@ -68,7 +65,7 @@ export function UserForm({
   return (
     <div className="h-full">
       <Form
-        className="relative h-full"
+        className="relative pb-16"
         form={form}
         layout="vertical"
         disabled={isCreateUserInFlight}
@@ -94,12 +91,50 @@ export function UserForm({
               },
             });
           } else {
+            console.log(
+              ConnectionHandler.getConnectionID("root", "usersPageQuery_users"),
+            );
             commitCreateUser({
               variables: {
                 input: values as CreateUserInput,
                 connections: [connectionID],
               },
+              // updater: (store) => {
+              //   const payload = store.getRootField("createUser");
+              //   const newUser = payload?.getLinkedRecord("edges");
+              //   console.log({ payload, newUser });
+
+              //   if (!newUser) return;
+
+              //   // Get the connection using ConnectionHandler
+              //   const connectionRecord = store.get(connectionID);
+              //   if (!connectionRecord) return;
+
+              //   // Create the edge with a stable ID
+              //   const userId = newUser.getDataID();
+              //   const edgeId = `client:${connectionID}:${userId}`;
+
+              //   const edge = store.create(edgeId, "UserEdge");
+              //   edge.setLinkedRecord(newUser, "node");
+
+              //   // Get existing edges
+              //   const existingEdges =
+              //     connectionRecord.getLinkedRecords("edges") || [];
+
+              //   // Append the new edge
+              //   connectionRecord.setLinkedRecords(
+              //     [...existingEdges, edge],
+              //     "edges",
+              //   );
+
+              //   // Update the total count if it exists
+              //   const count = connectionRecord.getValue("totalCount");
+              //   if (typeof count === "number") {
+              //     connectionRecord.setValue(count + 1, "totalCount");
+              //   }
+              // },
               onCompleted(response, errors) {
+                console.log(response);
                 message.success("添加成功");
                 onClose();
               },
@@ -119,7 +154,7 @@ export function UserForm({
         <Form.Item name="username" label="用户名" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="openID" label="中海通ID" rules={[{ required: true }]}>
+        <Form.Item name="openID" label="中海通ID">
           <Input />
         </Form.Item>
         <Form.Item name="avatarURL" label="头像URL">
@@ -140,7 +175,10 @@ export function UserForm({
         <Form.Item name="isAdmin" label="管理员">
           <Switch />
         </Form.Item>
-        <Form.Item name="isLeader" label="领导">
+        <Form.Item name="isEditor" label="可编辑" valuePropName="checked">
+          <Switch />
+        </Form.Item>
+        <Form.Item name="hasMapAccess" label="地图权限">
           <Switch />
         </Form.Item>
       </Form>

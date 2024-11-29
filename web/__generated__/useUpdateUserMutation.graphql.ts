@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1f1266cf6141769800993c8c878bea2e>>
+ * @generated SignedSource<<74acf706f49ad7fe8f5fba4259487232>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,15 +17,18 @@ export type UpdateUserInput = {
   addVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
   avatarURL?: string | null | undefined;
   clearAreas?: boolean | null | undefined;
+  clearAvatarURL?: boolean | null | undefined;
   clearCustomers?: boolean | null | undefined;
   clearLeader?: boolean | null | undefined;
+  clearOpenID?: boolean | null | undefined;
   clearTeamMembers?: boolean | null | undefined;
   clearTenders?: boolean | null | undefined;
   clearVisitRecords?: boolean | null | undefined;
   disabled?: boolean | null | undefined;
   email?: string | null | undefined;
+  hasMapAccess?: boolean | null | undefined;
   isAdmin?: boolean | null | undefined;
-  isLeader?: boolean | null | undefined;
+  isEditor?: boolean | null | undefined;
   leaderID?: string | null | undefined;
   name?: string | null | undefined;
   openID?: string | null | undefined;
@@ -51,14 +54,15 @@ export type useUpdateUserMutation$data = {
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
-    readonly avatarURL: string;
+    readonly avatarURL: string | null | undefined;
     readonly disabled: boolean;
     readonly email: string;
+    readonly hasMapAccess: boolean;
     readonly id: string;
     readonly isAdmin: boolean;
-    readonly isLeader: boolean;
+    readonly isEditor: boolean;
     readonly name: string;
-    readonly openID: string;
+    readonly openID: string | null | undefined;
     readonly username: string;
   };
 };
@@ -197,7 +201,14 @@ v3 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "isLeader",
+        "name": "isEditor",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "hasMapAccess",
         "storageKey": null
       }
     ],
@@ -222,16 +233,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "de12727f59257a2ff7a9c367ab68e178",
+    "cacheID": "2a2018a278dc91a08d3aa9f1a48671f4",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    isLeader\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    isEditor\n    hasMapAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d54680315bbc4c9c778166501190fa83";
+(node as any).hash = "63023de038d5fa269249bdadcbaf259e";
 
 export default node;

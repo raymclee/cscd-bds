@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<faeaa53e47d00fa4139b75d3eb660766>>
+ * @generated SignedSource<<d1cc5de04900c8eac3766002a7de1a11>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,37 +32,38 @@ var v0 = [
 ],
 v1 = [
   {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "id"
-      }
-    ],
-    "concreteType": "Tender",
-    "kind": "LinkedField",
-    "name": "deleteTender",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "useDeleteTenderMutation",
-    "selections": (v1/*: any*/),
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Tender",
+        "kind": "LinkedField",
+        "name": "deleteTender",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/)
+        ],
+        "storageKey": null
+      }
+    ],
     "type": "Mutation",
     "abstractKey": null
   },
@@ -71,7 +72,29 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useDeleteTenderMutation",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Tender",
+        "kind": "LinkedField",
+        "name": "deleteTender",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "deleteRecord",
+            "key": "",
+            "kind": "ScalarHandle",
+            "name": "id"
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
     "cacheID": "64bbb7fde8cc5e20b44dc83881133a1b",
@@ -84,6 +107,6 @@ return {
 };
 })();
 
-(node as any).hash = "797a0dc698973a1b636f12b79ee30d65";
+(node as any).hash = "304c898c48cfd35e8a4ff3c30ce779a2";
 
 export default node;

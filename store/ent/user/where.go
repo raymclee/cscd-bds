@@ -101,9 +101,14 @@ func IsAdmin(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldIsAdmin, v))
 }
 
-// IsLeader applies equality check predicate on the "is_leader" field. It's identical to IsLeaderEQ.
-func IsLeader(v bool) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldIsLeader, v))
+// HasMapAccess applies equality check predicate on the "has_map_access" field. It's identical to HasMapAccessEQ.
+func HasMapAccess(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldHasMapAccess, v))
+}
+
+// IsEditor applies equality check predicate on the "is_editor" field. It's identical to IsEditorEQ.
+func IsEditor(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsEditor, v))
 }
 
 // LeaderID applies equality check predicate on the "leader_id" field. It's identical to LeaderIDEQ.
@@ -441,6 +446,16 @@ func OpenIDHasSuffix(v string) predicate.User {
 	return predicate.User(sql.FieldHasSuffix(FieldOpenID, v))
 }
 
+// OpenIDIsNil applies the IsNil predicate on the "open_id" field.
+func OpenIDIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldOpenID))
+}
+
+// OpenIDNotNil applies the NotNil predicate on the "open_id" field.
+func OpenIDNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldOpenID))
+}
+
 // OpenIDEqualFold applies the EqualFold predicate on the "open_id" field.
 func OpenIDEqualFold(v string) predicate.User {
 	return predicate.User(sql.FieldEqualFold(FieldOpenID, v))
@@ -506,6 +521,16 @@ func AvatarURLHasSuffix(v string) predicate.User {
 	return predicate.User(sql.FieldHasSuffix(FieldAvatarURL, v))
 }
 
+// AvatarURLIsNil applies the IsNil predicate on the "avatar_url" field.
+func AvatarURLIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldAvatarURL))
+}
+
+// AvatarURLNotNil applies the NotNil predicate on the "avatar_url" field.
+func AvatarURLNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldAvatarURL))
+}
+
 // AvatarURLEqualFold applies the EqualFold predicate on the "avatar_url" field.
 func AvatarURLEqualFold(v string) predicate.User {
 	return predicate.User(sql.FieldEqualFold(FieldAvatarURL, v))
@@ -536,14 +561,24 @@ func IsAdminNEQ(v bool) predicate.User {
 	return predicate.User(sql.FieldNEQ(FieldIsAdmin, v))
 }
 
-// IsLeaderEQ applies the EQ predicate on the "is_leader" field.
-func IsLeaderEQ(v bool) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldIsLeader, v))
+// HasMapAccessEQ applies the EQ predicate on the "has_map_access" field.
+func HasMapAccessEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldHasMapAccess, v))
 }
 
-// IsLeaderNEQ applies the NEQ predicate on the "is_leader" field.
-func IsLeaderNEQ(v bool) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldIsLeader, v))
+// HasMapAccessNEQ applies the NEQ predicate on the "has_map_access" field.
+func HasMapAccessNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldHasMapAccess, v))
+}
+
+// IsEditorEQ applies the EQ predicate on the "is_editor" field.
+func IsEditorEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsEditor, v))
+}
+
+// IsEditorNEQ applies the NEQ predicate on the "is_editor" field.
+func IsEditorNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldIsEditor, v))
 }
 
 // LeaderIDEQ applies the EQ predicate on the "leader_id" field.

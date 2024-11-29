@@ -923,6 +923,153 @@ func (tu *TenderUpdate) SetNillableKeyProject(b *bool) *TenderUpdate {
 	return tu
 }
 
+// SetTenderCode sets the "tender_code" field.
+func (tu *TenderUpdate) SetTenderCode(s string) *TenderUpdate {
+	tu.mutation.SetTenderCode(s)
+	return tu
+}
+
+// SetNillableTenderCode sets the "tender_code" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderCode(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTenderCode(*s)
+	}
+	return tu
+}
+
+// ClearTenderCode clears the value of the "tender_code" field.
+func (tu *TenderUpdate) ClearTenderCode() *TenderUpdate {
+	tu.mutation.ClearTenderCode()
+	return tu
+}
+
+// SetArchitect sets the "architect" field.
+func (tu *TenderUpdate) SetArchitect(s string) *TenderUpdate {
+	tu.mutation.SetArchitect(s)
+	return tu
+}
+
+// SetNillableArchitect sets the "architect" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableArchitect(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetArchitect(*s)
+	}
+	return tu
+}
+
+// ClearArchitect clears the value of the "architect" field.
+func (tu *TenderUpdate) ClearArchitect() *TenderUpdate {
+	tu.mutation.ClearArchitect()
+	return tu
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (tu *TenderUpdate) SetTenderClosingDate(s string) *TenderUpdate {
+	tu.mutation.SetTenderClosingDate(s)
+	return tu
+}
+
+// SetNillableTenderClosingDate sets the "tender_closing_date" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderClosingDate(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTenderClosingDate(*s)
+	}
+	return tu
+}
+
+// ClearTenderClosingDate clears the value of the "tender_closing_date" field.
+func (tu *TenderUpdate) ClearTenderClosingDate() *TenderUpdate {
+	tu.mutation.ClearTenderClosingDate()
+	return tu
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (tu *TenderUpdate) SetConstructionArea(s string) *TenderUpdate {
+	tu.mutation.SetConstructionArea(s)
+	return tu
+}
+
+// SetNillableConstructionArea sets the "construction_area" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableConstructionArea(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetConstructionArea(*s)
+	}
+	return tu
+}
+
+// ClearConstructionArea clears the value of the "construction_area" field.
+func (tu *TenderUpdate) ClearConstructionArea() *TenderUpdate {
+	tu.mutation.ClearConstructionArea()
+	return tu
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (tu *TenderUpdate) SetTenderWinDate(t time.Time) *TenderUpdate {
+	tu.mutation.SetTenderWinDate(t)
+	return tu
+}
+
+// SetNillableTenderWinDate sets the "tender_win_date" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderWinDate(t *time.Time) *TenderUpdate {
+	if t != nil {
+		tu.SetTenderWinDate(*t)
+	}
+	return tu
+}
+
+// ClearTenderWinDate clears the value of the "tender_win_date" field.
+func (tu *TenderUpdate) ClearTenderWinDate() *TenderUpdate {
+	tu.mutation.ClearTenderWinDate()
+	return tu
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (tu *TenderUpdate) SetTenderWinAmount(s string) *TenderUpdate {
+	tu.mutation.SetTenderWinAmount(s)
+	return tu
+}
+
+// SetNillableTenderWinAmount sets the "tender_win_amount" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableTenderWinAmount(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetTenderWinAmount(*s)
+	}
+	return tu
+}
+
+// ClearTenderWinAmount clears the value of the "tender_win_amount" field.
+func (tu *TenderUpdate) ClearTenderWinAmount() *TenderUpdate {
+	tu.mutation.ClearTenderWinAmount()
+	return tu
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (tu *TenderUpdate) SetLastTenderAmount(f float64) *TenderUpdate {
+	tu.mutation.ResetLastTenderAmount()
+	tu.mutation.SetLastTenderAmount(f)
+	return tu
+}
+
+// SetNillableLastTenderAmount sets the "last_tender_amount" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableLastTenderAmount(f *float64) *TenderUpdate {
+	if f != nil {
+		tu.SetLastTenderAmount(*f)
+	}
+	return tu
+}
+
+// AddLastTenderAmount adds f to the "last_tender_amount" field.
+func (tu *TenderUpdate) AddLastTenderAmount(f float64) *TenderUpdate {
+	tu.mutation.AddLastTenderAmount(f)
+	return tu
+}
+
+// ClearLastTenderAmount clears the value of the "last_tender_amount" field.
+func (tu *TenderUpdate) ClearLastTenderAmount() *TenderUpdate {
+	tu.mutation.ClearLastTenderAmount()
+	return tu
+}
+
 // SetAreaID sets the "area_id" field.
 func (tu *TenderUpdate) SetAreaID(x xid.ID) *TenderUpdate {
 	tu.mutation.SetAreaID(x)
@@ -1561,6 +1708,51 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.KeyProject(); ok {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
+	}
+	if value, ok := tu.mutation.TenderCode(); ok {
+		_spec.SetField(tender.FieldTenderCode, field.TypeString, value)
+	}
+	if tu.mutation.TenderCodeCleared() {
+		_spec.ClearField(tender.FieldTenderCode, field.TypeString)
+	}
+	if value, ok := tu.mutation.Architect(); ok {
+		_spec.SetField(tender.FieldArchitect, field.TypeString, value)
+	}
+	if tu.mutation.ArchitectCleared() {
+		_spec.ClearField(tender.FieldArchitect, field.TypeString)
+	}
+	if value, ok := tu.mutation.TenderClosingDate(); ok {
+		_spec.SetField(tender.FieldTenderClosingDate, field.TypeString, value)
+	}
+	if tu.mutation.TenderClosingDateCleared() {
+		_spec.ClearField(tender.FieldTenderClosingDate, field.TypeString)
+	}
+	if value, ok := tu.mutation.ConstructionArea(); ok {
+		_spec.SetField(tender.FieldConstructionArea, field.TypeString, value)
+	}
+	if tu.mutation.ConstructionAreaCleared() {
+		_spec.ClearField(tender.FieldConstructionArea, field.TypeString)
+	}
+	if value, ok := tu.mutation.TenderWinDate(); ok {
+		_spec.SetField(tender.FieldTenderWinDate, field.TypeTime, value)
+	}
+	if tu.mutation.TenderWinDateCleared() {
+		_spec.ClearField(tender.FieldTenderWinDate, field.TypeTime)
+	}
+	if value, ok := tu.mutation.TenderWinAmount(); ok {
+		_spec.SetField(tender.FieldTenderWinAmount, field.TypeString, value)
+	}
+	if tu.mutation.TenderWinAmountCleared() {
+		_spec.ClearField(tender.FieldTenderWinAmount, field.TypeString)
+	}
+	if value, ok := tu.mutation.LastTenderAmount(); ok {
+		_spec.SetField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
+	}
+	if value, ok := tu.mutation.AddedLastTenderAmount(); ok {
+		_spec.AddField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
+	}
+	if tu.mutation.LastTenderAmountCleared() {
+		_spec.ClearField(tender.FieldLastTenderAmount, field.TypeFloat64)
 	}
 	if tu.mutation.AreaCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -2760,6 +2952,153 @@ func (tuo *TenderUpdateOne) SetNillableKeyProject(b *bool) *TenderUpdateOne {
 	return tuo
 }
 
+// SetTenderCode sets the "tender_code" field.
+func (tuo *TenderUpdateOne) SetTenderCode(s string) *TenderUpdateOne {
+	tuo.mutation.SetTenderCode(s)
+	return tuo
+}
+
+// SetNillableTenderCode sets the "tender_code" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderCode(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTenderCode(*s)
+	}
+	return tuo
+}
+
+// ClearTenderCode clears the value of the "tender_code" field.
+func (tuo *TenderUpdateOne) ClearTenderCode() *TenderUpdateOne {
+	tuo.mutation.ClearTenderCode()
+	return tuo
+}
+
+// SetArchitect sets the "architect" field.
+func (tuo *TenderUpdateOne) SetArchitect(s string) *TenderUpdateOne {
+	tuo.mutation.SetArchitect(s)
+	return tuo
+}
+
+// SetNillableArchitect sets the "architect" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableArchitect(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetArchitect(*s)
+	}
+	return tuo
+}
+
+// ClearArchitect clears the value of the "architect" field.
+func (tuo *TenderUpdateOne) ClearArchitect() *TenderUpdateOne {
+	tuo.mutation.ClearArchitect()
+	return tuo
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (tuo *TenderUpdateOne) SetTenderClosingDate(s string) *TenderUpdateOne {
+	tuo.mutation.SetTenderClosingDate(s)
+	return tuo
+}
+
+// SetNillableTenderClosingDate sets the "tender_closing_date" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderClosingDate(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTenderClosingDate(*s)
+	}
+	return tuo
+}
+
+// ClearTenderClosingDate clears the value of the "tender_closing_date" field.
+func (tuo *TenderUpdateOne) ClearTenderClosingDate() *TenderUpdateOne {
+	tuo.mutation.ClearTenderClosingDate()
+	return tuo
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (tuo *TenderUpdateOne) SetConstructionArea(s string) *TenderUpdateOne {
+	tuo.mutation.SetConstructionArea(s)
+	return tuo
+}
+
+// SetNillableConstructionArea sets the "construction_area" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableConstructionArea(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetConstructionArea(*s)
+	}
+	return tuo
+}
+
+// ClearConstructionArea clears the value of the "construction_area" field.
+func (tuo *TenderUpdateOne) ClearConstructionArea() *TenderUpdateOne {
+	tuo.mutation.ClearConstructionArea()
+	return tuo
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (tuo *TenderUpdateOne) SetTenderWinDate(t time.Time) *TenderUpdateOne {
+	tuo.mutation.SetTenderWinDate(t)
+	return tuo
+}
+
+// SetNillableTenderWinDate sets the "tender_win_date" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderWinDate(t *time.Time) *TenderUpdateOne {
+	if t != nil {
+		tuo.SetTenderWinDate(*t)
+	}
+	return tuo
+}
+
+// ClearTenderWinDate clears the value of the "tender_win_date" field.
+func (tuo *TenderUpdateOne) ClearTenderWinDate() *TenderUpdateOne {
+	tuo.mutation.ClearTenderWinDate()
+	return tuo
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (tuo *TenderUpdateOne) SetTenderWinAmount(s string) *TenderUpdateOne {
+	tuo.mutation.SetTenderWinAmount(s)
+	return tuo
+}
+
+// SetNillableTenderWinAmount sets the "tender_win_amount" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableTenderWinAmount(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetTenderWinAmount(*s)
+	}
+	return tuo
+}
+
+// ClearTenderWinAmount clears the value of the "tender_win_amount" field.
+func (tuo *TenderUpdateOne) ClearTenderWinAmount() *TenderUpdateOne {
+	tuo.mutation.ClearTenderWinAmount()
+	return tuo
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (tuo *TenderUpdateOne) SetLastTenderAmount(f float64) *TenderUpdateOne {
+	tuo.mutation.ResetLastTenderAmount()
+	tuo.mutation.SetLastTenderAmount(f)
+	return tuo
+}
+
+// SetNillableLastTenderAmount sets the "last_tender_amount" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableLastTenderAmount(f *float64) *TenderUpdateOne {
+	if f != nil {
+		tuo.SetLastTenderAmount(*f)
+	}
+	return tuo
+}
+
+// AddLastTenderAmount adds f to the "last_tender_amount" field.
+func (tuo *TenderUpdateOne) AddLastTenderAmount(f float64) *TenderUpdateOne {
+	tuo.mutation.AddLastTenderAmount(f)
+	return tuo
+}
+
+// ClearLastTenderAmount clears the value of the "last_tender_amount" field.
+func (tuo *TenderUpdateOne) ClearLastTenderAmount() *TenderUpdateOne {
+	tuo.mutation.ClearLastTenderAmount()
+	return tuo
+}
+
 // SetAreaID sets the "area_id" field.
 func (tuo *TenderUpdateOne) SetAreaID(x xid.ID) *TenderUpdateOne {
 	tuo.mutation.SetAreaID(x)
@@ -3428,6 +3767,51 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if value, ok := tuo.mutation.KeyProject(); ok {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
+	}
+	if value, ok := tuo.mutation.TenderCode(); ok {
+		_spec.SetField(tender.FieldTenderCode, field.TypeString, value)
+	}
+	if tuo.mutation.TenderCodeCleared() {
+		_spec.ClearField(tender.FieldTenderCode, field.TypeString)
+	}
+	if value, ok := tuo.mutation.Architect(); ok {
+		_spec.SetField(tender.FieldArchitect, field.TypeString, value)
+	}
+	if tuo.mutation.ArchitectCleared() {
+		_spec.ClearField(tender.FieldArchitect, field.TypeString)
+	}
+	if value, ok := tuo.mutation.TenderClosingDate(); ok {
+		_spec.SetField(tender.FieldTenderClosingDate, field.TypeString, value)
+	}
+	if tuo.mutation.TenderClosingDateCleared() {
+		_spec.ClearField(tender.FieldTenderClosingDate, field.TypeString)
+	}
+	if value, ok := tuo.mutation.ConstructionArea(); ok {
+		_spec.SetField(tender.FieldConstructionArea, field.TypeString, value)
+	}
+	if tuo.mutation.ConstructionAreaCleared() {
+		_spec.ClearField(tender.FieldConstructionArea, field.TypeString)
+	}
+	if value, ok := tuo.mutation.TenderWinDate(); ok {
+		_spec.SetField(tender.FieldTenderWinDate, field.TypeTime, value)
+	}
+	if tuo.mutation.TenderWinDateCleared() {
+		_spec.ClearField(tender.FieldTenderWinDate, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.TenderWinAmount(); ok {
+		_spec.SetField(tender.FieldTenderWinAmount, field.TypeString, value)
+	}
+	if tuo.mutation.TenderWinAmountCleared() {
+		_spec.ClearField(tender.FieldTenderWinAmount, field.TypeString)
+	}
+	if value, ok := tuo.mutation.LastTenderAmount(); ok {
+		_spec.SetField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
+	}
+	if value, ok := tuo.mutation.AddedLastTenderAmount(); ok {
+		_spec.AddField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
+	}
+	if tuo.mutation.LastTenderAmountCleared() {
+		_spec.ClearField(tender.FieldLastTenderAmount, field.TypeFloat64)
 	}
 	if tuo.mutation.AreaCleared() {
 		edge := &sqlgraph.EdgeSpec{

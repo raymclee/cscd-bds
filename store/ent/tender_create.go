@@ -620,6 +620,104 @@ func (tc *TenderCreate) SetNillableKeyProject(b *bool) *TenderCreate {
 	return tc
 }
 
+// SetTenderCode sets the "tender_code" field.
+func (tc *TenderCreate) SetTenderCode(s string) *TenderCreate {
+	tc.mutation.SetTenderCode(s)
+	return tc
+}
+
+// SetNillableTenderCode sets the "tender_code" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderCode(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderCode(*s)
+	}
+	return tc
+}
+
+// SetArchitect sets the "architect" field.
+func (tc *TenderCreate) SetArchitect(s string) *TenderCreate {
+	tc.mutation.SetArchitect(s)
+	return tc
+}
+
+// SetNillableArchitect sets the "architect" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableArchitect(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetArchitect(*s)
+	}
+	return tc
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (tc *TenderCreate) SetTenderClosingDate(s string) *TenderCreate {
+	tc.mutation.SetTenderClosingDate(s)
+	return tc
+}
+
+// SetNillableTenderClosingDate sets the "tender_closing_date" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderClosingDate(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderClosingDate(*s)
+	}
+	return tc
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (tc *TenderCreate) SetConstructionArea(s string) *TenderCreate {
+	tc.mutation.SetConstructionArea(s)
+	return tc
+}
+
+// SetNillableConstructionArea sets the "construction_area" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableConstructionArea(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetConstructionArea(*s)
+	}
+	return tc
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (tc *TenderCreate) SetTenderWinDate(t time.Time) *TenderCreate {
+	tc.mutation.SetTenderWinDate(t)
+	return tc
+}
+
+// SetNillableTenderWinDate sets the "tender_win_date" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderWinDate(t *time.Time) *TenderCreate {
+	if t != nil {
+		tc.SetTenderWinDate(*t)
+	}
+	return tc
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (tc *TenderCreate) SetTenderWinAmount(s string) *TenderCreate {
+	tc.mutation.SetTenderWinAmount(s)
+	return tc
+}
+
+// SetNillableTenderWinAmount sets the "tender_win_amount" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderWinAmount(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderWinAmount(*s)
+	}
+	return tc
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (tc *TenderCreate) SetLastTenderAmount(f float64) *TenderCreate {
+	tc.mutation.SetLastTenderAmount(f)
+	return tc
+}
+
+// SetNillableLastTenderAmount sets the "last_tender_amount" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableLastTenderAmount(f *float64) *TenderCreate {
+	if f != nil {
+		tc.SetLastTenderAmount(*f)
+	}
+	return tc
+}
+
 // SetAreaID sets the "area_id" field.
 func (tc *TenderCreate) SetAreaID(x xid.ID) *TenderCreate {
 	tc.mutation.SetAreaID(x)
@@ -1116,6 +1214,34 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.KeyProject(); ok {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
 		_node.KeyProject = value
+	}
+	if value, ok := tc.mutation.TenderCode(); ok {
+		_spec.SetField(tender.FieldTenderCode, field.TypeString, value)
+		_node.TenderCode = value
+	}
+	if value, ok := tc.mutation.Architect(); ok {
+		_spec.SetField(tender.FieldArchitect, field.TypeString, value)
+		_node.Architect = value
+	}
+	if value, ok := tc.mutation.TenderClosingDate(); ok {
+		_spec.SetField(tender.FieldTenderClosingDate, field.TypeString, value)
+		_node.TenderClosingDate = value
+	}
+	if value, ok := tc.mutation.ConstructionArea(); ok {
+		_spec.SetField(tender.FieldConstructionArea, field.TypeString, value)
+		_node.ConstructionArea = value
+	}
+	if value, ok := tc.mutation.TenderWinDate(); ok {
+		_spec.SetField(tender.FieldTenderWinDate, field.TypeTime, value)
+		_node.TenderWinDate = value
+	}
+	if value, ok := tc.mutation.TenderWinAmount(); ok {
+		_spec.SetField(tender.FieldTenderWinAmount, field.TypeString, value)
+		_node.TenderWinAmount = value
+	}
+	if value, ok := tc.mutation.LastTenderAmount(); ok {
+		_spec.SetField(tender.FieldLastTenderAmount, field.TypeFloat64, value)
+		_node.LastTenderAmount = value
 	}
 	if nodes := tc.mutation.AreaIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2127,6 +2253,138 @@ func (u *TenderUpsert) SetKeyProject(v bool) *TenderUpsert {
 // UpdateKeyProject sets the "key_project" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateKeyProject() *TenderUpsert {
 	u.SetExcluded(tender.FieldKeyProject)
+	return u
+}
+
+// SetTenderCode sets the "tender_code" field.
+func (u *TenderUpsert) SetTenderCode(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderCode, v)
+	return u
+}
+
+// UpdateTenderCode sets the "tender_code" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderCode() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderCode)
+	return u
+}
+
+// ClearTenderCode clears the value of the "tender_code" field.
+func (u *TenderUpsert) ClearTenderCode() *TenderUpsert {
+	u.SetNull(tender.FieldTenderCode)
+	return u
+}
+
+// SetArchitect sets the "architect" field.
+func (u *TenderUpsert) SetArchitect(v string) *TenderUpsert {
+	u.Set(tender.FieldArchitect, v)
+	return u
+}
+
+// UpdateArchitect sets the "architect" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateArchitect() *TenderUpsert {
+	u.SetExcluded(tender.FieldArchitect)
+	return u
+}
+
+// ClearArchitect clears the value of the "architect" field.
+func (u *TenderUpsert) ClearArchitect() *TenderUpsert {
+	u.SetNull(tender.FieldArchitect)
+	return u
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (u *TenderUpsert) SetTenderClosingDate(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderClosingDate, v)
+	return u
+}
+
+// UpdateTenderClosingDate sets the "tender_closing_date" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderClosingDate() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderClosingDate)
+	return u
+}
+
+// ClearTenderClosingDate clears the value of the "tender_closing_date" field.
+func (u *TenderUpsert) ClearTenderClosingDate() *TenderUpsert {
+	u.SetNull(tender.FieldTenderClosingDate)
+	return u
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (u *TenderUpsert) SetConstructionArea(v string) *TenderUpsert {
+	u.Set(tender.FieldConstructionArea, v)
+	return u
+}
+
+// UpdateConstructionArea sets the "construction_area" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateConstructionArea() *TenderUpsert {
+	u.SetExcluded(tender.FieldConstructionArea)
+	return u
+}
+
+// ClearConstructionArea clears the value of the "construction_area" field.
+func (u *TenderUpsert) ClearConstructionArea() *TenderUpsert {
+	u.SetNull(tender.FieldConstructionArea)
+	return u
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (u *TenderUpsert) SetTenderWinDate(v time.Time) *TenderUpsert {
+	u.Set(tender.FieldTenderWinDate, v)
+	return u
+}
+
+// UpdateTenderWinDate sets the "tender_win_date" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderWinDate() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderWinDate)
+	return u
+}
+
+// ClearTenderWinDate clears the value of the "tender_win_date" field.
+func (u *TenderUpsert) ClearTenderWinDate() *TenderUpsert {
+	u.SetNull(tender.FieldTenderWinDate)
+	return u
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (u *TenderUpsert) SetTenderWinAmount(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderWinAmount, v)
+	return u
+}
+
+// UpdateTenderWinAmount sets the "tender_win_amount" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderWinAmount() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderWinAmount)
+	return u
+}
+
+// ClearTenderWinAmount clears the value of the "tender_win_amount" field.
+func (u *TenderUpsert) ClearTenderWinAmount() *TenderUpsert {
+	u.SetNull(tender.FieldTenderWinAmount)
+	return u
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (u *TenderUpsert) SetLastTenderAmount(v float64) *TenderUpsert {
+	u.Set(tender.FieldLastTenderAmount, v)
+	return u
+}
+
+// UpdateLastTenderAmount sets the "last_tender_amount" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateLastTenderAmount() *TenderUpsert {
+	u.SetExcluded(tender.FieldLastTenderAmount)
+	return u
+}
+
+// AddLastTenderAmount adds v to the "last_tender_amount" field.
+func (u *TenderUpsert) AddLastTenderAmount(v float64) *TenderUpsert {
+	u.Add(tender.FieldLastTenderAmount, v)
+	return u
+}
+
+// ClearLastTenderAmount clears the value of the "last_tender_amount" field.
+func (u *TenderUpsert) ClearLastTenderAmount() *TenderUpsert {
+	u.SetNull(tender.FieldLastTenderAmount)
 	return u
 }
 
@@ -3213,6 +3471,160 @@ func (u *TenderUpsertOne) SetKeyProject(v bool) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateKeyProject() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateKeyProject()
+	})
+}
+
+// SetTenderCode sets the "tender_code" field.
+func (u *TenderUpsertOne) SetTenderCode(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderCode(v)
+	})
+}
+
+// UpdateTenderCode sets the "tender_code" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderCode() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderCode()
+	})
+}
+
+// ClearTenderCode clears the value of the "tender_code" field.
+func (u *TenderUpsertOne) ClearTenderCode() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderCode()
+	})
+}
+
+// SetArchitect sets the "architect" field.
+func (u *TenderUpsertOne) SetArchitect(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetArchitect(v)
+	})
+}
+
+// UpdateArchitect sets the "architect" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateArchitect() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateArchitect()
+	})
+}
+
+// ClearArchitect clears the value of the "architect" field.
+func (u *TenderUpsertOne) ClearArchitect() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearArchitect()
+	})
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (u *TenderUpsertOne) SetTenderClosingDate(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderClosingDate(v)
+	})
+}
+
+// UpdateTenderClosingDate sets the "tender_closing_date" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderClosingDate() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderClosingDate()
+	})
+}
+
+// ClearTenderClosingDate clears the value of the "tender_closing_date" field.
+func (u *TenderUpsertOne) ClearTenderClosingDate() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderClosingDate()
+	})
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (u *TenderUpsertOne) SetConstructionArea(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetConstructionArea(v)
+	})
+}
+
+// UpdateConstructionArea sets the "construction_area" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateConstructionArea() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateConstructionArea()
+	})
+}
+
+// ClearConstructionArea clears the value of the "construction_area" field.
+func (u *TenderUpsertOne) ClearConstructionArea() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearConstructionArea()
+	})
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (u *TenderUpsertOne) SetTenderWinDate(v time.Time) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderWinDate(v)
+	})
+}
+
+// UpdateTenderWinDate sets the "tender_win_date" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderWinDate() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderWinDate()
+	})
+}
+
+// ClearTenderWinDate clears the value of the "tender_win_date" field.
+func (u *TenderUpsertOne) ClearTenderWinDate() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderWinDate()
+	})
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (u *TenderUpsertOne) SetTenderWinAmount(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderWinAmount(v)
+	})
+}
+
+// UpdateTenderWinAmount sets the "tender_win_amount" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderWinAmount() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderWinAmount()
+	})
+}
+
+// ClearTenderWinAmount clears the value of the "tender_win_amount" field.
+func (u *TenderUpsertOne) ClearTenderWinAmount() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderWinAmount()
+	})
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (u *TenderUpsertOne) SetLastTenderAmount(v float64) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetLastTenderAmount(v)
+	})
+}
+
+// AddLastTenderAmount adds v to the "last_tender_amount" field.
+func (u *TenderUpsertOne) AddLastTenderAmount(v float64) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddLastTenderAmount(v)
+	})
+}
+
+// UpdateLastTenderAmount sets the "last_tender_amount" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateLastTenderAmount() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateLastTenderAmount()
+	})
+}
+
+// ClearLastTenderAmount clears the value of the "last_tender_amount" field.
+func (u *TenderUpsertOne) ClearLastTenderAmount() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearLastTenderAmount()
 	})
 }
 
@@ -4481,6 +4893,160 @@ func (u *TenderUpsertBulk) SetKeyProject(v bool) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateKeyProject() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateKeyProject()
+	})
+}
+
+// SetTenderCode sets the "tender_code" field.
+func (u *TenderUpsertBulk) SetTenderCode(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderCode(v)
+	})
+}
+
+// UpdateTenderCode sets the "tender_code" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderCode() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderCode()
+	})
+}
+
+// ClearTenderCode clears the value of the "tender_code" field.
+func (u *TenderUpsertBulk) ClearTenderCode() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderCode()
+	})
+}
+
+// SetArchitect sets the "architect" field.
+func (u *TenderUpsertBulk) SetArchitect(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetArchitect(v)
+	})
+}
+
+// UpdateArchitect sets the "architect" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateArchitect() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateArchitect()
+	})
+}
+
+// ClearArchitect clears the value of the "architect" field.
+func (u *TenderUpsertBulk) ClearArchitect() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearArchitect()
+	})
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (u *TenderUpsertBulk) SetTenderClosingDate(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderClosingDate(v)
+	})
+}
+
+// UpdateTenderClosingDate sets the "tender_closing_date" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderClosingDate() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderClosingDate()
+	})
+}
+
+// ClearTenderClosingDate clears the value of the "tender_closing_date" field.
+func (u *TenderUpsertBulk) ClearTenderClosingDate() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderClosingDate()
+	})
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (u *TenderUpsertBulk) SetConstructionArea(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetConstructionArea(v)
+	})
+}
+
+// UpdateConstructionArea sets the "construction_area" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateConstructionArea() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateConstructionArea()
+	})
+}
+
+// ClearConstructionArea clears the value of the "construction_area" field.
+func (u *TenderUpsertBulk) ClearConstructionArea() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearConstructionArea()
+	})
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (u *TenderUpsertBulk) SetTenderWinDate(v time.Time) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderWinDate(v)
+	})
+}
+
+// UpdateTenderWinDate sets the "tender_win_date" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderWinDate() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderWinDate()
+	})
+}
+
+// ClearTenderWinDate clears the value of the "tender_win_date" field.
+func (u *TenderUpsertBulk) ClearTenderWinDate() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderWinDate()
+	})
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (u *TenderUpsertBulk) SetTenderWinAmount(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderWinAmount(v)
+	})
+}
+
+// UpdateTenderWinAmount sets the "tender_win_amount" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderWinAmount() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderWinAmount()
+	})
+}
+
+// ClearTenderWinAmount clears the value of the "tender_win_amount" field.
+func (u *TenderUpsertBulk) ClearTenderWinAmount() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderWinAmount()
+	})
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (u *TenderUpsertBulk) SetLastTenderAmount(v float64) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetLastTenderAmount(v)
+	})
+}
+
+// AddLastTenderAmount adds v to the "last_tender_amount" field.
+func (u *TenderUpsertBulk) AddLastTenderAmount(v float64) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddLastTenderAmount(v)
+	})
+}
+
+// UpdateLastTenderAmount sets the "last_tender_amount" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateLastTenderAmount() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateLastTenderAmount()
+	})
+}
+
+// ClearLastTenderAmount clears the value of the "last_tender_amount" field.
+func (u *TenderUpsertBulk) ClearLastTenderAmount() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearLastTenderAmount()
 	})
 }
 

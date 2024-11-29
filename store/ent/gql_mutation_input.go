@@ -845,6 +845,13 @@ type CreateTenderInput struct {
 	DesignUnit                           *string
 	ConsultingFirm                       *string
 	KeyProject                           *bool
+	TenderCode                           *string
+	Architect                            *string
+	TenderClosingDate                    *string
+	ConstructionArea                     *string
+	TenderWinDate                        *time.Time
+	TenderWinAmount                      *string
+	LastTenderAmount                     *float64
 	AreaID                               xid.ID
 	CustomerID                           xid.ID
 	FinderID                             xid.ID
@@ -984,6 +991,27 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.KeyProject; v != nil {
 		m.SetKeyProject(*v)
 	}
+	if v := i.TenderCode; v != nil {
+		m.SetTenderCode(*v)
+	}
+	if v := i.Architect; v != nil {
+		m.SetArchitect(*v)
+	}
+	if v := i.TenderClosingDate; v != nil {
+		m.SetTenderClosingDate(*v)
+	}
+	if v := i.ConstructionArea; v != nil {
+		m.SetConstructionArea(*v)
+	}
+	if v := i.TenderWinDate; v != nil {
+		m.SetTenderWinDate(*v)
+	}
+	if v := i.TenderWinAmount; v != nil {
+		m.SetTenderWinAmount(*v)
+	}
+	if v := i.LastTenderAmount; v != nil {
+		m.SetLastTenderAmount(*v)
+	}
 	m.SetAreaID(i.AreaID)
 	m.SetCustomerID(i.CustomerID)
 	m.SetFinderID(i.FinderID)
@@ -1090,6 +1118,20 @@ type UpdateTenderInput struct {
 	ClearConsultingFirm                       bool
 	ConsultingFirm                            *string
 	KeyProject                                *bool
+	ClearTenderCode                           bool
+	TenderCode                                *string
+	ClearArchitect                            bool
+	Architect                                 *string
+	ClearTenderClosingDate                    bool
+	TenderClosingDate                         *string
+	ClearConstructionArea                     bool
+	ConstructionArea                          *string
+	ClearTenderWinDate                        bool
+	TenderWinDate                             *time.Time
+	ClearTenderWinAmount                      bool
+	TenderWinAmount                           *string
+	ClearLastTenderAmount                     bool
+	LastTenderAmount                          *float64
 	AreaID                                    *xid.ID
 	CustomerID                                *xid.ID
 	FinderID                                  *xid.ID
@@ -1351,6 +1393,48 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.KeyProject; v != nil {
 		m.SetKeyProject(*v)
 	}
+	if i.ClearTenderCode {
+		m.ClearTenderCode()
+	}
+	if v := i.TenderCode; v != nil {
+		m.SetTenderCode(*v)
+	}
+	if i.ClearArchitect {
+		m.ClearArchitect()
+	}
+	if v := i.Architect; v != nil {
+		m.SetArchitect(*v)
+	}
+	if i.ClearTenderClosingDate {
+		m.ClearTenderClosingDate()
+	}
+	if v := i.TenderClosingDate; v != nil {
+		m.SetTenderClosingDate(*v)
+	}
+	if i.ClearConstructionArea {
+		m.ClearConstructionArea()
+	}
+	if v := i.ConstructionArea; v != nil {
+		m.SetConstructionArea(*v)
+	}
+	if i.ClearTenderWinDate {
+		m.ClearTenderWinDate()
+	}
+	if v := i.TenderWinDate; v != nil {
+		m.SetTenderWinDate(*v)
+	}
+	if i.ClearTenderWinAmount {
+		m.ClearTenderWinAmount()
+	}
+	if v := i.TenderWinAmount; v != nil {
+		m.SetTenderWinAmount(*v)
+	}
+	if i.ClearLastTenderAmount {
+		m.ClearLastTenderAmount()
+	}
+	if v := i.LastTenderAmount; v != nil {
+		m.SetLastTenderAmount(*v)
+	}
 	if v := i.AreaID; v != nil {
 		m.SetAreaID(*v)
 	}
@@ -1414,11 +1498,12 @@ type CreateUserInput struct {
 	Name           string
 	Email          string
 	Username       string
-	OpenID         string
-	AvatarURL      string
+	OpenID         *string
+	AvatarURL      *string
 	Disabled       *bool
 	IsAdmin        *bool
-	IsLeader       *bool
+	HasMapAccess   *bool
+	IsEditor       *bool
 	AreaIDs        []xid.ID
 	CustomerIDs    []xid.ID
 	LeaderID       *xid.ID
@@ -1438,16 +1523,23 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	m.SetName(i.Name)
 	m.SetEmail(i.Email)
 	m.SetUsername(i.Username)
-	m.SetOpenID(i.OpenID)
-	m.SetAvatarURL(i.AvatarURL)
+	if v := i.OpenID; v != nil {
+		m.SetOpenID(*v)
+	}
+	if v := i.AvatarURL; v != nil {
+		m.SetAvatarURL(*v)
+	}
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
 	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
 	}
-	if v := i.IsLeader; v != nil {
-		m.SetIsLeader(*v)
+	if v := i.HasMapAccess; v != nil {
+		m.SetHasMapAccess(*v)
+	}
+	if v := i.IsEditor; v != nil {
+		m.SetIsEditor(*v)
 	}
 	if v := i.AreaIDs; len(v) > 0 {
 		m.AddAreaIDs(v...)
@@ -1481,11 +1573,14 @@ type UpdateUserInput struct {
 	Name                 *string
 	Email                *string
 	Username             *string
+	ClearOpenID          bool
 	OpenID               *string
+	ClearAvatarURL       bool
 	AvatarURL            *string
 	Disabled             *bool
 	IsAdmin              *bool
-	IsLeader             *bool
+	HasMapAccess         *bool
+	IsEditor             *bool
 	ClearAreas           bool
 	AddAreaIDs           []xid.ID
 	RemoveAreaIDs        []xid.ID
@@ -1519,8 +1614,14 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.Username; v != nil {
 		m.SetUsername(*v)
 	}
+	if i.ClearOpenID {
+		m.ClearOpenID()
+	}
 	if v := i.OpenID; v != nil {
 		m.SetOpenID(*v)
+	}
+	if i.ClearAvatarURL {
+		m.ClearAvatarURL()
 	}
 	if v := i.AvatarURL; v != nil {
 		m.SetAvatarURL(*v)
@@ -1531,8 +1632,11 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
 	}
-	if v := i.IsLeader; v != nil {
-		m.SetIsLeader(*v)
+	if v := i.HasMapAccess; v != nil {
+		m.SetHasMapAccess(*v)
+	}
+	if v := i.IsEditor; v != nil {
+		m.SetIsEditor(*v)
 	}
 	if i.ClearAreas {
 		m.ClearAreas()

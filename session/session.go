@@ -89,7 +89,8 @@ func (s Session) GetAccessToken(ctx context.Context, user User) (string, error) 
 			Email:        user.Email,
 			UserId:       user.UserId,
 			IsAdmin:      user.IsAdmin,
-			IsLeader:     user.IsLeader,
+			IsEditor:     user.IsEditor,
+			HasMapAccess: user.HasMapAccess,
 			// AdminId:      user.AdminId,
 		})
 	}

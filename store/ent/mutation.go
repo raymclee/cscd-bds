@@ -7147,6 +7147,14 @@ type TenderMutation struct {
 	design_unit                             *string
 	consulting_firm                         *string
 	key_project                             *bool
+	tender_code                             *string
+	architect                               *string
+	tender_closing_date                     *string
+	construction_area                       *string
+	tender_win_date                         *time.Time
+	tender_win_amount                       *string
+	last_tender_amount                      *float64
+	addlast_tender_amount                   *float64
 	clearedFields                           map[string]struct{}
 	area                                    *xid.ID
 	clearedarea                             bool
@@ -9621,6 +9629,370 @@ func (m *TenderMutation) ResetKeyProject() {
 	m.key_project = nil
 }
 
+// SetTenderCode sets the "tender_code" field.
+func (m *TenderMutation) SetTenderCode(s string) {
+	m.tender_code = &s
+}
+
+// TenderCode returns the value of the "tender_code" field in the mutation.
+func (m *TenderMutation) TenderCode() (r string, exists bool) {
+	v := m.tender_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTenderCode returns the old "tender_code" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldTenderCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTenderCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTenderCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTenderCode: %w", err)
+	}
+	return oldValue.TenderCode, nil
+}
+
+// ClearTenderCode clears the value of the "tender_code" field.
+func (m *TenderMutation) ClearTenderCode() {
+	m.tender_code = nil
+	m.clearedFields[tender.FieldTenderCode] = struct{}{}
+}
+
+// TenderCodeCleared returns if the "tender_code" field was cleared in this mutation.
+func (m *TenderMutation) TenderCodeCleared() bool {
+	_, ok := m.clearedFields[tender.FieldTenderCode]
+	return ok
+}
+
+// ResetTenderCode resets all changes to the "tender_code" field.
+func (m *TenderMutation) ResetTenderCode() {
+	m.tender_code = nil
+	delete(m.clearedFields, tender.FieldTenderCode)
+}
+
+// SetArchitect sets the "architect" field.
+func (m *TenderMutation) SetArchitect(s string) {
+	m.architect = &s
+}
+
+// Architect returns the value of the "architect" field in the mutation.
+func (m *TenderMutation) Architect() (r string, exists bool) {
+	v := m.architect
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldArchitect returns the old "architect" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldArchitect(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldArchitect is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldArchitect requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldArchitect: %w", err)
+	}
+	return oldValue.Architect, nil
+}
+
+// ClearArchitect clears the value of the "architect" field.
+func (m *TenderMutation) ClearArchitect() {
+	m.architect = nil
+	m.clearedFields[tender.FieldArchitect] = struct{}{}
+}
+
+// ArchitectCleared returns if the "architect" field was cleared in this mutation.
+func (m *TenderMutation) ArchitectCleared() bool {
+	_, ok := m.clearedFields[tender.FieldArchitect]
+	return ok
+}
+
+// ResetArchitect resets all changes to the "architect" field.
+func (m *TenderMutation) ResetArchitect() {
+	m.architect = nil
+	delete(m.clearedFields, tender.FieldArchitect)
+}
+
+// SetTenderClosingDate sets the "tender_closing_date" field.
+func (m *TenderMutation) SetTenderClosingDate(s string) {
+	m.tender_closing_date = &s
+}
+
+// TenderClosingDate returns the value of the "tender_closing_date" field in the mutation.
+func (m *TenderMutation) TenderClosingDate() (r string, exists bool) {
+	v := m.tender_closing_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTenderClosingDate returns the old "tender_closing_date" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldTenderClosingDate(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTenderClosingDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTenderClosingDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTenderClosingDate: %w", err)
+	}
+	return oldValue.TenderClosingDate, nil
+}
+
+// ClearTenderClosingDate clears the value of the "tender_closing_date" field.
+func (m *TenderMutation) ClearTenderClosingDate() {
+	m.tender_closing_date = nil
+	m.clearedFields[tender.FieldTenderClosingDate] = struct{}{}
+}
+
+// TenderClosingDateCleared returns if the "tender_closing_date" field was cleared in this mutation.
+func (m *TenderMutation) TenderClosingDateCleared() bool {
+	_, ok := m.clearedFields[tender.FieldTenderClosingDate]
+	return ok
+}
+
+// ResetTenderClosingDate resets all changes to the "tender_closing_date" field.
+func (m *TenderMutation) ResetTenderClosingDate() {
+	m.tender_closing_date = nil
+	delete(m.clearedFields, tender.FieldTenderClosingDate)
+}
+
+// SetConstructionArea sets the "construction_area" field.
+func (m *TenderMutation) SetConstructionArea(s string) {
+	m.construction_area = &s
+}
+
+// ConstructionArea returns the value of the "construction_area" field in the mutation.
+func (m *TenderMutation) ConstructionArea() (r string, exists bool) {
+	v := m.construction_area
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConstructionArea returns the old "construction_area" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldConstructionArea(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConstructionArea is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConstructionArea requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConstructionArea: %w", err)
+	}
+	return oldValue.ConstructionArea, nil
+}
+
+// ClearConstructionArea clears the value of the "construction_area" field.
+func (m *TenderMutation) ClearConstructionArea() {
+	m.construction_area = nil
+	m.clearedFields[tender.FieldConstructionArea] = struct{}{}
+}
+
+// ConstructionAreaCleared returns if the "construction_area" field was cleared in this mutation.
+func (m *TenderMutation) ConstructionAreaCleared() bool {
+	_, ok := m.clearedFields[tender.FieldConstructionArea]
+	return ok
+}
+
+// ResetConstructionArea resets all changes to the "construction_area" field.
+func (m *TenderMutation) ResetConstructionArea() {
+	m.construction_area = nil
+	delete(m.clearedFields, tender.FieldConstructionArea)
+}
+
+// SetTenderWinDate sets the "tender_win_date" field.
+func (m *TenderMutation) SetTenderWinDate(t time.Time) {
+	m.tender_win_date = &t
+}
+
+// TenderWinDate returns the value of the "tender_win_date" field in the mutation.
+func (m *TenderMutation) TenderWinDate() (r time.Time, exists bool) {
+	v := m.tender_win_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTenderWinDate returns the old "tender_win_date" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldTenderWinDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTenderWinDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTenderWinDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTenderWinDate: %w", err)
+	}
+	return oldValue.TenderWinDate, nil
+}
+
+// ClearTenderWinDate clears the value of the "tender_win_date" field.
+func (m *TenderMutation) ClearTenderWinDate() {
+	m.tender_win_date = nil
+	m.clearedFields[tender.FieldTenderWinDate] = struct{}{}
+}
+
+// TenderWinDateCleared returns if the "tender_win_date" field was cleared in this mutation.
+func (m *TenderMutation) TenderWinDateCleared() bool {
+	_, ok := m.clearedFields[tender.FieldTenderWinDate]
+	return ok
+}
+
+// ResetTenderWinDate resets all changes to the "tender_win_date" field.
+func (m *TenderMutation) ResetTenderWinDate() {
+	m.tender_win_date = nil
+	delete(m.clearedFields, tender.FieldTenderWinDate)
+}
+
+// SetTenderWinAmount sets the "tender_win_amount" field.
+func (m *TenderMutation) SetTenderWinAmount(s string) {
+	m.tender_win_amount = &s
+}
+
+// TenderWinAmount returns the value of the "tender_win_amount" field in the mutation.
+func (m *TenderMutation) TenderWinAmount() (r string, exists bool) {
+	v := m.tender_win_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTenderWinAmount returns the old "tender_win_amount" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldTenderWinAmount(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTenderWinAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTenderWinAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTenderWinAmount: %w", err)
+	}
+	return oldValue.TenderWinAmount, nil
+}
+
+// ClearTenderWinAmount clears the value of the "tender_win_amount" field.
+func (m *TenderMutation) ClearTenderWinAmount() {
+	m.tender_win_amount = nil
+	m.clearedFields[tender.FieldTenderWinAmount] = struct{}{}
+}
+
+// TenderWinAmountCleared returns if the "tender_win_amount" field was cleared in this mutation.
+func (m *TenderMutation) TenderWinAmountCleared() bool {
+	_, ok := m.clearedFields[tender.FieldTenderWinAmount]
+	return ok
+}
+
+// ResetTenderWinAmount resets all changes to the "tender_win_amount" field.
+func (m *TenderMutation) ResetTenderWinAmount() {
+	m.tender_win_amount = nil
+	delete(m.clearedFields, tender.FieldTenderWinAmount)
+}
+
+// SetLastTenderAmount sets the "last_tender_amount" field.
+func (m *TenderMutation) SetLastTenderAmount(f float64) {
+	m.last_tender_amount = &f
+	m.addlast_tender_amount = nil
+}
+
+// LastTenderAmount returns the value of the "last_tender_amount" field in the mutation.
+func (m *TenderMutation) LastTenderAmount() (r float64, exists bool) {
+	v := m.last_tender_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastTenderAmount returns the old "last_tender_amount" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldLastTenderAmount(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLastTenderAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLastTenderAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastTenderAmount: %w", err)
+	}
+	return oldValue.LastTenderAmount, nil
+}
+
+// AddLastTenderAmount adds f to the "last_tender_amount" field.
+func (m *TenderMutation) AddLastTenderAmount(f float64) {
+	if m.addlast_tender_amount != nil {
+		*m.addlast_tender_amount += f
+	} else {
+		m.addlast_tender_amount = &f
+	}
+}
+
+// AddedLastTenderAmount returns the value that was added to the "last_tender_amount" field in this mutation.
+func (m *TenderMutation) AddedLastTenderAmount() (r float64, exists bool) {
+	v := m.addlast_tender_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearLastTenderAmount clears the value of the "last_tender_amount" field.
+func (m *TenderMutation) ClearLastTenderAmount() {
+	m.last_tender_amount = nil
+	m.addlast_tender_amount = nil
+	m.clearedFields[tender.FieldLastTenderAmount] = struct{}{}
+}
+
+// LastTenderAmountCleared returns if the "last_tender_amount" field was cleared in this mutation.
+func (m *TenderMutation) LastTenderAmountCleared() bool {
+	_, ok := m.clearedFields[tender.FieldLastTenderAmount]
+	return ok
+}
+
+// ResetLastTenderAmount resets all changes to the "last_tender_amount" field.
+func (m *TenderMutation) ResetLastTenderAmount() {
+	m.last_tender_amount = nil
+	m.addlast_tender_amount = nil
+	delete(m.clearedFields, tender.FieldLastTenderAmount)
+}
+
 // SetAreaID sets the "area_id" field.
 func (m *TenderMutation) SetAreaID(x xid.ID) {
 	m.area = &x
@@ -10217,7 +10589,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 53)
+	fields := make([]string, 0, 60)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -10356,6 +10728,27 @@ func (m *TenderMutation) Fields() []string {
 	if m.key_project != nil {
 		fields = append(fields, tender.FieldKeyProject)
 	}
+	if m.tender_code != nil {
+		fields = append(fields, tender.FieldTenderCode)
+	}
+	if m.architect != nil {
+		fields = append(fields, tender.FieldArchitect)
+	}
+	if m.tender_closing_date != nil {
+		fields = append(fields, tender.FieldTenderClosingDate)
+	}
+	if m.construction_area != nil {
+		fields = append(fields, tender.FieldConstructionArea)
+	}
+	if m.tender_win_date != nil {
+		fields = append(fields, tender.FieldTenderWinDate)
+	}
+	if m.tender_win_amount != nil {
+		fields = append(fields, tender.FieldTenderWinAmount)
+	}
+	if m.last_tender_amount != nil {
+		fields = append(fields, tender.FieldLastTenderAmount)
+	}
 	if m.area != nil {
 		fields = append(fields, tender.FieldAreaID)
 	}
@@ -10477,6 +10870,20 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.ConsultingFirm()
 	case tender.FieldKeyProject:
 		return m.KeyProject()
+	case tender.FieldTenderCode:
+		return m.TenderCode()
+	case tender.FieldArchitect:
+		return m.Architect()
+	case tender.FieldTenderClosingDate:
+		return m.TenderClosingDate()
+	case tender.FieldConstructionArea:
+		return m.ConstructionArea()
+	case tender.FieldTenderWinDate:
+		return m.TenderWinDate()
+	case tender.FieldTenderWinAmount:
+		return m.TenderWinAmount()
+	case tender.FieldLastTenderAmount:
+		return m.LastTenderAmount()
 	case tender.FieldAreaID:
 		return m.AreaID()
 	case tender.FieldProvinceID:
@@ -10592,6 +10999,20 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldConsultingFirm(ctx)
 	case tender.FieldKeyProject:
 		return m.OldKeyProject(ctx)
+	case tender.FieldTenderCode:
+		return m.OldTenderCode(ctx)
+	case tender.FieldArchitect:
+		return m.OldArchitect(ctx)
+	case tender.FieldTenderClosingDate:
+		return m.OldTenderClosingDate(ctx)
+	case tender.FieldConstructionArea:
+		return m.OldConstructionArea(ctx)
+	case tender.FieldTenderWinDate:
+		return m.OldTenderWinDate(ctx)
+	case tender.FieldTenderWinAmount:
+		return m.OldTenderWinAmount(ctx)
+	case tender.FieldLastTenderAmount:
+		return m.OldLastTenderAmount(ctx)
 	case tender.FieldAreaID:
 		return m.OldAreaID(ctx)
 	case tender.FieldProvinceID:
@@ -10937,6 +11358,55 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetKeyProject(v)
 		return nil
+	case tender.FieldTenderCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTenderCode(v)
+		return nil
+	case tender.FieldArchitect:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetArchitect(v)
+		return nil
+	case tender.FieldTenderClosingDate:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTenderClosingDate(v)
+		return nil
+	case tender.FieldConstructionArea:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConstructionArea(v)
+		return nil
+	case tender.FieldTenderWinDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTenderWinDate(v)
+		return nil
+	case tender.FieldTenderWinAmount:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTenderWinAmount(v)
+		return nil
+	case tender.FieldLastTenderAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastTenderAmount(v)
+		return nil
 	case tender.FieldAreaID:
 		v, ok := value.(xid.ID)
 		if !ok {
@@ -11015,6 +11485,9 @@ func (m *TenderMutation) AddedFields() []string {
 	if m.addcompetitive_partnership_rating != nil {
 		fields = append(fields, tender.FieldCompetitivePartnershipRating)
 	}
+	if m.addlast_tender_amount != nil {
+		fields = append(fields, tender.FieldLastTenderAmount)
+	}
 	return fields
 }
 
@@ -11037,6 +11510,8 @@ func (m *TenderMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedCustomerRelationshipRating()
 	case tender.FieldCompetitivePartnershipRating:
 		return m.AddedCompetitivePartnershipRating()
+	case tender.FieldLastTenderAmount:
+		return m.AddedLastTenderAmount()
 	}
 	return nil, false
 }
@@ -11094,6 +11569,13 @@ func (m *TenderMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCompetitivePartnershipRating(v)
+		return nil
+	case tender.FieldLastTenderAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLastTenderAmount(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Tender numeric field %s", name)
@@ -11216,6 +11698,27 @@ func (m *TenderMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(tender.FieldConsultingFirm) {
 		fields = append(fields, tender.FieldConsultingFirm)
+	}
+	if m.FieldCleared(tender.FieldTenderCode) {
+		fields = append(fields, tender.FieldTenderCode)
+	}
+	if m.FieldCleared(tender.FieldArchitect) {
+		fields = append(fields, tender.FieldArchitect)
+	}
+	if m.FieldCleared(tender.FieldTenderClosingDate) {
+		fields = append(fields, tender.FieldTenderClosingDate)
+	}
+	if m.FieldCleared(tender.FieldConstructionArea) {
+		fields = append(fields, tender.FieldConstructionArea)
+	}
+	if m.FieldCleared(tender.FieldTenderWinDate) {
+		fields = append(fields, tender.FieldTenderWinDate)
+	}
+	if m.FieldCleared(tender.FieldTenderWinAmount) {
+		fields = append(fields, tender.FieldTenderWinAmount)
+	}
+	if m.FieldCleared(tender.FieldLastTenderAmount) {
+		fields = append(fields, tender.FieldLastTenderAmount)
 	}
 	if m.FieldCleared(tender.FieldCityID) {
 		fields = append(fields, tender.FieldCityID)
@@ -11347,6 +11850,27 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldConsultingFirm:
 		m.ClearConsultingFirm()
+		return nil
+	case tender.FieldTenderCode:
+		m.ClearTenderCode()
+		return nil
+	case tender.FieldArchitect:
+		m.ClearArchitect()
+		return nil
+	case tender.FieldTenderClosingDate:
+		m.ClearTenderClosingDate()
+		return nil
+	case tender.FieldConstructionArea:
+		m.ClearConstructionArea()
+		return nil
+	case tender.FieldTenderWinDate:
+		m.ClearTenderWinDate()
+		return nil
+	case tender.FieldTenderWinAmount:
+		m.ClearTenderWinAmount()
+		return nil
+	case tender.FieldLastTenderAmount:
+		m.ClearLastTenderAmount()
 		return nil
 	case tender.FieldCityID:
 		m.ClearCityID()
@@ -11496,6 +12020,27 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldKeyProject:
 		m.ResetKeyProject()
+		return nil
+	case tender.FieldTenderCode:
+		m.ResetTenderCode()
+		return nil
+	case tender.FieldArchitect:
+		m.ResetArchitect()
+		return nil
+	case tender.FieldTenderClosingDate:
+		m.ResetTenderClosingDate()
+		return nil
+	case tender.FieldConstructionArea:
+		m.ResetConstructionArea()
+		return nil
+	case tender.FieldTenderWinDate:
+		m.ResetTenderWinDate()
+		return nil
+	case tender.FieldTenderWinAmount:
+		m.ResetTenderWinAmount()
+		return nil
+	case tender.FieldLastTenderAmount:
+		m.ResetLastTenderAmount()
 		return nil
 	case tender.FieldAreaID:
 		m.ResetAreaID()
@@ -11773,7 +12318,8 @@ type UserMutation struct {
 	avatar_url           *string
 	disabled             *bool
 	is_admin             *bool
-	is_leader            *bool
+	has_map_access       *bool
+	is_editor            *bool
 	clearedFields        map[string]struct{}
 	areas                map[xid.ID]struct{}
 	removedareas         map[xid.ID]struct{}
@@ -12112,9 +12658,22 @@ func (m *UserMutation) OldOpenID(ctx context.Context) (v string, err error) {
 	return oldValue.OpenID, nil
 }
 
+// ClearOpenID clears the value of the "open_id" field.
+func (m *UserMutation) ClearOpenID() {
+	m.open_id = nil
+	m.clearedFields[user.FieldOpenID] = struct{}{}
+}
+
+// OpenIDCleared returns if the "open_id" field was cleared in this mutation.
+func (m *UserMutation) OpenIDCleared() bool {
+	_, ok := m.clearedFields[user.FieldOpenID]
+	return ok
+}
+
 // ResetOpenID resets all changes to the "open_id" field.
 func (m *UserMutation) ResetOpenID() {
 	m.open_id = nil
+	delete(m.clearedFields, user.FieldOpenID)
 }
 
 // SetAvatarURL sets the "avatar_url" field.
@@ -12148,9 +12707,22 @@ func (m *UserMutation) OldAvatarURL(ctx context.Context) (v string, err error) {
 	return oldValue.AvatarURL, nil
 }
 
+// ClearAvatarURL clears the value of the "avatar_url" field.
+func (m *UserMutation) ClearAvatarURL() {
+	m.avatar_url = nil
+	m.clearedFields[user.FieldAvatarURL] = struct{}{}
+}
+
+// AvatarURLCleared returns if the "avatar_url" field was cleared in this mutation.
+func (m *UserMutation) AvatarURLCleared() bool {
+	_, ok := m.clearedFields[user.FieldAvatarURL]
+	return ok
+}
+
 // ResetAvatarURL resets all changes to the "avatar_url" field.
 func (m *UserMutation) ResetAvatarURL() {
 	m.avatar_url = nil
+	delete(m.clearedFields, user.FieldAvatarURL)
 }
 
 // SetDisabled sets the "disabled" field.
@@ -12225,40 +12797,76 @@ func (m *UserMutation) ResetIsAdmin() {
 	m.is_admin = nil
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (m *UserMutation) SetIsLeader(b bool) {
-	m.is_leader = &b
+// SetHasMapAccess sets the "has_map_access" field.
+func (m *UserMutation) SetHasMapAccess(b bool) {
+	m.has_map_access = &b
 }
 
-// IsLeader returns the value of the "is_leader" field in the mutation.
-func (m *UserMutation) IsLeader() (r bool, exists bool) {
-	v := m.is_leader
+// HasMapAccess returns the value of the "has_map_access" field in the mutation.
+func (m *UserMutation) HasMapAccess() (r bool, exists bool) {
+	v := m.has_map_access
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsLeader returns the old "is_leader" field's value of the User entity.
+// OldHasMapAccess returns the old "has_map_access" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldIsLeader(ctx context.Context) (v bool, err error) {
+func (m *UserMutation) OldHasMapAccess(ctx context.Context) (v bool, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsLeader is only allowed on UpdateOne operations")
+		return v, errors.New("OldHasMapAccess is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsLeader requires an ID field in the mutation")
+		return v, errors.New("OldHasMapAccess requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsLeader: %w", err)
+		return v, fmt.Errorf("querying old value for OldHasMapAccess: %w", err)
 	}
-	return oldValue.IsLeader, nil
+	return oldValue.HasMapAccess, nil
 }
 
-// ResetIsLeader resets all changes to the "is_leader" field.
-func (m *UserMutation) ResetIsLeader() {
-	m.is_leader = nil
+// ResetHasMapAccess resets all changes to the "has_map_access" field.
+func (m *UserMutation) ResetHasMapAccess() {
+	m.has_map_access = nil
+}
+
+// SetIsEditor sets the "is_editor" field.
+func (m *UserMutation) SetIsEditor(b bool) {
+	m.is_editor = &b
+}
+
+// IsEditor returns the value of the "is_editor" field in the mutation.
+func (m *UserMutation) IsEditor() (r bool, exists bool) {
+	v := m.is_editor
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsEditor returns the old "is_editor" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsEditor(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsEditor is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsEditor requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsEditor: %w", err)
+	}
+	return oldValue.IsEditor, nil
+}
+
+// ResetIsEditor resets all changes to the "is_editor" field.
+func (m *UserMutation) ResetIsEditor() {
+	m.is_editor = nil
 }
 
 // SetLeaderID sets the "leader_id" field.
@@ -12641,7 +13249,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -12669,8 +13277,11 @@ func (m *UserMutation) Fields() []string {
 	if m.is_admin != nil {
 		fields = append(fields, user.FieldIsAdmin)
 	}
-	if m.is_leader != nil {
-		fields = append(fields, user.FieldIsLeader)
+	if m.has_map_access != nil {
+		fields = append(fields, user.FieldHasMapAccess)
+	}
+	if m.is_editor != nil {
+		fields = append(fields, user.FieldIsEditor)
 	}
 	if m.leader != nil {
 		fields = append(fields, user.FieldLeaderID)
@@ -12701,8 +13312,10 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Disabled()
 	case user.FieldIsAdmin:
 		return m.IsAdmin()
-	case user.FieldIsLeader:
-		return m.IsLeader()
+	case user.FieldHasMapAccess:
+		return m.HasMapAccess()
+	case user.FieldIsEditor:
+		return m.IsEditor()
 	case user.FieldLeaderID:
 		return m.LeaderID()
 	}
@@ -12732,8 +13345,10 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldDisabled(ctx)
 	case user.FieldIsAdmin:
 		return m.OldIsAdmin(ctx)
-	case user.FieldIsLeader:
-		return m.OldIsLeader(ctx)
+	case user.FieldHasMapAccess:
+		return m.OldHasMapAccess(ctx)
+	case user.FieldIsEditor:
+		return m.OldIsEditor(ctx)
 	case user.FieldLeaderID:
 		return m.OldLeaderID(ctx)
 	}
@@ -12808,12 +13423,19 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIsAdmin(v)
 		return nil
-	case user.FieldIsLeader:
+	case user.FieldHasMapAccess:
 		v, ok := value.(bool)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetIsLeader(v)
+		m.SetHasMapAccess(v)
+		return nil
+	case user.FieldIsEditor:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsEditor(v)
 		return nil
 	case user.FieldLeaderID:
 		v, ok := value.(xid.ID)
@@ -12852,6 +13474,12 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *UserMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(user.FieldOpenID) {
+		fields = append(fields, user.FieldOpenID)
+	}
+	if m.FieldCleared(user.FieldAvatarURL) {
+		fields = append(fields, user.FieldAvatarURL)
+	}
 	if m.FieldCleared(user.FieldLeaderID) {
 		fields = append(fields, user.FieldLeaderID)
 	}
@@ -12869,6 +13497,12 @@ func (m *UserMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *UserMutation) ClearField(name string) error {
 	switch name {
+	case user.FieldOpenID:
+		m.ClearOpenID()
+		return nil
+	case user.FieldAvatarURL:
+		m.ClearAvatarURL()
+		return nil
 	case user.FieldLeaderID:
 		m.ClearLeaderID()
 		return nil
@@ -12907,8 +13541,11 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldIsAdmin:
 		m.ResetIsAdmin()
 		return nil
-	case user.FieldIsLeader:
-		m.ResetIsLeader()
+	case user.FieldHasMapAccess:
+		m.ResetHasMapAccess()
+		return nil
+	case user.FieldIsEditor:
+		m.ResetIsEditor()
 		return nil
 	case user.FieldLeaderID:
 		m.ResetLeaderID()

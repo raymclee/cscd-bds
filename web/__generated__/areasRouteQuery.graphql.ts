@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a0ca74c85a4bbac8ace52f9cc30265a0>>
+ * @generated SignedSource<<748b4d83e4ae4f559066a86a7b6d0e3e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,7 @@ export type areasRouteQuery$data = {
   readonly areas: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly code: string;
         readonly id: string;
         readonly name: string;
       } | null | undefined;
@@ -64,6 +65,13 @@ var v0 = [
                 "kind": "ScalarField",
                 "name": "name",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "code",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -93,16 +101,16 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "dfbb6931184901cf8859df1e10d16098",
+    "cacheID": "d4c38968c836d875f8961de705b838c3",
     "id": null,
     "metadata": {},
     "name": "areasRouteQuery",
     "operationKind": "query",
-    "text": "query areasRouteQuery {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query areasRouteQuery {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9f279b2c38630afac2cbba7fee25b6eb";
+(node as any).hash = "46534710c0ac60e4d6b37c643d4ee7d6";
 
 export default node;

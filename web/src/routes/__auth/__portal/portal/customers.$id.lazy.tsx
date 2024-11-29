@@ -2,7 +2,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { customersDetailPageQuery } from "__generated__/customersDetailPageQuery.graphql";
 import { customersTenderListFragment$key } from "__generated__/customersTenderListFragment.graphql";
 import { customersVisitRecordListFragment$key } from "__generated__/customersVisitRecordListFragment.graphql";
-import { Card, Descriptions, List, Result } from "antd";
+import { Card, Descriptions, List, Result, Typography } from "antd";
 import dayjs from "dayjs";
 import * as React from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
@@ -137,7 +137,9 @@ function RouteComponent() {
       <Card
         title={
           <Descriptions
-            title={customer.name}
+            title={
+              <Typography.Title level={4}>{customer.name}</Typography.Title>
+            }
             items={[
               {
                 key: "ownerType",

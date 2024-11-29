@@ -72,14 +72,14 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-relay:
-        specifier: ^18.1.0
-        version: 18.1.0(react@18.3.1)
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.3.1)
       recharts:
         specifier: ^2.13.3
         version: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       relay-runtime:
-        specifier: ^18.1.0
-        version: 18.1.0
+        specifier: ^18.2.0
+        version: 18.2.0
       tailwind-merge:
         specifier: ^2.5.4
         version: 2.5.4
@@ -3720,8 +3720,8 @@ packages:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
 
-  react-relay@18.1.0:
-    resolution: {integrity: sha512-kqRbWid1A+B5HyvS05zwQacBhgWbIAlclTOO4CEWTwq0Sz00rZP1S9Bfcrl0ViImNKZHNa8+2I27409v9Sw1bQ==}
+  react-relay@18.2.0:
+    resolution: {integrity: sha512-/yHlv4pj3IQQPtDzYLfVk6P4wrOSvYPu/5ySPcRp4xV3pn9xoVOHVczSLcZkRVf72lJu8CIjoT8rn3roaGoFyQ==}
     peerDependencies:
       react: ^16.9.0 || ^17 || ^18
 
@@ -3806,8 +3806,8 @@ packages:
   relay-runtime@12.0.0:
     resolution: {integrity: sha512-QU6JKr1tMsry22DXNy9Whsq5rmvwr3LSZiiWV/9+DFpuTWvp+WFhobWMc8TC4OjKFfNhEZy7mOiqUAn5atQtug==}
 
-  relay-runtime@18.1.0:
-    resolution: {integrity: sha512-C3Ct6mty9ZD93KnzHLP4mFw9T3zqPL5VwFaNPRvVgdJYSwQT2dfzWz1336fWwMgAXIQGZIqIjedeamjy6P4ZkA==}
+  relay-runtime@18.2.0:
+    resolution: {integrity: sha512-r4FYWlx1dPwFW+KQnuF1ugwVKR4toIFduCGheEf2paRc6nEEcCIgd2p2Jx2gRF+4niO3mCbRZvqdCoKaznUDzg==}
 
   remedial@1.0.8:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
@@ -8607,14 +8607,14 @@ snapshots:
 
   react-refresh@0.14.2: {}
 
-  react-relay@18.1.0(react@18.3.1):
+  react-relay@18.2.0(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.26.0
       fbjs: 3.0.5
       invariant: 2.2.4
       nullthrows: 1.1.1
       react: 18.3.1
-      relay-runtime: 18.1.0
+      relay-runtime: 18.2.0
     transitivePeerDependencies:
       - encoding
 
@@ -8717,7 +8717,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  relay-runtime@18.1.0:
+  relay-runtime@18.2.0:
     dependencies:
       '@babel/runtime': 7.26.0
       fbjs: 3.0.5
@@ -9352,9 +9352,9 @@ snapshots:
       motion: 11.11.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-relay: 18.1.0(react@18.3.1)
+      react-relay: 18.2.0(react@18.3.1)
       recharts: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      relay-runtime: 18.1.0
+      relay-runtime: 18.2.0
       tailwind-merge: 2.5.4
       tailwindcss-animate: 1.0.7(tailwindcss@3.4.14)
       valibot: 1.0.0-beta.8(typescript@5.6.3)

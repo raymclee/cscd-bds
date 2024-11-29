@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { TenderListItem } from "~/components/portal/tender-list-item";
+import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
@@ -60,7 +61,6 @@ function TenderList({
             node {
               tenders(orderBy: $orderBy, first: $first, last: $last)
                 @connection(key: "TendersTenderListFragment_tenders") {
-                totalCount
                 edges {
                   node {
                     id
@@ -78,16 +78,10 @@ function TenderList({
   );
 
   const [searchText, setSearchText] = useState("");
+  const { session } = Route.useRouteContext();
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
-  const perPage = 10;
-  const currentPage = searchParams.page;
 
-  const totalCount =
-    data?.areas.edges?.reduce(
-      (acc, inc) => acc + (inc?.node?.tenders.totalCount || 0),
-      0,
-    ) ?? 0;
   const dataSource = data?.areas.edges
     ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
     .filter((t) =>
@@ -111,19 +105,21 @@ function TenderList({
             type="search"
           />
         </Form.Item>
-        <Link to="/portal/tenders/new">
-          <Button type="primary" icon={<Plus size={16} />}>
-            添加商机
-          </Button>
-        </Link>
+        {canEdit(session) && (
+          <Link to="/portal/tenders/new">
+            <Button type="primary" icon={<Plus size={16} />}>
+              添加商机
+            </Button>
+          </Link>
+        )}
       </div>
 
       <List
         pagination={{
           position: "both",
           showSizeChanger: true,
-          current: currentPage,
-          onChange(page, pageSize) {
+          current: searchParams.page,
+          onChange(page) {
             navigate({
               to: ".",
               search: { page },

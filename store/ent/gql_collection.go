@@ -2680,6 +2680,41 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldKeyProject)
 				fieldSeen[tender.FieldKeyProject] = struct{}{}
 			}
+		case "tenderCode":
+			if _, ok := fieldSeen[tender.FieldTenderCode]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderCode)
+				fieldSeen[tender.FieldTenderCode] = struct{}{}
+			}
+		case "architect":
+			if _, ok := fieldSeen[tender.FieldArchitect]; !ok {
+				selectedFields = append(selectedFields, tender.FieldArchitect)
+				fieldSeen[tender.FieldArchitect] = struct{}{}
+			}
+		case "tenderClosingDate":
+			if _, ok := fieldSeen[tender.FieldTenderClosingDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderClosingDate)
+				fieldSeen[tender.FieldTenderClosingDate] = struct{}{}
+			}
+		case "constructionArea":
+			if _, ok := fieldSeen[tender.FieldConstructionArea]; !ok {
+				selectedFields = append(selectedFields, tender.FieldConstructionArea)
+				fieldSeen[tender.FieldConstructionArea] = struct{}{}
+			}
+		case "tenderWinDate":
+			if _, ok := fieldSeen[tender.FieldTenderWinDate]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderWinDate)
+				fieldSeen[tender.FieldTenderWinDate] = struct{}{}
+			}
+		case "tenderWinAmount":
+			if _, ok := fieldSeen[tender.FieldTenderWinAmount]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderWinAmount)
+				fieldSeen[tender.FieldTenderWinAmount] = struct{}{}
+			}
+		case "lastTenderAmount":
+			if _, ok := fieldSeen[tender.FieldLastTenderAmount]; !ok {
+				selectedFields = append(selectedFields, tender.FieldLastTenderAmount)
+				fieldSeen[tender.FieldLastTenderAmount] = struct{}{}
+			}
 		case "areaID":
 			if _, ok := fieldSeen[tender.FieldAreaID]; !ok {
 				selectedFields = append(selectedFields, tender.FieldAreaID)
@@ -3240,10 +3275,15 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				selectedFields = append(selectedFields, user.FieldIsAdmin)
 				fieldSeen[user.FieldIsAdmin] = struct{}{}
 			}
-		case "isLeader":
-			if _, ok := fieldSeen[user.FieldIsLeader]; !ok {
-				selectedFields = append(selectedFields, user.FieldIsLeader)
-				fieldSeen[user.FieldIsLeader] = struct{}{}
+		case "hasMapAccess":
+			if _, ok := fieldSeen[user.FieldHasMapAccess]; !ok {
+				selectedFields = append(selectedFields, user.FieldHasMapAccess)
+				fieldSeen[user.FieldHasMapAccess] = struct{}{}
+			}
+		case "isEditor":
+			if _, ok := fieldSeen[user.FieldIsEditor]; !ok {
+				selectedFields = append(selectedFields, user.FieldIsEditor)
+				fieldSeen[user.FieldIsEditor] = struct{}{}
 			}
 		case "leaderID":
 			if _, ok := fieldSeen[user.FieldLeaderID]; !ok {

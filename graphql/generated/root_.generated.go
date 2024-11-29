@@ -192,6 +192,7 @@ type ComplexityRoot struct {
 		CreateUser   func(childComplexity int, input ent.CreateUserInput) int
 		DeletePlot   func(childComplexity int, id xid.ID) int
 		DeleteTender func(childComplexity int, id xid.ID) int
+		DeleteUser   func(childComplexity int, id xid.ID) int
 		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdatePlot   func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) int
@@ -271,17 +272,19 @@ type ComplexityRoot struct {
 	}
 
 	Session struct {
-		AvatarURL func(childComplexity int) int
-		Email     func(childComplexity int) int
-		IsAdmin   func(childComplexity int) int
-		IsLeader  func(childComplexity int) int
-		Name      func(childComplexity int) int
-		UserID    func(childComplexity int) int
-		Username  func(childComplexity int) int
+		AvatarURL    func(childComplexity int) int
+		Email        func(childComplexity int) int
+		HasMapAccess func(childComplexity int) int
+		IsAdmin      func(childComplexity int) int
+		IsEditor     func(childComplexity int) int
+		Name         func(childComplexity int) int
+		UserID       func(childComplexity int) int
+		Username     func(childComplexity int) int
 	}
 
 	Tender struct {
 		Address                              func(childComplexity int) int
+		Architect                            func(childComplexity int) int
 		Area                                 func(childComplexity int) int
 		AreaID                               func(childComplexity int) int
 		Attachements                         func(childComplexity int) int
@@ -293,6 +296,7 @@ type ComplexityRoot struct {
 		CompetitivePartnershipRating         func(childComplexity int) int
 		CompetitivePartnershipRatingOverview func(childComplexity int) int
 		CompetitorSituations                 func(childComplexity int) int
+		ConstructionArea                     func(childComplexity int) int
 		ConsultingFirm                       func(childComplexity int) int
 		ContractForm                         func(childComplexity int) int
 		Contractor                           func(childComplexity int) int
@@ -323,6 +327,7 @@ type ComplexityRoot struct {
 		ID                                   func(childComplexity int) int
 		Images                               func(childComplexity int) int
 		KeyProject                           func(childComplexity int) int
+		LastTenderAmount                     func(childComplexity int) int
 		ManagementCompany                    func(childComplexity int) int
 		Name                                 func(childComplexity int) int
 		OwnerSituations                      func(childComplexity int) int
@@ -336,9 +341,13 @@ type ComplexityRoot struct {
 		SizeAndValueRating                   func(childComplexity int) int
 		SizeAndValueRatingOverview           func(childComplexity int) int
 		Status                               func(childComplexity int) int
+		TenderClosingDate                    func(childComplexity int) int
+		TenderCode                           func(childComplexity int) int
 		TenderDate                           func(childComplexity int) int
 		TenderForm                           func(childComplexity int) int
 		TenderSituations                     func(childComplexity int) int
+		TenderWinAmount                      func(childComplexity int) int
+		TenderWinDate                        func(childComplexity int) int
 		TenderingAgency                      func(childComplexity int) int
 		TimeLimitRating                      func(childComplexity int) int
 		TimeLimitRatingOverview              func(childComplexity int) int
@@ -364,9 +373,10 @@ type ComplexityRoot struct {
 		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Disabled     func(childComplexity int) int
 		Email        func(childComplexity int) int
+		HasMapAccess func(childComplexity int) int
 		ID           func(childComplexity int) int
 		IsAdmin      func(childComplexity int) int
-		IsLeader     func(childComplexity int) int
+		IsEditor     func(childComplexity int) int
 		Leader       func(childComplexity int) int
 		LeaderID     func(childComplexity int) int
 		Name         func(childComplexity int) int
@@ -1179,6 +1189,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteTender(childComplexity, args["id"].(xid.ID)), true
 
+	case "Mutation.deleteUser":
+		if e.complexity.Mutation.DeleteUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteUser(childComplexity, args["id"].(xid.ID)), true
+
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
 			break
@@ -1652,6 +1674,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.Email(childComplexity), true
 
+	case "Session.hasMapAccess":
+		if e.complexity.Session.HasMapAccess == nil {
+			break
+		}
+
+		return e.complexity.Session.HasMapAccess(childComplexity), true
+
 	case "Session.isAdmin":
 		if e.complexity.Session.IsAdmin == nil {
 			break
@@ -1659,12 +1688,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.IsAdmin(childComplexity), true
 
-	case "Session.isLeader":
-		if e.complexity.Session.IsLeader == nil {
+	case "Session.isEditor":
+		if e.complexity.Session.IsEditor == nil {
 			break
 		}
 
-		return e.complexity.Session.IsLeader(childComplexity), true
+		return e.complexity.Session.IsEditor(childComplexity), true
 
 	case "Session.name":
 		if e.complexity.Session.Name == nil {
@@ -1693,6 +1722,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.Address(childComplexity), true
+
+	case "Tender.architect":
+		if e.complexity.Tender.Architect == nil {
+			break
+		}
+
+		return e.complexity.Tender.Architect(childComplexity), true
 
 	case "Tender.area":
 		if e.complexity.Tender.Area == nil {
@@ -1770,6 +1806,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.CompetitorSituations(childComplexity), true
+
+	case "Tender.constructionArea":
+		if e.complexity.Tender.ConstructionArea == nil {
+			break
+		}
+
+		return e.complexity.Tender.ConstructionArea(childComplexity), true
 
 	case "Tender.consultingFirm":
 		if e.complexity.Tender.ConsultingFirm == nil {
@@ -1981,6 +2024,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.KeyProject(childComplexity), true
 
+	case "Tender.lastTenderAmount":
+		if e.complexity.Tender.LastTenderAmount == nil {
+			break
+		}
+
+		return e.complexity.Tender.LastTenderAmount(childComplexity), true
+
 	case "Tender.managementCompany":
 		if e.complexity.Tender.ManagementCompany == nil {
 			break
@@ -2072,6 +2122,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Status(childComplexity), true
 
+	case "Tender.tenderClosingDate":
+		if e.complexity.Tender.TenderClosingDate == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderClosingDate(childComplexity), true
+
+	case "Tender.tenderCode":
+		if e.complexity.Tender.TenderCode == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderCode(childComplexity), true
+
 	case "Tender.tenderDate":
 		if e.complexity.Tender.TenderDate == nil {
 			break
@@ -2092,6 +2156,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.TenderSituations(childComplexity), true
+
+	case "Tender.tenderWinAmount":
+		if e.complexity.Tender.TenderWinAmount == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderWinAmount(childComplexity), true
+
+	case "Tender.tenderWinDate":
+		if e.complexity.Tender.TenderWinDate == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderWinDate(childComplexity), true
 
 	case "Tender.tenderingAgency":
 		if e.complexity.Tender.TenderingAgency == nil {
@@ -2220,6 +2298,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Email(childComplexity), true
 
+	case "User.hasMapAccess":
+		if e.complexity.User.HasMapAccess == nil {
+			break
+		}
+
+		return e.complexity.User.HasMapAccess(childComplexity), true
+
 	case "User.id":
 		if e.complexity.User.ID == nil {
 			break
@@ -2234,12 +2319,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.IsAdmin(childComplexity), true
 
-	case "User.isLeader":
-		if e.complexity.User.IsLeader == nil {
+	case "User.isEditor":
+		if e.complexity.User.IsEditor == nil {
 			break
 		}
 
-		return e.complexity.User.IsLeader(childComplexity), true
+		return e.complexity.User.IsEditor(childComplexity), true
 
 	case "User.leader":
 		if e.complexity.User.Leader == nil {
@@ -3445,6 +3530,34 @@ input CreateTenderInput {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  """
+  則師，只限港澳
+  """
+  architect: String
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: String
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  """
+  得標金額，只限港澳
+  """
+  tenderWinAmount: String
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
   areaID: ID!
   customerID: ID!
   finderID: ID!
@@ -3465,11 +3578,12 @@ input CreateUserInput {
   name: String!
   email: String!
   username: String!
-  openID: String!
-  avatarURL: String!
+  openID: String
+  avatarURL: String
   disabled: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  hasMapAccess: Boolean
+  isEditor: Boolean
   areaIDs: [ID!]
   customerIDs: [ID!]
   leaderID: ID
@@ -4996,6 +5110,34 @@ type Tender implements Node {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean!
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  """
+  則師，只限港澳
+  """
+  architect: String
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: String
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  """
+  得標金額，只限港澳
+  """
+  tenderWinAmount: String
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
   areaID: ID!
   provinceID: ID!
   cityID: ID
@@ -5761,6 +5903,122 @@ input TenderWhereInput {
   keyProject: Boolean
   keyProjectNEQ: Boolean
   """
+  tender_code field predicates
+  """
+  tenderCode: String
+  tenderCodeNEQ: String
+  tenderCodeIn: [String!]
+  tenderCodeNotIn: [String!]
+  tenderCodeGT: String
+  tenderCodeGTE: String
+  tenderCodeLT: String
+  tenderCodeLTE: String
+  tenderCodeContains: String
+  tenderCodeHasPrefix: String
+  tenderCodeHasSuffix: String
+  tenderCodeIsNil: Boolean
+  tenderCodeNotNil: Boolean
+  tenderCodeEqualFold: String
+  tenderCodeContainsFold: String
+  """
+  architect field predicates
+  """
+  architect: String
+  architectNEQ: String
+  architectIn: [String!]
+  architectNotIn: [String!]
+  architectGT: String
+  architectGTE: String
+  architectLT: String
+  architectLTE: String
+  architectContains: String
+  architectHasPrefix: String
+  architectHasSuffix: String
+  architectIsNil: Boolean
+  architectNotNil: Boolean
+  architectEqualFold: String
+  architectContainsFold: String
+  """
+  tender_closing_date field predicates
+  """
+  tenderClosingDate: String
+  tenderClosingDateNEQ: String
+  tenderClosingDateIn: [String!]
+  tenderClosingDateNotIn: [String!]
+  tenderClosingDateGT: String
+  tenderClosingDateGTE: String
+  tenderClosingDateLT: String
+  tenderClosingDateLTE: String
+  tenderClosingDateContains: String
+  tenderClosingDateHasPrefix: String
+  tenderClosingDateHasSuffix: String
+  tenderClosingDateIsNil: Boolean
+  tenderClosingDateNotNil: Boolean
+  tenderClosingDateEqualFold: String
+  tenderClosingDateContainsFold: String
+  """
+  construction_area field predicates
+  """
+  constructionArea: String
+  constructionAreaNEQ: String
+  constructionAreaIn: [String!]
+  constructionAreaNotIn: [String!]
+  constructionAreaGT: String
+  constructionAreaGTE: String
+  constructionAreaLT: String
+  constructionAreaLTE: String
+  constructionAreaContains: String
+  constructionAreaHasPrefix: String
+  constructionAreaHasSuffix: String
+  constructionAreaIsNil: Boolean
+  constructionAreaNotNil: Boolean
+  constructionAreaEqualFold: String
+  constructionAreaContainsFold: String
+  """
+  tender_win_date field predicates
+  """
+  tenderWinDate: Time
+  tenderWinDateNEQ: Time
+  tenderWinDateIn: [Time!]
+  tenderWinDateNotIn: [Time!]
+  tenderWinDateGT: Time
+  tenderWinDateGTE: Time
+  tenderWinDateLT: Time
+  tenderWinDateLTE: Time
+  tenderWinDateIsNil: Boolean
+  tenderWinDateNotNil: Boolean
+  """
+  tender_win_amount field predicates
+  """
+  tenderWinAmount: String
+  tenderWinAmountNEQ: String
+  tenderWinAmountIn: [String!]
+  tenderWinAmountNotIn: [String!]
+  tenderWinAmountGT: String
+  tenderWinAmountGTE: String
+  tenderWinAmountLT: String
+  tenderWinAmountLTE: String
+  tenderWinAmountContains: String
+  tenderWinAmountHasPrefix: String
+  tenderWinAmountHasSuffix: String
+  tenderWinAmountIsNil: Boolean
+  tenderWinAmountNotNil: Boolean
+  tenderWinAmountEqualFold: String
+  tenderWinAmountContainsFold: String
+  """
+  last_tender_amount field predicates
+  """
+  lastTenderAmount: Float
+  lastTenderAmountNEQ: Float
+  lastTenderAmountIn: [Float!]
+  lastTenderAmountNotIn: [Float!]
+  lastTenderAmountGT: Float
+  lastTenderAmountGTE: Float
+  lastTenderAmountLT: Float
+  lastTenderAmountLTE: Float
+  lastTenderAmountIsNil: Boolean
+  lastTenderAmountNotNil: Boolean
+  """
   area_id field predicates
   """
   areaID: ID
@@ -6138,6 +6396,41 @@ input UpdateTenderInput {
   consultingFirm: String
   clearConsultingFirm: Boolean
   keyProject: Boolean
+  """
+  投標編號，只限港澳
+  """
+  tenderCode: String
+  clearTenderCode: Boolean
+  """
+  則師，只限港澳
+  """
+  architect: String
+  clearArchitect: Boolean
+  """
+  交標日期，只限港澳
+  """
+  tenderClosingDate: String
+  clearTenderClosingDate: Boolean
+  """
+  施工面積，只限港澳
+  """
+  constructionArea: String
+  clearConstructionArea: Boolean
+  """
+  得標日期，只限港澳
+  """
+  tenderWinDate: Time
+  clearTenderWinDate: Boolean
+  """
+  得標金額，只限港澳
+  """
+  tenderWinAmount: String
+  clearTenderWinAmount: Boolean
+  """
+  最後一次投標金額，只限港澳
+  """
+  lastTenderAmount: Float
+  clearLastTenderAmount: Boolean
   areaID: ID
   customerID: ID
   finderID: ID
@@ -6163,10 +6456,13 @@ input UpdateUserInput {
   email: String
   username: String
   openID: String
+  clearOpenID: Boolean
   avatarURL: String
+  clearAvatarURL: Boolean
   disabled: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  hasMapAccess: Boolean
+  isEditor: Boolean
   addAreaIDs: [ID!]
   removeAreaIDs: [ID!]
   clearAreas: Boolean
@@ -6212,11 +6508,12 @@ type User implements Node {
   name: String!
   email: String!
   username: String!
-  openID: String!
-  avatarURL: String!
+  openID: String
+  avatarURL: String
   disabled: Boolean!
   isAdmin: Boolean!
-  isLeader: Boolean!
+  hasMapAccess: Boolean!
+  isEditor: Boolean!
   leaderID: ID
   areas(
     """
@@ -6497,6 +6794,8 @@ input UserWhereInput {
   openIDContains: String
   openIDHasPrefix: String
   openIDHasSuffix: String
+  openIDIsNil: Boolean
+  openIDNotNil: Boolean
   openIDEqualFold: String
   openIDContainsFold: String
   """
@@ -6513,6 +6812,8 @@ input UserWhereInput {
   avatarURLContains: String
   avatarURLHasPrefix: String
   avatarURLHasSuffix: String
+  avatarURLIsNil: Boolean
+  avatarURLNotNil: Boolean
   avatarURLEqualFold: String
   avatarURLContainsFold: String
   """
@@ -6526,10 +6827,15 @@ input UserWhereInput {
   isAdmin: Boolean
   isAdminNEQ: Boolean
   """
-  is_leader field predicates
+  has_map_access field predicates
   """
-  isLeader: Boolean
-  isLeaderNEQ: Boolean
+  hasMapAccess: Boolean
+  hasMapAccessNEQ: Boolean
+  """
+  is_editor field predicates
+  """
+  isEditor: Boolean
+  isEditorNEQ: Boolean
   """
   leader_id field predicates
   """
@@ -6876,6 +7182,7 @@ type GeoJson {
 
   createUser(input: CreateUserInput!): UserConnection!
   updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): User!
 
   createTender(
     input: CreateTenderInput!
@@ -6908,7 +7215,8 @@ type GeoJson {
   email: String!
   avatarUrl: String!
   isAdmin: Boolean!
-  isLeader: Boolean!
+  isEditor: Boolean!
+  hasMapAccess: Boolean!
 }
 
 extend type Query {

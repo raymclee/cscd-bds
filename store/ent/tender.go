@@ -118,6 +118,20 @@ type Tender struct {
 	ConsultingFirm *string `json:"consulting_firm,omitempty"`
 	// KeyProject holds the value of the "key_project" field.
 	KeyProject bool `json:"key_project,omitempty"`
+	// 投標編號，只限港澳
+	TenderCode string `json:"tender_code,omitempty"`
+	// 則師，只限港澳
+	Architect string `json:"architect,omitempty"`
+	// 交標日期，只限港澳
+	TenderClosingDate string `json:"tender_closing_date,omitempty"`
+	// 施工面積，只限港澳
+	ConstructionArea string `json:"construction_area,omitempty"`
+	// 得標日期，只限港澳
+	TenderWinDate time.Time `json:"tender_win_date,omitempty"`
+	// 得標金額，只限港澳
+	TenderWinAmount string `json:"tender_win_amount,omitempty"`
+	// 最後一次投標金額，只限港澳
+	LastTenderAmount float64 `json:"last_tender_amount,omitempty"`
 	// AreaID holds the value of the "area_id" field.
 	AreaID xid.ID `json:"area_id,omitempty"`
 	// ProvinceID holds the value of the "province_id" field.
@@ -276,13 +290,13 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case tender.FieldPrepareToBid, tender.FieldKeyProject:
 			values[i] = new(sql.NullBool)
-		case tender.FieldEstimatedAmount:
+		case tender.FieldEstimatedAmount, tender.FieldLastTenderAmount:
 			values[i] = new(sql.NullFloat64)
 		case tender.FieldStatus, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
-		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm:
+		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldTenderClosingDate, tender.FieldConstructionArea, tender.FieldTenderWinAmount:
 			values[i] = new(sql.NullString)
-		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate:
+		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate, tender.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
 		case tender.FieldID, tender.FieldAreaID, tender.FieldProvinceID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID:
 			values[i] = new(xid.ID)
@@ -620,6 +634,48 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.KeyProject = value.Bool
 			}
+		case tender.FieldTenderCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_code", values[i])
+			} else if value.Valid {
+				t.TenderCode = value.String
+			}
+		case tender.FieldArchitect:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field architect", values[i])
+			} else if value.Valid {
+				t.Architect = value.String
+			}
+		case tender.FieldTenderClosingDate:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_closing_date", values[i])
+			} else if value.Valid {
+				t.TenderClosingDate = value.String
+			}
+		case tender.FieldConstructionArea:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field construction_area", values[i])
+			} else if value.Valid {
+				t.ConstructionArea = value.String
+			}
+		case tender.FieldTenderWinDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_win_date", values[i])
+			} else if value.Valid {
+				t.TenderWinDate = value.Time
+			}
+		case tender.FieldTenderWinAmount:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tender_win_amount", values[i])
+			} else if value.Valid {
+				t.TenderWinAmount = value.String
+			}
+		case tender.FieldLastTenderAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field last_tender_amount", values[i])
+			} else if value.Valid {
+				t.LastTenderAmount = value.Float64
+			}
 		case tender.FieldAreaID:
 			if value, ok := values[i].(*xid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field area_id", values[i])
@@ -945,6 +1001,27 @@ func (t *Tender) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("key_project=")
 	builder.WriteString(fmt.Sprintf("%v", t.KeyProject))
+	builder.WriteString(", ")
+	builder.WriteString("tender_code=")
+	builder.WriteString(t.TenderCode)
+	builder.WriteString(", ")
+	builder.WriteString("architect=")
+	builder.WriteString(t.Architect)
+	builder.WriteString(", ")
+	builder.WriteString("tender_closing_date=")
+	builder.WriteString(t.TenderClosingDate)
+	builder.WriteString(", ")
+	builder.WriteString("construction_area=")
+	builder.WriteString(t.ConstructionArea)
+	builder.WriteString(", ")
+	builder.WriteString("tender_win_date=")
+	builder.WriteString(t.TenderWinDate.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("tender_win_amount=")
+	builder.WriteString(t.TenderWinAmount)
+	builder.WriteString(", ")
+	builder.WriteString("last_tender_amount=")
+	builder.WriteString(fmt.Sprintf("%v", t.LastTenderAmount))
 	builder.WriteString(", ")
 	builder.WriteString("area_id=")
 	builder.WriteString(fmt.Sprintf("%v", t.AreaID))

@@ -33,8 +33,10 @@ const (
 	FieldDisabled = "disabled"
 	// FieldIsAdmin holds the string denoting the is_admin field in the database.
 	FieldIsAdmin = "is_admin"
-	// FieldIsLeader holds the string denoting the is_leader field in the database.
-	FieldIsLeader = "is_leader"
+	// FieldHasMapAccess holds the string denoting the has_map_access field in the database.
+	FieldHasMapAccess = "has_map_access"
+	// FieldIsEditor holds the string denoting the is_editor field in the database.
+	FieldIsEditor = "is_editor"
 	// FieldLeaderID holds the string denoting the leader_id field in the database.
 	FieldLeaderID = "leader_id"
 	// EdgeAreas holds the string denoting the areas edge name in mutations.
@@ -95,7 +97,8 @@ var Columns = []string{
 	FieldAvatarURL,
 	FieldDisabled,
 	FieldIsAdmin,
-	FieldIsLeader,
+	FieldHasMapAccess,
+	FieldIsEditor,
 	FieldLeaderID,
 }
 
@@ -132,8 +135,10 @@ var (
 	DefaultDisabled bool
 	// DefaultIsAdmin holds the default value on creation for the "is_admin" field.
 	DefaultIsAdmin bool
-	// DefaultIsLeader holds the default value on creation for the "is_leader" field.
-	DefaultIsLeader bool
+	// DefaultHasMapAccess holds the default value on creation for the "has_map_access" field.
+	DefaultHasMapAccess bool
+	// DefaultIsEditor holds the default value on creation for the "is_editor" field.
+	DefaultIsEditor bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -191,9 +196,14 @@ func ByIsAdmin(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsAdmin, opts...).ToFunc()
 }
 
-// ByIsLeader orders the results by the is_leader field.
-func ByIsLeader(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsLeader, opts...).ToFunc()
+// ByHasMapAccess orders the results by the has_map_access field.
+func ByHasMapAccess(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHasMapAccess, opts...).ToFunc()
+}
+
+// ByIsEditor orders the results by the is_editor field.
+func ByIsEditor(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsEditor, opts...).ToFunc()
 }
 
 // ByLeaderID orders the results by the leader_id field.

@@ -43,6 +43,15 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id xid.ID, input ent.
 	return r.store.User.UpdateOneID(id).SetInput(input).Save(ctx)
 }
 
+// DeleteUser is the resolver for the deleteUser field.
+func (r *mutationResolver) DeleteUser(ctx context.Context, id xid.ID) (*ent.User, error) {
+	u, err := r.store.User.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user: %w", err)
+	}
+	return u, r.store.User.DeleteOne(u).Exec(ctx)
+}
+
 // CreateTender is the resolver for the createTender field.
 func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.TenderConnection, error) {
 	q := r.store.Tender.Create().SetInput(input)
