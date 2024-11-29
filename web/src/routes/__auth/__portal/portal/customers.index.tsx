@@ -1,14 +1,20 @@
-import * as React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import { loadQuery } from 'react-relay'
+import * as React from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { loadQuery } from "react-relay";
 import node, {
   customersPageQuery,
-} from '__generated__/customersPageQuery.graphql'
+} from "__generated__/customersPageQuery.graphql";
+import * as v from "valibot";
 
-export const Route = createFileRoute('/__auth/__portal/portal/customers/')({
+const customerSearchSchema = v.object({
+  page: v.optional(v.fallback(v.number(), 1), 1),
+});
+
+export const Route = createFileRoute("/__auth/__portal/portal/customers/")({
   async loader({ context: { RelayEnvironment, session } }) {
     return loadQuery<customersPageQuery>(RelayEnvironment, node, {
       userId: session.userId,
-    })
+    });
   },
-})
+  validateSearch: customerSearchSchema,
+});

@@ -1,3 +1,4 @@
+import { InboxOutlined } from "@ant-design/icons";
 import { useNavigate } from "@tanstack/react-router";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
 import {
@@ -16,13 +17,11 @@ import {
   Upload,
 } from "antd";
 import dayjs from "dayjs";
+import { useMemo, useState } from "react";
 import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { FixedToolbar } from "./fixed-toolbar";
-import { useMemo, useState } from "react";
-import { InboxOutlined } from "@ant-design/icons";
-import { UploadableMap } from "relay-runtime";
 
 const { Dragger } = Upload;
 
@@ -685,7 +684,6 @@ export function TenderForm<T>({
 
       <FixedToolbar>
         <Button
-          danger
           onClick={() => {
             navigate({ to: ".." });
           }}

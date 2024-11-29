@@ -42,7 +42,7 @@ export type AreaCustomersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<CustomerOrder>;
+  orderBy?: InputMaybe<Array<CustomerOrder>>;
   where?: InputMaybe<CustomerWhereInput>;
 };
 
@@ -711,7 +711,7 @@ export type CustomerVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -1154,10 +1154,10 @@ export type GeoJson = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createArea: Area;
+  createArea: AreaConnection;
   createPlot: PlotConnection;
   createTender: TenderConnection;
-  createUser: User;
+  createUser: UserConnection;
   deletePlot: Plot;
   deleteTender: Tender;
   updateArea: Area;
@@ -1626,7 +1626,7 @@ export type QueryCustomersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<CustomerOrder>;
+  orderBy?: InputMaybe<Array<CustomerOrder>>;
   where?: InputMaybe<CustomerWhereInput>;
 };
 
@@ -1696,7 +1696,7 @@ export type QueryVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -1784,7 +1784,7 @@ export type TenderVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -2865,7 +2865,7 @@ export type UserCustomersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<CustomerOrder>;
+  orderBy?: InputMaybe<Array<CustomerOrder>>;
   where?: InputMaybe<CustomerWhereInput>;
 };
 
@@ -2885,7 +2885,7 @@ export type UserVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
+  orderBy?: InputMaybe<VisitRecordOrder>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -3282,6 +3282,14 @@ export type UseCreatePlotMutationMutationVariables = Exact<{
 
 export type UseCreatePlotMutationMutation = { __typename?: 'Mutation', createPlot: { __typename?: 'PlotConnection', edges?: Array<{ __typename?: 'PlotEdge', node?: { __typename?: 'Plot', id: string, name: string, geoBounds?: Array<Array<number>> | null, colorHex: string } | null } | null> | null } };
 
+export type UseCreateUserMutationMutationVariables = Exact<{
+  input: CreateUserInput;
+  connections: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+}>;
+
+
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, isAdmin: boolean, isLeader: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', name: string } | null } | null> | null } } | null } | null> | null } };
+
 export type UseDeleteTenderMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -3318,6 +3326,27 @@ export const UseCreatePlotMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UseCreatePlotMutationMutation, UseCreatePlotMutationMutationVariables>;
+export const UseCreateUserMutationDocument = new TypedDocumentString(`
+    mutation useCreateUserMutation($input: CreateUserInput!, $connections: [ID!]!) {
+  createUser(input: $input) {
+    edges @appendNode(connections: $connections, edgeTypeName: "UserEdge") {
+      node {
+        id
+        name
+        areas {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+        isAdmin
+        isLeader
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<UseCreateUserMutationMutation, UseCreateUserMutationMutationVariables>;
 export const UseDeleteTenderMutationDocument = new TypedDocumentString(`
     mutation useDeleteTenderMutation($id: ID!) {
   deleteTender(id: $id) {

@@ -1333,24 +1333,30 @@ func newCustomerPaginateArgs(rv map[string]any) *customerPaginateArgs {
 	}
 	if v, ok := rv[orderByField]; ok {
 		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &CustomerOrder{Field: &CustomerOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
+		case []*CustomerOrder:
+			args.opts = append(args.opts, WithCustomerOrder(v))
+		case []any:
+			var orders []*CustomerOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &CustomerOrder{Field: &CustomerOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
 			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithCustomerOrder(order))
-			}
-		case *CustomerOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithCustomerOrder(v))
-			}
+			args.opts = append(args.opts, WithCustomerOrder(orders))
 		}
 	}
 	if v, ok := rv[whereField].(*CustomerWhereInput); ok {
@@ -3533,30 +3539,24 @@ func newVisitRecordPaginateArgs(rv map[string]any) *visitrecordPaginateArgs {
 	}
 	if v, ok := rv[orderByField]; ok {
 		switch v := v.(type) {
-		case []*VisitRecordOrder:
-			args.opts = append(args.opts, WithVisitRecordOrder(v))
-		case []any:
-			var orders []*VisitRecordOrder
-			for i := range v {
-				mv, ok := v[i].(map[string]any)
-				if !ok {
-					continue
-				}
-				var (
-					err1, err2 error
-					order      = &VisitRecordOrder{Field: &VisitRecordOrderField{}, Direction: entgql.OrderDirectionAsc}
-				)
-				if d, ok := mv[directionField]; ok {
-					err1 = order.Direction.UnmarshalGQL(d)
-				}
-				if f, ok := mv[fieldField]; ok {
-					err2 = order.Field.UnmarshalGQL(f)
-				}
-				if err1 == nil && err2 == nil {
-					orders = append(orders, order)
-				}
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &VisitRecordOrder{Field: &VisitRecordOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
 			}
-			args.opts = append(args.opts, WithVisitRecordOrder(orders))
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithVisitRecordOrder(order))
+			}
+		case *VisitRecordOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithVisitRecordOrder(v))
+			}
 		}
 	}
 	if v, ok := rv[whereField].(*VisitRecordWhereInput); ok {

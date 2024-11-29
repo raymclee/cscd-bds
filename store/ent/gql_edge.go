@@ -9,7 +9,7 @@ import (
 )
 
 func (a *Area) Customers(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *CustomerOrder, where *CustomerWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*CustomerOrder, where *CustomerWhereInput,
 ) (*CustomerConnection, error) {
 	opts := []CustomerPaginateOption{
 		WithCustomerOrder(orderBy),
@@ -209,7 +209,7 @@ func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
 }
 
 func (c *Customer) VisitRecords(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
 	opts := []VisitRecordPaginateOption{
 		WithVisitRecordOrder(orderBy),
@@ -443,7 +443,7 @@ func (t *Tender) District(ctx context.Context) (*District, error) {
 }
 
 func (t *Tender) VisitRecords(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
 	opts := []VisitRecordPaginateOption{
 		WithVisitRecordOrder(orderBy),
@@ -485,7 +485,7 @@ func (u *User) Areas(
 }
 
 func (u *User) Customers(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *CustomerOrder, where *CustomerWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*CustomerOrder, where *CustomerWhereInput,
 ) (*CustomerConnection, error) {
 	opts := []CustomerPaginateOption{
 		WithCustomerOrder(orderBy),
@@ -547,7 +547,7 @@ func (u *User) Tenders(
 }
 
 func (u *User) VisitRecords(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
 	opts := []VisitRecordPaginateOption{
 		WithVisitRecordOrder(orderBy),

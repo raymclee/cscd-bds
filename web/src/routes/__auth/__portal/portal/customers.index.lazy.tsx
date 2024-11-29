@@ -6,7 +6,7 @@ import { usePreloadedQuery } from "react-relay";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
 import { Customer } from "~/graphql/graphql";
 import dayjs from "dayjs";
-import { industryText, ownerTypeText } from "~/lib/helper";
+import { industryText, ownerTypeText, customerSizeText } from "~/lib/helper";
 import { Plus } from "lucide-react";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/customers/")({
@@ -49,6 +49,8 @@ function RouteComponent() {
     query,
     Route.useLoaderData(),
   );
+  const searchParams = Route.useSearch();
+  const navigate = Route.useNavigate();
 
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>
@@ -85,7 +87,11 @@ function RouteComponent() {
       title: "行业",
       render: (value) => industryText(value),
     },
-    { dataIndex: "size", title: "规模" },
+    {
+      dataIndex: "size",
+      title: "规模",
+      render: (value) => customerSizeText(value),
+    },
     {
       dataIndex: "updatedAt",
       title: "更新时间",
@@ -108,15 +114,23 @@ function RouteComponent() {
             type="search"
           />
         </Form.Item>
-        <Link to="/portal/tenders/new">
-          <Button type="primary" icon={<Plus size={16} />}>
-            添加商机
-          </Button>
-        </Link>
+        {/* <Link to="/portal/tenders/new"> */}
+        <Button type="primary" icon={<Plus size={16} />}>
+          添加商机
+        </Button>
+        {/* </Link> */}
       </div>
       <Table
         className="rounded-lg"
-        pagination={{}}
+        pagination={{
+          current: searchParams.page,
+          onChange(page, pageSize) {
+            navigate({
+              to: ".",
+              search: { page },
+            });
+          },
+        }}
         dataSource={dataSource}
         // @ts-ignore
         columns={columns}

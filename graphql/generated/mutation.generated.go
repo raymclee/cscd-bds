@@ -17,9 +17,9 @@ import (
 // region    ************************** generated!.gotpl **************************
 
 type MutationResolver interface {
-	CreateArea(ctx context.Context, input ent.CreateAreaInput) (*ent.Area, error)
+	CreateArea(ctx context.Context, input ent.CreateAreaInput) (*ent.AreaConnection, error)
 	UpdateArea(ctx context.Context, id xid.ID, input ent.UpdateAreaInput) (*ent.Area, error)
-	CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.User, error)
+	CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.UserConnection, error)
 	UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error)
 	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.TenderConnection, error)
 	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
@@ -657,9 +657,9 @@ func (ec *executionContext) _Mutation_createArea(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Area)
+	res := resTmp.(*ent.AreaConnection)
 	fc.Result = res
-	return ec.marshalNArea2ᚖcscdᚑbdsᚋstoreᚋentᚐArea(ctx, field.Selections, res)
+	return ec.marshalNAreaConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐAreaConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createArea(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -670,28 +670,14 @@ func (ec *executionContext) fieldContext_Mutation_createArea(ctx context.Context
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_Area_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_Area_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_Area_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_Area_name(ctx, field)
-			case "code":
-				return ec.fieldContext_Area_code(ctx, field)
-			case "customers":
-				return ec.fieldContext_Area_customers(ctx, field)
-			case "tenders":
-				return ec.fieldContext_Area_tenders(ctx, field)
-			case "sales":
-				return ec.fieldContext_Area_sales(ctx, field)
-			case "provinces":
-				return ec.fieldContext_Area_provinces(ctx, field)
-			case "center":
-				return ec.fieldContext_Area_center(ctx, field)
+			case "edges":
+				return ec.fieldContext_AreaConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_AreaConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_AreaConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Area", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type AreaConnection", field.Name)
 		},
 	}
 	defer func() {
@@ -811,9 +797,9 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*ent.UserConnection)
 	fc.Result = res
-	return ec.marshalNUser2ᚖcscdᚑbdsᚋstoreᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUserConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐUserConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -824,44 +810,14 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "createdAt":
-				return ec.fieldContext_User_createdAt(ctx, field)
-			case "updatedAt":
-				return ec.fieldContext_User_updatedAt(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
-			case "email":
-				return ec.fieldContext_User_email(ctx, field)
-			case "username":
-				return ec.fieldContext_User_username(ctx, field)
-			case "openID":
-				return ec.fieldContext_User_openID(ctx, field)
-			case "avatarURL":
-				return ec.fieldContext_User_avatarURL(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "isAdmin":
-				return ec.fieldContext_User_isAdmin(ctx, field)
-			case "isLeader":
-				return ec.fieldContext_User_isLeader(ctx, field)
-			case "leaderID":
-				return ec.fieldContext_User_leaderID(ctx, field)
-			case "areas":
-				return ec.fieldContext_User_areas(ctx, field)
-			case "customers":
-				return ec.fieldContext_User_customers(ctx, field)
-			case "leader":
-				return ec.fieldContext_User_leader(ctx, field)
-			case "teamMembers":
-				return ec.fieldContext_User_teamMembers(ctx, field)
-			case "tenders":
-				return ec.fieldContext_User_tenders(ctx, field)
-			case "visitRecords":
-				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "edges":
+				return ec.fieldContext_UserConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_UserConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_UserConnection_totalCount(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UserConnection", field.Name)
 		},
 	}
 	defer func() {

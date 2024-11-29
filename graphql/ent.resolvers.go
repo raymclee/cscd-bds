@@ -40,7 +40,7 @@ func (r *queryResolver) Countries(ctx context.Context, after *entgql.Cursor[xid.
 }
 
 // Customers is the resolver for the customers field.
-func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
+func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
 	return r.store.Customer.Query().Paginate(ctx, after, first, before, last, ent.WithCustomerFilter(where.Filter))
 }
 
@@ -70,7 +70,7 @@ func (r *queryResolver) Users(ctx context.Context, after *entgql.Cursor[xid.ID],
 }
 
 // VisitRecords is the resolver for the visitRecords field.
-func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
+func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
 	panic(fmt.Errorf("not implemented: VisitRecords - visitRecords"))
 }
 

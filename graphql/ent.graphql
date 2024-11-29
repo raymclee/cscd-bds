@@ -30,7 +30,7 @@ type Area implements Node {
     """
     Ordering options for Customers returned from the connection.
     """
-    orderBy: CustomerOrder
+    orderBy: [CustomerOrder!]
 
     """
     Filtering options for Customers returned from the connection.
@@ -944,7 +944,7 @@ type Customer implements Node {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -2129,7 +2129,7 @@ type Query {
     """
     Ordering options for Customers returned from the connection.
     """
-    orderBy: CustomerOrder
+    orderBy: [CustomerOrder!]
 
     """
     Filtering options for Customers returned from the connection.
@@ -2315,7 +2315,7 @@ type Query {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -2408,7 +2408,7 @@ type Tender implements Node {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
 
     """
     Filtering options for VisitRecords returned from the connection.
@@ -3646,7 +3646,7 @@ type User implements Node {
     """
     Ordering options for Customers returned from the connection.
     """
-    orderBy: CustomerOrder
+    orderBy: [CustomerOrder!]
 
     """
     Filtering options for Customers returned from the connection.
@@ -3710,7 +3710,7 @@ type User implements Node {
     """
     Ordering options for VisitRecords returned from the connection.
     """
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
 
     """
     Filtering options for VisitRecords returned from the connection.

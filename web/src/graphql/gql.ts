@@ -16,6 +16,7 @@ import * as types from './graphql';
  */
 const documents = {
     "\n  mutation useCreatePlotMutation(\n    $input: CreatePlotInput!\n    $geoBounds: [[Float!]!]\n    $connections: [ID!]!\n  ) {\n    createPlot(input: $input, geoBounds: $geoBounds) {\n      edges @prependNode(connections: $connections, edgeTypeName: \"PlotEdge\") {\n        node {\n          id\n          name\n          geoBounds\n          colorHex\n        }\n      }\n    }\n  }\n": types.UseCreatePlotMutationDocument,
+    "\n    mutation useCreateUserMutation(\n      $input: CreateUserInput!\n      $connections: [ID!]!\n    ) {\n      createUser(input: $input) {\n        edges @appendNode(connections: $connections, edgeTypeName: \"UserEdge\") {\n          node {\n            id\n            name\n            areas {\n              edges {\n                node {\n                  name\n                }\n              }\n            }\n            isAdmin\n            isLeader\n          }\n        }\n      }\n    }\n  ": types.UseCreateUserMutationDocument,
     "\n  mutation useDeleteTenderMutation($id: ID!) {\n    deleteTender(id: $id) {\n      id\n    }\n  }\n": types.UseDeleteTenderMutationDocument,
 };
 
@@ -23,6 +24,10 @@ const documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation useCreatePlotMutation(\n    $input: CreatePlotInput!\n    $geoBounds: [[Float!]!]\n    $connections: [ID!]!\n  ) {\n    createPlot(input: $input, geoBounds: $geoBounds) {\n      edges @prependNode(connections: $connections, edgeTypeName: \"PlotEdge\") {\n        node {\n          id\n          name\n          geoBounds\n          colorHex\n        }\n      }\n    }\n  }\n"): typeof import('./graphql').UseCreatePlotMutationDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation useCreateUserMutation(\n      $input: CreateUserInput!\n      $connections: [ID!]!\n    ) {\n      createUser(input: $input) {\n        edges @appendNode(connections: $connections, edgeTypeName: \"UserEdge\") {\n          node {\n            id\n            name\n            areas {\n              edges {\n                node {\n                  name\n                }\n              }\n            }\n            isAdmin\n            isLeader\n          }\n        }\n      }\n    }\n  "): typeof import('./graphql').UseCreateUserMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

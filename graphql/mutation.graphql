@@ -1,8 +1,8 @@
 type Mutation {
-  createArea(input: CreateAreaInput!): Area!
+  createArea(input: CreateAreaInput!): AreaConnection!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
 
-  createUser(input: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): UserConnection!
   updateUser(id: ID!, input: UpdateUserInput!): User!
 
   createTender(

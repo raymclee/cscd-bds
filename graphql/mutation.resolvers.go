@@ -14,8 +14,13 @@ import (
 )
 
 // CreateArea is the resolver for the createArea field.
-func (r *mutationResolver) CreateArea(ctx context.Context, input ent.CreateAreaInput) (*ent.Area, error) {
-	return r.store.Area.Create().SetInput(input).Save(ctx)
+func (r *mutationResolver) CreateArea(ctx context.Context, input ent.CreateAreaInput) (*ent.AreaConnection, error) {
+	q := r.store.Area.Create().SetInput(input)
+	a, err := q.Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create area: %w", err)
+	}
+	return &ent.AreaConnection{Edges: []*ent.AreaEdge{{Node: a}}}, nil
 }
 
 // UpdateArea is the resolver for the updateArea field.
@@ -24,8 +29,13 @@ func (r *mutationResolver) UpdateArea(ctx context.Context, id xid.ID, input ent.
 }
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.User, error) {
-	return r.store.User.Create().SetInput(input).Save(ctx)
+func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.UserConnection, error) {
+	q := r.store.User.Create().SetInput(input)
+	u, err := q.Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create user: %w", err)
+	}
+	return &ent.UserConnection{Edges: []*ent.UserEdge{{Node: u}}}, nil
 }
 
 // UpdateUser is the resolver for the updateUser field.

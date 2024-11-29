@@ -125,3 +125,23 @@ export function industryText(industry: Maybe<number> | undefined): string {
       return "";
   }
 }
+
+export function customerSizeText(size: Maybe<number> | undefined): string {
+  if (!size) {
+    return "";
+  }
+  switch (size) {
+    case 1:
+      return "<10";
+    case 2:
+      return "10-100";
+    case 3:
+      return "100-1000";
+    case 4:
+      return "1000-10000";
+    case 5:
+      return ">10000";
+    default:
+      return "";
+  }
+}

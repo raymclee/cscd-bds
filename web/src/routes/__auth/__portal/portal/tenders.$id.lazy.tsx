@@ -133,6 +133,7 @@ function Editor() {
 
   function endEditing() {
     setIsEditing(false);
+    polygonEditorRef.current?.getTarget()?.remove();
     polygonEditorRef.current?.setTarget(null);
     polygonEditorRef.current?.close();
   }
@@ -154,7 +155,7 @@ function Editor() {
       },
       onCompleted: (res) => {
         message.success("地塊刪除成功");
-        polygonRef.current?.remove();
+        endEditing();
       },
       onError(error) {
         console.error(error);

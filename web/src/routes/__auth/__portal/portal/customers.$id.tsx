@@ -10,7 +10,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/customers/$id")({
     return loadQuery<customersDetailPageQuery>(RelayEnvironment, node, {
       id,
       userId: session.userId,
-      orderBy: [{ field: "DATE", direction: "DESC" }],
+      orderBy: { field: "DATE", direction: "DESC" },
     });
   },
 });

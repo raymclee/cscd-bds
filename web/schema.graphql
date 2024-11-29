@@ -23,7 +23,7 @@ type Area implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for Customers returned from the connection."""
-    orderBy: CustomerOrder
+    orderBy: [CustomerOrder!]
     """Filtering options for Customers returned from the connection."""
     where: CustomerWhereInput
   ): CustomerConnection!
@@ -735,7 +735,7 @@ type Customer implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
@@ -1183,10 +1183,10 @@ type GeoJson {
 }
 
 type Mutation {
-  createArea(input: CreateAreaInput!): Area!
+  createArea(input: CreateAreaInput!): AreaConnection!
   createPlot(geoBounds: [[Float!]!], input: CreatePlotInput!): PlotConnection!
   createTender(attachmentFileNames: [String!]!, geoBounds: [[Float!]!], imageFileNames: [String!]!, input: CreateTenderInput!): TenderConnection!
-  createUser(input: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): UserConnection!
   deletePlot(id: ID!): Plot!
   deleteTender(id: ID!): Tender!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
@@ -1611,7 +1611,7 @@ type Query {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for Customers returned from the connection."""
-    orderBy: CustomerOrder
+    orderBy: [CustomerOrder!]
     """Filtering options for Customers returned from the connection."""
     where: CustomerWhereInput
   ): CustomerConnection!
@@ -1718,7 +1718,7 @@ type Query {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
@@ -1809,7 +1809,7 @@ type Tender implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
@@ -2885,7 +2885,7 @@ type User implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for Customers returned from the connection."""
-    orderBy: CustomerOrder
+    orderBy: [CustomerOrder!]
     """Filtering options for Customers returned from the connection."""
     where: CustomerWhereInput
   ): CustomerConnection!
@@ -2929,7 +2929,7 @@ type User implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: [VisitRecordOrder!]
+    orderBy: VisitRecordOrder
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!

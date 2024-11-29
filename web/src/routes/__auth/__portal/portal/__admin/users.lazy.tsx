@@ -1,11 +1,13 @@
 import * as React from "react";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { graphql } from "relay-runtime";
-import { usePreloadedQuery } from "react-relay";
+import { useFragment, usePreloadedQuery } from "react-relay";
 import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
-import { Button, Form, Input, Table, TableProps } from "antd";
+import { Button, Drawer, Form, Input, Space, Table, TableProps } from "antd";
 import { User } from "~/graphql/graphql";
 import { Plus } from "lucide-react";
+import { UserForm } from "~/components/portal/user-form";
+import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/__admin/users",
@@ -14,15 +16,22 @@ export const Route = createLazyFileRoute(
 });
 
 const query = graphql`
-  query usersPageQuery {
-    users {
+  query usersPageQuery($first: Int, $last: Int) {
+    users(first: $first, last: $last) @connection(key: "usersPageQuery_users") {
+      __id
       edges {
         node {
           id
           name
+          email
+          username
+          openID
+          avatarURL
+          disabled
           areas {
             edges {
               node {
+                id
                 name
               }
             }
@@ -32,24 +41,38 @@ const query = graphql`
         }
       }
     }
+
+    ...userFormFragment
   }
 `;
 
 function RouteComponent() {
   const [searchText, setSearchText] = React.useState("");
   const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData());
+  const searchParams = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
 
   const dataSource =
     data.users.edges
       ?.map((e) => e?.node)
       .filter((n) =>
-        n?.name.toLowerCase().includes(searchText.toLowerCase()),
+        n?.name?.toLowerCase().includes(searchText.toLowerCase()),
       ) ?? [];
 
   const columns: TableProps<User>["columns"] = [
     {
       dataIndex: "name",
       title: "名称",
+      render: (value, record) => (
+        <Button
+          type="link"
+          size="small"
+          onClick={() => setSelectedUser(record)}
+        >
+          {value}
+        </Button>
+      ),
     },
     {
       title: "区域",
@@ -83,15 +106,76 @@ function RouteComponent() {
             type="search"
           />
         </Form.Item>
-        <Link to="/portal/tenders/new">
-          <Button type="primary" icon={<Plus size={16} />}>
-            添加商机
-          </Button>
-        </Link>
+        {/* <Link to="/portal/tenders/new"> */}
+        {/* <Button type="primary" icon={<Plus size={16} />}>
+          添加商机
+        </Button> */}
+        {/* </Link> */}
+        <UserFormDrawer
+          queryRef={data}
+          connectionID={data.users.__id}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
       </div>
-      {/* 
-      // @ts-ignore */}
-      <Table dataSource={dataSource} columns={columns} rowKey={"id"} />
+      <Table
+        dataSource={dataSource}
+        // @ts-ignore
+        columns={columns}
+        rowKey={"id"}
+        pagination={{
+          current: searchParams.page,
+          onChange(page) {
+            navigate({ to: ".", search: { page } });
+          },
+        }}
+      />
     </div>
+  );
+}
+
+function UserFormDrawer({
+  queryRef,
+  connectionID,
+  selectedUser,
+  setSelectedUser,
+}: {
+  queryRef: userFormFragment$key;
+  connectionID: string;
+  selectedUser: User | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+}) {
+  const [open, setOpen] = React.useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+    setSelectedUser(null);
+  };
+
+  return (
+    <>
+      <Button
+        type="primary"
+        icon={<Plus size={16} />}
+        onClick={() => setOpen(true)}
+      >
+        添加商机
+      </Button>
+      <Drawer
+        title="添加用户"
+        open={open || !!selectedUser}
+        onClose={onClose}
+        width={480}
+        destroyOnClose
+        maskClosable={false}
+      >
+        <UserForm
+          queryRef={queryRef}
+          onClose={onClose}
+          connectionID={connectionID}
+          selectedUser={selectedUser}
+        />
+      </Drawer>
+    </>
   );
 }

@@ -8,13 +8,10 @@ const tenderSearchSchema = v.object({
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/tenders/")({
-  loaderDeps: ({ search }) => ({ ...search }),
-  async loader({ context: { RelayEnvironment, session }, deps: { page } }) {
-    // const first = 10;
+  async loader({ context: { RelayEnvironment, session } }) {
     return loadQuery<tendersPageQuery>(RelayEnvironment, node, {
       userId: session?.userId,
       orderBy: { field: "CREATED_AT", direction: "DESC" },
-      // first,
     });
   },
   validateSearch: tenderSearchSchema,

@@ -80,6 +80,8 @@ function TenderList({
   const [searchText, setSearchText] = useState("");
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
+  const perPage = 10;
+  const currentPage = searchParams.page;
 
   const totalCount =
     data?.areas.edges?.reduce(
@@ -120,6 +122,13 @@ function TenderList({
         pagination={{
           position: "both",
           showSizeChanger: true,
+          current: currentPage,
+          onChange(page, pageSize) {
+            navigate({
+              to: ".",
+              search: { page },
+            });
+          },
         }}
         dataSource={dataSource}
         itemLayout="vertical"

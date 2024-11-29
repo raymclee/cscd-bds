@@ -8,7 +8,12 @@ import * as React from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { TenderListItem } from "~/components/portal/tender-list-item";
-import { industryText, ownerTypeText, visitTypeText } from "~/lib/helper";
+import {
+  customerSizeText,
+  industryText,
+  ownerTypeText,
+  visitTypeText,
+} from "~/lib/helper";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/customers/$id",
@@ -20,7 +25,7 @@ const query = graphql`
   query customersDetailPageQuery(
     $userId: ID!
     $id: ID!
-    $orderBy: [VisitRecordOrder!]
+    $orderBy: VisitRecordOrder
   ) {
     node(id: $userId) {
       ... on User {
@@ -144,7 +149,11 @@ function RouteComponent() {
                 label: "產業",
                 children: industryText(customer.industry),
               },
-              { key: "size", label: "規模", children: customer.size },
+              {
+                key: "size",
+                label: "規模",
+                children: customerSizeText(customer.size),
+              },
               {
                 key: "area",
                 label: "地區",
@@ -154,6 +163,26 @@ function RouteComponent() {
                 key: "sales",
                 label: "客戶所有人",
                 children: customer.sales?.name,
+              },
+              {
+                key: "contactPerson",
+                label: "聯絡人",
+                children: customer.contactPerson,
+              },
+              {
+                key: "contactPersonPosition",
+                label: "聯絡人職位",
+                children: customer.contactPersonPosition,
+              },
+              {
+                key: "contactPersonPhone",
+                label: "聯絡人電話",
+                children: customer.contactPersonPhone,
+              },
+              {
+                key: "contactPersonEmail",
+                label: "聯絡人電郵",
+                children: customer.contactPersonEmail,
               },
               {
                 key: "createdBy",

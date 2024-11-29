@@ -39,11 +39,11 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-router':
-        specifier: ^1.84.0
-        version: 1.84.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.84.4
+        version: 1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/router-devtools':
         specifier: ^1.81.1
-        version: 1.81.1(@tanstack/react-router@1.84.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 1.81.1(@tanstack/react-router@1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       antd:
         specifier: ^5.22.1
         version: 5.22.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -89,6 +89,9 @@ importers:
       valibot:
         specifier: 1.0.0-beta.8
         version: 1.0.0-beta.8(typescript@5.6.3)
+      web:
+        specifier: 'file:'
+        version: file:(@types/react-dom@18.3.1)(@types/react@18.3.12)(csstype@3.1.3)(tailwindcss@3.4.14)(typescript@5.6.3)(use-sync-external-store@1.2.2(react@18.3.1))
       zustand:
         specifier: ^5.0.1
         version: 5.0.1(@types/react@18.3.12)(react@18.3.1)(use-sync-external-store@1.2.2(react@18.3.1))
@@ -1651,11 +1654,11 @@ packages:
     resolution: {integrity: sha512-9MPknhhnvZKifK4jSvva6NDqYQwsNaptrRzO4ejk6yCLyi4koVG4u3C4VCeClYZY5etLEQbO8wXU9knEFZpMeg==}
     engines: {node: '>=12'}
 
-  '@tanstack/react-router@1.84.0':
-    resolution: {integrity: sha512-JJ6NhktXQHF1oWBSZwPHwq7eRZJGqEbWhtar/Mw1JDwZcNrodZ6mgFSeL07jRax89/K3YAKHPzdVwIuSsllXeg==}
+  '@tanstack/react-router@1.84.4':
+    resolution: {integrity: sha512-N4n+w5bXRN2SitzmEnlnvRaUcPSL3/C6qYiDA0k9YxdUpta19Zge9O/3PEF+HzYXuvGcXM8Y6Nb25toddk8N8g==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/router-generator': 1.83.1
+      '@tanstack/router-generator': 1.84.4
       react: '>=18'
       react-dom: '>=18'
     peerDependenciesMeta:
@@ -4364,6 +4367,9 @@ packages:
   wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
 
+  'web@file:':
+    resolution: {directory: '', type: directory}
+
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -6240,7 +6246,7 @@ snapshots:
 
   '@tanstack/history@1.81.9': {}
 
-  '@tanstack/react-router@1.84.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-router@1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/history': 1.81.9
       '@tanstack/react-store': 0.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6257,9 +6263,9 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       use-sync-external-store: 1.2.2(react@18.3.1)
 
-  '@tanstack/router-devtools@1.81.1(@tanstack/react-router@1.84.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/router-devtools@1.81.1(@tanstack/react-router@1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/react-router': 1.84.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
       goober: 2.1.16(csstype@3.1.3)
       react: 18.3.1
@@ -9322,6 +9328,51 @@ snapshots:
   wcwidth@1.0.1:
     dependencies:
       defaults: 1.0.4
+
+  web@file:(@types/react-dom@18.3.1)(@types/react@18.3.12)(csstype@3.1.3)(tailwindcss@3.4.14)(typescript@5.6.3)(use-sync-external-store@1.2.2(react@18.3.1)):
+    dependencies:
+      '@amap/amap-jsapi-loader': 1.0.1
+      '@ant-design/icons': 5.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@ant-design/plots': 2.3.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@antv/g2': 5.2.7
+      '@radix-ui/react-dropdown-menu': 2.1.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-progress': 1.1.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-scroll-area': 1.2.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-select': 2.1.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.12)(react@18.3.1)
+      '@radix-ui/react-tabs': 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/router-devtools': 1.81.1(@tanstack/react-router@1.84.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      antd: 5.22.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      class-variance-authority: 0.7.0
+      clsx: 2.1.1
+      dayjs: 1.11.13
+      embla-carousel-react: 8.5.1(react@18.3.1)
+      lucide-react: 0.456.0(react@18.3.1)
+      motion: 11.11.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-relay: 18.1.0(react@18.3.1)
+      recharts: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      relay-runtime: 18.1.0
+      tailwind-merge: 2.5.4
+      tailwindcss-animate: 1.0.7(tailwindcss@3.4.14)
+      valibot: 1.0.0-beta.8(typescript@5.6.3)
+      zustand: 5.0.1(@types/react@18.3.12)(react@18.3.1)(use-sync-external-store@1.2.2(react@18.3.1))
+    transitivePeerDependencies:
+      - '@emotion/is-prop-valid'
+      - '@tanstack/router-generator'
+      - '@types/react'
+      - '@types/react-dom'
+      - csstype
+      - date-fns
+      - encoding
+      - immer
+      - luxon
+      - moment
+      - tailwindcss
+      - typescript
+      - use-sync-external-store
 
   webidl-conversions@3.0.1: {}
 

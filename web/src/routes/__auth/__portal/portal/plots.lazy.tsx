@@ -160,7 +160,7 @@ function RouteComponent() {
   return (
     <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
       <div id="map" className="absolute inset-0"></div>
-      {map || isReady ? (
+      {isReady ? (
         <EditorContainer />
       ) : (
         <div className="flex min-h-80 items-center justify-center">

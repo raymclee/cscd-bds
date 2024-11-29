@@ -8,7 +8,6 @@ require (
 	github.com/99designs/gqlgen v0.17.56
 	github.com/alexedwards/scs/v2 v2.8.0
 	github.com/canidam/echo-scs-session v1.0.0
-	github.com/davidbyttow/govips/v2 v2.15.0
 	github.com/gomodule/redigo v1.8.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/rs/xid v1.6.0
@@ -30,7 +29,6 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.29.0 // indirect
-	golang.org/x/image v0.22.0 // indirect
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
