@@ -28,9 +28,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="min-h-80">
-        <TenderForm queryRef={data?.node} />
-      </div>
+      <TenderForm queryRef={data?.node} />
     </>
   );
 }

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e03da008372e0facd70b0f620ebd217e>>
+ * @generated SignedSource<<44f07a1be7d6bb76639a89f4b9d3e239>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,10 +15,12 @@ export type tendersTenderListFragment$data = {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly tenders: {
+          readonly __id: string;
           readonly edges: ReadonlyArray<{
             readonly node: {
               readonly id: string;
               readonly name: string;
+              readonly status: number;
               readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
             } | null | undefined;
           } | null | undefined> | null | undefined;
@@ -102,7 +104,7 @@ const node: ReaderFragment = {
                   ],
                   "concreteType": "TenderConnection",
                   "kind": "LinkedField",
-                  "name": "__TendersTenderListFragment_tenders_connection",
+                  "name": "__tendersTenderListFragment_tenders_connection",
                   "plural": false,
                   "selections": [
                     {
@@ -133,6 +135,13 @@ const node: ReaderFragment = {
                               "args": null,
                               "kind": "ScalarField",
                               "name": "name",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "status",
                               "storageKey": null
                             },
                             {
@@ -198,6 +207,18 @@ const node: ReaderFragment = {
                         }
                       ],
                       "storageKey": null
+                    },
+                    {
+                      "kind": "ClientExtension",
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "__id",
+                          "storageKey": null
+                        }
+                      ]
                     }
                   ],
                   "storageKey": null
@@ -216,6 +237,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "f2927ba10cd533630d19499dd20b84e5";
+(node as any).hash = "2c57082b39afe7d0742def80ccb2d951";
 
 export default node;

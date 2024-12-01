@@ -23,15 +23,13 @@ func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
 		return nil, fmt.Errorf("session not found")
 	}
 	return &model.Session{
-		UserID:    su.UserId,
-		Name:      su.Name,
-		Email:     su.Email,
-		Username:  su.Username,
-		AvatarURL: su.AvatarUrl,
-		// IsAdmin:   su.IsAdmin,
-		// IsLeader:  su.IsLeader,
-		IsAdmin:      u.IsAdmin,
-		IsEditor:     u.IsEditor,
-		HasMapAccess: u.HasMapAccess,
+		UserID:        su.UserId,
+		Name:          su.Name,
+		Email:         su.Email,
+		Username:      su.Username,
+		AvatarURL:     su.AvatarUrl,
+		IsAdmin:       u.IsAdmin,
+		HasMapAccess:  u.HasMapAccess,
+		HasEditAccess: u.HasEditAccess,
 	}, nil
 }

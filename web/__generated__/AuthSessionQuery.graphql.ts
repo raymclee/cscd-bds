@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8ad09e93a59cde9dc3152813b0c7a474>>
+ * @generated SignedSource<<ea24112759b8af2f7f7e05168fdcdbbc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,9 +14,9 @@ export type AuthSessionQuery$data = {
   readonly session: {
     readonly avatarUrl: string;
     readonly email: string;
+    readonly hasEditAccess: boolean;
     readonly hasMapAccess: boolean;
     readonly isAdmin: boolean;
-    readonly isEditor: boolean;
     readonly name: string;
     readonly userId: string;
     readonly username: string;
@@ -83,14 +83,14 @@ var v0 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "isEditor",
+        "name": "hasMapAccess",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "hasMapAccess",
+        "name": "hasEditAccess",
         "storageKey": null
       }
     ],
@@ -115,16 +115,16 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "f974a975df7bbb9b915ba989a6b83246",
+    "cacheID": "e59acb067e8c1e3704395c2f27ababdc",
     "id": null,
     "metadata": {},
     "name": "AuthSessionQuery",
     "operationKind": "query",
-    "text": "query AuthSessionQuery {\n  session {\n    userId\n    name\n    username\n    email\n    avatarUrl\n    isAdmin\n    isEditor\n    hasMapAccess\n  }\n}\n"
+    "text": "query AuthSessionQuery {\n  session {\n    userId\n    name\n    username\n    email\n    avatarUrl\n    isAdmin\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "af56d81d6ee79af21d5999f98aac1aca";
+(node as any).hash = "c8522265f8cbbec05a681eefbd4bcb37";
 
 export default node;

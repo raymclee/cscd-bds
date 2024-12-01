@@ -272,14 +272,14 @@ type ComplexityRoot struct {
 	}
 
 	Session struct {
-		AvatarURL    func(childComplexity int) int
-		Email        func(childComplexity int) int
-		HasMapAccess func(childComplexity int) int
-		IsAdmin      func(childComplexity int) int
-		IsEditor     func(childComplexity int) int
-		Name         func(childComplexity int) int
-		UserID       func(childComplexity int) int
-		Username     func(childComplexity int) int
+		AvatarURL     func(childComplexity int) int
+		Email         func(childComplexity int) int
+		HasEditAccess func(childComplexity int) int
+		HasMapAccess  func(childComplexity int) int
+		IsAdmin       func(childComplexity int) int
+		Name          func(childComplexity int) int
+		UserID        func(childComplexity int) int
+		Username      func(childComplexity int) int
 	}
 
 	Tender struct {
@@ -367,25 +367,25 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
-		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
-		AvatarURL    func(childComplexity int) int
-		CreatedAt    func(childComplexity int) int
-		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
-		Disabled     func(childComplexity int) int
-		Email        func(childComplexity int) int
-		HasMapAccess func(childComplexity int) int
-		ID           func(childComplexity int) int
-		IsAdmin      func(childComplexity int) int
-		IsEditor     func(childComplexity int) int
-		Leader       func(childComplexity int) int
-		LeaderID     func(childComplexity int) int
-		Name         func(childComplexity int) int
-		OpenID       func(childComplexity int) int
-		TeamMembers  func(childComplexity int) int
-		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
-		UpdatedAt    func(childComplexity int) int
-		Username     func(childComplexity int) int
-		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		Areas         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
+		AvatarURL     func(childComplexity int) int
+		CreatedAt     func(childComplexity int) int
+		Customers     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
+		Disabled      func(childComplexity int) int
+		Email         func(childComplexity int) int
+		HasEditAccess func(childComplexity int) int
+		HasMapAccess  func(childComplexity int) int
+		ID            func(childComplexity int) int
+		IsAdmin       func(childComplexity int) int
+		Leader        func(childComplexity int) int
+		LeaderID      func(childComplexity int) int
+		Name          func(childComplexity int) int
+		OpenID        func(childComplexity int) int
+		TeamMembers   func(childComplexity int) int
+		Tenders       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		UpdatedAt     func(childComplexity int) int
+		Username      func(childComplexity int) int
+		VisitRecords  func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	UserConnection struct {
@@ -1674,6 +1674,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.Email(childComplexity), true
 
+	case "Session.hasEditAccess":
+		if e.complexity.Session.HasEditAccess == nil {
+			break
+		}
+
+		return e.complexity.Session.HasEditAccess(childComplexity), true
+
 	case "Session.hasMapAccess":
 		if e.complexity.Session.HasMapAccess == nil {
 			break
@@ -1687,13 +1694,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Session.IsAdmin(childComplexity), true
-
-	case "Session.isEditor":
-		if e.complexity.Session.IsEditor == nil {
-			break
-		}
-
-		return e.complexity.Session.IsEditor(childComplexity), true
 
 	case "Session.name":
 		if e.complexity.Session.Name == nil {
@@ -2298,6 +2298,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Email(childComplexity), true
 
+	case "User.hasEditAccess":
+		if e.complexity.User.HasEditAccess == nil {
+			break
+		}
+
+		return e.complexity.User.HasEditAccess(childComplexity), true
+
 	case "User.hasMapAccess":
 		if e.complexity.User.HasMapAccess == nil {
 			break
@@ -2318,13 +2325,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.IsAdmin(childComplexity), true
-
-	case "User.isEditor":
-		if e.complexity.User.IsEditor == nil {
-			break
-		}
-
-		return e.complexity.User.IsEditor(childComplexity), true
 
 	case "User.leader":
 		if e.complexity.User.Leader == nil {
@@ -3583,7 +3583,7 @@ input CreateUserInput {
   disabled: Boolean
   isAdmin: Boolean
   hasMapAccess: Boolean
-  isEditor: Boolean
+  hasEditAccess: Boolean
   areaIDs: [ID!]
   customerIDs: [ID!]
   leaderID: ID
@@ -6462,7 +6462,7 @@ input UpdateUserInput {
   disabled: Boolean
   isAdmin: Boolean
   hasMapAccess: Boolean
-  isEditor: Boolean
+  hasEditAccess: Boolean
   addAreaIDs: [ID!]
   removeAreaIDs: [ID!]
   clearAreas: Boolean
@@ -6513,7 +6513,7 @@ type User implements Node {
   disabled: Boolean!
   isAdmin: Boolean!
   hasMapAccess: Boolean!
-  isEditor: Boolean!
+  hasEditAccess: Boolean!
   leaderID: ID
   areas(
     """
@@ -6832,10 +6832,10 @@ input UserWhereInput {
   hasMapAccess: Boolean
   hasMapAccessNEQ: Boolean
   """
-  is_editor field predicates
+  has_edit_access field predicates
   """
-  isEditor: Boolean
-  isEditorNEQ: Boolean
+  hasEditAccess: Boolean
+  hasEditAccessNEQ: Boolean
   """
   leader_id field predicates
   """
@@ -7215,8 +7215,8 @@ type GeoJson {
   email: String!
   avatarUrl: String!
   isAdmin: Boolean!
-  isEditor: Boolean!
   hasMapAccess: Boolean!
+  hasEditAccess: Boolean!
 }
 
 extend type Query {

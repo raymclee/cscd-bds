@@ -3,13 +3,9 @@ import { graphql, useMutation } from "react-relay";
 
 export function useCreateUser() {
   return useMutation<useCreateUserMutation>(graphql`
-    mutation useCreateUserMutation(
-      $input: CreateUserInput!
-      $connections: [ID!]!
-    ) {
+    mutation useCreateUserMutation($input: CreateUserInput!) {
       createUser(input: $input) {
-        edges
-          @prependNode(connections: $connections, edgeTypeName: "UserEdge") {
+        edges {
           node {
             id
             name
@@ -27,8 +23,8 @@ export function useCreateUser() {
               }
             }
             isAdmin
-            isEditor
             hasMapAccess
+            hasEditAccess
           }
         }
       }

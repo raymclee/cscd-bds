@@ -1,12 +1,13 @@
-import * as React from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { loadQuery } from "react-relay";
-import node, {
-  tendersDetailPageQuery,
-} from "__generated__/tendersDetailPageQuery.graphql";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import { createFileRoute } from "@tanstack/react-router";
+import node, {
+  tendersDetailPlotPageQuery,
+} from "__generated__/tendersDetailPlotPageQuery.graphql";
+import { loadQuery } from "react-relay";
 
-export const Route = createFileRoute("/__auth/__portal/portal/tenders/$id")({
+export const Route = createFileRoute(
+  "/__auth/__portal/portal/tenders/$id/plot",
+)({
   async loader(ctx) {
     await AMapLoader.load({
       key: "2fe0b3e2e45dce4b4180ec0f5683cc24",
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/tenders/$id")({
       // plugins: ["ui/geo/DistrictCluster"],
       // plugins: ["AMap.PolygonEditor", "AMap.ToolBar", "AMap.Scale"],
     });
-    return loadQuery<tendersDetailPageQuery>(
+    return loadQuery<tendersDetailPlotPageQuery>(
       ctx.context.RelayEnvironment,
       node,
       { id: ctx.params.id },

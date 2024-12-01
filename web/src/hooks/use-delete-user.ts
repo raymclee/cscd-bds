@@ -4,7 +4,7 @@ export function useDeleteUser() {
   return useMutation(graphql`
     mutation useDeleteUserMutation($id: ID!) {
       deleteUser(id: $id) {
-        id @deleteRecord
+        id
       }
     }
   `);

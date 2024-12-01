@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d1cc5de04900c8eac3766002a7de1a11>>
+ * @generated SignedSource<<c60db319df83f12252bb657042a9df3b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,6 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type useDeleteTenderMutation$variables = {
+  connections: ReadonlyArray<string>;
   id: string;
 };
 export type useDeleteTenderMutation$data = {
@@ -23,21 +24,24 @@ export type useDeleteTenderMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "id"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "id"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "id"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -46,20 +50,23 @@ v2 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useDeleteTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "deleteTender",
         "plural": false,
         "selections": [
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
@@ -69,27 +76,37 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useDeleteTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "deleteTender",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
             "filters": null,
-            "handle": "deleteRecord",
+            "handle": "deleteEdge",
             "key": "",
             "kind": "ScalarHandle",
-            "name": "id"
+            "name": "id",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              }
+            ]
           }
         ],
         "storageKey": null
@@ -107,6 +124,6 @@ return {
 };
 })();
 
-(node as any).hash = "304c898c48cfd35e8a4ff3c30ce779a2";
+(node as any).hash = "1d4479552786700011d5a23c5a80eee6";
 
 export default node;

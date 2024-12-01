@@ -1,14 +1,15 @@
+import { useDeleteTenderMutation } from "__generated__/useDeleteTenderMutation.graphql";
 import { useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 
 const mutation = graphql`
-  mutation useDeleteTenderMutation($id: ID!) {
+  mutation useDeleteTenderMutation($id: ID!, $connections: [ID!]!) {
     deleteTender(id: $id) {
-      id @deleteRecord
+      id @deleteEdge(connections: $connections)
     }
   }
 `;
 
 export function useDeleteTenderMutation() {
-  return useMutation(mutation);
+  return useMutation<useDeleteTenderMutation>(mutation);
 }

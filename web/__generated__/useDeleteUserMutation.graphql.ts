@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<080c8cfb8b54bbd765a713a03de93720>>
+ * @generated SignedSource<<fea56cea100f09c9290bc2f68bd94d94>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,38 +32,37 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "id"
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "id"
+      }
+    ],
+    "concreteType": "User",
+    "kind": "LinkedField",
+    "name": "deleteUser",
+    "plural": false,
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "useDeleteUserMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "User",
-        "kind": "LinkedField",
-        "name": "deleteUser",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/)
-        ],
-        "storageKey": null
-      }
-    ],
+    "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -72,29 +71,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useDeleteUserMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "User",
-        "kind": "LinkedField",
-        "name": "deleteUser",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "filters": null,
-            "handle": "deleteRecord",
-            "key": "",
-            "kind": "ScalarHandle",
-            "name": "id"
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
     "cacheID": "ed8c6918e318db31ca9a8feb6c849a2b",
@@ -107,6 +84,6 @@ return {
 };
 })();
 
-(node as any).hash = "28d6c7590c43e2826d07294c5fa4aa92";
+(node as any).hash = "29161588b86fedde5e53cbb93f7aace1";
 
 export default node;

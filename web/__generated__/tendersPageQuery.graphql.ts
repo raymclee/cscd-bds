@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d8e15be8706f0c4dba9cb8257c00114d>>
+ * @generated SignedSource<<11bd8f99b8ba1a81c61f4836e70270df>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -90,8 +90,8 @@ v7 = {
   "storageKey": null
 },
 v8 = [
-  (v7/*: any*/),
-  (v6/*: any*/)
+  (v6/*: any*/),
+  (v7/*: any*/)
 ];
 return {
   "fragment": {
@@ -335,6 +335,18 @@ return {
                                   }
                                 ],
                                 "storageKey": null
+                              },
+                              {
+                                "kind": "ClientExtension",
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "__id",
+                                    "storageKey": null
+                                  }
+                                ]
                               }
                             ],
                             "storageKey": null
@@ -346,7 +358,7 @@ return {
                               "orderBy"
                             ],
                             "handle": "connection",
-                            "key": "TendersTenderListFragment_tenders",
+                            "key": "tendersTenderListFragment_tenders",
                             "kind": "LinkedHandle",
                             "name": "tenders"
                           },
@@ -371,12 +383,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9a6f28b43ab4d9406ae379b06dbdd730",
+    "cacheID": "4b2d1bd67c0ed560906b657b30e862f6",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    id\n    name\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

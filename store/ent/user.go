@@ -38,8 +38,8 @@ type User struct {
 	IsAdmin bool `json:"is_admin,omitempty"`
 	// HasMapAccess holds the value of the "has_map_access" field.
 	HasMapAccess bool `json:"has_map_access,omitempty"`
-	// IsEditor holds the value of the "is_editor" field.
-	IsEditor bool `json:"is_editor,omitempty"`
+	// HasEditAccess holds the value of the "has_edit_access" field.
+	HasEditAccess bool `json:"has_edit_access,omitempty"`
 	// LeaderID holds the value of the "leader_id" field.
 	LeaderID *xid.ID `json:"leader_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -138,7 +138,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldLeaderID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
-		case user.FieldDisabled, user.FieldIsAdmin, user.FieldHasMapAccess, user.FieldIsEditor:
+		case user.FieldDisabled, user.FieldIsAdmin, user.FieldHasMapAccess, user.FieldHasEditAccess:
 			values[i] = new(sql.NullBool)
 		case user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldOpenID, user.FieldAvatarURL:
 			values[i] = new(sql.NullString)
@@ -227,11 +227,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.HasMapAccess = value.Bool
 			}
-		case user.FieldIsEditor:
+		case user.FieldHasEditAccess:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_editor", values[i])
+				return fmt.Errorf("unexpected type %T for field has_edit_access", values[i])
 			} else if value.Valid {
-				u.IsEditor = value.Bool
+				u.HasEditAccess = value.Bool
 			}
 		case user.FieldLeaderID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -336,8 +336,8 @@ func (u *User) String() string {
 	builder.WriteString("has_map_access=")
 	builder.WriteString(fmt.Sprintf("%v", u.HasMapAccess))
 	builder.WriteString(", ")
-	builder.WriteString("is_editor=")
-	builder.WriteString(fmt.Sprintf("%v", u.IsEditor))
+	builder.WriteString("has_edit_access=")
+	builder.WriteString(fmt.Sprintf("%v", u.HasEditAccess))
 	builder.WriteString(", ")
 	if v := u.LeaderID; v != nil {
 		builder.WriteString("leader_id=")

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8a74b0c70a8c207c0d3cba2c53fbb9a7>>
+ * @generated SignedSource<<fa23a6e2f62e85c6a859943542d7fdb9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -27,17 +27,39 @@ export type customersTenderListFragment$key = {
 };
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "first"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "last"
+    }
+  ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "bidirectional",
+        "path": [
+          "tenders"
+        ]
+      }
+    ]
+  },
   "name": "customersTenderListFragment",
   "selections": [
     {
-      "alias": null,
+      "alias": "tenders",
       "args": null,
       "concreteType": "TenderConnection",
       "kind": "LinkedField",
-      "name": "tenders",
+      "name": "__customersTenderListFragment_tenders_connection",
       "plural": false,
       "selections": [
         {
@@ -67,8 +89,61 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "tenderListItemFragment"
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
                 }
               ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasPreviousPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "startCursor",
               "storageKey": null
             }
           ],
@@ -82,6 +157,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "83a4f82ef7927178d1b56301e6570d48";
+(node as any).hash = "59e18194acc0ee3f6e03517d0529a6c9";
 
 export default node;

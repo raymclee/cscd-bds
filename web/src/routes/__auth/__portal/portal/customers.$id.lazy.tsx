@@ -26,6 +26,8 @@ const query = graphql`
     $userId: ID!
     $id: ID!
     $orderBy: VisitRecordOrder
+    $first: Int
+    $last: Int
   ) {
     node(id: $userId) {
       ... on User {
@@ -54,9 +56,13 @@ const query = graphql`
                     area {
                       name
                     }
-                    tenders {
+                    tenders(first: $first, last: $last)
+                      @connection(key: "customersTenderListFragment_tenders") {
                       edges {
                         __id
+                        node {
+                          id
+                        }
                       }
                     }
                     visitRecords(orderBy: $orderBy) {
@@ -66,6 +72,7 @@ const query = graphql`
                     }
                     ...customersVisitRecordListFragment
                     ...customersTenderListFragment
+                      @arguments(first: $first, last: $last)
                   }
                 }
               }
@@ -99,8 +106,10 @@ const VisitRecordListFragment = graphql`
 `;
 
 const TenderListFragment = graphql`
-  fragment customersTenderListFragment on Customer {
-    tenders {
+  fragment customersTenderListFragment on Customer
+  @argumentDefinitions(first: { type: Int }, last: { type: Int }) {
+    tenders(first: $first, last: $last)
+      @connection(key: "customersTenderListFragment_tenders") {
       edges {
         node {
           id
@@ -125,8 +134,8 @@ function RouteComponent() {
     return (
       <Result
         status="404"
-        title="找不到資料"
-        subTitle="抱歉，找不到相關資料。"
+        title="找不到该客户资料"
+        subTitle="请检查链接是否正确"
         // extra={<Button type="primary">Back Home</Button>}
       />
     );
@@ -143,72 +152,72 @@ function RouteComponent() {
             items={[
               {
                 key: "ownerType",
-                label: "業主類型",
+                label: "业主类型",
                 children: ownerTypeText(customer.ownerType),
               },
               {
                 key: "industry",
-                label: "產業",
+                label: "行业",
                 children: industryText(customer.industry),
               },
               {
                 key: "size",
-                label: "規模",
+                label: "规模",
                 children: customerSizeText(customer.size),
               },
               {
                 key: "area",
-                label: "地區",
+                label: "地区",
                 children: customer.area.name,
               },
               {
                 key: "sales",
-                label: "客戶所有人",
+                label: "客户所有人",
                 children: customer.sales?.name,
               },
               {
                 key: "contactPerson",
-                label: "聯絡人",
+                label: "联系人",
                 children: customer.contactPerson,
               },
               {
                 key: "contactPersonPosition",
-                label: "聯絡人職位",
+                label: "联系人职位",
                 children: customer.contactPersonPosition,
               },
               {
                 key: "contactPersonPhone",
-                label: "聯絡人電話",
+                label: "联系人电话",
                 children: customer.contactPersonPhone,
               },
               {
                 key: "contactPersonEmail",
-                label: "聯絡人電郵",
+                label: "联系人邮箱",
                 children: customer.contactPersonEmail,
               },
               {
                 key: "createdBy",
-                label: "建立者",
+                label: "创建者",
                 children: customer.createdBy.name,
               },
               {
                 key: "updatedAt",
-                label: "更新時間",
+                label: "更新时间",
                 children: dayjs(customer.updatedAt).format("LLL"),
               },
             ]}
           />
         }
         onTabChange={(key) => setActiveTab(key)}
-        tabProps={{ style: { marginTop: 12 } }}
+        tabProps={{ style: { marginTop: 12 }, size: "small" }}
         tabList={[
           {
             key: "1",
-            tab: `項目列表 (${customer.tenders.edges?.length || 0})`,
+            tab: `项目列表 (${customer.tenders.edges?.length || 0})`,
           },
           {
             key: "2",
-            tab: `拜訪記錄 (${customer.visitRecords.edges?.length || 0})`,
+            tab: `拜访记录 (${customer.visitRecords.edges?.length || 0})`,
           },
         ]}
       >
@@ -230,9 +239,8 @@ function TenderList({
     <List
       itemLayout="vertical"
       dataSource={data.tenders.edges?.map((e) => e?.node)}
-      renderItem={(node) =>
-        node && <TenderListItem key={node.id} queryRef={node} />
-      }
+      rowKey={(node) => node?.id || ""}
+      renderItem={(node) => node && <TenderListItem queryRef={node} />}
     />
   );
 }
@@ -247,11 +255,10 @@ function VisitRecordList({
     <div className="space-y-6">
       <List
         dataSource={data.visitRecords.edges?.map((e) => e?.node)}
-        rowKey={(node) => node?.id!}
+        rowKey={(node) => node?.id || ""}
         renderItem={(node) =>
           node && (
             <Descriptions
-              key={node.id}
               layout="vertical"
               bordered
               className="py-4"
@@ -263,17 +270,17 @@ function VisitRecordList({
                 },
                 {
                   key: "visitType",
-                  label: "拜訪類型",
+                  label: "拜访类型",
                   children: visitTypeText(node.visitType),
                 },
                 {
                   key: "commPeople",
-                  label: "溝通人員",
+                  label: "沟通人员",
                   children: node.commPeople,
                 },
                 {
                   key: "commContent",
-                  label: "溝通內容",
+                  label: "沟通内容",
                   children: node.commContent,
                   span: 3,
                 },

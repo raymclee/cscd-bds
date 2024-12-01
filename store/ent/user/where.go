@@ -106,9 +106,9 @@ func HasMapAccess(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldHasMapAccess, v))
 }
 
-// IsEditor applies equality check predicate on the "is_editor" field. It's identical to IsEditorEQ.
-func IsEditor(v bool) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldIsEditor, v))
+// HasEditAccess applies equality check predicate on the "has_edit_access" field. It's identical to HasEditAccessEQ.
+func HasEditAccess(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldHasEditAccess, v))
 }
 
 // LeaderID applies equality check predicate on the "leader_id" field. It's identical to LeaderIDEQ.
@@ -571,14 +571,14 @@ func HasMapAccessNEQ(v bool) predicate.User {
 	return predicate.User(sql.FieldNEQ(FieldHasMapAccess, v))
 }
 
-// IsEditorEQ applies the EQ predicate on the "is_editor" field.
-func IsEditorEQ(v bool) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldIsEditor, v))
+// HasEditAccessEQ applies the EQ predicate on the "has_edit_access" field.
+func HasEditAccessEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldHasEditAccess, v))
 }
 
-// IsEditorNEQ applies the NEQ predicate on the "is_editor" field.
-func IsEditorNEQ(v bool) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldIsEditor, v))
+// HasEditAccessNEQ applies the NEQ predicate on the "has_edit_access" field.
+func HasEditAccessNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldHasEditAccess, v))
 }
 
 // LeaderIDEQ applies the EQ predicate on the "leader_id" field.

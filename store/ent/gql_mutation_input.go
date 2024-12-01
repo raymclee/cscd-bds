@@ -1503,7 +1503,7 @@ type CreateUserInput struct {
 	Disabled       *bool
 	IsAdmin        *bool
 	HasMapAccess   *bool
-	IsEditor       *bool
+	HasEditAccess  *bool
 	AreaIDs        []xid.ID
 	CustomerIDs    []xid.ID
 	LeaderID       *xid.ID
@@ -1538,8 +1538,8 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.HasMapAccess; v != nil {
 		m.SetHasMapAccess(*v)
 	}
-	if v := i.IsEditor; v != nil {
-		m.SetIsEditor(*v)
+	if v := i.HasEditAccess; v != nil {
+		m.SetHasEditAccess(*v)
 	}
 	if v := i.AreaIDs; len(v) > 0 {
 		m.AddAreaIDs(v...)
@@ -1580,7 +1580,7 @@ type UpdateUserInput struct {
 	Disabled             *bool
 	IsAdmin              *bool
 	HasMapAccess         *bool
-	IsEditor             *bool
+	HasEditAccess        *bool
 	ClearAreas           bool
 	AddAreaIDs           []xid.ID
 	RemoveAreaIDs        []xid.ID
@@ -1635,8 +1635,8 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.HasMapAccess; v != nil {
 		m.SetHasMapAccess(*v)
 	}
-	if v := i.IsEditor; v != nil {
-		m.SetIsEditor(*v)
+	if v := i.HasEditAccess; v != nil {
+		m.SetHasEditAccess(*v)
 	}
 	if i.ClearAreas {
 		m.ClearAreas()

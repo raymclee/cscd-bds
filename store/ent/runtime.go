@@ -321,10 +321,10 @@ func init() {
 	userDescHasMapAccess := userFields[7].Descriptor()
 	// user.DefaultHasMapAccess holds the default value on creation for the has_map_access field.
 	user.DefaultHasMapAccess = userDescHasMapAccess.Default.(bool)
-	// userDescIsEditor is the schema descriptor for is_editor field.
-	userDescIsEditor := userFields[8].Descriptor()
-	// user.DefaultIsEditor holds the default value on creation for the is_editor field.
-	user.DefaultIsEditor = userDescIsEditor.Default.(bool)
+	// userDescHasEditAccess is the schema descriptor for has_edit_access field.
+	userDescHasEditAccess := userFields[8].Descriptor()
+	// user.DefaultHasEditAccess holds the default value on creation for the has_edit_access field.
+	user.DefaultHasEditAccess = userDescHasEditAccess.Default.(bool)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

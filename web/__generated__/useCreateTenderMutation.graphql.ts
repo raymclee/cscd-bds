@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d52d16c9da00ffadb106645f463dd1ed>>
+ * @generated SignedSource<<aacaad963875dd752580f14c8eff4179>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -145,8 +145,8 @@ v6 = {
   "storageKey": null
 },
 v7 = [
-  (v6/*: any*/),
-  (v5/*: any*/)
+  (v5/*: any*/),
+  (v6/*: any*/)
 ];
 return {
   "fragment": {
@@ -341,12 +341,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "250eaffabcb6c0e53abf40658d7c303f",
+    "cacheID": "4deb0ea9c983c16060afab8857499d61",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    name\n    id\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    id\n    name\n  }\n}\n"
   }
 };
 })();

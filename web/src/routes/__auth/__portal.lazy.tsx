@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import logoImg from "~/assets/logo.jpg";
+import { Loading } from "~/components/loading";
 import { canEdit } from "~/lib/permission";
 import { cn } from "~/lib/utils";
 import { usePortalStore } from "~/store/portal";
@@ -37,6 +38,7 @@ export const Route = createLazyFileRoute("/__auth/__portal")({
       <Result status="500" title="500" subTitle={"手有点抖，等等再试试吧"} />
     );
   },
+  pendingComponent: () => <Loading />,
 });
 
 const { Header, Content, Sider } = Layout;
@@ -168,7 +170,7 @@ function RouteComponent() {
                 <Avatar src={session.avatarUrl} />
               </div>
             </Header>
-            <Content className="relative m-4">
+            <Content className="relative m-4 min-h-80">
               {/* <Breadcrumb className="my-4" items={[]} /> */}
               {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
               <Outlet />
@@ -196,6 +198,8 @@ function pageTitle(pathname: string) {
       return "拜访记录";
     case "users":
       return "用户";
+    case "areas":
+      return "区域";
     default:
       return "";
   }

@@ -5,8 +5,8 @@ type Session {
   email: String!
   avatarUrl: String!
   isAdmin: Boolean!
-  isEditor: Boolean!
   hasMapAccess: Boolean!
+  hasEditAccess: Boolean!
 }
 
 extend type Query {

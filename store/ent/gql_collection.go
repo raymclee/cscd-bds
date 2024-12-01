@@ -3280,10 +3280,10 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				selectedFields = append(selectedFields, user.FieldHasMapAccess)
 				fieldSeen[user.FieldHasMapAccess] = struct{}{}
 			}
-		case "isEditor":
-			if _, ok := fieldSeen[user.FieldIsEditor]; !ok {
-				selectedFields = append(selectedFields, user.FieldIsEditor)
-				fieldSeen[user.FieldIsEditor] = struct{}{}
+		case "hasEditAccess":
+			if _, ok := fieldSeen[user.FieldHasEditAccess]; !ok {
+				selectedFields = append(selectedFields, user.FieldHasEditAccess)
+				fieldSeen[user.FieldHasEditAccess] = struct{}{}
 			}
 		case "leaderID":
 			if _, ok := fieldSeen[user.FieldLeaderID]; !ok {

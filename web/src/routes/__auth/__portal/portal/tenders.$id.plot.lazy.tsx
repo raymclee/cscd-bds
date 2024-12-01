@@ -7,20 +7,22 @@ import {
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { tendersDetailPageMutation } from "__generated__/tendersDetailPageMutation.graphql";
 import { tendersDetailPageQuery } from "__generated__/tendersDetailPageQuery.graphql";
-import { App, Button, Popconfirm } from "antd";
+import { tendersDetailPlotPageQuery } from "__generated__/tendersDetailPlotPageQuery.graphql";
+import { App, Button, Popconfirm, Spin } from "antd";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
+import { Loading } from "~/components/loading";
 import { useMapStore } from "~/store/map";
 
-export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/$id")(
-  {
-    component: RouteComponent,
-  },
-);
+export const Route = createLazyFileRoute(
+  "/__auth/__portal/portal/tenders/$id/plot",
+)({
+  component: RouteComponent,
+});
 
 const query = graphql`
-  query tendersDetailPageQuery($id: ID!) {
+  query tendersDetailPlotPageQuery($id: ID!) {
     node(id: $id) {
       ... on Tender {
         id
@@ -55,19 +57,19 @@ function RouteComponent() {
   const map = useMapStore((state) => state.map);
   const initMap = useMapStore((state) => state.initMap);
 
-  const [ready, setReady] = React.useState(false);
+  const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
     initMap("map", {
       // center: data.node?
       center: [116.397428, 39.90923] as [number, number],
+      layers: [AMap.createDefaultLayer(), new AMap.TileLayer.Satellite()],
     });
   }, []);
 
   React.useEffect(() => {
     map?.on("complete", () => {
-      map.add([new AMap.TileLayer.Satellite()]);
-      setReady(true);
+      setIsReady(true);
     });
 
     return () => {
@@ -79,13 +81,13 @@ function RouteComponent() {
     <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
       {/* <Input value={data?.node?.name} /> */}
       <div id="map" className="absolute inset-0"></div>
-      {ready && <Editor />}
+      {isReady ? <Editor /> : <Loading />}
     </div>
   );
 }
 
 function Editor() {
-  const data = usePreloadedQuery<tendersDetailPageQuery>(
+  const data = usePreloadedQuery<tendersDetailPlotPageQuery>(
     query,
     Route.useLoaderData(),
   );

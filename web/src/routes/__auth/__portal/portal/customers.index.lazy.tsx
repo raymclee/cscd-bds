@@ -104,18 +104,20 @@ function RouteComponent() {
   ];
 
   return (
-    <div className="min-h-80">
-      <div className="flex items-center justify-between mb-4">
-        <Form.Item noStyle>
-          <Input.Search
-            className="w-72"
-            placeholder="搜索"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            allowClear
-            type="search"
-          />
-        </Form.Item>
+    <>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Form.Item label="搜索" className="mb-0">
+            <Input.Search
+              placeholder="搜索"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              allowClear
+              type="search"
+            />
+          </Form.Item>
+        </div>
+
         {canEdit(session) && (
           <Button type="primary" icon={<Plus size={16} />}>
             添加客户
@@ -138,6 +140,6 @@ function RouteComponent() {
         columns={columns}
         rowKey={"id"}
       />
-    </div>
+    </>
   );
 }

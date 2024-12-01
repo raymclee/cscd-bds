@@ -144,16 +144,16 @@ func (uc *UserCreate) SetNillableHasMapAccess(b *bool) *UserCreate {
 	return uc
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (uc *UserCreate) SetIsEditor(b bool) *UserCreate {
-	uc.mutation.SetIsEditor(b)
+// SetHasEditAccess sets the "has_edit_access" field.
+func (uc *UserCreate) SetHasEditAccess(b bool) *UserCreate {
+	uc.mutation.SetHasEditAccess(b)
 	return uc
 }
 
-// SetNillableIsEditor sets the "is_editor" field if the given value is not nil.
-func (uc *UserCreate) SetNillableIsEditor(b *bool) *UserCreate {
+// SetNillableHasEditAccess sets the "has_edit_access" field if the given value is not nil.
+func (uc *UserCreate) SetNillableHasEditAccess(b *bool) *UserCreate {
 	if b != nil {
-		uc.SetIsEditor(*b)
+		uc.SetHasEditAccess(*b)
 	}
 	return uc
 }
@@ -321,9 +321,9 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultHasMapAccess
 		uc.mutation.SetHasMapAccess(v)
 	}
-	if _, ok := uc.mutation.IsEditor(); !ok {
-		v := user.DefaultIsEditor
-		uc.mutation.SetIsEditor(v)
+	if _, ok := uc.mutation.HasEditAccess(); !ok {
+		v := user.DefaultHasEditAccess
+		uc.mutation.SetHasEditAccess(v)
 	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
@@ -357,8 +357,8 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.HasMapAccess(); !ok {
 		return &ValidationError{Name: "has_map_access", err: errors.New(`ent: missing required field "User.has_map_access"`)}
 	}
-	if _, ok := uc.mutation.IsEditor(); !ok {
-		return &ValidationError{Name: "is_editor", err: errors.New(`ent: missing required field "User.is_editor"`)}
+	if _, ok := uc.mutation.HasEditAccess(); !ok {
+		return &ValidationError{Name: "has_edit_access", err: errors.New(`ent: missing required field "User.has_edit_access"`)}
 	}
 	return nil
 }
@@ -436,9 +436,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
 		_node.HasMapAccess = value
 	}
-	if value, ok := uc.mutation.IsEditor(); ok {
-		_spec.SetField(user.FieldIsEditor, field.TypeBool, value)
-		_node.IsEditor = value
+	if value, ok := uc.mutation.HasEditAccess(); ok {
+		_spec.SetField(user.FieldHasEditAccess, field.TypeBool, value)
+		_node.HasEditAccess = value
 	}
 	if nodes := uc.mutation.AreasIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -709,15 +709,15 @@ func (u *UserUpsert) UpdateHasMapAccess() *UserUpsert {
 	return u
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (u *UserUpsert) SetIsEditor(v bool) *UserUpsert {
-	u.Set(user.FieldIsEditor, v)
+// SetHasEditAccess sets the "has_edit_access" field.
+func (u *UserUpsert) SetHasEditAccess(v bool) *UserUpsert {
+	u.Set(user.FieldHasEditAccess, v)
 	return u
 }
 
-// UpdateIsEditor sets the "is_editor" field to the value that was provided on create.
-func (u *UserUpsert) UpdateIsEditor() *UserUpsert {
-	u.SetExcluded(user.FieldIsEditor)
+// UpdateHasEditAccess sets the "has_edit_access" field to the value that was provided on create.
+func (u *UserUpsert) UpdateHasEditAccess() *UserUpsert {
+	u.SetExcluded(user.FieldHasEditAccess)
 	return u
 }
 
@@ -930,17 +930,17 @@ func (u *UserUpsertOne) UpdateHasMapAccess() *UserUpsertOne {
 	})
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (u *UserUpsertOne) SetIsEditor(v bool) *UserUpsertOne {
+// SetHasEditAccess sets the "has_edit_access" field.
+func (u *UserUpsertOne) SetHasEditAccess(v bool) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetIsEditor(v)
+		s.SetHasEditAccess(v)
 	})
 }
 
-// UpdateIsEditor sets the "is_editor" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateIsEditor() *UserUpsertOne {
+// UpdateHasEditAccess sets the "has_edit_access" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateHasEditAccess() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsEditor()
+		s.UpdateHasEditAccess()
 	})
 }
 
@@ -1323,17 +1323,17 @@ func (u *UserUpsertBulk) UpdateHasMapAccess() *UserUpsertBulk {
 	})
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (u *UserUpsertBulk) SetIsEditor(v bool) *UserUpsertBulk {
+// SetHasEditAccess sets the "has_edit_access" field.
+func (u *UserUpsertBulk) SetHasEditAccess(v bool) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetIsEditor(v)
+		s.SetHasEditAccess(v)
 	})
 }
 
-// UpdateIsEditor sets the "is_editor" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateIsEditor() *UserUpsertBulk {
+// UpdateHasEditAccess sets the "has_edit_access" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateHasEditAccess() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsEditor()
+		s.UpdateHasEditAccess()
 	})
 }
 

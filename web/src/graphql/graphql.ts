@@ -657,9 +657,9 @@ export type CreateUserInput = {
   customerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email: Scalars['String']['input'];
+  hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
-  isEditor?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -1725,9 +1725,9 @@ export type Session = {
   __typename?: 'Session';
   avatarUrl: Scalars['String']['output'];
   email: Scalars['String']['output'];
+  hasEditAccess: Scalars['Boolean']['output'];
   hasMapAccess: Scalars['Boolean']['output'];
   isAdmin: Scalars['Boolean']['output'];
-  isEditor: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   userId: Scalars['String']['output'];
   username: Scalars['String']['output'];
@@ -2953,9 +2953,9 @@ export type UpdateUserInput = {
   clearVisitRecords?: InputMaybe<Scalars['Boolean']['input']>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
-  isEditor?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -2997,10 +2997,10 @@ export type User = Node & {
   customers: CustomerConnection;
   disabled: Scalars['Boolean']['output'];
   email: Scalars['String']['output'];
+  hasEditAccess: Scalars['Boolean']['output'];
   hasMapAccess: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   isAdmin: Scalars['Boolean']['output'];
-  isEditor: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
   name: Scalars['String']['output'];
@@ -3139,6 +3139,9 @@ export type UserWhereInput = {
   /** customers edge predicates */
   hasCustomers?: InputMaybe<Scalars['Boolean']['input']>;
   hasCustomersWith?: InputMaybe<Array<CustomerWhereInput>>;
+  /** has_edit_access field predicates */
+  hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
+  hasEditAccessNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** leader edge predicates */
   hasLeader?: InputMaybe<Scalars['Boolean']['input']>;
   hasLeaderWith?: InputMaybe<Array<UserWhereInput>>;
@@ -3166,9 +3169,6 @@ export type UserWhereInput = {
   /** is_admin field predicates */
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
-  /** is_editor field predicates */
-  isEditor?: InputMaybe<Scalars['Boolean']['input']>;
-  isEditorNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** leader_id field predicates */
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   leaderIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -3458,7 +3458,7 @@ export type UseCreateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, isAdmin: boolean, isEditor: boolean, hasMapAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', name: string } | null } | null> | null } } | null } | null> | null } };
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } | null } | null> | null } };
 
 export type UseDeleteTenderMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3480,7 +3480,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isEditor: boolean, hasMapAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -3514,20 +3514,26 @@ export const UseCreatePlotMutationDocument = new TypedDocumentString(`
 export const UseCreateUserMutationDocument = new TypedDocumentString(`
     mutation useCreateUserMutation($input: CreateUserInput!, $connections: [ID!]!) {
   createUser(input: $input) {
-    edges @appendNode(connections: $connections, edgeTypeName: "UserEdge") {
+    edges @prependNode(connections: $connections, edgeTypeName: "UserEdge") {
       node {
         id
         name
+        email
+        username
+        openID
+        avatarURL
+        disabled
         areas {
           edges {
             node {
+              id
               name
             }
           }
         }
         isAdmin
-        isEditor
         hasMapAccess
+        hasEditAccess
       }
     }
   }
@@ -3566,8 +3572,8 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
       }
     }
     isAdmin
-    isEditor
     hasMapAccess
+    hasEditAccess
   }
 }
     `) as unknown as TypedDocumentString<UseUpdateUserMutationMutation, UseUpdateUserMutationMutationVariables>;

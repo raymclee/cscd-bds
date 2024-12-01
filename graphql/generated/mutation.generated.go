@@ -928,8 +928,8 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -1023,8 +1023,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteUser(ctx context.Context
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":

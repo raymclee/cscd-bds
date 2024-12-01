@@ -6872,9 +6872,9 @@ type UserWhereInput struct {
 	HasMapAccess    *bool `json:"hasMapAccess,omitempty"`
 	HasMapAccessNEQ *bool `json:"hasMapAccessNEQ,omitempty"`
 
-	// "is_editor" field predicates.
-	IsEditor    *bool `json:"isEditor,omitempty"`
-	IsEditorNEQ *bool `json:"isEditorNEQ,omitempty"`
+	// "has_edit_access" field predicates.
+	HasEditAccess    *bool `json:"hasEditAccess,omitempty"`
+	HasEditAccessNEQ *bool `json:"hasEditAccessNEQ,omitempty"`
 
 	// "leader_id" field predicates.
 	LeaderID             *xid.ID  `json:"leaderID,omitempty"`
@@ -7286,11 +7286,11 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.HasMapAccessNEQ != nil {
 		predicates = append(predicates, user.HasMapAccessNEQ(*i.HasMapAccessNEQ))
 	}
-	if i.IsEditor != nil {
-		predicates = append(predicates, user.IsEditorEQ(*i.IsEditor))
+	if i.HasEditAccess != nil {
+		predicates = append(predicates, user.HasEditAccessEQ(*i.HasEditAccess))
 	}
-	if i.IsEditorNEQ != nil {
-		predicates = append(predicates, user.IsEditorNEQ(*i.IsEditorNEQ))
+	if i.HasEditAccessNEQ != nil {
+		predicates = append(predicates, user.HasEditAccessNEQ(*i.HasEditAccessNEQ))
 	}
 	if i.LeaderID != nil {
 		predicates = append(predicates, user.LeaderIDEQ(*i.LeaderID))

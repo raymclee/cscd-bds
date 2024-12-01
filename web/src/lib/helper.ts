@@ -1,4 +1,4 @@
-import { Maybe, Tender, TenderConnection } from "~/graphql/graphql";
+import { AreaConnection, Maybe, TenderConnection } from "~/graphql/graphql";
 
 export function ownerTypeText(typ: Maybe<number> | undefined): string {
   if (!typ) {
@@ -17,6 +17,16 @@ export function ownerTypeText(typ: Maybe<number> | undefined): string {
       return "";
   }
 }
+
+export const tenderStatusOptions = [
+  { label: "跟进中", value: 1 },
+  { label: "停止跟进", value: 2 },
+  { label: "中标", value: 3 },
+  { label: "失标", value: 4 },
+  { label: "估价", value: 5 },
+  { label: "已交标", value: 6 },
+  { label: "数据作废", value: 7 },
+];
 
 export function tenderStatusText(status: Maybe<number> | undefined): string {
   if (!status) {
@@ -144,4 +154,8 @@ export function customerSizeText(size: Maybe<number> | undefined): string {
     default:
       return "";
   }
+}
+
+export function isGAOnly(areas: Maybe<AreaConnection> | undefined): Boolean {
+  return areas?.edges?.every((e) => e?.node?.code == "GA") || false;
 }

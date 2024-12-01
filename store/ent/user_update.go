@@ -163,16 +163,16 @@ func (uu *UserUpdate) SetNillableHasMapAccess(b *bool) *UserUpdate {
 	return uu
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (uu *UserUpdate) SetIsEditor(b bool) *UserUpdate {
-	uu.mutation.SetIsEditor(b)
+// SetHasEditAccess sets the "has_edit_access" field.
+func (uu *UserUpdate) SetHasEditAccess(b bool) *UserUpdate {
+	uu.mutation.SetHasEditAccess(b)
 	return uu
 }
 
-// SetNillableIsEditor sets the "is_editor" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableIsEditor(b *bool) *UserUpdate {
+// SetNillableHasEditAccess sets the "has_edit_access" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableHasEditAccess(b *bool) *UserUpdate {
 	if b != nil {
-		uu.SetIsEditor(*b)
+		uu.SetHasEditAccess(*b)
 	}
 	return uu
 }
@@ -471,8 +471,8 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.HasMapAccess(); ok {
 		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
 	}
-	if value, ok := uu.mutation.IsEditor(); ok {
-		_spec.SetField(user.FieldIsEditor, field.TypeBool, value)
+	if value, ok := uu.mutation.HasEditAccess(); ok {
+		_spec.SetField(user.FieldHasEditAccess, field.TypeBool, value)
 	}
 	if uu.mutation.AreasCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -878,16 +878,16 @@ func (uuo *UserUpdateOne) SetNillableHasMapAccess(b *bool) *UserUpdateOne {
 	return uuo
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (uuo *UserUpdateOne) SetIsEditor(b bool) *UserUpdateOne {
-	uuo.mutation.SetIsEditor(b)
+// SetHasEditAccess sets the "has_edit_access" field.
+func (uuo *UserUpdateOne) SetHasEditAccess(b bool) *UserUpdateOne {
+	uuo.mutation.SetHasEditAccess(b)
 	return uuo
 }
 
-// SetNillableIsEditor sets the "is_editor" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableIsEditor(b *bool) *UserUpdateOne {
+// SetNillableHasEditAccess sets the "has_edit_access" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableHasEditAccess(b *bool) *UserUpdateOne {
 	if b != nil {
-		uuo.SetIsEditor(*b)
+		uuo.SetHasEditAccess(*b)
 	}
 	return uuo
 }
@@ -1216,8 +1216,8 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.HasMapAccess(); ok {
 		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
 	}
-	if value, ok := uuo.mutation.IsEditor(); ok {
-		_spec.SetField(user.FieldIsEditor, field.TypeBool, value)
+	if value, ok := uuo.mutation.HasEditAccess(); ok {
+		_spec.SetField(user.FieldHasEditAccess, field.TypeBool, value)
 	}
 	if uuo.mutation.AreasCleared() {
 		edge := &sqlgraph.EdgeSpec{

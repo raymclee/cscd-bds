@@ -11,17 +11,19 @@ import { User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
+export type UserFormProps = {
+  queryRef: userFormFragment$key;
+  selectedUser: User | null;
+  onClose: () => void;
+  connectionID: string;
+};
+
 export function UserForm({
   onClose,
   queryRef,
   connectionID,
   selectedUser,
-}: {
-  onClose: () => void;
-  queryRef: userFormFragment$key;
-  connectionID: string;
-  selectedUser: User | null;
-}) {
+}: UserFormProps) {
   const data = useFragment(
     graphql`
       fragment userFormFragment on Query {
@@ -56,8 +58,8 @@ export function UserForm({
         areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
         disabled: selectedUser.disabled,
         isAdmin: selectedUser.isAdmin,
-        isEditor: selectedUser.isEditor,
         hasMapAccess: selectedUser.hasMapAccess,
+        hasEditAccess: selectedUser.hasEditAccess,
       });
     }
   }, [selectedUser]);
@@ -97,7 +99,7 @@ export function UserForm({
             commitCreateUser({
               variables: {
                 input: values as CreateUserInput,
-                connections: [connectionID],
+                // connections: [connectionID],
               },
               // updater: (store) => {
               //   const payload = store.getRootField("createUser");
@@ -140,6 +142,26 @@ export function UserForm({
               },
               onError(error) {
                 message.error("添加失败");
+              },
+              updater: (store, res) => {
+                const connectionRecord = ConnectionHandler.getConnection(
+                  store.getRoot(),
+                  "usersPageQuery_users",
+                );
+                console.log({ connectionRecord });
+                if (!connectionRecord || !res?.createUser.edges?.[0]?.node?.id)
+                  return;
+                const payload = store.getRootField("createUser");
+                const serverEdge = payload?.getLinkedRecord("users");
+
+                const newEdge = ConnectionHandler.buildConnectionEdge(
+                  store,
+                  connectionRecord,
+                  store.get(res?.createUser.edges[0]?.node?.id),
+                );
+                console.log({ newEdge, payload });
+                if (!newEdge) return;
+                ConnectionHandler.insertEdgeAfter(connectionRecord, newEdge);
               },
             });
           }

@@ -12319,7 +12319,7 @@ type UserMutation struct {
 	disabled             *bool
 	is_admin             *bool
 	has_map_access       *bool
-	is_editor            *bool
+	has_edit_access      *bool
 	clearedFields        map[string]struct{}
 	areas                map[xid.ID]struct{}
 	removedareas         map[xid.ID]struct{}
@@ -12833,40 +12833,40 @@ func (m *UserMutation) ResetHasMapAccess() {
 	m.has_map_access = nil
 }
 
-// SetIsEditor sets the "is_editor" field.
-func (m *UserMutation) SetIsEditor(b bool) {
-	m.is_editor = &b
+// SetHasEditAccess sets the "has_edit_access" field.
+func (m *UserMutation) SetHasEditAccess(b bool) {
+	m.has_edit_access = &b
 }
 
-// IsEditor returns the value of the "is_editor" field in the mutation.
-func (m *UserMutation) IsEditor() (r bool, exists bool) {
-	v := m.is_editor
+// HasEditAccess returns the value of the "has_edit_access" field in the mutation.
+func (m *UserMutation) HasEditAccess() (r bool, exists bool) {
+	v := m.has_edit_access
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsEditor returns the old "is_editor" field's value of the User entity.
+// OldHasEditAccess returns the old "has_edit_access" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldIsEditor(ctx context.Context) (v bool, err error) {
+func (m *UserMutation) OldHasEditAccess(ctx context.Context) (v bool, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsEditor is only allowed on UpdateOne operations")
+		return v, errors.New("OldHasEditAccess is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsEditor requires an ID field in the mutation")
+		return v, errors.New("OldHasEditAccess requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsEditor: %w", err)
+		return v, fmt.Errorf("querying old value for OldHasEditAccess: %w", err)
 	}
-	return oldValue.IsEditor, nil
+	return oldValue.HasEditAccess, nil
 }
 
-// ResetIsEditor resets all changes to the "is_editor" field.
-func (m *UserMutation) ResetIsEditor() {
-	m.is_editor = nil
+// ResetHasEditAccess resets all changes to the "has_edit_access" field.
+func (m *UserMutation) ResetHasEditAccess() {
+	m.has_edit_access = nil
 }
 
 // SetLeaderID sets the "leader_id" field.
@@ -13280,8 +13280,8 @@ func (m *UserMutation) Fields() []string {
 	if m.has_map_access != nil {
 		fields = append(fields, user.FieldHasMapAccess)
 	}
-	if m.is_editor != nil {
-		fields = append(fields, user.FieldIsEditor)
+	if m.has_edit_access != nil {
+		fields = append(fields, user.FieldHasEditAccess)
 	}
 	if m.leader != nil {
 		fields = append(fields, user.FieldLeaderID)
@@ -13314,8 +13314,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.IsAdmin()
 	case user.FieldHasMapAccess:
 		return m.HasMapAccess()
-	case user.FieldIsEditor:
-		return m.IsEditor()
+	case user.FieldHasEditAccess:
+		return m.HasEditAccess()
 	case user.FieldLeaderID:
 		return m.LeaderID()
 	}
@@ -13347,8 +13347,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldIsAdmin(ctx)
 	case user.FieldHasMapAccess:
 		return m.OldHasMapAccess(ctx)
-	case user.FieldIsEditor:
-		return m.OldIsEditor(ctx)
+	case user.FieldHasEditAccess:
+		return m.OldHasEditAccess(ctx)
 	case user.FieldLeaderID:
 		return m.OldLeaderID(ctx)
 	}
@@ -13430,12 +13430,12 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetHasMapAccess(v)
 		return nil
-	case user.FieldIsEditor:
+	case user.FieldHasEditAccess:
 		v, ok := value.(bool)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetIsEditor(v)
+		m.SetHasEditAccess(v)
 		return nil
 	case user.FieldLeaderID:
 		v, ok := value.(xid.ID)
@@ -13544,8 +13544,8 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldHasMapAccess:
 		m.ResetHasMapAccess()
 		return nil
-	case user.FieldIsEditor:
-		m.ResetIsEditor()
+	case user.FieldHasEditAccess:
+		m.ResetHasEditAccess()
 		return nil
 	case user.FieldLeaderID:
 		m.ResetLeaderID()

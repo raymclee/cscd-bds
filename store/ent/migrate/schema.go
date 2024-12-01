@@ -322,7 +322,7 @@ var (
 		{Name: "disabled", Type: field.TypeBool, Default: false},
 		{Name: "is_admin", Type: field.TypeBool, Default: false},
 		{Name: "has_map_access", Type: field.TypeBool, Default: false},
-		{Name: "is_editor", Type: field.TypeBool, Default: false},
+		{Name: "has_edit_access", Type: field.TypeBool, Default: false},
 		{Name: "leader_id", Type: field.TypeString, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.

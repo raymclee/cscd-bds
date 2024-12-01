@@ -95,7 +95,7 @@ export function MapTenderList() {
                               <CarouselItem key={["list", i].join("-")}>
                                 <img
                                   src={image}
-                                  className="aspect-[4/3] h-full w-full rounded"
+                                  className="aspect-[4/3] h-full w-full rounded object-contain"
                                   alt={tender?.name}
                                 />
                               </CarouselItem>

@@ -9,6 +9,7 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"cscd-bds/util"
 	"fmt"
 )
@@ -111,7 +112,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 // DeleteTender is the resolver for the deleteTender field.
 func (r *mutationResolver) DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error) {
-	t, err := r.store.Tender.Get(ctx, id)
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}

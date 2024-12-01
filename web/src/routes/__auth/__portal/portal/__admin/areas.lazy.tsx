@@ -1,8 +1,9 @@
 import * as React from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { Form, Input, Table } from "antd";
+import { Button, Form, Input, Table } from "antd";
 import { areasRouteQuery } from "__generated__/areasRouteQuery.graphql";
+import { Plus } from "lucide-react";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/__admin/areas",
@@ -45,29 +46,23 @@ function RouteComponent() {
   ];
 
   return (
-    <div className="min-h-80">
+    <>
       <div className="mb-4 flex items-center justify-between">
-        <Form.Item noStyle>
-          <Input.Search
-            className="w-72"
-            placeholder="搜索"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            allowClear
-            type="search"
-          />
-        </Form.Item>
-        {/* <Link to="/portal/tenders/new"> */}
-        {/* <Button type="primary" icon={<Plus size={16} />}>
-      添加商机
-    </Button> */}
-        {/* </Link> */}
-        {/* <UserFormDrawer
-      queryRef={data}
-      connectionID={data.users.__id}
-      selectedUser={selectedUser}
-      setSelectedUser={setSelectedUser}
-    /> */}
+        <div className="flex items-center gap-4">
+          <Form.Item label="搜索" className="mb-0">
+            <Input.Search
+              placeholder="搜索"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              allowClear
+              type="search"
+            />
+          </Form.Item>
+        </div>
+
+        <Button type="primary" icon={<Plus size={16} />}>
+          添加地区
+        </Button>
       </div>
       <Table
         dataSource={dataSource}
@@ -81,6 +76,6 @@ function RouteComponent() {
           },
         }}
       />
-    </div>
+    </>
   );
 }

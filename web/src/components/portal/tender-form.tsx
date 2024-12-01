@@ -17,11 +17,14 @@ import {
   Upload,
 } from "antd";
 import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ConnectionHandler, graphql, useFragment } from "react-relay";
-import { CreateTenderInput } from "~/graphql/graphql";
+import { CreateTenderInput, Tender } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { FixedToolbar } from "./fixed-toolbar";
+import { tenderStatusOptions } from "~/lib/helper";
+import { tendersDetailPageQuery$data } from "__generated__/tendersDetailPageQuery.graphql";
+import { useUpdateTender } from "~/hooks/use-update-tender";
 
 const { Dragger } = Upload;
 
@@ -90,16 +93,21 @@ const fragment = graphql`
   }
 `;
 
-export function TenderForm<T>({
-  queryRef,
-}: {
+export type TenderFormProps = {
   queryRef: tenderFormFragment$key;
-}) {
+  tenderNode?: tendersDetailPageQuery$data | null;
+};
+
+export function TenderForm<T extends TenderFormProps>({
+  queryRef,
+  tenderNode,
+}: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
   const data = useFragment(fragment, queryRef);
 
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
+  const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
   const navigate = useNavigate({ from: "/portal/tenders/new" });
 
   const areaID = Form.useWatch("areaID", form);
@@ -108,6 +116,8 @@ export function TenderForm<T>({
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
+
+  const { node: tender } = tenderNode || {};
 
   const area = useMemo(
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
@@ -142,87 +152,137 @@ export function TenderForm<T>({
     [area],
   );
 
+  // useEffect(() => {
+  //   if (tender) {
+  //     form.setFieldsValue({
+  //       name: tender.name,
+  //       code: tender.code,
+  //       status: tender.status,
+  //       areaID: tender.area?.id,
+  //       customerID: tender.customer?.id,
+  //       discoveryDate: tender.discoveryDate && dayjs(tender.discoveryDate),
+  //       createdByID: tender.createdBy?.id,
+  //       followingSaleIDs: tender.followingSales?.map((e) => e?.id),
+  //       provinceID: tender.province?.id,
+  //       cityID: tender.city?.id,
+  //       districtID: tender.district?.id,
+  //       estimatedAmount: tender.estimatedAmount,
+  //       tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
+  //       contractor: tender.contractor,
+  //       prepareToBid: tender.prepareToBid,
+  //       projectCode: tender.projectCode,
+  //       biddingDate: tender.biddingDate && dayjs(tender.biddingDate),
+  //       estimatedProjectStartDate:
+  //         tender.estimatedProjectStartDate &&
+  //         dayjs(tender.estimatedProjectStartDate),
+  //       estimatedProjectEndDate:
+  //         tender.estimatedProjectEndDate &&
+  //         dayjs(tender.estimatedProjectEndDate),
+  //       projectType: tender.projectType,
+  //       fullAddress: tender.fullAddress,
+  //       images: tender.images?.map((image) => image),
+  //       attachements: tender.attachements?.map((attachement) => attachement),
+  //       architect: tender.architect,
+  //     });
+  //   }
+  // }, [tender]);
+
   return (
     <Form<CreateTenderInput>
       form={form}
       className="relative pb-24"
       requiredMark="optional"
-      disabled={isCreateInFlight}
+      disabled={isCreateInFlight || isUpdateInFlight}
       scrollToFirstError={{
         behavior: "smooth",
         block: "start",
         skipOverflowHiddenElements: true,
       }}
-      initialValues={{ discoveryDate: dayjs() }}
+      initialValues={
+        tender
+          ? {
+              name: tender.name,
+              code: tender.code,
+              status: tender.status,
+              areaID: tender.area?.id,
+              customerID: tender.customer?.id,
+              discoveryDate:
+                tender.discoveryDate && dayjs(tender.discoveryDate),
+              finderID: tender.finder?.id,
+              createdByID: tender.createdBy?.id,
+              // followingSaleIDs: tender.followingSales?.map((e) => e?.id),
+              provinceID: tender.province?.id,
+              cityID: tender.city?.id,
+              districtID: tender.district?.id,
+              estimatedAmount: tender.estimatedAmount,
+              tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
+              contractor: tender.contractor,
+              prepareToBid: tender.prepareToBid,
+              projectCode: tender.projectCode,
+              biddingDate: tender.biddingDate && dayjs(tender.biddingDate),
+              estimatedProjectStartDate:
+                tender.estimatedProjectStartDate &&
+                dayjs(tender.estimatedProjectStartDate),
+              estimatedProjectEndDate:
+                tender.estimatedProjectEndDate &&
+                dayjs(tender.estimatedProjectEndDate),
+              projectType: tender.projectType,
+              fullAddress: tender.fullAddress,
+              images: tender.images?.map((image) => image),
+              attachements: tender.attachements?.map(
+                (attachement) => attachement,
+              ),
+              architect: tender.architect,
+            }
+          : { discoveryDate: dayjs() }
+      }
       layout="vertical"
       onFinish={(values) => {
-        const { images, attachements, ...input } = values;
-        const connectionID = ConnectionHandler.getConnectionID(
-          values.areaID,
-          "TendersTenderListFragment_tenders",
-          { orderBy: { field: "CREATED_AT", direction: "DESC" } },
-        );
-
-        console.log({ connectionID });
-
-        commitCreateMutation({
-          variables: {
-            input,
-            connections: [connectionID],
-            imageFileNames,
-            attachmentFileNames,
-          },
-          onCompleted() {
-            navigate({ to: "/portal/tenders" });
-            message.success("创建成功");
-          },
-          onError(error) {
-            console.error({ error });
-            message.error("创建失败");
-          },
-          // updater(store, data) {
-          //   if (!data?.createTender) return;
-
-          //   const node = store.get(data.createTender.area.id);
-          //   if (!node) {
-          //     console.log("no node");
-          //     return;
-          //   }
-          //   console.log({ node });
-          //   const tendersConnection = ConnectionHandler.getConnection(
-          //     node,
-          //     "TendersAreaTenderListFragment_tenders",
-          //   );
-          //   const newTender = store.get(data.createTender.id);
-          //   console.log({ tendersConnection, newTender });
-          //   if (!tendersConnection || !newTender) return;
-          //   const newTenderEdge = ConnectionHandler.createEdge(
-          //     store,
-          //     tendersConnection,
-          //     newTender,
-          //     "Tender",
-          //   );
-          //   ConnectionHandler.insertEdgeAfter(tendersConnection, newTenderEdge);
-          //   // const tenders = node.getLinkedRecords("tenders");
-          //   // if (!tenders) return;
-          //   // const newTenderRecord = store.get(data.createTender.id);
-          //   // if (newTenderRecord) {
-          //   //   node.setLinkedRecords([...tenders, newTenderRecord], "tenders");
-          //   // }
-          // },
-          // updater(store, data) {
-          //   if (!data?.createTender) return;
-
-          //   const node = store.get(data.createTender.area.id);
-          //   if (!node) return;
-          //   const tenders = node.getLinkedRecords("tenders");
-          //   if (!tenders) return;
-          //   const newTenderRecord = store.get(data.createTender.id);
-          //   if (newTenderRecord) {
-          //     node.setLinkedRecords([...tenders, newTenderRecord], "tenders");
-          //   }
-          // },
-        });
+        if (tender?.id) {
+          const { images, attachements, ...input } = values;
+          commitUpdateMutation({
+            variables: {
+              id: tender.id,
+              input,
+            },
+            onCompleted() {
+              navigate({ to: "/portal/tenders" });
+              message.success("更新成功");
+            },
+            onError(error) {
+              console.error({ error });
+              message.error("更新失败");
+            },
+          });
+        } else {
+          const { images, attachements, ...input } = values;
+          commitCreateMutation({
+            variables: {
+              input,
+              connections: [
+                ConnectionHandler.getConnectionID(
+                  values.areaID,
+                  "tendersTenderListFragment_tenders",
+                  { orderBy: { field: "CREATED_AT", direction: "DESC" } },
+                ),
+                ConnectionHandler.getConnectionID(
+                  values.customerID,
+                  "customersTenderListFragment_tenders",
+                ),
+              ],
+              imageFileNames,
+              attachmentFileNames,
+            },
+            onCompleted() {
+              navigate({ to: "/portal/tenders" });
+              message.success("创建成功");
+            },
+            onError(error) {
+              console.error({ error });
+              message.error("创建失败");
+            },
+          });
+        }
       }}
     >
       <Card title="項目資料">
@@ -251,7 +311,7 @@ export function TenderForm<T>({
               label="状态"
               rules={[{ required: true }]}
             >
-              <Input />
+              <Select options={tenderStatusOptions} />
             </Form.Item>
           </Col>
         </Row>
@@ -287,7 +347,15 @@ export function TenderForm<T>({
               label="业主名称"
               rules={[{ required: true }]}
             >
-              <Select options={customerOptions} />
+              <Select
+                options={customerOptions}
+                showSearch
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+              />
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>

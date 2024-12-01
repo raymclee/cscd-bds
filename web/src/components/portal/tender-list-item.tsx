@@ -1,18 +1,26 @@
 import { Link } from "@tanstack/react-router";
-import { tenderListItemFragment$key } from "__generated__/tenderListItemFragment.graphql";
+import {
+  tenderListItemFragment$data,
+  tenderListItemFragment$key,
+} from "__generated__/tenderListItemFragment.graphql";
 import { App, Button, List, Popconfirm, Tag } from "antd";
 import { useFragment } from "react-relay";
-import { graphql } from "relay-runtime";
+import { ConnectionHandler, graphql } from "relay-runtime";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
 import { tenderStatusText } from "~/lib/helper";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ImageOff } from "lucide-react";
+import { Tender } from "~/graphql/graphql";
+
+type TenderListItemProps = {
+  queryRef: tenderListItemFragment$key;
+  showDelete?: boolean;
+};
 
 export function TenderListItem({
   queryRef,
-}: {
-  queryRef: tenderListItemFragment$key;
-}) {
+  showDelete = true,
+}: TenderListItemProps) {
   const item = useFragment(
     graphql`
       fragment tenderListItemFragment on Tender {
@@ -22,6 +30,7 @@ export function TenderListItem({
         createdAt
         estimatedAmount
         customer {
+          id
           name
         }
         images
@@ -29,6 +38,7 @@ export function TenderListItem({
         tenderDate
         discoveryDate
         area {
+          id
           name
         }
       }
@@ -39,21 +49,31 @@ export function TenderListItem({
   return (
     <List.Item
       actions={[
-        <Link key="edit-link" to="/portal/tenders/$id" params={{ id: item.id }}>
-          <Button type="link" size="small" disabled>
+        <Link
+          key="edit-link"
+          to="/portal/tenders/$id"
+          params={{ id: item.id }}
+          resetScroll={false}
+        >
+          <Button type="link" size="small">
             修改
           </Button>
         </Link>,
-        <Link key="draw-link" to="/portal/tenders/$id" params={{ id: item.id }}>
+        <Link
+          key="draw-link"
+          to="/portal/tenders/$id/plot"
+          params={{ id: item.id }}
+          resetScroll={false}
+        >
           <Button type="link" size="small">
             地塊
           </Button>
         </Link>,
-        <DeleteButton key="delete" id={item?.id} />,
+        showDelete && <DeleteButton key="delete" tender={item} />,
         // <a key="list-loadmore-more">more</a>,
       ]}
       extra={
-        <div className="aspect-[16/9] max-w-[280px]">
+        <div className="aspect-[16/9] md:max-w-[280px]">
           {/* <img
             alt={item?.name}
             className="w-full h-full rounded-lg"
@@ -66,7 +86,7 @@ export function TenderListItem({
                   <CarouselItem key={[item.id, "image", i].join("-")}>
                     <img
                       src={image}
-                      className="aspect-[16/9] rounded-lg"
+                      className="aspect-[16/9] rounded-lg object-cover"
                       alt={item?.name}
                     />
                   </CarouselItem>
@@ -75,14 +95,13 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[280px] flex-col items-center justify-center rounded-lg bg-gray-100">
-              <ImageOff className="w-12 h-12 mb-2" />
+              <ImageOff className="mb-2 h-12 w-12" />
               暂没图片
             </div>
           )}
         </div>
       }
     >
-      {/* <Skeleton avatar title={false} loading={item.loading} active> */}
       <List.Item.Meta
         title={<div>{item?.name}</div>}
         description={item?.fullAddress}
@@ -91,21 +110,33 @@ export function TenderListItem({
         <Tag>{item?.area.name}</Tag>
         <Tag>{tenderStatusText(item?.status)}</Tag>
       </div>
-      {/* </Skeleton> */}
     </List.Item>
   );
 }
 
-function DeleteButton({ id }: { id?: string }) {
+function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
   const { message } = App.useApp();
   const [commit, inFlight] = useDeleteTenderMutation();
   return (
     <Popconfirm
       title="确定要删除吗？"
       onConfirm={() => {
-        if (!id) return;
+        if (!tender) return;
         commit({
-          variables: { id },
+          variables: {
+            id: tender.id,
+            connections: [
+              ConnectionHandler.getConnectionID(
+                tender.area.id,
+                "tendersTenderListFragment_tenders",
+                { orderBy: { field: "CREATED_AT", direction: "DESC" } },
+              ),
+              ConnectionHandler.getConnectionID(
+                tender.customer.id,
+                "customersTenderListFragment_tenders",
+              ),
+            ],
+          },
           onCompleted() {
             message.success("删除成功");
           },

@@ -249,7 +249,7 @@ function EditorContainer() {
         value={selectedDistrict ?? undefined}
         variant="outlined"
         treeDefaultExpandAll
-        className="absolute left-4 top-4 w-72"
+        className="absolute left-4 top-4 w-52"
         treeData={treeData}
         onSelect={(value: string, node) => {
           if (!("adcode" in node)) {

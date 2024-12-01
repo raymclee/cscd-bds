@@ -668,9 +668,9 @@ input CreateUserInput {
   customerIDs: [ID!]
   disabled: Boolean
   email: String!
+  hasEditAccess: Boolean
   hasMapAccess: Boolean
   isAdmin: Boolean
-  isEditor: Boolean
   leaderID: ID
   name: String!
   openID: String
@@ -1743,9 +1743,9 @@ type Query {
 type Session {
   avatarUrl: String!
   email: String!
+  hasEditAccess: Boolean!
   hasMapAccess: Boolean!
   isAdmin: Boolean!
-  isEditor: Boolean!
   name: String!
   userId: String!
   username: String!
@@ -2975,9 +2975,9 @@ input UpdateUserInput {
   clearVisitRecords: Boolean
   disabled: Boolean
   email: String
+  hasEditAccess: Boolean
   hasMapAccess: Boolean
   isAdmin: Boolean
-  isEditor: Boolean
   leaderID: ID
   name: String
   openID: String
@@ -3048,10 +3048,10 @@ type User implements Node {
   ): CustomerConnection!
   disabled: Boolean!
   email: String!
+  hasEditAccess: Boolean!
   hasMapAccess: Boolean!
   id: ID!
   isAdmin: Boolean!
-  isEditor: Boolean!
   leader: User
   leaderID: ID
   name: String!
@@ -3178,6 +3178,9 @@ input UserWhereInput {
   """customers edge predicates"""
   hasCustomers: Boolean
   hasCustomersWith: [CustomerWhereInput!]
+  """has_edit_access field predicates"""
+  hasEditAccess: Boolean
+  hasEditAccessNEQ: Boolean
   """leader edge predicates"""
   hasLeader: Boolean
   hasLeaderWith: [UserWhereInput!]
@@ -3205,9 +3208,6 @@ input UserWhereInput {
   """is_admin field predicates"""
   isAdmin: Boolean
   isAdminNEQ: Boolean
-  """is_editor field predicates"""
-  isEditor: Boolean
-  isEditorNEQ: Boolean
   """leader_id field predicates"""
   leaderID: ID
   leaderIDContains: ID

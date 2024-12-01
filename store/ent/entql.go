@@ -252,18 +252,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "User",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			user.FieldCreatedAt:    {Type: field.TypeTime, Column: user.FieldCreatedAt},
-			user.FieldUpdatedAt:    {Type: field.TypeTime, Column: user.FieldUpdatedAt},
-			user.FieldName:         {Type: field.TypeString, Column: user.FieldName},
-			user.FieldEmail:        {Type: field.TypeString, Column: user.FieldEmail},
-			user.FieldUsername:     {Type: field.TypeString, Column: user.FieldUsername},
-			user.FieldOpenID:       {Type: field.TypeString, Column: user.FieldOpenID},
-			user.FieldAvatarURL:    {Type: field.TypeString, Column: user.FieldAvatarURL},
-			user.FieldDisabled:     {Type: field.TypeBool, Column: user.FieldDisabled},
-			user.FieldIsAdmin:      {Type: field.TypeBool, Column: user.FieldIsAdmin},
-			user.FieldHasMapAccess: {Type: field.TypeBool, Column: user.FieldHasMapAccess},
-			user.FieldIsEditor:     {Type: field.TypeBool, Column: user.FieldIsEditor},
-			user.FieldLeaderID:     {Type: field.TypeString, Column: user.FieldLeaderID},
+			user.FieldCreatedAt:     {Type: field.TypeTime, Column: user.FieldCreatedAt},
+			user.FieldUpdatedAt:     {Type: field.TypeTime, Column: user.FieldUpdatedAt},
+			user.FieldName:          {Type: field.TypeString, Column: user.FieldName},
+			user.FieldEmail:         {Type: field.TypeString, Column: user.FieldEmail},
+			user.FieldUsername:      {Type: field.TypeString, Column: user.FieldUsername},
+			user.FieldOpenID:        {Type: field.TypeString, Column: user.FieldOpenID},
+			user.FieldAvatarURL:     {Type: field.TypeString, Column: user.FieldAvatarURL},
+			user.FieldDisabled:      {Type: field.TypeBool, Column: user.FieldDisabled},
+			user.FieldIsAdmin:       {Type: field.TypeBool, Column: user.FieldIsAdmin},
+			user.FieldHasMapAccess:  {Type: field.TypeBool, Column: user.FieldHasMapAccess},
+			user.FieldHasEditAccess: {Type: field.TypeBool, Column: user.FieldHasEditAccess},
+			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2212,9 +2212,9 @@ func (f *UserFilter) WhereHasMapAccess(p entql.BoolP) {
 	f.Where(p.Field(user.FieldHasMapAccess))
 }
 
-// WhereIsEditor applies the entql bool predicate on the is_editor field.
-func (f *UserFilter) WhereIsEditor(p entql.BoolP) {
-	f.Where(p.Field(user.FieldIsEditor))
+// WhereHasEditAccess applies the entql bool predicate on the has_edit_access field.
+func (f *UserFilter) WhereHasEditAccess(p entql.BoolP) {
+	f.Where(p.Field(user.FieldHasEditAccess))
 }
 
 // WhereLeaderID applies the entql string predicate on the leader_id field.

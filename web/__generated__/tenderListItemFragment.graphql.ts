@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ba9fa7547d67c55dab4988c692fdf8cb>>
+ * @generated SignedSource<<b03037c39094f13febc4c4fb88a534bb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,10 +12,12 @@ import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type tenderListItemFragment$data = {
   readonly area: {
+    readonly id: string;
     readonly name: string;
   };
   readonly createdAt: any;
   readonly customer: {
+    readonly id: string;
     readonly name: string;
   };
   readonly discoveryDate: any;
@@ -38,11 +40,19 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v1 = [
-  (v0/*: any*/)
+v2 = [
+  (v0/*: any*/),
+  (v1/*: any*/)
 ];
 return {
   "argumentDefinitions": [],
@@ -50,14 +60,8 @@ return {
   "metadata": null,
   "name": "tenderListItemFragment",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -86,7 +90,7 @@ return {
       "kind": "LinkedField",
       "name": "customer",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": (v2/*: any*/),
       "storageKey": null
     },
     {
@@ -124,7 +128,7 @@ return {
       "kind": "LinkedField",
       "name": "area",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": (v2/*: any*/),
       "storageKey": null
     }
   ],
@@ -133,6 +137,6 @@ return {
 };
 })();
 
-(node as any).hash = "7c9d2c2d1e2df8811432eacc4132b544";
+(node as any).hash = "91fc87872ddd9065c83acb0d17ea4ce8";
 
 export default node;

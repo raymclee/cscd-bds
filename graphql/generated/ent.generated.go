@@ -8110,8 +8110,8 @@ func (ec *executionContext) fieldContext_Customer_sales(_ context.Context, field
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -8194,8 +8194,8 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -12020,10 +12020,10 @@ func (ec *executionContext) fieldContext_Query_session(_ context.Context, field 
 				return ec.fieldContext_Session_avatarUrl(ctx, field)
 			case "isAdmin":
 				return ec.fieldContext_Session_isAdmin(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_Session_isEditor(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_Session_hasMapAccess(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_Session_hasEditAccess(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Session", field.Name)
 		},
@@ -14835,8 +14835,8 @@ func (ec *executionContext) fieldContext_Tender_finder(_ context.Context, field 
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -14919,8 +14919,8 @@ func (ec *executionContext) fieldContext_Tender_createdBy(_ context.Context, fie
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -15000,8 +15000,8 @@ func (ec *executionContext) fieldContext_Tender_followingSales(_ context.Context
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -16235,8 +16235,8 @@ func (ec *executionContext) fieldContext_User_hasMapAccess(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _User_isEditor(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_isEditor(ctx, field)
+func (ec *executionContext) _User_hasEditAccess(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_hasEditAccess(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -16249,7 +16249,7 @@ func (ec *executionContext) _User_isEditor(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.IsEditor, nil
+		return obj.HasEditAccess, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -16266,7 +16266,7 @@ func (ec *executionContext) _User_isEditor(ctx context.Context, field graphql.Co
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_isEditor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_hasEditAccess(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -16504,8 +16504,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -16585,8 +16585,8 @@ func (ec *executionContext) fieldContext_User_teamMembers(_ context.Context, fie
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -16937,8 +16937,8 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
-			case "isEditor":
-				return ec.fieldContext_User_isEditor(ctx, field)
+			case "hasEditAccess":
+				return ec.fieldContext_User_hasEditAccess(ctx, field)
 			case "leaderID":
 				return ec.fieldContext_User_leaderID(ctx, field)
 			case "areas":
@@ -20507,7 +20507,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "isAdmin", "hasMapAccess", "isEditor", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs", "visitRecordIDs"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "isAdmin", "hasMapAccess", "hasEditAccess", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs", "visitRecordIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -20584,13 +20584,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.HasMapAccess = data
-		case "isEditor":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isEditor"))
+		case "hasEditAccess":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEditAccess"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsEditor = data
+			it.HasEditAccess = data
 		case "areaIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areaIDs"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
@@ -30783,7 +30783,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "clearOpenID", "avatarURL", "clearAvatarURL", "disabled", "isAdmin", "hasMapAccess", "isEditor", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
+	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "clearOpenID", "avatarURL", "clearAvatarURL", "disabled", "isAdmin", "hasMapAccess", "hasEditAccess", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -30867,13 +30867,13 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.HasMapAccess = data
-		case "isEditor":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isEditor"))
+		case "hasEditAccess":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEditAccess"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsEditor = data
+			it.HasEditAccess = data
 		case "addAreaIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAreaIDs"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
@@ -31162,7 +31162,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDIsNil", "openIDNotNil", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLIsNil", "avatarURLNotNil", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "isAdmin", "isAdminNEQ", "hasMapAccess", "hasMapAccessNEQ", "isEditor", "isEditorNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith", "hasVisitRecords", "hasVisitRecordsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDIsNil", "openIDNotNil", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLIsNil", "avatarURLNotNil", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "isAdmin", "isAdminNEQ", "hasMapAccess", "hasMapAccessNEQ", "hasEditAccess", "hasEditAccessNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith", "hasVisitRecords", "hasVisitRecordsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -31883,20 +31883,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasMapAccessNEQ = data
-		case "isEditor":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isEditor"))
+		case "hasEditAccess":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEditAccess"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsEditor = data
-		case "isEditorNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isEditorNEQ"))
+			it.HasEditAccess = data
+		case "hasEditAccessNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEditAccessNEQ"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.IsEditorNEQ = data
+			it.HasEditAccessNEQ = data
 		case "leaderID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -36206,8 +36206,8 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "isEditor":
-			out.Values[i] = ec._User_isEditor(ctx, field, obj)
+		case "hasEditAccess":
+			out.Values[i] = ec._User_hasEditAccess(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}

@@ -35,8 +35,8 @@ const (
 	FieldIsAdmin = "is_admin"
 	// FieldHasMapAccess holds the string denoting the has_map_access field in the database.
 	FieldHasMapAccess = "has_map_access"
-	// FieldIsEditor holds the string denoting the is_editor field in the database.
-	FieldIsEditor = "is_editor"
+	// FieldHasEditAccess holds the string denoting the has_edit_access field in the database.
+	FieldHasEditAccess = "has_edit_access"
 	// FieldLeaderID holds the string denoting the leader_id field in the database.
 	FieldLeaderID = "leader_id"
 	// EdgeAreas holds the string denoting the areas edge name in mutations.
@@ -98,7 +98,7 @@ var Columns = []string{
 	FieldDisabled,
 	FieldIsAdmin,
 	FieldHasMapAccess,
-	FieldIsEditor,
+	FieldHasEditAccess,
 	FieldLeaderID,
 }
 
@@ -137,8 +137,8 @@ var (
 	DefaultIsAdmin bool
 	// DefaultHasMapAccess holds the default value on creation for the "has_map_access" field.
 	DefaultHasMapAccess bool
-	// DefaultIsEditor holds the default value on creation for the "is_editor" field.
-	DefaultIsEditor bool
+	// DefaultHasEditAccess holds the default value on creation for the "has_edit_access" field.
+	DefaultHasEditAccess bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -201,9 +201,9 @@ func ByHasMapAccess(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldHasMapAccess, opts...).ToFunc()
 }
 
-// ByIsEditor orders the results by the is_editor field.
-func ByIsEditor(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsEditor, opts...).ToFunc()
+// ByHasEditAccess orders the results by the has_edit_access field.
+func ByHasEditAccess(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHasEditAccess, opts...).ToFunc()
 }
 
 // ByLeaderID orders the results by the leader_id field.
