@@ -103,25 +103,29 @@ function RouteComponent() {
       dataIndex: "hasMapAccess",
       title: "大地图",
       render: (hasMapAccess, record) => (
-        <UserToggle user={record} field="hasMapAccess" />
+        <UserToggle user={record} field="hasMapAccess" value={hasMapAccess} />
       ),
     },
     {
       dataIndex: "hasEditAccess",
       title: "编辑",
       render: (hasEditAccess, record) => (
-        <UserToggle user={record} field="hasEditAccess" />
+        <UserToggle user={record} field="hasEditAccess" value={hasEditAccess} />
       ),
     },
     {
       dataIndex: "isSales",
       title: "销售",
-      render: (isSales, record) => <UserToggle user={record} field="isSales" />,
+      render: (isSales, record) => (
+        <UserToggle user={record} field="isSales" value={isSales} />
+      ),
     },
     {
       dataIndex: "isAdmin",
       title: "管理员",
-      render: (isAdmin, record) => <UserToggle user={record} field="isAdmin" />,
+      render: (isAdmin, record) => (
+        <UserToggle user={record} field="isAdmin" value={isAdmin} />
+      ),
     },
     {
       title: "操作",
@@ -277,18 +281,20 @@ function UserFormDrawer({
 function UserToggle({
   user,
   field,
+  value,
 }: {
   user: User;
   field: "isSales" | "isAdmin" | "hasMapAccess" | "hasEditAccess";
+  value: boolean;
 }) {
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
 
-  const value = user[field];
   const title = value ? "停用" : "启用";
 
   return (
     <Switch
+      value={value}
       checked={value}
       disabled={isUpdateUserInFlight}
       onChange={() => {

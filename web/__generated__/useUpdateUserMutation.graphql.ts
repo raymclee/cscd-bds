@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e4ebfdc5e9051e954ffda39ae3c42617>>
+ * @generated SignedSource<<44f63525fa3baee41e09038fde8343b5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -62,6 +62,7 @@ export type useUpdateUserMutation$data = {
     readonly hasMapAccess: boolean;
     readonly id: string;
     readonly isAdmin: boolean;
+    readonly isSales: boolean;
     readonly name: string;
     readonly openID: string | null | undefined;
     readonly username: string;
@@ -202,6 +203,13 @@ v3 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
+        "name": "isSales",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
         "name": "hasMapAccess",
         "storageKey": null
       },
@@ -234,16 +242,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "5e070383afee610536623c2dbc16241c",
+    "cacheID": "3d5d41774d5882a98812a2a880b7d90e",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    isSales\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "31e647600738a31fdb775750c6da6a3b";
+(node as any).hash = "32c2aad184bbfd3e3a8c9b533ec723d4";
 
 export default node;
