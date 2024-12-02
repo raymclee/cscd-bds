@@ -56,16 +56,19 @@ const updateTenderMutation = graphql`
 function RouteComponent() {
   const map = useMapStore((state) => state.map);
   const initMap = useMapStore((state) => state.initMap);
+  const data = usePreloadedQuery<tendersDetailPlotPageQuery>(
+    query,
+    Route.useLoaderData(),
+  );
 
   const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
     initMap("map", {
-      // center: data.node?
-      center: [116.397428, 39.90923] as [number, number],
+      // center: [116.397428, 39.90923] as [number, number],
       layers: [AMap.createDefaultLayer(), new AMap.TileLayer.Satellite()],
     });
-  }, []);
+  }, [data.node]);
 
   React.useEffect(() => {
     map?.on("complete", () => {
