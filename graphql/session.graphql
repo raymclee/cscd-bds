@@ -5,6 +5,7 @@ type Session {
   email: String!
   avatarUrl: String!
   isAdmin: Boolean!
+  isSales: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
 }

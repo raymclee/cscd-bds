@@ -14,6 +14,7 @@ type Session struct {
 	Email         string `json:"email"`
 	AvatarURL     string `json:"avatarUrl"`
 	IsAdmin       bool   `json:"isAdmin"`
+	IsSales       bool   `json:"isSales"`
 	HasMapAccess  bool   `json:"hasMapAccess"`
 	HasEditAccess bool   `json:"hasEditAccess"`
 }

@@ -1750,6 +1750,7 @@ type Session {
   hasEditAccess: Boolean!
   hasMapAccess: Boolean!
   isAdmin: Boolean!
+  isSales: Boolean!
   name: String!
   userId: String!
   username: String!

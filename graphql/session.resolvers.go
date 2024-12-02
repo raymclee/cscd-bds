@@ -29,6 +29,7 @@ func (r *queryResolver) Session(ctx context.Context) (*model.Session, error) {
 		Username:      su.Username,
 		AvatarURL:     su.AvatarUrl,
 		IsAdmin:       u.IsAdmin,
+		IsSales:       u.IsSales,
 		HasMapAccess:  u.HasMapAccess,
 		HasEditAccess: u.HasEditAccess,
 	}, nil

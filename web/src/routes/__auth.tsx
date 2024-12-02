@@ -12,6 +12,7 @@ graphql`
       email
       avatarUrl
       isAdmin
+      isSales
       hasMapAccess
       hasEditAccess
     }

@@ -12,14 +12,18 @@ import {
   ConfigProvider,
   Layout,
   Menu,
+  Popconfirm,
   Result,
+  Tooltip,
   Typography,
 } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import {
   Building2,
   ContactRound,
+  LogOut,
   Map,
+  Monitor,
   SlidersHorizontal,
   Users,
 } from "lucide-react";
@@ -152,21 +156,31 @@ function RouteComponent() {
               <Typography.Title className="!mb-0" level={3}>
                 {pageTitle(pathname)}
               </Typography.Title>
-              <div className="flex items-center gap-4">
-                <Button
-                  danger
-                  type="link"
-                  size="small"
-                  onClick={(e) => {
-                    fetch("/api/v1/logout").then((res) => {
-                      if (res.redirected) {
-                        navigate({ to: "/logout" });
-                      }
-                    });
-                  }}
-                >
-                  登出
-                </Button>
+              <div className="flex items-center gap-x-2">
+                {session.hasMapAccess && (
+                  <Tooltip title="大屏">
+                    <Link to="/" className="flex items-center justify-center">
+                      <Button
+                        shape="circle"
+                        icon={<Monitor size={16} />}
+                      ></Button>
+                    </Link>
+                  </Tooltip>
+                )}
+                <Tooltip title="退出">
+                  <Popconfirm
+                    title="确定退出吗？"
+                    onConfirm={() => {
+                      fetch("/api/v1/logout").then((res) => {
+                        if (res.redirected) {
+                          navigate({ to: "/logout" });
+                        }
+                      });
+                    }}
+                  >
+                    <Button shape="circle" icon={<LogOut size={16} />}></Button>
+                  </Popconfirm>
+                </Tooltip>
                 <Avatar src={session.avatarUrl} />
               </div>
             </Header>

@@ -12024,6 +12024,8 @@ func (ec *executionContext) fieldContext_Query_session(_ context.Context, field 
 				return ec.fieldContext_Session_avatarUrl(ctx, field)
 			case "isAdmin":
 				return ec.fieldContext_Session_isAdmin(ctx, field)
+			case "isSales":
+				return ec.fieldContext_Session_isSales(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_Session_hasMapAccess(ctx, field)
 			case "hasEditAccess":

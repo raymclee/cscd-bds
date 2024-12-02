@@ -277,6 +277,7 @@ type ComplexityRoot struct {
 		HasEditAccess func(childComplexity int) int
 		HasMapAccess  func(childComplexity int) int
 		IsAdmin       func(childComplexity int) int
+		IsSales       func(childComplexity int) int
 		Name          func(childComplexity int) int
 		UserID        func(childComplexity int) int
 		Username      func(childComplexity int) int
@@ -1697,6 +1698,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Session.IsAdmin(childComplexity), true
+
+	case "Session.isSales":
+		if e.complexity.Session.IsSales == nil {
+			break
+		}
+
+		return e.complexity.Session.IsSales(childComplexity), true
 
 	case "Session.name":
 		if e.complexity.Session.Name == nil {
@@ -7293,6 +7301,7 @@ type GeoJson {
   email: String!
   avatarUrl: String!
   isAdmin: Boolean!
+  isSales: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
 }

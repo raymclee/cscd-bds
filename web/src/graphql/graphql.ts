@@ -1732,6 +1732,7 @@ export type Session = {
   hasEditAccess: Scalars['Boolean']['output'];
   hasMapAccess: Scalars['Boolean']['output'];
   isAdmin: Scalars['Boolean']['output'];
+  isSales: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   userId: Scalars['String']['output'];
   username: Scalars['String']['output'];
@@ -3514,7 +3515,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isSales: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -3599,6 +3600,7 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
       }
     }
     isAdmin
+    isSales
     hasMapAccess
     hasEditAccess
   }
