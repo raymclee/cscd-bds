@@ -41,6 +41,9 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
     ) || 0,
   );
 
+  const gaTendersOnly = tenders?.every((t) => t?.area.code == "GA");
+  const gaView = gaOnly || gaTendersOnly;
+
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center">
@@ -63,7 +66,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
           layoutId={`tender-status-${selectedTenderStatus?.value}`}
           className={cn(
             "mx-4 block h-[80vh] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-            gaOnly
+            gaView
               ? "w-[clamp(400px,80vw,1200px)]"
               : "w-[clamp(400px,40vw,600px)]",
           )}
@@ -92,7 +95,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                     <TableHead className="w-[12rem] text-center text-gray-300">
                       名称
                     </TableHead>
-                    {gaOnly && (
+                    {gaView ? (
                       <>
                         <TableHead className="w-[7rem] text-center text-gray-300">
                           业主
@@ -123,8 +126,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                           </>
                         )}
                       </>
-                    )}
-                    {!gaOnly && (
+                    ) : (
                       <>
                         <TableHead className="w-[6rem] text-center text-gray-300">
                           区域
@@ -163,7 +165,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                     >
                       <TableCell className="text-center">{i + 1}</TableCell>
                       <TableCell>{tender?.name}</TableCell>
-                      {gaOnly ? (
+                      {gaView ? (
                         <>
                           <TableCell className="text-center">
                             {tender?.developer}
@@ -218,7 +220,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                   ))}
                 </TableBody>
               </Table>
-              {(!gaOnly || (gaOnly && selectedTenderStatus?.value == 3)) && (
+              {(!gaView || (gaView && selectedTenderStatus?.value == 3)) && (
                 <div className="flex w-full justify-end gap-x-4 pr-4 text-sm">
                   <div>合计: </div>
                   <div>{total}亿元</div>
