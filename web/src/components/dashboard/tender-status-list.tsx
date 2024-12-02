@@ -202,7 +202,9 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                         </>
                       ) : (
                         <>
-                          <TableCell>{tender?.area.name}</TableCell>
+                          <TableCell className="text-center">
+                            {tender?.area.name}
+                          </TableCell>
                           <TableCell className="text-center">
                             {/* {new Intl.NumberFormat("zh-Hans-CN", {
                             style: "currency",
