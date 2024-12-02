@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"cscd-bds/store"
+	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/geo"
-	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/user"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -40,81 +41,116 @@ func main() {
 	st := store.NewStore()
 	wg := &errgroup.Group{}
 
+	hkProvince, err := st.Province.Query().Where(province.Adcode(810000)).Only(ctx)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	hkFinder, err := st.User.Query().Where(user.Name("劉世瑛")).Only(ctx)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	hkCreatedBy, err := st.User.Query().Where(user.Name("余敬琳")).Only(ctx)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	hkArea, err := st.Area.Query().Where(area.Code("GA")).Only(ctx)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	rows, err := f.GetRows("source")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	codeMap := map[string][]string{}
+row:
 	for _, row := range rows {
+		time.Sleep(time.Second)
+		var code string
 
-		wg.Go(func() error {
-			var code string
-			codeMap := map[string][]string{}
+		q := st.Tender.Create().
+			SetStatus(1).
+			SetArea(hkArea).
+			SetProvince(hkProvince).
+			SetFinder(hkFinder).
+			SetCreatedBy(hkCreatedBy)
 
-			q := st.Tender.Create().
-				SetStatus(1).
-				SetAreaID(xid.ID("AR-csurl81hi0179h2ef5ng"))
-
-			for j, colCell := range row {
-				if j == 0 {
-					q.SetTenderCode(colCell)
+		for j, colCell := range row {
+			if j == 0 {
+				q.SetTenderCode(colCell)
+			}
+			if j == 1 {
+				adcode, lng, lat, err := getGeoCoordinate(colCell)
+				if err != nil {
+					fmt.Println(err)
+					continue row
 				}
-				if j == 1 {
-					adcode, lng, lat, err := getGeoCoordinate(colCell)
-					if err != nil {
-						return err
-					}
-					p, err := st.Province.Query().Where(province.Adcode(adcode)).Only(ctx)
-					if err != nil {
-						return err
-					}
-					center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
-					if err != nil {
-						return err
-					}
+				d, err := st.District.Query().Where(district.Adcode(adcode)).Only(ctx)
+				if err != nil {
+					fmt.Println(err)
+					continue row
+				}
+				q.SetName(colCell)
+				center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+				if err != nil {
+					fmt.Println(err)
+					continue row
+				} else {
 					coordinate := &geo.GeoJson{Geometry: center}
-					q.SetName(colCell).SetGeoCoordinate(coordinate).SetProvince(p)
+					q.SetGeoCoordinate(coordinate).SetDistrict(d)
 				}
-				if j == 2 {
-					q.SetDeveloper(colCell)
-				}
-				if j == 3 {
-					q.SetArchitect(colCell)
-				}
-				if j == 4 {
-					q.SetFacadeConsultant(colCell)
-				}
-				if j == 5 {
-					q.SetContractor(colCell)
-				}
-				if j == 6 {
-					t, err := time.Parse("01-02-06", colCell)
-					if err != nil {
-						fmt.Println(err)
-					}
-					if err == nil {
-						code = fmt.Sprintf("GA%s%03d", t.Format("20060102"), len(codeMap[colCell])+1)
-						fmt.Println(code)
-						codeMap[colCell] = append(codeMap[colCell], colCell)
-						q.SetCreatedAt(t).SetCode(code)
-					}
-				}
-				if j == 8 {
-					t, err := time.Parse("01-02-06", colCell)
-					if err == nil {
-						q.SetTenderClosingDate(t)
-					}
-				}
-
 			}
-			fmt.Println()
-
-			if code == "" {
-				return errors.New("code is empty")
+			if j == 2 {
+				q.SetDeveloper(colCell)
+			}
+			if j == 3 {
+				q.SetArchitect(colCell)
+			}
+			if j == 4 {
+				q.SetFacadeConsultant(colCell)
+			}
+			if j == 5 {
+				q.SetContractor(colCell)
+			}
+			if j == 6 {
+				t, err := time.Parse("01-02-06", colCell)
+				if err != nil {
+					fmt.Println(err)
+				}
+				if err == nil {
+					code = fmt.Sprintf("GA%s%03d", t.Format("20060102"), len(codeMap[colCell])+1)
+					fmt.Println(code)
+					codeMap[colCell] = append(codeMap[colCell], colCell)
+					q.SetCreatedAt(t).SetCode(code)
+					q.SetDiscoveryDate(t)
+				}
+			}
+			if j == 8 {
+				t, err := time.Parse("01-02-06", colCell)
+				if err == nil {
+					q.SetTenderClosingDate(t)
+				}
 			}
 
-			return q.Exec(ctx)
-		})
+		}
+		fmt.Println()
+
+		if code == "" {
+			fmt.Println("code is empty")
+			continue row
+		}
+
+		if err := q.Exec(ctx); err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	if err := wg.Wait(); err != nil {
@@ -180,10 +216,10 @@ type GeoCode struct {
 	Neighborhood     SubLocation `json:"neighborhood"`
 	Building         SubLocation `json:"building"`
 	AdCode           string      `json:"adcode"`
-	Street           []string    `json:"street"`
-	Number           []string    `json:"number"`
-	Location         string      `json:"location"`
-	Level            string      `json:"level"`
+	// Street           []string    `json:"street"`
+	// Number   []string `json:"number"`
+	Location string `json:"location"`
+	Level    string `json:"level"`
 }
 
 type SubLocation struct {

@@ -806,7 +806,10 @@ func (tq *TenderQuery) loadCustomer(ctx context.Context, query *CustomerQuery, n
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Tender)
 	for i := range nodes {
-		fk := nodes[i].CustomerID
+		if nodes[i].CustomerID == nil {
+			continue
+		}
+		fk := *nodes[i].CustomerID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}

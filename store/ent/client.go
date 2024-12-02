@@ -421,15 +421,15 @@ func (c *AreaClient) QueryTenders(a *Area) *TenderQuery {
 	return query
 }
 
-// QuerySales queries the sales edge of a Area.
-func (c *AreaClient) QuerySales(a *Area) *UserQuery {
+// QueryUsers queries the users edge of a Area.
+func (c *AreaClient) QueryUsers(a *Area) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := a.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(area.Table, area.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, area.SalesTable, area.SalesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, area.UsersTable, area.UsersPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
 		return fromV, nil

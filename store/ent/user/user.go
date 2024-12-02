@@ -31,6 +31,8 @@ const (
 	FieldAvatarURL = "avatar_url"
 	// FieldDisabled holds the string denoting the disabled field in the database.
 	FieldDisabled = "disabled"
+	// FieldIsSales holds the string denoting the is_sales field in the database.
+	FieldIsSales = "is_sales"
 	// FieldIsAdmin holds the string denoting the is_admin field in the database.
 	FieldIsAdmin = "is_admin"
 	// FieldHasMapAccess holds the string denoting the has_map_access field in the database.
@@ -54,7 +56,7 @@ const (
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// AreasTable is the table that holds the areas relation/edge. The primary key declared below.
-	AreasTable = "area_sales"
+	AreasTable = "area_users"
 	// AreasInverseTable is the table name for the Area entity.
 	// It exists in this package in order to avoid circular dependency with the "area" package.
 	AreasInverseTable = "areas"
@@ -96,6 +98,7 @@ var Columns = []string{
 	FieldOpenID,
 	FieldAvatarURL,
 	FieldDisabled,
+	FieldIsSales,
 	FieldIsAdmin,
 	FieldHasMapAccess,
 	FieldHasEditAccess,
@@ -133,6 +136,8 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled bool
+	// DefaultIsSales holds the default value on creation for the "is_sales" field.
+	DefaultIsSales bool
 	// DefaultIsAdmin holds the default value on creation for the "is_admin" field.
 	DefaultIsAdmin bool
 	// DefaultHasMapAccess holds the default value on creation for the "has_map_access" field.
@@ -189,6 +194,11 @@ func ByAvatarURL(opts ...sql.OrderTermOption) OrderOption {
 // ByDisabled orders the results by the disabled field.
 func ByDisabled(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDisabled, opts...).ToFunc()
+}
+
+// ByIsSales orders the results by the is_sales field.
+func ByIsSales(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsSales, opts...).ToFunc()
 }
 
 // ByIsAdmin orders the results by the is_admin field.

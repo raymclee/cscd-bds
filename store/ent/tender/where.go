@@ -3965,6 +3965,16 @@ func CustomerIDHasSuffix(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldHasSuffix(FieldCustomerID, vc))
 }
 
+// CustomerIDIsNil applies the IsNil predicate on the "customer_id" field.
+func CustomerIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldCustomerID))
+}
+
+// CustomerIDNotNil applies the NotNil predicate on the "customer_id" field.
+func CustomerIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldCustomerID))
+}
+
 // CustomerIDEqualFold applies the EqualFold predicate on the "customer_id" field.
 func CustomerIDEqualFold(v xid.ID) predicate.Tender {
 	vc := string(v)

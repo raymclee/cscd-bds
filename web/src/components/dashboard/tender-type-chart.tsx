@@ -67,7 +67,7 @@ export function TenderTypeChart() {
   let other = 0;
 
   for (const t of tenders || []) {
-    switch (t?.customer.ownerType) {
+    switch (t?.customer?.ownerType) {
       case 1:
         government += 1;
         break;
@@ -124,7 +124,7 @@ export function TenderTypeChart() {
 
       <CardContent className="flex h-full items-center justify-center gap-2">
         {/* <div className="w-[24%] rounded bg-gradient-to-b from-brand/40 to-transparent p-6">
-          <div className="flex flex-col items-center justify-evenly gap-4">
+          <div className="flex flex-col items-center gap-4 justify-evenly">
             <Tiny.Ring {...winConfig} />
             <Tiny.Ring {...loseConfig} />
           </div>

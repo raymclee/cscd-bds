@@ -116,6 +116,20 @@ func (uc *UserCreate) SetNillableDisabled(b *bool) *UserCreate {
 	return uc
 }
 
+// SetIsSales sets the "is_sales" field.
+func (uc *UserCreate) SetIsSales(b bool) *UserCreate {
+	uc.mutation.SetIsSales(b)
+	return uc
+}
+
+// SetNillableIsSales sets the "is_sales" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsSales(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetIsSales(*b)
+	}
+	return uc
+}
+
 // SetIsAdmin sets the "is_admin" field.
 func (uc *UserCreate) SetIsAdmin(b bool) *UserCreate {
 	uc.mutation.SetIsAdmin(b)
@@ -313,6 +327,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultDisabled
 		uc.mutation.SetDisabled(v)
 	}
+	if _, ok := uc.mutation.IsSales(); !ok {
+		v := user.DefaultIsSales
+		uc.mutation.SetIsSales(v)
+	}
 	if _, ok := uc.mutation.IsAdmin(); !ok {
 		v := user.DefaultIsAdmin
 		uc.mutation.SetIsAdmin(v)
@@ -350,6 +368,9 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Disabled(); !ok {
 		return &ValidationError{Name: "disabled", err: errors.New(`ent: missing required field "User.disabled"`)}
+	}
+	if _, ok := uc.mutation.IsSales(); !ok {
+		return &ValidationError{Name: "is_sales", err: errors.New(`ent: missing required field "User.is_sales"`)}
 	}
 	if _, ok := uc.mutation.IsAdmin(); !ok {
 		return &ValidationError{Name: "is_admin", err: errors.New(`ent: missing required field "User.is_admin"`)}
@@ -427,6 +448,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
 		_node.Disabled = value
+	}
+	if value, ok := uc.mutation.IsSales(); ok {
+		_spec.SetField(user.FieldIsSales, field.TypeBool, value)
+		_node.IsSales = value
 	}
 	if value, ok := uc.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
@@ -685,6 +710,18 @@ func (u *UserUpsert) UpdateDisabled() *UserUpsert {
 	return u
 }
 
+// SetIsSales sets the "is_sales" field.
+func (u *UserUpsert) SetIsSales(v bool) *UserUpsert {
+	u.Set(user.FieldIsSales, v)
+	return u
+}
+
+// UpdateIsSales sets the "is_sales" field to the value that was provided on create.
+func (u *UserUpsert) UpdateIsSales() *UserUpsert {
+	u.SetExcluded(user.FieldIsSales)
+	return u
+}
+
 // SetIsAdmin sets the "is_admin" field.
 func (u *UserUpsert) SetIsAdmin(v bool) *UserUpsert {
 	u.Set(user.FieldIsAdmin, v)
@@ -899,6 +936,20 @@ func (u *UserUpsertOne) SetDisabled(v bool) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateDisabled() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateDisabled()
+	})
+}
+
+// SetIsSales sets the "is_sales" field.
+func (u *UserUpsertOne) SetIsSales(v bool) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsSales(v)
+	})
+}
+
+// UpdateIsSales sets the "is_sales" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateIsSales() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsSales()
 	})
 }
 
@@ -1292,6 +1343,20 @@ func (u *UserUpsertBulk) SetDisabled(v bool) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateDisabled() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateDisabled()
+	})
+}
+
+// SetIsSales sets the "is_sales" field.
+func (u *UserUpsertBulk) SetIsSales(v bool) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsSales(v)
+	})
+}
+
+// UpdateIsSales sets the "is_sales" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateIsSales() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsSales()
 	})
 }
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<91685f570d41b4e8fd0b9892c2dac7b9>>
+ * @generated SignedSource<<ac18a503df50cffcfb442a9940ce986a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,6 +37,7 @@ export type UpdateTenderInput = {
   clearCostEngineer?: boolean | null | undefined;
   clearCreditAndPaymentRating?: boolean | null | undefined;
   clearCreditAndPaymentRatingOverview?: boolean | null | undefined;
+  clearCustomer?: boolean | null | undefined;
   clearCustomerRelationshipRating?: boolean | null | undefined;
   clearCustomerRelationshipRatingOverview?: boolean | null | undefined;
   clearDesignUnit?: boolean | null | undefined;

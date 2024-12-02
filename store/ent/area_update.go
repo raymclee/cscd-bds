@@ -104,19 +104,19 @@ func (au *AreaUpdate) AddTenders(t ...*Tender) *AreaUpdate {
 	return au.AddTenderIDs(ids...)
 }
 
-// AddSaleIDs adds the "sales" edge to the User entity by IDs.
-func (au *AreaUpdate) AddSaleIDs(ids ...xid.ID) *AreaUpdate {
-	au.mutation.AddSaleIDs(ids...)
+// AddUserIDs adds the "users" edge to the User entity by IDs.
+func (au *AreaUpdate) AddUserIDs(ids ...xid.ID) *AreaUpdate {
+	au.mutation.AddUserIDs(ids...)
 	return au
 }
 
-// AddSales adds the "sales" edges to the User entity.
-func (au *AreaUpdate) AddSales(u ...*User) *AreaUpdate {
+// AddUsers adds the "users" edges to the User entity.
+func (au *AreaUpdate) AddUsers(u ...*User) *AreaUpdate {
 	ids := make([]xid.ID, len(u))
 	for i := range u {
 		ids[i] = u[i].ID
 	}
-	return au.AddSaleIDs(ids...)
+	return au.AddUserIDs(ids...)
 }
 
 // AddProvinceIDs adds the "provinces" edge to the Province entity by IDs.
@@ -181,25 +181,25 @@ func (au *AreaUpdate) RemoveTenders(t ...*Tender) *AreaUpdate {
 	return au.RemoveTenderIDs(ids...)
 }
 
-// ClearSales clears all "sales" edges to the User entity.
-func (au *AreaUpdate) ClearSales() *AreaUpdate {
-	au.mutation.ClearSales()
+// ClearUsers clears all "users" edges to the User entity.
+func (au *AreaUpdate) ClearUsers() *AreaUpdate {
+	au.mutation.ClearUsers()
 	return au
 }
 
-// RemoveSaleIDs removes the "sales" edge to User entities by IDs.
-func (au *AreaUpdate) RemoveSaleIDs(ids ...xid.ID) *AreaUpdate {
-	au.mutation.RemoveSaleIDs(ids...)
+// RemoveUserIDs removes the "users" edge to User entities by IDs.
+func (au *AreaUpdate) RemoveUserIDs(ids ...xid.ID) *AreaUpdate {
+	au.mutation.RemoveUserIDs(ids...)
 	return au
 }
 
-// RemoveSales removes "sales" edges to User entities.
-func (au *AreaUpdate) RemoveSales(u ...*User) *AreaUpdate {
+// RemoveUsers removes "users" edges to User entities.
+func (au *AreaUpdate) RemoveUsers(u ...*User) *AreaUpdate {
 	ids := make([]xid.ID, len(u))
 	for i := range u {
 		ids[i] = u[i].ID
 	}
-	return au.RemoveSaleIDs(ids...)
+	return au.RemoveUserIDs(ids...)
 }
 
 // ClearProvinces clears all "provinces" edges to the Province entity.
@@ -370,12 +370,12 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if au.mutation.SalesCleared() {
+	if au.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
@@ -383,12 +383,12 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := au.mutation.RemovedSalesIDs(); len(nodes) > 0 && !au.mutation.SalesCleared() {
+	if nodes := au.mutation.RemovedUsersIDs(); len(nodes) > 0 && !au.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
@@ -399,12 +399,12 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := au.mutation.SalesIDs(); len(nodes) > 0 {
+	if nodes := au.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
@@ -550,19 +550,19 @@ func (auo *AreaUpdateOne) AddTenders(t ...*Tender) *AreaUpdateOne {
 	return auo.AddTenderIDs(ids...)
 }
 
-// AddSaleIDs adds the "sales" edge to the User entity by IDs.
-func (auo *AreaUpdateOne) AddSaleIDs(ids ...xid.ID) *AreaUpdateOne {
-	auo.mutation.AddSaleIDs(ids...)
+// AddUserIDs adds the "users" edge to the User entity by IDs.
+func (auo *AreaUpdateOne) AddUserIDs(ids ...xid.ID) *AreaUpdateOne {
+	auo.mutation.AddUserIDs(ids...)
 	return auo
 }
 
-// AddSales adds the "sales" edges to the User entity.
-func (auo *AreaUpdateOne) AddSales(u ...*User) *AreaUpdateOne {
+// AddUsers adds the "users" edges to the User entity.
+func (auo *AreaUpdateOne) AddUsers(u ...*User) *AreaUpdateOne {
 	ids := make([]xid.ID, len(u))
 	for i := range u {
 		ids[i] = u[i].ID
 	}
-	return auo.AddSaleIDs(ids...)
+	return auo.AddUserIDs(ids...)
 }
 
 // AddProvinceIDs adds the "provinces" edge to the Province entity by IDs.
@@ -627,25 +627,25 @@ func (auo *AreaUpdateOne) RemoveTenders(t ...*Tender) *AreaUpdateOne {
 	return auo.RemoveTenderIDs(ids...)
 }
 
-// ClearSales clears all "sales" edges to the User entity.
-func (auo *AreaUpdateOne) ClearSales() *AreaUpdateOne {
-	auo.mutation.ClearSales()
+// ClearUsers clears all "users" edges to the User entity.
+func (auo *AreaUpdateOne) ClearUsers() *AreaUpdateOne {
+	auo.mutation.ClearUsers()
 	return auo
 }
 
-// RemoveSaleIDs removes the "sales" edge to User entities by IDs.
-func (auo *AreaUpdateOne) RemoveSaleIDs(ids ...xid.ID) *AreaUpdateOne {
-	auo.mutation.RemoveSaleIDs(ids...)
+// RemoveUserIDs removes the "users" edge to User entities by IDs.
+func (auo *AreaUpdateOne) RemoveUserIDs(ids ...xid.ID) *AreaUpdateOne {
+	auo.mutation.RemoveUserIDs(ids...)
 	return auo
 }
 
-// RemoveSales removes "sales" edges to User entities.
-func (auo *AreaUpdateOne) RemoveSales(u ...*User) *AreaUpdateOne {
+// RemoveUsers removes "users" edges to User entities.
+func (auo *AreaUpdateOne) RemoveUsers(u ...*User) *AreaUpdateOne {
 	ids := make([]xid.ID, len(u))
 	for i := range u {
 		ids[i] = u[i].ID
 	}
-	return auo.RemoveSaleIDs(ids...)
+	return auo.RemoveUserIDs(ids...)
 }
 
 // ClearProvinces clears all "provinces" edges to the Province entity.
@@ -846,12 +846,12 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if auo.mutation.SalesCleared() {
+	if auo.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
@@ -859,12 +859,12 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := auo.mutation.RemovedSalesIDs(); len(nodes) > 0 && !auo.mutation.SalesCleared() {
+	if nodes := auo.mutation.RemovedUsersIDs(); len(nodes) > 0 && !auo.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
@@ -875,12 +875,12 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := auo.mutation.SalesIDs(); len(nodes) > 0 {
+	if nodes := auo.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),

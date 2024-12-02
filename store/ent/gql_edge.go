@@ -50,7 +50,7 @@ func (a *Area) Tenders(
 	return a.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
-func (a *Area) Sales(
+func (a *Area) Users(
 	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *UserOrder, where *UserWhereInput,
 ) (*UserConnection, error) {
 	opts := []UserPaginateOption{
@@ -59,7 +59,7 @@ func (a *Area) Sales(
 	}
 	alias := graphql.GetFieldContext(ctx).Field.Alias
 	totalCount, hasTotalCount := a.Edges.totalCount[2][alias]
-	if nodes, err := a.NamedSales(alias); err == nil || hasTotalCount {
+	if nodes, err := a.NamedUsers(alias); err == nil || hasTotalCount {
 		pager, err := newUserPager(opts, last != nil)
 		if err != nil {
 			return nil, err
@@ -68,7 +68,7 @@ func (a *Area) Sales(
 		conn.build(nodes, pager, after, first, before, last)
 		return conn, nil
 	}
-	return a.QuerySales().Paginate(ctx, after, first, before, last, opts...)
+	return a.QueryUsers().Paginate(ctx, after, first, before, last, opts...)
 }
 
 func (a *Area) Provinces(
@@ -387,7 +387,7 @@ func (t *Tender) Customer(ctx context.Context) (*Customer, error) {
 	if IsNotLoaded(err) {
 		result, err = t.QueryCustomer().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (t *Tender) Finder(ctx context.Context) (*User, error) {

@@ -47,6 +47,7 @@ const query = graphql`
               }
             }
           }
+          isSales
           isAdmin
           hasMapAccess
           hasEditAccess
@@ -108,6 +109,11 @@ function RouteComponent() {
       title: "编辑",
       render: (hasEditAccess, record) =>
         record.isAdmin || hasEditAccess ? "是" : "否",
+    },
+    {
+      dataIndex: "isSales",
+      title: "销售",
+      render: (isSales) => (isSales ? "是" : "否"),
     },
     {
       dataIndex: "isAdmin",

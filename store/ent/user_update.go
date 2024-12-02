@@ -135,6 +135,20 @@ func (uu *UserUpdate) SetNillableDisabled(b *bool) *UserUpdate {
 	return uu
 }
 
+// SetIsSales sets the "is_sales" field.
+func (uu *UserUpdate) SetIsSales(b bool) *UserUpdate {
+	uu.mutation.SetIsSales(b)
+	return uu
+}
+
+// SetNillableIsSales sets the "is_sales" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsSales(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsSales(*b)
+	}
+	return uu
+}
+
 // SetIsAdmin sets the "is_admin" field.
 func (uu *UserUpdate) SetIsAdmin(b bool) *UserUpdate {
 	uu.mutation.SetIsAdmin(b)
@@ -464,6 +478,9 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+	}
+	if value, ok := uu.mutation.IsSales(); ok {
+		_spec.SetField(user.FieldIsSales, field.TypeBool, value)
 	}
 	if value, ok := uu.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
@@ -850,6 +867,20 @@ func (uuo *UserUpdateOne) SetNillableDisabled(b *bool) *UserUpdateOne {
 	return uuo
 }
 
+// SetIsSales sets the "is_sales" field.
+func (uuo *UserUpdateOne) SetIsSales(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsSales(b)
+	return uuo
+}
+
+// SetNillableIsSales sets the "is_sales" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsSales(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsSales(*b)
+	}
+	return uuo
+}
+
 // SetIsAdmin sets the "is_admin" field.
 func (uuo *UserUpdateOne) SetIsAdmin(b bool) *UserUpdateOne {
 	uuo.mutation.SetIsAdmin(b)
@@ -1209,6 +1240,9 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
+	}
+	if value, ok := uuo.mutation.IsSales(); ok {
+		_spec.SetField(user.FieldIsSales, field.TypeBool, value)
 	}
 	if value, ok := uuo.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)

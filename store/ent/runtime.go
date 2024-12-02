@@ -313,16 +313,20 @@ func init() {
 	userDescDisabled := userFields[5].Descriptor()
 	// user.DefaultDisabled holds the default value on creation for the disabled field.
 	user.DefaultDisabled = userDescDisabled.Default.(bool)
+	// userDescIsSales is the schema descriptor for is_sales field.
+	userDescIsSales := userFields[6].Descriptor()
+	// user.DefaultIsSales holds the default value on creation for the is_sales field.
+	user.DefaultIsSales = userDescIsSales.Default.(bool)
 	// userDescIsAdmin is the schema descriptor for is_admin field.
-	userDescIsAdmin := userFields[6].Descriptor()
+	userDescIsAdmin := userFields[7].Descriptor()
 	// user.DefaultIsAdmin holds the default value on creation for the is_admin field.
 	user.DefaultIsAdmin = userDescIsAdmin.Default.(bool)
 	// userDescHasMapAccess is the schema descriptor for has_map_access field.
-	userDescHasMapAccess := userFields[7].Descriptor()
+	userDescHasMapAccess := userFields[8].Descriptor()
 	// user.DefaultHasMapAccess holds the default value on creation for the has_map_access field.
 	user.DefaultHasMapAccess = userDescHasMapAccess.Default.(bool)
 	// userDescHasEditAccess is the schema descriptor for has_edit_access field.
-	userDescHasEditAccess := userFields[8].Descriptor()
+	userDescHasEditAccess := userFields[9].Descriptor()
 	// user.DefaultHasEditAccess holds the default value on creation for the has_edit_access field.
 	user.DefaultHasEditAccess = userDescHasEditAccess.Default.(bool)
 	// userDescID is the schema descriptor for id field.

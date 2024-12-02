@@ -780,8 +780,8 @@ func (ec *executionContext) fieldContext_Mutation_updateArea(ctx context.Context
 				return ec.fieldContext_Area_customers(ctx, field)
 			case "tenders":
 				return ec.fieldContext_Area_tenders(ctx, field)
-			case "sales":
-				return ec.fieldContext_Area_sales(ctx, field)
+			case "users":
+				return ec.fieldContext_Area_users(ctx, field)
 			case "provinces":
 				return ec.fieldContext_Area_provinces(ctx, field)
 			case "center":
@@ -924,6 +924,8 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isSales":
+				return ec.fieldContext_User_isSales(ctx, field)
 			case "isAdmin":
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":
@@ -1019,6 +1021,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteUser(ctx context.Context
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
 				return ec.fieldContext_User_disabled(ctx, field)
+			case "isSales":
+				return ec.fieldContext_User_isSales(ctx, field)
 			case "isAdmin":
 				return ec.fieldContext_User_isAdmin(ctx, field)
 			case "hasMapAccess":

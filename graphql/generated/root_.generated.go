@@ -57,9 +57,9 @@ type ComplexityRoot struct {
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
-		Sales     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt func(childComplexity int) int
+		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 	}
 
 	AreaConnection struct {
@@ -379,6 +379,7 @@ type ComplexityRoot struct {
 		HasMapAccess  func(childComplexity int) int
 		ID            func(childComplexity int) int
 		IsAdmin       func(childComplexity int) int
+		IsSales       func(childComplexity int) int
 		Leader        func(childComplexity int) int
 		LeaderID      func(childComplexity int) int
 		Name          func(childComplexity int) int
@@ -507,18 +508,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Area.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProvinceOrder), args["where"].(*ent.ProvinceWhereInput)), true
 
-	case "Area.sales":
-		if e.complexity.Area.Sales == nil {
-			break
-		}
-
-		args, err := ec.field_Area_sales_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Area.Sales(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.UserOrder), args["where"].(*ent.UserWhereInput)), true
-
 	case "Area.tenders":
 		if e.complexity.Area.Tenders == nil {
 			break
@@ -537,6 +526,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Area.UpdatedAt(childComplexity), true
+
+	case "Area.users":
+		if e.complexity.Area.Users == nil {
+			break
+		}
+
+		args, err := ec.field_Area_users_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Area.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.UserOrder), args["where"].(*ent.UserWhereInput)), true
 
 	case "AreaConnection.edges":
 		if e.complexity.AreaConnection.Edges == nil {
@@ -2342,6 +2343,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.IsAdmin(childComplexity), true
 
+	case "User.isSales":
+		if e.complexity.User.IsSales == nil {
+			break
+		}
+
+		return e.complexity.User.IsSales(childComplexity), true
+
 	case "User.leader":
 		if e.complexity.User.Leader == nil {
 			break
@@ -2796,7 +2804,7 @@ type Area implements Node {
     """
     where: TenderWhereInput
   ): TenderConnection!
-  sales(
+  users(
     """
     Returns the elements in the list that come after the specified cursor.
     """
@@ -2992,10 +3000,10 @@ input AreaWhereInput {
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
   """
-  sales edge predicates
+  users edge predicates
   """
-  hasSales: Boolean
-  hasSalesWith: [UserWhereInput!]
+  hasUsers: Boolean
+  hasUsersWith: [UserWhereInput!]
   """
   provinces edge predicates
   """
@@ -3406,7 +3414,7 @@ input CreateAreaInput {
   code: String!
   customerIDs: [ID!]
   tenderIDs: [ID!]
-  saleIDs: [ID!]
+  userIDs: [ID!]
   provinceIDs: [ID!]
 }
 """
@@ -3580,7 +3588,7 @@ input CreateTenderInput {
   """
   lastTenderAmount: Float
   areaID: ID!
-  customerID: ID!
+  customerID: ID
   finderID: ID!
   createdByID: ID!
   followingSaleIDs: [ID!]
@@ -3602,6 +3610,7 @@ input CreateUserInput {
   openID: String
   avatarURL: String
   disabled: Boolean
+  isSales: Boolean
   isAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
@@ -5168,11 +5177,11 @@ type Tender implements Node {
   provinceID: ID!
   cityID: ID
   districtID: ID!
-  customerID: ID!
+  customerID: ID
   finderID: ID!
   createdByID: ID!
   area: Area!
-  customer: Customer!
+  customer: Customer
   finder: User!
   createdBy: User!
   followingSales: [User!]
@@ -6150,6 +6159,8 @@ input TenderWhereInput {
   customerIDContains: ID
   customerIDHasPrefix: ID
   customerIDHasSuffix: ID
+  customerIDIsNil: Boolean
+  customerIDNotNil: Boolean
   customerIDEqualFold: ID
   customerIDContainsFold: ID
   """
@@ -6244,9 +6255,9 @@ input UpdateAreaInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
-  addSaleIDs: [ID!]
-  removeSaleIDs: [ID!]
-  clearSales: Boolean
+  addUserIDs: [ID!]
+  removeUserIDs: [ID!]
+  clearUsers: Boolean
   addProvinceIDs: [ID!]
   removeProvinceIDs: [ID!]
   clearProvinces: Boolean
@@ -6492,6 +6503,7 @@ input UpdateTenderInput {
   clearLastTenderAmount: Boolean
   areaID: ID
   customerID: ID
+  clearCustomer: Boolean
   finderID: ID
   createdByID: ID
   addFollowingSaleIDs: [ID!]
@@ -6519,6 +6531,7 @@ input UpdateUserInput {
   avatarURL: String
   clearAvatarURL: Boolean
   disabled: Boolean
+  isSales: Boolean
   isAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
@@ -6570,6 +6583,7 @@ type User implements Node {
   openID: String
   avatarURL: String
   disabled: Boolean!
+  isSales: Boolean!
   isAdmin: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
@@ -6880,6 +6894,11 @@ input UserWhereInput {
   """
   disabled: Boolean
   disabledNEQ: Boolean
+  """
+  is_sales field predicates
+  """
+  isSales: Boolean
+  isSalesNEQ: Boolean
   """
   is_admin field predicates
   """

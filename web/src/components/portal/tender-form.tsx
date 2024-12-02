@@ -43,7 +43,7 @@ const fragment = graphql`
               }
             }
           }
-          sales {
+          users {
             edges {
               node {
                 id
@@ -147,7 +147,7 @@ export function TenderForm<T extends TenderFormProps>({
   const salesOptions = useMemo(
     () =>
       area
-        ?.flatMap((e) => e?.node?.sales.edges)
+        ?.flatMap((e) => e?.node?.users.edges)
         .map((s) => ({ label: s?.node?.name, value: s?.node?.id })),
     [area],
   );
@@ -266,7 +266,7 @@ export function TenderForm<T extends TenderFormProps>({
                   { orderBy: { field: "CREATED_AT", direction: "DESC" } },
                 ),
                 ConnectionHandler.getConnectionID(
-                  values.customerID,
+                  values.customerID ?? "",
                   "customersTenderListFragment_tenders",
                 ),
               ],

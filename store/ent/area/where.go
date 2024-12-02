@@ -378,21 +378,21 @@ func HasTendersWith(preds ...predicate.Tender) predicate.Area {
 	})
 }
 
-// HasSales applies the HasEdge predicate on the "sales" edge.
-func HasSales() predicate.Area {
+// HasUsers applies the HasEdge predicate on the "users" edge.
+func HasUsers() predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, SalesTable, SalesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, UsersTable, UsersPrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasSalesWith applies the HasEdge predicate on the "sales" edge with a given conditions (other predicates).
-func HasSalesWith(preds ...predicate.User) predicate.Area {
+// HasUsersWith applies the HasEdge predicate on the "users" edge with a given conditions (other predicates).
+func HasUsersWith(preds ...predicate.User) predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {
-		step := newSalesStep()
+		step := newUsersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

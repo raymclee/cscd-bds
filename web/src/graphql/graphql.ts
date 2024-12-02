@@ -31,9 +31,9 @@ export type Area = Node & {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   provinces: ProvinceConnection;
-  sales: UserConnection;
   tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
+  users: UserConnection;
 };
 
 
@@ -57,16 +57,6 @@ export type AreaProvincesArgs = {
 };
 
 
-export type AreaSalesArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UserOrder>;
-  where?: InputMaybe<UserWhereInput>;
-};
-
-
 export type AreaTendersArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -74,6 +64,16 @@ export type AreaTendersArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<TenderOrder>;
   where?: InputMaybe<TenderWhereInput>;
+};
+
+
+export type AreaUsersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserOrder>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -144,12 +144,12 @@ export type AreaWhereInput = {
   /** provinces edge predicates */
   hasProvinces?: InputMaybe<Scalars['Boolean']['input']>;
   hasProvincesWith?: InputMaybe<Array<ProvinceWhereInput>>;
-  /** sales edge predicates */
-  hasSales?: InputMaybe<Scalars['Boolean']['input']>;
-  hasSalesWith?: InputMaybe<Array<UserWhereInput>>;
   /** tenders edge predicates */
   hasTenders?: InputMaybe<Scalars['Boolean']['input']>;
   hasTendersWith?: InputMaybe<Array<TenderWhereInput>>;
+  /** users edge predicates */
+  hasUsers?: InputMaybe<Scalars['Boolean']['input']>;
+  hasUsersWith?: InputMaybe<Array<UserWhereInput>>;
   /** id field predicates */
   id?: InputMaybe<Scalars['ID']['input']>;
   idGT?: InputMaybe<Scalars['ID']['input']>;
@@ -473,9 +473,9 @@ export type CreateAreaInput = {
   customerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   name: Scalars['String']['input'];
   provinceIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  saleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   tenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
+  userIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 /**
@@ -599,7 +599,7 @@ export type CreateTenderInput = {
   createdByID: Scalars['ID']['input'];
   creditAndPaymentRating?: InputMaybe<Scalars['Int']['input']>;
   creditAndPaymentRatingOverview?: InputMaybe<Scalars['String']['input']>;
-  customerID: Scalars['ID']['input'];
+  customerID?: InputMaybe<Scalars['ID']['input']>;
   customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
   customerRelationshipRatingOverview?: InputMaybe<Scalars['String']['input']>;
   designUnit?: InputMaybe<Scalars['String']['input']>;
@@ -663,6 +663,7 @@ export type CreateUserInput = {
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isSales?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -1763,8 +1764,8 @@ export type Tender = Node & {
   createdByID: Scalars['ID']['output'];
   creditAndPaymentRating?: Maybe<Scalars['Int']['output']>;
   creditAndPaymentRatingOverview?: Maybe<Scalars['String']['output']>;
-  customer: Customer;
-  customerID: Scalars['ID']['output'];
+  customer?: Maybe<Customer>;
+  customerID?: Maybe<Scalars['ID']['output']>;
   customerRelationshipRating?: Maybe<Scalars['Int']['output']>;
   customerRelationshipRatingOverview?: Maybe<Scalars['String']['output']>;
   designUnit?: Maybe<Scalars['String']['output']>;
@@ -2156,10 +2157,12 @@ export type TenderWhereInput = {
   customerIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   customerIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   customerIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  customerIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   customerIDLT?: InputMaybe<Scalars['ID']['input']>;
   customerIDLTE?: InputMaybe<Scalars['ID']['input']>;
   customerIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   customerIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  customerIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** customer_relationship_rating field predicates */
   customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
   customerRelationshipRatingGT?: InputMaybe<Scalars['Int']['input']>;
@@ -2705,18 +2708,18 @@ export type TenderWhereInput = {
 export type UpdateAreaInput = {
   addCustomerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addProvinceIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  addSaleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  addUserIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   clearCustomers?: InputMaybe<Scalars['Boolean']['input']>;
   clearProvinces?: InputMaybe<Scalars['Boolean']['input']>;
-  clearSales?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenders?: InputMaybe<Scalars['Boolean']['input']>;
+  clearUsers?: InputMaybe<Scalars['Boolean']['input']>;
   code?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   removeCustomerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeProvinceIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  removeSaleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  removeUserIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
 
@@ -2870,6 +2873,7 @@ export type UpdateTenderInput = {
   clearCostEngineer?: InputMaybe<Scalars['Boolean']['input']>;
   clearCreditAndPaymentRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCreditAndPaymentRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
+  clearCustomer?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomerRelationshipRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomerRelationshipRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
   clearDesignUnit?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2989,6 +2993,7 @@ export type UpdateUserInput = {
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isSales?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -3034,6 +3039,7 @@ export type User = Node & {
   hasMapAccess: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   isAdmin: Scalars['Boolean']['output'];
+  isSales: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
   name: Scalars['String']['output'];
@@ -3202,6 +3208,9 @@ export type UserWhereInput = {
   /** is_admin field predicates */
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_sales field predicates */
+  isSales?: InputMaybe<Scalars['Boolean']['input']>;
+  isSalesNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** leader_id field predicates */
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   leaderIDContains?: InputMaybe<Scalars['ID']['input']>;

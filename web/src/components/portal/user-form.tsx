@@ -83,6 +83,7 @@ export function UserForm({
                 areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
                 disabled: selectedUser.disabled,
                 isAdmin: selectedUser.isAdmin,
+                isSales: selectedUser.isSales,
                 hasMapAccess: selectedUser.hasMapAccess,
                 hasEditAccess: selectedUser.hasEditAccess,
               }
@@ -207,10 +208,13 @@ export function UserForm({
             }))}
           />
         </Form.Item>
-        <Form.Item name="hasEditAccess" label="可编辑" valuePropName="checked">
+        <Form.Item name="hasEditAccess" label="可编辑">
           <Switch />
         </Form.Item>
         <Form.Item name="hasMapAccess" label="地图权限">
+          <Switch />
+        </Form.Item>
+        <Form.Item name="isSales" label="销售">
           <Switch />
         </Form.Item>
         <Form.Item name="isAdmin" label="管理员">

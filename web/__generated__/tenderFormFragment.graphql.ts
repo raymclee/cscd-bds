@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<815e46a67980d685170327d4cf00aa22>>
+ * @generated SignedSource<<d494811e851f195bbe53bd0ab1db662a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -60,7 +60,7 @@ export type tenderFormFragment$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
-        readonly sales: {
+        readonly users: {
           readonly edges: ReadonlyArray<{
             readonly node: {
               readonly id: string;
@@ -209,7 +209,7 @@ return {
                   "args": null,
                   "concreteType": "UserConnection",
                   "kind": "LinkedField",
-                  "name": "sales",
+                  "name": "users",
                   "plural": false,
                   "selections": [
                     {
@@ -325,6 +325,6 @@ return {
 };
 })();
 
-(node as any).hash = "cf6cb49127ad62c10b73cd9268d2c776";
+(node as any).hash = "4f408902dfb7e9eafe0141bb7809a5f6";
 
 export default node;

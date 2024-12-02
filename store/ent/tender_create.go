@@ -784,6 +784,14 @@ func (tc *TenderCreate) SetCustomerID(x xid.ID) *TenderCreate {
 	return tc
 }
 
+// SetNillableCustomerID sets the "customer_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCustomerID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetCustomerID(*x)
+	}
+	return tc
+}
+
 // SetFinderID sets the "finder_id" field.
 func (tc *TenderCreate) SetFinderID(x xid.ID) *TenderCreate {
 	tc.mutation.SetFinderID(x)
@@ -996,9 +1004,6 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.DistrictID(); !ok {
 		return &ValidationError{Name: "district_id", err: errors.New(`ent: missing required field "Tender.district_id"`)}
 	}
-	if _, ok := tc.mutation.CustomerID(); !ok {
-		return &ValidationError{Name: "customer_id", err: errors.New(`ent: missing required field "Tender.customer_id"`)}
-	}
 	if _, ok := tc.mutation.FinderID(); !ok {
 		return &ValidationError{Name: "finder_id", err: errors.New(`ent: missing required field "Tender.finder_id"`)}
 	}
@@ -1007,9 +1012,6 @@ func (tc *TenderCreate) check() error {
 	}
 	if len(tc.mutation.AreaIDs()) == 0 {
 		return &ValidationError{Name: "area", err: errors.New(`ent: missing required edge "Tender.area"`)}
-	}
-	if len(tc.mutation.CustomerIDs()) == 0 {
-		return &ValidationError{Name: "customer", err: errors.New(`ent: missing required edge "Tender.customer"`)}
 	}
 	if len(tc.mutation.FinderIDs()) == 0 {
 		return &ValidationError{Name: "finder", err: errors.New(`ent: missing required edge "Tender.finder"`)}
@@ -1310,7 +1312,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.CustomerID = nodes[0]
+		_node.CustomerID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := tc.mutation.FinderIDs(); len(nodes) > 0 {
@@ -2529,6 +2531,12 @@ func (u *TenderUpsert) SetCustomerID(v xid.ID) *TenderUpsert {
 // UpdateCustomerID sets the "customer_id" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateCustomerID() *TenderUpsert {
 	u.SetExcluded(tender.FieldCustomerID)
+	return u
+}
+
+// ClearCustomerID clears the value of the "customer_id" field.
+func (u *TenderUpsert) ClearCustomerID() *TenderUpsert {
+	u.SetNull(tender.FieldCustomerID)
 	return u
 }
 
@@ -3829,6 +3837,13 @@ func (u *TenderUpsertOne) SetCustomerID(v xid.ID) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateCustomerID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCustomerID()
+	})
+}
+
+// ClearCustomerID clears the value of the "customer_id" field.
+func (u *TenderUpsertOne) ClearCustomerID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCustomerID()
 	})
 }
 
@@ -5300,6 +5315,13 @@ func (u *TenderUpsertBulk) SetCustomerID(v xid.ID) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateCustomerID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCustomerID()
+	})
+}
+
+// ClearCustomerID clears the value of the "customer_id" field.
+func (u *TenderUpsertBulk) ClearCustomerID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCustomerID()
 	})
 }
 

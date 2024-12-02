@@ -96,6 +96,11 @@ func Disabled(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDisabled, v))
 }
 
+// IsSales applies equality check predicate on the "is_sales" field. It's identical to IsSalesEQ.
+func IsSales(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsSales, v))
+}
+
 // IsAdmin applies equality check predicate on the "is_admin" field. It's identical to IsAdminEQ.
 func IsAdmin(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldIsAdmin, v))
@@ -549,6 +554,16 @@ func DisabledEQ(v bool) predicate.User {
 // DisabledNEQ applies the NEQ predicate on the "disabled" field.
 func DisabledNEQ(v bool) predicate.User {
 	return predicate.User(sql.FieldNEQ(FieldDisabled, v))
+}
+
+// IsSalesEQ applies the EQ predicate on the "is_sales" field.
+func IsSalesEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsSales, v))
+}
+
+// IsSalesNEQ applies the NEQ predicate on the "is_sales" field.
+func IsSalesNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldIsSales, v))
 }
 
 // IsAdminEQ applies the EQ predicate on the "is_admin" field.

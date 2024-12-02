@@ -95,9 +95,9 @@ type AreaWhereInput struct {
 	HasTenders     *bool               `json:"hasTenders,omitempty"`
 	HasTendersWith []*TenderWhereInput `json:"hasTendersWith,omitempty"`
 
-	// "sales" edge predicates.
-	HasSales     *bool             `json:"hasSales,omitempty"`
-	HasSalesWith []*UserWhereInput `json:"hasSalesWith,omitempty"`
+	// "users" edge predicates.
+	HasUsers     *bool             `json:"hasUsers,omitempty"`
+	HasUsersWith []*UserWhereInput `json:"hasUsersWith,omitempty"`
 
 	// "provinces" edge predicates.
 	HasProvinces     *bool                 `json:"hasProvinces,omitempty"`
@@ -362,23 +362,23 @@ func (i *AreaWhereInput) P() (predicate.Area, error) {
 		}
 		predicates = append(predicates, area.HasTendersWith(with...))
 	}
-	if i.HasSales != nil {
-		p := area.HasSales()
-		if !*i.HasSales {
+	if i.HasUsers != nil {
+		p := area.HasUsers()
+		if !*i.HasUsers {
 			p = area.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasSalesWith) > 0 {
-		with := make([]predicate.User, 0, len(i.HasSalesWith))
-		for _, w := range i.HasSalesWith {
+	if len(i.HasUsersWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasUsersWith))
+		for _, w := range i.HasUsersWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasSalesWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasUsersWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, area.HasSalesWith(with...))
+		predicates = append(predicates, area.HasUsersWith(with...))
 	}
 	if i.HasProvinces != nil {
 		p := area.HasProvinces()
@@ -4300,6 +4300,8 @@ type TenderWhereInput struct {
 	CustomerIDContains     *xid.ID  `json:"customerIDContains,omitempty"`
 	CustomerIDHasPrefix    *xid.ID  `json:"customerIDHasPrefix,omitempty"`
 	CustomerIDHasSuffix    *xid.ID  `json:"customerIDHasSuffix,omitempty"`
+	CustomerIDIsNil        bool     `json:"customerIDIsNil,omitempty"`
+	CustomerIDNotNil       bool     `json:"customerIDNotNil,omitempty"`
 	CustomerIDEqualFold    *xid.ID  `json:"customerIDEqualFold,omitempty"`
 	CustomerIDContainsFold *xid.ID  `json:"customerIDContainsFold,omitempty"`
 
@@ -6571,6 +6573,12 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.CustomerIDHasSuffix != nil {
 		predicates = append(predicates, tender.CustomerIDHasSuffix(*i.CustomerIDHasSuffix))
 	}
+	if i.CustomerIDIsNil {
+		predicates = append(predicates, tender.CustomerIDIsNil())
+	}
+	if i.CustomerIDNotNil {
+		predicates = append(predicates, tender.CustomerIDNotNil())
+	}
 	if i.CustomerIDEqualFold != nil {
 		predicates = append(predicates, tender.CustomerIDEqualFold(*i.CustomerIDEqualFold))
 	}
@@ -6947,6 +6955,10 @@ type UserWhereInput struct {
 	// "disabled" field predicates.
 	Disabled    *bool `json:"disabled,omitempty"`
 	DisabledNEQ *bool `json:"disabledNEQ,omitempty"`
+
+	// "is_sales" field predicates.
+	IsSales    *bool `json:"isSales,omitempty"`
+	IsSalesNEQ *bool `json:"isSalesNEQ,omitempty"`
 
 	// "is_admin" field predicates.
 	IsAdmin    *bool `json:"isAdmin,omitempty"`
@@ -7357,6 +7369,12 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	}
 	if i.DisabledNEQ != nil {
 		predicates = append(predicates, user.DisabledNEQ(*i.DisabledNEQ))
+	}
+	if i.IsSales != nil {
+		predicates = append(predicates, user.IsSalesEQ(*i.IsSales))
+	}
+	if i.IsSalesNEQ != nil {
+		predicates = append(predicates, user.IsSalesNEQ(*i.IsSalesNEQ))
 	}
 	if i.IsAdmin != nil {
 		predicates = append(predicates, user.IsAdminEQ(*i.IsAdmin))

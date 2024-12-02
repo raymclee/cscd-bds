@@ -80,6 +80,12 @@ export function MapTenderDetail() {
                 </div>
               </div>
               <div className="grid grid-cols-3">
+                <div className="text-gray-400">项目编号</div>
+                <div className="col-span-2">
+                  {selectedTender?.tenderCode || "-"}
+                </div>
+              </div>
+              <div className="grid grid-cols-3">
                 <div className="text-gray-400">业主单位</div>
                 <div className="col-span-2">
                   {selectedTender?.developer || "-"}

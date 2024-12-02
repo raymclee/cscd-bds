@@ -15,7 +15,7 @@ type CreateAreaInput struct {
 	Code        string
 	CustomerIDs []xid.ID
 	TenderIDs   []xid.ID
-	SaleIDs     []xid.ID
+	UserIDs     []xid.ID
 	ProvinceIDs []xid.ID
 }
 
@@ -35,8 +35,8 @@ func (i *CreateAreaInput) Mutate(m *AreaMutation) {
 	if v := i.TenderIDs; len(v) > 0 {
 		m.AddTenderIDs(v...)
 	}
-	if v := i.SaleIDs; len(v) > 0 {
-		m.AddSaleIDs(v...)
+	if v := i.UserIDs; len(v) > 0 {
+		m.AddUserIDs(v...)
 	}
 	if v := i.ProvinceIDs; len(v) > 0 {
 		m.AddProvinceIDs(v...)
@@ -60,9 +60,9 @@ type UpdateAreaInput struct {
 	ClearTenders      bool
 	AddTenderIDs      []xid.ID
 	RemoveTenderIDs   []xid.ID
-	ClearSales        bool
-	AddSaleIDs        []xid.ID
-	RemoveSaleIDs     []xid.ID
+	ClearUsers        bool
+	AddUserIDs        []xid.ID
+	RemoveUserIDs     []xid.ID
 	ClearProvinces    bool
 	AddProvinceIDs    []xid.ID
 	RemoveProvinceIDs []xid.ID
@@ -97,14 +97,14 @@ func (i *UpdateAreaInput) Mutate(m *AreaMutation) {
 	if v := i.RemoveTenderIDs; len(v) > 0 {
 		m.RemoveTenderIDs(v...)
 	}
-	if i.ClearSales {
-		m.ClearSales()
+	if i.ClearUsers {
+		m.ClearUsers()
 	}
-	if v := i.AddSaleIDs; len(v) > 0 {
-		m.AddSaleIDs(v...)
+	if v := i.AddUserIDs; len(v) > 0 {
+		m.AddUserIDs(v...)
 	}
-	if v := i.RemoveSaleIDs; len(v) > 0 {
-		m.RemoveSaleIDs(v...)
+	if v := i.RemoveUserIDs; len(v) > 0 {
+		m.RemoveUserIDs(v...)
 	}
 	if i.ClearProvinces {
 		m.ClearProvinces()
@@ -855,7 +855,7 @@ type CreateTenderInput struct {
 	TenderWinAmount                      *float64
 	LastTenderAmount                     *float64
 	AreaID                               xid.ID
-	CustomerID                           xid.ID
+	CustomerID                           *xid.ID
 	FinderID                             xid.ID
 	CreatedByID                          xid.ID
 	FollowingSaleIDs                     []xid.ID
@@ -1021,7 +1021,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 		m.SetLastTenderAmount(*v)
 	}
 	m.SetAreaID(i.AreaID)
-	m.SetCustomerID(i.CustomerID)
+	if v := i.CustomerID; v != nil {
+		m.SetCustomerID(*v)
+	}
 	m.SetFinderID(i.FinderID)
 	m.SetCreatedByID(i.CreatedByID)
 	if v := i.FollowingSaleIDs; len(v) > 0 {
@@ -1145,6 +1147,7 @@ type UpdateTenderInput struct {
 	ClearLastTenderAmount                     bool
 	LastTenderAmount                          *float64
 	AreaID                                    *xid.ID
+	ClearCustomer                             bool
 	CustomerID                                *xid.ID
 	FinderID                                  *xid.ID
 	CreatedByID                               *xid.ID
@@ -1462,6 +1465,9 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.AreaID; v != nil {
 		m.SetAreaID(*v)
 	}
+	if i.ClearCustomer {
+		m.ClearCustomer()
+	}
 	if v := i.CustomerID; v != nil {
 		m.SetCustomerID(*v)
 	}
@@ -1525,6 +1531,7 @@ type CreateUserInput struct {
 	OpenID         *string
 	AvatarURL      *string
 	Disabled       *bool
+	IsSales        *bool
 	IsAdmin        *bool
 	HasMapAccess   *bool
 	HasEditAccess  *bool
@@ -1555,6 +1562,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
+	}
+	if v := i.IsSales; v != nil {
+		m.SetIsSales(*v)
 	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
@@ -1602,6 +1612,7 @@ type UpdateUserInput struct {
 	ClearAvatarURL       bool
 	AvatarURL            *string
 	Disabled             *bool
+	IsSales              *bool
 	IsAdmin              *bool
 	HasMapAccess         *bool
 	HasEditAccess        *bool
@@ -1652,6 +1663,9 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
+	}
+	if v := i.IsSales; v != nil {
+		m.SetIsSales(*v)
 	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)

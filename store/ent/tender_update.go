@@ -1193,6 +1193,12 @@ func (tu *TenderUpdate) SetNillableCustomerID(x *xid.ID) *TenderUpdate {
 	return tu
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (tu *TenderUpdate) ClearCustomerID() *TenderUpdate {
+	tu.mutation.ClearCustomerID()
+	return tu
+}
+
 // SetFinderID sets the "finder_id" field.
 func (tu *TenderUpdate) SetFinderID(x xid.ID) *TenderUpdate {
 	tu.mutation.SetFinderID(x)
@@ -1440,9 +1446,6 @@ func (tu *TenderUpdate) check() error {
 	}
 	if tu.mutation.AreaCleared() && len(tu.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
-	}
-	if tu.mutation.CustomerCleared() && len(tu.mutation.CustomerIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.customer"`)
 	}
 	if tu.mutation.FinderCleared() && len(tu.mutation.FinderIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.finder"`)
@@ -3284,6 +3287,12 @@ func (tuo *TenderUpdateOne) SetNillableCustomerID(x *xid.ID) *TenderUpdateOne {
 	return tuo
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (tuo *TenderUpdateOne) ClearCustomerID() *TenderUpdateOne {
+	tuo.mutation.ClearCustomerID()
+	return tuo
+}
+
 // SetFinderID sets the "finder_id" field.
 func (tuo *TenderUpdateOne) SetFinderID(x xid.ID) *TenderUpdateOne {
 	tuo.mutation.SetFinderID(x)
@@ -3544,9 +3553,6 @@ func (tuo *TenderUpdateOne) check() error {
 	}
 	if tuo.mutation.AreaCleared() && len(tuo.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
-	}
-	if tuo.mutation.CustomerCleared() && len(tuo.mutation.CustomerIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.customer"`)
 	}
 	if tuo.mutation.FinderCleared() && len(tuo.mutation.FinderIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.finder"`)

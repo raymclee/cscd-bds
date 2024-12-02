@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6577229ba320aee0bf5b0c5d47c6907d>>
+ * @generated SignedSource<<49fe0eb6ed6612bb00aee7a44d9a437a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -31,7 +31,7 @@ export type CreateTenderInput = {
   createdByID: string;
   creditAndPaymentRating?: number | null | undefined;
   creditAndPaymentRatingOverview?: string | null | undefined;
-  customerID: string;
+  customerID?: string | null | undefined;
   customerRelationshipRating?: number | null | undefined;
   customerRelationshipRatingOverview?: string | null | undefined;
   designUnit?: string | null | undefined;

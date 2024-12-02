@@ -34,6 +34,8 @@ type User struct {
 	AvatarURL string `json:"avatar_url,omitempty"`
 	// Disabled holds the value of the "disabled" field.
 	Disabled bool `json:"disabled,omitempty"`
+	// IsSales holds the value of the "is_sales" field.
+	IsSales bool `json:"is_sales,omitempty"`
 	// IsAdmin holds the value of the "is_admin" field.
 	IsAdmin bool `json:"is_admin,omitempty"`
 	// HasMapAccess holds the value of the "has_map_access" field.
@@ -138,7 +140,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldLeaderID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
-		case user.FieldDisabled, user.FieldIsAdmin, user.FieldHasMapAccess, user.FieldHasEditAccess:
+		case user.FieldDisabled, user.FieldIsSales, user.FieldIsAdmin, user.FieldHasMapAccess, user.FieldHasEditAccess:
 			values[i] = new(sql.NullBool)
 		case user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldOpenID, user.FieldAvatarURL:
 			values[i] = new(sql.NullString)
@@ -214,6 +216,12 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field disabled", values[i])
 			} else if value.Valid {
 				u.Disabled = value.Bool
+			}
+		case user.FieldIsSales:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_sales", values[i])
+			} else if value.Valid {
+				u.IsSales = value.Bool
 			}
 		case user.FieldIsAdmin:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -329,6 +337,9 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("disabled=")
 	builder.WriteString(fmt.Sprintf("%v", u.Disabled))
+	builder.WriteString(", ")
+	builder.WriteString("is_sales=")
+	builder.WriteString(fmt.Sprintf("%v", u.IsSales))
 	builder.WriteString(", ")
 	builder.WriteString("is_admin=")
 	builder.WriteString(fmt.Sprintf("%v", u.IsAdmin))

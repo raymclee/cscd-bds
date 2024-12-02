@@ -29,8 +29,8 @@ const (
 	EdgeCustomers = "customers"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
 	EdgeTenders = "tenders"
-	// EdgeSales holds the string denoting the sales edge name in mutations.
-	EdgeSales = "sales"
+	// EdgeUsers holds the string denoting the users edge name in mutations.
+	EdgeUsers = "users"
 	// EdgeProvinces holds the string denoting the provinces edge name in mutations.
 	EdgeProvinces = "provinces"
 	// Table holds the table name of the area in the database.
@@ -49,11 +49,11 @@ const (
 	TendersInverseTable = "tenders"
 	// TendersColumn is the table column denoting the tenders relation/edge.
 	TendersColumn = "area_id"
-	// SalesTable is the table that holds the sales relation/edge. The primary key declared below.
-	SalesTable = "area_sales"
-	// SalesInverseTable is the table name for the User entity.
+	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
+	UsersTable = "area_users"
+	// UsersInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
-	SalesInverseTable = "users"
+	UsersInverseTable = "users"
 	// ProvincesTable is the table that holds the provinces relation/edge.
 	ProvincesTable = "provinces"
 	// ProvincesInverseTable is the table name for the Province entity.
@@ -74,9 +74,9 @@ var Columns = []string{
 }
 
 var (
-	// SalesPrimaryKey and SalesColumn2 are the table columns denoting the
-	// primary key for the sales relation (M2M).
-	SalesPrimaryKey = []string{"area_id", "user_id"}
+	// UsersPrimaryKey and UsersColumn2 are the table columns denoting the
+	// primary key for the users relation (M2M).
+	UsersPrimaryKey = []string{"area_id", "user_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -161,17 +161,17 @@ func ByTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// BySalesCount orders the results by sales count.
-func BySalesCount(opts ...sql.OrderTermOption) OrderOption {
+// ByUsersCount orders the results by users count.
+func ByUsersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newSalesStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newUsersStep(), opts...)
 	}
 }
 
-// BySales orders the results by sales terms.
-func BySales(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByUsers orders the results by users terms.
+func ByUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newSalesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -202,11 +202,11 @@ func newTendersStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.O2M, false, TendersTable, TendersColumn),
 	)
 }
-func newSalesStep() *sqlgraph.Step {
+func newUsersStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(SalesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, SalesTable, SalesPrimaryKey...),
+		sqlgraph.To(UsersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, UsersTable, UsersPrimaryKey...),
 	)
 }
 func newProvincesStep() *sqlgraph.Step {

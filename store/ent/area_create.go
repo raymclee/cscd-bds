@@ -119,19 +119,19 @@ func (ac *AreaCreate) AddTenders(t ...*Tender) *AreaCreate {
 	return ac.AddTenderIDs(ids...)
 }
 
-// AddSaleIDs adds the "sales" edge to the User entity by IDs.
-func (ac *AreaCreate) AddSaleIDs(ids ...xid.ID) *AreaCreate {
-	ac.mutation.AddSaleIDs(ids...)
+// AddUserIDs adds the "users" edge to the User entity by IDs.
+func (ac *AreaCreate) AddUserIDs(ids ...xid.ID) *AreaCreate {
+	ac.mutation.AddUserIDs(ids...)
 	return ac
 }
 
-// AddSales adds the "sales" edges to the User entity.
-func (ac *AreaCreate) AddSales(u ...*User) *AreaCreate {
+// AddUsers adds the "users" edges to the User entity.
+func (ac *AreaCreate) AddUsers(u ...*User) *AreaCreate {
 	ids := make([]xid.ID, len(u))
 	for i := range u {
 		ids[i] = u[i].ID
 	}
-	return ac.AddSaleIDs(ids...)
+	return ac.AddUserIDs(ids...)
 }
 
 // AddProvinceIDs adds the "provinces" edge to the Province entity by IDs.
@@ -303,12 +303,12 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := ac.mutation.SalesIDs(); len(nodes) > 0 {
+	if nodes := ac.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),

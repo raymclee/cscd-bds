@@ -223,7 +223,7 @@ func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				*wq = *query
 			})
 
-		case "sales":
+		case "users":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -255,11 +255,11 @@ func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 							Count  int    `sql:"count"`
 						}
 						query.Where(func(s *sql.Selector) {
-							joinT := sql.Table(area.SalesTable)
-							s.Join(joinT).On(s.C(user.FieldID), joinT.C(area.SalesPrimaryKey[1]))
-							s.Where(sql.InValues(joinT.C(area.SalesPrimaryKey[0]), ids...))
-							s.Select(joinT.C(area.SalesPrimaryKey[0]), sql.Count("*"))
-							s.GroupBy(joinT.C(area.SalesPrimaryKey[0]))
+							joinT := sql.Table(area.UsersTable)
+							s.Join(joinT).On(s.C(user.FieldID), joinT.C(area.UsersPrimaryKey[1]))
+							s.Where(sql.InValues(joinT.C(area.UsersPrimaryKey[0]), ids...))
+							s.Select(joinT.C(area.UsersPrimaryKey[0]), sql.Count("*"))
+							s.GroupBy(joinT.C(area.UsersPrimaryKey[0]))
 						})
 						if err := query.Select().Scan(ctx, &v); err != nil {
 							return err
@@ -280,7 +280,7 @@ func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				} else {
 					a.loadTotal = append(a.loadTotal, func(_ context.Context, nodes []*Area) error {
 						for i := range nodes {
-							n := len(nodes[i].Edges.Sales)
+							n := len(nodes[i].Edges.Users)
 							if nodes[i].Edges.totalCount[2] == nil {
 								nodes[i].Edges.totalCount[2] = make(map[string]int)
 							}
@@ -306,13 +306,13 @@ func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				if oneNode {
 					pager.applyOrder(query.Limit(limit))
 				} else {
-					modify := entgql.LimitPerRow(area.SalesPrimaryKey[0], limit, pager.orderExpr(query))
+					modify := entgql.LimitPerRow(area.UsersPrimaryKey[0], limit, pager.orderExpr(query))
 					query.modifiers = append(query.modifiers, modify)
 				}
 			} else {
 				query = pager.applyOrder(query)
 			}
-			a.WithNamedSales(alias, func(wq *UserQuery) {
+			a.WithNamedUsers(alias, func(wq *UserQuery) {
 				*wq = *query
 			})
 
@@ -3279,6 +3279,11 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 			if _, ok := fieldSeen[user.FieldDisabled]; !ok {
 				selectedFields = append(selectedFields, user.FieldDisabled)
 				fieldSeen[user.FieldDisabled] = struct{}{}
+			}
+		case "isSales":
+			if _, ok := fieldSeen[user.FieldIsSales]; !ok {
+				selectedFields = append(selectedFields, user.FieldIsSales)
+				fieldSeen[user.FieldIsSales] = struct{}{}
 			}
 		case "isAdmin":
 			if _, ok := fieldSeen[user.FieldIsAdmin]; !ok {

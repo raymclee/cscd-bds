@@ -117,7 +117,9 @@ func (Tender) Fields() []ent.Field {
 		field.String("district_id").
 			GoType(xid.ID("")),
 		field.String("customer_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 		field.String("finder_id").
 			GoType(xid.ID("")),
 		field.String("created_by_id").
@@ -136,7 +138,6 @@ func (Tender) Edges() []ent.Edge {
 		edge.From("customer", Customer.Type).
 			Ref("tenders").
 			Field("customer_id").
-			Required().
 			Unique(),
 		edge.To("finder", User.Type).
 			Field("finder_id").

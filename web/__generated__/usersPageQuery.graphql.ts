@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6a60636b8a7b2728133c23a8a840d8a8>>
+ * @generated SignedSource<<e5e8c5d20f1bf2031b421060fe469647>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,6 +34,7 @@ export type usersPageQuery$data = {
         readonly hasMapAccess: boolean;
         readonly id: string;
         readonly isAdmin: boolean;
+        readonly isSales: boolean;
         readonly name: string;
         readonly openID: string | null | undefined;
         readonly username: string;
@@ -164,6 +165,13 @@ v4 = [
             "storageKey": null
           },
           (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isSales",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -324,7 +332,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d8ae0623f06beae5aaebfa55def02790",
+    "cacheID": "653f0a3fac1a842694e8b129d01073e5",
     "id": null,
     "metadata": {
       "connection": [
@@ -340,11 +348,11 @@ return {
     },
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n  ...userFormFragment\n}\n\nfragment userFormFragment on Query {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query usersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isSales\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n  ...userFormFragment\n}\n\nfragment userFormFragment on Query {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "06eaccb4c00acfc94b167bce9e891a68";
+(node as any).hash = "44829c96b0e3bb01565c214874c1160a";
 
 export default node;

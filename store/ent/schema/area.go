@@ -49,7 +49,7 @@ func (Area) Edges() []ent.Edge {
 			Annotations(
 				entgql.RelayConnection(),
 			),
-		edge.To("sales", User.Type).
+		edge.To("users", User.Type).
 			Annotations(
 				entgql.RelayConnection(),
 			),

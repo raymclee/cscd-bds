@@ -41,8 +41,8 @@ type AreaEdges struct {
 	Customers []*Customer `json:"customers,omitempty"`
 	// Tenders holds the value of the tenders edge.
 	Tenders []*Tender `json:"tenders,omitempty"`
-	// Sales holds the value of the sales edge.
-	Sales []*User `json:"sales,omitempty"`
+	// Users holds the value of the users edge.
+	Users []*User `json:"users,omitempty"`
 	// Provinces holds the value of the provinces edge.
 	Provinces []*Province `json:"provinces,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -53,7 +53,7 @@ type AreaEdges struct {
 
 	namedCustomers map[string][]*Customer
 	namedTenders   map[string][]*Tender
-	namedSales     map[string][]*User
+	namedUsers     map[string][]*User
 	namedProvinces map[string][]*Province
 }
 
@@ -75,13 +75,13 @@ func (e AreaEdges) TendersOrErr() ([]*Tender, error) {
 	return nil, &NotLoadedError{edge: "tenders"}
 }
 
-// SalesOrErr returns the Sales value or an error if the edge
+// UsersOrErr returns the Users value or an error if the edge
 // was not loaded in eager-loading.
-func (e AreaEdges) SalesOrErr() ([]*User, error) {
+func (e AreaEdges) UsersOrErr() ([]*User, error) {
 	if e.loadedTypes[2] {
-		return e.Sales, nil
+		return e.Users, nil
 	}
-	return nil, &NotLoadedError{edge: "sales"}
+	return nil, &NotLoadedError{edge: "users"}
 }
 
 // ProvincesOrErr returns the Provinces value or an error if the edge
@@ -180,9 +180,9 @@ func (a *Area) QueryTenders() *TenderQuery {
 	return NewAreaClient(a.config).QueryTenders(a)
 }
 
-// QuerySales queries the "sales" edge of the Area entity.
-func (a *Area) QuerySales() *UserQuery {
-	return NewAreaClient(a.config).QuerySales(a)
+// QueryUsers queries the "users" edge of the Area entity.
+func (a *Area) QueryUsers() *UserQuery {
+	return NewAreaClient(a.config).QueryUsers(a)
 }
 
 // QueryProvinces queries the "provinces" edge of the Area entity.
@@ -279,27 +279,27 @@ func (a *Area) appendNamedTenders(name string, edges ...*Tender) {
 	}
 }
 
-// NamedSales returns the Sales named value or an error if the edge was not
+// NamedUsers returns the Users named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (a *Area) NamedSales(name string) ([]*User, error) {
-	if a.Edges.namedSales == nil {
+func (a *Area) NamedUsers(name string) ([]*User, error) {
+	if a.Edges.namedUsers == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := a.Edges.namedSales[name]
+	nodes, ok := a.Edges.namedUsers[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (a *Area) appendNamedSales(name string, edges ...*User) {
-	if a.Edges.namedSales == nil {
-		a.Edges.namedSales = make(map[string][]*User)
+func (a *Area) appendNamedUsers(name string, edges ...*User) {
+	if a.Edges.namedUsers == nil {
+		a.Edges.namedUsers = make(map[string][]*User)
 	}
 	if len(edges) == 0 {
-		a.Edges.namedSales[name] = []*User{}
+		a.Edges.namedUsers[name] = []*User{}
 	} else {
-		a.Edges.namedSales[name] = append(a.Edges.namedSales[name], edges...)
+		a.Edges.namedUsers[name] = append(a.Edges.namedUsers[name], edges...)
 	}
 }
 

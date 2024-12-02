@@ -30,13 +30,13 @@ type AreaQuery struct {
 	predicates         []predicate.Area
 	withCustomers      *CustomerQuery
 	withTenders        *TenderQuery
-	withSales          *UserQuery
+	withUsers          *UserQuery
 	withProvinces      *ProvinceQuery
 	modifiers          []func(*sql.Selector)
 	loadTotal          []func(context.Context, []*Area) error
 	withNamedCustomers map[string]*CustomerQuery
 	withNamedTenders   map[string]*TenderQuery
-	withNamedSales     map[string]*UserQuery
+	withNamedUsers     map[string]*UserQuery
 	withNamedProvinces map[string]*ProvinceQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -118,8 +118,8 @@ func (aq *AreaQuery) QueryTenders() *TenderQuery {
 	return query
 }
 
-// QuerySales chains the current query on the "sales" edge.
-func (aq *AreaQuery) QuerySales() *UserQuery {
+// QueryUsers chains the current query on the "users" edge.
+func (aq *AreaQuery) QueryUsers() *UserQuery {
 	query := (&UserClient{config: aq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := aq.prepareQuery(ctx); err != nil {
@@ -132,7 +132,7 @@ func (aq *AreaQuery) QuerySales() *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(area.Table, area.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, area.SalesTable, area.SalesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, area.UsersTable, area.UsersPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil
@@ -356,7 +356,7 @@ func (aq *AreaQuery) Clone() *AreaQuery {
 		predicates:    append([]predicate.Area{}, aq.predicates...),
 		withCustomers: aq.withCustomers.Clone(),
 		withTenders:   aq.withTenders.Clone(),
-		withSales:     aq.withSales.Clone(),
+		withUsers:     aq.withUsers.Clone(),
 		withProvinces: aq.withProvinces.Clone(),
 		// clone intermediate query.
 		sql:  aq.sql.Clone(),
@@ -386,14 +386,14 @@ func (aq *AreaQuery) WithTenders(opts ...func(*TenderQuery)) *AreaQuery {
 	return aq
 }
 
-// WithSales tells the query-builder to eager-load the nodes that are connected to
-// the "sales" edge. The optional arguments are used to configure the query builder of the edge.
-func (aq *AreaQuery) WithSales(opts ...func(*UserQuery)) *AreaQuery {
+// WithUsers tells the query-builder to eager-load the nodes that are connected to
+// the "users" edge. The optional arguments are used to configure the query builder of the edge.
+func (aq *AreaQuery) WithUsers(opts ...func(*UserQuery)) *AreaQuery {
 	query := (&UserClient{config: aq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	aq.withSales = query
+	aq.withUsers = query
 	return aq
 }
 
@@ -489,7 +489,7 @@ func (aq *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 		loadedTypes = [4]bool{
 			aq.withCustomers != nil,
 			aq.withTenders != nil,
-			aq.withSales != nil,
+			aq.withUsers != nil,
 			aq.withProvinces != nil,
 		}
 	)
@@ -528,10 +528,10 @@ func (aq *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 			return nil, err
 		}
 	}
-	if query := aq.withSales; query != nil {
-		if err := aq.loadSales(ctx, query, nodes,
-			func(n *Area) { n.Edges.Sales = []*User{} },
-			func(n *Area, e *User) { n.Edges.Sales = append(n.Edges.Sales, e) }); err != nil {
+	if query := aq.withUsers; query != nil {
+		if err := aq.loadUsers(ctx, query, nodes,
+			func(n *Area) { n.Edges.Users = []*User{} },
+			func(n *Area, e *User) { n.Edges.Users = append(n.Edges.Users, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -556,10 +556,10 @@ func (aq *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 			return nil, err
 		}
 	}
-	for name, query := range aq.withNamedSales {
-		if err := aq.loadSales(ctx, query, nodes,
-			func(n *Area) { n.appendNamedSales(name) },
-			func(n *Area, e *User) { n.appendNamedSales(name, e) }); err != nil {
+	for name, query := range aq.withNamedUsers {
+		if err := aq.loadUsers(ctx, query, nodes,
+			func(n *Area) { n.appendNamedUsers(name) },
+			func(n *Area, e *User) { n.appendNamedUsers(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -638,7 +638,7 @@ func (aq *AreaQuery) loadTenders(ctx context.Context, query *TenderQuery, nodes 
 	}
 	return nil
 }
-func (aq *AreaQuery) loadSales(ctx context.Context, query *UserQuery, nodes []*Area, init func(*Area), assign func(*Area, *User)) error {
+func (aq *AreaQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*Area, init func(*Area), assign func(*Area, *User)) error {
 	edgeIDs := make([]driver.Value, len(nodes))
 	byID := make(map[xid.ID]*Area)
 	nids := make(map[xid.ID]map[*Area]struct{})
@@ -650,11 +650,11 @@ func (aq *AreaQuery) loadSales(ctx context.Context, query *UserQuery, nodes []*A
 		}
 	}
 	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(area.SalesTable)
-		s.Join(joinT).On(s.C(user.FieldID), joinT.C(area.SalesPrimaryKey[1]))
-		s.Where(sql.InValues(joinT.C(area.SalesPrimaryKey[0]), edgeIDs...))
+		joinT := sql.Table(area.UsersTable)
+		s.Join(joinT).On(s.C(user.FieldID), joinT.C(area.UsersPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(area.UsersPrimaryKey[0]), edgeIDs...))
 		columns := s.SelectedColumns()
-		s.Select(joinT.C(area.SalesPrimaryKey[0]))
+		s.Select(joinT.C(area.UsersPrimaryKey[0]))
 		s.AppendSelect(columns...)
 		s.SetDistinct(false)
 	})
@@ -691,7 +691,7 @@ func (aq *AreaQuery) loadSales(ctx context.Context, query *UserQuery, nodes []*A
 	for _, n := range neighbors {
 		nodes, ok := nids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "sales" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected "users" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)
@@ -845,17 +845,17 @@ func (aq *AreaQuery) WithNamedTenders(name string, opts ...func(*TenderQuery)) *
 	return aq
 }
 
-// WithNamedSales tells the query-builder to eager-load the nodes that are connected to the "sales"
+// WithNamedUsers tells the query-builder to eager-load the nodes that are connected to the "users"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (aq *AreaQuery) WithNamedSales(name string, opts ...func(*UserQuery)) *AreaQuery {
+func (aq *AreaQuery) WithNamedUsers(name string, opts ...func(*UserQuery)) *AreaQuery {
 	query := (&UserClient{config: aq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	if aq.withNamedSales == nil {
-		aq.withNamedSales = make(map[string]*UserQuery)
+	if aq.withNamedUsers == nil {
+		aq.withNamedUsers = make(map[string]*UserQuery)
 	}
-	aq.withNamedSales[name] = query
+	aq.withNamedUsers[name] = query
 	return aq
 }
 

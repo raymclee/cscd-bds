@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<67a2ea4ad4a00a1437bf3abb2fd80e84>>
+ * @generated SignedSource<<efdb8d2aaa3f9f0a7c8f89b6f582deeb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,7 +37,7 @@ export type tendersDetailPageQuery$data = {
     readonly customer?: {
       readonly id: string;
       readonly name: string;
-    };
+    } | null | undefined;
     readonly discoveryDate?: any;
     readonly district?: {
       readonly adcode: number;
@@ -607,7 +607,7 @@ return {
                             "args": null,
                             "concreteType": "UserConnection",
                             "kind": "LinkedField",
-                            "name": "sales",
+                            "name": "users",
                             "plural": false,
                             "selections": [
                               {
@@ -728,12 +728,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b6d69d10dc7464515d4e64011e47de09",
+    "cacheID": "444259c00c945cc3a98858fc1d689ef8",
     "id": null,
     "metadata": {},
     "name": "tendersDetailPageQuery",
     "operationKind": "query",
-    "text": "query tendersDetailPageQuery(\n  $id: ID!\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      code\n      status\n      area {\n        id\n        name\n      }\n      customer {\n        id\n        name\n      }\n      discoveryDate\n      createdBy {\n        id\n        name\n      }\n      finder {\n        id\n        name\n      }\n      followingSales {\n        id\n        name\n      }\n      province {\n        id\n        name\n        adcode\n      }\n      city {\n        id\n        name\n        adcode\n      }\n      district {\n        id\n        name\n        adcode\n      }\n      estimatedAmount\n      tenderDate\n      contractor\n      prepareToBid\n      projectCode\n      biddingDate\n      estimatedProjectStartDate\n      estimatedProjectEndDate\n      projectType\n      fullAddress\n      images\n      attachements\n      architect\n      visitRecords {\n        edges {\n          node {\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        sales {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersDetailPageQuery(\n  $id: ID!\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      code\n      status\n      area {\n        id\n        name\n      }\n      customer {\n        id\n        name\n      }\n      discoveryDate\n      createdBy {\n        id\n        name\n      }\n      finder {\n        id\n        name\n      }\n      followingSales {\n        id\n        name\n      }\n      province {\n        id\n        name\n        adcode\n      }\n      city {\n        id\n        name\n        adcode\n      }\n      district {\n        id\n        name\n        adcode\n      }\n      estimatedAmount\n      tenderDate\n      contractor\n      prepareToBid\n      projectCode\n      biddingDate\n      estimatedProjectStartDate\n      estimatedProjectEndDate\n      projectType\n      fullAddress\n      images\n      attachements\n      architect\n      visitRecords {\n        edges {\n          node {\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

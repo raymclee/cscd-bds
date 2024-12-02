@@ -66,9 +66,9 @@ type AreaMutation struct {
 	tenders          map[xid.ID]struct{}
 	removedtenders   map[xid.ID]struct{}
 	clearedtenders   bool
-	sales            map[xid.ID]struct{}
-	removedsales     map[xid.ID]struct{}
-	clearedsales     bool
+	users            map[xid.ID]struct{}
+	removedusers     map[xid.ID]struct{}
+	clearedusers     bool
 	provinces        map[xid.ID]struct{}
 	removedprovinces map[xid.ID]struct{}
 	clearedprovinces bool
@@ -469,58 +469,58 @@ func (m *AreaMutation) ResetTenders() {
 	m.removedtenders = nil
 }
 
-// AddSaleIDs adds the "sales" edge to the User entity by ids.
-func (m *AreaMutation) AddSaleIDs(ids ...xid.ID) {
-	if m.sales == nil {
-		m.sales = make(map[xid.ID]struct{})
+// AddUserIDs adds the "users" edge to the User entity by ids.
+func (m *AreaMutation) AddUserIDs(ids ...xid.ID) {
+	if m.users == nil {
+		m.users = make(map[xid.ID]struct{})
 	}
 	for i := range ids {
-		m.sales[ids[i]] = struct{}{}
+		m.users[ids[i]] = struct{}{}
 	}
 }
 
-// ClearSales clears the "sales" edge to the User entity.
-func (m *AreaMutation) ClearSales() {
-	m.clearedsales = true
+// ClearUsers clears the "users" edge to the User entity.
+func (m *AreaMutation) ClearUsers() {
+	m.clearedusers = true
 }
 
-// SalesCleared reports if the "sales" edge to the User entity was cleared.
-func (m *AreaMutation) SalesCleared() bool {
-	return m.clearedsales
+// UsersCleared reports if the "users" edge to the User entity was cleared.
+func (m *AreaMutation) UsersCleared() bool {
+	return m.clearedusers
 }
 
-// RemoveSaleIDs removes the "sales" edge to the User entity by IDs.
-func (m *AreaMutation) RemoveSaleIDs(ids ...xid.ID) {
-	if m.removedsales == nil {
-		m.removedsales = make(map[xid.ID]struct{})
+// RemoveUserIDs removes the "users" edge to the User entity by IDs.
+func (m *AreaMutation) RemoveUserIDs(ids ...xid.ID) {
+	if m.removedusers == nil {
+		m.removedusers = make(map[xid.ID]struct{})
 	}
 	for i := range ids {
-		delete(m.sales, ids[i])
-		m.removedsales[ids[i]] = struct{}{}
+		delete(m.users, ids[i])
+		m.removedusers[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedSales returns the removed IDs of the "sales" edge to the User entity.
-func (m *AreaMutation) RemovedSalesIDs() (ids []xid.ID) {
-	for id := range m.removedsales {
+// RemovedUsers returns the removed IDs of the "users" edge to the User entity.
+func (m *AreaMutation) RemovedUsersIDs() (ids []xid.ID) {
+	for id := range m.removedusers {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// SalesIDs returns the "sales" edge IDs in the mutation.
-func (m *AreaMutation) SalesIDs() (ids []xid.ID) {
-	for id := range m.sales {
+// UsersIDs returns the "users" edge IDs in the mutation.
+func (m *AreaMutation) UsersIDs() (ids []xid.ID) {
+	for id := range m.users {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetSales resets all changes to the "sales" edge.
-func (m *AreaMutation) ResetSales() {
-	m.sales = nil
-	m.clearedsales = false
-	m.removedsales = nil
+// ResetUsers resets all changes to the "users" edge.
+func (m *AreaMutation) ResetUsers() {
+	m.users = nil
+	m.clearedusers = false
+	m.removedusers = nil
 }
 
 // AddProvinceIDs adds the "provinces" edge to the Province entity by ids.
@@ -785,8 +785,8 @@ func (m *AreaMutation) AddedEdges() []string {
 	if m.tenders != nil {
 		edges = append(edges, area.EdgeTenders)
 	}
-	if m.sales != nil {
-		edges = append(edges, area.EdgeSales)
+	if m.users != nil {
+		edges = append(edges, area.EdgeUsers)
 	}
 	if m.provinces != nil {
 		edges = append(edges, area.EdgeProvinces)
@@ -810,9 +810,9 @@ func (m *AreaMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case area.EdgeSales:
-		ids := make([]ent.Value, 0, len(m.sales))
-		for id := range m.sales {
+	case area.EdgeUsers:
+		ids := make([]ent.Value, 0, len(m.users))
+		for id := range m.users {
 			ids = append(ids, id)
 		}
 		return ids
@@ -835,8 +835,8 @@ func (m *AreaMutation) RemovedEdges() []string {
 	if m.removedtenders != nil {
 		edges = append(edges, area.EdgeTenders)
 	}
-	if m.removedsales != nil {
-		edges = append(edges, area.EdgeSales)
+	if m.removedusers != nil {
+		edges = append(edges, area.EdgeUsers)
 	}
 	if m.removedprovinces != nil {
 		edges = append(edges, area.EdgeProvinces)
@@ -860,9 +860,9 @@ func (m *AreaMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case area.EdgeSales:
-		ids := make([]ent.Value, 0, len(m.removedsales))
-		for id := range m.removedsales {
+	case area.EdgeUsers:
+		ids := make([]ent.Value, 0, len(m.removedusers))
+		for id := range m.removedusers {
 			ids = append(ids, id)
 		}
 		return ids
@@ -885,8 +885,8 @@ func (m *AreaMutation) ClearedEdges() []string {
 	if m.clearedtenders {
 		edges = append(edges, area.EdgeTenders)
 	}
-	if m.clearedsales {
-		edges = append(edges, area.EdgeSales)
+	if m.clearedusers {
+		edges = append(edges, area.EdgeUsers)
 	}
 	if m.clearedprovinces {
 		edges = append(edges, area.EdgeProvinces)
@@ -902,8 +902,8 @@ func (m *AreaMutation) EdgeCleared(name string) bool {
 		return m.clearedcustomers
 	case area.EdgeTenders:
 		return m.clearedtenders
-	case area.EdgeSales:
-		return m.clearedsales
+	case area.EdgeUsers:
+		return m.clearedusers
 	case area.EdgeProvinces:
 		return m.clearedprovinces
 	}
@@ -928,8 +928,8 @@ func (m *AreaMutation) ResetEdge(name string) error {
 	case area.EdgeTenders:
 		m.ResetTenders()
 		return nil
-	case area.EdgeSales:
-		m.ResetSales()
+	case area.EdgeUsers:
+		m.ResetUsers()
 		return nil
 	case area.EdgeProvinces:
 		m.ResetProvinces()
@@ -10289,7 +10289,7 @@ func (m *TenderMutation) CustomerID() (r xid.ID, exists bool) {
 // OldCustomerID returns the old "customer_id" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldCustomerID(ctx context.Context) (v xid.ID, err error) {
+func (m *TenderMutation) OldCustomerID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCustomerID is only allowed on UpdateOne operations")
 	}
@@ -10303,9 +10303,22 @@ func (m *TenderMutation) OldCustomerID(ctx context.Context) (v xid.ID, err error
 	return oldValue.CustomerID, nil
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (m *TenderMutation) ClearCustomerID() {
+	m.customer = nil
+	m.clearedFields[tender.FieldCustomerID] = struct{}{}
+}
+
+// CustomerIDCleared returns if the "customer_id" field was cleared in this mutation.
+func (m *TenderMutation) CustomerIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldCustomerID]
+	return ok
+}
+
 // ResetCustomerID resets all changes to the "customer_id" field.
 func (m *TenderMutation) ResetCustomerID() {
 	m.customer = nil
+	delete(m.clearedFields, tender.FieldCustomerID)
 }
 
 // SetFinderID sets the "finder_id" field.
@@ -10415,7 +10428,7 @@ func (m *TenderMutation) ClearCustomer() {
 
 // CustomerCleared reports if the "customer" edge to the Customer entity was cleared.
 func (m *TenderMutation) CustomerCleared() bool {
-	return m.clearedcustomer
+	return m.CustomerIDCleared() || m.clearedcustomer
 }
 
 // CustomerIDs returns the "customer" edge IDs in the mutation.
@@ -11891,6 +11904,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldCityID) {
 		fields = append(fields, tender.FieldCityID)
 	}
+	if m.FieldCleared(tender.FieldCustomerID) {
+		fields = append(fields, tender.FieldCustomerID)
+	}
 	return fields
 }
 
@@ -12048,6 +12064,9 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldCityID:
 		m.ClearCityID()
+		return nil
+	case tender.FieldCustomerID:
+		m.ClearCustomerID()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender nullable field %s", name)
@@ -12497,6 +12516,7 @@ type UserMutation struct {
 	open_id              *string
 	avatar_url           *string
 	disabled             *bool
+	is_sales             *bool
 	is_admin             *bool
 	has_map_access       *bool
 	has_edit_access      *bool
@@ -12939,6 +12959,42 @@ func (m *UserMutation) OldDisabled(ctx context.Context) (v bool, err error) {
 // ResetDisabled resets all changes to the "disabled" field.
 func (m *UserMutation) ResetDisabled() {
 	m.disabled = nil
+}
+
+// SetIsSales sets the "is_sales" field.
+func (m *UserMutation) SetIsSales(b bool) {
+	m.is_sales = &b
+}
+
+// IsSales returns the value of the "is_sales" field in the mutation.
+func (m *UserMutation) IsSales() (r bool, exists bool) {
+	v := m.is_sales
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsSales returns the old "is_sales" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsSales(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsSales is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsSales requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsSales: %w", err)
+	}
+	return oldValue.IsSales, nil
+}
+
+// ResetIsSales resets all changes to the "is_sales" field.
+func (m *UserMutation) ResetIsSales() {
+	m.is_sales = nil
 }
 
 // SetIsAdmin sets the "is_admin" field.
@@ -13429,7 +13485,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
 	if m.created_at != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -13453,6 +13509,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.disabled != nil {
 		fields = append(fields, user.FieldDisabled)
+	}
+	if m.is_sales != nil {
+		fields = append(fields, user.FieldIsSales)
 	}
 	if m.is_admin != nil {
 		fields = append(fields, user.FieldIsAdmin)
@@ -13490,6 +13549,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.AvatarURL()
 	case user.FieldDisabled:
 		return m.Disabled()
+	case user.FieldIsSales:
+		return m.IsSales()
 	case user.FieldIsAdmin:
 		return m.IsAdmin()
 	case user.FieldHasMapAccess:
@@ -13523,6 +13584,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldAvatarURL(ctx)
 	case user.FieldDisabled:
 		return m.OldDisabled(ctx)
+	case user.FieldIsSales:
+		return m.OldIsSales(ctx)
 	case user.FieldIsAdmin:
 		return m.OldIsAdmin(ctx)
 	case user.FieldHasMapAccess:
@@ -13595,6 +13658,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDisabled(v)
+		return nil
+	case user.FieldIsSales:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsSales(v)
 		return nil
 	case user.FieldIsAdmin:
 		v, ok := value.(bool)
@@ -13717,6 +13787,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldDisabled:
 		m.ResetDisabled()
+		return nil
+	case user.FieldIsSales:
+		m.ResetIsSales()
 		return nil
 	case user.FieldIsAdmin:
 		m.ResetIsAdmin()

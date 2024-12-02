@@ -31,6 +31,7 @@ func (User) Fields() []ent.Field {
 		field.String("open_id").Unique().Optional(),
 		field.String("avatar_url").Optional(),
 		field.Bool("disabled").Default(false),
+		field.Bool("is_sales").Default(false),
 		field.Bool("is_admin").Default(false),
 		field.Bool("has_map_access").Default(false),
 		field.Bool("has_edit_access").Default(false),
@@ -46,7 +47,7 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("areas", Area.Type).
-			Ref("sales").
+			Ref("users").
 			Annotations(
 				entgql.RelayConnection(),
 			),

@@ -97,6 +97,7 @@ export const mapIndexPageQuery = graphql`
                     customerRelationshipRatingOverview
                     competitivePartnershipRatingOverview
                     tenderWinCompany
+                    tenderCode
                     developer
                     architect
                     tenderClosingDate
@@ -256,10 +257,10 @@ function RouteComponent() {
                 <div class="text-lg font-bold">${area?.name}</div>
                 <div class="flex items-baseline gap-3">
                   <div>
-                    项目:<span class="ml-1 font-bold text-lg">${area?.tenders?.edges?.length}</span>
+                    项目:<span class="ml-1 text-lg font-bold">${area?.tenders?.edges?.length}</span>
                   </div>
                   <div>
-                    金额:<span class="mx-1 font-bold text-lg">${amount}</span>亿
+                    金额:<span class="mx-1 text-lg font-bold">${amount}</span>亿
                   </div>
                 </div>
                 <div></div>
@@ -402,7 +403,7 @@ function RouteComponent() {
           label: {
             content: `
             <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-              <div class="font-medium text-center text-sm text-wrap">${plot?.name}</div>
+              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
             </div>
             `,
             offset: new AMap.Pixel(-100, 30),
@@ -441,7 +442,7 @@ function RouteComponent() {
             label: {
               content: `
               <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+                <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
               </div>
               `,
               offset: new AMap.Pixel(-80, offsetY),
@@ -479,7 +480,7 @@ function RouteComponent() {
             label: {
               content: `
               <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+                <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
               </div>
               `,
               offset: new AMap.Pixel(-80, offsetY),
@@ -777,7 +778,7 @@ function RouteComponent() {
   return (
     <>
       {/* <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
-        <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
+        <div className="text-3xl font-bold select-none text-ellipsis whitespace-nowrap">
           远东幕墙市场拓展地图
         </div>
       </div> */}

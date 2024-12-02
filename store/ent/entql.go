@@ -262,6 +262,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldOpenID:        {Type: field.TypeString, Column: user.FieldOpenID},
 			user.FieldAvatarURL:     {Type: field.TypeString, Column: user.FieldAvatarURL},
 			user.FieldDisabled:      {Type: field.TypeBool, Column: user.FieldDisabled},
+			user.FieldIsSales:       {Type: field.TypeBool, Column: user.FieldIsSales},
 			user.FieldIsAdmin:       {Type: field.TypeBool, Column: user.FieldIsAdmin},
 			user.FieldHasMapAccess:  {Type: field.TypeBool, Column: user.FieldHasMapAccess},
 			user.FieldHasEditAccess: {Type: field.TypeBool, Column: user.FieldHasEditAccess},
@@ -315,12 +316,12 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"Tender",
 	)
 	graph.MustAddE(
-		"sales",
+		"users",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   area.SalesTable,
-			Columns: area.SalesPrimaryKey,
+			Table:   area.UsersTable,
+			Columns: area.UsersPrimaryKey,
 			Bidi:    false,
 		},
 		"Area",
@@ -884,14 +885,14 @@ func (f *AreaFilter) WhereHasTendersWith(preds ...predicate.Tender) {
 	})))
 }
 
-// WhereHasSales applies a predicate to check if query has an edge sales.
-func (f *AreaFilter) WhereHasSales() {
-	f.Where(entql.HasEdge("sales"))
+// WhereHasUsers applies a predicate to check if query has an edge users.
+func (f *AreaFilter) WhereHasUsers() {
+	f.Where(entql.HasEdge("users"))
 }
 
-// WhereHasSalesWith applies a predicate to check if query has an edge sales with a given conditions (other predicates).
-func (f *AreaFilter) WhereHasSalesWith(preds ...predicate.User) {
-	f.Where(entql.HasEdgeWith("sales", sqlgraph.WrapFunc(func(s *sql.Selector) {
+// WhereHasUsersWith applies a predicate to check if query has an edge users with a given conditions (other predicates).
+func (f *AreaFilter) WhereHasUsersWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("users", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -2212,6 +2213,11 @@ func (f *UserFilter) WhereAvatarURL(p entql.StringP) {
 // WhereDisabled applies the entql bool predicate on the disabled field.
 func (f *UserFilter) WhereDisabled(p entql.BoolP) {
 	f.Where(p.Field(user.FieldDisabled))
+}
+
+// WhereIsSales applies the entql bool predicate on the is_sales field.
+func (f *UserFilter) WhereIsSales(p entql.BoolP) {
+	f.Where(p.Field(user.FieldIsSales))
 }
 
 // WhereIsAdmin applies the entql bool predicate on the is_admin field.

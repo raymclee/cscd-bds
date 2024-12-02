@@ -255,7 +255,7 @@ var (
 		{Name: "last_tender_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "area_id", Type: field.TypeString},
 		{Name: "city_id", Type: field.TypeString, Nullable: true},
-		{Name: "customer_id", Type: field.TypeString},
+		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "district_id", Type: field.TypeString},
 		{Name: "province_id", Type: field.TypeString},
 		{Name: "finder_id", Type: field.TypeString},
@@ -283,7 +283,7 @@ var (
 				Symbol:     "tenders_customers_tenders",
 				Columns:    []*schema.Column{TendersColumns[58]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
@@ -322,6 +322,7 @@ var (
 		{Name: "open_id", Type: field.TypeString, Unique: true, Nullable: true},
 		{Name: "avatar_url", Type: field.TypeString, Nullable: true},
 		{Name: "disabled", Type: field.TypeBool, Default: false},
+		{Name: "is_sales", Type: field.TypeBool, Default: false},
 		{Name: "is_admin", Type: field.TypeBool, Default: false},
 		{Name: "has_map_access", Type: field.TypeBool, Default: false},
 		{Name: "has_edit_access", Type: field.TypeBool, Default: false},
@@ -335,7 +336,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_team_members",
-				Columns:    []*schema.Column{UsersColumns[12]},
+				Columns:    []*schema.Column{UsersColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -374,26 +375,26 @@ var (
 			},
 		},
 	}
-	// AreaSalesColumns holds the columns for the "area_sales" table.
-	AreaSalesColumns = []*schema.Column{
+	// AreaUsersColumns holds the columns for the "area_users" table.
+	AreaUsersColumns = []*schema.Column{
 		{Name: "area_id", Type: field.TypeString},
 		{Name: "user_id", Type: field.TypeString},
 	}
-	// AreaSalesTable holds the schema information for the "area_sales" table.
-	AreaSalesTable = &schema.Table{
-		Name:       "area_sales",
-		Columns:    AreaSalesColumns,
-		PrimaryKey: []*schema.Column{AreaSalesColumns[0], AreaSalesColumns[1]},
+	// AreaUsersTable holds the schema information for the "area_users" table.
+	AreaUsersTable = &schema.Table{
+		Name:       "area_users",
+		Columns:    AreaUsersColumns,
+		PrimaryKey: []*schema.Column{AreaUsersColumns[0], AreaUsersColumns[1]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "area_sales_area_id",
-				Columns:    []*schema.Column{AreaSalesColumns[0]},
+				Symbol:     "area_users_area_id",
+				Columns:    []*schema.Column{AreaUsersColumns[0]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "area_sales_user_id",
-				Columns:    []*schema.Column{AreaSalesColumns[1]},
+				Symbol:     "area_users_user_id",
+				Columns:    []*schema.Column{AreaUsersColumns[1]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -461,7 +462,7 @@ var (
 		TendersTable,
 		UsersTable,
 		VisitRecordsTable,
-		AreaSalesTable,
+		AreaUsersTable,
 		TenderFollowingSalesTable,
 		UserVisitRecordsTable,
 	}
@@ -487,8 +488,8 @@ func init() {
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable
-	AreaSalesTable.ForeignKeys[0].RefTable = AreasTable
-	AreaSalesTable.ForeignKeys[1].RefTable = UsersTable
+	AreaUsersTable.ForeignKeys[0].RefTable = AreasTable
+	AreaUsersTable.ForeignKeys[1].RefTable = UsersTable
 	TenderFollowingSalesTable.ForeignKeys[0].RefTable = TendersTable
 	TenderFollowingSalesTable.ForeignKeys[1].RefTable = UsersTable
 	UserVisitRecordsTable.ForeignKeys[0].RefTable = UsersTable
