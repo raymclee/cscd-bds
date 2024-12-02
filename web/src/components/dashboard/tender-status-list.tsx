@@ -64,7 +64,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
           className={cn(
             "mx-4 block h-[80vh] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
             gaOnly
-              ? "w-[clamp(400px,80vw,1000px)]"
+              ? "w-[clamp(400px,80vw,1200px)]"
               : "w-[clamp(400px,40vw,600px)]",
           )}
         >
@@ -89,35 +89,35 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                     <TableHead className="w-[4rem] text-center text-gray-300">
                       序号
                     </TableHead>
-                    <TableHead className="text-center text-gray-300">
+                    <TableHead className="w-[12rem] text-center text-gray-300">
                       名称
                     </TableHead>
                     {gaOnly && (
                       <>
-                        <TableHead className="w-[8rem] text-center text-gray-300">
+                        <TableHead className="w-[7rem] text-center text-gray-300">
                           业主
                         </TableHead>
-                        <TableHead className="w-[8rem] text-center text-gray-300">
+                        <TableHead className="w-[7rem] text-center text-gray-300">
                           总包
                         </TableHead>
-                        <TableHead className="w-[8rem] text-center text-gray-300">
+                        <TableHead className="w-[7rem] text-center text-gray-300">
                           则师
                         </TableHead>
-                        <TableHead className="w-[8rem] text-center text-gray-300">
+                        <TableHead className="w-[7rem] text-center text-gray-300">
                           幕墙顾问
                         </TableHead>
-                        <TableHead className="w-[8rem] text-center text-gray-300">
+                        <TableHead className="w-[7rem] text-center text-gray-300">
                           交标日期
                         </TableHead>
-                        <TableHead className="w-[8rem] text-center text-gray-300">
+                        <TableHead className="w-[7rem] text-center text-gray-300">
                           面积
                         </TableHead>
                         {selectedTenderStatus?.value == 3 && (
                           <>
-                            <TableHead className="w-[8rem] text-center text-gray-300">
+                            <TableHead className="w-[7rem] text-center text-gray-300">
                               中标日期
                             </TableHead>
-                            <TableHead className="w-[8rem] text-center text-gray-300">
+                            <TableHead className="w-[9rem] text-center text-gray-300">
                               中标金额(亿元)
                             </TableHead>
                           </>

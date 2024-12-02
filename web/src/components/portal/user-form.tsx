@@ -207,16 +207,16 @@ export function UserForm({
             }))}
           />
         </Form.Item>
-        <Form.Item name="disabled" label="禁用">
+        <Form.Item name="hasEditAccess" label="可编辑" valuePropName="checked">
+          <Switch />
+        </Form.Item>
+        <Form.Item name="hasMapAccess" label="地图权限">
           <Switch />
         </Form.Item>
         <Form.Item name="isAdmin" label="管理员">
           <Switch />
         </Form.Item>
-        <Form.Item name="hasEditAccess" label="可编辑" valuePropName="checked">
-          <Switch />
-        </Form.Item>
-        <Form.Item name="hasMapAccess" label="地图权限">
+        <Form.Item name="disabled" label="禁用">
           <Switch />
         </Form.Item>
       </Form>

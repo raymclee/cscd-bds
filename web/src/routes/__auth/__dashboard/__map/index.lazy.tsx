@@ -104,6 +104,7 @@ export const mapIndexPageQuery = graphql`
                     tenderWinAmount
                     tenderWinDate
                     area {
+                      code
                       name
                     }
                     province {
