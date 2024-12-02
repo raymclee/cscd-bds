@@ -132,7 +132,7 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
                 { orderBy: { field: "CREATED_AT", direction: "DESC" } },
               ),
               ConnectionHandler.getConnectionID(
-                tender.customer.id,
+                tender.customer?.id || "",
                 "customersTenderListFragment_tenders",
               ),
             ],
