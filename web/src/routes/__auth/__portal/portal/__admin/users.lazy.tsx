@@ -8,6 +8,7 @@ import {
   Form,
   Input,
   Popconfirm,
+  Switch,
   Table,
   TableProps,
 } from "antd";
@@ -101,24 +102,26 @@ function RouteComponent() {
     {
       dataIndex: "hasMapAccess",
       title: "大地图",
-      render: (hasMapAccess, record) =>
-        record.isAdmin || hasMapAccess ? "是" : "否",
+      render: (hasMapAccess, record) => (
+        <UserToggle user={record} field="hasMapAccess" />
+      ),
     },
     {
       dataIndex: "hasEditAccess",
       title: "编辑",
-      render: (hasEditAccess, record) =>
-        record.isAdmin || hasEditAccess ? "是" : "否",
+      render: (hasEditAccess, record) => (
+        <UserToggle user={record} field="hasEditAccess" />
+      ),
     },
     {
       dataIndex: "isSales",
       title: "销售",
-      render: (isSales) => (isSales ? "是" : "否"),
+      render: (isSales, record) => <UserToggle user={record} field="isSales" />,
     },
     {
       dataIndex: "isAdmin",
       title: "管理员",
-      render: (isAdmin) => (isAdmin ? "是" : "否"),
+      render: (isAdmin, record) => <UserToggle user={record} field="isAdmin" />,
     },
     {
       title: "操作",
@@ -268,5 +271,41 @@ function UserFormDrawer({
         />
       </Drawer>
     </>
+  );
+}
+
+function UserToggle({
+  user,
+  field,
+}: {
+  user: User;
+  field: "isSales" | "isAdmin" | "hasMapAccess" | "hasEditAccess";
+}) {
+  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
+  const { message } = App.useApp();
+
+  const value = user[field];
+  const title = value ? "停用" : "启用";
+
+  return (
+    <Switch
+      checked={value}
+      disabled={isUpdateUserInFlight}
+      onChange={() => {
+        commitUpdateUser({
+          variables: {
+            id: user.id,
+            input: { [field]: !value },
+          },
+          onCompleted() {
+            message.success(`${title}成功`);
+          },
+          onError(error) {
+            console.error(error);
+            message.error(`${title}失败`);
+          },
+        });
+      }}
+    />
   );
 }

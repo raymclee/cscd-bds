@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d494811e851f195bbe53bd0ab1db662a>>
+ * @generated SignedSource<<b24edb458a37af0869c173fb2ed6b07f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -206,7 +206,15 @@ return {
                 },
                 {
                   "alias": null,
-                  "args": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "where",
+                      "value": {
+                        "isSales": true
+                      }
+                    }
+                  ],
                   "concreteType": "UserConnection",
                   "kind": "LinkedField",
                   "name": "users",
@@ -234,7 +242,7 @@ return {
                       "storageKey": null
                     }
                   ],
-                  "storageKey": null
+                  "storageKey": "users(where:{\"isSales\":true})"
                 },
                 {
                   "alias": null,
@@ -325,6 +333,6 @@ return {
 };
 })();
 
-(node as any).hash = "4f408902dfb7e9eafe0141bb7809a5f6";
+(node as any).hash = "ba3d0df4ec8a26a100496a523edb681f";
 
 export default node;

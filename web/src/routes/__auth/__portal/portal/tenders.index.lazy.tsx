@@ -60,6 +60,8 @@ function TenderList({
         areas {
           edges {
             node {
+              id
+              name
               tenders(orderBy: $orderBy, first: $first, last: $last)
                 @connection(key: "tendersTenderListFragment_tenders") {
                 __id
@@ -68,6 +70,9 @@ function TenderList({
                     id
                     name
                     status
+                    area {
+                      id
+                    }
                     ...tenderListItemFragment
                   }
                 }
@@ -82,6 +87,7 @@ function TenderList({
 
   const [searchText, setSearchText] = useState("");
   const [statusFilter, setStatusFilter] = useState<number | null>(null);
+  const [areaFilter, setAreaFilter] = useState<string | null>(null);
   const { session } = Route.useRouteContext();
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -91,7 +97,9 @@ function TenderList({
     .filter((t) =>
       t?.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
     )
-    .filter((t) => statusFilter === null || t?.status === statusFilter);
+    .filter((t) => statusFilter === null || t?.status === statusFilter)
+    .filter((t) => areaFilter === null || t?.area.id === areaFilter);
+  const moreThanOneArea = (data?.areas.edges ?? []).length > 1;
 
   return (
     <>
@@ -116,6 +124,21 @@ function TenderList({
               options={tenderStatusOptions}
             />
           </Form.Item>
+          {moreThanOneArea && (
+            <Form.Item label="区域" className="mb-0 w-36">
+              <Select
+                placeholder="区域"
+                value={areaFilter}
+                onSelect={(value) => setAreaFilter(value)}
+                allowClear
+                onClear={() => setAreaFilter(null)}
+                options={data?.areas.edges?.map((area) => ({
+                  label: area?.node?.name,
+                  value: area?.node?.id,
+                }))}
+              ></Select>
+            </Form.Item>
+          )}
         </div>
 
         {canEdit(session) && (

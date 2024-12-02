@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a26e677fef30993b4cd5db21f2ea6f54>>
+ * @generated SignedSource<<d8b58be1d31497d3b81cb1e4a55b70d0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -210,7 +210,15 @@ return {
                           },
                           {
                             "alias": null,
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "where",
+                                "value": {
+                                  "isSales": true
+                                }
+                              }
+                            ],
                             "concreteType": "UserConnection",
                             "kind": "LinkedField",
                             "name": "users",
@@ -238,7 +246,7 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": null
+                            "storageKey": "users(where:{\"isSales\":true})"
                           },
                           {
                             "alias": null,
@@ -334,12 +342,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "263fd1622de2570feeee6bb8d00dc6ea",
+    "cacheID": "94050ce834889c6075c0398ef2aaf6b3",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users(where: {isSales: true}) {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

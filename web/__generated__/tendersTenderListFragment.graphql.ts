@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<44f07a1be7d6bb76639a89f4b9d3e239>>
+ * @generated SignedSource<<6593dafe53225cd68378eb04ac7da346>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,10 +14,15 @@ export type tendersTenderListFragment$data = {
   readonly areas: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly id: string;
+        readonly name: string;
         readonly tenders: {
           readonly __id: string;
           readonly edges: ReadonlyArray<{
             readonly node: {
+              readonly area: {
+                readonly id: string;
+              };
               readonly id: string;
               readonly name: string;
               readonly status: number;
@@ -35,7 +40,22 @@ export type tendersTenderListFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"tendersTenderListFragment">;
 };
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -93,6 +113,8 @@ const node: ReaderFragment = {
               "name": "node",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "alias": "tenders",
                   "args": [
@@ -123,25 +145,25 @@ const node: ReaderFragment = {
                           "name": "node",
                           "plural": false,
                           "selections": [
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "id",
-                              "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "name",
-                              "storageKey": null
-                            },
+                            (v0/*: any*/),
+                            (v1/*: any*/),
                             {
                               "alias": null,
                               "args": null,
                               "kind": "ScalarField",
                               "name": "status",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "Area",
+                              "kind": "LinkedField",
+                              "name": "area",
+                              "plural": false,
+                              "selections": [
+                                (v0/*: any*/)
+                              ],
                               "storageKey": null
                             },
                             {
@@ -236,7 +258,8 @@ const node: ReaderFragment = {
   "type": "User",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "2c57082b39afe7d0742def80ccb2d951";
+(node as any).hash = "0d7b93f4a7f9670e9ac633828007170a";
 
 export default node;

@@ -43,7 +43,7 @@ const fragment = graphql`
               }
             }
           }
-          users {
+          users(where: { isSales: true }) {
             edges {
               node {
                 id
