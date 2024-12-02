@@ -1249,10 +1249,14 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_consultingFirm(ctx, field)
 			case "keyProject":
 				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "tenderWinCompany":
+				return ec.fieldContext_Tender_tenderWinCompany(ctx, field)
 			case "tenderCode":
 				return ec.fieldContext_Tender_tenderCode(ctx, field)
 			case "architect":
 				return ec.fieldContext_Tender_architect(ctx, field)
+			case "developer":
+				return ec.fieldContext_Tender_developer(ctx, field)
 			case "tenderClosingDate":
 				return ec.fieldContext_Tender_tenderClosingDate(ctx, field)
 			case "constructionArea":
@@ -1446,10 +1450,14 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_consultingFirm(ctx, field)
 			case "keyProject":
 				return ec.fieldContext_Tender_keyProject(ctx, field)
+			case "tenderWinCompany":
+				return ec.fieldContext_Tender_tenderWinCompany(ctx, field)
 			case "tenderCode":
 				return ec.fieldContext_Tender_tenderCode(ctx, field)
 			case "architect":
 				return ec.fieldContext_Tender_architect(ctx, field)
+			case "developer":
+				return ec.fieldContext_Tender_developer(ctx, field)
 			case "tenderClosingDate":
 				return ec.fieldContext_Tender_tenderClosingDate(ctx, field)
 			case "constructionArea":

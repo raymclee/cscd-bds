@@ -92,13 +92,15 @@ func (Tender) Fields() []ent.Field {
 		field.String("design_unit").Optional().Nillable(),
 		field.String("consulting_firm").Optional().Nillable(),
 		field.Bool("key_project").Default(false),
+		field.String("tender_win_company").Optional().Nillable(),
 
 		field.String("tender_code").Optional().Comment("投標編號，只限港澳"),
 		field.String("architect").Optional().Comment("則師，只限港澳"),
-		field.String("tender_closing_date").Optional().Comment("交標日期，只限港澳"),
+		field.String("developer").Optional().Comment("業主，只限港澳"),
+		field.Time("tender_closing_date").Optional().Comment("交標日期，只限港澳"),
 		field.String("construction_area").Optional().Comment("施工面積，只限港澳"),
 		field.Time("tender_win_date").Optional().Comment("得標日期，只限港澳"),
-		field.String("tender_win_amount").Optional().Comment("得標金額，只限港澳"),
+		field.Float("tender_win_amount").Optional().Comment("得標金額，只限港澳"),
 		field.Float("last_tender_amount").Optional().Comment("最後一次投標金額，只限港澳").
 			SchemaType(map[string]string{
 				dialect.Postgres: "numeric",

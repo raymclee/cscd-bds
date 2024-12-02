@@ -603,6 +603,8 @@ export type CreateTenderInput = {
   customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
   customerRelationshipRatingOverview?: InputMaybe<Scalars['String']['input']>;
   designUnit?: InputMaybe<Scalars['String']['input']>;
+  /** 業主，只限港澳 */
+  developer?: InputMaybe<Scalars['String']['input']>;
   discoveryDate: Scalars['Time']['input'];
   districtID: Scalars['ID']['input'];
   estimatedAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -629,14 +631,15 @@ export type CreateTenderInput = {
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['Int']['input']>;
   /** 交標日期，只限港澳 */
-  tenderClosingDate?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDate?: InputMaybe<Scalars['Time']['input']>;
   /** 投標編號，只限港澳 */
   tenderCode?: InputMaybe<Scalars['String']['input']>;
   tenderDate?: InputMaybe<Scalars['Time']['input']>;
   tenderForm?: InputMaybe<Scalars['String']['input']>;
   tenderSituations?: InputMaybe<Scalars['String']['input']>;
   /** 得標金額，只限港澳 */
-  tenderWinAmount?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmount?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinCompany?: InputMaybe<Scalars['String']['input']>;
   /** 得標日期，只限港澳 */
   tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
   tenderingAgency?: InputMaybe<Scalars['String']['input']>;
@@ -1765,6 +1768,8 @@ export type Tender = Node & {
   customerRelationshipRating?: Maybe<Scalars['Int']['output']>;
   customerRelationshipRatingOverview?: Maybe<Scalars['String']['output']>;
   designUnit?: Maybe<Scalars['String']['output']>;
+  /** 業主，只限港澳 */
+  developer?: Maybe<Scalars['String']['output']>;
   discoveryDate: Scalars['Time']['output'];
   district: District;
   districtID: Scalars['ID']['output'];
@@ -1797,14 +1802,15 @@ export type Tender = Node & {
   sizeAndValueRatingOverview?: Maybe<Scalars['String']['output']>;
   status: Scalars['Int']['output'];
   /** 交標日期，只限港澳 */
-  tenderClosingDate?: Maybe<Scalars['String']['output']>;
+  tenderClosingDate?: Maybe<Scalars['Time']['output']>;
   /** 投標編號，只限港澳 */
   tenderCode?: Maybe<Scalars['String']['output']>;
   tenderDate?: Maybe<Scalars['Time']['output']>;
   tenderForm?: Maybe<Scalars['String']['output']>;
   tenderSituations?: Maybe<Scalars['String']['output']>;
   /** 得標金額，只限港澳 */
-  tenderWinAmount?: Maybe<Scalars['String']['output']>;
+  tenderWinAmount?: Maybe<Scalars['Float']['output']>;
+  tenderWinCompany?: Maybe<Scalars['String']['output']>;
   /** 得標日期，只限港澳 */
   tenderWinDate?: Maybe<Scalars['Time']['output']>;
   tenderingAgency?: Maybe<Scalars['String']['output']>;
@@ -2197,6 +2203,22 @@ export type TenderWhereInput = {
   designUnitNEQ?: InputMaybe<Scalars['String']['input']>;
   designUnitNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   designUnitNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** developer field predicates */
+  developer?: InputMaybe<Scalars['String']['input']>;
+  developerContains?: InputMaybe<Scalars['String']['input']>;
+  developerContainsFold?: InputMaybe<Scalars['String']['input']>;
+  developerEqualFold?: InputMaybe<Scalars['String']['input']>;
+  developerGT?: InputMaybe<Scalars['String']['input']>;
+  developerGTE?: InputMaybe<Scalars['String']['input']>;
+  developerHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  developerHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  developerIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  developerIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  developerLT?: InputMaybe<Scalars['String']['input']>;
+  developerLTE?: InputMaybe<Scalars['String']['input']>;
+  developerNEQ?: InputMaybe<Scalars['String']['input']>;
+  developerNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  developerNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** discovery_date field predicates */
   discoveryDate?: InputMaybe<Scalars['Time']['input']>;
   discoveryDateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -2515,20 +2537,15 @@ export type TenderWhereInput = {
   statusNEQ?: InputMaybe<Scalars['Int']['input']>;
   statusNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** tender_closing_date field predicates */
-  tenderClosingDate?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateContains?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateContainsFold?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateEqualFold?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateGT?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateGTE?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateHasPrefix?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateHasSuffix?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderClosingDate?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateGT?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateGTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateIn?: InputMaybe<Array<Scalars['Time']['input']>>;
   tenderClosingDateIsNil?: InputMaybe<Scalars['Boolean']['input']>;
-  tenderClosingDateLT?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateLTE?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateNEQ?: InputMaybe<Scalars['String']['input']>;
-  tenderClosingDateNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderClosingDateLT?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateLTE?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateNEQ?: InputMaybe<Scalars['Time']['input']>;
+  tenderClosingDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
   tenderClosingDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** tender_code field predicates */
   tenderCode?: InputMaybe<Scalars['String']['input']>;
@@ -2590,21 +2607,32 @@ export type TenderWhereInput = {
   tenderSituationsNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   tenderSituationsNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** tender_win_amount field predicates */
-  tenderWinAmount?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountContains?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountContainsFold?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountEqualFold?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountGT?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountGTE?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountHasPrefix?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountHasSuffix?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinAmount?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountGT?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountGTE?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   tenderWinAmountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
-  tenderWinAmountLT?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountLTE?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountNEQ?: InputMaybe<Scalars['String']['input']>;
-  tenderWinAmountNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinAmountLT?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountLTE?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   tenderWinAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** tender_win_company field predicates */
+  tenderWinCompany?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyContains?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyContainsFold?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyEqualFold?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyGT?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyGTE?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinCompanyIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  tenderWinCompanyLT?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyLTE?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyNEQ?: InputMaybe<Scalars['String']['input']>;
+  tenderWinCompanyNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  tenderWinCompanyNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** tender_win_date field predicates */
   tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
   tenderWinDateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -2845,6 +2873,7 @@ export type UpdateTenderInput = {
   clearCustomerRelationshipRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomerRelationshipRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
   clearDesignUnit?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDeveloper?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedProjectEndDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedProjectStartDate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2867,6 +2896,7 @@ export type UpdateTenderInput = {
   clearTenderForm?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderSituations?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderWinAmount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearTenderWinCompany?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderWinDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenderingAgency?: InputMaybe<Scalars['Boolean']['input']>;
   clearTimeLimitRating?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2889,6 +2919,8 @@ export type UpdateTenderInput = {
   customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
   customerRelationshipRatingOverview?: InputMaybe<Scalars['String']['input']>;
   designUnit?: InputMaybe<Scalars['String']['input']>;
+  /** 業主，只限港澳 */
+  developer?: InputMaybe<Scalars['String']['input']>;
   discoveryDate?: InputMaybe<Scalars['Time']['input']>;
   districtID?: InputMaybe<Scalars['ID']['input']>;
   estimatedAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -2916,14 +2948,15 @@ export type UpdateTenderInput = {
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['Int']['input']>;
   /** 交標日期，只限港澳 */
-  tenderClosingDate?: InputMaybe<Scalars['String']['input']>;
+  tenderClosingDate?: InputMaybe<Scalars['Time']['input']>;
   /** 投標編號，只限港澳 */
   tenderCode?: InputMaybe<Scalars['String']['input']>;
   tenderDate?: InputMaybe<Scalars['Time']['input']>;
   tenderForm?: InputMaybe<Scalars['String']['input']>;
   tenderSituations?: InputMaybe<Scalars['String']['input']>;
   /** 得標金額，只限港澳 */
-  tenderWinAmount?: InputMaybe<Scalars['String']['input']>;
+  tenderWinAmount?: InputMaybe<Scalars['Float']['input']>;
+  tenderWinCompany?: InputMaybe<Scalars['String']['input']>;
   /** 得標日期，只限港澳 */
   tenderWinDate?: InputMaybe<Scalars['Time']['input']>;
   tenderingAgency?: InputMaybe<Scalars['String']['input']>;
@@ -3454,18 +3487,10 @@ export type UseCreatePlotMutationMutation = { __typename?: 'Mutation', createPlo
 
 export type UseCreateUserMutationMutationVariables = Exact<{
   input: CreateUserInput;
-  connections: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
 }>;
 
 
 export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } | null } | null> | null } };
-
-export type UseDeleteTenderMutationMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type UseDeleteTenderMutationMutation = { __typename?: 'Mutation', deleteTender: { __typename?: 'Tender', id: string } };
 
 export type UseDeleteUserMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3512,9 +3537,9 @@ export const UseCreatePlotMutationDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<UseCreatePlotMutationMutation, UseCreatePlotMutationMutationVariables>;
 export const UseCreateUserMutationDocument = new TypedDocumentString(`
-    mutation useCreateUserMutation($input: CreateUserInput!, $connections: [ID!]!) {
+    mutation useCreateUserMutation($input: CreateUserInput!) {
   createUser(input: $input) {
-    edges @prependNode(connections: $connections, edgeTypeName: "UserEdge") {
+    edges {
       node {
         id
         name
@@ -3539,17 +3564,10 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UseCreateUserMutationMutation, UseCreateUserMutationMutationVariables>;
-export const UseDeleteTenderMutationDocument = new TypedDocumentString(`
-    mutation useDeleteTenderMutation($id: ID!) {
-  deleteTender(id: $id) {
-    id @deleteRecord
-  }
-}
-    `) as unknown as TypedDocumentString<UseDeleteTenderMutationMutation, UseDeleteTenderMutationMutationVariables>;
 export const UseDeleteUserMutationDocument = new TypedDocumentString(`
     mutation useDeleteUserMutation($id: ID!) {
   deleteUser(id: $id) {
-    id @deleteRecord
+    id
   }
 }
     `) as unknown as TypedDocumentString<UseDeleteUserMutationMutation, UseDeleteUserMutationMutationVariables>;

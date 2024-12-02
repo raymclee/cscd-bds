@@ -196,11 +196,6 @@ function RouteComponent() {
           </Form.Item>
         </div>
 
-        {/* <Link to="/portal/tenders/new"> */}
-        {/* <Button type="primary" icon={<Plus size={16} />}>
-          添加商机
-        </Button> */}
-        {/* </Link> */}
         <UserFormDrawer
           queryRef={data}
           connectionID={data.users.__id}
@@ -257,7 +252,7 @@ function UserFormDrawer({
         onClose={onClose}
         width={480}
         destroyOnClose
-        maskClosable={false}
+        maskClosable={!!selectedUser}
       >
         <UserForm
           queryRef={queryRef}

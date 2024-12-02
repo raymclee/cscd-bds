@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<aacaad963875dd752580f14c8eff4179>>
+ * @generated SignedSource<<6577229ba320aee0bf5b0c5d47c6907d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -35,6 +35,7 @@ export type CreateTenderInput = {
   customerRelationshipRating?: number | null | undefined;
   customerRelationshipRatingOverview?: string | null | undefined;
   designUnit?: string | null | undefined;
+  developer?: string | null | undefined;
   discoveryDate: any;
   districtID: string;
   estimatedAmount?: number | null | undefined;
@@ -59,12 +60,13 @@ export type CreateTenderInput = {
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;
   status?: number | null | undefined;
-  tenderClosingDate?: string | null | undefined;
+  tenderClosingDate?: any | null | undefined;
   tenderCode?: string | null | undefined;
   tenderDate?: any | null | undefined;
   tenderForm?: string | null | undefined;
   tenderSituations?: string | null | undefined;
-  tenderWinAmount?: string | null | undefined;
+  tenderWinAmount?: number | null | undefined;
+  tenderWinCompany?: string | null | undefined;
   tenderWinDate?: any | null | undefined;
   tenderingAgency?: string | null | undefined;
   timeLimitRating?: number | null | undefined;

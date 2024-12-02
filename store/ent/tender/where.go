@@ -272,6 +272,11 @@ func KeyProject(v bool) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldKeyProject, v))
 }
 
+// TenderWinCompany applies equality check predicate on the "tender_win_company" field. It's identical to TenderWinCompanyEQ.
+func TenderWinCompany(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldTenderWinCompany, v))
+}
+
 // TenderCode applies equality check predicate on the "tender_code" field. It's identical to TenderCodeEQ.
 func TenderCode(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderCode, v))
@@ -282,8 +287,13 @@ func Architect(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldArchitect, v))
 }
 
+// Developer applies equality check predicate on the "developer" field. It's identical to DeveloperEQ.
+func Developer(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldDeveloper, v))
+}
+
 // TenderClosingDate applies equality check predicate on the "tender_closing_date" field. It's identical to TenderClosingDateEQ.
-func TenderClosingDate(v string) predicate.Tender {
+func TenderClosingDate(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderClosingDate, v))
 }
 
@@ -298,7 +308,7 @@ func TenderWinDate(v time.Time) predicate.Tender {
 }
 
 // TenderWinAmount applies equality check predicate on the "tender_win_amount" field. It's identical to TenderWinAmountEQ.
-func TenderWinAmount(v string) predicate.Tender {
+func TenderWinAmount(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderWinAmount, v))
 }
 
@@ -3032,6 +3042,81 @@ func KeyProjectNEQ(v bool) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldKeyProject, v))
 }
 
+// TenderWinCompanyEQ applies the EQ predicate on the "tender_win_company" field.
+func TenderWinCompanyEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyNEQ applies the NEQ predicate on the "tender_win_company" field.
+func TenderWinCompanyNEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyIn applies the In predicate on the "tender_win_company" field.
+func TenderWinCompanyIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldTenderWinCompany, vs...))
+}
+
+// TenderWinCompanyNotIn applies the NotIn predicate on the "tender_win_company" field.
+func TenderWinCompanyNotIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldTenderWinCompany, vs...))
+}
+
+// TenderWinCompanyGT applies the GT predicate on the "tender_win_company" field.
+func TenderWinCompanyGT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyGTE applies the GTE predicate on the "tender_win_company" field.
+func TenderWinCompanyGTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyLT applies the LT predicate on the "tender_win_company" field.
+func TenderWinCompanyLT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyLTE applies the LTE predicate on the "tender_win_company" field.
+func TenderWinCompanyLTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyContains applies the Contains predicate on the "tender_win_company" field.
+func TenderWinCompanyContains(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContains(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyHasPrefix applies the HasPrefix predicate on the "tender_win_company" field.
+func TenderWinCompanyHasPrefix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasPrefix(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyHasSuffix applies the HasSuffix predicate on the "tender_win_company" field.
+func TenderWinCompanyHasSuffix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasSuffix(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyIsNil applies the IsNil predicate on the "tender_win_company" field.
+func TenderWinCompanyIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldTenderWinCompany))
+}
+
+// TenderWinCompanyNotNil applies the NotNil predicate on the "tender_win_company" field.
+func TenderWinCompanyNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldTenderWinCompany))
+}
+
+// TenderWinCompanyEqualFold applies the EqualFold predicate on the "tender_win_company" field.
+func TenderWinCompanyEqualFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEqualFold(FieldTenderWinCompany, v))
+}
+
+// TenderWinCompanyContainsFold applies the ContainsFold predicate on the "tender_win_company" field.
+func TenderWinCompanyContainsFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContainsFold(FieldTenderWinCompany, v))
+}
+
 // TenderCodeEQ applies the EQ predicate on the "tender_code" field.
 func TenderCodeEQ(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderCode, v))
@@ -3182,59 +3267,119 @@ func ArchitectContainsFold(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldArchitect, v))
 }
 
+// DeveloperEQ applies the EQ predicate on the "developer" field.
+func DeveloperEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldDeveloper, v))
+}
+
+// DeveloperNEQ applies the NEQ predicate on the "developer" field.
+func DeveloperNEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldDeveloper, v))
+}
+
+// DeveloperIn applies the In predicate on the "developer" field.
+func DeveloperIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldDeveloper, vs...))
+}
+
+// DeveloperNotIn applies the NotIn predicate on the "developer" field.
+func DeveloperNotIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldDeveloper, vs...))
+}
+
+// DeveloperGT applies the GT predicate on the "developer" field.
+func DeveloperGT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldDeveloper, v))
+}
+
+// DeveloperGTE applies the GTE predicate on the "developer" field.
+func DeveloperGTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldDeveloper, v))
+}
+
+// DeveloperLT applies the LT predicate on the "developer" field.
+func DeveloperLT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldDeveloper, v))
+}
+
+// DeveloperLTE applies the LTE predicate on the "developer" field.
+func DeveloperLTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldDeveloper, v))
+}
+
+// DeveloperContains applies the Contains predicate on the "developer" field.
+func DeveloperContains(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContains(FieldDeveloper, v))
+}
+
+// DeveloperHasPrefix applies the HasPrefix predicate on the "developer" field.
+func DeveloperHasPrefix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasPrefix(FieldDeveloper, v))
+}
+
+// DeveloperHasSuffix applies the HasSuffix predicate on the "developer" field.
+func DeveloperHasSuffix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasSuffix(FieldDeveloper, v))
+}
+
+// DeveloperIsNil applies the IsNil predicate on the "developer" field.
+func DeveloperIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldDeveloper))
+}
+
+// DeveloperNotNil applies the NotNil predicate on the "developer" field.
+func DeveloperNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldDeveloper))
+}
+
+// DeveloperEqualFold applies the EqualFold predicate on the "developer" field.
+func DeveloperEqualFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEqualFold(FieldDeveloper, v))
+}
+
+// DeveloperContainsFold applies the ContainsFold predicate on the "developer" field.
+func DeveloperContainsFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContainsFold(FieldDeveloper, v))
+}
+
 // TenderClosingDateEQ applies the EQ predicate on the "tender_closing_date" field.
-func TenderClosingDateEQ(v string) predicate.Tender {
+func TenderClosingDateEQ(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderClosingDate, v))
 }
 
 // TenderClosingDateNEQ applies the NEQ predicate on the "tender_closing_date" field.
-func TenderClosingDateNEQ(v string) predicate.Tender {
+func TenderClosingDateNEQ(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldTenderClosingDate, v))
 }
 
 // TenderClosingDateIn applies the In predicate on the "tender_closing_date" field.
-func TenderClosingDateIn(vs ...string) predicate.Tender {
+func TenderClosingDateIn(vs ...time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldTenderClosingDate, vs...))
 }
 
 // TenderClosingDateNotIn applies the NotIn predicate on the "tender_closing_date" field.
-func TenderClosingDateNotIn(vs ...string) predicate.Tender {
+func TenderClosingDateNotIn(vs ...time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldTenderClosingDate, vs...))
 }
 
 // TenderClosingDateGT applies the GT predicate on the "tender_closing_date" field.
-func TenderClosingDateGT(v string) predicate.Tender {
+func TenderClosingDateGT(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldTenderClosingDate, v))
 }
 
 // TenderClosingDateGTE applies the GTE predicate on the "tender_closing_date" field.
-func TenderClosingDateGTE(v string) predicate.Tender {
+func TenderClosingDateGTE(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldTenderClosingDate, v))
 }
 
 // TenderClosingDateLT applies the LT predicate on the "tender_closing_date" field.
-func TenderClosingDateLT(v string) predicate.Tender {
+func TenderClosingDateLT(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldTenderClosingDate, v))
 }
 
 // TenderClosingDateLTE applies the LTE predicate on the "tender_closing_date" field.
-func TenderClosingDateLTE(v string) predicate.Tender {
+func TenderClosingDateLTE(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldTenderClosingDate, v))
-}
-
-// TenderClosingDateContains applies the Contains predicate on the "tender_closing_date" field.
-func TenderClosingDateContains(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldContains(FieldTenderClosingDate, v))
-}
-
-// TenderClosingDateHasPrefix applies the HasPrefix predicate on the "tender_closing_date" field.
-func TenderClosingDateHasPrefix(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldHasPrefix(FieldTenderClosingDate, v))
-}
-
-// TenderClosingDateHasSuffix applies the HasSuffix predicate on the "tender_closing_date" field.
-func TenderClosingDateHasSuffix(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldHasSuffix(FieldTenderClosingDate, v))
 }
 
 // TenderClosingDateIsNil applies the IsNil predicate on the "tender_closing_date" field.
@@ -3245,16 +3390,6 @@ func TenderClosingDateIsNil() predicate.Tender {
 // TenderClosingDateNotNil applies the NotNil predicate on the "tender_closing_date" field.
 func TenderClosingDateNotNil() predicate.Tender {
 	return predicate.Tender(sql.FieldNotNull(FieldTenderClosingDate))
-}
-
-// TenderClosingDateEqualFold applies the EqualFold predicate on the "tender_closing_date" field.
-func TenderClosingDateEqualFold(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldEqualFold(FieldTenderClosingDate, v))
-}
-
-// TenderClosingDateContainsFold applies the ContainsFold predicate on the "tender_closing_date" field.
-func TenderClosingDateContainsFold(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldContainsFold(FieldTenderClosingDate, v))
 }
 
 // ConstructionAreaEQ applies the EQ predicate on the "construction_area" field.
@@ -3383,58 +3518,43 @@ func TenderWinDateNotNil() predicate.Tender {
 }
 
 // TenderWinAmountEQ applies the EQ predicate on the "tender_win_amount" field.
-func TenderWinAmountEQ(v string) predicate.Tender {
+func TenderWinAmountEQ(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderWinAmount, v))
 }
 
 // TenderWinAmountNEQ applies the NEQ predicate on the "tender_win_amount" field.
-func TenderWinAmountNEQ(v string) predicate.Tender {
+func TenderWinAmountNEQ(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldTenderWinAmount, v))
 }
 
 // TenderWinAmountIn applies the In predicate on the "tender_win_amount" field.
-func TenderWinAmountIn(vs ...string) predicate.Tender {
+func TenderWinAmountIn(vs ...float64) predicate.Tender {
 	return predicate.Tender(sql.FieldIn(FieldTenderWinAmount, vs...))
 }
 
 // TenderWinAmountNotIn applies the NotIn predicate on the "tender_win_amount" field.
-func TenderWinAmountNotIn(vs ...string) predicate.Tender {
+func TenderWinAmountNotIn(vs ...float64) predicate.Tender {
 	return predicate.Tender(sql.FieldNotIn(FieldTenderWinAmount, vs...))
 }
 
 // TenderWinAmountGT applies the GT predicate on the "tender_win_amount" field.
-func TenderWinAmountGT(v string) predicate.Tender {
+func TenderWinAmountGT(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldGT(FieldTenderWinAmount, v))
 }
 
 // TenderWinAmountGTE applies the GTE predicate on the "tender_win_amount" field.
-func TenderWinAmountGTE(v string) predicate.Tender {
+func TenderWinAmountGTE(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldGTE(FieldTenderWinAmount, v))
 }
 
 // TenderWinAmountLT applies the LT predicate on the "tender_win_amount" field.
-func TenderWinAmountLT(v string) predicate.Tender {
+func TenderWinAmountLT(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldLT(FieldTenderWinAmount, v))
 }
 
 // TenderWinAmountLTE applies the LTE predicate on the "tender_win_amount" field.
-func TenderWinAmountLTE(v string) predicate.Tender {
+func TenderWinAmountLTE(v float64) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldTenderWinAmount, v))
-}
-
-// TenderWinAmountContains applies the Contains predicate on the "tender_win_amount" field.
-func TenderWinAmountContains(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldContains(FieldTenderWinAmount, v))
-}
-
-// TenderWinAmountHasPrefix applies the HasPrefix predicate on the "tender_win_amount" field.
-func TenderWinAmountHasPrefix(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldHasPrefix(FieldTenderWinAmount, v))
-}
-
-// TenderWinAmountHasSuffix applies the HasSuffix predicate on the "tender_win_amount" field.
-func TenderWinAmountHasSuffix(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldHasSuffix(FieldTenderWinAmount, v))
 }
 
 // TenderWinAmountIsNil applies the IsNil predicate on the "tender_win_amount" field.
@@ -3445,16 +3565,6 @@ func TenderWinAmountIsNil() predicate.Tender {
 // TenderWinAmountNotNil applies the NotNil predicate on the "tender_win_amount" field.
 func TenderWinAmountNotNil() predicate.Tender {
 	return predicate.Tender(sql.FieldNotNull(FieldTenderWinAmount))
-}
-
-// TenderWinAmountEqualFold applies the EqualFold predicate on the "tender_win_amount" field.
-func TenderWinAmountEqualFold(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldEqualFold(FieldTenderWinAmount, v))
-}
-
-// TenderWinAmountContainsFold applies the ContainsFold predicate on the "tender_win_amount" field.
-func TenderWinAmountContainsFold(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldContainsFold(FieldTenderWinAmount, v))
 }
 
 // LastTenderAmountEQ applies the EQ predicate on the "last_tender_amount" field.

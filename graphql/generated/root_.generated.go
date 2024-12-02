@@ -311,6 +311,7 @@ type ComplexityRoot struct {
 		CustomerRelationshipRating           func(childComplexity int) int
 		CustomerRelationshipRatingOverview   func(childComplexity int) int
 		DesignUnit                           func(childComplexity int) int
+		Developer                            func(childComplexity int) int
 		DiscoveryDate                        func(childComplexity int) int
 		District                             func(childComplexity int) int
 		DistrictID                           func(childComplexity int) int
@@ -347,6 +348,7 @@ type ComplexityRoot struct {
 		TenderForm                           func(childComplexity int) int
 		TenderSituations                     func(childComplexity int) int
 		TenderWinAmount                      func(childComplexity int) int
+		TenderWinCompany                     func(childComplexity int) int
 		TenderWinDate                        func(childComplexity int) int
 		TenderingAgency                      func(childComplexity int) int
 		TimeLimitRating                      func(childComplexity int) int
@@ -1912,6 +1914,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.DesignUnit(childComplexity), true
 
+	case "Tender.developer":
+		if e.complexity.Tender.Developer == nil {
+			break
+		}
+
+		return e.complexity.Tender.Developer(childComplexity), true
+
 	case "Tender.discoveryDate":
 		if e.complexity.Tender.DiscoveryDate == nil {
 			break
@@ -2163,6 +2172,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.TenderWinAmount(childComplexity), true
+
+	case "Tender.tenderWinCompany":
+		if e.complexity.Tender.TenderWinCompany == nil {
+			break
+		}
+
+		return e.complexity.Tender.TenderWinCompany(childComplexity), true
 
 	case "Tender.tenderWinDate":
 		if e.complexity.Tender.TenderWinDate == nil {
@@ -3530,6 +3546,7 @@ input CreateTenderInput {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean
+  tenderWinCompany: String
   """
   投標編號，只限港澳
   """
@@ -3539,9 +3556,13 @@ input CreateTenderInput {
   """
   architect: String
   """
+  業主，只限港澳
+  """
+  developer: String
+  """
   交標日期，只限港澳
   """
-  tenderClosingDate: String
+  tenderClosingDate: Time
   """
   施工面積，只限港澳
   """
@@ -3553,7 +3574,7 @@ input CreateTenderInput {
   """
   得標金額，只限港澳
   """
-  tenderWinAmount: String
+  tenderWinAmount: Float
   """
   最後一次投標金額，只限港澳
   """
@@ -5110,6 +5131,7 @@ type Tender implements Node {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean!
+  tenderWinCompany: String
   """
   投標編號，只限港澳
   """
@@ -5119,9 +5141,13 @@ type Tender implements Node {
   """
   architect: String
   """
+  業主，只限港澳
+  """
+  developer: String
+  """
   交標日期，只限港澳
   """
-  tenderClosingDate: String
+  tenderClosingDate: Time
   """
   施工面積，只限港澳
   """
@@ -5133,7 +5159,7 @@ type Tender implements Node {
   """
   得標金額，只限港澳
   """
-  tenderWinAmount: String
+  tenderWinAmount: Float
   """
   最後一次投標金額，只限港澳
   """
@@ -5903,6 +5929,24 @@ input TenderWhereInput {
   keyProject: Boolean
   keyProjectNEQ: Boolean
   """
+  tender_win_company field predicates
+  """
+  tenderWinCompany: String
+  tenderWinCompanyNEQ: String
+  tenderWinCompanyIn: [String!]
+  tenderWinCompanyNotIn: [String!]
+  tenderWinCompanyGT: String
+  tenderWinCompanyGTE: String
+  tenderWinCompanyLT: String
+  tenderWinCompanyLTE: String
+  tenderWinCompanyContains: String
+  tenderWinCompanyHasPrefix: String
+  tenderWinCompanyHasSuffix: String
+  tenderWinCompanyIsNil: Boolean
+  tenderWinCompanyNotNil: Boolean
+  tenderWinCompanyEqualFold: String
+  tenderWinCompanyContainsFold: String
+  """
   tender_code field predicates
   """
   tenderCode: String
@@ -5939,23 +5983,36 @@ input TenderWhereInput {
   architectEqualFold: String
   architectContainsFold: String
   """
+  developer field predicates
+  """
+  developer: String
+  developerNEQ: String
+  developerIn: [String!]
+  developerNotIn: [String!]
+  developerGT: String
+  developerGTE: String
+  developerLT: String
+  developerLTE: String
+  developerContains: String
+  developerHasPrefix: String
+  developerHasSuffix: String
+  developerIsNil: Boolean
+  developerNotNil: Boolean
+  developerEqualFold: String
+  developerContainsFold: String
+  """
   tender_closing_date field predicates
   """
-  tenderClosingDate: String
-  tenderClosingDateNEQ: String
-  tenderClosingDateIn: [String!]
-  tenderClosingDateNotIn: [String!]
-  tenderClosingDateGT: String
-  tenderClosingDateGTE: String
-  tenderClosingDateLT: String
-  tenderClosingDateLTE: String
-  tenderClosingDateContains: String
-  tenderClosingDateHasPrefix: String
-  tenderClosingDateHasSuffix: String
+  tenderClosingDate: Time
+  tenderClosingDateNEQ: Time
+  tenderClosingDateIn: [Time!]
+  tenderClosingDateNotIn: [Time!]
+  tenderClosingDateGT: Time
+  tenderClosingDateGTE: Time
+  tenderClosingDateLT: Time
+  tenderClosingDateLTE: Time
   tenderClosingDateIsNil: Boolean
   tenderClosingDateNotNil: Boolean
-  tenderClosingDateEqualFold: String
-  tenderClosingDateContainsFold: String
   """
   construction_area field predicates
   """
@@ -5990,21 +6047,16 @@ input TenderWhereInput {
   """
   tender_win_amount field predicates
   """
-  tenderWinAmount: String
-  tenderWinAmountNEQ: String
-  tenderWinAmountIn: [String!]
-  tenderWinAmountNotIn: [String!]
-  tenderWinAmountGT: String
-  tenderWinAmountGTE: String
-  tenderWinAmountLT: String
-  tenderWinAmountLTE: String
-  tenderWinAmountContains: String
-  tenderWinAmountHasPrefix: String
-  tenderWinAmountHasSuffix: String
+  tenderWinAmount: Float
+  tenderWinAmountNEQ: Float
+  tenderWinAmountIn: [Float!]
+  tenderWinAmountNotIn: [Float!]
+  tenderWinAmountGT: Float
+  tenderWinAmountGTE: Float
+  tenderWinAmountLT: Float
+  tenderWinAmountLTE: Float
   tenderWinAmountIsNil: Boolean
   tenderWinAmountNotNil: Boolean
-  tenderWinAmountEqualFold: String
-  tenderWinAmountContainsFold: String
   """
   last_tender_amount field predicates
   """
@@ -6396,6 +6448,8 @@ input UpdateTenderInput {
   consultingFirm: String
   clearConsultingFirm: Boolean
   keyProject: Boolean
+  tenderWinCompany: String
+  clearTenderWinCompany: Boolean
   """
   投標編號，只限港澳
   """
@@ -6407,9 +6461,14 @@ input UpdateTenderInput {
   architect: String
   clearArchitect: Boolean
   """
+  業主，只限港澳
+  """
+  developer: String
+  clearDeveloper: Boolean
+  """
   交標日期，只限港澳
   """
-  tenderClosingDate: String
+  tenderClosingDate: Time
   clearTenderClosingDate: Boolean
   """
   施工面積，只限港澳
@@ -6424,7 +6483,7 @@ input UpdateTenderInput {
   """
   得標金額，只限港澳
   """
-  tenderWinAmount: String
+  tenderWinAmount: Float
   clearTenderWinAmount: Boolean
   """
   最後一次投標金額，只限港澳

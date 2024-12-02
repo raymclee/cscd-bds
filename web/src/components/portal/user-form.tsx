@@ -47,22 +47,22 @@ export function UserForm({
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
 
-  useEffect(() => {
-    if (selectedUser) {
-      form.setFieldsValue({
-        name: selectedUser.name,
-        email: selectedUser.email,
-        username: selectedUser.username,
-        openID: selectedUser.openID,
-        avatarURL: selectedUser.avatarURL,
-        areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
-        disabled: selectedUser.disabled,
-        isAdmin: selectedUser.isAdmin,
-        hasMapAccess: selectedUser.hasMapAccess,
-        hasEditAccess: selectedUser.hasEditAccess,
-      });
-    }
-  }, [selectedUser]);
+  // useEffect(() => {
+  //   if (selectedUser) {
+  // form.setFieldsValue({
+  //   name: selectedUser.name,
+  //   email: selectedUser.email,
+  //   username: selectedUser.username,
+  //   openID: selectedUser.openID,
+  //   avatarURL: selectedUser.avatarURL,
+  //   areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
+  //   disabled: selectedUser.disabled,
+  //   isAdmin: selectedUser.isAdmin,
+  //   hasMapAccess: selectedUser.hasMapAccess,
+  //   hasEditAccess: selectedUser.hasEditAccess,
+  // });
+  //   }
+  // }, [selectedUser]);
 
   return (
     <div className="h-full">
@@ -72,6 +72,22 @@ export function UserForm({
         layout="vertical"
         disabled={isCreateUserInFlight}
         requiredMark="optional"
+        initialValues={
+          selectedUser
+            ? {
+                name: selectedUser.name,
+                email: selectedUser.email,
+                username: selectedUser.username,
+                openID: selectedUser.openID,
+                avatarURL: selectedUser.avatarURL,
+                areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
+                disabled: selectedUser.disabled,
+                isAdmin: selectedUser.isAdmin,
+                hasMapAccess: selectedUser.hasMapAccess,
+                hasEditAccess: selectedUser.hasEditAccess,
+              }
+            : {}
+        }
         onFinish={(values) => {
           if (selectedUser) {
             const { areaIDs, ...rest } = values as CreateUserInput;
@@ -197,7 +213,7 @@ export function UserForm({
         <Form.Item name="isAdmin" label="管理员">
           <Switch />
         </Form.Item>
-        <Form.Item name="isEditor" label="可编辑" valuePropName="checked">
+        <Form.Item name="hasEditAccess" label="可编辑" valuePropName="checked">
           <Switch />
         </Form.Item>
         <Form.Item name="hasMapAccess" label="地图权限">

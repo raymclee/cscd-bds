@@ -107,10 +107,14 @@ const (
 	FieldConsultingFirm = "consulting_firm"
 	// FieldKeyProject holds the string denoting the key_project field in the database.
 	FieldKeyProject = "key_project"
+	// FieldTenderWinCompany holds the string denoting the tender_win_company field in the database.
+	FieldTenderWinCompany = "tender_win_company"
 	// FieldTenderCode holds the string denoting the tender_code field in the database.
 	FieldTenderCode = "tender_code"
 	// FieldArchitect holds the string denoting the architect field in the database.
 	FieldArchitect = "architect"
+	// FieldDeveloper holds the string denoting the developer field in the database.
+	FieldDeveloper = "developer"
 	// FieldTenderClosingDate holds the string denoting the tender_closing_date field in the database.
 	FieldTenderClosingDate = "tender_closing_date"
 	// FieldConstructionArea holds the string denoting the construction_area field in the database.
@@ -267,8 +271,10 @@ var Columns = []string{
 	FieldDesignUnit,
 	FieldConsultingFirm,
 	FieldKeyProject,
+	FieldTenderWinCompany,
 	FieldTenderCode,
 	FieldArchitect,
+	FieldDeveloper,
 	FieldTenderClosingDate,
 	FieldConstructionArea,
 	FieldTenderWinDate,
@@ -549,6 +555,11 @@ func ByKeyProject(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldKeyProject, opts...).ToFunc()
 }
 
+// ByTenderWinCompany orders the results by the tender_win_company field.
+func ByTenderWinCompany(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenderWinCompany, opts...).ToFunc()
+}
+
 // ByTenderCode orders the results by the tender_code field.
 func ByTenderCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTenderCode, opts...).ToFunc()
@@ -557,6 +568,11 @@ func ByTenderCode(opts ...sql.OrderTermOption) OrderOption {
 // ByArchitect orders the results by the architect field.
 func ByArchitect(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldArchitect, opts...).ToFunc()
+}
+
+// ByDeveloper orders the results by the developer field.
+func ByDeveloper(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeveloper, opts...).ToFunc()
 }
 
 // ByTenderClosingDate orders the results by the tender_closing_date field.

@@ -225,12 +225,14 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldDesignUnit:                           {Type: field.TypeString, Column: tender.FieldDesignUnit},
 			tender.FieldConsultingFirm:                       {Type: field.TypeString, Column: tender.FieldConsultingFirm},
 			tender.FieldKeyProject:                           {Type: field.TypeBool, Column: tender.FieldKeyProject},
+			tender.FieldTenderWinCompany:                     {Type: field.TypeString, Column: tender.FieldTenderWinCompany},
 			tender.FieldTenderCode:                           {Type: field.TypeString, Column: tender.FieldTenderCode},
 			tender.FieldArchitect:                            {Type: field.TypeString, Column: tender.FieldArchitect},
-			tender.FieldTenderClosingDate:                    {Type: field.TypeString, Column: tender.FieldTenderClosingDate},
+			tender.FieldDeveloper:                            {Type: field.TypeString, Column: tender.FieldDeveloper},
+			tender.FieldTenderClosingDate:                    {Type: field.TypeTime, Column: tender.FieldTenderClosingDate},
 			tender.FieldConstructionArea:                     {Type: field.TypeString, Column: tender.FieldConstructionArea},
 			tender.FieldTenderWinDate:                        {Type: field.TypeTime, Column: tender.FieldTenderWinDate},
-			tender.FieldTenderWinAmount:                      {Type: field.TypeString, Column: tender.FieldTenderWinAmount},
+			tender.FieldTenderWinAmount:                      {Type: field.TypeFloat64, Column: tender.FieldTenderWinAmount},
 			tender.FieldLastTenderAmount:                     {Type: field.TypeFloat64, Column: tender.FieldLastTenderAmount},
 			tender.FieldAreaID:                               {Type: field.TypeString, Column: tender.FieldAreaID},
 			tender.FieldProvinceID:                           {Type: field.TypeString, Column: tender.FieldProvinceID},
@@ -1926,6 +1928,11 @@ func (f *TenderFilter) WhereKeyProject(p entql.BoolP) {
 	f.Where(p.Field(tender.FieldKeyProject))
 }
 
+// WhereTenderWinCompany applies the entql string predicate on the tender_win_company field.
+func (f *TenderFilter) WhereTenderWinCompany(p entql.StringP) {
+	f.Where(p.Field(tender.FieldTenderWinCompany))
+}
+
 // WhereTenderCode applies the entql string predicate on the tender_code field.
 func (f *TenderFilter) WhereTenderCode(p entql.StringP) {
 	f.Where(p.Field(tender.FieldTenderCode))
@@ -1936,8 +1943,13 @@ func (f *TenderFilter) WhereArchitect(p entql.StringP) {
 	f.Where(p.Field(tender.FieldArchitect))
 }
 
-// WhereTenderClosingDate applies the entql string predicate on the tender_closing_date field.
-func (f *TenderFilter) WhereTenderClosingDate(p entql.StringP) {
+// WhereDeveloper applies the entql string predicate on the developer field.
+func (f *TenderFilter) WhereDeveloper(p entql.StringP) {
+	f.Where(p.Field(tender.FieldDeveloper))
+}
+
+// WhereTenderClosingDate applies the entql time.Time predicate on the tender_closing_date field.
+func (f *TenderFilter) WhereTenderClosingDate(p entql.TimeP) {
 	f.Where(p.Field(tender.FieldTenderClosingDate))
 }
 
@@ -1951,8 +1963,8 @@ func (f *TenderFilter) WhereTenderWinDate(p entql.TimeP) {
 	f.Where(p.Field(tender.FieldTenderWinDate))
 }
 
-// WhereTenderWinAmount applies the entql string predicate on the tender_win_amount field.
-func (f *TenderFilter) WhereTenderWinAmount(p entql.StringP) {
+// WhereTenderWinAmount applies the entql float64 predicate on the tender_win_amount field.
+func (f *TenderFilter) WhereTenderWinAmount(p entql.Float64P) {
 	f.Where(p.Field(tender.FieldTenderWinAmount))
 }
 

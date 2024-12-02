@@ -845,12 +845,14 @@ type CreateTenderInput struct {
 	DesignUnit                           *string
 	ConsultingFirm                       *string
 	KeyProject                           *bool
+	TenderWinCompany                     *string
 	TenderCode                           *string
 	Architect                            *string
-	TenderClosingDate                    *string
+	Developer                            *string
+	TenderClosingDate                    *time.Time
 	ConstructionArea                     *string
 	TenderWinDate                        *time.Time
-	TenderWinAmount                      *string
+	TenderWinAmount                      *float64
 	LastTenderAmount                     *float64
 	AreaID                               xid.ID
 	CustomerID                           xid.ID
@@ -991,11 +993,17 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.KeyProject; v != nil {
 		m.SetKeyProject(*v)
 	}
+	if v := i.TenderWinCompany; v != nil {
+		m.SetTenderWinCompany(*v)
+	}
 	if v := i.TenderCode; v != nil {
 		m.SetTenderCode(*v)
 	}
 	if v := i.Architect; v != nil {
 		m.SetArchitect(*v)
+	}
+	if v := i.Developer; v != nil {
+		m.SetDeveloper(*v)
 	}
 	if v := i.TenderClosingDate; v != nil {
 		m.SetTenderClosingDate(*v)
@@ -1118,18 +1126,22 @@ type UpdateTenderInput struct {
 	ClearConsultingFirm                       bool
 	ConsultingFirm                            *string
 	KeyProject                                *bool
+	ClearTenderWinCompany                     bool
+	TenderWinCompany                          *string
 	ClearTenderCode                           bool
 	TenderCode                                *string
 	ClearArchitect                            bool
 	Architect                                 *string
+	ClearDeveloper                            bool
+	Developer                                 *string
 	ClearTenderClosingDate                    bool
-	TenderClosingDate                         *string
+	TenderClosingDate                         *time.Time
 	ClearConstructionArea                     bool
 	ConstructionArea                          *string
 	ClearTenderWinDate                        bool
 	TenderWinDate                             *time.Time
 	ClearTenderWinAmount                      bool
-	TenderWinAmount                           *string
+	TenderWinAmount                           *float64
 	ClearLastTenderAmount                     bool
 	LastTenderAmount                          *float64
 	AreaID                                    *xid.ID
@@ -1393,6 +1405,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.KeyProject; v != nil {
 		m.SetKeyProject(*v)
 	}
+	if i.ClearTenderWinCompany {
+		m.ClearTenderWinCompany()
+	}
+	if v := i.TenderWinCompany; v != nil {
+		m.SetTenderWinCompany(*v)
+	}
 	if i.ClearTenderCode {
 		m.ClearTenderCode()
 	}
@@ -1404,6 +1422,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.Architect; v != nil {
 		m.SetArchitect(*v)
+	}
+	if i.ClearDeveloper {
+		m.ClearDeveloper()
+	}
+	if v := i.Developer; v != nil {
+		m.SetDeveloper(*v)
 	}
 	if i.ClearTenderClosingDate {
 		m.ClearTenderClosingDate()

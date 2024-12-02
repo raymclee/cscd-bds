@@ -1,4 +1,9 @@
-import { AreaConnection, Maybe, TenderConnection } from "~/graphql/graphql";
+import {
+  AreaConnection,
+  Maybe,
+  Tender,
+  TenderConnection,
+} from "~/graphql/graphql";
 
 export function ownerTypeText(typ: Maybe<number> | undefined): string {
   if (!typ) {
@@ -156,6 +161,10 @@ export function customerSizeText(size: Maybe<number> | undefined): string {
   }
 }
 
-export function isGAOnly(areas: Maybe<AreaConnection> | undefined): Boolean {
+export function isGAOnly(areas: AreaConnection | undefined): boolean {
   return areas?.edges?.every((e) => e?.node?.code == "GA") || false;
+}
+
+export function isGA(tender: Partial<Tender> | null): boolean {
+  return tender?.area?.code === "GA";
 }

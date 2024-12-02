@@ -27,6 +27,7 @@ import {
   findTenderWithLevel,
   fixAmount,
   getDistrictZoomLevel,
+  isGAOnly,
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
@@ -95,6 +96,13 @@ export const mapIndexPageQuery = graphql`
                     creditAndPaymentRatingOverview
                     customerRelationshipRatingOverview
                     competitivePartnershipRatingOverview
+                    tenderWinCompany
+                    developer
+                    architect
+                    tenderClosingDate
+                    constructionArea
+                    tenderWinAmount
+                    tenderWinDate
                     area {
                       name
                     }
@@ -198,6 +206,7 @@ function RouteComponent() {
   );
 
   const areas = data.node?.areas?.edges?.map((e) => e?.node);
+  const gaOnly = isGAOnly(data.node?.areas as any);
 
   React.useEffect(() => {
     map?.on("complete", () => {
@@ -974,7 +983,7 @@ function RouteComponent() {
       </div>
 
       <AnimatePresence>
-        {selectedTenderStatus && <TenderStatusList />}
+        {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
       </AnimatePresence>
     </>
   );

@@ -2680,6 +2680,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldKeyProject)
 				fieldSeen[tender.FieldKeyProject] = struct{}{}
 			}
+		case "tenderWinCompany":
+			if _, ok := fieldSeen[tender.FieldTenderWinCompany]; !ok {
+				selectedFields = append(selectedFields, tender.FieldTenderWinCompany)
+				fieldSeen[tender.FieldTenderWinCompany] = struct{}{}
+			}
 		case "tenderCode":
 			if _, ok := fieldSeen[tender.FieldTenderCode]; !ok {
 				selectedFields = append(selectedFields, tender.FieldTenderCode)
@@ -2689,6 +2694,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 			if _, ok := fieldSeen[tender.FieldArchitect]; !ok {
 				selectedFields = append(selectedFields, tender.FieldArchitect)
 				fieldSeen[tender.FieldArchitect] = struct{}{}
+			}
+		case "developer":
+			if _, ok := fieldSeen[tender.FieldDeveloper]; !ok {
+				selectedFields = append(selectedFields, tender.FieldDeveloper)
+				fieldSeen[tender.FieldDeveloper] = struct{}{}
 			}
 		case "tenderClosingDate":
 			if _, ok := fieldSeen[tender.FieldTenderClosingDate]; !ok {

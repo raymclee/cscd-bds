@@ -614,6 +614,8 @@ input CreateTenderInput {
   customerRelationshipRating: Int
   customerRelationshipRatingOverview: String
   designUnit: String
+  """業主，只限港澳"""
+  developer: String
   discoveryDate: Time!
   districtID: ID!
   estimatedAmount: Float
@@ -640,14 +642,15 @@ input CreateTenderInput {
   sizeAndValueRatingOverview: String
   status: Int
   """交標日期，只限港澳"""
-  tenderClosingDate: String
+  tenderClosingDate: Time
   """投標編號，只限港澳"""
   tenderCode: String
   tenderDate: Time
   tenderForm: String
   tenderSituations: String
   """得標金額，只限港澳"""
-  tenderWinAmount: String
+  tenderWinAmount: Float
+  tenderWinCompany: String
   """得標日期，只限港澳"""
   tenderWinDate: Time
   tenderingAgency: String
@@ -1782,6 +1785,8 @@ type Tender implements Node {
   customerRelationshipRating: Int
   customerRelationshipRatingOverview: String
   designUnit: String
+  """業主，只限港澳"""
+  developer: String
   discoveryDate: Time!
   district: District!
   districtID: ID!
@@ -1814,14 +1819,15 @@ type Tender implements Node {
   sizeAndValueRatingOverview: String
   status: Int!
   """交標日期，只限港澳"""
-  tenderClosingDate: String
+  tenderClosingDate: Time
   """投標編號，只限港澳"""
   tenderCode: String
   tenderDate: Time
   tenderForm: String
   tenderSituations: String
   """得標金額，只限港澳"""
-  tenderWinAmount: String
+  tenderWinAmount: Float
+  tenderWinCompany: String
   """得標日期，只限港澳"""
   tenderWinDate: Time
   tenderingAgency: String
@@ -2217,6 +2223,22 @@ input TenderWhereInput {
   designUnitNEQ: String
   designUnitNotIn: [String!]
   designUnitNotNil: Boolean
+  """developer field predicates"""
+  developer: String
+  developerContains: String
+  developerContainsFold: String
+  developerEqualFold: String
+  developerGT: String
+  developerGTE: String
+  developerHasPrefix: String
+  developerHasSuffix: String
+  developerIn: [String!]
+  developerIsNil: Boolean
+  developerLT: String
+  developerLTE: String
+  developerNEQ: String
+  developerNotIn: [String!]
+  developerNotNil: Boolean
   """discovery_date field predicates"""
   discoveryDate: Time
   discoveryDateGT: Time
@@ -2535,20 +2557,15 @@ input TenderWhereInput {
   statusNEQ: Int
   statusNotIn: [Int!]
   """tender_closing_date field predicates"""
-  tenderClosingDate: String
-  tenderClosingDateContains: String
-  tenderClosingDateContainsFold: String
-  tenderClosingDateEqualFold: String
-  tenderClosingDateGT: String
-  tenderClosingDateGTE: String
-  tenderClosingDateHasPrefix: String
-  tenderClosingDateHasSuffix: String
-  tenderClosingDateIn: [String!]
+  tenderClosingDate: Time
+  tenderClosingDateGT: Time
+  tenderClosingDateGTE: Time
+  tenderClosingDateIn: [Time!]
   tenderClosingDateIsNil: Boolean
-  tenderClosingDateLT: String
-  tenderClosingDateLTE: String
-  tenderClosingDateNEQ: String
-  tenderClosingDateNotIn: [String!]
+  tenderClosingDateLT: Time
+  tenderClosingDateLTE: Time
+  tenderClosingDateNEQ: Time
+  tenderClosingDateNotIn: [Time!]
   tenderClosingDateNotNil: Boolean
   """tender_code field predicates"""
   tenderCode: String
@@ -2610,21 +2627,32 @@ input TenderWhereInput {
   tenderSituationsNotIn: [String!]
   tenderSituationsNotNil: Boolean
   """tender_win_amount field predicates"""
-  tenderWinAmount: String
-  tenderWinAmountContains: String
-  tenderWinAmountContainsFold: String
-  tenderWinAmountEqualFold: String
-  tenderWinAmountGT: String
-  tenderWinAmountGTE: String
-  tenderWinAmountHasPrefix: String
-  tenderWinAmountHasSuffix: String
-  tenderWinAmountIn: [String!]
+  tenderWinAmount: Float
+  tenderWinAmountGT: Float
+  tenderWinAmountGTE: Float
+  tenderWinAmountIn: [Float!]
   tenderWinAmountIsNil: Boolean
-  tenderWinAmountLT: String
-  tenderWinAmountLTE: String
-  tenderWinAmountNEQ: String
-  tenderWinAmountNotIn: [String!]
+  tenderWinAmountLT: Float
+  tenderWinAmountLTE: Float
+  tenderWinAmountNEQ: Float
+  tenderWinAmountNotIn: [Float!]
   tenderWinAmountNotNil: Boolean
+  """tender_win_company field predicates"""
+  tenderWinCompany: String
+  tenderWinCompanyContains: String
+  tenderWinCompanyContainsFold: String
+  tenderWinCompanyEqualFold: String
+  tenderWinCompanyGT: String
+  tenderWinCompanyGTE: String
+  tenderWinCompanyHasPrefix: String
+  tenderWinCompanyHasSuffix: String
+  tenderWinCompanyIn: [String!]
+  tenderWinCompanyIsNil: Boolean
+  tenderWinCompanyLT: String
+  tenderWinCompanyLTE: String
+  tenderWinCompanyNEQ: String
+  tenderWinCompanyNotIn: [String!]
+  tenderWinCompanyNotNil: Boolean
   """tender_win_date field predicates"""
   tenderWinDate: Time
   tenderWinDateGT: Time
@@ -2867,6 +2895,7 @@ input UpdateTenderInput {
   clearCustomerRelationshipRating: Boolean
   clearCustomerRelationshipRatingOverview: Boolean
   clearDesignUnit: Boolean
+  clearDeveloper: Boolean
   clearEstimatedAmount: Boolean
   clearEstimatedProjectEndDate: Boolean
   clearEstimatedProjectStartDate: Boolean
@@ -2889,6 +2918,7 @@ input UpdateTenderInput {
   clearTenderForm: Boolean
   clearTenderSituations: Boolean
   clearTenderWinAmount: Boolean
+  clearTenderWinCompany: Boolean
   clearTenderWinDate: Boolean
   clearTenderingAgency: Boolean
   clearTimeLimitRating: Boolean
@@ -2911,6 +2941,8 @@ input UpdateTenderInput {
   customerRelationshipRating: Int
   customerRelationshipRatingOverview: String
   designUnit: String
+  """業主，只限港澳"""
+  developer: String
   discoveryDate: Time
   districtID: ID
   estimatedAmount: Float
@@ -2938,14 +2970,15 @@ input UpdateTenderInput {
   sizeAndValueRatingOverview: String
   status: Int
   """交標日期，只限港澳"""
-  tenderClosingDate: String
+  tenderClosingDate: Time
   """投標編號，只限港澳"""
   tenderCode: String
   tenderDate: Time
   tenderForm: String
   tenderSituations: String
   """得標金額，只限港澳"""
-  tenderWinAmount: String
+  tenderWinAmount: Float
+  tenderWinCompany: String
   """得標日期，只限港澳"""
   tenderWinDate: Time
   tenderingAgency: String

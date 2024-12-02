@@ -620,6 +620,20 @@ func (tc *TenderCreate) SetNillableKeyProject(b *bool) *TenderCreate {
 	return tc
 }
 
+// SetTenderWinCompany sets the "tender_win_company" field.
+func (tc *TenderCreate) SetTenderWinCompany(s string) *TenderCreate {
+	tc.mutation.SetTenderWinCompany(s)
+	return tc
+}
+
+// SetNillableTenderWinCompany sets the "tender_win_company" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableTenderWinCompany(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetTenderWinCompany(*s)
+	}
+	return tc
+}
+
 // SetTenderCode sets the "tender_code" field.
 func (tc *TenderCreate) SetTenderCode(s string) *TenderCreate {
 	tc.mutation.SetTenderCode(s)
@@ -648,16 +662,30 @@ func (tc *TenderCreate) SetNillableArchitect(s *string) *TenderCreate {
 	return tc
 }
 
+// SetDeveloper sets the "developer" field.
+func (tc *TenderCreate) SetDeveloper(s string) *TenderCreate {
+	tc.mutation.SetDeveloper(s)
+	return tc
+}
+
+// SetNillableDeveloper sets the "developer" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableDeveloper(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetDeveloper(*s)
+	}
+	return tc
+}
+
 // SetTenderClosingDate sets the "tender_closing_date" field.
-func (tc *TenderCreate) SetTenderClosingDate(s string) *TenderCreate {
-	tc.mutation.SetTenderClosingDate(s)
+func (tc *TenderCreate) SetTenderClosingDate(t time.Time) *TenderCreate {
+	tc.mutation.SetTenderClosingDate(t)
 	return tc
 }
 
 // SetNillableTenderClosingDate sets the "tender_closing_date" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableTenderClosingDate(s *string) *TenderCreate {
-	if s != nil {
-		tc.SetTenderClosingDate(*s)
+func (tc *TenderCreate) SetNillableTenderClosingDate(t *time.Time) *TenderCreate {
+	if t != nil {
+		tc.SetTenderClosingDate(*t)
 	}
 	return tc
 }
@@ -691,15 +719,15 @@ func (tc *TenderCreate) SetNillableTenderWinDate(t *time.Time) *TenderCreate {
 }
 
 // SetTenderWinAmount sets the "tender_win_amount" field.
-func (tc *TenderCreate) SetTenderWinAmount(s string) *TenderCreate {
-	tc.mutation.SetTenderWinAmount(s)
+func (tc *TenderCreate) SetTenderWinAmount(f float64) *TenderCreate {
+	tc.mutation.SetTenderWinAmount(f)
 	return tc
 }
 
 // SetNillableTenderWinAmount sets the "tender_win_amount" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableTenderWinAmount(s *string) *TenderCreate {
-	if s != nil {
-		tc.SetTenderWinAmount(*s)
+func (tc *TenderCreate) SetNillableTenderWinAmount(f *float64) *TenderCreate {
+	if f != nil {
+		tc.SetTenderWinAmount(*f)
 	}
 	return tc
 }
@@ -1215,6 +1243,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
 		_node.KeyProject = value
 	}
+	if value, ok := tc.mutation.TenderWinCompany(); ok {
+		_spec.SetField(tender.FieldTenderWinCompany, field.TypeString, value)
+		_node.TenderWinCompany = &value
+	}
 	if value, ok := tc.mutation.TenderCode(); ok {
 		_spec.SetField(tender.FieldTenderCode, field.TypeString, value)
 		_node.TenderCode = value
@@ -1223,8 +1255,12 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldArchitect, field.TypeString, value)
 		_node.Architect = value
 	}
+	if value, ok := tc.mutation.Developer(); ok {
+		_spec.SetField(tender.FieldDeveloper, field.TypeString, value)
+		_node.Developer = value
+	}
 	if value, ok := tc.mutation.TenderClosingDate(); ok {
-		_spec.SetField(tender.FieldTenderClosingDate, field.TypeString, value)
+		_spec.SetField(tender.FieldTenderClosingDate, field.TypeTime, value)
 		_node.TenderClosingDate = value
 	}
 	if value, ok := tc.mutation.ConstructionArea(); ok {
@@ -1236,7 +1272,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_node.TenderWinDate = value
 	}
 	if value, ok := tc.mutation.TenderWinAmount(); ok {
-		_spec.SetField(tender.FieldTenderWinAmount, field.TypeString, value)
+		_spec.SetField(tender.FieldTenderWinAmount, field.TypeFloat64, value)
 		_node.TenderWinAmount = value
 	}
 	if value, ok := tc.mutation.LastTenderAmount(); ok {
@@ -2256,6 +2292,24 @@ func (u *TenderUpsert) UpdateKeyProject() *TenderUpsert {
 	return u
 }
 
+// SetTenderWinCompany sets the "tender_win_company" field.
+func (u *TenderUpsert) SetTenderWinCompany(v string) *TenderUpsert {
+	u.Set(tender.FieldTenderWinCompany, v)
+	return u
+}
+
+// UpdateTenderWinCompany sets the "tender_win_company" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateTenderWinCompany() *TenderUpsert {
+	u.SetExcluded(tender.FieldTenderWinCompany)
+	return u
+}
+
+// ClearTenderWinCompany clears the value of the "tender_win_company" field.
+func (u *TenderUpsert) ClearTenderWinCompany() *TenderUpsert {
+	u.SetNull(tender.FieldTenderWinCompany)
+	return u
+}
+
 // SetTenderCode sets the "tender_code" field.
 func (u *TenderUpsert) SetTenderCode(v string) *TenderUpsert {
 	u.Set(tender.FieldTenderCode, v)
@@ -2292,8 +2346,26 @@ func (u *TenderUpsert) ClearArchitect() *TenderUpsert {
 	return u
 }
 
+// SetDeveloper sets the "developer" field.
+func (u *TenderUpsert) SetDeveloper(v string) *TenderUpsert {
+	u.Set(tender.FieldDeveloper, v)
+	return u
+}
+
+// UpdateDeveloper sets the "developer" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateDeveloper() *TenderUpsert {
+	u.SetExcluded(tender.FieldDeveloper)
+	return u
+}
+
+// ClearDeveloper clears the value of the "developer" field.
+func (u *TenderUpsert) ClearDeveloper() *TenderUpsert {
+	u.SetNull(tender.FieldDeveloper)
+	return u
+}
+
 // SetTenderClosingDate sets the "tender_closing_date" field.
-func (u *TenderUpsert) SetTenderClosingDate(v string) *TenderUpsert {
+func (u *TenderUpsert) SetTenderClosingDate(v time.Time) *TenderUpsert {
 	u.Set(tender.FieldTenderClosingDate, v)
 	return u
 }
@@ -2347,7 +2419,7 @@ func (u *TenderUpsert) ClearTenderWinDate() *TenderUpsert {
 }
 
 // SetTenderWinAmount sets the "tender_win_amount" field.
-func (u *TenderUpsert) SetTenderWinAmount(v string) *TenderUpsert {
+func (u *TenderUpsert) SetTenderWinAmount(v float64) *TenderUpsert {
 	u.Set(tender.FieldTenderWinAmount, v)
 	return u
 }
@@ -2355,6 +2427,12 @@ func (u *TenderUpsert) SetTenderWinAmount(v string) *TenderUpsert {
 // UpdateTenderWinAmount sets the "tender_win_amount" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateTenderWinAmount() *TenderUpsert {
 	u.SetExcluded(tender.FieldTenderWinAmount)
+	return u
+}
+
+// AddTenderWinAmount adds v to the "tender_win_amount" field.
+func (u *TenderUpsert) AddTenderWinAmount(v float64) *TenderUpsert {
+	u.Add(tender.FieldTenderWinAmount, v)
 	return u
 }
 
@@ -3474,6 +3552,27 @@ func (u *TenderUpsertOne) UpdateKeyProject() *TenderUpsertOne {
 	})
 }
 
+// SetTenderWinCompany sets the "tender_win_company" field.
+func (u *TenderUpsertOne) SetTenderWinCompany(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderWinCompany(v)
+	})
+}
+
+// UpdateTenderWinCompany sets the "tender_win_company" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateTenderWinCompany() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderWinCompany()
+	})
+}
+
+// ClearTenderWinCompany clears the value of the "tender_win_company" field.
+func (u *TenderUpsertOne) ClearTenderWinCompany() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderWinCompany()
+	})
+}
+
 // SetTenderCode sets the "tender_code" field.
 func (u *TenderUpsertOne) SetTenderCode(v string) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -3516,8 +3615,29 @@ func (u *TenderUpsertOne) ClearArchitect() *TenderUpsertOne {
 	})
 }
 
+// SetDeveloper sets the "developer" field.
+func (u *TenderUpsertOne) SetDeveloper(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetDeveloper(v)
+	})
+}
+
+// UpdateDeveloper sets the "developer" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateDeveloper() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateDeveloper()
+	})
+}
+
+// ClearDeveloper clears the value of the "developer" field.
+func (u *TenderUpsertOne) ClearDeveloper() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearDeveloper()
+	})
+}
+
 // SetTenderClosingDate sets the "tender_closing_date" field.
-func (u *TenderUpsertOne) SetTenderClosingDate(v string) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetTenderClosingDate(v time.Time) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetTenderClosingDate(v)
 	})
@@ -3580,9 +3700,16 @@ func (u *TenderUpsertOne) ClearTenderWinDate() *TenderUpsertOne {
 }
 
 // SetTenderWinAmount sets the "tender_win_amount" field.
-func (u *TenderUpsertOne) SetTenderWinAmount(v string) *TenderUpsertOne {
+func (u *TenderUpsertOne) SetTenderWinAmount(v float64) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetTenderWinAmount(v)
+	})
+}
+
+// AddTenderWinAmount adds v to the "tender_win_amount" field.
+func (u *TenderUpsertOne) AddTenderWinAmount(v float64) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddTenderWinAmount(v)
 	})
 }
 
@@ -4896,6 +5023,27 @@ func (u *TenderUpsertBulk) UpdateKeyProject() *TenderUpsertBulk {
 	})
 }
 
+// SetTenderWinCompany sets the "tender_win_company" field.
+func (u *TenderUpsertBulk) SetTenderWinCompany(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetTenderWinCompany(v)
+	})
+}
+
+// UpdateTenderWinCompany sets the "tender_win_company" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateTenderWinCompany() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateTenderWinCompany()
+	})
+}
+
+// ClearTenderWinCompany clears the value of the "tender_win_company" field.
+func (u *TenderUpsertBulk) ClearTenderWinCompany() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearTenderWinCompany()
+	})
+}
+
 // SetTenderCode sets the "tender_code" field.
 func (u *TenderUpsertBulk) SetTenderCode(v string) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -4938,8 +5086,29 @@ func (u *TenderUpsertBulk) ClearArchitect() *TenderUpsertBulk {
 	})
 }
 
+// SetDeveloper sets the "developer" field.
+func (u *TenderUpsertBulk) SetDeveloper(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetDeveloper(v)
+	})
+}
+
+// UpdateDeveloper sets the "developer" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateDeveloper() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateDeveloper()
+	})
+}
+
+// ClearDeveloper clears the value of the "developer" field.
+func (u *TenderUpsertBulk) ClearDeveloper() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearDeveloper()
+	})
+}
+
 // SetTenderClosingDate sets the "tender_closing_date" field.
-func (u *TenderUpsertBulk) SetTenderClosingDate(v string) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetTenderClosingDate(v time.Time) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetTenderClosingDate(v)
 	})
@@ -5002,9 +5171,16 @@ func (u *TenderUpsertBulk) ClearTenderWinDate() *TenderUpsertBulk {
 }
 
 // SetTenderWinAmount sets the "tender_win_amount" field.
-func (u *TenderUpsertBulk) SetTenderWinAmount(v string) *TenderUpsertBulk {
+func (u *TenderUpsertBulk) SetTenderWinAmount(v float64) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.SetTenderWinAmount(v)
+	})
+}
+
+// AddTenderWinAmount adds v to the "tender_win_amount" field.
+func (u *TenderUpsertBulk) AddTenderWinAmount(v float64) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddTenderWinAmount(v)
 	})
 }
 

@@ -3,7 +3,7 @@ import { m } from "motion/react";
 import { useRelayEnvironment } from "react-relay";
 import { fetchQuery } from "relay-runtime";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
-import { fixAmount } from "~/lib/helper";
+import { fixAmount, isGAOnly } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
 import { useMapStore } from "~/store/map";
@@ -17,10 +17,16 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { useRouteContext } from "@tanstack/react-router";
+import dayjs from "dayjs";
 
 const MotionCard = m.create(Card);
 
-export function TenderStatusList() {
+type TenderStatusListProps = {
+  gaOnly: boolean;
+};
+
+export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
   const tenders = useAreaTenders();
   const selectedTenderStatus = useMapStore((s) => s.selectedTenderStatus);
   const filteredTenders = tenders?.filter(
@@ -56,7 +62,10 @@ export function TenderStatusList() {
           transition={{ duration: 0.2, delay: 0.1 }}
           layoutId={`tender-status-${selectedTenderStatus?.value}`}
           className={cn(
-            "mx-4 block h-[80vh] w-[clamp(400px,40vw,600px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[80vh] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            gaOnly
+              ? "w-[clamp(400px,80vw,1000px)]"
+              : "w-[clamp(400px,40vw,600px)]",
           )}
         >
           <CardHeader className="flex flex-row items-center justify-between overflow-hidden bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -80,14 +89,53 @@ export function TenderStatusList() {
                     <TableHead className="w-[4rem] text-center text-gray-300">
                       序号
                     </TableHead>
-                    <TableHead className="text-gray-300">名称</TableHead>
-                    <TableHead className="w-[6rem] text-center text-gray-300">
-                      区域
+                    <TableHead className="text-center text-gray-300">
+                      名称
                     </TableHead>
-                    <TableHead className="w-[6rem] text-center text-gray-300">
-                      <div>金额</div>
-                      (亿元)
-                    </TableHead>
+                    {gaOnly && (
+                      <>
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          业主
+                        </TableHead>
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          总包
+                        </TableHead>
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          则师
+                        </TableHead>
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          幕墙顾问
+                        </TableHead>
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          交标日期
+                        </TableHead>
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          面积
+                        </TableHead>
+                        {selectedTenderStatus?.value == 3 && (
+                          <>
+                            <TableHead className="w-[8rem] text-center text-gray-300">
+                              中标日期
+                            </TableHead>
+                            <TableHead className="w-[8rem] text-center text-gray-300">
+                              中标金额(亿元)
+                            </TableHead>
+                          </>
+                        )}
+                      </>
+                    )}
+                    {!gaOnly && (
+                      <>
+                        <TableHead className="w-[6rem] text-center text-gray-300">
+                          区域
+                        </TableHead>
+
+                        <TableHead className="w-[6rem] text-center text-gray-300">
+                          <div>金额</div>
+                          (亿元)
+                        </TableHead>
+                      </>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody className="text-white">
@@ -115,9 +163,46 @@ export function TenderStatusList() {
                     >
                       <TableCell className="text-center">{i + 1}</TableCell>
                       <TableCell>{tender?.name}</TableCell>
-                      <TableCell>{tender?.area.name}</TableCell>
-                      <TableCell className="text-center">
-                        {/* {new Intl.NumberFormat("zh-Hans-CN", {
+                      {gaOnly ? (
+                        <>
+                          <TableCell className="text-center">
+                            {tender?.developer}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {tender?.contractor}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {tender?.architect}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {tender?.facadeConsultant}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {tender?.tenderClosingDate
+                              ? dayjs(tender.tenderClosingDate).format("LL")
+                              : "-"}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {tender?.constructionArea}
+                          </TableCell>
+                          {selectedTenderStatus?.value == 3 && (
+                            <>
+                              <TableCell className="text-center">
+                                {tender?.tenderWinDate
+                                  ? dayjs(tender.tenderWinDate).format("LL")
+                                  : "-"}
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {fixAmount(tender?.tenderWinAmount)}
+                              </TableCell>
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <TableCell>{tender?.area.name}</TableCell>
+                          <TableCell className="text-center">
+                            {/* {new Intl.NumberFormat("zh-Hans-CN", {
                             style: "currency",
                             currency: "CNY",
                             trailingZeroDisplay: "auto",
@@ -125,16 +210,20 @@ export function TenderStatusList() {
                             compactDisplay: "short",
                             unitDisplay: "short",
                           }).format(tender?.estimatedAmount! / 100000000)} */}
-                        {fixAmount(tender?.estimatedAmount)}
-                      </TableCell>
+                            {fixAmount(tender?.estimatedAmount)}
+                          </TableCell>
+                        </>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-              <div className="flex w-full justify-end gap-x-4 pr-4 text-sm">
-                <div>合计: </div>
-                <div>{total}亿元</div>
-              </div>
+              {(!gaOnly || (gaOnly && selectedTenderStatus?.value == 3)) && (
+                <div className="flex w-full justify-end gap-x-4 pr-4 text-sm">
+                  <div>合计: </div>
+                  <div>{total}亿元</div>
+                </div>
+              )}
             </ScrollArea>
           </CardContent>
         </MotionCard>

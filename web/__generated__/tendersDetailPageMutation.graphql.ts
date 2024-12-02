@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d9f63bea66a7bb02246fd2531f5ce4ce>>
+ * @generated SignedSource<<91685f570d41b4e8fd0b9892c2dac7b9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -40,6 +40,7 @@ export type UpdateTenderInput = {
   clearCustomerRelationshipRating?: boolean | null | undefined;
   clearCustomerRelationshipRatingOverview?: boolean | null | undefined;
   clearDesignUnit?: boolean | null | undefined;
+  clearDeveloper?: boolean | null | undefined;
   clearEstimatedAmount?: boolean | null | undefined;
   clearEstimatedProjectEndDate?: boolean | null | undefined;
   clearEstimatedProjectStartDate?: boolean | null | undefined;
@@ -62,6 +63,7 @@ export type UpdateTenderInput = {
   clearTenderForm?: boolean | null | undefined;
   clearTenderSituations?: boolean | null | undefined;
   clearTenderWinAmount?: boolean | null | undefined;
+  clearTenderWinCompany?: boolean | null | undefined;
   clearTenderWinDate?: boolean | null | undefined;
   clearTenderingAgency?: boolean | null | undefined;
   clearTimeLimitRating?: boolean | null | undefined;
@@ -83,6 +85,7 @@ export type UpdateTenderInput = {
   customerRelationshipRating?: number | null | undefined;
   customerRelationshipRatingOverview?: string | null | undefined;
   designUnit?: string | null | undefined;
+  developer?: string | null | undefined;
   discoveryDate?: any | null | undefined;
   districtID?: string | null | undefined;
   estimatedAmount?: number | null | undefined;
@@ -108,12 +111,13 @@ export type UpdateTenderInput = {
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;
   status?: number | null | undefined;
-  tenderClosingDate?: string | null | undefined;
+  tenderClosingDate?: any | null | undefined;
   tenderCode?: string | null | undefined;
   tenderDate?: any | null | undefined;
   tenderForm?: string | null | undefined;
   tenderSituations?: string | null | undefined;
-  tenderWinAmount?: string | null | undefined;
+  tenderWinAmount?: number | null | undefined;
+  tenderWinCompany?: string | null | undefined;
   tenderWinDate?: any | null | undefined;
   tenderingAgency?: string | null | undefined;
   timeLimitRating?: number | null | undefined;
