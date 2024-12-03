@@ -439,7 +439,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.OpenID(); ok {
 		_spec.SetField(user.FieldOpenID, field.TypeString, value)
-		_node.OpenID = value
+		_node.OpenID = &value
 	}
 	if value, ok := uc.mutation.AvatarURL(); ok {
 		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)

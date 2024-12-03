@@ -73,6 +73,10 @@ export const mapIndexPageQuery = graphql`
                     customer {
                       ownerType
                     }
+                    followingSales {
+                      id
+                      name
+                    }
                     images
                     fullAddress
                     tenderDate
@@ -237,7 +241,6 @@ function RouteComponent() {
     if (adcode === 100000) {
       const markers: AMap.Marker[] = [];
       for (const area of data.node?.areas?.edges?.map((e) => e?.node) || []) {
-        console.log({ area });
         const amount = fixAmount(
           area?.tenders?.edges
             ?.map((e) => e?.node)

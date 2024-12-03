@@ -124,7 +124,7 @@ export function MapTenderDetail() {
                   selectedTender?.followingSales?.length > 0
                     ? selectedTender?.followingSales
                         ?.map((s) => s.name)
-                        .join(",")
+                        .join(", ")
                     : "-"}
                 </div>
               </div>

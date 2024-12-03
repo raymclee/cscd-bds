@@ -29,7 +29,7 @@ export function useAreaTenders() {
             case "city":
               return (
                 adcodes?.includes(t?.city?.adcode) ||
-                adcodes?.includes(t?.district.adcode)
+                adcodes?.includes(t?.district?.adcode)
               );
             // return t?.map(
             //   (e) =>

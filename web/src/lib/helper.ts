@@ -170,5 +170,9 @@ export function isGAOnly(areas: AreaConnection | undefined): boolean {
 }
 
 export function isGA(tender: Partial<Tender> | null): boolean {
-  return tender?.area?.code === "GA" || tender?.area?.code === "HW";
+  return tender?.area?.code === "GA";
+}
+
+export function isHW(tender: Partial<Tender> | null): boolean {
+  return tender?.area?.code === "HW";
 }

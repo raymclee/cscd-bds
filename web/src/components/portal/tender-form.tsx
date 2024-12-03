@@ -22,7 +22,7 @@ import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput, Tender } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { FixedToolbar } from "./fixed-toolbar";
-import { tenderStatusOptions } from "~/lib/helper";
+import { isGA, isHW, tenderStatusOptions } from "~/lib/helper";
 import { tendersDetailPageQuery$data } from "__generated__/tendersDetailPageQuery.graphql";
 import { useUpdateTender } from "~/hooks/use-update-tender";
 
@@ -98,10 +98,7 @@ export type TenderFormProps = {
   tenderNode?: tendersDetailPageQuery$data | null;
 };
 
-export function TenderForm<T extends TenderFormProps>({
-  queryRef,
-  tenderNode,
-}: TenderFormProps) {
+export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
   const data = useFragment(fragment, queryRef);
@@ -118,6 +115,9 @@ export function TenderForm<T extends TenderFormProps>({
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
 
   const { node: tender } = tenderNode || {};
+
+  const isGATender = isGA(tender as Tender);
+  const isHWTender = isHW(tender as Tender);
 
   const area = useMemo(
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
@@ -141,7 +141,7 @@ export function TenderForm<T extends TenderFormProps>({
       area
         ?.flatMap((e) => e?.node?.customers.edges)
         .map((c) => ({ label: c?.node?.name, value: c?.node?.id })),
-    [area],
+    [data],
   );
 
   const salesOptions = useMemo(
@@ -162,6 +162,7 @@ export function TenderForm<T extends TenderFormProps>({
         customerID: tender.customer?.id,
         discoveryDate: tender.discoveryDate && dayjs(tender.discoveryDate),
         createdByID: tender.createdBy?.id,
+        finderID: tender.finder?.id,
         followingSaleIDs: tender.followingSales?.map((e) => e?.id),
         provinceID: tender.province?.id,
         cityID: tender.city?.id,
@@ -185,7 +186,7 @@ export function TenderForm<T extends TenderFormProps>({
         architect: tender.architect,
       });
     }
-  }, [tender]);
+  }, [tenderNode]);
 
   return (
     <Form<CreateTenderInput>
@@ -202,11 +203,15 @@ export function TenderForm<T extends TenderFormProps>({
       layout="vertical"
       onFinish={(values) => {
         if (tender?.id) {
-          const { images, attachements, ...input } = values;
+          const { images, attachements, followingSaleIDs, ...input } = values;
           commitUpdateMutation({
             variables: {
               id: tender.id,
-              input,
+              input: {
+                ...input,
+                clearFollowingSales: followingSaleIDs?.length === 0,
+                addFollowingSaleIDs: followingSaleIDs,
+              },
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });
@@ -306,19 +311,23 @@ export function TenderForm<T extends TenderFormProps>({
           </Col>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
-              name="customerID"
+              name={isGATender || isHWTender ? "developer" : "customerID"}
               label="业主名称"
-              rules={[{ required: true }]}
+              rules={[{ required: !isGATender && !isHWTender }]}
             >
-              <Select
-                options={customerOptions}
-                showSearch
-                filterOption={(input, option) =>
-                  (option?.label ?? "")
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-              />
+              {isGATender || isHWTender ? (
+                <Input />
+              ) : (
+                <Select
+                  options={customerOptions}
+                  showSearch
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                />
+              )}
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>
@@ -366,7 +375,7 @@ export function TenderForm<T extends TenderFormProps>({
             <Form.Item
               name="provinceID"
               label="省"
-              rules={[{ required: true }]}
+              rules={[{ required: !isHWTender }]}
             >
               <Select
                 options={provinces?.map((p) => ({
@@ -383,7 +392,7 @@ export function TenderForm<T extends TenderFormProps>({
             <Form.Item
               name="cityID"
               label="市"
-              rules={[{ required: cities?.edges?.length != 0 }]}
+              rules={[{ required: cities?.edges?.length != 0 && !isHWTender }]}
             >
               <Select
                 disabled={cities?.edges?.length === 0}
@@ -400,7 +409,7 @@ export function TenderForm<T extends TenderFormProps>({
             <Form.Item
               name="districtID"
               label="区"
-              rules={[{ required: true }]}
+              rules={[{ required: !isHWTender }]}
             >
               <Select
                 options={districts?.edges

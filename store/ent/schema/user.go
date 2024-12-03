@@ -28,7 +28,7 @@ func (User) Fields() []ent.Field {
 		field.String("name"),
 		field.String("email").Unique(),
 		field.String("username").Unique(),
-		field.String("open_id").Unique().Optional(),
+		field.String("open_id").Unique().Optional().Nillable(),
 		field.String("avatar_url").Optional(),
 		field.Bool("disabled").Default(false),
 		field.Bool("is_sales").Default(false),

@@ -80,7 +80,7 @@ export function UserForm({
                 id: selectedUser.id,
                 input: {
                   ...rest,
-                  clearAreas: true,
+                  clearAreas: areaIDs?.length === 0,
                   addAreaIDs: areaIDs,
                 },
               },

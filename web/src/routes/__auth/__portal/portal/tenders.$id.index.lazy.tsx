@@ -24,6 +24,7 @@ function RouteComponent() {
             area {
               id
               name
+              code
             }
             customer {
               id

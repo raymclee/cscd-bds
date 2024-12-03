@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<17f6db8a9bc7b3e8f3d37b583f52718b>>
+ * @generated SignedSource<<84892eb28d8ec73da90ffab72063fb71>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,7 @@ export type tendersDetailPageQuery$data = {
   readonly node: {
     readonly architect?: string | null | undefined;
     readonly area?: {
+      readonly code: string;
       readonly id: string;
       readonly name: string;
     };
@@ -134,20 +135,24 @@ v5 = {
   "name": "status",
   "storageKey": null
 },
-v6 = [
-  (v2/*: any*/),
-  (v3/*: any*/)
-],
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "Area",
   "kind": "LinkedField",
   "name": "area",
   "plural": false,
-  "selections": (v6/*: any*/),
+  "selections": [
+    (v2/*: any*/),
+    (v3/*: any*/),
+    (v4/*: any*/)
+  ],
   "storageKey": null
 },
+v7 = [
+  (v2/*: any*/),
+  (v3/*: any*/)
+],
 v8 = {
   "alias": null,
   "args": null,
@@ -155,7 +160,7 @@ v8 = {
   "kind": "LinkedField",
   "name": "customer",
   "plural": false,
-  "selections": (v6/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
 v9 = {
@@ -172,7 +177,7 @@ v10 = {
   "kind": "LinkedField",
   "name": "createdBy",
   "plural": false,
-  "selections": (v6/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
 v11 = {
@@ -182,7 +187,7 @@ v11 = {
   "kind": "LinkedField",
   "name": "finder",
   "plural": false,
-  "selections": (v6/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
 v12 = {
@@ -192,7 +197,7 @@ v12 = {
   "kind": "LinkedField",
   "name": "followingSales",
   "plural": true,
-  "selections": (v6/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
 v13 = {
@@ -430,7 +435,7 @@ return {
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
-              (v7/*: any*/),
+              (v6/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
               (v10/*: any*/),
@@ -502,7 +507,7 @@ return {
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
-              (v7/*: any*/),
+              (v6/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
               (v10/*: any*/),
@@ -593,7 +598,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v6/*: any*/),
+                                    "selections": (v7/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -633,7 +638,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v6/*: any*/),
+                                    "selections": (v7/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -736,16 +741,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0ed81afe922fd342caf5c7690fceb954",
+    "cacheID": "cf477e1f402855b5157cb98699f0c76b",
     "id": null,
     "metadata": {},
     "name": "tendersDetailPageQuery",
     "operationKind": "query",
-    "text": "query tendersDetailPageQuery(\n  $id: ID!\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      code\n      status\n      area {\n        id\n        name\n      }\n      customer {\n        id\n        name\n      }\n      discoveryDate\n      createdBy {\n        id\n        name\n      }\n      finder {\n        id\n        name\n      }\n      followingSales {\n        id\n        name\n      }\n      province {\n        id\n        name\n        adcode\n      }\n      city {\n        id\n        name\n        adcode\n      }\n      district {\n        id\n        name\n        adcode\n      }\n      estimatedAmount\n      tenderDate\n      contractor\n      prepareToBid\n      projectCode\n      biddingDate\n      estimatedProjectStartDate\n      estimatedProjectEndDate\n      projectType\n      fullAddress\n      images\n      attachements\n      architect\n      visitRecords {\n        edges {\n          node {\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users(where: {isSales: true}) {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersDetailPageQuery(\n  $id: ID!\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on Tender {\n      id\n      name\n      code\n      status\n      area {\n        id\n        name\n        code\n      }\n      customer {\n        id\n        name\n      }\n      discoveryDate\n      createdBy {\n        id\n        name\n      }\n      finder {\n        id\n        name\n      }\n      followingSales {\n        id\n        name\n      }\n      province {\n        id\n        name\n        adcode\n      }\n      city {\n        id\n        name\n        adcode\n      }\n      district {\n        id\n        name\n        adcode\n      }\n      estimatedAmount\n      tenderDate\n      contractor\n      prepareToBid\n      projectCode\n      biddingDate\n      estimatedProjectStartDate\n      estimatedProjectEndDate\n      projectType\n      fullAddress\n      images\n      attachements\n      architect\n      visitRecords {\n        edges {\n          node {\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users(where: {isSales: true}) {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "12bffa352fcff059c71eaf8079f32d77";
+(node as any).hash = "f7b5c67c2c19ecdd6c5906b27f7f666f";
 
 export default node;
