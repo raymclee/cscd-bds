@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { industryText, ownerTypeText, customerSizeText } from "~/lib/helper";
 import { Plus } from "lucide-react";
 import { canEdit } from "~/lib/permission";
+import { ListFilter } from "~/components/portal/list-filter";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/customers/")({
   component: RouteComponent,
@@ -20,6 +21,8 @@ const query = graphql`
         areas {
           edges {
             node {
+              name
+              code
               customers {
                 edges {
                   node {
@@ -30,6 +33,7 @@ const query = graphql`
                     industry
                     size
                     area {
+                      code
                       name
                     }
                   }
@@ -53,6 +57,12 @@ function RouteComponent() {
   const searchText = searchParams.q || "";
   const navigate = Route.useNavigate();
   const { session } = Route.useRouteContext();
+  const area = searchParams.area;
+
+  const areas = data?.node?.areas?.edges?.map((a) => ({
+    label: a?.node?.name ?? "",
+    value: a?.node?.code ?? "",
+  }));
 
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>
@@ -60,7 +70,8 @@ function RouteComponent() {
         ?.map((c) => c?.node)
         .filter((n) =>
           n?.name.toLowerCase().includes(searchText?.toLowerCase()),
-        ),
+        )
+        .filter((n) => area === undefined || n?.area?.code === area),
     ) ?? [];
 
   const columns: TableProps<Partial<Customer>>["columns"] = [
@@ -105,31 +116,19 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Form.Item label="搜索" className="mb-0">
-            <Input.Search
-              placeholder="搜索"
-              value={searchText}
-              onChange={(e) => {
-                navigate({
-                  to: ".",
-                  search: { q: e.target.value },
-                  replace: true,
-                });
-              }}
-              allowClear
-              type="search"
-            />
-          </Form.Item>
-        </div>
-
+      <ListFilter areas={areas}>
         {canEdit(session) && (
-          <Button type="primary" icon={<Plus size={16} />}>
-            添加客户
-          </Button>
+          <Link to="" className="w-full md:w-auto">
+            <Button
+              type="primary"
+              icon={<Plus size={16} />}
+              className="w-full md:w-auto"
+            >
+              添加客户
+            </Button>
+          </Link>
         )}
-      </div>
+      </ListFilter>
       <Table
         className="rounded-lg"
         pagination={{
@@ -137,7 +136,7 @@ function RouteComponent() {
           onChange(page, pageSize) {
             navigate({
               to: ".",
-              search: { page },
+              search: (prev) => ({ ...prev, page }),
             });
           },
         }}

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e5e8c5d20f1bf2031b421060fe469647>>
+ * @generated SignedSource<<689f28949c68c9473c493ce87a0baa7a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,15 @@ export type usersPageQuery$variables = {
   last?: number | null | undefined;
 };
 export type usersPageQuery$data = {
+  readonly areas: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly code: string;
+        readonly id: string;
+        readonly name: string;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
+  };
   readonly users: {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
@@ -22,6 +31,7 @@ export type usersPageQuery$data = {
         readonly areas: {
           readonly edges: ReadonlyArray<{
             readonly node: {
+              readonly code: string;
               readonly id: string;
               readonly name: string;
             } | null | undefined;
@@ -100,7 +110,14 @@ v3 = {
           "plural": false,
           "selections": [
             (v1/*: any*/),
-            (v2/*: any*/)
+            (v2/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "code",
+              "storageKey": null
+            }
           ],
           "storageKey": null
         }
@@ -284,6 +301,7 @@ return {
     "metadata": null,
     "name": "usersPageQuery",
     "selections": [
+      (v3/*: any*/),
       {
         "alias": "users",
         "args": null,
@@ -309,6 +327,7 @@ return {
     "kind": "Operation",
     "name": "usersPageQuery",
     "selections": [
+      (v3/*: any*/),
       {
         "alias": null,
         "args": (v5/*: any*/),
@@ -327,12 +346,11 @@ return {
         "key": "usersPageQuery_users",
         "kind": "LinkedHandle",
         "name": "users"
-      },
-      (v3/*: any*/)
+      }
     ]
   },
   "params": {
-    "cacheID": "653f0a3fac1a842694e8b129d01073e5",
+    "cacheID": "70a183eec2ac1e29d309311bbefa6c26",
     "id": null,
     "metadata": {
       "connection": [
@@ -348,11 +366,11 @@ return {
     },
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isSales\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n  ...userFormFragment\n}\n\nfragment userFormFragment on Query {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query usersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isSales\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n  ...userFormFragment\n}\n\nfragment userFormFragment on Query {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "44829c96b0e3bb01565c214874c1160a";
+(node as any).hash = "7e77f85ea2242149464602d1e76d464d";
 
 export default node;

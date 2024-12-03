@@ -8,7 +8,9 @@ export const Route = createLazyFileRoute("/__auth/__dashboard")({
 function RouteComponent() {
   return (
     <LazyMotion features={domAnimation}>
-      <Outlet />
+      <div className="relative min-h-screen overflow-hidden bg-slate-900">
+        <Outlet />
+      </div>
     </LazyMotion>
   );
 }

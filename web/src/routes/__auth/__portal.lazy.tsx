@@ -2,6 +2,7 @@ import {
   createLazyFileRoute,
   Link,
   Outlet,
+  ScrollRestoration,
   useLocation,
 } from "@tanstack/react-router";
 import type { MenuProps } from "antd";
@@ -124,10 +125,11 @@ function RouteComponent() {
       // componentSize="large"
     >
       <App>
-        <Layout hasSider style={{ minHeight: "100vh" }}>
+        <Layout hasSider className="relative">
           <Sider
-            className="fixed bottom-0 start-0 top-0 h-screen"
+            className="fixed bottom-8 start-0 top-0"
             breakpoint="lg"
+            collapsedWidth={70}
             collapsible
             collapsed={sidebarCollapsed}
             onCollapse={(collapsed) =>
@@ -184,9 +186,10 @@ function RouteComponent() {
                 <Avatar src={session.avatarUrl} />
               </div>
             </Header>
-            <Content className="relative m-4 min-h-80">
+            <Content className="relative m-4 min-h-[calc(100vh-96px)]">
               {/* <Breadcrumb className="my-4" items={[]} /> */}
               {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
+              <ScrollRestoration />
               <Outlet />
               {/* </div> */}
             </Content>

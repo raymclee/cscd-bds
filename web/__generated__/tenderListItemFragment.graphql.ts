@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0e3880a87aa70b53c6d1da7c0dca7180>>
+ * @generated SignedSource<<b5ada7ca7bf8c9ff45800acda7645524>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type tenderListItemFragment$data = {
   readonly area: {
+    readonly code: string;
     readonly id: string;
     readonly name: string;
   };
@@ -27,6 +28,7 @@ export type tenderListItemFragment$data = {
   readonly images: ReadonlyArray<string> | null | undefined;
   readonly name: string;
   readonly status: number;
+  readonly tenderClosingDate: any | null | undefined;
   readonly tenderDate: any | null | undefined;
   readonly " $fragmentType": "tenderListItemFragment";
 };
@@ -49,11 +51,7 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v2 = [
-  (v0/*: any*/),
-  (v1/*: any*/)
-];
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -90,7 +88,10 @@ return {
       "kind": "LinkedField",
       "name": "customer",
       "plural": false,
-      "selections": (v2/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/)
+      ],
       "storageKey": null
     },
     {
@@ -124,11 +125,28 @@ return {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "tenderClosingDate",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "Area",
       "kind": "LinkedField",
       "name": "area",
       "plural": false,
-      "selections": (v2/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "code",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     }
   ],
@@ -137,6 +155,6 @@ return {
 };
 })();
 
-(node as any).hash = "91fc87872ddd9065c83acb0d17ea4ce8";
+(node as any).hash = "eacd8b53ac0421eff6120886d9e53d3b";
 
 export default node;

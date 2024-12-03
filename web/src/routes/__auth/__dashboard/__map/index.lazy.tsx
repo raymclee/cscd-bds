@@ -684,7 +684,7 @@ function RouteComponent() {
       iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
       label: {
         content: `
-        <div class="flex flex-col gap-1 text-xs">
+        <div class="flex flex-col gap-1 p-0.5 text-xs shadow-2xl">
           <div class="font-medium">${props.name}(${projectCount})</div>
           ${projectAmount > 0 ? `<div>${projectAmount}亿</div>` : ""}
         </div>
@@ -790,8 +790,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute bottom-[5vh] left-1/2 -translate-x-1/2 transition",
-          !tenderViewTender && "translate-y-[10vh]",
+          "fixed left-1/2 top-[10vh] -translate-x-1/2 transition xl:bottom-[5vh] xl:top-[unset]",
+          !tenderViewTender && "-translate-y-[20vh] xl:translate-y-[10vh]",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -844,8 +844,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute bottom-[5vh] left-1/2 -translate-x-1/2 transition",
-          navigations.length < 1 && "translate-y-[10vh]",
+          "fixed left-1/2 top-[10vh] -translate-x-1/2 transition xl:bottom-[5vh] xl:top-[unset]",
+          navigations.length < 1 && "-translate-y-[20vh] xl:translate-y-[10vh]",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -961,10 +961,10 @@ function RouteComponent() {
       <MapTenderList />
       <MapTenderDetail />
 
-      <div className="flex gap-2 px-4 pt-14">
+      <div className="mt-[-126vh] grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]">
         <div
           className={cn(
-            "hidden h-full w-[clamp(380px,20vw,380px)] space-y-2 transition xl:block",
+            "h-full w-full space-y-2 transition xl:block xl:w-[clamp(380px,20vw,380px)]",
             !dashboardVisible && "-translate-x-[110%]",
           )}
         >
@@ -973,11 +973,9 @@ function RouteComponent() {
           <NewTenderBoard />
         </div>
 
-        <div className="flex-1 space-y-2"></div>
-
         <div
           className={cn(
-            "hidden w-[clamp(380px,20vw,380px)] space-y-2 transition xl:block",
+            "h-full w-full space-y-2 place-self-end transition lg:col-span-2 xl:block xl:w-[clamp(380px,20vw,380px)]",
             !dashboardVisible && "translate-x-[110%]",
           )}
         >

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8237372958e6188ce2a4da24318657ef>>
+ * @generated SignedSource<<8e1fde3585faa0cbb3cc8f904c466b08>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -145,11 +145,7 @@ v6 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v7 = [
-  (v5/*: any*/),
-  (v6/*: any*/)
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -269,7 +265,10 @@ return {
                     "kind": "LinkedField",
                     "name": "customer",
                     "plural": false,
-                    "selections": (v7/*: any*/),
+                    "selections": [
+                      (v5/*: any*/),
+                      (v6/*: any*/)
+                    ],
                     "storageKey": null
                   },
                   {
@@ -303,11 +302,28 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "tenderClosingDate",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "concreteType": "Area",
                     "kind": "LinkedField",
                     "name": "area",
                     "plural": false,
-                    "selections": (v7/*: any*/),
+                    "selections": [
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "code",
+                        "storageKey": null
+                      }
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -343,12 +359,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4deb0ea9c983c16060afab8857499d61",
+    "cacheID": "0359cf19b3bd1e3dacf2917c2e8516a2",
     "id": null,
     "metadata": {},
     "name": "useCreateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    id\n    name\n  }\n}\n"
+    "text": "mutation useCreateTenderMutation(\n  $input: CreateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  createTender(input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    edges {\n      node {\n        ...tenderListItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n}\n"
   }
 };
 })();

@@ -35,6 +35,7 @@ const fragment = graphql`
         node {
           id
           name
+          code
           customers {
             edges {
               node {
@@ -110,6 +111,13 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
   const areaID = Form.useWatch("areaID", form);
   const provinceID = Form.useWatch("provinceID", form);
   const cityID = Form.useWatch("cityID", form);
+
+  const isGASelected = data.areas?.edges?.find(
+    (e) => e?.node?.id === areaID && e.node.code === "GA",
+  );
+  const isHWSelected = data.areas.edges?.find(
+    (e) => e?.node?.id === areaID && e.node.code === "HW",
+  );
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
@@ -253,7 +261,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
         }
       }}
     >
-      <Card title="項目資料">
+      <Card title="信息">
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
@@ -311,11 +319,23 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
           </Col>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
-              name={isGATender || isHWTender ? "developer" : "customerID"}
+              name={
+                isGATender || isHWTender || isGASelected || isHWSelected
+                  ? "developer"
+                  : "customerID"
+              }
               label="业主名称"
-              rules={[{ required: !isGATender && !isHWTender }]}
+              rules={[
+                {
+                  required:
+                    !isGATender &&
+                    !isHWTender &&
+                    !isGASelected &&
+                    !isHWSelected,
+                },
+              ]}
             >
-              {isGATender || isHWTender ? (
+              {isGATender || isHWTender || isGASelected || isHWSelected ? (
                 <Input />
               ) : (
                 <Select
@@ -639,7 +659,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
         </Row>
       </Card>
 
-      <Card title="投标评分" className="mt-4">
+      <Card title="评分" className="mt-4">
         <Form.Item
           name="sizeAndValueRating"
           label="规模及价值-评分（5分制）"

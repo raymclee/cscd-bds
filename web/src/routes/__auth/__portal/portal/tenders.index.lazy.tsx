@@ -9,6 +9,8 @@ import { graphql } from "relay-runtime";
 import { TenderListItem } from "~/components/portal/tender-list-item";
 import { tenderStatusOptions } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
+import { useDebounceCallback } from "usehooks-ts";
+import { ListFilter } from "~/components/portal/list-filter";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
@@ -102,79 +104,28 @@ function TenderList({
     )
     .filter((t) => statusFilter === undefined || t?.status === statusFilter)
     .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter);
-  const moreThanOneArea = (data?.areas.edges ?? []).length > 1;
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Form.Item label="搜索" className="mb-0">
-            <Input.Search
-              placeholder="搜索"
-              value={searchText}
-              onChange={(e) => {
-                navigate({
-                  to: ".",
-                  search: { q: e.target.value },
-                  replace: true,
-                });
-              }}
-              allowClear
-              type="search"
-            />
-          </Form.Item>
-          <Form.Item label="状态" className="mb-0 w-36">
-            <Select
-              placeholder="状态"
-              value={statusFilter}
-              onSelect={(value) => {
-                navigate({
-                  to: ".",
-                  search: { status: value },
-                  replace: true,
-                });
-                // setStatusFilter(value);
-              }}
-              allowClear
-              onClear={() => {
-                navigate({ to: ".", replace: true });
-              }}
-              options={tenderStatusOptions}
-            />
-          </Form.Item>
-          {moreThanOneArea && (
-            <Form.Item label="区域" className="mb-0 w-36">
-              <Select
-                placeholder="区域"
-                value={areaFilter}
-                onSelect={(value) => {
-                  navigate({
-                    to: ".",
-                    search: { area: value },
-                    replace: true,
-                  });
-                }}
-                allowClear
-                onClear={() => {
-                  navigate({ to: ".", replace: true });
-                }}
-                options={data?.areas.edges?.map((area) => ({
-                  label: area?.node?.name,
-                  value: area?.node?.code,
-                }))}
-              ></Select>
-            </Form.Item>
-          )}
-        </div>
-
+      <ListFilter
+        showStatus
+        areas={data?.areas.edges?.map((a) => ({
+          label: a?.node?.name ?? "",
+          value: a?.node?.code ?? "",
+        }))}
+      >
         {canEdit(session) && (
-          <Link to="/portal/tenders/new">
-            <Button type="primary" icon={<Plus size={16} />}>
+          <Link to="/portal/tenders/new" className="w-full md:w-auto">
+            <Button
+              type="primary"
+              icon={<Plus size={16} />}
+              className="w-full md:w-auto"
+            >
               添加商机
             </Button>
           </Link>
         )}
-      </div>
+      </ListFilter>
 
       <List
         pagination={{

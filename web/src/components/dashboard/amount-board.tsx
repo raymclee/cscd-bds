@@ -40,7 +40,7 @@ export function AmountBoard() {
   );
 
   return (
-    <>
+    <div className="@container">
       <Card
         className={cn(
           "h-[clamp(34rem,60dvh,34rem)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
@@ -62,7 +62,7 @@ export function AmountBoard() {
                 <span className="text-4xl font-black text-white">
                   {totalAmount}
                 </span>
-                <span className="hidden font-medium text-brand lg:block">
+                <span className="hidden font-medium text-brand @xs:block">
                   亿元
                 </span>
               </div>
@@ -150,6 +150,6 @@ export function AmountBoard() {
           </div>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }

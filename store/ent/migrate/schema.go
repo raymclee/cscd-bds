@@ -319,7 +319,7 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "email", Type: field.TypeString, Unique: true},
 		{Name: "username", Type: field.TypeString, Unique: true},
-		{Name: "open_id", Type: field.TypeString, Unique: true, Nullable: true},
+		{Name: "open_id", Type: field.TypeString, Nullable: true},
 		{Name: "avatar_url", Type: field.TypeString, Nullable: true},
 		{Name: "disabled", Type: field.TypeBool, Default: false},
 		{Name: "is_sales", Type: field.TypeBool, Default: false},

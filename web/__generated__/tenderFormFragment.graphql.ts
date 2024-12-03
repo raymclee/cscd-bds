@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b24edb458a37af0869c173fb2ed6b07f>>
+ * @generated SignedSource<<4351733ce6b96e432416518c81571aa9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,7 @@ export type tenderFormFragment$data = {
   readonly areas: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly code: string;
         readonly customers: {
           readonly edges: ReadonlyArray<{
             readonly node: {
@@ -175,6 +176,13 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "code",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "CustomerConnection",
                   "kind": "LinkedField",
                   "name": "customers",
@@ -333,6 +341,6 @@ return {
 };
 })();
 
-(node as any).hash = "ba3d0df4ec8a26a100496a523edb681f";
+(node as any).hash = "b3b6a00377acb79da17986aed6160b60";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1da999d6e66ddcd93d760d690786916d>>
+ * @generated SignedSource<<1d1cb6aef3aac437e9248fa6e3f9a528>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,10 +17,12 @@ export type customersPageQuery$data = {
     readonly areas?: {
       readonly edges: ReadonlyArray<{
         readonly node: {
+          readonly code: string;
           readonly customers: {
             readonly edges: ReadonlyArray<{
               readonly node: {
                 readonly area: {
+                  readonly code: string;
                   readonly name: string;
                 };
                 readonly id: string;
@@ -32,6 +34,7 @@ export type customersPageQuery$data = {
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };
+          readonly name: string;
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
@@ -61,38 +64,45 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "code",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "updatedAt",
+  "name": "id",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerType",
+  "name": "updatedAt",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "industry",
+  "name": "ownerType",
   "storageKey": null
 },
 v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "industry",
+  "storageKey": null
+},
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -141,6 +151,8 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -165,12 +177,12 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v2/*: any*/),
-                                      (v3/*: any*/),
                                       (v4/*: any*/),
+                                      (v2/*: any*/),
                                       (v5/*: any*/),
                                       (v6/*: any*/),
                                       (v7/*: any*/),
+                                      (v8/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -179,7 +191,8 @@ return {
                                         "name": "area",
                                         "plural": false,
                                         "selections": [
-                                          (v3/*: any*/)
+                                          (v3/*: any*/),
+                                          (v2/*: any*/)
                                         ],
                                         "storageKey": null
                                       }
@@ -260,6 +273,8 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -284,12 +299,12 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v2/*: any*/),
-                                      (v3/*: any*/),
                                       (v4/*: any*/),
+                                      (v2/*: any*/),
                                       (v5/*: any*/),
                                       (v6/*: any*/),
                                       (v7/*: any*/),
+                                      (v8/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -299,7 +314,8 @@ return {
                                         "plural": false,
                                         "selections": [
                                           (v3/*: any*/),
-                                          (v2/*: any*/)
+                                          (v2/*: any*/),
+                                          (v4/*: any*/)
                                         ],
                                         "storageKey": null
                                       }
@@ -312,7 +328,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -326,23 +342,23 @@ return {
             "type": "User",
             "abstractKey": null
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "3ee90ac91bd2677ee8e053c18a90caf0",
+    "cacheID": "7a8907533d79152e5100f86e44e5cc85",
     "id": null,
     "metadata": {},
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    name\n                    id\n                  }\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    code\n                    name\n                    id\n                  }\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "903b03e30ed2c2b5382b92bb75c6881b";
+(node as any).hash = "40eb19d21a9169f14a35719442f75ab0";
 
 export default node;

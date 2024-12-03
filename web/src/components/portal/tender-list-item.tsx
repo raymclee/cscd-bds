@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import {
   tenderListItemFragment$data,
   tenderListItemFragment$key,
@@ -11,6 +11,8 @@ import { tenderStatusText } from "~/lib/helper";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ImageOff } from "lucide-react";
 import { Tender } from "~/graphql/graphql";
+import { canEdit } from "~/lib/permission";
+import dayjs from "dayjs";
 
 type TenderListItemProps = {
   queryRef: tenderListItemFragment$key;
@@ -37,41 +39,47 @@ export function TenderListItem({
         fullAddress
         tenderDate
         discoveryDate
+        tenderClosingDate
         area {
           id
           name
+          code
         }
       }
     `,
     queryRef,
   );
+  const { session } = useRouteContext({ from: "/__auth" });
 
   return (
     <List.Item
-      actions={[
-        <Link
-          key="edit-link"
-          to="/portal/tenders/$id"
-          params={{ id: item.id }}
-          resetScroll={false}
-        >
-          <Button type="link" size="small">
-            修改
-          </Button>
-        </Link>,
-        <Link
-          key="draw-link"
-          to="/portal/tenders/$id/plot"
-          params={{ id: item.id }}
-          resetScroll={false}
-        >
-          <Button type="link" size="small">
-            地塊
-          </Button>
-        </Link>,
-        showDelete && <DeleteButton key="delete" tender={item} />,
-        // <a key="list-loadmore-more">more</a>,
-      ]}
+      actions={
+        canEdit(session)
+          ? [
+              <Link
+                key="edit-link"
+                to="/portal/tenders/$id"
+                params={{ id: item.id }}
+              >
+                <Button type="link" size="small">
+                  修改
+                </Button>
+              </Link>,
+              <Link
+                key="draw-link"
+                to="/portal/tenders/$id/plot"
+                params={{ id: item.id }}
+                resetScroll={false}
+              >
+                <Button type="link" size="small">
+                  地塊
+                </Button>
+              </Link>,
+              showDelete && <DeleteButton key="delete" tender={item} />,
+              // <a key="list-loadmore-more">more</a>,
+            ]
+          : []
+      }
       extra={
         <div className="aspect-[16/9] md:max-w-[280px]">
           {/* <img
@@ -109,6 +117,12 @@ export function TenderListItem({
       <div>
         <Tag>{item?.area.name}</Tag>
         <Tag>{tenderStatusText(item?.status)}</Tag>
+        <Tag>
+          {item.area.code === "GA" || item.area.code === "HW"
+            ? item.tenderDate && dayjs(item.tenderDate).format("LL")
+            : item.tenderClosingDate &&
+              dayjs(item.tenderClosingDate).format("LL")}
+        </Tag>
       </div>
     </List.Item>
   );

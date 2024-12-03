@@ -4,6 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import { Button, Form, Input, Table } from "antd";
 import { areasRouteQuery } from "__generated__/areasRouteQuery.graphql";
 import { Plus } from "lucide-react";
+import { ListFilter } from "~/components/portal/list-filter";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/__admin/areas",
@@ -47,29 +48,16 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Form.Item label="搜索" className="mb-0">
-            <Input.Search
-              placeholder="搜索"
-              value={searchText}
-              onChange={(e) => {
-                navigate({
-                  to: ".",
-                  search: { q: e.target.value },
-                  replace: true,
-                });
-              }}
-              allowClear
-              type="search"
-            />
-          </Form.Item>
-        </div>
-
-        <Button type="primary" icon={<Plus size={16} />}>
+      <ListFilter>
+        <Button
+          type="primary"
+          icon={<Plus size={16} />}
+          className="w-full md:w-auto"
+        >
           添加地区
         </Button>
-      </div>
+      </ListFilter>
+
       <Table
         dataSource={dataSource}
         // @ts-ignore
@@ -78,7 +66,10 @@ function RouteComponent() {
         pagination={{
           current: searchParams.page,
           onChange(page) {
-            navigate({ to: ".", search: { page } });
+            navigate({
+              to: ".",
+              search: (prev) => ({ ...prev, page }),
+            });
           },
         }}
       />

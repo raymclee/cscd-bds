@@ -31,7 +31,7 @@ type User struct {
 	// OpenID holds the value of the "open_id" field.
 	OpenID *string `json:"open_id,omitempty"`
 	// AvatarURL holds the value of the "avatar_url" field.
-	AvatarURL string `json:"avatar_url,omitempty"`
+	AvatarURL *string `json:"avatar_url,omitempty"`
 	// Disabled holds the value of the "disabled" field.
 	Disabled bool `json:"disabled,omitempty"`
 	// IsSales holds the value of the "is_sales" field.
@@ -210,7 +210,8 @@ func (u *User) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field avatar_url", values[i])
 			} else if value.Valid {
-				u.AvatarURL = value.String
+				u.AvatarURL = new(string)
+				*u.AvatarURL = value.String
 			}
 		case user.FieldDisabled:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -335,8 +336,10 @@ func (u *User) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("avatar_url=")
-	builder.WriteString(u.AvatarURL)
+	if v := u.AvatarURL; v != nil {
+		builder.WriteString("avatar_url=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("disabled=")
 	builder.WriteString(fmt.Sprintf("%v", u.Disabled))

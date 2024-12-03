@@ -16,6 +16,7 @@ import { Plus } from "lucide-react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
+import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
 import { User } from "~/graphql/graphql";
 import { useDeleteUser } from "~/hooks/use-delete-user";
@@ -29,6 +30,15 @@ export const Route = createLazyFileRoute(
 
 const query = graphql`
   query usersPageQuery($first: Int, $last: Int) {
+    areas {
+      edges {
+        node {
+          id
+          name
+          code
+        }
+      }
+    }
     users(first: $first, last: $last) @connection(key: "usersPageQuery_users") {
       __id
       edges {
@@ -45,6 +55,7 @@ const query = graphql`
               node {
                 id
                 name
+                code
               }
             }
           }
@@ -70,12 +81,16 @@ function RouteComponent() {
   const { message } = App.useApp();
   const { session } = Route.useRouteContext();
   const searchText = searchParams.q || "";
+  const area = searchParams.area;
 
   const dataSource =
     data.users.edges
       ?.map((e) => e?.node)
-      .filter((n) =>
-        n?.name?.toLowerCase().includes(searchText.toLowerCase()),
+      .filter((n) => n?.name?.toLowerCase().includes(searchText.toLowerCase()))
+      .filter(
+        (n) =>
+          area === undefined ||
+          n?.areas?.edges?.some((a) => a?.node?.code === area),
       ) ?? [];
 
   const columns: TableProps<User>["columns"] = [
@@ -196,32 +211,20 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Form.Item label="搜索" className="mb-0">
-            <Input.Search
-              placeholder="搜索"
-              value={searchText}
-              onChange={(e) => {
-                navigate({
-                  to: ".",
-                  search: { q: e.target.value },
-                  replace: true,
-                });
-              }}
-              allowClear
-              type="search"
-            />
-          </Form.Item>
-        </div>
-
+      <ListFilter
+        areas={data.areas.edges?.map((a) => ({
+          label: a?.node?.name ?? "",
+          value: a?.node?.code ?? "",
+        }))}
+      >
         <UserFormDrawer
           queryRef={data}
           connectionID={data.users.__id}
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
         />
-      </div>
+      </ListFilter>
+
       <Table
         dataSource={dataSource}
         // @ts-ignore
@@ -230,7 +233,10 @@ function RouteComponent() {
         pagination={{
           current: searchParams.page,
           onChange(page) {
-            navigate({ to: ".", search: { page } });
+            navigate({
+              to: ".",
+              search: (prev) => ({ ...prev, page }),
+            });
           },
         }}
       />
@@ -262,6 +268,7 @@ function UserFormDrawer({
         type="primary"
         icon={<Plus size={16} />}
         onClick={() => setOpen(true)}
+        className="w-full md:w-auto"
       >
         添加用户
       </Button>

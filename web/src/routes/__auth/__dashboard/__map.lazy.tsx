@@ -25,7 +25,6 @@ function RouteComponent() {
 
   React.useEffect(() => {
     return () => {
-      map?.destroy();
       useMapStore.setState({
         selectedArea: null,
         currentAreaNode: null,
@@ -35,37 +34,39 @@ function RouteComponent() {
         tenderViewTender: null,
         selectedTenderStatus: null,
       });
+      map?.destroy();
     };
   }, [map]);
 
   return (
     <>
-      <div className="relative min-h-dvh w-full overflow-hidden">
-        <div id="map" className="absolute inset-0"></div>
+      <div
+        id="map"
+        className="fixed left-0 right-0 top-0 h-[50vh] xl:bottom-0 xl:h-full"
+      ></div>
 
-        <div className="absolute flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
-          <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
-            远东幕墙市场拓展地图
-          </div>
+      <div className="fixed left-0 right-0 top-0 flex h-[72px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white xl:h-[96px]">
+        <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
+          远东幕墙市场拓展地图
         </div>
-
-        <div className="absolute left-4 top-2">
-          {((session.hasMapAccess && session.hasEditAccess) ||
-            session.isAdmin) && (
-            <Tooltip title="后台">
-              <Link to="/portal">
-                <Button
-                  className="border-0 bg-gradient-to-r from-sky-900 to-sky-600 text-white drop-shadow-2xl"
-                  size="small"
-                  shape="circle"
-                  icon={<Blocks size={14} />}
-                ></Button>
-              </Link>
-            </Tooltip>
-          )}
-        </div>
-        <Outlet />
       </div>
+
+      <div className="fixed left-4 top-4 lg:top-2">
+        {((session.hasMapAccess && session.hasEditAccess) ||
+          session.isAdmin) && (
+          <Tooltip title="后台">
+            <Link to="/portal">
+              <Button
+                className="border-0 bg-gradient-to-r from-sky-900 to-sky-600 text-white drop-shadow-2xl"
+                size="small"
+                shape="circle"
+                icon={<Blocks size={14} />}
+              ></Button>
+            </Link>
+          </Tooltip>
+        )}
+      </div>
+      <Outlet />
     </>
   );
 }

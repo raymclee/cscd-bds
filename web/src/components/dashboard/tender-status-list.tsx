@@ -112,7 +112,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                         <TableHead className="w-[7rem] text-center text-gray-300">
                           幕墙顾问
                         </TableHead>
-                        <TableHead className="w-[7rem] text-center text-gray-300">
+                        <TableHead className="w-[8rem] text-center text-gray-300">
                           交标日期
                         </TableHead>
                         <TableHead className="w-[7rem] text-center text-gray-300">
@@ -168,7 +168,9 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                       }}
                     >
                       <TableCell className="text-center">{i + 1}</TableCell>
-                      <TableCell>{tender?.name}</TableCell>
+                      <TableCell className="text-center">
+                        {tender?.name}
+                      </TableCell>
                       {gaView ? (
                         <>
                           <TableCell className="text-center">

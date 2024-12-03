@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2ba7e74f08c73c556e68f7f1535b1827>>
+ * @generated SignedSource<<086afe3c6eb7388de8f5b4aa8db72b06>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,6 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
 export type UpdateTenderInput = {
   addFollowingSaleIDs?: ReadonlyArray<string> | null | undefined;
   addVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
@@ -134,7 +133,67 @@ export type useUpdateTenderMutation$variables = {
 };
 export type useUpdateTenderMutation$data = {
   readonly updateTender: {
-    readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
+    readonly architect: string | null | undefined;
+    readonly area: {
+      readonly code: string;
+      readonly id: string;
+      readonly name: string;
+    };
+    readonly attachements: ReadonlyArray<string> | null | undefined;
+    readonly biddingDate: any | null | undefined;
+    readonly city: {
+      readonly adcode: number;
+      readonly id: string;
+      readonly name: string;
+    } | null | undefined;
+    readonly code: string;
+    readonly contractor: string | null | undefined;
+    readonly createdBy: {
+      readonly id: string;
+      readonly name: string;
+    };
+    readonly customer: {
+      readonly id: string;
+      readonly name: string;
+    } | null | undefined;
+    readonly discoveryDate: any;
+    readonly district: {
+      readonly adcode: number;
+      readonly id: string;
+      readonly name: string;
+    } | null | undefined;
+    readonly estimatedAmount: number | null | undefined;
+    readonly estimatedProjectEndDate: any | null | undefined;
+    readonly estimatedProjectStartDate: any | null | undefined;
+    readonly finder: {
+      readonly id: string;
+      readonly name: string;
+    };
+    readonly followingSales: ReadonlyArray<{
+      readonly id: string;
+      readonly name: string;
+    }> | null | undefined;
+    readonly fullAddress: string | null | undefined;
+    readonly id: string;
+    readonly images: ReadonlyArray<string> | null | undefined;
+    readonly name: string;
+    readonly prepareToBid: boolean;
+    readonly projectCode: string | null | undefined;
+    readonly projectType: string | null | undefined;
+    readonly province: {
+      readonly adcode: number;
+      readonly id: string;
+      readonly name: string;
+    } | null | undefined;
+    readonly status: number;
+    readonly tenderDate: any | null | undefined;
+    readonly visitRecords: {
+      readonly edges: ReadonlyArray<{
+        readonly node: {
+          readonly id: string;
+        } | null | undefined;
+      } | null | undefined> | null | undefined;
+    };
   };
 };
 export type useUpdateTenderMutation = {
@@ -155,35 +214,291 @@ var v0 = [
     "name": "input"
   }
 ],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "id"
-  },
-  {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input"
-  }
-],
-v2 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "code",
+  "storageKey": null
+},
 v4 = [
+  (v1/*: any*/),
+  (v2/*: any*/)
+],
+v5 = [
+  (v1/*: any*/),
   (v2/*: any*/),
-  (v3/*: any*/)
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "adcode",
+    "storageKey": null
+  }
+],
+v6 = [
+  {
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "id"
+      },
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input"
+      }
+    ],
+    "concreteType": "Tender",
+    "kind": "LinkedField",
+    "name": "updateTender",
+    "plural": false,
+    "selections": [
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "status",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Area",
+        "kind": "LinkedField",
+        "name": "area",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
+          (v3/*: any*/)
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Customer",
+        "kind": "LinkedField",
+        "name": "customer",
+        "plural": false,
+        "selections": (v4/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "discoveryDate",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "createdBy",
+        "plural": false,
+        "selections": (v4/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "finder",
+        "plural": false,
+        "selections": (v4/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "followingSales",
+        "plural": true,
+        "selections": (v4/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Province",
+        "kind": "LinkedField",
+        "name": "province",
+        "plural": false,
+        "selections": (v5/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "City",
+        "kind": "LinkedField",
+        "name": "city",
+        "plural": false,
+        "selections": (v5/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "District",
+        "kind": "LinkedField",
+        "name": "district",
+        "plural": false,
+        "selections": (v5/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "estimatedAmount",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "tenderDate",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "contractor",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "prepareToBid",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "projectCode",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "biddingDate",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "estimatedProjectStartDate",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "estimatedProjectEndDate",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "projectType",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "fullAddress",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "images",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "attachements",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "architect",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "VisitRecordConnection",
+        "kind": "LinkedField",
+        "name": "visitRecords",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "VisitRecordEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "VisitRecord",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v1/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
+  }
 ];
 return {
   "fragment": {
@@ -191,24 +506,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "useUpdateTenderMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Tender",
-        "kind": "LinkedField",
-        "name": "updateTender",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "tenderListItemFragment"
-          }
-        ],
-        "storageKey": null
-      }
-    ],
+    "selections": (v6/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -217,102 +515,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useUpdateTenderMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Tender",
-        "kind": "LinkedField",
-        "name": "updateTender",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "status",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "estimatedAmount",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Customer",
-            "kind": "LinkedField",
-            "name": "customer",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "images",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "fullAddress",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "tenderDate",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "discoveryDate",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Area",
-            "kind": "LinkedField",
-            "name": "area",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "ffa7f4250146e09ca07d1173c085ac0b",
+    "cacheID": "3c0cef369fe92518e924524f48ee8610",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n) {\n  updateTender(id: $id, input: $input) {\n    ...tenderListItemFragment\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    id\n    name\n  }\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n) {\n  updateTender(id: $id, input: $input) {\n    id\n    name\n    code\n    status\n    area {\n      id\n      name\n      code\n    }\n    customer {\n      id\n      name\n    }\n    discoveryDate\n    createdBy {\n      id\n      name\n    }\n    finder {\n      id\n      name\n    }\n    followingSales {\n      id\n      name\n    }\n    province {\n      id\n      name\n      adcode\n    }\n    city {\n      id\n      name\n      adcode\n    }\n    district {\n      id\n      name\n      adcode\n    }\n    estimatedAmount\n    tenderDate\n    contractor\n    prepareToBid\n    projectCode\n    biddingDate\n    estimatedProjectStartDate\n    estimatedProjectEndDate\n    projectType\n    fullAddress\n    images\n    attachements\n    architect\n    visitRecords {\n      edges {\n        node {\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "213a9bf7e7c7ddd74c3ea332c95de32c";
+(node as any).hash = "b717544d73ba3866431a1a5d13173eba";
 
 export default node;

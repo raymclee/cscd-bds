@@ -8,6 +8,7 @@ import * as v from "valibot";
 const customerSearchSchema = v.object({
   page: v.optional(v.fallback(v.number(), 1), 1),
   q: v.optional(v.string()),
+  area: v.optional(v.string()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/customers/")({
