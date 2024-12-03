@@ -859,9 +859,9 @@ type CreateTenderInput struct {
 	FinderID                             xid.ID
 	CreatedByID                          xid.ID
 	FollowingSaleIDs                     []xid.ID
-	ProvinceID                           xid.ID
+	ProvinceID                           *xid.ID
 	CityID                               *xid.ID
-	DistrictID                           xid.ID
+	DistrictID                           *xid.ID
 	VisitRecordIDs                       []xid.ID
 }
 
@@ -1029,11 +1029,15 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.FollowingSaleIDs; len(v) > 0 {
 		m.AddFollowingSaleIDs(v...)
 	}
-	m.SetProvinceID(i.ProvinceID)
+	if v := i.ProvinceID; v != nil {
+		m.SetProvinceID(*v)
+	}
 	if v := i.CityID; v != nil {
 		m.SetCityID(*v)
 	}
-	m.SetDistrictID(i.DistrictID)
+	if v := i.DistrictID; v != nil {
+		m.SetDistrictID(*v)
+	}
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
@@ -1154,9 +1158,11 @@ type UpdateTenderInput struct {
 	ClearFollowingSales                       bool
 	AddFollowingSaleIDs                       []xid.ID
 	RemoveFollowingSaleIDs                    []xid.ID
+	ClearProvince                             bool
 	ProvinceID                                *xid.ID
 	ClearCity                                 bool
 	CityID                                    *xid.ID
+	ClearDistrict                             bool
 	DistrictID                                *xid.ID
 	ClearVisitRecords                         bool
 	AddVisitRecordIDs                         []xid.ID
@@ -1486,6 +1492,9 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.RemoveFollowingSaleIDs; len(v) > 0 {
 		m.RemoveFollowingSaleIDs(v...)
 	}
+	if i.ClearProvince {
+		m.ClearProvince()
+	}
 	if v := i.ProvinceID; v != nil {
 		m.SetProvinceID(*v)
 	}
@@ -1494,6 +1503,9 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.CityID; v != nil {
 		m.SetCityID(*v)
+	}
+	if i.ClearDistrict {
+		m.ClearDistrict()
 	}
 	if v := i.DistrictID; v != nil {
 		m.SetDistrictID(*v)

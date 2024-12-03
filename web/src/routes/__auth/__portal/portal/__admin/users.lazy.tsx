@@ -62,7 +62,6 @@ const query = graphql`
 
 function RouteComponent() {
   const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData());
-  const [searchText, setSearchText] = React.useState("");
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
@@ -70,6 +69,7 @@ function RouteComponent() {
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const { session } = Route.useRouteContext();
+  const searchText = searchParams.q || "";
 
   const dataSource =
     data.users.edges
@@ -202,7 +202,13 @@ function RouteComponent() {
             <Input.Search
               placeholder="搜索"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                navigate({
+                  to: ".",
+                  search: { q: e.target.value },
+                  replace: true,
+                });
+              }}
               allowClear
               type="search"
             />

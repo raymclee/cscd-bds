@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ac18a503df50cffcfb442a9940ce986a>>
+ * @generated SignedSource<<074f86195cd2a168ebe06483080bb3cf>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -42,6 +42,7 @@ export type UpdateTenderInput = {
   clearCustomerRelationshipRatingOverview?: boolean | null | undefined;
   clearDesignUnit?: boolean | null | undefined;
   clearDeveloper?: boolean | null | undefined;
+  clearDistrict?: boolean | null | undefined;
   clearEstimatedAmount?: boolean | null | undefined;
   clearEstimatedProjectEndDate?: boolean | null | undefined;
   clearEstimatedProjectStartDate?: boolean | null | undefined;
@@ -55,6 +56,7 @@ export type UpdateTenderInput = {
   clearProjectCode?: boolean | null | undefined;
   clearProjectDefinition?: boolean | null | undefined;
   clearProjectType?: boolean | null | undefined;
+  clearProvince?: boolean | null | undefined;
   clearRemark?: boolean | null | undefined;
   clearSizeAndValueRating?: boolean | null | undefined;
   clearSizeAndValueRatingOverview?: boolean | null | undefined;

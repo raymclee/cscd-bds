@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6593dafe53225cd68378eb04ac7da346>>
+ * @generated SignedSource<<97b772f173fa9d1d1c33f5855c79f211>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,7 @@ export type tendersTenderListFragment$data = {
   readonly areas: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly code: string;
         readonly id: string;
         readonly name: string;
         readonly tenders: {
@@ -21,6 +22,7 @@ export type tendersTenderListFragment$data = {
           readonly edges: ReadonlyArray<{
             readonly node: {
               readonly area: {
+                readonly code: string;
                 readonly id: string;
               };
               readonly id: string;
@@ -49,6 +51,13 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "code",
+  "storageKey": null
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -115,6 +124,7 @@ return {
               "selections": [
                 (v0/*: any*/),
                 (v1/*: any*/),
+                (v2/*: any*/),
                 {
                   "alias": "tenders",
                   "args": [
@@ -146,7 +156,7 @@ return {
                           "plural": false,
                           "selections": [
                             (v0/*: any*/),
-                            (v1/*: any*/),
+                            (v2/*: any*/),
                             {
                               "alias": null,
                               "args": null,
@@ -162,7 +172,8 @@ return {
                               "name": "area",
                               "plural": false,
                               "selections": [
-                                (v0/*: any*/)
+                                (v0/*: any*/),
+                                (v1/*: any*/)
                               ],
                               "storageKey": null
                             },
@@ -260,6 +271,6 @@ return {
 };
 })();
 
-(node as any).hash = "0d7b93f4a7f9670e9ac633828007170a";
+(node as any).hash = "9395a84a11d666a150aecca9de847da3";
 
 export default node;

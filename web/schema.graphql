@@ -617,7 +617,7 @@ input CreateTenderInput {
   """業主，只限港澳"""
   developer: String
   discoveryDate: Time!
-  districtID: ID!
+  districtID: ID
   estimatedAmount: Float
   estimatedProjectEndDate: Time
   estimatedProjectStartDate: Time
@@ -636,7 +636,7 @@ input CreateTenderInput {
   projectCode: String
   projectDefinition: String
   projectType: String
-  provinceID: ID!
+  provinceID: ID
   remark: String
   sizeAndValueRating: Int
   sizeAndValueRatingOverview: String
@@ -1790,8 +1790,8 @@ type Tender implements Node {
   """業主，只限港澳"""
   developer: String
   discoveryDate: Time!
-  district: District!
-  districtID: ID!
+  district: District
+  districtID: ID
   estimatedAmount: Float
   estimatedProjectEndDate: Time
   estimatedProjectStartDate: Time
@@ -1814,8 +1814,8 @@ type Tender implements Node {
   projectCode: String
   projectDefinition: String
   projectType: String
-  province: Province!
-  provinceID: ID!
+  province: Province
+  provinceID: ID
   remark: String
   sizeAndValueRating: Int
   sizeAndValueRatingOverview: String
@@ -2262,10 +2262,12 @@ input TenderWhereInput {
   districtIDHasPrefix: ID
   districtIDHasSuffix: ID
   districtIDIn: [ID!]
+  districtIDIsNil: Boolean
   districtIDLT: ID
   districtIDLTE: ID
   districtIDNEQ: ID
   districtIDNotIn: [ID!]
+  districtIDNotNil: Boolean
   """estimated_amount field predicates"""
   estimatedAmount: Float
   estimatedAmountGT: Float
@@ -2504,10 +2506,12 @@ input TenderWhereInput {
   provinceIDHasPrefix: ID
   provinceIDHasSuffix: ID
   provinceIDIn: [ID!]
+  provinceIDIsNil: Boolean
   provinceIDLT: ID
   provinceIDLTE: ID
   provinceIDNEQ: ID
   provinceIDNotIn: [ID!]
+  provinceIDNotNil: Boolean
   """remark field predicates"""
   remark: String
   remarkContains: String
@@ -2901,6 +2905,7 @@ input UpdateTenderInput {
   clearCustomerRelationshipRatingOverview: Boolean
   clearDesignUnit: Boolean
   clearDeveloper: Boolean
+  clearDistrict: Boolean
   clearEstimatedAmount: Boolean
   clearEstimatedProjectEndDate: Boolean
   clearEstimatedProjectStartDate: Boolean
@@ -2914,6 +2919,7 @@ input UpdateTenderInput {
   clearProjectCode: Boolean
   clearProjectDefinition: Boolean
   clearProjectType: Boolean
+  clearProvince: Boolean
   clearRemark: Boolean
   clearSizeAndValueRating: Boolean
   clearSizeAndValueRatingOverview: Boolean

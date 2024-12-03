@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1a3cc3d7a9f7b0a6e0733adaa09845e8>>
+ * @generated SignedSource<<b91d62bccc797238d55ca51985ca5012>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -86,13 +86,16 @@ v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "code",
   "storageKey": null
 },
-v8 = [
-  (v6/*: any*/),
-  (v7/*: any*/)
-];
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -190,6 +193,7 @@ return {
                         "selections": [
                           (v6/*: any*/),
                           (v7/*: any*/),
+                          (v8/*: any*/),
                           {
                             "alias": null,
                             "args": (v4/*: any*/),
@@ -215,7 +219,7 @@ return {
                                     "plural": false,
                                     "selections": [
                                       (v6/*: any*/),
-                                      (v7/*: any*/),
+                                      (v8/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -230,7 +234,11 @@ return {
                                         "kind": "LinkedField",
                                         "name": "area",
                                         "plural": false,
-                                        "selections": (v8/*: any*/),
+                                        "selections": [
+                                          (v6/*: any*/),
+                                          (v7/*: any*/),
+                                          (v8/*: any*/)
+                                        ],
                                         "storageKey": null
                                       },
                                       {
@@ -254,7 +262,10 @@ return {
                                         "kind": "LinkedField",
                                         "name": "customer",
                                         "plural": false,
-                                        "selections": (v8/*: any*/),
+                                        "selections": [
+                                          (v6/*: any*/),
+                                          (v8/*: any*/)
+                                        ],
                                         "storageKey": null
                                       },
                                       {
@@ -384,12 +395,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c438abb778bbeec3abef3b2859a7679c",
+    "cacheID": "bfbb914e449f0272efe1378f3f30b03e",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    id\n    name\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              area {\n                id\n              }\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  area {\n    id\n    name\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              area {\n                id\n                code\n              }\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

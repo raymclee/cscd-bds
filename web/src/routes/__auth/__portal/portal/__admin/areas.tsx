@@ -5,6 +5,7 @@ import * as v from "valibot";
 
 const areaSearchParams = v.object({
   page: v.optional(v.number(), 1),
+  q: v.optional(v.string()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/__admin/areas")({

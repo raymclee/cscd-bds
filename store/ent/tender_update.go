@@ -1145,6 +1145,12 @@ func (tu *TenderUpdate) SetNillableProvinceID(x *xid.ID) *TenderUpdate {
 	return tu
 }
 
+// ClearProvinceID clears the value of the "province_id" field.
+func (tu *TenderUpdate) ClearProvinceID() *TenderUpdate {
+	tu.mutation.ClearProvinceID()
+	return tu
+}
+
 // SetCityID sets the "city_id" field.
 func (tu *TenderUpdate) SetCityID(x xid.ID) *TenderUpdate {
 	tu.mutation.SetCityID(x)
@@ -1176,6 +1182,12 @@ func (tu *TenderUpdate) SetNillableDistrictID(x *xid.ID) *TenderUpdate {
 	if x != nil {
 		tu.SetDistrictID(*x)
 	}
+	return tu
+}
+
+// ClearDistrictID clears the value of the "district_id" field.
+func (tu *TenderUpdate) ClearDistrictID() *TenderUpdate {
+	tu.mutation.ClearDistrictID()
 	return tu
 }
 
@@ -1452,12 +1464,6 @@ func (tu *TenderUpdate) check() error {
 	}
 	if tu.mutation.CreatedByCleared() && len(tu.mutation.CreatedByIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.created_by"`)
-	}
-	if tu.mutation.ProvinceCleared() && len(tu.mutation.ProvinceIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.province"`)
-	}
-	if tu.mutation.DistrictCleared() && len(tu.mutation.DistrictIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.district"`)
 	}
 	return nil
 }
@@ -3239,6 +3245,12 @@ func (tuo *TenderUpdateOne) SetNillableProvinceID(x *xid.ID) *TenderUpdateOne {
 	return tuo
 }
 
+// ClearProvinceID clears the value of the "province_id" field.
+func (tuo *TenderUpdateOne) ClearProvinceID() *TenderUpdateOne {
+	tuo.mutation.ClearProvinceID()
+	return tuo
+}
+
 // SetCityID sets the "city_id" field.
 func (tuo *TenderUpdateOne) SetCityID(x xid.ID) *TenderUpdateOne {
 	tuo.mutation.SetCityID(x)
@@ -3270,6 +3282,12 @@ func (tuo *TenderUpdateOne) SetNillableDistrictID(x *xid.ID) *TenderUpdateOne {
 	if x != nil {
 		tuo.SetDistrictID(*x)
 	}
+	return tuo
+}
+
+// ClearDistrictID clears the value of the "district_id" field.
+func (tuo *TenderUpdateOne) ClearDistrictID() *TenderUpdateOne {
+	tuo.mutation.ClearDistrictID()
 	return tuo
 }
 
@@ -3559,12 +3577,6 @@ func (tuo *TenderUpdateOne) check() error {
 	}
 	if tuo.mutation.CreatedByCleared() && len(tuo.mutation.CreatedByIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.created_by"`)
-	}
-	if tuo.mutation.ProvinceCleared() && len(tuo.mutation.ProvinceIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.province"`)
-	}
-	if tuo.mutation.DistrictCleared() && len(tuo.mutation.DistrictIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.district"`)
 	}
 	return nil
 }

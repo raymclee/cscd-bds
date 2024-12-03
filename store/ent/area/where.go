@@ -332,6 +332,16 @@ func CenterLTE(v *geo.GeoJson) predicate.Area {
 	return predicate.Area(sql.FieldLTE(FieldCenter, v))
 }
 
+// CenterIsNil applies the IsNil predicate on the "center" field.
+func CenterIsNil() predicate.Area {
+	return predicate.Area(sql.FieldIsNull(FieldCenter))
+}
+
+// CenterNotNil applies the NotNil predicate on the "center" field.
+func CenterNotNil() predicate.Area {
+	return predicate.Area(sql.FieldNotNull(FieldCenter))
+}
+
 // HasCustomers applies the HasEdge predicate on the "customers" edge.
 func HasCustomers() predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {

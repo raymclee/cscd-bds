@@ -4253,6 +4253,8 @@ type TenderWhereInput struct {
 	ProvinceIDContains     *xid.ID  `json:"provinceIDContains,omitempty"`
 	ProvinceIDHasPrefix    *xid.ID  `json:"provinceIDHasPrefix,omitempty"`
 	ProvinceIDHasSuffix    *xid.ID  `json:"provinceIDHasSuffix,omitempty"`
+	ProvinceIDIsNil        bool     `json:"provinceIDIsNil,omitempty"`
+	ProvinceIDNotNil       bool     `json:"provinceIDNotNil,omitempty"`
 	ProvinceIDEqualFold    *xid.ID  `json:"provinceIDEqualFold,omitempty"`
 	ProvinceIDContainsFold *xid.ID  `json:"provinceIDContainsFold,omitempty"`
 
@@ -4285,6 +4287,8 @@ type TenderWhereInput struct {
 	DistrictIDContains     *xid.ID  `json:"districtIDContains,omitempty"`
 	DistrictIDHasPrefix    *xid.ID  `json:"districtIDHasPrefix,omitempty"`
 	DistrictIDHasSuffix    *xid.ID  `json:"districtIDHasSuffix,omitempty"`
+	DistrictIDIsNil        bool     `json:"districtIDIsNil,omitempty"`
+	DistrictIDNotNil       bool     `json:"districtIDNotNil,omitempty"`
 	DistrictIDEqualFold    *xid.ID  `json:"districtIDEqualFold,omitempty"`
 	DistrictIDContainsFold *xid.ID  `json:"districtIDContainsFold,omitempty"`
 
@@ -6450,6 +6454,12 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.ProvinceIDHasSuffix != nil {
 		predicates = append(predicates, tender.ProvinceIDHasSuffix(*i.ProvinceIDHasSuffix))
 	}
+	if i.ProvinceIDIsNil {
+		predicates = append(predicates, tender.ProvinceIDIsNil())
+	}
+	if i.ProvinceIDNotNil {
+		predicates = append(predicates, tender.ProvinceIDNotNil())
+	}
 	if i.ProvinceIDEqualFold != nil {
 		predicates = append(predicates, tender.ProvinceIDEqualFold(*i.ProvinceIDEqualFold))
 	}
@@ -6533,6 +6543,12 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.DistrictIDHasSuffix != nil {
 		predicates = append(predicates, tender.DistrictIDHasSuffix(*i.DistrictIDHasSuffix))
+	}
+	if i.DistrictIDIsNil {
+		predicates = append(predicates, tender.DistrictIDIsNil())
+	}
+	if i.DistrictIDNotNil {
+		predicates = append(predicates, tender.DistrictIDNotNil())
 	}
 	if i.DistrictIDEqualFold != nil {
 		predicates = append(predicates, tender.DistrictIDEqualFold(*i.DistrictIDEqualFold))

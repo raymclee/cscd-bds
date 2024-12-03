@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<843376709c176729f014adb11ab12f61>>
+ * @generated SignedSource<<17f6db8a9bc7b3e8f3d37b583f52718b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -43,7 +43,7 @@ export type tendersDetailPageQuery$data = {
       readonly adcode: number;
       readonly id: string;
       readonly name: string;
-    };
+    } | null | undefined;
     readonly estimatedAmount?: number | null | undefined;
     readonly estimatedProjectEndDate?: any | null | undefined;
     readonly estimatedProjectStartDate?: any | null | undefined;
@@ -66,7 +66,7 @@ export type tendersDetailPageQuery$data = {
       readonly adcode: number;
       readonly id: string;
       readonly name: string;
-    };
+    } | null | undefined;
     readonly status?: number;
     readonly tenderDate?: any | null | undefined;
     readonly visitRecords?: {

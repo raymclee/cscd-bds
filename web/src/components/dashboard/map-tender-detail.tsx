@@ -112,8 +112,8 @@ export function MapTenderDetail() {
               <div className="grid grid-cols-3">
                 <div className="text-gray-400">交標日期</div>
                 <div className="col-span-2">
-                  {selectedTender?.tenderDate
-                    ? dayjs(selectedTender.tenderDate).format("LL")
+                  {selectedTender?.tenderClosingDate
+                    ? dayjs(selectedTender.tenderClosingDate).format("LL")
                     : "-"}
                 </div>
               </div>

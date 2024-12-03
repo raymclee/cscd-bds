@@ -356,9 +356,22 @@ func (m *AreaMutation) OldCenter(ctx context.Context) (v *geo.GeoJson, err error
 	return oldValue.Center, nil
 }
 
+// ClearCenter clears the value of the "center" field.
+func (m *AreaMutation) ClearCenter() {
+	m.center = nil
+	m.clearedFields[area.FieldCenter] = struct{}{}
+}
+
+// CenterCleared returns if the "center" field was cleared in this mutation.
+func (m *AreaMutation) CenterCleared() bool {
+	_, ok := m.clearedFields[area.FieldCenter]
+	return ok
+}
+
 // ResetCenter resets all changes to the "center" field.
 func (m *AreaMutation) ResetCenter() {
 	m.center = nil
+	delete(m.clearedFields, area.FieldCenter)
 }
 
 // AddCustomerIDs adds the "customers" edge to the Customer entity by ids.
@@ -737,7 +750,11 @@ func (m *AreaMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *AreaMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(area.FieldCenter) {
+		fields = append(fields, area.FieldCenter)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -750,6 +767,11 @@ func (m *AreaMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *AreaMutation) ClearField(name string) error {
+	switch name {
+	case area.FieldCenter:
+		m.ClearCenter()
+		return nil
+	}
 	return fmt.Errorf("unknown Area nullable field %s", name)
 }
 
@@ -10168,7 +10190,7 @@ func (m *TenderMutation) ProvinceID() (r xid.ID, exists bool) {
 // OldProvinceID returns the old "province_id" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldProvinceID(ctx context.Context) (v xid.ID, err error) {
+func (m *TenderMutation) OldProvinceID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldProvinceID is only allowed on UpdateOne operations")
 	}
@@ -10182,9 +10204,22 @@ func (m *TenderMutation) OldProvinceID(ctx context.Context) (v xid.ID, err error
 	return oldValue.ProvinceID, nil
 }
 
+// ClearProvinceID clears the value of the "province_id" field.
+func (m *TenderMutation) ClearProvinceID() {
+	m.province = nil
+	m.clearedFields[tender.FieldProvinceID] = struct{}{}
+}
+
+// ProvinceIDCleared returns if the "province_id" field was cleared in this mutation.
+func (m *TenderMutation) ProvinceIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldProvinceID]
+	return ok
+}
+
 // ResetProvinceID resets all changes to the "province_id" field.
 func (m *TenderMutation) ResetProvinceID() {
 	m.province = nil
+	delete(m.clearedFields, tender.FieldProvinceID)
 }
 
 // SetCityID sets the "city_id" field.
@@ -10253,7 +10288,7 @@ func (m *TenderMutation) DistrictID() (r xid.ID, exists bool) {
 // OldDistrictID returns the old "district_id" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldDistrictID(ctx context.Context) (v xid.ID, err error) {
+func (m *TenderMutation) OldDistrictID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDistrictID is only allowed on UpdateOne operations")
 	}
@@ -10267,9 +10302,22 @@ func (m *TenderMutation) OldDistrictID(ctx context.Context) (v xid.ID, err error
 	return oldValue.DistrictID, nil
 }
 
+// ClearDistrictID clears the value of the "district_id" field.
+func (m *TenderMutation) ClearDistrictID() {
+	m.district = nil
+	m.clearedFields[tender.FieldDistrictID] = struct{}{}
+}
+
+// DistrictIDCleared returns if the "district_id" field was cleared in this mutation.
+func (m *TenderMutation) DistrictIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldDistrictID]
+	return ok
+}
+
 // ResetDistrictID resets all changes to the "district_id" field.
 func (m *TenderMutation) ResetDistrictID() {
 	m.district = nil
+	delete(m.clearedFields, tender.FieldDistrictID)
 }
 
 // SetCustomerID sets the "customer_id" field.
@@ -10563,7 +10611,7 @@ func (m *TenderMutation) ClearProvince() {
 
 // ProvinceCleared reports if the "province" edge to the Province entity was cleared.
 func (m *TenderMutation) ProvinceCleared() bool {
-	return m.clearedprovince
+	return m.ProvinceIDCleared() || m.clearedprovince
 }
 
 // ProvinceIDs returns the "province" edge IDs in the mutation.
@@ -10617,7 +10665,7 @@ func (m *TenderMutation) ClearDistrict() {
 
 // DistrictCleared reports if the "district" edge to the District entity was cleared.
 func (m *TenderMutation) DistrictCleared() bool {
-	return m.cleareddistrict
+	return m.DistrictIDCleared() || m.cleareddistrict
 }
 
 // DistrictIDs returns the "district" edge IDs in the mutation.
@@ -11901,8 +11949,14 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldLastTenderAmount) {
 		fields = append(fields, tender.FieldLastTenderAmount)
 	}
+	if m.FieldCleared(tender.FieldProvinceID) {
+		fields = append(fields, tender.FieldProvinceID)
+	}
 	if m.FieldCleared(tender.FieldCityID) {
 		fields = append(fields, tender.FieldCityID)
+	}
+	if m.FieldCleared(tender.FieldDistrictID) {
+		fields = append(fields, tender.FieldDistrictID)
 	}
 	if m.FieldCleared(tender.FieldCustomerID) {
 		fields = append(fields, tender.FieldCustomerID)
@@ -12062,8 +12116,14 @@ func (m *TenderMutation) ClearField(name string) error {
 	case tender.FieldLastTenderAmount:
 		m.ClearLastTenderAmount()
 		return nil
+	case tender.FieldProvinceID:
+		m.ClearProvinceID()
+		return nil
 	case tender.FieldCityID:
 		m.ClearCityID()
+		return nil
+	case tender.FieldDistrictID:
+		m.ClearDistrictID()
 		return nil
 	case tender.FieldCustomerID:
 		m.ClearCustomerID()

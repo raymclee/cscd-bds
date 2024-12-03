@@ -28,9 +28,9 @@ function RouteComponent() {
     `,
     Route.useLoaderData(),
   );
-  const searchParams = Route.useSearch();
-  const [searchText, setSearchText] = React.useState("");
   const navigate = Route.useNavigate();
+  const searchParams = Route.useSearch();
+  const searchText = searchParams.q || "";
 
   const dataSource = data.areas.edges?.map((edge) => edge?.node);
 
@@ -53,7 +53,13 @@ function RouteComponent() {
             <Input.Search
               placeholder="搜索"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                navigate({
+                  to: ".",
+                  search: { q: e.target.value },
+                  replace: true,
+                });
+              }}
               allowClear
               type="search"
             />

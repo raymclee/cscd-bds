@@ -139,11 +139,11 @@ type Tender struct {
 	// AreaID holds the value of the "area_id" field.
 	AreaID xid.ID `json:"area_id,omitempty"`
 	// ProvinceID holds the value of the "province_id" field.
-	ProvinceID xid.ID `json:"province_id,omitempty"`
+	ProvinceID *xid.ID `json:"province_id,omitempty"`
 	// CityID holds the value of the "city_id" field.
 	CityID *xid.ID `json:"city_id,omitempty"`
 	// DistrictID holds the value of the "district_id" field.
-	DistrictID xid.ID `json:"district_id,omitempty"`
+	DistrictID *xid.ID `json:"district_id,omitempty"`
 	// CustomerID holds the value of the "customer_id" field.
 	CustomerID *xid.ID `json:"customer_id,omitempty"`
 	// FinderID holds the value of the "finder_id" field.
@@ -288,7 +288,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldCityID, tender.FieldCustomerID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
@@ -302,7 +302,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate, tender.FieldTenderClosingDate, tender.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
-		case tender.FieldID, tender.FieldAreaID, tender.FieldProvinceID, tender.FieldDistrictID, tender.FieldFinderID, tender.FieldCreatedByID:
+		case tender.FieldID, tender.FieldAreaID, tender.FieldFinderID, tender.FieldCreatedByID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -700,10 +700,11 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				t.AreaID = *value
 			}
 		case tender.FieldProvinceID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field province_id", values[i])
-			} else if value != nil {
-				t.ProvinceID = *value
+			} else if value.Valid {
+				t.ProvinceID = new(xid.ID)
+				*t.ProvinceID = *value.S.(*xid.ID)
 			}
 		case tender.FieldCityID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -713,10 +714,11 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				*t.CityID = *value.S.(*xid.ID)
 			}
 		case tender.FieldDistrictID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field district_id", values[i])
-			} else if value != nil {
-				t.DistrictID = *value
+			} else if value.Valid {
+				t.DistrictID = new(xid.ID)
+				*t.DistrictID = *value.S.(*xid.ID)
 			}
 		case tender.FieldCustomerID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -1052,16 +1054,20 @@ func (t *Tender) String() string {
 	builder.WriteString("area_id=")
 	builder.WriteString(fmt.Sprintf("%v", t.AreaID))
 	builder.WriteString(", ")
-	builder.WriteString("province_id=")
-	builder.WriteString(fmt.Sprintf("%v", t.ProvinceID))
+	if v := t.ProvinceID; v != nil {
+		builder.WriteString("province_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	if v := t.CityID; v != nil {
 		builder.WriteString("city_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("district_id=")
-	builder.WriteString(fmt.Sprintf("%v", t.DistrictID))
+	if v := t.DistrictID; v != nil {
+		builder.WriteString("district_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	if v := t.CustomerID; v != nil {
 		builder.WriteString("customer_id=")

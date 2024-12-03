@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<49fe0eb6ed6612bb00aee7a44d9a437a>>
+ * @generated SignedSource<<8237372958e6188ce2a4da24318657ef>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,7 +37,7 @@ export type CreateTenderInput = {
   designUnit?: string | null | undefined;
   developer?: string | null | undefined;
   discoveryDate: any;
-  districtID: string;
+  districtID?: string | null | undefined;
   estimatedAmount?: number | null | undefined;
   estimatedProjectEndDate?: any | null | undefined;
   estimatedProjectStartDate?: any | null | undefined;
@@ -55,7 +55,7 @@ export type CreateTenderInput = {
   projectCode?: string | null | undefined;
   projectDefinition?: string | null | undefined;
   projectType?: string | null | undefined;
-  provinceID: string;
+  provinceID?: string | null | undefined;
   remark?: string | null | undefined;
   sizeAndValueRating?: number | null | undefined;
   sizeAndValueRatingOverview?: string | null | undefined;

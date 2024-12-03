@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7eae032cdd019e2d4f380c71a4825f71>>
+ * @generated SignedSource<<622c2ff2df08f3687a320d62c28b0d85>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -68,7 +68,7 @@ export type MapIndexPageQuery$data = {
                 readonly district: {
                   readonly adcode: number;
                   readonly name: string;
-                };
+                } | null | undefined;
                 readonly estimatedAmount: number | null | undefined;
                 readonly facadeConsultant: string | null | undefined;
                 readonly fullAddress: string | null | undefined;
@@ -83,7 +83,7 @@ export type MapIndexPageQuery$data = {
                 readonly province: {
                   readonly adcode: number;
                   readonly name: string;
-                };
+                } | null | undefined;
                 readonly sizeAndValueRating: number | null | undefined;
                 readonly sizeAndValueRatingOverview: string | null | undefined;
                 readonly status: number;

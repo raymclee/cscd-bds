@@ -15,7 +15,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
 		{Name: "code", Type: field.TypeString, Unique: true},
-		{Name: "center", Type: field.TypeOther, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
+		{Name: "center", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
 	}
 	// AreasTable holds the schema information for the "areas" table.
 	AreasTable = &schema.Table{
@@ -256,8 +256,8 @@ var (
 		{Name: "area_id", Type: field.TypeString},
 		{Name: "city_id", Type: field.TypeString, Nullable: true},
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
-		{Name: "district_id", Type: field.TypeString},
-		{Name: "province_id", Type: field.TypeString},
+		{Name: "district_id", Type: field.TypeString, Nullable: true},
+		{Name: "province_id", Type: field.TypeString, Nullable: true},
 		{Name: "finder_id", Type: field.TypeString},
 		{Name: "created_by_id", Type: field.TypeString},
 	}
@@ -289,13 +289,13 @@ var (
 				Symbol:     "tenders_districts_tenders",
 				Columns:    []*schema.Column{TendersColumns[59]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
 				Columns:    []*schema.Column{TendersColumns[60]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_finder",

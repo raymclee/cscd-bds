@@ -8,7 +8,7 @@ Content-Type: application/json
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=港深創新及科技園
+GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=亞洲博覽館
 
 
 ###

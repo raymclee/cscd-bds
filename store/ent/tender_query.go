@@ -957,7 +957,10 @@ func (tq *TenderQuery) loadProvince(ctx context.Context, query *ProvinceQuery, n
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Tender)
 	for i := range nodes {
-		fk := nodes[i].ProvinceID
+		if nodes[i].ProvinceID == nil {
+			continue
+		}
+		fk := *nodes[i].ProvinceID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -1018,7 +1021,10 @@ func (tq *TenderQuery) loadDistrict(ctx context.Context, query *DistrictQuery, n
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Tender)
 	for i := range nodes {
-		fk := nodes[i].DistrictID
+		if nodes[i].DistrictID == nil {
+			continue
+		}
+		fk := *nodes[i].DistrictID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}

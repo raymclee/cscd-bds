@@ -237,6 +237,7 @@ function RouteComponent() {
     if (adcode === 100000) {
       const markers: AMap.Marker[] = [];
       for (const area of data.node?.areas?.edges?.map((e) => e?.node) || []) {
+        console.log({ area });
         const amount = fixAmount(
           area?.tenders?.edges
             ?.map((e) => e?.node)
@@ -274,6 +275,7 @@ function RouteComponent() {
             home: true,
           },
         });
+
         marker.on("click", () => {
           map?.remove(markers);
 
@@ -639,9 +641,9 @@ function RouteComponent() {
     const tendersWithinArea = selectedArea?.tenders.edges?.map((e) => e?.node);
 
     const adcodes = [
-      ...(tendersWithinArea?.map((t) => t?.province.adcode) || []),
+      ...(tendersWithinArea?.map((t) => t?.province?.adcode) || []),
       ...(tendersWithinArea?.map((t) => t?.city?.adcode) || []),
-      ...(tendersWithinArea?.map((t) => t?.district.adcode) || []),
+      ...(tendersWithinArea?.map((t) => t?.district?.adcode) || []),
     ];
 
     if (!adcodes.includes(props.adcode)) {
@@ -653,11 +655,11 @@ function RouteComponent() {
       ?.map((t) => {
         switch (props.level) {
           case "province":
-            if (t?.province.adcode === props.adcode) return t;
+            if (t?.province?.adcode === props.adcode) return t;
           case "city":
             if (t?.city?.adcode === props.adcode) return t;
           case "district":
-            if (t?.district.adcode === props.adcode) return t;
+            if (t?.district?.adcode === props.adcode) return t;
         }
       })
       .filter(Boolean);

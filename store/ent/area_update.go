@@ -74,6 +74,12 @@ func (au *AreaUpdate) SetCenter(gj *geo.GeoJson) *AreaUpdate {
 	return au
 }
 
+// ClearCenter clears the value of the "center" field.
+func (au *AreaUpdate) ClearCenter() *AreaUpdate {
+	au.mutation.ClearCenter()
+	return au
+}
+
 // AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
 func (au *AreaUpdate) AddCustomerIDs(ids ...xid.ID) *AreaUpdate {
 	au.mutation.AddCustomerIDs(ids...)
@@ -279,6 +285,9 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.Center(); ok {
 		_spec.SetField(area.FieldCenter, field.TypeOther, value)
+	}
+	if au.mutation.CenterCleared() {
+		_spec.ClearField(area.FieldCenter, field.TypeOther)
 	}
 	if au.mutation.CustomersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -520,6 +529,12 @@ func (auo *AreaUpdateOne) SetCenter(gj *geo.GeoJson) *AreaUpdateOne {
 	return auo
 }
 
+// ClearCenter clears the value of the "center" field.
+func (auo *AreaUpdateOne) ClearCenter() *AreaUpdateOne {
+	auo.mutation.ClearCenter()
+	return auo
+}
+
 // AddCustomerIDs adds the "customers" edge to the Customer entity by IDs.
 func (auo *AreaUpdateOne) AddCustomerIDs(ids ...xid.ID) *AreaUpdateOne {
 	auo.mutation.AddCustomerIDs(ids...)
@@ -755,6 +770,9 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 	}
 	if value, ok := auo.mutation.Center(); ok {
 		_spec.SetField(area.FieldCenter, field.TypeOther, value)
+	}
+	if auo.mutation.CenterCleared() {
+		_spec.ClearField(area.FieldCenter, field.TypeOther)
 	}
 	if auo.mutation.CustomersCleared() {
 		edge := &sqlgraph.EdgeSpec{

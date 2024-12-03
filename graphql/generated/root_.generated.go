@@ -3600,9 +3600,9 @@ input CreateTenderInput {
   finderID: ID!
   createdByID: ID!
   followingSaleIDs: [ID!]
-  provinceID: ID!
+  provinceID: ID
   cityID: ID
-  districtID: ID!
+  districtID: ID
   visitRecordIDs: [ID!]
 }
 """
@@ -5182,9 +5182,9 @@ type Tender implements Node {
   """
   lastTenderAmount: Float
   areaID: ID!
-  provinceID: ID!
+  provinceID: ID
   cityID: ID
-  districtID: ID!
+  districtID: ID
   customerID: ID
   finderID: ID!
   createdByID: ID!
@@ -5193,9 +5193,9 @@ type Tender implements Node {
   finder: User!
   createdBy: User!
   followingSales: [User!]
-  province: Province!
+  province: Province
   city: City
-  district: District!
+  district: District
   visitRecords(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -6117,6 +6117,8 @@ input TenderWhereInput {
   provinceIDContains: ID
   provinceIDHasPrefix: ID
   provinceIDHasSuffix: ID
+  provinceIDIsNil: Boolean
+  provinceIDNotNil: Boolean
   provinceIDEqualFold: ID
   provinceIDContainsFold: ID
   """
@@ -6151,6 +6153,8 @@ input TenderWhereInput {
   districtIDContains: ID
   districtIDHasPrefix: ID
   districtIDHasSuffix: ID
+  districtIDIsNil: Boolean
+  districtIDNotNil: Boolean
   districtIDEqualFold: ID
   districtIDContainsFold: ID
   """
@@ -6518,9 +6522,11 @@ input UpdateTenderInput {
   removeFollowingSaleIDs: [ID!]
   clearFollowingSales: Boolean
   provinceID: ID
+  clearProvince: Boolean
   cityID: ID
   clearCity: Boolean
   districtID: ID
+  clearDistrict: Boolean
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean

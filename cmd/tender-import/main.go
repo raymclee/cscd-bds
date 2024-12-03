@@ -65,7 +65,7 @@ func main() {
 		return
 	}
 
-	rows, err := f.GetRows("source")
+	rows, err := f.GetRows("hk")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -85,20 +85,40 @@ row:
 
 		for j, colCell := range row {
 			if j == 0 {
+				// if colCell != "T2024-89" && colCell != "T2024-91" {
+				// 	continue row
+				// }
 				q.SetTenderCode(colCell)
 			}
 			if j == 1 {
-				adcode, lng, lat, err := getGeoCoordinate(colCell)
+				q.SetName(colCell)
+				var address string
+				fmt.Println(colCell)
+				if strings.Contains(colCell, "亞洲博覽館") {
+					address = "亞洲博覽館"
+				} else if strings.Contains(colCell, "港深創新") {
+					address = "港深創新及科技園"
+				} else if strings.Contains(colCell, "The Henderson Art Garden") {
+					address = "美利道2號"
+				} else if strings.Contains(colCell, "發祥街1號") {
+					address = "發祥街1號"
+				} else {
+					address = strings.Split(colCell, " - ")[0]
+				}
+				adcode, lng, lat, fullAddress, err := getGeoCoordinate(address)
 				if err != nil {
 					fmt.Println(err)
 					continue row
+				}
+				q.SetFullAddress(fullAddress)
+				if strings.Contains(colCell, "港深創新") {
+					adcode = 810013
 				}
 				d, err := st.District.Query().Where(district.Adcode(adcode)).Only(ctx)
 				if err != nil {
 					fmt.Println(err)
 					continue row
 				}
-				q.SetName(colCell)
 				center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
 				if err != nil {
 					fmt.Println(err)
@@ -158,44 +178,43 @@ row:
 	}
 }
 
-func getGeoCoordinate(address string) (int, float64, float64, error) {
+func getGeoCoordinate(address string) (int, float64, float64, string, error) {
 	// GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&city=香港特别行政区&address=亞洲博覽館
 	req, err := http.NewRequest("GET", "https://restapi.amap.com/v3/geocode/geo", nil)
 	if err != nil {
-		return 0, 0, 0, err
+		return 0, 0, 0, "", err
 	}
 	q := req.URL.Query()
 	q.Add("key", "28982eb1a6a3cd956e0e0614c2fb131b")
-	q.Add("city", "香港特别行政区")
+	// q.Add("city", "香港特别行政区")
 	q.Add("address", address)
 	req.URL.RawQuery = q.Encode()
 	resp, err := hc.Do(req)
 	if err != nil {
-		return 0, 0, 0, err
+		return 0, 0, 0, "", err
 	}
 	defer resp.Body.Close()
 
 	var geoResp GeoResponse
 	if err := json.NewDecoder(resp.Body).Decode(&geoResp); err != nil {
-		return 0, 0, 0, err
+		return 0, 0, 0, "", err
 	}
-	fmt.Println(geoResp)
 
-	if len(geoResp.GeoCodes) != 1 {
-		return 0, 0, 0, fmt.Errorf("error")
+	if len(geoResp.GeoCodes) < 1 {
+		return 0, 0, 0, "", fmt.Errorf("error")
 	}
 
 	loc := strings.Split(geoResp.GeoCodes[0].Location, ",")
 	lat, err := strconv.ParseFloat(loc[0], 64)
 	if err != nil {
-		return 0, 0, 0, err
+		return 0, 0, 0, "", err
 	}
 	lng, err := strconv.ParseFloat(loc[1], 64)
 	if err != nil {
-		return 0, 0, 0, err
+		return 0, 0, 0, "", err
 	}
 	adcode, _ := strconv.Atoi(geoResp.GeoCodes[0].AdCode)
-	return adcode, lng, lat, nil
+	return adcode, lng, lat, geoResp.GeoCodes[0].FormattedAddress, nil
 }
 
 type GeoResponse struct {
@@ -207,15 +226,15 @@ type GeoResponse struct {
 }
 
 type GeoCode struct {
-	FormattedAddress string      `json:"formatted_address"`
-	Country          string      `json:"country"`
-	Province         string      `json:"province"`
-	City             []string    `json:"city"`
-	District         string      `json:"district"`
-	Township         []string    `json:"township"`
-	Neighborhood     SubLocation `json:"neighborhood"`
-	Building         SubLocation `json:"building"`
-	AdCode           string      `json:"adcode"`
+	FormattedAddress string `json:"formatted_address"`
+	Country          string `json:"country"`
+	Province         string `json:"province"`
+	// City             []string    `json:"city"`
+	// District     string      `json:"district"`
+	Township     []string    `json:"township"`
+	Neighborhood SubLocation `json:"neighborhood"`
+	Building     SubLocation `json:"building"`
+	AdCode       string      `json:"adcode"`
 	// Street           []string    `json:"street"`
 	// Number   []string `json:"number"`
 	Location string `json:"location"`

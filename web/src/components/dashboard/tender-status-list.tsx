@@ -97,6 +97,9 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                     </TableHead>
                     {gaView ? (
                       <>
+                        <TableHead className="w-[6rem] text-center text-gray-300">
+                          区域
+                        </TableHead>
                         <TableHead className="w-[7rem] text-center text-gray-300">
                           业主
                         </TableHead>
@@ -146,6 +149,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                       className="cursor-pointer"
                       key={tender?.id}
                       onClick={async () => {
+                        if (!tender?.district) return;
                         const districts =
                           await fetchQuery<MapIndexPageDistrictQuery>(
                             environment,
@@ -167,6 +171,9 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                       <TableCell>{tender?.name}</TableCell>
                       {gaView ? (
                         <>
+                          <TableCell className="text-center">
+                            {tender?.area.name}
+                          </TableCell>
                           <TableCell className="text-center">
                             {tender?.developer}
                           </TableCell>

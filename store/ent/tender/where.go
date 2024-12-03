@@ -3745,6 +3745,16 @@ func ProvinceIDHasSuffix(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldHasSuffix(FieldProvinceID, vc))
 }
 
+// ProvinceIDIsNil applies the IsNil predicate on the "province_id" field.
+func ProvinceIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldProvinceID))
+}
+
+// ProvinceIDNotNil applies the NotNil predicate on the "province_id" field.
+func ProvinceIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldProvinceID))
+}
+
 // ProvinceIDEqualFold applies the EqualFold predicate on the "province_id" field.
 func ProvinceIDEqualFold(v xid.ID) predicate.Tender {
 	vc := string(v)
@@ -3893,6 +3903,16 @@ func DistrictIDHasPrefix(v xid.ID) predicate.Tender {
 func DistrictIDHasSuffix(v xid.ID) predicate.Tender {
 	vc := string(v)
 	return predicate.Tender(sql.FieldHasSuffix(FieldDistrictID, vc))
+}
+
+// DistrictIDIsNil applies the IsNil predicate on the "district_id" field.
+func DistrictIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldDistrictID))
+}
+
+// DistrictIDNotNil applies the NotNil predicate on the "district_id" field.
+func DistrictIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldDistrictID))
 }
 
 // DistrictIDEqualFold applies the EqualFold predicate on the "district_id" field.

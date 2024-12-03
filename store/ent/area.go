@@ -99,7 +99,7 @@ func (*Area) scanValues(columns []string) ([]any, error) {
 	for i := range columns {
 		switch columns[i] {
 		case area.FieldCenter:
-			values[i] = new(geo.GeoJson)
+			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
 		case area.FieldName, area.FieldCode:
 			values[i] = new(sql.NullString)
 		case area.FieldCreatedAt, area.FieldUpdatedAt:
@@ -152,10 +152,10 @@ func (a *Area) assignValues(columns []string, values []any) error {
 				a.Code = value.String
 			}
 		case area.FieldCenter:
-			if value, ok := values[i].(*geo.GeoJson); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field center", values[i])
-			} else if value != nil {
-				a.Center = value
+			} else if value.Valid {
+				a.Center = value.S.(*geo.GeoJson)
 			}
 		default:
 			a.selectValues.Set(columns[i], values[i])
@@ -225,8 +225,10 @@ func (a *Area) String() string {
 	builder.WriteString("code=")
 	builder.WriteString(a.Code)
 	builder.WriteString(", ")
-	builder.WriteString("center=")
-	builder.WriteString(fmt.Sprintf("%v", a.Center))
+	if v := a.Center; v != nil {
+		builder.WriteString("center=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

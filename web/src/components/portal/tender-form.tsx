@@ -152,40 +152,40 @@ export function TenderForm<T extends TenderFormProps>({
     [area],
   );
 
-  // useEffect(() => {
-  //   if (tender) {
-  //     form.setFieldsValue({
-  //       name: tender.name,
-  //       code: tender.code,
-  //       status: tender.status,
-  //       areaID: tender.area?.id,
-  //       customerID: tender.customer?.id,
-  //       discoveryDate: tender.discoveryDate && dayjs(tender.discoveryDate),
-  //       createdByID: tender.createdBy?.id,
-  //       followingSaleIDs: tender.followingSales?.map((e) => e?.id),
-  //       provinceID: tender.province?.id,
-  //       cityID: tender.city?.id,
-  //       districtID: tender.district?.id,
-  //       estimatedAmount: tender.estimatedAmount,
-  //       tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
-  //       contractor: tender.contractor,
-  //       prepareToBid: tender.prepareToBid,
-  //       projectCode: tender.projectCode,
-  //       biddingDate: tender.biddingDate && dayjs(tender.biddingDate),
-  //       estimatedProjectStartDate:
-  //         tender.estimatedProjectStartDate &&
-  //         dayjs(tender.estimatedProjectStartDate),
-  //       estimatedProjectEndDate:
-  //         tender.estimatedProjectEndDate &&
-  //         dayjs(tender.estimatedProjectEndDate),
-  //       projectType: tender.projectType,
-  //       fullAddress: tender.fullAddress,
-  //       images: tender.images?.map((image) => image),
-  //       attachements: tender.attachements?.map((attachement) => attachement),
-  //       architect: tender.architect,
-  //     });
-  //   }
-  // }, [tender]);
+  useEffect(() => {
+    if (tender) {
+      form.setFieldsValue({
+        name: tender.name,
+        code: tender.code,
+        status: tender.status,
+        areaID: tender.area?.id,
+        customerID: tender.customer?.id,
+        discoveryDate: tender.discoveryDate && dayjs(tender.discoveryDate),
+        createdByID: tender.createdBy?.id,
+        followingSaleIDs: tender.followingSales?.map((e) => e?.id),
+        provinceID: tender.province?.id,
+        cityID: tender.city?.id,
+        districtID: tender.district?.id,
+        estimatedAmount: tender.estimatedAmount,
+        tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
+        contractor: tender.contractor,
+        prepareToBid: tender.prepareToBid,
+        projectCode: tender.projectCode,
+        biddingDate: tender.biddingDate && dayjs(tender.biddingDate),
+        estimatedProjectStartDate:
+          tender.estimatedProjectStartDate &&
+          dayjs(tender.estimatedProjectStartDate),
+        estimatedProjectEndDate:
+          tender.estimatedProjectEndDate &&
+          dayjs(tender.estimatedProjectEndDate),
+        projectType: tender.projectType,
+        fullAddress: tender.fullAddress,
+        images: tender.images?.map((image) => image),
+        attachements: tender.attachements?.map((attachement) => attachement),
+        architect: tender.architect,
+      });
+    }
+  }, [tender]);
 
   return (
     <Form<CreateTenderInput>
@@ -198,44 +198,7 @@ export function TenderForm<T extends TenderFormProps>({
         block: "start",
         skipOverflowHiddenElements: true,
       }}
-      initialValues={
-        tender
-          ? {
-              name: tender.name,
-              code: tender.code,
-              status: tender.status,
-              areaID: tender.area?.id,
-              customerID: tender.customer?.id,
-              discoveryDate:
-                tender.discoveryDate && dayjs(tender.discoveryDate),
-              finderID: tender.finder?.id,
-              createdByID: tender.createdBy?.id,
-              // followingSaleIDs: tender.followingSales?.map((e) => e?.id),
-              provinceID: tender.province?.id,
-              cityID: tender.city?.id,
-              districtID: tender.district?.id,
-              estimatedAmount: tender.estimatedAmount,
-              tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
-              contractor: tender.contractor,
-              prepareToBid: tender.prepareToBid,
-              projectCode: tender.projectCode,
-              biddingDate: tender.biddingDate && dayjs(tender.biddingDate),
-              estimatedProjectStartDate:
-                tender.estimatedProjectStartDate &&
-                dayjs(tender.estimatedProjectStartDate),
-              estimatedProjectEndDate:
-                tender.estimatedProjectEndDate &&
-                dayjs(tender.estimatedProjectEndDate),
-              projectType: tender.projectType,
-              fullAddress: tender.fullAddress,
-              images: tender.images?.map((image) => image),
-              attachements: tender.attachements?.map(
-                (attachement) => attachement,
-              ),
-              architect: tender.architect,
-            }
-          : { discoveryDate: dayjs() }
-      }
+      initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
       onFinish={(values) => {
         if (tender?.id) {

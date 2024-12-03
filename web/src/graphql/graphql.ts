@@ -606,7 +606,7 @@ export type CreateTenderInput = {
   /** 業主，只限港澳 */
   developer?: InputMaybe<Scalars['String']['input']>;
   discoveryDate: Scalars['Time']['input'];
-  districtID: Scalars['ID']['input'];
+  districtID?: InputMaybe<Scalars['ID']['input']>;
   estimatedAmount?: InputMaybe<Scalars['Float']['input']>;
   estimatedProjectEndDate?: InputMaybe<Scalars['Time']['input']>;
   estimatedProjectStartDate?: InputMaybe<Scalars['Time']['input']>;
@@ -625,7 +625,7 @@ export type CreateTenderInput = {
   projectCode?: InputMaybe<Scalars['String']['input']>;
   projectDefinition?: InputMaybe<Scalars['String']['input']>;
   projectType?: InputMaybe<Scalars['String']['input']>;
-  provinceID: Scalars['ID']['input'];
+  provinceID?: InputMaybe<Scalars['ID']['input']>;
   remark?: InputMaybe<Scalars['String']['input']>;
   sizeAndValueRating?: InputMaybe<Scalars['Int']['input']>;
   sizeAndValueRatingOverview?: InputMaybe<Scalars['String']['input']>;
@@ -1773,8 +1773,8 @@ export type Tender = Node & {
   /** 業主，只限港澳 */
   developer?: Maybe<Scalars['String']['output']>;
   discoveryDate: Scalars['Time']['output'];
-  district: District;
-  districtID: Scalars['ID']['output'];
+  district?: Maybe<District>;
+  districtID?: Maybe<Scalars['ID']['output']>;
   estimatedAmount?: Maybe<Scalars['Float']['output']>;
   estimatedProjectEndDate?: Maybe<Scalars['Time']['output']>;
   estimatedProjectStartDate?: Maybe<Scalars['Time']['output']>;
@@ -1797,8 +1797,8 @@ export type Tender = Node & {
   projectCode?: Maybe<Scalars['String']['output']>;
   projectDefinition?: Maybe<Scalars['String']['output']>;
   projectType?: Maybe<Scalars['String']['output']>;
-  province: Province;
-  provinceID: Scalars['ID']['output'];
+  province?: Maybe<Province>;
+  provinceID?: Maybe<Scalars['ID']['output']>;
   remark?: Maybe<Scalars['String']['output']>;
   sizeAndValueRating?: Maybe<Scalars['Int']['output']>;
   sizeAndValueRatingOverview?: Maybe<Scalars['String']['output']>;
@@ -2242,10 +2242,12 @@ export type TenderWhereInput = {
   districtIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   districtIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   districtIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  districtIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   districtIDLT?: InputMaybe<Scalars['ID']['input']>;
   districtIDLTE?: InputMaybe<Scalars['ID']['input']>;
   districtIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   districtIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  districtIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** estimated_amount field predicates */
   estimatedAmount?: InputMaybe<Scalars['Float']['input']>;
   estimatedAmountGT?: InputMaybe<Scalars['Float']['input']>;
@@ -2484,10 +2486,12 @@ export type TenderWhereInput = {
   provinceIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   provinceIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   provinceIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  provinceIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   provinceIDLT?: InputMaybe<Scalars['ID']['input']>;
   provinceIDLTE?: InputMaybe<Scalars['ID']['input']>;
   provinceIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   provinceIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  provinceIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** remark field predicates */
   remark?: InputMaybe<Scalars['String']['input']>;
   remarkContains?: InputMaybe<Scalars['String']['input']>;
@@ -2879,6 +2883,7 @@ export type UpdateTenderInput = {
   clearCustomerRelationshipRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
   clearDesignUnit?: InputMaybe<Scalars['Boolean']['input']>;
   clearDeveloper?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDistrict?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedProjectEndDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedProjectStartDate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2892,6 +2897,7 @@ export type UpdateTenderInput = {
   clearProjectCode?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectDefinition?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectType?: InputMaybe<Scalars['Boolean']['input']>;
+  clearProvince?: InputMaybe<Scalars['Boolean']['input']>;
   clearRemark?: InputMaybe<Scalars['Boolean']['input']>;
   clearSizeAndValueRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearSizeAndValueRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;

@@ -423,7 +423,7 @@ func (t *Tender) Province(ctx context.Context) (*Province, error) {
 	if IsNotLoaded(err) {
 		result, err = t.QueryProvince().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (t *Tender) City(ctx context.Context) (*City, error) {
@@ -439,7 +439,7 @@ func (t *Tender) District(ctx context.Context) (*District, error) {
 	if IsNotLoaded(err) {
 		result, err = t.QueryDistrict().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (t *Tender) VisitRecords(

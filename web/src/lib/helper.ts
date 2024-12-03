@@ -162,9 +162,13 @@ export function customerSizeText(size: Maybe<number> | undefined): string {
 }
 
 export function isGAOnly(areas: AreaConnection | undefined): boolean {
-  return areas?.edges?.every((e) => e?.node?.code == "GA") || false;
+  return (
+    areas?.edges?.every(
+      (e) => e?.node?.code == "GA" || e?.node?.code == "HW",
+    ) || false
+  );
 }
 
 export function isGA(tender: Partial<Tender> | null): boolean {
-  return tender?.area?.code === "GA";
+  return tender?.area?.code === "GA" || tender?.area?.code === "HW";
 }

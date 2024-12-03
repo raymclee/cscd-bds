@@ -1,4 +1,3 @@
-import * as React from "react";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { Button, Form, Input, Table, TableProps, Typography } from "antd";
 import { graphql } from "relay-runtime";
@@ -45,12 +44,13 @@ const query = graphql`
 `;
 
 function RouteComponent() {
-  const [searchText, setSearchText] = React.useState("");
+  // const [searchText, setSearchText] = React.useState("");
   const data = usePreloadedQuery<customersPageQuery>(
     query,
     Route.useLoaderData(),
   );
   const searchParams = Route.useSearch();
+  const searchText = searchParams.q || "";
   const navigate = Route.useNavigate();
   const { session } = Route.useRouteContext();
 
@@ -59,7 +59,7 @@ function RouteComponent() {
       a?.node?.customers?.edges
         ?.map((c) => c?.node)
         .filter((n) =>
-          n?.name.toLowerCase().includes(searchText.toLowerCase()),
+          n?.name.toLowerCase().includes(searchText?.toLowerCase()),
         ),
     ) ?? [];
 
@@ -111,7 +111,13 @@ function RouteComponent() {
             <Input.Search
               placeholder="搜索"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                navigate({
+                  to: ".",
+                  search: { q: e.target.value },
+                  replace: true,
+                });
+              }}
               allowClear
               type="search"
             />

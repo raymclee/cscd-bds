@@ -61,6 +61,7 @@ function TenderList({
           edges {
             node {
               id
+              code
               name
               tenders(orderBy: $orderBy, first: $first, last: $last)
                 @connection(key: "tendersTenderListFragment_tenders") {
@@ -72,6 +73,7 @@ function TenderList({
                     status
                     area {
                       id
+                      code
                     }
                     ...tenderListItemFragment
                   }
@@ -85,20 +87,21 @@ function TenderList({
     queryRef,
   );
 
-  const [searchText, setSearchText] = useState("");
-  const [statusFilter, setStatusFilter] = useState<number | null>(null);
-  const [areaFilter, setAreaFilter] = useState<string | null>(null);
+  // const [searchText, setSearchText] = useState("");
   const { session } = Route.useRouteContext();
-  const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
+  const searchParams = Route.useSearch();
+  const searchText = searchParams.q || "";
+  const statusFilter = searchParams.status;
+  const areaFilter = searchParams.area;
 
   const dataSource = data?.areas.edges
     ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
     .filter((t) =>
-      t?.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
+      t?.name.toLocaleLowerCase().includes(searchText?.toLocaleLowerCase()),
     )
-    .filter((t) => statusFilter === null || t?.status === statusFilter)
-    .filter((t) => areaFilter === null || t?.area.id === areaFilter);
+    .filter((t) => statusFilter === undefined || t?.status === statusFilter)
+    .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter);
   const moreThanOneArea = (data?.areas.edges ?? []).length > 1;
 
   return (
@@ -109,7 +112,13 @@ function TenderList({
             <Input.Search
               placeholder="搜索"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                navigate({
+                  to: ".",
+                  search: { q: e.target.value },
+                  replace: true,
+                });
+              }}
               allowClear
               type="search"
             />
@@ -118,9 +127,18 @@ function TenderList({
             <Select
               placeholder="状态"
               value={statusFilter}
-              onSelect={(value) => setStatusFilter(value)}
+              onSelect={(value) => {
+                navigate({
+                  to: ".",
+                  search: { status: value },
+                  replace: true,
+                });
+                // setStatusFilter(value);
+              }}
               allowClear
-              onClear={() => setStatusFilter(null)}
+              onClear={() => {
+                navigate({ to: ".", replace: true });
+              }}
               options={tenderStatusOptions}
             />
           </Form.Item>
@@ -129,12 +147,20 @@ function TenderList({
               <Select
                 placeholder="区域"
                 value={areaFilter}
-                onSelect={(value) => setAreaFilter(value)}
+                onSelect={(value) => {
+                  navigate({
+                    to: ".",
+                    search: { area: value },
+                    replace: true,
+                  });
+                }}
                 allowClear
-                onClear={() => setAreaFilter(null)}
+                onClear={() => {
+                  navigate({ to: ".", replace: true });
+                }}
                 options={data?.areas.edges?.map((area) => ({
                   label: area?.node?.name,
-                  value: area?.node?.id,
+                  value: area?.node?.code,
                 }))}
               ></Select>
             </Form.Item>
@@ -158,7 +184,7 @@ function TenderList({
           onChange(page) {
             navigate({
               to: ".",
-              search: { page },
+              search: (prev) => ({ ...prev, page }),
             });
           },
           responsive: true,

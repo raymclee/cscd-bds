@@ -212,9 +212,6 @@ func (ac *AreaCreate) check() error {
 	if _, ok := ac.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Area.code"`)}
 	}
-	if _, ok := ac.mutation.Center(); !ok {
-		return &ValidationError{Name: "center", err: errors.New(`ent: missing required field "Area.center"`)}
-	}
 	return nil
 }
 
@@ -435,6 +432,12 @@ func (u *AreaUpsert) UpdateCenter() *AreaUpsert {
 	return u
 }
 
+// ClearCenter clears the value of the "center" field.
+func (u *AreaUpsert) ClearCenter() *AreaUpsert {
+	u.SetNull(area.FieldCenter)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -539,6 +542,13 @@ func (u *AreaUpsertOne) SetCenter(v *geo.GeoJson) *AreaUpsertOne {
 func (u *AreaUpsertOne) UpdateCenter() *AreaUpsertOne {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCenter()
+	})
+}
+
+// ClearCenter clears the value of the "center" field.
+func (u *AreaUpsertOne) ClearCenter() *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.ClearCenter()
 	})
 }
 
@@ -813,6 +823,13 @@ func (u *AreaUpsertBulk) SetCenter(v *geo.GeoJson) *AreaUpsertBulk {
 func (u *AreaUpsertBulk) UpdateCenter() *AreaUpsertBulk {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCenter()
+	})
+}
+
+// ClearCenter clears the value of the "center" field.
+func (u *AreaUpsertBulk) ClearCenter() *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.ClearCenter()
 	})
 }
 

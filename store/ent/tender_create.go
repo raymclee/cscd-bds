@@ -758,6 +758,14 @@ func (tc *TenderCreate) SetProvinceID(x xid.ID) *TenderCreate {
 	return tc
 }
 
+// SetNillableProvinceID sets the "province_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableProvinceID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetProvinceID(*x)
+	}
+	return tc
+}
+
 // SetCityID sets the "city_id" field.
 func (tc *TenderCreate) SetCityID(x xid.ID) *TenderCreate {
 	tc.mutation.SetCityID(x)
@@ -775,6 +783,14 @@ func (tc *TenderCreate) SetNillableCityID(x *xid.ID) *TenderCreate {
 // SetDistrictID sets the "district_id" field.
 func (tc *TenderCreate) SetDistrictID(x xid.ID) *TenderCreate {
 	tc.mutation.SetDistrictID(x)
+	return tc
+}
+
+// SetNillableDistrictID sets the "district_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableDistrictID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetDistrictID(*x)
+	}
 	return tc
 }
 
@@ -998,12 +1014,6 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Tender.area_id"`)}
 	}
-	if _, ok := tc.mutation.ProvinceID(); !ok {
-		return &ValidationError{Name: "province_id", err: errors.New(`ent: missing required field "Tender.province_id"`)}
-	}
-	if _, ok := tc.mutation.DistrictID(); !ok {
-		return &ValidationError{Name: "district_id", err: errors.New(`ent: missing required field "Tender.district_id"`)}
-	}
 	if _, ok := tc.mutation.FinderID(); !ok {
 		return &ValidationError{Name: "finder_id", err: errors.New(`ent: missing required field "Tender.finder_id"`)}
 	}
@@ -1018,12 +1028,6 @@ func (tc *TenderCreate) check() error {
 	}
 	if len(tc.mutation.CreatedByIDs()) == 0 {
 		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required edge "Tender.created_by"`)}
-	}
-	if len(tc.mutation.ProvinceIDs()) == 0 {
-		return &ValidationError{Name: "province", err: errors.New(`ent: missing required edge "Tender.province"`)}
-	}
-	if len(tc.mutation.DistrictIDs()) == 0 {
-		return &ValidationError{Name: "district", err: errors.New(`ent: missing required edge "Tender.district"`)}
 	}
 	return nil
 }
@@ -1379,7 +1383,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.ProvinceID = nodes[0]
+		_node.ProvinceID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := tc.mutation.CityIDs(); len(nodes) > 0 {
@@ -1413,7 +1417,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.DistrictID = nodes[0]
+		_node.DistrictID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := tc.mutation.VisitRecordsIDs(); len(nodes) > 0 {
@@ -2492,6 +2496,12 @@ func (u *TenderUpsert) UpdateProvinceID() *TenderUpsert {
 	return u
 }
 
+// ClearProvinceID clears the value of the "province_id" field.
+func (u *TenderUpsert) ClearProvinceID() *TenderUpsert {
+	u.SetNull(tender.FieldProvinceID)
+	return u
+}
+
 // SetCityID sets the "city_id" field.
 func (u *TenderUpsert) SetCityID(v xid.ID) *TenderUpsert {
 	u.Set(tender.FieldCityID, v)
@@ -2519,6 +2529,12 @@ func (u *TenderUpsert) SetDistrictID(v xid.ID) *TenderUpsert {
 // UpdateDistrictID sets the "district_id" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateDistrictID() *TenderUpsert {
 	u.SetExcluded(tender.FieldDistrictID)
+	return u
+}
+
+// ClearDistrictID clears the value of the "district_id" field.
+func (u *TenderUpsert) ClearDistrictID() *TenderUpsert {
+	u.SetNull(tender.FieldDistrictID)
 	return u
 }
 
@@ -3791,6 +3807,13 @@ func (u *TenderUpsertOne) UpdateProvinceID() *TenderUpsertOne {
 	})
 }
 
+// ClearProvinceID clears the value of the "province_id" field.
+func (u *TenderUpsertOne) ClearProvinceID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearProvinceID()
+	})
+}
+
 // SetCityID sets the "city_id" field.
 func (u *TenderUpsertOne) SetCityID(v xid.ID) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -3823,6 +3846,13 @@ func (u *TenderUpsertOne) SetDistrictID(v xid.ID) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateDistrictID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateDistrictID()
+	})
+}
+
+// ClearDistrictID clears the value of the "district_id" field.
+func (u *TenderUpsertOne) ClearDistrictID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearDistrictID()
 	})
 }
 
@@ -5269,6 +5299,13 @@ func (u *TenderUpsertBulk) UpdateProvinceID() *TenderUpsertBulk {
 	})
 }
 
+// ClearProvinceID clears the value of the "province_id" field.
+func (u *TenderUpsertBulk) ClearProvinceID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearProvinceID()
+	})
+}
+
 // SetCityID sets the "city_id" field.
 func (u *TenderUpsertBulk) SetCityID(v xid.ID) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -5301,6 +5338,13 @@ func (u *TenderUpsertBulk) SetDistrictID(v xid.ID) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateDistrictID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateDistrictID()
+	})
+}
+
+// ClearDistrictID clears the value of the "district_id" field.
+func (u *TenderUpsertBulk) ClearDistrictID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearDistrictID()
 	})
 }
 

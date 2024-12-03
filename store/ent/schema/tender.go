@@ -109,13 +109,17 @@ func (Tender) Fields() []ent.Field {
 		field.String("area_id").
 			GoType(xid.ID("")),
 		field.String("province_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 		field.String("city_id").
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
 		field.String("district_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 		field.String("customer_id").
 			GoType(xid.ID("")).
 			Optional().
@@ -151,7 +155,6 @@ func (Tender) Edges() []ent.Edge {
 		edge.From("province", Province.Type).
 			Ref("tenders").
 			Field("province_id").
-			Required().
 			Unique(),
 		edge.From("city", City.Type).
 			Ref("tenders").
@@ -160,7 +163,6 @@ func (Tender) Edges() []ent.Edge {
 		edge.From("district", District.Type).
 			Ref("tenders").
 			Field("district_id").
-			Required().
 			Unique(),
 		edge.To("visit_records", VisitRecord.Type).
 			Annotations(

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { loadQuery } from "react-relay";
 import node, {
@@ -8,6 +7,7 @@ import * as v from "valibot";
 
 const customerSearchSchema = v.object({
   page: v.optional(v.fallback(v.number(), 1), 1),
+  q: v.optional(v.string()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/customers/")({

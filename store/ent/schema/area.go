@@ -32,6 +32,8 @@ func (Area) Fields() []ent.Field {
 			SchemaType(map[string]string{
 				dialect.Postgres: "geometry(Point,4326)",
 			}).
+			Optional().
+			Nillable().
 			Annotations(
 				entgql.Skip(entgql.SkipAll),
 			),

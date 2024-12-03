@@ -5,6 +5,14 @@ import node, { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
 
 const tenderSearchSchema = v.object({
   page: v.optional(v.fallback(v.number(), 1), 1),
+  area: v.optional(v.string()),
+  status: v.optional(
+    v.pipe(
+      v.number(),
+      v.transform((value) => Number(value)),
+    ),
+  ),
+  q: v.optional(v.string()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/tenders/")({
