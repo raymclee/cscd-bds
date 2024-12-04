@@ -61,7 +61,7 @@ type Area implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -338,7 +338,7 @@ type City implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -946,7 +946,7 @@ type Customer implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -1316,7 +1316,7 @@ type District implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -1842,7 +1842,7 @@ type Province implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -2288,7 +2288,7 @@ type Query {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -2533,6 +2533,7 @@ Properties by which Tender connections can be ordered.
 enum TenderOrderField {
   CREATED_AT
   NAME
+  CLOSING_DATE
 }
 """
 TenderWhereInput is used for filtering Tender objects.
@@ -3946,7 +3947,7 @@ type User implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.

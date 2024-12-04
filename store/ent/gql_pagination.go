@@ -2307,19 +2307,14 @@ func (c *TenderConnection) build(nodes []*Tender, pager *tenderPager, after *Cur
 type TenderPaginateOption func(*tenderPager) error
 
 // WithTenderOrder configures pagination ordering.
-func WithTenderOrder(order *TenderOrder) TenderPaginateOption {
-	if order == nil {
-		order = DefaultTenderOrder
-	}
-	o := *order
+func WithTenderOrder(order []*TenderOrder) TenderPaginateOption {
 	return func(pager *tenderPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultTenderOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -2337,7 +2332,7 @@ func WithTenderFilter(filter func(*TenderQuery) (*TenderQuery, error)) TenderPag
 
 type tenderPager struct {
 	reverse bool
-	order   *TenderOrder
+	order   []*TenderOrder
 	filter  func(*TenderQuery) (*TenderQuery, error)
 }
 
@@ -2348,8 +2343,10 @@ func newTenderPager(opts []TenderPaginateOption, reverse bool) (*tenderPager, er
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultTenderOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -2362,48 +2359,87 @@ func (p *tenderPager) applyFilter(query *TenderQuery) (*TenderQuery, error) {
 }
 
 func (p *tenderPager) toCursor(t *Tender) Cursor {
-	return p.order.Field.toCursor(t)
+	cs_ := make([]any, 0, len(p.order))
+	for _, o_ := range p.order {
+		cs_ = append(cs_, o_.Field.toCursor(t).Value)
+	}
+	return Cursor{ID: t.ID, Value: cs_}
 }
 
 func (p *tenderPager) applyCursors(query *TenderQuery, after, before *Cursor) (*TenderQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultTenderOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultTenderOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *tenderPager) applyOrder(query *TenderQuery) *TenderQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultTenderOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultTenderOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultTenderOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *tenderPager) orderExpr(query *TenderQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultTenderOrder.Field {
-			b.Comma().Ident(DefaultTenderOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultTenderOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 
@@ -2489,6 +2525,20 @@ var (
 			}
 		},
 	}
+	// TenderOrderFieldTenderClosingDate orders Tender by tender_closing_date.
+	TenderOrderFieldTenderClosingDate = &TenderOrderField{
+		Value: func(t *Tender) (ent.Value, error) {
+			return t.TenderClosingDate, nil
+		},
+		column: tender.FieldTenderClosingDate,
+		toTerm: tender.ByTenderClosingDate,
+		toCursor: func(t *Tender) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.TenderClosingDate,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -2499,6 +2549,8 @@ func (f TenderOrderField) String() string {
 		str = "CREATED_AT"
 	case TenderOrderFieldName.column:
 		str = "NAME"
+	case TenderOrderFieldTenderClosingDate.column:
+		str = "CLOSING_DATE"
 	}
 	return str
 }
@@ -2519,6 +2571,8 @@ func (f *TenderOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *TenderOrderFieldCreatedAt
 	case "NAME":
 		*f = *TenderOrderFieldName
+	case "CLOSING_DATE":
+		*f = *TenderOrderFieldTenderClosingDate
 	default:
 		return fmt.Errorf("%s is not a valid TenderOrderField", str)
 	}

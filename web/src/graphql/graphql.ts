@@ -62,7 +62,7 @@ export type AreaTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 
@@ -217,7 +217,7 @@ export type CityTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 
@@ -720,7 +720,7 @@ export type CustomerTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 
@@ -1008,7 +1008,7 @@ export type DistrictTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 
@@ -1454,7 +1454,7 @@ export type ProvinceTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 
@@ -1701,7 +1701,7 @@ export type QueryTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 
@@ -1862,6 +1862,7 @@ export type TenderOrder = {
 
 /** Properties by which Tender connections can be ordered. */
 export enum TenderOrderField {
+  ClosingDate = 'CLOSING_DATE',
   CreatedAt = 'CREATED_AT',
   Name = 'NAME'
 }
@@ -3084,7 +3085,7 @@ export type UserTendersArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TenderOrder>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
 };
 

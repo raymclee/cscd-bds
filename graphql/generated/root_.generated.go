@@ -57,7 +57,7 @@ type ComplexityRoot struct {
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
-		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt func(childComplexity int) int
 		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 	}
@@ -83,7 +83,7 @@ type ComplexityRoot struct {
 		ProvCode   func(childComplexity int) int
 		Province   func(childComplexity int) int
 		ProvinceID func(childComplexity int) int
-		Tenders    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt  func(childComplexity int) int
 	}
 
@@ -136,7 +136,7 @@ type ComplexityRoot struct {
 		Sales                 func(childComplexity int) int
 		SalesID               func(childComplexity int) int
 		Size                  func(childComplexity int) int
-		Tenders               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt             func(childComplexity int) int
 		VisitRecords          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
@@ -165,7 +165,7 @@ type ComplexityRoot struct {
 		ProvCode   func(childComplexity int) int
 		Province   func(childComplexity int) int
 		ProvinceID func(childComplexity int) int
-		Tenders    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt  func(childComplexity int) int
 	}
 
@@ -240,7 +240,7 @@ type ComplexityRoot struct {
 		Districts func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
-		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt func(childComplexity int) int
 	}
 
@@ -266,7 +266,7 @@ type ComplexityRoot struct {
 		Plots        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
 		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		Session      func(childComplexity int) int
-		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
@@ -386,7 +386,7 @@ type ComplexityRoot struct {
 		Name          func(childComplexity int) int
 		OpenID        func(childComplexity int) int
 		TeamMembers   func(childComplexity int) int
-		Tenders       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) int
+		Tenders       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt     func(childComplexity int) int
 		Username      func(childComplexity int) int
 		VisitRecords  func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
@@ -519,7 +519,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Area.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.Area.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Area.updatedAt":
 		if e.complexity.Area.UpdatedAt == nil {
@@ -653,7 +653,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.City.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.City.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "City.updatedAt":
 		if e.complexity.City.UpdatedAt == nil {
@@ -908,7 +908,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Customer.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.Customer.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Customer.updatedAt":
 		if e.complexity.Customer.UpdatedAt == nil {
@@ -1063,7 +1063,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.District.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.District.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "District.updatedAt":
 		if e.complexity.District.UpdatedAt == nil {
@@ -1469,7 +1469,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Province.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.Province.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Province.updatedAt":
 		if e.complexity.Province.UpdatedAt == nil {
@@ -1638,7 +1638,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.Query.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "Query.users":
 		if e.complexity.Query.Users == nil {
@@ -2403,7 +2403,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.User.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+		return e.complexity.User.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "User.updatedAt":
 		if e.complexity.User.UpdatedAt == nil {
@@ -2805,7 +2805,7 @@ type Area implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -3082,7 +3082,7 @@ type City implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -3690,7 +3690,7 @@ type Customer implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -4060,7 +4060,7 @@ type District implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -4586,7 +4586,7 @@ type Province implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -5032,7 +5032,7 @@ type Query {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.
@@ -5277,6 +5277,7 @@ Properties by which Tender connections can be ordered.
 enum TenderOrderField {
   CREATED_AT
   NAME
+  CLOSING_DATE
 }
 """
 TenderWhereInput is used for filtering Tender objects.
@@ -6690,7 +6691,7 @@ type User implements Node {
     """
     Ordering options for Tenders returned from the connection.
     """
-    orderBy: TenderOrder
+    orderBy: [TenderOrder!]
 
     """
     Filtering options for Tenders returned from the connection.

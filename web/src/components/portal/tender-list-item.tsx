@@ -7,7 +7,7 @@ import { App, Button, List, Popconfirm, Tag } from "antd";
 import { useFragment } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
-import { tenderStatusText } from "~/lib/helper";
+import { isGA, isHW, tenderStatusText } from "~/lib/helper";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ImageOff } from "lucide-react";
 import { Tender } from "~/graphql/graphql";
@@ -51,6 +51,8 @@ export function TenderListItem({
   );
   const { session } = useRouteContext({ from: "/__auth" });
 
+  const isGAOrHW = item.area.code === "GA" || item.area.code === "HW";
+
   return (
     <List.Item
       actions={
@@ -58,7 +60,7 @@ export function TenderListItem({
           ? [
               <Link
                 key="edit-link"
-                to="/portal/tenders/$id"
+                to="/portal/tenders/$id/edit"
                 params={{ id: item.id }}
               >
                 <Button type="link" size="small">
@@ -78,7 +80,17 @@ export function TenderListItem({
               showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
             ]
-          : []
+          : [
+              <Link
+                key="view-link"
+                to="/portal/tenders/$id"
+                params={{ id: item.id }}
+              >
+                <Button type="link" size="small">
+                  查看
+                </Button>
+              </Link>,
+            ]
       }
       extra={
         <div className="aspect-[16/9] md:max-w-[280px]">
@@ -111,18 +123,39 @@ export function TenderListItem({
       }
     >
       <List.Item.Meta
-        title={<div>{item?.name}</div>}
+        title={
+          <Link to="/portal/tenders/$id" params={{ id: item.id }}>
+            {item?.name}
+          </Link>
+        }
         description={item?.fullAddress}
       />
-      <div>
-        <Tag>{item?.area.name}</Tag>
-        <Tag>{tenderStatusText(item?.status)}</Tag>
-        <Tag>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <Tag>{item?.area.name}</Tag>
+          <Tag>{tenderStatusText(item?.status)}</Tag>
+        </div>
+
+        <div>
+          {isGAOrHW && item.tenderClosingDate && (
+            <div>交標日期：{dayjs(item.tenderClosingDate).format("L")}</div>
+          )}
+        </div>
+        {/* {(isGA(item as Partial<Tender>) || isHW(item as Partial<Tender>)) &&
+          item.tenderClosingDate && (
+            <Tag>{dayjs(item.tenderClosingDate).format("L")}</Tag>
+          )} */}
+        {/* <Tag>
           {item.area.code === "GA" || item.area.code === "HW"
             ? item.tenderDate && dayjs(item.tenderDate).format("LL")
             : item.tenderClosingDate &&
               dayjs(item.tenderClosingDate).format("LL")}
-        </Tag>
+        </Tag> */}
+
+        {/* {(isGA(item as Partial<Tender>) || isHW(item as Partial<Tender>)) &&
+          item.tenderClosingDate && (
+            <p>{dayjs(item.tenderClosingDate).format("L")}</p>
+          )} */}
       </div>
     </List.Item>
   );

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<97b772f173fa9d1d1c33f5855c79f211>>
+ * @generated SignedSource<<f1d5f358718b16b66ed53588a1a869c9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,6 +28,7 @@ export type tendersTenderListFragment$data = {
               readonly id: string;
               readonly name: string;
               readonly status: number;
+              readonly tenderClosingDate: any | null | undefined;
               readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
             } | null | undefined;
           } | null | undefined> | null | undefined;
@@ -77,10 +78,7 @@ return {
       "name": "last"
     },
     {
-      "defaultValue": {
-        "direction": "DESC",
-        "field": "CREATED_AT"
-      },
+      "defaultValue": null,
       "kind": "LocalArgument",
       "name": "orderBy"
     }
@@ -162,6 +160,13 @@ return {
                               "args": null,
                               "kind": "ScalarField",
                               "name": "status",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "tenderClosingDate",
                               "storageKey": null
                             },
                             {
@@ -271,6 +276,6 @@ return {
 };
 })();
 
-(node as any).hash = "9395a84a11d666a150aecca9de847da3";
+(node as any).hash = "5894de072f2a60f5bf4ab743bed4de10";
 
 export default node;

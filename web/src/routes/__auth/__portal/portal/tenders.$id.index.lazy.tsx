@@ -4,6 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import { tendersDetailPageQuery } from "__generated__/tendersDetailPageQuery.graphql";
 import { Result } from "antd";
 import { TenderForm } from "~/components/portal/tender-form";
+import { TenderDetail } from "~/components/portal/tender-detail";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/tenders/$id/",
@@ -16,69 +17,7 @@ function RouteComponent() {
     graphql`
       query tendersDetailPageQuery($id: ID!, $userId: ID!) {
         node(id: $id) {
-          ... on Tender {
-            id
-            name
-            code
-            status
-            area {
-              id
-              name
-              code
-            }
-            customer {
-              id
-              name
-            }
-            discoveryDate
-            createdBy {
-              id
-              name
-            }
-            finder {
-              id
-              name
-            }
-            followingSales {
-              id
-              name
-            }
-            province {
-              id
-              name
-              adcode
-            }
-            city {
-              id
-              name
-              adcode
-            }
-            district {
-              id
-              name
-              adcode
-            }
-            estimatedAmount
-            tenderDate
-            contractor
-            prepareToBid
-            projectCode
-            biddingDate
-            estimatedProjectStartDate
-            estimatedProjectEndDate
-            projectType
-            fullAddress
-            images
-            attachements
-            architect
-            visitRecords {
-              edges {
-                node {
-                  id
-                }
-              }
-            }
-          }
+          ...tenderDetailFragment
         }
 
         user: node(id: $userId) {
@@ -101,7 +40,8 @@ function RouteComponent() {
 
   return (
     <>
-      <TenderForm queryRef={data.user} tenderNode={data} />
+      {/* <TenderForm queryRef={data.user} tenderNode={data} /> */}
+      <TenderDetail queryRef={data.node} />
     </>
   );
 }

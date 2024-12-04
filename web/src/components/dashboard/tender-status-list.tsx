@@ -3,7 +3,7 @@ import { m } from "motion/react";
 import { useRelayEnvironment } from "react-relay";
 import { fetchQuery } from "relay-runtime";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
-import { fixAmount, isGAOnly } from "~/lib/helper";
+import { fixAmount, isGAorHWOnly } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
 import { useMapStore } from "~/store/map";
@@ -42,7 +42,8 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
   );
 
   const gaTendersOnly = tenders?.every((t) => t?.area.code == "GA");
-  const gaView = gaOnly || gaTendersOnly;
+  const hwTendersOnly = tenders?.every((t) => t?.area.code == "HW");
+  const gaView = gaOnly || gaTendersOnly || hwTendersOnly;
 
   return (
     <>
@@ -87,7 +88,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
             <ScrollArea className="h-full px-4">
               <Table className="my-4 h-full">
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-                <TableHeader className="bg-brand/10">
+                <TableHeader className="sticky top-0 bg-gray-900">
                   <TableRow className="items-center">
                     <TableHead className="w-[4rem] text-center text-gray-300">
                       序号

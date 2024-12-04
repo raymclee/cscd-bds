@@ -161,7 +161,7 @@ export function customerSizeText(size: Maybe<number> | undefined): string {
   }
 }
 
-export function isGAOnly(areas: AreaConnection | undefined): boolean {
+export function isGAorHWOnly(areas: AreaConnection | undefined): boolean {
   return (
     areas?.edges?.every(
       (e) => e?.node?.code == "GA" || e?.node?.code == "HW",

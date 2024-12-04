@@ -27,7 +27,7 @@ import {
   findTenderWithLevel,
   fixAmount,
   getDistrictZoomLevel,
-  isGAOnly,
+  isGAorHWOnly,
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
@@ -212,7 +212,7 @@ function RouteComponent() {
   );
 
   const areas = data.node?.areas?.edges?.map((e) => e?.node);
-  const gaOnly = isGAOnly(data.node?.areas as any);
+  const gaOnly = isGAorHWOnly(data.node?.areas as any);
 
   React.useEffect(() => {
     map?.on("complete", () => {

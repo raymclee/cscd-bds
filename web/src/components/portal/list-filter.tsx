@@ -1,14 +1,20 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Form, Input, Select } from "antd";
+import { DatePicker, Form, Input, Select } from "antd";
 import { tenderStatusOptions } from "~/lib/helper";
 
 type Props = {
   areas?: { label: string; value: string }[];
   showStatus?: boolean;
+  showTenderClosingDate?: boolean;
   children?: React.ReactNode;
 };
 
-export function ListFilter({ areas, showStatus, children }: Props) {
+export function ListFilter({
+  areas,
+  showStatus,
+  showTenderClosingDate,
+  children,
+}: Props) {
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchText = search.q || "";
@@ -17,7 +23,7 @@ export function ListFilter({ areas, showStatus, children }: Props) {
 
   return (
     <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-1 flex-wrap items-center gap-4">
         <Form.Item label="搜索" className="mb-0 w-full md:w-auto">
           <Input.Search
             placeholder="搜索"
@@ -73,6 +79,28 @@ export function ListFilter({ areas, showStatus, children }: Props) {
               }}
               options={areas}
             ></Select>
+          </Form.Item>
+        )}
+        {showTenderClosingDate && (
+          <Form.Item label="交标日期" className="mb-0">
+            <Select
+              placeholder="交标日期"
+              options={[
+                { label: "升序", value: "asc" },
+                { label: "降序", value: "desc" },
+              ]}
+              onSelect={(value) => {
+                navigate({
+                  to: ".",
+                  search: { closing_date: value },
+                  replace: true,
+                });
+              }}
+              allowClear
+              onClear={() => {
+                navigate({ to: ".", replace: true });
+              }}
+            />
           </Form.Item>
         )}
       </div>

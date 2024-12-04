@@ -2797,24 +2797,30 @@ func newTenderPaginateArgs(rv map[string]any) *tenderPaginateArgs {
 	}
 	if v, ok := rv[orderByField]; ok {
 		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &TenderOrder{Field: &TenderOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
+		case []*TenderOrder:
+			args.opts = append(args.opts, WithTenderOrder(v))
+		case []any:
+			var orders []*TenderOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &TenderOrder{Field: &TenderOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
 			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithTenderOrder(order))
-			}
-		case *TenderOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithTenderOrder(v))
-			}
+			args.opts = append(args.opts, WithTenderOrder(orders))
 		}
 	}
 	if v, ok := rv[whereField].(*TenderWhereInput); ok {

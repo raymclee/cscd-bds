@@ -25,7 +25,7 @@ func main() {
 	center := &geo.GeoJson{Geometry: pt}
 
 	st.Area.Create().
-		SetName("海外区域").
+		SetName("海外地区").
 		SetCode("HW").
 		SetCenter(center).
 		Save(ctx)

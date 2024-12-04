@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { TenderListItem } from "~/components/portal/tender-list-item";
-import { tenderStatusOptions } from "~/lib/helper";
+import { isGAorHWOnly, tenderStatusOptions } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
-import { useDebounceCallback } from "usehooks-ts";
 import { ListFilter } from "~/components/portal/list-filter";
+import dayjs from "dayjs";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
@@ -19,7 +19,11 @@ export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
 function RouteComponent() {
   const data = usePreloadedQuery<tendersPageQuery>(
     graphql`
-      query tendersPageQuery($userId: ID!, $orderBy: TenderOrder, $first: Int) {
+      query tendersPageQuery(
+        $userId: ID!
+        $orderBy: [TenderOrder!]
+        $first: Int
+      ) {
         node(id: $userId) {
           ... on User {
             ...tendersTenderListFragment
@@ -52,10 +56,7 @@ function TenderList({
     graphql`
       fragment tendersTenderListFragment on User
       @argumentDefinitions(
-        orderBy: {
-          type: "TenderOrder"
-          defaultValue: { field: CREATED_AT, direction: DESC }
-        }
+        orderBy: { type: "[TenderOrder!]" }
         first: { type: "Int" }
         last: { type: "Int" }
       ) {
@@ -73,6 +74,7 @@ function TenderList({
                     id
                     name
                     status
+                    tenderClosingDate
                     area {
                       id
                       code
@@ -89,13 +91,13 @@ function TenderList({
     queryRef,
   );
 
-  // const [searchText, setSearchText] = useState("");
   const { session } = Route.useRouteContext();
   const navigate = Route.useNavigate();
   const searchParams = Route.useSearch();
   const searchText = searchParams.q || "";
   const statusFilter = searchParams.status;
   const areaFilter = searchParams.area;
+  const closingDateFilter = searchParams.closing_date;
 
   const dataSource = data?.areas.edges
     ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
@@ -103,27 +105,49 @@ function TenderList({
       t?.name.toLocaleLowerCase().includes(searchText?.toLocaleLowerCase()),
     )
     .filter((t) => statusFilter === undefined || t?.status === statusFilter)
-    .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter);
+    .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter)
+    .sort((a, b) => {
+      if (a?.tenderClosingDate === null && b?.tenderClosingDate === null) {
+        return 0;
+      }
+      if (a?.tenderClosingDate === null) {
+        return 1;
+      }
+      if (b?.tenderClosingDate === null) {
+        return -1;
+      }
+      if (closingDateFilter === "asc") {
+        return dayjs(a?.tenderClosingDate).diff(dayjs(b?.tenderClosingDate));
+      } else if (closingDateFilter === "desc") {
+        return dayjs(b?.tenderClosingDate).diff(dayjs(a?.tenderClosingDate));
+      }
+      return 0;
+    });
+
+  const isGAOrHW = isGAorHWOnly(data?.areas as any);
 
   return (
     <>
       <ListFilter
         showStatus
+        showTenderClosingDate={isGAOrHW}
         areas={data?.areas.edges?.map((a) => ({
           label: a?.node?.name ?? "",
           value: a?.node?.code ?? "",
         }))}
       >
         {canEdit(session) && (
-          <Link to="/portal/tenders/new" className="w-full md:w-auto">
-            <Button
-              type="primary"
-              icon={<Plus size={16} />}
-              className="w-full md:w-auto"
-            >
-              添加商机
-            </Button>
-          </Link>
+          <div>
+            <Link to="/portal/tenders/new" className="w-full md:w-auto">
+              <Button
+                type="primary"
+                icon={<Plus size={16} />}
+                className="w-full md:w-auto"
+              >
+                添加商机
+              </Button>
+            </Link>
+          </div>
         )}
       </ListFilter>
 

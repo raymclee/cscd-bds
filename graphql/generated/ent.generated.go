@@ -47,7 +47,7 @@ type QueryResolver interface {
 	Districts(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) (*ent.DistrictConnection, error)
 	Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) (*ent.PlotConnection, error)
 	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
-	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
+	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
 	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error)
 	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	Session(ctx context.Context) (*model.Session, error)
@@ -520,22 +520,22 @@ func (ec *executionContext) field_Area_tenders_argsLast(
 func (ec *executionContext) field_Area_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -1021,22 +1021,22 @@ func (ec *executionContext) field_City_tenders_argsLast(
 func (ec *executionContext) field_City_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -1355,22 +1355,22 @@ func (ec *executionContext) field_Customer_tenders_argsLast(
 func (ec *executionContext) field_Customer_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -1856,22 +1856,22 @@ func (ec *executionContext) field_District_tenders_argsLast(
 func (ec *executionContext) field_District_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -2357,22 +2357,22 @@ func (ec *executionContext) field_Province_tenders_argsLast(
 func (ec *executionContext) field_Province_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -3789,22 +3789,22 @@ func (ec *executionContext) field_Query_tenders_argsLast(
 func (ec *executionContext) field_Query_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -4791,22 +4791,22 @@ func (ec *executionContext) field_User_tenders_argsLast(
 func (ec *executionContext) field_User_tenders_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TenderOrder, error) {
+) ([]*ent.TenderOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.TenderOrder
+		var zeroVal []*ent.TenderOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, tmp)
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.TenderOrder
+	var zeroVal []*ent.TenderOrder
 	return zeroVal, nil
 }
 
@@ -5471,7 +5471,7 @@ func (ec *executionContext) _Area_tenders(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6402,7 +6402,7 @@ func (ec *executionContext) _City_tenders(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8003,7 +8003,7 @@ func (ec *executionContext) _Customer_tenders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9098,7 +9098,7 @@ func (ec *executionContext) _District_tenders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10819,7 +10819,7 @@ func (ec *executionContext) _Province_tenders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11798,7 +11798,7 @@ func (ec *executionContext) _Query_tenders(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Tenders(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return ec.resolvers.Query().Tenders(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -16750,7 +16750,7 @@ func (ec *executionContext) _User_tenders(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+		return obj.Tenders(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -37617,6 +37617,11 @@ func (ec *executionContext) marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋent
 	return ec._TenderConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx context.Context, v interface{}) (*ent.TenderOrder, error) {
+	res, err := ec.unmarshalInputTenderOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNTenderOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderField(ctx context.Context, v interface{}) (*ent.TenderOrderField, error) {
 	var res = new(ent.TenderOrderField)
 	err := res.UnmarshalGQL(v)
@@ -38469,12 +38474,24 @@ func (ec *executionContext) marshalOTenderEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐTen
 	return ec._TenderEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx context.Context, v interface{}) (*ent.TenderOrder, error) {
+func (ec *executionContext) unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx context.Context, v interface{}) ([]*ent.TenderOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalInputTenderOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*ent.TenderOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNTenderOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOTenderWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.TenderWhereInput, error) {

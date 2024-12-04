@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<66491b0c55b1c4797a602e8b69ceecef>>
+ * @generated SignedSource<<ee7f67b94dd3010d2f4afc53ecf5f601>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,14 +11,14 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type OrderDirection = "ASC" | "DESC" | "%future added value";
-export type TenderOrderField = "CREATED_AT" | "NAME" | "%future added value";
+export type TenderOrderField = "CLOSING_DATE" | "CREATED_AT" | "NAME" | "%future added value";
 export type TenderOrder = {
   direction?: OrderDirection;
   field: TenderOrderField;
 };
 export type tendersPageQuery$variables = {
   first?: number | null | undefined;
-  orderBy?: TenderOrder | null | undefined;
+  orderBy?: ReadonlyArray<TenderOrder> | null | undefined;
   userId: string;
 };
 export type tendersPageQuery$data = {
@@ -230,6 +230,13 @@ return {
                                       {
                                         "alias": null,
                                         "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "tenderClosingDate",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
                                         "concreteType": "Area",
                                         "kind": "LinkedField",
                                         "name": "area",
@@ -294,13 +301,6 @@ return {
                                         "args": null,
                                         "kind": "ScalarField",
                                         "name": "discoveryDate",
-                                        "storageKey": null
-                                      },
-                                      {
-                                        "alias": null,
-                                        "args": null,
-                                        "kind": "ScalarField",
-                                        "name": "tenderClosingDate",
                                         "storageKey": null
                                       },
                                       (v5/*: any*/)
@@ -402,16 +402,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b67caf1a68f9dda8816c08e79d01bc0b",
+    "cacheID": "07238a32d655a4596d80150c571d2052",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: TenderOrder\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              area {\n                id\n                code\n              }\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              tenderClosingDate\n              area {\n                id\n                code\n              }\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8b7c20d8fc7d22983adfdc5d23f47585";
+(node as any).hash = "6e74ad3cd21849c19a27ab1d735b579b";
 
 export default node;

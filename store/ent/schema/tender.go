@@ -97,7 +97,9 @@ func (Tender) Fields() []ent.Field {
 		field.String("tender_code").Optional().Comment("投標編號，只限港澳"),
 		field.String("architect").Optional().Comment("則師，只限港澳"),
 		field.String("developer").Optional().Comment("業主，只限港澳"),
-		field.Time("tender_closing_date").Optional().Comment("交標日期，只限港澳"),
+		field.Time("tender_closing_date").Optional().Comment("交標日期，只限港澳").Annotations(
+			entgql.OrderField("CLOSING_DATE"),
+		),
 		field.String("construction_area").Optional().Comment("施工面積，只限港澳"),
 		field.Time("tender_win_date").Optional().Comment("得標日期，只限港澳"),
 		field.Float("tender_win_amount").Optional().Comment("得標金額，只限港澳"),
@@ -175,6 +177,7 @@ func (Tender) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),
 		entgql.QueryField(),
+		entgql.MultiOrder(),
 		entgql.Mutations(
 			entgql.MutationCreate(),
 			entgql.MutationUpdate(),

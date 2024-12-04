@@ -30,7 +30,7 @@ func (a *Area) Customers(
 }
 
 func (a *Area) Tenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
 ) (*TenderConnection, error) {
 	opts := []TenderPaginateOption{
 		WithTenderOrder(orderBy),
@@ -122,7 +122,7 @@ func (c *City) Province(ctx context.Context) (*Province, error) {
 }
 
 func (c *City) Tenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
 ) (*TenderConnection, error) {
 	opts := []TenderPaginateOption{
 		WithTenderOrder(orderBy),
@@ -172,7 +172,7 @@ func (c *Customer) Area(ctx context.Context) (*Area, error) {
 }
 
 func (c *Customer) Tenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
 ) (*TenderConnection, error) {
 	opts := []TenderPaginateOption{
 		WithTenderOrder(orderBy),
@@ -246,7 +246,7 @@ func (d *District) City(ctx context.Context) (*City, error) {
 }
 
 func (d *District) Tenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
 ) (*TenderConnection, error) {
 	opts := []TenderPaginateOption{
 		WithTenderOrder(orderBy),
@@ -346,7 +346,7 @@ func (pr *Province) Country(ctx context.Context) (*Country, error) {
 }
 
 func (pr *Province) Tenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
 ) (*TenderConnection, error) {
 	opts := []TenderPaginateOption{
 		WithTenderOrder(orderBy),
@@ -526,7 +526,7 @@ func (u *User) TeamMembers(ctx context.Context) (result []*User, err error) {
 }
 
 func (u *User) Tenders(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *TenderOrder, where *TenderWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
 ) (*TenderConnection, error) {
 	opts := []TenderPaginateOption{
 		WithTenderOrder(orderBy),

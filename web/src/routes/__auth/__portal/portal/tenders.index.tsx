@@ -13,13 +13,14 @@ const tenderSearchSchema = v.object({
     ),
   ),
   q: v.optional(v.string()),
+  closing_date: v.optional(v.string()),
 });
 
 export const Route = createFileRoute("/__auth/__portal/portal/tenders/")({
   async loader({ context: { RelayEnvironment, session } }) {
     return loadQuery<tendersPageQuery>(RelayEnvironment, node, {
       userId: session?.userId,
-      orderBy: { field: "CREATED_AT", direction: "DESC" },
+      orderBy: [{ field: "CREATED_AT", direction: "DESC" }],
     });
   },
   validateSearch: tenderSearchSchema,

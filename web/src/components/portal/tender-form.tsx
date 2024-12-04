@@ -22,9 +22,14 @@ import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput, Tender } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { FixedToolbar } from "./fixed-toolbar";
-import { isGA, isHW, tenderStatusOptions } from "~/lib/helper";
+import { isGA, isGAorHWOnly, isHW, tenderStatusOptions } from "~/lib/helper";
 import { tendersDetailPageQuery$data } from "__generated__/tendersDetailPageQuery.graphql";
 import { useUpdateTender } from "~/hooks/use-update-tender";
+import {
+  tenderDetailFragment$data,
+  tenderDetailFragment$key,
+} from "__generated__/tenderDetailFragment.graphql";
+import { TenderDetailFragment } from "./tender-detail";
 
 const { Dragger } = Upload;
 
@@ -96,13 +101,14 @@ const fragment = graphql`
 
 export type TenderFormProps = {
   queryRef: tenderFormFragment$key;
-  tenderNode?: tendersDetailPageQuery$data | null;
+  tenderRef?: tenderDetailFragment$key | null;
 };
 
-export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
+export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
   const data = useFragment(fragment, queryRef);
+  const tender = useFragment(TenderDetailFragment, tenderRef);
 
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
@@ -122,10 +128,15 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
 
-  const { node: tender } = tenderNode || {};
+  // const { node: tender } = tenderNode || {};
 
-  const isGATender = isGA(tender as Tender);
-  const isHWTender = isHW(tender as Tender);
+  const isGATender = isGA(tender as any);
+  const isHWTender = isHW(tender as any);
+
+  const showSHFields = !!data.areas.edges?.find(
+    (e) =>
+      e?.node?.id === areaID && e.node.code !== "GA" && e.node.code !== "HW",
+  )?.node;
 
   const area = useMemo(
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
@@ -192,9 +203,25 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
         images: tender.images?.map((image) => image),
         attachements: tender.attachements?.map((attachement) => attachement),
         architect: tender.architect,
+        facadeConsultant: tender.facadeConsultant,
+        designUnit: tender.designUnit,
+        consultingFirm: tender.consultingFirm,
+        keyProject: tender.keyProject,
+        managementCompany: tender.managementCompany,
+        tenderingAgency: tender.tenderingAgency,
+        tenderWinCompany: tender.tenderWinCompany,
+        tenderCode: tender.tenderCode,
+        developer: tender.developer,
+        tenderClosingDate:
+          tender.tenderClosingDate && dayjs(tender.tenderClosingDate),
+        constructionArea: tender.constructionArea,
+        tenderWinDate: tender.tenderWinDate && dayjs(tender.tenderWinDate),
+        tenderWinAmount: tender.tenderWinAmount,
+        lastTenderAmount: tender.lastTenderAmount,
+        remark: tender.remark,
       });
     }
-  }, [tenderNode]);
+  }, [tender]);
 
   return (
     <Form<CreateTenderInput>
@@ -217,7 +244,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
               id: tender.id,
               input: {
                 ...input,
-                clearFollowingSales: followingSaleIDs?.length === 0,
+                clearFollowingSales: true,
                 addFollowingSaleIDs: followingSaleIDs,
               },
             },
@@ -274,11 +301,11 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
           </Col>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
-              name={"code"}
-              label="备案编码"
+              name={showSHFields ? "code" : "tenderCode"}
+              label={showSHFields ? "备案编码" : "招标编号"}
               rules={[{ required: true }]}
             >
-              <Input />
+              <Input disabled={!!tender} />
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>
@@ -300,6 +327,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
               rules={[{ required: true }]}
             >
               <Select
+                disabled={!!tender}
                 options={data.areas?.edges
                   ?.map((e) => e?.node)
                   .map((a) => ({ label: a?.name, value: a?.id }))}
@@ -376,7 +404,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
               label="创建人"
               rules={[{ required: true }]}
             >
-              <Select options={salesOptions} />
+              <Select options={salesOptions} disabled={!!tender} />
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>
@@ -390,12 +418,34 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
             </Form.Item>
           </Col>
         </Row>
+
+        <Row gutter={{ xs: 8, sm: 64 }}>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="estimatedAmount" label="预计金额">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item
+              name={showSHFields ? "tenderDate" : "tenderClosingDate"}
+              label={showSHFields ? "招标日" : "交標日期"}
+            >
+              <DatePicker className="w-full" />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item name="contractor" label="总包单位" rules={[]}>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
               name="provinceID"
               label="省"
-              rules={[{ required: !isHWTender }]}
+              rules={[{ required: showSHFields }]}
             >
               <Select
                 options={provinces?.map((p) => ({
@@ -412,7 +462,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
             <Form.Item
               name="cityID"
               label="市"
-              rules={[{ required: cities?.edges?.length != 0 && !isHWTender }]}
+              rules={[{ required: cities?.edges?.length != 0 && showSHFields }]}
             >
               <Select
                 disabled={cities?.edges?.length === 0}
@@ -429,7 +479,7 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
             <Form.Item
               name="districtID"
               label="区"
-              rules={[{ required: !isHWTender }]}
+              rules={[{ required: showSHFields }]}
             >
               <Select
                 options={districts?.edges
@@ -443,108 +493,165 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
           </Col>
         </Row>
 
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="estimatedAmount" label="预计金额">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="tenderDate" label="招标日">
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="contractor" label="总包单位" rules={[]}>
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
         <Form.Item name="fullAddress" label="详细地址" rules={[]}>
           <Input />
         </Form.Item>
 
+        {showSHFields && (
+          <>
+            <Row gutter={{ xs: 8, sm: 64 }}>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="prepareToBid" label="是否准备投标">
+                  <Switch />
+                </Form.Item>
+              </Col>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="projectCode" label="项目代码">
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="biddingDate" label="投标时间">
+                  <DatePicker className="w-full" />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={{ xs: 8, sm: 64 }}>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item
+                  name="estimatedProjectStartDate"
+                  label="预计项目开始日期"
+                >
+                  <DatePicker className="w-full" />
+                </Form.Item>
+              </Col>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item
+                  name="estimatedProjectEndDate"
+                  label="项目预计结束日期"
+                >
+                  <DatePicker className="w-full" />
+                </Form.Item>
+              </Col>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="projectType" label="项目类型">
+                  <Select
+                    options={[
+                      { label: "GC:830工程项目", value: "GC" },
+                      { label: "SC:830生产项目", value: "SC" },
+                      { label: "YF:830研发项目", value: "YF" },
+                    ]}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Form.Item name="projectDefinition" label="项目定义">
+              <Input />
+            </Form.Item>
+
+            <Form.Item name="remark" label="备注">
+              <Input.TextArea />
+            </Form.Item>
+
+            <Row>
+              <Col sm={24}>
+                <Form.Item name="attachements" label="附件">
+                  <Dragger
+                    multiple
+                    name="files"
+                    action="/api/v1/file/upload"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
+                    onChange={(info) => {
+                      for (const file of info.fileList) {
+                        if (file.status === "done") {
+                          setAttachmentFileNames((prev) => [
+                            ...prev,
+                            file.name,
+                          ]);
+                        }
+                        if (
+                          file.status === "error" ||
+                          file.status === "removed"
+                        ) {
+                          setAttachmentFileNames((prev) =>
+                            prev.filter((name) => name !== file.name),
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    <p className="ant-upload-drag-icon">
+                      <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">
+                      点击或拖动文件到此区域上传
+                    </p>
+                    <p className="ant-upload-hint">支持单个或批量上传。</p>
+                  </Dragger>
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
+
+        {showSHFields && (
+          <>
+            <Form.Item name="biddingInstructions" label="立项/投标说明">
+              <Input.TextArea />
+            </Form.Item>
+
+            <Row gutter={{ xs: 8, sm: 64 }}>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="costEngineer" label="造价师">
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="tenderForm" label="招采形式">
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="contractForm" label="合同形式">
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={{ xs: 8, sm: 64 }}>
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="managementCompany" label="管理公司">
+                  <Input />
+                </Form.Item>
+              </Col>
+
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="tenderingAgency" label="招标代理">
+                  <Input />
+                </Form.Item>
+              </Col>
+
+              <Col sm={24} md={12} lg={8}>
+                <Form.Item name="consultingFirm" label="咨询公司">
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
+
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
-            <Form.Item name="prepareToBid" label="是否准备投标">
-              <Switch />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="projectCode" label="项目代码">
+            <Form.Item name="facadeConsultant" label="幕墙顾问">
               <Input />
             </Form.Item>
           </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="biddingDate" label="投标时间">
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-        </Row>
 
-        <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="estimatedProjectStartDate"
-              label="预计项目开始日期"
-            >
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="estimatedProjectEndDate" label="项目预计结束日期">
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="projectType" label="项目类型">
-              <Select
-                options={[
-                  { label: "GC:830工程项目", value: "GC" },
-                  { label: "SC:830生产项目", value: "SC" },
-                  { label: "YF:830研发项目", value: "YF" },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Form.Item name="projectDefinition" label="项目定义">
-          <Input />
-        </Form.Item>
-
-        <Form.Item name="remark" label="备注">
-          <Input.TextArea />
-        </Form.Item>
-
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="attachements" label="附件">
-              <Dragger
-                multiple
-                name="files"
-                action="/api/v1/file/upload"
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
-                onChange={(info) => {
-                  for (const file of info.fileList) {
-                    if (file.status === "done") {
-                      setAttachmentFileNames((prev) => [...prev, file.name]);
-                    }
-                    if (file.status === "error" || file.status === "removed") {
-                      setAttachmentFileNames((prev) =>
-                        prev.filter((name) => name !== file.name),
-                      );
-                    }
-                  }
-                }}
-              >
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">点击或拖动文件到此区域上传</p>
-                <p className="ant-upload-hint">支持单个或批量上传。</p>
-              </Dragger>
+            <Form.Item name="designUnit" label="设计单位">
+              <Input />
             </Form.Item>
           </Col>
         </Row>
@@ -577,56 +684,6 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
           </Dragger>
         </Form.Item>
 
-        <Form.Item name="biddingInstructions" label="立项/投标说明">
-          <Input.TextArea />
-        </Form.Item>
-
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="costEngineer" label="造价师">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="tenderForm" label="招采形式">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="contractForm" label="合同形式">
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="managementCompany" label="管理公司">
-              <Input />
-            </Form.Item>
-          </Col>
-
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="tenderingAgency" label="招标代理">
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="designUnit" label="设计单位">
-              <Input />
-            </Form.Item>
-          </Col>
-
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="consultingFirm" label="咨询公司">
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
         {/* <Form.Item name="geoCoordinate" label="geoCoordinate">
           <Input />
         </Form.Item>
@@ -635,114 +692,118 @@ export function TenderForm({ queryRef, tenderNode }: TenderFormProps) {
         </Form.Item> */}
       </Card>
 
-      <Card className="mt-4" title="情况">
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="tenderSituations" label="项目主要情况">
+      {showSHFields && (
+        <>
+          <Card className="mt-4" title="情况">
+            <Row>
+              <Col sm={24}>
+                <Form.Item name="tenderSituations" label="项目主要情况">
+                  <Input.TextArea />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={24}>
+                <Form.Item name="ownerSituations" label="业主主要情况">
+                  <Input.TextArea />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={24}>
+                <Form.Item name="competitorSituations" label="竞争对手情况">
+                  <Input.TextArea />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Card>
+
+          <Card title="评分" className="mt-4">
+            <Form.Item
+              name="sizeAndValueRating"
+              label="规模及价值-评分（5分制）"
+              rules={[{ type: "number", max: 5, min: 1 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+            <Form.Item
+              name="sizeAndValueRatingOverview"
+              label="规模及价值-概述"
+              rules={[]}
+            >
               <Input.TextArea />
             </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="ownerSituations" label="业主主要情况">
+
+            <Divider />
+
+            <Form.Item
+              name="creditAndPaymentRating"
+              label="资信及付款-评分（5分制）"
+              rules={[{ type: "number", max: 5, min: 1 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+            <Form.Item
+              name="creditAndPaymentRatingOverview"
+              label="资信及付款-概述"
+              rules={[]}
+            >
               <Input.TextArea />
             </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={24}>
-            <Form.Item name="competitorSituations" label="竞争对手情况">
+
+            <Divider />
+
+            <Form.Item
+              name="timeLimitRating"
+              label="中标原则及时限-评分（5分制）"
+              rules={[{ type: "number", max: 5, min: 1 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+            <Form.Item
+              name="timeLimitRatingOverview"
+              label="中标原则及时限-概述"
+              rules={[]}
+            >
               <Input.TextArea />
             </Form.Item>
-          </Col>
-        </Row>
-      </Card>
 
-      <Card title="评分" className="mt-4">
-        <Form.Item
-          name="sizeAndValueRating"
-          label="规模及价值-评分（5分制）"
-          rules={[{ type: "number", max: 5, min: 1 }]}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          name="sizeAndValueRatingOverview"
-          label="规模及价值-概述"
-          rules={[]}
-        >
-          <Input.TextArea />
-        </Form.Item>
+            <Divider />
 
-        <Divider />
+            <Form.Item
+              name="competitivePartnershipRating"
+              label="客情关系-评分（5分制）"
+              rules={[{ type: "number", max: 5, min: 1 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+            <Form.Item
+              name="customerRelationshipRatingOverview"
+              label="客情关系-概述"
+              rules={[]}
+            >
+              <Input.TextArea />
+            </Form.Item>
 
-        <Form.Item
-          name="creditAndPaymentRating"
-          label="资信及付款-评分（5分制）"
-          rules={[{ type: "number", max: 5, min: 1 }]}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          name="creditAndPaymentRatingOverview"
-          label="资信及付款-概述"
-          rules={[]}
-        >
-          <Input.TextArea />
-        </Form.Item>
+            <Divider />
 
-        <Divider />
-
-        <Form.Item
-          name="timeLimitRating"
-          label="中标原则及时限-评分（5分制）"
-          rules={[{ type: "number", max: 5, min: 1 }]}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          name="timeLimitRatingOverview"
-          label="中标原则及时限-概述"
-          rules={[]}
-        >
-          <Input.TextArea />
-        </Form.Item>
-
-        <Divider />
-
-        <Form.Item
-          name="competitivePartnershipRating"
-          label="客情关系-评分（5分制）"
-          rules={[{ type: "number", max: 5, min: 1 }]}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          name="customerRelationshipRatingOverview"
-          label="客情关系-概述"
-          rules={[]}
-        >
-          <Input.TextArea />
-        </Form.Item>
-
-        <Divider />
-
-        <Form.Item
-          name="competitivePartnershipRating"
-          label="竞争合作关系-评分（5分制）"
-          rules={[{ type: "number", max: 5, min: 1 }]}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          name="competitivePartnershipRatingOverview"
-          label="竞争合作关系-概述"
-          rules={[]}
-        >
-          <Input.TextArea />
-        </Form.Item>
-      </Card>
+            <Form.Item
+              name="competitivePartnershipRating"
+              label="竞争合作关系-评分（5分制）"
+              rules={[{ type: "number", max: 5, min: 1 }]}
+            >
+              <InputNumber />
+            </Form.Item>
+            <Form.Item
+              name="competitivePartnershipRatingOverview"
+              label="竞争合作关系-概述"
+              rules={[]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+          </Card>
+        </>
+      )}
 
       <FixedToolbar>
         <Button

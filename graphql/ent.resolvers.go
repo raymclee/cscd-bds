@@ -60,7 +60,7 @@ func (r *queryResolver) Provinces(ctx context.Context, after *entgql.Cursor[xid.
 }
 
 // Tenders is the resolver for the tenders field.
-func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
+func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
 	return r.store.Tender.Query().Paginate(ctx, after, first, before, last, ent.WithTenderFilter(where.Filter))
 }
 

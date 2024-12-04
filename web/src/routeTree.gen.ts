@@ -28,6 +28,7 @@ import { Route as authportalPortaladminUsersImport } from './routes/__auth/__por
 import { Route as authportalPortaladminAreasImport } from './routes/__auth/__portal/portal/__admin/areas'
 import { Route as authportalPortalTendersIdIndexImport } from './routes/__auth/__portal/portal/tenders.$id.index'
 import { Route as authportalPortalTendersIdPlotImport } from './routes/__auth/__portal/portal/tenders.$id.plot'
+import { Route as authportalPortalTendersIdEditImport } from './routes/__auth/__portal/portal/tenders.$id.edit'
 
 // Create Virtual Routes
 
@@ -235,6 +236,18 @@ const authportalPortalTendersIdPlotRoute = authportalPortalTendersIdPlotImport
     ),
   )
 
+const authportalPortalTendersIdEditRoute = authportalPortalTendersIdEditImport
+  .update({
+    id: '/tenders/$id/edit',
+    path: '/tenders/$id/edit',
+    getParentRoute: () => authportalPortalRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__portal/portal/tenders.$id.edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalPortalTendersIndexImport
       parentRoute: typeof authportalPortalImport
     }
+    '/__auth/__portal/portal/tenders/$id/edit': {
+      id: '/__auth/__portal/portal/tenders/$id/edit'
+      path: '/tenders/$id/edit'
+      fullPath: '/portal/tenders/$id/edit'
+      preLoaderRoute: typeof authportalPortalTendersIdEditImport
+      parentRoute: typeof authportalPortalImport
+    }
     '/__auth/__portal/portal/tenders/$id/plot': {
       id: '/__auth/__portal/portal/tenders/$id/plot'
       path: '/tenders/$id/plot'
@@ -439,6 +459,7 @@ interface authportalPortalRouteChildren {
   authportalPortalTendersNewRoute: typeof authportalPortalTendersNewRoute
   authportalPortalCustomersIndexRoute: typeof authportalPortalCustomersIndexRoute
   authportalPortalTendersIndexRoute: typeof authportalPortalTendersIndexRoute
+  authportalPortalTendersIdEditRoute: typeof authportalPortalTendersIdEditRoute
   authportalPortalTendersIdPlotRoute: typeof authportalPortalTendersIdPlotRoute
   authportalPortalTendersIdIndexRoute: typeof authportalPortalTendersIdIndexRoute
 }
@@ -451,6 +472,7 @@ const authportalPortalRouteChildren: authportalPortalRouteChildren = {
   authportalPortalTendersNewRoute: authportalPortalTendersNewRoute,
   authportalPortalCustomersIndexRoute: authportalPortalCustomersIndexRoute,
   authportalPortalTendersIndexRoute: authportalPortalTendersIndexRoute,
+  authportalPortalTendersIdEditRoute: authportalPortalTendersIdEditRoute,
   authportalPortalTendersIdPlotRoute: authportalPortalTendersIdPlotRoute,
   authportalPortalTendersIdIndexRoute: authportalPortalTendersIdIndexRoute,
 }
@@ -498,6 +520,7 @@ export interface FileRoutesByFullPath {
   '/portal/tenders/new': typeof authportalPortalTendersNewRoute
   '/portal/customers': typeof authportalPortalCustomersIndexRoute
   '/portal/tenders': typeof authportalPortalTendersIndexRoute
+  '/portal/tenders/$id/edit': typeof authportalPortalTendersIdEditRoute
   '/portal/tenders/$id/plot': typeof authportalPortalTendersIdPlotRoute
   '/portal/tenders/$id': typeof authportalPortalTendersIdIndexRoute
 }
@@ -517,6 +540,7 @@ export interface FileRoutesByTo {
   '/portal/tenders/new': typeof authportalPortalTendersNewRoute
   '/portal/customers': typeof authportalPortalCustomersIndexRoute
   '/portal/tenders': typeof authportalPortalTendersIndexRoute
+  '/portal/tenders/$id/edit': typeof authportalPortalTendersIdEditRoute
   '/portal/tenders/$id/plot': typeof authportalPortalTendersIdPlotRoute
   '/portal/tenders/$id': typeof authportalPortalTendersIdIndexRoute
 }
@@ -542,6 +566,7 @@ export interface FileRoutesById {
   '/__auth/__portal/portal/tenders/new': typeof authportalPortalTendersNewRoute
   '/__auth/__portal/portal/customers/': typeof authportalPortalCustomersIndexRoute
   '/__auth/__portal/portal/tenders/': typeof authportalPortalTendersIndexRoute
+  '/__auth/__portal/portal/tenders/$id/edit': typeof authportalPortalTendersIdEditRoute
   '/__auth/__portal/portal/tenders/$id/plot': typeof authportalPortalTendersIdPlotRoute
   '/__auth/__portal/portal/tenders/$id/': typeof authportalPortalTendersIdIndexRoute
 }
@@ -564,6 +589,7 @@ export interface FileRouteTypes {
     | '/portal/tenders/new'
     | '/portal/customers'
     | '/portal/tenders'
+    | '/portal/tenders/$id/edit'
     | '/portal/tenders/$id/plot'
     | '/portal/tenders/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -582,6 +608,7 @@ export interface FileRouteTypes {
     | '/portal/tenders/new'
     | '/portal/customers'
     | '/portal/tenders'
+    | '/portal/tenders/$id/edit'
     | '/portal/tenders/$id/plot'
     | '/portal/tenders/$id'
   id:
@@ -605,6 +632,7 @@ export interface FileRouteTypes {
     | '/__auth/__portal/portal/tenders/new'
     | '/__auth/__portal/portal/customers/'
     | '/__auth/__portal/portal/tenders/'
+    | '/__auth/__portal/portal/tenders/$id/edit'
     | '/__auth/__portal/portal/tenders/$id/plot'
     | '/__auth/__portal/portal/tenders/$id/'
   fileRoutesById: FileRoutesById
@@ -689,6 +717,7 @@ export const routeTree = rootRoute
         "/__auth/__portal/portal/tenders/new",
         "/__auth/__portal/portal/customers/",
         "/__auth/__portal/portal/tenders/",
+        "/__auth/__portal/portal/tenders/$id/edit",
         "/__auth/__portal/portal/tenders/$id/plot",
         "/__auth/__portal/portal/tenders/$id/"
       ]
@@ -739,6 +768,10 @@ export const routeTree = rootRoute
     },
     "/__auth/__portal/portal/tenders/": {
       "filePath": "__auth/__portal/portal/tenders.index.tsx",
+      "parent": "/__auth/__portal/portal"
+    },
+    "/__auth/__portal/portal/tenders/$id/edit": {
+      "filePath": "__auth/__portal/portal/tenders.$id.edit.tsx",
       "parent": "/__auth/__portal/portal"
     },
     "/__auth/__portal/portal/tenders/$id/plot": {
