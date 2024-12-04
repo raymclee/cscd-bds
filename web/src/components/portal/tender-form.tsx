@@ -1,5 +1,5 @@
 import { InboxOutlined } from "@ant-design/icons";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
 import {
@@ -162,7 +162,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
       area
         ?.flatMap((e) => e?.node?.customers.edges)
         .map((c) => ({ label: c?.node?.name, value: c?.node?.id })),
-    [data],
+    [data, areaID],
   );
 
   const salesOptions = useMemo(
@@ -170,7 +170,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
       area
         ?.flatMap((e) => e?.node?.users.edges)
         .map((s) => ({ label: s?.node?.name, value: s?.node?.id })),
-    [area],
+    [area, areaID],
   );
 
   useEffect(() => {
@@ -274,28 +274,39 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               areaId: values.areaID,
               date: dayjs(values.createdAt).toISOString(),
             },
+            { fetchPolicy: "network-only" },
           ).toPromise();
 
           if (!data?.lastAvailableTenderCode) {
-            throw new Error("获取备案编码失败");
+            message.error("获取备案编码失败");
+            return;
           }
 
           const { images, attachements, ...input } = values;
 
+          const connections = [
+            ConnectionHandler.getConnectionID(
+              values.areaID,
+              "tendersTenderListFragment_tenders",
+              {
+                orderBy: [{ field: "CREATED_AT", direction: "DESC" }],
+              },
+            ),
+          ];
+
+          if (values.customerID) {
+            connections.push(
+              ConnectionHandler.getConnectionID(
+                values.customerID,
+                "customersTenderListFragment_tenders",
+              ),
+            );
+          }
+
           commitCreateMutation({
             variables: {
               input: { ...input, code: data?.lastAvailableTenderCode },
-              connections: [
-                ConnectionHandler.getConnectionID(
-                  values.areaID,
-                  "tendersTenderListFragment_tenders",
-                  { orderBy: { field: "CREATED_AT", direction: "DESC" } },
-                ),
-                ConnectionHandler.getConnectionID(
-                  values.customerID ?? "",
-                  "customersTenderListFragment_tenders",
-                ),
-              ],
+              connections,
               imageFileNames,
               attachmentFileNames,
             },

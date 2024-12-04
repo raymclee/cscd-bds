@@ -16,7 +16,7 @@ import (
 
 // LastAvailableTenderCode is the resolver for the lastAvailableTenderCode field.
 func (r *queryResolver) LastAvailableTenderCode(ctx context.Context, areaID xid.ID, date time.Time) (string, error) {
-	stdate := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.Local)
+	stdate := time.Date(date.Year(), date.Month()-1, date.Day(), 0, 0, 0, 0, time.Local)
 	enddate := stdate.AddDate(0, 0, 1)
 	area, err := r.store.Area.Query().
 		Where(area.ID(areaID)).

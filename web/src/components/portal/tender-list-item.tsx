@@ -115,7 +115,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[280px] flex-col items-center justify-center rounded-lg bg-gray-100">
-              <ImageOff className="mb-2 h-12 w-12" />
+              <ImageOff className="w-12 h-12 mb-2" />
               暂没图片
             </div>
           )}
@@ -169,20 +169,28 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
       title="确定要删除吗？"
       onConfirm={() => {
         if (!tender) return;
+
+        const connections = [
+          ConnectionHandler.getConnectionID(
+            tender.area.id,
+            "tendersTenderListFragment_tenders",
+            { orderBy: [{ field: "CREATED_AT", direction: "DESC" }] },
+          ),
+        ];
+
+        if (tender.customer?.id) {
+          connections.push(
+            ConnectionHandler.getConnectionID(
+              tender.customer.id,
+              "customersTenderListFragment_tenders",
+            ),
+          );
+        }
+
         commit({
           variables: {
             id: tender.id,
-            connections: [
-              ConnectionHandler.getConnectionID(
-                tender.area.id,
-                "tendersTenderListFragment_tenders",
-                { orderBy: { field: "CREATED_AT", direction: "DESC" } },
-              ),
-              ConnectionHandler.getConnectionID(
-                tender.customer?.id || "",
-                "customersTenderListFragment_tenders",
-              ),
-            ],
+            connections,
           },
           onCompleted() {
             message.success("删除成功");

@@ -35,18 +35,18 @@ export function MapTenderList() {
             "h-[90vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
           )}
         >
-          <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+          <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
             项目列表
           </CardHeader>
 
           <CardContent className="h-full px-0">
             <ScrollArea className="h-full pb-6">
-              <div className="space-y-4 px-4 py-2">
+              <div className="px-4 py-2 space-y-4">
                 {tenderList.map((tender, i) => (
                   <div
                     key={tender?.id}
                     className={cn(
-                      "flex cursor-pointer items-center gap-x-4 rounded-md p-2 transition-shadow hover:bg-brand/50",
+                      "flex items-center p-2 transition-shadow rounded-md cursor-pointer gap-x-4 hover:bg-brand/50",
                       (tenderListHovering === i ||
                         tenderListHovering === tender?.id) &&
                         "ring ring-white",
@@ -96,7 +96,7 @@ export function MapTenderList() {
                               <CarouselItem key={["list", i].join("-")}>
                                 <img
                                   src={image}
-                                  className="aspect-[4/3] h-full w-full rounded object-contain"
+                                  className="aspect-[4/3] h-full w-full rounded object-cover"
                                   alt={tender?.name}
                                 />
                               </CarouselItem>
@@ -111,7 +111,7 @@ export function MapTenderList() {
                       )}
                     </div>
                     <div className="w-[60%] space-y-2 py-1">
-                      <h3 className="line-clamp-1 font-bold">{tender?.name}</h3>
+                      <h3 className="font-bold line-clamp-1">{tender?.name}</h3>
                       <div className="flex items-center justify-between text-sm">
                         <div className="text-gray-300">预计招标日期</div>
                         <div>
