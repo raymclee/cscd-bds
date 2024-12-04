@@ -23,6 +23,12 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
   // defaultPendingMs: 5000,
   // defaultPendingMinMs: 5000,
+  defaultErrorComponent: () => (
+    <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+      <div className="text-2xl font-bold">500</div>
+      <div className="text-lg">服务器错误</div>
+    </div>
+  ),
 });
 
 // Register things for typesafety

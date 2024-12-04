@@ -71,8 +71,12 @@ func SaveStaticFile(filename string, shouldResize bool) (string, error) {
 	}
 	// }
 
-	tf.Close()
-	out.Close()
+	if tf != nil {
+		tf.Close()
+	}
+	if out != nil {
+		out.Close()
+	}
 	if err = os.Remove(sourcePath); err != nil {
 		return "", fmt.Errorf("failed to remove file: %w", err)
 	}

@@ -1,5 +1,6 @@
 import { InboxOutlined } from "@ant-design/icons";
 import { useNavigate } from "@tanstack/react-router";
+import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
 import {
   App,
@@ -18,18 +19,20 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import { ConnectionHandler, graphql, useFragment } from "react-relay";
-import { CreateTenderInput, Tender } from "~/graphql/graphql";
-import { useCreateTender } from "~/hooks/use-create-tender";
-import { FixedToolbar } from "./fixed-toolbar";
-import { isGA, isGAorHWOnly, isHW, tenderStatusOptions } from "~/lib/helper";
-import { tendersDetailPageQuery$data } from "__generated__/tendersDetailPageQuery.graphql";
-import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
-  tenderDetailFragment$data,
-  tenderDetailFragment$key,
-} from "__generated__/tenderDetailFragment.graphql";
+  ConnectionHandler,
+  fetchQuery,
+  graphql,
+  useFragment,
+  useRelayEnvironment,
+} from "react-relay";
+import { CreateTenderInput } from "~/graphql/graphql";
+import { useCreateTender } from "~/hooks/use-create-tender";
+import { useUpdateTender } from "~/hooks/use-update-tender";
+import { isGA, isHW, tenderStatusOptions } from "~/lib/helper";
+import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
+import { tenderFormLastAvailableTenderCodeQuery } from "__generated__/tenderFormLastAvailableTenderCodeQuery.graphql";
 
 const { Dragger } = Upload;
 
@@ -107,12 +110,13 @@ export type TenderFormProps = {
 export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
+  const environment = useRelayEnvironment();
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
 
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
-  const navigate = useNavigate({ from: "/portal/tenders/new" });
+  const navigate = useNavigate();
 
   const areaID = Form.useWatch("areaID", form);
   const provinceID = Form.useWatch("provinceID", form);
@@ -127,8 +131,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
-
-  // const { node: tender } = tenderNode || {};
 
   const isGATender = isGA(tender as any);
   const isHWTender = isHW(tender as any);
@@ -236,7 +238,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
       }}
       initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
-      onFinish={(values) => {
+      onFinish={async (values) => {
         if (tender?.id) {
           const { images, attachements, followingSaleIDs, ...input } = values;
           commitUpdateMutation({
@@ -258,10 +260,31 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             },
           });
         } else {
+          const data = await fetchQuery<tenderFormLastAvailableTenderCodeQuery>(
+            environment,
+            graphql`
+              query tenderFormLastAvailableTenderCodeQuery(
+                $areaId: ID!
+                $date: Time!
+              ) {
+                lastAvailableTenderCode(areaId: $areaId, date: $date)
+              }
+            `,
+            {
+              areaId: values.areaID,
+              date: dayjs(values.createdAt).toISOString(),
+            },
+          ).toPromise();
+
+          if (!data?.lastAvailableTenderCode) {
+            throw new Error("获取备案编码失败");
+          }
+
           const { images, attachements, ...input } = values;
+
           commitCreateMutation({
             variables: {
-              input,
+              input: { ...input, code: data?.lastAvailableTenderCode },
               connections: [
                 ConnectionHandler.getConnectionID(
                   values.areaID,
@@ -292,36 +315,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
         <Row gutter={{ xs: 8, sm: 64 }}>
           <Col sm={24} md={12} lg={8}>
             <Form.Item
-              name={"name"}
-              label="项目名称"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={showSHFields ? "code" : "tenderCode"}
-              label={showSHFields ? "备案编码" : "招标编号"}
-              rules={[{ required: true }]}
-            >
-              <Input disabled={!!tender} />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={"status"}
-              label="状态"
-              rules={[{ required: true }]}
-            >
-              <Select options={tenderStatusOptions} />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
               name="areaID"
               label="业务区域"
               rules={[{ required: true }]}
@@ -340,9 +333,43 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                     "createdByID",
                     "customerID",
                     "followingSaleIDs",
+                    "tenderCode",
+                    "developer",
+                    "tenderClosingDate",
+                    "tenderDate",
                   ]);
                 }}
               />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item
+              name={"name"}
+              label="项目名称"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item
+              name={"status"}
+              label="状态"
+              rules={[{ required: true }]}
+            >
+              <Select options={tenderStatusOptions} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={{ xs: 8, sm: 64 }}>
+          <Col sm={24} md={12} lg={8}>
+            <Form.Item
+              name={showSHFields ? "code" : "tenderCode"}
+              label={showSHFields ? "备案编码" : "招标编号"}
+              rules={[{ required: true }]}
+            >
+              <Input disabled={!!tender} />
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>

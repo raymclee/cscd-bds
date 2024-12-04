@@ -1651,6 +1651,7 @@ type Query {
     """Filtering options for Districts returned from the connection."""
     where: DistrictWhereInput
   ): DistrictConnection!
+  lastAvailableTenderCode(areaId: ID!, date: Time!): String!
   """Fetches an object given its ID."""
   node(
     """ID of the object."""

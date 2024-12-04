@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2b90c75c187e9efff5a10c2e7a208782>>
+ * @generated SignedSource<<712b31d3e79cf9e8b6a951f41f31c8a3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type tenderFormLastAvailableTenderCodeQuery$variables = {
-  areaCode: string;
+  areaId: string;
   date: any;
 };
 export type tenderFormLastAvailableTenderCodeQuery$data = {
@@ -26,7 +26,7 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "areaCode"
+    "name": "areaId"
   },
   {
     "defaultValue": null,
@@ -40,8 +40,8 @@ v1 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "areaCode",
-        "variableName": "areaCode"
+        "name": "areaId",
+        "variableName": "areaId"
       },
       {
         "kind": "Variable",
@@ -72,16 +72,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "f972ea16e7697669d36da16077a39a66",
+    "cacheID": "c35c34907c9f7b697561516c27ee2e13",
     "id": null,
     "metadata": {},
     "name": "tenderFormLastAvailableTenderCodeQuery",
     "operationKind": "query",
-    "text": "query tenderFormLastAvailableTenderCodeQuery(\n  $areaCode: String!\n  $date: Date!\n) {\n  lastAvailableTenderCode(areaCode: $areaCode, date: $date)\n}\n"
+    "text": "query tenderFormLastAvailableTenderCodeQuery(\n  $areaId: ID!\n  $date: Time!\n) {\n  lastAvailableTenderCode(areaId: $areaId, date: $date)\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7e1861fb16792439c85cf44d0ac3aa76";
+(node as any).hash = "72b10df8f73c764d58a5d7c6f92bb888";
 
 export default node;
