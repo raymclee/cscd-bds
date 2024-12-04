@@ -363,15 +363,17 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
         </Row>
 
         <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={showSHFields ? "code" : "tenderCode"}
-              label={showSHFields ? "备案编码" : "招标编号"}
-              rules={[{ required: true }]}
-            >
-              <Input disabled={!!tender} />
-            </Form.Item>
-          </Col>
+          {!showSHFields && (
+            <Col sm={24} md={12} lg={8}>
+              <Form.Item
+                name={"tenderCode"}
+                label={"招标编号"}
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          )}
           <Col sm={24} md={12} lg={8}>
             <Form.Item
               name={
@@ -382,11 +384,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               label="业主名称"
               rules={[
                 {
-                  required:
-                    !isGATender &&
-                    !isHWTender &&
-                    !isGASelected &&
-                    !isHWSelected,
+                  required: true,
                 },
               ]}
             >
