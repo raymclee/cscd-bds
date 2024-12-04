@@ -1,9 +1,4 @@
-import {
-  LoadingOutlined,
-  PlusOutlined,
-  SaveOutlined,
-  StopOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, SaveOutlined, StopOutlined } from "@ant-design/icons";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { plotsDeletePlotMutation } from "__generated__/plotsDeletePlotMutation.graphql";
 import { plotsPageQuery } from "__generated__/plotsPageQuery.graphql";
@@ -20,7 +15,6 @@ import {
   Typography,
 } from "antd";
 import { DataNode } from "antd/es/tree";
-import { Loader } from "lucide-react";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
@@ -165,7 +159,7 @@ function RouteComponent() {
       {isReady ? (
         <EditorContainer />
       ) : (
-        <div className="flex min-h-80 items-center justify-center">
+        <div className="flex items-center justify-center min-h-80">
           <Spin />
         </div>
       )}
@@ -427,7 +421,7 @@ function Editor() {
         </Form.Item>
       </Modal>
 
-      <div className="absolute right-4 top-4 flex gap-2">
+      <div className="absolute flex gap-2 right-4 top-4">
         {isAdding && (
           <>
             <Button

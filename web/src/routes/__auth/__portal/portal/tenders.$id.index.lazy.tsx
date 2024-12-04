@@ -1,9 +1,7 @@
-import * as React from "react";
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { graphql, usePreloadedQuery } from "react-relay";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { tendersDetailPageQuery } from "__generated__/tendersDetailPageQuery.graphql";
 import { Result } from "antd";
-import { TenderForm } from "~/components/portal/tender-form";
+import { graphql, usePreloadedQuery } from "react-relay";
 import { TenderDetail } from "~/components/portal/tender-detail";
 
 export const Route = createLazyFileRoute(
@@ -40,7 +38,6 @@ function RouteComponent() {
 
   return (
     <>
-      {/* <TenderForm queryRef={data.user} tenderNode={data} /> */}
       <TenderDetail queryRef={data.node} />
     </>
   );

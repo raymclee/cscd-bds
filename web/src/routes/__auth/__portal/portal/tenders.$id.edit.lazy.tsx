@@ -1,10 +1,8 @@
-import * as React from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { graphql, usePreloadedQuery } from "react-relay";
 import { tendersEditPageQuery } from "__generated__/tendersEditPageQuery.graphql";
-import { TenderForm } from "~/components/portal/tender-form";
 import { Result } from "antd";
-import { Tender } from "~/graphql/graphql";
+import { graphql, usePreloadedQuery } from "react-relay";
+import { TenderForm } from "~/components/portal/tender-form";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/tenders/$id/edit",

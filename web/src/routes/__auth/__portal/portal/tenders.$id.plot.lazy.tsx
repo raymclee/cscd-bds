@@ -6,9 +6,8 @@ import {
 } from "@ant-design/icons";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { tendersDetailPageMutation } from "__generated__/tendersDetailPageMutation.graphql";
-import { tendersDetailPageQuery } from "__generated__/tendersDetailPageQuery.graphql";
 import { tendersDetailPlotPageQuery } from "__generated__/tendersDetailPlotPageQuery.graphql";
-import { App, Button, Popconfirm, Spin } from "antd";
+import { App, Button, Popconfirm } from "antd";
 import * as React from "react";
 import { useMutation, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -173,7 +172,7 @@ function Editor() {
   }
 
   return (
-    <div className="absolute right-4 top-4 flex gap-2">
+    <div className="absolute flex gap-2 right-4 top-4">
       {!isEditing && data.node && !data.node?.geoBounds && (
         <Button onClick={handleNewClick} icon={<PlusOutlined />}>
           新增

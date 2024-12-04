@@ -1,14 +1,14 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { Button, Form, Input, Table, TableProps, Typography } from "antd";
-import { graphql } from "relay-runtime";
-import { usePreloadedQuery } from "react-relay";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
-import { Customer } from "~/graphql/graphql";
+import { Button, Table, TableProps, Typography } from "antd";
 import dayjs from "dayjs";
-import { industryText, ownerTypeText, customerSizeText } from "~/lib/helper";
 import { Plus } from "lucide-react";
-import { canEdit } from "~/lib/permission";
+import { usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
+import { Customer } from "~/graphql/graphql";
+import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
+import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/customers/")({
   component: RouteComponent,
@@ -48,7 +48,6 @@ const query = graphql`
 `;
 
 function RouteComponent() {
-  // const [searchText, setSearchText] = React.useState("");
   const data = usePreloadedQuery<customersPageQuery>(
     query,
     Route.useLoaderData(),
