@@ -37,7 +37,12 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
 });
 
 export const mapIndexPageQuery = graphql`
-  query MapIndexPageQuery($userId: ID!) {
+  query MapIndexPageQuery(
+    $userId: ID!
+    $orderBy: [TenderOrder!]
+    $first: Int
+    $last: Int
+  ) {
     node(id: $userId) {
       ... on User {
         areas {
@@ -62,7 +67,8 @@ export const mapIndexPageQuery = graphql`
                   }
                 }
               }
-              tenders {
+              tenders(orderBy: $orderBy, first: $first, last: $last)
+                @connection(key: "MapIndexPageQuery_tenders") {
                 edges {
                   node {
                     id

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3b9ce52510aa5b3c52d65684e344bf12>>
+ * @generated SignedSource<<7450bf510d3b477eacbd3acaecd5bc9a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,16 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+export type OrderDirection = "ASC" | "DESC" | "%future added value";
+export type TenderOrderField = "CLOSING_DATE" | "CREATED_AT" | "NAME" | "%future added value";
+export type TenderOrder = {
+  direction?: OrderDirection;
+  field: TenderOrderField;
+};
 export type MapIndexPageQuery$variables = {
+  first?: number | null | undefined;
+  last?: number | null | undefined;
+  orderBy?: ReadonlyArray<TenderOrder> | null | undefined;
   userId: string;
 };
 export type MapIndexPageQuery$data = {
@@ -129,49 +138,62 @@ export type MapIndexPageQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "userId"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "first"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "last"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "orderBy"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "userId"
+},
+v4 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "userId"
   }
 ],
-v2 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v4 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "code",
   "storageKey": null
 },
-v5 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v6 = [
+v9 = [
   {
     "alias": null,
     "args": null,
@@ -180,24 +202,24 @@ v6 = [
     "storageKey": null
   }
 ],
-v7 = {
+v10 = {
   "alias": null,
   "args": null,
   "concreteType": "GeoJson",
   "kind": "LinkedField",
   "name": "center",
   "plural": false,
-  "selections": (v6/*: any*/),
+  "selections": (v9/*: any*/),
   "storageKey": null
 },
-v8 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "adcode",
   "storageKey": null
 },
-v9 = {
+v12 = {
   "alias": null,
   "args": null,
   "concreteType": "ProvinceConnection",
@@ -221,10 +243,10 @@ v9 = {
           "name": "node",
           "plural": false,
           "selections": [
-            (v2/*: any*/),
-            (v3/*: any*/),
-            (v8/*: any*/),
-            (v7/*: any*/)
+            (v5/*: any*/),
+            (v6/*: any*/),
+            (v11/*: any*/),
+            (v10/*: any*/)
           ],
           "storageKey": null
         }
@@ -234,28 +256,33 @@ v9 = {
   ],
   "storageKey": null
 },
-v10 = {
+v13 = {
+  "kind": "Variable",
+  "name": "orderBy",
+  "variableName": "orderBy"
+},
+v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "status",
   "storageKey": null
 },
-v11 = {
+v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "estimatedAmount",
   "storageKey": null
 },
-v12 = {
+v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "ownerType",
   "storageKey": null
 },
-v13 = {
+v17 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -263,292 +290,363 @@ v13 = {
   "name": "followingSales",
   "plural": true,
   "selections": [
-    (v2/*: any*/),
-    (v3/*: any*/)
+    (v5/*: any*/),
+    (v6/*: any*/)
   ],
-  "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "images",
-  "storageKey": null
-},
-v15 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "fullAddress",
-  "storageKey": null
-},
-v16 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "tenderDate",
-  "storageKey": null
-},
-v17 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "discoveryDate",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractor",
+  "name": "images",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "designUnit",
+  "name": "fullAddress",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderForm",
+  "name": "tenderDate",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "keyProject",
+  "name": "discoveryDate",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractForm",
+  "name": "contractor",
   "storageKey": null
 },
 v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderingAgency",
+  "name": "designUnit",
   "storageKey": null
 },
 v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "consultingFirm",
+  "name": "tenderForm",
   "storageKey": null
 },
 v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "facadeConsultant",
+  "name": "keyProject",
   "storageKey": null
 },
 v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "timeLimitRating",
+  "name": "contractForm",
   "storageKey": null
 },
 v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "sizeAndValueRating",
+  "name": "tenderingAgency",
   "storageKey": null
 },
 v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "creditAndPaymentRating",
+  "name": "consultingFirm",
   "storageKey": null
 },
 v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "customerRelationshipRating",
+  "name": "facadeConsultant",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitivePartnershipRating",
+  "name": "timeLimitRating",
   "storageKey": null
 },
 v31 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "timeLimitRatingOverview",
+  "name": "sizeAndValueRating",
   "storageKey": null
 },
 v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "sizeAndValueRatingOverview",
+  "name": "creditAndPaymentRating",
   "storageKey": null
 },
 v33 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "creditAndPaymentRatingOverview",
+  "name": "customerRelationshipRating",
   "storageKey": null
 },
 v34 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "customerRelationshipRatingOverview",
+  "name": "competitivePartnershipRating",
   "storageKey": null
 },
 v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "competitivePartnershipRatingOverview",
+  "name": "timeLimitRatingOverview",
   "storageKey": null
 },
 v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinCompany",
+  "name": "sizeAndValueRatingOverview",
   "storageKey": null
 },
 v37 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderCode",
+  "name": "creditAndPaymentRatingOverview",
   "storageKey": null
 },
 v38 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "developer",
+  "name": "customerRelationshipRatingOverview",
   "storageKey": null
 },
 v39 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "architect",
+  "name": "competitivePartnershipRatingOverview",
   "storageKey": null
 },
 v40 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderClosingDate",
+  "name": "tenderWinCompany",
   "storageKey": null
 },
 v41 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "constructionArea",
+  "name": "tenderCode",
   "storageKey": null
 },
 v42 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinAmount",
+  "name": "developer",
   "storageKey": null
 },
 v43 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tenderWinDate",
+  "name": "architect",
   "storageKey": null
 },
-v44 = [
-  (v3/*: any*/),
-  (v8/*: any*/)
-],
+v44 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "tenderClosingDate",
+  "storageKey": null
+},
 v45 = {
   "alias": null,
   "args": null,
-  "concreteType": "GeoJson",
-  "kind": "LinkedField",
-  "name": "geoCoordinate",
-  "plural": false,
-  "selections": (v6/*: any*/),
+  "kind": "ScalarField",
+  "name": "constructionArea",
   "storageKey": null
 },
 v46 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "geoBounds",
+  "name": "tenderWinAmount",
   "storageKey": null
 },
 v47 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "visitType",
+  "name": "tenderWinDate",
   "storageKey": null
 },
-v48 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "nextStep",
-  "storageKey": null
-},
+v48 = [
+  (v6/*: any*/),
+  (v11/*: any*/)
+],
 v49 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "commPeople",
+  "concreteType": "GeoJson",
+  "kind": "LinkedField",
+  "name": "geoCoordinate",
+  "plural": false,
+  "selections": (v9/*: any*/),
   "storageKey": null
 },
 v50 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "commContent",
+  "name": "geoBounds",
   "storageKey": null
 },
 v51 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "visitType",
+  "storageKey": null
+},
+v52 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "nextStep",
+  "storageKey": null
+},
+v53 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "commPeople",
+  "storageKey": null
+},
+v54 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "commContent",
+  "storageKey": null
+},
+v55 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "date",
   "storageKey": null
 },
-v52 = [
-  (v3/*: any*/),
-  (v8/*: any*/),
-  (v2/*: any*/)
+v56 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v57 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "cursor",
+  "storageKey": null
+},
+v58 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "PageInfo",
+  "kind": "LinkedField",
+  "name": "pageInfo",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "endCursor",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "hasNextPage",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "hasPreviousPage",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "startCursor",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v59 = [
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  },
+  {
+    "kind": "Variable",
+    "name": "last",
+    "variableName": "last"
+  },
+  (v13/*: any*/)
+],
+v60 = [
+  (v6/*: any*/),
+  (v11/*: any*/),
+  (v5/*: any*/)
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "MapIndexPageQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "node",
@@ -581,23 +679,25 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "RequiredField",
-                            "field": (v3/*: any*/),
+                            "field": (v6/*: any*/),
                             "action": "NONE",
                             "path": "node.areas.edges.node.name"
                           },
-                          (v4/*: any*/),
-                          (v5/*: any*/),
                           (v7/*: any*/),
-                          (v9/*: any*/),
+                          (v8/*: any*/),
+                          (v10/*: any*/),
+                          (v12/*: any*/),
                           {
-                            "alias": null,
-                            "args": null,
+                            "alias": "tenders",
+                            "args": [
+                              (v13/*: any*/)
+                            ],
                             "concreteType": "TenderConnection",
                             "kind": "LinkedField",
-                            "name": "tenders",
+                            "name": "__MapIndexPageQuery_tenders_connection",
                             "plural": false,
                             "selections": [
                               {
@@ -616,11 +716,11 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v2/*: any*/),
-                                      (v3/*: any*/),
-                                      (v10/*: any*/),
                                       (v5/*: any*/),
-                                      (v11/*: any*/),
+                                      (v6/*: any*/),
+                                      (v14/*: any*/),
+                                      (v8/*: any*/),
+                                      (v15/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -629,14 +729,10 @@ return {
                                         "name": "customer",
                                         "plural": false,
                                         "selections": [
-                                          (v12/*: any*/)
+                                          (v16/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
-                                      (v13/*: any*/),
-                                      (v14/*: any*/),
-                                      (v15/*: any*/),
-                                      (v16/*: any*/),
                                       (v17/*: any*/),
                                       (v18/*: any*/),
                                       (v19/*: any*/),
@@ -664,6 +760,10 @@ return {
                                       (v41/*: any*/),
                                       (v42/*: any*/),
                                       (v43/*: any*/),
+                                      (v44/*: any*/),
+                                      (v45/*: any*/),
+                                      (v46/*: any*/),
+                                      (v47/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -672,8 +772,8 @@ return {
                                         "name": "area",
                                         "plural": false,
                                         "selections": [
-                                          (v4/*: any*/),
-                                          (v3/*: any*/)
+                                          (v7/*: any*/),
+                                          (v6/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -685,8 +785,8 @@ return {
                                         "name": "province",
                                         "plural": false,
                                         "selections": [
-                                          (v8/*: any*/),
-                                          (v3/*: any*/)
+                                          (v11/*: any*/),
+                                          (v6/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -697,7 +797,7 @@ return {
                                         "kind": "LinkedField",
                                         "name": "city",
                                         "plural": false,
-                                        "selections": (v44/*: any*/),
+                                        "selections": (v48/*: any*/),
                                         "storageKey": null
                                       },
                                       {
@@ -707,11 +807,11 @@ return {
                                         "kind": "LinkedField",
                                         "name": "district",
                                         "plural": false,
-                                        "selections": (v44/*: any*/),
+                                        "selections": (v48/*: any*/),
                                         "storageKey": null
                                       },
-                                      (v45/*: any*/),
-                                      (v46/*: any*/),
+                                      (v49/*: any*/),
+                                      (v50/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -736,11 +836,11 @@ return {
                                                 "name": "node",
                                                 "plural": false,
                                                 "selections": [
-                                                  (v47/*: any*/),
-                                                  (v48/*: any*/),
-                                                  (v49/*: any*/),
-                                                  (v50/*: any*/),
                                                   (v51/*: any*/),
+                                                  (v52/*: any*/),
+                                                  (v53/*: any*/),
+                                                  (v54/*: any*/),
+                                                  (v55/*: any*/),
                                                   {
                                                     "alias": null,
                                                     "args": null,
@@ -749,7 +849,7 @@ return {
                                                     "name": "customer",
                                                     "plural": false,
                                                     "selections": [
-                                                      (v3/*: any*/)
+                                                      (v6/*: any*/)
                                                     ],
                                                     "storageKey": null
                                                   }
@@ -761,13 +861,16 @@ return {
                                           }
                                         ],
                                         "storageKey": null
-                                      }
+                                      },
+                                      (v56/*: any*/)
                                     ],
                                     "storageKey": null
-                                  }
+                                  },
+                                  (v57/*: any*/)
                                 ],
                                 "storageKey": null
-                              }
+                              },
+                              (v58/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -793,25 +896,24 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v3/*: any*/),
+      (v2/*: any*/),
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Operation",
     "name": "MapIndexPageQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "node",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "__typename",
-            "storageKey": null
-          },
+          (v56/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -839,15 +941,15 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
-                          (v3/*: any*/),
-                          (v4/*: any*/),
                           (v5/*: any*/),
+                          (v6/*: any*/),
                           (v7/*: any*/),
-                          (v9/*: any*/),
+                          (v8/*: any*/),
+                          (v10/*: any*/),
+                          (v12/*: any*/),
                           {
                             "alias": null,
-                            "args": null,
+                            "args": (v59/*: any*/),
                             "concreteType": "TenderConnection",
                             "kind": "LinkedField",
                             "name": "tenders",
@@ -869,11 +971,11 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v2/*: any*/),
-                                      (v3/*: any*/),
-                                      (v10/*: any*/),
                                       (v5/*: any*/),
-                                      (v11/*: any*/),
+                                      (v6/*: any*/),
+                                      (v14/*: any*/),
+                                      (v8/*: any*/),
+                                      (v15/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -882,15 +984,11 @@ return {
                                         "name": "customer",
                                         "plural": false,
                                         "selections": [
-                                          (v12/*: any*/),
-                                          (v2/*: any*/)
+                                          (v16/*: any*/),
+                                          (v5/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
-                                      (v13/*: any*/),
-                                      (v14/*: any*/),
-                                      (v15/*: any*/),
-                                      (v16/*: any*/),
                                       (v17/*: any*/),
                                       (v18/*: any*/),
                                       (v19/*: any*/),
@@ -918,6 +1016,10 @@ return {
                                       (v41/*: any*/),
                                       (v42/*: any*/),
                                       (v43/*: any*/),
+                                      (v44/*: any*/),
+                                      (v45/*: any*/),
+                                      (v46/*: any*/),
+                                      (v47/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -926,9 +1028,9 @@ return {
                                         "name": "area",
                                         "plural": false,
                                         "selections": [
-                                          (v4/*: any*/),
-                                          (v3/*: any*/),
-                                          (v2/*: any*/)
+                                          (v7/*: any*/),
+                                          (v6/*: any*/),
+                                          (v5/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -940,9 +1042,9 @@ return {
                                         "name": "province",
                                         "plural": false,
                                         "selections": [
-                                          (v8/*: any*/),
-                                          (v3/*: any*/),
-                                          (v2/*: any*/)
+                                          (v11/*: any*/),
+                                          (v6/*: any*/),
+                                          (v5/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -953,7 +1055,7 @@ return {
                                         "kind": "LinkedField",
                                         "name": "city",
                                         "plural": false,
-                                        "selections": (v52/*: any*/),
+                                        "selections": (v60/*: any*/),
                                         "storageKey": null
                                       },
                                       {
@@ -963,11 +1065,11 @@ return {
                                         "kind": "LinkedField",
                                         "name": "district",
                                         "plural": false,
-                                        "selections": (v52/*: any*/),
+                                        "selections": (v60/*: any*/),
                                         "storageKey": null
                                       },
-                                      (v45/*: any*/),
-                                      (v46/*: any*/),
+                                      (v49/*: any*/),
+                                      (v50/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -992,11 +1094,11 @@ return {
                                                 "name": "node",
                                                 "plural": false,
                                                 "selections": [
-                                                  (v47/*: any*/),
-                                                  (v48/*: any*/),
-                                                  (v49/*: any*/),
-                                                  (v50/*: any*/),
                                                   (v51/*: any*/),
+                                                  (v52/*: any*/),
+                                                  (v53/*: any*/),
+                                                  (v54/*: any*/),
+                                                  (v55/*: any*/),
                                                   {
                                                     "alias": null,
                                                     "args": null,
@@ -1005,12 +1107,12 @@ return {
                                                     "name": "customer",
                                                     "plural": false,
                                                     "selections": [
-                                                      (v3/*: any*/),
-                                                      (v2/*: any*/)
+                                                      (v6/*: any*/),
+                                                      (v5/*: any*/)
                                                     ],
                                                     "storageKey": null
                                                   },
-                                                  (v2/*: any*/)
+                                                  (v5/*: any*/)
                                                 ],
                                                 "storageKey": null
                                               }
@@ -1019,15 +1121,29 @@ return {
                                           }
                                         ],
                                         "storageKey": null
-                                      }
+                                      },
+                                      (v56/*: any*/)
                                     ],
                                     "storageKey": null
-                                  }
+                                  },
+                                  (v57/*: any*/)
                                 ],
                                 "storageKey": null
-                              }
+                              },
+                              (v58/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": (v59/*: any*/),
+                            "filters": [
+                              "orderBy"
+                            ],
+                            "handle": "connection",
+                            "key": "MapIndexPageQuery_tenders",
+                            "kind": "LinkedHandle",
+                            "name": "tenders"
                           }
                         ],
                         "storageKey": null
@@ -1042,23 +1158,32 @@ return {
             "type": "User",
             "abstractKey": null
           },
-          (v2/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "d127766cd4db31680058650620f49e57",
+    "cacheID": "d0a3f9a6a530b65a3f474bda84df9219",
     "id": null,
-    "metadata": {},
+    "metadata": {
+      "connection": [
+        {
+          "count": null,
+          "cursor": null,
+          "direction": "bidirectional",
+          "path": null
+        }
+      ]
+    },
     "name": "MapIndexPageQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    ownerType\n                    id\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  visitRecords {\n                    edges {\n                      node {\n                        visitType\n                        nextStep\n                        commPeople\n                        commContent\n                        date\n                        customer {\n                          name\n                          id\n                        }\n                        id\n                      }\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    ownerType\n                    id\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  visitRecords {\n                    edges {\n                      node {\n                        visitType\n                        nextStep\n                        commPeople\n                        commContent\n                        date\n                        customer {\n                          name\n                          id\n                        }\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7632d393f8e7f61601821fd39c3ce523";
+(node as any).hash = "ef43bbe6a9a338511adeac1ff1c5c422";
 
 export default node;

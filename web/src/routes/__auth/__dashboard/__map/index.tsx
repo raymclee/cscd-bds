@@ -8,6 +8,10 @@ export const Route = createFileRoute("/__auth/__dashboard/__map/")({
   loader: async ({ context: { RelayEnvironment, session } }) => {
     return loadQuery<MapIndexPageQuery>(RelayEnvironment, node, {
       userId: session.userId,
+      orderBy: [
+        { field: "CLOSING_DATE", direction: "ASC" },
+        { field: "CREATED_AT", direction: "ASC" },
+      ],
     });
   },
 });
