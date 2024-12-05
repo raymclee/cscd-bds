@@ -119,6 +119,8 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		}
 		if len(images) > 0 {
 			q.SetImages(images)
+		} else {
+			q.ClearImages()
 		}
 	}
 
@@ -133,6 +135,8 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		}
 		if len(attachments) > 0 {
 			q.SetAttachements(attachments)
+		} else {
+			q.ClearAttachements()
 		}
 	}
 

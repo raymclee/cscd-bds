@@ -697,6 +697,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
         <Form.Item name="images" label="效果图">
           <Dragger
             multiple
+            defaultFileList={tender?.images?.map((url, i) => ({
+              uid: i.toString(),
+              name: url,
+              url,
+              status: "done",
+            }))}
             name="files"
             action="/api/v1/file/upload"
             accept=".jpg,.jpeg,.png,.gif"

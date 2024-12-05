@@ -6,6 +6,7 @@ import { Button, Card, Descriptions } from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
 import { tenderStatusText } from "~/lib/helper";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
 type TenderDetailProps = {
   queryRef: tenderDetailFragment$key;
@@ -224,6 +225,22 @@ function GAAndHWTender({
           },
         ]}
       />
+
+      <div className="max-h-[600px] w-[30%]">
+        <Carousel>
+          <CarouselContent>
+            {images?.map((image, i) => (
+              <CarouselItem key={["list", i].join("-")}>
+                <img
+                  src={image}
+                  className="aspect-[16/9] h-full w-full rounded object-cover"
+                  alt={name}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
     </div>
   );
 }

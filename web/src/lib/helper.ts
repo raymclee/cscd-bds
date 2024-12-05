@@ -169,10 +169,14 @@ export function isGAorHWOnly(areas: AreaConnection | undefined): boolean {
   );
 }
 
-export function isGA(tender: Partial<Tender> | null): boolean {
+export function isGA(
+  tender: Maybe<Tender> | Partial<Tender> | null | undefined,
+): boolean {
   return tender?.area?.code === "GA";
 }
 
-export function isHW(tender: Partial<Tender> | null): boolean {
+export function isHW(
+  tender: Maybe<Tender> | Partial<Tender> | null | undefined,
+): boolean {
   return tender?.area?.code === "HW";
 }
