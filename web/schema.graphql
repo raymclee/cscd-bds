@@ -1211,7 +1211,7 @@ type Mutation {
   deleteUser(id: ID!): User!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
   updatePlot(geoBounds: [[Float!]!], id: ID!, input: UpdatePlotInput!): Plot!
-  updateTender(geoBounds: [[Float!]!], id: ID!, input: UpdateTenderInput!): Tender!
+  updateTender(attachmentFileNames: [String!], geoBounds: [[Float!]!], id: ID!, imageFileNames: [String!], input: UpdateTenderInput!): Tender!
   updateUser(id: ID!, input: UpdateUserInput!): User!
 }
 

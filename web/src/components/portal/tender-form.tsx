@@ -249,6 +249,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 clearFollowingSales: true,
                 addFollowingSaleIDs: followingSaleIDs,
               },
+              imageFileNames,
+              attachmentFileNames,
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });

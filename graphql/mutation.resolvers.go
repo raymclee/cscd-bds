@@ -100,13 +100,42 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 }
 
 // UpdateTender is the resolver for the updateTender field.
-func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error) {
+func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error) {
 	q := r.store.Tender.UpdateOneID(id).SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
 	} else {
 		q.ClearGeoBounds()
 	}
+
+	var images []string
+	{
+		for _, fn := range imageFileNames {
+			filename, err := util.SaveStaticFile(fn, true)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save image file: %w", err)
+			}
+			images = append(images, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(images) > 0 {
+			q.SetImages(images)
+		}
+	}
+
+	var attachments []string
+	{
+		for _, fn := range attachmentFileNames {
+			filename, err := util.SaveStaticFile(fn, false)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save attachment file: %w", err)
+			}
+			attachments = append(attachments, fmt.Sprintf("/static/%s", filename))
+		}
+		if len(attachments) > 0 {
+			q.SetAttachements(attachments)
+		}
+	}
+
 	return q.Save(ctx)
 }
 

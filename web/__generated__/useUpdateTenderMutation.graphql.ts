@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d05e857ebfc87e0ae167b98afe966035>>
+ * @generated SignedSource<<d57a0e0ef00a62c7c745976c40e8c5c1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -129,7 +129,9 @@ export type UpdateTenderInput = {
   updatedAt?: any | null | undefined;
 };
 export type useUpdateTenderMutation$variables = {
+  attachmentFileNames: ReadonlyArray<string>;
   id: string;
+  imageFileNames: ReadonlyArray<string>;
   input: UpdateTenderInput;
 };
 export type useUpdateTenderMutation$data = {
@@ -143,19 +145,32 @@ export type useUpdateTenderMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "attachmentFileNames"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "id"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "imageFileNames"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v4 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "id"
+    "kind": "Variable",
+    "name": "attachmentFileNames",
+    "variableName": "attachmentFileNames"
   },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
-  }
-],
-v1 = [
   {
     "kind": "Variable",
     "name": "id",
@@ -163,44 +178,65 @@ v1 = [
   },
   {
     "kind": "Variable",
+    "name": "imageFileNames",
+    "variableName": "imageFileNames"
+  },
+  {
+    "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v2 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "code",
   "storageKey": null
 },
-v4 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v5 = [
-  (v2/*: any*/)
+v8 = [
+  (v5/*: any*/)
+],
+v9 = [
+  (v5/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "adcode",
+    "storageKey": null
+  },
+  (v7/*: any*/)
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useUpdateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
@@ -220,21 +256,26 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v3/*: any*/),
+      (v2/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useUpdateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
+          (v5/*: any*/),
+          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -579,9 +620,9 @@ return {
             "name": "area",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/)
+              (v5/*: any*/),
+              (v6/*: any*/),
+              (v7/*: any*/)
             ],
             "storageKey": null
           },
@@ -593,8 +634,8 @@ return {
             "name": "followingSales",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
-              (v4/*: any*/)
+              (v5/*: any*/),
+              (v7/*: any*/)
             ],
             "storageKey": null
           },
@@ -605,7 +646,7 @@ return {
             "kind": "LinkedField",
             "name": "finder",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v8/*: any*/),
             "storageKey": null
           },
           {
@@ -615,7 +656,7 @@ return {
             "kind": "LinkedField",
             "name": "createdBy",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v8/*: any*/),
             "storageKey": null
           },
           {
@@ -625,7 +666,16 @@ return {
             "kind": "LinkedField",
             "name": "customer",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": [
+              (v5/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "ownerType",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -635,7 +685,7 @@ return {
             "kind": "LinkedField",
             "name": "province",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v9/*: any*/),
             "storageKey": null
           },
           {
@@ -645,7 +695,7 @@ return {
             "kind": "LinkedField",
             "name": "city",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v9/*: any*/),
             "storageKey": null
           },
           {
@@ -655,7 +705,7 @@ return {
             "kind": "LinkedField",
             "name": "district",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v9/*: any*/),
             "storageKey": null
           }
         ],
@@ -664,16 +714,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "741293e1a64dab41577cea7433ad9230",
+    "cacheID": "53277a3960a99d23c51002a8bd440add",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n) {\n  updateTender(id: $id, input: $input) {\n    ...tenderDetailFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  fullAddress\n  contractor\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  prepareToBid\n  projectCode\n  projectDefinition\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  projectType\n  attachements\n  remark\n  images\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  costEngineer\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  tenderWinCompany\n  tenderCode\n  architect\n  developer\n  tenderClosingDate\n  constructionArea\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  finder {\n    id\n  }\n  createdBy {\n    id\n  }\n  customer {\n    id\n  }\n  province {\n    id\n  }\n  city {\n    id\n  }\n  district {\n    id\n  }\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    ...tenderDetailFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  fullAddress\n  contractor\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  prepareToBid\n  projectCode\n  projectDefinition\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  projectType\n  attachements\n  remark\n  images\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  costEngineer\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  tenderWinCompany\n  tenderCode\n  architect\n  developer\n  tenderClosingDate\n  constructionArea\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  finder {\n    id\n  }\n  createdBy {\n    id\n  }\n  customer {\n    id\n    ownerType\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "07d20ea950c760f60a9c759f03136ef6";
+(node as any).hash = "521831b9d007542e9e1825558bd24c23";
 
 export default node;

@@ -1240,8 +1240,10 @@ export type MutationUpdatePlotArgs = {
 
 
 export type MutationUpdateTenderArgs = {
+  attachmentFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
   geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
   id: Scalars['ID']['input'];
+  imageFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
   input: UpdateTenderInput;
 };
 

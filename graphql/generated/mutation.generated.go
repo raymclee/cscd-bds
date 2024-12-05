@@ -23,7 +23,7 @@ type MutationResolver interface {
 	UpdateUser(ctx context.Context, id xid.ID, input ent.UpdateUserInput) (*ent.User, error)
 	DeleteUser(ctx context.Context, id xid.ID) (*ent.User, error)
 	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.TenderConnection, error)
-	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) (*ent.Tender, error)
+	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error)
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error)
 	UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
@@ -529,6 +529,16 @@ func (ec *executionContext) field_Mutation_updateTender_args(ctx context.Context
 		return nil, err
 	}
 	args["geoBounds"] = arg2
+	arg3, err := ec.field_Mutation_updateTender_argsImageFileNames(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["imageFileNames"] = arg3
+	arg4, err := ec.field_Mutation_updateTender_argsAttachmentFileNames(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["attachmentFileNames"] = arg4
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateTender_argsID(
@@ -594,6 +604,50 @@ func (ec *executionContext) field_Mutation_updateTender_argsGeoBounds(
 	}
 
 	var zeroVal [][]float64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTender_argsImageFileNames(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["imageFileNames"]
+	if !ok {
+		var zeroVal []string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("imageFileNames"))
+	if tmp, ok := rawArgs["imageFileNames"]; ok {
+		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+	}
+
+	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTender_argsAttachmentFileNames(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["attachmentFileNames"]
+	if !ok {
+		var zeroVal []string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("attachmentFileNames"))
+	if tmp, ok := rawArgs["attachmentFileNames"]; ok {
+		return ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+	}
+
+	var zeroVal []string
 	return zeroVal, nil
 }
 
@@ -1138,7 +1192,7 @@ func (ec *executionContext) _Mutation_updateTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateTenderInput), fc.Args["geoBounds"].([][]float64))
+		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

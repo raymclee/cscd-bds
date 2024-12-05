@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d82564a5e8f4d917b0dffc22a09fedba>>
+ * @generated SignedSource<<183ea11711f2a1bb8b7c524a7e3d2f04>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,7 +21,9 @@ export type tenderDetailFragment$data = {
   readonly biddingDate: any | null | undefined;
   readonly biddingInstructions: string | null | undefined;
   readonly city: {
+    readonly adcode: number;
     readonly id: string;
+    readonly name: string;
   } | null | undefined;
   readonly code: string;
   readonly competitivePartnershipRating: number | null | undefined;
@@ -39,6 +41,7 @@ export type tenderDetailFragment$data = {
   readonly creditAndPaymentRatingOverview: string | null | undefined;
   readonly customer: {
     readonly id: string;
+    readonly ownerType: number | null | undefined;
   } | null | undefined;
   readonly customerRelationshipRating: number | null | undefined;
   readonly customerRelationshipRatingOverview: string | null | undefined;
@@ -46,7 +49,9 @@ export type tenderDetailFragment$data = {
   readonly developer: string | null | undefined;
   readonly discoveryDate: any;
   readonly district: {
+    readonly adcode: number;
     readonly id: string;
+    readonly name: string;
   } | null | undefined;
   readonly estimatedAmount: number | null | undefined;
   readonly estimatedProjectEndDate: any | null | undefined;
@@ -72,7 +77,9 @@ export type tenderDetailFragment$data = {
   readonly projectDefinition: string | null | undefined;
   readonly projectType: string | null | undefined;
   readonly province: {
+    readonly adcode: number;
     readonly id: string;
+    readonly name: string;
   } | null | undefined;
   readonly remark: string | null | undefined;
   readonly sizeAndValueRating: number | null | undefined;
@@ -120,6 +127,17 @@ v2 = {
 },
 v3 = [
   (v0/*: any*/)
+],
+v4 = [
+  (v0/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "adcode",
+    "storageKey": null
+  },
+  (v2/*: any*/)
 ];
 return {
   "argumentDefinitions": [],
@@ -520,7 +538,16 @@ return {
       "kind": "LinkedField",
       "name": "customer",
       "plural": false,
-      "selections": (v3/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "ownerType",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -530,7 +557,7 @@ return {
       "kind": "LinkedField",
       "name": "province",
       "plural": false,
-      "selections": (v3/*: any*/),
+      "selections": (v4/*: any*/),
       "storageKey": null
     },
     {
@@ -540,7 +567,7 @@ return {
       "kind": "LinkedField",
       "name": "city",
       "plural": false,
-      "selections": (v3/*: any*/),
+      "selections": (v4/*: any*/),
       "storageKey": null
     },
     {
@@ -550,7 +577,7 @@ return {
       "kind": "LinkedField",
       "name": "district",
       "plural": false,
-      "selections": (v3/*: any*/),
+      "selections": (v4/*: any*/),
       "storageKey": null
     }
   ],
@@ -559,6 +586,6 @@ return {
 };
 })();
 
-(node as any).hash = "d9c3456fd5f8d3ce4a5b46cc0d1a2e51";
+(node as any).hash = "1f4e9ef51a860fe9120c98ccc67775d6";
 
 export default node;

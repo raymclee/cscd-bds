@@ -4,7 +4,6 @@ import (
 	"cscd-bds/config"
 	"fmt"
 	"io"
-	"runtime"
 
 	"os"
 
@@ -12,12 +11,8 @@ import (
 )
 
 func SaveStaticFile(filename string, shouldResize bool) (string, error) {
-	var sourcePath string
-	if runtime.GOOS == "windows" {
-		sourcePath = fmt.Sprintf("%stmp\\%s", config.FilePath, filename)
-	} else {
-		sourcePath = fmt.Sprintf("%stmp/%s", config.FilePath, filename)
-	}
+
+	sourcePath := fmt.Sprintf("%stmp/%s", config.FilePath, filename)
 	tf, err := os.Open(sourcePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to open file: %w", err)

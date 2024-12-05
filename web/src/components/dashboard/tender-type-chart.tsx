@@ -98,6 +98,17 @@ export function TenderTypeChart() {
     label: {
       text: (d: { type: string; value: number }) => `${d.type}\n ${d.value}个`,
       position: "outside",
+      // transform: [
+      //   {
+      //     type: "overlapHide",
+      //     priority: (a, b) => {
+      //       console.log({ a, b });
+      //       return a.value < b.value;
+      //     },
+      //   },
+      // ],
+      transform: [{ type: "overlapDodgeY", maxIterations: 1 }],
+      // transform: [{ type: "overlapHide", priority: (a, b) => a < b }],
     },
     // label: false,
     // legend: {

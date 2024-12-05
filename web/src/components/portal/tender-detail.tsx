@@ -81,15 +81,22 @@ export const TenderDetailFragment = graphql`
     }
     customer {
       id
+      ownerType
     }
     province {
       id
+      adcode
+      name
     }
     city {
       id
+      adcode
+      name
     }
     district {
       id
+      adcode
+      name
     }
   }
 `;

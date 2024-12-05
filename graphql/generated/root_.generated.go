@@ -196,7 +196,7 @@ type ComplexityRoot struct {
 		DeleteUser   func(childComplexity int, id xid.ID) int
 		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdatePlot   func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64) int
+		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
 		UpdateUser   func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 	}
 
@@ -1241,7 +1241,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64)), true
+		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -7301,6 +7301,8 @@ type GeoJson {
     id: ID!
     input: UpdateTenderInput!
     geoBounds: [[Float!]!]
+    imageFileNames: [String!]
+    attachmentFileNames: [String!]
   ): Tender!
   deleteTender(id: ID!): Tender!
 
