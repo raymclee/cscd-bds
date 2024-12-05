@@ -1,16 +1,15 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
 import { tendersTenderListFragment$key } from "__generated__/tendersTenderListFragment.graphql";
-import { Button, Form, Input, List, Select } from "antd";
+import { Button, List } from "antd";
+import dayjs from "dayjs";
 import { Plus } from "lucide-react";
-import { useState } from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
-import { TenderListItem } from "~/components/portal/tender-list-item";
-import { isGAorHWOnly, tenderStatusOptions } from "~/lib/helper";
-import { canEdit } from "~/lib/permission";
 import { ListFilter } from "~/components/portal/list-filter";
-import dayjs from "dayjs";
+import { TenderListItem } from "~/components/portal/tender-list-item";
+import { isGAorHWOnly } from "~/lib/helper";
+import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders/")({
   component: RouteComponent,
@@ -166,7 +165,7 @@ function TenderList({
         }}
         dataSource={dataSource}
         itemLayout="vertical"
-        className="rounded-lg bg-white px-4 pb-6 pt-px"
+        className="px-4 pt-px pb-6 bg-white rounded-lg"
         renderItem={(node) =>
           node && <TenderListItem key={node?.id} queryRef={node} />
         }
