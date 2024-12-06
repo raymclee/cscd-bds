@@ -1,10 +1,13 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { customerFormFragment$key } from "__generated__/customerFormFragment.graphql";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
-import { Button, Table, TableProps, Typography } from "antd";
+import { Button, Drawer, Table, TableProps, Typography } from "antd";
 import dayjs from "dayjs";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
+import { CustomerForm } from "~/components/portal/customer-form";
 import { ListFilter } from "~/components/portal/list-filter";
 import { Customer } from "~/graphql/graphql";
 import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
@@ -43,6 +46,7 @@ const query = graphql`
           }
         }
       }
+      ...customerFormFragment @alias(as: "form")
     }
   }
 `;
@@ -113,20 +117,12 @@ function RouteComponent() {
     },
   ];
 
+  if (!data.node?.form) return null;
+
   return (
     <>
       <ListFilter areas={areas}>
-        {canEdit(session) && (
-          <Link to="" className="w-full md:w-auto">
-            <Button
-              type="primary"
-              icon={<Plus size={16} />}
-              className="w-full md:w-auto"
-            >
-              添加客户
-            </Button>
-          </Link>
-        )}
+        {canEdit(session) && <CustomerFormDrawer queryRef={data.node?.form} />}
       </ListFilter>
       <Table
         className="rounded-lg"
@@ -144,6 +140,35 @@ function RouteComponent() {
         columns={columns}
         rowKey={"id"}
       />
+    </>
+  );
+}
+
+type CustomerFormDrawerProps = {
+  queryRef: customerFormFragment$key;
+};
+
+function CustomerFormDrawer({ queryRef }: CustomerFormDrawerProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        type="primary"
+        icon={<Plus size={16} />}
+        onClick={() => setOpen(true)}
+        className="w-full md:w-auto"
+      >
+        添加客户
+      </Button>
+      <Drawer
+        title="添加客户"
+        open={open}
+        onClose={() => setOpen(false)}
+        width={480}
+      >
+        <CustomerForm queryRef={queryRef} onClose={() => setOpen(false)} />
+      </Drawer>
     </>
   );
 }

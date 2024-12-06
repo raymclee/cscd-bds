@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1d1cb6aef3aac437e9248fa6e3f9a528>>
+ * @generated SignedSource<<9ff94d3b7fe8f39fcccb0007239174de>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type customersPageQuery$variables = {
   userId: string;
 };
@@ -38,6 +39,9 @@ export type customersPageQuery$data = {
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
+    readonly form: {
+      readonly " $fragmentSpreads": FragmentRefs<"customerFormFragment">;
+    } | null | undefined;
   } | null | undefined;
 };
 export type customersPageQuery = {
@@ -217,6 +221,22 @@ return {
             ],
             "type": "User",
             "abstractKey": null
+          },
+          {
+            "fragment": {
+              "kind": "InlineFragment",
+              "selections": [
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "customerFormFragment"
+                }
+              ],
+              "type": "User",
+              "abstractKey": null
+            },
+            "kind": "AliasedInlineFragmentSpread",
+            "name": "form"
           }
         ],
         "storageKey": null
@@ -342,6 +362,48 @@ return {
             "type": "User",
             "abstractKey": null
           },
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "AreaConnection",
+                "kind": "LinkedField",
+                "name": "areas",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "AreaEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Area",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v4/*: any*/),
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "type": "User",
+            "abstractKey": null
+          },
           (v4/*: any*/)
         ],
         "storageKey": null
@@ -349,16 +411,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7a8907533d79152e5100f86e44e5cc85",
+    "cacheID": "833b6b0ebe9c8d6adfff177d63c2bec2",
     "id": null,
     "metadata": {},
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    code\n                    name\n                    id\n                  }\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    code\n                    name\n                    id\n                  }\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    ...customerFormFragment\n    id\n  }\n}\n\nfragment customerFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "40eb19d21a9169f14a35719442f75ab0";
+(node as any).hash = "faa6a0e50f7052ea9f2d79a515ff4033";
 
 export default node;

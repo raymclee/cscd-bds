@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7450bf510d3b477eacbd3acaecd5bc9a>>
+ * @generated SignedSource<<a159bbcbd455b2d0980b0a0a07098dfa>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type OrderDirection = "ASC" | "DESC" | "%future added value";
-export type TenderOrderField = "CLOSING_DATE" | "CREATED_AT" | "NAME" | "%future added value";
+export type TenderOrderField = "CLOSING_DATE" | "CREATED_AT" | "NAME" | "TENDER_DATE" | "%future added value";
 export type TenderOrder = {
   direction?: OrderDirection;
   field: TenderOrderField;

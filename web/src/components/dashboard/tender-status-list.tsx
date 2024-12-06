@@ -69,7 +69,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
             "mx-4 block h-[80vh] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
             gaView
               ? "w-[clamp(400px,80vw,1200px)]"
-              : "w-[clamp(400px,40vw,600px)]",
+              : "w-[clamp(400px,60vw,800px)]",
           )}
         >
           <CardHeader className="flex flex-row items-center justify-between overflow-hidden bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -135,7 +135,9 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                         <TableHead className="w-[6rem] text-center text-gray-300">
                           区域
                         </TableHead>
-
+                        <TableHead className="w-[8rem] text-center text-gray-300">
+                          招标日期
+                        </TableHead>
                         <TableHead className="w-[6rem] text-center text-gray-300">
                           <div>金额</div>
                           (亿元)
@@ -214,6 +216,11 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                         <>
                           <TableCell className="text-center">
                             {tender?.area.name}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {tender?.tenderDate
+                              ? dayjs(tender.tenderDate).format("LL")
+                              : "-"}
                           </TableCell>
                           <TableCell className="text-center">
                             {/* {new Intl.NumberFormat("zh-Hans-CN", {

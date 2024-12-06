@@ -1873,7 +1873,8 @@ export type TenderOrder = {
 export enum TenderOrderField {
   ClosingDate = 'CLOSING_DATE',
   CreatedAt = 'CREATED_AT',
-  Name = 'NAME'
+  Name = 'NAME',
+  TenderDate = 'TENDER_DATE'
 }
 
 /**

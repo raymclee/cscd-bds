@@ -5291,6 +5291,7 @@ Properties by which Tender connections can be ordered.
 enum TenderOrderField {
   CREATED_AT
   NAME
+  TENDER_DATE
   CLOSING_DATE
 }
 """

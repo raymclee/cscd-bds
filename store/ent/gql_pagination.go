@@ -2525,6 +2525,20 @@ var (
 			}
 		},
 	}
+	// TenderOrderFieldTenderDate orders Tender by tender_date.
+	TenderOrderFieldTenderDate = &TenderOrderField{
+		Value: func(t *Tender) (ent.Value, error) {
+			return t.TenderDate, nil
+		},
+		column: tender.FieldTenderDate,
+		toTerm: tender.ByTenderDate,
+		toCursor: func(t *Tender) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.TenderDate,
+			}
+		},
+	}
 	// TenderOrderFieldTenderClosingDate orders Tender by tender_closing_date.
 	TenderOrderFieldTenderClosingDate = &TenderOrderField{
 		Value: func(t *Tender) (ent.Value, error) {
@@ -2549,6 +2563,8 @@ func (f TenderOrderField) String() string {
 		str = "CREATED_AT"
 	case TenderOrderFieldName.column:
 		str = "NAME"
+	case TenderOrderFieldTenderDate.column:
+		str = "TENDER_DATE"
 	case TenderOrderFieldTenderClosingDate.column:
 		str = "CLOSING_DATE"
 	}
@@ -2571,6 +2587,8 @@ func (f *TenderOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *TenderOrderFieldCreatedAt
 	case "NAME":
 		*f = *TenderOrderFieldName
+	case "TENDER_DATE":
+		*f = *TenderOrderFieldTenderDate
 	case "CLOSING_DATE":
 		*f = *TenderOrderFieldTenderClosingDate
 	default:

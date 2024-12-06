@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import * as React from "react";
 import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
+import { CustomerDetail } from "~/components/portal/customer-detail";
 import { TenderListItem } from "~/components/portal/tender-list-item";
 import {
   customerSizeText,
@@ -37,25 +38,7 @@ const query = graphql`
               customers(where: { id: $id }) {
                 edges {
                   node {
-                    id
-                    name
-                    createdBy {
-                      name
-                    }
-                    updatedAt
-                    ownerType
-                    industry
-                    size
-                    contactPerson
-                    contactPersonPosition
-                    contactPersonPhone
-                    contactPersonEmail
-                    sales {
-                      name
-                    }
-                    area {
-                      name
-                    }
+                    ...customerDetailFragment
                     tenders(first: $first, last: $last)
                       @connection(key: "customersTenderListFragment_tenders") {
                       edges {
@@ -144,70 +127,7 @@ function RouteComponent() {
   return (
     <>
       <Card
-        title={
-          <Descriptions
-            title={
-              <Typography.Title level={4}>{customer.name}</Typography.Title>
-            }
-            items={[
-              {
-                key: "ownerType",
-                label: "业主类型",
-                children: ownerTypeText(customer.ownerType),
-              },
-              {
-                key: "industry",
-                label: "行业",
-                children: industryText(customer.industry),
-              },
-              {
-                key: "size",
-                label: "规模",
-                children: customerSizeText(customer.size),
-              },
-              {
-                key: "area",
-                label: "地区",
-                children: customer.area.name,
-              },
-              {
-                key: "sales",
-                label: "客户所有人",
-                children: customer.sales?.name,
-              },
-              {
-                key: "contactPerson",
-                label: "联系人",
-                children: customer.contactPerson,
-              },
-              {
-                key: "contactPersonPosition",
-                label: "联系人职位",
-                children: customer.contactPersonPosition,
-              },
-              {
-                key: "contactPersonPhone",
-                label: "联系人电话",
-                children: customer.contactPersonPhone,
-              },
-              {
-                key: "contactPersonEmail",
-                label: "联系人邮箱",
-                children: customer.contactPersonEmail,
-              },
-              {
-                key: "createdBy",
-                label: "创建者",
-                children: customer.createdBy.name,
-              },
-              {
-                key: "updatedAt",
-                label: "更新时间",
-                children: dayjs(customer.updatedAt).format("LLL"),
-              },
-            ]}
-          />
-        }
+        title={<CustomerDetail queryRef={customer} />}
         onTabChange={(key) => setActiveTab(key)}
         tabProps={{ style: { marginTop: 12 }, size: "small" }}
         tabList={[

@@ -269,9 +269,21 @@ function RouteComponent() {
                   <div>
                     项目:<span class="ml-1 text-lg font-bold">${area?.tenders?.edges?.length}</span>
                   </div>
-                  <div>
-                    金额:<span class="mx-1 text-lg font-bold">${amount}</span>亿
-                  </div>
+                  ${
+                    typeof amount === "number"
+                      ? amount > 0 &&
+                        `<div>
+                        金额:
+                        <span class="mx-1 text-lg font-bold">
+                          ${
+                            typeof amount === "number" && amount > 0
+                              ? `${amount}亿`
+                              : "-"
+                          }
+                        </span>
+                      </div>`
+                      : ""
+                  }
                 </div>
                 <div></div>
               </div>
@@ -692,7 +704,7 @@ function RouteComponent() {
         content: `
         <div class="flex flex-col gap-1 p-0.5 text-xs shadow-2xl">
           <div class="font-medium">${props.name}(${projectCount})</div>
-          ${projectAmount > 0 ? `<div>${projectAmount}亿</div>` : ""}
+          ${typeof projectAmount === "number" && projectAmount > 0 ? `<div>${projectAmount}亿</div>` : ""}
         </div>
         `,
         offset: new AMap.Pixel(-50, 0),

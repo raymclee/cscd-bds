@@ -229,7 +229,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
     <Form<CreateTenderInput>
       form={form}
       className="relative pb-24"
-      requiredMark="optional"
+      // requiredMark="optional"
       disabled={isCreateInFlight || isUpdateInFlight}
       scrollToFirstError={{
         behavior: "smooth",

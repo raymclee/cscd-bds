@@ -41,6 +41,7 @@ require (
 
 require (
 	ariga.io/atlas v0.28.1 // indirect
+	github.com/SAP/go-hdb v1.12.6
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/alexedwards/scs/redisstore v0.0.0-20240316134038-7e11d57e8885

@@ -9,6 +9,7 @@ export const Route = createFileRoute("/__auth/__dashboard/__map/")({
     return loadQuery<MapIndexPageQuery>(RelayEnvironment, node, {
       userId: session.userId,
       orderBy: [
+        { field: "TENDER_DATE", direction: "ASC" },
         { field: "CLOSING_DATE", direction: "ASC" },
         { field: "CREATED_AT", direction: "ASC" },
       ],

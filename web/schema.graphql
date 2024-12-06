@@ -1886,6 +1886,7 @@ enum TenderOrderField {
   CLOSING_DATE
   CREATED_AT
   NAME
+  TENDER_DATE
 }
 
 """

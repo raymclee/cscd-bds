@@ -38,7 +38,9 @@ func (Tender) Fields() []ent.Field {
 			SchemaType(map[string]string{
 				dialect.Postgres: "numeric",
 			}),
-		field.Time("tender_date").Optional(),
+		field.Time("tender_date").Optional().Annotations(
+			entgql.OrderField("TENDER_DATE"),
+		),
 		field.Time("discovery_date"),
 		field.String("address").Optional().Nillable(),
 		field.String("full_address").Optional().Nillable(),
