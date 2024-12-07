@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fa23a6e2f62e85c6a859943542d7fdb9>>
+ * @generated SignedSource<<59c68e03b8bc90805ab4e331ffb5bead>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type customersTenderListFragment$data = {
+export type customerTenderListFragment$data = {
   readonly tenders: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -19,11 +19,11 @@ export type customersTenderListFragment$data = {
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
-  readonly " $fragmentType": "customersTenderListFragment";
+  readonly " $fragmentType": "customerTenderListFragment";
 };
-export type customersTenderListFragment$key = {
-  readonly " $data"?: customersTenderListFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"customersTenderListFragment">;
+export type customerTenderListFragment$key = {
+  readonly " $data"?: customerTenderListFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"customerTenderListFragment">;
 };
 
 const node: ReaderFragment = {
@@ -52,7 +52,7 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "customersTenderListFragment",
+  "name": "customerTenderListFragment",
   "selections": [
     {
       "alias": "tenders",
@@ -157,6 +157,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "59e18194acc0ee3f6e03517d0529a6c9";
+(node as any).hash = "1abd05c6fdfabbfaaed4871120aaef44";
 
 export default node;

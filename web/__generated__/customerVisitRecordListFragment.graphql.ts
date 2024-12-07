@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b22cf7e2058c40259685f2e4b3e8ba13>>
+ * @generated SignedSource<<46184c259592be2a4235850a49a7bb61>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type customersVisitRecordListFragment$data = {
+export type customerVisitRecordListFragment$data = {
   readonly visitRecords: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -27,11 +27,11 @@ export type customersVisitRecordListFragment$data = {
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
-  readonly " $fragmentType": "customersVisitRecordListFragment";
+  readonly " $fragmentType": "customerVisitRecordListFragment";
 };
-export type customersVisitRecordListFragment$key = {
-  readonly " $data"?: customersVisitRecordListFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"customersVisitRecordListFragment">;
+export type customerVisitRecordListFragment$key = {
+  readonly " $data"?: customerVisitRecordListFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"customerVisitRecordListFragment">;
 };
 
 const node: ReaderFragment = (function(){
@@ -51,7 +51,7 @@ return {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "customersVisitRecordListFragment",
+  "name": "customerVisitRecordListFragment",
   "selections": [
     {
       "alias": null,
@@ -153,6 +153,6 @@ return {
 };
 })();
 
-(node as any).hash = "50442c84733dc4449a240b6e15654cf5";
+(node as any).hash = "d54a6169a7cdac6a98ac2d9bc949c0c3";
 
 export default node;
