@@ -270,16 +270,11 @@ function RouteComponent() {
                     项目:<span class="ml-1 text-lg font-bold">${area?.tenders?.edges?.length}</span>
                   </div>
                   ${
-                    typeof amount === "number"
-                      ? amount > 0 &&
-                        `<div>
+                    amount > 0
+                      ? `<div>
                         金额:
                         <span class="mx-1 text-lg font-bold">
-                          ${
-                            typeof amount === "number" && amount > 0
-                              ? `${amount}亿`
-                              : "-"
-                          }
+                          ${`${amount}亿`}
                         </span>
                       </div>`
                       : ""

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ff8500b511360fdb13c3c5a47f6874db>>
+ * @generated SignedSource<<b14fe22223ed0f32194f3c268dd0ed61>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -44,7 +44,7 @@ export type customersDetailPageQuery$data = {
                     readonly __id: string;
                   } | null | undefined> | null | undefined;
                 };
-                readonly " $fragmentSpreads": FragmentRefs<"customerDetailFragment" | "customersTenderListFragment" | "customersVisitRecordListFragment">;
+                readonly " $fragmentSpreads": FragmentRefs<"customerDetailFragment" | "customerTenderListFragment" | "customerVisitRecordListFragment">;
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };
@@ -351,12 +351,12 @@ return {
                                       {
                                         "args": null,
                                         "kind": "FragmentSpread",
-                                        "name": "customersVisitRecordListFragment"
+                                        "name": "customerVisitRecordListFragment"
                                       },
                                       {
                                         "args": (v13/*: any*/),
                                         "kind": "FragmentSpread",
-                                        "name": "customersTenderListFragment"
+                                        "name": "customerTenderListFragment"
                                       }
                                     ],
                                     "storageKey": null
@@ -791,7 +791,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "706466f04def2e087a4845a8de9bdf62",
+    "cacheID": "532fb70e4c239db2869e0a3c56eee019",
     "id": null,
     "metadata": {
       "connection": [
@@ -805,11 +805,11 @@ return {
     },
     "name": "customersDetailPageQuery",
     "operationKind": "query",
-    "text": "query customersDetailPageQuery(\n  $userId: ID!\n  $id: ID!\n  $orderBy: VisitRecordOrder\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers(where: {id: $id}) {\n              edges {\n                node {\n                  ...customerDetailFragment\n                  tenders(first: $first, last: $last) {\n                    edges {\n                      node {\n                        id\n                        __typename\n                      }\n                      cursor\n                    }\n                    pageInfo {\n                      endCursor\n                      hasNextPage\n                      hasPreviousPage\n                      startCursor\n                    }\n                  }\n                  ...customersVisitRecordListFragment\n                  ...customersTenderListFragment_2pIUTM\n                  id\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    name\n    id\n  }\n}\n\nfragment customersTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customersVisitRecordListFragment on Customer {\n  visitRecords(orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        date\n        visitType\n        commPeople\n        commContent\n        nextStep\n        tender {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n}\n"
+    "text": "query customersDetailPageQuery(\n  $userId: ID!\n  $id: ID!\n  $orderBy: VisitRecordOrder\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            customers(where: {id: $id}) {\n              edges {\n                node {\n                  ...customerDetailFragment\n                  tenders(first: $first, last: $last) {\n                    edges {\n                      node {\n                        id\n                        __typename\n                      }\n                      cursor\n                    }\n                    pageInfo {\n                      endCursor\n                      hasNextPage\n                      hasPreviousPage\n                      startCursor\n                    }\n                  }\n                  ...customerVisitRecordListFragment\n                  ...customerTenderListFragment_2pIUTM\n                  id\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    name\n    id\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerVisitRecordListFragment on Customer {\n  visitRecords(orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        date\n        visitType\n        commPeople\n        commContent\n        nextStep\n        tender {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6abd71c460509a220e13ad307cdcf045";
+(node as any).hash = "a9040281f5ae33045d79084a9cb9867f";
 
 export default node;

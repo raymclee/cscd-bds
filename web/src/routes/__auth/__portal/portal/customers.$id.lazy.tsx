@@ -1,20 +1,12 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { customersDetailPageQuery } from "__generated__/customersDetailPageQuery.graphql";
-import { customersTenderListFragment$key } from "__generated__/customersTenderListFragment.graphql";
-import { customersVisitRecordListFragment$key } from "__generated__/customersVisitRecordListFragment.graphql";
-import { Card, Descriptions, List, Result, Typography } from "antd";
-import dayjs from "dayjs";
+import { Card, Result } from "antd";
 import * as React from "react";
-import { useFragment, usePreloadedQuery } from "react-relay";
+import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { CustomerDetail } from "~/components/portal/customer-detail";
-import { TenderListItem } from "~/components/portal/tender-list-item";
-import {
-  customerSizeText,
-  industryText,
-  ownerTypeText,
-  visitTypeText,
-} from "~/lib/helper";
+import { CustomerTenderList } from "~/components/portal/customer-tender-list";
+import { CustomerVisitRecordList } from "~/components/portal/customer-visit-record-list";
 
 export const Route = createLazyFileRoute(
   "/__auth/__portal/portal/customers/$id",
@@ -22,40 +14,46 @@ export const Route = createLazyFileRoute(
   component: RouteComponent,
 });
 
-const query = graphql`
-  query customersDetailPageQuery(
-    $userId: ID!
-    $id: ID!
-    $orderBy: VisitRecordOrder
-    $first: Int
-    $last: Int
-  ) {
-    node(id: $userId) {
-      ... on User {
-        areas {
-          edges {
-            node {
-              customers(where: { id: $id }) {
-                edges {
-                  node {
-                    ...customerDetailFragment
-                    tenders(first: $first, last: $last)
-                      @connection(key: "customersTenderListFragment_tenders") {
-                      edges {
-                        __id
-                        node {
-                          id
+function RouteComponent() {
+  const data = usePreloadedQuery<customersDetailPageQuery>(
+    graphql`
+      query customersDetailPageQuery(
+        $userId: ID!
+        $id: ID!
+        $orderBy: VisitRecordOrder
+        $first: Int
+        $last: Int
+      ) {
+        node(id: $userId) {
+          ... on User {
+            areas {
+              edges {
+                node {
+                  customers(where: { id: $id }) {
+                    edges {
+                      node {
+                        ...customerDetailFragment
+                        tenders(first: $first, last: $last)
+                          @connection(
+                            key: "customersTenderListFragment_tenders"
+                          ) {
+                          edges {
+                            __id
+                            node {
+                              id
+                            }
+                          }
                         }
+                        visitRecords(orderBy: $orderBy) {
+                          edges {
+                            __id
+                          }
+                        }
+                        ...customerVisitRecordListFragment
+                        ...customerTenderListFragment
+                          @arguments(first: $first, last: $last)
                       }
                     }
-                    visitRecords(orderBy: $orderBy) {
-                      edges {
-                        __id
-                      }
-                    }
-                    ...customersVisitRecordListFragment
-                    ...customersTenderListFragment
-                      @arguments(first: $first, last: $last)
                   }
                 }
               }
@@ -63,49 +61,7 @@ const query = graphql`
           }
         }
       }
-    }
-  }
-`;
-
-const VisitRecordListFragment = graphql`
-  fragment customersVisitRecordListFragment on Customer {
-    visitRecords(orderBy: $orderBy) {
-      edges {
-        node {
-          id
-          date
-          visitType
-          commPeople
-          commContent
-          nextStep
-          tender {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
-
-const TenderListFragment = graphql`
-  fragment customersTenderListFragment on Customer
-  @argumentDefinitions(first: { type: Int }, last: { type: Int }) {
-    tenders(first: $first, last: $last)
-      @connection(key: "customersTenderListFragment_tenders") {
-      edges {
-        node {
-          id
-          ...tenderListItemFragment
-        }
-      }
-    }
-  }
-`;
-
-function RouteComponent() {
-  const data = usePreloadedQuery<customersDetailPageQuery>(
-    query,
+    `,
     Route.useLoaderData(),
   );
   const [activeTab, setActiveTab] = React.useState("1");
@@ -141,80 +97,9 @@ function RouteComponent() {
           },
         ]}
       >
-        {activeTab === "1" && <TenderList queryRef={customer} />}
-        {activeTab === "2" && <VisitRecordList queryRef={customer} />}
+        {activeTab === "1" && <CustomerTenderList queryRef={customer} />}
+        {activeTab === "2" && <CustomerVisitRecordList queryRef={customer} />}
       </Card>
-      {/* <pre>{JSON.stringify(customer, null, 2)}</pre> */}
     </>
-  );
-}
-
-function TenderList({
-  queryRef,
-}: {
-  queryRef: customersTenderListFragment$key;
-}) {
-  const data = useFragment(TenderListFragment, queryRef);
-  return (
-    <List
-      itemLayout="vertical"
-      dataSource={data.tenders.edges?.map((e) => e?.node)}
-      rowKey={(node) => node?.id || ""}
-      renderItem={(node) => node && <TenderListItem queryRef={node} />}
-    />
-  );
-}
-
-function VisitRecordList({
-  queryRef,
-}: {
-  queryRef: customersVisitRecordListFragment$key;
-}) {
-  const data = useFragment(VisitRecordListFragment, queryRef);
-  return (
-    <div className="space-y-6">
-      <List
-        dataSource={data.visitRecords.edges?.map((e) => e?.node)}
-        rowKey={(node) => node?.id || ""}
-        renderItem={(node) =>
-          node && (
-            <Descriptions
-              layout="vertical"
-              bordered
-              className="py-4"
-              items={[
-                {
-                  key: "date",
-                  label: "日期",
-                  children: dayjs(node.date).format("LL"),
-                },
-                {
-                  key: "visitType",
-                  label: "拜访类型",
-                  children: visitTypeText(node.visitType),
-                },
-                {
-                  key: "commPeople",
-                  label: "沟通人员",
-                  children: node.commPeople,
-                },
-                {
-                  key: "commContent",
-                  label: "沟通内容",
-                  children: node.commContent,
-                  span: 3,
-                },
-                {
-                  key: "nextStep",
-                  label: "下一步",
-                  children: node.nextStep,
-                  span: 3,
-                },
-              ]}
-            />
-          )
-        }
-      />
-    </div>
   );
 }

@@ -57,9 +57,9 @@ export function tenderStatusText(status: Maybe<number> | undefined): string {
   }
 }
 
-export function fixAmount(amount: Maybe<number> | undefined): number | string {
+export function fixAmount(amount: Maybe<number> | undefined): number {
   if (!amount) {
-    return "-";
+    return 0;
   }
   return Number((Math.abs(Number(amount)) / 1.0e8).toFixed(2));
 }
