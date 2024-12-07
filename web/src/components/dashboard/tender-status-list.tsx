@@ -3,7 +3,7 @@ import { m } from "motion/react";
 import { useRelayEnvironment } from "react-relay";
 import { fetchQuery } from "relay-runtime";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
-import { fixAmount, isGAorHWOnly } from "~/lib/helper";
+import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
 import { useMapStore } from "~/store/map";
@@ -17,7 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useRouteContext } from "@tanstack/react-router";
 import dayjs from "dayjs";
 
 const MotionCard = m.create(Card);
@@ -41,8 +40,8 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
     ) || 0,
   );
 
-  const gaTendersOnly = tenders?.every((t) => t?.area.code == "GA");
-  const hwTendersOnly = tenders?.every((t) => t?.area.code == "HW");
+  const gaTendersOnly = filteredTenders?.every((t) => t?.area.code == "GA");
+  const hwTendersOnly = filteredTenders?.every((t) => t?.area.code == "HW");
   const gaView = gaOnly || gaTendersOnly || hwTendersOnly;
 
   return (
