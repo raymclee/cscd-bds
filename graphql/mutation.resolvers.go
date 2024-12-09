@@ -217,7 +217,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 					"ZXMDY",
 					"ZXMLX"
 				) VALUES (
-					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
 			`, mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate, t.Edges.CreatedBy.Name, t.CreatedAt, t.Status, followingSalesNamesStr, t.FullAddress, t.EstimatedAmount, t.TenderDate, t.ProjectCode, t.ProjectDefinition, t.ProjectType)
 			if err != nil {
