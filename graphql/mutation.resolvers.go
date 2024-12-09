@@ -166,6 +166,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 	if config.IsProd && input.Status != nil && *input.Status == 3 {
 		go func() {
+			ctx := context.Background()
 			t, err := r.store.Tender.Query().Where(tender.ID(id)).
 				WithArea().
 				WithCustomer().
