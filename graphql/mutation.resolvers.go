@@ -166,6 +166,16 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 	if config.IsProd && input.Status != nil && *input.Status == 3 {
 		go func() {
+			t, err := r.store.Tender.Query().Where(tender.ID(id)).
+				WithArea().
+				WithCustomer().
+				WithFinder().
+				WithCreatedBy().
+				WithFollowingSales().
+				Only(ctx)
+			if err != nil {
+				fmt.Println(err)
+			}
 			var (
 				now                 = time.Now()
 				customerName        string
@@ -186,7 +196,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 				followingSalesNames = append(followingSalesNames, s.Name)
 			}
 			followingSalesNamesStr := strings.Join(followingSalesNames, ",")
-			_, err := r.sap.Hana.Exec(`
+			_, err = r.sap.Hana.Exec(`
 				INSERT INTO "ZTSD005" (
 					"MANDT",
 					"ZBABH", // 标案编号
