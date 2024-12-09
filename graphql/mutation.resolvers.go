@@ -200,24 +200,24 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			_, err = r.sap.Hana.Exec(`
 				INSERT INTO "ZTSD005" (
 					"MANDT",
-					"ZBABH", // 标案编号
-					"ZXMMC", // 项目名称
-					"ZYWQY", // 业务区域
-					"ZYZMC", // 业主名称
-					"ZSJFXR", // 商机发现人
-					"ZSJFXRQ", // 商机发现日期
-					"ZCJZ", // 创建者
-					"ZCJRQ", // 创建日期
-					"ZSJZT", // 商机状态
-					"ZDQGZR", // 当前跟踪人
-					"ZLOCATION", // 地理位置
-					"ZYJJE", // 预算金额
-					"ZTBSJ", // 投标时间
-					"ZXMDM", // 项目代码
-					"ZXMDY", // 项目定义
-					"ZXMLX", // 项目类型
-					"ZCRDATE", // 数据创建日期
-					"ZUPDATE", // 数据更新日期
+					"ZBABH",
+					"ZXMMC",
+					"ZYWQY",
+					"ZYZMC",
+					"ZSJFXR",
+					"ZSJFXRQ",
+					"ZCJZ",
+					"ZCJRQ",
+					"ZSJZT",
+					"ZDQGZR",
+					"ZLOCATION",
+					"ZYJJE",
+					"ZTBSJ",
+					"ZXMDM",
+					"ZXMDY",
+					"ZXMLX",
+					"ZCRDATE",
+					"ZUPDATE",
 				) VALUES (
 					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
