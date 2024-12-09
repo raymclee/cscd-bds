@@ -196,7 +196,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			for _, s := range t.Edges.FollowingSales {
 				followingSalesNames = append(followingSalesNames, s.Name)
 			}
-			followingSalesNamesStr := strings.Join(followingSalesNames, ",")
+			// followingSalesNamesStr := strings.Join(followingSalesNames, ",")
 			_, err = r.sap.Hana.Exec(`
 				INSERT INTO "ZTSD005" (
 					"MANDT",
@@ -209,7 +209,6 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 					"ZCJZ",
 					"ZCJRQ",
 					"ZSJZT",
-					"ZDQGZR",
 					"ZLOCATION",
 					"ZYJJE",
 					"ZTBSJ",
@@ -219,7 +218,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 				) VALUES (
 					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
-			`, mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate.Format("20060102"), t.Edges.CreatedBy.Name, t.CreatedAt.Format("20060102"), t.Status, followingSalesNamesStr, t.FullAddress, t.EstimatedAmount, t.TenderDate.Format("20060102"), t.ProjectCode, t.ProjectDefinition, t.ProjectType)
+			`, mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate.Format("20060102"), t.Edges.CreatedBy.Name, t.CreatedAt.Format("20060102"), t.Status, t.FullAddress, t.EstimatedAmount, t.TenderDate.Format("20060102"), t.ProjectCode, t.ProjectDefinition, t.ProjectType)
 			if err != nil {
 				fmt.Println(err)
 			}
