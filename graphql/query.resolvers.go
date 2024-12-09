@@ -30,5 +30,5 @@ func (r *queryResolver) LastAvailableTenderCode(ctx context.Context, areaID xid.
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("%s%s%03d", area.Code, date.Format("20060102"), len(area.Edges.Tenders)+1), nil
+	return fmt.Sprintf("%s%s%03d", area.Code, date.Format("20060102"), len(area.Edges.Tenders)+2), nil
 }
