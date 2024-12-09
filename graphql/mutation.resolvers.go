@@ -14,6 +14,7 @@ import (
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/util"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -164,7 +165,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
 
-	if config.IsProd && input.Status != nil && *input.Status == 3 {
+	if t.Status != 3 && input.Status != nil && *input.Status == 3 {
 		go func() {
 			ctx := context.Background()
 			t, err := r.store.Tender.Query().Where(tender.ID(id)).
@@ -179,9 +180,12 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			}
 			var (
 				// now                 = time.Now()
-				customerName        string
-				followingSalesNames []string
-				mandt               string
+				customerName           string
+				followingSalesNames    []string
+				mandt                  string
+				tenderDate             *string
+				followingSalesNamesStr string
+				esAmount               string
 			)
 			if config.IsProd {
 				mandt = "300"
@@ -193,9 +197,17 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			} else {
 				customerName = t.Edges.Customer.Name
 			}
+			if !t.TenderDate.IsZero() {
+				ti := t.TenderDate.Format("20060102")
+				tenderDate = &ti
+			}
 			for _, s := range t.Edges.FollowingSales {
 				followingSalesNames = append(followingSalesNames, s.Name)
 			}
+			followingSalesNamesStr = strings.Join(followingSalesNames, ",")
+			esAmount = strconv.FormatFloat(t.EstimatedAmount, 'f', -1, 64)
+
+			fmt.Println(mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate.Format("20060102"), t.Edges.CreatedBy.Name, t.CreatedAt.Format("20060102"), t.Status, t.FullAddress, t.EstimatedAmount, t.TenderDate.Format("20060102"), t.ProjectCode, t.ProjectDefinition)
 			// followingSalesNamesStr := strings.Join(followingSalesNames, ",")
 			_, err = r.sap.Hana.Exec(`
 				INSERT INTO "ZTSD005" (
@@ -209,6 +221,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 					"ZCJZ",
 					"ZCJRQ",
 					"ZSJZT",
+					"ZDQGZR",
 					"ZLOCATION",
 					"ZYJJE",
 					"ZTBSJ",
@@ -216,9 +229,9 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 					"ZXMDY",
 					"ZXMLX"
 				) VALUES (
-					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
-			`, mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate.Format("20060102"), t.Edges.CreatedBy.Name, t.CreatedAt.Format("20060102"), t.Status, t.FullAddress, t.EstimatedAmount, t.TenderDate.Format("20060102"), t.ProjectCode, t.ProjectDefinition, t.ProjectType)
+			`, mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate.Format("20060102"), t.Edges.CreatedBy.Name, t.CreatedAt.Format("20060102"), "中标", followingSalesNamesStr, t.FullAddress, esAmount, tenderDate, t.ProjectCode, t.ProjectDefinition, t.ProjectType)
 			if err != nil {
 				fmt.Println(err)
 			}
