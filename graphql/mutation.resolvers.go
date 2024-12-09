@@ -217,7 +217,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 					"ZXMDY",
 					"ZXMLX",
 					"ZCRDATE",
-					"ZUPDATE",
+					"ZUPDATE"
 				) VALUES (
 					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
