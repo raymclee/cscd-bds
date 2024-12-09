@@ -8,10 +8,13 @@ import (
 	"context"
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
+	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/util"
 	"fmt"
+	"strings"
+	"time"
 )
 
 // CreateArea is the resolver for the createArea field.
@@ -60,6 +63,33 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 		q.SetGeoBounds(geoBounds)
 	}
 
+	date := time.Now()
+	stdate := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.Local)
+	enddate := stdate.AddDate(0, 0, 1)
+	a, err := r.store.Area.Query().
+		Where(area.ID(input.AreaID)).
+		WithTenders(func(tq *ent.TenderQuery) {
+			tq.Where(
+				tender.And(
+					tender.CreatedAtGTE(stdate),
+					tender.CreatedAtLTE(enddate),
+				),
+			)
+		}).
+		Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var n int
+	if len(a.Edges.Tenders) > 0 {
+		n = len(a.Edges.Tenders) + 2
+	} else {
+		n = 1
+	}
+	code := fmt.Sprintf("%s%s%03d", a.Code, date.Format("20060102"), n)
+	q.SetCode(code)
+
 	var images []string
 	{
 		for _, fn := range imageFileNames {
@@ -100,7 +130,12 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 }
 
 // UpdateTender is the resolver for the updateTender field.
-func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.Tender, error) {
+func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) (*ent.Tender, error) {
+	t, err := r.store.Tender.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
 	q := r.store.Tender.UpdateOneID(id).SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
@@ -111,6 +146,9 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	var images []string
 	{
 		for _, fn := range imageFileNames {
+			if strings.HasPrefix(fn, "/static/") {
+				continue
+			}
 			filename, err := util.SaveStaticFile(fn, true)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save image file: %w", err)
@@ -118,10 +156,20 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			images = append(images, fmt.Sprintf("/static/%s", filename))
 		}
 		if len(images) > 0 {
-			q.SetImages(images)
-		} else {
-			q.ClearImages()
+			q.AppendImages(images)
 		}
+	}
+	for _, fn := range removeImageFileNames {
+		for i, image := range t.Images {
+			if fn == image {
+				util.DeleteStaticFile(image)
+				t.Images = append(t.Images[:i], t.Images[i+1:]...)
+				break
+			}
+		}
+	}
+	if len(removeImageFileNames) > 0 {
+		q.SetImages(t.Images)
 	}
 
 	var attachments []string
@@ -134,10 +182,20 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			attachments = append(attachments, fmt.Sprintf("/static/%s", filename))
 		}
 		if len(attachments) > 0 {
-			q.SetAttachements(attachments)
-		} else {
-			q.ClearAttachements()
+			q.AppendAttachements(attachments)
 		}
+	}
+	for _, fn := range removeAttachmentFileNames {
+		for i, att := range t.Attachements {
+			if fn == att {
+				util.DeleteStaticFile(att)
+				t.Attachements = append(t.Attachements[:i], t.Attachements[i+1:]...)
+				break
+			}
+		}
+	}
+	if len(removeAttachmentFileNames) > 0 {
+		q.SetAttachements(t.Attachements)
 	}
 
 	return q.Save(ctx)

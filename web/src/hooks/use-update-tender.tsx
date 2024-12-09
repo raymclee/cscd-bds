@@ -8,12 +8,16 @@ export function useUpdateTender() {
       $input: UpdateTenderInput!
       $imageFileNames: [String!]!
       $attachmentFileNames: [String!]!
+      $removeImageFileNames: [String!]
+      $removeAttachmentFileNames: [String!]
     ) {
       updateTender(
         id: $id
         input: $input
         imageFileNames: $imageFileNames
         attachmentFileNames: $attachmentFileNames
+        removeImageFileNames: $removeImageFileNames
+        removeAttachmentFileNames: $removeAttachmentFileNames
       ) {
         ...tenderDetailFragment
       }

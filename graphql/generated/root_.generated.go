@@ -9,7 +9,6 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"errors"
 	"sync/atomic"
-	"time"
 
 	"entgo.io/contrib/entgql"
 	"github.com/99designs/gqlgen/graphql"
@@ -196,7 +195,7 @@ type ComplexityRoot struct {
 		DeleteUser   func(childComplexity int, id xid.ID) int
 		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdatePlot   func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
+		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
 		UpdateUser   func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 	}
 
@@ -257,20 +256,19 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Areas                   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
-		Cities                  func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
-		Countries               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
-		Customers               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
-		Districts               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
-		LastAvailableTenderCode func(childComplexity int, areaID xid.ID, date time.Time) int
-		Node                    func(childComplexity int, id xid.ID) int
-		Nodes                   func(childComplexity int, ids []xid.ID) int
-		Plots                   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
-		Provinces               func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
-		Session                 func(childComplexity int) int
-		Tenders                 func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
-		Users                   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
-		VisitRecords            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
+		Cities       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
+		Countries    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
+		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
+		Districts    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
+		Node         func(childComplexity int, id xid.ID) int
+		Nodes        func(childComplexity int, ids []xid.ID) int
+		Plots        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
+		Session      func(childComplexity int) int
+		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
+		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
+		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	Session struct {
@@ -1241,7 +1239,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
+		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["removeImageFileNames"].([]string), args["attachmentFileNames"].([]string), args["removeAttachmentFileNames"].([]string)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -1574,18 +1572,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.DistrictOrder), args["where"].(*ent.DistrictWhereInput)), true
-
-	case "Query.lastAvailableTenderCode":
-		if e.complexity.Query.LastAvailableTenderCode == nil {
-			break
-		}
-
-		args, err := ec.field_Query_lastAvailableTenderCode_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.LastAvailableTenderCode(childComplexity, args["areaId"].(xid.ID), args["date"].(time.Time)), true
 
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
@@ -7303,7 +7289,9 @@ type GeoJson {
     input: UpdateTenderInput!
     geoBounds: [[Float!]!]
     imageFileNames: [String!]
+    removeImageFileNames: [String!]
     attachmentFileNames: [String!]
+    removeAttachmentFileNames: [String!]
   ): Tender!
   deleteTender(id: ID!): Tender!
 
@@ -7314,10 +7302,6 @@ type GeoJson {
 `, BuiltIn: false},
 	{Name: "../plot.graphql", Input: `extend type Plot {
   geoBounds: [[Float!]!]
-}
-`, BuiltIn: false},
-	{Name: "../query.graphql", Input: `extend type Query {
-  lastAvailableTenderCode(areaId: ID!, date: Time!): String!
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time

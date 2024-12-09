@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d57a0e0ef00a62c7c745976c40e8c5c1>>
+ * @generated SignedSource<<253e9ae508b2897877aad93f7c3edac3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -133,6 +133,8 @@ export type useUpdateTenderMutation$variables = {
   id: string;
   imageFileNames: ReadonlyArray<string>;
   input: UpdateTenderInput;
+  removeAttachmentFileNames?: ReadonlyArray<string> | null | undefined;
+  removeImageFileNames?: ReadonlyArray<string> | null | undefined;
 };
 export type useUpdateTenderMutation$data = {
   readonly updateTender: {
@@ -165,7 +167,17 @@ v3 = {
   "kind": "LocalArgument",
   "name": "input"
 },
-v4 = [
+v4 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "removeAttachmentFileNames"
+},
+v5 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "removeImageFileNames"
+},
+v6 = [
   {
     "kind": "Variable",
     "name": "attachmentFileNames",
@@ -185,34 +197,44 @@ v4 = [
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
+  },
+  {
+    "kind": "Variable",
+    "name": "removeAttachmentFileNames",
+    "variableName": "removeAttachmentFileNames"
+  },
+  {
+    "kind": "Variable",
+    "name": "removeImageFileNames",
+    "variableName": "removeImageFileNames"
   }
 ],
-v5 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v6 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "code",
   "storageKey": null
 },
-v7 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v8 = [
-  (v5/*: any*/)
+v10 = [
+  (v7/*: any*/)
 ],
-v9 = [
-  (v5/*: any*/),
+v11 = [
+  (v7/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -220,7 +242,7 @@ v9 = [
     "name": "adcode",
     "storageKey": null
   },
-  (v7/*: any*/)
+  (v9/*: any*/)
 ];
 return {
   "fragment": {
@@ -228,7 +250,9 @@ return {
       (v0/*: any*/),
       (v1/*: any*/),
       (v2/*: any*/),
-      (v3/*: any*/)
+      (v3/*: any*/),
+      (v4/*: any*/),
+      (v5/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -236,7 +260,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v6/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
@@ -260,22 +284,24 @@ return {
       (v1/*: any*/),
       (v3/*: any*/),
       (v2/*: any*/),
-      (v0/*: any*/)
+      (v0/*: any*/),
+      (v5/*: any*/),
+      (v4/*: any*/)
     ],
     "kind": "Operation",
     "name": "useUpdateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v6/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
         "plural": false,
         "selections": [
-          (v5/*: any*/),
-          (v6/*: any*/),
           (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -620,9 +646,9 @@ return {
             "name": "area",
             "plural": false,
             "selections": [
-              (v5/*: any*/),
-              (v6/*: any*/),
-              (v7/*: any*/)
+              (v7/*: any*/),
+              (v8/*: any*/),
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -634,8 +660,8 @@ return {
             "name": "followingSales",
             "plural": true,
             "selections": [
-              (v5/*: any*/),
-              (v7/*: any*/)
+              (v7/*: any*/),
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -646,7 +672,7 @@ return {
             "kind": "LinkedField",
             "name": "finder",
             "plural": false,
-            "selections": (v8/*: any*/),
+            "selections": (v10/*: any*/),
             "storageKey": null
           },
           {
@@ -656,7 +682,7 @@ return {
             "kind": "LinkedField",
             "name": "createdBy",
             "plural": false,
-            "selections": (v8/*: any*/),
+            "selections": (v10/*: any*/),
             "storageKey": null
           },
           {
@@ -667,7 +693,7 @@ return {
             "name": "customer",
             "plural": false,
             "selections": [
-              (v5/*: any*/),
+              (v7/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -685,7 +711,7 @@ return {
             "kind": "LinkedField",
             "name": "province",
             "plural": false,
-            "selections": (v9/*: any*/),
+            "selections": (v11/*: any*/),
             "storageKey": null
           },
           {
@@ -695,7 +721,7 @@ return {
             "kind": "LinkedField",
             "name": "city",
             "plural": false,
-            "selections": (v9/*: any*/),
+            "selections": (v11/*: any*/),
             "storageKey": null
           },
           {
@@ -705,7 +731,7 @@ return {
             "kind": "LinkedField",
             "name": "district",
             "plural": false,
-            "selections": (v9/*: any*/),
+            "selections": (v11/*: any*/),
             "storageKey": null
           }
         ],
@@ -714,16 +740,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "53277a3960a99d23c51002a8bd440add",
+    "cacheID": "7e0759ee3105d3c3f85312b692439242",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames) {\n    ...tenderDetailFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  fullAddress\n  contractor\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  prepareToBid\n  projectCode\n  projectDefinition\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  projectType\n  attachements\n  remark\n  images\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  costEngineer\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  tenderWinCompany\n  tenderCode\n  architect\n  developer\n  tenderClosingDate\n  constructionArea\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  finder {\n    id\n  }\n  createdBy {\n    id\n  }\n  customer {\n    id\n    ownerType\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames) {\n    ...tenderDetailFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  fullAddress\n  contractor\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  prepareToBid\n  projectCode\n  projectDefinition\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  projectType\n  attachements\n  remark\n  images\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  costEngineer\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  tenderWinCompany\n  tenderCode\n  architect\n  developer\n  tenderClosingDate\n  constructionArea\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  finder {\n    id\n  }\n  createdBy {\n    id\n  }\n  customer {\n    id\n    ownerType\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "521831b9d007542e9e1825558bd24c23";
+(node as any).hash = "053f9a1292dbb1d644dcd2910a897833";
 
 export default node;

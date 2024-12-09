@@ -17,7 +17,9 @@ type Mutation {
     input: UpdateTenderInput!
     geoBounds: [[Float!]!]
     imageFileNames: [String!]
+    removeImageFileNames: [String!]
     attachmentFileNames: [String!]
+    removeAttachmentFileNames: [String!]
   ): Tender!
   deleteTender(id: ID!): Tender!
 

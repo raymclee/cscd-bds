@@ -1245,6 +1245,8 @@ export type MutationUpdateTenderArgs = {
   id: Scalars['ID']['input'];
   imageFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
   input: UpdateTenderInput;
+  removeAttachmentFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
+  removeImageFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 
@@ -1605,7 +1607,6 @@ export type Query = {
   countries: CountryConnection;
   customers: CustomerConnection;
   districts: DistrictConnection;
-  lastAvailableTenderCode: Scalars['String']['output'];
   /** Fetches an object given its ID. */
   node?: Maybe<Node>;
   /** Lookup nodes by a list of IDs. */
@@ -1666,12 +1667,6 @@ export type QueryDistrictsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<DistrictOrder>;
   where?: InputMaybe<DistrictWhereInput>;
-};
-
-
-export type QueryLastAvailableTenderCodeArgs = {
-  areaId: Scalars['ID']['input'];
-  date: Scalars['Time']['input'];
 };
 
 

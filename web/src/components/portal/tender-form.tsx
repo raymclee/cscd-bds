@@ -1,5 +1,5 @@
 import { InboxOutlined } from "@ant-design/icons";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
 import {
@@ -21,7 +21,6 @@ import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import {
   ConnectionHandler,
-  fetchQuery,
   graphql,
   useFragment,
   useRelayEnvironment,
@@ -32,7 +31,6 @@ import { useUpdateTender } from "~/hooks/use-update-tender";
 import { isGA, isHW, tenderStatusOptions } from "~/lib/helper";
 import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
-import { tenderFormLastAvailableTenderCodeQuery } from "__generated__/tenderFormLastAvailableTenderCodeQuery.graphql";
 
 const { Dragger } = Upload;
 
@@ -110,7 +108,6 @@ export type TenderFormProps = {
 export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const { message } = App.useApp();
   const [form] = Form.useForm<CreateTenderInput>();
-  const environment = useRelayEnvironment();
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
 
@@ -131,6 +128,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
+  const [removeImageFileNames, setRemoveImageFileNames] = useState<string[]>(
+    [],
+  );
+  const [removeAttachmentFileNames, setRemoveAttachmentFileNames] = useState<
+    string[]
+  >([]);
 
   const isGATender = isGA(tender as any);
   const isHWTender = isHW(tender as any);
@@ -251,6 +254,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               },
               imageFileNames,
               attachmentFileNames,
+              removeImageFileNames,
+              removeAttachmentFileNames,
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });
@@ -262,28 +267,6 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             },
           });
         } else {
-          const data = await fetchQuery<tenderFormLastAvailableTenderCodeQuery>(
-            environment,
-            graphql`
-              query tenderFormLastAvailableTenderCodeQuery(
-                $areaId: ID!
-                $date: Time!
-              ) {
-                lastAvailableTenderCode(areaId: $areaId, date: $date)
-              }
-            `,
-            {
-              areaId: values.areaID,
-              date: dayjs(values.createdAt).toISOString(),
-            },
-            { fetchPolicy: "network-only" },
-          ).toPromise();
-
-          if (!data?.lastAvailableTenderCode) {
-            message.error("获取备案编码失败");
-            return;
-          }
-
           const { images, attachements, ...input } = values;
 
           const connections = [
@@ -307,7 +290,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
           commitCreateMutation({
             variables: {
-              input: { ...input, code: data?.lastAvailableTenderCode },
+              input: { ...input, code: "" },
               connections,
               imageFileNames,
               attachmentFileNames,
@@ -707,10 +690,22 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             action="/api/v1/file/upload"
             accept=".jpg,.jpeg,.png,.gif"
             listType="picture-card"
+            onRemove={(file) => {
+              setRemoveImageFileNames((prev) => [...prev, file.name]);
+            }}
             onChange={(info) => {
+              console.log(info);
               for (const file of info.fileList) {
-                if (file.status === "done") {
-                  setImageFileNames((prev) => [...prev, file.name]);
+                if (
+                  file.status === "done" &&
+                  !file.name.startsWith("/static/")
+                ) {
+                  setImageFileNames((prev) => {
+                    if (prev.includes(file.name)) {
+                      return prev;
+                    }
+                    return [...prev, file.name];
+                  });
                 }
                 if (file.status === "error" || file.status === "removed") {
                   setImageFileNames((prev) =>

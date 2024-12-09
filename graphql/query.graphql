@@ -1,3 +1,0 @@
-extend type Query {
-  lastAvailableTenderCode(areaId: ID!, date: Time!): String!
-}
