@@ -6,6 +6,10 @@ type Mutation {
   updateUser(id: ID!, input: UpdateUserInput!): User!
   deleteUser(id: ID!): User!
 
+  createCustomer(input: CreateCustomerInput!): CustomerConnection!
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
+  deleteCustomer(id: ID!): Customer!
+
   createTender(
     input: CreateTenderInput!
     geoBounds: [[Float!]!]

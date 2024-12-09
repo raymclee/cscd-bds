@@ -141,6 +141,20 @@ export function industryText(industry: Maybe<number> | undefined): string {
   }
 }
 
+export const industryOptions = [
+  { label: "互联网", value: 1 },
+  { label: "金融", value: 2 },
+  { label: "医疗", value: 3 },
+  { label: "餐饮", value: 4 },
+  { label: "制造", value: 5 },
+  { label: "电商", value: 6 },
+  { label: "科技", value: 7 },
+  { label: "其他", value: 8 },
+  { label: "物流", value: 9 },
+  { label: "地产", value: 10 },
+  { label: "政府", value: 11 },
+];
+
 export function customerSizeText(size: Maybe<number> | undefined): string {
   if (!size) {
     return "";
@@ -160,6 +174,14 @@ export function customerSizeText(size: Maybe<number> | undefined): string {
       return "";
   }
 }
+
+export const customerSizeOptions = [
+  { label: "<10", value: 1 },
+  { label: "10-100", value: 2 },
+  { label: "100-1000", value: 3 },
+  { label: "1000-10000", value: 4 },
+  { label: ">10000", value: 5 },
+];
 
 export function isGAorHWOnly(areas: AreaConnection | undefined): boolean {
   return (

@@ -31,7 +31,7 @@ type Customer struct {
 	// OwnerType holds the value of the "owner_type" field.
 	OwnerType *int `json:"owner_type,omitempty"`
 	// Industry holds the value of the "industry" field.
-	Industry int `json:"industry,omitempty"`
+	Industry *int `json:"industry,omitempty"`
 	// Size holds the value of the "size" field.
 	Size *int `json:"size,omitempty"`
 	// ContactPerson holds the value of the "contact_person" field.
@@ -196,7 +196,8 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field industry", values[i])
 			} else if value.Valid {
-				c.Industry = int(value.Int64)
+				c.Industry = new(int)
+				*c.Industry = int(value.Int64)
 			}
 		case customer.FieldSize:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -335,8 +336,10 @@ func (c *Customer) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("industry=")
-	builder.WriteString(fmt.Sprintf("%v", c.Industry))
+	if v := c.Industry; v != nil {
+		builder.WriteString("industry=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	if v := c.Size; v != nil {
 		builder.WriteString("size=")

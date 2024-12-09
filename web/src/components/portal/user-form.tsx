@@ -6,7 +6,7 @@ import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
 import { useUpdateUserMutation$variables } from "__generated__/useUpdateUserMutation.graphql";
 import { App, Button, Form, Input, Select, Space, Switch } from "antd";
 import { useEffect } from "react";
-import { ConnectionHandler, graphql, useFragment } from "react-relay";
+import { graphql, useFragment } from "react-relay";
 import { User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
@@ -93,48 +93,11 @@ export function UserForm({
               },
             });
           } else {
-            console.log(
-              ConnectionHandler.getConnectionID("root", "usersPageQuery_users"),
-            );
             commitCreateUser({
               variables: {
                 input: values as CreateUserInput,
-                // connections: [connectionID],
+                connections: [connectionID],
               },
-              // updater: (store) => {
-              //   const payload = store.getRootField("createUser");
-              //   const newUser = payload?.getLinkedRecord("edges");
-              //   console.log({ payload, newUser });
-
-              //   if (!newUser) return;
-
-              //   // Get the connection using ConnectionHandler
-              //   const connectionRecord = store.get(connectionID);
-              //   if (!connectionRecord) return;
-
-              //   // Create the edge with a stable ID
-              //   const userId = newUser.getDataID();
-              //   const edgeId = `client:${connectionID}:${userId}`;
-
-              //   const edge = store.create(edgeId, "UserEdge");
-              //   edge.setLinkedRecord(newUser, "node");
-
-              //   // Get existing edges
-              //   const existingEdges =
-              //     connectionRecord.getLinkedRecords("edges") || [];
-
-              //   // Append the new edge
-              //   connectionRecord.setLinkedRecords(
-              //     [...existingEdges, edge],
-              //     "edges",
-              //   );
-
-              //   // Update the total count if it exists
-              //   const count = connectionRecord.getValue("totalCount");
-              //   if (typeof count === "number") {
-              //     connectionRecord.setValue(count + 1, "totalCount");
-              //   }
-              // },
               onCompleted(response, errors) {
                 console.log(response);
                 message.success("添加成功");
@@ -142,26 +105,6 @@ export function UserForm({
               },
               onError(error) {
                 message.error("添加失败");
-              },
-              updater: (store, res) => {
-                const connectionRecord = ConnectionHandler.getConnection(
-                  store.getRoot(),
-                  "usersPageQuery_users",
-                );
-                console.log({ connectionRecord });
-                if (!connectionRecord || !res?.createUser.edges?.[0]?.node?.id)
-                  return;
-                const payload = store.getRootField("createUser");
-                const serverEdge = payload?.getLinkedRecord("users");
-
-                const newEdge = ConnectionHandler.buildConnectionEdge(
-                  store,
-                  connectionRecord,
-                  store.get(res?.createUser.edges[0]?.node?.id),
-                );
-                console.log({ newEdge, payload });
-                if (!newEdge) return;
-                ConnectionHandler.insertEdgeAfter(connectionRecord, newEdge);
               },
             });
           }

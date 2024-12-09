@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dd536820fb34b4d10b34b3816649b262>>
+ * @generated SignedSource<<6636ab8bd837b0c1bfb4ac028e9b7abb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -221,7 +221,10 @@ return {
             "kind": "LinkedField",
             "name": "area",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ],
             "storageKey": null
           }
         ],
@@ -230,12 +233,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0ddc49c243ceb0055efa893e8b478435",
+    "cacheID": "f302f16d938520ca199a527fd08e5953",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    id\n    name\n  }\n}\n"
   }
 };
 })();

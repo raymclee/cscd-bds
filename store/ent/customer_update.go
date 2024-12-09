@@ -102,6 +102,12 @@ func (cu *CustomerUpdate) AddIndustry(i int) *CustomerUpdate {
 	return cu
 }
 
+// ClearIndustry clears the value of the "industry" field.
+func (cu *CustomerUpdate) ClearIndustry() *CustomerUpdate {
+	cu.mutation.ClearIndustry()
+	return cu
+}
+
 // SetSize sets the "size" field.
 func (cu *CustomerUpdate) SetSize(i int) *CustomerUpdate {
 	cu.mutation.ResetSize()
@@ -459,6 +465,9 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.AddedIndustry(); ok {
 		_spec.AddField(customer.FieldIndustry, field.TypeInt, value)
 	}
+	if cu.mutation.IndustryCleared() {
+		_spec.ClearField(customer.FieldIndustry, field.TypeInt)
+	}
 	if value, ok := cu.mutation.Size(); ok {
 		_spec.SetField(customer.FieldSize, field.TypeInt, value)
 	}
@@ -760,6 +769,12 @@ func (cuo *CustomerUpdateOne) SetNillableIndustry(i *int) *CustomerUpdateOne {
 // AddIndustry adds i to the "industry" field.
 func (cuo *CustomerUpdateOne) AddIndustry(i int) *CustomerUpdateOne {
 	cuo.mutation.AddIndustry(i)
+	return cuo
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (cuo *CustomerUpdateOne) ClearIndustry() *CustomerUpdateOne {
+	cuo.mutation.ClearIndustry()
 	return cuo
 }
 
@@ -1149,6 +1164,9 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	}
 	if value, ok := cuo.mutation.AddedIndustry(); ok {
 		_spec.AddField(customer.FieldIndustry, field.TypeInt, value)
+	}
+	if cuo.mutation.IndustryCleared() {
+		_spec.ClearField(customer.FieldIndustry, field.TypeInt)
 	}
 	if value, ok := cuo.mutation.Size(); ok {
 		_spec.SetField(customer.FieldSize, field.TypeInt, value)

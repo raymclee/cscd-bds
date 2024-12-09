@@ -311,7 +311,7 @@ type CreateCustomerInput struct {
 	UpdatedAt             *time.Time
 	Name                  string
 	OwnerType             *int
-	Industry              int
+	Industry              *int
 	Size                  *int
 	ContactPerson         *string
 	ContactPersonPosition *string
@@ -336,7 +336,9 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.OwnerType; v != nil {
 		m.SetOwnerType(*v)
 	}
-	m.SetIndustry(i.Industry)
+	if v := i.Industry; v != nil {
+		m.SetIndustry(*v)
+	}
 	if v := i.Size; v != nil {
 		m.SetSize(*v)
 	}
@@ -377,6 +379,7 @@ type UpdateCustomerInput struct {
 	Name                       *string
 	ClearOwnerType             bool
 	OwnerType                  *int
+	ClearIndustry              bool
 	Industry                   *int
 	ClearSize                  bool
 	Size                       *int
@@ -413,6 +416,9 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.OwnerType; v != nil {
 		m.SetOwnerType(*v)
+	}
+	if i.ClearIndustry {
+		m.ClearIndustry()
 	}
 	if v := i.Industry; v != nil {
 		m.SetIndustry(*v)

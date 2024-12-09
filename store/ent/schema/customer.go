@@ -37,7 +37,9 @@ func (Customer) Fields() []ent.Field {
 			Annotations(
 				entgql.OrderField("OWNER_TYPE"),
 			),
-		field.Int("industry"),
+		field.Int("industry").
+			Optional().
+			Nillable(),
 		field.Int("size").
 			Optional().
 			Nillable(),

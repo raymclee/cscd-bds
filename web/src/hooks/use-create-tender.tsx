@@ -14,8 +14,7 @@ const mutation = graphql`
       imageFileNames: $imageFileNames
       attachmentFileNames: $attachmentFileNames
     ) {
-      edges
-        @prependNode(connections: $connections, edgeTypeName: "TenderEdge") {
+      edges @prependEdge(connections: $connections) {
         node {
           ...tenderListItemFragment
         }

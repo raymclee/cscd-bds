@@ -715,7 +715,7 @@ input CreateCustomerInput {
   updatedAt: Time
   name: String!
   ownerType: Int
-  industry: Int!
+  industry: Int
   size: Int
   contactPerson: String
   contactPersonPosition: String
@@ -912,7 +912,7 @@ type Customer implements Node {
   updatedAt: Time!
   name: String!
   ownerType: Int
-  industry: Int!
+  industry: Int
   size: Int
   contactPerson: String
   contactPersonPosition: String
@@ -1119,6 +1119,8 @@ input CustomerWhereInput {
   industryGTE: Int
   industryLT: Int
   industryLTE: Int
+  industryIsNil: Boolean
+  industryNotNil: Boolean
   """
   size field predicates
   """
@@ -3571,6 +3573,7 @@ input UpdateCustomerInput {
   ownerType: Int
   clearOwnerType: Boolean
   industry: Int
+  clearIndustry: Boolean
   size: Int
   clearSize: Boolean
   contactPerson: String

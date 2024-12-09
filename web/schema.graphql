@@ -528,7 +528,7 @@ input CreateCustomerInput {
   contactPersonPosition: String
   createdAt: Time
   createdByID: ID!
-  industry: Int!
+  industry: Int
   name: String!
   ownerType: Int
   salesID: ID
@@ -719,7 +719,7 @@ type Customer implements Node {
   createdBy: User!
   createdByID: ID!
   id: ID!
-  industry: Int!
+  industry: Int
   name: String!
   ownerType: Int
   sales: User
@@ -929,10 +929,12 @@ input CustomerWhereInput {
   industryGT: Int
   industryGTE: Int
   industryIn: [Int!]
+  industryIsNil: Boolean
   industryLT: Int
   industryLTE: Int
   industryNEQ: Int
   industryNotIn: [Int!]
+  industryNotNil: Boolean
   """name field predicates"""
   name: String
   nameContains: String
@@ -1203,13 +1205,16 @@ type GeoJson {
 
 type Mutation {
   createArea(input: CreateAreaInput!): AreaConnection!
+  createCustomer(input: CreateCustomerInput!): CustomerConnection!
   createPlot(geoBounds: [[Float!]!], input: CreatePlotInput!): PlotConnection!
   createTender(attachmentFileNames: [String!]!, geoBounds: [[Float!]!], imageFileNames: [String!]!, input: CreateTenderInput!): TenderConnection!
   createUser(input: CreateUserInput!): UserConnection!
+  deleteCustomer(id: ID!): Customer!
   deletePlot(id: ID!): Plot!
   deleteTender(id: ID!): Tender!
   deleteUser(id: ID!): User!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
   updatePlot(geoBounds: [[Float!]!], id: ID!, input: UpdatePlotInput!): Plot!
   updateTender(attachmentFileNames: [String!], geoBounds: [[Float!]!], id: ID!, imageFileNames: [String!], input: UpdateTenderInput!, removeAttachmentFileNames: [String!], removeImageFileNames: [String!]): Tender!
   updateUser(id: ID!, input: UpdateUserInput!): User!
@@ -2795,6 +2800,7 @@ input UpdateCustomerInput {
   clearContactPersonEmail: Boolean
   clearContactPersonPhone: Boolean
   clearContactPersonPosition: Boolean
+  clearIndustry: Boolean
   clearOwnerType: Boolean
   clearSales: Boolean
   clearSize: Boolean

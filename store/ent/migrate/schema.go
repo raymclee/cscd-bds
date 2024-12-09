@@ -70,7 +70,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
-		{Name: "industry", Type: field.TypeInt},
+		{Name: "industry", Type: field.TypeInt, Nullable: true},
 		{Name: "size", Type: field.TypeInt, Nullable: true},
 		{Name: "contact_person", Type: field.TypeString, Nullable: true},
 		{Name: "contact_person_position", Type: field.TypeString, Nullable: true},

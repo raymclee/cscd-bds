@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6c1a48014e983f7afd0f358320278d07>>
+ * @generated SignedSource<<31c7650a86ea3358db645612c28c3163>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type customerDetailFragment$data = {
   readonly area: {
+    readonly id: string;
     readonly name: string;
   };
   readonly contactPerson: string | null | undefined;
@@ -22,7 +23,7 @@ export type customerDetailFragment$data = {
     readonly name: string;
   };
   readonly id: string;
-  readonly industry: number;
+  readonly industry: number | null | undefined;
   readonly name: string;
   readonly ownerType: number | null | undefined;
   readonly sales: {
@@ -42,11 +43,18 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v1 = [
-  (v0/*: any*/)
+v2 = [
+  (v1/*: any*/)
 ];
 return {
   "argumentDefinitions": [],
@@ -54,14 +62,8 @@ return {
   "metadata": null,
   "name": "customerDetailFragment",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -69,7 +71,7 @@ return {
       "kind": "LinkedField",
       "name": "createdBy",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": (v2/*: any*/),
       "storageKey": null
     },
     {
@@ -135,7 +137,7 @@ return {
       "kind": "LinkedField",
       "name": "sales",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": (v2/*: any*/),
       "storageKey": null
     },
     {
@@ -145,7 +147,10 @@ return {
       "kind": "LinkedField",
       "name": "area",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/)
+      ],
       "storageKey": null
     }
   ],
@@ -154,6 +159,6 @@ return {
 };
 })();
 
-(node as any).hash = "f51869e2c4e75b202d5032add768a62d";
+(node as any).hash = "c4d70bda198b5905e3062f5f5a29f769";
 
 export default node;

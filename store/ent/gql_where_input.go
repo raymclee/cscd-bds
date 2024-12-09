@@ -1209,14 +1209,16 @@ type CustomerWhereInput struct {
 	OwnerTypeNotNil bool  `json:"ownerTypeNotNil,omitempty"`
 
 	// "industry" field predicates.
-	Industry      *int  `json:"industry,omitempty"`
-	IndustryNEQ   *int  `json:"industryNEQ,omitempty"`
-	IndustryIn    []int `json:"industryIn,omitempty"`
-	IndustryNotIn []int `json:"industryNotIn,omitempty"`
-	IndustryGT    *int  `json:"industryGT,omitempty"`
-	IndustryGTE   *int  `json:"industryGTE,omitempty"`
-	IndustryLT    *int  `json:"industryLT,omitempty"`
-	IndustryLTE   *int  `json:"industryLTE,omitempty"`
+	Industry       *int  `json:"industry,omitempty"`
+	IndustryNEQ    *int  `json:"industryNEQ,omitempty"`
+	IndustryIn     []int `json:"industryIn,omitempty"`
+	IndustryNotIn  []int `json:"industryNotIn,omitempty"`
+	IndustryGT     *int  `json:"industryGT,omitempty"`
+	IndustryGTE    *int  `json:"industryGTE,omitempty"`
+	IndustryLT     *int  `json:"industryLT,omitempty"`
+	IndustryLTE    *int  `json:"industryLTE,omitempty"`
+	IndustryIsNil  bool  `json:"industryIsNil,omitempty"`
+	IndustryNotNil bool  `json:"industryNotNil,omitempty"`
 
 	// "size" field predicates.
 	Size       *int  `json:"size,omitempty"`
@@ -1601,6 +1603,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	}
 	if i.IndustryLTE != nil {
 		predicates = append(predicates, customer.IndustryLTE(*i.IndustryLTE))
+	}
+	if i.IndustryIsNil {
+		predicates = append(predicates, customer.IndustryIsNil())
+	}
+	if i.IndustryNotNil {
+		predicates = append(predicates, customer.IndustryNotNil())
 	}
 	if i.Size != nil {
 		predicates = append(predicates, customer.SizeEQ(*i.Size))

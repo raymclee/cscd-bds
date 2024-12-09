@@ -356,6 +356,16 @@ func IndustryLTE(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldIndustry, v))
 }
 
+// IndustryIsNil applies the IsNil predicate on the "industry" field.
+func IndustryIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldIndustry))
+}
+
+// IndustryNotNil applies the NotNil predicate on the "industry" field.
+func IndustryNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldIndustry))
+}
+
 // SizeEQ applies the EQ predicate on the "size" field.
 func SizeEQ(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldSize, v))

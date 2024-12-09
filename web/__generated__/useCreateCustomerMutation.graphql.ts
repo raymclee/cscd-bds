@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4099efcaa787f8394e1e9ee2080eebd7>>
+ * @generated SignedSource<<a6685cfaefab6d7c68b5337b63dd5a6e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,7 @@ export type CreateCustomerInput = {
   contactPersonPosition?: string | null | undefined;
   createdAt?: any | null | undefined;
   createdByID: string;
-  industry: number;
+  industry?: number | null | undefined;
   name: string;
   ownerType?: number | null | undefined;
   salesID?: string | null | undefined;
@@ -251,7 +251,10 @@ return {
                     "kind": "LinkedField",
                     "name": "area",
                     "plural": false,
-                    "selections": (v5/*: any*/),
+                    "selections": [
+                      (v3/*: any*/),
+                      (v4/*: any*/)
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -264,7 +267,7 @@ return {
             "alias": null,
             "args": null,
             "filters": null,
-            "handle": "prependNode",
+            "handle": "appendEdge",
             "key": "",
             "kind": "LinkedHandle",
             "name": "edges",
@@ -273,11 +276,6 @@ return {
                 "kind": "Variable",
                 "name": "connections",
                 "variableName": "connections"
-              },
-              {
-                "kind": "Literal",
-                "name": "edgeTypeName",
-                "value": "CustomerEdge"
               }
             ]
           }
@@ -287,16 +285,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "dd157b26fd3342bfaf64b7e3360ae2ca",
+    "cacheID": "c163160af65547952577098b881ac2a4",
     "id": null,
     "metadata": {},
     "name": "useCreateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    name\n    id\n  }\n}\n"
+    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e236c02cdb9adec4e61df4c77db7e13e";
+(node as any).hash = "4f7e3e4d0e73c45bc31ad7f23d255dfc";
 
 export default node;

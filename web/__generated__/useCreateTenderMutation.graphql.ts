@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8e1fde3585faa0cbb3cc8f904c466b08>>
+ * @generated SignedSource<<31832174de9f9f2984cf983229b46459>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -336,7 +336,7 @@ return {
             "alias": null,
             "args": null,
             "filters": null,
-            "handle": "prependNode",
+            "handle": "prependEdge",
             "key": "",
             "kind": "LinkedHandle",
             "name": "edges",
@@ -345,11 +345,6 @@ return {
                 "kind": "Variable",
                 "name": "connections",
                 "variableName": "connections"
-              },
-              {
-                "kind": "Literal",
-                "name": "edgeTypeName",
-                "value": "TenderEdge"
               }
             ]
           }
@@ -369,6 +364,6 @@ return {
 };
 })();
 
-(node as any).hash = "d70fd5299ce276b665e8a61ec24a22c2";
+(node as any).hash = "501a63280ed5511deaca0d002eea69ea";
 
 export default node;

@@ -18,7 +18,7 @@ export const Route = createLazyFileRoute("/__auth/__portal/portal/customers/")({
 });
 
 const query = graphql`
-  query customersPageQuery($userId: ID!) {
+  query customersPageQuery($userId: ID!, $first: Int, $last: Int) {
     node(id: $userId) {
       ... on User {
         areas {
@@ -26,7 +26,8 @@ const query = graphql`
             node {
               name
               code
-              customers {
+              customers(first: $first, last: $last)
+                @connection(key: "customersPageQuery_customers") {
                 edges {
                   node {
                     id
@@ -36,9 +37,14 @@ const query = graphql`
                     industry
                     size
                     area {
+                      id
                       code
                       name
                     }
+                    contactPerson
+                    contactPersonPosition
+                    contactPersonEmail
+                    contactPersonPhone
                   }
                 }
               }
@@ -61,6 +67,9 @@ function RouteComponent() {
   const navigate = Route.useNavigate();
   const { session } = Route.useRouteContext();
   const area = searchParams.area;
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null,
+  );
 
   const areas = data?.node?.areas?.edges?.map((a) => ({
     label: a?.node?.name ?? "",
@@ -72,12 +81,12 @@ function RouteComponent() {
       a?.node?.customers?.edges
         ?.map((c) => c?.node)
         .filter((n) =>
-          n?.name.toLowerCase().includes(searchText?.toLowerCase()),
+          n?.name?.toLowerCase().includes(searchText?.toLowerCase()),
         )
         .filter((n) => area === undefined || n?.area?.code === area),
     ) ?? [];
 
-  const columns: TableProps<Partial<Customer>>["columns"] = [
+  const columns: TableProps<Customer>["columns"] = [
     {
       dataIndex: "name",
       title: "名称",
@@ -119,10 +128,33 @@ function RouteComponent() {
 
   if (!data.node?.form) return null;
 
+  if (canEdit(session)) {
+    columns.push({
+      dataIndex: "actions",
+      title: "操作",
+      render: (_, record) => (
+        <Button
+          className="-ml-2"
+          type="link"
+          size="small"
+          onClick={() => setSelectedCustomer(record)}
+        >
+          编辑
+        </Button>
+      ),
+    });
+  }
+
   return (
     <>
       <ListFilter areas={areas}>
-        {canEdit(session) && <CustomerFormDrawer queryRef={data.node?.form} />}
+        {canEdit(session) && (
+          <CustomerFormDrawer
+            queryRef={data.node?.form}
+            selectedCustomer={selectedCustomer}
+            setSelectedCustomer={setSelectedCustomer}
+          />
+        )}
       </ListFilter>
       <Table
         className="rounded-lg"
@@ -146,10 +178,21 @@ function RouteComponent() {
 
 type CustomerFormDrawerProps = {
   queryRef: customerFormFragment$key;
+  selectedCustomer: Customer | null;
+  setSelectedCustomer: (customer: Customer | null) => void;
 };
 
-function CustomerFormDrawer({ queryRef }: CustomerFormDrawerProps) {
+function CustomerFormDrawer({
+  queryRef,
+  selectedCustomer,
+  setSelectedCustomer,
+}: CustomerFormDrawerProps) {
   const [open, setOpen] = useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+    setSelectedCustomer(null);
+  };
 
   return (
     <>
@@ -159,15 +202,21 @@ function CustomerFormDrawer({ queryRef }: CustomerFormDrawerProps) {
         onClick={() => setOpen(true)}
         className="w-full md:w-auto"
       >
-        添加客户
+        {selectedCustomer ? "编辑客户" : "添加客户"}
       </Button>
       <Drawer
-        title="添加客户"
-        open={open}
-        onClose={() => setOpen(false)}
+        title={selectedCustomer ? "编辑客户" : "添加客户"}
+        open={open || !!selectedCustomer}
+        onClose={onClose}
         width={480}
+        destroyOnClose
+        maskClosable={!!selectedCustomer}
       >
-        <CustomerForm queryRef={queryRef} onClose={() => setOpen(false)} />
+        <CustomerForm
+          queryRef={queryRef}
+          onClose={onClose}
+          selectedCustomer={selectedCustomer}
+        />
       </Drawer>
     </>
   );

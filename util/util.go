@@ -66,20 +66,20 @@ func SaveStaticFile(filename string, shouldResize bool) (string, error) {
 	}
 	// }
 
-	// if tf != nil {
-	// 	tf.Close()
-	// }
-	// if out != nil {
-	// 	out.Close()
-	// }
-	// if err = os.Remove(sourcePath); err != nil {
-	// 	return "", fmt.Errorf("failed to remove file: %w", err)
-	// }
+	if tf != nil {
+		tf.Close()
+	}
+	if out != nil {
+		out.Close()
+	}
+	if err = os.Remove(sourcePath); err != nil {
+		return "", fmt.Errorf("failed to remove file: %w", err)
+	}
 
 	return fn, nil
 }
 
 func DeleteStaticFile(filename string) error {
-	os.Remove(fmt.Sprintf("%s%s", config.FilePath, filename))
+	os.Remove(filename)
 	return nil
 }

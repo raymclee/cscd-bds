@@ -6,6 +6,7 @@ package graphql
 
 import (
 	"context"
+	"cscd-bds/config"
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
@@ -54,6 +55,33 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id xid.ID) (*ent.User
 		return nil, fmt.Errorf("failed to get user: %w", err)
 	}
 	return u, r.store.User.DeleteOne(u).Exec(ctx)
+}
+
+// CreateCustomer is the resolver for the createCustomer field.
+func (r *mutationResolver) CreateCustomer(ctx context.Context, input ent.CreateCustomerInput) (*ent.CustomerConnection, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	c, err := r.store.Customer.Create().SetInput(input).SetCreatedByID(xid.ID(sess.UserId)).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create customer: %w", err)
+	}
+	return &ent.CustomerConnection{Edges: []*ent.CustomerEdge{{Node: c}}}, nil
+}
+
+// UpdateCustomer is the resolver for the updateCustomer field.
+func (r *mutationResolver) UpdateCustomer(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error) {
+	return r.store.Customer.UpdateOneID(id).SetInput(input).Save(ctx)
+}
+
+// DeleteCustomer is the resolver for the deleteCustomer field.
+func (r *mutationResolver) DeleteCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error) {
+	c, err := r.store.Customer.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get customer: %w", err)
+	}
+	return c, r.store.Customer.DeleteOne(c).Exec(ctx)
 }
 
 // CreateTender is the resolver for the createTender field.
@@ -134,6 +162,59 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	t, err := r.store.Tender.Get(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
+	if config.IsProd && input.Status != nil && *input.Status == 3 {
+		go func() {
+			var (
+				now                 = time.Now()
+				customerName        string
+				followingSalesNames []string
+				mandt               string
+			)
+			if config.IsProd {
+				mandt = "300"
+			} else {
+				mandt = "300"
+			}
+			if t.Developer != "" {
+				customerName = t.Developer
+			} else {
+				customerName = t.Edges.Customer.Name
+			}
+			for _, s := range t.Edges.FollowingSales {
+				followingSalesNames = append(followingSalesNames, s.Name)
+			}
+			followingSalesNamesStr := strings.Join(followingSalesNames, ",")
+			_, err := r.sap.Hana.Exec(`
+				INSERT INTO "ZTSD005" (
+					"MANDT",
+					"ZBABH", // 标案编号
+					"ZXMMC", // 项目名称
+					"ZYWQY", // 业务区域
+					"ZYZMC", // 业主名称
+					"ZSJFXR", // 商机发现人
+					"ZSJFXRQ", // 商机发现日期
+					"ZCJZ", // 创建者
+					"ZCJRQ", // 创建日期
+					"ZSJZT", // 商机状态
+					"ZDQGZR", // 当前跟踪人
+					"ZLOCATION", // 地理位置
+					"ZYJJE", // 预算金额
+					"ZTBSJ", // 投标时间
+					"ZXMDM", // 项目代码
+					"ZXMDY", // 项目定义
+					"ZXMLX", // 项目类型
+					"ZCRDATE", // 数据创建日期
+					"ZUPDATE", // 数据更新日期
+				) VALUES (
+					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+				)
+			`, mandt, t.Code, t.Name, t.Edges.Area.Name, customerName, t.Edges.Finder.Name, t.DiscoveryDate, t.Edges.CreatedBy.Name, t.CreatedAt, t.Status, followingSalesNamesStr, t.FullAddress, t.EstimatedAmount, t.TenderDate, t.ProjectCode, t.ProjectDefinition, t.ProjectType, now, now)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}()
 	}
 
 	q := r.store.Tender.UpdateOneID(id).SetInput(input)

@@ -517,7 +517,7 @@ export type CreateCustomerInput = {
   contactPersonPosition?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Time']['input']>;
   createdByID: Scalars['ID']['input'];
-  industry: Scalars['Int']['input'];
+  industry?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   ownerType?: InputMaybe<Scalars['Int']['input']>;
   salesID?: InputMaybe<Scalars['ID']['input']>;
@@ -703,7 +703,7 @@ export type Customer = Node & {
   createdBy: User;
   createdByID: Scalars['ID']['output'];
   id: Scalars['ID']['output'];
-  industry: Scalars['Int']['output'];
+  industry?: Maybe<Scalars['Int']['output']>;
   name: Scalars['String']['output'];
   ownerType?: Maybe<Scalars['Int']['output']>;
   sales?: Maybe<User>;
@@ -905,10 +905,12 @@ export type CustomerWhereInput = {
   industryGT?: InputMaybe<Scalars['Int']['input']>;
   industryGTE?: InputMaybe<Scalars['Int']['input']>;
   industryIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  industryIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   industryLT?: InputMaybe<Scalars['Int']['input']>;
   industryLTE?: InputMaybe<Scalars['Int']['input']>;
   industryNEQ?: InputMaybe<Scalars['Int']['input']>;
   industryNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  industryNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** name field predicates */
   name?: InputMaybe<Scalars['String']['input']>;
   nameContains?: InputMaybe<Scalars['String']['input']>;
@@ -1174,13 +1176,16 @@ export type GeoJson = {
 export type Mutation = {
   __typename?: 'Mutation';
   createArea: AreaConnection;
+  createCustomer: CustomerConnection;
   createPlot: PlotConnection;
   createTender: TenderConnection;
   createUser: UserConnection;
+  deleteCustomer: Customer;
   deletePlot: Plot;
   deleteTender: Tender;
   deleteUser: User;
   updateArea: Area;
+  updateCustomer: Customer;
   updatePlot: Plot;
   updateTender: Tender;
   updateUser: User;
@@ -1189,6 +1194,11 @@ export type Mutation = {
 
 export type MutationCreateAreaArgs = {
   input: CreateAreaInput;
+};
+
+
+export type MutationCreateCustomerArgs = {
+  input: CreateCustomerInput;
 };
 
 
@@ -1211,6 +1221,11 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteCustomerArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeletePlotArgs = {
   id: Scalars['ID']['input'];
 };
@@ -1229,6 +1244,12 @@ export type MutationDeleteUserArgs = {
 export type MutationUpdateAreaArgs = {
   id: Scalars['ID']['input'];
   input: UpdateAreaInput;
+};
+
+
+export type MutationUpdateCustomerArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCustomerInput;
 };
 
 
@@ -2777,6 +2798,7 @@ export type UpdateCustomerInput = {
   clearContactPersonEmail?: InputMaybe<Scalars['Boolean']['input']>;
   clearContactPersonPhone?: InputMaybe<Scalars['Boolean']['input']>;
   clearContactPersonPosition?: InputMaybe<Scalars['Boolean']['input']>;
+  clearIndustry?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerType?: InputMaybe<Scalars['Boolean']['input']>;
   clearSales?: InputMaybe<Scalars['Boolean']['input']>;
   clearSize?: InputMaybe<Scalars['Boolean']['input']>;

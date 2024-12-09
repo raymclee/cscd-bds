@@ -2922,7 +2922,7 @@ func (m *CustomerMutation) Industry() (r int, exists bool) {
 // OldIndustry returns the old "industry" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldIndustry(ctx context.Context) (v int, err error) {
+func (m *CustomerMutation) OldIndustry(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldIndustry is only allowed on UpdateOne operations")
 	}
@@ -2954,10 +2954,24 @@ func (m *CustomerMutation) AddedIndustry() (r int, exists bool) {
 	return *v, true
 }
 
+// ClearIndustry clears the value of the "industry" field.
+func (m *CustomerMutation) ClearIndustry() {
+	m.industry = nil
+	m.addindustry = nil
+	m.clearedFields[customer.FieldIndustry] = struct{}{}
+}
+
+// IndustryCleared returns if the "industry" field was cleared in this mutation.
+func (m *CustomerMutation) IndustryCleared() bool {
+	_, ok := m.clearedFields[customer.FieldIndustry]
+	return ok
+}
+
 // ResetIndustry resets all changes to the "industry" field.
 func (m *CustomerMutation) ResetIndustry() {
 	m.industry = nil
 	m.addindustry = nil
+	delete(m.clearedFields, customer.FieldIndustry)
 }
 
 // SetSize sets the "size" field.
@@ -3914,6 +3928,9 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldOwnerType) {
 		fields = append(fields, customer.FieldOwnerType)
 	}
+	if m.FieldCleared(customer.FieldIndustry) {
+		fields = append(fields, customer.FieldIndustry)
+	}
 	if m.FieldCleared(customer.FieldSize) {
 		fields = append(fields, customer.FieldSize)
 	}
@@ -3951,6 +3968,9 @@ func (m *CustomerMutation) ClearField(name string) error {
 	switch name {
 	case customer.FieldOwnerType:
 		m.ClearOwnerType()
+		return nil
+	case customer.FieldIndustry:
+		m.ClearIndustry()
 		return nil
 	case customer.FieldSize:
 		m.ClearSize()

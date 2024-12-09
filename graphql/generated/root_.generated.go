@@ -186,17 +186,20 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateArea   func(childComplexity int, input ent.CreateAreaInput) int
-		CreatePlot   func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
-		CreateUser   func(childComplexity int, input ent.CreateUserInput) int
-		DeletePlot   func(childComplexity int, id xid.ID) int
-		DeleteTender func(childComplexity int, id xid.ID) int
-		DeleteUser   func(childComplexity int, id xid.ID) int
-		UpdateArea   func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdatePlot   func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateTender func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
-		UpdateUser   func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		CreateArea     func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCustomer func(childComplexity int, input ent.CreateCustomerInput) int
+		CreatePlot     func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
+		CreateTender   func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
+		CreateUser     func(childComplexity int, input ent.CreateUserInput) int
+		DeleteCustomer func(childComplexity int, id xid.ID) int
+		DeletePlot     func(childComplexity int, id xid.ID) int
+		DeleteTender   func(childComplexity int, id xid.ID) int
+		DeleteUser     func(childComplexity int, id xid.ID) int
+		UpdateArea     func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCustomer func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdatePlot     func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
+		UpdateTender   func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
+		UpdateUser     func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 	}
 
 	PageInfo struct {
@@ -1133,6 +1136,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateArea(childComplexity, args["input"].(ent.CreateAreaInput)), true
 
+	case "Mutation.createCustomer":
+		if e.complexity.Mutation.CreateCustomer == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCustomer_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCustomer(childComplexity, args["input"].(ent.CreateCustomerInput)), true
+
 	case "Mutation.createPlot":
 		if e.complexity.Mutation.CreatePlot == nil {
 			break
@@ -1168,6 +1183,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(ent.CreateUserInput)), true
+
+	case "Mutation.deleteCustomer":
+		if e.complexity.Mutation.DeleteCustomer == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteCustomer_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteCustomer(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.deletePlot":
 		if e.complexity.Mutation.DeletePlot == nil {
@@ -1216,6 +1243,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateArea(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateAreaInput)), true
+
+	case "Mutation.updateCustomer":
+		if e.complexity.Mutation.UpdateCustomer == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateCustomer_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateCustomer(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateCustomerInput)), true
 
 	case "Mutation.updatePlot":
 		if e.complexity.Mutation.UpdatePlot == nil {
@@ -3459,7 +3498,7 @@ input CreateCustomerInput {
   updatedAt: Time
   name: String!
   ownerType: Int
-  industry: Int!
+  industry: Int
   size: Int
   contactPerson: String
   contactPersonPosition: String
@@ -3656,7 +3695,7 @@ type Customer implements Node {
   updatedAt: Time!
   name: String!
   ownerType: Int
-  industry: Int!
+  industry: Int
   size: Int
   contactPerson: String
   contactPersonPosition: String
@@ -3863,6 +3902,8 @@ input CustomerWhereInput {
   industryGTE: Int
   industryLT: Int
   industryLTE: Int
+  industryIsNil: Boolean
+  industryNotNil: Boolean
   """
   size field predicates
   """
@@ -6315,6 +6356,7 @@ input UpdateCustomerInput {
   ownerType: Int
   clearOwnerType: Boolean
   industry: Int
+  clearIndustry: Boolean
   size: Int
   clearSize: Boolean
   contactPerson: String
@@ -7277,6 +7319,10 @@ type GeoJson {
   createUser(input: CreateUserInput!): UserConnection!
   updateUser(id: ID!, input: UpdateUserInput!): User!
   deleteUser(id: ID!): User!
+
+  createCustomer(input: CreateCustomerInput!): CustomerConnection!
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
+  deleteCustomer(id: ID!): Customer!
 
   createTender(
     input: CreateTenderInput!

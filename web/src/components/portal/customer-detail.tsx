@@ -28,6 +28,7 @@ export function CustomerDetail(props: {
           name
         }
         area {
+          id
           name
         }
       }

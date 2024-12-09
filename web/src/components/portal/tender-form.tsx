@@ -19,12 +19,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import {
-  ConnectionHandler,
-  graphql,
-  useFragment,
-  useRelayEnvironment,
-} from "react-relay";
+import { ConnectionHandler, graphql, useFragment } from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { useUpdateTender } from "~/hooks/use-update-tender";
@@ -320,6 +315,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 options={data.areas?.edges
                   ?.map((e) => e?.node)
                   .map((a) => ({ label: a?.name, value: a?.id }))}
+                showSearch
+                optionFilterProp="label"
                 onSelect={() => {
                   form.resetFields([
                     "provinceID",
@@ -353,7 +350,11 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               label="状态"
               rules={[{ required: true }]}
             >
-              <Select options={tenderStatusOptions} />
+              <Select
+                options={tenderStatusOptions}
+                showSearch
+                optionFilterProp="label"
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -390,6 +391,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 <Select
                   options={customerOptions}
                   showSearch
+                  optionFilterProp="label"
                   filterOption={(input, option) =>
                     (option?.label ?? "")
                       .toLowerCase()
@@ -405,7 +407,11 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               label="发现人"
               rules={[{ required: true }]}
             >
-              <Select options={salesOptions} />
+              <Select
+                options={salesOptions}
+                showSearch
+                optionFilterProp="label"
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -425,7 +431,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               label="创建人"
               rules={[{ required: true }]}
             >
-              <Select options={salesOptions} disabled={!!tender} />
+              <Select
+                options={salesOptions}
+                disabled={!!tender}
+                showSearch
+                optionFilterProp="label"
+              />
             </Form.Item>
           </Col>
           <Col sm={24} md={12} lg={8}>
@@ -435,6 +446,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 mode="multiple"
                 maxTagCount={3}
                 allowClear
+                showSearch
+                optionFilterProp="label"
               />
             </Form.Item>
           </Col>
@@ -476,6 +489,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 onSelect={() => {
                   form.resetFields(["cityID", "districtID"]);
                 }}
+                showSearch
+                optionFilterProp="label"
               />
             </Form.Item>
           </Col>
@@ -493,6 +508,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                 onSelect={() => {
                   form.resetFields(["districtID"]);
                 }}
+                showSearch
+                optionFilterProp="label"
               />
             </Form.Item>
           </Col>
@@ -509,6 +526,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                     label: n?.name,
                     value: n?.id,
                   }))}
+                showSearch
+                optionFilterProp="label"
               />
             </Form.Item>
           </Col>
@@ -563,6 +582,8 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
                       { label: "SC:830生产项目", value: "SC" },
                       { label: "YF:830研发项目", value: "YF" },
                     ]}
+                    showSearch
+                    optionFilterProp="label"
                   />
                 </Form.Item>
               </Col>

@@ -83,6 +83,14 @@ func (cc *CustomerCreate) SetIndustry(i int) *CustomerCreate {
 	return cc
 }
 
+// SetNillableIndustry sets the "industry" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableIndustry(i *int) *CustomerCreate {
+	if i != nil {
+		cc.SetIndustry(*i)
+	}
+	return cc
+}
+
 // SetSize sets the "size" field.
 func (cc *CustomerCreate) SetSize(i int) *CustomerCreate {
 	cc.mutation.SetSize(i)
@@ -304,9 +312,6 @@ func (cc *CustomerCreate) check() error {
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Customer.name"`)}
 	}
-	if _, ok := cc.mutation.Industry(); !ok {
-		return &ValidationError{Name: "industry", err: errors.New(`ent: missing required field "Customer.industry"`)}
-	}
 	if _, ok := cc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Customer.area_id"`)}
 	}
@@ -373,7 +378,7 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := cc.mutation.Industry(); ok {
 		_spec.SetField(customer.FieldIndustry, field.TypeInt, value)
-		_node.Industry = value
+		_node.Industry = &value
 	}
 	if value, ok := cc.mutation.Size(); ok {
 		_spec.SetField(customer.FieldSize, field.TypeInt, value)
@@ -597,6 +602,12 @@ func (u *CustomerUpsert) UpdateIndustry() *CustomerUpsert {
 // AddIndustry adds v to the "industry" field.
 func (u *CustomerUpsert) AddIndustry(v int) *CustomerUpsert {
 	u.Add(customer.FieldIndustry, v)
+	return u
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (u *CustomerUpsert) ClearIndustry() *CustomerUpsert {
+	u.SetNull(customer.FieldIndustry)
 	return u
 }
 
@@ -881,6 +892,13 @@ func (u *CustomerUpsertOne) AddIndustry(v int) *CustomerUpsertOne {
 func (u *CustomerUpsertOne) UpdateIndustry() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.UpdateIndustry()
+	})
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (u *CustomerUpsertOne) ClearIndustry() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearIndustry()
 	})
 }
 
@@ -1358,6 +1376,13 @@ func (u *CustomerUpsertBulk) AddIndustry(v int) *CustomerUpsertBulk {
 func (u *CustomerUpsertBulk) UpdateIndustry() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.UpdateIndustry()
+	})
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (u *CustomerUpsertBulk) ClearIndustry() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearIndustry()
 	})
 }
 
