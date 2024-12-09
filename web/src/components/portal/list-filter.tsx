@@ -32,12 +32,19 @@ export function ListFilter({
             onChange={(e) => {
               navigate({
                 to: ".",
-                search: { q: e.target.value },
+                search: (prev) => ({ ...prev, q: e.target.value }),
                 replace: true,
               });
             }}
             allowClear
             type="search"
+            onClear={() => {
+              navigate({
+                to: ".",
+                replace: true,
+                search: (prev) => ({ ...prev, q: undefined }),
+              });
+            }}
           />
         </Form.Item>
         {showStatus && (
@@ -48,14 +55,18 @@ export function ListFilter({
               onSelect={(value) => {
                 navigate({
                   to: ".",
-                  search: { status: value },
+                  search: (prev) => ({ ...prev, status: value }),
                   replace: true,
                 });
                 // setStatusFilter(value);
               }}
               allowClear
               onClear={() => {
-                navigate({ to: ".", replace: true });
+                navigate({
+                  to: ".",
+                  replace: true,
+                  search: (prev) => ({ ...prev, status: undefined }),
+                });
               }}
               options={tenderStatusOptions}
             />
@@ -69,13 +80,17 @@ export function ListFilter({
               onSelect={(value) => {
                 navigate({
                   to: ".",
-                  search: { area: value },
+                  search: (prev) => ({ ...prev, area: value }),
                   replace: true,
                 });
               }}
               allowClear
               onClear={() => {
-                navigate({ to: ".", replace: true });
+                navigate({
+                  to: ".",
+                  replace: true,
+                  search: (prev) => ({ ...prev, area: undefined }),
+                });
               }}
               options={areas}
             ></Select>
@@ -92,13 +107,17 @@ export function ListFilter({
               onSelect={(value) => {
                 navigate({
                   to: ".",
-                  search: { closing_date: value },
+                  search: (prev) => ({ ...prev, closing_date: value }),
                   replace: true,
                 });
               }}
               allowClear
               onClear={() => {
-                navigate({ to: ".", replace: true });
+                navigate({
+                  to: ".",
+                  replace: true,
+                  search: (prev) => ({ ...prev, closing_date: undefined }),
+                });
               }}
             />
           </Form.Item>

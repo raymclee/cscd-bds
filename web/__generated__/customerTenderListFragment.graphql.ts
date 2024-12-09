@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<59c68e03b8bc90805ab4e331ffb5bead>>
+ * @generated SignedSource<<b010c01b454787c96e3d63ebc1c82c90>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -59,7 +59,7 @@ const node: ReaderFragment = {
       "args": null,
       "concreteType": "TenderConnection",
       "kind": "LinkedField",
-      "name": "__customersTenderListFragment_tenders_connection",
+      "name": "__customerTenderListFragment_tenders_connection",
       "plural": false,
       "selections": [
         {
@@ -157,6 +157,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "1abd05c6fdfabbfaaed4871120aaef44";
+(node as any).hash = "0356ca778a84bbd99083818f361e56e4";
 
 export default node;

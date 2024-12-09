@@ -1,15 +1,12 @@
 import { customerDetailFragment$key } from "__generated__/customerDetailFragment.graphql";
-import { Typography } from "antd";
 import { Descriptions } from "antd";
 import dayjs from "dayjs";
 import { customerSizeText, industryText } from "~/lib/helper";
 import { graphql, useFragment } from "react-relay";
 import { ownerTypeText } from "~/lib/helper";
 
-export function CustomerDetail({
-  queryRef,
-}: {
-  queryRef: customerDetailFragment$key;
+export function CustomerDetail(props: {
+  customer: customerDetailFragment$key;
 }) {
   const customer = useFragment(
     graphql`
@@ -35,7 +32,7 @@ export function CustomerDetail({
         }
       }
     `,
-    queryRef,
+    props.customer,
   );
 
   return (

@@ -35,21 +35,30 @@ function RouteComponent() {
                         ...customerDetailFragment
                         tenders(first: $first, last: $last)
                           @connection(
-                            key: "customersTenderListFragment_tenders"
+                            key: "customerTenderListFragment_tenders"
                           ) {
                           edges {
                             __id
-                            node {
-                              id
-                            }
                           }
                         }
-                        visitRecords(orderBy: $orderBy) {
+                        visitRecords(
+                          first: $first
+                          last: $last
+                          orderBy: $orderBy
+                        )
+                          @connection(
+                            key: "customerVisitRecordListFragment_visitRecords"
+                          ) {
                           edges {
                             __id
                           }
                         }
                         ...customerVisitRecordListFragment
+                          @arguments(
+                            first: $first
+                            last: $last
+                            orderBy: $orderBy
+                          )
                         ...customerTenderListFragment
                           @arguments(first: $first, last: $last)
                       }
@@ -83,7 +92,7 @@ function RouteComponent() {
   return (
     <>
       <Card
-        title={<CustomerDetail queryRef={customer} />}
+        title={<CustomerDetail customer={customer} />}
         onTabChange={(key) => setActiveTab(key)}
         tabProps={{ style: { marginTop: 12 }, size: "small" }}
         tabList={[
@@ -97,8 +106,8 @@ function RouteComponent() {
           },
         ]}
       >
-        {activeTab === "1" && <CustomerTenderList queryRef={customer} />}
-        {activeTab === "2" && <CustomerVisitRecordList queryRef={customer} />}
+        {activeTab === "1" && <CustomerTenderList customer={customer} />}
+        {activeTab === "2" && <CustomerVisitRecordList customer={customer} />}
       </Card>
     </>
   );

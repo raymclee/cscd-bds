@@ -57,6 +57,7 @@ export function DashboardTenderList() {
                   className="cursor-pointer"
                   key={tender?.id}
                   onClick={async () => {
+                    if (!tender?.district) return;
                     const districts =
                       await fetchQuery<MapIndexPageDistrictQuery>(
                         environment,

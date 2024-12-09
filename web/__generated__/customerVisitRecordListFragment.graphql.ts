@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<46184c259592be2a4235850a49a7bb61>>
+ * @generated SignedSource<<24d0158bdf739bb4344af45d7bb6c33e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -45,16 +45,38 @@ var v0 = {
 return {
   "argumentDefinitions": [
     {
-      "kind": "RootArgument",
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "first"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "last"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "orderBy"
     }
   ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "bidirectional",
+        "path": [
+          "visitRecords"
+        ]
+      }
+    ]
+  },
   "name": "customerVisitRecordListFragment",
   "selections": [
     {
-      "alias": null,
+      "alias": "visitRecords",
       "args": [
         {
           "kind": "Variable",
@@ -64,7 +86,7 @@ return {
       ],
       "concreteType": "VisitRecordConnection",
       "kind": "LinkedField",
-      "name": "visitRecords",
+      "name": "__customerVisitRecordListFragment_visitRecords_connection",
       "plural": false,
       "selections": [
         {
@@ -137,8 +159,61 @@ return {
                     }
                   ],
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
                 }
               ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasPreviousPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "startCursor",
               "storageKey": null
             }
           ],
@@ -153,6 +228,6 @@ return {
 };
 })();
 
-(node as any).hash = "d54a6169a7cdac6a98ac2d9bc949c0c3";
+(node as any).hash = "aa07564b086af6629e3ceadce07e8e85";
 
 export default node;

@@ -5,15 +5,19 @@ import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
 import { visitTypeText } from "~/lib/helper";
 
-export function CustomerVisitRecordList({
-  queryRef,
-}: {
-  queryRef: customerVisitRecordListFragment$key;
+export function CustomerVisitRecordList(props: {
+  customer: customerVisitRecordListFragment$key;
 }) {
   const data = useFragment(
     graphql`
-      fragment customerVisitRecordListFragment on Customer {
-        visitRecords(orderBy: $orderBy) {
+      fragment customerVisitRecordListFragment on Customer
+      @argumentDefinitions(
+        first: { type: Int }
+        last: { type: Int }
+        orderBy: { type: "VisitRecordOrder" }
+      ) {
+        visitRecords(first: $first, last: $last, orderBy: $orderBy)
+          @connection(key: "customerVisitRecordListFragment_visitRecords") {
           edges {
             node {
               id
@@ -31,7 +35,7 @@ export function CustomerVisitRecordList({
         }
       }
     `,
-    queryRef,
+    props.customer,
   );
 
   return (

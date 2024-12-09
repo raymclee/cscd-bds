@@ -4,23 +4,22 @@ import {
   tenderListItemFragment$key,
 } from "__generated__/tenderListItemFragment.graphql";
 import { App, Button, List, Popconfirm, Tag } from "antd";
+import dayjs from "dayjs";
+import { ImageOff } from "lucide-react";
 import { useFragment } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
-import { isGA, isHW, tenderStatusText } from "~/lib/helper";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
-import { ImageOff } from "lucide-react";
-import { Tender } from "~/graphql/graphql";
+import { tenderStatusText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
-import dayjs from "dayjs";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
 type TenderListItemProps = {
-  queryRef: tenderListItemFragment$key;
+  tender: tenderListItemFragment$key;
   showDelete?: boolean;
 };
 
 export function TenderListItem({
-  queryRef,
+  tender,
   showDelete = true,
 }: TenderListItemProps) {
   const item = useFragment(
@@ -47,7 +46,7 @@ export function TenderListItem({
         }
       }
     `,
-    queryRef,
+    tender,
   );
   const { session } = useRouteContext({ from: "/__auth" });
 
@@ -115,7 +114,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[280px] flex-col items-center justify-center rounded-lg bg-gray-100">
-              <ImageOff className="w-12 h-12 mb-2" />
+              <ImageOff className="mb-2 h-12 w-12" />
               暂没图片
             </div>
           )}
@@ -182,7 +181,7 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
           connections.push(
             ConnectionHandler.getConnectionID(
               tender.customer.id,
-              "customersTenderListFragment_tenders",
+              "customerTenderListFragment_tenders",
             ),
           );
         }

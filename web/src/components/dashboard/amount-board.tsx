@@ -1,6 +1,4 @@
-import { Link } from "@tanstack/react-router";
-import { MapIndexPageQuery$data } from "__generated__/MapIndexPageQuery.graphql";
-import { RectangleEllipsis, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { motion } from "motion/react";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";

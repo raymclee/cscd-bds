@@ -165,9 +165,9 @@ function TenderList({
         }}
         dataSource={dataSource}
         itemLayout="vertical"
-        className="px-4 pt-px pb-6 bg-white rounded-lg"
+        className="rounded-lg bg-white px-4 pb-6 pt-px"
         renderItem={(node) =>
-          node && <TenderListItem key={node?.id} queryRef={node} />
+          node && <TenderListItem key={node?.id} tender={node} />
         }
       />
     </>

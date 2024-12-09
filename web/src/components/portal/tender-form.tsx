@@ -300,7 +300,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             connections.push(
               ConnectionHandler.getConnectionID(
                 values.customerID,
-                "customersTenderListFragment_tenders",
+                "customerTenderListFragment_tenders",
               ),
             );
           }
