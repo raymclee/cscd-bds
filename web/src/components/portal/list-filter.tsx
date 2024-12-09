@@ -20,6 +20,7 @@ export function ListFilter({
   const searchText = search.q || "";
   const statusFilter = search.status;
   const areaFilter = search.area;
+  const closingDateFilter = search.closing_date;
 
   return (
     <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
@@ -100,6 +101,7 @@ export function ListFilter({
           <Form.Item label="交标日期" className="mb-0">
             <Select
               placeholder="交标日期"
+              value={closingDateFilter}
               options={[
                 { label: "升序", value: "asc" },
                 { label: "降序", value: "desc" },
