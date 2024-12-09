@@ -303,454 +303,398 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
       }}
     >
       <Card title="信息">
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
+          <Form.Item
+            name="areaID"
+            label="业务区域"
+            rules={[{ required: true }]}
+          >
+            <Select
+              disabled={!!tender}
+              options={data.areas?.edges
+                ?.map((e) => e?.node)
+                .map((a) => ({ label: a?.name, value: a?.id }))}
+              showSearch
+              optionFilterProp="label"
+              onSelect={() => {
+                form.resetFields([
+                  "provinceID",
+                  "cityID",
+                  "districtID",
+                  "finderID",
+                  "createdByID",
+                  "customerID",
+                  "followingSaleIDs",
+                  "tenderCode",
+                  "developer",
+                  "tenderClosingDate",
+                  "tenderDate",
+                ]);
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name={"name"}
+            label="项目名称"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item name={"status"} label="状态" rules={[{ required: true }]}>
+            <Select
+              options={tenderStatusOptions}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          {!showSHFields && (
             <Form.Item
-              name="areaID"
-              label="业务区域"
-              rules={[{ required: true }]}
-            >
-              <Select
-                disabled={!!tender}
-                options={data.areas?.edges
-                  ?.map((e) => e?.node)
-                  .map((a) => ({ label: a?.name, value: a?.id }))}
-                showSearch
-                optionFilterProp="label"
-                onSelect={() => {
-                  form.resetFields([
-                    "provinceID",
-                    "cityID",
-                    "districtID",
-                    "finderID",
-                    "createdByID",
-                    "customerID",
-                    "followingSaleIDs",
-                    "tenderCode",
-                    "developer",
-                    "tenderClosingDate",
-                    "tenderDate",
-                  ]);
-                }}
-              />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={"name"}
-              label="项目名称"
+              name={"tenderCode"}
+              label={"招标编号"}
               rules={[{ required: true }]}
             >
               <Input />
             </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={"status"}
-              label="状态"
-              rules={[{ required: true }]}
-            >
+          )}
+
+          <Form.Item
+            name={
+              isGATender || isHWTender || isGASelected || isHWSelected
+                ? "developer"
+                : "customerID"
+            }
+            label="业主名称"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            {isGATender || isHWTender || isGASelected || isHWSelected ? (
+              <Input />
+            ) : (
               <Select
-                options={tenderStatusOptions}
+                options={customerOptions}
                 showSearch
                 optionFilterProp="label"
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
               />
-            </Form.Item>
-          </Col>
-        </Row>
+            )}
+          </Form.Item>
 
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          {!showSHFields && (
-            <Col sm={24} md={12} lg={8}>
-              <Form.Item
-                name={"tenderCode"}
-                label={"招标编号"}
-                rules={[{ required: true }]}
-              >
+          <Form.Item
+            name="finderID"
+            label="发现人"
+            rules={[{ required: true }]}
+          >
+            <Select
+              options={salesOptions}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="discoveryDate"
+            label="发现日"
+            rules={[{ required: true }]}
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
+
+          <Form.Item
+            name="createdByID"
+            label="创建人"
+            rules={[{ required: true }]}
+          >
+            <Select
+              options={salesOptions}
+              disabled={!!tender}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          <Form.Item name="followingSaleIDs" label="当前跟踪人">
+            <Select
+              options={salesOptions}
+              mode="multiple"
+              maxTagCount={3}
+              allowClear
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          <Form.Item name="estimatedAmount" label="预计金额">
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name={showSHFields ? "tenderDate" : "tenderClosingDate"}
+            label={showSHFields ? "招标日" : "交標日期"}
+          >
+            <DatePicker className="w-full" />
+          </Form.Item>
+
+          <Form.Item name="contractor" label="总包单位" rules={[]}>
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="fullAddress" label="详细地址" rules={[]}>
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="provinceID"
+            label="省"
+            rules={[{ required: showSHFields }]}
+          >
+            <Select
+              options={provinces?.map((p) => ({
+                label: p?.name,
+                value: p?.id,
+              }))}
+              onSelect={() => {
+                form.resetFields(["cityID", "districtID"]);
+              }}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="cityID"
+            label="市"
+            rules={[{ required: cities?.edges?.length != 0 && showSHFields }]}
+          >
+            <Select
+              disabled={cities?.edges?.length === 0}
+              options={cities?.edges
+                ?.map((c) => c?.node)
+                .map((c) => ({ label: c?.name, value: c?.id }))}
+              onSelect={() => {
+                form.resetFields(["districtID"]);
+              }}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="districtID"
+            label="区"
+            rules={[{ required: showSHFields }]}
+          >
+            <Select
+              options={districts?.edges
+                ?.map((e) => e && e.node)
+                .map((n) => ({
+                  label: n?.name,
+                  value: n?.id,
+                }))}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+
+          {showSHFields && (
+            <>
+              <Form.Item name="prepareToBid" label="是否准备投标">
+                <Switch />
+              </Form.Item>
+
+              <Form.Item name="projectCode" label="项目代码">
                 <Input />
               </Form.Item>
-            </Col>
-          )}
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={
-                isGATender || isHWTender || isGASelected || isHWSelected
-                  ? "developer"
-                  : "customerID"
-              }
-              label="业主名称"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              {isGATender || isHWTender || isGASelected || isHWSelected ? (
-                <Input />
-              ) : (
+
+              <Form.Item name="biddingDate" label="投标时间">
+                <DatePicker className="w-full" />
+              </Form.Item>
+
+              <Form.Item
+                name="estimatedProjectStartDate"
+                label="预计项目开始日期"
+              >
+                <DatePicker className="w-full" />
+              </Form.Item>
+
+              <Form.Item
+                name="estimatedProjectEndDate"
+                label="项目预计结束日期"
+              >
+                <DatePicker className="w-full" />
+              </Form.Item>
+
+              <Form.Item name="projectType" label="项目类型">
                 <Select
-                  options={customerOptions}
+                  options={[
+                    { label: "GC:830工程项目", value: "GC" },
+                    { label: "SC:830生产项目", value: "SC" },
+                    { label: "YF:830研发项目", value: "YF" },
+                  ]}
                   showSearch
                   optionFilterProp="label"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
                 />
-              )}
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="finderID"
-              label="发现人"
-              rules={[{ required: true }]}
-            >
-              <Select
-                options={salesOptions}
-                showSearch
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="discoveryDate"
-              label="发现日"
-              rules={[{ required: true }]}
-            >
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="createdByID"
-              label="创建人"
-              rules={[{ required: true }]}
-            >
-              <Select
-                options={salesOptions}
-                disabled={!!tender}
-                showSearch
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="followingSaleIDs" label="当前跟踪人">
-              <Select
-                options={salesOptions}
-                mode="multiple"
-                maxTagCount={3}
-                allowClear
-                showSearch
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+              </Form.Item>
 
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="estimatedAmount" label="预计金额">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name={showSHFields ? "tenderDate" : "tenderClosingDate"}
-              label={showSHFields ? "招标日" : "交標日期"}
-            >
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="contractor" label="总包单位" rules={[]}>
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
+              <Form.Item name="projectDefinition" label="项目定义">
+                <Input />
+              </Form.Item>
 
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="provinceID"
-              label="省"
-              rules={[{ required: showSHFields }]}
-            >
-              <Select
-                options={provinces?.map((p) => ({
-                  label: p?.name,
-                  value: p?.id,
-                }))}
-                onSelect={() => {
-                  form.resetFields(["cityID", "districtID"]);
-                }}
-                showSearch
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="cityID"
-              label="市"
-              rules={[{ required: cities?.edges?.length != 0 && showSHFields }]}
-            >
-              <Select
-                disabled={cities?.edges?.length === 0}
-                options={cities?.edges
-                  ?.map((c) => c?.node)
-                  .map((c) => ({ label: c?.name, value: c?.id }))}
-                onSelect={() => {
-                  form.resetFields(["districtID"]);
-                }}
-                showSearch
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          </Col>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item
-              name="districtID"
-              label="区"
-              rules={[{ required: showSHFields }]}
-            >
-              <Select
-                options={districts?.edges
-                  ?.map((e) => e && e.node)
-                  .map((n) => ({
-                    label: n?.name,
-                    value: n?.id,
-                  }))}
-                showSearch
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+              <Form.Item
+                name="remark"
+                label="备注"
+                className="sm:col-span-2 lg:col-span-3"
+              >
+                <Input.TextArea />
+              </Form.Item>
 
-        <Form.Item name="fullAddress" label="详细地址" rules={[]}>
-          <Input />
-        </Form.Item>
-
-        {showSHFields && (
-          <>
-            <Row gutter={{ xs: 8, sm: 64 }}>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="prepareToBid" label="是否准备投标">
-                  <Switch />
-                </Form.Item>
-              </Col>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="projectCode" label="项目代码">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="biddingDate" label="投标时间">
-                  <DatePicker className="w-full" />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={{ xs: 8, sm: 64 }}>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item
-                  name="estimatedProjectStartDate"
-                  label="预计项目开始日期"
-                >
-                  <DatePicker className="w-full" />
-                </Form.Item>
-              </Col>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item
-                  name="estimatedProjectEndDate"
-                  label="项目预计结束日期"
-                >
-                  <DatePicker className="w-full" />
-                </Form.Item>
-              </Col>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="projectType" label="项目类型">
-                  <Select
-                    options={[
-                      { label: "GC:830工程项目", value: "GC" },
-                      { label: "SC:830生产项目", value: "SC" },
-                      { label: "YF:830研发项目", value: "YF" },
-                    ]}
-                    showSearch
-                    optionFilterProp="label"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Form.Item name="projectDefinition" label="项目定义">
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="remark" label="备注">
-              <Input.TextArea />
-            </Form.Item>
-
-            <Row>
-              <Col sm={24}>
-                <Form.Item name="attachements" label="附件">
-                  <Dragger
-                    multiple
-                    name="files"
-                    action="/api/v1/file/upload"
-                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
-                    onChange={(info) => {
-                      for (const file of info.fileList) {
-                        if (file.status === "done") {
-                          setAttachmentFileNames((prev) => [
-                            ...prev,
-                            file.name,
-                          ]);
-                        }
-                        if (
-                          file.status === "error" ||
-                          file.status === "removed"
-                        ) {
-                          setAttachmentFileNames((prev) =>
-                            prev.filter((name) => name !== file.name),
-                          );
-                        }
+              <Form.Item
+                name="attachements"
+                label="附件"
+                className="sm:col-span-2 lg:col-span-3"
+              >
+                <Dragger
+                  multiple
+                  name="files"
+                  action="/api/v1/file/upload"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
+                  onChange={(info) => {
+                    for (const file of info.fileList) {
+                      if (file.status === "done") {
+                        setAttachmentFileNames((prev) => [...prev, file.name]);
                       }
-                    }}
-                  >
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">
-                      点击或拖动文件到此区域上传
-                    </p>
-                    <p className="ant-upload-hint">支持单个或批量上传。</p>
-                  </Dragger>
-                </Form.Item>
-              </Col>
-            </Row>
-          </>
-        )}
-
-        {showSHFields && (
-          <>
-            <Form.Item name="biddingInstructions" label="立项/投标说明">
-              <Input.TextArea />
-            </Form.Item>
-
-            <Row gutter={{ xs: 8, sm: 64 }}>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="costEngineer" label="造价师">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="tenderForm" label="招采形式">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="contractForm" label="合同形式">
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={{ xs: 8, sm: 64 }}>
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="managementCompany" label="管理公司">
-                  <Input />
-                </Form.Item>
-              </Col>
-
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="tenderingAgency" label="招标代理">
-                  <Input />
-                </Form.Item>
-              </Col>
-
-              <Col sm={24} md={12} lg={8}>
-                <Form.Item name="consultingFirm" label="咨询公司">
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row>
-          </>
-        )}
-
-        <Row gutter={{ xs: 8, sm: 64 }}>
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="facadeConsultant" label="幕墙顾问">
-              <Input />
-            </Form.Item>
-          </Col>
-
-          <Col sm={24} md={12} lg={8}>
-            <Form.Item name="designUnit" label="设计单位">
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Form.Item name="images" label="效果图">
-          <Dragger
-            multiple
-            defaultFileList={tender?.images?.map((url, i) => ({
-              uid: i.toString(),
-              name: url,
-              url,
-              status: "done",
-            }))}
-            name="files"
-            action="/api/v1/file/upload"
-            accept=".jpg,.jpeg,.png,.gif"
-            listType="picture-card"
-            onRemove={(file) => {
-              setRemoveImageFileNames((prev) => [...prev, file.name]);
-            }}
-            onChange={(info) => {
-              console.log(info);
-              for (const file of info.fileList) {
-                if (
-                  file.status === "done" &&
-                  !file.name.startsWith("/static/")
-                ) {
-                  setImageFileNames((prev) => {
-                    if (prev.includes(file.name)) {
-                      return prev;
+                      if (
+                        file.status === "error" ||
+                        file.status === "removed"
+                      ) {
+                        setAttachmentFileNames((prev) =>
+                          prev.filter((name) => name !== file.name),
+                        );
+                      }
                     }
-                    return [...prev, file.name];
-                  });
-                }
-                if (file.status === "error" || file.status === "removed") {
-                  setImageFileNames((prev) =>
-                    prev.filter((name) => name !== file.name),
-                  );
-                }
-              }
-            }}
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">点击或拖动文件到此区域上传</p>
-            <p className="ant-upload-hint">支持单个或批量上传。</p>
-          </Dragger>
-        </Form.Item>
+                  }}
+                >
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">点击或拖动文件到此区域上传</p>
+                  <p className="ant-upload-hint">支持单个或批量上传。</p>
+                </Dragger>
+              </Form.Item>
+            </>
+          )}
 
-        {/* <Form.Item name="geoCoordinate" label="geoCoordinate">
+          {showSHFields && (
+            <>
+              <Form.Item
+                name="biddingInstructions"
+                label="立项/投标说明"
+                className="sm:col-span-2 lg:col-span-3"
+              >
+                <Input.TextArea />
+              </Form.Item>
+
+              <Form.Item name="costEngineer" label="造价师">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="tenderForm" label="招采形式">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="contractForm" label="合同形式">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="managementCompany" label="管理公司">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="tenderingAgency" label="招标代理">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="consultingFirm" label="咨询公司">
+                <Input />
+              </Form.Item>
+            </>
+          )}
+
+          <Form.Item name="facadeConsultant" label="幕墙顾问">
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="designUnit" label="设计单位">
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="images"
+            label="效果图"
+            className="sm:col-span-2 lg:col-span-3"
+          >
+            <Dragger
+              multiple
+              defaultFileList={tender?.images?.map((url, i) => ({
+                uid: i.toString(),
+                name: url,
+                url,
+                status: "done",
+              }))}
+              name="files"
+              action="/api/v1/file/upload"
+              accept=".jpg,.jpeg,.png,.gif"
+              listType="picture-card"
+              onRemove={(file) => {
+                setRemoveImageFileNames((prev) => [...prev, file.name]);
+              }}
+              onChange={(info) => {
+                console.log(info);
+                for (const file of info.fileList) {
+                  if (
+                    file.status === "done" &&
+                    !file.name.startsWith("/static/")
+                  ) {
+                    setImageFileNames((prev) => {
+                      if (prev.includes(file.name)) {
+                        return prev;
+                      }
+                      return [...prev, file.name];
+                    });
+                  }
+                  if (file.status === "error" || file.status === "removed") {
+                    setImageFileNames((prev) =>
+                      prev.filter((name) => name !== file.name),
+                    );
+                  }
+                }
+              }}
+            >
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">点击或拖动文件到此区域上传</p>
+              <p className="ant-upload-hint">支持单个或批量上传。</p>
+            </Dragger>
+          </Form.Item>
+        </div>
+      </Card>
+
+      {/* <Form.Item name="geoCoordinate" label="geoCoordinate">
           <Input />
         </Form.Item>
         <Form.Item name="geoBounds" label="geoBounds">
           <Input />
         </Form.Item> */}
-      </Card>
 
       {showSHFields && (
         <>
