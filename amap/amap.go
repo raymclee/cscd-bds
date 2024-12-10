@@ -24,7 +24,7 @@ func (a *AMap) GeoCode(address string) (int, float64, float64, string, error) {
 	}
 	q := req.URL.Query()
 	q.Add("key", "28982eb1a6a3cd956e0e0614c2fb131b")
-	// q.Add("city", "香港特别行政区")
+	q.Add("city", "香港特别行政区")
 	q.Add("address", address)
 	req.URL.RawQuery = q.Encode()
 	resp, err := a.hc.Do(req)
@@ -39,7 +39,7 @@ func (a *AMap) GeoCode(address string) (int, float64, float64, string, error) {
 	}
 
 	if len(geoResp.GeoCodes) < 1 {
-		return 0, 0, 0, "", fmt.Errorf("error")
+		return 0, 0, 0, "", fmt.Errorf("no geo code")
 	}
 
 	loc := strings.Split(geoResp.GeoCodes[0].Location, ",")
