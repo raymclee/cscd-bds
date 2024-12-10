@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<31c7650a86ea3358db645612c28c3163>>
+ * @generated SignedSource<<c8f06f833d78d392aca1faa0e3e1e974>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,10 +15,9 @@ export type customerDetailFragment$data = {
     readonly id: string;
     readonly name: string;
   };
-  readonly contactPerson: string | null | undefined;
-  readonly contactPersonEmail: string | null | undefined;
-  readonly contactPersonPhone: string | null | undefined;
-  readonly contactPersonPosition: string | null | undefined;
+  readonly contact: {
+    readonly " $fragmentSpreads": FragmentRefs<"customerDetailContactFragment">;
+  };
   readonly createdBy: {
     readonly name: string;
   };
@@ -27,6 +26,7 @@ export type customerDetailFragment$data = {
   readonly name: string;
   readonly ownerType: number | null | undefined;
   readonly sales: {
+    readonly id: string;
     readonly name: string;
   } | null | undefined;
   readonly size: number | null | undefined;
@@ -54,6 +54,7 @@ v1 = {
   "storageKey": null
 },
 v2 = [
+  (v0/*: any*/),
   (v1/*: any*/)
 ];
 return {
@@ -71,7 +72,9 @@ return {
       "kind": "LinkedField",
       "name": "createdBy",
       "plural": false,
-      "selections": (v2/*: any*/),
+      "selections": [
+        (v1/*: any*/)
+      ],
       "storageKey": null
     },
     {
@@ -105,34 +108,6 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "contactPerson",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPersonPosition",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPersonPhone",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "contactPersonEmail",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "User",
       "kind": "LinkedField",
       "name": "sales",
@@ -147,11 +122,24 @@ return {
       "kind": "LinkedField",
       "name": "area",
       "plural": false,
-      "selections": [
-        (v0/*: any*/),
-        (v1/*: any*/)
-      ],
+      "selections": (v2/*: any*/),
       "storageKey": null
+    },
+    {
+      "fragment": {
+        "kind": "InlineFragment",
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "customerDetailContactFragment"
+          }
+        ],
+        "type": "Customer",
+        "abstractKey": null
+      },
+      "kind": "AliasedInlineFragmentSpread",
+      "name": "contact"
     }
   ],
   "type": "Customer",
@@ -159,6 +147,6 @@ return {
 };
 })();
 
-(node as any).hash = "c4d70bda198b5905e3062f5f5a29f769";
+(node as any).hash = "13e84c96f05ee7d6fa2e0ba2fa1a4471";
 
 export default node;

@@ -41,6 +41,7 @@ const (
 	customerTid    = "tbl5pgTgK7hiT7px"
 	visitRecordTid = "tblVtjBucJoRQyOp"
 	salesTid       = "tblbv3qpmTcwkQYQ"
+	competitorTid  = "tbl2a4lE1OVBVOov"
 )
 
 var (
@@ -59,6 +60,17 @@ func main() {
 	fetchTender()
 	fetchVisitRecord()
 
+}
+
+func fetchCompetitor() {
+	req := larkbitable.NewListAppTableRecordReqBuilder().AppToken(appToken).TableId(competitorTid).Build()
+	resp, err := client.Bitable.AppTableRecord.List(ctx, req)
+	if err != nil {
+		panic(err)
+	}
+	if !resp.Success() {
+		panic(resp.Error())
+	}
 }
 
 func fetchVisitRecord() {

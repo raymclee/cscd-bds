@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d60967c56857df93d0a09db8eba71ca8>>
+ * @generated SignedSource<<437c911a737eeef38ca7fd5b2b0d5f7b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,10 +29,6 @@ export type customersPageQuery$data = {
                   readonly id: string;
                   readonly name: string;
                 };
-                readonly contactPerson: string | null | undefined;
-                readonly contactPersonEmail: string | null | undefined;
-                readonly contactPersonPhone: string | null | undefined;
-                readonly contactPersonPosition: string | null | undefined;
                 readonly id: string;
                 readonly industry: number | null | undefined;
                 readonly name: string;
@@ -166,34 +162,6 @@ v8 = [
               (v5/*: any*/),
               (v4/*: any*/)
             ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPerson",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPersonPosition",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPersonEmail",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPersonPhone",
             "storageKey": null
           },
           (v7/*: any*/)
@@ -486,7 +454,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "39f14232f454bf1f737a17d024087516",
+    "cacheID": "348419e64810d00c4923094909a47fdd",
     "id": null,
     "metadata": {
       "connection": [
@@ -500,11 +468,11 @@ return {
     },
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  contactPerson\n                  contactPersonPosition\n                  contactPersonEmail\n                  contactPersonPhone\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    ...customerFormFragment\n    id\n  }\n}\n\nfragment customerFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    ...customerFormFragment\n    id\n  }\n}\n\nfragment customerFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "2aecc4171e6bc7c8bcb150630b9216b1";
+(node as any).hash = "191aa026c6eb8d1f973025286407e121";
 
 export default node;

@@ -41,10 +41,6 @@ const query = graphql`
                       code
                       name
                     }
-                    contactPerson
-                    contactPersonPosition
-                    contactPersonEmail
-                    contactPersonPhone
                   }
                 }
               }

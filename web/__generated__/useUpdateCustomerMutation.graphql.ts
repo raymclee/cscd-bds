@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6636ab8bd837b0c1bfb4ac028e9b7abb>>
+ * @generated SignedSource<<0819b11a94d13cf0bc0477dc953aadad>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -92,8 +92,8 @@ v3 = {
   "storageKey": null
 },
 v4 = [
-  (v3/*: any*/),
-  (v2/*: any*/)
+  (v2/*: any*/),
+  (v3/*: any*/)
 ];
 return {
   "fragment": {
@@ -145,7 +145,10 @@ return {
             "kind": "LinkedField",
             "name": "createdBy",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": [
+              (v3/*: any*/),
+              (v2/*: any*/)
+            ],
             "storageKey": null
           },
           {
@@ -179,34 +182,6 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "contactPerson",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPersonPosition",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPersonPhone",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "contactPersonEmail",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "concreteType": "User",
             "kind": "LinkedField",
             "name": "sales",
@@ -221,10 +196,7 @@ return {
             "kind": "LinkedField",
             "name": "area",
             "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
-            ],
+            "selections": (v4/*: any*/),
             "storageKey": null
           }
         ],
@@ -233,12 +205,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f302f16d938520ca199a527fd08e5953",
+    "cacheID": "bab2d589ad15a379f34deff637afbe02",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    id\n    name\n  }\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailContactFragment on Customer {\n  id\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  ...customerDetailContactFragment\n}\n"
   }
 };
 })();

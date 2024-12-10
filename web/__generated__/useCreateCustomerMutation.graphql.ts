@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a6685cfaefab6d7c68b5337b63dd5a6e>>
+ * @generated SignedSource<<5eff424d39078b9a6c22a9c2804ea9b8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -78,8 +78,8 @@ v4 = {
   "storageKey": null
 },
 v5 = [
-  (v4/*: any*/),
-  (v3/*: any*/)
+  (v3/*: any*/),
+  (v4/*: any*/)
 ];
 return {
   "fragment": {
@@ -175,7 +175,10 @@ return {
                     "kind": "LinkedField",
                     "name": "createdBy",
                     "plural": false,
-                    "selections": (v5/*: any*/),
+                    "selections": [
+                      (v4/*: any*/),
+                      (v3/*: any*/)
+                    ],
                     "storageKey": null
                   },
                   {
@@ -209,34 +212,6 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPerson",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPersonPosition",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPersonPhone",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "contactPersonEmail",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "User",
                     "kind": "LinkedField",
                     "name": "sales",
@@ -251,10 +226,7 @@ return {
                     "kind": "LinkedField",
                     "name": "area",
                     "plural": false,
-                    "selections": [
-                      (v3/*: any*/),
-                      (v4/*: any*/)
-                    ],
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -285,12 +257,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c163160af65547952577098b881ac2a4",
+    "cacheID": "c896050159c599317fc6190b923912b5",
     "id": null,
     "metadata": {},
     "name": "useCreateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  sales {\n    name\n    id\n  }\n  area {\n    id\n    name\n  }\n}\n"
+    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailContactFragment on Customer {\n  id\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  ...customerDetailContactFragment\n}\n"
   }
 };
 })();

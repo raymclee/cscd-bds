@@ -344,7 +344,9 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
           <Form.Item name={"status"} label="状态" rules={[{ required: true }]}>
             <Select
-              options={tenderStatusOptions}
+              options={tenderStatusOptions.filter(
+                (o) => o.value !== 3 && o.value !== 4,
+              )}
               showSearch
               optionFilterProp="label"
             />
@@ -369,7 +371,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             label="业主名称"
             rules={[
               {
-                required: true,
+                required: !(
+                  isGATender ||
+                  isHWTender ||
+                  isGASelected ||
+                  isHWSelected
+                ),
               },
             ]}
           >

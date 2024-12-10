@@ -32,7 +32,9 @@ function RouteComponent() {
                   customers(where: { id: $id }) {
                     edges {
                       node {
-                        ...customerDetailFragment
+                        sales {
+                          id
+                        }
                         tenders(first: $first, last: $last)
                           @connection(
                             key: "customerTenderListFragment_tenders"
@@ -53,6 +55,7 @@ function RouteComponent() {
                             __id
                           }
                         }
+                        ...customerDetailFragment
                         ...customerVisitRecordListFragment
                           @arguments(
                             first: $first
@@ -77,6 +80,7 @@ function RouteComponent() {
   const customer = data.node?.areas?.edges
     ?.flatMap((a) => a?.node?.customers?.edges?.map((c) => c?.node))
     ?.at(0);
+  const { session } = Route.useRouteContext();
 
   if (!customer) {
     return (
@@ -92,7 +96,12 @@ function RouteComponent() {
   return (
     <>
       <Card
-        title={<CustomerDetail customer={customer} />}
+        title={
+          <CustomerDetail
+            customer={customer}
+            showContact={session.userId == customer.sales?.id}
+          />
+        }
         onTabChange={(key) => setActiveTab(key)}
         tabProps={{ style: { marginTop: 12 }, size: "small" }}
         tabList={[
