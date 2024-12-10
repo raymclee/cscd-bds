@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"cscd-bds/amap"
 	"cscd-bds/config"
 	"cscd-bds/sap"
 	"cscd-bds/session"
@@ -18,14 +19,16 @@ type handler struct {
 	feishu  *lark.Client
 	session *session.Session
 	sap     *sap.Sap
+	amap    *amap.AMap
 }
 
-func NewHandler(store *store.Store, feishu *lark.Client, session *session.Session, sap *sap.Sap) *handler {
+func NewHandler(store *store.Store, feishu *lark.Client, session *session.Session, sap *sap.Sap, amap *amap.AMap) *handler {
 	return &handler{
 		store:   store,
 		feishu:  feishu,
 		session: session,
 		sap:     sap,
+		amap:    amap,
 	}
 }
 

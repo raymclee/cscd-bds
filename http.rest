@@ -8,7 +8,7 @@ Content-Type: application/json
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=亞洲博覽館
+GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address="土瓜灣土瓜灣道68A-78B號"
 
 
 ###

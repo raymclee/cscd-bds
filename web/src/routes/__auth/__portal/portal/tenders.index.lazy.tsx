@@ -123,7 +123,9 @@ function TenderList({
       return 0;
     });
 
-  const isGAOrHW = isGAorHWOnly(data?.areas as any);
+  const isGAOrHW = data?.areas.edges?.some(
+    (a) => a?.node?.code === "GA" || a?.node?.code === "HW",
+  );
 
   return (
     <>

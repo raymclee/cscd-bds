@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cscd-bds/amap"
 	"cscd-bds/config"
 	"cscd-bds/graphql"
 	"cscd-bds/handler"
@@ -36,8 +37,10 @@ func main() {
 	s := store.NewStore()
 	sm := session.NewSession(lc)
 	sh := sap.New()
-	h := handler.NewHandler(s, lc, sm, sh)
-	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, lc, sm, sh))
+	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
+
+	h := handler.NewHandler(s, lc, sm, sh, amap)
+	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, lc, sm, sh, amap))
 	gs.Use(entgql.Transactioner{TxOpener: s.Client})
 	ph := playground.Handler("远东幕墙市场拓展地图", "/graphql")
 

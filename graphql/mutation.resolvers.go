@@ -9,12 +9,17 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/util"
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/twpayne/go-geom"
+	"github.com/twpayne/go-geom/encoding/geojson"
 )
 
 // CreateArea is the resolver for the createArea field.
@@ -116,6 +121,27 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	}
 	code := fmt.Sprintf("%s%s%03d", a.Code, date.Format("20060102"), n)
 	q.SetCode(code)
+
+	if a.Code == "GA" && input.Address != nil {
+
+		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		q.SetDistrict(d)
+		q.SetFullAddress(address)
+		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+		if err != nil {
+			return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
+		}
+		coordinate := &geo.GeoJson{Geometry: center}
+		q.SetGeoCoordinate(coordinate).SetDistrict(d)
+
+	}
 
 	var images []string
 	{

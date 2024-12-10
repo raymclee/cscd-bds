@@ -448,7 +448,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             <Input />
           </Form.Item>
 
-          <Form.Item name="fullAddress" label="详细地址" rules={[]}>
+          <Form.Item name="address" label="详细地址" rules={[]}>
             <Input />
           </Form.Item>
 

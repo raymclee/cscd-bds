@@ -1,6 +1,7 @@
 package graphql
 
 import (
+	"cscd-bds/amap"
 	"cscd-bds/graphql/generated"
 	"cscd-bds/sap"
 	"cscd-bds/session"
@@ -19,15 +20,17 @@ type Resolver struct {
 	feishu  *lark.Client
 	session *session.Session
 	sap     *sap.Sap
+	amap    *amap.AMap
 }
 
-func NewSchema(store *store.Store, feishu *lark.Client, session *session.Session, sap *sap.Sap) graphql.ExecutableSchema {
+func NewSchema(store *store.Store, feishu *lark.Client, session *session.Session, sap *sap.Sap, amap *amap.AMap) graphql.ExecutableSchema {
 	return generated.NewExecutableSchema(generated.Config{
 		Resolvers: &Resolver{
 			store:   store,
 			feishu:  feishu,
 			session: session,
 			sap:     sap,
+			amap:    amap,
 		},
 	})
 }
