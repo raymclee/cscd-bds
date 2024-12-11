@@ -56,7 +56,7 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		esAmount               string
 	)
 	if config.IsProd {
-		mandt = "300"
+		mandt = "800"
 	} else {
 		mandt = "300"
 	}

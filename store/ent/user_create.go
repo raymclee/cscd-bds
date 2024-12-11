@@ -144,6 +144,34 @@ func (uc *UserCreate) SetNillableIsAdmin(b *bool) *UserCreate {
 	return uc
 }
 
+// SetIsLeader sets the "is_leader" field.
+func (uc *UserCreate) SetIsLeader(b bool) *UserCreate {
+	uc.mutation.SetIsLeader(b)
+	return uc
+}
+
+// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsLeader(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetIsLeader(*b)
+	}
+	return uc
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (uc *UserCreate) SetIsSuperAdmin(b bool) *UserCreate {
+	uc.mutation.SetIsSuperAdmin(b)
+	return uc
+}
+
+// SetNillableIsSuperAdmin sets the "is_super_admin" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsSuperAdmin(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetIsSuperAdmin(*b)
+	}
+	return uc
+}
+
 // SetHasMapAccess sets the "has_map_access" field.
 func (uc *UserCreate) SetHasMapAccess(b bool) *UserCreate {
 	uc.mutation.SetHasMapAccess(b)
@@ -335,6 +363,14 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultIsAdmin
 		uc.mutation.SetIsAdmin(v)
 	}
+	if _, ok := uc.mutation.IsLeader(); !ok {
+		v := user.DefaultIsLeader
+		uc.mutation.SetIsLeader(v)
+	}
+	if _, ok := uc.mutation.IsSuperAdmin(); !ok {
+		v := user.DefaultIsSuperAdmin
+		uc.mutation.SetIsSuperAdmin(v)
+	}
 	if _, ok := uc.mutation.HasMapAccess(); !ok {
 		v := user.DefaultHasMapAccess
 		uc.mutation.SetHasMapAccess(v)
@@ -374,6 +410,12 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.IsAdmin(); !ok {
 		return &ValidationError{Name: "is_admin", err: errors.New(`ent: missing required field "User.is_admin"`)}
+	}
+	if _, ok := uc.mutation.IsLeader(); !ok {
+		return &ValidationError{Name: "is_leader", err: errors.New(`ent: missing required field "User.is_leader"`)}
+	}
+	if _, ok := uc.mutation.IsSuperAdmin(); !ok {
+		return &ValidationError{Name: "is_super_admin", err: errors.New(`ent: missing required field "User.is_super_admin"`)}
 	}
 	if _, ok := uc.mutation.HasMapAccess(); !ok {
 		return &ValidationError{Name: "has_map_access", err: errors.New(`ent: missing required field "User.has_map_access"`)}
@@ -456,6 +498,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
 		_node.IsAdmin = value
+	}
+	if value, ok := uc.mutation.IsLeader(); ok {
+		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
+		_node.IsLeader = value
+	}
+	if value, ok := uc.mutation.IsSuperAdmin(); ok {
+		_spec.SetField(user.FieldIsSuperAdmin, field.TypeBool, value)
+		_node.IsSuperAdmin = value
 	}
 	if value, ok := uc.mutation.HasMapAccess(); ok {
 		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
@@ -734,6 +784,30 @@ func (u *UserUpsert) UpdateIsAdmin() *UserUpsert {
 	return u
 }
 
+// SetIsLeader sets the "is_leader" field.
+func (u *UserUpsert) SetIsLeader(v bool) *UserUpsert {
+	u.Set(user.FieldIsLeader, v)
+	return u
+}
+
+// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
+func (u *UserUpsert) UpdateIsLeader() *UserUpsert {
+	u.SetExcluded(user.FieldIsLeader)
+	return u
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (u *UserUpsert) SetIsSuperAdmin(v bool) *UserUpsert {
+	u.Set(user.FieldIsSuperAdmin, v)
+	return u
+}
+
+// UpdateIsSuperAdmin sets the "is_super_admin" field to the value that was provided on create.
+func (u *UserUpsert) UpdateIsSuperAdmin() *UserUpsert {
+	u.SetExcluded(user.FieldIsSuperAdmin)
+	return u
+}
+
 // SetHasMapAccess sets the "has_map_access" field.
 func (u *UserUpsert) SetHasMapAccess(v bool) *UserUpsert {
 	u.Set(user.FieldHasMapAccess, v)
@@ -964,6 +1038,34 @@ func (u *UserUpsertOne) SetIsAdmin(v bool) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateIsAdmin() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateIsAdmin()
+	})
+}
+
+// SetIsLeader sets the "is_leader" field.
+func (u *UserUpsertOne) SetIsLeader(v bool) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsLeader(v)
+	})
+}
+
+// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateIsLeader() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsLeader()
+	})
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (u *UserUpsertOne) SetIsSuperAdmin(v bool) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsSuperAdmin(v)
+	})
+}
+
+// UpdateIsSuperAdmin sets the "is_super_admin" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateIsSuperAdmin() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsSuperAdmin()
 	})
 }
 
@@ -1371,6 +1473,34 @@ func (u *UserUpsertBulk) SetIsAdmin(v bool) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateIsAdmin() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateIsAdmin()
+	})
+}
+
+// SetIsLeader sets the "is_leader" field.
+func (u *UserUpsertBulk) SetIsLeader(v bool) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsLeader(v)
+	})
+}
+
+// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateIsLeader() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsLeader()
+	})
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (u *UserUpsertBulk) SetIsSuperAdmin(v bool) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetIsSuperAdmin(v)
+	})
+}
+
+// UpdateIsSuperAdmin sets the "is_super_admin" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateIsSuperAdmin() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateIsSuperAdmin()
 	})
 }
 

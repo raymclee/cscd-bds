@@ -876,6 +876,8 @@ input CreateUserInput {
   disabled: Boolean
   isSales: Boolean
   isAdmin: Boolean
+  isLeader: Boolean
+  isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
   areaIDs: [ID!]
@@ -3808,6 +3810,8 @@ input UpdateUserInput {
   disabled: Boolean
   isSales: Boolean
   isAdmin: Boolean
+  isLeader: Boolean
+  isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
   addAreaIDs: [ID!]
@@ -3860,6 +3864,8 @@ type User implements Node {
   disabled: Boolean!
   isSales: Boolean!
   isAdmin: Boolean!
+  isLeader: Boolean!
+  isSuperAdmin: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
   leaderID: ID
@@ -4179,6 +4185,16 @@ input UserWhereInput {
   """
   isAdmin: Boolean
   isAdminNEQ: Boolean
+  """
+  is_leader field predicates
+  """
+  isLeader: Boolean
+  isLeaderNEQ: Boolean
+  """
+  is_super_admin field predicates
+  """
+  isSuperAdmin: Boolean
+  isSuperAdminNEQ: Boolean
   """
   has_map_access field predicates
   """

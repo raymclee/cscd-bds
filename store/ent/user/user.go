@@ -35,6 +35,10 @@ const (
 	FieldIsSales = "is_sales"
 	// FieldIsAdmin holds the string denoting the is_admin field in the database.
 	FieldIsAdmin = "is_admin"
+	// FieldIsLeader holds the string denoting the is_leader field in the database.
+	FieldIsLeader = "is_leader"
+	// FieldIsSuperAdmin holds the string denoting the is_super_admin field in the database.
+	FieldIsSuperAdmin = "is_super_admin"
 	// FieldHasMapAccess holds the string denoting the has_map_access field in the database.
 	FieldHasMapAccess = "has_map_access"
 	// FieldHasEditAccess holds the string denoting the has_edit_access field in the database.
@@ -100,6 +104,8 @@ var Columns = []string{
 	FieldDisabled,
 	FieldIsSales,
 	FieldIsAdmin,
+	FieldIsLeader,
+	FieldIsSuperAdmin,
 	FieldHasMapAccess,
 	FieldHasEditAccess,
 	FieldLeaderID,
@@ -140,6 +146,10 @@ var (
 	DefaultIsSales bool
 	// DefaultIsAdmin holds the default value on creation for the "is_admin" field.
 	DefaultIsAdmin bool
+	// DefaultIsLeader holds the default value on creation for the "is_leader" field.
+	DefaultIsLeader bool
+	// DefaultIsSuperAdmin holds the default value on creation for the "is_super_admin" field.
+	DefaultIsSuperAdmin bool
 	// DefaultHasMapAccess holds the default value on creation for the "has_map_access" field.
 	DefaultHasMapAccess bool
 	// DefaultHasEditAccess holds the default value on creation for the "has_edit_access" field.
@@ -204,6 +214,16 @@ func ByIsSales(opts ...sql.OrderTermOption) OrderOption {
 // ByIsAdmin orders the results by the is_admin field.
 func ByIsAdmin(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsAdmin, opts...).ToFunc()
+}
+
+// ByIsLeader orders the results by the is_leader field.
+func ByIsLeader(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsLeader, opts...).ToFunc()
+}
+
+// ByIsSuperAdmin orders the results by the is_super_admin field.
+func ByIsSuperAdmin(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsSuperAdmin, opts...).ToFunc()
 }
 
 // ByHasMapAccess orders the results by the has_map_access field.

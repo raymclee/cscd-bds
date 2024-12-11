@@ -1,8 +1,9 @@
-import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { loadQuery } from "react-relay";
-import node, { usersPageQuery } from "__generated__/usersPageQuery.graphql";
 import * as v from "valibot";
+import node, {
+  usersSuperAdminUsersPageQuery,
+} from "__generated__/usersSuperAdminUsersPageQuery.graphql";
 
 const userSearchSchema = v.object({
   page: v.optional(v.fallback(v.number(), 1), 1),
@@ -10,9 +11,11 @@ const userSearchSchema = v.object({
   area: v.optional(v.string()),
 });
 
-export const Route = createFileRoute("/__auth/__portal/portal/__admin/users")({
+export const Route = createFileRoute(
+  "/__auth/__portal/portal/__super-admin/sa/users",
+)({
   async loader({ context: { RelayEnvironment, session } }) {
-    return loadQuery<usersPageQuery>(RelayEnvironment, node, {
+    return loadQuery<usersSuperAdminUsersPageQuery>(RelayEnvironment, node, {
       userId: session.userId,
     });
   },

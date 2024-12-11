@@ -163,6 +163,34 @@ func (uu *UserUpdate) SetNillableIsAdmin(b *bool) *UserUpdate {
 	return uu
 }
 
+// SetIsLeader sets the "is_leader" field.
+func (uu *UserUpdate) SetIsLeader(b bool) *UserUpdate {
+	uu.mutation.SetIsLeader(b)
+	return uu
+}
+
+// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsLeader(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsLeader(*b)
+	}
+	return uu
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (uu *UserUpdate) SetIsSuperAdmin(b bool) *UserUpdate {
+	uu.mutation.SetIsSuperAdmin(b)
+	return uu
+}
+
+// SetNillableIsSuperAdmin sets the "is_super_admin" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsSuperAdmin(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsSuperAdmin(*b)
+	}
+	return uu
+}
+
 // SetHasMapAccess sets the "has_map_access" field.
 func (uu *UserUpdate) SetHasMapAccess(b bool) *UserUpdate {
 	uu.mutation.SetHasMapAccess(b)
@@ -484,6 +512,12 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
+	}
+	if value, ok := uu.mutation.IsLeader(); ok {
+		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
+	}
+	if value, ok := uu.mutation.IsSuperAdmin(); ok {
+		_spec.SetField(user.FieldIsSuperAdmin, field.TypeBool, value)
 	}
 	if value, ok := uu.mutation.HasMapAccess(); ok {
 		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)
@@ -895,6 +929,34 @@ func (uuo *UserUpdateOne) SetNillableIsAdmin(b *bool) *UserUpdateOne {
 	return uuo
 }
 
+// SetIsLeader sets the "is_leader" field.
+func (uuo *UserUpdateOne) SetIsLeader(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsLeader(b)
+	return uuo
+}
+
+// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsLeader(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsLeader(*b)
+	}
+	return uuo
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (uuo *UserUpdateOne) SetIsSuperAdmin(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsSuperAdmin(b)
+	return uuo
+}
+
+// SetNillableIsSuperAdmin sets the "is_super_admin" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsSuperAdmin(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsSuperAdmin(*b)
+	}
+	return uuo
+}
+
 // SetHasMapAccess sets the "has_map_access" field.
 func (uuo *UserUpdateOne) SetHasMapAccess(b bool) *UserUpdateOne {
 	uuo.mutation.SetHasMapAccess(b)
@@ -1246,6 +1308,12 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
+	}
+	if value, ok := uuo.mutation.IsLeader(); ok {
+		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
+	}
+	if value, ok := uuo.mutation.IsSuperAdmin(); ok {
+		_spec.SetField(user.FieldIsSuperAdmin, field.TypeBool, value)
 	}
 	if value, ok := uuo.mutation.HasMapAccess(); ok {
 		_spec.SetField(user.FieldHasMapAccess, field.TypeBool, value)

@@ -33,7 +33,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		Build()
 
 	// 发起请求
-	resp, err := h.feishu.Authen.OidcAccessToken.Create(c.Request().Context(), req)
+	resp, err := h.feishu.Client.Authen.OidcAccessToken.Create(c.Request().Context(), req)
 	if err != nil {
 		fmt.Println(err)
 		return c.Redirect(301, url)
@@ -42,7 +42,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		fmt.Println(resp.Code, resp.Msg, resp.Data)
 		return c.Redirect(301, url)
 	}
-	userInfo, err := h.feishu.Authen.UserInfo.Get(c.Request().Context(), larkcore.WithUserAccessToken(*resp.Data.AccessToken))
+	userInfo, err := h.feishu.Client.Authen.UserInfo.Get(c.Request().Context(), larkcore.WithUserAccessToken(*resp.Data.AccessToken))
 	if err != nil {
 		fmt.Println(err)
 		return c.Redirect(301, url)

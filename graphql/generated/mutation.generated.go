@@ -1162,6 +1162,10 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_isSales(ctx, field)
 			case "isAdmin":
 				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
+			case "isSuperAdmin":
+				return ec.fieldContext_User_isSuperAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
 			case "hasEditAccess":
@@ -1259,6 +1263,10 @@ func (ec *executionContext) fieldContext_Mutation_deleteUser(ctx context.Context
 				return ec.fieldContext_User_isSales(ctx, field)
 			case "isAdmin":
 				return ec.fieldContext_User_isAdmin(ctx, field)
+			case "isLeader":
+				return ec.fieldContext_User_isLeader(ctx, field)
+			case "isSuperAdmin":
+				return ec.fieldContext_User_isSuperAdmin(ctx, field)
 			case "hasMapAccess":
 				return ec.fieldContext_User_hasMapAccess(ctx, field)
 			case "hasEditAccess":

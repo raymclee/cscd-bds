@@ -12598,6 +12598,8 @@ type UserMutation struct {
 	disabled             *bool
 	is_sales             *bool
 	is_admin             *bool
+	is_leader            *bool
+	is_super_admin       *bool
 	has_map_access       *bool
 	has_edit_access      *bool
 	clearedFields        map[string]struct{}
@@ -13113,6 +13115,78 @@ func (m *UserMutation) ResetIsAdmin() {
 	m.is_admin = nil
 }
 
+// SetIsLeader sets the "is_leader" field.
+func (m *UserMutation) SetIsLeader(b bool) {
+	m.is_leader = &b
+}
+
+// IsLeader returns the value of the "is_leader" field in the mutation.
+func (m *UserMutation) IsLeader() (r bool, exists bool) {
+	v := m.is_leader
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsLeader returns the old "is_leader" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsLeader(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsLeader is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsLeader requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsLeader: %w", err)
+	}
+	return oldValue.IsLeader, nil
+}
+
+// ResetIsLeader resets all changes to the "is_leader" field.
+func (m *UserMutation) ResetIsLeader() {
+	m.is_leader = nil
+}
+
+// SetIsSuperAdmin sets the "is_super_admin" field.
+func (m *UserMutation) SetIsSuperAdmin(b bool) {
+	m.is_super_admin = &b
+}
+
+// IsSuperAdmin returns the value of the "is_super_admin" field in the mutation.
+func (m *UserMutation) IsSuperAdmin() (r bool, exists bool) {
+	v := m.is_super_admin
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsSuperAdmin returns the old "is_super_admin" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsSuperAdmin(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsSuperAdmin is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsSuperAdmin requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsSuperAdmin: %w", err)
+	}
+	return oldValue.IsSuperAdmin, nil
+}
+
+// ResetIsSuperAdmin resets all changes to the "is_super_admin" field.
+func (m *UserMutation) ResetIsSuperAdmin() {
+	m.is_super_admin = nil
+}
+
 // SetHasMapAccess sets the "has_map_access" field.
 func (m *UserMutation) SetHasMapAccess(b bool) {
 	m.has_map_access = &b
@@ -13565,7 +13639,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 15)
 	if m.created_at != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -13595,6 +13669,12 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.is_admin != nil {
 		fields = append(fields, user.FieldIsAdmin)
+	}
+	if m.is_leader != nil {
+		fields = append(fields, user.FieldIsLeader)
+	}
+	if m.is_super_admin != nil {
+		fields = append(fields, user.FieldIsSuperAdmin)
 	}
 	if m.has_map_access != nil {
 		fields = append(fields, user.FieldHasMapAccess)
@@ -13633,6 +13713,10 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.IsSales()
 	case user.FieldIsAdmin:
 		return m.IsAdmin()
+	case user.FieldIsLeader:
+		return m.IsLeader()
+	case user.FieldIsSuperAdmin:
+		return m.IsSuperAdmin()
 	case user.FieldHasMapAccess:
 		return m.HasMapAccess()
 	case user.FieldHasEditAccess:
@@ -13668,6 +13752,10 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldIsSales(ctx)
 	case user.FieldIsAdmin:
 		return m.OldIsAdmin(ctx)
+	case user.FieldIsLeader:
+		return m.OldIsLeader(ctx)
+	case user.FieldIsSuperAdmin:
+		return m.OldIsSuperAdmin(ctx)
 	case user.FieldHasMapAccess:
 		return m.OldHasMapAccess(ctx)
 	case user.FieldHasEditAccess:
@@ -13752,6 +13840,20 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIsAdmin(v)
+		return nil
+	case user.FieldIsLeader:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsLeader(v)
+		return nil
+	case user.FieldIsSuperAdmin:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsSuperAdmin(v)
 		return nil
 	case user.FieldHasMapAccess:
 		v, ok := value.(bool)
@@ -13873,6 +13975,12 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldIsAdmin:
 		m.ResetIsAdmin()
+		return nil
+	case user.FieldIsLeader:
+		m.ResetIsLeader()
+		return nil
+	case user.FieldIsSuperAdmin:
+		m.ResetIsSuperAdmin()
 		return nil
 	case user.FieldHasMapAccess:
 		m.ResetHasMapAccess()

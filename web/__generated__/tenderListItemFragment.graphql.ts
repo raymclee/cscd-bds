@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b5ada7ca7bf8c9ff45800acda7645524>>
+ * @generated SignedSource<<79592fb57a32fac513da544cac085064>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,12 +17,18 @@ export type tenderListItemFragment$data = {
     readonly name: string;
   };
   readonly createdAt: any;
+  readonly createdBy: {
+    readonly id: string;
+  };
   readonly customer: {
     readonly id: string;
     readonly name: string;
   } | null | undefined;
   readonly discoveryDate: any;
   readonly estimatedAmount: number | null | undefined;
+  readonly followingSales: ReadonlyArray<{
+    readonly id: string;
+  }> | null | undefined;
   readonly fullAddress: string | null | undefined;
   readonly id: string;
   readonly images: ReadonlyArray<string> | null | undefined;
@@ -51,7 +57,10 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-};
+},
+v2 = [
+  (v0/*: any*/)
+];
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -148,6 +157,26 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "User",
+      "kind": "LinkedField",
+      "name": "followingSales",
+      "plural": true,
+      "selections": (v2/*: any*/),
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "User",
+      "kind": "LinkedField",
+      "name": "createdBy",
+      "plural": false,
+      "selections": (v2/*: any*/),
+      "storageKey": null
     }
   ],
   "type": "Tender",
@@ -155,6 +184,6 @@ return {
 };
 })();
 
-(node as any).hash = "eacd8b53ac0421eff6120886d9e53d3b";
+(node as any).hash = "def6a473828be6494d6bb27651262ea8";
 
 export default node;

@@ -12,6 +12,7 @@ import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
 import { tenderStatusText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { Tender } from "~/graphql/graphql";
 
 type TenderListItemProps = {
   tender: tenderListItemFragment$key;
@@ -44,6 +45,12 @@ export function TenderListItem({
           name
           code
         }
+        followingSales {
+          id
+        }
+        createdBy {
+          id
+        }
       }
     `,
     tender,
@@ -55,7 +62,7 @@ export function TenderListItem({
   return (
     <List.Item
       actions={
-        canEdit(session)
+        canEdit(session, { tender: item as unknown as Partial<Tender> })
           ? [
               <Link
                 key="edit-link"

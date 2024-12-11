@@ -3296,6 +3296,16 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				selectedFields = append(selectedFields, user.FieldIsAdmin)
 				fieldSeen[user.FieldIsAdmin] = struct{}{}
 			}
+		case "isLeader":
+			if _, ok := fieldSeen[user.FieldIsLeader]; !ok {
+				selectedFields = append(selectedFields, user.FieldIsLeader)
+				fieldSeen[user.FieldIsLeader] = struct{}{}
+			}
+		case "isSuperAdmin":
+			if _, ok := fieldSeen[user.FieldIsSuperAdmin]; !ok {
+				selectedFields = append(selectedFields, user.FieldIsSuperAdmin)
+				fieldSeen[user.FieldIsSuperAdmin] = struct{}{}
+			}
 		case "hasMapAccess":
 			if _, ok := fieldSeen[user.FieldHasMapAccess]; !ok {
 				selectedFields = append(selectedFields, user.FieldHasMapAccess)

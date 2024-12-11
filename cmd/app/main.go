@@ -3,6 +3,7 @@ package main
 import (
 	"cscd-bds/amap"
 	"cscd-bds/config"
+	"cscd-bds/feishu"
 	"cscd-bds/graphql"
 	"cscd-bds/handler"
 	"cscd-bds/sap"
@@ -36,11 +37,12 @@ func main() {
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.NewStore()
 	sm := session.NewSession(lc)
+	f := feishu.NewFeishu(lc, sm)
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
 
-	h := handler.NewHandler(s, lc, sm, sh, amap)
-	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, lc, sm, sh, amap))
+	h := handler.NewHandler(s, f, sm, sh, amap)
+	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, f, sm, sh, amap))
 	gs.Use(entgql.Transactioner{TxOpener: s.Client})
 	ph := playground.Handler("远东幕墙市场拓展地图", "/graphql")
 

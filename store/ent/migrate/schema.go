@@ -324,6 +324,8 @@ var (
 		{Name: "disabled", Type: field.TypeBool, Default: false},
 		{Name: "is_sales", Type: field.TypeBool, Default: false},
 		{Name: "is_admin", Type: field.TypeBool, Default: false},
+		{Name: "is_leader", Type: field.TypeBool, Default: false},
+		{Name: "is_super_admin", Type: field.TypeBool, Default: false},
 		{Name: "has_map_access", Type: field.TypeBool, Default: false},
 		{Name: "has_edit_access", Type: field.TypeBool, Default: false},
 		{Name: "leader_id", Type: field.TypeString, Nullable: true},
@@ -336,7 +338,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_team_members",
-				Columns:    []*schema.Column{UsersColumns[13]},
+				Columns:    []*schema.Column{UsersColumns[15]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

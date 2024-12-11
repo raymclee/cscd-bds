@@ -33,6 +33,8 @@ func (User) Fields() []ent.Field {
 		field.Bool("disabled").Default(false),
 		field.Bool("is_sales").Default(false),
 		field.Bool("is_admin").Default(false),
+		field.Bool("is_leader").Default(false),
+		field.Bool("is_super_admin").Default(false),
 		field.Bool("has_map_access").Default(false),
 		field.Bool("has_edit_access").Default(false),
 

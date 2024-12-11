@@ -10,12 +10,14 @@ import { graphql, useFragment } from "react-relay";
 import { User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
+import { SearchUserSelect } from "./search-user-select";
 
 export type UserFormProps = {
   queryRef: userFormFragment$key;
   selectedUser: User | null;
   onClose: () => void;
   connectionID: string;
+  isSuperAdmin?: boolean;
 };
 
 export function UserForm({
@@ -23,10 +25,11 @@ export function UserForm({
   queryRef,
   connectionID,
   selectedUser,
+  isSuperAdmin = false,
 }: UserFormProps) {
   const data = useFragment(
     graphql`
-      fragment userFormFragment on Query {
+      fragment userFormFragment on User {
         areas {
           edges {
             node {
@@ -60,6 +63,7 @@ export function UserForm({
         isAdmin: selectedUser.isAdmin,
         hasMapAccess: selectedUser.hasMapAccess,
         hasEditAccess: selectedUser.hasEditAccess,
+        isSales: selectedUser.isSales,
       });
     }
   }, [selectedUser]);
@@ -71,6 +75,7 @@ export function UserForm({
         form={form}
         layout="vertical"
         disabled={isCreateUserInFlight}
+        initialValues={{ isSales: !isSuperAdmin }}
         // requiredMark="optional"
         onFinish={(values) => {
           if (selectedUser) {
@@ -110,21 +115,34 @@ export function UserForm({
           }
         }}
       >
-        <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
-          <Input />
+        <Form.Item
+          name="zhtUser"
+          label="中海通用戶"
+          rules={[{ required: true }]}
+        >
+          <SearchUserSelect
+            onSelectUser={(user) => {
+              form.setFieldsValue({
+                ...user,
+              });
+            }}
+          />
         </Form.Item>
+        {/* <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item> */}
         <Form.Item name="email" label="電郵" rules={[{ required: true }]}>
           <Input type="email" />
         </Form.Item>
         <Form.Item name="username" label="用户名" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="openID" label="中海通ID">
+        {/* <Form.Item name="openID" label="中海通ID">
           <Input />
         </Form.Item>
         <Form.Item name="avatarURL" label="头像URL">
           <Input />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="areaIDs" label="区域">
           <Select
             mode="multiple"
@@ -140,12 +158,24 @@ export function UserForm({
         <Form.Item name="hasMapAccess" label="地图权限">
           <Switch />
         </Form.Item>
-        <Form.Item name="isSales" label="销售">
-          <Switch />
-        </Form.Item>
+        {isSuperAdmin && (
+          <Form.Item name="isSales" label="销售">
+            <Switch />
+          </Form.Item>
+        )}
         <Form.Item name="isAdmin" label="管理员">
           <Switch />
         </Form.Item>
+        {isSuperAdmin && (
+          <>
+            <Form.Item name="isLeader" label="領導">
+              <Switch />
+            </Form.Item>
+            <Form.Item name="isSuperAdmin" label="超級管理員">
+              <Switch />
+            </Form.Item>
+          </>
+        )}
         <Form.Item name="disabled" label="禁用">
           <Switch />
         </Form.Item>

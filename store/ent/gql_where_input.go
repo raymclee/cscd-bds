@@ -6988,6 +6988,14 @@ type UserWhereInput struct {
 	IsAdmin    *bool `json:"isAdmin,omitempty"`
 	IsAdminNEQ *bool `json:"isAdminNEQ,omitempty"`
 
+	// "is_leader" field predicates.
+	IsLeader    *bool `json:"isLeader,omitempty"`
+	IsLeaderNEQ *bool `json:"isLeaderNEQ,omitempty"`
+
+	// "is_super_admin" field predicates.
+	IsSuperAdmin    *bool `json:"isSuperAdmin,omitempty"`
+	IsSuperAdminNEQ *bool `json:"isSuperAdminNEQ,omitempty"`
+
 	// "has_map_access" field predicates.
 	HasMapAccess    *bool `json:"hasMapAccess,omitempty"`
 	HasMapAccessNEQ *bool `json:"hasMapAccessNEQ,omitempty"`
@@ -7405,6 +7413,18 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	}
 	if i.IsAdminNEQ != nil {
 		predicates = append(predicates, user.IsAdminNEQ(*i.IsAdminNEQ))
+	}
+	if i.IsLeader != nil {
+		predicates = append(predicates, user.IsLeaderEQ(*i.IsLeader))
+	}
+	if i.IsLeaderNEQ != nil {
+		predicates = append(predicates, user.IsLeaderNEQ(*i.IsLeaderNEQ))
+	}
+	if i.IsSuperAdmin != nil {
+		predicates = append(predicates, user.IsSuperAdminEQ(*i.IsSuperAdmin))
+	}
+	if i.IsSuperAdminNEQ != nil {
+		predicates = append(predicates, user.IsSuperAdminNEQ(*i.IsSuperAdminNEQ))
 	}
 	if i.HasMapAccess != nil {
 		predicates = append(predicates, user.HasMapAccessEQ(*i.HasMapAccess))

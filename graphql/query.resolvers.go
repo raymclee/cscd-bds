@@ -6,29 +6,22 @@ package graphql
 
 import (
 	"context"
-	"cscd-bds/store/ent"
-	"cscd-bds/store/ent/area"
-	"cscd-bds/store/ent/schema/xid"
-	"cscd-bds/store/ent/tender"
-	"fmt"
-	"time"
+	"cscd-bds/graphql/model"
 )
 
-// LastAvailableTenderCode is the resolver for the lastAvailableTenderCode field.
-func (r *queryResolver) LastAvailableTenderCode(ctx context.Context, areaID xid.ID, date time.Time) (string, error) {
-	stdate := time.Date(date.Year(), date.Month()-1, date.Day(), 0, 0, 0, 0, time.Local)
-	enddate := stdate.AddDate(0, 0, 1)
-	area, err := r.store.Area.Query().
-		Where(area.ID(areaID)).
-		WithTenders(func(tq *ent.TenderQuery) {
-			tq.Where(
-				tender.CreatedAtLTE(enddate),
-				tender.CreatedAtGTE(stdate),
-			)
-		}).
-		Only(ctx)
+// SearchFeishuUser is the resolver for the searchFeishuUser field.
+func (r *queryResolver) SearchFeishuUser(ctx context.Context, keyword string) ([]*model.FeishuUser, error) {
+	users, err := r.feishu.SearchFeishuUser(ctx, keyword)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return fmt.Sprintf("%s%s%03d", area.Code, date.Format("20060102"), len(area.Edges.Tenders)+2), nil
+	var out []*model.FeishuUser
+	for _, user := range *users {
+		out = append(out, &model.FeishuUser{
+			OpenID:    user.OpenID,
+			Name:      user.Name,
+			AvatarURL: user.Avatar.AvatarOrigin,
+		})
+	}
+	return out, nil
 }

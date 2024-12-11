@@ -2,13 +2,13 @@ package graphql
 
 import (
 	"cscd-bds/amap"
+	"cscd-bds/feishu"
 	"cscd-bds/graphql/generated"
 	"cscd-bds/sap"
 	"cscd-bds/session"
 	"cscd-bds/store"
 
 	"github.com/99designs/gqlgen/graphql"
-	lark "github.com/larksuite/oapi-sdk-go/v3"
 )
 
 // This file will not be regenerated automatically.
@@ -17,17 +17,17 @@ import (
 
 type Resolver struct {
 	store   *store.Store
-	feishu  *lark.Client
+	feishu  *feishu.Feishu
 	session *session.Session
 	sap     *sap.Sap
 	amap    *amap.AMap
 }
 
-func NewSchema(store *store.Store, feishu *lark.Client, session *session.Session, sap *sap.Sap, amap *amap.AMap) graphql.ExecutableSchema {
+func NewSchema(store *store.Store, f *feishu.Feishu, session *session.Session, sap *sap.Sap, amap *amap.AMap) graphql.ExecutableSchema {
 	return generated.NewExecutableSchema(generated.Config{
 		Resolvers: &Resolver{
 			store:   store,
-			feishu:  feishu,
+			feishu:  f,
 			session: session,
 			sap:     sap,
 			amap:    amap,

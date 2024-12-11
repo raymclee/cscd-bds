@@ -11,7 +11,9 @@ graphql`
       username
       email
       avatarUrl
+      isLeader
       isAdmin
+      isSuperAdmin
       isSales
       hasMapAccess
       hasEditAccess

@@ -3,6 +3,7 @@ package handler
 import (
 	"cscd-bds/amap"
 	"cscd-bds/config"
+	"cscd-bds/feishu"
 	"cscd-bds/sap"
 	"cscd-bds/session"
 	"cscd-bds/store"
@@ -11,21 +12,20 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
-	lark "github.com/larksuite/oapi-sdk-go/v3"
 )
 
 type handler struct {
 	store   *store.Store
-	feishu  *lark.Client
+	feishu  *feishu.Feishu
 	session *session.Session
 	sap     *sap.Sap
 	amap    *amap.AMap
 }
 
-func NewHandler(store *store.Store, feishu *lark.Client, session *session.Session, sap *sap.Sap, amap *amap.AMap) *handler {
+func NewHandler(store *store.Store, f *feishu.Feishu, session *session.Session, sap *sap.Sap, amap *amap.AMap) *handler {
 	return &handler{
 		store:   store,
-		feishu:  feishu,
+		feishu:  f,
 		session: session,
 		sap:     sap,
 		amap:    amap,

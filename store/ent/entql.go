@@ -264,6 +264,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldDisabled:      {Type: field.TypeBool, Column: user.FieldDisabled},
 			user.FieldIsSales:       {Type: field.TypeBool, Column: user.FieldIsSales},
 			user.FieldIsAdmin:       {Type: field.TypeBool, Column: user.FieldIsAdmin},
+			user.FieldIsLeader:      {Type: field.TypeBool, Column: user.FieldIsLeader},
+			user.FieldIsSuperAdmin:  {Type: field.TypeBool, Column: user.FieldIsSuperAdmin},
 			user.FieldHasMapAccess:  {Type: field.TypeBool, Column: user.FieldHasMapAccess},
 			user.FieldHasEditAccess: {Type: field.TypeBool, Column: user.FieldHasEditAccess},
 			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
@@ -2223,6 +2225,16 @@ func (f *UserFilter) WhereIsSales(p entql.BoolP) {
 // WhereIsAdmin applies the entql bool predicate on the is_admin field.
 func (f *UserFilter) WhereIsAdmin(p entql.BoolP) {
 	f.Where(p.Field(user.FieldIsAdmin))
+}
+
+// WhereIsLeader applies the entql bool predicate on the is_leader field.
+func (f *UserFilter) WhereIsLeader(p entql.BoolP) {
+	f.Where(p.Field(user.FieldIsLeader))
+}
+
+// WhereIsSuperAdmin applies the entql bool predicate on the is_super_admin field.
+func (f *UserFilter) WhereIsSuperAdmin(p entql.BoolP) {
+	f.Where(p.Field(user.FieldIsSuperAdmin))
 }
 
 // WhereHasMapAccess applies the entql bool predicate on the has_map_access field.

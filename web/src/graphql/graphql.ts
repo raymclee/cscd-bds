@@ -663,7 +663,9 @@ export type CreateUserInput = {
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
   isSales?: InputMaybe<Scalars['Boolean']['input']>;
+  isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -1167,6 +1169,13 @@ export type DistrictWhereInput = {
   updatedAtNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
 };
 
+export type FeishuUser = {
+  __typename?: 'FeishuUser';
+  avatarUrl: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  openId: Scalars['String']['output'];
+};
+
 export type GeoJson = {
   __typename?: 'GeoJson';
   coordinates: Array<Scalars['Float']['output']>;
@@ -1634,6 +1643,7 @@ export type Query = {
   nodes: Array<Maybe<Node>>;
   plots: PlotConnection;
   provinces: ProvinceConnection;
+  searchFeishuUser: Array<FeishuUser>;
   session: Session;
   tenders: TenderConnection;
   users: UserConnection;
@@ -1721,6 +1731,11 @@ export type QueryProvincesArgs = {
 };
 
 
+export type QuerySearchFeishuUserArgs = {
+  keyword: Scalars['String']['input'];
+};
+
+
 export type QueryTendersArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1757,7 +1772,9 @@ export type Session = {
   hasEditAccess: Scalars['Boolean']['output'];
   hasMapAccess: Scalars['Boolean']['output'];
   isAdmin: Scalars['Boolean']['output'];
+  isLeader: Scalars['Boolean']['output'];
   isSales: Scalars['Boolean']['output'];
+  isSuperAdmin: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   userId: Scalars['String']['output'];
   username: Scalars['String']['output'];
@@ -3028,7 +3045,9 @@ export type UpdateUserInput = {
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
   isSales?: InputMaybe<Scalars['Boolean']['input']>;
+  isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -3074,7 +3093,9 @@ export type User = Node & {
   hasMapAccess: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   isAdmin: Scalars['Boolean']['output'];
+  isLeader: Scalars['Boolean']['output'];
   isSales: Scalars['Boolean']['output'];
+  isSuperAdmin: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
   name: Scalars['String']['output'];
@@ -3243,9 +3264,15 @@ export type UserWhereInput = {
   /** is_admin field predicates */
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_leader field predicates */
+  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
+  isLeaderNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** is_sales field predicates */
   isSales?: InputMaybe<Scalars['Boolean']['input']>;
   isSalesNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_super_admin field predicates */
+  isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  isSuperAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** leader_id field predicates */
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   leaderIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -3531,6 +3558,7 @@ export type UseCreatePlotMutationMutation = { __typename?: 'Mutation', createPlo
 
 export type UseCreateUserMutationMutationVariables = Exact<{
   input: CreateUserInput;
+  connections: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
 }>;
 
 
@@ -3581,9 +3609,9 @@ export const UseCreatePlotMutationDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<UseCreatePlotMutationMutation, UseCreatePlotMutationMutationVariables>;
 export const UseCreateUserMutationDocument = new TypedDocumentString(`
-    mutation useCreateUserMutation($input: CreateUserInput!) {
+    mutation useCreateUserMutation($input: CreateUserInput!, $connections: [ID!]!) {
   createUser(input: $input) {
-    edges {
+    edges @appendEdge(connections: $connections) {
       node {
         id
         name

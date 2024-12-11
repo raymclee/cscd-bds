@@ -180,6 +180,12 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	FeishuUser struct {
+		AvatarURL func(childComplexity int) int
+		Name      func(childComplexity int) int
+		OpenID    func(childComplexity int) int
+	}
+
 	GeoJson struct {
 		Coordinates func(childComplexity int) int
 		Type        func(childComplexity int) int
@@ -259,19 +265,20 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Areas        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
-		Cities       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
-		Countries    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
-		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
-		Districts    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
-		Node         func(childComplexity int, id xid.ID) int
-		Nodes        func(childComplexity int, ids []xid.ID) int
-		Plots        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
-		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
-		Session      func(childComplexity int) int
-		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
-		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
-		VisitRecords func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
+		Areas            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
+		Cities           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
+		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
+		Customers        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
+		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
+		Node             func(childComplexity int, id xid.ID) int
+		Nodes            func(childComplexity int, ids []xid.ID) int
+		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
+		SearchFeishuUser func(childComplexity int, keyword string) int
+		Session          func(childComplexity int) int
+		Tenders          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
+		Users            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
+		VisitRecords     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
 
 	Session struct {
@@ -280,7 +287,9 @@ type ComplexityRoot struct {
 		HasEditAccess func(childComplexity int) int
 		HasMapAccess  func(childComplexity int) int
 		IsAdmin       func(childComplexity int) int
+		IsLeader      func(childComplexity int) int
 		IsSales       func(childComplexity int) int
+		IsSuperAdmin  func(childComplexity int) int
 		Name          func(childComplexity int) int
 		UserID        func(childComplexity int) int
 		Username      func(childComplexity int) int
@@ -383,7 +392,9 @@ type ComplexityRoot struct {
 		HasMapAccess  func(childComplexity int) int
 		ID            func(childComplexity int) int
 		IsAdmin       func(childComplexity int) int
+		IsLeader      func(childComplexity int) int
 		IsSales       func(childComplexity int) int
+		IsSuperAdmin  func(childComplexity int) int
 		Leader        func(childComplexity int) int
 		LeaderID      func(childComplexity int) int
 		Name          func(childComplexity int) int
@@ -1110,6 +1121,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DistrictEdge.Node(childComplexity), true
 
+	case "FeishuUser.avatarUrl":
+		if e.complexity.FeishuUser.AvatarURL == nil {
+			break
+		}
+
+		return e.complexity.FeishuUser.AvatarURL(childComplexity), true
+
+	case "FeishuUser.name":
+		if e.complexity.FeishuUser.Name == nil {
+			break
+		}
+
+		return e.complexity.FeishuUser.Name(childComplexity), true
+
+	case "FeishuUser.openId":
+		if e.complexity.FeishuUser.OpenID == nil {
+			break
+		}
+
+		return e.complexity.FeishuUser.OpenID(childComplexity), true
+
 	case "GeoJson.coordinates":
 		if e.complexity.GeoJson.Coordinates == nil {
 			break
@@ -1660,6 +1692,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProvinceOrder), args["where"].(*ent.ProvinceWhereInput)), true
 
+	case "Query.searchFeishuUser":
+		if e.complexity.Query.SearchFeishuUser == nil {
+			break
+		}
+
+		args, err := ec.field_Query_searchFeishuUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.SearchFeishuUser(childComplexity, args["keyword"].(string)), true
+
 	case "Query.session":
 		if e.complexity.Query.Session == nil {
 			break
@@ -1738,12 +1782,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.IsAdmin(childComplexity), true
 
+	case "Session.isLeader":
+		if e.complexity.Session.IsLeader == nil {
+			break
+		}
+
+		return e.complexity.Session.IsLeader(childComplexity), true
+
 	case "Session.isSales":
 		if e.complexity.Session.IsSales == nil {
 			break
 		}
 
 		return e.complexity.Session.IsSales(childComplexity), true
+
+	case "Session.isSuperAdmin":
+		if e.complexity.Session.IsSuperAdmin == nil {
+			break
+		}
+
+		return e.complexity.Session.IsSuperAdmin(childComplexity), true
 
 	case "Session.name":
 		if e.complexity.Session.Name == nil {
@@ -2390,12 +2448,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.IsAdmin(childComplexity), true
 
+	case "User.isLeader":
+		if e.complexity.User.IsLeader == nil {
+			break
+		}
+
+		return e.complexity.User.IsLeader(childComplexity), true
+
 	case "User.isSales":
 		if e.complexity.User.IsSales == nil {
 			break
 		}
 
 		return e.complexity.User.IsSales(childComplexity), true
+
+	case "User.isSuperAdmin":
+		if e.complexity.User.IsSuperAdmin == nil {
+			break
+		}
+
+		return e.complexity.User.IsSuperAdmin(childComplexity), true
 
 	case "User.leader":
 		if e.complexity.User.Leader == nil {
@@ -3659,6 +3731,8 @@ input CreateUserInput {
   disabled: Boolean
   isSales: Boolean
   isAdmin: Boolean
+  isLeader: Boolean
+  isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
   areaIDs: [ID!]
@@ -6591,6 +6665,8 @@ input UpdateUserInput {
   disabled: Boolean
   isSales: Boolean
   isAdmin: Boolean
+  isLeader: Boolean
+  isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
   addAreaIDs: [ID!]
@@ -6643,6 +6719,8 @@ type User implements Node {
   disabled: Boolean!
   isSales: Boolean!
   isAdmin: Boolean!
+  isLeader: Boolean!
+  isSuperAdmin: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
   leaderID: ID
@@ -6962,6 +7040,16 @@ input UserWhereInput {
   """
   isAdmin: Boolean
   isAdminNEQ: Boolean
+  """
+  is_leader field predicates
+  """
+  isLeader: Boolean
+  isLeaderNEQ: Boolean
+  """
+  is_super_admin field predicates
+  """
+  isSuperAdmin: Boolean
+  isSuperAdminNEQ: Boolean
   """
   has_map_access field predicates
   """
@@ -7350,6 +7438,16 @@ type GeoJson {
   geoBounds: [[Float!]!]
 }
 `, BuiltIn: false},
+	{Name: "../query.graphql", Input: `extend type Query {
+  searchFeishuUser(keyword: String!): [FeishuUser!]!
+}
+
+type FeishuUser {
+  openId: String!
+  name: String!
+  avatarUrl: String!
+}
+`, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time
 `, BuiltIn: false},
 	{Name: "../session.graphql", Input: `type Session {
@@ -7358,7 +7456,9 @@ type GeoJson {
   username: String!
   email: String!
   avatarUrl: String!
+  isLeader: Boolean!
   isAdmin: Boolean!
+  isSuperAdmin: Boolean!
   isSales: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!

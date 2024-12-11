@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<44f63525fa3baee41e09038fde8343b5>>
+ * @generated SignedSource<<e26d2351f85f5288ecc309dd9b066b4c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,7 +29,9 @@ export type UpdateUserInput = {
   hasEditAccess?: boolean | null | undefined;
   hasMapAccess?: boolean | null | undefined;
   isAdmin?: boolean | null | undefined;
+  isLeader?: boolean | null | undefined;
   isSales?: boolean | null | undefined;
+  isSuperAdmin?: boolean | null | undefined;
   leaderID?: string | null | undefined;
   name?: string | null | undefined;
   openID?: string | null | undefined;

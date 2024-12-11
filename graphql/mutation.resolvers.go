@@ -39,7 +39,25 @@ func (r *mutationResolver) UpdateArea(ctx context.Context, id xid.ID, input ent.
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.UserConnection, error) {
-	q := r.store.User.Create().SetInput(input)
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	if input.OpenID != nil {
+		return nil, fmt.Errorf("openID is not allowed to be set")
+	}
+
+	accessToken, err := r.session.GetAccessToken(ctx, sess)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get access token: %w", err)
+	}
+
+	fu, err := r.feishu.GetFeishuUser(ctx, *input.OpenID, accessToken)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get feishu user: %w", err)
+	}
+
+	q := r.store.User.Create().SetInput(input).SetName(*fu.Name).SetAvatarURL(*fu.Avatar.AvatarOrigin).SetUsername(*fu.EnName)
 	u, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create user: %w", err)
@@ -184,9 +202,17 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 
 // UpdateTender is the resolver for the updateTender field.
 func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) (*ent.Tender, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
 	t, err := r.store.Tender.Get(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+
+	if string(t.CreatedByID) != sess.UserId && (!sess.IsAdmin || !sess.IsSuperAdmin) {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
 	}
 
 	if t.Status != 3 && input.Status != nil && *input.Status == 3 {

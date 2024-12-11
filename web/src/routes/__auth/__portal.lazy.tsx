@@ -74,13 +74,18 @@ function RouteComponent() {
     () => [
       getItem(
         <Link to="/portal/tenders">商机</Link>,
-        "tenders",
+        "/portal/tenders",
         <Building2 size={16} />,
       ),
       getItem(
         <Link to="/portal/customers">客户</Link>,
-        "customers",
+        "/portal/customers",
         <ContactRound size={16} />,
+      ),
+      getItem(
+        <Link to="/portal/users">用户</Link>,
+        "/portal/users",
+        <Users size={16} />,
       ),
     ],
     [],
@@ -90,24 +95,34 @@ function RouteComponent() {
     items.push(
       getItem(
         <Link to="/portal/plots">区域地块</Link>,
-        "plots",
+        "/portal/plots",
         <Map size={16} />,
       ),
     );
   }
 
-  if (session.isAdmin) {
+  if (session.isSuperAdmin) {
+    items.push(
+      getItem("管理员", "sa", <SlidersHorizontal size={16} />, [
+        getItem(
+          <Link to="/portal/sa/users">用户</Link>,
+          "/portal/sa/users",
+          <Users size={16} />,
+        ),
+        getItem(
+          <Link to="/portal/sa/areas">区域</Link>,
+          "/portal/sa/areas",
+          <Map size={16} />,
+        ),
+      ]),
+    );
+  } else if (session.isAdmin) {
     items.push(
       getItem("管理员", "admins", <SlidersHorizontal size={16} />, [
         getItem(
           <Link to="/portal/users">用户</Link>,
-          "users",
+          "/portal/users",
           <Users size={16} />,
-        ),
-        getItem(
-          <Link to="/portal/areas">区域</Link>,
-          "areas",
-          <Map size={16} />,
         ),
       ]),
     );
@@ -142,8 +157,8 @@ function RouteComponent() {
             </div>
             <Menu
               theme="dark"
-              defaultSelectedKeys={[pathname.split("/")[2]]}
-              defaultOpenKeys={["admins"]}
+              defaultSelectedKeys={[pathname]}
+              defaultOpenKeys={["sa"]}
               mode="inline"
               items={items}
             />

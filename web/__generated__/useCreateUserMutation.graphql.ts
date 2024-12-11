@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<37a471d0619b9a2a7ec0580e9e189a66>>
+ * @generated SignedSource<<a84b536009edc109cb9404b8d1285497>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,9 @@ export type CreateUserInput = {
   hasEditAccess?: boolean | null | undefined;
   hasMapAccess?: boolean | null | undefined;
   isAdmin?: boolean | null | undefined;
+  isLeader?: boolean | null | undefined;
   isSales?: boolean | null | undefined;
+  isSuperAdmin?: boolean | null | undefined;
   leaderID?: string | null | undefined;
   name: string;
   openID?: string | null | undefined;

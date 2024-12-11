@@ -674,7 +674,9 @@ input CreateUserInput {
   hasEditAccess: Boolean
   hasMapAccess: Boolean
   isAdmin: Boolean
+  isLeader: Boolean
   isSales: Boolean
+  isSuperAdmin: Boolean
   leaderID: ID
   name: String!
   openID: String
@@ -1198,6 +1200,12 @@ input DistrictWhereInput {
   updatedAtNotIn: [Time!]
 }
 
+type FeishuUser {
+  avatarUrl: String!
+  name: String!
+  openId: String!
+}
+
 type GeoJson {
   coordinates: [Float!]!
   type: String!
@@ -1698,6 +1706,7 @@ type Query {
     """Filtering options for Provinces returned from the connection."""
     where: ProvinceWhereInput
   ): ProvinceConnection!
+  searchFeishuUser(keyword: String!): [FeishuUser!]!
   session: Session!
   tenders(
     """Returns the elements in the list that come after the specified cursor."""
@@ -1755,7 +1764,9 @@ type Session {
   hasEditAccess: Boolean!
   hasMapAccess: Boolean!
   isAdmin: Boolean!
+  isLeader: Boolean!
   isSales: Boolean!
+  isSuperAdmin: Boolean!
   name: String!
   userId: String!
   username: String!
@@ -3030,7 +3041,9 @@ input UpdateUserInput {
   hasEditAccess: Boolean
   hasMapAccess: Boolean
   isAdmin: Boolean
+  isLeader: Boolean
   isSales: Boolean
+  isSuperAdmin: Boolean
   leaderID: ID
   name: String
   openID: String
@@ -3105,7 +3118,9 @@ type User implements Node {
   hasMapAccess: Boolean!
   id: ID!
   isAdmin: Boolean!
+  isLeader: Boolean!
   isSales: Boolean!
+  isSuperAdmin: Boolean!
   leader: User
   leaderID: ID
   name: String!
@@ -3262,9 +3277,15 @@ input UserWhereInput {
   """is_admin field predicates"""
   isAdmin: Boolean
   isAdminNEQ: Boolean
+  """is_leader field predicates"""
+  isLeader: Boolean
+  isLeaderNEQ: Boolean
   """is_sales field predicates"""
   isSales: Boolean
   isSalesNEQ: Boolean
+  """is_super_admin field predicates"""
+  isSuperAdmin: Boolean
+  isSuperAdminNEQ: Boolean
   """leader_id field predicates"""
   leaderID: ID
   leaderIDContains: ID

@@ -1,6 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
 import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
+import { usersSuperAdminUsersPageQuery } from "__generated__/usersSuperAdminUsersPageQuery.graphql";
 import {
   App,
   Button,
@@ -21,54 +22,50 @@ import { useDeleteUser } from "~/hooks/use-delete-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
 export const Route = createLazyFileRoute(
-  "/__auth/__portal/portal/__admin/users",
+  "/__auth/__portal/portal/__super-admin/sa/users",
 )({
   component: RouteComponent,
 });
 
 const query = graphql`
-  query usersPageQuery($userId: ID!, $first: Int, $last: Int) {
+  query usersSuperAdminUsersPageQuery($userId: ID!, $first: Int, $last: Int) {
     node(id: $userId) {
-      ... on User {
-        ...userFormFragment
-
-        areas {
-          edges {
-            node {
-              id
-              name
-              code
-              users(
-                first: $first
-                last: $last
-                where: { isLeader: false, isSuperAdmin: false }
-              ) @connection(key: "usersPageQuery_users") {
-                __id
-                edges {
-                  node {
-                    id
-                    name
-                    email
-                    username
-                    openID
-                    avatarURL
-                    disabled
-                    areas {
-                      edges {
-                        node {
-                          id
-                          name
-                          code
-                        }
-                      }
-                    }
-                    isAdmin
-                    hasMapAccess
-                  }
-                }
+      ...userFormFragment
+    }
+    areas {
+      edges {
+        node {
+          id
+          name
+          code
+        }
+      }
+    }
+    users(first: $first, last: $last)
+      @connection(key: "usersSuperAdminUsersPageQuery_users") {
+      __id
+      edges {
+        node {
+          id
+          name
+          email
+          username
+          openID
+          avatarURL
+          disabled
+          areas {
+            edges {
+              node {
+                id
+                name
+                code
               }
             }
           }
+          isSales
+          isAdmin
+          hasMapAccess
+          hasEditAccess
         }
       }
     }
@@ -76,7 +73,10 @@ const query = graphql`
 `;
 
 function RouteComponent() {
-  const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData());
+  const data = usePreloadedQuery<usersSuperAdminUsersPageQuery>(
+    query,
+    Route.useLoaderData(),
+  );
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
@@ -88,8 +88,7 @@ function RouteComponent() {
   const area = searchParams.area;
 
   const dataSource =
-    data.node?.areas?.edges
-      ?.flatMap((a) => a?.node?.users.edges)
+    data.users.edges
       ?.map((e) => e?.node)
       .filter((n) => n?.name?.toLowerCase().includes(searchText.toLowerCase()))
       .filter(
@@ -124,6 +123,20 @@ function RouteComponent() {
       title: "大地图",
       render: (hasMapAccess, record) => (
         <UserToggle user={record} field="hasMapAccess" value={hasMapAccess} />
+      ),
+    },
+    {
+      dataIndex: "hasEditAccess",
+      title: "编辑",
+      render: (hasEditAccess, record) => (
+        <UserToggle user={record} field="hasEditAccess" value={hasEditAccess} />
+      ),
+    },
+    {
+      dataIndex: "isSales",
+      title: "销售",
+      render: (isSales, record) => (
+        <UserToggle user={record} field="isSales" value={isSales} />
       ),
     },
     {
@@ -203,15 +216,14 @@ function RouteComponent() {
   return (
     <>
       <ListFilter
-        areas={data.node?.areas?.edges?.map((a) => ({
+        areas={data.areas.edges?.map((a) => ({
           label: a?.node?.name ?? "",
           value: a?.node?.code ?? "",
         }))}
       >
         <UserFormDrawer
           queryRef={data.node!}
-          // connectionID={data.users.__id}
-          connectionID=""
+          connectionID={data.users.__id}
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
         />
@@ -277,6 +289,7 @@ function UserFormDrawer({
           onClose={onClose}
           connectionID={connectionID}
           selectedUser={selectedUser}
+          isSuperAdmin
         />
       </Drawer>
     </>
@@ -289,12 +302,7 @@ function UserToggle({
   value,
 }: {
   user: User;
-  field:
-    | "isSales"
-    | "isAdmin"
-    | "isSuperAdmin"
-    | "hasMapAccess"
-    | "hasEditAccess";
+  field: "isSales" | "isAdmin" | "hasMapAccess" | "hasEditAccess";
   value: boolean;
 }) {
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();

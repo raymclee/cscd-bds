@@ -2,6 +2,12 @@
 
 package model
 
+type FeishuUser struct {
+	OpenID    string `json:"openId"`
+	Name      string `json:"name"`
+	AvatarURL string `json:"avatarUrl"`
+}
+
 type GeoJSON struct {
 	Type        string    `json:"type"`
 	Coordinates []float64 `json:"coordinates"`
@@ -13,7 +19,9 @@ type Session struct {
 	Username      string `json:"username"`
 	Email         string `json:"email"`
 	AvatarURL     string `json:"avatarUrl"`
+	IsLeader      bool   `json:"isLeader"`
 	IsAdmin       bool   `json:"isAdmin"`
+	IsSuperAdmin  bool   `json:"isSuperAdmin"`
 	IsSales       bool   `json:"isSales"`
 	HasMapAccess  bool   `json:"hasMapAccess"`
 	HasEditAccess bool   `json:"hasEditAccess"`

@@ -1551,6 +1551,8 @@ type CreateUserInput struct {
 	Disabled       *bool
 	IsSales        *bool
 	IsAdmin        *bool
+	IsLeader       *bool
+	IsSuperAdmin   *bool
 	HasMapAccess   *bool
 	HasEditAccess  *bool
 	AreaIDs        []xid.ID
@@ -1586,6 +1588,12 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
+	}
+	if v := i.IsLeader; v != nil {
+		m.SetIsLeader(*v)
+	}
+	if v := i.IsSuperAdmin; v != nil {
+		m.SetIsSuperAdmin(*v)
 	}
 	if v := i.HasMapAccess; v != nil {
 		m.SetHasMapAccess(*v)
@@ -1632,6 +1640,8 @@ type UpdateUserInput struct {
 	Disabled             *bool
 	IsSales              *bool
 	IsAdmin              *bool
+	IsLeader             *bool
+	IsSuperAdmin         *bool
 	HasMapAccess         *bool
 	HasEditAccess        *bool
 	ClearAreas           bool
@@ -1687,6 +1697,12 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
+	}
+	if v := i.IsLeader; v != nil {
+		m.SetIsLeader(*v)
+	}
+	if v := i.IsSuperAdmin; v != nil {
+		m.SetIsSuperAdmin(*v)
 	}
 	if v := i.HasMapAccess; v != nil {
 		m.SetHasMapAccess(*v)

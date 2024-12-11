@@ -1,0 +1,9 @@
+extend type Query {
+  searchFeishuUser(keyword: String!): [FeishuUser!]!
+}
+
+type FeishuUser {
+  openId: String!
+  name: String!
+  avatarUrl: String!
+}

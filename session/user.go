@@ -17,6 +17,8 @@ type User struct {
 	Email         string    `json:"email,omitempty"`           // 用户邮箱
 	UserId        string    `json:"user_id,omitempty"`         // 用户 user_id
 	IsAdmin       bool      `json:"is_admin,omitempty"`        // 是否是管理员
+	IsSuperAdmin  bool      `json:"is_super_admin,omitempty"`  // 是否是超级管理员
+	IsLeader      bool      `json:"is_leader,omitempty"`       // 是否是领导
 	HasMapAccess  bool      `json:"has_map_access,omitempty"`  // 是否拥有地图访问权限
 	HasEditAccess bool      `json:"has_edit_access,omitempty"` // 是否拥有编辑权限
 }

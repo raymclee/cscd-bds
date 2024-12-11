@@ -38,6 +38,10 @@ type User struct {
 	IsSales bool `json:"is_sales,omitempty"`
 	// IsAdmin holds the value of the "is_admin" field.
 	IsAdmin bool `json:"is_admin,omitempty"`
+	// IsLeader holds the value of the "is_leader" field.
+	IsLeader bool `json:"is_leader,omitempty"`
+	// IsSuperAdmin holds the value of the "is_super_admin" field.
+	IsSuperAdmin bool `json:"is_super_admin,omitempty"`
 	// HasMapAccess holds the value of the "has_map_access" field.
 	HasMapAccess bool `json:"has_map_access,omitempty"`
 	// HasEditAccess holds the value of the "has_edit_access" field.
@@ -140,7 +144,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldLeaderID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
-		case user.FieldDisabled, user.FieldIsSales, user.FieldIsAdmin, user.FieldHasMapAccess, user.FieldHasEditAccess:
+		case user.FieldDisabled, user.FieldIsSales, user.FieldIsAdmin, user.FieldIsLeader, user.FieldIsSuperAdmin, user.FieldHasMapAccess, user.FieldHasEditAccess:
 			values[i] = new(sql.NullBool)
 		case user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldOpenID, user.FieldAvatarURL:
 			values[i] = new(sql.NullString)
@@ -230,6 +234,18 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field is_admin", values[i])
 			} else if value.Valid {
 				u.IsAdmin = value.Bool
+			}
+		case user.FieldIsLeader:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_leader", values[i])
+			} else if value.Valid {
+				u.IsLeader = value.Bool
+			}
+		case user.FieldIsSuperAdmin:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_super_admin", values[i])
+			} else if value.Valid {
+				u.IsSuperAdmin = value.Bool
 			}
 		case user.FieldHasMapAccess:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -349,6 +365,12 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("is_admin=")
 	builder.WriteString(fmt.Sprintf("%v", u.IsAdmin))
+	builder.WriteString(", ")
+	builder.WriteString("is_leader=")
+	builder.WriteString(fmt.Sprintf("%v", u.IsLeader))
+	builder.WriteString(", ")
+	builder.WriteString("is_super_admin=")
+	builder.WriteString(fmt.Sprintf("%v", u.IsSuperAdmin))
 	builder.WriteString(", ")
 	builder.WriteString("has_map_access=")
 	builder.WriteString(fmt.Sprintf("%v", u.HasMapAccess))

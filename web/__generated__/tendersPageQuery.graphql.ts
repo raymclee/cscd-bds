@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3e703b72390f9f13ab372e11d6393779>>
+ * @generated SignedSource<<19cac896ebcc032189c5630c04cbbb7f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -95,7 +95,10 @@ v8 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-};
+},
+v9 = [
+  (v6/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -303,6 +306,26 @@ return {
                                         "name": "discoveryDate",
                                         "storageKey": null
                                       },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "User",
+                                        "kind": "LinkedField",
+                                        "name": "followingSales",
+                                        "plural": true,
+                                        "selections": (v9/*: any*/),
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "User",
+                                        "kind": "LinkedField",
+                                        "name": "createdBy",
+                                        "plural": false,
+                                        "selections": (v9/*: any*/),
+                                        "storageKey": null
+                                      },
                                       (v5/*: any*/)
                                     ],
                                     "storageKey": null
@@ -402,12 +425,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "07238a32d655a4596d80150c571d2052",
+    "cacheID": "c01fcbc0996aab31258d44d7b16d3622",
     "id": null,
     "metadata": {},
     "name": "tendersPageQuery",
     "operationKind": "query",
-    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              tenderClosingDate\n              area {\n                id\n                code\n              }\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...tendersTenderListFragment_3p2xDJ\n    }\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment tendersTenderListFragment_3p2xDJ on User {\n  areas {\n    edges {\n      node {\n        id\n        code\n        name\n        tenders(orderBy: $orderBy, first: $first) {\n          edges {\n            node {\n              id\n              name\n              status\n              tenderClosingDate\n              area {\n                id\n                code\n              }\n              ...tenderListItemFragment\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

@@ -34,7 +34,7 @@ func (h handler) AdminOnly() echo.MiddlewareFunc {
 			if err != nil {
 				return echo.NewHTTPError(500, "Internal Server Error")
 			}
-			if u.IsAdmin {
+			if u.IsAdmin || u.IsSuperAdmin {
 				return next(c)
 			}
 

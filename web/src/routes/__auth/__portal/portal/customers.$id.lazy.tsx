@@ -99,7 +99,9 @@ function RouteComponent() {
         title={
           <CustomerDetail
             customer={customer}
-            showContact={session.userId == customer.sales?.id}
+            showContact={
+              session.userId == customer.sales?.id || session.isAdmin
+            }
           />
         }
         onTabChange={(key) => setActiveTab(key)}
