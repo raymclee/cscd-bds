@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<62e7f02806f13f8495be0836a5429d3b>>
+ * @generated SignedSource<<c7c4bf1f6ba434651f6648f362b85794>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,40 +10,41 @@
 
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type userFormFragment$data = {
-  readonly areas: {
+export type tenderResultModal_competitors$data = {
+  readonly competitors: {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
         readonly name: string;
+        readonly shortName: string;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
-  readonly " $fragmentType": "userFormFragment";
+  readonly " $fragmentType": "tenderResultModal_competitors";
 };
-export type userFormFragment$key = {
-  readonly " $data"?: userFormFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"userFormFragment">;
+export type tenderResultModal_competitors$key = {
+  readonly " $data"?: tenderResultModal_competitors$data;
+  readonly " $fragmentSpreads": FragmentRefs<"tenderResultModal_competitors">;
 };
 
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "userFormFragment",
+  "name": "tenderResultModal_competitors",
   "selections": [
     {
       "alias": null,
       "args": null,
-      "concreteType": "AreaConnection",
+      "concreteType": "CompetitorConnection",
       "kind": "LinkedField",
-      "name": "areas",
+      "name": "competitors",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "AreaEdge",
+          "concreteType": "CompetitorEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -51,7 +52,7 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Area",
+              "concreteType": "Competitor",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -61,6 +62,13 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "shortName",
                   "storageKey": null
                 },
                 {
@@ -80,10 +88,10 @@ const node: ReaderFragment = {
       "storageKey": null
     }
   ],
-  "type": "User",
+  "type": "Query",
   "abstractKey": null
 };
 
-(node as any).hash = "31bc5c76eafaf4f814611cdde499489c";
+(node as any).hash = "de466c2466daf308e9dbfe2304d6461f";
 
 export default node;
