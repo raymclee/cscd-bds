@@ -3,11 +3,11 @@
 package config
 
 func init() {
-	DatabaseUrl = "postgresql://postgres:~!Wbvxwet=JdgcKB@10.106.189.10:5432/cscd_bds"
+	DatabaseUrl = "postgresql://postgres:~!Wbvxwet=JdgcKB@localhost:5432/cscd_bds_uat"
 	IsProd = false
 
-	HanaPort = 30044
-	HanaHost = "10.148.7.4"
+	HanaPort = 30071
+	HanaHost = "10.148.8.9"
 	HanaUsername = "SAPHANADB"
 	HanaPassword = "Sap2cool"
 	HanaDatabase = "SAPHANADB"

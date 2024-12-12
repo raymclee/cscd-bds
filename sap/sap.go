@@ -11,6 +11,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 
 	_ "github.com/SAP/go-hdb/driver"
 )
@@ -47,13 +48,17 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		fmt.Println(err)
 	}
 	var (
-		// now                 = time.Now()
+		now                    = time.Now()
 		customerName           string
 		followingSalesNames    []string
 		mandt                  string
-		tenderDate             *string
+		tenderDate             = ""
 		followingSalesNamesStr string
 		esAmount               string
+		projectCode            = ""
+		projectDefinition      = ""
+		projectType            = ""
+		location               = ""
 	)
 	if config.IsProd {
 		mandt = "800"
@@ -67,7 +72,19 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 	}
 	if !t.TenderDate.IsZero() {
 		ti := t.TenderDate.Format("20060102")
-		tenderDate = &ti
+		tenderDate = ti
+	}
+	if t.FullAddress != nil {
+		location = *t.FullAddress
+	}
+	if t.ProjectCode != nil {
+		projectCode = *t.ProjectCode
+	}
+	if t.ProjectDefinition != nil {
+		projectDefinition = *t.ProjectDefinition
+	}
+	if t.ProjectType != nil {
+		projectType = *t.ProjectType
 	}
 	for _, s := range t.Edges.FollowingSales {
 		followingSalesNames = append(followingSalesNames, s.Name)
@@ -75,7 +92,8 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 	followingSalesNamesStr = strings.Join(followingSalesNames, ",")
 	esAmount = strconv.FormatFloat(t.EstimatedAmount, 'f', -1, 64)
 
-	_, err = s.Hana.Exec(`
+	_, err = s.Hana.Exec(
+		`
 				INSERT INTO "ZTSD005" (
 					"MANDT",
 					"ZBABH",
@@ -93,11 +111,40 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 					"ZTBSJ",
 					"ZXMDM",
 					"ZXMDY",
-					"ZXMLX"
+					"ZXMLX",
+					"ZCRDATE",
+					"ZUPDATE"
 				) VALUES (
-					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
 			`,
+		// `
+		// 	MERGE INTO ZTSD005 m
+		// 		USING (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) as s
+		// 		(MANDT, ZBABH, ZXMMC, ZYWQY, ZYZMC, ZSJFXR, ZSJFXRQ, ZCJZ, ZCJRQ, ZSJZT, ZDQGZR, ZLOCATION, ZYJJE, ZTBSJ, ZXMDM, ZXMLX)
+		// 		ON m.ZBABH = s.ZBABH
+		// 		WHEN MATCHED THEN
+		// 		UPDATE SET
+		// 			MANDT = s.MANDT,
+		// 			ZBABH = s.ZBABH,
+		// 			ZXMMC = s.ZXMMC,
+		// 			ZYWQY = s.ZYWQY,
+		// 			ZYZMC = s.ZYZMC,
+		// 			ZSJFXR = s.ZSJFXR,
+		// 			ZSJFXRQ = s.ZSJFXRQ,
+		// 			ZCJZ = s.ZCJZ,
+		// 			ZCJRQ = s.ZCJRQ,
+		// 			ZSJZT = s.ZSJZT,
+		// 			ZDQGZR = s.ZDQGZR,
+		// 			ZLOCATION = s.ZLOCATION,
+		// 			ZYJJE = s.ZYJJE,
+		// 			ZTBSJ = s.ZTBSJ,
+		// 			ZXMDM = s.ZXMDM,
+		// 			ZXMLX = s.ZXMLX
+		// 		WHEN NOT MATCHED BY TARGET THEN
+		// 		INSERT (MANDT, ZBABH, ZXMMC, ZYWQY, ZYZMC, ZSJFXR, ZSJFXRQ, ZCJZ, ZCJRQ, ZSJZT, ZDQGZR, ZLOCATION, ZYJJE, ZTBSJ, ZXMDM, ZXMLX)
+		// 		VALUES (s.MANDT, s.ZBABH, s.ZXMMC, s.ZYWQY, s.ZYZMC, s.ZSJFXR, s.ZSJFXRQ, s.ZCJZ, s.ZCJRQ, s.ZSJZT, s.ZDQGZR, s.ZLOCATION, s.ZYJJE, s.ZTBSJ, s.ZXMDM, s.ZXMLX);
+		// `,
 		mandt,
 		t.Code,
 		t.Name,
@@ -109,12 +156,14 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		t.CreatedAt.Format("20060102"),
 		"中标",
 		followingSalesNamesStr,
-		t.FullAddress,
+		location,
 		esAmount,
 		tenderDate,
-		t.ProjectCode,
-		t.ProjectDefinition,
-		t.ProjectType,
+		projectCode,
+		projectDefinition,
+		projectType,
+		now.Local().UnixMilli(),
+		now.Local().UnixMilli(),
 	)
 	if err != nil {
 		fmt.Println(err)

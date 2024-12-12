@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -22,6 +23,7 @@ import (
 var prefixMap = map[xid.ID]string{
 	"AR": area.Table,
 	"CI": city.Table,
+	"CP": competitor.Table,
 	"CO": country.Table,
 	"CU": customer.Table,
 	"DI": district.Table,

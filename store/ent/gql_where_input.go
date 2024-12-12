@@ -5,6 +5,7 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -839,6 +840,306 @@ func (i *CityWhereInput) P() (predicate.City, error) {
 		return predicates[0], nil
 	default:
 		return city.And(predicates...), nil
+	}
+}
+
+// CompetitorWhereInput represents a where input for filtering Competitor queries.
+type CompetitorWhereInput struct {
+	Predicates []predicate.Competitor  `json:"-"`
+	Not        *CompetitorWhereInput   `json:"not,omitempty"`
+	Or         []*CompetitorWhereInput `json:"or,omitempty"`
+	And        []*CompetitorWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "short_name" field predicates.
+	ShortName             *string  `json:"shortName,omitempty"`
+	ShortNameNEQ          *string  `json:"shortNameNEQ,omitempty"`
+	ShortNameIn           []string `json:"shortNameIn,omitempty"`
+	ShortNameNotIn        []string `json:"shortNameNotIn,omitempty"`
+	ShortNameGT           *string  `json:"shortNameGT,omitempty"`
+	ShortNameGTE          *string  `json:"shortNameGTE,omitempty"`
+	ShortNameLT           *string  `json:"shortNameLT,omitempty"`
+	ShortNameLTE          *string  `json:"shortNameLTE,omitempty"`
+	ShortNameContains     *string  `json:"shortNameContains,omitempty"`
+	ShortNameHasPrefix    *string  `json:"shortNameHasPrefix,omitempty"`
+	ShortNameHasSuffix    *string  `json:"shortNameHasSuffix,omitempty"`
+	ShortNameEqualFold    *string  `json:"shortNameEqualFold,omitempty"`
+	ShortNameContainsFold *string  `json:"shortNameContainsFold,omitempty"`
+
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *CompetitorWhereInput) AddPredicates(predicates ...predicate.Competitor) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the CompetitorWhereInput filter on the CompetitorQuery builder.
+func (i *CompetitorWhereInput) Filter(q *CompetitorQuery) (*CompetitorQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyCompetitorWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyCompetitorWhereInput is returned in case the CompetitorWhereInput is empty.
+var ErrEmptyCompetitorWhereInput = errors.New("ent: empty predicate CompetitorWhereInput")
+
+// P returns a predicate for filtering competitors.
+// An error is returned if the input is empty or invalid.
+func (i *CompetitorWhereInput) P() (predicate.Competitor, error) {
+	var predicates []predicate.Competitor
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, competitor.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.Competitor, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, competitor.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.Competitor, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, competitor.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, competitor.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, competitor.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, competitor.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, competitor.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, competitor.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, competitor.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, competitor.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, competitor.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, competitor.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, competitor.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, competitor.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, competitor.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, competitor.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, competitor.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, competitor.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, competitor.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, competitor.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, competitor.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, competitor.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, competitor.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, competitor.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, competitor.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, competitor.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, competitor.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.ShortName != nil {
+		predicates = append(predicates, competitor.ShortNameEQ(*i.ShortName))
+	}
+	if i.ShortNameNEQ != nil {
+		predicates = append(predicates, competitor.ShortNameNEQ(*i.ShortNameNEQ))
+	}
+	if len(i.ShortNameIn) > 0 {
+		predicates = append(predicates, competitor.ShortNameIn(i.ShortNameIn...))
+	}
+	if len(i.ShortNameNotIn) > 0 {
+		predicates = append(predicates, competitor.ShortNameNotIn(i.ShortNameNotIn...))
+	}
+	if i.ShortNameGT != nil {
+		predicates = append(predicates, competitor.ShortNameGT(*i.ShortNameGT))
+	}
+	if i.ShortNameGTE != nil {
+		predicates = append(predicates, competitor.ShortNameGTE(*i.ShortNameGTE))
+	}
+	if i.ShortNameLT != nil {
+		predicates = append(predicates, competitor.ShortNameLT(*i.ShortNameLT))
+	}
+	if i.ShortNameLTE != nil {
+		predicates = append(predicates, competitor.ShortNameLTE(*i.ShortNameLTE))
+	}
+	if i.ShortNameContains != nil {
+		predicates = append(predicates, competitor.ShortNameContains(*i.ShortNameContains))
+	}
+	if i.ShortNameHasPrefix != nil {
+		predicates = append(predicates, competitor.ShortNameHasPrefix(*i.ShortNameHasPrefix))
+	}
+	if i.ShortNameHasSuffix != nil {
+		predicates = append(predicates, competitor.ShortNameHasSuffix(*i.ShortNameHasSuffix))
+	}
+	if i.ShortNameEqualFold != nil {
+		predicates = append(predicates, competitor.ShortNameEqualFold(*i.ShortNameEqualFold))
+	}
+	if i.ShortNameContainsFold != nil {
+		predicates = append(predicates, competitor.ShortNameContainsFold(*i.ShortNameContainsFold))
+	}
+	if i.Name != nil {
+		predicates = append(predicates, competitor.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, competitor.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, competitor.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, competitor.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, competitor.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, competitor.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, competitor.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, competitor.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, competitor.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, competitor.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, competitor.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, competitor.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, competitor.NameContainsFold(*i.NameContainsFold))
+	}
+
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyCompetitorWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return competitor.And(predicates...), nil
 	}
 }
 

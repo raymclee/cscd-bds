@@ -1,6 +1,4 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
-import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
 import { usersSuperAdminUsersPageQuery } from "__generated__/usersSuperAdminUsersPageQuery.graphql";
 import {
   App,
@@ -14,10 +12,10 @@ import {
 import { Plus } from "lucide-react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
-import { ConnectionHandler, graphql } from "relay-runtime";
+import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
-import { User } from "~/graphql/graphql";
+import { AreaConnection, User } from "~/graphql/graphql";
 import { useDeleteUser } from "~/hooks/use-delete-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
@@ -28,10 +26,7 @@ export const Route = createLazyFileRoute(
 });
 
 const query = graphql`
-  query usersSuperAdminUsersPageQuery($userId: ID!, $first: Int, $last: Int) {
-    node(id: $userId) {
-      ...userFormFragment
-    }
+  query usersSuperAdminUsersPageQuery($first: Int, $last: Int) {
     areas {
       edges {
         node {
@@ -179,21 +174,13 @@ function RouteComponent() {
             title="确定删除吗？"
             onConfirm={() => {
               commitDeleteUser({
-                variables: { id: record.id },
+                variables: { id: record.id, connections: [data.users.__id] },
                 onCompleted() {
                   message.success("删除成功");
                 },
                 onError(error) {
                   console.error(error);
                   message.error(`删除失败`);
-                },
-                updater(store) {
-                  const userRecord = store.getRoot();
-                  const connectionRecord = ConnectionHandler.getConnection(
-                    userRecord,
-                    "usersPageQuery_users",
-                  );
-                  ConnectionHandler.deleteNode(connectionRecord!, record.id);
                 },
               });
             }}
@@ -222,10 +209,10 @@ function RouteComponent() {
         }))}
       >
         <UserFormDrawer
-          queryRef={data.node!}
           connectionID={data.users.__id}
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
+          avaliableAreas={data.areas as AreaConnection}
         />
       </ListFilter>
 
@@ -249,12 +236,12 @@ function RouteComponent() {
 }
 
 function UserFormDrawer({
-  queryRef,
+  avaliableAreas,
   connectionID,
   selectedUser,
   setSelectedUser,
 }: {
-  queryRef: userFormFragment$key;
+  avaliableAreas: AreaConnection;
   connectionID: string;
   selectedUser: User | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -285,11 +272,11 @@ function UserFormDrawer({
         maskClosable={!!selectedUser}
       >
         <UserForm
-          queryRef={queryRef}
           onClose={onClose}
-          connectionID={connectionID}
+          connectionIDs={[connectionID]}
           selectedUser={selectedUser}
           isSuperAdmin
+          avaliableAreas={avaliableAreas}
         />
       </Drawer>
     </>

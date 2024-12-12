@@ -14,6 +14,7 @@ import (
 
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -38,6 +39,8 @@ type Client struct {
 	Area *AreaClient
 	// City is the client for interacting with the City builders.
 	City *CityClient
+	// Competitor is the client for interacting with the Competitor builders.
+	Competitor *CompetitorClient
 	// Country is the client for interacting with the Country builders.
 	Country *CountryClient
 	// Customer is the client for interacting with the Customer builders.
@@ -67,6 +70,7 @@ func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Area = NewAreaClient(c.config)
 	c.City = NewCityClient(c.config)
+	c.Competitor = NewCompetitorClient(c.config)
 	c.Country = NewCountryClient(c.config)
 	c.Customer = NewCustomerClient(c.config)
 	c.District = NewDistrictClient(c.config)
@@ -169,6 +173,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		config:      cfg,
 		Area:        NewAreaClient(cfg),
 		City:        NewCityClient(cfg),
+		Competitor:  NewCompetitorClient(cfg),
 		Country:     NewCountryClient(cfg),
 		Customer:    NewCustomerClient(cfg),
 		District:    NewDistrictClient(cfg),
@@ -198,6 +203,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		config:      cfg,
 		Area:        NewAreaClient(cfg),
 		City:        NewCityClient(cfg),
+		Competitor:  NewCompetitorClient(cfg),
 		Country:     NewCountryClient(cfg),
 		Customer:    NewCustomerClient(cfg),
 		District:    NewDistrictClient(cfg),
@@ -235,8 +241,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Area, c.City, c.Country, c.Customer, c.District, c.Plot, c.Province, c.Tender,
-		c.User, c.VisitRecord,
+		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Plot,
+		c.Province, c.Tender, c.User, c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -246,8 +252,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Area, c.City, c.Country, c.Customer, c.District, c.Plot, c.Province, c.Tender,
-		c.User, c.VisitRecord,
+		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Plot,
+		c.Province, c.Tender, c.User, c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -260,6 +266,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Area.mutate(ctx, m)
 	case *CityMutation:
 		return c.City.mutate(ctx, m)
+	case *CompetitorMutation:
+		return c.Competitor.mutate(ctx, m)
 	case *CountryMutation:
 		return c.Country.mutate(ctx, m)
 	case *CustomerMutation:
@@ -656,6 +664,139 @@ func (c *CityClient) mutate(ctx context.Context, m *CityMutation) (Value, error)
 		return (&CityDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown City mutation op: %q", m.Op())
+	}
+}
+
+// CompetitorClient is a client for the Competitor schema.
+type CompetitorClient struct {
+	config
+}
+
+// NewCompetitorClient returns a client for the Competitor from the given config.
+func NewCompetitorClient(c config) *CompetitorClient {
+	return &CompetitorClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `competitor.Hooks(f(g(h())))`.
+func (c *CompetitorClient) Use(hooks ...Hook) {
+	c.hooks.Competitor = append(c.hooks.Competitor, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `competitor.Intercept(f(g(h())))`.
+func (c *CompetitorClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Competitor = append(c.inters.Competitor, interceptors...)
+}
+
+// Create returns a builder for creating a Competitor entity.
+func (c *CompetitorClient) Create() *CompetitorCreate {
+	mutation := newCompetitorMutation(c.config, OpCreate)
+	return &CompetitorCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Competitor entities.
+func (c *CompetitorClient) CreateBulk(builders ...*CompetitorCreate) *CompetitorCreateBulk {
+	return &CompetitorCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CompetitorClient) MapCreateBulk(slice any, setFunc func(*CompetitorCreate, int)) *CompetitorCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CompetitorCreateBulk{err: fmt.Errorf("calling to CompetitorClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CompetitorCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CompetitorCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Competitor.
+func (c *CompetitorClient) Update() *CompetitorUpdate {
+	mutation := newCompetitorMutation(c.config, OpUpdate)
+	return &CompetitorUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CompetitorClient) UpdateOne(co *Competitor) *CompetitorUpdateOne {
+	mutation := newCompetitorMutation(c.config, OpUpdateOne, withCompetitor(co))
+	return &CompetitorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CompetitorClient) UpdateOneID(id xid.ID) *CompetitorUpdateOne {
+	mutation := newCompetitorMutation(c.config, OpUpdateOne, withCompetitorID(id))
+	return &CompetitorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Competitor.
+func (c *CompetitorClient) Delete() *CompetitorDelete {
+	mutation := newCompetitorMutation(c.config, OpDelete)
+	return &CompetitorDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CompetitorClient) DeleteOne(co *Competitor) *CompetitorDeleteOne {
+	return c.DeleteOneID(co.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CompetitorClient) DeleteOneID(id xid.ID) *CompetitorDeleteOne {
+	builder := c.Delete().Where(competitor.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CompetitorDeleteOne{builder}
+}
+
+// Query returns a query builder for Competitor.
+func (c *CompetitorClient) Query() *CompetitorQuery {
+	return &CompetitorQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCompetitor},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Competitor entity by its id.
+func (c *CompetitorClient) Get(ctx context.Context, id xid.ID) (*Competitor, error) {
+	return c.Query().Where(competitor.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CompetitorClient) GetX(ctx context.Context, id xid.ID) *Competitor {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *CompetitorClient) Hooks() []Hook {
+	return c.hooks.Competitor
+}
+
+// Interceptors returns the client interceptors.
+func (c *CompetitorClient) Interceptors() []Interceptor {
+	return c.inters.Competitor
+}
+
+func (c *CompetitorClient) mutate(ctx context.Context, m *CompetitorMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CompetitorCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CompetitorUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CompetitorUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CompetitorDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Competitor mutation op: %q", m.Op())
 	}
 }
 
@@ -2270,11 +2411,11 @@ func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Area, City, Country, Customer, District, Plot, Province, Tender, User,
-		VisitRecord []ent.Hook
+		Area, City, Competitor, Country, Customer, District, Plot, Province, Tender,
+		User, VisitRecord []ent.Hook
 	}
 	inters struct {
-		Area, City, Country, Customer, District, Plot, Province, Tender, User,
-		VisitRecord []ent.Interceptor
+		Area, City, Competitor, Country, Customer, District, Plot, Province, Tender,
+		User, VisitRecord []ent.Interceptor
 	}
 )

@@ -8,6 +8,9 @@ export function canEdit(
   }: { customer?: Partial<Customer>; tender?: Partial<Tender> } = {},
 ) {
   if (tender || customer) {
+    if (tender?.status === 3 || tender?.status === 4) {
+      return false;
+    }
     const areaCode = tender?.area?.code || customer?.area?.code;
     if (!areaCode) {
       return false;
@@ -16,6 +19,9 @@ export function canEdit(
       case "GA" || "HW":
         return session.isAdmin || session.hasEditAccess;
       default:
+        if (session.isAdmin || session.isSuperAdmin) {
+          return true;
+        }
         if (session.userId == customer?.sales?.id) {
           return true;
         }

@@ -231,6 +231,64 @@ func (c *CityUpdateOne) SetInput(i UpdateCityInput) *CityUpdateOne {
 	return c
 }
 
+// CreateCompetitorInput represents a mutation input for creating competitors.
+type CreateCompetitorInput struct {
+	CreatedAt *time.Time
+	UpdatedAt *time.Time
+	ShortName string
+	Name      string
+}
+
+// Mutate applies the CreateCompetitorInput on the CompetitorMutation builder.
+func (i *CreateCompetitorInput) Mutate(m *CompetitorMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	m.SetShortName(i.ShortName)
+	m.SetName(i.Name)
+}
+
+// SetInput applies the change-set in the CreateCompetitorInput on the CompetitorCreate builder.
+func (c *CompetitorCreate) SetInput(i CreateCompetitorInput) *CompetitorCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateCompetitorInput represents a mutation input for updating competitors.
+type UpdateCompetitorInput struct {
+	UpdatedAt *time.Time
+	ShortName *string
+	Name      *string
+}
+
+// Mutate applies the UpdateCompetitorInput on the CompetitorMutation builder.
+func (i *UpdateCompetitorInput) Mutate(m *CompetitorMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.ShortName; v != nil {
+		m.SetShortName(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateCompetitorInput on the CompetitorUpdate builder.
+func (c *CompetitorUpdate) SetInput(i UpdateCompetitorInput) *CompetitorUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateCompetitorInput on the CompetitorUpdateOne builder.
+func (c *CompetitorUpdateOne) SetInput(i UpdateCompetitorInput) *CompetitorUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // CreateCountryInput represents a mutation input for creating countries.
 type CreateCountryInput struct {
 	CreatedAt   *time.Time

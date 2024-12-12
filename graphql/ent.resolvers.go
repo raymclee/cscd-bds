@@ -34,6 +34,11 @@ func (r *queryResolver) Cities(ctx context.Context, after *entgql.Cursor[xid.ID]
 	return r.store.City.Query().Paginate(ctx, after, first, before, last, ent.WithCityFilter(where.Filter))
 }
 
+// Competitors is the resolver for the competitors field.
+func (r *queryResolver) Competitors(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CompetitorOrder, where *ent.CompetitorWhereInput) (*ent.CompetitorConnection, error) {
+	return r.store.Competitor.Query().Paginate(ctx, after, first, before, last, ent.WithCompetitorFilter(where.Filter))
+}
+
 // Countries is the resolver for the countries field.
 func (r *queryResolver) Countries(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) (*ent.CountryConnection, error) {
 	return r.store.Country.Query().Paginate(ctx, after, first, before, last, ent.WithCountryFilter(where.Filter))

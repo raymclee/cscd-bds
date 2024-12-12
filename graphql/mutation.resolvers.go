@@ -13,7 +13,9 @@ import (
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"cscd-bds/util"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -39,15 +41,7 @@ func (r *mutationResolver) UpdateArea(ctx context.Context, id xid.ID, input ent.
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.UserConnection, error) {
-	sess, err := r.session.GetSession(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get session: %w", err)
-	}
-	if input.OpenID != nil {
-		return nil, fmt.Errorf("openID is not allowed to be set")
-	}
-
-	accessToken, err := r.session.GetAccessToken(ctx, sess)
+	accessToken, err := r.session.GetAccessToken(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get access token: %w", err)
 	}
@@ -57,11 +51,21 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserI
 		return nil, fmt.Errorf("failed to get feishu user: %w", err)
 	}
 
-	q := r.store.User.Create().SetInput(input).SetName(*fu.Name).SetAvatarURL(*fu.Avatar.AvatarOrigin).SetUsername(*fu.EnName)
-	u, err := q.Save(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create user: %w", err)
+	var u *ent.User
+
+	u, err = r.store.User.Query().Where(user.Username(*fu.EnName)).Only(ctx)
+	if ent.IsNotFound(err) {
+		u, err = r.store.User.Create().SetInput(input).SetName(*fu.Name).SetAvatarURL(*fu.Avatar.AvatarOrigin).SetUsername(*fu.EnName).SetEmail(*fu.Email).Save(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create user: %w", err)
+		}
+	} else {
+		u, err = u.Update().AddAreaIDs(input.AreaIDs...).Save(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to update user: %w", err)
+		}
 	}
+
 	return &ent.UserConnection{Edges: []*ent.UserEdge{{Node: u}}}, nil
 }
 
@@ -211,8 +215,8 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
 
-	if string(t.CreatedByID) != sess.UserId && (!sess.IsAdmin || !sess.IsSuperAdmin) {
-		return nil, fmt.Errorf("failed to update tender: %w", err)
+	if string(t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
+		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 
 	if t.Status != 3 && input.Status != nil && *input.Status == 3 {

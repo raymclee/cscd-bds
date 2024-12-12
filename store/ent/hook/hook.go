@@ -32,6 +32,18 @@ func (f CityFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CityMutation", m)
 }
 
+// The CompetitorFunc type is an adapter to allow the use of ordinary
+// function as Competitor mutator.
+type CompetitorFunc func(context.Context, *ent.CompetitorMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CompetitorFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CompetitorMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CompetitorMutation", m)
+}
+
 // The CountryFunc type is an adapter to allow the use of ordinary
 // function as Country mutator.
 type CountryFunc func(context.Context, *ent.CountryMutation) (ent.Value, error)

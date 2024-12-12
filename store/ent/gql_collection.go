@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -790,6 +791,110 @@ func newCityPaginateArgs(rv map[string]any) *cityPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*CityWhereInput); ok {
 		args.opts = append(args.opts, WithCityFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (c *CompetitorQuery) CollectFields(ctx context.Context, satisfies ...string) (*CompetitorQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return c, nil
+	}
+	if err := c.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func (c *CompetitorQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(competitor.Columns))
+		selectedFields = []string{competitor.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "createdAt":
+			if _, ok := fieldSeen[competitor.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, competitor.FieldCreatedAt)
+				fieldSeen[competitor.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[competitor.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, competitor.FieldUpdatedAt)
+				fieldSeen[competitor.FieldUpdatedAt] = struct{}{}
+			}
+		case "shortName":
+			if _, ok := fieldSeen[competitor.FieldShortName]; !ok {
+				selectedFields = append(selectedFields, competitor.FieldShortName)
+				fieldSeen[competitor.FieldShortName] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[competitor.FieldName]; !ok {
+				selectedFields = append(selectedFields, competitor.FieldName)
+				fieldSeen[competitor.FieldName] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		c.Select(selectedFields...)
+	}
+	return nil
+}
+
+type competitorPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []CompetitorPaginateOption
+}
+
+func newCompetitorPaginateArgs(rv map[string]any) *competitorPaginateArgs {
+	args := &competitorPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &CompetitorOrder{Field: &CompetitorOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithCompetitorOrder(order))
+			}
+		case *CompetitorOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithCompetitorOrder(v))
+			}
+		}
+	}
+	if v, ok := rv[whereField].(*CompetitorWhereInput); ok {
+		args.opts = append(args.opts, WithCompetitorFilter(v.Filter))
 	}
 	return args
 }

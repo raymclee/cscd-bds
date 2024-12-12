@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b4e8fe86a8ba898cce0bcc7fb26ccb0c>>
+ * @generated SignedSource<<371d1e027dafc70fc884fe83c60d3a70>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,11 +9,9 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
 export type usersSuperAdminUsersPageQuery$variables = {
   first?: number | null | undefined;
   last?: number | null | undefined;
-  userId: string;
 };
 export type usersSuperAdminUsersPageQuery$data = {
   readonly areas: {
@@ -25,9 +23,6 @@ export type usersSuperAdminUsersPageQuery$data = {
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
-  readonly node: {
-    readonly " $fragmentSpreads": FragmentRefs<"userFormFragment">;
-  } | null | undefined;
   readonly users: {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
@@ -62,43 +57,33 @@ export type usersSuperAdminUsersPageQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "first"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "last"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "userId"
-},
-v3 = [
+var v0 = [
   {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "userId"
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "first"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "last"
   }
 ],
-v4 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = {
+v3 = {
   "alias": null,
   "args": null,
   "concreteType": "AreaConnection",
@@ -122,8 +107,8 @@ v6 = {
           "name": "node",
           "plural": false,
           "selections": [
-            (v4/*: any*/),
-            (v5/*: any*/),
+            (v1/*: any*/),
+            (v2/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -140,14 +125,7 @@ v6 = {
   ],
   "storageKey": null
 },
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
-v8 = [
+v4 = [
   {
     "alias": null,
     "args": null,
@@ -164,8 +142,8 @@ v8 = [
         "name": "node",
         "plural": false,
         "selections": [
-          (v4/*: any*/),
-          (v5/*: any*/),
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -201,7 +179,7 @@ v8 = [
             "name": "disabled",
             "storageKey": null
           },
-          (v6/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -230,7 +208,13 @@ v8 = [
             "name": "hasEditAccess",
             "storageKey": null
           },
-          (v7/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "__typename",
+            "storageKey": null
+          }
         ],
         "storageKey": null
       },
@@ -296,7 +280,7 @@ v8 = [
     ]
   }
 ],
-v9 = [
+v5 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -310,32 +294,12 @@ v9 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "usersSuperAdminUsersPageQuery",
     "selections": [
-      {
-        "alias": null,
-        "args": (v3/*: any*/),
-        "concreteType": null,
-        "kind": "LinkedField",
-        "name": "node",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "userFormFragment"
-          }
-        ],
-        "storageKey": null
-      },
-      (v6/*: any*/),
+      (v3/*: any*/),
       {
         "alias": "users",
         "args": null,
@@ -343,7 +307,7 @@ return {
         "kind": "LinkedField",
         "name": "__usersSuperAdminUsersPageQuery_users_connection",
         "plural": false,
-        "selections": (v8/*: any*/),
+        "selections": (v4/*: any*/),
         "storageKey": null
       }
     ],
@@ -352,83 +316,24 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v2/*: any*/),
-      (v0/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "usersSuperAdminUsersPageQuery",
     "selections": [
+      (v3/*: any*/),
       {
         "alias": null,
-        "args": (v3/*: any*/),
-        "concreteType": null,
-        "kind": "LinkedField",
-        "name": "node",
-        "plural": false,
-        "selections": [
-          (v7/*: any*/),
-          {
-            "kind": "InlineFragment",
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "AreaConnection",
-                "kind": "LinkedField",
-                "name": "areas",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "AreaEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Area",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v4/*: any*/),
-                          (v5/*: any*/)
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "type": "User",
-            "abstractKey": null
-          },
-          (v4/*: any*/)
-        ],
-        "storageKey": null
-      },
-      (v6/*: any*/),
-      {
-        "alias": null,
-        "args": (v9/*: any*/),
+        "args": (v5/*: any*/),
         "concreteType": "UserConnection",
         "kind": "LinkedField",
         "name": "users",
         "plural": false,
-        "selections": (v8/*: any*/),
+        "selections": (v4/*: any*/),
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v9/*: any*/),
+        "args": (v5/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "usersSuperAdminUsersPageQuery_users",
@@ -438,7 +343,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "813cc16c4860b5a989ec3e089d571802",
+    "cacheID": "4f72ee47d1c7c3101119b91d07c50af9",
     "id": null,
     "metadata": {
       "connection": [
@@ -454,11 +359,11 @@ return {
     },
     "name": "usersSuperAdminUsersPageQuery",
     "operationKind": "query",
-    "text": "query usersSuperAdminUsersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ...userFormFragment\n    id\n  }\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isSales\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment userFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isSales\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f64beb8bb8c38f94bd292386cb4bf961";
+(node as any).hash = "c5b26a8aedc16b7348a1b69fdf6f0a89";
 
 export default node;

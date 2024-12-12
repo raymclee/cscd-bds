@@ -2,53 +2,39 @@ import {
   CreateUserInput,
   useCreateUserMutation$variables,
 } from "__generated__/useCreateUserMutation.graphql";
-import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
 import { useUpdateUserMutation$variables } from "__generated__/useUpdateUserMutation.graphql";
 import { App, Button, Form, Input, Select, Space, Switch } from "antd";
-import { useEffect } from "react";
-import { graphql, useFragment } from "react-relay";
-import { User } from "~/graphql/graphql";
+import React, { useEffect } from "react";
+import { AreaConnection, User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 import { SearchUserSelect } from "./search-user-select";
 
 export type UserFormProps = {
-  queryRef: userFormFragment$key;
   selectedUser: User | null;
   onClose: () => void;
-  connectionID: string;
+  connectionIDs: string[];
   isSuperAdmin?: boolean;
+  avaliableAreas: AreaConnection;
 };
 
 export function UserForm({
   onClose,
-  queryRef,
-  connectionID,
+  connectionIDs,
   selectedUser,
   isSuperAdmin = false,
+  avaliableAreas,
 }: UserFormProps) {
-  const data = useFragment(
-    graphql`
-      fragment userFormFragment on User {
-        areas {
-          edges {
-            node {
-              id
-              name
-            }
-          }
-        }
-      }
-    `,
-    queryRef,
-  );
   const [form] = Form.useForm<
-    | useCreateUserMutation$variables["input"]
-    | useUpdateUserMutation$variables["input"]
+    (
+      | useCreateUserMutation$variables["input"]
+      | useUpdateUserMutation$variables["input"]
+    ) & { zhtUser: { label: string; value: string } }
   >();
   const [commitCreateUser, isCreateUserInFlight] = useCreateUser();
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
+  const [removedAreaIDs, setRemovedAreaIDs] = React.useState<string[]>([]);
 
   useEffect(() => {
     if (selectedUser) {
@@ -58,7 +44,11 @@ export function UserForm({
         username: selectedUser.username,
         openID: selectedUser.openID,
         avatarURL: selectedUser.avatarURL,
-        areaIDs: selectedUser.areas.edges?.map((a) => a?.node?.id),
+        areaIDs: selectedUser.areas.edges
+          ?.filter((e) =>
+            avaliableAreas.edges?.map((a) => a?.node?.id).includes(e?.node?.id),
+          )
+          .map((a) => a?.node?.id),
         disabled: selectedUser.disabled,
         isAdmin: selectedUser.isAdmin,
         hasMapAccess: selectedUser.hasMapAccess,
@@ -80,13 +70,21 @@ export function UserForm({
         onFinish={(values) => {
           if (selectedUser) {
             const { areaIDs, ...rest } = values as CreateUserInput;
+
             commitUpdateUser({
               variables: {
                 id: selectedUser.id,
                 input: {
                   ...rest,
                   clearAreas: true,
-                  addAreaIDs: areaIDs,
+                  addAreaIDs: [
+                    ...(areaIDs ?? []),
+                    ...(selectedUser.areas.edges
+                      ?.map((a) => a?.node?.id)
+                      .filter(
+                        (i): i is string => !!i && !removedAreaIDs?.includes(i),
+                      ) ?? []),
+                  ],
                 },
               },
               onCompleted(response, errors) {
@@ -98,63 +96,82 @@ export function UserForm({
               },
             });
           } else {
+            const { zhtUser, ...input } = values;
+
             commitCreateUser({
               variables: {
-                input: values as CreateUserInput,
-                connections: [connectionID],
+                input: {
+                  ...input,
+                  email: "",
+                  username: "",
+                  name: zhtUser.label,
+                  openID: zhtUser.value,
+                },
+                connections: connectionIDs,
               },
-              onCompleted(response, errors) {
-                console.log(response);
+              onCompleted() {
                 message.success("添加成功");
                 onClose();
               },
-              onError(error) {
+              onError() {
                 message.error("添加失败");
               },
             });
           }
         }}
       >
-        <Form.Item
-          name="zhtUser"
-          label="中海通用戶"
-          rules={[{ required: true }]}
-        >
-          <SearchUserSelect
-            onSelectUser={(user) => {
-              form.setFieldsValue({
-                ...user,
-              });
-            }}
-          />
-        </Form.Item>
-        {/* <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item> */}
-        <Form.Item name="email" label="電郵" rules={[{ required: true }]}>
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item name="username" label="用户名" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        {/* <Form.Item name="openID" label="中海通ID">
-          <Input />
-        </Form.Item>
-        <Form.Item name="avatarURL" label="头像URL">
-          <Input />
-        </Form.Item> */}
+        {!selectedUser ? (
+          <Form.Item
+            name="zhtUser"
+            label="中海通用戶"
+            rules={[{ required: true }]}
+          >
+            <SearchUserSelect />
+          </Form.Item>
+        ) : (
+          <>
+            <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="email" label="電郵" rules={[{ required: true }]}>
+              <Input type="email" />
+            </Form.Item>
+            <Form.Item
+              name="username"
+              label="用户名"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item name="openID" label="中海通ID">
+              <Input />
+            </Form.Item>
+            <Form.Item name="avatarURL" label="头像URL">
+              <Input />
+            </Form.Item>
+          </>
+        )}
         <Form.Item name="areaIDs" label="区域">
           <Select
             mode="multiple"
-            options={data.areas.edges?.map((a) => ({
+            // options={data.areas.edges?.map((a) => ({
+            //   label: a?.node?.name,
+            //   value: a?.node?.id,
+            // }))}
+            options={avaliableAreas.edges?.map((a) => ({
               label: a?.node?.name,
               value: a?.node?.id,
             }))}
+            onDeselect={(value) => {
+              setRemovedAreaIDs((prev) => [...prev, value]);
+            }}
           />
         </Form.Item>
-        <Form.Item name="hasEditAccess" label="可编辑">
-          <Switch />
-        </Form.Item>
+        {isSuperAdmin && (
+          <Form.Item name="hasEditAccess" label="可编辑">
+            <Switch />
+          </Form.Item>
+        )}
         <Form.Item name="hasMapAccess" label="地图权限">
           <Switch />
         </Form.Item>

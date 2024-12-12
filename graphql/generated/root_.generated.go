@@ -98,6 +98,25 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	Competitor struct {
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		ShortName func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	CompetitorConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	CompetitorEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Country struct {
 		Adcode    func(childComplexity int) int
 		Center    func(childComplexity int) int
@@ -267,6 +286,7 @@ type ComplexityRoot struct {
 	Query struct {
 		Areas            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
 		Cities           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
+		Competitors      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
 		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
 		Customers        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
@@ -710,6 +730,76 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CityEdge.Node(childComplexity), true
+
+	case "Competitor.createdAt":
+		if e.complexity.Competitor.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Competitor.CreatedAt(childComplexity), true
+
+	case "Competitor.id":
+		if e.complexity.Competitor.ID == nil {
+			break
+		}
+
+		return e.complexity.Competitor.ID(childComplexity), true
+
+	case "Competitor.name":
+		if e.complexity.Competitor.Name == nil {
+			break
+		}
+
+		return e.complexity.Competitor.Name(childComplexity), true
+
+	case "Competitor.shortName":
+		if e.complexity.Competitor.ShortName == nil {
+			break
+		}
+
+		return e.complexity.Competitor.ShortName(childComplexity), true
+
+	case "Competitor.updatedAt":
+		if e.complexity.Competitor.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Competitor.UpdatedAt(childComplexity), true
+
+	case "CompetitorConnection.edges":
+		if e.complexity.CompetitorConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.CompetitorConnection.Edges(childComplexity), true
+
+	case "CompetitorConnection.pageInfo":
+		if e.complexity.CompetitorConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.CompetitorConnection.PageInfo(childComplexity), true
+
+	case "CompetitorConnection.totalCount":
+		if e.complexity.CompetitorConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.CompetitorConnection.TotalCount(childComplexity), true
+
+	case "CompetitorEdge.cursor":
+		if e.complexity.CompetitorEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.CompetitorEdge.Cursor(childComplexity), true
+
+	case "CompetitorEdge.node":
+		if e.complexity.CompetitorEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.CompetitorEdge.Node(childComplexity), true
 
 	case "Country.adcode":
 		if e.complexity.Country.Adcode == nil {
@@ -1607,6 +1697,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Cities(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CityOrder), args["where"].(*ent.CityWhereInput)), true
+
+	case "Query.competitors":
+		if e.complexity.Query.Competitors == nil {
+			break
+		}
+
+		args, err := ec.field_Query_competitors_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Competitors(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CompetitorOrder), args["where"].(*ent.CompetitorWhereInput)), true
 
 	case "Query.countries":
 		if e.complexity.Query.Countries == nil {
@@ -2720,10 +2822,13 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputAreaWhereInput,
 		ec.unmarshalInputCityOrder,
 		ec.unmarshalInputCityWhereInput,
+		ec.unmarshalInputCompetitorOrder,
+		ec.unmarshalInputCompetitorWhereInput,
 		ec.unmarshalInputCountryOrder,
 		ec.unmarshalInputCountryWhereInput,
 		ec.unmarshalInputCreateAreaInput,
 		ec.unmarshalInputCreateCityInput,
+		ec.unmarshalInputCreateCompetitorInput,
 		ec.unmarshalInputCreateCountryInput,
 		ec.unmarshalInputCreateCustomerInput,
 		ec.unmarshalInputCreateDistrictInput,
@@ -2744,6 +2849,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputTenderWhereInput,
 		ec.unmarshalInputUpdateAreaInput,
 		ec.unmarshalInputUpdateCityInput,
+		ec.unmarshalInputUpdateCompetitorInput,
 		ec.unmarshalInputUpdateCountryInput,
 		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateDistrictInput,
@@ -3361,6 +3467,137 @@ input CityWhereInput {
   hasTenders: Boolean
   hasTendersWith: [TenderWhereInput!]
 }
+type Competitor implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  shortName: String!
+  name: String!
+}
+"""
+A connection to a list of items.
+"""
+type CompetitorConnection {
+  """
+  A list of edges.
+  """
+  edges: [CompetitorEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type CompetitorEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Competitor
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for Competitor connections
+"""
+input CompetitorOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Competitors.
+  """
+  field: CompetitorOrderField!
+}
+"""
+Properties by which Competitor connections can be ordered.
+"""
+enum CompetitorOrderField {
+  CREATED_AT
+  NAME
+}
+"""
+CompetitorWhereInput is used for filtering Competitor objects.
+Input was generated by ent.
+"""
+input CompetitorWhereInput {
+  not: CompetitorWhereInput
+  and: [CompetitorWhereInput!]
+  or: [CompetitorWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  short_name field predicates
+  """
+  shortName: String
+  shortNameNEQ: String
+  shortNameIn: [String!]
+  shortNameNotIn: [String!]
+  shortNameGT: String
+  shortNameGTE: String
+  shortNameLT: String
+  shortNameLTE: String
+  shortNameContains: String
+  shortNameHasPrefix: String
+  shortNameHasSuffix: String
+  shortNameEqualFold: String
+  shortNameContainsFold: String
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
+}
 type Country implements Node {
   id: ID!
   createdAt: Time!
@@ -3549,6 +3786,16 @@ input CreateCityInput {
   districtIDs: [ID!]
   provinceID: ID!
   tenderIDs: [ID!]
+}
+"""
+CreateCompetitorInput is used for create Competitor object.
+Input was generated by ent.
+"""
+input CreateCompetitorInput {
+  createdAt: Time
+  updatedAt: Time
+  shortName: String!
+  name: String!
 }
 """
 CreateCountryInput is used for create Country object.
@@ -4968,6 +5215,37 @@ type Query {
     """
     where: CityWhereInput
   ): CityConnection!
+  competitors(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Competitors returned from the connection.
+    """
+    orderBy: CompetitorOrder
+
+    """
+    Filtering options for Competitors returned from the connection.
+    """
+    where: CompetitorWhereInput
+  ): CompetitorConnection!
   countries(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -6407,6 +6685,15 @@ input UpdateCityInput {
   addTenderIDs: [ID!]
   removeTenderIDs: [ID!]
   clearTenders: Boolean
+}
+"""
+UpdateCompetitorInput is used for update Competitor object.
+Input was generated by ent.
+"""
+input UpdateCompetitorInput {
+  updatedAt: Time
+  shortName: String
+  name: String
 }
 """
 UpdateCountryInput is used for update Country object.

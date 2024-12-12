@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -36,6 +37,11 @@ var cityImplementors = []string{"City", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*City) IsNode() {}
+
+var competitorImplementors = []string{"Competitor", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*Competitor) IsNode() {}
 
 var countryImplementors = []string{"Country", "Node"}
 
@@ -157,6 +163,19 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(city.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, cityImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case competitor.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Competitor.Query().
+			Where(competitor.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, competitorImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -358,6 +377,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		query := c.City.Query().
 			Where(city.IDIn(ids...))
 		query, err := query.CollectFields(ctx, cityImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case competitor.Table:
+		query := c.Competitor.Query().
+			Where(competitor.IDIn(ids...))
+		query, err := query.CollectFields(ctx, competitorImplementors...)
 		if err != nil {
 			return nil, err
 		}

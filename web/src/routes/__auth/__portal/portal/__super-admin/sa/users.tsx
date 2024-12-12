@@ -14,10 +14,8 @@ const userSearchSchema = v.object({
 export const Route = createFileRoute(
   "/__auth/__portal/portal/__super-admin/sa/users",
 )({
-  async loader({ context: { RelayEnvironment, session } }) {
-    return loadQuery<usersSuperAdminUsersPageQuery>(RelayEnvironment, node, {
-      userId: session.userId,
-    });
+  async loader({ context: { RelayEnvironment } }) {
+    return loadQuery<usersSuperAdminUsersPageQuery>(RelayEnvironment, node, {});
   },
   validateSearch: userSearchSchema,
 });

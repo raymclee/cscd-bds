@@ -36,7 +36,7 @@ func main() {
 
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.NewStore()
-	sm := session.NewSession(lc)
+	sm := session.NewSession(lc, s)
 	f := feishu.NewFeishu(lc, sm)
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")

@@ -17,7 +17,7 @@ import * as types from './graphql';
 const documents = {
     "\n  mutation useCreatePlotMutation(\n    $input: CreatePlotInput!\n    $geoBounds: [[Float!]!]\n    $connections: [ID!]!\n  ) {\n    createPlot(input: $input, geoBounds: $geoBounds) {\n      edges @prependNode(connections: $connections, edgeTypeName: \"PlotEdge\") {\n        node {\n          id\n          name\n          geoBounds\n          colorHex\n        }\n      }\n    }\n  }\n": types.UseCreatePlotMutationDocument,
     "\n    mutation useCreateUserMutation(\n      $input: CreateUserInput!\n      $connections: [ID!]!\n    ) {\n      createUser(input: $input) {\n        edges @appendEdge(connections: $connections) {\n          node {\n            id\n            name\n            email\n            username\n            openID\n            avatarURL\n            disabled\n            areas {\n              edges {\n                node {\n                  id\n                  name\n                }\n              }\n            }\n            isAdmin\n            hasMapAccess\n            hasEditAccess\n          }\n        }\n      }\n    }\n  ": types.UseCreateUserMutationDocument,
-    "\n    mutation useDeleteUserMutation($id: ID!) {\n      deleteUser(id: $id) {\n        id\n      }\n    }\n  ": types.UseDeleteUserMutationDocument,
+    "\n    mutation useDeleteUserMutation($id: ID!, $connections: [ID!]!) {\n      deleteUser(id: $id) {\n        id @deleteEdge(connections: $connections)\n      }\n    }\n  ": types.UseDeleteUserMutationDocument,
     "\n    mutation useUpdateUserMutation($id: ID!, $input: UpdateUserInput!) {\n      updateUser(id: $id, input: $input) {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isAdmin\n        isSales\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  ": types.UseUpdateUserMutationDocument,
 };
 
@@ -32,7 +32,7 @@ export function graphql(source: "\n    mutation useCreateUserMutation(\n      $i
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation useDeleteUserMutation($id: ID!) {\n      deleteUser(id: $id) {\n        id\n      }\n    }\n  "): typeof import('./graphql').UseDeleteUserMutationDocument;
+export function graphql(source: "\n    mutation useDeleteUserMutation($id: ID!, $connections: [ID!]!) {\n      deleteUser(id: $id) {\n        id @deleteEdge(connections: $connections)\n      }\n    }\n  "): typeof import('./graphql').UseDeleteUserMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

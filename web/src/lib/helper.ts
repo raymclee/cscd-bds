@@ -1,3 +1,4 @@
+import { TagProps } from "antd";
 import {
   AreaConnection,
   Maybe,
@@ -201,4 +202,25 @@ export function isHW(
   tender: Maybe<Tender> | Partial<Tender> | null | undefined,
 ): boolean {
   return tender?.area?.code === "HW";
+}
+
+export function tenderStatusTagColor(
+  status: Maybe<number> | undefined,
+): TagProps["color"] {
+  if (!status) {
+    return "default";
+  }
+  switch (status) {
+    case 3:
+      return "success";
+    case 4:
+      return "red";
+    case 1:
+    case 5:
+    case 6:
+      return "processing";
+    case 2:
+      return "warning";
+  }
+  return "default";
 }

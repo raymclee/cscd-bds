@@ -5,8 +5,8 @@ func init() {
 	IsProd = false
 	FilePath = "static/"
 
-	HanaPort = 30044
-	HanaHost = "10.148.7.4"
+	HanaPort = 30071
+	HanaHost = "10.148.8.9"
 	HanaUsername = "SAPHANADB"
 	HanaPassword = "Sap2cool"
 	HanaDatabase = "SAPHANADB"

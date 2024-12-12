@@ -1,5 +1,4 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { userFormFragment$key } from "__generated__/userFormFragment.graphql";
 import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
 import {
   App,
@@ -13,10 +12,10 @@ import {
 import { Plus } from "lucide-react";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
-import { ConnectionHandler, graphql } from "relay-runtime";
+import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
-import { User } from "~/graphql/graphql";
+import { AreaConnection, User } from "~/graphql/graphql";
 import { useDeleteUser } from "~/hooks/use-delete-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
@@ -30,8 +29,6 @@ const query = graphql`
   query usersPageQuery($userId: ID!, $first: Int, $last: Int) {
     node(id: $userId) {
       ... on User {
-        ...userFormFragment
-
         areas {
           edges {
             node {
@@ -87,16 +84,32 @@ function RouteComponent() {
   const searchText = searchParams.q || "";
   const area = searchParams.area;
 
+  const users: User[] = [];
+  for (const area of data.node?.areas?.edges ?? []) {
+    for (const user of area?.node?.users.edges ?? []) {
+      if (!user?.node) {
+        continue;
+      }
+      if (users.map((u) => u.id).includes(user.node.id)) {
+        continue;
+      }
+      users.push(user.node as User);
+    }
+  }
+
   const dataSource =
-    data.node?.areas?.edges
-      ?.flatMap((a) => a?.node?.users.edges)
-      ?.map((e) => e?.node)
+    users
       .filter((n) => n?.name?.toLowerCase().includes(searchText.toLowerCase()))
       .filter(
         (n) =>
           area === undefined ||
           n?.areas?.edges?.some((a) => a?.node?.code === area),
       ) ?? [];
+
+  const connectionIDs =
+    data.node?.areas?.edges
+      ?.flatMap((e) => e?.node?.users.__id)
+      .filter((id) => id !== undefined) ?? [];
 
   const columns: TableProps<User>["columns"] = [
     {
@@ -116,7 +129,14 @@ function RouteComponent() {
       title: "区域",
       render: (_, record) =>
         record.areas.edges && record.areas.edges?.length > 0
-          ? record.areas?.edges?.map((a) => a?.node?.name).join(", ")
+          ? record.areas?.edges
+              ?.filter((e) =>
+                data.node?.areas?.edges
+                  ?.map((a) => a?.node?.id)
+                  .includes(e?.node?.id),
+              )
+              .map((a) => a?.node?.name)
+              .join(", ")
           : "无",
     },
     {
@@ -166,21 +186,13 @@ function RouteComponent() {
             title="确定删除吗？"
             onConfirm={() => {
               commitDeleteUser({
-                variables: { id: record.id },
+                variables: { id: record.id, connections: connectionIDs },
                 onCompleted() {
                   message.success("删除成功");
                 },
                 onError(error) {
                   console.error(error);
                   message.error(`删除失败`);
-                },
-                updater(store) {
-                  const userRecord = store.getRoot();
-                  const connectionRecord = ConnectionHandler.getConnection(
-                    userRecord,
-                    "usersPageQuery_users",
-                  );
-                  ConnectionHandler.deleteNode(connectionRecord!, record.id);
                 },
               });
             }}
@@ -209,17 +221,15 @@ function RouteComponent() {
         }))}
       >
         <UserFormDrawer
-          queryRef={data.node!}
-          // connectionID={data.users.__id}
-          connectionID=""
+          connectionIDs={connectionIDs.length > 0 ? [connectionIDs.at(0)!] : []}
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
+          avaliableAreas={data.node?.areas as AreaConnection}
         />
       </ListFilter>
 
       <Table
         dataSource={dataSource}
-        // @ts-ignore
         columns={columns}
         rowKey={"id"}
         pagination={{
@@ -237,15 +247,15 @@ function RouteComponent() {
 }
 
 function UserFormDrawer({
-  queryRef,
-  connectionID,
+  connectionIDs,
   selectedUser,
   setSelectedUser,
+  avaliableAreas,
 }: {
-  queryRef: userFormFragment$key;
-  connectionID: string;
+  connectionIDs: string[];
   selectedUser: User | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  avaliableAreas: AreaConnection;
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -273,10 +283,10 @@ function UserFormDrawer({
         maskClosable={!!selectedUser}
       >
         <UserForm
-          queryRef={queryRef}
           onClose={onClose}
-          connectionID={connectionID}
+          connectionIDs={connectionIDs}
           selectedUser={selectedUser}
+          avaliableAreas={avaliableAreas}
         />
       </Drawer>
     </>

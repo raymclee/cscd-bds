@@ -9,7 +9,7 @@ import { ImageOff } from "lucide-react";
 import { useFragment } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
 import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
-import { tenderStatusText } from "~/lib/helper";
+import { tenderStatusTagColor, tenderStatusText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { Tender } from "~/graphql/graphql";
@@ -100,11 +100,6 @@ export function TenderListItem({
       }
       extra={
         <div className="aspect-[16/9] md:max-w-[280px]">
-          {/* <img
-            alt={item?.name}
-            className="w-full h-full rounded-lg"
-            src={item?.images?.[0] || ""}
-          /> */}
           {item?.images && item?.images?.length > 0 ? (
             <Carousel>
               <CarouselContent>
@@ -139,12 +134,14 @@ export function TenderListItem({
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <Tag>{item?.area.name}</Tag>
-          <Tag>{tenderStatusText(item?.status)}</Tag>
+          <Tag color={tenderStatusTagColor(item.status)}>
+            {tenderStatusText(item?.status)}
+          </Tag>
         </div>
 
         <div>
           {isGAOrHW && item.tenderClosingDate && (
-            <div>交標日期：{dayjs(item.tenderClosingDate).format("L")}</div>
+            <div>交标日期：{dayjs(item.tenderClosingDate).format("L")}</div>
           )}
         </div>
         {/* {(isGA(item as Partial<Tender>) || isHW(item as Partial<Tender>)) &&

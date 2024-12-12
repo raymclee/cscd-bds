@@ -59,6 +59,7 @@ func main() {
 	fetchCustomer()
 	fetchTender()
 	fetchVisitRecord()
+	fetchCompetitor()
 
 }
 
@@ -70,6 +71,33 @@ func fetchCompetitor() {
 	}
 	if !resp.Success() {
 		panic(resp.Error())
+	}
+
+	for _, item := range resp.Data.Items {
+		fmt.Println(item.Fields)
+
+		var (
+			shortName string
+			name      string
+		)
+
+		if f, ok := item.Fields["简称"]; ok {
+			if v, ok := f.(string); ok {
+				shortName = v
+			}
+		}
+
+		if f, ok := item.Fields["企业名称"]; ok {
+			if v, ok := f.(string); ok {
+				name = v
+			}
+		}
+
+		if shortName == "" || name == "" {
+			continue
+		}
+
+		s.Competitor.Create().SetShortName(shortName).SetName(name).Exec(ctx)
 	}
 }
 

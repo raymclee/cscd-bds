@@ -44,10 +44,11 @@ func (f *Feishu) GetFeishuUser(ctx context.Context, openID string, accessToken s
 }
 
 func (f *Feishu) SearchFeishuUser(ctx context.Context, query string) (*[]FeishuUser, error) {
-	sess, err := f.session.GetSession(ctx)
+	accessToken, err := f.session.GetAccessToken(ctx)
 	if err != nil {
 		return nil, err
 	}
+
 	// 构建请求URL
 	url := fmt.Sprintf("https://open.feishu.cn/open-apis/search/v1/user?query=%s", url.QueryEscape(query))
 
@@ -57,10 +58,6 @@ func (f *Feishu) SearchFeishuUser(ctx context.Context, query string) (*[]FeishuU
 		return nil, fmt.Errorf("创建请求失败: %v", err)
 	}
 
-	accessToken, err := f.session.GetAccessToken(ctx, sess)
-	if err != nil {
-		return nil, err
-	}
 	// 设置请求头
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 	req.Header.Set("Content-Type", "application/json")

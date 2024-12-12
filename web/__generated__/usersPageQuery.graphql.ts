@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<038d8602170f1802ee2a16ed2f91cf89>>
+ * @generated SignedSource<<5ae2258006c7faf802a597f462a01181>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,6 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
 export type usersPageQuery$variables = {
   first?: number | null | undefined;
   last?: number | null | undefined;
@@ -51,7 +50,6 @@ export type usersPageQuery$data = {
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
-    readonly " $fragmentSpreads": FragmentRefs<"userFormFragment">;
   } | null | undefined;
 };
 export type usersPageQuery = {
@@ -324,11 +322,6 @@ return {
             "kind": "InlineFragment",
             "selections": [
               {
-                "args": null,
-                "kind": "FragmentSpread",
-                "name": "userFormFragment"
-              },
-              {
                 "alias": null,
                 "args": null,
                 "concreteType": "AreaConnection",
@@ -477,7 +470,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "96458633170b8b450ec2a7d2a6d0603e",
+    "cacheID": "7093db20e7c7bca4328603c7a1c51b24",
     "id": null,
     "metadata": {
       "connection": [
@@ -491,11 +484,11 @@ return {
     },
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      ...userFormFragment\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users(first: $first, last: $last, where: {isLeader: false, isSuperAdmin: false}) {\n              edges {\n                node {\n                  id\n                  name\n                  email\n                  username\n                  openID\n                  avatarURL\n                  disabled\n                  areas {\n                    edges {\n                      node {\n                        id\n                        name\n                        code\n                      }\n                    }\n                  }\n                  isAdmin\n                  hasMapAccess\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment userFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query usersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users(first: $first, last: $last, where: {isLeader: false, isSuperAdmin: false}) {\n              edges {\n                node {\n                  id\n                  name\n                  email\n                  username\n                  openID\n                  avatarURL\n                  disabled\n                  areas {\n                    edges {\n                      node {\n                        id\n                        name\n                        code\n                      }\n                    }\n                  }\n                  isAdmin\n                  hasMapAccess\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "bfea3949fd4b0cf8e337dd118c9055e8";
+(node as any).hash = "1c7d7933dd0faa6b4c6b222a80fc41aa";
 
 export default node;

@@ -5,6 +5,7 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -64,6 +65,27 @@ func init() {
 	cityDescID := cityMixinFields0[0].Descriptor()
 	// city.DefaultID holds the default value on creation for the id field.
 	city.DefaultID = cityDescID.Default.(func() xid.ID)
+	competitorMixin := schema.Competitor{}.Mixin()
+	competitorMixinFields0 := competitorMixin[0].Fields()
+	_ = competitorMixinFields0
+	competitorMixinFields1 := competitorMixin[1].Fields()
+	_ = competitorMixinFields1
+	competitorFields := schema.Competitor{}.Fields()
+	_ = competitorFields
+	// competitorDescCreatedAt is the schema descriptor for created_at field.
+	competitorDescCreatedAt := competitorMixinFields1[0].Descriptor()
+	// competitor.DefaultCreatedAt holds the default value on creation for the created_at field.
+	competitor.DefaultCreatedAt = competitorDescCreatedAt.Default.(func() time.Time)
+	// competitorDescUpdatedAt is the schema descriptor for updated_at field.
+	competitorDescUpdatedAt := competitorMixinFields1[1].Descriptor()
+	// competitor.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	competitor.DefaultUpdatedAt = competitorDescUpdatedAt.Default.(func() time.Time)
+	// competitor.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	competitor.UpdateDefaultUpdatedAt = competitorDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// competitorDescID is the schema descriptor for id field.
+	competitorDescID := competitorMixinFields0[0].Descriptor()
+	// competitor.DefaultID holds the default value on creation for the id field.
+	competitor.DefaultID = competitorDescID.Default.(func() xid.ID)
 	countryMixin := schema.Country{}.Mixin()
 	countryMixinFields0 := countryMixin[0].Fields()
 	_ = countryMixinFields0

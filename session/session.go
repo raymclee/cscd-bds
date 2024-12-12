@@ -2,6 +2,8 @@ package session
 
 import (
 	"context"
+	"cscd-bds/store"
+	"cscd-bds/store/ent/schema/xid"
 	"encoding/gob"
 	"fmt"
 	"time"
@@ -22,9 +24,10 @@ func init() {
 type Session struct {
 	*scs.SessionManager
 	feishu *lark.Client
+	store  *store.Store
 }
 
-func NewSession(feishu *lark.Client) *Session {
+func NewSession(feishu *lark.Client, store *store.Store) *Session {
 	sessionManager := scs.New()
 	sessionManager.Store = redisstore.New(&redis.Pool{
 		MaxIdle: 10,
@@ -36,6 +39,7 @@ func NewSession(feishu *lark.Client) *Session {
 	return &Session{
 		sessionManager,
 		feishu,
+		store,
 	}
 }
 
@@ -44,16 +48,43 @@ func (s Session) Middlware() echo.MiddlewareFunc {
 }
 
 func (s Session) GetSession(ctx context.Context) (User, error) {
-	user, ok := s.Get(ctx, "user").(User)
+	su, ok := s.Get(ctx, "user").(User)
 	if !ok {
 		return User{}, fmt.Errorf("Unauthorized")
 	}
-	return user, nil
+	u, err := s.store.User.Get(ctx, xid.ID(su.UserId))
+	if err != nil {
+		return User{}, fmt.Errorf("session not found")
+	}
+	return User{
+		AccessToken:   su.AccessToken,
+		ExpiresIn:     su.ExpiresIn,
+		RefreshToken:  su.RefreshToken,
+		UserId:        su.UserId,
+		Name:          su.Name,
+		Username:      su.Username,
+		AvatarUrl:     su.AvatarUrl,
+		AvatarThumb:   su.AvatarThumb,
+		AvatarMiddle:  su.AvatarMiddle,
+		AvatarBig:     su.AvatarBig,
+		OpenId:        su.OpenId,
+		UnionId:       su.UnionId,
+		Email:         su.Email,
+		IsAdmin:       u.IsAdmin,
+		IsSuperAdmin:  u.IsSuperAdmin,
+		HasMapAccess:  u.HasMapAccess,
+		HasEditAccess: u.HasEditAccess,
+	}, nil
 }
 
-func (s Session) GetAccessToken(ctx context.Context, user User) (string, error) {
+func (s Session) GetAccessToken(ctx context.Context) (string, error) {
+	user, err := s.GetSession(ctx)
+	if err != nil {
+		return "", err
+	}
 	var accessToken = user.AccessToken
 	if user.IsExpired() {
+		fmt.Println(user)
 		body := larkauthen.
 			NewCreateOidcRefreshAccessTokenReqBodyBuilder().
 			GrantType("refresh_token").
@@ -65,10 +96,12 @@ func (s Session) GetAccessToken(ctx context.Context, user User) (string, error) 
 			Build()
 		res, err := s.feishu.Authen.OidcRefreshAccessToken.Create(ctx, req)
 		if err != nil {
+			fmt.Println(err)
 			return "", fmt.Errorf("error refreshing access token: %s", err)
 		}
 		if !res.Success() {
-			return "", fmt.Errorf("error refreshing access token: %s", res.Msg)
+			fmt.Println(res)
+			return "", fmt.Errorf("error refreshing access token: %s", res)
 		}
 		accessToken = *res.Data.AccessToken
 		if err := s.RenewToken(ctx); err != nil {

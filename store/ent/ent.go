@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
@@ -84,6 +85,7 @@ func checkColumn(table, column string) error {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			area.Table:        area.ValidColumn,
 			city.Table:        city.ValidColumn,
+			competitor.Table:  competitor.ValidColumn,
 			country.Table:     country.ValidColumn,
 			customer.Table:    customer.ValidColumn,
 			district.Table:    district.ValidColumn,

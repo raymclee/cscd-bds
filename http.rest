@@ -8,7 +8,7 @@ Content-Type: application/json
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=北區古洞北面&city=香港特别行政区
+GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=九龍灣啟成街3號&city=香港特别行政区
 
 
 ###

@@ -12,6 +12,9 @@ type Area func(*sql.Selector)
 // City is the predicate function for city builders.
 type City func(*sql.Selector)
 
+// Competitor is the predicate function for competitor builders.
+type Competitor func(*sql.Selector)
+
 // Country is the predicate function for country builders.
 type Country func(*sql.Selector)
 
