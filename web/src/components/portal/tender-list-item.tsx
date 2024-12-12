@@ -55,7 +55,7 @@ export function TenderListItem({
     `,
     tender,
   );
-  const { session } = useRouteContext({ from: "/__auth" });
+  const { session } = useRouteContext({ from: "/_auth" });
 
   const isGAOrHW = item.area.code === "GA" || item.area.code === "HW";
 
@@ -85,6 +85,15 @@ export function TenderListItem({
               </Link>,
               showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
+              <Link
+                to="/portal/tenders/$id/result"
+                params={{ id: item.id }}
+                resetScroll={false}
+              >
+                <Button type="link" size="small">
+                  结果
+                </Button>
+              </Link>,
             ]
           : [
               <Link

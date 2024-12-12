@@ -1,4 +1,8 @@
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+  RouterProvider,
+  createRouteMask,
+  createRouter,
+} from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 import { RelayEnvironment } from "~/lib/relay";
 import dayjs from "dayjs";
@@ -13,9 +17,17 @@ import { routeTree } from "./routeTree.gen";
 import "@amap/amap-jsapi-types";
 import "./main.css";
 
+const tenderResultModalToTenderMask = createRouteMask({
+  routeTree,
+  from: "/portal/tenders/$id/result",
+  to: "/portal/tenders",
+  params: true,
+});
+
 // Set up a Router instance
 const router = createRouter({
   routeTree,
+  routeMasks: [tenderResultModalToTenderMask],
   defaultPreload: "intent",
   context: {
     RelayEnvironment,

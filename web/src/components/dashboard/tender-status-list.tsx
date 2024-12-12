@@ -5,7 +5,7 @@ import { fetchQuery } from "relay-runtime";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { districtsQuery } from "~/routes/_auth/_dashboard/__map/index.lazy";
 import { useMapStore } from "~/store/map";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";

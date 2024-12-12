@@ -1,7 +1,7 @@
 import { useLoaderData } from "@tanstack/react-router";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
 import { usePreloadedQuery } from "react-relay";
-import { mapIndexPageQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { mapIndexPageQuery } from "~/routes/_auth/_dashboard/__map/index.lazy";
 import { useMapStore } from "~/store/map";
 
 export function useAreaTenders() {
