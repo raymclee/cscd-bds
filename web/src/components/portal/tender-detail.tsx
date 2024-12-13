@@ -2,7 +2,7 @@ import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
-import { Button, Card, Descriptions } from "antd";
+import { Button, Card, Descriptions, Image } from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
 import { tenderStatusText } from "~/lib/helper";
@@ -226,7 +226,17 @@ function GAAndHWTender({
         ]}
       />
 
-      <div className="max-h-[600px] w-[30%]">
+      <Image.PreviewGroup preview={{}}>
+        {images?.map((image, i) => (
+          <Image
+            className="aspect-video max-h-[300px] overflow-hidden"
+            key={["list", i].join("-")}
+            src={image}
+          />
+        ))}
+      </Image.PreviewGroup>
+
+      {/* <div className="max-h-[600px] w-[30%]">
         <Carousel>
           <CarouselContent>
             {images?.map((image, i) => (
@@ -240,7 +250,7 @@ function GAAndHWTender({
             ))}
           </CarouselContent>
         </Carousel>
-      </div>
+      </div> */}
     </div>
   );
 }

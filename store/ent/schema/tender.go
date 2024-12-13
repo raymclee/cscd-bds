@@ -132,6 +132,10 @@ func (Tender) Fields() []ent.Field {
 			GoType(xid.ID("")),
 		field.String("created_by_id").
 			GoType(xid.ID("")),
+		field.String("competitor_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -172,6 +176,10 @@ func (Tender) Edges() []ent.Edge {
 			Annotations(
 				entgql.RelayConnection(),
 			),
+		edge.From("competitor", Competitor.Type).
+			Ref("won_tenders").
+			Field("competitor_id").
+			Unique(),
 	}
 }
 

@@ -259,6 +259,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCustomerID:                           {Type: field.TypeString, Column: tender.FieldCustomerID},
 			tender.FieldFinderID:                             {Type: field.TypeString, Column: tender.FieldFinderID},
 			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
+			tender.FieldCompetitorID:                         {Type: field.TypeString, Column: tender.FieldCompetitorID},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -280,9 +281,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldOpenID:        {Type: field.TypeString, Column: user.FieldOpenID},
 			user.FieldAvatarURL:     {Type: field.TypeString, Column: user.FieldAvatarURL},
 			user.FieldDisabled:      {Type: field.TypeBool, Column: user.FieldDisabled},
-			user.FieldIsSales:       {Type: field.TypeBool, Column: user.FieldIsSales},
 			user.FieldIsAdmin:       {Type: field.TypeBool, Column: user.FieldIsAdmin},
-			user.FieldIsLeader:      {Type: field.TypeBool, Column: user.FieldIsLeader},
+			user.FieldIsCeo:         {Type: field.TypeBool, Column: user.FieldIsCeo},
 			user.FieldIsSuperAdmin:  {Type: field.TypeBool, Column: user.FieldIsSuperAdmin},
 			user.FieldHasMapAccess:  {Type: field.TypeBool, Column: user.FieldHasMapAccess},
 			user.FieldHasEditAccess: {Type: field.TypeBool, Column: user.FieldHasEditAccess},
@@ -393,6 +393,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Bidi:    false,
 		},
 		"City",
+		"Tender",
+	)
+	graph.MustAddE(
+		"won_tenders",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+		},
+		"Competitor",
 		"Tender",
 	)
 	graph.MustAddE(
@@ -694,6 +706,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Tender",
 		"VisitRecord",
+	)
+	graph.MustAddE(
+		"competitor",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CompetitorTable,
+			Columns: []string{tender.CompetitorColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"Competitor",
 	)
 	graph.MustAddE(
 		"areas",
@@ -1108,6 +1132,20 @@ func (f *CompetitorFilter) WhereShortName(p entql.StringP) {
 // WhereName applies the entql string predicate on the name field.
 func (f *CompetitorFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(competitor.FieldName))
+}
+
+// WhereHasWonTenders applies a predicate to check if query has an edge won_tenders.
+func (f *CompetitorFilter) WhereHasWonTenders() {
+	f.Where(entql.HasEdge("won_tenders"))
+}
+
+// WhereHasWonTendersWith applies a predicate to check if query has an edge won_tenders with a given conditions (other predicates).
+func (f *CompetitorFilter) WhereHasWonTendersWith(preds ...predicate.Tender) {
+	f.Where(entql.HasEdgeWith("won_tenders", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
 }
 
 // addPredicate implements the predicateAdder interface.
@@ -2089,6 +2127,11 @@ func (f *TenderFilter) WhereCreatedByID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCreatedByID))
 }
 
+// WhereCompetitorID applies the entql string predicate on the competitor_id field.
+func (f *TenderFilter) WhereCompetitorID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCompetitorID))
+}
+
 // WhereHasArea applies a predicate to check if query has an edge area.
 func (f *TenderFilter) WhereHasArea() {
 	f.Where(entql.HasEdge("area"))
@@ -2215,6 +2258,20 @@ func (f *TenderFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord) 
 	})))
 }
 
+// WhereHasCompetitor applies a predicate to check if query has an edge competitor.
+func (f *TenderFilter) WhereHasCompetitor() {
+	f.Where(entql.HasEdge("competitor"))
+}
+
+// WhereHasCompetitorWith applies a predicate to check if query has an edge competitor with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasCompetitorWith(preds ...predicate.Competitor) {
+	f.Where(entql.HasEdgeWith("competitor", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
 // addPredicate implements the predicateAdder interface.
 func (uq *UserQuery) addPredicate(pred func(s *sql.Selector)) {
 	uq.predicates = append(uq.predicates, pred)
@@ -2295,19 +2352,14 @@ func (f *UserFilter) WhereDisabled(p entql.BoolP) {
 	f.Where(p.Field(user.FieldDisabled))
 }
 
-// WhereIsSales applies the entql bool predicate on the is_sales field.
-func (f *UserFilter) WhereIsSales(p entql.BoolP) {
-	f.Where(p.Field(user.FieldIsSales))
-}
-
 // WhereIsAdmin applies the entql bool predicate on the is_admin field.
 func (f *UserFilter) WhereIsAdmin(p entql.BoolP) {
 	f.Where(p.Field(user.FieldIsAdmin))
 }
 
-// WhereIsLeader applies the entql bool predicate on the is_leader field.
-func (f *UserFilter) WhereIsLeader(p entql.BoolP) {
-	f.Where(p.Field(user.FieldIsLeader))
+// WhereIsCeo applies the entql bool predicate on the is_ceo field.
+func (f *UserFilter) WhereIsCeo(p entql.BoolP) {
+	f.Where(p.Field(user.FieldIsCeo))
 }
 
 // WhereIsSuperAdmin applies the entql bool predicate on the is_super_admin field.

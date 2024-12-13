@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e26d2351f85f5288ecc309dd9b066b4c>>
+ * @generated SignedSource<<8a18dd903c84f8a2ac6a9456be033bd4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,8 +29,7 @@ export type UpdateUserInput = {
   hasEditAccess?: boolean | null | undefined;
   hasMapAccess?: boolean | null | undefined;
   isAdmin?: boolean | null | undefined;
-  isLeader?: boolean | null | undefined;
-  isSales?: boolean | null | undefined;
+  isCeo?: boolean | null | undefined;
   isSuperAdmin?: boolean | null | undefined;
   leaderID?: string | null | undefined;
   name?: string | null | undefined;
@@ -64,7 +63,7 @@ export type useUpdateUserMutation$data = {
     readonly hasMapAccess: boolean;
     readonly id: string;
     readonly isAdmin: boolean;
-    readonly isSales: boolean;
+    readonly isCeo: boolean;
     readonly name: string;
     readonly openID: string | null | undefined;
     readonly username: string;
@@ -205,7 +204,7 @@ v3 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "isSales",
+        "name": "isCeo",
         "storageKey": null
       },
       {
@@ -244,16 +243,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "3d5d41774d5882a98812a2a880b7d90e",
+    "cacheID": "ad3326601e64cae26f18036b74243151",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    isSales\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "32c2aad184bbfd3e3a8c9b533ec723d4";
+(node as any).hash = "516571c9bf1270f6e50583600aedc9fa";
 
 export default node;

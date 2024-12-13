@@ -512,6 +512,37 @@ type Competitor implements Node {
   updatedAt: Time!
   shortName: String!
   name: String!
+  wonTenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: [TenderOrder!]
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
 }
 """
 A connection to a list of items.
@@ -636,6 +667,11 @@ input CompetitorWhereInput {
   nameHasSuffix: String
   nameEqualFold: String
   nameContainsFold: String
+  """
+  won_tenders edge predicates
+  """
+  hasWonTenders: Boolean
+  hasWonTendersWith: [TenderWhereInput!]
 }
 type Country implements Node {
   id: ID!
@@ -835,6 +871,7 @@ input CreateCompetitorInput {
   updatedAt: Time
   shortName: String!
   name: String!
+  wonTenderIDs: [ID!]
 }
 """
 CreateCountryInput is used for create Country object.
@@ -1001,6 +1038,7 @@ input CreateTenderInput {
   cityID: ID
   districtID: ID
   visitRecordIDs: [ID!]
+  competitorID: ID
 }
 """
 CreateUserInput is used for create User object.
@@ -1015,9 +1053,8 @@ input CreateUserInput {
   openID: String
   avatarURL: String
   disabled: Boolean
-  isSales: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  isCeo: Boolean
   isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
@@ -2620,6 +2657,7 @@ type Tender implements Node {
   customerID: ID
   finderID: ID!
   createdByID: ID!
+  competitorID: ID
   area: Area!
   customer: Customer
   finder: User!
@@ -2659,6 +2697,7 @@ type Tender implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
+  competitor: Competitor
 }
 """
 A connection to a list of items.
@@ -3642,6 +3681,24 @@ input TenderWhereInput {
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
+  competitor_id field predicates
+  """
+  competitorID: ID
+  competitorIDNEQ: ID
+  competitorIDIn: [ID!]
+  competitorIDNotIn: [ID!]
+  competitorIDGT: ID
+  competitorIDGTE: ID
+  competitorIDLT: ID
+  competitorIDLTE: ID
+  competitorIDContains: ID
+  competitorIDHasPrefix: ID
+  competitorIDHasSuffix: ID
+  competitorIDIsNil: Boolean
+  competitorIDNotNil: Boolean
+  competitorIDEqualFold: ID
+  competitorIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -3686,6 +3743,11 @@ input TenderWhereInput {
   """
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
+  """
+  competitor edge predicates
+  """
+  hasCompetitor: Boolean
+  hasCompetitorWith: [CompetitorWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -3733,6 +3795,9 @@ input UpdateCompetitorInput {
   updatedAt: Time
   shortName: String
   name: String
+  addWonTenderIDs: [ID!]
+  removeWonTenderIDs: [ID!]
+  clearWonTenders: Boolean
 }
 """
 UpdateCountryInput is used for update Country object.
@@ -3974,6 +4039,8 @@ input UpdateTenderInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
+  competitorID: ID
+  clearCompetitor: Boolean
 }
 """
 UpdateUserInput is used for update User object.
@@ -3989,9 +4056,8 @@ input UpdateUserInput {
   avatarURL: String
   clearAvatarURL: Boolean
   disabled: Boolean
-  isSales: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  isCeo: Boolean
   isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
@@ -4043,9 +4109,8 @@ type User implements Node {
   openID: String
   avatarURL: String
   disabled: Boolean!
-  isSales: Boolean!
   isAdmin: Boolean!
-  isLeader: Boolean!
+  isCeo: Boolean!
   isSuperAdmin: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
@@ -4357,20 +4422,15 @@ input UserWhereInput {
   disabled: Boolean
   disabledNEQ: Boolean
   """
-  is_sales field predicates
-  """
-  isSales: Boolean
-  isSalesNEQ: Boolean
-  """
   is_admin field predicates
   """
   isAdmin: Boolean
   isAdminNEQ: Boolean
   """
-  is_leader field predicates
+  is_ceo field predicates
   """
-  isLeader: Boolean
-  isLeaderNEQ: Boolean
+  isCeo: Boolean
+  isCeoNEQ: Boolean
   """
   is_super_admin field predicates
   """

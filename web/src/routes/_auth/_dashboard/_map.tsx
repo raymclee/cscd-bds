@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import AMapLoader from '@amap/amap-jsapi-loader'
 
-export const Route = createFileRoute('/_auth/_dashboard/__map')({
+export const Route = createFileRoute('/_auth/_dashboard/_map')({
   loader: async () => {
     // await AMapLoader.load({
     //   key: "28982eb1a6a3cd956e0e0614c2fb131b",

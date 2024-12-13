@@ -99,11 +99,12 @@ type ComplexityRoot struct {
 	}
 
 	Competitor struct {
-		CreatedAt func(childComplexity int) int
-		ID        func(childComplexity int) int
-		Name      func(childComplexity int) int
-		ShortName func(childComplexity int) int
-		UpdatedAt func(childComplexity int) int
+		CreatedAt  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Name       func(childComplexity int) int
+		ShortName  func(childComplexity int) int
+		UpdatedAt  func(childComplexity int) int
+		WonTenders func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 	}
 
 	CompetitorConnection struct {
@@ -211,20 +212,21 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateArea     func(childComplexity int, input ent.CreateAreaInput) int
-		CreateCustomer func(childComplexity int, input ent.CreateCustomerInput) int
-		CreatePlot     func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender   func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
-		CreateUser     func(childComplexity int, input ent.CreateUserInput) int
-		DeleteCustomer func(childComplexity int, id xid.ID) int
-		DeletePlot     func(childComplexity int, id xid.ID) int
-		DeleteTender   func(childComplexity int, id xid.ID) int
-		DeleteUser     func(childComplexity int, id xid.ID) int
-		UpdateArea     func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdateCustomer func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
-		UpdatePlot     func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateTender   func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
-		UpdateUser     func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		CreateArea          func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCustomer      func(childComplexity int, input ent.CreateCustomerInput) int
+		CreatePlot          func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
+		CreateTender        func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
+		CreateUser          func(childComplexity int, input ent.CreateUserInput) int
+		DeleteCustomer      func(childComplexity int, id xid.ID) int
+		DeletePlot          func(childComplexity int, id xid.ID) int
+		DeleteTender        func(childComplexity int, id xid.ID) int
+		DeleteUser          func(childComplexity int, id xid.ID) int
+		SetTenderCompetitor func(childComplexity int, tenderID xid.ID, competitorID xid.ID, won bool) int
+		UpdateArea          func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCustomer      func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdatePlot          func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
+		UpdateTender        func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
+		UpdateUser          func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 	}
 
 	PageInfo struct {
@@ -307,8 +309,7 @@ type ComplexityRoot struct {
 		HasEditAccess func(childComplexity int) int
 		HasMapAccess  func(childComplexity int) int
 		IsAdmin       func(childComplexity int) int
-		IsLeader      func(childComplexity int) int
-		IsSales       func(childComplexity int) int
+		IsCeo         func(childComplexity int) int
 		IsSuperAdmin  func(childComplexity int) int
 		Name          func(childComplexity int) int
 		UserID        func(childComplexity int) int
@@ -328,6 +329,8 @@ type ComplexityRoot struct {
 		Code                                 func(childComplexity int) int
 		CompetitivePartnershipRating         func(childComplexity int) int
 		CompetitivePartnershipRatingOverview func(childComplexity int) int
+		Competitor                           func(childComplexity int) int
+		CompetitorID                         func(childComplexity int) int
 		CompetitorSituations                 func(childComplexity int) int
 		ConstructionArea                     func(childComplexity int) int
 		ConsultingFirm                       func(childComplexity int) int
@@ -412,8 +415,7 @@ type ComplexityRoot struct {
 		HasMapAccess  func(childComplexity int) int
 		ID            func(childComplexity int) int
 		IsAdmin       func(childComplexity int) int
-		IsLeader      func(childComplexity int) int
-		IsSales       func(childComplexity int) int
+		IsCeo         func(childComplexity int) int
 		IsSuperAdmin  func(childComplexity int) int
 		Leader        func(childComplexity int) int
 		LeaderID      func(childComplexity int) int
@@ -765,6 +767,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Competitor.UpdatedAt(childComplexity), true
+
+	case "Competitor.wonTenders":
+		if e.complexity.Competitor.WonTenders == nil {
+			break
+		}
+
+		args, err := ec.field_Competitor_wonTenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Competitor.WonTenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "CompetitorConnection.edges":
 		if e.complexity.CompetitorConnection.Edges == nil {
@@ -1354,6 +1368,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteUser(childComplexity, args["id"].(xid.ID)), true
 
+	case "Mutation.setTenderCompetitor":
+		if e.complexity.Mutation.SetTenderCompetitor == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_setTenderCompetitor_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.SetTenderCompetitor(childComplexity, args["tenderId"].(xid.ID), args["competitorId"].(xid.ID), args["won"].(bool)), true
+
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
 			break
@@ -1884,19 +1910,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Session.IsAdmin(childComplexity), true
 
-	case "Session.isLeader":
-		if e.complexity.Session.IsLeader == nil {
+	case "Session.isCeo":
+		if e.complexity.Session.IsCeo == nil {
 			break
 		}
 
-		return e.complexity.Session.IsLeader(childComplexity), true
-
-	case "Session.isSales":
-		if e.complexity.Session.IsSales == nil {
-			break
-		}
-
-		return e.complexity.Session.IsSales(childComplexity), true
+		return e.complexity.Session.IsCeo(childComplexity), true
 
 	case "Session.isSuperAdmin":
 		if e.complexity.Session.IsSuperAdmin == nil {
@@ -2009,6 +2028,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.CompetitivePartnershipRatingOverview(childComplexity), true
+
+	case "Tender.competitor":
+		if e.complexity.Tender.Competitor == nil {
+			break
+		}
+
+		return e.complexity.Tender.Competitor(childComplexity), true
+
+	case "Tender.competitorID":
+		if e.complexity.Tender.CompetitorID == nil {
+			break
+		}
+
+		return e.complexity.Tender.CompetitorID(childComplexity), true
 
 	case "Tender.competitorSituations":
 		if e.complexity.Tender.CompetitorSituations == nil {
@@ -2550,19 +2583,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.IsAdmin(childComplexity), true
 
-	case "User.isLeader":
-		if e.complexity.User.IsLeader == nil {
+	case "User.isCeo":
+		if e.complexity.User.IsCeo == nil {
 			break
 		}
 
-		return e.complexity.User.IsLeader(childComplexity), true
-
-	case "User.isSales":
-		if e.complexity.User.IsSales == nil {
-			break
-		}
-
-		return e.complexity.User.IsSales(childComplexity), true
+		return e.complexity.User.IsCeo(childComplexity), true
 
 	case "User.isSuperAdmin":
 		if e.complexity.User.IsSuperAdmin == nil {
@@ -3473,6 +3499,37 @@ type Competitor implements Node {
   updatedAt: Time!
   shortName: String!
   name: String!
+  wonTenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Tenders returned from the connection.
+    """
+    orderBy: [TenderOrder!]
+
+    """
+    Filtering options for Tenders returned from the connection.
+    """
+    where: TenderWhereInput
+  ): TenderConnection!
 }
 """
 A connection to a list of items.
@@ -3597,6 +3654,11 @@ input CompetitorWhereInput {
   nameHasSuffix: String
   nameEqualFold: String
   nameContainsFold: String
+  """
+  won_tenders edge predicates
+  """
+  hasWonTenders: Boolean
+  hasWonTendersWith: [TenderWhereInput!]
 }
 type Country implements Node {
   id: ID!
@@ -3796,6 +3858,7 @@ input CreateCompetitorInput {
   updatedAt: Time
   shortName: String!
   name: String!
+  wonTenderIDs: [ID!]
 }
 """
 CreateCountryInput is used for create Country object.
@@ -3962,6 +4025,7 @@ input CreateTenderInput {
   cityID: ID
   districtID: ID
   visitRecordIDs: [ID!]
+  competitorID: ID
 }
 """
 CreateUserInput is used for create User object.
@@ -3976,9 +4040,8 @@ input CreateUserInput {
   openID: String
   avatarURL: String
   disabled: Boolean
-  isSales: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  isCeo: Boolean
   isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
@@ -5581,6 +5644,7 @@ type Tender implements Node {
   customerID: ID
   finderID: ID!
   createdByID: ID!
+  competitorID: ID
   area: Area!
   customer: Customer
   finder: User!
@@ -5620,6 +5684,7 @@ type Tender implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
+  competitor: Competitor
 }
 """
 A connection to a list of items.
@@ -6603,6 +6668,24 @@ input TenderWhereInput {
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
+  competitor_id field predicates
+  """
+  competitorID: ID
+  competitorIDNEQ: ID
+  competitorIDIn: [ID!]
+  competitorIDNotIn: [ID!]
+  competitorIDGT: ID
+  competitorIDGTE: ID
+  competitorIDLT: ID
+  competitorIDLTE: ID
+  competitorIDContains: ID
+  competitorIDHasPrefix: ID
+  competitorIDHasSuffix: ID
+  competitorIDIsNil: Boolean
+  competitorIDNotNil: Boolean
+  competitorIDEqualFold: ID
+  competitorIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -6647,6 +6730,11 @@ input TenderWhereInput {
   """
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
+  """
+  competitor edge predicates
+  """
+  hasCompetitor: Boolean
+  hasCompetitorWith: [CompetitorWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -6694,6 +6782,9 @@ input UpdateCompetitorInput {
   updatedAt: Time
   shortName: String
   name: String
+  addWonTenderIDs: [ID!]
+  removeWonTenderIDs: [ID!]
+  clearWonTenders: Boolean
 }
 """
 UpdateCountryInput is used for update Country object.
@@ -6935,6 +7026,8 @@ input UpdateTenderInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
+  competitorID: ID
+  clearCompetitor: Boolean
 }
 """
 UpdateUserInput is used for update User object.
@@ -6950,9 +7043,8 @@ input UpdateUserInput {
   avatarURL: String
   clearAvatarURL: Boolean
   disabled: Boolean
-  isSales: Boolean
   isAdmin: Boolean
-  isLeader: Boolean
+  isCeo: Boolean
   isSuperAdmin: Boolean
   hasMapAccess: Boolean
   hasEditAccess: Boolean
@@ -7004,9 +7096,8 @@ type User implements Node {
   openID: String
   avatarURL: String
   disabled: Boolean!
-  isSales: Boolean!
   isAdmin: Boolean!
-  isLeader: Boolean!
+  isCeo: Boolean!
   isSuperAdmin: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
@@ -7318,20 +7409,15 @@ input UserWhereInput {
   disabled: Boolean
   disabledNEQ: Boolean
   """
-  is_sales field predicates
-  """
-  isSales: Boolean
-  isSalesNEQ: Boolean
-  """
   is_admin field predicates
   """
   isAdmin: Boolean
   isAdminNEQ: Boolean
   """
-  is_leader field predicates
+  is_ceo field predicates
   """
-  isLeader: Boolean
-  isLeaderNEQ: Boolean
+  isCeo: Boolean
+  isCeoNEQ: Boolean
   """
   is_super_admin field predicates
   """
@@ -7719,6 +7805,8 @@ type GeoJson {
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
   deletePlot(id: ID!): Plot!
+
+  setTenderCompetitor(tenderId: ID!, competitorId: ID!, won: Boolean!): Tender!
 }
 `, BuiltIn: false},
 	{Name: "../plot.graphql", Input: `extend type Plot {
@@ -7743,10 +7831,9 @@ type FeishuUser {
   username: String!
   email: String!
   avatarUrl: String!
-  isLeader: Boolean!
   isAdmin: Boolean!
   isSuperAdmin: Boolean!
-  isSales: Boolean!
+  isCeo: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
 }

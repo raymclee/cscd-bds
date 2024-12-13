@@ -4,7 +4,7 @@ import { useMapStore } from '~/store/map'
 import { Blocks, Monitor } from 'lucide-react'
 import { Button, Tooltip } from 'antd'
 
-export const Route = createLazyFileRoute('/_auth/_dashboard/__map')({
+export const Route = createLazyFileRoute('/_auth/_dashboard/_map')({
   component: RouteComponent,
 })
 

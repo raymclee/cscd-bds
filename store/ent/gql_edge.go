@@ -142,6 +142,27 @@ func (c *City) Tenders(
 	return c.QueryTenders().Paginate(ctx, after, first, before, last, opts...)
 }
 
+func (c *Competitor) WonTenders(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*TenderOrder, where *TenderWhereInput,
+) (*TenderConnection, error) {
+	opts := []TenderPaginateOption{
+		WithTenderOrder(orderBy),
+		WithTenderFilter(where.Filter),
+	}
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := c.Edges.totalCount[0][alias]
+	if nodes, err := c.NamedWonTenders(alias); err == nil || hasTotalCount {
+		pager, err := newTenderPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &TenderConnection{Edges: []*TenderEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
+	}
+	return c.QueryWonTenders().Paginate(ctx, after, first, before, last, opts...)
+}
+
 func (c *Country) Provinces(
 	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *ProvinceOrder, where *ProvinceWhereInput,
 ) (*ProvinceConnection, error) {
@@ -461,6 +482,14 @@ func (t *Tender) VisitRecords(
 		return conn, nil
 	}
 	return t.QueryVisitRecords().Paginate(ctx, after, first, before, last, opts...)
+}
+
+func (t *Tender) Competitor(ctx context.Context) (*Competitor, error) {
+	result, err := t.Edges.CompetitorOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryCompetitor().Only(ctx)
+	}
+	return result, MaskNotFound(err)
 }
 
 func (u *User) Areas(

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -22,8 +23,17 @@ const (
 	FieldShortName = "short_name"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// EdgeWonTenders holds the string denoting the won_tenders edge name in mutations.
+	EdgeWonTenders = "won_tenders"
 	// Table holds the table name of the competitor in the database.
 	Table = "competitors"
+	// WonTendersTable is the table that holds the won_tenders relation/edge.
+	WonTendersTable = "tenders"
+	// WonTendersInverseTable is the table name for the Tender entity.
+	// It exists in this package in order to avoid circular dependency with the "tender" package.
+	WonTendersInverseTable = "tenders"
+	// WonTendersColumn is the table column denoting the won_tenders relation/edge.
+	WonTendersColumn = "competitor_id"
 )
 
 // Columns holds all SQL columns for competitor fields.
@@ -82,4 +92,25 @@ func ByShortName(opts ...sql.OrderTermOption) OrderOption {
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
+// ByWonTendersCount orders the results by won_tenders count.
+func ByWonTendersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newWonTendersStep(), opts...)
+	}
+}
+
+// ByWonTenders orders the results by won_tenders terms.
+func ByWonTenders(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newWonTendersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newWonTendersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(WonTendersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, WonTendersTable, WonTendersColumn),
+	)
 }

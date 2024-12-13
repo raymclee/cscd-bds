@@ -5,6 +5,7 @@ package config
 func init() {
 	DatabaseUrl = "postgresql://postgres:~!Wbvxwet=JdgcKB@localhost:5432/cscd_bds_uat"
 	IsProd = false
+	IsUat = true
 
 	HanaPort = 30071
 	HanaHost = "10.148.8.9"

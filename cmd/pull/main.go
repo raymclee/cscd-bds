@@ -54,7 +54,7 @@ func main() {
 	client = lark.NewClient(appId, appSecret)
 	s = store.NewStore()
 
-	// fetchArea()
+	fetchArea()
 	fetchSales()
 	fetchCustomer()
 	fetchTender()

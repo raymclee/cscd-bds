@@ -25,8 +25,33 @@ type Competitor struct {
 	// ShortName holds the value of the "short_name" field.
 	ShortName string `json:"short_name,omitempty"`
 	// Name holds the value of the "name" field.
-	Name         string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the CompetitorQuery when eager-loading is set.
+	Edges        CompetitorEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// CompetitorEdges holds the relations/edges for other nodes in the graph.
+type CompetitorEdges struct {
+	// WonTenders holds the value of the won_tenders edge.
+	WonTenders []*Tender `json:"won_tenders,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+	// totalCount holds the count of the edges above.
+	totalCount [1]map[string]int
+
+	namedWonTenders map[string][]*Tender
+}
+
+// WonTendersOrErr returns the WonTenders value or an error if the edge
+// was not loaded in eager-loading.
+func (e CompetitorEdges) WonTendersOrErr() ([]*Tender, error) {
+	if e.loadedTypes[0] {
+		return e.WonTenders, nil
+	}
+	return nil, &NotLoadedError{edge: "won_tenders"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -98,6 +123,11 @@ func (c *Competitor) Value(name string) (ent.Value, error) {
 	return c.selectValues.Get(name)
 }
 
+// QueryWonTenders queries the "won_tenders" edge of the Competitor entity.
+func (c *Competitor) QueryWonTenders() *TenderQuery {
+	return NewCompetitorClient(c.config).QueryWonTenders(c)
+}
+
 // Update returns a builder for updating this Competitor.
 // Note that you need to call Competitor.Unwrap() before calling this method if this Competitor
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -134,6 +164,30 @@ func (c *Competitor) String() string {
 	builder.WriteString(c.Name)
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedWonTenders returns the WonTenders named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *Competitor) NamedWonTenders(name string) ([]*Tender, error) {
+	if c.Edges.namedWonTenders == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedWonTenders[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *Competitor) appendNamedWonTenders(name string, edges ...*Tender) {
+	if c.Edges.namedWonTenders == nil {
+		c.Edges.namedWonTenders = make(map[string][]*Tender)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedWonTenders[name] = []*Tender{}
+	} else {
+		c.Edges.namedWonTenders[name] = append(c.Edges.namedWonTenders[name], edges...)
+	}
 }
 
 // Competitors is a parsable slice of Competitor.

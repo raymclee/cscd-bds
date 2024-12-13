@@ -82,11 +82,6 @@ function RouteComponent() {
         "/portal/customers",
         <ContactRound size={16} />,
       ),
-      getItem(
-        <Link to="/portal/users">用户</Link>,
-        "/portal/users",
-        <Users size={16} />,
-      ),
     ],
     [],
   );

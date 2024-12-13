@@ -6,6 +6,8 @@ import (
 	"context"
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"errors"
 	"fmt"
 	"time"
@@ -62,9 +64,45 @@ func (cu *CompetitorUpdate) SetNillableName(s *string) *CompetitorUpdate {
 	return cu
 }
 
+// AddWonTenderIDs adds the "won_tenders" edge to the Tender entity by IDs.
+func (cu *CompetitorUpdate) AddWonTenderIDs(ids ...xid.ID) *CompetitorUpdate {
+	cu.mutation.AddWonTenderIDs(ids...)
+	return cu
+}
+
+// AddWonTenders adds the "won_tenders" edges to the Tender entity.
+func (cu *CompetitorUpdate) AddWonTenders(t ...*Tender) *CompetitorUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cu.AddWonTenderIDs(ids...)
+}
+
 // Mutation returns the CompetitorMutation object of the builder.
 func (cu *CompetitorUpdate) Mutation() *CompetitorMutation {
 	return cu.mutation
+}
+
+// ClearWonTenders clears all "won_tenders" edges to the Tender entity.
+func (cu *CompetitorUpdate) ClearWonTenders() *CompetitorUpdate {
+	cu.mutation.ClearWonTenders()
+	return cu
+}
+
+// RemoveWonTenderIDs removes the "won_tenders" edge to Tender entities by IDs.
+func (cu *CompetitorUpdate) RemoveWonTenderIDs(ids ...xid.ID) *CompetitorUpdate {
+	cu.mutation.RemoveWonTenderIDs(ids...)
+	return cu
+}
+
+// RemoveWonTenders removes "won_tenders" edges to Tender entities.
+func (cu *CompetitorUpdate) RemoveWonTenders(t ...*Tender) *CompetitorUpdate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cu.RemoveWonTenderIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -121,6 +159,51 @@ func (cu *CompetitorUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(competitor.FieldName, field.TypeString, value)
 	}
+	if cu.mutation.WonTendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedWonTendersIDs(); len(nodes) > 0 && !cu.mutation.WonTendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.WonTendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{competitor.Label}
@@ -175,9 +258,45 @@ func (cuo *CompetitorUpdateOne) SetNillableName(s *string) *CompetitorUpdateOne 
 	return cuo
 }
 
+// AddWonTenderIDs adds the "won_tenders" edge to the Tender entity by IDs.
+func (cuo *CompetitorUpdateOne) AddWonTenderIDs(ids ...xid.ID) *CompetitorUpdateOne {
+	cuo.mutation.AddWonTenderIDs(ids...)
+	return cuo
+}
+
+// AddWonTenders adds the "won_tenders" edges to the Tender entity.
+func (cuo *CompetitorUpdateOne) AddWonTenders(t ...*Tender) *CompetitorUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cuo.AddWonTenderIDs(ids...)
+}
+
 // Mutation returns the CompetitorMutation object of the builder.
 func (cuo *CompetitorUpdateOne) Mutation() *CompetitorMutation {
 	return cuo.mutation
+}
+
+// ClearWonTenders clears all "won_tenders" edges to the Tender entity.
+func (cuo *CompetitorUpdateOne) ClearWonTenders() *CompetitorUpdateOne {
+	cuo.mutation.ClearWonTenders()
+	return cuo
+}
+
+// RemoveWonTenderIDs removes the "won_tenders" edge to Tender entities by IDs.
+func (cuo *CompetitorUpdateOne) RemoveWonTenderIDs(ids ...xid.ID) *CompetitorUpdateOne {
+	cuo.mutation.RemoveWonTenderIDs(ids...)
+	return cuo
+}
+
+// RemoveWonTenders removes "won_tenders" edges to Tender entities.
+func (cuo *CompetitorUpdateOne) RemoveWonTenders(t ...*Tender) *CompetitorUpdateOne {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cuo.RemoveWonTenderIDs(ids...)
 }
 
 // Where appends a list predicates to the CompetitorUpdate builder.
@@ -263,6 +382,51 @@ func (cuo *CompetitorUpdateOne) sqlSave(ctx context.Context) (_node *Competitor,
 	}
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(competitor.FieldName, field.TypeString, value)
+	}
+	if cuo.mutation.WonTendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedWonTendersIDs(); len(nodes) > 0 && !cuo.mutation.WonTendersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.WonTendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Competitor{config: cuo.config}
 	_spec.Assign = _node.assignValues

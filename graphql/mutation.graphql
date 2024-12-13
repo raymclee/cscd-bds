@@ -30,4 +30,6 @@ type Mutation {
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
   deletePlot(id: ID!): Plot!
+
+  setTenderCompetitor(tenderId: ID!, competitorId: ID!, won: Boolean!): Tender!
 }

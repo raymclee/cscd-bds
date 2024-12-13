@@ -1,6 +1,8 @@
 build: export CGO_ENABLED=0
 build: export GOOS=linux
-build: export VITE_HOST=http://10.106.189.10:8081
+
+uat: export CGO_ENABLED=0
+uat: export GOOS=linux
 
 build-pull: export CGO_ENABLED=0
 build-pull: export GOOS=linux
@@ -21,7 +23,8 @@ build:
 	go build -tags prod -o ./bin/cscd-mkm ./cmd/app/main.go
 
 uat:
-	go run -tags prod ./cmd/app/main.go
+	cd web && pnpm build
+	go build -tags uat -o ./bin/cscd-mkm-uat ./cmd/app/main.go
 
 build-pull:
 	go build -tags prod -o ./bin/pull-image ./cmd/pull/.

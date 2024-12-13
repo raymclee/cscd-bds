@@ -335,28 +335,24 @@ func init() {
 	userDescDisabled := userFields[5].Descriptor()
 	// user.DefaultDisabled holds the default value on creation for the disabled field.
 	user.DefaultDisabled = userDescDisabled.Default.(bool)
-	// userDescIsSales is the schema descriptor for is_sales field.
-	userDescIsSales := userFields[6].Descriptor()
-	// user.DefaultIsSales holds the default value on creation for the is_sales field.
-	user.DefaultIsSales = userDescIsSales.Default.(bool)
 	// userDescIsAdmin is the schema descriptor for is_admin field.
-	userDescIsAdmin := userFields[7].Descriptor()
+	userDescIsAdmin := userFields[6].Descriptor()
 	// user.DefaultIsAdmin holds the default value on creation for the is_admin field.
 	user.DefaultIsAdmin = userDescIsAdmin.Default.(bool)
-	// userDescIsLeader is the schema descriptor for is_leader field.
-	userDescIsLeader := userFields[8].Descriptor()
-	// user.DefaultIsLeader holds the default value on creation for the is_leader field.
-	user.DefaultIsLeader = userDescIsLeader.Default.(bool)
+	// userDescIsCeo is the schema descriptor for is_ceo field.
+	userDescIsCeo := userFields[7].Descriptor()
+	// user.DefaultIsCeo holds the default value on creation for the is_ceo field.
+	user.DefaultIsCeo = userDescIsCeo.Default.(bool)
 	// userDescIsSuperAdmin is the schema descriptor for is_super_admin field.
-	userDescIsSuperAdmin := userFields[9].Descriptor()
+	userDescIsSuperAdmin := userFields[8].Descriptor()
 	// user.DefaultIsSuperAdmin holds the default value on creation for the is_super_admin field.
 	user.DefaultIsSuperAdmin = userDescIsSuperAdmin.Default.(bool)
 	// userDescHasMapAccess is the schema descriptor for has_map_access field.
-	userDescHasMapAccess := userFields[10].Descriptor()
+	userDescHasMapAccess := userFields[9].Descriptor()
 	// user.DefaultHasMapAccess holds the default value on creation for the has_map_access field.
 	user.DefaultHasMapAccess = userDescHasMapAccess.Default.(bool)
 	// userDescHasEditAccess is the schema descriptor for has_edit_access field.
-	userDescHasEditAccess := userFields[11].Descriptor()
+	userDescHasEditAccess := userFields[10].Descriptor()
 	// user.DefaultHasEditAccess holds the default value on creation for the has_edit_access field.
 	user.DefaultHasEditAccess = userDescHasEditAccess.Default.(bool)
 	// userDescID is the schema descriptor for id field.

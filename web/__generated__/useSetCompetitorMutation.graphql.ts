@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c7d6e2c56548f57db5fd2fdc4c0c01db>>
+ * @generated SignedSource<<a7bb328c3926626785b9b7db45203fc0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type useSetCompetitorMutation$variables = {
   competitorId: string;
   tenderId: string;
@@ -16,7 +17,7 @@ export type useSetCompetitorMutation$variables = {
 };
 export type useSetCompetitorMutation$data = {
   readonly setTenderCompetitor: {
-    readonly id: string;
+    readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
   };
 };
 export type useSetCompetitorMutation = {
@@ -42,39 +43,37 @@ v2 = {
 },
 v3 = [
   {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "competitorId",
-        "variableName": "competitorId"
-      },
-      {
-        "kind": "Variable",
-        "name": "tenderId",
-        "variableName": "tenderId"
-      },
-      {
-        "kind": "Variable",
-        "name": "won",
-        "variableName": "won"
-      }
-    ],
-    "concreteType": "Tender",
-    "kind": "LinkedField",
-    "name": "setTenderCompetitor",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
+    "kind": "Variable",
+    "name": "competitorId",
+    "variableName": "competitorId"
+  },
+  {
+    "kind": "Variable",
+    "name": "tenderId",
+    "variableName": "tenderId"
+  },
+  {
+    "kind": "Variable",
+    "name": "won",
+    "variableName": "won"
   }
+],
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v6 = [
+  (v4/*: any*/)
 ];
 return {
   "fragment": {
@@ -86,7 +85,24 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "useSetCompetitorMutation",
-    "selections": (v3/*: any*/),
+    "selections": [
+      {
+        "alias": null,
+        "args": (v3/*: any*/),
+        "concreteType": "Tender",
+        "kind": "LinkedField",
+        "name": "setTenderCompetitor",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "tenderListItemFragment"
+          }
+        ],
+        "storageKey": null
+      }
+    ],
     "type": "Mutation",
     "abstractKey": null
   },
@@ -99,19 +115,142 @@ return {
     ],
     "kind": "Operation",
     "name": "useSetCompetitorMutation",
-    "selections": (v3/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v3/*: any*/),
+        "concreteType": "Tender",
+        "kind": "LinkedField",
+        "name": "setTenderCompetitor",
+        "plural": false,
+        "selections": [
+          (v4/*: any*/),
+          (v5/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "status",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "createdAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "estimatedAmount",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Customer",
+            "kind": "LinkedField",
+            "name": "customer",
+            "plural": false,
+            "selections": [
+              (v4/*: any*/),
+              (v5/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "images",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "fullAddress",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "tenderDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "discoveryDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "tenderClosingDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Area",
+            "kind": "LinkedField",
+            "name": "area",
+            "plural": false,
+            "selections": [
+              (v4/*: any*/),
+              (v5/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "code",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "followingSales",
+            "plural": true,
+            "selections": (v6/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "createdBy",
+            "plural": false,
+            "selections": (v6/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "fe4aadcaf35c396dd93de396108382ca",
+    "cacheID": "a87f7238c43c445ab7e8eb5b3ec4c947",
     "id": null,
     "metadata": {},
     "name": "useSetCompetitorMutation",
     "operationKind": "mutation",
-    "text": "mutation useSetCompetitorMutation(\n  $tenderId: ID!\n  $competitorId: ID!\n  $won: Boolean!\n) {\n  setTenderCompetitor(tenderId: $tenderId, competitorId: $competitorId, won: $won) {\n    id\n  }\n}\n"
+    "text": "mutation useSetCompetitorMutation(\n  $tenderId: ID!\n  $competitorId: ID!\n  $won: Boolean!\n) {\n  setTenderCompetitor(tenderId: $tenderId, competitorId: $competitorId, won: $won) {\n    ...tenderListItemFragment\n    id\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4f1b68776c8194056e283eca1f3d3252";
+(node as any).hash = "755fe640ce4881b4df33f55de2ae66e8";
 
 export default node;

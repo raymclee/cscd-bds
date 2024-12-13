@@ -5,6 +5,7 @@ package config
 func init() {
 	DatabaseUrl = "postgresql://postgres:~!Wbvxwet=JdgcKB@localhost:5432/cscd_bds"
 	IsProd = true
+	IsUat = false
 	FilePath = "/home/itadmin/static/"
 
 	HanaPort = 30015

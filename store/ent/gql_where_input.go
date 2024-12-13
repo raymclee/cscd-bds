@@ -909,6 +909,10 @@ type CompetitorWhereInput struct {
 	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
+	// "won_tenders" edge predicates.
+	HasWonTenders     *bool               `json:"hasWonTenders,omitempty"`
+	HasWonTendersWith []*TenderWhereInput `json:"hasWonTendersWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -1133,6 +1137,24 @@ func (i *CompetitorWhereInput) P() (predicate.Competitor, error) {
 		predicates = append(predicates, competitor.NameContainsFold(*i.NameContainsFold))
 	}
 
+	if i.HasWonTenders != nil {
+		p := competitor.HasWonTenders()
+		if !*i.HasWonTenders {
+			p = competitor.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasWonTendersWith) > 0 {
+		with := make([]predicate.Tender, 0, len(i.HasWonTendersWith))
+		for _, w := range i.HasWonTendersWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasWonTendersWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, competitor.HasWonTendersWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyCompetitorWhereInput
@@ -4648,6 +4670,23 @@ type TenderWhereInput struct {
 	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
 	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
 
+	// "competitor_id" field predicates.
+	CompetitorID             *xid.ID  `json:"competitorID,omitempty"`
+	CompetitorIDNEQ          *xid.ID  `json:"competitorIDNEQ,omitempty"`
+	CompetitorIDIn           []xid.ID `json:"competitorIDIn,omitempty"`
+	CompetitorIDNotIn        []xid.ID `json:"competitorIDNotIn,omitempty"`
+	CompetitorIDGT           *xid.ID  `json:"competitorIDGT,omitempty"`
+	CompetitorIDGTE          *xid.ID  `json:"competitorIDGTE,omitempty"`
+	CompetitorIDLT           *xid.ID  `json:"competitorIDLT,omitempty"`
+	CompetitorIDLTE          *xid.ID  `json:"competitorIDLTE,omitempty"`
+	CompetitorIDContains     *xid.ID  `json:"competitorIDContains,omitempty"`
+	CompetitorIDHasPrefix    *xid.ID  `json:"competitorIDHasPrefix,omitempty"`
+	CompetitorIDHasSuffix    *xid.ID  `json:"competitorIDHasSuffix,omitempty"`
+	CompetitorIDIsNil        bool     `json:"competitorIDIsNil,omitempty"`
+	CompetitorIDNotNil       bool     `json:"competitorIDNotNil,omitempty"`
+	CompetitorIDEqualFold    *xid.ID  `json:"competitorIDEqualFold,omitempty"`
+	CompetitorIDContainsFold *xid.ID  `json:"competitorIDContainsFold,omitempty"`
+
 	// "area" edge predicates.
 	HasArea     *bool             `json:"hasArea,omitempty"`
 	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
@@ -4683,6 +4722,10 @@ type TenderWhereInput struct {
 	// "visit_records" edge predicates.
 	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
 	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
+
+	// "competitor" edge predicates.
+	HasCompetitor     *bool                   `json:"hasCompetitor,omitempty"`
+	HasCompetitorWith []*CompetitorWhereInput `json:"hasCompetitorWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -6988,6 +7031,51 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.CreatedByIDContainsFold != nil {
 		predicates = append(predicates, tender.CreatedByIDContainsFold(*i.CreatedByIDContainsFold))
 	}
+	if i.CompetitorID != nil {
+		predicates = append(predicates, tender.CompetitorIDEQ(*i.CompetitorID))
+	}
+	if i.CompetitorIDNEQ != nil {
+		predicates = append(predicates, tender.CompetitorIDNEQ(*i.CompetitorIDNEQ))
+	}
+	if len(i.CompetitorIDIn) > 0 {
+		predicates = append(predicates, tender.CompetitorIDIn(i.CompetitorIDIn...))
+	}
+	if len(i.CompetitorIDNotIn) > 0 {
+		predicates = append(predicates, tender.CompetitorIDNotIn(i.CompetitorIDNotIn...))
+	}
+	if i.CompetitorIDGT != nil {
+		predicates = append(predicates, tender.CompetitorIDGT(*i.CompetitorIDGT))
+	}
+	if i.CompetitorIDGTE != nil {
+		predicates = append(predicates, tender.CompetitorIDGTE(*i.CompetitorIDGTE))
+	}
+	if i.CompetitorIDLT != nil {
+		predicates = append(predicates, tender.CompetitorIDLT(*i.CompetitorIDLT))
+	}
+	if i.CompetitorIDLTE != nil {
+		predicates = append(predicates, tender.CompetitorIDLTE(*i.CompetitorIDLTE))
+	}
+	if i.CompetitorIDContains != nil {
+		predicates = append(predicates, tender.CompetitorIDContains(*i.CompetitorIDContains))
+	}
+	if i.CompetitorIDHasPrefix != nil {
+		predicates = append(predicates, tender.CompetitorIDHasPrefix(*i.CompetitorIDHasPrefix))
+	}
+	if i.CompetitorIDHasSuffix != nil {
+		predicates = append(predicates, tender.CompetitorIDHasSuffix(*i.CompetitorIDHasSuffix))
+	}
+	if i.CompetitorIDIsNil {
+		predicates = append(predicates, tender.CompetitorIDIsNil())
+	}
+	if i.CompetitorIDNotNil {
+		predicates = append(predicates, tender.CompetitorIDNotNil())
+	}
+	if i.CompetitorIDEqualFold != nil {
+		predicates = append(predicates, tender.CompetitorIDEqualFold(*i.CompetitorIDEqualFold))
+	}
+	if i.CompetitorIDContainsFold != nil {
+		predicates = append(predicates, tender.CompetitorIDContainsFold(*i.CompetitorIDContainsFold))
+	}
 
 	if i.HasArea != nil {
 		p := tender.HasArea()
@@ -7151,6 +7239,24 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 		}
 		predicates = append(predicates, tender.HasVisitRecordsWith(with...))
 	}
+	if i.HasCompetitor != nil {
+		p := tender.HasCompetitor()
+		if !*i.HasCompetitor {
+			p = tender.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCompetitorWith) > 0 {
+		with := make([]predicate.Competitor, 0, len(i.HasCompetitorWith))
+		for _, w := range i.HasCompetitorWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCompetitorWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tender.HasCompetitorWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyTenderWhereInput
@@ -7281,17 +7387,13 @@ type UserWhereInput struct {
 	Disabled    *bool `json:"disabled,omitempty"`
 	DisabledNEQ *bool `json:"disabledNEQ,omitempty"`
 
-	// "is_sales" field predicates.
-	IsSales    *bool `json:"isSales,omitempty"`
-	IsSalesNEQ *bool `json:"isSalesNEQ,omitempty"`
-
 	// "is_admin" field predicates.
 	IsAdmin    *bool `json:"isAdmin,omitempty"`
 	IsAdminNEQ *bool `json:"isAdminNEQ,omitempty"`
 
-	// "is_leader" field predicates.
-	IsLeader    *bool `json:"isLeader,omitempty"`
-	IsLeaderNEQ *bool `json:"isLeaderNEQ,omitempty"`
+	// "is_ceo" field predicates.
+	IsCeo    *bool `json:"isCeo,omitempty"`
+	IsCeoNEQ *bool `json:"isCeoNEQ,omitempty"`
 
 	// "is_super_admin" field predicates.
 	IsSuperAdmin    *bool `json:"isSuperAdmin,omitempty"`
@@ -7703,23 +7805,17 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.DisabledNEQ != nil {
 		predicates = append(predicates, user.DisabledNEQ(*i.DisabledNEQ))
 	}
-	if i.IsSales != nil {
-		predicates = append(predicates, user.IsSalesEQ(*i.IsSales))
-	}
-	if i.IsSalesNEQ != nil {
-		predicates = append(predicates, user.IsSalesNEQ(*i.IsSalesNEQ))
-	}
 	if i.IsAdmin != nil {
 		predicates = append(predicates, user.IsAdminEQ(*i.IsAdmin))
 	}
 	if i.IsAdminNEQ != nil {
 		predicates = append(predicates, user.IsAdminNEQ(*i.IsAdminNEQ))
 	}
-	if i.IsLeader != nil {
-		predicates = append(predicates, user.IsLeaderEQ(*i.IsLeader))
+	if i.IsCeo != nil {
+		predicates = append(predicates, user.IsCeoEQ(*i.IsCeo))
 	}
-	if i.IsLeaderNEQ != nil {
-		predicates = append(predicates, user.IsLeaderNEQ(*i.IsLeaderNEQ))
+	if i.IsCeoNEQ != nil {
+		predicates = append(predicates, user.IsCeoNEQ(*i.IsCeoNEQ))
 	}
 	if i.IsSuperAdmin != nil {
 		predicates = append(predicates, user.IsSuperAdminEQ(*i.IsSuperAdmin))

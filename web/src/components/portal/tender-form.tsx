@@ -45,7 +45,7 @@ const fragment = graphql`
               }
             }
           }
-          users(where: { isSales: true }) {
+          users(where: { isCeo: false, isSuperAdmin: false }) {
             edges {
               node {
                 id

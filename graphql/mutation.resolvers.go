@@ -219,10 +219,6 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 
-	if t.Status != 3 && input.Status != nil && *input.Status == 3 {
-		go r.sap.InsertTender(r.store, t)
-	}
-
 	q := r.store.Tender.UpdateOneID(id).SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
@@ -334,6 +330,28 @@ func (r *mutationResolver) DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot
 		return nil, fmt.Errorf("failed to delete plot: %w", err)
 	}
 	return p, nil
+}
+
+// SetTenderCompetitor is the resolver for the setTenderCompetitor field.
+func (r *mutationResolver) SetTenderCompetitor(ctx context.Context, tenderID xid.ID, competitorID xid.ID, won bool) (*ent.Tender, error) {
+	t, err := r.store.Tender.Query().Where(tender.ID(tenderID)).WithArea().Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tender: %w", err)
+	}
+	var status int
+	if won {
+		status = 3
+	} else {
+		status = 4
+	}
+	if won && t.Edges.Area.Code != "GA" && t.Edges.Area.Code != "HW" {
+		go r.sap.InsertTender(r.store, t)
+	}
+	t, err = t.Update().SetCompetitorID(competitorID).SetStatus(status).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to set tender competitor: %w", err)
+	}
+	return t, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

@@ -5,6 +5,7 @@ package ent
 import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
@@ -150,6 +151,8 @@ type Tender struct {
 	FinderID xid.ID `json:"finder_id,omitempty"`
 	// CreatedByID holds the value of the "created_by_id" field.
 	CreatedByID xid.ID `json:"created_by_id,omitempty"`
+	// CompetitorID holds the value of the "competitor_id" field.
+	CompetitorID *xid.ID `json:"competitor_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TenderQuery when eager-loading is set.
 	Edges        TenderEdges `json:"edges"`
@@ -176,11 +179,13 @@ type TenderEdges struct {
 	District *District `json:"district,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
+	// Competitor holds the value of the competitor edge.
+	Competitor *Competitor `json:"competitor,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [9]bool
+	loadedTypes [10]bool
 	// totalCount holds the count of the edges above.
-	totalCount [9]map[string]int
+	totalCount [10]map[string]int
 
 	namedFollowingSales map[string][]*User
 	namedVisitRecords   map[string][]*VisitRecord
@@ -281,6 +286,17 @@ func (e TenderEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
 	return nil, &NotLoadedError{edge: "visit_records"}
 }
 
+// CompetitorOrErr returns the Competitor value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) CompetitorOrErr() (*Competitor, error) {
+	if e.Competitor != nil {
+		return e.Competitor, nil
+	} else if e.loadedTypes[9] {
+		return nil, &NotFoundError{label: competitor.Label}
+	}
+	return nil, &NotLoadedError{edge: "competitor"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Tender) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -288,7 +304,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldCompetitorID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
@@ -739,6 +755,13 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value != nil {
 				t.CreatedByID = *value
 			}
+		case tender.FieldCompetitorID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field competitor_id", values[i])
+			} else if value.Valid {
+				t.CompetitorID = new(xid.ID)
+				*t.CompetitorID = *value.S.(*xid.ID)
+			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
 		}
@@ -795,6 +818,11 @@ func (t *Tender) QueryDistrict() *DistrictQuery {
 // QueryVisitRecords queries the "visit_records" edge of the Tender entity.
 func (t *Tender) QueryVisitRecords() *VisitRecordQuery {
 	return NewTenderClient(t.config).QueryVisitRecords(t)
+}
+
+// QueryCompetitor queries the "competitor" edge of the Tender entity.
+func (t *Tender) QueryCompetitor() *CompetitorQuery {
+	return NewTenderClient(t.config).QueryCompetitor(t)
 }
 
 // Update returns a builder for updating this Tender.
@@ -1079,6 +1107,11 @@ func (t *Tender) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("created_by_id=")
 	builder.WriteString(fmt.Sprintf("%v", t.CreatedByID))
+	builder.WriteString(", ")
+	if v := t.CompetitorID; v != nil {
+		builder.WriteString("competitor_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

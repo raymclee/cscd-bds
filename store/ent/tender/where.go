@@ -352,6 +352,11 @@ func CreatedByID(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCreatedByID, v))
 }
 
+// CompetitorID applies equality check predicate on the "competitor_id" field. It's identical to CompetitorIDEQ.
+func CompetitorID(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldCompetitorID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCreatedAt, v))
@@ -4147,6 +4152,86 @@ func CreatedByIDContainsFold(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldCreatedByID, vc))
 }
 
+// CompetitorIDEQ applies the EQ predicate on the "competitor_id" field.
+func CompetitorIDEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldCompetitorID, v))
+}
+
+// CompetitorIDNEQ applies the NEQ predicate on the "competitor_id" field.
+func CompetitorIDNEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldCompetitorID, v))
+}
+
+// CompetitorIDIn applies the In predicate on the "competitor_id" field.
+func CompetitorIDIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldCompetitorID, vs...))
+}
+
+// CompetitorIDNotIn applies the NotIn predicate on the "competitor_id" field.
+func CompetitorIDNotIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldCompetitorID, vs...))
+}
+
+// CompetitorIDGT applies the GT predicate on the "competitor_id" field.
+func CompetitorIDGT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldCompetitorID, v))
+}
+
+// CompetitorIDGTE applies the GTE predicate on the "competitor_id" field.
+func CompetitorIDGTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldCompetitorID, v))
+}
+
+// CompetitorIDLT applies the LT predicate on the "competitor_id" field.
+func CompetitorIDLT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldCompetitorID, v))
+}
+
+// CompetitorIDLTE applies the LTE predicate on the "competitor_id" field.
+func CompetitorIDLTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldCompetitorID, v))
+}
+
+// CompetitorIDContains applies the Contains predicate on the "competitor_id" field.
+func CompetitorIDContains(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContains(FieldCompetitorID, vc))
+}
+
+// CompetitorIDHasPrefix applies the HasPrefix predicate on the "competitor_id" field.
+func CompetitorIDHasPrefix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasPrefix(FieldCompetitorID, vc))
+}
+
+// CompetitorIDHasSuffix applies the HasSuffix predicate on the "competitor_id" field.
+func CompetitorIDHasSuffix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasSuffix(FieldCompetitorID, vc))
+}
+
+// CompetitorIDIsNil applies the IsNil predicate on the "competitor_id" field.
+func CompetitorIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldCompetitorID))
+}
+
+// CompetitorIDNotNil applies the NotNil predicate on the "competitor_id" field.
+func CompetitorIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldCompetitorID))
+}
+
+// CompetitorIDEqualFold applies the EqualFold predicate on the "competitor_id" field.
+func CompetitorIDEqualFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldEqualFold(FieldCompetitorID, vc))
+}
+
+// CompetitorIDContainsFold applies the ContainsFold predicate on the "competitor_id" field.
+func CompetitorIDContainsFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContainsFold(FieldCompetitorID, vc))
+}
+
 // HasArea applies the HasEdge predicate on the "area" edge.
 func HasArea() predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
@@ -4346,6 +4431,29 @@ func HasVisitRecords() predicate.Tender {
 func HasVisitRecordsWith(preds ...predicate.VisitRecord) predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
 		step := newVisitRecordsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasCompetitor applies the HasEdge predicate on the "competitor" edge.
+func HasCompetitor() predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, CompetitorTable, CompetitorColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCompetitorWith applies the HasEdge predicate on the "competitor" edge with a given conditions (other predicates).
+func HasCompetitorWith(preds ...predicate.Competitor) predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := newCompetitorStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

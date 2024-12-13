@@ -19,10 +19,9 @@ type Session struct {
 	Username      string `json:"username"`
 	Email         string `json:"email"`
 	AvatarURL     string `json:"avatarUrl"`
-	IsLeader      bool   `json:"isLeader"`
 	IsAdmin       bool   `json:"isAdmin"`
 	IsSuperAdmin  bool   `json:"isSuperAdmin"`
-	IsSales       bool   `json:"isSales"`
+	IsCeo         bool   `json:"isCeo"`
 	HasMapAccess  bool   `json:"hasMapAccess"`
 	HasEditAccess bool   `json:"hasEditAccess"`
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
@@ -820,6 +821,20 @@ func (tc *TenderCreate) SetCreatedByID(x xid.ID) *TenderCreate {
 	return tc
 }
 
+// SetCompetitorID sets the "competitor_id" field.
+func (tc *TenderCreate) SetCompetitorID(x xid.ID) *TenderCreate {
+	tc.mutation.SetCompetitorID(x)
+	return tc
+}
+
+// SetNillableCompetitorID sets the "competitor_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCompetitorID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetCompetitorID(*x)
+	}
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TenderCreate) SetID(x xid.ID) *TenderCreate {
 	tc.mutation.SetID(x)
@@ -897,6 +912,11 @@ func (tc *TenderCreate) AddVisitRecords(v ...*VisitRecord) *TenderCreate {
 		ids[i] = v[i].ID
 	}
 	return tc.AddVisitRecordIDs(ids...)
+}
+
+// SetCompetitor sets the "competitor" edge to the Competitor entity.
+func (tc *TenderCreate) SetCompetitor(c *Competitor) *TenderCreate {
+	return tc.SetCompetitorID(c.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1434,6 +1454,23 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.CompetitorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CompetitorTable,
+			Columns: []string{tender.CompetitorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CompetitorID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -2577,6 +2614,24 @@ func (u *TenderUpsert) SetCreatedByID(v xid.ID) *TenderUpsert {
 // UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateCreatedByID() *TenderUpsert {
 	u.SetExcluded(tender.FieldCreatedByID)
+	return u
+}
+
+// SetCompetitorID sets the "competitor_id" field.
+func (u *TenderUpsert) SetCompetitorID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldCompetitorID, v)
+	return u
+}
+
+// UpdateCompetitorID sets the "competitor_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCompetitorID() *TenderUpsert {
+	u.SetExcluded(tender.FieldCompetitorID)
+	return u
+}
+
+// ClearCompetitorID clears the value of the "competitor_id" field.
+func (u *TenderUpsert) ClearCompetitorID() *TenderUpsert {
+	u.SetNull(tender.FieldCompetitorID)
 	return u
 }
 
@@ -3902,6 +3957,27 @@ func (u *TenderUpsertOne) SetCreatedByID(v xid.ID) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateCreatedByID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCreatedByID()
+	})
+}
+
+// SetCompetitorID sets the "competitor_id" field.
+func (u *TenderUpsertOne) SetCompetitorID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCompetitorID(v)
+	})
+}
+
+// UpdateCompetitorID sets the "competitor_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCompetitorID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCompetitorID()
+	})
+}
+
+// ClearCompetitorID clears the value of the "competitor_id" field.
+func (u *TenderUpsertOne) ClearCompetitorID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCompetitorID()
 	})
 }
 
@@ -5394,6 +5470,27 @@ func (u *TenderUpsertBulk) SetCreatedByID(v xid.ID) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateCreatedByID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCreatedByID()
+	})
+}
+
+// SetCompetitorID sets the "competitor_id" field.
+func (u *TenderUpsertBulk) SetCompetitorID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCompetitorID(v)
+	})
+}
+
+// UpdateCompetitorID sets the "competitor_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCompetitorID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCompetitorID()
+	})
+}
+
+// ClearCompetitorID clears the value of the "competitor_id" field.
+func (u *TenderUpsertBulk) ClearCompetitorID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCompetitorID()
 	})
 }
 

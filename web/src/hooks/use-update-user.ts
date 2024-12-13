@@ -21,7 +21,7 @@ export function useUpdateUser() {
           }
         }
         isAdmin
-        isSales
+        isCeo
         hasMapAccess
         hasEditAccess
       }

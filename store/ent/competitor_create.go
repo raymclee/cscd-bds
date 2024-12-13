@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
 	"errors"
 	"fmt"
 	"time"
@@ -76,6 +77,21 @@ func (cc *CompetitorCreate) SetNillableID(x *xid.ID) *CompetitorCreate {
 		cc.SetID(*x)
 	}
 	return cc
+}
+
+// AddWonTenderIDs adds the "won_tenders" edge to the Tender entity by IDs.
+func (cc *CompetitorCreate) AddWonTenderIDs(ids ...xid.ID) *CompetitorCreate {
+	cc.mutation.AddWonTenderIDs(ids...)
+	return cc
+}
+
+// AddWonTenders adds the "won_tenders" edges to the Tender entity.
+func (cc *CompetitorCreate) AddWonTenders(t ...*Tender) *CompetitorCreate {
+	ids := make([]xid.ID, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return cc.AddWonTenderIDs(ids...)
 }
 
 // Mutation returns the CompetitorMutation object of the builder.
@@ -192,6 +208,22 @@ func (cc *CompetitorCreate) createSpec() (*Competitor, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Name(); ok {
 		_spec.SetField(competitor.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if nodes := cc.mutation.WonTendersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   competitor.WonTendersTable,
+			Columns: []string{competitor.WonTendersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tender.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

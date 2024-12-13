@@ -29,7 +29,7 @@ func Open(databaseUrl string) *ent.Client {
 	o := []ent.Option{
 		ent.Driver(drv),
 	}
-	if !config.IsProd {
+	if !config.IsProd && !config.IsUat {
 		o = append(o, ent.Debug())
 	}
 	return ent.NewClient(o...)

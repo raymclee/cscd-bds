@@ -31,12 +31,10 @@ const (
 	FieldAvatarURL = "avatar_url"
 	// FieldDisabled holds the string denoting the disabled field in the database.
 	FieldDisabled = "disabled"
-	// FieldIsSales holds the string denoting the is_sales field in the database.
-	FieldIsSales = "is_sales"
 	// FieldIsAdmin holds the string denoting the is_admin field in the database.
 	FieldIsAdmin = "is_admin"
-	// FieldIsLeader holds the string denoting the is_leader field in the database.
-	FieldIsLeader = "is_leader"
+	// FieldIsCeo holds the string denoting the is_ceo field in the database.
+	FieldIsCeo = "is_ceo"
 	// FieldIsSuperAdmin holds the string denoting the is_super_admin field in the database.
 	FieldIsSuperAdmin = "is_super_admin"
 	// FieldHasMapAccess holds the string denoting the has_map_access field in the database.
@@ -102,9 +100,8 @@ var Columns = []string{
 	FieldOpenID,
 	FieldAvatarURL,
 	FieldDisabled,
-	FieldIsSales,
 	FieldIsAdmin,
-	FieldIsLeader,
+	FieldIsCeo,
 	FieldIsSuperAdmin,
 	FieldHasMapAccess,
 	FieldHasEditAccess,
@@ -142,12 +139,10 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled bool
-	// DefaultIsSales holds the default value on creation for the "is_sales" field.
-	DefaultIsSales bool
 	// DefaultIsAdmin holds the default value on creation for the "is_admin" field.
 	DefaultIsAdmin bool
-	// DefaultIsLeader holds the default value on creation for the "is_leader" field.
-	DefaultIsLeader bool
+	// DefaultIsCeo holds the default value on creation for the "is_ceo" field.
+	DefaultIsCeo bool
 	// DefaultIsSuperAdmin holds the default value on creation for the "is_super_admin" field.
 	DefaultIsSuperAdmin bool
 	// DefaultHasMapAccess holds the default value on creation for the "has_map_access" field.
@@ -206,19 +201,14 @@ func ByDisabled(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDisabled, opts...).ToFunc()
 }
 
-// ByIsSales orders the results by the is_sales field.
-func ByIsSales(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsSales, opts...).ToFunc()
-}
-
 // ByIsAdmin orders the results by the is_admin field.
 func ByIsAdmin(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsAdmin, opts...).ToFunc()
 }
 
-// ByIsLeader orders the results by the is_leader field.
-func ByIsLeader(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsLeader, opts...).ToFunc()
+// ByIsCeo orders the results by the is_ceo field.
+func ByIsCeo(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsCeo, opts...).ToFunc()
 }
 
 // ByIsSuperAdmin orders the results by the is_super_admin field.

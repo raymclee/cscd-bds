@@ -353,6 +353,17 @@ export type Competitor = Node & {
   name: Scalars['String']['output'];
   shortName: Scalars['String']['output'];
   updatedAt: Scalars['Time']['output'];
+  wonTenders: TenderConnection;
+};
+
+
+export type CompetitorWonTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
+  where?: InputMaybe<TenderWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -404,6 +415,9 @@ export type CompetitorWhereInput = {
   createdAtLTE?: InputMaybe<Scalars['Time']['input']>;
   createdAtNEQ?: InputMaybe<Scalars['Time']['input']>;
   createdAtNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  /** won_tenders edge predicates */
+  hasWonTenders?: InputMaybe<Scalars['Boolean']['input']>;
+  hasWonTendersWith?: InputMaybe<Array<TenderWhereInput>>;
   /** id field predicates */
   id?: InputMaybe<Scalars['ID']['input']>;
   idGT?: InputMaybe<Scalars['ID']['input']>;
@@ -610,6 +624,7 @@ export type CreateCompetitorInput = {
   name: Scalars['String']['input'];
   shortName: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
+  wonTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 /**
@@ -707,6 +722,7 @@ export type CreateTenderInput = {
   code: Scalars['String']['input'];
   competitivePartnershipRating?: InputMaybe<Scalars['Int']['input']>;
   competitivePartnershipRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  competitorID?: InputMaybe<Scalars['ID']['input']>;
   competitorSituations?: InputMaybe<Scalars['String']['input']>;
   /** 施工面積，只限港澳 */
   constructionArea?: InputMaybe<Scalars['String']['input']>;
@@ -782,8 +798,7 @@ export type CreateUserInput = {
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
-  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
-  isSales?: InputMaybe<Scalars['Boolean']['input']>;
+  isCeo?: InputMaybe<Scalars['Boolean']['input']>;
   isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
@@ -1312,6 +1327,7 @@ export type Mutation = {
   deletePlot: Plot;
   deleteTender: Tender;
   deleteUser: User;
+  setTenderCompetitor: Tender;
   updateArea: Area;
   updateCustomer: Customer;
   updatePlot: Plot;
@@ -1366,6 +1382,13 @@ export type MutationDeleteTenderArgs = {
 
 export type MutationDeleteUserArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationSetTenderCompetitorArgs = {
+  competitorId: Scalars['ID']['input'];
+  tenderId: Scalars['ID']['input'];
+  won: Scalars['Boolean']['input'];
 };
 
 
@@ -1902,8 +1925,7 @@ export type Session = {
   hasEditAccess: Scalars['Boolean']['output'];
   hasMapAccess: Scalars['Boolean']['output'];
   isAdmin: Scalars['Boolean']['output'];
-  isLeader: Scalars['Boolean']['output'];
-  isSales: Scalars['Boolean']['output'];
+  isCeo: Scalars['Boolean']['output'];
   isSuperAdmin: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   userId: Scalars['String']['output'];
@@ -1925,6 +1947,8 @@ export type Tender = Node & {
   code: Scalars['String']['output'];
   competitivePartnershipRating?: Maybe<Scalars['Int']['output']>;
   competitivePartnershipRatingOverview?: Maybe<Scalars['String']['output']>;
+  competitor?: Maybe<Competitor>;
+  competitorID?: Maybe<Scalars['ID']['output']>;
   competitorSituations?: Maybe<Scalars['String']['output']>;
   /** 施工面積，只限港澳 */
   constructionArea?: Maybe<Scalars['String']['output']>;
@@ -2176,6 +2200,22 @@ export type TenderWhereInput = {
   competitivePartnershipRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
   competitivePartnershipRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   competitivePartnershipRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** competitor_id field predicates */
+  competitorID?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDContains?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDContainsFold?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDEqualFold?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDGT?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDGTE?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  competitorIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  competitorIDLT?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDLTE?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDNEQ?: InputMaybe<Scalars['ID']['input']>;
+  competitorIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  competitorIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** competitor_situations field predicates */
   competitorSituations?: InputMaybe<Scalars['String']['input']>;
   competitorSituationsContains?: InputMaybe<Scalars['String']['input']>;
@@ -2507,6 +2547,9 @@ export type TenderWhereInput = {
   /** city edge predicates */
   hasCity?: InputMaybe<Scalars['Boolean']['input']>;
   hasCityWith?: InputMaybe<Array<CityWhereInput>>;
+  /** competitor edge predicates */
+  hasCompetitor?: InputMaybe<Scalars['Boolean']['input']>;
+  hasCompetitorWith?: InputMaybe<Array<CompetitorWhereInput>>;
   /** created_by edge predicates */
   hasCreatedBy?: InputMaybe<Scalars['Boolean']['input']>;
   hasCreatedByWith?: InputMaybe<Array<UserWhereInput>>;
@@ -2925,7 +2968,10 @@ export type UpdateCityInput = {
  * Input was generated by ent.
  */
 export type UpdateCompetitorInput = {
+  addWonTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  clearWonTenders?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  removeWonTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   shortName?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
@@ -3055,6 +3101,7 @@ export type UpdateTenderInput = {
   clearCity?: InputMaybe<Scalars['Boolean']['input']>;
   clearCompetitivePartnershipRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCompetitivePartnershipRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
+  clearCompetitor?: InputMaybe<Scalars['Boolean']['input']>;
   clearCompetitorSituations?: InputMaybe<Scalars['Boolean']['input']>;
   clearConstructionArea?: InputMaybe<Scalars['Boolean']['input']>;
   clearConsultingFirm?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3101,6 +3148,7 @@ export type UpdateTenderInput = {
   code?: InputMaybe<Scalars['String']['input']>;
   competitivePartnershipRating?: InputMaybe<Scalars['Int']['input']>;
   competitivePartnershipRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  competitorID?: InputMaybe<Scalars['ID']['input']>;
   competitorSituations?: InputMaybe<Scalars['String']['input']>;
   /** 施工面積，只限港澳 */
   constructionArea?: InputMaybe<Scalars['String']['input']>;
@@ -3185,8 +3233,7 @@ export type UpdateUserInput = {
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
-  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
-  isSales?: InputMaybe<Scalars['Boolean']['input']>;
+  isCeo?: InputMaybe<Scalars['Boolean']['input']>;
   isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -3233,8 +3280,7 @@ export type User = Node & {
   hasMapAccess: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   isAdmin: Scalars['Boolean']['output'];
-  isLeader: Scalars['Boolean']['output'];
-  isSales: Scalars['Boolean']['output'];
+  isCeo: Scalars['Boolean']['output'];
   isSuperAdmin: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
@@ -3404,12 +3450,9 @@ export type UserWhereInput = {
   /** is_admin field predicates */
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
-  /** is_leader field predicates */
-  isLeader?: InputMaybe<Scalars['Boolean']['input']>;
-  isLeaderNEQ?: InputMaybe<Scalars['Boolean']['input']>;
-  /** is_sales field predicates */
-  isSales?: InputMaybe<Scalars['Boolean']['input']>;
-  isSalesNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_ceo field predicates */
+  isCeo?: InputMaybe<Scalars['Boolean']['input']>;
+  isCeoNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** is_super_admin field predicates */
   isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isSuperAdminNEQ?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3718,7 +3761,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isSales: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -3803,7 +3846,7 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
       }
     }
     isAdmin
-    isSales
+    isCeo
     hasMapAccess
     hasEditAccess
   }

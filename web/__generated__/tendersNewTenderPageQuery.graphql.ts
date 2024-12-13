@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e749389fbdc503dac1b75074e1973a8f>>
+ * @generated SignedSource<<1363730ecc398921075a9bf97ef426c7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -222,7 +222,8 @@ return {
                                 "kind": "Literal",
                                 "name": "where",
                                 "value": {
-                                  "isSales": true
+                                  "isCeo": false,
+                                  "isSuperAdmin": false
                                 }
                               }
                             ],
@@ -253,7 +254,7 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": "users(where:{\"isSales\":true})"
+                            "storageKey": "users(where:{\"isCeo\":false,\"isSuperAdmin\":false})"
                           },
                           {
                             "alias": null,
@@ -349,12 +350,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "57a2b1600269325a4826d5385dc623c9",
+    "cacheID": "774e16654c715a06e5024453ec2a87eb",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users(where: {isSales: true}) {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users(where: {isCeo: false, isSuperAdmin: false}) {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

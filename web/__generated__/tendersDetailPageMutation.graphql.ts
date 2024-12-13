@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<074f86195cd2a168ebe06483080bb3cf>>
+ * @generated SignedSource<<5c34d6b9623aa30f0463265f907eb6f8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,6 +29,7 @@ export type UpdateTenderInput = {
   clearCity?: boolean | null | undefined;
   clearCompetitivePartnershipRating?: boolean | null | undefined;
   clearCompetitivePartnershipRatingOverview?: boolean | null | undefined;
+  clearCompetitor?: boolean | null | undefined;
   clearCompetitorSituations?: boolean | null | undefined;
   clearConstructionArea?: boolean | null | undefined;
   clearConsultingFirm?: boolean | null | undefined;
@@ -75,6 +76,7 @@ export type UpdateTenderInput = {
   code?: string | null | undefined;
   competitivePartnershipRating?: number | null | undefined;
   competitivePartnershipRatingOverview?: string | null | undefined;
+  competitorID?: string | null | undefined;
   competitorSituations?: string | null | undefined;
   constructionArea?: string | null | undefined;
   consultingFirm?: string | null | undefined;

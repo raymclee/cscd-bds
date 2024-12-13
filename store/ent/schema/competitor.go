@@ -4,6 +4,7 @@ import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -31,7 +32,12 @@ func (Competitor) Fields() []ent.Field {
 
 // Edges of the Competitor.
 func (Competitor) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("won_tenders", Tender.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+	}
 }
 
 func (Competitor) Annotations() []schema.Annotation {

@@ -7,6 +7,8 @@ import (
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -19,12 +21,14 @@ import (
 // CompetitorQuery is the builder for querying Competitor entities.
 type CompetitorQuery struct {
 	config
-	ctx        *QueryContext
-	order      []competitor.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Competitor
-	modifiers  []func(*sql.Selector)
-	loadTotal  []func(context.Context, []*Competitor) error
+	ctx                 *QueryContext
+	order               []competitor.OrderOption
+	inters              []Interceptor
+	predicates          []predicate.Competitor
+	withWonTenders      *TenderQuery
+	modifiers           []func(*sql.Selector)
+	loadTotal           []func(context.Context, []*Competitor) error
+	withNamedWonTenders map[string]*TenderQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -59,6 +63,28 @@ func (cq *CompetitorQuery) Unique(unique bool) *CompetitorQuery {
 func (cq *CompetitorQuery) Order(o ...competitor.OrderOption) *CompetitorQuery {
 	cq.order = append(cq.order, o...)
 	return cq
+}
+
+// QueryWonTenders chains the current query on the "won_tenders" edge.
+func (cq *CompetitorQuery) QueryWonTenders() *TenderQuery {
+	query := (&TenderClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(competitor.Table, competitor.FieldID, selector),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, competitor.WonTendersTable, competitor.WonTendersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Competitor entity from the query.
@@ -248,15 +274,27 @@ func (cq *CompetitorQuery) Clone() *CompetitorQuery {
 		return nil
 	}
 	return &CompetitorQuery{
-		config:     cq.config,
-		ctx:        cq.ctx.Clone(),
-		order:      append([]competitor.OrderOption{}, cq.order...),
-		inters:     append([]Interceptor{}, cq.inters...),
-		predicates: append([]predicate.Competitor{}, cq.predicates...),
+		config:         cq.config,
+		ctx:            cq.ctx.Clone(),
+		order:          append([]competitor.OrderOption{}, cq.order...),
+		inters:         append([]Interceptor{}, cq.inters...),
+		predicates:     append([]predicate.Competitor{}, cq.predicates...),
+		withWonTenders: cq.withWonTenders.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
 	}
+}
+
+// WithWonTenders tells the query-builder to eager-load the nodes that are connected to
+// the "won_tenders" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompetitorQuery) WithWonTenders(opts ...func(*TenderQuery)) *CompetitorQuery {
+	query := (&TenderClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withWonTenders = query
+	return cq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -335,8 +373,11 @@ func (cq *CompetitorQuery) prepareQuery(ctx context.Context) error {
 
 func (cq *CompetitorQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Competitor, error) {
 	var (
-		nodes = []*Competitor{}
-		_spec = cq.querySpec()
+		nodes       = []*Competitor{}
+		_spec       = cq.querySpec()
+		loadedTypes = [1]bool{
+			cq.withWonTenders != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Competitor).scanValues(nil, columns)
@@ -344,6 +385,7 @@ func (cq *CompetitorQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*C
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Competitor{config: cq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if len(cq.modifiers) > 0 {
@@ -358,12 +400,60 @@ func (cq *CompetitorQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*C
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := cq.withWonTenders; query != nil {
+		if err := cq.loadWonTenders(ctx, query, nodes,
+			func(n *Competitor) { n.Edges.WonTenders = []*Tender{} },
+			func(n *Competitor, e *Tender) { n.Edges.WonTenders = append(n.Edges.WonTenders, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedWonTenders {
+		if err := cq.loadWonTenders(ctx, query, nodes,
+			func(n *Competitor) { n.appendNamedWonTenders(name) },
+			func(n *Competitor, e *Tender) { n.appendNamedWonTenders(name, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for i := range cq.loadTotal {
 		if err := cq.loadTotal[i](ctx, nodes); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
+}
+
+func (cq *CompetitorQuery) loadWonTenders(ctx context.Context, query *TenderQuery, nodes []*Competitor, init func(*Competitor), assign func(*Competitor, *Tender)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[xid.ID]*Competitor)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(tender.FieldCompetitorID)
+	}
+	query.Where(predicate.Tender(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(competitor.WonTendersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.CompetitorID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "competitor_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "competitor_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
 }
 
 func (cq *CompetitorQuery) sqlCount(ctx context.Context) (int, error) {
@@ -448,6 +538,20 @@ func (cq *CompetitorQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// WithNamedWonTenders tells the query-builder to eager-load the nodes that are connected to the "won_tenders"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompetitorQuery) WithNamedWonTenders(name string, opts ...func(*TenderQuery)) *CompetitorQuery {
+	query := (&TenderClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedWonTenders == nil {
+		cq.withNamedWonTenders = make(map[string]*TenderQuery)
+	}
+	cq.withNamedWonTenders[name] = query
+	return cq
 }
 
 // CompetitorGroupBy is the group-by builder for Competitor entities.

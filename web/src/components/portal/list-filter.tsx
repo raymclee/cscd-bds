@@ -25,7 +25,11 @@ export function ListFilter({
   return (
     <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-1 flex-wrap items-center gap-4">
-        <Form.Item label="搜索" className="mb-0 w-full md:w-auto">
+        <Form.Item
+          label="搜索"
+          className="mb-0 w-full md:w-auto"
+          layout="horizontal"
+        >
           <Input.Search
             placeholder="搜索"
             value={searchText}

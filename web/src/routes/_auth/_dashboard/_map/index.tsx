@@ -4,7 +4,7 @@ import node, {
 } from '__generated__/MapIndexPageQuery.graphql'
 import { loadQuery } from 'react-relay'
 
-export const Route = createFileRoute('/_auth/_dashboard/__map/')({
+export const Route = createFileRoute('/_auth/_dashboard/_map/')({
   loader: async ({ context: { RelayEnvironment, session } }) => {
     return loadQuery<MapIndexPageQuery>(RelayEnvironment, node, {
       userId: session.userId,

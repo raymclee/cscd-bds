@@ -139,6 +139,8 @@ const (
 	FieldFinderID = "finder_id"
 	// FieldCreatedByID holds the string denoting the created_by_id field in the database.
 	FieldCreatedByID = "created_by_id"
+	// FieldCompetitorID holds the string denoting the competitor_id field in the database.
+	FieldCompetitorID = "competitor_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeCustomer holds the string denoting the customer edge name in mutations.
@@ -157,6 +159,8 @@ const (
 	EdgeDistrict = "district"
 	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
 	EdgeVisitRecords = "visit_records"
+	// EdgeCompetitor holds the string denoting the competitor edge name in mutations.
+	EdgeCompetitor = "competitor"
 	// Table holds the table name of the tender in the database.
 	Table = "tenders"
 	// AreaTable is the table that holds the area relation/edge.
@@ -220,6 +224,13 @@ const (
 	VisitRecordsInverseTable = "visit_records"
 	// VisitRecordsColumn is the table column denoting the visit_records relation/edge.
 	VisitRecordsColumn = "tender_id"
+	// CompetitorTable is the table that holds the competitor relation/edge.
+	CompetitorTable = "tenders"
+	// CompetitorInverseTable is the table name for the Competitor entity.
+	// It exists in this package in order to avoid circular dependency with the "competitor" package.
+	CompetitorInverseTable = "competitors"
+	// CompetitorColumn is the table column denoting the competitor relation/edge.
+	CompetitorColumn = "competitor_id"
 )
 
 // Columns holds all SQL columns for tender fields.
@@ -287,6 +298,7 @@ var Columns = []string{
 	FieldCustomerID,
 	FieldFinderID,
 	FieldCreatedByID,
+	FieldCompetitorID,
 }
 
 var (
@@ -635,6 +647,11 @@ func ByCreatedByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedByID, opts...).ToFunc()
 }
 
+// ByCompetitorID orders the results by the competitor_id field.
+func ByCompetitorID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCompetitorID, opts...).ToFunc()
+}
+
 // ByAreaField orders the results by area field.
 func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -711,6 +728,13 @@ func ByVisitRecords(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newVisitRecordsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByCompetitorField orders the results by competitor field.
+func ByCompetitorField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCompetitorStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -772,5 +796,12 @@ func newVisitRecordsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(VisitRecordsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, VisitRecordsTable, VisitRecordsColumn),
+	)
+}
+func newCompetitorStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CompetitorInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, CompetitorTable, CompetitorColumn),
 	)
 }

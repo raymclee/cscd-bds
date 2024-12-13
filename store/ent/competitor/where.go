@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -283,6 +284,29 @@ func NameEqualFold(v string) predicate.Competitor {
 // NameContainsFold applies the ContainsFold predicate on the "name" field.
 func NameContainsFold(v string) predicate.Competitor {
 	return predicate.Competitor(sql.FieldContainsFold(FieldName, v))
+}
+
+// HasWonTenders applies the HasEdge predicate on the "won_tenders" edge.
+func HasWonTenders() predicate.Competitor {
+	return predicate.Competitor(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, WonTendersTable, WonTendersColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasWonTendersWith applies the HasEdge predicate on the "won_tenders" edge with a given conditions (other predicates).
+func HasWonTendersWith(preds ...predicate.Tender) predicate.Competitor {
+	return predicate.Competitor(func(s *sql.Selector) {
+		step := newWonTendersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

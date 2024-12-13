@@ -775,6 +775,22 @@ func (c *CompetitorClient) GetX(ctx context.Context, id xid.ID) *Competitor {
 	return obj
 }
 
+// QueryWonTenders queries the won_tenders edge of a Competitor.
+func (c *CompetitorClient) QueryWonTenders(co *Competitor) *TenderQuery {
+	query := (&TenderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(competitor.Table, competitor.FieldID, id),
+			sqlgraph.To(tender.Table, tender.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, competitor.WonTendersTable, competitor.WonTendersColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CompetitorClient) Hooks() []Hook {
 	return c.hooks.Competitor
@@ -1966,6 +1982,22 @@ func (c *TenderClient) QueryVisitRecords(t *Tender) *VisitRecordQuery {
 			sqlgraph.From(tender.Table, tender.FieldID, id),
 			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, tender.VisitRecordsTable, tender.VisitRecordsColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCompetitor queries the competitor edge of a Tender.
+func (c *TenderClient) QueryCompetitor(t *Tender) *CompetitorQuery {
+	query := (&CompetitorClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(competitor.Table, competitor.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, tender.CompetitorTable, tender.CompetitorColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

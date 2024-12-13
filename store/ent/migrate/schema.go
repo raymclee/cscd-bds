@@ -269,6 +269,7 @@ var (
 		{Name: "last_tender_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "area_id", Type: field.TypeString},
 		{Name: "city_id", Type: field.TypeString, Nullable: true},
+		{Name: "competitor_id", Type: field.TypeString, Nullable: true},
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "district_id", Type: field.TypeString, Nullable: true},
 		{Name: "province_id", Type: field.TypeString, Nullable: true},
@@ -294,32 +295,38 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "tenders_customers_tenders",
+				Symbol:     "tenders_competitors_won_tenders",
 				Columns:    []*schema.Column{TendersColumns[58]},
+				RefColumns: []*schema.Column{CompetitorsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tenders_customers_tenders",
+				Columns:    []*schema.Column{TendersColumns[59]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
-				Columns:    []*schema.Column{TendersColumns[59]},
+				Columns:    []*schema.Column{TendersColumns[60]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
-				Columns:    []*schema.Column{TendersColumns[60]},
+				Columns:    []*schema.Column{TendersColumns[61]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_finder",
-				Columns:    []*schema.Column{TendersColumns[61]},
+				Columns:    []*schema.Column{TendersColumns[62]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
-				Columns:    []*schema.Column{TendersColumns[62]},
+				Columns:    []*schema.Column{TendersColumns[63]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -336,9 +343,8 @@ var (
 		{Name: "open_id", Type: field.TypeString, Nullable: true},
 		{Name: "avatar_url", Type: field.TypeString, Nullable: true},
 		{Name: "disabled", Type: field.TypeBool, Default: false},
-		{Name: "is_sales", Type: field.TypeBool, Default: false},
 		{Name: "is_admin", Type: field.TypeBool, Default: false},
-		{Name: "is_leader", Type: field.TypeBool, Default: false},
+		{Name: "is_ceo", Type: field.TypeBool, Default: false},
 		{Name: "is_super_admin", Type: field.TypeBool, Default: false},
 		{Name: "has_map_access", Type: field.TypeBool, Default: false},
 		{Name: "has_edit_access", Type: field.TypeBool, Default: false},
@@ -352,7 +358,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_team_members",
-				Columns:    []*schema.Column{UsersColumns[15]},
+				Columns:    []*schema.Column{UsersColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -497,11 +503,12 @@ func init() {
 	ProvincesTable.ForeignKeys[1].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable
 	TendersTable.ForeignKeys[1].RefTable = CitiesTable
-	TendersTable.ForeignKeys[2].RefTable = CustomersTable
-	TendersTable.ForeignKeys[3].RefTable = DistrictsTable
-	TendersTable.ForeignKeys[4].RefTable = ProvincesTable
-	TendersTable.ForeignKeys[5].RefTable = UsersTable
+	TendersTable.ForeignKeys[2].RefTable = CompetitorsTable
+	TendersTable.ForeignKeys[3].RefTable = CustomersTable
+	TendersTable.ForeignKeys[4].RefTable = DistrictsTable
+	TendersTable.ForeignKeys[5].RefTable = ProvincesTable
 	TendersTable.ForeignKeys[6].RefTable = UsersTable
+	TendersTable.ForeignKeys[7].RefTable = UsersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable

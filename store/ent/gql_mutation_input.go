@@ -233,10 +233,11 @@ func (c *CityUpdateOne) SetInput(i UpdateCityInput) *CityUpdateOne {
 
 // CreateCompetitorInput represents a mutation input for creating competitors.
 type CreateCompetitorInput struct {
-	CreatedAt *time.Time
-	UpdatedAt *time.Time
-	ShortName string
-	Name      string
+	CreatedAt    *time.Time
+	UpdatedAt    *time.Time
+	ShortName    string
+	Name         string
+	WonTenderIDs []xid.ID
 }
 
 // Mutate applies the CreateCompetitorInput on the CompetitorMutation builder.
@@ -249,6 +250,9 @@ func (i *CreateCompetitorInput) Mutate(m *CompetitorMutation) {
 	}
 	m.SetShortName(i.ShortName)
 	m.SetName(i.Name)
+	if v := i.WonTenderIDs; len(v) > 0 {
+		m.AddWonTenderIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateCompetitorInput on the CompetitorCreate builder.
@@ -259,9 +263,12 @@ func (c *CompetitorCreate) SetInput(i CreateCompetitorInput) *CompetitorCreate {
 
 // UpdateCompetitorInput represents a mutation input for updating competitors.
 type UpdateCompetitorInput struct {
-	UpdatedAt *time.Time
-	ShortName *string
-	Name      *string
+	UpdatedAt          *time.Time
+	ShortName          *string
+	Name               *string
+	ClearWonTenders    bool
+	AddWonTenderIDs    []xid.ID
+	RemoveWonTenderIDs []xid.ID
 }
 
 // Mutate applies the UpdateCompetitorInput on the CompetitorMutation builder.
@@ -274,6 +281,15 @@ func (i *UpdateCompetitorInput) Mutate(m *CompetitorMutation) {
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if i.ClearWonTenders {
+		m.ClearWonTenders()
+	}
+	if v := i.AddWonTenderIDs; len(v) > 0 {
+		m.AddWonTenderIDs(v...)
+	}
+	if v := i.RemoveWonTenderIDs; len(v) > 0 {
+		m.RemoveWonTenderIDs(v...)
 	}
 }
 
@@ -927,6 +943,7 @@ type CreateTenderInput struct {
 	CityID                               *xid.ID
 	DistrictID                           *xid.ID
 	VisitRecordIDs                       []xid.ID
+	CompetitorID                         *xid.ID
 }
 
 // Mutate applies the CreateTenderInput on the TenderMutation builder.
@@ -1105,6 +1122,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
+	if v := i.CompetitorID; v != nil {
+		m.SetCompetitorID(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateTenderInput on the TenderCreate builder.
@@ -1231,6 +1251,8 @@ type UpdateTenderInput struct {
 	ClearVisitRecords                         bool
 	AddVisitRecordIDs                         []xid.ID
 	RemoveVisitRecordIDs                      []xid.ID
+	ClearCompetitor                           bool
+	CompetitorID                              *xid.ID
 }
 
 // Mutate applies the UpdateTenderInput on the TenderMutation builder.
@@ -1583,6 +1605,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
 		m.RemoveVisitRecordIDs(v...)
 	}
+	if i.ClearCompetitor {
+		m.ClearCompetitor()
+	}
+	if v := i.CompetitorID; v != nil {
+		m.SetCompetitorID(*v)
+	}
 }
 
 // SetInput applies the change-set in the UpdateTenderInput on the TenderUpdate builder.
@@ -1607,9 +1635,8 @@ type CreateUserInput struct {
 	OpenID         *string
 	AvatarURL      *string
 	Disabled       *bool
-	IsSales        *bool
 	IsAdmin        *bool
-	IsLeader       *bool
+	IsCeo          *bool
 	IsSuperAdmin   *bool
 	HasMapAccess   *bool
 	HasEditAccess  *bool
@@ -1641,14 +1668,11 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
 	}
-	if v := i.IsSales; v != nil {
-		m.SetIsSales(*v)
-	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
 	}
-	if v := i.IsLeader; v != nil {
-		m.SetIsLeader(*v)
+	if v := i.IsCeo; v != nil {
+		m.SetIsCeo(*v)
 	}
 	if v := i.IsSuperAdmin; v != nil {
 		m.SetIsSuperAdmin(*v)
@@ -1696,9 +1720,8 @@ type UpdateUserInput struct {
 	ClearAvatarURL       bool
 	AvatarURL            *string
 	Disabled             *bool
-	IsSales              *bool
 	IsAdmin              *bool
-	IsLeader             *bool
+	IsCeo                *bool
 	IsSuperAdmin         *bool
 	HasMapAccess         *bool
 	HasEditAccess        *bool
@@ -1750,14 +1773,11 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
 	}
-	if v := i.IsSales; v != nil {
-		m.SetIsSales(*v)
-	}
 	if v := i.IsAdmin; v != nil {
 		m.SetIsAdmin(*v)
 	}
-	if v := i.IsLeader; v != nil {
-		m.SetIsLeader(*v)
+	if v := i.IsCeo; v != nil {
+		m.SetIsCeo(*v)
 	}
 	if v := i.IsSuperAdmin; v != nil {
 		m.SetIsSuperAdmin(*v)

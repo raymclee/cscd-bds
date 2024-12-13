@@ -64,7 +64,7 @@ func main() {
 		return c.Redirect(http.StatusFound, "/logout")
 	})
 
-	if config.IsProd {
+	if config.IsProd || config.IsUat {
 		e.Use(middleware.Secure())
 		e.Use(
 			middleware.Gzip(),
@@ -78,5 +78,13 @@ func main() {
 			}))
 	}
 
-	e.Start(":3000")
+	var port string
+	if config.IsProd {
+		port = ":3000"
+	} else if config.IsUat {
+		port = ":3001"
+	} else {
+		port = ":3000"
+	}
+	e.Start(port)
 }

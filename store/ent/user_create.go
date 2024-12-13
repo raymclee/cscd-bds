@@ -116,20 +116,6 @@ func (uc *UserCreate) SetNillableDisabled(b *bool) *UserCreate {
 	return uc
 }
 
-// SetIsSales sets the "is_sales" field.
-func (uc *UserCreate) SetIsSales(b bool) *UserCreate {
-	uc.mutation.SetIsSales(b)
-	return uc
-}
-
-// SetNillableIsSales sets the "is_sales" field if the given value is not nil.
-func (uc *UserCreate) SetNillableIsSales(b *bool) *UserCreate {
-	if b != nil {
-		uc.SetIsSales(*b)
-	}
-	return uc
-}
-
 // SetIsAdmin sets the "is_admin" field.
 func (uc *UserCreate) SetIsAdmin(b bool) *UserCreate {
 	uc.mutation.SetIsAdmin(b)
@@ -144,16 +130,16 @@ func (uc *UserCreate) SetNillableIsAdmin(b *bool) *UserCreate {
 	return uc
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (uc *UserCreate) SetIsLeader(b bool) *UserCreate {
-	uc.mutation.SetIsLeader(b)
+// SetIsCeo sets the "is_ceo" field.
+func (uc *UserCreate) SetIsCeo(b bool) *UserCreate {
+	uc.mutation.SetIsCeo(b)
 	return uc
 }
 
-// SetNillableIsLeader sets the "is_leader" field if the given value is not nil.
-func (uc *UserCreate) SetNillableIsLeader(b *bool) *UserCreate {
+// SetNillableIsCeo sets the "is_ceo" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsCeo(b *bool) *UserCreate {
 	if b != nil {
-		uc.SetIsLeader(*b)
+		uc.SetIsCeo(*b)
 	}
 	return uc
 }
@@ -355,17 +341,13 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultDisabled
 		uc.mutation.SetDisabled(v)
 	}
-	if _, ok := uc.mutation.IsSales(); !ok {
-		v := user.DefaultIsSales
-		uc.mutation.SetIsSales(v)
-	}
 	if _, ok := uc.mutation.IsAdmin(); !ok {
 		v := user.DefaultIsAdmin
 		uc.mutation.SetIsAdmin(v)
 	}
-	if _, ok := uc.mutation.IsLeader(); !ok {
-		v := user.DefaultIsLeader
-		uc.mutation.SetIsLeader(v)
+	if _, ok := uc.mutation.IsCeo(); !ok {
+		v := user.DefaultIsCeo
+		uc.mutation.SetIsCeo(v)
 	}
 	if _, ok := uc.mutation.IsSuperAdmin(); !ok {
 		v := user.DefaultIsSuperAdmin
@@ -405,14 +387,11 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Disabled(); !ok {
 		return &ValidationError{Name: "disabled", err: errors.New(`ent: missing required field "User.disabled"`)}
 	}
-	if _, ok := uc.mutation.IsSales(); !ok {
-		return &ValidationError{Name: "is_sales", err: errors.New(`ent: missing required field "User.is_sales"`)}
-	}
 	if _, ok := uc.mutation.IsAdmin(); !ok {
 		return &ValidationError{Name: "is_admin", err: errors.New(`ent: missing required field "User.is_admin"`)}
 	}
-	if _, ok := uc.mutation.IsLeader(); !ok {
-		return &ValidationError{Name: "is_leader", err: errors.New(`ent: missing required field "User.is_leader"`)}
+	if _, ok := uc.mutation.IsCeo(); !ok {
+		return &ValidationError{Name: "is_ceo", err: errors.New(`ent: missing required field "User.is_ceo"`)}
 	}
 	if _, ok := uc.mutation.IsSuperAdmin(); !ok {
 		return &ValidationError{Name: "is_super_admin", err: errors.New(`ent: missing required field "User.is_super_admin"`)}
@@ -491,17 +470,13 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
 		_node.Disabled = value
 	}
-	if value, ok := uc.mutation.IsSales(); ok {
-		_spec.SetField(user.FieldIsSales, field.TypeBool, value)
-		_node.IsSales = value
-	}
 	if value, ok := uc.mutation.IsAdmin(); ok {
 		_spec.SetField(user.FieldIsAdmin, field.TypeBool, value)
 		_node.IsAdmin = value
 	}
-	if value, ok := uc.mutation.IsLeader(); ok {
-		_spec.SetField(user.FieldIsLeader, field.TypeBool, value)
-		_node.IsLeader = value
+	if value, ok := uc.mutation.IsCeo(); ok {
+		_spec.SetField(user.FieldIsCeo, field.TypeBool, value)
+		_node.IsCeo = value
 	}
 	if value, ok := uc.mutation.IsSuperAdmin(); ok {
 		_spec.SetField(user.FieldIsSuperAdmin, field.TypeBool, value)
@@ -760,18 +735,6 @@ func (u *UserUpsert) UpdateDisabled() *UserUpsert {
 	return u
 }
 
-// SetIsSales sets the "is_sales" field.
-func (u *UserUpsert) SetIsSales(v bool) *UserUpsert {
-	u.Set(user.FieldIsSales, v)
-	return u
-}
-
-// UpdateIsSales sets the "is_sales" field to the value that was provided on create.
-func (u *UserUpsert) UpdateIsSales() *UserUpsert {
-	u.SetExcluded(user.FieldIsSales)
-	return u
-}
-
 // SetIsAdmin sets the "is_admin" field.
 func (u *UserUpsert) SetIsAdmin(v bool) *UserUpsert {
 	u.Set(user.FieldIsAdmin, v)
@@ -784,15 +747,15 @@ func (u *UserUpsert) UpdateIsAdmin() *UserUpsert {
 	return u
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (u *UserUpsert) SetIsLeader(v bool) *UserUpsert {
-	u.Set(user.FieldIsLeader, v)
+// SetIsCeo sets the "is_ceo" field.
+func (u *UserUpsert) SetIsCeo(v bool) *UserUpsert {
+	u.Set(user.FieldIsCeo, v)
 	return u
 }
 
-// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
-func (u *UserUpsert) UpdateIsLeader() *UserUpsert {
-	u.SetExcluded(user.FieldIsLeader)
+// UpdateIsCeo sets the "is_ceo" field to the value that was provided on create.
+func (u *UserUpsert) UpdateIsCeo() *UserUpsert {
+	u.SetExcluded(user.FieldIsCeo)
 	return u
 }
 
@@ -1013,20 +976,6 @@ func (u *UserUpsertOne) UpdateDisabled() *UserUpsertOne {
 	})
 }
 
-// SetIsSales sets the "is_sales" field.
-func (u *UserUpsertOne) SetIsSales(v bool) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetIsSales(v)
-	})
-}
-
-// UpdateIsSales sets the "is_sales" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateIsSales() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsSales()
-	})
-}
-
 // SetIsAdmin sets the "is_admin" field.
 func (u *UserUpsertOne) SetIsAdmin(v bool) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
@@ -1041,17 +990,17 @@ func (u *UserUpsertOne) UpdateIsAdmin() *UserUpsertOne {
 	})
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (u *UserUpsertOne) SetIsLeader(v bool) *UserUpsertOne {
+// SetIsCeo sets the "is_ceo" field.
+func (u *UserUpsertOne) SetIsCeo(v bool) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetIsLeader(v)
+		s.SetIsCeo(v)
 	})
 }
 
-// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateIsLeader() *UserUpsertOne {
+// UpdateIsCeo sets the "is_ceo" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateIsCeo() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsLeader()
+		s.UpdateIsCeo()
 	})
 }
 
@@ -1448,20 +1397,6 @@ func (u *UserUpsertBulk) UpdateDisabled() *UserUpsertBulk {
 	})
 }
 
-// SetIsSales sets the "is_sales" field.
-func (u *UserUpsertBulk) SetIsSales(v bool) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetIsSales(v)
-	})
-}
-
-// UpdateIsSales sets the "is_sales" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateIsSales() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsSales()
-	})
-}
-
 // SetIsAdmin sets the "is_admin" field.
 func (u *UserUpsertBulk) SetIsAdmin(v bool) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
@@ -1476,17 +1411,17 @@ func (u *UserUpsertBulk) UpdateIsAdmin() *UserUpsertBulk {
 	})
 }
 
-// SetIsLeader sets the "is_leader" field.
-func (u *UserUpsertBulk) SetIsLeader(v bool) *UserUpsertBulk {
+// SetIsCeo sets the "is_ceo" field.
+func (u *UserUpsertBulk) SetIsCeo(v bool) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetIsLeader(v)
+		s.SetIsCeo(v)
 	})
 }
 
-// UpdateIsLeader sets the "is_leader" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateIsLeader() *UserUpsertBulk {
+// UpdateIsCeo sets the "is_ceo" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateIsCeo() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsLeader()
+		s.UpdateIsCeo()
 	})
 }
 

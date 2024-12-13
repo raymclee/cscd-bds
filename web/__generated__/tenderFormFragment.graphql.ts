@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4351733ce6b96e432416518c81571aa9>>
+ * @generated SignedSource<<1f3a153f3da19617c07f9f172d9cf664>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -219,7 +219,8 @@ return {
                       "kind": "Literal",
                       "name": "where",
                       "value": {
-                        "isSales": true
+                        "isCeo": false,
+                        "isSuperAdmin": false
                       }
                     }
                   ],
@@ -250,7 +251,7 @@ return {
                       "storageKey": null
                     }
                   ],
-                  "storageKey": "users(where:{\"isSales\":true})"
+                  "storageKey": "users(where:{\"isCeo\":false,\"isSuperAdmin\":false})"
                 },
                 {
                   "alias": null,
@@ -341,6 +342,6 @@ return {
 };
 })();
 
-(node as any).hash = "b3b6a00377acb79da17986aed6160b60";
+(node as any).hash = "28c14c7b5902ba3f12f1f9d8df92ab33";
 
 export default node;

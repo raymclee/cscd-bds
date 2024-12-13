@@ -4,10 +4,9 @@ type Session {
   username: String!
   email: String!
   avatarUrl: String!
-  isLeader: Boolean!
   isAdmin: Boolean!
   isSuperAdmin: Boolean!
-  isSales: Boolean!
+  isCeo: Boolean!
   hasMapAccess: Boolean!
   hasEditAccess: Boolean!
 }

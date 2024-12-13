@@ -85,16 +85,19 @@ export function TenderListItem({
               </Link>,
               showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
-              <Link
-                to="/portal/tenders/$id/result"
-                params={{ id: item.id }}
-                resetScroll={false}
-              >
-                <Button type="link" size="small">
-                  结果
-                </Button>
-              </Link>,
-            ]
+              !isGAOrHW ? (
+                <Link
+                  to="/portal/tenders/$id/result"
+                  params={{ id: item.id }}
+                  search={(prev) => prev}
+                  resetScroll={false}
+                >
+                  <Button type="link" size="small">
+                    结果
+                  </Button>
+                </Link>
+              ) : undefined,
+            ].filter(Boolean)
           : [
               <Link
                 key="view-link"
@@ -124,7 +127,7 @@ export function TenderListItem({
               </CarouselContent>
             </Carousel>
           ) : (
-            <div className="flex aspect-[16/9] h-full w-[280px] flex-col items-center justify-center rounded-lg bg-gray-100">
+            <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
               <ImageOff className="mb-2 h-12 w-12" />
               暂没图片
             </div>

@@ -8,7 +8,6 @@ import { useFragment, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { TenderListItem } from "~/components/portal/tender-list-item";
-import { isGAorHWOnly } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute("/_auth/_portal/portal/tenders")({
@@ -138,17 +137,15 @@ function TenderList({
         }))}
       >
         {canEdit(session) && (
-          <div>
-            <Link to="/portal/tenders/new" className="w-full md:w-auto">
-              <Button
-                type="primary"
-                icon={<Plus size={16} />}
-                className="w-full md:w-auto"
-              >
-                添加商机
-              </Button>
-            </Link>
-          </div>
+          <Link to="/portal/tenders/new" className="w-full md:w-auto">
+            <Button
+              type="primary"
+              icon={<Plus size={16} />}
+              className="w-full md:w-auto"
+            >
+              添加商机
+            </Button>
+          </Link>
         )}
       </ListFilter>
 

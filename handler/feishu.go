@@ -16,6 +16,8 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	var url string
 	if config.IsProd {
 		url = "https://mkm.fefacade.com"
+	} else if config.IsUat {
+		url = "https://mkm.uat.fefacade.com"
 	} else {
 		url = "http://localhost:5173"
 	}

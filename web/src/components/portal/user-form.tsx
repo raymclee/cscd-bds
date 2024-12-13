@@ -53,7 +53,7 @@ export function UserForm({
         isAdmin: selectedUser.isAdmin,
         hasMapAccess: selectedUser.hasMapAccess,
         hasEditAccess: selectedUser.hasEditAccess,
-        isSales: selectedUser.isSales,
+        isCeo: selectedUser.isCeo,
       });
     }
   }, [selectedUser]);
@@ -65,7 +65,6 @@ export function UserForm({
         form={form}
         layout="vertical"
         disabled={isCreateUserInFlight}
-        initialValues={{ isSales: !isSuperAdmin }}
         // requiredMark="optional"
         onFinish={(values) => {
           if (selectedUser) {
@@ -175,17 +174,12 @@ export function UserForm({
         <Form.Item name="hasMapAccess" label="地图权限">
           <Switch />
         </Form.Item>
-        {isSuperAdmin && (
-          <Form.Item name="isSales" label="销售">
-            <Switch />
-          </Form.Item>
-        )}
         <Form.Item name="isAdmin" label="管理员">
           <Switch />
         </Form.Item>
         {isSuperAdmin && (
           <>
-            <Form.Item name="isLeader" label="領導">
+            <Form.Item name="isCeo" label="領導">
               <Switch />
             </Form.Item>
             <Form.Item name="isSuperAdmin" label="超級管理員">

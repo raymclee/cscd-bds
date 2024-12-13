@@ -1,5 +1,6 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { usersPageQuery } from '__generated__/usersPageQuery.graphql'
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
 import {
   App,
   Button,
@@ -8,20 +9,21 @@ import {
   Switch,
   Table,
   TableProps,
-} from 'antd'
-import { Plus } from 'lucide-react'
-import * as React from 'react'
-import { usePreloadedQuery } from 'react-relay'
-import { graphql } from 'relay-runtime'
-import { ListFilter } from '~/components/portal/list-filter'
-import { UserForm } from '~/components/portal/user-form'
-import { AreaConnection, User } from '~/graphql/graphql'
-import { useDeleteUser } from '~/hooks/use-delete-user'
-import { useUpdateUser } from '~/hooks/use-update-user'
+  Tooltip,
+} from "antd";
+import { Plus } from "lucide-react";
+import * as React from "react";
+import { usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { ListFilter } from "~/components/portal/list-filter";
+import { UserForm } from "~/components/portal/user-form";
+import { AreaConnection, User } from "~/graphql/graphql";
+import { useDeleteUser } from "~/hooks/use-delete-user";
+import { useUpdateUser } from "~/hooks/use-update-user";
 
-export const Route = createLazyFileRoute('/_auth/_portal/portal/_admin/users')({
+export const Route = createLazyFileRoute("/_auth/_portal/portal/_admin/users")({
   component: RouteComponent,
-})
+});
 
 const query = graphql`
   query usersPageQuery($userId: ID!, $first: Int, $last: Int) {
@@ -36,7 +38,7 @@ const query = graphql`
               users(
                 first: $first
                 last: $last
-                where: { isLeader: false, isSuperAdmin: false }
+                where: { isCeo: false, isSuperAdmin: false }
               ) @connection(key: "usersPageQuery_users") {
                 __id
                 edges {
@@ -68,30 +70,30 @@ const query = graphql`
       }
     }
   }
-`
+`;
 
 function RouteComponent() {
-  const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData())
-  const searchParams = Route.useSearch()
-  const navigate = Route.useNavigate()
-  const [selectedUser, setSelectedUser] = React.useState<User | null>(null)
-  const [commitDeleteUser, isDeleteUserInFlight] = useDeleteUser()
-  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser()
-  const { message } = App.useApp()
-  const { session } = Route.useRouteContext()
-  const searchText = searchParams.q || ''
-  const area = searchParams.area
+  const data = usePreloadedQuery<usersPageQuery>(query, Route.useLoaderData());
+  const searchParams = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+  const [commitDeleteUser, isDeleteUserInFlight] = useDeleteUser();
+  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
+  const { message } = App.useApp();
+  const { session } = Route.useRouteContext();
+  const searchText = searchParams.q || "";
+  const area = searchParams.area;
 
-  const users: User[] = []
+  const users: User[] = [];
   for (const area of data.node?.areas?.edges ?? []) {
     for (const user of area?.node?.users.edges ?? []) {
       if (!user?.node) {
-        continue
+        continue;
       }
       if (users.map((u) => u.id).includes(user.node.id)) {
-        continue
+        continue;
       }
-      users.push(user.node as User)
+      users.push(user.node as User);
     }
   }
 
@@ -102,17 +104,17 @@ function RouteComponent() {
         (n) =>
           area === undefined ||
           n?.areas?.edges?.some((a) => a?.node?.code === area),
-      ) ?? []
+      ) ?? [];
 
   const connectionIDs =
     data.node?.areas?.edges
       ?.flatMap((e) => e?.node?.users.__id)
-      .filter((id) => id !== undefined) ?? []
+      .filter((id) => id !== undefined) ?? [];
 
-  const columns: TableProps<User>['columns'] = [
+  const columns: TableProps<User>["columns"] = [
     {
-      dataIndex: 'name',
-      title: '名称',
+      dataIndex: "name",
+      title: "名称",
       render: (value, record) => (
         <Button
           type="link"
@@ -124,7 +126,7 @@ function RouteComponent() {
       ),
     },
     {
-      title: '区域',
+      title: "区域",
       render: (_, record) =>
         record.areas.edges && record.areas.edges?.length > 0
           ? record.areas?.edges
@@ -134,25 +136,25 @@ function RouteComponent() {
                   .includes(e?.node?.id),
               )
               .map((a) => a?.node?.name)
-              .join(', ')
-          : '无',
+              .join(", ")
+          : "无",
     },
     {
-      dataIndex: 'hasMapAccess',
-      title: '大地图',
+      dataIndex: "hasMapAccess",
+      title: "大地图",
       render: (hasMapAccess, record) => (
         <UserToggle user={record} field="hasMapAccess" value={hasMapAccess} />
       ),
     },
     {
-      dataIndex: 'isAdmin',
-      title: '管理员',
+      dataIndex: "isAdmin",
+      title: "管理员",
       render: (isAdmin, record) => (
         <UserToggle user={record} field="isAdmin" value={isAdmin} />
       ),
     },
     {
-      title: '操作',
+      title: "操作",
       render: (_, record) => (
         <div className="-ml-2 flex items-center gap-2">
           <Button
@@ -167,18 +169,18 @@ function RouteComponent() {
                   input: { disabled: !record.disabled },
                 },
                 onCompleted() {
-                  message.destroy()
-                  message.success(record.disabled ? '启用成功' : '停用成功')
+                  message.destroy();
+                  message.success(record.disabled ? "启用成功" : "停用成功");
                 },
                 onError(error) {
-                  console.error(error)
-                  message.destroy()
-                  message.error(record.disabled ? '启用失败' : '停用失败')
+                  console.error(error);
+                  message.destroy();
+                  message.error(record.disabled ? "启用失败" : "停用失败");
                 },
               })
             }
           >
-            {record.disabled ? '启用' : '停用'}
+            {record.disabled ? "启用" : "停用"}
           </Button>
           <Popconfirm
             title="确定删除吗？"
@@ -186,13 +188,13 @@ function RouteComponent() {
               commitDeleteUser({
                 variables: { id: record.id, connections: connectionIDs },
                 onCompleted() {
-                  message.success('删除成功')
+                  message.success("删除成功");
                 },
                 onError(error) {
-                  console.error(error)
-                  message.error(`删除失败`)
+                  console.error(error);
+                  message.error(`删除失败`);
                 },
-              })
+              });
             }}
           >
             <Button
@@ -208,14 +210,14 @@ function RouteComponent() {
         </div>
       ),
     },
-  ]
+  ];
 
   return (
     <>
       <ListFilter
         areas={data.node?.areas?.edges?.map((a) => ({
-          label: a?.node?.name ?? '',
-          value: a?.node?.code ?? '',
+          label: a?.node?.name ?? "",
+          value: a?.node?.code ?? "",
         }))}
       >
         <UserFormDrawer
@@ -229,19 +231,19 @@ function RouteComponent() {
       <Table
         dataSource={dataSource}
         columns={columns}
-        rowKey={'id'}
+        rowKey={"id"}
         pagination={{
           current: searchParams.page,
           onChange(page) {
             navigate({
-              to: '.',
+              to: ".",
               search: (prev) => ({ ...prev, page }),
-            })
+            });
           },
         }}
       />
     </>
-  )
+  );
 }
 
 function UserFormDrawer({
@@ -250,17 +252,17 @@ function UserFormDrawer({
   setSelectedUser,
   avaliableAreas,
 }: {
-  connectionIDs: string[]
-  selectedUser: User | null
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>
-  avaliableAreas: AreaConnection
+  connectionIDs: string[];
+  selectedUser: User | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  avaliableAreas: AreaConnection;
 }) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   const onClose = () => {
-    setOpen(false)
-    setSelectedUser(null)
-  }
+    setOpen(false);
+    setSelectedUser(null);
+  };
 
   return (
     <>
@@ -273,7 +275,7 @@ function UserFormDrawer({
         添加用户
       </Button>
       <Drawer
-        title={selectedUser ? '编辑用户' : '添加用户'}
+        title={selectedUser ? "编辑用户" : "添加用户"}
         open={open || !!selectedUser}
         onClose={onClose}
         width={480}
@@ -288,7 +290,7 @@ function UserFormDrawer({
         />
       </Drawer>
     </>
-  )
+  );
 }
 
 function UserToggle({
@@ -296,19 +298,19 @@ function UserToggle({
   field,
   value,
 }: {
-  user: User
+  user: User;
   field:
-    | 'isSales'
-    | 'isAdmin'
-    | 'isSuperAdmin'
-    | 'hasMapAccess'
-    | 'hasEditAccess'
-  value: boolean
+    | "isSales"
+    | "isAdmin"
+    | "isSuperAdmin"
+    | "hasMapAccess"
+    | "hasEditAccess";
+  value: boolean;
 }) {
-  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser()
-  const { message } = App.useApp()
+  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
+  const { message } = App.useApp();
 
-  const title = value ? '停用' : '启用'
+  const title = value ? "停用" : "启用";
 
   return (
     <Switch
@@ -322,14 +324,14 @@ function UserToggle({
             input: { [field]: !value },
           },
           onCompleted() {
-            message.success(`${title}成功`)
+            message.success(`${title}成功`);
           },
           onError(error) {
-            console.error(error)
-            message.error(`${title}失败`)
+            console.error(error);
+            message.error(`${title}失败`);
           },
-        })
+        });
       }}
     />
-  )
+  );
 }

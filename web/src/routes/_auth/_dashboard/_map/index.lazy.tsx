@@ -32,7 +32,7 @@ import {
 import { cn } from '~/lib/utils'
 import { useMapStore } from '~/store/map'
 
-export const Route = createLazyFileRoute('/_auth/_dashboard/__map/')({
+export const Route = createLazyFileRoute('/_auth/_dashboard/_map/')({
   component: RouteComponent,
 })
 

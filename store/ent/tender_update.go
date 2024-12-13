@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/city"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/predicate"
@@ -1239,6 +1240,26 @@ func (tu *TenderUpdate) SetNillableCreatedByID(x *xid.ID) *TenderUpdate {
 	return tu
 }
 
+// SetCompetitorID sets the "competitor_id" field.
+func (tu *TenderUpdate) SetCompetitorID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetCompetitorID(x)
+	return tu
+}
+
+// SetNillableCompetitorID sets the "competitor_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCompetitorID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetCompetitorID(*x)
+	}
+	return tu
+}
+
+// ClearCompetitorID clears the value of the "competitor_id" field.
+func (tu *TenderUpdate) ClearCompetitorID() *TenderUpdate {
+	tu.mutation.ClearCompetitorID()
+	return tu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tu *TenderUpdate) SetArea(a *Area) *TenderUpdate {
 	return tu.SetAreaID(a.ID)
@@ -1302,6 +1323,11 @@ func (tu *TenderUpdate) AddVisitRecords(v ...*VisitRecord) *TenderUpdate {
 		ids[i] = v[i].ID
 	}
 	return tu.AddVisitRecordIDs(ids...)
+}
+
+// SetCompetitor sets the "competitor" edge to the Competitor entity.
+func (tu *TenderUpdate) SetCompetitor(c *Competitor) *TenderUpdate {
+	return tu.SetCompetitorID(c.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1391,6 +1417,12 @@ func (tu *TenderUpdate) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdate {
 		ids[i] = v[i].ID
 	}
 	return tu.RemoveVisitRecordIDs(ids...)
+}
+
+// ClearCompetitor clears the "competitor" edge to the Competitor entity.
+func (tu *TenderUpdate) ClearCompetitor() *TenderUpdate {
+	tu.mutation.ClearCompetitor()
+	return tu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -2111,6 +2143,35 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.CompetitorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CompetitorTable,
+			Columns: []string{tender.CompetitorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.CompetitorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CompetitorTable,
+			Columns: []string{tender.CompetitorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -3339,6 +3400,26 @@ func (tuo *TenderUpdateOne) SetNillableCreatedByID(x *xid.ID) *TenderUpdateOne {
 	return tuo
 }
 
+// SetCompetitorID sets the "competitor_id" field.
+func (tuo *TenderUpdateOne) SetCompetitorID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetCompetitorID(x)
+	return tuo
+}
+
+// SetNillableCompetitorID sets the "competitor_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCompetitorID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetCompetitorID(*x)
+	}
+	return tuo
+}
+
+// ClearCompetitorID clears the value of the "competitor_id" field.
+func (tuo *TenderUpdateOne) ClearCompetitorID() *TenderUpdateOne {
+	tuo.mutation.ClearCompetitorID()
+	return tuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tuo *TenderUpdateOne) SetArea(a *Area) *TenderUpdateOne {
 	return tuo.SetAreaID(a.ID)
@@ -3402,6 +3483,11 @@ func (tuo *TenderUpdateOne) AddVisitRecords(v ...*VisitRecord) *TenderUpdateOne 
 		ids[i] = v[i].ID
 	}
 	return tuo.AddVisitRecordIDs(ids...)
+}
+
+// SetCompetitor sets the "competitor" edge to the Competitor entity.
+func (tuo *TenderUpdateOne) SetCompetitor(c *Competitor) *TenderUpdateOne {
+	return tuo.SetCompetitorID(c.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -3491,6 +3577,12 @@ func (tuo *TenderUpdateOne) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdateO
 		ids[i] = v[i].ID
 	}
 	return tuo.RemoveVisitRecordIDs(ids...)
+}
+
+// ClearCompetitor clears the "competitor" edge to the Competitor entity.
+func (tuo *TenderUpdateOne) ClearCompetitor() *TenderUpdateOne {
+	tuo.mutation.ClearCompetitor()
+	return tuo
 }
 
 // Where appends a list predicates to the TenderUpdate builder.
@@ -4241,6 +4333,35 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(visitrecord.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.CompetitorCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CompetitorTable,
+			Columns: []string{tender.CompetitorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.CompetitorIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   tender.CompetitorTable,
+			Columns: []string{tender.CompetitorColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
