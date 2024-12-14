@@ -254,10 +254,12 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });
+              message.destroy();
               message.success("更新成功");
             },
             onError(error) {
               console.error({ error });
+              message.destroy();
               message.error("更新失败");
             },
           });

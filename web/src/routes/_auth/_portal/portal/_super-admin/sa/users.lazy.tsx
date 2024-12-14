@@ -153,7 +153,7 @@ function RouteComponent() {
     {
       title: "操作",
       render: (_, record) => (
-        <div className="-ml-2 flex items-center gap-2">
+        <div className="flex items-center gap-2 -ml-2">
           <Button
             type="link"
             size="small"
@@ -185,10 +185,12 @@ function RouteComponent() {
               commitDeleteUser({
                 variables: { id: record.id, connections: [data.users.__id] },
                 onCompleted() {
+                  message.destroy();
                   message.success("删除成功");
                 },
                 onError(error) {
                   console.error(error);
+                  message.destroy();
                   message.error(`删除失败`);
                 },
               });
@@ -318,10 +320,12 @@ function UserToggle({
             input: { [field]: !value },
           },
           onCompleted() {
+            message.destroy();
             message.success(`${title}成功`);
           },
           onError(error) {
             console.error(error);
+            message.destroy();
             message.error(`${title}失败`);
           },
         });

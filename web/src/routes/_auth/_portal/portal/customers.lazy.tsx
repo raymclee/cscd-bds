@@ -13,7 +13,7 @@ import { Customer } from '~/graphql/graphql'
 import { customerSizeText, industryText, ownerTypeText } from '~/lib/helper'
 import { canEdit } from '~/lib/permission'
 
-export const Route = createLazyFileRoute('/_auth/_portal/portal/customers/')({
+export const Route = createLazyFileRoute('/_auth/_portal/portal/customers')({
   component: RouteComponent,
 })
 

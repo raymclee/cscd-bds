@@ -128,7 +128,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="mb-2 h-12 w-12" />
+              <ImageOff className="w-12 h-12 mb-2" />
               暂没图片
             </div>
           )}
@@ -208,9 +208,11 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
             connections,
           },
           onCompleted() {
+            message.destroy();
             message.success("删除成功");
           },
           onError() {
+            message.destroy();
             message.error("删除失败");
           },
         });

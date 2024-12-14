@@ -73,10 +73,12 @@ export function CustomerForm({
                 input,
               },
               onCompleted: () => {
+                message.destroy();
                 message.success("更新客户成功");
                 onClose();
               },
               onError: (error) => {
+                message.destroy();
                 console.error(error);
                 message.error("更新客户失败");
               },
@@ -93,11 +95,13 @@ export function CustomerForm({
                 ],
               },
               onCompleted: () => {
+                message.destroy();
                 message.success("创建客户成功");
                 onClose();
               },
               onError: (error) => {
                 console.error(error);
+                message.destroy();
                 message.error("创建客户失败");
               },
             });
@@ -145,7 +149,7 @@ export function CustomerForm({
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

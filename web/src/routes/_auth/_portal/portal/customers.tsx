@@ -11,7 +11,7 @@ const customerSearchSchema = v.object({
   area: v.optional(v.string()),
 })
 
-export const Route = createFileRoute('/_auth/_portal/portal/customers/')({
+export const Route = createFileRoute('/_auth/_portal/portal/customers')({
   async loader({ context: { RelayEnvironment, session } }) {
     return loadQuery<customersPageQuery>(RelayEnvironment, node, {
       userId: session.userId,

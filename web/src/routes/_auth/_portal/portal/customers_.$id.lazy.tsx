@@ -8,11 +8,11 @@ import { CustomerDetail } from '~/components/portal/customer-detail'
 import { CustomerTenderList } from '~/components/portal/customer-tender-list'
 import { CustomerVisitRecordList } from '~/components/portal/customer-visit-record-list'
 
-export const Route = createLazyFileRoute('/_auth/_portal/portal/customers/$id')(
-  {
-    component: RouteComponent,
-  },
-)
+export const Route = createLazyFileRoute(
+  '/_auth/_portal/portal/customers_/$id',
+)({
+  component: RouteComponent,
+})
 
 function RouteComponent() {
   const data = usePreloadedQuery<customersDetailPageQuery>(

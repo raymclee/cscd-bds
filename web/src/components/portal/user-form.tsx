@@ -87,10 +87,12 @@ export function UserForm({
                 },
               },
               onCompleted(response, errors) {
+                message.destroy();
                 message.success("更新成功");
                 onClose();
               },
               onError(error) {
+                message.destroy();
                 message.error("更新失败");
               },
             });
@@ -191,7 +193,7 @@ export function UserForm({
           <Switch />
         </Form.Item>
       </Form>
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

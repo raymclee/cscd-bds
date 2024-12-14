@@ -1,13 +1,11 @@
-import * as React from "react";
-import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { tendersResultModal_competitors$key } from "__generated__/tendersResultModal_competitors.graphql";
+import { tendersResultModal_tender$key } from "__generated__/tendersResultModal_tender.graphql";
+import { tendersResultPageQuery } from "__generated__/tendersResultPageQuery.graphql";
+import { useSetCompetitorMutation$variables } from "__generated__/useSetCompetitorMutation.graphql";
 import { Alert, App, Form, Modal, Radio, Select } from "antd";
 import { graphql, useFragment, usePreloadedQuery } from "react-relay";
-import { tendersResultPageQuery } from "__generated__/tendersResultPageQuery.graphql";
-import { tendersResultModal_tender$key } from "__generated__/tendersResultModal_tender.graphql";
-import { tendersResultModal_competitors$key } from "__generated__/tendersResultModal_competitors.graphql";
-import { useUpdateTender } from "~/hooks/use-update-tender";
 import { useSetCompetitor } from "~/hooks/use-set-competitor";
-import { useSetCompetitorMutation$variables } from "__generated__/useSetCompetitorMutation.graphql";
 
 export const Route = createLazyFileRoute(
   "/_auth/_portal/portal/tenders/$id/result",
@@ -119,9 +117,12 @@ function TenderResultModal(props: {
                 },
                 onCompleted: () => {
                   closeModal();
+                  message.destroy();
                   message.success("更新成功");
                 },
-                onError: () => {
+                onError: (error) => {
+                  console.error(error);
+                  message.destroy();
                   message.error("更新失败");
                 },
               });
