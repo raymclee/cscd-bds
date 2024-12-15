@@ -20,7 +20,7 @@ import "./main.css";
 const tenderResultModalToTenderMask = createRouteMask({
   routeTree,
   from: "/portal/tenders/$id/result",
-  to: "/portal/tenders",
+  to: "/portal/tenders/$id",
   params: true,
 });
 
@@ -36,7 +36,7 @@ const router = createRouter({
   // defaultPendingMs: 5000,
   // defaultPendingMinMs: 5000,
   defaultErrorComponent: () => (
-    <div className="flex min-h-screen flex-col items-center justify-center space-y-2">
+    <div className="flex flex-col items-center justify-center min-h-screen space-y-2">
       <div className="text-2xl font-bold">500</div>
       <div className="text-lg">服务器错误</div>
     </div>

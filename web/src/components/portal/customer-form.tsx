@@ -40,7 +40,6 @@ export function CustomerForm({
   const { message } = App.useApp();
 
   useEffect(() => {
-    console.log(selectedCustomer);
     if (selectedCustomer?.id) {
       form.setFieldsValue({
         name: selectedCustomer.name,

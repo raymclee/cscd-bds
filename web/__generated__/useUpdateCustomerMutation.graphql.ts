@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0819b11a94d13cf0bc0477dc953aadad>>
+ * @generated SignedSource<<d7120dcf4257d2f8b1a22a6e71a1745a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -205,12 +205,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "bab2d589ad15a379f34deff637afbe02",
+    "cacheID": "5c8225957a80cec21c4f26cea474108e",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailContactFragment on Customer {\n  id\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  ...customerDetailContactFragment\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  ...customerDetail_customerContact\n}\n\nfragment customerDetail_customerContact on Customer {\n  id\n}\n"
   }
 };
 })();

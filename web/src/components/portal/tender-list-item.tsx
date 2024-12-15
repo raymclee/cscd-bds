@@ -85,18 +85,6 @@ export function TenderListItem({
               </Link>,
               showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
-              !isGAOrHW ? (
-                <Link
-                  to="/portal/tenders/$id/result"
-                  params={{ id: item.id }}
-                  search={(prev) => prev}
-                  resetScroll={false}
-                >
-                  <Button type="link" size="small">
-                    结果
-                  </Button>
-                </Link>
-              ) : undefined,
             ].filter(Boolean)
           : [
               <Link
@@ -211,9 +199,10 @@ function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
             message.destroy();
             message.success("删除成功");
           },
-          onError() {
+          onError(error) {
             message.destroy();
             message.error("删除失败");
+            console.error(error);
           },
         });
       }}

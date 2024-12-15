@@ -20,6 +20,7 @@ export function useUpdateUser() {
             }
           }
         }
+        isSuperAdmin
         isAdmin
         isCeo
         hasMapAccess

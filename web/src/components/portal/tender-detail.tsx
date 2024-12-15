@@ -2,11 +2,15 @@ import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
-import { Button, Card, Descriptions, Image } from "antd";
+import { Button, Card, Descriptions, Image, Space } from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
-import { tenderStatusText } from "~/lib/helper";
+import { isGAorHWOnly, tenderStatusText } from "~/lib/helper";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { Link, useRouteContext } from "@tanstack/react-router";
+import { canEdit } from "~/lib/permission";
+import { EditOutlined } from "@ant-design/icons";
+import { ListEnd, ListTodo } from "lucide-react";
 
 type TenderDetailProps = {
   queryRef: tenderDetailFragment$key;
@@ -104,18 +108,35 @@ export const TenderDetailFragment = graphql`
 
 export function TenderDetail({ queryRef }: TenderDetailProps) {
   const data = useFragment(TenderDetailFragment, queryRef);
-  return data.area.code === "SH" ? (
-    <SHTender {...data} />
-  ) : (
+  return data.area.code === "GA" || data.area.code === "HW" ? (
     <GAAndHWTender {...data} />
+  ) : (
+    <SHTender {...data} />
   );
 }
 
-function SHTender({ name, status }: tenderDetailFragment$data) {
+function SHTender({ id, name, status }: tenderDetailFragment$data) {
+  const { session } = useRouteContext({ from: "/_auth" });
   return (
     <Card>
       <Descriptions
         title={name}
+        extra={
+          canEdit(session) && (
+            <Space>
+              <Link to="/portal/tenders/$id/edit" params={{ id }}>
+                <Button type="primary" icon={<EditOutlined />}>
+                  编辑
+                </Button>
+              </Link>
+              <Link to="/portal/tenders/$id/result" params={{ id }}>
+                <Button type="primary" icon={<ListTodo size={16} />}>
+                  结果
+                </Button>
+              </Link>
+            </Space>
+          )
+        }
         items={[
           { key: "status", label: "狀態", children: tenderStatusText(status) },
         ]}
@@ -125,6 +146,7 @@ function SHTender({ name, status }: tenderDetailFragment$data) {
 }
 
 function GAAndHWTender({
+  id,
   name,
   status,
   tenderCode,
@@ -142,11 +164,22 @@ function GAAndHWTender({
   lastTenderAmount,
   followingSales,
 }: tenderDetailFragment$data) {
+  const { session } = useRouteContext({ from: "/_auth" });
   return (
     <div className="space-y-4">
       <Descriptions
-        className="rounded-lg bg-white p-6"
-        // extra={<Button type="primary">編輯</Button>}
+        className="p-6 bg-white rounded-lg"
+        extra={
+          canEdit(session) && (
+            <Space>
+              <Link to="/portal/tenders/$id/edit" params={{ id }}>
+                <Button type="primary" icon={<EditOutlined />}>
+                  编辑
+                </Button>
+              </Link>
+            </Space>
+          )
+        }
         title={name}
         items={[
           { key: "tenderCode", label: "投標編號", children: tenderCode },
@@ -200,7 +233,7 @@ function GAAndHWTender({
       />
 
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="p-6 bg-white rounded-lg"
         title="得標資料"
         items={[
           {

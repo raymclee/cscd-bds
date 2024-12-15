@@ -1,18 +1,19 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { customersDetailPageQuery } from '__generated__/customersDetailPageQuery.graphql'
-import { Card, Result } from 'antd'
-import * as React from 'react'
-import { usePreloadedQuery } from 'react-relay'
-import { graphql } from 'relay-runtime'
-import { CustomerDetail } from '~/components/portal/customer-detail'
-import { CustomerTenderList } from '~/components/portal/customer-tender-list'
-import { CustomerVisitRecordList } from '~/components/portal/customer-visit-record-list'
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { customersDetailPageQuery } from "__generated__/customersDetailPageQuery.graphql";
+import { Button, Card, Result } from "antd";
+import * as React from "react";
+import { usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { CustomerDetail } from "~/components/portal/customer-detail";
+import { CustomerTenderList } from "~/components/portal/customer-tender-list";
+import { CustomerVisitRecordList } from "~/components/portal/customer-visit-record-list";
+import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute(
-  '/_auth/_portal/portal/customers_/$id',
+  "/_auth/_portal/portal/customers_/$id",
 )({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const data = usePreloadedQuery<customersDetailPageQuery>(
@@ -32,6 +33,7 @@ function RouteComponent() {
                   customers(where: { id: $id }) {
                     edges {
                       node {
+                        id
                         sales {
                           id
                         }
@@ -75,12 +77,12 @@ function RouteComponent() {
       }
     `,
     Route.useLoaderData(),
-  )
-  const [activeTab, setActiveTab] = React.useState('1')
+  );
+  const [activeTab, setActiveTab] = React.useState("1");
   const customer = data.node?.areas?.edges
     ?.flatMap((a) => a?.node?.customers?.edges?.map((c) => c?.node))
-    ?.at(0)
-  const { session } = Route.useRouteContext()
+    ?.at(0);
+  const { session } = Route.useRouteContext();
 
   if (!customer) {
     return (
@@ -90,7 +92,7 @@ function RouteComponent() {
         subTitle="请检查链接是否正确"
         // extra={<Button type="primary">Back Home</Button>}
       />
-    )
+    );
   }
 
   return (
@@ -106,21 +108,21 @@ function RouteComponent() {
           />
         }
         onTabChange={(key) => setActiveTab(key)}
-        tabProps={{ style: { marginTop: 12 }, size: 'small' }}
+        tabProps={{ style: { marginTop: 12 }, size: "small" }}
         tabList={[
           {
-            key: '1',
+            key: "1",
             tab: `项目列表 (${customer.tenders.edges?.length || 0})`,
           },
           {
-            key: '2',
+            key: "2",
             tab: `拜访记录 (${customer.visitRecords.edges?.length || 0})`,
           },
         ]}
       >
-        {activeTab === '1' && <CustomerTenderList customer={customer} />}
-        {activeTab === '2' && <CustomerVisitRecordList customer={customer} />}
+        {activeTab === "1" && <CustomerTenderList customer={customer} />}
+        {activeTab === "2" && <CustomerVisitRecordList customer={customer} />}
       </Card>
     </>
-  )
+  );
 }

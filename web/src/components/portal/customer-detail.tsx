@@ -1,14 +1,13 @@
+import { EditOutlined } from "@ant-design/icons";
+import { Link, useRouteContext } from "@tanstack/react-router";
+import { customerDetail_customerContact$key } from "__generated__/customerDetail_customerContact.graphql";
 import { customerDetailFragment$key } from "__generated__/customerDetailFragment.graphql";
-import { Descriptions } from "antd";
+import { Button, Descriptions, Skeleton } from "antd";
 import dayjs from "dayjs";
-import { customerSizeText, industryText } from "~/lib/helper";
+import { Suspense, useEffect } from "react";
 import { graphql, useFragment, useRefetchableFragment } from "react-relay";
-import { ownerTypeText } from "~/lib/helper";
-import {
-  customerDetailContactFragment$data,
-  customerDetailContactFragment$key,
-} from "__generated__/customerDetailContactFragment.graphql";
-import { useEffect } from "react";
+import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
+import { canEdit } from "~/lib/permission";
 
 export function CustomerDetail(props: {
   customer: customerDetailFragment$key;
@@ -34,15 +33,26 @@ export function CustomerDetail(props: {
           id
           name
         }
-        ...customerDetailContactFragment @alias(as: "contact")
+        ...customerDetail_customerContact
       }
     `,
     props.customer,
   );
 
+  const { session } = useRouteContext({ from: "/_auth" });
+
   return (
     <>
       <Descriptions
+        extra={
+          canEdit(session) && (
+            // <Link to="/portal/customers/$id/edit" params={{ id: customer.id! }}>
+            <Button type="primary" icon={<EditOutlined />}>
+              编辑
+            </Button>
+            // </Link>
+          )
+        }
         title={customer.name}
         items={[
           {
@@ -133,23 +143,22 @@ export function CustomerDetail(props: {
         ]}
       />
       {props.showContact && (
-        <ContactDetail
-          customer={customer.contact}
-          showContact={props.showContact}
-        />
+        <Suspense fallback={<Skeleton active />}>
+          <ContactDetail customer={customer} showContact={props.showContact} />
+        </Suspense>
       )}
     </>
   );
 }
 
 function ContactDetail(props: {
-  customer: customerDetailContactFragment$key;
+  customer: customerDetail_customerContact$key;
   showContact: boolean;
 }) {
   const [data, refetch] = useRefetchableFragment(
     graphql`
-      fragment customerDetailContactFragment on Customer
-      @refetchable(queryName: "customerDetailContactFragmentRefetchQuery")
+      fragment customerDetail_customerContact on Customer
+      @refetchable(queryName: "customerDetail_customerContactRefetchQuery")
       @argumentDefinitions(
         showContact: { type: "Boolean", defaultValue: false }
       ) {

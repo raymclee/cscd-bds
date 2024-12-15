@@ -8,7 +8,7 @@ import { graphql, useFragment, usePreloadedQuery } from "react-relay";
 import { useSetCompetitor } from "~/hooks/use-set-competitor";
 
 export const Route = createLazyFileRoute(
-  "/_auth/_portal/portal/tenders/$id/result",
+  "/_auth/_portal/portal/tenders_/$id/result",
 )({
   component: RouteComponent,
 });
@@ -84,9 +84,11 @@ function TenderResultModal(props: {
   const { id } = Route.useParams();
   const closeModal = () => {
     navigate({
-      to: "/portal/tenders",
+      to: "/portal/tenders/$id",
+      params: { id },
       resetScroll: false,
       search: (prev) => prev,
+      replace: true,
     });
   };
   const { message } = App.useApp();

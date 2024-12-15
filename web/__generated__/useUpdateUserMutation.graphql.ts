@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8a18dd903c84f8a2ac6a9456be033bd4>>
+ * @generated SignedSource<<f119aaa2c03faede89f5fa673626f4dd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -64,6 +64,7 @@ export type useUpdateUserMutation$data = {
     readonly id: string;
     readonly isAdmin: boolean;
     readonly isCeo: boolean;
+    readonly isSuperAdmin: boolean;
     readonly name: string;
     readonly openID: string | null | undefined;
     readonly username: string;
@@ -197,6 +198,13 @@ v3 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
+        "name": "isSuperAdmin",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
         "name": "isAdmin",
         "storageKey": null
       },
@@ -243,16 +251,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "ad3326601e64cae26f18036b74243151",
+    "cacheID": "a911edc9696d495153895dadc65db451",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "516571c9bf1270f6e50583600aedc9fa";
+(node as any).hash = "7fc5ebade2d8b03750ebdfe0e2ec1158";
 
 export default node;

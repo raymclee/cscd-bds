@@ -61,6 +61,7 @@ const query = graphql`
           }
           isCeo
           isAdmin
+          isSuperAdmin
           hasMapAccess
           hasEditAccess
         }
@@ -148,6 +149,13 @@ function RouteComponent() {
       title: "管理员",
       render: (isAdmin, record) => (
         <UserToggle user={record} field="isAdmin" value={isAdmin} />
+      ),
+    },
+    {
+      dataIndex: "isSuperAdmin",
+      title: "超级管理员",
+      render: (isSuperAdmin, record) => (
+        <UserToggle user={record} field="isSuperAdmin" value={isSuperAdmin} />
       ),
     },
     {
@@ -300,7 +308,12 @@ function UserToggle({
   value,
 }: {
   user: User;
-  field: "isCeo" | "isAdmin" | "hasMapAccess" | "hasEditAccess";
+  field:
+    | "isCeo"
+    | "isAdmin"
+    | "isSuperAdmin"
+    | "hasMapAccess"
+    | "hasEditAccess";
   value: boolean;
 }) {
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();

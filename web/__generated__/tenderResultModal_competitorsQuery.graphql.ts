@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1c2b2945f91e318a0ac6528fae970402>>
+ * @generated SignedSource<<7f599425071fa55658a7cf5d15878c21>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,84 +9,68 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
 export type tenderResultModal_competitorsQuery$variables = Record<PropertyKey, never>;
 export type tenderResultModal_competitorsQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"tenderResultModal_competitors">;
+  readonly competitors: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+        readonly name: string;
+        readonly shortName: string;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
+  };
 };
 export type tenderResultModal_competitorsQuery = {
   response: tenderResultModal_competitorsQuery$data;
   variables: tenderResultModal_competitorsQuery$variables;
 };
 
-const node: ConcreteRequest = {
-  "fragment": {
-    "argumentDefinitions": [],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "tenderResultModal_competitorsQuery",
-    "selections": [
-      {
-        "args": null,
-        "kind": "FragmentSpread",
-        "name": "tenderResultModal_competitors"
-      }
-    ],
-    "type": "Query",
-    "abstractKey": null
-  },
-  "kind": "Request",
-  "operation": {
-    "argumentDefinitions": [],
-    "kind": "Operation",
-    "name": "tenderResultModal_competitorsQuery",
+const node: ConcreteRequest = (function(){
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "CompetitorConnection",
+    "kind": "LinkedField",
+    "name": "competitors",
+    "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "CompetitorConnection",
+        "concreteType": "CompetitorEdge",
         "kind": "LinkedField",
-        "name": "competitors",
-        "plural": false,
+        "name": "edges",
+        "plural": true,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "CompetitorEdge",
+            "concreteType": "Competitor",
             "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
+            "name": "node",
+            "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Competitor",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "shortName",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
-                    "storageKey": null
-                  }
-                ],
+                "kind": "ScalarField",
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "shortName",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
                 "storageKey": null
               }
             ],
@@ -95,18 +79,38 @@ const node: ConcreteRequest = {
         ],
         "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "tenderResultModal_competitorsQuery",
+    "selections": (v0/*: any*/),
+    "type": "Query",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": [],
+    "kind": "Operation",
+    "name": "tenderResultModal_competitorsQuery",
+    "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "750c2f353bc2a08dbd52b009585bca8a",
+    "cacheID": "b8fbca81921ffb4bfb4f80aa24797949",
     "id": null,
     "metadata": {},
     "name": "tenderResultModal_competitorsQuery",
     "operationKind": "query",
-    "text": "query tenderResultModal_competitorsQuery {\n  ...tenderResultModal_competitors\n}\n\nfragment tenderResultModal_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        shortName\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query tenderResultModal_competitorsQuery {\n  competitors {\n    edges {\n      node {\n        id\n        shortName\n        name\n      }\n    }\n  }\n}\n"
   }
 };
+})();
 
-(node as any).hash = "b21ed01e17f11f544afedddd21b76d99";
+(node as any).hash = "43215ada3e2be33118a9ab4a189edd41";
 
 export default node;

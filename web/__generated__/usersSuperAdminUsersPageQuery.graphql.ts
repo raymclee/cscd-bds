@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<67b40bfb7b0c931b98f9b2f2d130da28>>
+ * @generated SignedSource<<316392ac712a145e338e8c50552d9c21>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -44,6 +44,7 @@ export type usersSuperAdminUsersPageQuery$data = {
         readonly id: string;
         readonly isAdmin: boolean;
         readonly isCeo: boolean;
+        readonly isSuperAdmin: boolean;
         readonly name: string;
         readonly openID: string | null | undefined;
         readonly username: string;
@@ -198,6 +199,13 @@ v4 = [
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "isSuperAdmin",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "hasMapAccess",
             "storageKey": null
           },
@@ -343,7 +351,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d5bdc712117081289ff44bc6dcbc0888",
+    "cacheID": "863f70a24d8870273c4d2a6b5a0809fc",
     "id": null,
     "metadata": {
       "connection": [
@@ -359,11 +367,11 @@ return {
     },
     "name": "usersSuperAdminUsersPageQuery",
     "operationKind": "query",
-    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b1727d2f928533c25a488463859a8acb";
+(node as any).hash = "01ace7659314bf2172ac8cf4bb70760b";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c8f06f833d78d392aca1faa0e3e1e974>>
+ * @generated SignedSource<<dcd1070e366b2c5b61c1b615e1aedc48>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,9 +15,6 @@ export type customerDetailFragment$data = {
     readonly id: string;
     readonly name: string;
   };
-  readonly contact: {
-    readonly " $fragmentSpreads": FragmentRefs<"customerDetailContactFragment">;
-  };
   readonly createdBy: {
     readonly name: string;
   };
@@ -31,6 +28,7 @@ export type customerDetailFragment$data = {
   } | null | undefined;
   readonly size: number | null | undefined;
   readonly updatedAt: any;
+  readonly " $fragmentSpreads": FragmentRefs<"customerDetail_customerContact">;
   readonly " $fragmentType": "customerDetailFragment";
 };
 export type customerDetailFragment$key = {
@@ -126,20 +124,9 @@ return {
       "storageKey": null
     },
     {
-      "fragment": {
-        "kind": "InlineFragment",
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "customerDetailContactFragment"
-          }
-        ],
-        "type": "Customer",
-        "abstractKey": null
-      },
-      "kind": "AliasedInlineFragmentSpread",
-      "name": "contact"
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "customerDetail_customerContact"
     }
   ],
   "type": "Customer",
@@ -147,6 +134,6 @@ return {
 };
 })();
 
-(node as any).hash = "13e84c96f05ee7d6fa2e0ba2fa1a4471";
+(node as any).hash = "f24d312986ee1ab03ea7d08e07fefff4";
 
 export default node;
