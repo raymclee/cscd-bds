@@ -90,7 +90,7 @@ export function TenderListItem({
                 resetScroll={false}
               >
                 <Button type="link" size="small">
-                  地塊
+                  地块
                 </Button>
               </Link>,
               showDelete && <DeleteButton key="delete" tender={item} />,
@@ -103,7 +103,7 @@ export function TenderListItem({
                     usePortalStore.setState({ tenderResultTender: item });
                   }}
                 >
-                  結果
+                  结果
                 </Button>
               ),
             ].filter(Boolean)

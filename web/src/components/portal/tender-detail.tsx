@@ -174,21 +174,21 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
         items={[
           {
             key: "developer",
-            label: "業主",
+            label: "业主",
             children: customer ? customer.name : "-",
           },
           {
             key: "status",
-            label: "狀態",
+            label: "状态",
             children: tenderStatusText(status),
           },
           {
             key: "facadeConsultant",
-            label: "外觀顧問",
+            label: "外观顾问",
             children: facadeConsultant ? facadeConsultant : "-",
           },
 
-          { key: "area", label: "區域", children: area.name },
+          { key: "area", label: "区域", children: area.name },
           {
             key: "fullAddress",
             label: "地址",
@@ -197,26 +197,26 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
 
           {
             key: "biddingInstructions",
-            label: "投標說明",
+            label: "投标说明",
             children: biddingInstructions,
           },
           {
             key: "tenderSituations",
-            label: "投標情況",
+            label: "投标情况",
             children: tenderSituations,
             span: 3,
           },
           {
             key: "ownerSituations",
-            label: "業主情況",
+            label: "业主情况",
             children: ownerSituations,
           },
           {
             key: "competitorSituations",
-            label: "競爭對手情況",
+            label: "竞争对手情况",
             children: competitorSituations,
           },
-          { key: "tenderForm", label: "投標文件", children: tenderForm },
+          { key: "tenderForm", label: "投标文件", children: tenderForm },
           { key: "contractForm", label: "合同文件", children: contractForm },
           {
             key: "managementCompany",
@@ -225,56 +225,56 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
           },
           {
             key: "tenderingAgency",
-            label: "招標代理",
+            label: "招标代理",
             children: tenderingAgency,
           },
           {
             key: "biddingDate",
-            label: "投標日期",
+            label: "投标日期",
             children: biddingDate ? dayjs(biddingDate).format("LL") : "-",
           },
           {
             key: "facadeConsultant",
-            label: "外觀顧問",
+            label: "外观顾问",
             children: facadeConsultant,
           },
-          { key: "designUnit", label: "設計單位", children: designUnit },
+          { key: "designUnit", label: "设计单位", children: designUnit },
           {
             key: "consultingFirm",
-            label: "顧問公司",
+            label: "顾问公司",
             children: consultingFirm,
           },
           {
             key: "keyProject",
-            label: "關鍵項目",
+            label: "关键项目",
             children: keyProject ? "是" : "否",
           },
           {
             key: "tenderWinCompany",
-            label: "得標公司",
+            label: "得标公司",
             children: tenderWinCompany,
           },
           {
             key: "tenderWinDate",
-            label: "得標日期",
+            label: "得标日期",
             children: tenderWinDate ? dayjs(tenderWinDate).format("LL") : "-",
           },
           {
             key: "tenderWinAmount",
-            label: "得標金額",
+            label: "得标金额",
             children: tenderWinAmount,
           },
           {
             key: "lastTenderAmount",
-            label: "最後一次投標金額",
+            label: "最后一次投标金额",
             children: lastTenderAmount,
           },
           {
             key: "followingSales",
-            label: "跟進銷售",
+            label: "跟进销售",
             children: followingSales?.map((s) => s.name).join(", "),
           },
-          { key: "remark", label: "備註", children: remark },
+          { key: "remark", label: "备注", children: remark },
         ]}
       />
 
