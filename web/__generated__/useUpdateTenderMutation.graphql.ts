@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fb0680bf2bf1c237213c4b9c059ffc76>>
+ * @generated SignedSource<<ae0736cafa337c797fb86329cc457667>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -702,7 +702,8 @@ return {
                 "kind": "ScalarField",
                 "name": "ownerType",
                 "storageKey": null
-              }
+              },
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -742,12 +743,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7e0759ee3105d3c3f85312b692439242",
+    "cacheID": "6bf154649b29e2b3503a495564bd3ad9",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames) {\n    ...tenderDetailFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  fullAddress\n  contractor\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  prepareToBid\n  projectCode\n  projectDefinition\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  projectType\n  attachements\n  remark\n  images\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  costEngineer\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  tenderWinCompany\n  tenderCode\n  architect\n  developer\n  tenderClosingDate\n  constructionArea\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  finder {\n    id\n  }\n  createdBy {\n    id\n  }\n  customer {\n    id\n    ownerType\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames) {\n    ...tenderDetailFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  fullAddress\n  contractor\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  prepareToBid\n  projectCode\n  projectDefinition\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  projectType\n  attachements\n  remark\n  images\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  costEngineer\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  tenderWinCompany\n  tenderCode\n  architect\n  developer\n  tenderClosingDate\n  constructionArea\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  finder {\n    id\n  }\n  createdBy {\n    id\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
   }
 };
 })();

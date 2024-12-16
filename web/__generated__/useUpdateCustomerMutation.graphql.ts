@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d7120dcf4257d2f8b1a22a6e71a1745a>>
+ * @generated SignedSource<<e9cddd06799078cdbf88533bf8268d36>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -198,6 +198,34 @@ return {
             "plural": false,
             "selections": (v4/*: any*/),
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "contactPerson",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "contactPersonPosition",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "contactPersonPhone",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "contactPersonEmail",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -205,12 +233,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5c8225957a80cec21c4f26cea474108e",
+    "cacheID": "23498f150cc1087624a74795a058954d",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  ...customerDetail_customerContact\n}\n\nfragment customerDetail_customerContact on Customer {\n  id\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  ...customerDetail_customerContact\n}\n\nfragment customerDetail_customerContact on Customer {\n  id\n}\n"
   }
 };
 })();

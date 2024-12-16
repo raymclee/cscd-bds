@@ -1,27 +1,26 @@
-import { customerFormFragment$key } from "__generated__/customerFormFragment.graphql";
+import { useRouteContext } from "@tanstack/react-router";
+import { customerFormDrawerQuery } from "__generated__/customerFormDrawerQuery.graphql";
 import { useUpdateCustomerMutation } from "__generated__/useUpdateCustomerMutation.graphql";
-import { App, Button, Form, Input, Select, Space } from "antd";
+import { App, Button, Drawer, Form, Input, Select, Space } from "antd";
 import { useEffect } from "react";
-import { ConnectionHandler, graphql, useFragment } from "react-relay";
+import {
+  ConnectionHandler,
+  graphql,
+  PreloadedQuery,
+  useFragment,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay";
 import { CreateCustomerInput, Customer } from "~/graphql/graphql";
 import { useCreateCustomer } from "~/hooks/use-create-customer";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
 import { customerSizeOptions, industryOptions } from "~/lib/helper";
+import { usePortalStore } from "~/store/portal";
 
-type CustomerFormProps = {
-  queryRef: customerFormFragment$key;
-  onClose: () => void;
-  selectedCustomer: Customer | null;
-};
-
-export function CustomerForm({
-  queryRef,
-  onClose,
-  selectedCustomer,
-}: CustomerFormProps) {
-  const data = useFragment(
-    graphql`
-      fragment customerFormFragment on User {
+const CustomerFormDrawerQuery = graphql`
+  query customerFormDrawerQuery($id: ID!) {
+    node(id: $id) {
+      ... on User {
         areas {
           edges {
             node {
@@ -31,13 +30,69 @@ export function CustomerForm({
           }
         }
       }
-    `,
-    queryRef,
+    }
+  }
+`;
+
+export function CustomerFormDrawer() {
+  const customerFormOpen = usePortalStore((state) => state.customerFormOpen);
+  const customerFormCustomer = usePortalStore(
+    (state) => state.customerFormCustomer,
   );
+  const { session } = useRouteContext({ from: "/_auth" });
+  const [queryRef, loadQuery] = useQueryLoader<customerFormDrawerQuery>(
+    CustomerFormDrawerQuery,
+  );
+
+  useEffect(() => {
+    if (customerFormOpen && !queryRef) {
+      loadQuery({ id: session.userId });
+    }
+  }, [customerFormOpen, session.userId]);
+
+  const onClose = () => {
+    usePortalStore.setState({
+      customerFormOpen: false,
+      customerFormCustomer: null,
+    });
+  };
+
+  return (
+    <>
+      <Drawer
+        title={customerFormCustomer ? "编辑客户" : "添加客户"}
+        open={customerFormOpen}
+        onClose={onClose}
+        width={480}
+        destroyOnClose
+        maskClosable={!!customerFormCustomer}
+      >
+        {queryRef && <CustomerForm queryRef={queryRef} />}
+      </Drawer>
+    </>
+  );
+}
+
+type CustomerFormProps = {
+  queryRef: PreloadedQuery<customerFormDrawerQuery>;
+};
+
+function CustomerForm({ queryRef }: CustomerFormProps) {
+  const data = usePreloadedQuery(CustomerFormDrawerQuery, queryRef);
   const [form] = Form.useForm<CreateCustomerInput>();
   const [commitCreateCustomer, isCreateCustomerInFlight] = useCreateCustomer();
   const [commitUpdateCustomer, isUpdateCustomerInFlight] = useUpdateCustomer();
   const { message } = App.useApp();
+  const selectedCustomer = usePortalStore(
+    (state) => state.customerFormCustomer,
+  );
+
+  const onClose = () => {
+    usePortalStore.setState({
+      customerFormOpen: false,
+      customerFormCustomer: null,
+    });
+  };
 
   useEffect(() => {
     if (selectedCustomer?.id) {
@@ -112,7 +167,7 @@ export function CustomerForm({
         </Form.Item>
         <Form.Item name="areaID" label="区域" rules={[{ required: true }]}>
           <Select
-            options={data.areas.edges?.map((a) => ({
+            options={data.node?.areas?.edges?.map((a) => ({
               label: a?.node?.name,
               value: a?.node?.id,
             }))}
@@ -148,7 +203,7 @@ export function CustomerForm({
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

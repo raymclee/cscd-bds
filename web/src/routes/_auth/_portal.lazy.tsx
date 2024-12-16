@@ -31,6 +31,8 @@ import {
 import * as React from "react";
 import logoImg from "~/assets/logo.jpg";
 import { Loading } from "~/components/loading";
+import { CustomerFormDrawer } from "~/components/portal/customer-form-drawer";
+import { TenderResultModal } from "~/components/portal/tender-result-modal";
 import { canEdit } from "~/lib/permission";
 import { cn } from "~/lib/utils";
 import { usePortalStore } from "~/store/portal";
@@ -201,6 +203,8 @@ function RouteComponent() {
               {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
               <ScrollRestoration />
               <Outlet />
+              <TenderResultModal />
+              <CustomerFormDrawer />
               {/* </div> */}
             </Content>
           </Layout>

@@ -8,6 +8,7 @@ import { Suspense, useEffect } from "react";
 import { graphql, useFragment, useRefetchableFragment } from "react-relay";
 import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
+import { usePortalStore } from "~/store/portal";
 
 export function CustomerDetail(props: {
   customer: customerDetailFragment$key;
@@ -33,6 +34,10 @@ export function CustomerDetail(props: {
           id
           name
         }
+        contactPerson
+        contactPersonPosition
+        contactPersonPhone
+        contactPersonEmail
         ...customerDetail_customerContact
       }
     `,
@@ -47,7 +52,16 @@ export function CustomerDetail(props: {
         extra={
           canEdit(session) && (
             // <Link to="/portal/customers/$id/edit" params={{ id: customer.id! }}>
-            <Button type="primary" icon={<EditOutlined />}>
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => {
+                usePortalStore.setState({
+                  customerFormOpen: true,
+                  customerFormCustomer: customer,
+                });
+              }}
+            >
               编辑
             </Button>
             // </Link>

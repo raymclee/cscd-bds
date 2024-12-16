@@ -1,3 +1,5 @@
+import { tenderDetailFragment$data } from "__generated__/tenderDetailFragment.graphql";
+import { tenderListItemFragment$data } from "__generated__/tenderListItemFragment.graphql";
 import { Customer, Session, Tender } from "~/graphql/graphql";
 
 export function canEdit(
@@ -5,7 +7,13 @@ export function canEdit(
   {
     customer,
     tender,
-  }: { customer?: Partial<Customer>; tender?: Partial<Tender> } = {},
+  }: {
+    customer?: Partial<Customer>;
+    tender?:
+      | Partial<Tender>
+      | tenderListItemFragment$data
+      | tenderDetailFragment$data;
+  } = {},
 ) {
   if (tender || customer) {
     if (tender?.status === 3 || tender?.status === 4) {

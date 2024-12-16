@@ -10,7 +10,7 @@ import {
   Select,
   Skeleton,
 } from "antd";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   graphql,
   PreloadedQuery,
@@ -35,13 +35,20 @@ const CompetitorQuery = graphql`
 `;
 
 export function TenderResultModal() {
-  const [open, setOpen] = useState(false);
+  const tender = usePortalStore((state) => state.tenderResultTender);
+  // const [open, setOpen] = useState(false);
   const [queryRef, loadQuery] =
     useQueryLoader<tenderResultModal_competitorsQuery>(CompetitorQuery);
 
+  useEffect(() => {
+    if (tender && !queryRef) {
+      loadQuery({});
+    }
+  }, [tender]);
+
   return (
     <>
-      <Button
+      {/* <Button
         type="primary"
         onClick={() => {
           if (!queryRef) {
@@ -51,12 +58,12 @@ export function TenderResultModal() {
         }}
       >
         New Collection
-      </Button>
-      <Suspense fallback={<Skeleton active />}>
+      </Button> */}
+      <Suspense fallback={<Modal loading />}>
         {queryRef && (
           <TenderResultModalContent
-            open={open}
-            setOpen={setOpen}
+            // open={open}
+            // setOpen={setOpen}
             competitors={queryRef}
           />
         )}
@@ -66,8 +73,8 @@ export function TenderResultModal() {
 }
 
 type TenderResultModalContentProps = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  // open: boolean;
+  // setOpen: (open: boolean) => void;
   competitors: PreloadedQuery<tenderResultModal_competitorsQuery>;
 };
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dcd1070e366b2c5b61c1b615e1aedc48>>
+ * @generated SignedSource<<bcbdd58ac17a7cf9a8b627e0ba6ceaf6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,10 @@ export type customerDetailFragment$data = {
     readonly id: string;
     readonly name: string;
   };
+  readonly contactPerson: string | null | undefined;
+  readonly contactPersonEmail: string | null | undefined;
+  readonly contactPersonPhone: string | null | undefined;
+  readonly contactPersonPosition: string | null | undefined;
   readonly createdBy: {
     readonly name: string;
   };
@@ -124,6 +128,34 @@ return {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "contactPerson",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "contactPersonPosition",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "contactPersonPhone",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "contactPersonEmail",
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "customerDetail_customerContact"
@@ -134,6 +166,6 @@ return {
 };
 })();
 
-(node as any).hash = "f24d312986ee1ab03ea7d08e07fefff4";
+(node as any).hash = "b9068e6ad418e2637a1b19e30a84dada";
 
 export default node;

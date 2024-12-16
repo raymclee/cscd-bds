@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<183ea11711f2a1bb8b7c524a7e3d2f04>>
+ * @generated SignedSource<<1ee34350d241cef5d416045e33338a9a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -41,6 +41,7 @@ export type tenderDetailFragment$data = {
   readonly creditAndPaymentRatingOverview: string | null | undefined;
   readonly customer: {
     readonly id: string;
+    readonly name: string;
     readonly ownerType: number | null | undefined;
   } | null | undefined;
   readonly customerRelationshipRating: number | null | undefined;
@@ -546,7 +547,8 @@ return {
           "kind": "ScalarField",
           "name": "ownerType",
           "storageKey": null
-        }
+        },
+        (v2/*: any*/)
       ],
       "storageKey": null
     },
@@ -586,6 +588,6 @@ return {
 };
 })();
 
-(node as any).hash = "1f4e9ef51a860fe9120c98ccc67775d6";
+(node as any).hash = "8bf876a0c20b739df5d6b1ed41b2e1f6";
 
 export default node;
