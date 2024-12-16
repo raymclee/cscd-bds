@@ -7,11 +7,10 @@ import {
   ConnectionHandler,
   graphql,
   PreloadedQuery,
-  useFragment,
   usePreloadedQuery,
   useQueryLoader,
 } from "react-relay";
-import { CreateCustomerInput, Customer } from "~/graphql/graphql";
+import { CreateCustomerInput } from "~/graphql/graphql";
 import { useCreateCustomer } from "~/hooks/use-create-customer";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
 import { customerSizeOptions, industryOptions } from "~/lib/helper";

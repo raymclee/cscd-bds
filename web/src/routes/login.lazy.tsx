@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createLazyFileRoute("/login")({
@@ -6,7 +6,7 @@ export const Route = createLazyFileRoute("/login")({
 });
 
 const host = import.meta.env.PROD
-  ? "https://mkm.uat.fefacade.com"
+  ? "https://mkm.fefacade.com"
   : "http://localhost:3000";
 
 function HomeComponent() {

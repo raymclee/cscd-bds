@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { useRouteContext } from "@tanstack/react-router";
 import { customerDetail_customerContact$key } from "__generated__/customerDetail_customerContact.graphql";
 import { customerDetailFragment$key } from "__generated__/customerDetailFragment.graphql";
 import { Button, Descriptions, Skeleton } from "antd";

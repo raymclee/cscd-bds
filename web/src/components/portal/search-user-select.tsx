@@ -1,8 +1,5 @@
-import {
-  searchUserSelectQuery,
-  searchUserSelectQuery$data,
-} from "__generated__/searchUserSelectQuery.graphql";
-import { Result, Select, SelectProps, Spin } from "antd";
+import { searchUserSelectQuery } from "__generated__/searchUserSelectQuery.graphql";
+import { Select, SelectProps, Spin } from "antd";
 import { useRef, useState } from "react";
 import { useRelayEnvironment } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";

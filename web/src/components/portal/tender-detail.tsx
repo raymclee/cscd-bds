@@ -1,17 +1,15 @@
+import { EditOutlined } from "@ant-design/icons";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
-import { Button, Card, Descriptions, Image, Space } from "antd";
+import { Button, Descriptions, Image, Space } from "antd";
 import dayjs from "dayjs";
+import { ListTodo } from "lucide-react";
 import { graphql, useFragment } from "react-relay";
-import { isGAorHWOnly, tenderStatusText } from "~/lib/helper";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { tenderStatusText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
-import { EditOutlined } from "@ant-design/icons";
-import { ListEnd, ListTodo } from "lucide-react";
-import { Tender } from "~/graphql/graphql";
 import { usePortalStore } from "~/store/portal";
 
 type TenderDetailProps = {

@@ -1,13 +1,12 @@
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { customersDetailPageQuery } from "__generated__/customersDetailPageQuery.graphql";
-import { Button, Card, Result } from "antd";
+import { Card, Result } from "antd";
 import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { CustomerDetail } from "~/components/portal/customer-detail";
 import { CustomerTenderList } from "~/components/portal/customer-tender-list";
 import { CustomerVisitRecordList } from "~/components/portal/customer-visit-record-list";
-import { canEdit } from "~/lib/permission";
 
 export const Route = createLazyFileRoute(
   "/_auth/_portal/portal/customers_/$id",

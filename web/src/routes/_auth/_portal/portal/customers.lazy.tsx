@@ -1,9 +1,8 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
-import { Button, Drawer, Table, TableProps, Typography } from "antd";
+import { Button, Table, TableProps, Typography } from "antd";
 import dayjs from "dayjs";
 import { Plus } from "lucide-react";
-import { useState } from "react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";

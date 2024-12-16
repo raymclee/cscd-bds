@@ -1,16 +1,6 @@
 import { tenderResultModal_competitorsQuery } from "__generated__/tenderResultModal_competitorsQuery.graphql";
-import {
-  Alert,
-  App,
-  Button,
-  Form,
-  Input,
-  Modal,
-  Radio,
-  Select,
-  Skeleton,
-} from "antd";
-import { Suspense, useEffect, useState } from "react";
+import { Alert, App, Form, Modal, Radio, Select } from "antd";
+import { Suspense, useEffect } from "react";
 import {
   graphql,
   PreloadedQuery,
