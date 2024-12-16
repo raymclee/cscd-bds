@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bcbdd58ac17a7cf9a8b627e0ba6ceaf6>>
+ * @generated SignedSource<<ac9a9743d98d79b2ccdce77b91ce06fb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,7 +32,6 @@ export type customerDetailFragment$data = {
   } | null | undefined;
   readonly size: number | null | undefined;
   readonly updatedAt: any;
-  readonly " $fragmentSpreads": FragmentRefs<"customerDetail_customerContact">;
   readonly " $fragmentType": "customerDetailFragment";
 };
 export type customerDetailFragment$key = {
@@ -154,11 +153,6 @@ return {
       "kind": "ScalarField",
       "name": "contactPersonEmail",
       "storageKey": null
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "customerDetail_customerContact"
     }
   ],
   "type": "Customer",
@@ -166,6 +160,6 @@ return {
 };
 })();
 
-(node as any).hash = "b9068e6ad418e2637a1b19e30a84dada";
+(node as any).hash = "086d15218d4ef43bdd51d2d3e9d1307f";
 
 export default node;

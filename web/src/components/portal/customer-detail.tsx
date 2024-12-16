@@ -38,7 +38,7 @@ export function CustomerDetail(props: {
         contactPersonPosition
         contactPersonPhone
         contactPersonEmail
-        ...customerDetail_customerContact
+        # ...customerDetail_customerContact
       }
     `,
     props.customer,
@@ -156,11 +156,47 @@ export function CustomerDetail(props: {
           },
         ]}
       />
-      {props.showContact && (
+      {/* {props.showContact && (
         <Suspense fallback={<Skeleton active />}>
           <ContactDetail customer={customer} showContact={props.showContact} />
         </Suspense>
-      )}
+      )} */}
+
+      <Descriptions
+        className="mt-4"
+        items={[
+          {
+            key: "contactPerson",
+            label: "联系人",
+            children: (
+              <span className="font-normal">{customer.contactPerson}</span>
+            ),
+          },
+          {
+            key: "contactPersonPosition",
+            label: "联系人职位",
+            children: (
+              <span className="font-normal">
+                {customer.contactPersonPosition}
+              </span>
+            ),
+          },
+          {
+            key: "contactPersonPhone",
+            label: "联系人电话",
+            children: (
+              <span className="font-normal">{customer.contactPersonPhone}</span>
+            ),
+          },
+          {
+            key: "contactPersonEmail",
+            label: "联系人邮箱",
+            children: (
+              <span className="font-normal">{customer.contactPersonEmail}</span>
+            ),
+          },
+        ]}
+      />
     </>
   );
 }
