@@ -39,6 +39,9 @@ const LogoutLazyImport = createFileRoute('/logout')()
 const LoginLazyImport = createFileRoute('/login')()
 const AccessDeniedLazyImport = createFileRoute('/access-denied')()
 const AuthPortalPortalImport = createFileRoute('/_auth/_portal/portal')()
+const AuthDashboardProjectLazyImport = createFileRoute(
+  '/_auth/_dashboard/project',
+)()
 const AuthDashboardMapTendersLazyImport = createFileRoute(
   '/_auth/_dashboard/_map/tenders',
 )()
@@ -85,6 +88,14 @@ const AuthPortalPortalRoute = AuthPortalPortalImport.update({
   path: '/portal',
   getParentRoute: () => AuthPortalRoute,
 } as any)
+
+const AuthDashboardProjectLazyRoute = AuthDashboardProjectLazyImport.update({
+  id: '/project',
+  path: '/project',
+  getParentRoute: () => AuthDashboardRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/_dashboard/project.lazy').then((d) => d.Route),
+)
 
 const AuthDashboardMapRoute = AuthDashboardMapImport.update({
   id: '/_map',
@@ -294,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardMapImport
       parentRoute: typeof AuthDashboardImport
     }
+    '/_auth/_dashboard/project': {
+      id: '/_auth/_dashboard/project'
+      path: '/project'
+      fullPath: '/project'
+      preLoaderRoute: typeof AuthDashboardProjectLazyImport
+      parentRoute: typeof AuthDashboardImport
+    }
     '/_auth/_portal/portal': {
       id: '/_auth/_portal/portal'
       path: '/portal'
@@ -433,10 +451,12 @@ const AuthDashboardMapRouteWithChildren =
 
 interface AuthDashboardRouteChildren {
   AuthDashboardMapRoute: typeof AuthDashboardMapRouteWithChildren
+  AuthDashboardProjectLazyRoute: typeof AuthDashboardProjectLazyRoute
 }
 
 const AuthDashboardRouteChildren: AuthDashboardRouteChildren = {
   AuthDashboardMapRoute: AuthDashboardMapRouteWithChildren,
+  AuthDashboardProjectLazyRoute: AuthDashboardProjectLazyRoute,
 }
 
 const AuthDashboardRouteWithChildren = AuthDashboardRoute._addFileChildren(
@@ -534,6 +554,7 @@ export interface FileRoutesByFullPath {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
+  '/project': typeof AuthDashboardProjectLazyRoute
   '/portal': typeof AuthPortalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof AuthPortalPortalCustomersRoute
   '/portal/plots': typeof AuthPortalPortalPlotsRoute
@@ -556,6 +577,7 @@ export interface FileRoutesByTo {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
+  '/project': typeof AuthDashboardProjectLazyRoute
   '/portal': typeof AuthPortalPortalIndexRoute
   '/portal/customers': typeof AuthPortalPortalCustomersRoute
   '/portal/plots': typeof AuthPortalPortalPlotsRoute
@@ -581,6 +603,7 @@ export interface FileRoutesById {
   '/_auth/_dashboard': typeof AuthDashboardRouteWithChildren
   '/_auth/_portal': typeof AuthPortalRouteWithChildren
   '/_auth/_dashboard/_map': typeof AuthDashboardMapRouteWithChildren
+  '/_auth/_dashboard/project': typeof AuthDashboardProjectLazyRoute
   '/_auth/_portal/portal': typeof AuthPortalPortalRouteWithChildren
   '/_auth/_portal/portal/_admin': typeof AuthPortalPortalAdminRouteWithChildren
   '/_auth/_portal/portal/_super-admin': typeof AuthPortalPortalSuperAdminRouteWithChildren
@@ -607,6 +630,7 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
+    | '/project'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
@@ -628,6 +652,7 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
+    | '/project'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
@@ -651,6 +676,7 @@ export interface FileRouteTypes {
     | '/_auth/_dashboard'
     | '/_auth/_portal'
     | '/_auth/_dashboard/_map'
+    | '/_auth/_dashboard/project'
     | '/_auth/_portal/portal'
     | '/_auth/_portal/portal/_admin'
     | '/_auth/_portal/portal/_super-admin'
@@ -721,7 +747,8 @@ export const routeTree = rootRoute
       "filePath": "_auth/_dashboard.tsx",
       "parent": "/_auth",
       "children": [
-        "/_auth/_dashboard/_map"
+        "/_auth/_dashboard/_map",
+        "/_auth/_dashboard/project"
       ]
     },
     "/_auth/_portal": {
@@ -738,6 +765,10 @@ export const routeTree = rootRoute
         "/_auth/_dashboard/_map/tenders",
         "/_auth/_dashboard/_map/"
       ]
+    },
+    "/_auth/_dashboard/project": {
+      "filePath": "_auth/_dashboard/project.lazy.tsx",
+      "parent": "/_auth/_dashboard"
     },
     "/_auth/_portal/portal": {
       "filePath": "_auth/_portal/portal",

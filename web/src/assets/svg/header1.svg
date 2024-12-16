@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 976.966 70.008">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #206988;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-1, .cls-2, .cls-4 {
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        stroke: #707070;
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        fill: #0b344b;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #ffe363;
+      }
+
+      .cls-5 {
+        fill: #fff;
+        font-size: 35.894px;
+        font-family: MicrosoftYaHei, Microsoft YaHei;
+        letter-spacing: 0.05em;
+      }
+
+      .cls-6 {
+        fill: #ffe363;
+      }
+    </style>
+    <linearGradient id="linear-gradient" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#0da3c4"/>
+      <stop offset="1" stop-color="#48e7d8"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#0b364d"/>
+      <stop offset="1" stop-color="#0b364d" stop-opacity="0.102"/>
+    </linearGradient>
+  </defs>
+  <g id="小标题" transform="translate(-49 -167.001)">
+    <path id="形状_12_拷贝" data-name="形状 12 拷贝" class="cls-1" d="M141.013,211.995l24.264,24h42.358l-.02.018H50v-68h91.014Z"/>
+    <image id="项目管理" width="51" height="50" transform="translate(70 179)" xlink:href="data:image/png;base64,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"/>
+    <path id="形状_12" data-name="形状 12" class="cls-2" d="M141.043,211.995V168H433.187l27.466,24h564.312v43.994H166.012Z"/>
+    <path id="矩形_12" data-name="矩形 12" class="cls-3" d="M463.012,168h15.167l19.5,17H482.513Z"/>
+    <path id="矩形_12_拷贝" data-name="矩形 12 拷贝" class="cls-3" d="M491.179,168h15.167l19.5,17H510.68Z"/>
+    <path id="矩形_12_拷贝_2" data-name="矩形 12 拷贝 2" class="cls-3" d="M519.347,168h15.167l19.5,17H538.847Z"/>
+    <line id="形状_13_拷贝" data-name="形状 13 拷贝" class="cls-4" x2="19.03" transform="translate(1006.58 234.59)"/>
+    <text id="成本管理" class="cls-5" transform="translate(185.736 215.358)"><tspan x="0" y="0">成本管理</tspan></text>
+    <path id="多边形_2" data-name="多边形 2" class="cls-6" d="M170.737,202.445l-11.969,9.314V193.132Z"/>
+    <line id="形状_13" data-name="形状 13" class="cls-4" x2="19.03" transform="translate(139.53 168.9)"/>
+  </g>
+</svg>
