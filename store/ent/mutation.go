@@ -15395,7 +15395,7 @@ func (m *VisitRecordMutation) TenderID() (r xid.ID, exists bool) {
 // OldTenderID returns the old "tender_id" field's value of the VisitRecord entity.
 // If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v xid.ID, err error) {
+func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldTenderID is only allowed on UpdateOne operations")
 	}
@@ -15409,9 +15409,22 @@ func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v xid.ID, err er
 	return oldValue.TenderID, nil
 }
 
+// ClearTenderID clears the value of the "tender_id" field.
+func (m *VisitRecordMutation) ClearTenderID() {
+	m.tender = nil
+	m.clearedFields[visitrecord.FieldTenderID] = struct{}{}
+}
+
+// TenderIDCleared returns if the "tender_id" field was cleared in this mutation.
+func (m *VisitRecordMutation) TenderIDCleared() bool {
+	_, ok := m.clearedFields[visitrecord.FieldTenderID]
+	return ok
+}
+
 // ResetTenderID resets all changes to the "tender_id" field.
 func (m *VisitRecordMutation) ResetTenderID() {
 	m.tender = nil
+	delete(m.clearedFields, visitrecord.FieldTenderID)
 }
 
 // SetCustomerID sets the "customer_id" field.
@@ -15458,7 +15471,7 @@ func (m *VisitRecordMutation) ClearTender() {
 
 // TenderCleared reports if the "tender" edge to the Tender entity was cleared.
 func (m *VisitRecordMutation) TenderCleared() bool {
-	return m.clearedtender
+	return m.TenderIDCleared() || m.clearedtender
 }
 
 // TenderIDs returns the "tender" edge IDs in the mutation.
@@ -15793,6 +15806,9 @@ func (m *VisitRecordMutation) ClearedFields() []string {
 	if m.FieldCleared(visitrecord.FieldNextStep) {
 		fields = append(fields, visitrecord.FieldNextStep)
 	}
+	if m.FieldCleared(visitrecord.FieldTenderID) {
+		fields = append(fields, visitrecord.FieldTenderID)
+	}
 	return fields
 }
 
@@ -15809,6 +15825,9 @@ func (m *VisitRecordMutation) ClearField(name string) error {
 	switch name {
 	case visitrecord.FieldNextStep:
 		m.ClearNextStep()
+		return nil
+	case visitrecord.FieldTenderID:
+		m.ClearTenderID()
 		return nil
 	}
 	return fmt.Errorf("unknown VisitRecord nullable field %s", name)

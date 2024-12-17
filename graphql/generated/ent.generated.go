@@ -18727,14 +18727,11 @@ func (ec *executionContext) _VisitRecord_tenderID(ctx context.Context, field gra
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(xid.ID)
+	res := resTmp.(*xid.ID)
 	fc.Result = res
-	return ec.marshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
+	return ec.marshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_VisitRecord_tenderID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18815,14 +18812,11 @@ func (ec *executionContext) _VisitRecord_tender(ctx context.Context, field graph
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*ent.Tender)
 	fc.Result = res
-	return ec.marshalNTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, field.Selections, res)
+	return ec.marshalOTender2ᚖcscdᚑbdsᚋstoreᚋentᚐTender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_VisitRecord_tender(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -22619,7 +22613,7 @@ func (ec *executionContext) unmarshalInputCreateVisitRecordInput(ctx context.Con
 			it.Date = data
 		case "tenderID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderID"))
-			data, err := ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
+			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -33466,7 +33460,7 @@ func (ec *executionContext) unmarshalInputUpdateVisitRecordInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "visitType", "commPeople", "commContent", "nextStep", "clearNextStep", "date", "tenderID", "customerID", "addFollowUpByIDs", "removeFollowUpByIDs", "clearFollowUpBys"}
+	fieldsInOrder := [...]string{"updatedAt", "visitType", "commPeople", "commContent", "nextStep", "clearNextStep", "date", "tenderID", "clearTender", "customerID", "addFollowUpByIDs", "removeFollowUpByIDs", "clearFollowUpBys"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -33529,6 +33523,13 @@ func (ec *executionContext) unmarshalInputUpdateVisitRecordInput(ctx context.Con
 				return it, err
 			}
 			it.TenderID = data
+		case "clearTender":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTender"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTender = data
 		case "customerID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customerID"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -34611,7 +34612,7 @@ func (ec *executionContext) unmarshalInputVisitRecordWhereInput(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "visitType", "visitTypeNEQ", "visitTypeIn", "visitTypeNotIn", "visitTypeGT", "visitTypeGTE", "visitTypeLT", "visitTypeLTE", "commPeople", "commPeopleNEQ", "commPeopleIn", "commPeopleNotIn", "commPeopleGT", "commPeopleGTE", "commPeopleLT", "commPeopleLTE", "commPeopleContains", "commPeopleHasPrefix", "commPeopleHasSuffix", "commPeopleEqualFold", "commPeopleContainsFold", "commContent", "commContentNEQ", "commContentIn", "commContentNotIn", "commContentGT", "commContentGTE", "commContentLT", "commContentLTE", "commContentContains", "commContentHasPrefix", "commContentHasSuffix", "commContentEqualFold", "commContentContainsFold", "nextStep", "nextStepNEQ", "nextStepIn", "nextStepNotIn", "nextStepGT", "nextStepGTE", "nextStepLT", "nextStepLTE", "nextStepContains", "nextStepHasPrefix", "nextStepHasSuffix", "nextStepIsNil", "nextStepNotNil", "nextStepEqualFold", "nextStepContainsFold", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "tenderID", "tenderIDNEQ", "tenderIDIn", "tenderIDNotIn", "tenderIDGT", "tenderIDGTE", "tenderIDLT", "tenderIDLTE", "tenderIDContains", "tenderIDHasPrefix", "tenderIDHasSuffix", "tenderIDEqualFold", "tenderIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDEqualFold", "customerIDContainsFold", "hasTender", "hasTenderWith", "hasCustomer", "hasCustomerWith", "hasFollowUpBys", "hasFollowUpBysWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "visitType", "visitTypeNEQ", "visitTypeIn", "visitTypeNotIn", "visitTypeGT", "visitTypeGTE", "visitTypeLT", "visitTypeLTE", "commPeople", "commPeopleNEQ", "commPeopleIn", "commPeopleNotIn", "commPeopleGT", "commPeopleGTE", "commPeopleLT", "commPeopleLTE", "commPeopleContains", "commPeopleHasPrefix", "commPeopleHasSuffix", "commPeopleEqualFold", "commPeopleContainsFold", "commContent", "commContentNEQ", "commContentIn", "commContentNotIn", "commContentGT", "commContentGTE", "commContentLT", "commContentLTE", "commContentContains", "commContentHasPrefix", "commContentHasSuffix", "commContentEqualFold", "commContentContainsFold", "nextStep", "nextStepNEQ", "nextStepIn", "nextStepNotIn", "nextStepGT", "nextStepGTE", "nextStepLT", "nextStepLTE", "nextStepContains", "nextStepHasPrefix", "nextStepHasSuffix", "nextStepIsNil", "nextStepNotNil", "nextStepEqualFold", "nextStepContainsFold", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "tenderID", "tenderIDNEQ", "tenderIDIn", "tenderIDNotIn", "tenderIDGT", "tenderIDGTE", "tenderIDLT", "tenderIDLTE", "tenderIDContains", "tenderIDHasPrefix", "tenderIDHasSuffix", "tenderIDIsNil", "tenderIDNotNil", "tenderIDEqualFold", "tenderIDContainsFold", "customerID", "customerIDNEQ", "customerIDIn", "customerIDNotIn", "customerIDGT", "customerIDGTE", "customerIDLT", "customerIDLTE", "customerIDContains", "customerIDHasPrefix", "customerIDHasSuffix", "customerIDEqualFold", "customerIDContainsFold", "hasTender", "hasTenderWith", "hasCustomer", "hasCustomerWith", "hasFollowUpBys", "hasFollowUpBysWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -35283,6 +35284,20 @@ func (ec *executionContext) unmarshalInputVisitRecordWhereInput(ctx context.Cont
 				return it, err
 			}
 			it.TenderIDHasSuffix = data
+		case "tenderIDIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderIDIsNil = data
+		case "tenderIDNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TenderIDNotNil = data
 		case "tenderIDEqualFold":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tenderIDEqualFold"))
 			data, err := ec.unmarshalOID2ᚖcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, v)
@@ -39290,9 +39305,6 @@ func (ec *executionContext) _VisitRecord(ctx context.Context, sel ast.SelectionS
 			}
 		case "tenderID":
 			out.Values[i] = ec._VisitRecord_tenderID(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
 		case "customerID":
 			out.Values[i] = ec._VisitRecord_customerID(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -39301,16 +39313,13 @@ func (ec *executionContext) _VisitRecord(ctx context.Context, sel ast.SelectionS
 		case "tender":
 			field := field
 
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
 				res = ec._VisitRecord_tender(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
 				return res
 			}
 

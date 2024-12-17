@@ -4073,7 +4073,7 @@ input CreateVisitRecordInput {
   commContent: String!
   nextStep: String
   date: Time!
-  tenderID: ID!
+  tenderID: ID
   customerID: ID!
   followupbyIDs: [ID!]
 }
@@ -7104,6 +7104,7 @@ input UpdateVisitRecordInput {
   clearNextStep: Boolean
   date: Time
   tenderID: ID
+  clearTender: Boolean
   customerID: ID
   addFollowUpByIDs: [ID!]
   removeFollowUpByIDs: [ID!]
@@ -7514,9 +7515,9 @@ type VisitRecord implements Node {
   commContent: String!
   nextStep: String
   date: Time!
-  tenderID: ID!
+  tenderID: ID
   customerID: ID!
-  tender: Tender!
+  tender: Tender
   customer: Customer!
   followupbys(
     """
@@ -7727,6 +7728,8 @@ input VisitRecordWhereInput {
   tenderIDContains: ID
   tenderIDHasPrefix: ID
   tenderIDHasSuffix: ID
+  tenderIDIsNil: Boolean
+  tenderIDNotNil: Boolean
   tenderIDEqualFold: ID
   tenderIDContainsFold: ID
   """

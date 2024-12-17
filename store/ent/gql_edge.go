@@ -601,7 +601,7 @@ func (vr *VisitRecord) Tender(ctx context.Context) (*Tender, error) {
 	if IsNotLoaded(err) {
 		result, err = vr.QueryTender().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (vr *VisitRecord) Customer(ctx context.Context) (*Customer, error) {

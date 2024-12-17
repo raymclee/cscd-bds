@@ -8157,6 +8157,8 @@ type VisitRecordWhereInput struct {
 	TenderIDContains     *xid.ID  `json:"tenderIDContains,omitempty"`
 	TenderIDHasPrefix    *xid.ID  `json:"tenderIDHasPrefix,omitempty"`
 	TenderIDHasSuffix    *xid.ID  `json:"tenderIDHasSuffix,omitempty"`
+	TenderIDIsNil        bool     `json:"tenderIDIsNil,omitempty"`
+	TenderIDNotNil       bool     `json:"tenderIDNotNil,omitempty"`
 	TenderIDEqualFold    *xid.ID  `json:"tenderIDEqualFold,omitempty"`
 	TenderIDContainsFold *xid.ID  `json:"tenderIDContainsFold,omitempty"`
 
@@ -8534,6 +8536,12 @@ func (i *VisitRecordWhereInput) P() (predicate.VisitRecord, error) {
 	}
 	if i.TenderIDHasSuffix != nil {
 		predicates = append(predicates, visitrecord.TenderIDHasSuffix(*i.TenderIDHasSuffix))
+	}
+	if i.TenderIDIsNil {
+		predicates = append(predicates, visitrecord.TenderIDIsNil())
+	}
+	if i.TenderIDNotNil {
+		predicates = append(predicates, visitrecord.TenderIDNotNil())
 	}
 	if i.TenderIDEqualFold != nil {
 		predicates = append(predicates, visitrecord.TenderIDEqualFold(*i.TenderIDEqualFold))

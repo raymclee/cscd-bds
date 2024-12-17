@@ -383,7 +383,7 @@ var (
 		{Name: "next_step", Type: field.TypeString, Nullable: true},
 		{Name: "date", Type: field.TypeTime},
 		{Name: "customer_id", Type: field.TypeString},
-		{Name: "tender_id", Type: field.TypeString},
+		{Name: "tender_id", Type: field.TypeString, Nullable: true},
 	}
 	// VisitRecordsTable holds the schema information for the "visit_records" table.
 	VisitRecordsTable = &schema.Table{
@@ -401,7 +401,7 @@ var (
 				Symbol:     "visit_records_tenders_visit_records",
 				Columns:    []*schema.Column{VisitRecordsColumns[9]},
 				RefColumns: []*schema.Column{TendersColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}

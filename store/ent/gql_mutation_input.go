@@ -1874,7 +1874,7 @@ type CreateVisitRecordInput struct {
 	CommContent   string
 	NextStep      *string
 	Date          time.Time
-	TenderID      xid.ID
+	TenderID      *xid.ID
 	CustomerID    xid.ID
 	FollowUpByIDs []xid.ID
 }
@@ -1896,7 +1896,9 @@ func (i *CreateVisitRecordInput) Mutate(m *VisitRecordMutation) {
 		m.SetNextStep(*v)
 	}
 	m.SetDate(i.Date)
-	m.SetTenderID(i.TenderID)
+	if v := i.TenderID; v != nil {
+		m.SetTenderID(*v)
+	}
 	m.SetCustomerID(i.CustomerID)
 	if v := i.FollowUpByIDs; len(v) > 0 {
 		m.AddFollowUpByIDs(v...)
@@ -1918,6 +1920,7 @@ type UpdateVisitRecordInput struct {
 	ClearNextStep       bool
 	NextStep            *string
 	Date                *time.Time
+	ClearTender         bool
 	TenderID            *xid.ID
 	CustomerID          *xid.ID
 	ClearFollowUpBys    bool
@@ -1947,6 +1950,9 @@ func (i *UpdateVisitRecordInput) Mutate(m *VisitRecordMutation) {
 	}
 	if v := i.Date; v != nil {
 		m.SetDate(*v)
+	}
+	if i.ClearTender {
+		m.ClearTender()
 	}
 	if v := i.TenderID; v != nil {
 		m.SetTenderID(*v)

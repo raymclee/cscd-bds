@@ -135,6 +135,12 @@ func (vru *VisitRecordUpdate) SetNillableTenderID(x *xid.ID) *VisitRecordUpdate 
 	return vru
 }
 
+// ClearTenderID clears the value of the "tender_id" field.
+func (vru *VisitRecordUpdate) ClearTenderID() *VisitRecordUpdate {
+	vru.mutation.ClearTenderID()
+	return vru
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (vru *VisitRecordUpdate) SetCustomerID(x xid.ID) *VisitRecordUpdate {
 	vru.mutation.SetCustomerID(x)
@@ -259,9 +265,6 @@ func (vru *VisitRecordUpdate) check() error {
 		if err := visitrecord.CommContentValidator(v); err != nil {
 			return &ValidationError{Name: "comm_content", err: fmt.Errorf(`ent: validator failed for field "VisitRecord.comm_content": %w`, err)}
 		}
-	}
-	if vru.mutation.TenderCleared() && len(vru.mutation.TenderIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "VisitRecord.tender"`)
 	}
 	if vru.mutation.CustomerCleared() && len(vru.mutation.CustomerIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "VisitRecord.customer"`)
@@ -531,6 +534,12 @@ func (vruo *VisitRecordUpdateOne) SetNillableTenderID(x *xid.ID) *VisitRecordUpd
 	return vruo
 }
 
+// ClearTenderID clears the value of the "tender_id" field.
+func (vruo *VisitRecordUpdateOne) ClearTenderID() *VisitRecordUpdateOne {
+	vruo.mutation.ClearTenderID()
+	return vruo
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (vruo *VisitRecordUpdateOne) SetCustomerID(x xid.ID) *VisitRecordUpdateOne {
 	vruo.mutation.SetCustomerID(x)
@@ -668,9 +677,6 @@ func (vruo *VisitRecordUpdateOne) check() error {
 		if err := visitrecord.CommContentValidator(v); err != nil {
 			return &ValidationError{Name: "comm_content", err: fmt.Errorf(`ent: validator failed for field "VisitRecord.comm_content": %w`, err)}
 		}
-	}
-	if vruo.mutation.TenderCleared() && len(vruo.mutation.TenderIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "VisitRecord.tender"`)
 	}
 	if vruo.mutation.CustomerCleared() && len(vruo.mutation.CustomerIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "VisitRecord.customer"`)

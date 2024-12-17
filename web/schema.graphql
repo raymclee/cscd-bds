@@ -836,7 +836,7 @@ input CreateVisitRecordInput {
   date: Time!
   followupbyIDs: [ID!]
   nextStep: String
-  tenderID: ID!
+  tenderID: ID
   updatedAt: Time
   visitType: Int
 }
@@ -3266,6 +3266,7 @@ input UpdateVisitRecordInput {
   addFollowUpByIDs: [ID!]
   clearFollowUpBys: Boolean
   clearNextStep: Boolean
+  clearTender: Boolean
   commContent: String
   commPeople: String
   customerID: ID
@@ -3580,8 +3581,8 @@ type VisitRecord implements Node {
   ): UserConnection! @goField(name: "FollowUpBys", forceResolver: false)
   id: ID!
   nextStep: String
-  tender: Tender!
-  tenderID: ID!
+  tender: Tender
+  tenderID: ID
   updatedAt: Time!
   visitType: Int!
 }
@@ -3730,10 +3731,12 @@ input VisitRecordWhereInput {
   tenderIDHasPrefix: ID
   tenderIDHasSuffix: ID
   tenderIDIn: [ID!]
+  tenderIDIsNil: Boolean
   tenderIDLT: ID
   tenderIDLTE: ID
   tenderIDNEQ: ID
   tenderIDNotIn: [ID!]
+  tenderIDNotNil: Boolean
   """updated_at field predicates"""
   updatedAt: Time
   updatedAtGT: Time

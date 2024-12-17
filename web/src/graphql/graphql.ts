@@ -823,7 +823,7 @@ export type CreateVisitRecordInput = {
   date: Scalars['Time']['input'];
   followupbyIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   nextStep?: InputMaybe<Scalars['String']['input']>;
-  tenderID: Scalars['ID']['input'];
+  tenderID?: InputMaybe<Scalars['ID']['input']>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   visitType?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -3270,6 +3270,7 @@ export type UpdateVisitRecordInput = {
   addFollowUpByIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   clearFollowUpBys?: InputMaybe<Scalars['Boolean']['input']>;
   clearNextStep?: InputMaybe<Scalars['Boolean']['input']>;
+  clearTender?: InputMaybe<Scalars['Boolean']['input']>;
   commContent?: InputMaybe<Scalars['String']['input']>;
   commPeople?: InputMaybe<Scalars['String']['input']>;
   customerID?: InputMaybe<Scalars['ID']['input']>;
@@ -3553,8 +3554,8 @@ export type VisitRecord = Node & {
   followupbys: UserConnection;
   id: Scalars['ID']['output'];
   nextStep?: Maybe<Scalars['String']['output']>;
-  tender: Tender;
-  tenderID: Scalars['ID']['output'];
+  tender?: Maybe<Tender>;
+  tenderID?: Maybe<Scalars['ID']['output']>;
   updatedAt: Scalars['Time']['output'];
   visitType: Scalars['Int']['output'];
 };
@@ -3715,10 +3716,12 @@ export type VisitRecordWhereInput = {
   tenderIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   tenderIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   tenderIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  tenderIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   tenderIDLT?: InputMaybe<Scalars['ID']['input']>;
   tenderIDLTE?: InputMaybe<Scalars['ID']['input']>;
   tenderIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   tenderIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  tenderIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** updated_at field predicates */
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   updatedAtGT?: InputMaybe<Scalars['Time']['input']>;

@@ -40,7 +40,9 @@ func (VisitRecord) Fields() []ent.Field {
 			),
 
 		field.String("tender_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Nillable().
+			Optional(),
 		field.String("customer_id").
 			GoType(xid.ID("")),
 	}
@@ -52,7 +54,6 @@ func (VisitRecord) Edges() []ent.Edge {
 		edge.From("tender", Tender.Type).
 			Field("tender_id").
 			Ref("visit_records").
-			Required().
 			Unique(),
 		edge.From("customer", Customer.Type).
 			Field("customer_id").
