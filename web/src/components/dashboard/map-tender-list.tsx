@@ -25,9 +25,10 @@ export function MapTenderList() {
     <>
       <div
         className={cn(
-          "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
+          // "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
+          // tenderListVisible && "mt-[60vh] xl:mt-0",
+          "absolute left-4 top-[7vh] h-full w-[440px] space-y-2 transition",
           !tenderListVisible && "-translate-x-[110%]",
-          tenderListVisible && "mt-[60vh] xl:mt-0",
         )}
       >
         <Card
