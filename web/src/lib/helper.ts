@@ -1,6 +1,7 @@
 import { TagProps } from "antd";
 import {
   AreaConnection,
+  InputMaybe,
   Maybe,
   Tender,
   TenderConnection,
@@ -70,6 +71,13 @@ export function fixAmount(amount: Maybe<number> | undefined): number {
     return 0;
   }
   return Number((Math.abs(Number(amount)) / 1.0e8).toFixed(2));
+}
+
+export function toActualAmount(amount: InputMaybe<number> | undefined): number {
+  if (!amount) {
+    return 0;
+  }
+  return amount * 1.0e8;
 }
 
 export function findTenderWithLevel(

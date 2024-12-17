@@ -24,10 +24,12 @@ import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
+  fixAmount,
   isGA,
   isHW,
   levelInvolvedOptions,
   tenderStatusOptions,
+  toActualAmount,
 } from "~/lib/helper";
 import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
@@ -218,7 +220,7 @@ export function TenderForm({
         provinceID: tender.province?.id,
         cityID: tender.city?.id,
         districtID: tender.district?.id,
-        estimatedAmount: tender.estimatedAmount,
+        estimatedAmount: fixAmount(tender.estimatedAmount),
         tenderDate: tender.tenderDate && dayjs(tender.tenderDate),
         contractor: tender.contractor,
         prepareToBid: tender.prepareToBid,
@@ -271,7 +273,13 @@ export function TenderForm({
       layout="vertical"
       onFinish={async (values) => {
         if (tender?.id) {
-          const { images, attachements, followingSaleIDs, ...input } = values;
+          const {
+            images,
+            attachements,
+            followingSaleIDs,
+            estimatedAmount,
+            ...input
+          } = values;
           commitUpdateMutation({
             variables: {
               id: tender.id,
@@ -279,6 +287,7 @@ export function TenderForm({
                 ...input,
                 clearFollowingSales: true,
                 addFollowingSaleIDs: followingSaleIDs,
+                estimatedAmount: toActualAmount(estimatedAmount),
               },
               imageFileNames,
               attachmentFileNames,
@@ -297,7 +306,7 @@ export function TenderForm({
             },
           });
         } else {
-          const { images, attachements, ...input } = values;
+          const { images, attachements, estimatedAmount, ...input } = values;
 
           const connections = [
             ConnectionHandler.getConnectionID(
@@ -320,7 +329,12 @@ export function TenderForm({
 
           commitCreateMutation({
             variables: {
-              input: { ...input, code: "", createdByID: session.userId },
+              input: {
+                ...input,
+                code: "",
+                estimatedAmount: toActualAmount(estimatedAmount),
+                createdByID: session.userId,
+              },
               connections,
               imageFileNames,
               attachmentFileNames,
@@ -524,7 +538,7 @@ export function TenderForm({
               </Form.Item>
 
               <Form.Item name="estimatedAmount" label="预计金额">
-                <Input />
+                <Input prefix="$" suffix="亿元" />
               </Form.Item>
             </>
           )}
@@ -715,7 +729,7 @@ export function TenderForm({
               </Form.Item>
 
               <Form.Item name="estimatedAmount" label="预计金额">
-                <Input />
+                <Input prefix="￥" suffix="亿元" />
               </Form.Item>
 
               <Form.Item name={"tenderDate"} label={"招标日"}>
