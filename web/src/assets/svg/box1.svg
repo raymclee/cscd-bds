@@ -1,209 +1,195 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 299.969 465.519">
+<svg id="目标结算总额" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="301.97" height="466.812" viewBox="0 0 301.97 466.812">
   <defs>
     <style>
-      .cls-1, .cls-2 {
-        fill: #011731;
-      }
-
       .cls-1 {
+        fill: #011731;
         stroke: #148bff;
+        filter: url(#filter);
       }
 
-      .cls-1, .cls-12 {
+      .cls-1, .cls-9 {
         stroke-width: 2px;
       }
 
-      .cls-3 {
-        clip-path: url(#clip-path);
+      .cls-1, .cls-10, .cls-13, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        fill-rule: evenodd;
       }
 
-      .cls-4 {
+      .cls-2 {
         fill: #225fce;
       }
 
-      .cls-5 {
-        fill: #00f2ff;
-        font-size: 60px;
-        font-family: Arial-BoldMT, Arial;
-        font-weight: 700;
-      }
-
-      .cls-10, .cls-20, .cls-6 {
+      .cls-3, .cls-7 {
         fill: none;
       }
 
-      .cls-12, .cls-6, .cls-7, .cls-8 {
-        stroke: #707070;
-      }
-
-      .cls-10, .cls-6, .cls-7, .cls-8 {
+      .cls-3, .cls-4, .cls-5, .cls-7 {
         stroke-linecap: round;
         stroke-linejoin: round;
       }
 
-      .cls-6 {
+      .cls-3 {
         stroke-width: 2.083px;
+        stroke: url(#linear-gradient);
       }
 
-      .cls-7 {
+      .cls-4 {
         fill: #08154c;
+        stroke: url(#linear-gradient-2);
+        filter: url(#filter-2);
       }
 
-      .cls-7, .cls-8 {
+      .cls-4, .cls-5, .cls-7 {
         stroke-width: 1.042px;
       }
 
-      .cls-8 {
-        fill: url(#linear-gradient);
-      }
-
-      .cls-9 {
-        fill: url(#linear-gradient-2);
-      }
-
-      .cls-11 {
+      .cls-5 {
         fill: url(#linear-gradient-3);
+        stroke: url(#linear-gradient-4);
       }
 
-      .cls-12 {
-        fill: #001f42;
-        opacity: 0.8;
-      }
-
-      .cls-13 {
-        fill: url(#linear-gradient-4);
-      }
-
-      .cls-14 {
-        opacity: 0.702;
-      }
-
-      .cls-15, .cls-16 {
-        fill: #fff;
-      }
-
-      .cls-16 {
-        font-size: 29.896px;
-        font-family: MicrosoftYaHei, Microsoft YaHei;
-        letter-spacing: 0.075em;
-      }
-
-      .cls-17 {
+      .cls-6 {
         fill: url(#linear-gradient-5);
       }
 
-      .cls-18, .cls-19, .cls-21 {
-        stroke: none;
+      .cls-7 {
+        stroke: url(#linear-gradient-6);
       }
 
-      .cls-19 {
-        fill: #148bff;
+      .cls-8 {
+        fill: url(#linear-gradient-7);
+        filter: url(#filter-3);
       }
 
-      .cls-21 {
-        fill: #707070;
+      .cls-9 {
+        fill: #001f42;
+        opacity: 0.8;
+        stroke: url(#linear-gradient-8);
+        filter: url(#filter-4);
       }
 
-      .cls-22 {
-        filter: url(#_49_688);
+      .cls-10 {
+        fill: url(#linear-gradient-9);
+      }
+
+      .cls-11 {
+        opacity: 0.7;
+      }
+
+      .cls-12, .cls-13, .cls-14 {
+        fill: #fff;
+      }
+
+      .cls-14 {
+        font-size: 23.079px;
+        text-anchor: middle;
+        font-family: "Microsoft YaHei";
       }
     </style>
-    <clipPath id="clip-path">
-      <path id="形状_5" data-name="形状 5" class="cls-1" d="M1186,293.977h83.775l21.619,18.917h94.585l18.917-18.917h81.073V758.794H1407.6l-18.917-16.214h-99.99l-16.215,16.214H1186Z"/>
-    </clipPath>
-    <filter id="_49_688" x="45.096" y="310.973" width="202" height="85" filterUnits="userSpaceOnUse">
-      <feOffset dx="-4.95" dy="4.95" input="SourceAlpha"/>
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feFlood flood-color="#00f1ff" flood-opacity="0.502"/>
-      <feComposite operator="in" in2="blur"/>
-      <feComposite in="SourceGraphic"/>
+    <filter id="filter" x="1186" y="293.969" width="299.97" height="464.812" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="5" in="SourceAlpha"/>
+      <feFlood result="flood" flood-color="#1289a7" flood-opacity="0.3"/>
+      <feComposite result="composite-2" operator="out" in2="blur"/>
+      <feComposite result="composite" operator="in" in2="SourceAlpha"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
     </filter>
-    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
+    <linearGradient id="linear-gradient" x1="1335.81" y1="597.844" x2="1335.81" y2="519" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#071c5f"/>
+      <stop offset="1" stop-color="#071c5f" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="1335.065" y1="587.531" x2="1335.065" y2="526.344" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#163399"/>
+      <stop offset="1" stop-color="#576dba"/>
+    </linearGradient>
+    <filter id="filter-2" x="1233.91" y="526.344" width="202.31" height="61.187" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="1.667" in="SourceAlpha"/>
+      <feFlood result="flood" flood-color="#1c3fc4" flood-opacity="0.8"/>
+      <feComposite result="composite-2" operator="out" in2="blur"/>
+      <feComposite result="composite" operator="in" in2="SourceAlpha"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-3" x1="1335.81" y1="581.5" x2="1335.81" y2="532.375" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#030829"/>
       <stop offset="1" stop-color="#030829" stop-opacity="0.502"/>
     </linearGradient>
-    <linearGradient id="linear-gradient-2" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
+    <linearGradient id="linear-gradient-4" x1="1335.81" y1="581.5" x2="1335.81" y2="532.375" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#132c85" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#132c85"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-5" x1="1338.78" y1="559.156" x2="1338.78" y2="405.906" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#1d47d3" stop-opacity="0.502"/>
       <stop offset="0.994" stop-color="#1d47d3" stop-opacity="0"/>
-      <stop offset="1" stop-color="#1d47d3" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="linear-gradient-3" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+    <linearGradient id="linear-gradient-6" x1="1338.78" y1="559.156" x2="1338.78" y2="405.906" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3c6bf1" stop-opacity="0.502"/>
+      <stop offset="1" stop-color="#3c6bf1" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-7" x1="1278.53" y1="556.937" x2="1391.59" y2="556.937" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#1a5edc"/>
       <stop offset="1" stop-color="#001650"/>
     </linearGradient>
-    <linearGradient id="linear-gradient-4" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
-      <stop offset="0" stop-color="#87c6fb" stop-opacity="0"/>
+    <filter id="filter-3" x="1278.53" y="539.812" width="113.06" height="34.25" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2.667" in="SourceAlpha"/>
+      <feFlood result="flood" flood-color="#b7fdff"/>
+      <feComposite result="composite-2" operator="out" in2="blur"/>
+      <feComposite result="composite" operator="in" in2="SourceAlpha"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-8" x1="151.375" y1="256.5" x2="151.375" y2="128.437" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6290e8"/>
+      <stop offset="0.506" stop-color="#fff"/>
+      <stop offset="1" stop-color="#0070e1"/>
+    </linearGradient>
+    <filter id="filter-4" x="87.34" y="128.437" width="128.07" height="128.063" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="5.333" in="SourceAlpha"/>
+      <feFlood result="flood" flood-color="#00599f" flood-opacity="0.55"/>
+      <feComposite result="composite-2" operator="out" in2="blur"/>
+      <feComposite result="composite" operator="in" in2="SourceAlpha"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-9" x1="1336.375" y1="499.688" x2="1336.375" y2="424.969" gradientUnits="userSpaceOnUse">
       <stop offset="0.116" stop-color="#87c6fb" stop-opacity="0"/>
       <stop offset="1" stop-color="#87c6fb" stop-opacity="0.6"/>
     </linearGradient>
-    <linearGradient id="linear-gradient-5" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
-      <stop offset="0" stop-color="#95b2ff"/>
-      <stop offset="0.004" stop-color="#95b2ff"/>
-      <stop offset="0.377" stop-color="#cad9ff"/>
-      <stop offset="0.986" stop-color="#fff"/>
-      <stop offset="1" stop-color="#fff"/>
-    </linearGradient>
   </defs>
-  <g id="目标结算总额" transform="translate(-1185.997 -293.977)">
-    <g id="ds">
-      <g id="形状_5-2" data-name="形状 5">
-        <g id="形状_5-3" data-name="形状 5" class="cls-2">
-          <path class="cls-18" d="M 1484.96533203125 757.7935791015625 L 1407.965087890625 757.7935791015625 L 1389.328979492188 741.81982421875 L 1389.048217773438 741.5791015625 L 1388.67822265625 741.5791015625 L 1288.6884765625 741.5791015625 L 1288.274291992188 741.5791015625 L 1287.981323242188 741.8719482421875 L 1272.059692382812 757.7935791015625 L 1186.99658203125 757.7935791015625 L 1186.99658203125 294.9771423339844 L 1269.395751953125 294.9771423339844 L 1290.732421875 313.646728515625 L 1291.01513671875 313.8941345214844 L 1291.390869140625 313.8941345214844 L 1385.975830078125 313.8941345214844 L 1386.390014648438 313.8941345214844 L 1386.682983398438 313.6012573242188 L 1405.30712890625 294.9771423339844 L 1484.96533203125 294.9771423339844 L 1484.96533203125 757.7935791015625 Z"/>
-          <path class="cls-19" d="M 1187.99658203125 295.9771118164062 L 1187.99658203125 756.7935791015625 L 1271.645385742188 756.7935791015625 L 1287.860107421875 740.5791015625 L 1389.418090820312 740.5791015625 L 1408.335083007812 756.7935791015625 L 1483.96533203125 756.7935791015625 L 1483.96533203125 295.9771118164062 L 1405.721313476562 295.9771118164062 L 1386.804321289062 314.8941040039062 L 1290.639404296875 314.8941040039062 L 1269.020141601562 295.9771118164062 L 1187.99658203125 295.9771118164062 M 1185.99658203125 293.9771118164062 L 1269.771484375 293.9771118164062 L 1291.390869140625 312.8941040039062 L 1385.975830078125 312.8941040039062 L 1404.892822265625 293.9771118164062 L 1485.96533203125 293.9771118164062 L 1485.96533203125 758.7935791015625 L 1407.59521484375 758.7935791015625 L 1388.67822265625 742.5791015625 L 1288.6884765625 742.5791015625 L 1272.473876953125 758.7935791015625 L 1185.99658203125 758.7935791015625 L 1185.99658203125 293.9771118164062 Z"/>
-        </g>
-        <g id="Clip" class="cls-3">
-          <image id="图层_2" data-name="图层 2" width="280" height="282" transform="translate(1197 634)" xlink:href="%E7%9B%AE%E6%A0%87%E7%BB%93%E7%AE%97%E6%80%BB%E9%A2%9D-image.png"/>
-        </g>
-      </g>
-      <path id="形状_7" data-name="形状 7" class="cls-4" d="M1283.284,293.977l10.81,10.81h89.18l10.81-10.81Z"/>
-      <path id="形状_7_拷贝" data-name="形状 7 拷贝" class="cls-4" d="M1283.284,759.5l10.81-10.81h89.18l10.81,10.81Z"/>
-      <rect id="矩形_4" data-name="矩形 4" class="cls-4" width="13.51" height="16.21" transform="translate(1191.44 299.38)"/>
-      <rect id="矩形_4_拷贝" data-name="矩形 4 拷贝" class="cls-4" width="13.51" height="16.21" transform="translate(1467.08 299.38)"/>
-      <rect id="矩形_4_拷贝_2" data-name="矩形 4 拷贝 2" class="cls-4" width="13.51" height="16.21" transform="translate(1191.44 737.17)"/>
-      <rect id="矩形_4_拷贝_2-2" data-name="矩形 4 拷贝 2" class="cls-4" width="13.51" height="16.21" transform="translate(1467.08 737.17)"/>
+  <g id="ds">
+    <g transform="translate(-1185 -292.969)" style="fill: #011731; filter: url(#filter)">
+      <path id="形状_5" data-name="形状 5" class="cls-1" d="M1186,293.977h83.77l21.62,18.917h94.59l18.91-18.917h81.08V758.794H1407.6l-18.92-16.215h-99.99l-16.22,16.215H1186V293.977Z" style="stroke: inherit; filter: none; fill: inherit"/>
     </g>
-    <g class="cls-22" transform="matrix(1, 0, 0, 1, 1186, 293.98)">
-      <text id="_49_688-2" data-name="49,688" class="cls-5" transform="translate(151.05 369.02)"><tspan x="-91.758" y="0">49,688</tspan></text>
-    </g>
-    <g id="icon">
-      <g id="_1" data-name="1">
-        <g id="椭圆_1_拷贝_3" data-name="椭圆 1 拷贝 3" class="cls-6" transform="translate(1222 519)">
-          <ellipse class="cls-18" cx="113.81" cy="39.43" rx="113.81" ry="39.43"/>
-          <ellipse class="cls-20" cx="113.81" cy="39.43" rx="112.768" ry="38.388"/>
-        </g>
-        <g id="椭圆_1_拷贝_2" data-name="椭圆 1 拷贝 2" class="cls-7" transform="translate(1233.9 526.34)">
-          <ellipse class="cls-18" cx="101.16" cy="30.6" rx="101.16" ry="30.6"/>
-          <ellipse class="cls-20" cx="101.16" cy="30.6" rx="100.639" ry="30.079"/>
-        </g>
-        <g id="椭圆_1_拷贝" data-name="椭圆 1 拷贝" class="cls-8" transform="translate(1245.81 532.39)">
-          <ellipse class="cls-18" cx="90" cy="24.55" rx="90" ry="24.55"/>
-          <ellipse class="cls-20" cx="90" cy="24.55" rx="89.479" ry="24.029"/>
-        </g>
-        <path id="形状_2" data-name="形状 2" class="cls-9" d="M1278.531,559.171l-55.044-153.26h230.588l-60.994,153.26Z"/>
-        <g id="形状_2_拷贝" data-name="形状 2 拷贝" class="cls-10">
-          <path class="cls-18" d="M1278.531,559.171l-55.044-153.26h230.588l-62.482,153.26Z"/>
-          <path class="cls-21" d="M 1390.8935546875 558.129638671875 L 1452.526123046875 406.9525756835938 L 1224.96826171875 406.9525756835938 L 1279.263671875 558.129638671875 L 1390.8935546875 558.129638671875 M 1391.59375 559.1713256835938 L 1278.531005859375 559.1713256835938 L 1223.4873046875 405.910888671875 L 1454.07568359375 405.910888671875 L 1391.59375 559.1713256835938 Z"/>
-        </g>
-        <ellipse id="椭圆_1" data-name="椭圆 1" class="cls-11" cx="56.52" cy="17.11" rx="56.52" ry="17.11" transform="translate(1278.54 539.83)"/>
-      </g>
-      <g id="椭圆_1-2" data-name="椭圆 1" class="cls-12" transform="translate(1272.33 421.4)">
-        <circle class="cls-18" cx="64.04" cy="64.04" r="64.04"/>
-        <circle class="cls-20" cx="64.04" cy="64.04" r="63.04"/>
-      </g>
-      <ellipse id="椭圆_1-3" data-name="椭圆 1" class="cls-13" cx="42.69" cy="37.35" rx="42.69" ry="37.35" transform="translate(1293.68 424.97)"/>
-      <g id="_2" data-name="2" class="cls-14">
-        <circle id="椭圆_2" data-name="椭圆 2" class="cls-15" cx="2.98" cy="2.98" r="2.98" transform="translate(1370.75 517.5)"/>
-        <circle id="椭圆_2_拷贝" data-name="椭圆 2 拷贝" class="cls-15" cx="1.49" cy="1.49" r="1.49" transform="translate(1333.6 553.22)"/>
-        <circle id="椭圆_2_拷贝_2" data-name="椭圆 2 拷贝 2" class="cls-15" cx="2.23" cy="2.23" r="2.23" transform="translate(1285.98 533.88)"/>
-        <circle id="椭圆_2_拷贝_3" data-name="椭圆 2 拷贝 3" class="cls-15" cx="2.23" cy="2.23" r="2.23" transform="translate(1281.52 498.17)"/>
-        <circle id="椭圆_2_拷贝_4" data-name="椭圆 2 拷贝 4" class="cls-15" cx="2.23" cy="2.23" r="2.23" transform="translate(1305.33 513.05)"/>
-        <circle id="椭圆_2_拷贝_5" data-name="椭圆 2 拷贝 5" class="cls-15" cx="2.23" cy="2.23" r="2.23" transform="translate(1388.61 483.29)"/>
-      </g>
-      <image id="余额钱币" width="64" height="64" transform="translate(1306 450)" xlink:href="%E7%9B%AE%E6%A0%87%E7%BB%93%E7%AE%97%E6%80%BB%E9%A2%9D-image2.png"/>
-    </g>
-    <g id="目标结算总额-2" data-name="目标结算总额">
-      <text id="目标结算总额-3" data-name="目标结算总额" class="cls-16" transform="translate(1335.269 369.589)"><tspan x="-95.293" y="0">目标结算总额</tspan></text>
-      <path id="Gradient_Overlay" data-name="Gradient Overlay" class="cls-17" d="M1244.385,346.16h21.137v27.035h-2.482V371h-16.174v2.19h-2.482Zm2.482,17.167v5.518h16.174v-5.518Zm0-7.5v5.46h16.174v-5.46Zm0-7.5v5.459h16.174V348.32Zm25.6,14.685a31.489,31.489,0,0,0,4.438-10.452h-4.233v-1.985h4.438v-5.722h2.044v5.722h3.97v1.985h-3.97v5.168l1.255-1.314q1.868,1.606,3.3,3.095l-1.547,1.606q-1.4-1.591-3.007-3.211v15.415h-2.044V357.5a29.131,29.131,0,0,1-3.679,8.072Q1273.019,364.319,1272.465,363.005Zm10.627-7.883h18.218v2.044h-8.058v12.2q0,3.649-3.357,3.649-1.577.029-3.883-.029-.146-1.051-.409-2.423a32.163,32.163,0,0,0,3.679.234q1.752,0,1.752-2.16V357.166h-7.941Zm1.343-8.554h15.532v2.044h-15.532Zm10.744,14.364,2.073-.993q2.773,5.314,4.613,9.313l-2.336,1.022Q1297.631,365.75,1295.178,360.933Zm-9.372-.993,2.19.876q-2.394,5.343-4.759,9.488a16.88,16.88,0,0,0-2.131-1.022A69.132,69.132,0,0,0,1285.807,359.94Zm30.707,1.664h15.415v11.853h-2.277v-1.81h-10.86v1.81h-2.277Zm-.584-5.547h7.124V351.5h-8.087v-2.1h8.087v-4.671h2.336V349.4h8.175v2.1h-8.175v4.554h7.153v2.1H1315.93Zm-7.5,6.219q3.883-.555,6.423-.993-.175,1.139-.263,2.219-3.241.467-8.846,1.372l-.467-2.16a37.544,37.544,0,0,0,4.452-6.16q-2.452.161-4.452.321l-.555-1.985a51.537,51.537,0,0,0,5.576-10.364l2.219.876q-3.153,6.189-5.168,9.313,1.693-.044,3.533-.1.993-1.693,2.073-3.693l2.161,1.08Q1311.784,357.546,1308.427,362.276Zm21.225,1.372h-10.86V369.6h10.86Zm-25.049,5.518q5.4-1.051,10.539-2.306-.088,1.168-.088,2.219-4.73.993-9.81,2.336Zm36.313-16.992h4.846q-1.08-1.343-2.16-2.511l1.051-.759H1342.2a27.488,27.488,0,0,1-3.941,4.029,20.751,20.751,0,0,0-1.46-1.489,20.423,20.423,0,0,0,5.664-6.832h2.482a26.626,26.626,0,0,1-1.518,2.6h8.5V348.9h-6.569q1.051,1.066,2.1,2.219l-1.387,1.051h13.459a28.449,28.449,0,0,0-2.467-2.511l1.007-.759h-2.9a26.192,26.192,0,0,1-2.394,3.153,18.371,18.371,0,0,0-1.781-1.372,22.182,22.182,0,0,0,4.087-6.073h2.511q-.672,1.372-1.372,2.6h9.255V348.9h-6.656a27.174,27.174,0,0,1,2.306,2.131l-1.416,1.139h2.263v13.138h-2.044v-.963h-16.962v.963h-2.044Zm-3.825,14.568h7.941a13.289,13.289,0,0,0,.117-1.839h2.131a15.638,15.638,0,0,1-.1,1.839h9.561v-1.81h2.16v1.81h6.919v1.81H1358.9v4.9h-2.16v-4.9h-9.868q-1.051,3.927-6.919,5.168-.555-.905-1.285-1.927,4.846-.817,5.927-3.241h-7.5Zm22.831-12.933h-16.962v1.956h16.962Zm-16.962,8.9h16.962v-1.956h-16.962Zm0-3.474h16.962v-1.956h-16.962Zm29.773-9.518h12.758q1.825-2.657,3.27-5.138l2.248,1.168q-1.46,2-2.978,3.971h6.189v11.912h-2.336v-1.285h-16.816v1.285h-2.336Zm19.152,2.1h-16.816v6.423h16.816Zm-15.444,11.328h2.277v5.109q0,2.277,2.044,2.277h5.868a2.054,2.054,0,0,0,2.161-1.752,22.592,22.592,0,0,0,.525-3.27q.847.38,2.248.876a26.373,26.373,0,0,1-.847,3.649,3.769,3.769,0,0,1-3.97,2.54h-6.452q-3.854,0-3.854-3.912Zm-4.554-.2,2.19.7a63.189,63.189,0,0,1-3.036,7.5l-2.131-.934A56.74,56.74,0,0,0,1371.885,362.947Zm19.444,1.022,1.664-1.285q2.686,2.978,5.051,5.985l-1.956,1.547Q1394.016,367.3,1391.329,363.969Zm-10.364-1.81,1.781-1.168a42.1,42.1,0,0,1,3.825,4.671l-1.956,1.372A53.894,53.894,0,0,0,1380.965,362.159Zm-4.992-16.437,1.781-1.139a35.433,35.433,0,0,1,3.153,3.8l-1.985,1.285Q1377.666,347.853,1375.973,345.722Zm28.722,12.262,1.08-1.635,3.27,1.606a15.213,15.213,0,0,0,2.569-3.328h-5.693a29.192,29.192,0,0,1-3.3,4.467q-.642-.7-1.372-1.4a23.556,23.556,0,0,0,4.554-7.124l1.927.642q-.409.876-.847,1.664h7.065v1.664a17.455,17.455,0,0,1-3.036,4.35q2.54,1.285,4.671,2.394l-1.2,1.9q-2.481-1.431-5.08-2.832a22.448,22.448,0,0,1-5.08,3.065h9.313v9.372h-1.927V371.53h-5.985v1.489H1403.7v-9.372q-.876.35-1.781.671-.379-.788-.963-1.781a21.95,21.95,0,0,0,6.452-3.182Q1406.067,358.685,1404.695,357.984Zm11.707-5.81h4.262l.672-3.679h-5.518V346.51h13.955V348.5h-6.189l-.788,3.679h6.073V366.83h-2.044V354.159h-8.379V366.83H1416.4Zm5.2,3.8h2.1q.058,7.445-.672,10.306,4.2,2.949,7.328,5.43l-1.46,1.868a78.69,78.69,0,0,0-6.656-5.343q-1.81,3.3-6.773,5.635-.584-.847-1.4-1.868,5.372-2.394,6.656-5.751Q1421.774,363.911,1421.6,355.969Zm-19.765-7.824h6.014q-.584-1.314-1.372-2.715l1.9-.817q1.08,2.014,1.781,3.533h5.168v4.116h-1.985V349.9h-9.518v2.365h-1.985Zm9.78,17.079h-5.985v4.5h5.985Z"/>
-    </g>
+    <use transform="translate(-1185 -292.969)" xlink:href="#形状_5" style="stroke: #148bff; filter: none; fill: none"/>
+    <path id="形状_7" data-name="形状 7" class="cls-2" d="M1283.28,293.977l10.81,10.81h89.18l10.81-10.81h-110.8Z" transform="translate(-1185 -292.969)"/>
+    <path id="形状_7_拷贝" data-name="形状 7 拷贝" class="cls-2" d="M1283.28,759.5l10.81-10.81h89.18l10.81,10.81h-110.8Z" transform="translate(-1185 -292.969)"/>
+    <path id="矩形_4" data-name="矩形 4" class="cls-2" d="M1191.44,299.382h13.51V315.6h-13.51V299.382Z" transform="translate(-1185 -292.969)"/>
+    <path id="矩形_4_拷贝" data-name="矩形 4 拷贝" class="cls-2" d="M1467.08,299.382h13.51V315.6h-13.51V299.382Z" transform="translate(-1185 -292.969)"/>
+    <path id="矩形_4_拷贝_2" data-name="矩形 4 拷贝 2" class="cls-2" d="M1191.44,737.175h13.51v16.214h-13.51V737.175Z" transform="translate(-1185 -292.969)"/>
+    <path id="矩形_4_拷贝_2-2" data-name="矩形 4 拷贝 2" class="cls-2" d="M1467.08,737.175h13.51v16.214h-13.51V737.175Z" transform="translate(-1185 -292.969)"/>
   </g>
+  <g id="icon">
+    <g id="_1" data-name="1">
+      <path id="椭圆_1_拷贝_3" data-name="椭圆 1 拷贝 3" class="cls-3" d="M1335.81,519c62.85,0,113.8,17.654,113.8,39.432s-50.95,39.431-113.8,39.431S1222,580.205,1222,558.428,1272.95,519,1335.81,519Z" transform="translate(-1185 -292.969)"/>
+      <g transform="translate(-1185 -292.969)" style="fill: #08154c; filter: url(#filter-2)">
+        <path id="椭圆_1_拷贝_2" data-name="椭圆 1 拷贝 2" class="cls-4" d="M1335.06,526.343c55.87,0,101.16,13.7,101.16,30.6s-45.29,30.6-101.16,30.6-101.16-13.7-101.16-30.6S1279.19,526.343,1335.06,526.343Z" style="stroke: inherit; filter: none; fill: inherit"/>
+      </g>
+      <use transform="translate(-1185 -292.969)" xlink:href="#椭圆_1_拷贝_2" style="stroke: url(#linear-gradient-2); filter: none; fill: none"/>
+      <path id="椭圆_1_拷贝" data-name="椭圆 1 拷贝" class="cls-5" d="M1335.81,532.388c49.7,0,89.99,10.992,89.99,24.551s-40.29,24.552-89.99,24.552-90-10.992-90-24.552S1286.1,532.388,1335.81,532.388Z" transform="translate(-1185 -292.969)"/>
+      <path id="形状_2" data-name="形状 2" class="cls-6" d="M1278.53,559.171l-55.04-153.26h230.59l-61,153.26H1278.53Z" transform="translate(-1185 -292.969)"/>
+      <path id="形状_2_拷贝" data-name="形状 2 拷贝" class="cls-7" d="M1278.53,559.171l-55.04-153.26h230.59l-62.49,153.26H1278.53Z" transform="translate(-1185 -292.969)"/>
+      <path id="椭圆_1" data-name="椭圆 1" class="cls-8" d="M1335.06,539.828c31.22,0,56.52,7.661,56.52,17.111s-25.3,17.112-56.52,17.112-56.52-7.661-56.52-17.112S1303.85,539.828,1335.06,539.828Z" transform="translate(-1185 -292.969)"/>
+    </g>
+    <g style="fill: #001f42; filter: url(#filter-4)">
+      <circle id="椭圆_1-2" data-name="椭圆 1" class="cls-9" cx="151.375" cy="192.469" r="64.035" style="stroke: inherit; filter: none; fill: inherit"/>
+    </g>
+    <use xlink:href="#椭圆_1-2" style="stroke: url(#linear-gradient-8); filter: none; fill: none"/>
+    <path id="椭圆_1-3" data-name="椭圆 1" class="cls-10" d="M1336.37,424.964c23.58,0,42.69,16.724,42.69,37.354s-19.11,37.354-42.69,37.354-42.69-16.724-42.69-37.354S1312.79,424.964,1336.37,424.964Z" transform="translate(-1185 -292.969)"/>
+    <g id="_2" data-name="2" class="cls-11">
+      <circle id="椭圆_2" data-name="椭圆 2" class="cls-12" cx="188.72" cy="227.516" r="2.97"/>
+      <circle id="椭圆_2_拷贝" data-name="椭圆 2 拷贝" class="cls-12" cx="150.075" cy="261.735" r="1.485"/>
+      <circle id="椭圆_2_拷贝_2" data-name="椭圆 2 拷贝 2" class="cls-12" cx="103.205" cy="243.141" r="2.235"/>
+      <circle id="椭圆_2_拷贝_3" data-name="椭圆 2 拷贝 3" class="cls-12" cx="98.75" cy="207.421" r="2.22"/>
+      <circle id="椭圆_2_拷贝_4" data-name="椭圆 2 拷贝 4" class="cls-12" cx="122.545" cy="222.296" r="2.235"/>
+      <path id="椭圆_2_拷贝_5" data-name="椭圆 2 拷贝 5" class="cls-13" d="M1390.84,483.285a2.232,2.232,0,1,1-2.23,2.232A2.232,2.232,0,0,1,1390.84,483.285Z" transform="translate(-1185 -292.969)"/>
+    </g>
+    <image id="余额钱币" x="121" y="157.031" width="64" height="64" xlink:href="data:img/png;base64,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"/>
+  </g>
+  <text id="目标结算总额-2" data-name="目标结算总额" class="cls-14" transform="translate(149.149 76.62) scale(1.295 1.3)">目标结算总额</text>
 </svg>

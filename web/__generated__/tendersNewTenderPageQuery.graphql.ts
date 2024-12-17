@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1363730ecc398921075a9bf97ef426c7>>
+ * @generated SignedSource<<0f29056d33d82f42ae8b5a0549829adb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -42,20 +42,23 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "__typename",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v4 = [
-  (v2/*: any*/),
-  (v3/*: any*/)
-],
 v5 = {
   "alias": null,
   "args": null,
@@ -87,8 +90,8 @@ v6 = {
           "name": "node",
           "plural": false,
           "selections": [
-            (v2/*: any*/),
             (v3/*: any*/),
+            (v4/*: any*/),
             (v5/*: any*/)
           ],
           "storageKey": null
@@ -140,13 +143,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "__typename",
-            "storageKey": null
-          },
+          (v2/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -174,8 +171,8 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
                           (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -206,7 +203,57 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v4/*: any*/),
+                                    "selections": [
+                                      (v3/*: any*/),
+                                      (v4/*: any*/),
+                                      (v2/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "cursor",
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "PageInfo",
+                                "kind": "LinkedField",
+                                "name": "pageInfo",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "endCursor",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "hasNextPage",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "hasPreviousPage",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "startCursor",
                                     "storageKey": null
                                   }
                                 ],
@@ -217,16 +264,16 @@ return {
                           },
                           {
                             "alias": null,
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "where",
-                                "value": {
-                                  "isCeo": false,
-                                  "isSuperAdmin": false
-                                }
-                              }
-                            ],
+                            "args": null,
+                            "filters": null,
+                            "handle": "connection",
+                            "key": "tenderFormFragment_customers",
+                            "kind": "LinkedHandle",
+                            "name": "customers"
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
                             "concreteType": "UserConnection",
                             "kind": "LinkedField",
                             "name": "users",
@@ -247,14 +294,17 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v4/*: any*/),
+                                    "selections": [
+                                      (v3/*: any*/),
+                                      (v4/*: any*/)
+                                    ],
                                     "storageKey": null
                                   }
                                 ],
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": "users(where:{\"isCeo\":false,\"isSuperAdmin\":false})"
+                            "storageKey": null
                           },
                           {
                             "alias": null,
@@ -280,8 +330,8 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v2/*: any*/),
                                       (v3/*: any*/),
+                                      (v4/*: any*/),
                                       (v5/*: any*/),
                                       {
                                         "alias": null,
@@ -307,8 +357,8 @@ return {
                                                 "name": "node",
                                                 "plural": false,
                                                 "selections": [
-                                                  (v2/*: any*/),
                                                   (v3/*: any*/),
+                                                  (v4/*: any*/),
                                                   (v5/*: any*/),
                                                   (v6/*: any*/)
                                                 ],
@@ -343,19 +393,19 @@ return {
             "type": "User",
             "abstractKey": null
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "774e16654c715a06e5024453ec2a87eb",
+    "cacheID": "3fdf6cbd44131ccd564c45f4cffd0e46",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        users(where: {isCeo: false, isSuperAdmin: false}) {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

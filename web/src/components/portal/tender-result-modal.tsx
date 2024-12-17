@@ -131,9 +131,10 @@ function TenderResultModalContent({
       >
         <Form.Item
           className="mt-4"
-          label="竞标者"
+          label="竞争对手"
+          tooltip="失标后需要选择中标的竞争对手"
           name="competitorId"
-          rules={[{ required: true, message: "请选择竞标者" }]}
+          rules={[{ required: true, message: "请选择竞争对手" }]}
         >
           <Select
             options={

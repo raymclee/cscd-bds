@@ -6,14 +6,24 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      gridTemplateAreas: {
+        "project-large": ["left center right"],
+        "project-small": ["center center", "left right"],
+      },
+      gridTemplateColumns: {
+        "project-large": ["1fr", "1.8fr", "1fr"],
+        "project-small": ["1fr", "1fr"],
+      },
       fontFamily: {
         sans: [...defaultTheme.fontFamily.sans],
         mono: [...defaultTheme.fontFamily.mono],
+        title: ["Microsoft YaHei", ...defaultTheme.fontFamily.sans],
       },
       backgroundImage: {
         dashboard: "url('/src/assets/bg.png')",
         "dashboard-head": "url('/src/assets/head.png')",
         "dashboard-head-1": "url('/src/assets/head-1.png')",
+        "project-dashboard": "url('/src/assets/base.png')",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -77,5 +87,6 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/container-queries"),
+    require("@savvywombat/tailwindcss-grid-areas"),
   ],
 };

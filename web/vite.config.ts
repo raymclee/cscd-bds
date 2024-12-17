@@ -26,4 +26,7 @@ export default defineConfig(({ mode }) => ({
           },
         }
       : {},
+  build: {
+    assetsInlineLimit: Number.MAX_SAFE_INTEGER,
+  },
 }));

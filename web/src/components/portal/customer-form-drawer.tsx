@@ -13,7 +13,11 @@ import {
 import { CreateCustomerInput } from "~/graphql/graphql";
 import { useCreateCustomer } from "~/hooks/use-create-customer";
 import { useUpdateCustomer } from "~/hooks/use-update-customer";
-import { customerSizeOptions, industryOptions } from "~/lib/helper";
+import {
+  customerSizeOptions,
+  industryOptions,
+  ownerTypeOptions,
+} from "~/lib/helper";
 import { usePortalStore } from "~/store/portal";
 
 const CustomerFormDrawerQuery = graphql`
@@ -25,6 +29,14 @@ const CustomerFormDrawerQuery = graphql`
             node {
               id
               name
+              users {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
             }
           }
         }
@@ -100,6 +112,8 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         areaID: selectedCustomer.area?.id,
         industry: selectedCustomer.industry,
         size: selectedCustomer.size,
+        ownerType: selectedCustomer.ownerType,
+        salesID: selectedCustomer.sales?.id,
         contactPerson: selectedCustomer.contactPerson,
         contactPersonPosition: selectedCustomer.contactPersonPosition,
         contactPersonEmail: selectedCustomer.contactPersonEmail,
@@ -145,6 +159,10 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                     values.areaID,
                     "customersPageQuery_customers",
                   ),
+                  ConnectionHandler.getConnectionID(
+                    values.areaID,
+                    "tenderFormFragment_customers",
+                  ),
                 ],
               },
               onCompleted: () => {
@@ -164,6 +182,40 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         <Form.Item name="name" label="客户名称" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
+        <Form.Item
+          name="salesID"
+          label="客户所有人"
+          rules={[{ required: true }]}
+        >
+          <Select
+            options={data.node?.areas?.edges
+              ?.flatMap((a) => a?.node?.users.edges)
+              .map((u) => ({
+                label: u?.node?.name,
+                value: u?.node?.id,
+              }))}
+          />
+        </Form.Item>
+        <Form.Item
+          name="ownerType"
+          label="业主类型"
+          rules={[{ required: true }]}
+        >
+          <Select
+            options={ownerTypeOptions}
+            showSearch
+            optionFilterProp="label"
+          />
+        </Form.Item>
+
+        <Form.Item name="industry" label="行业" rules={[{ required: true }]}>
+          <Select
+            options={industryOptions}
+            showSearch
+            optionFilterProp="label"
+          />
+        </Form.Item>
+
         <Form.Item name="areaID" label="区域" rules={[{ required: true }]}>
           <Select
             options={data.node?.areas?.edges?.map((a) => ({
@@ -174,30 +226,28 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item name="industry" label="行业">
-          <Select
-            options={industryOptions}
-            showSearch
-            optionFilterProp="label"
-          />
-        </Form.Item>
-        <Form.Item name="size" label="规模">
+
+        <Form.Item name="size" label="规模" rules={[{ required: true }]}>
           <Select
             options={customerSizeOptions}
             showSearch
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item name="contactPerson" label="联系人">
+
+        <Form.Item name="contactPerson" label="对接人姓名">
           <Input />
         </Form.Item>
-        <Form.Item name="contactPersonPosition" label="联系人职位">
+
+        <Form.Item name="contactPersonPosition" label="对接人职位">
           <Input />
         </Form.Item>
-        <Form.Item name="contactPersonEmail" label="联系人邮箱">
+
+        <Form.Item name="contactPersonEmail" label="对接人邮箱">
           <Input />
         </Form.Item>
-        <Form.Item name="contactPersonPhone" label="联系人电话">
+
+        <Form.Item name="contactPersonPhone" label="联系电话">
           <Input />
         </Form.Item>
       </Form>

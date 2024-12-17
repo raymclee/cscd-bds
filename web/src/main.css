@@ -84,3 +84,38 @@
 .amap-marker-label {
   @apply cursor-pointer overflow-hidden rounded border-0 bg-gradient-to-r from-sky-900 to-sky-700 px-2.5 py-1 text-white transition-shadow hover:ring hover:ring-white;
 }
+
+/* .project-container {
+  display: grid;
+}
+
+@media (min-width: 1280px) {
+  .project-container {
+    display: grid;
+    grid-template-areas: "left center right";
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1.8fr 1fr;
+  }
+}
+
+@media (max-width: 1280px) {
+  .project-container {
+    grid-template-areas:
+      "center center"
+      "left right";
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.center-side {
+  order: 0;
+  grid-area: center;
+}
+
+.right-side {
+  grid-area: right;
+}
+
+.left-side {
+  grid-area: left;
+} */

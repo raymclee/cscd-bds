@@ -51,6 +51,7 @@ export function UserForm({
           .map((a) => a?.node?.id),
         disabled: selectedUser.disabled,
         isAdmin: selectedUser.isAdmin,
+        isSuperAdmin: selectedUser.isSuperAdmin,
         hasMapAccess: selectedUser.hasMapAccess,
         hasEditAccess: selectedUser.hasEditAccess,
         isCeo: selectedUser.isCeo,
@@ -124,7 +125,7 @@ export function UserForm({
         {!selectedUser ? (
           <Form.Item
             name="zhtUser"
-            label="中海通用戶"
+            label="中海通用户"
             rules={[{ required: true }]}
           >
             <SearchUserSelect />
@@ -134,7 +135,7 @@ export function UserForm({
             <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item name="email" label="電郵" rules={[{ required: true }]}>
+            <Form.Item name="email" label="邮箱" rules={[{ required: true }]}>
               <Input type="email" />
             </Form.Item>
             <Form.Item
@@ -181,10 +182,10 @@ export function UserForm({
         </Form.Item>
         {isSuperAdmin && (
           <>
-            <Form.Item name="isCeo" label="領導">
+            <Form.Item name="isCeo" label="领导">
               <Switch />
             </Form.Item>
-            <Form.Item name="isSuperAdmin" label="超級管理員">
+            <Form.Item name="isSuperAdmin" label="超级管理员">
               <Switch />
             </Form.Item>
           </>
@@ -193,7 +194,7 @@ export function UserForm({
           <Switch />
         </Form.Item>
       </Form>
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

@@ -1,5 +1,5 @@
 import { InboxOutlined } from "@ant-design/icons";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
 import {
@@ -30,14 +30,16 @@ import { TenderDetailFragment } from "./tender-detail";
 const { Dragger } = Upload;
 
 const fragment = graphql`
-  fragment tenderFormFragment on User {
+  fragment tenderFormFragment on User
+  @argumentDefinitions(first: { type: Int }, last: { type: Int }) {
     areas {
       edges {
         node {
           id
           name
           code
-          customers {
+          customers(first: $first, last: $last)
+            @connection(key: "tenderFormFragment_customers") {
             edges {
               node {
                 id
@@ -45,7 +47,7 @@ const fragment = graphql`
               }
             }
           }
-          users(where: { isCeo: false, isSuperAdmin: false }) {
+          users {
             edges {
               node {
                 id
@@ -105,6 +107,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
   const [form] = Form.useForm<CreateTenderInput>();
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
+  const { session } = useRouteContext({ from: "/_auth" });
 
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
@@ -287,7 +290,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
 
           commitCreateMutation({
             variables: {
-              input: { ...input, code: "" },
+              input: { ...input, code: "", createdByID: session.userId },
               connections,
               imageFileNames,
               attachmentFileNames,
@@ -418,7 +421,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
             <DatePicker className="w-full" />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             name="createdByID"
             label="创建人"
             rules={[{ required: true }]}
@@ -429,7 +432,7 @@ export function TenderForm({ queryRef, tenderRef }: TenderFormProps) {
               showSearch
               optionFilterProp="label"
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item name="followingSaleIDs" label="当前跟踪人">
             <Select

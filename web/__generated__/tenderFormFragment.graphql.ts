@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1f3a153f3da19617c07f9f172d9cf664>>
+ * @generated SignedSource<<986d2104674e95915ad6252e5e4d48ed>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -94,18 +94,14 @@ v1 = {
   "name": "name",
   "storageKey": null
 },
-v2 = [
-  (v0/*: any*/),
-  (v1/*: any*/)
-],
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "adcode",
   "storageKey": null
 },
-v4 = {
+v3 = {
   "alias": null,
   "args": null,
   "concreteType": "DistrictConnection",
@@ -131,7 +127,7 @@ v4 = {
           "selections": [
             (v0/*: any*/),
             (v1/*: any*/),
-            (v3/*: any*/)
+            (v2/*: any*/)
           ],
           "storageKey": null
         }
@@ -142,9 +138,29 @@ v4 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "first"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "last"
+    }
+  ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "bidirectional",
+        "path": null
+      }
+    ]
+  },
   "name": "tenderFormFragment",
   "selections": [
     {
@@ -181,11 +197,11 @@ return {
                   "storageKey": null
                 },
                 {
-                  "alias": null,
+                  "alias": "customers",
                   "args": null,
                   "concreteType": "CustomerConnection",
                   "kind": "LinkedField",
-                  "name": "customers",
+                  "name": "__tenderFormFragment_customers_connection",
                   "plural": false,
                   "selections": [
                     {
@@ -203,7 +219,63 @@ return {
                           "kind": "LinkedField",
                           "name": "node",
                           "plural": false,
-                          "selections": (v2/*: any*/),
+                          "selections": [
+                            (v0/*: any*/),
+                            (v1/*: any*/),
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "__typename",
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "cursor",
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "PageInfo",
+                      "kind": "LinkedField",
+                      "name": "pageInfo",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "endCursor",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "hasNextPage",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "hasPreviousPage",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "startCursor",
                           "storageKey": null
                         }
                       ],
@@ -214,16 +286,7 @@ return {
                 },
                 {
                   "alias": null,
-                  "args": [
-                    {
-                      "kind": "Literal",
-                      "name": "where",
-                      "value": {
-                        "isCeo": false,
-                        "isSuperAdmin": false
-                      }
-                    }
-                  ],
+                  "args": null,
                   "concreteType": "UserConnection",
                   "kind": "LinkedField",
                   "name": "users",
@@ -244,14 +307,17 @@ return {
                           "kind": "LinkedField",
                           "name": "node",
                           "plural": false,
-                          "selections": (v2/*: any*/),
+                          "selections": [
+                            (v0/*: any*/),
+                            (v1/*: any*/)
+                          ],
                           "storageKey": null
                         }
                       ],
                       "storageKey": null
                     }
                   ],
-                  "storageKey": "users(where:{\"isCeo\":false,\"isSuperAdmin\":false})"
+                  "storageKey": null
                 },
                 {
                   "alias": null,
@@ -279,7 +345,7 @@ return {
                           "selections": [
                             (v0/*: any*/),
                             (v1/*: any*/),
-                            (v3/*: any*/),
+                            (v2/*: any*/),
                             {
                               "alias": null,
                               "args": null,
@@ -306,8 +372,8 @@ return {
                                       "selections": [
                                         (v0/*: any*/),
                                         (v1/*: any*/),
-                                        (v3/*: any*/),
-                                        (v4/*: any*/)
+                                        (v2/*: any*/),
+                                        (v3/*: any*/)
                                       ],
                                       "storageKey": null
                                     }
@@ -317,7 +383,7 @@ return {
                               ],
                               "storageKey": null
                             },
-                            (v4/*: any*/)
+                            (v3/*: any*/)
                           ],
                           "storageKey": null
                         }
@@ -342,6 +408,6 @@ return {
 };
 })();
 
-(node as any).hash = "28c14c7b5902ba3f12f1f9d8df92ab33";
+(node as any).hash = "f8504142cc51a7476b835c9901ce02dd";
 
 export default node;

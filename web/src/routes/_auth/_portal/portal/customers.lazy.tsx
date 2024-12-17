@@ -94,7 +94,7 @@ function RouteComponent() {
     { dataIndex: ["area", "name"], title: "区域" },
     {
       dataIndex: "ownerType",
-      title: "所有者类型",
+      title: "业主类型",
       render: (value) => ownerTypeText(value),
     },
     {

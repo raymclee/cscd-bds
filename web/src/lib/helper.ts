@@ -24,6 +24,13 @@ export function ownerTypeText(typ: Maybe<number> | undefined): string {
   }
 }
 
+export const ownerTypeOptions = [
+  { label: "政府平台", value: 1 },
+  { label: "央企国企", value: 2 },
+  { label: "高科技企业", value: 3 },
+  { label: "其他企业", value: 4 },
+];
+
 export const tenderStatusOptions = [
   { label: "跟进中", value: 1 },
   { label: "停止跟进", value: 2 },

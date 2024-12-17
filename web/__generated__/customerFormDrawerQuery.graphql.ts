@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6674844db30898355049a686991b678c>>
+ * @generated SignedSource<<8771bea9c92d9f8dab3fc6f614b80a03>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,6 +19,14 @@ export type customerFormDrawerQuery$data = {
         readonly node: {
           readonly id: string;
           readonly name: string;
+          readonly users: {
+            readonly edges: ReadonlyArray<{
+              readonly node: {
+                readonly id: string;
+                readonly name: string;
+              } | null | undefined;
+            } | null | undefined> | null | undefined;
+          };
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
@@ -52,6 +60,13 @@ v2 = {
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
   "kind": "InlineFragment",
   "selections": [
     {
@@ -79,11 +94,40 @@ v3 = {
               "plural": false,
               "selections": [
                 (v2/*: any*/),
+                (v3/*: any*/),
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
+                  "concreteType": "UserConnection",
+                  "kind": "LinkedField",
+                  "name": "users",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "UserEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "User",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": [
+                            (v2/*: any*/),
+                            (v3/*: any*/)
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 }
               ],
@@ -114,7 +158,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v3/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
@@ -143,7 +187,7 @@ return {
             "name": "__typename",
             "storageKey": null
           },
-          (v3/*: any*/),
+          (v4/*: any*/),
           (v2/*: any*/)
         ],
         "storageKey": null
@@ -151,16 +195,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5195d050eba698e40fd9094e63b5d9b3",
+    "cacheID": "340be84531ae70093c117e8a5bcb0bba",
     "id": null,
     "metadata": {},
     "name": "customerFormDrawerQuery",
     "operationKind": "query",
-    "text": "query customerFormDrawerQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customerFormDrawerQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            users {\n              edges {\n                node {\n                  id\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5c9d62ee81d2abc545fccc9cc992c42c";
+(node as any).hash = "d837702f8db9f8fa96f2c0b2ff01f2c8";
 
 export default node;

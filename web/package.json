@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "dev": "concurrently 'pnpm:relay:watch' 'vite'",
+    "dev": "concurrently 'pnpm:relay:watch' 'pnpm:start'",
     "build": "vite build",
     "serve": "vite preview",
-    "start": "vite",
+    "start": "vite --host",
     "gen": "graphql-codegen --config codegen.ts",
     "relay": "relay-compiler",
     "relay:watch": "relay-compiler --watch"
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.15",
     "@graphql-codegen/cli": "^5.0.3",
+    "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tanstack/router-plugin": "^1.79.0",
     "@types/react": "^18.3.3",
