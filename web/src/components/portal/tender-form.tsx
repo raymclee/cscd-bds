@@ -620,20 +620,8 @@ export function TenderForm({
               )}
 
               <Form.Item
-                name="salesID"
-                label="商机所有人"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  options={salesOptions}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-
-              <Form.Item
                 name="finderID"
-                label="发现人"
+                label="商机所有人"
                 rules={[{ required: true }]}
               >
                 <Select
