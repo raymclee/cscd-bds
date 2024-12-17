@@ -5,10 +5,9 @@ import node, {
 } from "__generated__/customersDetailPageQuery.graphql";
 
 export const Route = createFileRoute("/_auth/_portal/portal/customers_/$id")({
-  loader({ context: { RelayEnvironment, session }, params: { id } }) {
+  loader({ context: { RelayEnvironment }, params: { id } }) {
     return loadQuery<customersDetailPageQuery>(RelayEnvironment, node, {
       id,
-      userId: session.userId,
       orderBy: { field: "DATE", direction: "DESC" },
     });
   },

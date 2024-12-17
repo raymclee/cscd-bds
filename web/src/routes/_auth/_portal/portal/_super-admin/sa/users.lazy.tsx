@@ -240,6 +240,7 @@ function RouteComponent() {
         // @ts-ignore
         columns={columns}
         rowKey={"id"}
+        scroll={{ x: 1000 }}
         pagination={{
           current: searchParams.page,
           onChange(page) {

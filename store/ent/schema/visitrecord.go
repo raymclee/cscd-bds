@@ -40,13 +40,9 @@ func (VisitRecord) Fields() []ent.Field {
 			),
 
 		field.String("tender_id").
-			GoType(xid.ID("")).
-			Optional().
-			Nillable(),
+			GoType(xid.ID("")),
 		field.String("customer_id").
-			GoType(xid.ID("")).
-			Optional().
-			Nillable(),
+			GoType(xid.ID("")),
 	}
 }
 
@@ -56,10 +52,12 @@ func (VisitRecord) Edges() []ent.Edge {
 		edge.From("tender", Tender.Type).
 			Field("tender_id").
 			Ref("visit_records").
+			Required().
 			Unique(),
 		edge.From("customer", Customer.Type).
 			Field("customer_id").
 			Ref("visit_records").
+			Required().
 			Unique(),
 		edge.From("followUpBys", User.Type).
 			Ref("visit_records").

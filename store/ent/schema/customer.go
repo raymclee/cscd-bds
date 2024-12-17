@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // Customer holds the schema definition for the Customer entity.
@@ -27,7 +28,6 @@ func (Customer) Mixin() []ent.Mixin {
 func (Customer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
-			Unique().
 			Annotations(
 				entgql.OrderField("NAME"),
 			),
@@ -95,6 +95,12 @@ func (Customer) Edges() []ent.Edge {
 			Annotations(
 				entgql.RelayConnection(),
 			),
+	}
+}
+
+func (Customer) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("name", "area_id").Unique(),
 	}
 }
 

@@ -82,7 +82,7 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "name", Type: field.TypeString, Unique: true},
+		{Name: "name", Type: field.TypeString},
 		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
 		{Name: "industry", Type: field.TypeInt, Nullable: true},
 		{Name: "size", Type: field.TypeInt, Nullable: true},
@@ -118,6 +118,13 @@ var (
 				Columns:    []*schema.Column{CustomersColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "customer_name_area_id",
+				Unique:  true,
+				Columns: []*schema.Column{CustomersColumns[3], CustomersColumns[12]},
 			},
 		},
 	}
@@ -223,6 +230,7 @@ var (
 		{Name: "address", Type: field.TypeString, Nullable: true},
 		{Name: "full_address", Type: field.TypeString, Nullable: true},
 		{Name: "contractor", Type: field.TypeString, Nullable: true},
+		{Name: "level_involved", Type: field.TypeInt, Nullable: true},
 		{Name: "size_and_value_rating", Type: field.TypeInt, Nullable: true},
 		{Name: "size_and_value_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "credit_and_payment_rating", Type: field.TypeInt, Nullable: true},
@@ -284,49 +292,49 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tenders_areas_tenders",
-				Columns:    []*schema.Column{TendersColumns[56]},
+				Columns:    []*schema.Column{TendersColumns[57]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_cities_tenders",
-				Columns:    []*schema.Column{TendersColumns[57]},
+				Columns:    []*schema.Column{TendersColumns[58]},
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_competitors_won_tenders",
-				Columns:    []*schema.Column{TendersColumns[58]},
+				Columns:    []*schema.Column{TendersColumns[59]},
 				RefColumns: []*schema.Column{CompetitorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_customers_tenders",
-				Columns:    []*schema.Column{TendersColumns[59]},
+				Columns:    []*schema.Column{TendersColumns[60]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
-				Columns:    []*schema.Column{TendersColumns[60]},
+				Columns:    []*schema.Column{TendersColumns[61]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
-				Columns:    []*schema.Column{TendersColumns[61]},
+				Columns:    []*schema.Column{TendersColumns[62]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_finder",
-				Columns:    []*schema.Column{TendersColumns[62]},
+				Columns:    []*schema.Column{TendersColumns[63]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
-				Columns:    []*schema.Column{TendersColumns[63]},
+				Columns:    []*schema.Column{TendersColumns[64]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -374,8 +382,8 @@ var (
 		{Name: "comm_content", Type: field.TypeString},
 		{Name: "next_step", Type: field.TypeString, Nullable: true},
 		{Name: "date", Type: field.TypeTime},
-		{Name: "customer_id", Type: field.TypeString, Nullable: true},
-		{Name: "tender_id", Type: field.TypeString, Nullable: true},
+		{Name: "customer_id", Type: field.TypeString},
+		{Name: "tender_id", Type: field.TypeString},
 	}
 	// VisitRecordsTable holds the schema information for the "visit_records" table.
 	VisitRecordsTable = &schema.Table{
@@ -387,13 +395,13 @@ var (
 				Symbol:     "visit_records_customers_visit_records",
 				Columns:    []*schema.Column{VisitRecordsColumns[8]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
-				OnDelete:   schema.SetNull,
+				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "visit_records_tenders_visit_records",
 				Columns:    []*schema.Column{VisitRecordsColumns[9]},
 				RefColumns: []*schema.Column{TendersColumns[0]},
-				OnDelete:   schema.SetNull,
+				OnDelete:   schema.NoAction,
 			},
 		},
 	}

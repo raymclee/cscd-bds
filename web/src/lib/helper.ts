@@ -103,6 +103,28 @@ export function getDistrictZoomLevel(id: string) {
   return zoom;
 }
 
+export function levelInvolvedText(level: Maybe<number> | undefined): string {
+  if (!level) {
+    return "";
+  }
+  switch (level) {
+    case 1:
+      return "区域";
+    case 2:
+      return "公司";
+    case 3:
+      return "集团";
+    default:
+      return "";
+  }
+}
+
+export const levelInvolvedOptions = [
+  { label: "区域", value: 1 },
+  { label: "公司", value: 2 },
+  { label: "集团", value: 3 },
+];
+
 export function visitTypeText(type: Maybe<number> | undefined): string {
   if (!type) {
     return "";

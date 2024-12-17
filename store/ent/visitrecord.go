@@ -35,9 +35,9 @@ type VisitRecord struct {
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
 	// TenderID holds the value of the "tender_id" field.
-	TenderID *xid.ID `json:"tender_id,omitempty"`
+	TenderID xid.ID `json:"tender_id,omitempty"`
 	// CustomerID holds the value of the "customer_id" field.
-	CustomerID *xid.ID `json:"customer_id,omitempty"`
+	CustomerID xid.ID `json:"customer_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the VisitRecordQuery when eager-loading is set.
 	Edges        VisitRecordEdges `json:"edges"`
@@ -97,15 +97,13 @@ func (*VisitRecord) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case visitrecord.FieldTenderID, visitrecord.FieldCustomerID:
-			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case visitrecord.FieldVisitType:
 			values[i] = new(sql.NullInt64)
 		case visitrecord.FieldCommPeople, visitrecord.FieldCommContent, visitrecord.FieldNextStep:
 			values[i] = new(sql.NullString)
 		case visitrecord.FieldCreatedAt, visitrecord.FieldUpdatedAt, visitrecord.FieldDate:
 			values[i] = new(sql.NullTime)
-		case visitrecord.FieldID:
+		case visitrecord.FieldID, visitrecord.FieldTenderID, visitrecord.FieldCustomerID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -172,18 +170,16 @@ func (vr *VisitRecord) assignValues(columns []string, values []any) error {
 				vr.Date = value.Time
 			}
 		case visitrecord.FieldTenderID:
-			if value, ok := values[i].(*sql.NullScanner); !ok {
+			if value, ok := values[i].(*xid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field tender_id", values[i])
-			} else if value.Valid {
-				vr.TenderID = new(xid.ID)
-				*vr.TenderID = *value.S.(*xid.ID)
+			} else if value != nil {
+				vr.TenderID = *value
 			}
 		case visitrecord.FieldCustomerID:
-			if value, ok := values[i].(*sql.NullScanner); !ok {
+			if value, ok := values[i].(*xid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field customer_id", values[i])
-			} else if value.Valid {
-				vr.CustomerID = new(xid.ID)
-				*vr.CustomerID = *value.S.(*xid.ID)
+			} else if value != nil {
+				vr.CustomerID = *value
 			}
 		default:
 			vr.selectValues.Set(columns[i], values[i])
@@ -259,15 +255,11 @@ func (vr *VisitRecord) String() string {
 	builder.WriteString("date=")
 	builder.WriteString(vr.Date.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := vr.TenderID; v != nil {
-		builder.WriteString("tender_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
+	builder.WriteString("tender_id=")
+	builder.WriteString(fmt.Sprintf("%v", vr.TenderID))
 	builder.WriteString(", ")
-	if v := vr.CustomerID; v != nil {
-		builder.WriteString("customer_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
+	builder.WriteString("customer_id=")
+	builder.WriteString(fmt.Sprintf("%v", vr.CustomerID))
 	builder.WriteByte(')')
 	return builder.String()
 }

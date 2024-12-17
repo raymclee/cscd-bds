@@ -524,16 +524,6 @@ func TenderIDHasSuffix(v xid.ID) predicate.VisitRecord {
 	return predicate.VisitRecord(sql.FieldHasSuffix(FieldTenderID, vc))
 }
 
-// TenderIDIsNil applies the IsNil predicate on the "tender_id" field.
-func TenderIDIsNil() predicate.VisitRecord {
-	return predicate.VisitRecord(sql.FieldIsNull(FieldTenderID))
-}
-
-// TenderIDNotNil applies the NotNil predicate on the "tender_id" field.
-func TenderIDNotNil() predicate.VisitRecord {
-	return predicate.VisitRecord(sql.FieldNotNull(FieldTenderID))
-}
-
 // TenderIDEqualFold applies the EqualFold predicate on the "tender_id" field.
 func TenderIDEqualFold(v xid.ID) predicate.VisitRecord {
 	vc := string(v)
@@ -602,16 +592,6 @@ func CustomerIDHasPrefix(v xid.ID) predicate.VisitRecord {
 func CustomerIDHasSuffix(v xid.ID) predicate.VisitRecord {
 	vc := string(v)
 	return predicate.VisitRecord(sql.FieldHasSuffix(FieldCustomerID, vc))
-}
-
-// CustomerIDIsNil applies the IsNil predicate on the "customer_id" field.
-func CustomerIDIsNil() predicate.VisitRecord {
-	return predicate.VisitRecord(sql.FieldIsNull(FieldCustomerID))
-}
-
-// CustomerIDNotNil applies the NotNil predicate on the "customer_id" field.
-func CustomerIDNotNil() predicate.VisitRecord {
-	return predicate.VisitRecord(sql.FieldNotNull(FieldCustomerID))
 }
 
 // CustomerIDEqualFold applies the EqualFold predicate on the "customer_id" field.

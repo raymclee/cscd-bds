@@ -144,15 +144,21 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	code := fmt.Sprintf("%s%s%03d", a.Code, date.Format("20060102"), n)
 	q.SetCode(code)
 
-	if a.Code == "GA" && input.Address != nil {
+	if input.Address != nil {
 
 		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get geo code: %w", err)
 		}
-		d, err := r.store.District.Query().Where(district.Adcode(adcode)).Only(ctx)
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			q.SetCity(d.Edges.City)
+		}
+		if d.Edges.Province != nil {
+			q.SetProvince(d.Edges.Province)
 		}
 		q.SetDistrict(d)
 		q.SetFullAddress(address)

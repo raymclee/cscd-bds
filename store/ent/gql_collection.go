@@ -2724,6 +2724,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldContractor)
 				fieldSeen[tender.FieldContractor] = struct{}{}
 			}
+		case "levelInvolved":
+			if _, ok := fieldSeen[tender.FieldLevelInvolved]; !ok {
+				selectedFields = append(selectedFields, tender.FieldLevelInvolved)
+				fieldSeen[tender.FieldLevelInvolved] = struct{}{}
+			}
 		case "sizeAndValueRating":
 			if _, ok := fieldSeen[tender.FieldSizeAndValueRating]; !ok {
 				selectedFields = append(selectedFields, tender.FieldSizeAndValueRating)

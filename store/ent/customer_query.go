@@ -747,12 +747,9 @@ func (cq *CustomerQuery) loadVisitRecords(ctx context.Context, query *VisitRecor
 	}
 	for _, n := range neighbors {
 		fk := n.CustomerID
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "customer_id" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "customer_id" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "customer_id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}

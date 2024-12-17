@@ -169,6 +169,7 @@ function RouteComponent() {
         // @ts-ignore
         columns={columns}
         rowKey={"id"}
+        scroll={{ x: 1000 }}
       />
     </>
   );

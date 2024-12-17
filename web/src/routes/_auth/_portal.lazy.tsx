@@ -126,91 +126,97 @@ function RouteComponent() {
   }
 
   return (
-    <ConfigProvider
-      locale={zhCN}
-      input={{ variant: "filled" }}
-      treeSelect={{ variant: "filled" }}
-      select={{ variant: "filled" }}
-      datePicker={{ variant: "filled" }}
-      textArea={{ variant: "filled" }}
-      inputNumber={{ variant: "filled" }}
-      // componentSize="large"
-    >
-      <App>
-        <Layout hasSider className="relative">
-          <Sider
-            className="fixed bottom-8 start-0 top-0"
-            breakpoint="lg"
-            collapsedWidth={70}
-            collapsible
-            collapsed={sidebarCollapsed}
-            onCollapse={(collapsed) =>
-              usePortalStore.setState({ sidebarCollapsed: collapsed })
-            }
-          >
-            <div className="m-4 flex h-10 items-center justify-center gap-2">
-              <img src={logoImg} alt="logo" className="h-full" />
-              {/* <span className="text-lg font-bold text-white">远东幕墙</span> */}
-            </div>
-            <Menu
-              theme="dark"
-              defaultSelectedKeys={[pathname]}
-              defaultOpenKeys={["admins"]}
-              mode="inline"
-              items={items}
-            />
-          </Sider>
-          <Layout
-            className={cn(
-              "transition-all",
-              sidebarCollapsed ? "ms-20" : "ms-[200px]",
-            )}
-          >
-            <Header className="flex items-center justify-between bg-white px-4">
-              <Typography.Title className="!mb-0" level={3}>
-                {pageTitle(pathname)}
-              </Typography.Title>
-              <div className="flex items-center gap-x-2">
-                {session.hasMapAccess && (
-                  <Tooltip title="大屏">
-                    <Link to="/" className="flex items-center justify-center">
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <ConfigProvider
+        locale={zhCN}
+        input={{ variant: "filled" }}
+        treeSelect={{ variant: "filled" }}
+        select={{ variant: "filled" }}
+        datePicker={{ variant: "filled" }}
+        textArea={{ variant: "filled" }}
+        inputNumber={{ variant: "filled" }}
+        // componentSize="large"
+      >
+        <App>
+          <Layout hasSider className="relative">
+            <Sider
+              className="fixed top-0 bottom-8 start-0"
+              breakpoint="lg"
+              collapsedWidth={70}
+              collapsible
+              collapsed={sidebarCollapsed}
+              onCollapse={(collapsed) =>
+                usePortalStore.setState({ sidebarCollapsed: collapsed })
+              }
+            >
+              <div className="flex items-center justify-center h-10 gap-2 m-4">
+                <img src={logoImg} alt="logo" className="h-full" />
+                {/* <span className="text-lg font-bold text-white">远东幕墙</span> */}
+              </div>
+              <Menu
+                theme="dark"
+                defaultSelectedKeys={[pathname]}
+                defaultOpenKeys={["admins"]}
+                mode="inline"
+                items={items}
+              />
+            </Sider>
+            <Layout
+              className={cn(
+                "transition-all",
+                sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
+              )}
+            >
+              <Header className="flex items-center justify-between px-4 bg-white">
+                <Typography.Title className="!mb-0" level={3}>
+                  {pageTitle(pathname)}
+                </Typography.Title>
+                <div className="flex items-center gap-x-2">
+                  {session.hasMapAccess && (
+                    <Tooltip title="大屏">
+                      <Link to="/" className="flex items-center justify-center">
+                        <Button
+                          shape="circle"
+                          icon={<Monitor size={16} />}
+                        ></Button>
+                      </Link>
+                    </Tooltip>
+                  )}
+                  <Tooltip title="退出">
+                    <Popconfirm
+                      title="确定退出吗？"
+                      onConfirm={() => {
+                        fetch("/api/v1/logout").then((res) => {
+                          if (res.redirected) {
+                            navigate({ to: "/logout" });
+                          }
+                        });
+                      }}
+                    >
                       <Button
                         shape="circle"
-                        icon={<Monitor size={16} />}
+                        icon={<LogOut size={16} />}
                       ></Button>
-                    </Link>
+                    </Popconfirm>
                   </Tooltip>
-                )}
-                <Tooltip title="退出">
-                  <Popconfirm
-                    title="确定退出吗？"
-                    onConfirm={() => {
-                      fetch("/api/v1/logout").then((res) => {
-                        if (res.redirected) {
-                          navigate({ to: "/logout" });
-                        }
-                      });
-                    }}
-                  >
-                    <Button shape="circle" icon={<LogOut size={16} />}></Button>
-                  </Popconfirm>
-                </Tooltip>
-                <Avatar src={session.avatarUrl} />
-              </div>
-            </Header>
-            <Content className="relative m-4 min-h-[calc(100vh-96px)]">
-              {/* <Breadcrumb className="my-4" items={[]} /> */}
-              {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
-              <ScrollRestoration />
-              <Outlet />
-              <TenderResultModal />
-              <CustomerFormDrawer />
-              {/* </div> */}
-            </Content>
+                  <Avatar src={session.avatarUrl} />
+                </div>
+              </Header>
+              <Content className="relative m-4 min-h-[calc(100vh-96px)]">
+                {/* <Breadcrumb className="my-4" items={[]} /> */}
+                {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
+                <ScrollRestoration />
+                <Outlet />
+                <TenderResultModal />
+                <CustomerFormDrawer />
+                {/* </div> */}
+              </Content>
+            </Layout>
           </Layout>
-        </Layout>
-      </App>
-    </ConfigProvider>
+        </App>
+      </ConfigProvider>{" "}
+    </>
   );
 }
 

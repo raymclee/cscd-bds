@@ -25,6 +25,7 @@ export const TenderDetailFragment = graphql`
     estimatedAmount
     tenderDate
     discoveryDate
+    address
     fullAddress
     contractor
     sizeAndValueRating
@@ -149,7 +150,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
   return (
     <div className="space-y-4">
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="p-6 bg-white rounded-lg"
         title={name}
         extra={
           canEdit(session, { tender }) && (
@@ -315,7 +316,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
   return (
     <div className="space-y-4">
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="p-6 bg-white rounded-lg"
         extra={
           canEdit(session, { tender }) && (
             <Space>
@@ -380,7 +381,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
       />
 
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="p-6 bg-white rounded-lg"
         title="得標資料"
         items={[
           {

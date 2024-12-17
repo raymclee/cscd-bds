@@ -753,6 +753,7 @@ export type CreateTenderInput = {
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
   /** 最後一次投標金額，只限港澳 */
   lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
+  levelInvolved?: InputMaybe<Scalars['Int']['input']>;
   managementCompany?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   ownerSituations?: InputMaybe<Scalars['String']['input']>;
@@ -818,11 +819,11 @@ export type CreateVisitRecordInput = {
   commContent: Scalars['String']['input'];
   commPeople: Scalars['String']['input'];
   createdAt?: InputMaybe<Scalars['Time']['input']>;
-  customerID?: InputMaybe<Scalars['ID']['input']>;
+  customerID: Scalars['ID']['input'];
   date: Scalars['Time']['input'];
   followupbyIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   nextStep?: InputMaybe<Scalars['String']['input']>;
-  tenderID?: InputMaybe<Scalars['ID']['input']>;
+  tenderID: Scalars['ID']['input'];
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   visitType?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1986,6 +1987,7 @@ export type Tender = Node & {
   keyProject: Scalars['Boolean']['output'];
   /** 最後一次投標金額，只限港澳 */
   lastTenderAmount?: Maybe<Scalars['Float']['output']>;
+  levelInvolved?: Maybe<Scalars['Int']['output']>;
   managementCompany?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   ownerSituations?: Maybe<Scalars['String']['output']>;
@@ -2594,6 +2596,17 @@ export type TenderWhereInput = {
   lastTenderAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
   lastTenderAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   lastTenderAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** level_involved field predicates */
+  levelInvolved?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedGT?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedGTE?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  levelInvolvedIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  levelInvolvedLT?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedLTE?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedNEQ?: InputMaybe<Scalars['Int']['input']>;
+  levelInvolvedNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  levelInvolvedNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** management_company field predicates */
   managementCompany?: InputMaybe<Scalars['String']['input']>;
   managementCompanyContains?: InputMaybe<Scalars['String']['input']>;
@@ -3124,6 +3137,7 @@ export type UpdateTenderInput = {
   clearFullAddress?: InputMaybe<Scalars['Boolean']['input']>;
   clearImages?: InputMaybe<Scalars['Boolean']['input']>;
   clearLastTenderAmount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearLevelInvolved?: InputMaybe<Scalars['Boolean']['input']>;
   clearManagementCompany?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerSituations?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectCode?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3177,6 +3191,7 @@ export type UpdateTenderInput = {
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
   /** 最後一次投標金額，只限港澳 */
   lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
+  levelInvolved?: InputMaybe<Scalars['Int']['input']>;
   managementCompany?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   ownerSituations?: InputMaybe<Scalars['String']['input']>;
@@ -3253,10 +3268,8 @@ export type UpdateUserInput = {
  */
 export type UpdateVisitRecordInput = {
   addFollowUpByIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  clearCustomer?: InputMaybe<Scalars['Boolean']['input']>;
   clearFollowUpBys?: InputMaybe<Scalars['Boolean']['input']>;
   clearNextStep?: InputMaybe<Scalars['Boolean']['input']>;
-  clearTender?: InputMaybe<Scalars['Boolean']['input']>;
   commContent?: InputMaybe<Scalars['String']['input']>;
   commPeople?: InputMaybe<Scalars['String']['input']>;
   customerID?: InputMaybe<Scalars['ID']['input']>;
@@ -3534,14 +3547,14 @@ export type VisitRecord = Node & {
   commContent: Scalars['String']['output'];
   commPeople: Scalars['String']['output'];
   createdAt: Scalars['Time']['output'];
-  customer?: Maybe<Customer>;
-  customerID?: Maybe<Scalars['ID']['output']>;
+  customer: Customer;
+  customerID: Scalars['ID']['output'];
   date: Scalars['Time']['output'];
   followupbys: UserConnection;
   id: Scalars['ID']['output'];
   nextStep?: Maybe<Scalars['String']['output']>;
-  tender?: Maybe<Tender>;
-  tenderID?: Maybe<Scalars['ID']['output']>;
+  tender: Tender;
+  tenderID: Scalars['ID']['output'];
   updatedAt: Scalars['Time']['output'];
   visitType: Scalars['Int']['output'];
 };
@@ -3643,12 +3656,10 @@ export type VisitRecordWhereInput = {
   customerIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   customerIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   customerIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customerIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   customerIDLT?: InputMaybe<Scalars['ID']['input']>;
   customerIDLTE?: InputMaybe<Scalars['ID']['input']>;
   customerIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   customerIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customerIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** date field predicates */
   date?: InputMaybe<Scalars['Time']['input']>;
   dateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -3704,12 +3715,10 @@ export type VisitRecordWhereInput = {
   tenderIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   tenderIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   tenderIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  tenderIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   tenderIDLT?: InputMaybe<Scalars['ID']['input']>;
   tenderIDLTE?: InputMaybe<Scalars['ID']['input']>;
   tenderIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   tenderIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  tenderIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** updated_at field predicates */
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   updatedAtGT?: InputMaybe<Scalars['Time']['input']>;
@@ -3761,7 +3770,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -3845,6 +3854,7 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
         }
       }
     }
+    isSuperAdmin
     isAdmin
     isCeo
     hasMapAccess

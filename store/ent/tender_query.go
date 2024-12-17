@@ -1114,12 +1114,9 @@ func (tq *TenderQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQ
 	}
 	for _, n := range neighbors {
 		fk := n.TenderID
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "tender_id" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "tender_id" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "tender_id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}

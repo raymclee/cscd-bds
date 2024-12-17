@@ -163,6 +163,20 @@ func (tc *TenderCreate) SetNillableContractor(s *string) *TenderCreate {
 	return tc
 }
 
+// SetLevelInvolved sets the "level_involved" field.
+func (tc *TenderCreate) SetLevelInvolved(i int) *TenderCreate {
+	tc.mutation.SetLevelInvolved(i)
+	return tc
+}
+
+// SetNillableLevelInvolved sets the "level_involved" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableLevelInvolved(i *int) *TenderCreate {
+	if i != nil {
+		tc.SetLevelInvolved(*i)
+	}
+	return tc
+}
+
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
 func (tc *TenderCreate) SetSizeAndValueRating(i int) *TenderCreate {
 	tc.mutation.SetSizeAndValueRating(i)
@@ -1000,6 +1014,11 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.DiscoveryDate(); !ok {
 		return &ValidationError{Name: "discovery_date", err: errors.New(`ent: missing required field "Tender.discovery_date"`)}
 	}
+	if v, ok := tc.mutation.LevelInvolved(); ok {
+		if err := tender.LevelInvolvedValidator(v); err != nil {
+			return &ValidationError{Name: "level_involved", err: fmt.Errorf(`ent: validator failed for field "Tender.level_involved": %w`, err)}
+		}
+	}
 	if v, ok := tc.mutation.SizeAndValueRating(); ok {
 		if err := tender.SizeAndValueRatingValidator(v); err != nil {
 			return &ValidationError{Name: "size_and_value_rating", err: fmt.Errorf(`ent: validator failed for field "Tender.size_and_value_rating": %w`, err)}
@@ -1128,6 +1147,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.Contractor(); ok {
 		_spec.SetField(tender.FieldContractor, field.TypeString, value)
 		_node.Contractor = &value
+	}
+	if value, ok := tc.mutation.LevelInvolved(); ok {
+		_spec.SetField(tender.FieldLevelInvolved, field.TypeInt, value)
+		_node.LevelInvolved = &value
 	}
 	if value, ok := tc.mutation.SizeAndValueRating(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt, value)
@@ -1684,6 +1707,30 @@ func (u *TenderUpsert) UpdateContractor() *TenderUpsert {
 // ClearContractor clears the value of the "contractor" field.
 func (u *TenderUpsert) ClearContractor() *TenderUpsert {
 	u.SetNull(tender.FieldContractor)
+	return u
+}
+
+// SetLevelInvolved sets the "level_involved" field.
+func (u *TenderUpsert) SetLevelInvolved(v int) *TenderUpsert {
+	u.Set(tender.FieldLevelInvolved, v)
+	return u
+}
+
+// UpdateLevelInvolved sets the "level_involved" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateLevelInvolved() *TenderUpsert {
+	u.SetExcluded(tender.FieldLevelInvolved)
+	return u
+}
+
+// AddLevelInvolved adds v to the "level_involved" field.
+func (u *TenderUpsert) AddLevelInvolved(v int) *TenderUpsert {
+	u.Add(tender.FieldLevelInvolved, v)
+	return u
+}
+
+// ClearLevelInvolved clears the value of the "level_involved" field.
+func (u *TenderUpsert) ClearLevelInvolved() *TenderUpsert {
+	u.SetNull(tender.FieldLevelInvolved)
 	return u
 }
 
@@ -2872,6 +2919,34 @@ func (u *TenderUpsertOne) UpdateContractor() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearContractor() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearContractor()
+	})
+}
+
+// SetLevelInvolved sets the "level_involved" field.
+func (u *TenderUpsertOne) SetLevelInvolved(v int) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetLevelInvolved(v)
+	})
+}
+
+// AddLevelInvolved adds v to the "level_involved" field.
+func (u *TenderUpsertOne) AddLevelInvolved(v int) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddLevelInvolved(v)
+	})
+}
+
+// UpdateLevelInvolved sets the "level_involved" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateLevelInvolved() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateLevelInvolved()
+	})
+}
+
+// ClearLevelInvolved clears the value of the "level_involved" field.
+func (u *TenderUpsertOne) ClearLevelInvolved() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearLevelInvolved()
 	})
 }
 
@@ -4385,6 +4460,34 @@ func (u *TenderUpsertBulk) UpdateContractor() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearContractor() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearContractor()
+	})
+}
+
+// SetLevelInvolved sets the "level_involved" field.
+func (u *TenderUpsertBulk) SetLevelInvolved(v int) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetLevelInvolved(v)
+	})
+}
+
+// AddLevelInvolved adds v to the "level_involved" field.
+func (u *TenderUpsertBulk) AddLevelInvolved(v int) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddLevelInvolved(v)
+	})
+}
+
+// UpdateLevelInvolved sets the "level_involved" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateLevelInvolved() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateLevelInvolved()
+	})
+}
+
+// ClearLevelInvolved clears the value of the "level_involved" field.
+func (u *TenderUpsertBulk) ClearLevelInvolved() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearLevelInvolved()
 	})
 }
 

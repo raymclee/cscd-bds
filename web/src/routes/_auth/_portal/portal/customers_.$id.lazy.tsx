@@ -18,59 +18,33 @@ function RouteComponent() {
   const data = usePreloadedQuery<customersDetailPageQuery>(
     graphql`
       query customersDetailPageQuery(
-        $userId: ID!
         $id: ID!
         $orderBy: VisitRecordOrder
         $first: Int
         $last: Int
       ) {
-        node(id: $userId) {
-          ... on User {
-            areas {
+        node(id: $id) {
+          ... on Customer {
+            id
+            sales {
+              id
+            }
+            tenders(first: $first, last: $last)
+              @connection(key: "customerTenderListFragment_tenders") {
               edges {
-                node {
-                  customers(where: { id: $id }) {
-                    edges {
-                      node {
-                        id
-                        sales {
-                          id
-                        }
-                        tenders(first: $first, last: $last)
-                          @connection(
-                            key: "customerTenderListFragment_tenders"
-                          ) {
-                          edges {
-                            __id
-                          }
-                        }
-                        visitRecords(
-                          first: $first
-                          last: $last
-                          orderBy: $orderBy
-                        )
-                          @connection(
-                            key: "customerVisitRecordListFragment_visitRecords"
-                          ) {
-                          edges {
-                            __id
-                          }
-                        }
-                        ...customerDetailFragment
-                        ...customerVisitRecordListFragment
-                          @arguments(
-                            first: $first
-                            last: $last
-                            orderBy: $orderBy
-                          )
-                        ...customerTenderListFragment
-                          @arguments(first: $first, last: $last)
-                      }
-                    }
-                  }
-                }
+                __id
               }
             }
+            visitRecords(first: $first, last: $last, orderBy: $orderBy)
+              @connection(key: "customerVisitRecordListFragment_visitRecords") {
+              edges {
+                __id
+              }
+            }
+            ...customerDetailFragment
+            ...customerVisitRecordListFragment
+              @arguments(first: $first, last: $last, orderBy: $orderBy)
+            ...customerTenderListFragment @arguments(first: $first, last: $last)
           }
         }
       }
@@ -78,9 +52,7 @@ function RouteComponent() {
     Route.useLoaderData(),
   );
   const [activeTab, setActiveTab] = React.useState("1");
-  const customer = data.node?.areas?.edges
-    ?.flatMap((a) => a?.node?.customers?.edges?.map((c) => c?.node))
-    ?.at(0);
+  const customer = data.node;
   const { session } = Route.useRouteContext();
 
   if (!customer) {
@@ -111,11 +83,11 @@ function RouteComponent() {
         tabList={[
           {
             key: "1",
-            tab: `项目列表 (${customer.tenders.edges?.length || 0})`,
+            tab: `项目列表 (${customer.tenders?.edges?.length || 0})`,
           },
           {
             key: "2",
-            tab: `拜访记录 (${customer.visitRecords.edges?.length || 0})`,
+            tab: `拜访记录 (${customer.visitRecords?.edges?.length || 0})`,
           },
         ]}
       >

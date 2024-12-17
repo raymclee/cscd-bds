@@ -1,8 +1,17 @@
 import { useRouteContext } from "@tanstack/react-router";
 import { customerFormDrawerQuery } from "__generated__/customerFormDrawerQuery.graphql";
 import { useUpdateCustomerMutation } from "__generated__/useUpdateCustomerMutation.graphql";
-import { App, Button, Drawer, Form, Input, Select, Space } from "antd";
-import { useEffect } from "react";
+import {
+  App,
+  Button,
+  Drawer,
+  Form,
+  FormItemProps,
+  Input,
+  Select,
+  Space,
+} from "antd";
+import { useEffect, useState } from "react";
 import {
   ConnectionHandler,
   graphql,
@@ -109,7 +118,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
     if (selectedCustomer?.id) {
       form.setFieldsValue({
         name: selectedCustomer.name,
-        areaID: selectedCustomer.area?.id,
+        areaID: selectedCustomer.area.id,
         industry: selectedCustomer.industry,
         size: selectedCustomer.size,
         ownerType: selectedCustomer.ownerType,
@@ -132,12 +141,10 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         disabled={isCreateCustomerInFlight || isUpdateCustomerInFlight}
         onFinish={(values) => {
           if (selectedCustomer?.id) {
-            const input =
-              values as useUpdateCustomerMutation["variables"]["input"];
             commitUpdateCustomer({
               variables: {
                 id: selectedCustomer.id,
-                input,
+                input: values,
               },
               onCompleted: () => {
                 message.destroy();
@@ -151,16 +158,21 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
               },
             });
           } else {
+            const { contactPersonPosition, ...rest } = values;
             commitCreateCustomer({
               variables: {
-                input: { ...values, createdByID: "" },
+                input: {
+                  ...rest,
+                  contactPersonPosition: contactPersonPosition?.at(0) ?? null,
+                  createdByID: "",
+                },
                 connections: [
                   ConnectionHandler.getConnectionID(
                     values.areaID,
                     "customersPageQuery_customers",
                   ),
                   ConnectionHandler.getConnectionID(
-                    values.areaID,
+                    "root",
                     "tenderFormFragment_customers",
                   ),
                 ],
@@ -235,24 +247,58 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           />
         </Form.Item>
 
-        <Form.Item name="contactPerson" label="对接人姓名">
+        <Form.Item
+          name="contactPerson"
+          label="对接人姓名"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item name="contactPersonPosition" label="对接人职位">
+        <Form.Item
+          name="contactPersonPosition"
+          label="对接人职位"
+          rules={[{ required: true }]}
+        >
+          <Select
+            mode="tags"
+            onChange={(value) => {
+              if (value?.length == 0) {
+                form.setFieldValue("contactPersonPosition", null);
+              } else if (value.at(1)) {
+                form.setFieldValue("contactPersonPosition", value.at(1));
+              }
+            }}
+            onDeselect={() => {
+              form.setFieldValue("contactPersonPosition", null);
+            }}
+            options={[
+              { label: "CEO", value: "CEO" },
+              { label: "CTO", value: "CTO" },
+              { label: "IT负责人", value: "IT负责人" },
+              { label: "人事负责人", value: "人事负责人" },
+              { label: "产品负责人", value: "产品负责人" },
+              { label: "运营负责人", value: "运营负责人" },
+              { label: "商务负责人", value: "商务负责人" },
+              { label: "业务员", value: "业务员" },
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="contactPersonPhone"
+          label="联系电话"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
 
         <Form.Item name="contactPersonEmail" label="对接人邮箱">
           <Input />
         </Form.Item>
-
-        <Form.Item name="contactPersonPhone" label="联系电话">
-          <Input />
-        </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button
@@ -266,5 +312,37 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Space>
       </div>
     </div>
+  );
+}
+
+function ContactPersonPositionSelect({ value, onChange }: any) {
+  const [selected, setSelected] = useState<string[]>(value ? [value] : []);
+  return (
+    <Select
+      mode="tags"
+      onChange={(value, options) => {
+        if (value?.length == 1) {
+          onChange?.(value.at(1));
+          setSelected(value);
+        } else if (value.at(1) && typeof value.at(1) !== "undefined") {
+          onChange?.(value.at(1) as string);
+          setSelected([value.at(1) as string]);
+        }
+      }}
+      onDeselect={() => {
+        setSelected([]);
+      }}
+      value={selected}
+      options={[
+        { label: "CEO", value: "CEO" },
+        { label: "CTO", value: "CTO" },
+        { label: "IT负责人", value: "IT负责人" },
+        { label: "人事负责人", value: "人事负责人" },
+        { label: "产品负责人", value: "产品负责人" },
+        { label: "运营负责人", value: "运营负责人" },
+        { label: "商务负责人", value: "商务负责人" },
+        { label: "业务员", value: "业务员" },
+      ]}
+    />
   );
 }

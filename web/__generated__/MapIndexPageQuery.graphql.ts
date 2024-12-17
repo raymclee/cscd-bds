@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a159bbcbd455b2d0980b0a0a07098dfa>>
+ * @generated SignedSource<<95eb122d3da2fd272f943992e1743512>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -117,7 +117,7 @@ export type MapIndexPageQuery$data = {
                       readonly commPeople: string;
                       readonly customer: {
                         readonly name: string;
-                      } | null | undefined;
+                      };
                       readonly date: any;
                       readonly nextStep: string | null | undefined;
                       readonly visitType: number;

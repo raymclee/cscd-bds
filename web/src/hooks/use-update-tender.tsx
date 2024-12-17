@@ -20,6 +20,10 @@ export function useUpdateTender() {
         removeAttachmentFileNames: $removeAttachmentFileNames
       ) {
         ...tenderDetailFragment
+        customer {
+          id
+          name
+        }
       }
     }
   `);

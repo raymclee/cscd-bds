@@ -512,10 +512,7 @@ func (vrq *VisitRecordQuery) loadTender(ctx context.Context, query *TenderQuery,
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*VisitRecord)
 	for i := range nodes {
-		if nodes[i].TenderID == nil {
-			continue
-		}
-		fk := *nodes[i].TenderID
+		fk := nodes[i].TenderID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -544,10 +541,7 @@ func (vrq *VisitRecordQuery) loadCustomer(ctx context.Context, query *CustomerQu
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*VisitRecord)
 	for i := range nodes {
-		if nodes[i].CustomerID == nil {
-			continue
-		}
-		fk := *nodes[i].CustomerID
+		fk := nodes[i].CustomerID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}

@@ -208,6 +208,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldAddress:                              {Type: field.TypeString, Column: tender.FieldAddress},
 			tender.FieldFullAddress:                          {Type: field.TypeString, Column: tender.FieldFullAddress},
 			tender.FieldContractor:                           {Type: field.TypeString, Column: tender.FieldContractor},
+			tender.FieldLevelInvolved:                        {Type: field.TypeInt, Column: tender.FieldLevelInvolved},
 			tender.FieldSizeAndValueRating:                   {Type: field.TypeInt, Column: tender.FieldSizeAndValueRating},
 			tender.FieldSizeAndValueRatingOverview:           {Type: field.TypeString, Column: tender.FieldSizeAndValueRatingOverview},
 			tender.FieldCreditAndPaymentRating:               {Type: field.TypeInt, Column: tender.FieldCreditAndPaymentRating},
@@ -1870,6 +1871,11 @@ func (f *TenderFilter) WhereFullAddress(p entql.StringP) {
 // WhereContractor applies the entql string predicate on the contractor field.
 func (f *TenderFilter) WhereContractor(p entql.StringP) {
 	f.Where(p.Field(tender.FieldContractor))
+}
+
+// WhereLevelInvolved applies the entql int predicate on the level_involved field.
+func (f *TenderFilter) WhereLevelInvolved(p entql.IntP) {
+	f.Where(p.Field(tender.FieldLevelInvolved))
 }
 
 // WhereSizeAndValueRating applies the entql int predicate on the size_and_value_rating field.

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0f29056d33d82f42ae8b5a0549829adb>>
+ * @generated SignedSource<<f05b761ad4c0490b9d06e44bcd6d211c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type tendersNewTenderPageQuery$data = {
   readonly node: {
     readonly " $fragmentSpreads": FragmentRefs<"tenderFormFragment">;
   } | null | undefined;
+  readonly " $fragmentSpreads": FragmentRefs<"tenderFormFragment_competitors">;
 };
 export type tendersNewTenderPageQuery = {
   response: tendersNewTenderPageQuery$data;
@@ -59,14 +60,18 @@ v4 = {
   "name": "name",
   "storageKey": null
 },
-v5 = {
+v5 = [
+  (v3/*: any*/),
+  (v4/*: any*/)
+],
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "adcode",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "concreteType": "DistrictConnection",
@@ -92,7 +97,7 @@ v6 = {
           "selections": [
             (v3/*: any*/),
             (v4/*: any*/),
-            (v5/*: any*/)
+            (v6/*: any*/)
           ],
           "storageKey": null
         }
@@ -124,6 +129,11 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "tenderFormFragment_competitors"
       }
     ],
     "type": "Query",
@@ -294,10 +304,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": [
-                                      (v3/*: any*/),
-                                      (v4/*: any*/)
-                                    ],
+                                    "selections": (v5/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -332,7 +339,7 @@ return {
                                     "selections": [
                                       (v3/*: any*/),
                                       (v4/*: any*/),
-                                      (v5/*: any*/),
+                                      (v6/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -359,8 +366,8 @@ return {
                                                 "selections": [
                                                   (v3/*: any*/),
                                                   (v4/*: any*/),
-                                                  (v5/*: any*/),
-                                                  (v6/*: any*/)
+                                                  (v6/*: any*/),
+                                                  (v7/*: any*/)
                                                 ],
                                                 "storageKey": null
                                               }
@@ -370,7 +377,7 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v6/*: any*/)
+                                      (v7/*: any*/)
                                     ],
                                     "storageKey": null
                                   }
@@ -396,20 +403,52 @@ return {
           (v3/*: any*/)
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "CompetitorConnection",
+        "kind": "LinkedField",
+        "name": "competitors",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "CompetitorEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Competitor",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": (v5/*: any*/),
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "3fdf6cbd44131ccd564c45f4cffd0e46",
+    "cacheID": "a42c84eb7051a5b56ef96aa0e26a2243",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b2a3b2fb1378fd70c8c2833f52a63217";
+(node as any).hash = "b6ce2d490f644ec267d53a10eb7fddc2";
 
 export default node;

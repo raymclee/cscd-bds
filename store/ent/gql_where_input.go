@@ -3963,6 +3963,18 @@ type TenderWhereInput struct {
 	ContractorEqualFold    *string  `json:"contractorEqualFold,omitempty"`
 	ContractorContainsFold *string  `json:"contractorContainsFold,omitempty"`
 
+	// "level_involved" field predicates.
+	LevelInvolved       *int  `json:"levelInvolved,omitempty"`
+	LevelInvolvedNEQ    *int  `json:"levelInvolvedNEQ,omitempty"`
+	LevelInvolvedIn     []int `json:"levelInvolvedIn,omitempty"`
+	LevelInvolvedNotIn  []int `json:"levelInvolvedNotIn,omitempty"`
+	LevelInvolvedGT     *int  `json:"levelInvolvedGT,omitempty"`
+	LevelInvolvedGTE    *int  `json:"levelInvolvedGTE,omitempty"`
+	LevelInvolvedLT     *int  `json:"levelInvolvedLT,omitempty"`
+	LevelInvolvedLTE    *int  `json:"levelInvolvedLTE,omitempty"`
+	LevelInvolvedIsNil  bool  `json:"levelInvolvedIsNil,omitempty"`
+	LevelInvolvedNotNil bool  `json:"levelInvolvedNotNil,omitempty"`
+
 	// "size_and_value_rating" field predicates.
 	SizeAndValueRating       *int  `json:"sizeAndValueRating,omitempty"`
 	SizeAndValueRatingNEQ    *int  `json:"sizeAndValueRatingNEQ,omitempty"`
@@ -5191,6 +5203,36 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.ContractorContainsFold != nil {
 		predicates = append(predicates, tender.ContractorContainsFold(*i.ContractorContainsFold))
+	}
+	if i.LevelInvolved != nil {
+		predicates = append(predicates, tender.LevelInvolvedEQ(*i.LevelInvolved))
+	}
+	if i.LevelInvolvedNEQ != nil {
+		predicates = append(predicates, tender.LevelInvolvedNEQ(*i.LevelInvolvedNEQ))
+	}
+	if len(i.LevelInvolvedIn) > 0 {
+		predicates = append(predicates, tender.LevelInvolvedIn(i.LevelInvolvedIn...))
+	}
+	if len(i.LevelInvolvedNotIn) > 0 {
+		predicates = append(predicates, tender.LevelInvolvedNotIn(i.LevelInvolvedNotIn...))
+	}
+	if i.LevelInvolvedGT != nil {
+		predicates = append(predicates, tender.LevelInvolvedGT(*i.LevelInvolvedGT))
+	}
+	if i.LevelInvolvedGTE != nil {
+		predicates = append(predicates, tender.LevelInvolvedGTE(*i.LevelInvolvedGTE))
+	}
+	if i.LevelInvolvedLT != nil {
+		predicates = append(predicates, tender.LevelInvolvedLT(*i.LevelInvolvedLT))
+	}
+	if i.LevelInvolvedLTE != nil {
+		predicates = append(predicates, tender.LevelInvolvedLTE(*i.LevelInvolvedLTE))
+	}
+	if i.LevelInvolvedIsNil {
+		predicates = append(predicates, tender.LevelInvolvedIsNil())
+	}
+	if i.LevelInvolvedNotNil {
+		predicates = append(predicates, tender.LevelInvolvedNotNil())
 	}
 	if i.SizeAndValueRating != nil {
 		predicates = append(predicates, tender.SizeAndValueRatingEQ(*i.SizeAndValueRating))
@@ -8115,8 +8157,6 @@ type VisitRecordWhereInput struct {
 	TenderIDContains     *xid.ID  `json:"tenderIDContains,omitempty"`
 	TenderIDHasPrefix    *xid.ID  `json:"tenderIDHasPrefix,omitempty"`
 	TenderIDHasSuffix    *xid.ID  `json:"tenderIDHasSuffix,omitempty"`
-	TenderIDIsNil        bool     `json:"tenderIDIsNil,omitempty"`
-	TenderIDNotNil       bool     `json:"tenderIDNotNil,omitempty"`
 	TenderIDEqualFold    *xid.ID  `json:"tenderIDEqualFold,omitempty"`
 	TenderIDContainsFold *xid.ID  `json:"tenderIDContainsFold,omitempty"`
 
@@ -8132,8 +8172,6 @@ type VisitRecordWhereInput struct {
 	CustomerIDContains     *xid.ID  `json:"customerIDContains,omitempty"`
 	CustomerIDHasPrefix    *xid.ID  `json:"customerIDHasPrefix,omitempty"`
 	CustomerIDHasSuffix    *xid.ID  `json:"customerIDHasSuffix,omitempty"`
-	CustomerIDIsNil        bool     `json:"customerIDIsNil,omitempty"`
-	CustomerIDNotNil       bool     `json:"customerIDNotNil,omitempty"`
 	CustomerIDEqualFold    *xid.ID  `json:"customerIDEqualFold,omitempty"`
 	CustomerIDContainsFold *xid.ID  `json:"customerIDContainsFold,omitempty"`
 
@@ -8497,12 +8535,6 @@ func (i *VisitRecordWhereInput) P() (predicate.VisitRecord, error) {
 	if i.TenderIDHasSuffix != nil {
 		predicates = append(predicates, visitrecord.TenderIDHasSuffix(*i.TenderIDHasSuffix))
 	}
-	if i.TenderIDIsNil {
-		predicates = append(predicates, visitrecord.TenderIDIsNil())
-	}
-	if i.TenderIDNotNil {
-		predicates = append(predicates, visitrecord.TenderIDNotNil())
-	}
 	if i.TenderIDEqualFold != nil {
 		predicates = append(predicates, visitrecord.TenderIDEqualFold(*i.TenderIDEqualFold))
 	}
@@ -8541,12 +8573,6 @@ func (i *VisitRecordWhereInput) P() (predicate.VisitRecord, error) {
 	}
 	if i.CustomerIDHasSuffix != nil {
 		predicates = append(predicates, visitrecord.CustomerIDHasSuffix(*i.CustomerIDHasSuffix))
-	}
-	if i.CustomerIDIsNil {
-		predicates = append(predicates, visitrecord.CustomerIDIsNil())
-	}
-	if i.CustomerIDNotNil {
-		predicates = append(predicates, visitrecord.CustomerIDNotNil())
 	}
 	if i.CustomerIDEqualFold != nil {
 		predicates = append(predicates, visitrecord.CustomerIDEqualFold(*i.CustomerIDEqualFold))

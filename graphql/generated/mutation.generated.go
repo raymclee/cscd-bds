@@ -1765,6 +1765,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_fullAddress(ctx, field)
 			case "contractor":
 				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "levelInvolved":
+				return ec.fieldContext_Tender_levelInvolved(ctx, field)
 			case "sizeAndValueRating":
 				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
 			case "sizeAndValueRatingOverview":
@@ -1970,6 +1972,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_fullAddress(ctx, field)
 			case "contractor":
 				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "levelInvolved":
+				return ec.fieldContext_Tender_levelInvolved(ctx, field)
 			case "sizeAndValueRating":
 				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
 			case "sizeAndValueRatingOverview":
@@ -2384,6 +2388,8 @@ func (ec *executionContext) fieldContext_Mutation_setTenderCompetitor(ctx contex
 				return ec.fieldContext_Tender_fullAddress(ctx, field)
 			case "contractor":
 				return ec.fieldContext_Tender_contractor(ctx, field)
+			case "levelInvolved":
+				return ec.fieldContext_Tender_levelInvolved(ctx, field)
 			case "sizeAndValueRating":
 				return ec.fieldContext_Tender_sizeAndValueRating(ctx, field)
 			case "sizeAndValueRatingOverview":

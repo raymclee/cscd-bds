@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5c34d6b9623aa30f0463265f907eb6f8>>
+ * @generated SignedSource<<5b847103494b9a5bdf31b669b7623187>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -52,6 +52,7 @@ export type UpdateTenderInput = {
   clearFullAddress?: boolean | null | undefined;
   clearImages?: boolean | null | undefined;
   clearLastTenderAmount?: boolean | null | undefined;
+  clearLevelInvolved?: boolean | null | undefined;
   clearManagementCompany?: boolean | null | undefined;
   clearOwnerSituations?: boolean | null | undefined;
   clearProjectCode?: boolean | null | undefined;
@@ -102,6 +103,7 @@ export type UpdateTenderInput = {
   images?: ReadonlyArray<string> | null | undefined;
   keyProject?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;
+  levelInvolved?: number | null | undefined;
   managementCompany?: string | null | undefined;
   name?: string | null | undefined;
   ownerSituations?: string | null | undefined;

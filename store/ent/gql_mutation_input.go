@@ -892,6 +892,7 @@ type CreateTenderInput struct {
 	Address                              *string
 	FullAddress                          *string
 	Contractor                           *string
+	LevelInvolved                        *int
 	SizeAndValueRating                   *int
 	SizeAndValueRatingOverview           *string
 	CreditAndPaymentRating               *int
@@ -974,6 +975,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.Contractor; v != nil {
 		m.SetContractor(*v)
+	}
+	if v := i.LevelInvolved; v != nil {
+		m.SetLevelInvolved(*v)
 	}
 	if v := i.SizeAndValueRating; v != nil {
 		m.SetSizeAndValueRating(*v)
@@ -1150,6 +1154,8 @@ type UpdateTenderInput struct {
 	FullAddress                               *string
 	ClearContractor                           bool
 	Contractor                                *string
+	ClearLevelInvolved                        bool
+	LevelInvolved                             *int
 	ClearSizeAndValueRating                   bool
 	SizeAndValueRating                        *int
 	ClearSizeAndValueRatingOverview           bool
@@ -1301,6 +1307,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.Contractor; v != nil {
 		m.SetContractor(*v)
+	}
+	if i.ClearLevelInvolved {
+		m.ClearLevelInvolved()
+	}
+	if v := i.LevelInvolved; v != nil {
+		m.SetLevelInvolved(*v)
 	}
 	if i.ClearSizeAndValueRating {
 		m.ClearSizeAndValueRating()
@@ -1862,8 +1874,8 @@ type CreateVisitRecordInput struct {
 	CommContent   string
 	NextStep      *string
 	Date          time.Time
-	TenderID      *xid.ID
-	CustomerID    *xid.ID
+	TenderID      xid.ID
+	CustomerID    xid.ID
 	FollowUpByIDs []xid.ID
 }
 
@@ -1884,12 +1896,8 @@ func (i *CreateVisitRecordInput) Mutate(m *VisitRecordMutation) {
 		m.SetNextStep(*v)
 	}
 	m.SetDate(i.Date)
-	if v := i.TenderID; v != nil {
-		m.SetTenderID(*v)
-	}
-	if v := i.CustomerID; v != nil {
-		m.SetCustomerID(*v)
-	}
+	m.SetTenderID(i.TenderID)
+	m.SetCustomerID(i.CustomerID)
 	if v := i.FollowUpByIDs; len(v) > 0 {
 		m.AddFollowUpByIDs(v...)
 	}
@@ -1910,9 +1918,7 @@ type UpdateVisitRecordInput struct {
 	ClearNextStep       bool
 	NextStep            *string
 	Date                *time.Time
-	ClearTender         bool
 	TenderID            *xid.ID
-	ClearCustomer       bool
 	CustomerID          *xid.ID
 	ClearFollowUpBys    bool
 	AddFollowUpByIDs    []xid.ID
@@ -1942,14 +1948,8 @@ func (i *UpdateVisitRecordInput) Mutate(m *VisitRecordMutation) {
 	if v := i.Date; v != nil {
 		m.SetDate(*v)
 	}
-	if i.ClearTender {
-		m.ClearTender()
-	}
 	if v := i.TenderID; v != nil {
 		m.SetTenderID(*v)
-	}
-	if i.ClearCustomer {
-		m.ClearCustomer()
 	}
 	if v := i.CustomerID; v != nil {
 		m.SetCustomerID(*v)

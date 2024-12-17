@@ -8,8 +8,7 @@ Content-Type: application/json
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=九龍灣啟成街3號&city=香港特别行政区
-
+GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=广州市海珠区阅江西路222号
 
 ###
 GET https://restapi.amap.com/v3/geocode/regeo?address=The Henderson Art Garden&key=28982eb1a6a3cd956e0e0614c2fb131b

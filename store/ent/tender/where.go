@@ -112,6 +112,11 @@ func Contractor(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldContractor, v))
 }
 
+// LevelInvolved applies equality check predicate on the "level_involved" field. It's identical to LevelInvolvedEQ.
+func LevelInvolved(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldLevelInvolved, v))
+}
+
 // SizeAndValueRating applies equality check predicate on the "size_and_value_rating" field. It's identical to SizeAndValueRatingEQ.
 func SizeAndValueRating(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldSizeAndValueRating, v))
@@ -970,6 +975,56 @@ func ContractorEqualFold(v string) predicate.Tender {
 // ContractorContainsFold applies the ContainsFold predicate on the "contractor" field.
 func ContractorContainsFold(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldContractor, v))
+}
+
+// LevelInvolvedEQ applies the EQ predicate on the "level_involved" field.
+func LevelInvolvedEQ(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldLevelInvolved, v))
+}
+
+// LevelInvolvedNEQ applies the NEQ predicate on the "level_involved" field.
+func LevelInvolvedNEQ(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldLevelInvolved, v))
+}
+
+// LevelInvolvedIn applies the In predicate on the "level_involved" field.
+func LevelInvolvedIn(vs ...int) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldLevelInvolved, vs...))
+}
+
+// LevelInvolvedNotIn applies the NotIn predicate on the "level_involved" field.
+func LevelInvolvedNotIn(vs ...int) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldLevelInvolved, vs...))
+}
+
+// LevelInvolvedGT applies the GT predicate on the "level_involved" field.
+func LevelInvolvedGT(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldLevelInvolved, v))
+}
+
+// LevelInvolvedGTE applies the GTE predicate on the "level_involved" field.
+func LevelInvolvedGTE(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldLevelInvolved, v))
+}
+
+// LevelInvolvedLT applies the LT predicate on the "level_involved" field.
+func LevelInvolvedLT(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldLevelInvolved, v))
+}
+
+// LevelInvolvedLTE applies the LTE predicate on the "level_involved" field.
+func LevelInvolvedLTE(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldLevelInvolved, v))
+}
+
+// LevelInvolvedIsNil applies the IsNil predicate on the "level_involved" field.
+func LevelInvolvedIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldLevelInvolved))
+}
+
+// LevelInvolvedNotNil applies the NotNil predicate on the "level_involved" field.
+func LevelInvolvedNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldLevelInvolved))
 }
 
 // SizeAndValueRatingEQ applies the EQ predicate on the "size_and_value_rating" field.

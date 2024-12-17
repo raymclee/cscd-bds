@@ -37,6 +37,8 @@ const (
 	FieldFullAddress = "full_address"
 	// FieldContractor holds the string denoting the contractor field in the database.
 	FieldContractor = "contractor"
+	// FieldLevelInvolved holds the string denoting the level_involved field in the database.
+	FieldLevelInvolved = "level_involved"
 	// FieldSizeAndValueRating holds the string denoting the size_and_value_rating field in the database.
 	FieldSizeAndValueRating = "size_and_value_rating"
 	// FieldSizeAndValueRatingOverview holds the string denoting the size_and_value_rating_overview field in the database.
@@ -247,6 +249,7 @@ var Columns = []string{
 	FieldAddress,
 	FieldFullAddress,
 	FieldContractor,
+	FieldLevelInvolved,
 	FieldSizeAndValueRating,
 	FieldSizeAndValueRatingOverview,
 	FieldCreditAndPaymentRating,
@@ -326,6 +329,8 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
+	// LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
+	LevelInvolvedValidator func(int) error
 	// SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
 	SizeAndValueRatingValidator func(int) error
 	// CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
@@ -405,6 +410,11 @@ func ByFullAddress(opts ...sql.OrderTermOption) OrderOption {
 // ByContractor orders the results by the contractor field.
 func ByContractor(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldContractor, opts...).ToFunc()
+}
+
+// ByLevelInvolved orders the results by the level_involved field.
+func ByLevelInvolved(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLevelInvolved, opts...).ToFunc()
 }
 
 // BySizeAndValueRating orders the results by the size_and_value_rating field.

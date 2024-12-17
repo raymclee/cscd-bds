@@ -54,12 +54,12 @@ func main() {
 	client = lark.NewClient(appId, appSecret)
 	s = store.NewStore()
 
-	fetchArea()
-	fetchSales()
+	// fetchArea()
+	// fetchSales()
 	fetchCustomer()
 	fetchTender()
 	fetchVisitRecord()
-	fetchCompetitor()
+	// fetchCompetitor()
 
 }
 
@@ -269,15 +269,13 @@ func fetchVisitRecord() {
 			}
 		}
 
-		// fmt.Println(commPeople, visitType, date, are, tend, content, nextStep, updatedAt, createdAt, users, cust)
-		q := s.VisitRecord.Create().SetCommContent(content).SetCommPeople(commPeople).SetVisitType(visitType).SetDate(date).SetNillableNextStep(nextStep).SetNillableUpdatedAt(updatedAt).SetNillableCreatedAt(createdAt)
+		if tend == nil || cust == nil {
+			continue
+		}
 
-		if tend != nil {
-			q.SetTender(tend)
-		}
-		if cust != nil {
-			q.SetCustomer(cust)
-		}
+		// fmt.Println(commPeople, visitType, date, are, tend, content, nextStep, updatedAt, createdAt, users, cust)
+		q := s.VisitRecord.Create().SetCommContent(content).SetCommPeople(commPeople).SetVisitType(visitType).SetDate(date).SetNillableNextStep(nextStep).SetNillableUpdatedAt(updatedAt).SetNillableCreatedAt(createdAt).SetTender(tend).SetCustomer(cust)
+
 		if len(users) > 0 {
 			q.AddFollowUpBys(users...)
 		}
@@ -1354,7 +1352,7 @@ func fetchCustomer() {
 		if updatedAt != nil {
 			q.SetUpdatedAt(*updatedAt)
 		}
-		if err := q.OnConflictColumns(customer.FieldName).UpdateNewValues().
+		if err := q.OnConflictColumns(customer.FieldName, customer.FieldAreaID).UpdateNewValues().
 			Exec(ctx); err != nil {
 			fmt.Println(err)
 		}

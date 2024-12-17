@@ -46,6 +46,8 @@ func (Tender) Fields() []ent.Field {
 		field.String("full_address").Optional().Nillable(),
 		field.String("contractor").Optional().Nillable(),
 
+		field.Int("level_involved").Optional().Nillable().Min(1).Max(5),
+
 		field.Int("size_and_value_rating").Optional().Nillable().Min(1).Max(5),
 		field.String("size_and_value_rating_overview").Optional().Nillable(),
 		field.Int("credit_and_payment_rating").Optional().Nillable().Min(1).Max(5),

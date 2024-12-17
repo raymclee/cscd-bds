@@ -215,6 +215,33 @@ func (tu *TenderUpdate) ClearContractor() *TenderUpdate {
 	return tu
 }
 
+// SetLevelInvolved sets the "level_involved" field.
+func (tu *TenderUpdate) SetLevelInvolved(i int) *TenderUpdate {
+	tu.mutation.ResetLevelInvolved()
+	tu.mutation.SetLevelInvolved(i)
+	return tu
+}
+
+// SetNillableLevelInvolved sets the "level_involved" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableLevelInvolved(i *int) *TenderUpdate {
+	if i != nil {
+		tu.SetLevelInvolved(*i)
+	}
+	return tu
+}
+
+// AddLevelInvolved adds i to the "level_involved" field.
+func (tu *TenderUpdate) AddLevelInvolved(i int) *TenderUpdate {
+	tu.mutation.AddLevelInvolved(i)
+	return tu
+}
+
+// ClearLevelInvolved clears the value of the "level_involved" field.
+func (tu *TenderUpdate) ClearLevelInvolved() *TenderUpdate {
+	tu.mutation.ClearLevelInvolved()
+	return tu
+}
+
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
 func (tu *TenderUpdate) SetSizeAndValueRating(i int) *TenderUpdate {
 	tu.mutation.ResetSizeAndValueRating()
@@ -1463,6 +1490,11 @@ func (tu *TenderUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tu *TenderUpdate) check() error {
+	if v, ok := tu.mutation.LevelInvolved(); ok {
+		if err := tender.LevelInvolvedValidator(v); err != nil {
+			return &ValidationError{Name: "level_involved", err: fmt.Errorf(`ent: validator failed for field "Tender.level_involved": %w`, err)}
+		}
+	}
 	if v, ok := tu.mutation.SizeAndValueRating(); ok {
 		if err := tender.SizeAndValueRatingValidator(v); err != nil {
 			return &ValidationError{Name: "size_and_value_rating", err: fmt.Errorf(`ent: validator failed for field "Tender.size_and_value_rating": %w`, err)}
@@ -1562,6 +1594,15 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.ContractorCleared() {
 		_spec.ClearField(tender.FieldContractor, field.TypeString)
+	}
+	if value, ok := tu.mutation.LevelInvolved(); ok {
+		_spec.SetField(tender.FieldLevelInvolved, field.TypeInt, value)
+	}
+	if value, ok := tu.mutation.AddedLevelInvolved(); ok {
+		_spec.AddField(tender.FieldLevelInvolved, field.TypeInt, value)
+	}
+	if tu.mutation.LevelInvolvedCleared() {
+		_spec.ClearField(tender.FieldLevelInvolved, field.TypeInt)
 	}
 	if value, ok := tu.mutation.SizeAndValueRating(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt, value)
@@ -2372,6 +2413,33 @@ func (tuo *TenderUpdateOne) SetNillableContractor(s *string) *TenderUpdateOne {
 // ClearContractor clears the value of the "contractor" field.
 func (tuo *TenderUpdateOne) ClearContractor() *TenderUpdateOne {
 	tuo.mutation.ClearContractor()
+	return tuo
+}
+
+// SetLevelInvolved sets the "level_involved" field.
+func (tuo *TenderUpdateOne) SetLevelInvolved(i int) *TenderUpdateOne {
+	tuo.mutation.ResetLevelInvolved()
+	tuo.mutation.SetLevelInvolved(i)
+	return tuo
+}
+
+// SetNillableLevelInvolved sets the "level_involved" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableLevelInvolved(i *int) *TenderUpdateOne {
+	if i != nil {
+		tuo.SetLevelInvolved(*i)
+	}
+	return tuo
+}
+
+// AddLevelInvolved adds i to the "level_involved" field.
+func (tuo *TenderUpdateOne) AddLevelInvolved(i int) *TenderUpdateOne {
+	tuo.mutation.AddLevelInvolved(i)
+	return tuo
+}
+
+// ClearLevelInvolved clears the value of the "level_involved" field.
+func (tuo *TenderUpdateOne) ClearLevelInvolved() *TenderUpdateOne {
+	tuo.mutation.ClearLevelInvolved()
 	return tuo
 }
 
@@ -3636,6 +3704,11 @@ func (tuo *TenderUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tuo *TenderUpdateOne) check() error {
+	if v, ok := tuo.mutation.LevelInvolved(); ok {
+		if err := tender.LevelInvolvedValidator(v); err != nil {
+			return &ValidationError{Name: "level_involved", err: fmt.Errorf(`ent: validator failed for field "Tender.level_involved": %w`, err)}
+		}
+	}
 	if v, ok := tuo.mutation.SizeAndValueRating(); ok {
 		if err := tender.SizeAndValueRatingValidator(v); err != nil {
 			return &ValidationError{Name: "size_and_value_rating", err: fmt.Errorf(`ent: validator failed for field "Tender.size_and_value_rating": %w`, err)}
@@ -3752,6 +3825,15 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.ContractorCleared() {
 		_spec.ClearField(tender.FieldContractor, field.TypeString)
+	}
+	if value, ok := tuo.mutation.LevelInvolved(); ok {
+		_spec.SetField(tender.FieldLevelInvolved, field.TypeInt, value)
+	}
+	if value, ok := tuo.mutation.AddedLevelInvolved(); ok {
+		_spec.AddField(tender.FieldLevelInvolved, field.TypeInt, value)
+	}
+	if tuo.mutation.LevelInvolvedCleared() {
+		_spec.ClearField(tender.FieldLevelInvolved, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.SizeAndValueRating(); ok {
 		_spec.SetField(tender.FieldSizeAndValueRating, field.TypeInt, value)

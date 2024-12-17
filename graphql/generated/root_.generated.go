@@ -365,6 +365,7 @@ type ComplexityRoot struct {
 		Images                               func(childComplexity int) int
 		KeyProject                           func(childComplexity int) int
 		LastTenderAmount                     func(childComplexity int) int
+		LevelInvolved                        func(childComplexity int) int
 		ManagementCompany                    func(childComplexity int) int
 		Name                                 func(childComplexity int) int
 		OwnerSituations                      func(childComplexity int) int
@@ -2281,6 +2282,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.LastTenderAmount(childComplexity), true
 
+	case "Tender.levelInvolved":
+		if e.complexity.Tender.LevelInvolved == nil {
+			break
+		}
+
+		return e.complexity.Tender.LevelInvolved(childComplexity), true
+
 	case "Tender.managementCompany":
 		if e.complexity.Tender.ManagementCompany == nil {
 			break
@@ -3950,6 +3958,7 @@ input CreateTenderInput {
   address: String
   fullAddress: String
   contractor: String
+  levelInvolved: Int
   sizeAndValueRating: Int
   sizeAndValueRatingOverview: String
   creditAndPaymentRating: Int
@@ -4064,8 +4073,8 @@ input CreateVisitRecordInput {
   commContent: String!
   nextStep: String
   date: Time!
-  tenderID: ID
-  customerID: ID
+  tenderID: ID!
+  customerID: ID!
   followupbyIDs: [ID!]
 }
 """
@@ -5571,6 +5580,7 @@ type Tender implements Node {
   address: String
   fullAddress: String
   contractor: String
+  levelInvolved: Int
   sizeAndValueRating: Int
   sizeAndValueRatingOverview: String
   creditAndPaymentRating: Int
@@ -5913,6 +5923,19 @@ input TenderWhereInput {
   contractorNotNil: Boolean
   contractorEqualFold: String
   contractorContainsFold: String
+  """
+  level_involved field predicates
+  """
+  levelInvolved: Int
+  levelInvolvedNEQ: Int
+  levelInvolvedIn: [Int!]
+  levelInvolvedNotIn: [Int!]
+  levelInvolvedGT: Int
+  levelInvolvedGTE: Int
+  levelInvolvedLT: Int
+  levelInvolvedLTE: Int
+  levelInvolvedIsNil: Boolean
+  levelInvolvedNotNil: Boolean
   """
   size_and_value_rating field predicates
   """
@@ -6901,6 +6924,8 @@ input UpdateTenderInput {
   clearFullAddress: Boolean
   contractor: String
   clearContractor: Boolean
+  levelInvolved: Int
+  clearLevelInvolved: Boolean
   sizeAndValueRating: Int
   clearSizeAndValueRating: Boolean
   sizeAndValueRatingOverview: String
@@ -7079,9 +7104,7 @@ input UpdateVisitRecordInput {
   clearNextStep: Boolean
   date: Time
   tenderID: ID
-  clearTender: Boolean
   customerID: ID
-  clearCustomer: Boolean
   addFollowUpByIDs: [ID!]
   removeFollowUpByIDs: [ID!]
   clearFollowUpBys: Boolean
@@ -7491,10 +7514,10 @@ type VisitRecord implements Node {
   commContent: String!
   nextStep: String
   date: Time!
-  tenderID: ID
-  customerID: ID
-  tender: Tender
-  customer: Customer
+  tenderID: ID!
+  customerID: ID!
+  tender: Tender!
+  customer: Customer!
   followupbys(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -7704,8 +7727,6 @@ input VisitRecordWhereInput {
   tenderIDContains: ID
   tenderIDHasPrefix: ID
   tenderIDHasSuffix: ID
-  tenderIDIsNil: Boolean
-  tenderIDNotNil: Boolean
   tenderIDEqualFold: ID
   tenderIDContainsFold: ID
   """
@@ -7722,8 +7743,6 @@ input VisitRecordWhereInput {
   customerIDContains: ID
   customerIDHasPrefix: ID
   customerIDHasSuffix: ID
-  customerIDIsNil: Boolean
-  customerIDNotNil: Boolean
   customerIDEqualFold: ID
   customerIDContainsFold: ID
   """

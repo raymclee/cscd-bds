@@ -7735,6 +7735,8 @@ type TenderMutation struct {
 	address                                 *string
 	full_address                            *string
 	contractor                              *string
+	level_involved                          *int
+	addlevel_involved                       *int
 	size_and_value_rating                   *int
 	addsize_and_value_rating                *int
 	size_and_value_rating_overview          *string
@@ -8421,6 +8423,76 @@ func (m *TenderMutation) ContractorCleared() bool {
 func (m *TenderMutation) ResetContractor() {
 	m.contractor = nil
 	delete(m.clearedFields, tender.FieldContractor)
+}
+
+// SetLevelInvolved sets the "level_involved" field.
+func (m *TenderMutation) SetLevelInvolved(i int) {
+	m.level_involved = &i
+	m.addlevel_involved = nil
+}
+
+// LevelInvolved returns the value of the "level_involved" field in the mutation.
+func (m *TenderMutation) LevelInvolved() (r int, exists bool) {
+	v := m.level_involved
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLevelInvolved returns the old "level_involved" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldLevelInvolved(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLevelInvolved is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLevelInvolved requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLevelInvolved: %w", err)
+	}
+	return oldValue.LevelInvolved, nil
+}
+
+// AddLevelInvolved adds i to the "level_involved" field.
+func (m *TenderMutation) AddLevelInvolved(i int) {
+	if m.addlevel_involved != nil {
+		*m.addlevel_involved += i
+	} else {
+		m.addlevel_involved = &i
+	}
+}
+
+// AddedLevelInvolved returns the value that was added to the "level_involved" field in this mutation.
+func (m *TenderMutation) AddedLevelInvolved() (r int, exists bool) {
+	v := m.addlevel_involved
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearLevelInvolved clears the value of the "level_involved" field.
+func (m *TenderMutation) ClearLevelInvolved() {
+	m.level_involved = nil
+	m.addlevel_involved = nil
+	m.clearedFields[tender.FieldLevelInvolved] = struct{}{}
+}
+
+// LevelInvolvedCleared returns if the "level_involved" field was cleared in this mutation.
+func (m *TenderMutation) LevelInvolvedCleared() bool {
+	_, ok := m.clearedFields[tender.FieldLevelInvolved]
+	return ok
+}
+
+// ResetLevelInvolved resets all changes to the "level_involved" field.
+func (m *TenderMutation) ResetLevelInvolved() {
+	m.level_involved = nil
+	m.addlevel_involved = nil
+	delete(m.clearedFields, tender.FieldLevelInvolved)
 }
 
 // SetSizeAndValueRating sets the "size_and_value_rating" field.
@@ -11459,7 +11531,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 63)
+	fields := make([]string, 0, 64)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -11492,6 +11564,9 @@ func (m *TenderMutation) Fields() []string {
 	}
 	if m.contractor != nil {
 		fields = append(fields, tender.FieldContractor)
+	}
+	if m.level_involved != nil {
+		fields = append(fields, tender.FieldLevelInvolved)
 	}
 	if m.size_and_value_rating != nil {
 		fields = append(fields, tender.FieldSizeAndValueRating)
@@ -11679,6 +11754,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.FullAddress()
 	case tender.FieldContractor:
 		return m.Contractor()
+	case tender.FieldLevelInvolved:
+		return m.LevelInvolved()
 	case tender.FieldSizeAndValueRating:
 		return m.SizeAndValueRating()
 	case tender.FieldSizeAndValueRatingOverview:
@@ -11814,6 +11891,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldFullAddress(ctx)
 	case tender.FieldContractor:
 		return m.OldContractor(ctx)
+	case tender.FieldLevelInvolved:
+		return m.OldLevelInvolved(ctx)
 	case tender.FieldSizeAndValueRating:
 		return m.OldSizeAndValueRating(ctx)
 	case tender.FieldSizeAndValueRatingOverview:
@@ -12003,6 +12082,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetContractor(v)
+		return nil
+	case tender.FieldLevelInvolved:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLevelInvolved(v)
 		return nil
 	case tender.FieldSizeAndValueRating:
 		v, ok := value.(int)
@@ -12382,6 +12468,9 @@ func (m *TenderMutation) AddedFields() []string {
 	if m.addestimated_amount != nil {
 		fields = append(fields, tender.FieldEstimatedAmount)
 	}
+	if m.addlevel_involved != nil {
+		fields = append(fields, tender.FieldLevelInvolved)
+	}
 	if m.addsize_and_value_rating != nil {
 		fields = append(fields, tender.FieldSizeAndValueRating)
 	}
@@ -12415,6 +12504,8 @@ func (m *TenderMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedStatus()
 	case tender.FieldEstimatedAmount:
 		return m.AddedEstimatedAmount()
+	case tender.FieldLevelInvolved:
+		return m.AddedLevelInvolved()
 	case tender.FieldSizeAndValueRating:
 		return m.AddedSizeAndValueRating()
 	case tender.FieldCreditAndPaymentRating:
@@ -12451,6 +12542,13 @@ func (m *TenderMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddEstimatedAmount(v)
+		return nil
+	case tender.FieldLevelInvolved:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevelInvolved(v)
 		return nil
 	case tender.FieldSizeAndValueRating:
 		v, ok := value.(int)
@@ -12523,6 +12621,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(tender.FieldContractor) {
 		fields = append(fields, tender.FieldContractor)
+	}
+	if m.FieldCleared(tender.FieldLevelInvolved) {
+		fields = append(fields, tender.FieldLevelInvolved)
 	}
 	if m.FieldCleared(tender.FieldSizeAndValueRating) {
 		fields = append(fields, tender.FieldSizeAndValueRating)
@@ -12693,6 +12794,9 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldContractor:
 		m.ClearContractor()
+		return nil
+	case tender.FieldLevelInvolved:
+		m.ClearLevelInvolved()
 		return nil
 	case tender.FieldSizeAndValueRating:
 		m.ClearSizeAndValueRating()
@@ -12875,6 +12979,9 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldContractor:
 		m.ResetContractor()
+		return nil
+	case tender.FieldLevelInvolved:
+		m.ResetLevelInvolved()
 		return nil
 	case tender.FieldSizeAndValueRating:
 		m.ResetSizeAndValueRating()
@@ -15288,7 +15395,7 @@ func (m *VisitRecordMutation) TenderID() (r xid.ID, exists bool) {
 // OldTenderID returns the old "tender_id" field's value of the VisitRecord entity.
 // If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v *xid.ID, err error) {
+func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldTenderID is only allowed on UpdateOne operations")
 	}
@@ -15302,22 +15409,9 @@ func (m *VisitRecordMutation) OldTenderID(ctx context.Context) (v *xid.ID, err e
 	return oldValue.TenderID, nil
 }
 
-// ClearTenderID clears the value of the "tender_id" field.
-func (m *VisitRecordMutation) ClearTenderID() {
-	m.tender = nil
-	m.clearedFields[visitrecord.FieldTenderID] = struct{}{}
-}
-
-// TenderIDCleared returns if the "tender_id" field was cleared in this mutation.
-func (m *VisitRecordMutation) TenderIDCleared() bool {
-	_, ok := m.clearedFields[visitrecord.FieldTenderID]
-	return ok
-}
-
 // ResetTenderID resets all changes to the "tender_id" field.
 func (m *VisitRecordMutation) ResetTenderID() {
 	m.tender = nil
-	delete(m.clearedFields, visitrecord.FieldTenderID)
 }
 
 // SetCustomerID sets the "customer_id" field.
@@ -15337,7 +15431,7 @@ func (m *VisitRecordMutation) CustomerID() (r xid.ID, exists bool) {
 // OldCustomerID returns the old "customer_id" field's value of the VisitRecord entity.
 // If the VisitRecord object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VisitRecordMutation) OldCustomerID(ctx context.Context) (v *xid.ID, err error) {
+func (m *VisitRecordMutation) OldCustomerID(ctx context.Context) (v xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCustomerID is only allowed on UpdateOne operations")
 	}
@@ -15351,22 +15445,9 @@ func (m *VisitRecordMutation) OldCustomerID(ctx context.Context) (v *xid.ID, err
 	return oldValue.CustomerID, nil
 }
 
-// ClearCustomerID clears the value of the "customer_id" field.
-func (m *VisitRecordMutation) ClearCustomerID() {
-	m.customer = nil
-	m.clearedFields[visitrecord.FieldCustomerID] = struct{}{}
-}
-
-// CustomerIDCleared returns if the "customer_id" field was cleared in this mutation.
-func (m *VisitRecordMutation) CustomerIDCleared() bool {
-	_, ok := m.clearedFields[visitrecord.FieldCustomerID]
-	return ok
-}
-
 // ResetCustomerID resets all changes to the "customer_id" field.
 func (m *VisitRecordMutation) ResetCustomerID() {
 	m.customer = nil
-	delete(m.clearedFields, visitrecord.FieldCustomerID)
 }
 
 // ClearTender clears the "tender" edge to the Tender entity.
@@ -15377,7 +15458,7 @@ func (m *VisitRecordMutation) ClearTender() {
 
 // TenderCleared reports if the "tender" edge to the Tender entity was cleared.
 func (m *VisitRecordMutation) TenderCleared() bool {
-	return m.TenderIDCleared() || m.clearedtender
+	return m.clearedtender
 }
 
 // TenderIDs returns the "tender" edge IDs in the mutation.
@@ -15404,7 +15485,7 @@ func (m *VisitRecordMutation) ClearCustomer() {
 
 // CustomerCleared reports if the "customer" edge to the Customer entity was cleared.
 func (m *VisitRecordMutation) CustomerCleared() bool {
-	return m.CustomerIDCleared() || m.clearedcustomer
+	return m.clearedcustomer
 }
 
 // CustomerIDs returns the "customer" edge IDs in the mutation.
@@ -15712,12 +15793,6 @@ func (m *VisitRecordMutation) ClearedFields() []string {
 	if m.FieldCleared(visitrecord.FieldNextStep) {
 		fields = append(fields, visitrecord.FieldNextStep)
 	}
-	if m.FieldCleared(visitrecord.FieldTenderID) {
-		fields = append(fields, visitrecord.FieldTenderID)
-	}
-	if m.FieldCleared(visitrecord.FieldCustomerID) {
-		fields = append(fields, visitrecord.FieldCustomerID)
-	}
 	return fields
 }
 
@@ -15734,12 +15809,6 @@ func (m *VisitRecordMutation) ClearField(name string) error {
 	switch name {
 	case visitrecord.FieldNextStep:
 		m.ClearNextStep()
-		return nil
-	case visitrecord.FieldTenderID:
-		m.ClearTenderID()
-		return nil
-	case visitrecord.FieldCustomerID:
-		m.ClearCustomerID()
 		return nil
 	}
 	return fmt.Errorf("unknown VisitRecord nullable field %s", name)

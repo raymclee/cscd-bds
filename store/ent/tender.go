@@ -49,6 +49,8 @@ type Tender struct {
 	FullAddress *string `json:"full_address,omitempty"`
 	// Contractor holds the value of the "contractor" field.
 	Contractor *string `json:"contractor,omitempty"`
+	// LevelInvolved holds the value of the "level_involved" field.
+	LevelInvolved *int `json:"level_involved,omitempty"`
 	// SizeAndValueRating holds the value of the "size_and_value_rating" field.
 	SizeAndValueRating *int `json:"size_and_value_rating,omitempty"`
 	// SizeAndValueRatingOverview holds the value of the "size_and_value_rating_overview" field.
@@ -312,7 +314,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case tender.FieldEstimatedAmount, tender.FieldTenderWinAmount, tender.FieldLastTenderAmount:
 			values[i] = new(sql.NullFloat64)
-		case tender.FieldStatus, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
+		case tender.FieldStatus, tender.FieldLevelInvolved, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
 		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
 			values[i] = new(sql.NullString)
@@ -409,6 +411,13 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.Contractor = new(string)
 				*t.Contractor = value.String
+			}
+		case tender.FieldLevelInvolved:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field level_involved", values[i])
+			} else if value.Valid {
+				t.LevelInvolved = new(int)
+				*t.LevelInvolved = int(value.Int64)
 			}
 		case tender.FieldSizeAndValueRating:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -885,6 +894,11 @@ func (t *Tender) String() string {
 	if v := t.Contractor; v != nil {
 		builder.WriteString("contractor=")
 		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := t.LevelInvolved; v != nil {
+		builder.WriteString("level_involved=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := t.SizeAndValueRating; v != nil {

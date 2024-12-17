@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1ee34350d241cef5d416045e33338a9a>>
+ * @generated SignedSource<<4456f9c7d4fbb0bf6b5e722f49227a4e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,7 @@
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type tenderDetailFragment$data = {
+  readonly address: string | null | undefined;
   readonly architect: string | null | undefined;
   readonly area: {
     readonly code: string;
@@ -175,6 +176,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "discoveryDate",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "address",
       "storageKey": null
     },
     {
@@ -588,6 +596,6 @@ return {
 };
 })();
 
-(node as any).hash = "8bf876a0c20b739df5d6b1ed41b2e1f6";
+(node as any).hash = "27fb40fc8a51a568e1fb51d4be1a2a23";
 
 export default node;

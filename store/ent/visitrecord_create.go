@@ -107,25 +107,9 @@ func (vrc *VisitRecordCreate) SetTenderID(x xid.ID) *VisitRecordCreate {
 	return vrc
 }
 
-// SetNillableTenderID sets the "tender_id" field if the given value is not nil.
-func (vrc *VisitRecordCreate) SetNillableTenderID(x *xid.ID) *VisitRecordCreate {
-	if x != nil {
-		vrc.SetTenderID(*x)
-	}
-	return vrc
-}
-
 // SetCustomerID sets the "customer_id" field.
 func (vrc *VisitRecordCreate) SetCustomerID(x xid.ID) *VisitRecordCreate {
 	vrc.mutation.SetCustomerID(x)
-	return vrc
-}
-
-// SetNillableCustomerID sets the "customer_id" field if the given value is not nil.
-func (vrc *VisitRecordCreate) SetNillableCustomerID(x *xid.ID) *VisitRecordCreate {
-	if x != nil {
-		vrc.SetCustomerID(*x)
-	}
 	return vrc
 }
 
@@ -251,6 +235,18 @@ func (vrc *VisitRecordCreate) check() error {
 	if _, ok := vrc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "VisitRecord.date"`)}
 	}
+	if _, ok := vrc.mutation.TenderID(); !ok {
+		return &ValidationError{Name: "tender_id", err: errors.New(`ent: missing required field "VisitRecord.tender_id"`)}
+	}
+	if _, ok := vrc.mutation.CustomerID(); !ok {
+		return &ValidationError{Name: "customer_id", err: errors.New(`ent: missing required field "VisitRecord.customer_id"`)}
+	}
+	if len(vrc.mutation.TenderIDs()) == 0 {
+		return &ValidationError{Name: "tender", err: errors.New(`ent: missing required edge "VisitRecord.tender"`)}
+	}
+	if len(vrc.mutation.CustomerIDs()) == 0 {
+		return &ValidationError{Name: "customer", err: errors.New(`ent: missing required edge "VisitRecord.customer"`)}
+	}
 	return nil
 }
 
@@ -329,7 +325,7 @@ func (vrc *VisitRecordCreate) createSpec() (*VisitRecord, *sqlgraph.CreateSpec) 
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.TenderID = &nodes[0]
+		_node.TenderID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := vrc.mutation.CustomerIDs(); len(nodes) > 0 {
@@ -346,7 +342,7 @@ func (vrc *VisitRecordCreate) createSpec() (*VisitRecord, *sqlgraph.CreateSpec) 
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.CustomerID = &nodes[0]
+		_node.CustomerID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := vrc.mutation.FollowUpBysIDs(); len(nodes) > 0 {
@@ -513,12 +509,6 @@ func (u *VisitRecordUpsert) UpdateTenderID() *VisitRecordUpsert {
 	return u
 }
 
-// ClearTenderID clears the value of the "tender_id" field.
-func (u *VisitRecordUpsert) ClearTenderID() *VisitRecordUpsert {
-	u.SetNull(visitrecord.FieldTenderID)
-	return u
-}
-
 // SetCustomerID sets the "customer_id" field.
 func (u *VisitRecordUpsert) SetCustomerID(v xid.ID) *VisitRecordUpsert {
 	u.Set(visitrecord.FieldCustomerID, v)
@@ -528,12 +518,6 @@ func (u *VisitRecordUpsert) SetCustomerID(v xid.ID) *VisitRecordUpsert {
 // UpdateCustomerID sets the "customer_id" field to the value that was provided on create.
 func (u *VisitRecordUpsert) UpdateCustomerID() *VisitRecordUpsert {
 	u.SetExcluded(visitrecord.FieldCustomerID)
-	return u
-}
-
-// ClearCustomerID clears the value of the "customer_id" field.
-func (u *VisitRecordUpsert) ClearCustomerID() *VisitRecordUpsert {
-	u.SetNull(visitrecord.FieldCustomerID)
 	return u
 }
 
@@ -700,13 +684,6 @@ func (u *VisitRecordUpsertOne) UpdateTenderID() *VisitRecordUpsertOne {
 	})
 }
 
-// ClearTenderID clears the value of the "tender_id" field.
-func (u *VisitRecordUpsertOne) ClearTenderID() *VisitRecordUpsertOne {
-	return u.Update(func(s *VisitRecordUpsert) {
-		s.ClearTenderID()
-	})
-}
-
 // SetCustomerID sets the "customer_id" field.
 func (u *VisitRecordUpsertOne) SetCustomerID(v xid.ID) *VisitRecordUpsertOne {
 	return u.Update(func(s *VisitRecordUpsert) {
@@ -718,13 +695,6 @@ func (u *VisitRecordUpsertOne) SetCustomerID(v xid.ID) *VisitRecordUpsertOne {
 func (u *VisitRecordUpsertOne) UpdateCustomerID() *VisitRecordUpsertOne {
 	return u.Update(func(s *VisitRecordUpsert) {
 		s.UpdateCustomerID()
-	})
-}
-
-// ClearCustomerID clears the value of the "customer_id" field.
-func (u *VisitRecordUpsertOne) ClearCustomerID() *VisitRecordUpsertOne {
-	return u.Update(func(s *VisitRecordUpsert) {
-		s.ClearCustomerID()
 	})
 }
 
@@ -1058,13 +1028,6 @@ func (u *VisitRecordUpsertBulk) UpdateTenderID() *VisitRecordUpsertBulk {
 	})
 }
 
-// ClearTenderID clears the value of the "tender_id" field.
-func (u *VisitRecordUpsertBulk) ClearTenderID() *VisitRecordUpsertBulk {
-	return u.Update(func(s *VisitRecordUpsert) {
-		s.ClearTenderID()
-	})
-}
-
 // SetCustomerID sets the "customer_id" field.
 func (u *VisitRecordUpsertBulk) SetCustomerID(v xid.ID) *VisitRecordUpsertBulk {
 	return u.Update(func(s *VisitRecordUpsert) {
@@ -1076,13 +1039,6 @@ func (u *VisitRecordUpsertBulk) SetCustomerID(v xid.ID) *VisitRecordUpsertBulk {
 func (u *VisitRecordUpsertBulk) UpdateCustomerID() *VisitRecordUpsertBulk {
 	return u.Update(func(s *VisitRecordUpsert) {
 		s.UpdateCustomerID()
-	})
-}
-
-// ClearCustomerID clears the value of the "customer_id" field.
-func (u *VisitRecordUpsertBulk) ClearCustomerID() *VisitRecordUpsertBulk {
-	return u.Update(func(s *VisitRecordUpsert) {
-		s.ClearCustomerID()
 	})
 }
 
