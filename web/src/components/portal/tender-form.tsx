@@ -507,7 +507,7 @@ export function TenderForm({
                 name="address"
                 label="详细地址"
                 rules={[{ required: true }]}
-                className="col-span-2"
+                className="md:col-span-2"
               >
                 <Input />
               </Form.Item>
@@ -698,7 +698,7 @@ export function TenderForm({
                 name="address"
                 label="详细地址"
                 rules={[{ required: true }]}
-                className="md:col-span-2"
+                className="md:col-span-3"
               >
                 <Input />
               </Form.Item>

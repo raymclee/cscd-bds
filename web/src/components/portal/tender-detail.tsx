@@ -160,7 +160,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                   编辑
                 </Button>
               </Link>
-              <Button
+              {/* <Button
                 type="primary"
                 icon={<ListTodo size={16} />}
                 onClick={() => {
@@ -168,7 +168,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                 }}
               >
                 结果
-              </Button>
+              </Button> */}
             </Space>
           )
         }

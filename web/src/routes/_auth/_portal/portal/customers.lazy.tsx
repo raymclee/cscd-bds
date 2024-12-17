@@ -39,6 +39,20 @@ const query = graphql`
                       code
                       name
                     }
+                    tenders {
+                      edges {
+                        node {
+                          id
+                        }
+                      }
+                    }
+                    visitRecords {
+                      edges {
+                        node {
+                          id
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -106,6 +120,16 @@ function RouteComponent() {
       dataIndex: "size",
       title: "规模",
       render: (value) => customerSizeText(value),
+    },
+    {
+      dataIndex: "tenders",
+      title: "商机数",
+      render: (value, record) => record.tenders?.edges?.length,
+    },
+    {
+      dataIndex: "visitRecords",
+      title: "拜访数",
+      render: (value, record) => record.visitRecords?.edges?.length,
     },
     {
       dataIndex: "updatedAt",

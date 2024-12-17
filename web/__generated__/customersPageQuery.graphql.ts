@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c5d4465281ea16591a90617aa549fcff>>
+ * @generated SignedSource<<165611ebc78787048dd80f96b82d3470>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -33,7 +33,21 @@ export type customersPageQuery$data = {
                 readonly name: string;
                 readonly ownerType: number | null | undefined;
                 readonly size: number | null | undefined;
+                readonly tenders: {
+                  readonly edges: ReadonlyArray<{
+                    readonly node: {
+                      readonly id: string;
+                    } | null | undefined;
+                  } | null | undefined> | null | undefined;
+                };
                 readonly updatedAt: any;
+                readonly visitRecords: {
+                  readonly edges: ReadonlyArray<{
+                    readonly node: {
+                      readonly id: string;
+                    } | null | undefined;
+                  } | null | undefined> | null | undefined;
+                };
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };
@@ -92,14 +106,17 @@ v6 = {
   "name": "id",
   "storageKey": null
 },
-v7 = {
+v7 = [
+  (v6/*: any*/)
+],
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v8 = [
+v9 = [
   {
     "alias": null,
     "args": null,
@@ -160,7 +177,71 @@ v8 = [
             ],
             "storageKey": null
           },
-          (v7/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "TenderConnection",
+            "kind": "LinkedField",
+            "name": "tenders",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "TenderEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Tender",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": (v7/*: any*/),
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "VisitRecordConnection",
+            "kind": "LinkedField",
+            "name": "visitRecords",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "VisitRecordEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "VisitRecord",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": (v7/*: any*/),
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          (v8/*: any*/)
         ],
         "storageKey": null
       },
@@ -214,7 +295,7 @@ v8 = [
     "storageKey": null
   }
 ],
-v9 = [
+v10 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -281,7 +362,7 @@ return {
                             "kind": "LinkedField",
                             "name": "__customersPageQuery_customers_connection",
                             "plural": false,
-                            "selections": (v8/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -322,7 +403,7 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v7/*: any*/),
+          (v8/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -354,17 +435,17 @@ return {
                           (v5/*: any*/),
                           {
                             "alias": null,
-                            "args": (v9/*: any*/),
+                            "args": (v10/*: any*/),
                             "concreteType": "CustomerConnection",
                             "kind": "LinkedField",
                             "name": "customers",
                             "plural": false,
-                            "selections": (v8/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
                           {
                             "alias": null,
-                            "args": (v9/*: any*/),
+                            "args": (v10/*: any*/),
                             "filters": null,
                             "handle": "connection",
                             "key": "customersPageQuery_customers",
@@ -392,7 +473,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7124f57e6904bea8494ed61140b9866d",
+    "cacheID": "88498cc8c54dbc4006cc349e18719006",
     "id": null,
     "metadata": {
       "connection": [
@@ -406,11 +487,11 @@ return {
     },
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  visitRecords {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "77e0fa6e0f7f11f7f3fd97443374e685";
+(node as any).hash = "70a8c51b6197c104a3f32fe46c676d4c";
 
 export default node;

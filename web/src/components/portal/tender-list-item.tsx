@@ -95,17 +95,17 @@ export function TenderListItem({
               </Link>,
               showDelete && <DeleteButton key="delete" tender={item} />,
               // <a key="list-loadmore-more">more</a>,
-              !isGAOrHW && (
-                <Button
-                  type="link"
-                  size="small"
-                  onClick={() => {
-                    usePortalStore.setState({ tenderResultTender: item });
-                  }}
-                >
-                  结果
-                </Button>
-              ),
+              // !isGAOrHW && (
+              //   <Button
+              //     type="link"
+              //     size="small"
+              //     onClick={() => {
+              //       usePortalStore.setState({ tenderResultTender: item });
+              //     }}
+              //   >
+              //     结果
+              //   </Button>
+              // ),
             ].filter(Boolean)
           : [
               <Link
@@ -137,7 +137,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="mb-2 h-12 w-12" />
+              <ImageOff className="w-12 h-12 mb-2" />
               暂没图片
             </div>
           )}

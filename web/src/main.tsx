@@ -17,24 +17,23 @@ import { routeTree } from "./routeTree.gen";
 import "@amap/amap-jsapi-types";
 import "./main.css";
 
-const tenderResultModalToTenderMask = createRouteMask({
-  routeTree,
-  from: "/portal/tenders/$id/result",
-  to: "/portal/tenders/$id",
-  params: true,
-});
+// const tenderResultModalToTenderMask = createRouteMask({
+//   routeTree,
+//   from: "/portal/tenders/$id/result",
+//   to: "/portal/tenders/$id",
+//   params: true,
+// });
 
 // Set up a Router instance
 const router = createRouter({
   routeTree,
-  routeMasks: [tenderResultModalToTenderMask],
+  // routeMasks: [tenderResultModalToTenderMask],
   defaultPreload: "intent",
   context: {
     RelayEnvironment,
   },
   defaultPreloadStaleTime: 0,
   // defaultPendingMs: 5000,
-  // defaultPendingMinMs: 5000,
   defaultErrorComponent: () => (
     <div className="flex flex-col items-center justify-center min-h-screen space-y-2">
       <div className="text-2xl font-bold">500</div>
