@@ -11,6 +11,7 @@ type State = {
     | null;
   customerFormOpen: boolean;
   customerFormCustomer: customerDetailFragment$data | null;
+  visitRecordFormOpen: boolean;
 };
 
 type Action = {};
@@ -20,4 +21,5 @@ export const usePortalStore = create<State & Action>()((set) => ({
   tenderResultTender: null,
   customerFormOpen: false,
   customerFormCustomer: null,
+  visitRecordFormOpen: false,
 }));

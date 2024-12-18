@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ac9a9743d98d79b2ccdce77b91ce06fb>>
+ * @generated SignedSource<<69991eb95552348bdee125364c3e25cc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,11 +19,19 @@ export type customerDetailFragment$data = {
   readonly contactPersonEmail: string | null | undefined;
   readonly contactPersonPhone: string | null | undefined;
   readonly contactPersonPosition: string | null | undefined;
+  readonly createdAt: any;
   readonly createdBy: {
     readonly name: string;
   };
   readonly id: string;
   readonly industry: number | null | undefined;
+  readonly lastVisitRecord: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly date: any;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
+  };
   readonly name: string;
   readonly ownerType: number | null | undefined;
   readonly sales: {
@@ -66,6 +74,13 @@ return {
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "createdAt",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -153,6 +168,52 @@ return {
       "kind": "ScalarField",
       "name": "contactPersonEmail",
       "storageKey": null
+    },
+    {
+      "alias": "lastVisitRecord",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "last",
+          "value": 1
+        }
+      ],
+      "concreteType": "VisitRecordConnection",
+      "kind": "LinkedField",
+      "name": "visitRecords",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "VisitRecordEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "VisitRecord",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "date",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "visitRecords(last:1)"
     }
   ],
   "type": "Customer",
@@ -160,6 +221,6 @@ return {
 };
 })();
 
-(node as any).hash = "086d15218d4ef43bdd51d2d3e9d1307f";
+(node as any).hash = "3392dad3eab16bcb476d8f0603bea8c2";
 
 export default node;

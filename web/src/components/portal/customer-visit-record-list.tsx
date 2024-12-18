@@ -1,9 +1,7 @@
 import { customerVisitRecordListFragment$key } from "__generated__/customerVisitRecordListFragment.graphql";
-import { Descriptions } from "antd";
 import { List } from "antd";
-import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
-import { visitTypeText } from "~/lib/helper";
+import { VisitRecordItem } from "./visit-record-item";
 
 export function CustomerVisitRecordList(props: {
   customer: customerVisitRecordListFragment$key;
@@ -21,15 +19,7 @@ export function CustomerVisitRecordList(props: {
           edges {
             node {
               id
-              date
-              visitType
-              commPeople
-              commContent
-              nextStep
-              tender {
-                id
-                name
-              }
+              ...visitRecordItemFragment
             }
           }
         }
@@ -43,44 +33,7 @@ export function CustomerVisitRecordList(props: {
       <List
         dataSource={data.visitRecords.edges?.map((e) => e?.node)}
         rowKey={(node) => node?.id || ""}
-        renderItem={(node) =>
-          node && (
-            <Descriptions
-              layout="vertical"
-              bordered
-              className="py-4"
-              items={[
-                {
-                  key: "date",
-                  label: "日期",
-                  children: dayjs(node.date).format("LL"),
-                },
-                {
-                  key: "visitType",
-                  label: "拜访类型",
-                  children: visitTypeText(node.visitType),
-                },
-                {
-                  key: "commPeople",
-                  label: "沟通人员",
-                  children: node.commPeople,
-                },
-                {
-                  key: "commContent",
-                  label: "沟通内容",
-                  children: node.commContent,
-                  span: 3,
-                },
-                {
-                  key: "nextStep",
-                  label: "下一步",
-                  children: node.nextStep,
-                  span: 3,
-                },
-              ]}
-            />
-          )
-        }
+        renderItem={(node) => node && <VisitRecordItem record={node} />}
       />
     </div>
   );

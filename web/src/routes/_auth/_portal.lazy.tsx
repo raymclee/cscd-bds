@@ -33,6 +33,7 @@ import logoImg from "~/assets/logo.jpg";
 import { Loading } from "~/components/loading";
 import { CustomerFormDrawer } from "~/components/portal/customer-form-drawer";
 import { TenderResultModal } from "~/components/portal/tender-result-modal";
+import { VisitRecordFormDrawer } from "~/components/portal/visit-record-form-drawer";
 import { canEdit } from "~/lib/permission";
 import { cn } from "~/lib/utils";
 import { usePortalStore } from "~/store/portal";
@@ -141,7 +142,7 @@ function RouteComponent() {
         <App>
           <Layout hasSider className="relative">
             <Sider
-              className="fixed top-0 bottom-8 start-0"
+              className="fixed bottom-8 start-0 top-0"
               breakpoint="lg"
               collapsedWidth={70}
               collapsible
@@ -150,7 +151,7 @@ function RouteComponent() {
                 usePortalStore.setState({ sidebarCollapsed: collapsed })
               }
             >
-              <div className="flex items-center justify-center h-10 gap-2 m-4">
+              <div className="m-4 flex h-10 items-center justify-center gap-2">
                 <img src={logoImg} alt="logo" className="h-full" />
                 {/* <span className="text-lg font-bold text-white">远东幕墙</span> */}
               </div>
@@ -168,7 +169,7 @@ function RouteComponent() {
                 sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
               )}
             >
-              <Header className="flex items-center justify-between px-4 bg-white">
+              <Header className="flex items-center justify-between bg-white px-4">
                 <Typography.Title className="!mb-0" level={3}>
                   {pageTitle(pathname)}
                 </Typography.Title>
@@ -208,14 +209,14 @@ function RouteComponent() {
                 {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
                 <ScrollRestoration />
                 <Outlet />
-                <TenderResultModal />
+                {/* <TenderResultModal /> */}
                 <CustomerFormDrawer />
                 {/* </div> */}
               </Content>
             </Layout>
           </Layout>
         </App>
-      </ConfigProvider>{" "}
+      </ConfigProvider>
     </>
   );
 }

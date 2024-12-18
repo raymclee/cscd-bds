@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5c1070a688eaf2c3a42ed78330531957>>
+ * @generated SignedSource<<c6dbc7e182eedba50b6730e08b355f7c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,6 +23,7 @@ export type CreateVisitRecordInput = {
   visitType?: number | null | undefined;
 };
 export type useCreateVisitRecordMutation$variables = {
+  connections: ReadonlyArray<string>;
   input: CreateVisitRecordInput;
 };
 export type useCreateVisitRecordMutation$data = {
@@ -40,14 +41,17 @@ export type useCreateVisitRecordMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "input",
@@ -56,14 +60,17 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateVisitRecordMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "VisitRecordConnection",
         "kind": "LinkedField",
         "name": "createVisitRecord",
@@ -105,13 +112,16 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useCreateVisitRecordMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "VisitRecordConnection",
         "kind": "LinkedField",
         "name": "createVisitRecord",
@@ -180,6 +190,22 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "prependEdge",
+            "key": "",
+            "kind": "LinkedHandle",
+            "name": "edges",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              }
+            ]
           }
         ],
         "storageKey": null
@@ -197,6 +223,6 @@ return {
 };
 })();
 
-(node as any).hash = "b20a7f6a23cd2036f1a9c64c199d1a9e";
+(node as any).hash = "4474872793d5f01162580cf80424f367";
 
 export default node;

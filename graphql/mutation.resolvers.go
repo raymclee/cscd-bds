@@ -360,6 +360,36 @@ func (r *mutationResolver) SetTenderCompetitor(ctx context.Context, tenderID xid
 	return t, nil
 }
 
+// CreateVisitRecord is the resolver for the createVisitRecord field.
+func (r *mutationResolver) CreateVisitRecord(ctx context.Context, input ent.CreateVisitRecordInput) (*ent.VisitRecordConnection, error) {
+	n, err := r.store.VisitRecord.Create().SetInput(input).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create visit record: %w", err)
+	}
+	return &ent.VisitRecordConnection{
+		Edges: []*ent.VisitRecordEdge{
+			{Node: n},
+		},
+	}, nil
+}
+
+// UpdateVisitRecord is the resolver for the updateVisitRecord field.
+func (r *mutationResolver) UpdateVisitRecord(ctx context.Context, id xid.ID, input ent.UpdateVisitRecordInput) (*ent.VisitRecord, error) {
+	return r.store.VisitRecord.UpdateOneID(id).SetInput(input).Save(ctx)
+}
+
+// DeleteVisitRecord is the resolver for the deleteVisitRecord field.
+func (r *mutationResolver) DeleteVisitRecord(ctx context.Context, id xid.ID) (*ent.VisitRecord, error) {
+	v, err := r.store.VisitRecord.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get visit record: %w", err)
+	}
+	if err := r.store.VisitRecord.DeleteOne(v).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to delete visit record: %w", err)
+	}
+	return v, nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

@@ -83,7 +83,7 @@ export function CustomerFormDrawer() {
         title={customerFormCustomer ? "编辑客户" : "添加客户"}
         open={customerFormOpen}
         onClose={onClose}
-        width={480}
+        width={520}
         destroyOnClose
         maskClosable={!!customerFormCustomer}
       >
@@ -200,6 +200,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           rules={[{ required: true }]}
         >
           <Select
+            optionFilterProp="label"
             options={data.node?.areas?.edges
               ?.flatMap((a) => a?.node?.users.edges)
               .map((u) => ({
@@ -298,7 +299,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

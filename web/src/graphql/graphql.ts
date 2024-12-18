@@ -1324,16 +1324,19 @@ export type Mutation = {
   createPlot: PlotConnection;
   createTender: TenderConnection;
   createUser: UserConnection;
+  createVisitRecord: VisitRecordConnection;
   deleteCustomer: Customer;
   deletePlot: Plot;
   deleteTender: Tender;
   deleteUser: User;
+  deleteVisitRecord: VisitRecord;
   setTenderCompetitor: Tender;
   updateArea: Area;
   updateCustomer: Customer;
   updatePlot: Plot;
   updateTender: Tender;
   updateUser: User;
+  updateVisitRecord: VisitRecord;
 };
 
 
@@ -1366,6 +1369,11 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationCreateVisitRecordArgs = {
+  input: CreateVisitRecordInput;
+};
+
+
 export type MutationDeleteCustomerArgs = {
   id: Scalars['ID']['input'];
 };
@@ -1382,6 +1390,11 @@ export type MutationDeleteTenderArgs = {
 
 
 export type MutationDeleteUserArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteVisitRecordArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -1426,6 +1439,12 @@ export type MutationUpdateTenderArgs = {
 export type MutationUpdateUserArgs = {
   id: Scalars['ID']['input'];
   input: UpdateUserInput;
+};
+
+
+export type MutationUpdateVisitRecordArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateVisitRecordInput;
 };
 
 /**

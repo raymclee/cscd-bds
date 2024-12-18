@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8a2b9de08d2c11bc542a15e5c355536a>>
+ * @generated SignedSource<<ba71b1a0d3d560b0a26f1e5cc6aba388>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -141,6 +141,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "createdAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "User",
             "kind": "LinkedField",
             "name": "createdBy",
@@ -226,6 +233,53 @@ return {
             "kind": "ScalarField",
             "name": "contactPersonEmail",
             "storageKey": null
+          },
+          {
+            "alias": "lastVisitRecord",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "last",
+                "value": 1
+              }
+            ],
+            "concreteType": "VisitRecordConnection",
+            "kind": "LinkedField",
+            "name": "visitRecords",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "VisitRecordEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "VisitRecord",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": "visitRecords(last:1)"
           }
         ],
         "storageKey": null
@@ -233,12 +287,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b4f0e01f53b2cf037292ba35a448a0b6",
+    "cacheID": "14009bbacb4ef6bf2fadec1fc1afaf34",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

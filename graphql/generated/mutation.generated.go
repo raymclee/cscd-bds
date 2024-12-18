@@ -32,6 +32,9 @@ type MutationResolver interface {
 	UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
 	DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot, error)
 	SetTenderCompetitor(ctx context.Context, tenderID xid.ID, competitorID xid.ID, won bool) (*ent.Tender, error)
+	CreateVisitRecord(ctx context.Context, input ent.CreateVisitRecordInput) (*ent.VisitRecordConnection, error)
+	UpdateVisitRecord(ctx context.Context, id xid.ID, input ent.UpdateVisitRecordInput) (*ent.VisitRecord, error)
+	DeleteVisitRecord(ctx context.Context, id xid.ID) (*ent.VisitRecord, error)
 }
 
 // endregion ************************** generated!.gotpl **************************
@@ -306,6 +309,38 @@ func (ec *executionContext) field_Mutation_createUser_argsInput(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_createVisitRecord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_createVisitRecord_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createVisitRecord_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.CreateVisitRecordInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.CreateVisitRecordInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreateVisitRecordInput2cscdᚑbdsᚋstoreᚋentᚐCreateVisitRecordInput(ctx, tmp)
+	}
+
+	var zeroVal ent.CreateVisitRecordInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_deleteCustomer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -413,6 +448,38 @@ func (ec *executionContext) field_Mutation_deleteUser_args(ctx context.Context, 
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_deleteUser_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteVisitRecord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_deleteVisitRecord_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_deleteVisitRecord_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (xid.ID, error) {
@@ -974,6 +1041,65 @@ func (ec *executionContext) field_Mutation_updateUser_argsInput(
 	}
 
 	var zeroVal ent.UpdateUserInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateVisitRecord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_updateVisitRecord_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	arg1, err := ec.field_Mutation_updateVisitRecord_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_updateVisitRecord_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateVisitRecord_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.UpdateVisitRecordInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.UpdateVisitRecordInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNUpdateVisitRecordInput2cscdᚑbdsᚋstoreᚋentᚐUpdateVisitRecordInput(ctx, tmp)
+	}
+
+	var zeroVal ent.UpdateVisitRecordInput
 	return zeroVal, nil
 }
 
@@ -2532,6 +2658,235 @@ func (ec *executionContext) fieldContext_Mutation_setTenderCompetitor(ctx contex
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_createVisitRecord(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createVisitRecord(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateVisitRecord(rctx, fc.Args["input"].(ent.CreateVisitRecordInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.VisitRecordConnection)
+	fc.Result = res
+	return ec.marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createVisitRecord(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_VisitRecordConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_VisitRecordConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_VisitRecordConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecordConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createVisitRecord_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateVisitRecord(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateVisitRecord(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateVisitRecord(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateVisitRecordInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.VisitRecord)
+	fc.Result = res
+	return ec.marshalNVisitRecord2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateVisitRecord(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_VisitRecord_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_VisitRecord_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_VisitRecord_updatedAt(ctx, field)
+			case "visitType":
+				return ec.fieldContext_VisitRecord_visitType(ctx, field)
+			case "commPeople":
+				return ec.fieldContext_VisitRecord_commPeople(ctx, field)
+			case "commContent":
+				return ec.fieldContext_VisitRecord_commContent(ctx, field)
+			case "nextStep":
+				return ec.fieldContext_VisitRecord_nextStep(ctx, field)
+			case "date":
+				return ec.fieldContext_VisitRecord_date(ctx, field)
+			case "tenderID":
+				return ec.fieldContext_VisitRecord_tenderID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_VisitRecord_customerID(ctx, field)
+			case "tender":
+				return ec.fieldContext_VisitRecord_tender(ctx, field)
+			case "customer":
+				return ec.fieldContext_VisitRecord_customer(ctx, field)
+			case "followupbys":
+				return ec.fieldContext_VisitRecord_followupbys(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecord", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateVisitRecord_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteVisitRecord(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteVisitRecord(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteVisitRecord(rctx, fc.Args["id"].(xid.ID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.VisitRecord)
+	fc.Result = res
+	return ec.marshalNVisitRecord2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteVisitRecord(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_VisitRecord_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_VisitRecord_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_VisitRecord_updatedAt(ctx, field)
+			case "visitType":
+				return ec.fieldContext_VisitRecord_visitType(ctx, field)
+			case "commPeople":
+				return ec.fieldContext_VisitRecord_commPeople(ctx, field)
+			case "commContent":
+				return ec.fieldContext_VisitRecord_commContent(ctx, field)
+			case "nextStep":
+				return ec.fieldContext_VisitRecord_nextStep(ctx, field)
+			case "date":
+				return ec.fieldContext_VisitRecord_date(ctx, field)
+			case "tenderID":
+				return ec.fieldContext_VisitRecord_tenderID(ctx, field)
+			case "customerID":
+				return ec.fieldContext_VisitRecord_customerID(ctx, field)
+			case "tender":
+				return ec.fieldContext_VisitRecord_tender(ctx, field)
+			case "customer":
+				return ec.fieldContext_VisitRecord_customer(ctx, field)
+			case "followupbys":
+				return ec.fieldContext_VisitRecord_followupbys(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecord", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteVisitRecord_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
@@ -2664,6 +3019,27 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "setTenderCompetitor":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_setTenderCompetitor(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createVisitRecord":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createVisitRecord(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "updateVisitRecord":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateVisitRecord(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deleteVisitRecord":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteVisitRecord(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

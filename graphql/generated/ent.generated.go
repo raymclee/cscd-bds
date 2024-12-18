@@ -39718,6 +39718,11 @@ func (ec *executionContext) unmarshalNCreateUserInput2cscdᚑbdsᚋstoreᚋent�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNCreateVisitRecordInput2cscdᚑbdsᚋstoreᚋentᚐCreateVisitRecordInput(ctx context.Context, v interface{}) (ent.CreateVisitRecordInput, error) {
+	res, err := ec.unmarshalInputCreateVisitRecordInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNCursor2entgoᚗioᚋcontribᚋentgqlᚐCursor(ctx context.Context, v interface{}) (entgql.Cursor[xid.ID], error) {
 	var res entgql.Cursor[xid.ID]
 	err := res.UnmarshalGQL(v)
@@ -40052,6 +40057,11 @@ func (ec *executionContext) unmarshalNUpdateUserInput2cscdᚑbdsᚋstoreᚋent�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNUpdateVisitRecordInput2cscdᚑbdsᚋstoreᚋentᚐUpdateVisitRecordInput(ctx context.Context, v interface{}) (ent.UpdateVisitRecordInput, error) {
+	res, err := ec.unmarshalInputUpdateVisitRecordInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNUser2cscdᚑbdsᚋstoreᚋentᚐUser(ctx context.Context, sel ast.SelectionSet, v ent.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
@@ -40099,6 +40109,20 @@ func (ec *executionContext) marshalNUserOrderField2ᚖcscdᚑbdsᚋstoreᚋent�
 func (ec *executionContext) unmarshalNUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInput(ctx context.Context, v interface{}) (*ent.UserWhereInput, error) {
 	res, err := ec.unmarshalInputUserWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNVisitRecord2cscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx context.Context, sel ast.SelectionSet, v ent.VisitRecord) graphql.Marshaler {
+	return ec._VisitRecord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNVisitRecord2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecord(ctx context.Context, sel ast.SelectionSet, v *ent.VisitRecord) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._VisitRecord(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNVisitRecordConnection2cscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx context.Context, sel ast.SelectionSet, v ent.VisitRecordConnection) graphql.Marshaler {

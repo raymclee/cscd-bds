@@ -147,6 +147,11 @@ export function visitTypeText(type: Maybe<number> | undefined): string {
   }
 }
 
+export const visitTypeOptions = [
+  { label: "现场拜访", value: 1 },
+  { label: "线上会议", value: 2 },
+];
+
 export function industryText(industry: Maybe<number> | undefined): string {
   if (!industry) {
     return "";

@@ -594,20 +594,11 @@ export function TenderForm({
                   </Form.Item>
 
                   <Form.Item
-                    name="projectType"
-                    label="项目类型"
-                    className="md:col-span-2"
+                    name="projectDefinition"
+                    label="项目定义"
                     rules={[{ required: true }]}
                   >
-                    <Select
-                      options={[
-                        { label: "GC:830工程项目", value: "GC" },
-                        { label: "SC:830生产项目", value: "SC" },
-                        { label: "YF:830研发项目", value: "YF" },
-                      ]}
-                      showSearch
-                      optionFilterProp="label"
-                    />
+                    <Input />
                   </Form.Item>
                 </>
               )}
@@ -758,8 +749,20 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <Form.Item name="projectDefinition" label="项目定义">
-                <Input />
+              <Form.Item
+                name="projectType"
+                label="项目类型"
+                className="md:col-span-2"
+              >
+                <Select
+                  options={[
+                    { label: "GC:830工程项目", value: "GC" },
+                    { label: "SC:830生产项目", value: "SC" },
+                    { label: "YF:830研发项目", value: "YF" },
+                  ]}
+                  showSearch
+                  optionFilterProp="label"
+                />
               </Form.Item>
 
               <Form.Item name="levelInvolved" label="涉及层面">

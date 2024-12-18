@@ -1354,16 +1354,19 @@ type Mutation {
   createPlot(geoBounds: [[Float!]!], input: CreatePlotInput!): PlotConnection!
   createTender(attachmentFileNames: [String!]!, geoBounds: [[Float!]!], imageFileNames: [String!]!, input: CreateTenderInput!): TenderConnection!
   createUser(input: CreateUserInput!): UserConnection!
+  createVisitRecord(input: CreateVisitRecordInput!): VisitRecordConnection!
   deleteCustomer(id: ID!): Customer!
   deletePlot(id: ID!): Plot!
   deleteTender(id: ID!): Tender!
   deleteUser(id: ID!): User!
+  deleteVisitRecord(id: ID!): VisitRecord!
   setTenderCompetitor(competitorId: ID!, tenderId: ID!, won: Boolean!): Tender!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
   updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
   updatePlot(geoBounds: [[Float!]!], id: ID!, input: UpdatePlotInput!): Plot!
   updateTender(attachmentFileNames: [String!], geoBounds: [[Float!]!], id: ID!, imageFileNames: [String!], input: UpdateTenderInput!, removeAttachmentFileNames: [String!], removeImageFileNames: [String!]): Tender!
   updateUser(id: ID!, input: UpdateUserInput!): User!
+  updateVisitRecord(id: ID!, input: UpdateVisitRecordInput!): VisitRecord!
 }
 
 """

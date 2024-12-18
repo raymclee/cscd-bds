@@ -2,13 +2,15 @@ import { EditOutlined } from "@ant-design/icons";
 import { useRouteContext } from "@tanstack/react-router";
 import { customerDetail_customerContact$key } from "__generated__/customerDetail_customerContact.graphql";
 import { customerDetailFragment$key } from "__generated__/customerDetailFragment.graphql";
-import { Button, Descriptions, Skeleton } from "antd";
+import { Button, Descriptions, Space } from "antd";
 import dayjs from "dayjs";
-import { Suspense, useEffect } from "react";
+import { BookUser } from "lucide-react";
+import { useEffect } from "react";
 import { graphql, useFragment, useRefetchableFragment } from "react-relay";
 import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { usePortalStore } from "~/store/portal";
+import { VisitRecordFormDrawer } from "./visit-record-form-drawer";
 
 export function CustomerDetail(props: {
   customer: customerDetailFragment$key;
@@ -19,6 +21,7 @@ export function CustomerDetail(props: {
       fragment customerDetailFragment on Customer {
         id
         name
+        createdAt
         createdBy {
           name
         }
@@ -38,6 +41,13 @@ export function CustomerDetail(props: {
         contactPersonPosition
         contactPersonPhone
         contactPersonEmail
+        lastVisitRecord: visitRecords(last: 1) {
+          edges {
+            node {
+              date
+            }
+          }
+        }
         # ...customerDetail_customerContact
       }
     `,
@@ -51,20 +61,31 @@ export function CustomerDetail(props: {
       <Descriptions
         extra={
           canEdit(session) && (
-            // <Link to="/portal/customers/$id/edit" params={{ id: customer.id! }}>
-            <Button
-              type="primary"
-              icon={<EditOutlined />}
-              onClick={() => {
-                usePortalStore.setState({
-                  customerFormOpen: true,
-                  customerFormCustomer: customer,
-                });
-              }}
-            >
-              编辑
-            </Button>
-            // </Link>
+            <Space>
+              <Button
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={() => {
+                  usePortalStore.setState({
+                    customerFormOpen: true,
+                    customerFormCustomer: customer,
+                  });
+                }}
+              >
+                编辑
+              </Button>
+              <Button
+                type="primary"
+                icon={<BookUser size={16} />}
+                onClick={() => {
+                  usePortalStore.setState({
+                    visitRecordFormOpen: true,
+                  });
+                }}
+              >
+                添加拜访记录
+              </Button>
+            </Space>
           )
         }
         title={customer.name}
@@ -98,7 +119,7 @@ export function CustomerDetail(props: {
           },
           {
             key: "area",
-            label: "地区",
+            label: "区域",
             children: <span className="font-normal">{customer.area.name}</span>,
           },
           {
@@ -139,8 +160,17 @@ export function CustomerDetail(props: {
           //   ),
           // },
           {
+            key: "createdAt",
+            label: "创建时间",
+            children: (
+              <span className="font-normal">
+                {dayjs(customer.createdAt).format("LLL")}
+              </span>
+            ),
+          },
+          {
             key: "createdBy",
-            label: "创建者",
+            label: "创建人",
             children: (
               <span className="font-normal">{customer.createdBy.name}</span>
             ),
@@ -151,6 +181,19 @@ export function CustomerDetail(props: {
             children: (
               <span className="font-normal">
                 {dayjs(customer.updatedAt).format("LLL")}
+              </span>
+            ),
+          },
+          {
+            key: "lastUpdated",
+            label: "最后更新时间",
+            children: (
+              <span className="font-normal">
+                {customer.lastVisitRecord.edges?.at(0)?.node?.date
+                  ? dayjs(
+                      customer.lastVisitRecord.edges?.at(0)?.node?.date,
+                    ).format("LL")
+                  : "-"}
               </span>
             ),
           },
@@ -167,14 +210,14 @@ export function CustomerDetail(props: {
         items={[
           {
             key: "contactPerson",
-            label: "联系人",
+            label: "对接人姓名",
             children: (
               <span className="font-normal">{customer.contactPerson}</span>
             ),
           },
           {
             key: "contactPersonPosition",
-            label: "联系人职位",
+            label: "对接人职位",
             children: (
               <span className="font-normal">
                 {customer.contactPersonPosition}
@@ -183,19 +226,24 @@ export function CustomerDetail(props: {
           },
           {
             key: "contactPersonPhone",
-            label: "联系人电话",
+            label: "对接人电话",
             children: (
               <span className="font-normal">{customer.contactPersonPhone}</span>
             ),
           },
           {
             key: "contactPersonEmail",
-            label: "联系人邮箱",
+            label: "对接人邮箱",
             children: (
               <span className="font-normal">{customer.contactPersonEmail}</span>
             ),
           },
         ]}
+      />
+
+      <VisitRecordFormDrawer
+        areaId={customer.area.id}
+        customerId={customer.id}
       />
     </>
   );

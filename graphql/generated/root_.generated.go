@@ -217,16 +217,19 @@ type ComplexityRoot struct {
 		CreatePlot          func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
 		CreateTender        func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
 		CreateUser          func(childComplexity int, input ent.CreateUserInput) int
+		CreateVisitRecord   func(childComplexity int, input ent.CreateVisitRecordInput) int
 		DeleteCustomer      func(childComplexity int, id xid.ID) int
 		DeletePlot          func(childComplexity int, id xid.ID) int
 		DeleteTender        func(childComplexity int, id xid.ID) int
 		DeleteUser          func(childComplexity int, id xid.ID) int
+		DeleteVisitRecord   func(childComplexity int, id xid.ID) int
 		SetTenderCompetitor func(childComplexity int, tenderID xid.ID, competitorID xid.ID, won bool) int
 		UpdateArea          func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
 		UpdateCustomer      func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
 		UpdatePlot          func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateTender        func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
 		UpdateUser          func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		UpdateVisitRecord   func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 	}
 
 	PageInfo struct {
@@ -1321,6 +1324,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(ent.CreateUserInput)), true
 
+	case "Mutation.createVisitRecord":
+		if e.complexity.Mutation.CreateVisitRecord == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createVisitRecord_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateVisitRecord(childComplexity, args["input"].(ent.CreateVisitRecordInput)), true
+
 	case "Mutation.deleteCustomer":
 		if e.complexity.Mutation.DeleteCustomer == nil {
 			break
@@ -1368,6 +1383,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.DeleteUser(childComplexity, args["id"].(xid.ID)), true
+
+	case "Mutation.deleteVisitRecord":
+		if e.complexity.Mutation.DeleteVisitRecord == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteVisitRecord_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteVisitRecord(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.setTenderCompetitor":
 		if e.complexity.Mutation.SetTenderCompetitor == nil {
@@ -1440,6 +1467,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateUserInput)), true
+
+	case "Mutation.updateVisitRecord":
+		if e.complexity.Mutation.UpdateVisitRecord == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateVisitRecord_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateVisitRecord(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateVisitRecordInput)), true
 
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
@@ -7829,6 +7868,10 @@ type GeoJson {
   deletePlot(id: ID!): Plot!
 
   setTenderCompetitor(tenderId: ID!, competitorId: ID!, won: Boolean!): Tender!
+
+  createVisitRecord(input: CreateVisitRecordInput!): VisitRecordConnection!
+  updateVisitRecord(id: ID!, input: UpdateVisitRecordInput!): VisitRecord!
+  deleteVisitRecord(id: ID!): VisitRecord!
 }
 `, BuiltIn: false},
 	{Name: "../plot.graphql", Input: `extend type Plot {

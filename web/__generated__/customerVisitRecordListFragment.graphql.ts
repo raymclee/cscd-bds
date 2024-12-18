@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<24d0158bdf739bb4344af45d7bb6c33e>>
+ * @generated SignedSource<<6fbe4183a24d96d84a8cf9fad39aac6a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,16 +14,8 @@ export type customerVisitRecordListFragment$data = {
   readonly visitRecords: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly commContent: string;
-        readonly commPeople: string;
-        readonly date: any;
         readonly id: string;
-        readonly nextStep: string | null | undefined;
-        readonly tender: {
-          readonly id: string;
-          readonly name: string;
-        } | null | undefined;
-        readonly visitType: number;
+        readonly " $fragmentSpreads": FragmentRefs<"visitRecordItemFragment">;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -34,15 +26,7 @@ export type customerVisitRecordListFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"customerVisitRecordListFragment">;
 };
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -105,60 +89,17 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "date",
+                  "name": "id",
                   "storageKey": null
                 },
                 {
-                  "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "visitType",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "commPeople",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "commContent",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "nextStep",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Tender",
-                  "kind": "LinkedField",
-                  "name": "tender",
-                  "plural": false,
-                  "selections": [
-                    (v0/*: any*/),
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "name",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "visitRecordItemFragment"
                 },
                 {
                   "alias": null,
@@ -226,8 +167,7 @@ return {
   "type": "Customer",
   "abstractKey": null
 };
-})();
 
-(node as any).hash = "aa07564b086af6629e3ceadce07e8e85";
+(node as any).hash = "ff29136e0d0bef55385657f6716b7bfe";
 
 export default node;
