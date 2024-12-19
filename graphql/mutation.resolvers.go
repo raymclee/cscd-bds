@@ -259,11 +259,13 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 	var removedImages []string
 	for _, fn := range removeImageFileNames {
-		for _, image := range t.Images {
-			if strings.Contains(image, fn) {
+		for i, image := range t.Images {
+			img := strings.TrimPrefix(image, fmt.Sprintf("/static/%s/", string(t.ID)))
+
+			if img == fn {
 				util.DeleteStaticFile(string(t.ID), image)
-			} else {
-				removedImages = append(removedImages, image)
+				removedImages = append(t.Images[:i], t.Images[i+1:]...)
+				continue
 			}
 		}
 	}
@@ -287,13 +289,12 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 
 	var removedAttachments []string
 	for _, fn := range removeAttachmentFileNames {
-		for _, att := range t.Attachements {
-			if strings.Contains(att, fn) {
+		for i, att := range t.Attachements {
+			at := strings.TrimPrefix(att, fmt.Sprintf("/static/%s/", string(t.ID)))
+			if at == fn {
 				util.DeleteStaticFile(string(t.ID), att)
-				removedAttachments = append(removedAttachments, att)
-				break
-			} else {
-				removedAttachments = append(removedAttachments, att)
+				removedAttachments = append(t.Attachements[:i], t.Attachements[i+1:]...)
+				continue
 			}
 		}
 	}

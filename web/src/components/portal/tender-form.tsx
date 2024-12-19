@@ -149,13 +149,6 @@ export function TenderForm({
   const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
 
-  const isGASelected = data.areas?.edges?.find(
-    (e) => e?.node?.id === areaID && e.node.code === "GA",
-  );
-  const isHWSelected = data.areas.edges?.find(
-    (e) => e?.node?.id === areaID && e.node.code === "HW",
-  );
-
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
   const [removeImageFileNames, setRemoveImageFileNames] = useState<string[]>(
@@ -164,10 +157,6 @@ export function TenderForm({
   const [removeAttachmentFileNames, setRemoveAttachmentFileNames] = useState<
     string[]
   >([]);
-
-  const isGATender = isGA(tender as any);
-  const isHWTender = isHW(tender as any);
-
   const showSHFields = !!data.areas.edges?.find(
     (e) =>
       e?.node?.id === areaID && e.node.code !== "GA" && e.node.code !== "HW",
@@ -813,6 +802,12 @@ export function TenderForm({
                     name="files"
                     action="/api/v1/file/upload"
                     accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
+                    onRemove={(file) => {
+                      setRemoveAttachmentFileNames((prev) => [
+                        ...prev,
+                        file.name,
+                      ]);
+                    }}
                     onChange={(info) => {
                       for (const file of info.fileList) {
                         if (
@@ -820,10 +815,12 @@ export function TenderForm({
                           !file.name.startsWith("/static/") &&
                           file.lastModified
                         ) {
-                          setAttachmentFileNames((prev) => [
-                            ...prev,
-                            file.name,
-                          ]);
+                          setAttachmentFileNames((prev) => {
+                            if (prev.includes(file.name)) {
+                              return prev;
+                            }
+                            return [...prev, file.name];
+                          });
                         }
                         if (
                           file.status === "error" ||
