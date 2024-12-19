@@ -635,6 +635,20 @@ func (tc *TenderCreate) SetNillableKeyProject(b *bool) *TenderCreate {
 	return tc
 }
 
+// SetCurrentProgress sets the "current_progress" field.
+func (tc *TenderCreate) SetCurrentProgress(s string) *TenderCreate {
+	tc.mutation.SetCurrentProgress(s)
+	return tc
+}
+
+// SetNillableCurrentProgress sets the "current_progress" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCurrentProgress(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetCurrentProgress(*s)
+	}
+	return tc
+}
+
 // SetTenderWinCompany sets the "tender_win_company" field.
 func (tc *TenderCreate) SetTenderWinCompany(s string) *TenderCreate {
 	tc.mutation.SetTenderWinCompany(s)
@@ -1291,6 +1305,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.KeyProject(); ok {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
 		_node.KeyProject = value
+	}
+	if value, ok := tc.mutation.CurrentProgress(); ok {
+		_spec.SetField(tender.FieldCurrentProgress, field.TypeString, value)
+		_node.CurrentProgress = &value
 	}
 	if value, ok := tc.mutation.TenderWinCompany(); ok {
 		_spec.SetField(tender.FieldTenderWinCompany, field.TypeString, value)
@@ -2379,6 +2397,24 @@ func (u *TenderUpsert) SetKeyProject(v bool) *TenderUpsert {
 // UpdateKeyProject sets the "key_project" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateKeyProject() *TenderUpsert {
 	u.SetExcluded(tender.FieldKeyProject)
+	return u
+}
+
+// SetCurrentProgress sets the "current_progress" field.
+func (u *TenderUpsert) SetCurrentProgress(v string) *TenderUpsert {
+	u.Set(tender.FieldCurrentProgress, v)
+	return u
+}
+
+// UpdateCurrentProgress sets the "current_progress" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateCurrentProgress() *TenderUpsert {
+	u.SetExcluded(tender.FieldCurrentProgress)
+	return u
+}
+
+// ClearCurrentProgress clears the value of the "current_progress" field.
+func (u *TenderUpsert) ClearCurrentProgress() *TenderUpsert {
+	u.SetNull(tender.FieldCurrentProgress)
 	return u
 }
 
@@ -3703,6 +3739,27 @@ func (u *TenderUpsertOne) SetKeyProject(v bool) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateKeyProject() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateKeyProject()
+	})
+}
+
+// SetCurrentProgress sets the "current_progress" field.
+func (u *TenderUpsertOne) SetCurrentProgress(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCurrentProgress(v)
+	})
+}
+
+// UpdateCurrentProgress sets the "current_progress" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateCurrentProgress() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCurrentProgress()
+	})
+}
+
+// ClearCurrentProgress clears the value of the "current_progress" field.
+func (u *TenderUpsertOne) ClearCurrentProgress() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCurrentProgress()
 	})
 }
 
@@ -5244,6 +5301,27 @@ func (u *TenderUpsertBulk) SetKeyProject(v bool) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateKeyProject() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateKeyProject()
+	})
+}
+
+// SetCurrentProgress sets the "current_progress" field.
+func (u *TenderUpsertBulk) SetCurrentProgress(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetCurrentProgress(v)
+	})
+}
+
+// UpdateCurrentProgress sets the "current_progress" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateCurrentProgress() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateCurrentProgress()
+	})
+}
+
+// ClearCurrentProgress clears the value of the "current_progress" field.
+func (u *TenderUpsertBulk) ClearCurrentProgress() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCurrentProgress()
 	})
 }
 

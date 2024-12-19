@@ -747,6 +747,7 @@ input CreateTenderInput {
   createdByID: ID!
   creditAndPaymentRating: Int
   creditAndPaymentRatingOverview: String
+  currentProgress: String
   customerID: ID
   customerRelationshipRating: Int
   customerRelationshipRatingOverview: String
@@ -1360,7 +1361,6 @@ type Mutation {
   deleteTender(id: ID!): Tender!
   deleteUser(id: ID!): User!
   deleteVisitRecord(id: ID!): VisitRecord!
-  setTenderCompetitor(competitorId: ID!, tenderId: ID!, won: Boolean!): Tender!
   updateArea(id: ID!, input: UpdateAreaInput!): Area!
   updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
   updatePlot(geoBounds: [[Float!]!], id: ID!, input: UpdatePlotInput!): Plot!
@@ -1956,6 +1956,7 @@ type Tender implements Node {
   createdByID: ID!
   creditAndPaymentRating: Int
   creditAndPaymentRatingOverview: String
+  currentProgress: String
   customer: Customer
   customerID: ID
   customerRelationshipRating: Int
@@ -2361,6 +2362,22 @@ input TenderWhereInput {
   creditAndPaymentRatingOverviewNEQ: String
   creditAndPaymentRatingOverviewNotIn: [String!]
   creditAndPaymentRatingOverviewNotNil: Boolean
+  """current_progress field predicates"""
+  currentProgress: String
+  currentProgressContains: String
+  currentProgressContainsFold: String
+  currentProgressEqualFold: String
+  currentProgressGT: String
+  currentProgressGTE: String
+  currentProgressHasPrefix: String
+  currentProgressHasSuffix: String
+  currentProgressIn: [String!]
+  currentProgressIsNil: Boolean
+  currentProgressLT: String
+  currentProgressLTE: String
+  currentProgressNEQ: String
+  currentProgressNotIn: [String!]
+  currentProgressNotNil: Boolean
   """customer_id field predicates"""
   customerID: ID
   customerIDContains: ID
@@ -3122,6 +3139,7 @@ input UpdateTenderInput {
   clearCostEngineer: Boolean
   clearCreditAndPaymentRating: Boolean
   clearCreditAndPaymentRatingOverview: Boolean
+  clearCurrentProgress: Boolean
   clearCustomer: Boolean
   clearCustomerRelationshipRating: Boolean
   clearCustomerRelationshipRatingOverview: Boolean
@@ -3172,6 +3190,7 @@ input UpdateTenderInput {
   createdByID: ID
   creditAndPaymentRating: Int
   creditAndPaymentRatingOverview: String
+  currentProgress: String
   customerID: ID
   customerRelationshipRating: Int
   customerRelationshipRatingOverview: String

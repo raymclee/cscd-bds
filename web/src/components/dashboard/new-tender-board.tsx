@@ -3,6 +3,13 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
+import { Button } from "../ui/button";
+import { Eye } from "lucide-react";
+import { useMapStore } from "~/store/map";
+import { motion } from "motion/react";
+
+const MotionCard = motion(Card);
+const MotionEye = motion(Eye);
 
 export function NewTenderBoard() {
   const tenders = useAreaTenders();
@@ -120,13 +127,25 @@ export function NewTenderBoard() {
   };
 
   return (
-    <Card
+    <MotionCard
+      layoutId="new-tender-board"
       className={cn(
         "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        本月新增商机
+        <div className="flex items-center justify-between">
+          <motion.span layoutId="new-tender-board-title">
+            本月新增商机
+          </motion.span>
+          <MotionEye
+            layoutId="new-tender-board-icon"
+            className="cursor-pointer"
+            onClick={() => {
+              useMapStore.setState({ moreNewTenderBoardVisible: true });
+            }}
+          />
+        </div>
       </CardHeader>
       <CardContent className="flex h-full">
         {/* <div className="w-[40%]"><Tiny {...monthConfig} /></div> */}
@@ -146,6 +165,6 @@ export function NewTenderBoard() {
         </div>
         <Column {...barConfig} />
       </CardContent>
-    </Card>
+    </MotionCard>
   );
 }

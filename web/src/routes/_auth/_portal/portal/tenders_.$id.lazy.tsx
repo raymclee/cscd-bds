@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { tendersDetailPageQuery } from "__generated__/tendersDetailPageQuery.graphql";
 import { Result } from "antd";
 import { graphql, usePreloadedQuery } from "react-relay";
@@ -37,7 +37,6 @@ function RouteComponent() {
   return (
     <>
       <TenderDetail queryRef={data.node} />
-      <Outlet />
     </>
   );
 }

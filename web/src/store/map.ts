@@ -1,92 +1,6 @@
 import { create } from "zustand";
-import {
-  Area,
-  Area as GraphqlArea,
-  Maybe,
-  Plot,
-  Tender,
-} from "~/graphql/graphql";
+import { Area, Maybe, Plot, Tender } from "~/graphql/graphql";
 import { getDistrictColor, tenderStatusBoundColor } from "~/lib/color";
-
-// export type District = {
-//   id: string;
-//   citycode: string[];
-//   adcode: number[];
-//   name: string;
-//   center: [number, number];
-//   level: string;
-//   districts: District[];
-// };
-
-// const districts: District[] = [
-//   {
-//     id: "1",
-//     citycode: [],
-//     adcode: [
-//       540000, 650000, 620000, 630000, 510000, 530000, 640000, 610000, 500000,
-//       520000,
-//     ],
-//     name: "西部地区",
-//     center: [90.986153, 36.876121],
-//     level: "province",
-//     districts: [],
-//   },
-//   {
-//     id: "2",
-//     citycode: [],
-//     adcode: [
-//       150000, 230000, 220000, 210000, 110000, 130000, 140000, 120000, 370000,
-//     ],
-//     name: "华北地区",
-//     center: [116.136142, 42.021244],
-//     level: "province",
-//     districts: [],
-//   },
-//   {
-//     id: "3",
-//     citycode: [],
-//     adcode: [320000, 310000, 340000, 330000, 410000],
-//     name: "华东地区",
-//     center: [119.008879, 32.688899],
-//     level: "province",
-//     districts: [],
-//   },
-//   {
-//     id: "4",
-//     citycode: [],
-//     adcode: [430000, 350000, 440000, 450000, 360000, 420000, 460000, 710000],
-//     name: "华南地区",
-//     center: [112.186512, 28.03419],
-//     level: "province",
-//     districts: [],
-//   },
-//   {
-//     id: "5",
-//     citycode: [],
-//     adcode: [810000, 820000],
-//     name: "港澳地区",
-//     center: [114.183583, 22.385247],
-//     level: "province",
-//     districts: [],
-//   },
-// ];
-
-// export type Area = {
-//   id: string;
-//   name: string;
-//   adcode: number;
-//   center: {
-//     coordinates: readonly number[];
-//   };
-//   provinces: {
-//     id: string;
-//     name: string;
-//     adcode: number;
-//     center: {
-//       coordinates: readonly number[];
-//     };
-//   };
-// };
 
 type Navigation = {
   name: string;
@@ -97,11 +11,6 @@ type TenderStatus = {
   status: string;
   value: number;
 };
-
-// export type StoreArea = Pick<
-//   GraphqlArea,
-//   "id" | "name" | "center" | "provinces" | "tenders" | "code"
-// >;
 
 type MapState = {
   map: AMap.Map | null;
@@ -122,6 +31,7 @@ type MapState = {
   selectedTenderStatus: TenderStatus | null;
   mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
   tenderViewTender: Tender | null;
+  moreNewTenderBoardVisible: boolean;
 };
 
 type Action = {
@@ -164,6 +74,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   selectedTender: null,
   tenderViewTender: null,
   selectedTenderStatus: null,
+  moreNewTenderBoardVisible: false,
   // districts,
   initMap: (container, opts) => {
     const map = new AMap.Map(container, { ...opts });

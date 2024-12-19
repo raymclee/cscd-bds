@@ -183,9 +183,13 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
                 onClose();
               },
               onError: (error) => {
+                let msgText = "创建客户失败";
+                if (error.message.includes("duplicate")) {
+                  msgText = "客户已存在";
+                }
                 console.error(error);
                 message.destroy();
-                message.error("创建客户失败");
+                message.error(msgText);
               },
             });
           }
@@ -288,7 +292,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
 
         <Form.Item
           name="contactPersonPhone"
-          label="联系电话"
+          label="对接人电话"
           rules={[{ required: true }]}
         >
           <Input />

@@ -20,6 +20,7 @@ import {
 } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import {
+  Angry,
   Building2,
   ContactRound,
   LogOut,
@@ -32,8 +33,6 @@ import * as React from "react";
 import logoImg from "~/assets/logo.jpg";
 import { Loading } from "~/components/loading";
 import { CustomerFormDrawer } from "~/components/portal/customer-form-drawer";
-import { TenderResultModal } from "~/components/portal/tender-result-modal";
-import { VisitRecordFormDrawer } from "~/components/portal/visit-record-form-drawer";
 import { canEdit } from "~/lib/permission";
 import { cn } from "~/lib/utils";
 import { usePortalStore } from "~/store/portal";
@@ -112,6 +111,11 @@ function RouteComponent() {
           "/portal/sa/areas",
           <Map size={16} />,
         ),
+        getItem(
+          <Link to="/portal/sa/competitors">竞争对手</Link>,
+          "/portal/sa/competitors",
+          <Angry size={16} />,
+        ),
       ]),
     );
   } else if (session.isAdmin) {
@@ -125,6 +129,8 @@ function RouteComponent() {
       ]),
     );
   }
+
+  // console.log(`/${pathname.split("/")?.at(1)}/${pathname.split("/")?.at(2)}`);
 
   return (
     <>
@@ -157,7 +163,9 @@ function RouteComponent() {
               </div>
               <Menu
                 theme="dark"
-                defaultSelectedKeys={[pathname]}
+                defaultSelectedKeys={[
+                  `/${pathname.split("/")?.at(1)}/${pathname.split("/")?.at(2)}`,
+                ]}
                 defaultOpenKeys={["admins"]}
                 mode="inline"
                 items={items}
@@ -239,6 +247,8 @@ function pageTitle(pathname: string) {
         return "用户";
       } else if (pathname.split("/")?.[3] === "areas") {
         return "区域";
+      } else if (pathname.split("/")?.[3] === "competitors") {
+        return "竞争对手";
       }
     case "users":
       return "用户";

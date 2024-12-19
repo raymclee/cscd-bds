@@ -4,13 +4,16 @@ import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
-import { Button, Descriptions, Image, Space } from "antd";
+import { Button, Card, Descriptions, Empty, Image, List, Space } from "antd";
 import dayjs from "dayjs";
-import { ListTodo } from "lucide-react";
 import { graphql, useFragment } from "react-relay";
-import { tenderStatusText } from "~/lib/helper";
+import {
+  fixAmount,
+  levelInvolvedText,
+  projectTypeText,
+  tenderStatusText,
+} from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
-import { usePortalStore } from "~/store/portal";
 
 type TenderDetailProps = {
   queryRef: tenderDetailFragment$key;
@@ -28,6 +31,13 @@ export const TenderDetailFragment = graphql`
     address
     fullAddress
     contractor
+    prepareToBid
+    projectCode
+    projectType
+    estimatedProjectStartDate
+    estimatedProjectEndDate
+    levelInvolved
+    costEngineer
     sizeAndValueRating
     sizeAndValueRatingOverview
     creditAndPaymentRating
@@ -38,20 +48,10 @@ export const TenderDetailFragment = graphql`
     customerRelationshipRatingOverview
     competitivePartnershipRating
     competitivePartnershipRatingOverview
-    prepareToBid
-    projectCode
-    projectDefinition
-    estimatedProjectStartDate
-    estimatedProjectEndDate
-    projectType
-    attachements
-    remark
-    images
     tenderSituations
     ownerSituations
     biddingInstructions
     competitorSituations
-    costEngineer
     tenderForm
     contractForm
     managementCompany
@@ -61,15 +61,26 @@ export const TenderDetailFragment = graphql`
     designUnit
     consultingFirm
     keyProject
+    currentProgress
     tenderWinCompany
-    tenderCode
-    architect
-    developer
-    tenderClosingDate
-    constructionArea
     tenderWinDate
     tenderWinAmount
     lastTenderAmount
+    attachements
+    tenderCode
+    developer
+    architect
+    facadeConsultant
+    tenderClosingDate
+    constructionArea
+    remark
+    images
+    createdBy {
+      id
+    }
+    finder {
+      id
+    }
     area {
       id
       code
@@ -78,12 +89,6 @@ export const TenderDetailFragment = graphql`
     followingSales {
       id
       name
-    }
-    finder {
-      id
-    }
-    createdBy {
-      id
     }
     customer {
       id
@@ -131,26 +136,42 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
     contractForm,
     managementCompany,
     tenderingAgency,
-    biddingDate,
     facadeConsultant,
     designUnit,
     consultingFirm,
-    keyProject,
-    tenderWinCompany,
-    tenderWinDate,
-    tenderWinAmount,
-    lastTenderAmount,
-    followingSales,
-    area,
     images,
     fullAddress,
     remark,
     customer,
+    estimatedAmount,
+    tenderDate,
+    keyProject,
+    currentProgress,
+    contractor,
+    projectCode,
+    projectType,
+    estimatedProjectStartDate,
+    estimatedProjectEndDate,
+    levelInvolved,
+    prepareToBid,
+    costEngineer,
+    sizeAndValueRating,
+    sizeAndValueRatingOverview,
+    creditAndPaymentRating,
+    creditAndPaymentRatingOverview,
+    timeLimitRating,
+    timeLimitRatingOverview,
+    customerRelationshipRating,
+    customerRelationshipRatingOverview,
+    competitivePartnershipRating,
+    competitivePartnershipRatingOverview,
+    attachements,
   } = tender;
+
   return (
     <div className="space-y-4">
       <Descriptions
-        className="p-6 bg-white rounded-lg"
+        className="rounded-lg bg-white p-6"
         title={name}
         extra={
           canEdit(session, { tender }) && (
@@ -160,134 +181,269 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                   编辑
                 </Button>
               </Link>
-              {/* <Button
-                type="primary"
-                icon={<ListTodo size={16} />}
-                onClick={() => {
-                  usePortalStore.setState({ tenderResultTender: tender });
-                }}
-              >
-                结果
-              </Button> */}
             </Space>
           )
         }
         items={[
+          { key: "status", label: "状态", children: tenderStatusText(status) },
           {
-            key: "developer",
+            key: "customer",
             label: "业主",
-            children: customer ? customer.name : "-",
+            children: (
+              <Link
+                to="/portal/customers/$id"
+                params={{ id: customer?.id || "" }}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                {customer?.name}
+              </Link>
+            ),
           },
           {
-            key: "status",
-            label: "状态",
-            children: tenderStatusText(status),
+            key: "estimatedAmount",
+            label: "预计金额",
+            children: estimatedAmount
+              ? `￥${fixAmount(estimatedAmount)}亿元`
+              : "-",
           },
           {
-            key: "facadeConsultant",
-            label: "外观顾问",
-            children: facadeConsultant ? facadeConsultant : "-",
+            key: "tenderDate",
+            label: "招标日",
+            children: tenderDate ? dayjs(tenderDate).format("LL") : "-",
           },
-
-          { key: "area", label: "区域", children: area.name },
+          {
+            key: "contractor",
+            label: "总包单位",
+            children: contractor || "-",
+          },
+          {
+            key: "projectCode",
+            label: "项目代码",
+            children: projectCode || "-",
+          },
+          {
+            key: "projectType",
+            label: "项目类型",
+            children: projectTypeText(projectType) || "-",
+          },
+          {
+            key: "estimatedProjectDates",
+            label: "预计项目周期",
+            children: estimatedProjectStartDate
+              ? `${dayjs(estimatedProjectStartDate).format("LL")} ~ ${dayjs(estimatedProjectEndDate).format("LL")}`
+              : "-",
+          },
+          {
+            key: "levelInvolved",
+            label: "涉及层面",
+            children: levelInvolved ? levelInvolvedText(levelInvolved) : "-",
+          },
+          {
+            key: "keyProject",
+            label: "是否重点跟进项目",
+            children: keyProject ? "是" : "否",
+          },
+          {
+            key: "prepareToBid",
+            label: "准备投标",
+            children: prepareToBid ? "是" : "否",
+          },
+          {
+            key: "costEngineer",
+            label: "造价师",
+            children: costEngineer || "-",
+          },
           {
             key: "fullAddress",
             label: "地址",
-            children: fullAddress ? fullAddress : "-",
-          },
-
-          {
-            key: "biddingInstructions",
-            label: "投标说明",
-            children: biddingInstructions,
-          },
-          {
-            key: "tenderSituations",
-            label: "投标情况",
-            children: tenderSituations,
+            children: fullAddress || "-",
             span: 3,
           },
           {
-            key: "ownerSituations",
-            label: "业主情况",
-            children: ownerSituations,
+            key: "remark",
+            label: "备注",
+            children: remark || "-",
+            span: 3,
           },
           {
-            key: "competitorSituations",
-            label: "竞争对手情况",
-            children: competitorSituations,
+            key: "biddingInstructions",
+            label: "立项/投标说明",
+            children: biddingInstructions || "-",
+            span: 3,
           },
-          { key: "tenderForm", label: "投标文件", children: tenderForm },
-          { key: "contractForm", label: "合同文件", children: contractForm },
+          {
+            key: "tenderForm",
+            label: "招采形式",
+            children: tenderForm || "-",
+          },
+          {
+            key: "contractForm",
+            label: "合同形式",
+            children: contractForm || "-",
+          },
           {
             key: "managementCompany",
             label: "管理公司",
-            children: managementCompany,
+            children: managementCompany || "-",
           },
           {
             key: "tenderingAgency",
             label: "招标代理",
-            children: tenderingAgency,
+            children: tenderingAgency || "-",
           },
           {
-            key: "biddingDate",
-            label: "投标日期",
-            children: biddingDate ? dayjs(biddingDate).format("LL") : "-",
+            key: "consultingFirm",
+            label: "咨询公司",
+            children: consultingFirm || "-",
           },
           {
             key: "facadeConsultant",
-            label: "外观顾问",
-            children: facadeConsultant,
-          },
-          { key: "designUnit", label: "设计单位", children: designUnit },
-          {
-            key: "consultingFirm",
-            label: "顾问公司",
-            children: consultingFirm,
+            label: "幕墙顾问",
+            children: facadeConsultant || "-",
           },
           {
-            key: "keyProject",
-            label: "关键项目",
-            children: keyProject ? "是" : "否",
+            key: "designUnit",
+            label: "设计单位",
+            children: designUnit || "-",
           },
           {
-            key: "tenderWinCompany",
-            label: "得标公司",
-            children: tenderWinCompany,
+            key: "currentProgress",
+            label: "当前进展",
+            children: currentProgress || "-",
           },
-          {
-            key: "tenderWinDate",
-            label: "得标日期",
-            children: tenderWinDate ? dayjs(tenderWinDate).format("LL") : "-",
-          },
-          {
-            key: "tenderWinAmount",
-            label: "得标金额",
-            children: tenderWinAmount,
-          },
-          {
-            key: "lastTenderAmount",
-            label: "最后一次投标金额",
-            children: lastTenderAmount,
-          },
-          {
-            key: "followingSales",
-            label: "跟进销售",
-            children: followingSales?.map((s) => s.name).join(", "),
-          },
-          { key: "remark", label: "备注", children: remark },
         ]}
       />
 
-      <Image.PreviewGroup preview={{}}>
-        {images?.map((image, i) => (
-          <Image
-            className="aspect-video max-h-[300px] overflow-hidden"
-            key={["list", i].join("-")}
-            src={image}
+      <Descriptions
+        className="rounded-lg bg-white p-6"
+        title="项目情况"
+        items={[
+          {
+            key: "tenderSituations",
+            label: "项目主要情况",
+            children: tenderSituations || "-",
+            span: 3,
+          },
+          {
+            key: "ownerSituations",
+            label: "业主主要情况",
+            children: ownerSituations || "-",
+            span: 3,
+          },
+          {
+            key: "competitorSituations",
+            label: "竞争对手情况",
+            children: competitorSituations || "-",
+            span: 3,
+          },
+        ]}
+      />
+
+      <Descriptions
+        className="rounded-lg bg-white p-6"
+        title="评分"
+        items={[
+          {
+            key: "sizeAndValue",
+            label: "规模及价值",
+            children: sizeAndValueRating ? (
+              <div>
+                <div>评分：{sizeAndValueRating}/5</div>
+                <div>概述：{sizeAndValueRatingOverview || "-"}</div>
+              </div>
+            ) : (
+              "-"
+            ),
+            span: 3,
+          },
+          {
+            key: "creditAndPayment",
+            label: "资信及付款",
+            children: creditAndPaymentRating ? (
+              <div>
+                <div>评分：{creditAndPaymentRating}/5</div>
+                <div>概述：{creditAndPaymentRatingOverview || "-"}</div>
+              </div>
+            ) : (
+              "-"
+            ),
+            span: 3,
+          },
+          {
+            key: "timeLimit",
+            label: "中标原则及时限",
+            children: timeLimitRating ? (
+              <div>
+                <div>评分：{timeLimitRating}/5</div>
+                <div>概述：{timeLimitRatingOverview || "-"}</div>
+              </div>
+            ) : (
+              "-"
+            ),
+            span: 3,
+          },
+          {
+            key: "customerRelationship",
+            label: "客情关系",
+            children: customerRelationshipRating ? (
+              <div>
+                <div>评分：{customerRelationshipRating}/5</div>
+                <div>概述：{customerRelationshipRatingOverview || "-"}</div>
+              </div>
+            ) : (
+              "-"
+            ),
+            span: 3,
+          },
+          {
+            key: "competitivePartnership",
+            label: "竞争合作关系",
+            children: competitivePartnershipRating ? (
+              <div>
+                <div>评分：{competitivePartnershipRating}/5</div>
+                <div>概述：{competitivePartnershipRatingOverview || "-"}</div>
+              </div>
+            ) : (
+              "-"
+            ),
+            span: 3,
+          },
+        ]}
+      />
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card title="效果图">
+          {images?.length && images?.length > 0 ? (
+            <Image.PreviewGroup preview={{}}>
+              {images?.map((image, i) => (
+                <Image
+                  className="aspect-video max-h-[200px] overflow-hidden"
+                  key={["list", i].join("-")}
+                  src={image}
+                />
+              ))}
+            </Image.PreviewGroup>
+          ) : (
+            <Empty description="暂无效果图" />
+          )}
+        </Card>
+
+        <Card title="附件">
+          <List
+            dataSource={attachements?.filter(Boolean)}
+            renderItem={(item) => (
+              <List.Item>
+                <a
+                  href={item}
+                  className="text-blue-500 underline hover:text-blue-700 hover:no-underline"
+                >
+                  {item.split("/").pop()}
+                </a>
+              </List.Item>
+            )}
           />
-        ))}
-      </Image.PreviewGroup>
+        </Card>
+      </div>
     </div>
   );
 }
@@ -304,7 +460,6 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     facadeConsultant,
     tenderClosingDate,
     constructionArea,
-    area,
     images,
     fullAddress,
     tenderWinAmount,
@@ -316,7 +471,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
   return (
     <div className="space-y-4">
       <Descriptions
-        className="p-6 bg-white rounded-lg"
+        className="rounded-lg bg-white p-6"
         extra={
           canEdit(session, { tender }) && (
             <Space>
@@ -381,7 +536,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
       />
 
       <Descriptions
-        className="p-6 bg-white rounded-lg"
+        className="rounded-lg bg-white p-6"
         title="得標資料"
         items={[
           {

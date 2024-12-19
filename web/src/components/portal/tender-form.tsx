@@ -28,6 +28,7 @@ import {
   isGA,
   isHW,
   levelInvolvedOptions,
+  projectTypeOptions,
   tenderStatusOptions,
   toActualAmount,
 } from "~/lib/helper";
@@ -242,6 +243,7 @@ export function TenderForm({
         designUnit: tender.designUnit,
         consultingFirm: tender.consultingFirm,
         keyProject: tender.keyProject,
+        currentProgress: tender.currentProgress,
         managementCompany: tender.managementCompany,
         tenderingAgency: tender.tenderingAgency,
         tenderWinCompany: tender.tenderWinCompany,
@@ -254,6 +256,26 @@ export function TenderForm({
         tenderWinAmount: tender.tenderWinAmount,
         lastTenderAmount: tender.lastTenderAmount,
         remark: tender.remark,
+        tenderForm: tender.tenderForm,
+        contractForm: tender.contractForm,
+        biddingInstructions: tender.biddingInstructions,
+        tenderSituations: tender.tenderSituations,
+        ownerSituations: tender.ownerSituations,
+        competitorSituations: tender.competitorSituations,
+        costEngineer: tender.costEngineer,
+        sizeAndValueRating: tender.sizeAndValueRating,
+        sizeAndValueRatingOverview: tender.sizeAndValueRatingOverview,
+        creditAndPaymentRating: tender.creditAndPaymentRating,
+        creditAndPaymentRatingOverview: tender.creditAndPaymentRatingOverview,
+        timeLimitRating: tender.timeLimitRating,
+        timeLimitRatingOverview: tender.timeLimitRatingOverview,
+        customerRelationshipRating: tender.customerRelationshipRating,
+        customerRelationshipRatingOverview:
+          tender.customerRelationshipRatingOverview,
+        competitivePartnershipRating: tender.competitivePartnershipRating,
+        competitivePartnershipRatingOverview:
+          tender.competitivePartnershipRatingOverview,
+        levelInvolved: tender.levelInvolved,
       });
     }
   }, [tender]);
@@ -596,6 +618,7 @@ export function TenderForm({
                   <Form.Item
                     name="projectDefinition"
                     label="项目定义"
+                    className="md:col-span-2"
                     rules={[{ required: true }]}
                   >
                     <Input />
@@ -749,17 +772,9 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <Form.Item
-                name="projectType"
-                label="项目类型"
-                className="md:col-span-2"
-              >
+              <Form.Item name="projectType" label="项目类型">
                 <Select
-                  options={[
-                    { label: "GC:830工程项目", value: "GC" },
-                    { label: "SC:830生产项目", value: "SC" },
-                    { label: "YF:830研发项目", value: "YF" },
-                  ]}
+                  options={projectTypeOptions}
                   showSearch
                   optionFilterProp="label"
                 />
@@ -767,6 +782,14 @@ export function TenderForm({
 
               <Form.Item name="levelInvolved" label="涉及层面">
                 <Select options={levelInvolvedOptions} />
+              </Form.Item>
+
+              <Form.Item name="currentProgress" label="当前进展">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="keyProject" label="是否重点跟进项目">
+                <Switch />
               </Form.Item>
 
               <Form.Item name="prepareToBid" label="是否准备投标">
@@ -780,13 +803,23 @@ export function TenderForm({
                   className="sm:col-span-2 md:col-span-3 lg:col-span-4"
                 >
                   <Dragger
+                    defaultFileList={tender?.attachements?.map((url, i) => ({
+                      uid: i.toString(),
+                      name: url.split("/").pop() ?? "",
+                      url,
+                      status: "done",
+                    }))}
                     multiple
                     name="files"
                     action="/api/v1/file/upload"
                     accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
                     onChange={(info) => {
                       for (const file of info.fileList) {
-                        if (file.status === "done") {
+                        if (
+                          file.status === "done" &&
+                          !file.name.startsWith("/static/") &&
+                          file.lastModified
+                        ) {
                           setAttachmentFileNames((prev) => [
                             ...prev,
                             file.name,
@@ -874,7 +907,7 @@ export function TenderForm({
                 multiple
                 defaultFileList={tender?.images?.map((url, i) => ({
                   uid: i.toString(),
-                  name: url,
+                  name: url.split("/").pop() ?? "",
                   url,
                   status: "done",
                 }))}
@@ -886,11 +919,11 @@ export function TenderForm({
                   setRemoveImageFileNames((prev) => [...prev, file.name]);
                 }}
                 onChange={(info) => {
-                  console.log(info);
                   for (const file of info.fileList) {
                     if (
                       file.status === "done" &&
-                      !file.name.startsWith("/static/")
+                      !file.name.startsWith("/static/") &&
+                      file.lastModified
                     ) {
                       setImageFileNames((prev) => {
                         if (prev.includes(file.name)) {

@@ -117,6 +117,9 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 		q.SetGeoBounds(geoBounds)
 	}
 
+	tid := xid.MustNew("TE")
+	q.SetID(tid)
+
 	date := time.Now()
 	stdate := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.Local)
 	enddate := stdate.AddDate(0, 0, 1)
@@ -174,7 +177,7 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	var images []string
 	{
 		for _, fn := range imageFileNames {
-			filename, err := util.SaveStaticFile(fn, true)
+			filename, err := util.SaveStaticFile(string(tid), fn, true)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save image file: %w", err)
 			}
@@ -188,7 +191,7 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	var attachments []string
 	{
 		for _, fn := range attachmentFileNames {
-			filename, err := util.SaveStaticFile(fn, false)
+			filename, err := util.SaveStaticFile(string(tid), fn, false)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save attachment file: %w", err)
 			}
@@ -203,6 +206,11 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	if err != nil {
 		return nil, fmt.Errorf("failed to create tender: %w", err)
 	}
+
+	if t.Status == 3 {
+		go r.sap.InsertTender(r.store, t)
+	}
+
 	return &ent.TenderConnection{
 		Edges: []*ent.TenderEdge{
 			{Node: t},
@@ -238,7 +246,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			if strings.HasPrefix(fn, "/static/") {
 				continue
 			}
-			filename, err := util.SaveStaticFile(fn, true)
+			filename, err := util.SaveStaticFile(string(t.ID), fn, true)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save image file: %w", err)
 			}
@@ -248,23 +256,25 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			q.AppendImages(images)
 		}
 	}
+
+	var removedImages []string
 	for _, fn := range removeImageFileNames {
-		for i, image := range t.Images {
-			if fn == image {
-				util.DeleteStaticFile(image)
-				t.Images = append(t.Images[:i], t.Images[i+1:]...)
-				break
+		for _, image := range t.Images {
+			if strings.Contains(image, fn) {
+				util.DeleteStaticFile(string(t.ID), image)
+			} else {
+				removedImages = append(removedImages, image)
 			}
 		}
 	}
 	if len(removeImageFileNames) > 0 {
-		q.SetImages(t.Images)
+		q.SetImages(removedImages)
 	}
 
 	var attachments []string
 	{
 		for _, fn := range attachmentFileNames {
-			filename, err := util.SaveStaticFile(fn, false)
+			filename, err := util.SaveStaticFile(string(t.ID), fn, false)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save attachment file: %w", err)
 			}
@@ -274,20 +284,33 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			q.AppendAttachements(attachments)
 		}
 	}
+
+	var removedAttachments []string
 	for _, fn := range removeAttachmentFileNames {
-		for i, att := range t.Attachements {
-			if fn == att {
-				util.DeleteStaticFile(att)
-				t.Attachements = append(t.Attachements[:i], t.Attachements[i+1:]...)
+		for _, att := range t.Attachements {
+			if strings.Contains(att, fn) {
+				util.DeleteStaticFile(string(t.ID), att)
+				removedAttachments = append(removedAttachments, att)
 				break
+			} else {
+				removedAttachments = append(removedAttachments, att)
 			}
 		}
 	}
 	if len(removeAttachmentFileNames) > 0 {
-		q.SetAttachements(t.Attachements)
+		q.SetAttachements(removedAttachments)
 	}
 
-	return q.Save(ctx)
+	t, err = q.Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	if t.Status == 3 {
+		go r.sap.InsertTender(r.store, t)
+	}
+
+	return t, nil
 }
 
 // DeleteTender is the resolver for the deleteTender field.
@@ -336,28 +359,6 @@ func (r *mutationResolver) DeletePlot(ctx context.Context, id xid.ID) (*ent.Plot
 		return nil, fmt.Errorf("failed to delete plot: %w", err)
 	}
 	return p, nil
-}
-
-// SetTenderCompetitor is the resolver for the setTenderCompetitor field.
-func (r *mutationResolver) SetTenderCompetitor(ctx context.Context, tenderID xid.ID, competitorID xid.ID, won bool) (*ent.Tender, error) {
-	t, err := r.store.Tender.Query().Where(tender.ID(tenderID)).WithArea().Only(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get tender: %w", err)
-	}
-	var status int
-	if won {
-		status = 3
-	} else {
-		status = 4
-	}
-	if won && t.Edges.Area.Code != "GA" && t.Edges.Area.Code != "HW" {
-		go r.sap.InsertTender(r.store, t)
-	}
-	t, err = t.Update().SetCompetitorID(competitorID).SetStatus(status).Save(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to set tender competitor: %w", err)
-	}
-	return t, nil
 }
 
 // CreateVisitRecord is the resolver for the createVisitRecord field.

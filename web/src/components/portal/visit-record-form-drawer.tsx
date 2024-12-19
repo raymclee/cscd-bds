@@ -180,6 +180,8 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
 
         <Form.Item label="商機" name="tenderID">
           <Select
+            optionFilterProp="label"
+            showSearch
             options={data.node?.tenders?.edges?.map((t) => ({
               label: t?.node?.name,
               value: t?.node?.id,

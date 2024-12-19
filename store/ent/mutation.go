@@ -7780,6 +7780,7 @@ type TenderMutation struct {
 	design_unit                             *string
 	consulting_firm                         *string
 	key_project                             *bool
+	current_progress                        *string
 	tender_win_company                      *string
 	tender_code                             *string
 	architect                               *string
@@ -10337,6 +10338,55 @@ func (m *TenderMutation) ResetKeyProject() {
 	m.key_project = nil
 }
 
+// SetCurrentProgress sets the "current_progress" field.
+func (m *TenderMutation) SetCurrentProgress(s string) {
+	m.current_progress = &s
+}
+
+// CurrentProgress returns the value of the "current_progress" field in the mutation.
+func (m *TenderMutation) CurrentProgress() (r string, exists bool) {
+	v := m.current_progress
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCurrentProgress returns the old "current_progress" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldCurrentProgress(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCurrentProgress is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCurrentProgress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCurrentProgress: %w", err)
+	}
+	return oldValue.CurrentProgress, nil
+}
+
+// ClearCurrentProgress clears the value of the "current_progress" field.
+func (m *TenderMutation) ClearCurrentProgress() {
+	m.current_progress = nil
+	m.clearedFields[tender.FieldCurrentProgress] = struct{}{}
+}
+
+// CurrentProgressCleared returns if the "current_progress" field was cleared in this mutation.
+func (m *TenderMutation) CurrentProgressCleared() bool {
+	_, ok := m.clearedFields[tender.FieldCurrentProgress]
+	return ok
+}
+
+// ResetCurrentProgress resets all changes to the "current_progress" field.
+func (m *TenderMutation) ResetCurrentProgress() {
+	m.current_progress = nil
+	delete(m.clearedFields, tender.FieldCurrentProgress)
+}
+
 // SetTenderWinCompany sets the "tender_win_company" field.
 func (m *TenderMutation) SetTenderWinCompany(s string) {
 	m.tender_win_company = &s
@@ -11531,7 +11581,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 64)
+	fields := make([]string, 0, 65)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -11672,6 +11722,9 @@ func (m *TenderMutation) Fields() []string {
 	}
 	if m.key_project != nil {
 		fields = append(fields, tender.FieldKeyProject)
+	}
+	if m.current_progress != nil {
+		fields = append(fields, tender.FieldCurrentProgress)
 	}
 	if m.tender_win_company != nil {
 		fields = append(fields, tender.FieldTenderWinCompany)
@@ -11826,6 +11879,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.ConsultingFirm()
 	case tender.FieldKeyProject:
 		return m.KeyProject()
+	case tender.FieldCurrentProgress:
+		return m.CurrentProgress()
 	case tender.FieldTenderWinCompany:
 		return m.TenderWinCompany()
 	case tender.FieldTenderCode:
@@ -11963,6 +12018,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldConsultingFirm(ctx)
 	case tender.FieldKeyProject:
 		return m.OldKeyProject(ctx)
+	case tender.FieldCurrentProgress:
+		return m.OldCurrentProgress(ctx)
 	case tender.FieldTenderWinCompany:
 		return m.OldTenderWinCompany(ctx)
 	case tender.FieldTenderCode:
@@ -12334,6 +12391,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetKeyProject(v)
+		return nil
+	case tender.FieldCurrentProgress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCurrentProgress(v)
 		return nil
 	case tender.FieldTenderWinCompany:
 		v, ok := value.(string)
@@ -12724,6 +12788,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldConsultingFirm) {
 		fields = append(fields, tender.FieldConsultingFirm)
 	}
+	if m.FieldCleared(tender.FieldCurrentProgress) {
+		fields = append(fields, tender.FieldCurrentProgress)
+	}
 	if m.FieldCleared(tender.FieldTenderWinCompany) {
 		fields = append(fields, tender.FieldTenderWinCompany)
 	}
@@ -12896,6 +12963,9 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldConsultingFirm:
 		m.ClearConsultingFirm()
+		return nil
+	case tender.FieldCurrentProgress:
+		m.ClearCurrentProgress()
 		return nil
 	case tender.FieldTenderWinCompany:
 		m.ClearTenderWinCompany()
@@ -13087,6 +13157,9 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldKeyProject:
 		m.ResetKeyProject()
+		return nil
+	case tender.FieldCurrentProgress:
+		m.ResetCurrentProgress()
 		return nil
 	case tender.FieldTenderWinCompany:
 		m.ResetTenderWinCompany()

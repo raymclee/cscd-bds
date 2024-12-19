@@ -7,6 +7,28 @@ import {
   TenderConnection,
 } from "~/graphql/graphql";
 
+export function projectTypeText(typ: Maybe<string> | undefined): string {
+  if (!typ) {
+    return "";
+  }
+  switch (typ) {
+    case "GC":
+      return "GC:830工程项目";
+    case "SC":
+      return "SC:830生产项目";
+    case "YF":
+      return "YF:830研发项目";
+    default:
+      return "";
+  }
+}
+
+export const projectTypeOptions = [
+  { label: "GC:830工程项目", value: "GC" },
+  { label: "SC:830生产项目", value: "SC" },
+  { label: "YF:830研发项目", value: "YF" },
+];
+
 export function ownerTypeText(typ: Maybe<number> | undefined): string {
   if (!typ) {
     return "";

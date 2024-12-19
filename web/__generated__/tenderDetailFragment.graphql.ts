@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4456f9c7d4fbb0bf6b5e722f49227a4e>>
+ * @generated SignedSource<<96e82a61e64b29f18d9366f5c767b99c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -40,6 +40,7 @@ export type tenderDetailFragment$data = {
   };
   readonly creditAndPaymentRating: number | null | undefined;
   readonly creditAndPaymentRatingOverview: string | null | undefined;
+  readonly currentProgress: string | null | undefined;
   readonly customer: {
     readonly id: string;
     readonly name: string;
@@ -71,12 +72,12 @@ export type tenderDetailFragment$data = {
   readonly images: ReadonlyArray<string> | null | undefined;
   readonly keyProject: boolean;
   readonly lastTenderAmount: number | null | undefined;
+  readonly levelInvolved: number | null | undefined;
   readonly managementCompany: string | null | undefined;
   readonly name: string;
   readonly ownerSituations: string | null | undefined;
   readonly prepareToBid: boolean;
   readonly projectCode: string | null | undefined;
-  readonly projectDefinition: string | null | undefined;
   readonly projectType: string | null | undefined;
   readonly province: {
     readonly adcode: number;
@@ -203,6 +204,55 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "prepareToBid",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "projectCode",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "projectType",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "estimatedProjectStartDate",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "estimatedProjectEndDate",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "levelInvolved",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "costEngineer",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "sizeAndValueRating",
       "storageKey": null
     },
@@ -273,69 +323,6 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "prepareToBid",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "projectCode",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "projectDefinition",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "estimatedProjectStartDate",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "estimatedProjectEndDate",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "projectType",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "attachements",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "remark",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "images",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
       "name": "tenderSituations",
       "storageKey": null
     },
@@ -358,13 +345,6 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "competitorSituations",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costEngineer",
       "storageKey": null
     },
     {
@@ -434,42 +414,14 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "currentProgress",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "tenderWinCompany",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "tenderCode",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "architect",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "developer",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "tenderClosingDate",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "constructionArea",
       "storageKey": null
     },
     {
@@ -491,6 +443,82 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "lastTenderAmount",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "attachements",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "tenderCode",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "developer",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "architect",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "tenderClosingDate",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "constructionArea",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "remark",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "images",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "User",
+      "kind": "LinkedField",
+      "name": "createdBy",
+      "plural": false,
+      "selections": (v3/*: any*/),
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "User",
+      "kind": "LinkedField",
+      "name": "finder",
+      "plural": false,
+      "selections": (v3/*: any*/),
       "storageKey": null
     },
     {
@@ -518,26 +546,6 @@ return {
         (v0/*: any*/),
         (v2/*: any*/)
       ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "User",
-      "kind": "LinkedField",
-      "name": "finder",
-      "plural": false,
-      "selections": (v3/*: any*/),
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "User",
-      "kind": "LinkedField",
-      "name": "createdBy",
-      "plural": false,
-      "selections": (v3/*: any*/),
       "storageKey": null
     },
     {
@@ -596,6 +604,6 @@ return {
 };
 })();
 
-(node as any).hash = "27fb40fc8a51a568e1fb51d4be1a2a23";
+(node as any).hash = "0dbb9f8e180eb6b939d44cad34ca56e6";
 
 export default node;

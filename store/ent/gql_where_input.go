@@ -4436,6 +4436,23 @@ type TenderWhereInput struct {
 	KeyProject    *bool `json:"keyProject,omitempty"`
 	KeyProjectNEQ *bool `json:"keyProjectNEQ,omitempty"`
 
+	// "current_progress" field predicates.
+	CurrentProgress             *string  `json:"currentProgress,omitempty"`
+	CurrentProgressNEQ          *string  `json:"currentProgressNEQ,omitempty"`
+	CurrentProgressIn           []string `json:"currentProgressIn,omitempty"`
+	CurrentProgressNotIn        []string `json:"currentProgressNotIn,omitempty"`
+	CurrentProgressGT           *string  `json:"currentProgressGT,omitempty"`
+	CurrentProgressGTE          *string  `json:"currentProgressGTE,omitempty"`
+	CurrentProgressLT           *string  `json:"currentProgressLT,omitempty"`
+	CurrentProgressLTE          *string  `json:"currentProgressLTE,omitempty"`
+	CurrentProgressContains     *string  `json:"currentProgressContains,omitempty"`
+	CurrentProgressHasPrefix    *string  `json:"currentProgressHasPrefix,omitempty"`
+	CurrentProgressHasSuffix    *string  `json:"currentProgressHasSuffix,omitempty"`
+	CurrentProgressIsNil        bool     `json:"currentProgressIsNil,omitempty"`
+	CurrentProgressNotNil       bool     `json:"currentProgressNotNil,omitempty"`
+	CurrentProgressEqualFold    *string  `json:"currentProgressEqualFold,omitempty"`
+	CurrentProgressContainsFold *string  `json:"currentProgressContainsFold,omitempty"`
+
 	// "tender_win_company" field predicates.
 	TenderWinCompany             *string  `json:"tenderWinCompany,omitempty"`
 	TenderWinCompanyNEQ          *string  `json:"tenderWinCompanyNEQ,omitempty"`
@@ -6430,6 +6447,51 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.KeyProjectNEQ != nil {
 		predicates = append(predicates, tender.KeyProjectNEQ(*i.KeyProjectNEQ))
+	}
+	if i.CurrentProgress != nil {
+		predicates = append(predicates, tender.CurrentProgressEQ(*i.CurrentProgress))
+	}
+	if i.CurrentProgressNEQ != nil {
+		predicates = append(predicates, tender.CurrentProgressNEQ(*i.CurrentProgressNEQ))
+	}
+	if len(i.CurrentProgressIn) > 0 {
+		predicates = append(predicates, tender.CurrentProgressIn(i.CurrentProgressIn...))
+	}
+	if len(i.CurrentProgressNotIn) > 0 {
+		predicates = append(predicates, tender.CurrentProgressNotIn(i.CurrentProgressNotIn...))
+	}
+	if i.CurrentProgressGT != nil {
+		predicates = append(predicates, tender.CurrentProgressGT(*i.CurrentProgressGT))
+	}
+	if i.CurrentProgressGTE != nil {
+		predicates = append(predicates, tender.CurrentProgressGTE(*i.CurrentProgressGTE))
+	}
+	if i.CurrentProgressLT != nil {
+		predicates = append(predicates, tender.CurrentProgressLT(*i.CurrentProgressLT))
+	}
+	if i.CurrentProgressLTE != nil {
+		predicates = append(predicates, tender.CurrentProgressLTE(*i.CurrentProgressLTE))
+	}
+	if i.CurrentProgressContains != nil {
+		predicates = append(predicates, tender.CurrentProgressContains(*i.CurrentProgressContains))
+	}
+	if i.CurrentProgressHasPrefix != nil {
+		predicates = append(predicates, tender.CurrentProgressHasPrefix(*i.CurrentProgressHasPrefix))
+	}
+	if i.CurrentProgressHasSuffix != nil {
+		predicates = append(predicates, tender.CurrentProgressHasSuffix(*i.CurrentProgressHasSuffix))
+	}
+	if i.CurrentProgressIsNil {
+		predicates = append(predicates, tender.CurrentProgressIsNil())
+	}
+	if i.CurrentProgressNotNil {
+		predicates = append(predicates, tender.CurrentProgressNotNil())
+	}
+	if i.CurrentProgressEqualFold != nil {
+		predicates = append(predicates, tender.CurrentProgressEqualFold(*i.CurrentProgressEqualFold))
+	}
+	if i.CurrentProgressContainsFold != nil {
+		predicates = append(predicates, tender.CurrentProgressContainsFold(*i.CurrentProgressContainsFold))
 	}
 	if i.TenderWinCompany != nil {
 		predicates = append(predicates, tender.TenderWinCompanyEQ(*i.TenderWinCompany))

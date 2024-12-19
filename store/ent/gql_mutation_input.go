@@ -926,6 +926,7 @@ type CreateTenderInput struct {
 	DesignUnit                           *string
 	ConsultingFirm                       *string
 	KeyProject                           *bool
+	CurrentProgress                      *string
 	TenderWinCompany                     *string
 	TenderCode                           *string
 	Architect                            *string
@@ -1078,6 +1079,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.KeyProject; v != nil {
 		m.SetKeyProject(*v)
 	}
+	if v := i.CurrentProgress; v != nil {
+		m.SetCurrentProgress(*v)
+	}
 	if v := i.TenderWinCompany; v != nil {
 		m.SetTenderWinCompany(*v)
 	}
@@ -1222,6 +1226,8 @@ type UpdateTenderInput struct {
 	ClearConsultingFirm                       bool
 	ConsultingFirm                            *string
 	KeyProject                                *bool
+	ClearCurrentProgress                      bool
+	CurrentProgress                           *string
 	ClearTenderWinCompany                     bool
 	TenderWinCompany                          *string
 	ClearTenderCode                           bool
@@ -1511,6 +1517,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.KeyProject; v != nil {
 		m.SetKeyProject(*v)
+	}
+	if i.ClearCurrentProgress {
+		m.ClearCurrentProgress()
+	}
+	if v := i.CurrentProgress; v != nil {
+		m.SetCurrentProgress(*v)
 	}
 	if i.ClearTenderWinCompany {
 		m.ClearTenderWinCompany()

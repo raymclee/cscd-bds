@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5b847103494b9a5bdf31b669b7623187>>
+ * @generated SignedSource<<7f4ab08d1cc5b32af4e8d9b6945d200b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,6 +38,7 @@ export type UpdateTenderInput = {
   clearCostEngineer?: boolean | null | undefined;
   clearCreditAndPaymentRating?: boolean | null | undefined;
   clearCreditAndPaymentRatingOverview?: boolean | null | undefined;
+  clearCurrentProgress?: boolean | null | undefined;
   clearCustomer?: boolean | null | undefined;
   clearCustomerRelationshipRating?: boolean | null | undefined;
   clearCustomerRelationshipRatingOverview?: boolean | null | undefined;
@@ -87,6 +88,7 @@ export type UpdateTenderInput = {
   createdByID?: string | null | undefined;
   creditAndPaymentRating?: number | null | undefined;
   creditAndPaymentRatingOverview?: string | null | undefined;
+  currentProgress?: string | null | undefined;
   customerID?: string | null | undefined;
   customerRelationshipRating?: number | null | undefined;
   customerRelationshipRatingOverview?: string | null | undefined;

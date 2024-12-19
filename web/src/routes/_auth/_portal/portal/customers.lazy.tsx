@@ -188,6 +188,7 @@ function RouteComponent() {
               search: (prev) => ({ ...prev, page }),
             });
           },
+          showTotal: (total) => `共 ${total} 条`,
         }}
         dataSource={dataSource}
         // @ts-ignore

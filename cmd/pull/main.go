@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"cscd-bds/config"
 	"cscd-bds/store"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
@@ -14,6 +13,7 @@ import (
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -26,7 +26,6 @@ import (
 	lark "github.com/larksuite/oapi-sdk-go/v3"
 	larkauth "github.com/larksuite/oapi-sdk-go/v3/service/auth/v3"
 	larkbitable "github.com/larksuite/oapi-sdk-go/v3/service/bitable/v1"
-	"github.com/rs/xid"
 	"github.com/twpayne/go-geom"
 	"github.com/twpayne/go-geom/encoding/geojson"
 	"golang.org/x/sync/errgroup"
@@ -56,9 +55,9 @@ func main() {
 
 	// fetchArea()
 	// fetchSales()
-	fetchCustomer()
+	// fetchCustomer()
 	fetchTender()
-	fetchVisitRecord()
+	// fetchVisitRecord()
 	// fetchCompetitor()
 
 }
@@ -330,6 +329,7 @@ func fetchTender() {
 			fullAddress   *string
 			contractor    *string
 
+			photos                               []interface{}
 			sizeAndValueRating                   *int
 			sizeAndValueRatingOverview           *string
 			creditAndPaymentRating               *int
@@ -342,6 +342,7 @@ func fetchTender() {
 			competitivePartnershipRatingOverview *string
 			estimatedAmount                      *float64
 			prepareToBid                         bool = false
+			currentProgress                      *string
 			projectCode                          *string
 			projectDefinition                    *string
 			estimatedProjectStartDate            *time.Time
@@ -808,6 +809,12 @@ func fetchTender() {
 			}
 		}
 
+		if f, ok := item.Fields["当前进展"]; ok {
+			if v, ok := f.(string); ok {
+				currentProgress = &v
+			}
+		}
+
 		if f, ok := item.Fields["项目名称"]; ok {
 			if v, ok := f.(string); ok {
 				name = v
@@ -845,59 +852,11 @@ func fetchTender() {
 		}
 
 		if f, ok := item.Fields["效果图"]; ok {
-			photos, ok := f.([]interface{})
+			ps, ok := f.([]interface{})
 			if !ok {
 				continue
 			}
-			wg := errgroup.Group{}
-			for _, photo := range photos {
-				wg.Go(func() error {
-					id := xid.New().String()
-					p := photo.(map[string]interface{})
-					if !ok {
-						return nil
-					}
-					url, ok := p["url"].(string)
-					if !ok {
-						return nil
-					}
-					name, ok := p["name"].(string)
-					if !ok {
-						return nil
-					}
-
-					req, err := http.NewRequest("GET", url, nil)
-					if err != nil {
-						log.Fatal(err)
-					}
-					req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
-					res, err := httpClient.Do(req)
-					if err != nil {
-						log.Fatal(err)
-					}
-					defer res.Body.Close()
-
-					splited := strings.Split(name, ".")
-					file, err := os.Create(config.FilePath + id + "." + splited[len(splited)-1])
-					if err != nil {
-						log.Fatal(err)
-					}
-					defer file.Close()
-
-					_, err = io.Copy(file, res.Body)
-					if err != nil {
-						log.Fatal(err)
-					}
-					fmt.Println(id + "-" + name + " Success!")
-
-					images = append(images, fmt.Sprintf("/static/%s.%s", id, splited[len(splited)-1]))
-					return nil
-				})
-			}
-			if err := wg.Wait(); err != nil {
-				panic(err)
-			}
-
+			photos = ps
 		}
 
 		// fmt.Println(code, status, name, estimatedAmount, tenderDate, discoveryDate, prov, cit, distr)
@@ -933,6 +892,7 @@ func fetchTender() {
 			SetNillableManagementCompany(managementCompany).
 			SetNillableDesignUnit(designUnit).
 			SetKeyProject(keyProject).
+			SetNillableCurrentProgress(currentProgress).
 			SetNillableConsultingFirm(consultingFirm).
 			SetNillableFacadeConsultant(facadeConsultant).
 			SetNillableBiddingDate(biddingDate).
@@ -976,6 +936,73 @@ func fetchTender() {
 		if err := q.OnConflictColumns(tender.FieldCode).UpdateNewValues().Exec(ctx); err != nil {
 			fmt.Println(err)
 		}
+
+		t, err := s.Tender.Query().Where(tender.Code(code)).Only(ctx)
+		if err != nil {
+			fmt.Println(err)
+		}
+		wg := errgroup.Group{}
+		for _, photo := range photos {
+			fmt.Println("photo", photo)
+			wg.Go(func() error {
+				// id := xid.New().String()
+				p, ok := photo.(map[string]interface{})
+				if !ok {
+					fmt.Println("photo is not a map")
+					return errors.New("photo is not a map")
+				}
+				url, ok := p["url"].(string)
+				if !ok {
+					fmt.Println("url is not a string")
+					return errors.New("url is not a string")
+				}
+				name, ok := p["name"].(string)
+				if !ok {
+					fmt.Println("name is not a string")
+					return errors.New("name is not a string")
+				}
+
+				req, err := http.NewRequest("GET", url, nil)
+				if err != nil {
+					fmt.Println("req err", err)
+					return errors.New("req err")
+				}
+				req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
+				res, err := httpClient.Do(req)
+				if err != nil {
+					fmt.Println("res err", err)
+					return errors.New("res err")
+				}
+				defer res.Body.Close()
+
+				// splited := strings.Split(name, ".")
+				if err := os.MkdirAll(fmt.Sprintf("static/%s", t.ID), 0755); err != nil {
+					fmt.Println("mkdir err", err)
+					return errors.New("mkdir err")
+				}
+				file, err := os.Create(fmt.Sprintf("static/%s/%s", t.ID, name))
+				if err != nil {
+					fmt.Println("create file err", err)
+					return errors.New("create file err")
+				}
+				defer file.Close()
+
+				_, err = io.Copy(file, res.Body)
+				if err != nil {
+					fmt.Println("copy err", err)
+					return errors.New("copy err")
+				}
+				fmt.Println(name + " Success!")
+
+				images = append(images, fmt.Sprintf("/static/%s/%s", t.ID, name))
+				return nil
+			})
+		}
+		if err := wg.Wait(); err != nil {
+			panic(err)
+		}
+
+		t.Update().SetImages(images).Exec(ctx)
 
 	}
 }

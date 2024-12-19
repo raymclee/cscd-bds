@@ -53,6 +53,7 @@ func (h handler) UploadFile(c echo.Context) error {
 			fmt.Println(err)
 			return err
 		}
+		defer dst.Close()
 
 		// Copy
 		if _, err = io.Copy(dst, src); err != nil {

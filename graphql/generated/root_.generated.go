@@ -212,24 +212,23 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateArea          func(childComplexity int, input ent.CreateAreaInput) int
-		CreateCustomer      func(childComplexity int, input ent.CreateCustomerInput) int
-		CreatePlot          func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender        func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
-		CreateUser          func(childComplexity int, input ent.CreateUserInput) int
-		CreateVisitRecord   func(childComplexity int, input ent.CreateVisitRecordInput) int
-		DeleteCustomer      func(childComplexity int, id xid.ID) int
-		DeletePlot          func(childComplexity int, id xid.ID) int
-		DeleteTender        func(childComplexity int, id xid.ID) int
-		DeleteUser          func(childComplexity int, id xid.ID) int
-		DeleteVisitRecord   func(childComplexity int, id xid.ID) int
-		SetTenderCompetitor func(childComplexity int, tenderID xid.ID, competitorID xid.ID, won bool) int
-		UpdateArea          func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
-		UpdateCustomer      func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
-		UpdatePlot          func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
-		UpdateTender        func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
-		UpdateUser          func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
-		UpdateVisitRecord   func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
+		CreateArea        func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
+		CreatePlot        func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
+		CreateTender      func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
+		CreateUser        func(childComplexity int, input ent.CreateUserInput) int
+		CreateVisitRecord func(childComplexity int, input ent.CreateVisitRecordInput) int
+		DeleteCustomer    func(childComplexity int, id xid.ID) int
+		DeletePlot        func(childComplexity int, id xid.ID) int
+		DeleteTender      func(childComplexity int, id xid.ID) int
+		DeleteUser        func(childComplexity int, id xid.ID) int
+		DeleteVisitRecord func(childComplexity int, id xid.ID) int
+		UpdateArea        func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCustomer    func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
+		UpdatePlot        func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
+		UpdateTender      func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
+		UpdateUser        func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
+		UpdateVisitRecord func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 	}
 
 	PageInfo struct {
@@ -345,6 +344,7 @@ type ComplexityRoot struct {
 		CreatedByID                          func(childComplexity int) int
 		CreditAndPaymentRating               func(childComplexity int) int
 		CreditAndPaymentRatingOverview       func(childComplexity int) int
+		CurrentProgress                      func(childComplexity int) int
 		Customer                             func(childComplexity int) int
 		CustomerID                           func(childComplexity int) int
 		CustomerRelationshipRating           func(childComplexity int) int
@@ -1396,18 +1396,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteVisitRecord(childComplexity, args["id"].(xid.ID)), true
 
-	case "Mutation.setTenderCompetitor":
-		if e.complexity.Mutation.SetTenderCompetitor == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_setTenderCompetitor_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.SetTenderCompetitor(childComplexity, args["tenderId"].(xid.ID), args["competitorId"].(xid.ID), args["won"].(bool)), true
-
 	case "Mutation.updateArea":
 		if e.complexity.Mutation.UpdateArea == nil {
 			break
@@ -2159,6 +2147,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.CreditAndPaymentRatingOverview(childComplexity), true
+
+	case "Tender.currentProgress":
+		if e.complexity.Tender.CurrentProgress == nil {
+			break
+		}
+
+		return e.complexity.Tender.CurrentProgress(childComplexity), true
 
 	case "Tender.customer":
 		if e.complexity.Tender.Customer == nil {
@@ -4031,6 +4026,7 @@ input CreateTenderInput {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean
+  currentProgress: String
   tenderWinCompany: String
   """
   投標編號，只限港澳
@@ -5653,6 +5649,7 @@ type Tender implements Node {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean!
+  currentProgress: String
   tenderWinCompany: String
   """
   投標編號，只限港澳
@@ -6468,6 +6465,24 @@ input TenderWhereInput {
   keyProject: Boolean
   keyProjectNEQ: Boolean
   """
+  current_progress field predicates
+  """
+  currentProgress: String
+  currentProgressNEQ: String
+  currentProgressIn: [String!]
+  currentProgressNotIn: [String!]
+  currentProgressGT: String
+  currentProgressGTE: String
+  currentProgressLT: String
+  currentProgressLTE: String
+  currentProgressContains: String
+  currentProgressHasPrefix: String
+  currentProgressHasSuffix: String
+  currentProgressIsNil: Boolean
+  currentProgressNotNil: Boolean
+  currentProgressEqualFold: String
+  currentProgressContainsFold: String
+  """
   tender_win_company field predicates
   """
   tenderWinCompany: String
@@ -7031,6 +7046,8 @@ input UpdateTenderInput {
   consultingFirm: String
   clearConsultingFirm: Boolean
   keyProject: Boolean
+  currentProgress: String
+  clearCurrentProgress: Boolean
   tenderWinCompany: String
   clearTenderWinCompany: Boolean
   """
@@ -7866,8 +7883,6 @@ type GeoJson {
   createPlot(input: CreatePlotInput!, geoBounds: [[Float!]!]): PlotConnection!
   updatePlot(id: ID!, input: UpdatePlotInput!, geoBounds: [[Float!]!]): Plot!
   deletePlot(id: ID!): Plot!
-
-  setTenderCompetitor(tenderId: ID!, competitorId: ID!, won: Boolean!): Tender!
 
   createVisitRecord(input: CreateVisitRecordInput!): VisitRecordConnection!
   updateVisitRecord(id: ID!, input: UpdateVisitRecordInput!): VisitRecord!

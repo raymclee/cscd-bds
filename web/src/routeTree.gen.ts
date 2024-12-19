@@ -31,6 +31,7 @@ import { Route as AuthPortalPortalAdminUsersImport } from './routes/_auth/_porta
 import { Route as AuthPortalPortalTendersIdPlotImport } from './routes/_auth/_portal/portal/tenders_.$id_.plot'
 import { Route as AuthPortalPortalTendersIdEditImport } from './routes/_auth/_portal/portal/tenders_.$id_.edit'
 import { Route as AuthPortalPortalSuperAdminSaUsersImport } from './routes/_auth/_portal/portal/_super-admin/sa/users'
+import { Route as AuthPortalPortalSuperAdminSaCompetitorsImport } from './routes/_auth/_portal/portal/_super-admin/sa/competitors'
 import { Route as AuthPortalPortalSuperAdminSaAreasImport } from './routes/_auth/_portal/portal/_super-admin/sa/areas'
 
 // Create Virtual Routes
@@ -241,6 +242,17 @@ const AuthPortalPortalSuperAdminSaUsersRoute =
     ),
   )
 
+const AuthPortalPortalSuperAdminSaCompetitorsRoute =
+  AuthPortalPortalSuperAdminSaCompetitorsImport.update({
+    id: '/sa/competitors',
+    path: '/sa/competitors',
+    getParentRoute: () => AuthPortalPortalSuperAdminRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_auth/_portal/portal/_super-admin/sa/competitors.lazy'
+    ).then((d) => d.Route),
+  )
+
 const AuthPortalPortalSuperAdminSaAreasRoute =
   AuthPortalPortalSuperAdminSaAreasImport.update({
     id: '/sa/areas',
@@ -410,6 +422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPortalPortalSuperAdminSaAreasImport
       parentRoute: typeof AuthPortalPortalSuperAdminImport
     }
+    '/_auth/_portal/portal/_super-admin/sa/competitors': {
+      id: '/_auth/_portal/portal/_super-admin/sa/competitors'
+      path: '/sa/competitors'
+      fullPath: '/portal/sa/competitors'
+      preLoaderRoute: typeof AuthPortalPortalSuperAdminSaCompetitorsImport
+      parentRoute: typeof AuthPortalPortalSuperAdminImport
+    }
     '/_auth/_portal/portal/_super-admin/sa/users': {
       id: '/_auth/_portal/portal/_super-admin/sa/users'
       path: '/sa/users'
@@ -478,6 +497,7 @@ const AuthPortalPortalAdminRouteWithChildren =
 
 interface AuthPortalPortalSuperAdminRouteChildren {
   AuthPortalPortalSuperAdminSaAreasRoute: typeof AuthPortalPortalSuperAdminSaAreasRoute
+  AuthPortalPortalSuperAdminSaCompetitorsRoute: typeof AuthPortalPortalSuperAdminSaCompetitorsRoute
   AuthPortalPortalSuperAdminSaUsersRoute: typeof AuthPortalPortalSuperAdminSaUsersRoute
 }
 
@@ -485,6 +505,8 @@ const AuthPortalPortalSuperAdminRouteChildren: AuthPortalPortalSuperAdminRouteCh
   {
     AuthPortalPortalSuperAdminSaAreasRoute:
       AuthPortalPortalSuperAdminSaAreasRoute,
+    AuthPortalPortalSuperAdminSaCompetitorsRoute:
+      AuthPortalPortalSuperAdminSaCompetitorsRoute,
     AuthPortalPortalSuperAdminSaUsersRoute:
       AuthPortalPortalSuperAdminSaUsersRoute,
   }
@@ -567,6 +589,7 @@ export interface FileRoutesByFullPath {
   '/portal/tenders/$id': typeof AuthPortalPortalTendersIdRoute
   '/portal/tenders/new': typeof AuthPortalPortalTendersNewRoute
   '/portal/sa/areas': typeof AuthPortalPortalSuperAdminSaAreasRoute
+  '/portal/sa/competitors': typeof AuthPortalPortalSuperAdminSaCompetitorsRoute
   '/portal/sa/users': typeof AuthPortalPortalSuperAdminSaUsersRoute
   '/portal/tenders/$id/edit': typeof AuthPortalPortalTendersIdEditRoute
   '/portal/tenders/$id/plot': typeof AuthPortalPortalTendersIdPlotRoute
@@ -589,6 +612,7 @@ export interface FileRoutesByTo {
   '/portal/tenders/$id': typeof AuthPortalPortalTendersIdRoute
   '/portal/tenders/new': typeof AuthPortalPortalTendersNewRoute
   '/portal/sa/areas': typeof AuthPortalPortalSuperAdminSaAreasRoute
+  '/portal/sa/competitors': typeof AuthPortalPortalSuperAdminSaCompetitorsRoute
   '/portal/sa/users': typeof AuthPortalPortalSuperAdminSaUsersRoute
   '/portal/tenders/$id/edit': typeof AuthPortalPortalTendersIdEditRoute
   '/portal/tenders/$id/plot': typeof AuthPortalPortalTendersIdPlotRoute
@@ -618,6 +642,7 @@ export interface FileRoutesById {
   '/_auth/_portal/portal/tenders_/$id': typeof AuthPortalPortalTendersIdRoute
   '/_auth/_portal/portal/tenders_/new': typeof AuthPortalPortalTendersNewRoute
   '/_auth/_portal/portal/_super-admin/sa/areas': typeof AuthPortalPortalSuperAdminSaAreasRoute
+  '/_auth/_portal/portal/_super-admin/sa/competitors': typeof AuthPortalPortalSuperAdminSaCompetitorsRoute
   '/_auth/_portal/portal/_super-admin/sa/users': typeof AuthPortalPortalSuperAdminSaUsersRoute
   '/_auth/_portal/portal/tenders_/$id_/edit': typeof AuthPortalPortalTendersIdEditRoute
   '/_auth/_portal/portal/tenders_/$id_/plot': typeof AuthPortalPortalTendersIdPlotRoute
@@ -643,6 +668,7 @@ export interface FileRouteTypes {
     | '/portal/tenders/$id'
     | '/portal/tenders/new'
     | '/portal/sa/areas'
+    | '/portal/sa/competitors'
     | '/portal/sa/users'
     | '/portal/tenders/$id/edit'
     | '/portal/tenders/$id/plot'
@@ -664,6 +690,7 @@ export interface FileRouteTypes {
     | '/portal/tenders/$id'
     | '/portal/tenders/new'
     | '/portal/sa/areas'
+    | '/portal/sa/competitors'
     | '/portal/sa/users'
     | '/portal/tenders/$id/edit'
     | '/portal/tenders/$id/plot'
@@ -691,6 +718,7 @@ export interface FileRouteTypes {
     | '/_auth/_portal/portal/tenders_/$id'
     | '/_auth/_portal/portal/tenders_/new'
     | '/_auth/_portal/portal/_super-admin/sa/areas'
+    | '/_auth/_portal/portal/_super-admin/sa/competitors'
     | '/_auth/_portal/portal/_super-admin/sa/users'
     | '/_auth/_portal/portal/tenders_/$id_/edit'
     | '/_auth/_portal/portal/tenders_/$id_/plot'
@@ -799,6 +827,7 @@ export const routeTree = rootRoute
       "parent": "/_auth/_portal/portal",
       "children": [
         "/_auth/_portal/portal/_super-admin/sa/areas",
+        "/_auth/_portal/portal/_super-admin/sa/competitors",
         "/_auth/_portal/portal/_super-admin/sa/users"
       ]
     },
@@ -844,6 +873,10 @@ export const routeTree = rootRoute
     },
     "/_auth/_portal/portal/_super-admin/sa/areas": {
       "filePath": "_auth/_portal/portal/_super-admin/sa/areas.tsx",
+      "parent": "/_auth/_portal/portal/_super-admin"
+    },
+    "/_auth/_portal/portal/_super-admin/sa/competitors": {
+      "filePath": "_auth/_portal/portal/_super-admin/sa/competitors.tsx",
       "parent": "/_auth/_portal/portal/_super-admin"
     },
     "/_auth/_portal/portal/_super-admin/sa/users": {

@@ -997,6 +997,7 @@ input CreateTenderInput {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean
+  currentProgress: String
   tenderWinCompany: String
   """
   投標編號，只限港澳
@@ -2619,6 +2620,7 @@ type Tender implements Node {
   designUnit: String
   consultingFirm: String
   keyProject: Boolean!
+  currentProgress: String
   tenderWinCompany: String
   """
   投標編號，只限港澳
@@ -3434,6 +3436,24 @@ input TenderWhereInput {
   keyProject: Boolean
   keyProjectNEQ: Boolean
   """
+  current_progress field predicates
+  """
+  currentProgress: String
+  currentProgressNEQ: String
+  currentProgressIn: [String!]
+  currentProgressNotIn: [String!]
+  currentProgressGT: String
+  currentProgressGTE: String
+  currentProgressLT: String
+  currentProgressLTE: String
+  currentProgressContains: String
+  currentProgressHasPrefix: String
+  currentProgressHasSuffix: String
+  currentProgressIsNil: Boolean
+  currentProgressNotNil: Boolean
+  currentProgressEqualFold: String
+  currentProgressContainsFold: String
+  """
   tender_win_company field predicates
   """
   tenderWinCompany: String
@@ -3997,6 +4017,8 @@ input UpdateTenderInput {
   consultingFirm: String
   clearConsultingFirm: Boolean
   keyProject: Boolean
+  currentProgress: String
+  clearCurrentProgress: Boolean
   tenderWinCompany: String
   clearTenderWinCompany: Boolean
   """

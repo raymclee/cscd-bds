@@ -2894,6 +2894,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldKeyProject)
 				fieldSeen[tender.FieldKeyProject] = struct{}{}
 			}
+		case "currentProgress":
+			if _, ok := fieldSeen[tender.FieldCurrentProgress]; !ok {
+				selectedFields = append(selectedFields, tender.FieldCurrentProgress)
+				fieldSeen[tender.FieldCurrentProgress] = struct{}{}
+			}
 		case "tenderWinCompany":
 			if _, ok := fieldSeen[tender.FieldTenderWinCompany]; !ok {
 				selectedFields = append(selectedFields, tender.FieldTenderWinCompany)

@@ -10,7 +10,8 @@ import { AmountBoard } from "~/components/dashboard/amount-board";
 import { DashboardTenderList } from "~/components/dashboard/dashboard-tender-list";
 import { MapTenderDetail } from "~/components/dashboard/map-tender-detail";
 import { MapTenderList } from "~/components/dashboard/map-tender-list";
-import { NewTenderBoard } from "~/components/dashboard/new-tender-card";
+import { MoreNewTenderBoard } from "~/components/dashboard/more-new-tender-board";
+import { NewTenderBoard } from "~/components/dashboard/new-tender-board";
 import { RankingListChart } from "~/components/dashboard/ranking-list-chart";
 import { TenderStatusList } from "~/components/dashboard/tender-status-list";
 import { TenderTypeChart } from "~/components/dashboard/tender-type-chart";
@@ -193,6 +194,7 @@ function RouteComponent() {
     push,
     pop,
     selectedTenderStatus,
+    moreNewTenderBoardVisible,
   ] = useMapStore(
     useShallow((state) => [
       state.map,
@@ -206,6 +208,7 @@ function RouteComponent() {
       state.push,
       state.pop,
       state.selectedTenderStatus,
+      state.moreNewTenderBoardVisible,
     ]),
   );
   const satelliteLayer = useMapStore((state) => state.satelliteLayer);
@@ -808,7 +811,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -862,7 +865,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -1001,8 +1004,30 @@ function RouteComponent() {
         </div>
       </div>
 
+      {/* <AnimatePresence> */}
+      {/* <AnimiatedBoards gaOnly={gaOnly} /> */}
+      {/* {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
+        {moreNewTenderBoardVisible && <MoreNewTenderBoard />} */}
+      {/* </AnimatePresence> */}
+
+      <AnimiatedBoards gaOnly={gaOnly} />
+    </>
+  );
+}
+
+function AnimiatedBoards({ gaOnly }: { gaOnly: boolean }) {
+  const selectedTenderStatus = useMapStore((s) => s.selectedTenderStatus);
+  const moreNewTenderBoardVisible = useMapStore(
+    (s) => s.moreNewTenderBoardVisible,
+  );
+
+  return (
+    <>
       <AnimatePresence>
         {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {moreNewTenderBoardVisible && <MoreNewTenderBoard />}
       </AnimatePresence>
     </>
   );

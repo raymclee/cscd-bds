@@ -734,6 +734,7 @@ export type CreateTenderInput = {
   createdByID: Scalars['ID']['input'];
   creditAndPaymentRating?: InputMaybe<Scalars['Int']['input']>;
   creditAndPaymentRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  currentProgress?: InputMaybe<Scalars['String']['input']>;
   customerID?: InputMaybe<Scalars['ID']['input']>;
   customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
   customerRelationshipRatingOverview?: InputMaybe<Scalars['String']['input']>;
@@ -1330,7 +1331,6 @@ export type Mutation = {
   deleteTender: Tender;
   deleteUser: User;
   deleteVisitRecord: VisitRecord;
-  setTenderCompetitor: Tender;
   updateArea: Area;
   updateCustomer: Customer;
   updatePlot: Plot;
@@ -1396,13 +1396,6 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteVisitRecordArgs = {
   id: Scalars['ID']['input'];
-};
-
-
-export type MutationSetTenderCompetitorArgs = {
-  competitorId: Scalars['ID']['input'];
-  tenderId: Scalars['ID']['input'];
-  won: Scalars['Boolean']['input'];
 };
 
 
@@ -1981,6 +1974,7 @@ export type Tender = Node & {
   createdByID: Scalars['ID']['output'];
   creditAndPaymentRating?: Maybe<Scalars['Int']['output']>;
   creditAndPaymentRatingOverview?: Maybe<Scalars['String']['output']>;
+  currentProgress?: Maybe<Scalars['String']['output']>;
   customer?: Maybe<Customer>;
   customerID?: Maybe<Scalars['ID']['output']>;
   customerRelationshipRating?: Maybe<Scalars['Int']['output']>;
@@ -2383,6 +2377,22 @@ export type TenderWhereInput = {
   creditAndPaymentRatingOverviewNEQ?: InputMaybe<Scalars['String']['input']>;
   creditAndPaymentRatingOverviewNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   creditAndPaymentRatingOverviewNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** current_progress field predicates */
+  currentProgress?: InputMaybe<Scalars['String']['input']>;
+  currentProgressContains?: InputMaybe<Scalars['String']['input']>;
+  currentProgressContainsFold?: InputMaybe<Scalars['String']['input']>;
+  currentProgressEqualFold?: InputMaybe<Scalars['String']['input']>;
+  currentProgressGT?: InputMaybe<Scalars['String']['input']>;
+  currentProgressGTE?: InputMaybe<Scalars['String']['input']>;
+  currentProgressHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  currentProgressHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  currentProgressIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  currentProgressIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  currentProgressLT?: InputMaybe<Scalars['String']['input']>;
+  currentProgressLTE?: InputMaybe<Scalars['String']['input']>;
+  currentProgressNEQ?: InputMaybe<Scalars['String']['input']>;
+  currentProgressNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  currentProgressNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** customer_id field predicates */
   customerID?: InputMaybe<Scalars['ID']['input']>;
   customerIDContains?: InputMaybe<Scalars['ID']['input']>;
@@ -3142,6 +3152,7 @@ export type UpdateTenderInput = {
   clearCostEngineer?: InputMaybe<Scalars['Boolean']['input']>;
   clearCreditAndPaymentRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCreditAndPaymentRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
+  clearCurrentProgress?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomer?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomerRelationshipRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomerRelationshipRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3192,6 +3203,7 @@ export type UpdateTenderInput = {
   createdByID?: InputMaybe<Scalars['ID']['input']>;
   creditAndPaymentRating?: InputMaybe<Scalars['Int']['input']>;
   creditAndPaymentRatingOverview?: InputMaybe<Scalars['String']['input']>;
+  currentProgress?: InputMaybe<Scalars['String']['input']>;
   customerID?: InputMaybe<Scalars['ID']['input']>;
   customerRelationshipRating?: InputMaybe<Scalars['Int']['input']>;
   customerRelationshipRatingOverview?: InputMaybe<Scalars['String']['input']>;

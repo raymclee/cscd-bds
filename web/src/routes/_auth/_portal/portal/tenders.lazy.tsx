@@ -161,6 +161,7 @@ function TenderList({
             });
           },
           responsive: true,
+          showTotal: (total) => `共 ${total} 条`,
         }}
         dataSource={dataSource}
         itemLayout="vertical"

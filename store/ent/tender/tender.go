@@ -109,6 +109,8 @@ const (
 	FieldConsultingFirm = "consulting_firm"
 	// FieldKeyProject holds the string denoting the key_project field in the database.
 	FieldKeyProject = "key_project"
+	// FieldCurrentProgress holds the string denoting the current_progress field in the database.
+	FieldCurrentProgress = "current_progress"
 	// FieldTenderWinCompany holds the string denoting the tender_win_company field in the database.
 	FieldTenderWinCompany = "tender_win_company"
 	// FieldTenderCode holds the string denoting the tender_code field in the database.
@@ -285,6 +287,7 @@ var Columns = []string{
 	FieldDesignUnit,
 	FieldConsultingFirm,
 	FieldKeyProject,
+	FieldCurrentProgress,
 	FieldTenderWinCompany,
 	FieldTenderCode,
 	FieldArchitect,
@@ -575,6 +578,11 @@ func ByConsultingFirm(opts ...sql.OrderTermOption) OrderOption {
 // ByKeyProject orders the results by the key_project field.
 func ByKeyProject(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldKeyProject, opts...).ToFunc()
+}
+
+// ByCurrentProgress orders the results by the current_progress field.
+func ByCurrentProgress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCurrentProgress, opts...).ToFunc()
 }
 
 // ByTenderWinCompany orders the results by the tender_win_company field.

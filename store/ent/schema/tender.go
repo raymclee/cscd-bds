@@ -96,6 +96,7 @@ func (Tender) Fields() []ent.Field {
 		field.String("design_unit").Optional().Nillable(),
 		field.String("consulting_firm").Optional().Nillable(),
 		field.Bool("key_project").Default(false),
+		field.String("current_progress").Optional().Nillable(),
 		field.String("tender_win_company").Optional().Nillable(),
 
 		field.String("tender_code").Optional().Comment("投標編號，只限港澳"),

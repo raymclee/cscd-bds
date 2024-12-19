@@ -244,6 +244,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldDesignUnit:                           {Type: field.TypeString, Column: tender.FieldDesignUnit},
 			tender.FieldConsultingFirm:                       {Type: field.TypeString, Column: tender.FieldConsultingFirm},
 			tender.FieldKeyProject:                           {Type: field.TypeBool, Column: tender.FieldKeyProject},
+			tender.FieldCurrentProgress:                      {Type: field.TypeString, Column: tender.FieldCurrentProgress},
 			tender.FieldTenderWinCompany:                     {Type: field.TypeString, Column: tender.FieldTenderWinCompany},
 			tender.FieldTenderCode:                           {Type: field.TypeString, Column: tender.FieldTenderCode},
 			tender.FieldArchitect:                            {Type: field.TypeString, Column: tender.FieldArchitect},
@@ -2051,6 +2052,11 @@ func (f *TenderFilter) WhereConsultingFirm(p entql.StringP) {
 // WhereKeyProject applies the entql bool predicate on the key_project field.
 func (f *TenderFilter) WhereKeyProject(p entql.BoolP) {
 	f.Where(p.Field(tender.FieldKeyProject))
+}
+
+// WhereCurrentProgress applies the entql string predicate on the current_progress field.
+func (f *TenderFilter) WhereCurrentProgress(p entql.StringP) {
+	f.Where(p.Field(tender.FieldCurrentProgress))
 }
 
 // WhereTenderWinCompany applies the entql string predicate on the tender_win_company field.

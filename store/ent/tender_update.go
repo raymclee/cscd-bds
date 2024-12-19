@@ -951,6 +951,26 @@ func (tu *TenderUpdate) SetNillableKeyProject(b *bool) *TenderUpdate {
 	return tu
 }
 
+// SetCurrentProgress sets the "current_progress" field.
+func (tu *TenderUpdate) SetCurrentProgress(s string) *TenderUpdate {
+	tu.mutation.SetCurrentProgress(s)
+	return tu
+}
+
+// SetNillableCurrentProgress sets the "current_progress" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableCurrentProgress(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetCurrentProgress(*s)
+	}
+	return tu
+}
+
+// ClearCurrentProgress clears the value of the "current_progress" field.
+func (tu *TenderUpdate) ClearCurrentProgress() *TenderUpdate {
+	tu.mutation.ClearCurrentProgress()
+	return tu
+}
+
 // SetTenderWinCompany sets the "tender_win_company" field.
 func (tu *TenderUpdate) SetTenderWinCompany(s string) *TenderUpdate {
 	tu.mutation.SetTenderWinCompany(s)
@@ -1837,6 +1857,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.KeyProject(); ok {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
+	}
+	if value, ok := tu.mutation.CurrentProgress(); ok {
+		_spec.SetField(tender.FieldCurrentProgress, field.TypeString, value)
+	}
+	if tu.mutation.CurrentProgressCleared() {
+		_spec.ClearField(tender.FieldCurrentProgress, field.TypeString)
 	}
 	if value, ok := tu.mutation.TenderWinCompany(); ok {
 		_spec.SetField(tender.FieldTenderWinCompany, field.TypeString, value)
@@ -3152,6 +3178,26 @@ func (tuo *TenderUpdateOne) SetNillableKeyProject(b *bool) *TenderUpdateOne {
 	return tuo
 }
 
+// SetCurrentProgress sets the "current_progress" field.
+func (tuo *TenderUpdateOne) SetCurrentProgress(s string) *TenderUpdateOne {
+	tuo.mutation.SetCurrentProgress(s)
+	return tuo
+}
+
+// SetNillableCurrentProgress sets the "current_progress" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableCurrentProgress(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetCurrentProgress(*s)
+	}
+	return tuo
+}
+
+// ClearCurrentProgress clears the value of the "current_progress" field.
+func (tuo *TenderUpdateOne) ClearCurrentProgress() *TenderUpdateOne {
+	tuo.mutation.ClearCurrentProgress()
+	return tuo
+}
+
 // SetTenderWinCompany sets the "tender_win_company" field.
 func (tuo *TenderUpdateOne) SetTenderWinCompany(s string) *TenderUpdateOne {
 	tuo.mutation.SetTenderWinCompany(s)
@@ -4068,6 +4114,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if value, ok := tuo.mutation.KeyProject(); ok {
 		_spec.SetField(tender.FieldKeyProject, field.TypeBool, value)
+	}
+	if value, ok := tuo.mutation.CurrentProgress(); ok {
+		_spec.SetField(tender.FieldCurrentProgress, field.TypeString, value)
+	}
+	if tuo.mutation.CurrentProgressCleared() {
+		_spec.ClearField(tender.FieldCurrentProgress, field.TypeString)
 	}
 	if value, ok := tuo.mutation.TenderWinCompany(); ok {
 		_spec.SetField(tender.FieldTenderWinCompany, field.TypeString, value)

@@ -7,13 +7,12 @@ import { App, Button, List, Popconfirm, Tag } from "antd";
 import dayjs from "dayjs";
 import { ImageOff } from "lucide-react";
 import { useFragment } from "react-relay";
-import { ConnectionHandler, graphql } from "relay-runtime";
-import { useDeleteTenderMutation } from "~/hooks/use-delete-tender";
+import { graphql } from "relay-runtime";
+import { Tender } from "~/graphql/graphql";
+import { useUpdateTender } from "~/hooks/use-update-tender";
 import { tenderStatusTagColor, tenderStatusText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
-import { Tender } from "~/graphql/graphql";
-import { usePortalStore } from "~/store/portal";
 
 type TenderListItemProps = {
   tender: tenderListItemFragment$key;
@@ -137,7 +136,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="w-12 h-12 mb-2" />
+              <ImageOff className="mb-2 h-12 w-12" />
               暂没图片
             </div>
           )}
@@ -187,49 +186,58 @@ export function TenderListItem({
 
 function DeleteButton({ tender }: { tender?: tenderListItemFragment$data }) {
   const { message } = App.useApp();
-  const [commit, inFlight] = useDeleteTenderMutation();
+  const [commit, inFlight] = useUpdateTender();
   return (
     <Popconfirm
-      title="确定要删除吗？"
+      title="确定要作废吗？"
       onConfirm={() => {
         if (!tender) return;
 
-        const connections = [
-          ConnectionHandler.getConnectionID(
-            tender.area.id,
-            "tendersTenderListFragment_tenders",
-            { orderBy: [{ field: "CREATED_AT", direction: "DESC" }] },
-          ),
-        ];
+        // const connections = [
+        //   ConnectionHandler.getConnectionID(
+        //     tender.area.id,
+        //     "tendersTenderListFragment_tenders",
+        //     { orderBy: [{ field: "CREATED_AT", direction: "DESC" }] },
+        //   ),
+        // ];
 
-        if (tender.customer?.id) {
-          connections.push(
-            ConnectionHandler.getConnectionID(
-              tender.customer.id,
-              "customerTenderListFragment_tenders",
-            ),
-          );
-        }
+        // if (tender.customer?.id) {
+        //   connections.push(
+        //     ConnectionHandler.getConnectionID(
+        //       tender.customer.id,
+        //       "customerTenderListFragment_tenders",
+        //     ),
+        //   );
+        // }
 
         commit({
           variables: {
             id: tender.id,
-            connections,
+            input: {
+              status: 7,
+            },
+            imageFileNames: [],
+            attachmentFileNames: [],
           },
           onCompleted() {
             message.destroy();
-            message.success("删除成功");
+            message.success("作废成功");
           },
           onError(error) {
             message.destroy();
-            message.error("删除失败");
+            message.error("作废失败");
             console.error(error);
           },
         });
       }}
     >
-      <Button disabled={inFlight} danger type="link" size="small">
-        删除
+      <Button
+        disabled={inFlight || tender?.status === 7}
+        danger
+        type="link"
+        size="small"
+      >
+        作废
       </Button>
     </Popconfirm>
   );

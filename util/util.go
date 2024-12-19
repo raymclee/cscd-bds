@@ -6,20 +6,20 @@ import (
 	"io"
 
 	"os"
-
-	"github.com/rs/xid"
 )
 
-func SaveStaticFile(filename string, shouldResize bool) (string, error) {
-
+func SaveStaticFile(tenderId string, filename string, shouldResize bool) (string, error) {
 	sourcePath := fmt.Sprintf("%stmp/%s", config.FilePath, filename)
 	tf, err := os.Open(sourcePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to open file: %w", err)
 	}
 
-	fn := fmt.Sprintf("%s-%s", xid.New(), filename)
-	out, err := os.Create(fmt.Sprintf("%s%s", config.FilePath, fn))
+	fn := fmt.Sprintf("%s/%s", tenderId, filename)
+	if err := os.MkdirAll(fmt.Sprintf("%s/%s", config.FilePath, tenderId), 0755); err != nil {
+		return "", fmt.Errorf("failed to create directory: %w", err)
+	}
+	out, err := os.Create(fmt.Sprintf("%s/%s", config.FilePath, fn))
 	if err != nil {
 		return "", fmt.Errorf("failed to create file: %w", err)
 	}
@@ -79,7 +79,9 @@ func SaveStaticFile(filename string, shouldResize bool) (string, error) {
 	return fn, nil
 }
 
-func DeleteStaticFile(filename string) error {
-	os.Remove(filename)
+func DeleteStaticFile(tenderId string, filename string) error {
+	if err := os.Remove(filename[1:]); err != nil {
+		fmt.Println(fmt.Errorf("failed to delete file: %w", err))
+	}
 	return nil
 }

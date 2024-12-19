@@ -277,6 +277,11 @@ func KeyProject(v bool) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldKeyProject, v))
 }
 
+// CurrentProgress applies equality check predicate on the "current_progress" field. It's identical to CurrentProgressEQ.
+func CurrentProgress(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldCurrentProgress, v))
+}
+
 // TenderWinCompany applies equality check predicate on the "tender_win_company" field. It's identical to TenderWinCompanyEQ.
 func TenderWinCompany(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderWinCompany, v))
@@ -3100,6 +3105,81 @@ func KeyProjectEQ(v bool) predicate.Tender {
 // KeyProjectNEQ applies the NEQ predicate on the "key_project" field.
 func KeyProjectNEQ(v bool) predicate.Tender {
 	return predicate.Tender(sql.FieldNEQ(FieldKeyProject, v))
+}
+
+// CurrentProgressEQ applies the EQ predicate on the "current_progress" field.
+func CurrentProgressEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldCurrentProgress, v))
+}
+
+// CurrentProgressNEQ applies the NEQ predicate on the "current_progress" field.
+func CurrentProgressNEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldCurrentProgress, v))
+}
+
+// CurrentProgressIn applies the In predicate on the "current_progress" field.
+func CurrentProgressIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldCurrentProgress, vs...))
+}
+
+// CurrentProgressNotIn applies the NotIn predicate on the "current_progress" field.
+func CurrentProgressNotIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldCurrentProgress, vs...))
+}
+
+// CurrentProgressGT applies the GT predicate on the "current_progress" field.
+func CurrentProgressGT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldCurrentProgress, v))
+}
+
+// CurrentProgressGTE applies the GTE predicate on the "current_progress" field.
+func CurrentProgressGTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldCurrentProgress, v))
+}
+
+// CurrentProgressLT applies the LT predicate on the "current_progress" field.
+func CurrentProgressLT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldCurrentProgress, v))
+}
+
+// CurrentProgressLTE applies the LTE predicate on the "current_progress" field.
+func CurrentProgressLTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldCurrentProgress, v))
+}
+
+// CurrentProgressContains applies the Contains predicate on the "current_progress" field.
+func CurrentProgressContains(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContains(FieldCurrentProgress, v))
+}
+
+// CurrentProgressHasPrefix applies the HasPrefix predicate on the "current_progress" field.
+func CurrentProgressHasPrefix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasPrefix(FieldCurrentProgress, v))
+}
+
+// CurrentProgressHasSuffix applies the HasSuffix predicate on the "current_progress" field.
+func CurrentProgressHasSuffix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasSuffix(FieldCurrentProgress, v))
+}
+
+// CurrentProgressIsNil applies the IsNil predicate on the "current_progress" field.
+func CurrentProgressIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldCurrentProgress))
+}
+
+// CurrentProgressNotNil applies the NotNil predicate on the "current_progress" field.
+func CurrentProgressNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldCurrentProgress))
+}
+
+// CurrentProgressEqualFold applies the EqualFold predicate on the "current_progress" field.
+func CurrentProgressEqualFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEqualFold(FieldCurrentProgress, v))
+}
+
+// CurrentProgressContainsFold applies the ContainsFold predicate on the "current_progress" field.
+func CurrentProgressContainsFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContainsFold(FieldCurrentProgress, v))
 }
 
 // TenderWinCompanyEQ applies the EQ predicate on the "tender_win_company" field.

@@ -186,7 +186,7 @@ export function CustomerDetail(props: {
           },
           {
             key: "lastUpdated",
-            label: "最后更新时间",
+            label: "最新跟进时间",
             children: (
               <span className="font-normal">
                 {customer.lastVisitRecord.edges?.at(0)?.node?.date

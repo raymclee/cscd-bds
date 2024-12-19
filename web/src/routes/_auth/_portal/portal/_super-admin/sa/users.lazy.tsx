@@ -161,7 +161,7 @@ function RouteComponent() {
     {
       title: "操作",
       render: (_, record) => (
-        <div className="flex items-center gap-2 -ml-2">
+        <div className="-ml-2 flex items-center gap-2">
           <Button
             type="link"
             size="small"
@@ -249,6 +249,7 @@ function RouteComponent() {
               search: (prev) => ({ ...prev, page }),
             });
           },
+          showTotal: (total) => `共 ${total} 条`,
         }}
       />
     </>

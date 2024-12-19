@@ -121,6 +121,8 @@ type Tender struct {
 	ConsultingFirm *string `json:"consulting_firm,omitempty"`
 	// KeyProject holds the value of the "key_project" field.
 	KeyProject bool `json:"key_project,omitempty"`
+	// CurrentProgress holds the value of the "current_progress" field.
+	CurrentProgress *string `json:"current_progress,omitempty"`
 	// TenderWinCompany holds the value of the "tender_win_company" field.
 	TenderWinCompany *string `json:"tender_win_company,omitempty"`
 	// 投標編號，只限港澳
@@ -316,7 +318,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case tender.FieldStatus, tender.FieldLevelInvolved, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
-		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
+		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldCurrentProgress, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
 			values[i] = new(sql.NullString)
 		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate, tender.FieldTenderClosingDate, tender.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
@@ -662,6 +664,13 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field key_project", values[i])
 			} else if value.Valid {
 				t.KeyProject = value.Bool
+			}
+		case tender.FieldCurrentProgress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field current_progress", values[i])
+			} else if value.Valid {
+				t.CurrentProgress = new(string)
+				*t.CurrentProgress = value.String
 			}
 		case tender.FieldTenderWinCompany:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -1063,6 +1072,11 @@ func (t *Tender) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("key_project=")
 	builder.WriteString(fmt.Sprintf("%v", t.KeyProject))
+	builder.WriteString(", ")
+	if v := t.CurrentProgress; v != nil {
+		builder.WriteString("current_progress=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	if v := t.TenderWinCompany; v != nil {
 		builder.WriteString("tender_win_company=")
