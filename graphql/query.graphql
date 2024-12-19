@@ -1,9 +1,18 @@
 extend type Query {
   searchFeishuUser(keyword: String!): [FeishuUser!]!
+
+  searchLocation(keyword: String!): [Location!]!
 }
 
 type FeishuUser {
   openId: String!
   name: String!
   avatarUrl: String!
+}
+
+type Location {
+  fullAddress: String!
+  province: Province!
+  city: City
+  district: District!
 }

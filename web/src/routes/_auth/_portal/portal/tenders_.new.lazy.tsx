@@ -7,19 +7,17 @@ export const Route = createLazyFileRoute("/_auth/_portal/portal/tenders_/new")({
   component: RouteComponent,
 });
 
-const TendersNewTenderPageQuery = graphql`
-  query tendersNewTenderPageQuery($userId: ID!) {
-    node(id: $userId) {
-      ...tenderFormFragment
-    }
-    ...tenderFormFragment_competitors
-  }
-`;
-
 function RouteComponent() {
   const preload = Route.useLoaderData();
   const data = usePreloadedQuery<tendersNewTenderPageQuery>(
-    TendersNewTenderPageQuery,
+    graphql`
+      query tendersNewTenderPageQuery($userId: ID!) {
+        node(id: $userId) {
+          ...tenderFormFragment
+        }
+        ...tenderFormFragment_competitors
+      }
+    `,
     preload,
   );
 

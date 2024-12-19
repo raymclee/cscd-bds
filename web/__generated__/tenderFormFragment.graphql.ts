@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<986d2104674e95915ad6252e5e4d48ed>>
+ * @generated SignedSource<<b6c7b2d5b0018cccf596f7c6c8526aec>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,42 +25,6 @@ export type tenderFormFragment$data = {
         };
         readonly id: string;
         readonly name: string;
-        readonly provinces: {
-          readonly edges: ReadonlyArray<{
-            readonly node: {
-              readonly adcode: number;
-              readonly cities: {
-                readonly edges: ReadonlyArray<{
-                  readonly node: {
-                    readonly adcode: number;
-                    readonly districts: {
-                      readonly edges: ReadonlyArray<{
-                        readonly node: {
-                          readonly adcode: number;
-                          readonly id: string;
-                          readonly name: string;
-                        } | null | undefined;
-                      } | null | undefined> | null | undefined;
-                    };
-                    readonly id: string;
-                    readonly name: string;
-                  } | null | undefined;
-                } | null | undefined> | null | undefined;
-              };
-              readonly districts: {
-                readonly edges: ReadonlyArray<{
-                  readonly node: {
-                    readonly adcode: number;
-                    readonly id: string;
-                    readonly name: string;
-                  } | null | undefined;
-                } | null | undefined> | null | undefined;
-              };
-              readonly id: string;
-              readonly name: string;
-            } | null | undefined;
-          } | null | undefined> | null | undefined;
-        };
         readonly users: {
           readonly edges: ReadonlyArray<{
             readonly node: {
@@ -92,49 +56,6 @@ v1 = {
   "args": null,
   "kind": "ScalarField",
   "name": "name",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "adcode",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "DistrictConnection",
-  "kind": "LinkedField",
-  "name": "districts",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "DistrictEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "District",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v0/*: any*/),
-            (v1/*: any*/),
-            (v2/*: any*/)
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
   "storageKey": null
 };
 return {
@@ -318,80 +239,6 @@ return {
                     }
                   ],
                   "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "ProvinceConnection",
-                  "kind": "LinkedField",
-                  "name": "provinces",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "ProvinceEdge",
-                      "kind": "LinkedField",
-                      "name": "edges",
-                      "plural": true,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "concreteType": "Province",
-                          "kind": "LinkedField",
-                          "name": "node",
-                          "plural": false,
-                          "selections": [
-                            (v0/*: any*/),
-                            (v1/*: any*/),
-                            (v2/*: any*/),
-                            {
-                              "alias": null,
-                              "args": null,
-                              "concreteType": "CityConnection",
-                              "kind": "LinkedField",
-                              "name": "cities",
-                              "plural": false,
-                              "selections": [
-                                {
-                                  "alias": null,
-                                  "args": null,
-                                  "concreteType": "CityEdge",
-                                  "kind": "LinkedField",
-                                  "name": "edges",
-                                  "plural": true,
-                                  "selections": [
-                                    {
-                                      "alias": null,
-                                      "args": null,
-                                      "concreteType": "City",
-                                      "kind": "LinkedField",
-                                      "name": "node",
-                                      "plural": false,
-                                      "selections": [
-                                        (v0/*: any*/),
-                                        (v1/*: any*/),
-                                        (v2/*: any*/),
-                                        (v3/*: any*/)
-                                      ],
-                                      "storageKey": null
-                                    }
-                                  ],
-                                  "storageKey": null
-                                }
-                              ],
-                              "storageKey": null
-                            },
-                            (v3/*: any*/)
-                          ],
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -408,6 +255,6 @@ return {
 };
 })();
 
-(node as any).hash = "f8504142cc51a7476b835c9901ce02dd";
+(node as any).hash = "fe562b18017e2e9decbccefc36579145";
 
 export default node;

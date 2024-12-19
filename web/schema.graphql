@@ -1349,6 +1349,13 @@ type GeoJson {
   type: String!
 }
 
+type Location {
+  city: City
+  district: District!
+  fullAddress: String!
+  province: Province!
+}
+
 type Mutation {
   createArea(input: CreateAreaInput!): AreaConnection!
   createCustomer(input: CreateCustomerInput!): CustomerConnection!
@@ -1864,6 +1871,7 @@ type Query {
     where: ProvinceWhereInput
   ): ProvinceConnection!
   searchFeishuUser(keyword: String!): [FeishuUser!]!
+  searchLocation(keyword: String!): [Location!]!
   session: Session!
   tenders(
     """Returns the elements in the list that come after the specified cursor."""

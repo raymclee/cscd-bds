@@ -2,6 +2,8 @@ import { InboxOutlined } from "@ant-design/icons";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
+import { tenderFormFragment_competitors$key } from "__generated__/tenderFormFragment_competitors.graphql";
+import { tenderForm_provinceCityDistrictSelectorQuery } from "__generated__/tenderForm_provinceCityDistrictSelectorQuery.graphql";
 import {
   App,
   Button,
@@ -19,14 +21,19 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import { ConnectionHandler, graphql, useFragment } from "react-relay";
+import {
+  ConnectionHandler,
+  graphql,
+  PreloadedQuery,
+  useFragment,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay";
 import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
   fixAmount,
-  isGA,
-  isHW,
   levelInvolvedOptions,
   projectTypeOptions,
   tenderStatusOptions,
@@ -34,7 +41,6 @@ import {
 } from "~/lib/helper";
 import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
-import { tenderFormFragment_competitors$key } from "__generated__/tenderFormFragment_competitors.graphql";
 
 const { Dragger } = Upload;
 
@@ -61,42 +67,6 @@ const fragment = graphql`
               node {
                 id
                 name
-              }
-            }
-          }
-          provinces {
-            edges {
-              node {
-                id
-                name
-                adcode
-                cities {
-                  edges {
-                    node {
-                      id
-                      name
-                      adcode
-                      districts {
-                        edges {
-                          node {
-                            id
-                            name
-                            adcode
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                districts {
-                  edges {
-                    node {
-                      id
-                      name
-                      adcode
-                    }
-                  }
-                }
               }
             }
           }
@@ -143,8 +113,6 @@ export function TenderForm({
   const navigate = useNavigate();
 
   const areaID = Form.useWatch("areaID", form);
-  const provinceID = Form.useWatch("provinceID", form);
-  const cityID = Form.useWatch("cityID", form);
 
   const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
@@ -166,18 +134,6 @@ export function TenderForm({
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
     [data, areaID],
   );
-
-  const provinces = useMemo(
-    () =>
-      data.areas?.edges
-        ?.filter((e) => e?.node?.id === areaID)
-        .flatMap((a) => a?.node?.provinces.edges?.map((p) => p?.node)),
-    [data, areaID],
-  );
-  const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
-  const districts = cityID
-    ? cities?.edges?.find((c) => c?.node?.id === cityID)?.node?.districts
-    : provinces?.find((p) => p?.id === provinceID)?.districts;
 
   const customerOptions = useMemo(
     () =>
@@ -475,58 +431,7 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <Form.Item
-                name="provinceID"
-                label="省"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  options={provinces?.map((p) => ({
-                    label: p?.name,
-                    value: p?.id,
-                  }))}
-                  onSelect={() => {
-                    form.resetFields(["cityID", "districtID"]);
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="cityID"
-                label="市"
-                rules={[{ required: cities?.edges?.length != 0 }]}
-              >
-                <Select
-                  disabled={cities?.edges?.length === 0}
-                  options={cities?.edges
-                    ?.map((c) => c?.node)
-                    .map((c) => ({ label: c?.name, value: c?.id }))}
-                  onSelect={() => {
-                    form.resetFields(["districtID"]);
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="districtID"
-                label="区"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  options={districts?.edges
-                    ?.map((e) => e && e.node)
-                    .map((n) => ({
-                      label: n?.name,
-                      value: n?.id,
-                    }))}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
+              <ProvinceCityDistrictSelectorLoader areaID={areaID} />
 
               <Form.Item
                 name="address"
@@ -656,60 +561,7 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <Form.Item
-                name="provinceID"
-                label="省"
-                rules={[{ required: showSHFields }]}
-              >
-                <Select
-                  options={provinces?.map((p) => ({
-                    label: p?.name,
-                    value: p?.id,
-                  }))}
-                  onSelect={() => {
-                    form.resetFields(["cityID", "districtID"]);
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="cityID"
-                label="市"
-                rules={[
-                  { required: cities?.edges?.length != 0 && showSHFields },
-                ]}
-              >
-                <Select
-                  disabled={cities?.edges?.length === 0}
-                  options={cities?.edges
-                    ?.map((c) => c?.node)
-                    .map((c) => ({ label: c?.name, value: c?.id }))}
-                  onSelect={() => {
-                    form.resetFields(["districtID"]);
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="districtID"
-                label="区"
-                rules={[{ required: showSHFields }]}
-              >
-                <Select
-                  options={districts?.edges
-                    ?.map((e) => e && e.node)
-                    .map((n) => ({
-                      label: n?.name,
-                      value: n?.id,
-                    }))}
-                  showSearch
-                  optionFilterProp="label"
-                />
-              </Form.Item>
+              <ProvinceCityDistrictSelectorLoader areaID={areaID} />
 
               <Form.Item
                 name="address"
@@ -1081,5 +933,142 @@ export function TenderForm({
         </Button>
       </FixedToolbar>
     </Form>
+  );
+}
+
+const ProvinceCityDistrictSelectorQuery = graphql`
+  query tenderForm_provinceCityDistrictSelectorQuery($areaID: ID!) {
+    node(id: $areaID) {
+      ... on Area {
+        provinces {
+          edges {
+            node {
+              id
+              name
+              cities {
+                edges {
+                  node {
+                    id
+                    name
+                    districts {
+                      edges {
+                        node {
+                          id
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              districts {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+function ProvinceCityDistrictSelectorLoader({}: { areaID: string }) {
+  const form = Form.useFormInstance();
+  const areaID = Form.useWatch("areaID", form);
+  const [queryRef, loadQuery] =
+    useQueryLoader<tenderForm_provinceCityDistrictSelectorQuery>(
+      ProvinceCityDistrictSelectorQuery,
+    );
+
+  useEffect(() => {
+    if (areaID) {
+      loadQuery({ areaID });
+    }
+  }, [areaID]);
+
+  return queryRef ? <ProvinceCityDistrictSelector queryRef={queryRef} /> : null;
+}
+
+function ProvinceCityDistrictSelector({
+  queryRef,
+}: {
+  queryRef: PreloadedQuery<tenderForm_provinceCityDistrictSelectorQuery>;
+}) {
+  const form = Form.useFormInstance();
+  const data = usePreloadedQuery<tenderForm_provinceCityDistrictSelectorQuery>(
+    ProvinceCityDistrictSelectorQuery,
+    queryRef,
+  );
+
+  const provinceID = Form.useWatch("provinceID");
+  const cityID = Form.useWatch("cityID");
+
+  const provinces = data.node?.provinces?.edges?.map((e) => e?.node);
+
+  const cities = provinces?.find((p) => p?.id === provinceID)?.cities;
+
+  const districts = cityID
+    ? cities?.edges?.find((c) => c?.node?.id === cityID)?.node?.districts
+    : provinces?.find((p) => p?.id === provinceID)?.districts;
+
+  return (
+    <>
+      <Form.Item name="provinceID" label="省" rules={[{ required: true }]}>
+        <Select
+          options={provinces?.map((p) => ({
+            label: p?.name,
+            value: p?.id,
+          }))}
+          showSearch
+          optionFilterProp="label"
+          onSelect={() => {
+            form.resetFields(["cityID", "districtID"]);
+          }}
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="cityID"
+        label="市"
+        rules={[
+          {
+            required: cities?.edges ? cities?.edges?.length > 0 : false,
+          },
+        ]}
+      >
+        <Select
+          disabled={cities?.edges?.length === 0}
+          options={cities?.edges
+            ?.map((e) => e?.node)
+            .map((c) => ({
+              label: c?.name,
+              value: c?.id,
+            }))}
+          onSelect={() => {
+            form.resetFields(["districtID"]);
+          }}
+          showSearch
+          optionFilterProp="label"
+        />
+      </Form.Item>
+
+      <Form.Item name="districtID" label="区" rules={[{ required: true }]}>
+        <Select
+          options={districts?.edges
+            ?.map((e) => e?.node)
+            .map((d) => ({
+              label: d?.name,
+              value: d?.id,
+            }))}
+          showSearch
+          optionFilterProp="label"
+        />
+      </Form.Item>
+    </>
   );
 }

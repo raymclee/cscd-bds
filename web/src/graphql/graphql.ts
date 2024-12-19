@@ -1318,6 +1318,14 @@ export type GeoJson = {
   type: Scalars['String']['output'];
 };
 
+export type Location = {
+  __typename?: 'Location';
+  city?: Maybe<City>;
+  district: District;
+  fullAddress: Scalars['String']['output'];
+  province: Province;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createArea: AreaConnection;
@@ -1800,6 +1808,7 @@ export type Query = {
   plots: PlotConnection;
   provinces: ProvinceConnection;
   searchFeishuUser: Array<FeishuUser>;
+  searchLocation: Array<Location>;
   session: Session;
   tenders: TenderConnection;
   users: UserConnection;
@@ -1898,6 +1907,11 @@ export type QueryProvincesArgs = {
 
 
 export type QuerySearchFeishuUserArgs = {
+  keyword: Scalars['String']['input'];
+};
+
+
+export type QuerySearchLocationArgs = {
   keyword: Scalars['String']['input'];
 };
 

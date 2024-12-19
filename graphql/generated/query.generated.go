@@ -5,7 +5,9 @@ package generated
 import (
 	"context"
 	"cscd-bds/graphql/model"
+	"cscd-bds/store/ent"
 	"errors"
+	"fmt"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -160,6 +162,261 @@ func (ec *executionContext) fieldContext_FeishuUser_avatarUrl(_ context.Context,
 	return fc, nil
 }
 
+func (ec *executionContext) _Location_fullAddress(ctx context.Context, field graphql.CollectedField, obj *model.Location) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Location_fullAddress(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FullAddress, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Location_fullAddress(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Location",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Location_province(ctx context.Context, field graphql.CollectedField, obj *model.Location) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Location_province(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Province, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Province)
+	fc.Result = res
+	return ec.marshalNProvince2ᚖcscdᚑbdsᚋstoreᚋentᚐProvince(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Location_province(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Location",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Province_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Province_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Province_updatedAt(ctx, field)
+			case "adcode":
+				return ec.fieldContext_Province_adcode(ctx, field)
+			case "name":
+				return ec.fieldContext_Province_name(ctx, field)
+			case "countryID":
+				return ec.fieldContext_Province_countryID(ctx, field)
+			case "areaID":
+				return ec.fieldContext_Province_areaID(ctx, field)
+			case "districts":
+				return ec.fieldContext_Province_districts(ctx, field)
+			case "cities":
+				return ec.fieldContext_Province_cities(ctx, field)
+			case "country":
+				return ec.fieldContext_Province_country(ctx, field)
+			case "tenders":
+				return ec.fieldContext_Province_tenders(ctx, field)
+			case "area":
+				return ec.fieldContext_Province_area(ctx, field)
+			case "center":
+				return ec.fieldContext_Province_center(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Province", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Location_city(ctx context.Context, field graphql.CollectedField, obj *model.Location) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Location_city(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.City, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*ent.City)
+	fc.Result = res
+	return ec.marshalOCity2ᚖcscdᚑbdsᚋstoreᚋentᚐCity(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Location_city(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Location",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_City_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_City_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_City_updatedAt(ctx, field)
+			case "adcode":
+				return ec.fieldContext_City_adcode(ctx, field)
+			case "provCode":
+				return ec.fieldContext_City_provCode(ctx, field)
+			case "name":
+				return ec.fieldContext_City_name(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_City_provinceID(ctx, field)
+			case "districts":
+				return ec.fieldContext_City_districts(ctx, field)
+			case "province":
+				return ec.fieldContext_City_province(ctx, field)
+			case "tenders":
+				return ec.fieldContext_City_tenders(ctx, field)
+			case "center":
+				return ec.fieldContext_City_center(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type City", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Location_district(ctx context.Context, field graphql.CollectedField, obj *model.Location) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Location_district(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.District, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.District)
+	fc.Result = res
+	return ec.marshalNDistrict2ᚖcscdᚑbdsᚋstoreᚋentᚐDistrict(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Location_district(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Location",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_District_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_District_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_District_updatedAt(ctx, field)
+			case "adcode":
+				return ec.fieldContext_District_adcode(ctx, field)
+			case "provCode":
+				return ec.fieldContext_District_provCode(ctx, field)
+			case "cityCode":
+				return ec.fieldContext_District_cityCode(ctx, field)
+			case "name":
+				return ec.fieldContext_District_name(ctx, field)
+			case "provinceID":
+				return ec.fieldContext_District_provinceID(ctx, field)
+			case "cityID":
+				return ec.fieldContext_District_cityID(ctx, field)
+			case "province":
+				return ec.fieldContext_District_province(ctx, field)
+			case "city":
+				return ec.fieldContext_District_city(ctx, field)
+			case "tenders":
+				return ec.fieldContext_District_tenders(ctx, field)
+			case "plots":
+				return ec.fieldContext_District_plots(ctx, field)
+			case "center":
+				return ec.fieldContext_District_center(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type District", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
@@ -195,6 +452,57 @@ func (ec *executionContext) _FeishuUser(ctx context.Context, sel ast.SelectionSe
 			}
 		case "avatarUrl":
 			out.Values[i] = ec._FeishuUser_avatarUrl(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var locationImplementors = []string{"Location"}
+
+func (ec *executionContext) _Location(ctx context.Context, sel ast.SelectionSet, obj *model.Location) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, locationImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Location")
+		case "fullAddress":
+			out.Values[i] = ec._Location_fullAddress(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "province":
+			out.Values[i] = ec._Location_province(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "city":
+			out.Values[i] = ec._Location_city(ctx, field, obj)
+		case "district":
+			out.Values[i] = ec._Location_district(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -277,6 +585,60 @@ func (ec *executionContext) marshalNFeishuUser2ᚖcscdᚑbdsᚋgraphqlᚋmodel�
 		return graphql.Null
 	}
 	return ec._FeishuUser(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNLocation2ᚕᚖcscdᚑbdsᚋgraphqlᚋmodelᚐLocationᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Location) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNLocation2ᚖcscdᚑbdsᚋgraphqlᚋmodelᚐLocation(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNLocation2ᚖcscdᚑbdsᚋgraphqlᚋmodelᚐLocation(ctx context.Context, sel ast.SelectionSet, v *model.Location) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Location(ctx, sel, v)
 }
 
 // endregion ***************************** type.gotpl *****************************

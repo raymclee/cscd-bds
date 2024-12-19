@@ -7,6 +7,7 @@ package graphql
 import (
 	"context"
 	"cscd-bds/graphql/model"
+	"fmt"
 )
 
 // SearchFeishuUser is the resolver for the searchFeishuUser field.
@@ -24,4 +25,9 @@ func (r *queryResolver) SearchFeishuUser(ctx context.Context, keyword string) ([
 		})
 	}
 	return out, nil
+}
+
+// SearchLocation is the resolver for the searchLocation field.
+func (r *queryResolver) SearchLocation(ctx context.Context, keyword string) ([]*model.Location, error) {
+	panic(fmt.Errorf("not implemented: SearchLocation - searchLocation"))
 }

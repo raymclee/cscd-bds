@@ -211,6 +211,13 @@ type ComplexityRoot struct {
 		Type        func(childComplexity int) int
 	}
 
+	Location struct {
+		City        func(childComplexity int) int
+		District    func(childComplexity int) int
+		FullAddress func(childComplexity int) int
+		Province    func(childComplexity int) int
+	}
+
 	Mutation struct {
 		CreateArea        func(childComplexity int, input ent.CreateAreaInput) int
 		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
@@ -299,6 +306,7 @@ type ComplexityRoot struct {
 		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
 		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		SearchFeishuUser func(childComplexity int, keyword string) int
+		SearchLocation   func(childComplexity int, keyword string) int
 		Session          func(childComplexity int) int
 		Tenders          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		Users            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
@@ -1264,6 +1272,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GeoJson.Type(childComplexity), true
 
+	case "Location.city":
+		if e.complexity.Location.City == nil {
+			break
+		}
+
+		return e.complexity.Location.City(childComplexity), true
+
+	case "Location.district":
+		if e.complexity.Location.District == nil {
+			break
+		}
+
+		return e.complexity.Location.District(childComplexity), true
+
+	case "Location.fullAddress":
+		if e.complexity.Location.FullAddress == nil {
+			break
+		}
+
+		return e.complexity.Location.FullAddress(childComplexity), true
+
+	case "Location.province":
+		if e.complexity.Location.Province == nil {
+			break
+		}
+
+		return e.complexity.Location.Province(childComplexity), true
+
 	case "Mutation.createArea":
 		if e.complexity.Mutation.CreateArea == nil {
 			break
@@ -1859,6 +1895,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.SearchFeishuUser(childComplexity, args["keyword"].(string)), true
+
+	case "Query.searchLocation":
+		if e.complexity.Query.SearchLocation == nil {
+			break
+		}
+
+		args, err := ec.field_Query_searchLocation_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.SearchLocation(childComplexity, args["keyword"].(string)), true
 
 	case "Query.session":
 		if e.complexity.Query.Session == nil {
@@ -7895,12 +7943,21 @@ type GeoJson {
 `, BuiltIn: false},
 	{Name: "../query.graphql", Input: `extend type Query {
   searchFeishuUser(keyword: String!): [FeishuUser!]!
+
+  searchLocation(keyword: String!): [Location!]!
 }
 
 type FeishuUser {
   openId: String!
   name: String!
   avatarUrl: String!
+}
+
+type Location {
+  fullAddress: String!
+  province: Province!
+  city: City
+  district: District!
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time

@@ -2,6 +2,10 @@
 
 package model
 
+import (
+	"cscd-bds/store/ent"
+)
+
 type FeishuUser struct {
 	OpenID    string `json:"openId"`
 	Name      string `json:"name"`
@@ -11,6 +15,13 @@ type FeishuUser struct {
 type GeoJSON struct {
 	Type        string    `json:"type"`
 	Coordinates []float64 `json:"coordinates"`
+}
+
+type Location struct {
+	FullAddress string        `json:"fullAddress"`
+	Province    *ent.Province `json:"province"`
+	City        *ent.City     `json:"city,omitempty"`
+	District    *ent.District `json:"district"`
 }
 
 type Session struct {

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f05b761ad4c0490b9d06e44bcd6d211c>>
+ * @generated SignedSource<<4723fdd542b5393224c53c455857556c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -63,50 +63,7 @@ v4 = {
 v5 = [
   (v3/*: any*/),
   (v4/*: any*/)
-],
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "adcode",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "DistrictConnection",
-  "kind": "LinkedField",
-  "name": "districts",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "DistrictEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "District",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v3/*: any*/),
-            (v4/*: any*/),
-            (v6/*: any*/)
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -312,80 +269,6 @@ return {
                               }
                             ],
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "ProvinceConnection",
-                            "kind": "LinkedField",
-                            "name": "provinces",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "ProvinceEdge",
-                                "kind": "LinkedField",
-                                "name": "edges",
-                                "plural": true,
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "Province",
-                                    "kind": "LinkedField",
-                                    "name": "node",
-                                    "plural": false,
-                                    "selections": [
-                                      (v3/*: any*/),
-                                      (v4/*: any*/),
-                                      (v6/*: any*/),
-                                      {
-                                        "alias": null,
-                                        "args": null,
-                                        "concreteType": "CityConnection",
-                                        "kind": "LinkedField",
-                                        "name": "cities",
-                                        "plural": false,
-                                        "selections": [
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "concreteType": "CityEdge",
-                                            "kind": "LinkedField",
-                                            "name": "edges",
-                                            "plural": true,
-                                            "selections": [
-                                              {
-                                                "alias": null,
-                                                "args": null,
-                                                "concreteType": "City",
-                                                "kind": "LinkedField",
-                                                "name": "node",
-                                                "plural": false,
-                                                "selections": [
-                                                  (v3/*: any*/),
-                                                  (v4/*: any*/),
-                                                  (v6/*: any*/),
-                                                  (v7/*: any*/)
-                                                ],
-                                                "storageKey": null
-                                              }
-                                            ],
-                                            "storageKey": null
-                                          }
-                                        ],
-                                        "storageKey": null
-                                      },
-                                      (v7/*: any*/)
-                                    ],
-                                    "storageKey": null
-                                  }
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -439,12 +322,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "a42c84eb7051a5b56ef96aa0e26a2243",
+    "cacheID": "10c7d304f11eddf467573aa8cd8b35b6",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        provinces {\n          edges {\n            node {\n              id\n              name\n              adcode\n              cities {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                    districts {\n                      edges {\n                        node {\n                          id\n                          name\n                          adcode\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n              districts {\n                edges {\n                  node {\n                    id\n                    name\n                    adcode\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
