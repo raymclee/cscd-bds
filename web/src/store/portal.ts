@@ -1,6 +1,7 @@
 import { customerDetailFragment$data } from "__generated__/customerDetailFragment.graphql";
 import { tenderDetailFragment$data } from "__generated__/tenderDetailFragment.graphql";
 import { tenderListItemFragment$data } from "__generated__/tenderListItemFragment.graphql";
+import { visitRecordItemFragment$data } from "__generated__/visitRecordItemFragment.graphql";
 import { create } from "zustand";
 
 type State = {
@@ -12,6 +13,7 @@ type State = {
   customerFormOpen: boolean;
   customerFormCustomer: customerDetailFragment$data | null;
   visitRecordFormOpen: boolean;
+  visitRecordFormVisitRecord: visitRecordItemFragment$data | null;
 };
 
 type Action = {};
@@ -22,4 +24,5 @@ export const usePortalStore = create<State & Action>()((set) => ({
   customerFormOpen: false,
   customerFormCustomer: null,
   visitRecordFormOpen: false,
+  visitRecordFormVisitRecord: null,
 }));

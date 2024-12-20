@@ -23,8 +23,7 @@ func (a *AMap) GeoCode(address string) (int, float64, float64, string, error) {
 		return 0, 0, 0, "", err
 	}
 	q := req.URL.Query()
-	q.Add("key", "28982eb1a6a3cd956e0e0614c2fb131b")
-	// q.Add("city", "香港特别行政区")
+	q.Add("key", a.Key)
 	q.Add("address", address)
 	req.URL.RawQuery = q.Encode()
 	resp, err := a.hc.Do(req)
@@ -53,6 +52,29 @@ func (a *AMap) GeoCode(address string) (int, float64, float64, string, error) {
 	}
 	adcode, _ := strconv.Atoi(geoResp.GeoCodes[0].AdCode)
 	return adcode, lng, lat, geoResp.GeoCodes[0].FormattedAddress, nil
+}
+
+func (a *AMap) SearchLocation(keyword string) (GeoResponse, error) {
+	req, err := http.NewRequest("GET", "https://restapi.amap.com/v3/geocode/geo", nil)
+	if err != nil {
+		return GeoResponse{}, err
+	}
+	q := req.URL.Query()
+	q.Add("key", a.Key)
+	q.Add("address", keyword)
+	req.URL.RawQuery = q.Encode()
+	resp, err := a.hc.Do(req)
+	if err != nil {
+		fmt.Println(fmt.Errorf("failed to search location: %w", err))
+		return GeoResponse{}, err
+	}
+	defer resp.Body.Close()
+
+	var geoResp GeoResponse
+	if err := json.NewDecoder(resp.Body).Decode(&geoResp); err != nil {
+		return GeoResponse{}, err
+	}
+	return geoResp, nil
 }
 
 type GeoResponse struct {

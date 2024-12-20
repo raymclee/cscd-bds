@@ -1323,6 +1323,7 @@ export type Location = {
   city?: Maybe<City>;
   district: District;
   fullAddress: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
   province: Province;
 };
 

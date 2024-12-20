@@ -215,6 +215,7 @@ type ComplexityRoot struct {
 		City        func(childComplexity int) int
 		District    func(childComplexity int) int
 		FullAddress func(childComplexity int) int
+		ID          func(childComplexity int) int
 		Province    func(childComplexity int) int
 	}
 
@@ -1292,6 +1293,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Location.FullAddress(childComplexity), true
+
+	case "Location.id":
+		if e.complexity.Location.ID == nil {
+			break
+		}
+
+		return e.complexity.Location.ID(childComplexity), true
 
 	case "Location.province":
 		if e.complexity.Location.Province == nil {
@@ -7954,6 +7962,7 @@ type FeishuUser {
 }
 
 type Location {
+  id: ID!
   fullAddress: String!
   province: Province!
   city: City

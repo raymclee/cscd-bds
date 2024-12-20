@@ -16,6 +16,7 @@ export function CustomerVisitRecordList(props: {
       ) {
         visitRecords(first: $first, last: $last, orderBy: $orderBy)
           @connection(key: "customerVisitRecordListFragment_visitRecords") {
+          __id
           edges {
             node {
               id
@@ -33,7 +34,15 @@ export function CustomerVisitRecordList(props: {
       <List
         dataSource={data.visitRecords.edges?.map((e) => e?.node)}
         rowKey={(node) => node?.id || ""}
-        renderItem={(node) => node && <VisitRecordItem record={node} />}
+        renderItem={(node) =>
+          node && (
+            <VisitRecordItem
+              key={node.id}
+              record={node}
+              connectionID={data.visitRecords.__id}
+            />
+          )
+        }
       />
     </div>
   );

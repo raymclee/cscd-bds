@@ -11,6 +11,7 @@ type FeishuUser {
 }
 
 type Location {
+  id: ID!
   fullAddress: String!
   province: Province!
   city: City

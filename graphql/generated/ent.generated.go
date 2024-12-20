@@ -13067,6 +13067,8 @@ func (ec *executionContext) fieldContext_Query_searchLocation(ctx context.Contex
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
+			case "id":
+				return ec.fieldContext_Location_id(ctx, field)
 			case "fullAddress":
 				return ec.fieldContext_Location_fullAddress(ctx, field)
 			case "province":

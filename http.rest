@@ -8,7 +8,7 @@ Content-Type: application/json
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?key=28982eb1a6a3cd956e0e0614c2fb131b&address=广州市海珠区阅江西路222号
+GET https://restapi.amap.com/v3/geocode/geo?address=%E5%85%AB%E5%8F%B7%E5%95%86%E4%B8%9A%E5%B9%BF%E5%9C%BA&key=28982eb1a6a3cd956e0e0614c2fb131b
 
 ###
 GET https://restapi.amap.com/v3/geocode/regeo?address=The Henderson Art Garden&key=28982eb1a6a3cd956e0e0614c2fb131b

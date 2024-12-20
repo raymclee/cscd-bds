@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c6dbc7e182eedba50b6730e08b355f7c>>
+ * @generated SignedSource<<f50fe6de5037ada3cef4ee023e6e7fc2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -57,6 +57,16 @@ v2 = [
     "name": "input",
     "variableName": "input"
   }
+],
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = [
+  (v3/*: any*/)
 ];
 return {
   "fragment": {
@@ -143,13 +153,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -184,6 +188,48 @@ return {
                     "kind": "ScalarField",
                     "name": "nextStep",
                     "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "UserConnection",
+                    "kind": "LinkedField",
+                    "name": "followupbys",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "UserEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "User",
+                            "kind": "LinkedField",
+                            "name": "node",
+                            "plural": false,
+                            "selections": (v4/*: any*/),
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Tender",
+                    "kind": "LinkedField",
+                    "name": "tender",
+                    "plural": false,
+                    "selections": (v4/*: any*/),
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -213,12 +259,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4133a2170af6a53f12c797b1b7ea2435",
+    "cacheID": "fd5703d4a3e734ed1262692132d791f7",
     "id": null,
     "metadata": {},
     "name": "useCreateVisitRecordMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateVisitRecordMutation(\n  $input: CreateVisitRecordInput!\n) {\n  createVisitRecord(input: $input) {\n    edges {\n      node {\n        ...visitRecordItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n}\n"
+    "text": "mutation useCreateVisitRecordMutation(\n  $input: CreateVisitRecordInput!\n) {\n  createVisitRecord(input: $input) {\n    edges {\n      node {\n        ...visitRecordItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
   }
 };
 })();

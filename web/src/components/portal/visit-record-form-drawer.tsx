@@ -3,6 +3,7 @@ import { visitRecordFormDrawerQuery } from "__generated__/visitRecordFormDrawerQ
 import { App, Button, DatePicker, Input, Select, Space } from "antd";
 import { Form } from "antd";
 import { Drawer } from "antd";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import {
   ConnectionHandler,
@@ -13,7 +14,9 @@ import {
   usePreloadedQuery,
   useQueryLoader,
 } from "react-relay";
+import { fromTheme } from "tailwind-merge";
 import { useCreateVisitRecord } from "~/hooks/use-create-visit-record";
+import { useUpdateVisitRecord } from "~/hooks/use-update-visit-record";
 import { visitTypeOptions } from "~/lib/helper";
 import { usePortalStore } from "~/store/portal";
 
@@ -55,6 +58,9 @@ export function VisitRecordFormDrawer({
   const [queryRef, loadQuery] = useQueryLoader<visitRecordFormDrawerQuery>(
     VisitRecordFormDrawerQuery,
   );
+  const visitRecord = usePortalStore(
+    (state) => state.visitRecordFormVisitRecord,
+  );
 
   const onClose = () => {
     usePortalStore.setState({
@@ -69,7 +75,12 @@ export function VisitRecordFormDrawer({
   }, [open, areaId]);
 
   return (
-    <Drawer open={open} onClose={onClose} width={520} title="添加拜访记录">
+    <Drawer
+      open={open}
+      onClose={onClose}
+      width={520}
+      title={visitRecord ? "修改拜访记录" : "添加拜访记录"}
+    >
       {queryRef && (
         <VisitRecordForm customerId={customerId} queryRef={queryRef} />
       )}
@@ -87,13 +98,34 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
   const [form] = Form.useForm();
   const [commitCreateVisitRecord, isCreateVisitRecordInFlight] =
     useCreateVisitRecord();
+  const [commitUpdateVisitRecord, isUpdateVisitRecordInFlight] =
+    useUpdateVisitRecord();
   const { message } = App.useApp();
+  const visitRecord = usePortalStore(
+    (state) => state.visitRecordFormVisitRecord,
+  );
 
   const onClose = () => {
+    form.resetFields();
     usePortalStore.setState({
       visitRecordFormOpen: false,
+      visitRecordFormVisitRecord: null,
     });
   };
+
+  useEffect(() => {
+    if (visitRecord) {
+      form.setFieldsValue({
+        date: dayjs(visitRecord.date),
+        visitType: visitRecord.visitType,
+        followupbyIDs: visitRecord.followupbys?.edges?.map((e) => e?.node?.id),
+        commPeople: visitRecord.commPeople,
+        commContent: visitRecord.commContent,
+        nextStep: visitRecord.nextStep,
+        tenderID: visitRecord.tender?.id,
+      });
+    }
+  }, [visitRecord]);
 
   return (
     <>
@@ -101,34 +133,58 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
         form={form}
         layout="vertical"
         clearOnDestroy
-        disabled={isCreateVisitRecordInFlight}
+        disabled={isCreateVisitRecordInFlight || isUpdateVisitRecordInFlight}
         onFinish={(values) => {
-          commitCreateVisitRecord({
-            variables: {
-              input: { ...values, customerID: customerId },
-              connections: [
-                ConnectionHandler.getConnectionID(
-                  customerId,
-                  "customerVisitRecordListFragment_visitRecords",
-                  {
-                    orderBy: {
-                      direction: "DESC",
-                      field: "DATE",
+          if (visitRecord) {
+            const { followupbyIDs, ...input } = values;
+            commitUpdateVisitRecord({
+              variables: {
+                id: visitRecord.id,
+                input: {
+                  ...input,
+                  customerID: customerId,
+                  clearFollowUpBys: true,
+                  addFollowUpByIDs: followupbyIDs,
+                },
+              },
+              onCompleted: () => {
+                message.destroy();
+                message.success("修改拜访记录成功");
+                onClose();
+              },
+              onError: (error) => {
+                message.destroy();
+                message.error(error.message);
+              },
+            });
+          } else {
+            commitCreateVisitRecord({
+              variables: {
+                input: { ...values, customerID: customerId },
+                connections: [
+                  ConnectionHandler.getConnectionID(
+                    customerId,
+                    "customerVisitRecordListFragment_visitRecords",
+                    {
+                      orderBy: {
+                        direction: "DESC",
+                        field: "DATE",
+                      },
                     },
-                  },
-                ),
-              ],
-            },
-            onCompleted: () => {
-              message.destroy();
-              message.success("添加拜访记录成功");
-              onClose();
-            },
-            onError: (error) => {
-              message.destroy();
-              message.error(error.message);
-            },
-          });
+                  ),
+                ],
+              },
+              onCompleted: () => {
+                message.destroy();
+                message.success("添加拜访记录成功");
+                onClose();
+              },
+              onError: (error) => {
+                message.destroy();
+                message.error(error.message);
+              },
+            });
+          }
         }}
       >
         <Form.Item label="跟进时间" name="date" rules={[{ required: true }]}>
@@ -199,7 +255,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
             // loading={isCreateUserInFlight || isUpdateUserInFlight}
             onClick={() => form.submit()}
           >
-            保存
+            {visitRecord ? "保存" : "提交"}
           </Button>
         </Space>
       </div>

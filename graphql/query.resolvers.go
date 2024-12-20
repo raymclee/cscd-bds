@@ -7,7 +7,12 @@ package graphql
 import (
 	"context"
 	"cscd-bds/graphql/model"
+	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/schema/xid"
 	"fmt"
+	"strconv"
+
+	"golang.org/x/sync/errgroup"
 )
 
 // SearchFeishuUser is the resolver for the searchFeishuUser field.
@@ -29,5 +34,37 @@ func (r *queryResolver) SearchFeishuUser(ctx context.Context, keyword string) ([
 
 // SearchLocation is the resolver for the searchLocation field.
 func (r *queryResolver) SearchLocation(ctx context.Context, keyword string) ([]*model.Location, error) {
-	panic(fmt.Errorf("not implemented: SearchLocation - searchLocation"))
+	geoResp, err := r.amap.SearchLocation(keyword)
+	if err != nil {
+		return nil, fmt.Errorf("failed to search location: %w", err)
+	}
+	var wg errgroup.Group
+	var out []*model.Location
+	for _, geo := range geoResp.GeoCodes {
+		wg.Go(func() error {
+			o := &model.Location{
+				ID:          xid.MustNew("AL"),
+				FullAddress: geo.FormattedAddress,
+			}
+			ac, err := strconv.Atoi(geo.AdCode)
+			if err != nil {
+				return fmt.Errorf("failed to convert adcode: %w", err)
+			}
+			d, err := r.store.District.Query().Where(district.Adcode(ac)).WithCity().WithProvince().Only(ctx)
+			if err != nil {
+				return nil
+			}
+			if d != nil {
+				o.City = d.Edges.City
+				o.Province = d.Edges.Province
+				o.District = d
+			}
+			out = append(out, o)
+			return nil
+		})
+	}
+	if err := wg.Wait(); err != nil {
+		return nil, err
+	}
+	return out, nil
 }

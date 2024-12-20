@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fba84fb64333840bca8c08b9b8d7ab19>>
+ * @generated SignedSource<<ef0bad3fadb1c8d4bd45e5a03898ff37>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,8 +14,18 @@ export type visitRecordItemFragment$data = {
   readonly commContent: string;
   readonly commPeople: string;
   readonly date: any;
+  readonly followupbys: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
+  };
   readonly id: string;
   readonly nextStep: string | null | undefined;
+  readonly tender: {
+    readonly id: string;
+  } | null | undefined;
   readonly visitType: number;
   readonly " $fragmentType": "visitRecordItemFragment";
 };
@@ -24,19 +34,24 @@ export type visitRecordItemFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"visitRecordItemFragment">;
 };
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = [
+  (v0/*: any*/)
+];
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "visitRecordItemFragment",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -71,12 +86,55 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "nextStep",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "UserConnection",
+      "kind": "LinkedField",
+      "name": "followupbys",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "UserEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "User",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": (v1/*: any*/),
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Tender",
+      "kind": "LinkedField",
+      "name": "tender",
+      "plural": false,
+      "selections": (v1/*: any*/),
+      "storageKey": null
     }
   ],
   "type": "VisitRecord",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "8dfe6b4efdbe3a12233583ea1eb68229";
+(node as any).hash = "ec5f0e3eb5b67a877992b0f751669093";
 
 export default node;

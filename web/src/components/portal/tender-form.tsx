@@ -41,6 +41,7 @@ import {
 } from "~/lib/helper";
 import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
+import { SearchLocationSelect } from "./search-location-select";
 
 const { Dragger } = Upload;
 
@@ -564,12 +565,20 @@ export function TenderForm({
               <ProvinceCityDistrictSelectorLoader areaID={areaID} />
 
               <Form.Item
-                name="address"
+                name="fullAddress"
                 label="详细地址"
                 rules={[{ required: true }]}
                 className="md:col-span-3"
               >
-                <Input />
+                <SearchLocationSelect
+                // onAddressSelected={(a) => {
+                //   if (a) {
+                //     form.setFieldValue("provinceID", a.province.id);
+                //     if (a.city) form.setFieldValue("cityID", a.city.id);
+                //     form.setFieldValue("districtID", a.district.id);
+                //   }
+                // }}
+                />
               </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
@@ -991,7 +1000,15 @@ function ProvinceCityDistrictSelectorLoader({}: { areaID: string }) {
     }
   }, [areaID]);
 
-  return queryRef ? <ProvinceCityDistrictSelector queryRef={queryRef} /> : null;
+  return queryRef ? (
+    <ProvinceCityDistrictSelector queryRef={queryRef} />
+  ) : (
+    ["省", "市", "区"].map((label, i) => (
+      <Form.Item key={i} label={label}>
+        <Select />
+      </Form.Item>
+    ))
+  );
 }
 
 function ProvinceCityDistrictSelector({

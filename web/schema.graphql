@@ -1353,6 +1353,7 @@ type Location {
   city: City
   district: District!
   fullAddress: String!
+  id: ID!
   province: Province!
 }
 

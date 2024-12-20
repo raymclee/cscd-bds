@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3119dd390e4c40ef1a6b652c4a57efd8>>
+ * @generated SignedSource<<cbaea71497b1e3946fceaf39a27579ec>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,13 +15,17 @@ export type searchLocationSelectQuery$variables = {
 export type searchLocationSelectQuery$data = {
   readonly searchLocation: ReadonlyArray<{
     readonly city: {
+      readonly id: string;
       readonly name: string;
     } | null | undefined;
     readonly district: {
+      readonly id: string;
       readonly name: string;
     };
     readonly fullAddress: string;
+    readonly id: string;
     readonly province: {
+      readonly id: string;
       readonly name: string;
     };
   }>;
@@ -39,37 +43,77 @@ var v0 = [
     "name": "keyword"
   }
 ],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "keyword",
-    "variableName": "keyword"
-  }
-],
-v2 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "fullAddress",
+  "name": "id",
   "storageKey": null
 },
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v4 = [
-  (v3/*: any*/)
-],
-v5 = [
-  (v3/*: any*/),
+v2 = [
+  (v1/*: any*/),
   {
     "alias": null,
     "args": null,
     "kind": "ScalarField",
-    "name": "id",
+    "name": "name",
+    "storageKey": null
+  }
+],
+v3 = [
+  {
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "keyword",
+        "variableName": "keyword"
+      }
+    ],
+    "concreteType": "Location",
+    "kind": "LinkedField",
+    "name": "searchLocation",
+    "plural": true,
+    "selections": [
+      (v1/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "fullAddress",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Province",
+        "kind": "LinkedField",
+        "name": "province",
+        "plural": false,
+        "selections": (v2/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "City",
+        "kind": "LinkedField",
+        "name": "city",
+        "plural": false,
+        "selections": (v2/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "District",
+        "kind": "LinkedField",
+        "name": "district",
+        "plural": false,
+        "selections": (v2/*: any*/),
+        "storageKey": null
+      }
+    ],
     "storageKey": null
   }
 ];
@@ -79,50 +123,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "searchLocationSelectQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Location",
-        "kind": "LinkedField",
-        "name": "searchLocation",
-        "plural": true,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Province",
-            "kind": "LinkedField",
-            "name": "province",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "City",
-            "kind": "LinkedField",
-            "name": "city",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "District",
-            "kind": "LinkedField",
-            "name": "district",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ],
+    "selections": (v3/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -131,62 +132,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "searchLocationSelectQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Location",
-        "kind": "LinkedField",
-        "name": "searchLocation",
-        "plural": true,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Province",
-            "kind": "LinkedField",
-            "name": "province",
-            "plural": false,
-            "selections": (v5/*: any*/),
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "City",
-            "kind": "LinkedField",
-            "name": "city",
-            "plural": false,
-            "selections": (v5/*: any*/),
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "District",
-            "kind": "LinkedField",
-            "name": "district",
-            "plural": false,
-            "selections": (v5/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "3959266b1953316e784f1fc5d5eb6c18",
+    "cacheID": "3c5dd4d3d8d356042d0cfd12847505ac",
     "id": null,
     "metadata": {},
     "name": "searchLocationSelectQuery",
     "operationKind": "query",
-    "text": "query searchLocationSelectQuery(\n  $keyword: String!\n) {\n  searchLocation(keyword: $keyword) {\n    fullAddress\n    province {\n      name\n      id\n    }\n    city {\n      name\n      id\n    }\n    district {\n      name\n      id\n    }\n  }\n}\n"
+    "text": "query searchLocationSelectQuery(\n  $keyword: String!\n) {\n  searchLocation(keyword: $keyword) {\n    id\n    fullAddress\n    province {\n      id\n      name\n    }\n    city {\n      id\n      name\n    }\n    district {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b4bbcf09594d4646efe5239820535082";
+(node as any).hash = "8932439a5e399f81101e34455e0c8cdc";
 
 export default node;

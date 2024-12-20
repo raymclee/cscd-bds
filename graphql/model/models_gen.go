@@ -4,6 +4,7 @@ package model
 
 import (
 	"cscd-bds/store/ent"
+	"cscd-bds/store/ent/schema/xid"
 )
 
 type FeishuUser struct {
@@ -18,6 +19,7 @@ type GeoJSON struct {
 }
 
 type Location struct {
+	ID          xid.ID        `json:"id"`
 	FullAddress string        `json:"fullAddress"`
 	Province    *ent.Province `json:"province"`
 	City        *ent.City     `json:"city,omitempty"`

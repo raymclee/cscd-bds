@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e0c0af4b43ee0393e805076b9abd7724>>
+ * @generated SignedSource<<44f0d380487344eaf52c4e06a3a38e77>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type UpdateVisitRecordInput = {
   addFollowUpByIDs?: ReadonlyArray<string> | null | undefined;
   clearFollowUpBys?: boolean | null | undefined;
@@ -30,7 +31,7 @@ export type useUpdateVisitRecordMutation$variables = {
 };
 export type useUpdateVisitRecordMutation$data = {
   readonly updateVisitRecord: {
-    readonly id: string;
+    readonly " $fragmentSpreads": FragmentRefs<"visitRecordItemFragment">;
   };
 };
 export type useUpdateVisitRecordMutation = {
@@ -53,34 +54,25 @@ var v0 = [
 ],
 v1 = [
   {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "id"
-      },
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "VisitRecord",
-    "kind": "LinkedField",
-    "name": "updateVisitRecord",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id"
+  },
+  {
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = [
+  (v2/*: any*/)
 ];
 return {
   "fragment": {
@@ -88,7 +80,24 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "useUpdateVisitRecordMutation",
-    "selections": (v1/*: any*/),
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "VisitRecord",
+        "kind": "LinkedField",
+        "name": "updateVisitRecord",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "visitRecordItemFragment"
+          }
+        ],
+        "storageKey": null
+      }
+    ],
     "type": "Mutation",
     "abstractKey": null
   },
@@ -97,19 +106,109 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "useUpdateVisitRecordMutation",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "VisitRecord",
+        "kind": "LinkedField",
+        "name": "updateVisitRecord",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "date",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "visitType",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "commPeople",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "commContent",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "nextStep",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "UserConnection",
+            "kind": "LinkedField",
+            "name": "followupbys",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "UserEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "User",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": (v3/*: any*/),
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Tender",
+            "kind": "LinkedField",
+            "name": "tender",
+            "plural": false,
+            "selections": (v3/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "429ac4cd212db0733e2b7e05959d3cc6",
+    "cacheID": "004bde0f29026818d78a3dbd72939228",
     "id": null,
     "metadata": {},
     "name": "useUpdateVisitRecordMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateVisitRecordMutation(\n  $id: ID!\n  $input: UpdateVisitRecordInput!\n) {\n  updateVisitRecord(id: $id, input: $input) {\n    id\n  }\n}\n"
+    "text": "mutation useUpdateVisitRecordMutation(\n  $id: ID!\n  $input: UpdateVisitRecordInput!\n) {\n  updateVisitRecord(id: $id, input: $input) {\n    ...visitRecordItemFragment\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8acf004d751e21c8c86f84b54e6befa9";
+(node as any).hash = "1f198ae3b9fa50f84bbc698519629764";
 
 export default node;

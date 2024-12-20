@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6fbe4183a24d96d84a8cf9fad39aac6a>>
+ * @generated SignedSource<<18ebd7bda10381ac408549561a6cfa04>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type customerVisitRecordListFragment$data = {
   readonly visitRecords: {
+    readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
@@ -159,6 +160,18 @@ const node: ReaderFragment = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "kind": "ClientExtension",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__id",
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": null
@@ -168,6 +181,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "ff29136e0d0bef55385657f6716b7bfe";
+(node as any).hash = "74a95a8da3189f14cdd27bbc235944bb";
 
 export default node;
