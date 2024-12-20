@@ -302,6 +302,33 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		q.SetAttachements(removedAttachments)
 	}
 
+	if input.Address != nil && t.Address != nil && *input.Address != *t.Address {
+
+		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get geo code: %w", err)
+		}
+		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get district: %w", err)
+		}
+		if d.Edges.City != nil {
+			q.SetCity(d.Edges.City)
+		}
+		if d.Edges.Province != nil {
+			q.SetProvince(d.Edges.Province)
+		}
+		q.SetDistrict(d)
+		q.SetFullAddress(address)
+		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+		if err != nil {
+			return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
+		}
+		coordinate := &geo.GeoJson{Geometry: center}
+		q.SetGeoCoordinate(coordinate).SetDistrict(d)
+
+	}
+
 	t, err = q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)

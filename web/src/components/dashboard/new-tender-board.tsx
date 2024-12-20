@@ -8,8 +8,8 @@ import { Ellipsis, Eye } from "lucide-react";
 import { useMapStore } from "~/store/map";
 import { motion } from "motion/react";
 
-const MotionCard = motion(Card);
-const MotionEllipsis = motion(Ellipsis);
+const MotionCard = motion.create(Card);
+const MotionEllipsis = motion.create(Ellipsis);
 
 export function NewTenderBoard() {
   const tenders = useAreaTenders();

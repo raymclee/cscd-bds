@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f169e66d701d6b29430a832d9d8af5cb>>
+ * @generated SignedSource<<ba90d522a544fd56faf048d950293c22>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,6 +26,7 @@ export type visitRecordItemFragment$data = {
   readonly nextStep: string | null | undefined;
   readonly tender: {
     readonly id: string;
+    readonly name: string;
   } | null | undefined;
   readonly visitType: number;
   readonly " $fragmentType": "visitRecordItemFragment";
@@ -42,10 +43,7 @@ var v0 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v1 = [
-  (v0/*: any*/)
-];
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -118,7 +116,9 @@ return {
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
-              "selections": (v1/*: any*/),
+              "selections": [
+                (v0/*: any*/)
+              ],
               "storageKey": null
             }
           ],
@@ -134,7 +134,16 @@ return {
       "kind": "LinkedField",
       "name": "tender",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "name",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     }
   ],
@@ -143,6 +152,6 @@ return {
 };
 })();
 
-(node as any).hash = "366e0f1a61e5183828a5150834e7ebd6";
+(node as any).hash = "106ecfc0035799a6adeabdbb31b7cab0";
 
 export default node;

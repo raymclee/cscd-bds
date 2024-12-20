@@ -1,4 +1,4 @@
-import { useRouteContext } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import {
   visitRecordItemFragment$data,
   visitRecordItemFragment$key,
@@ -38,6 +38,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
         }
         tender {
           id
+          name
         }
       }
     `,
@@ -91,6 +92,22 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
           span: 2,
         },
         {
+          key: "tender",
+          label: "商机",
+          children: data.tender ? (
+            <Link
+              to={`/portal/tenders/$id`}
+              params={{ id: data.tender.id }}
+              className="text-blue-500 hover:text-blue-700"
+            >
+              {data.tender.name}
+            </Link>
+          ) : (
+            "-"
+          ),
+          span: 3,
+        },
+        {
           key: "commContent",
           label: "沟通内容",
           children: data.commContent,
@@ -98,7 +115,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
         },
         {
           key: "nextStep",
-          label: "下一步",
+          label: "下一步计划",
           children: data.nextStep || "-",
           span: 3,
         },

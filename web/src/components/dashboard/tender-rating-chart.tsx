@@ -1,4 +1,10 @@
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
+import {
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+} from "recharts";
 
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import {
@@ -15,6 +21,8 @@ const chartConfig = {
     color: "var(--brand)",
   },
 } satisfies ChartConfig;
+
+const scale = 10;
 
 type TenderRatingChartProps = Pick<
   Tender,
@@ -33,11 +41,14 @@ export function TenderRatingChart({
   competitivePartnershipRating,
 }: TenderRatingChartProps) {
   const chartData = [
-    { month: "资信及付款", rating: creditAndPaymentRating },
-    { month: "规模及价值", rating: sizeAndValueRating },
-    { month: "中标原则及时限", rating: timeLimitRating },
-    { month: "客情关系", rating: customerRelationshipRating },
-    { month: "竞争合作关系", rating: competitivePartnershipRating },
+    { month: "资信及付款", rating: (creditAndPaymentRating ?? 0) * scale },
+    { month: "规模及价值", rating: (sizeAndValueRating ?? 0) * scale },
+    { month: "中标原则及时限", rating: (timeLimitRating ?? 0) * scale },
+    { month: "客情关系", rating: (customerRelationshipRating ?? 0) * scale },
+    {
+      month: "竞争合作关系",
+      rating: (competitivePartnershipRating ?? 0) * scale,
+    },
   ];
 
   return (
@@ -51,7 +62,7 @@ export function TenderRatingChart({
       <CardContent className="pb-0">
         <ChartContainer config={chartConfig} className="mx-auto max-h-[250px]">
           <RadarChart data={chartData} className="text-white">
-            <ChartTooltip
+            {/* <ChartTooltip
               cursor={false}
               contentStyle={{ color: "white" }}
               wrapperClassName="text-white"
@@ -61,10 +72,16 @@ export function TenderRatingChart({
                   className="border-0 bg-black/70 text-white"
                 />
               }
+            /> */}
+            <PolarGrid
+              className="fill-[--brand] opacity-20"
+              // polarRadius={[50, 60, 70, 80, 90, 100]}
+              polarRadius={[10, 20, 30, 40, 50].map((x) => x * 1.35)}
             />
-            <PolarGrid className="fill-[--brand] opacity-20" />
+            {/* <PolarRadiusAxis angle={30} domain={[0, 3]} tickCount={5} /> */}
             <PolarAngleAxis
               dataKey="month"
+              tickSize={1}
               tick={({ x, y, textAnchor, value, index, ...props }) => {
                 const data = chartData[index];
                 return (
@@ -77,7 +94,9 @@ export function TenderRatingChart({
                     {...props}
                     className="flex flex-col"
                   >
-                    <tspan className="fill-gray-300">{data.rating || 0}</tspan>
+                    <tspan className="fill-gray-300">
+                      {data.rating / 10 || 0}
+                    </tspan>
                     <tspan
                       x={x}
                       dy={"1rem"}

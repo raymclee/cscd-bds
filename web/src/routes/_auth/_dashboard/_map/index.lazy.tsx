@@ -43,6 +43,7 @@ export const mapIndexPageQuery = graphql`
     $orderBy: [TenderOrder!]
     $first: Int
     $last: Int
+    $visitOrderBy: VisitRecordOrder
   ) {
     node(id: $userId) {
       ... on User {
@@ -78,6 +79,7 @@ export const mapIndexPageQuery = graphql`
                     createdAt
                     estimatedAmount
                     customer {
+                      name
                       ownerType
                     }
                     followingSales {
@@ -135,7 +137,7 @@ export const mapIndexPageQuery = graphql`
                       coordinates
                     }
                     geoBounds
-                    visitRecords {
+                    visitRecords(orderBy: $visitOrderBy) {
                       edges {
                         node {
                           visitType
@@ -144,6 +146,10 @@ export const mapIndexPageQuery = graphql`
                           commContent
                           date
                           customer {
+                            name
+                          }
+                          tender {
+                            id
                             name
                           }
                         }
@@ -735,7 +741,6 @@ function RouteComponent() {
       marker.setOptions({ zIndex: 12 });
     });
     useMapStore.setState((state) => ({
-      ...state,
       markers: [...state.markers, marker],
     }));
   }
@@ -806,8 +811,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "fixed left-1/2 top-[10vh] -translate-x-1/2 transition xl:bottom-[5vh] xl:top-[unset]",
-          !tenderViewTender && "-translate-y-[20vh] xl:translate-y-[10vh]",
+          "fixed bottom-[5vh] left-1/2 -translate-x-1/2 transition",
+          !tenderViewTender && "translate-y-[10vh]",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -860,8 +865,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "fixed left-1/2 top-[10vh] -translate-x-1/2 transition xl:bottom-[5vh] xl:top-[unset]",
-          navigations.length < 1 && "-translate-y-[20vh] xl:translate-y-[10vh]",
+          "fixed bottom-[5vh] left-1/2 -translate-x-1/2 transition",
+          navigations.length < 1 && "translate-y-[10vh]",
         )}
       >
         <Breadcrumb className="mt-px">

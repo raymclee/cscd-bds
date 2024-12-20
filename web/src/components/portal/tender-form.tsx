@@ -180,7 +180,7 @@ export function TenderForm({
           tender.estimatedProjectEndDate &&
           dayjs(tender.estimatedProjectEndDate),
         projectType: tender.projectType,
-        address: tender.address,
+        address: tender.fullAddress || tender.address,
         fullAddress: tender.fullAddress,
         images: tender.images?.map((image) => image),
         attachements: tender.attachements?.map((attachement) => attachement),
@@ -565,7 +565,7 @@ export function TenderForm({
               <ProvinceCityDistrictSelectorLoader areaID={areaID} />
 
               <Form.Item
-                name="fullAddress"
+                name="address"
                 label="详细地址"
                 rules={[{ required: true }]}
                 className="md:col-span-3"
@@ -611,6 +611,7 @@ export function TenderForm({
               <Form.Item
                 name="estimatedProjectStartDate"
                 label="预计项目开始日期"
+                rules={[{ required: status === 3 }]}
               >
                 <DatePicker className="w-full" />
               </Form.Item>
@@ -618,6 +619,7 @@ export function TenderForm({
               <Form.Item
                 name="estimatedProjectEndDate"
                 label="项目预计结束日期"
+                rules={[{ required: status === 3 }]}
               >
                 <DatePicker className="w-full" />
               </Form.Item>
@@ -632,10 +634,6 @@ export function TenderForm({
 
               <Form.Item name="levelInvolved" label="涉及层面">
                 <Select options={levelInvolvedOptions} />
-              </Form.Item>
-
-              <Form.Item name="currentProgress" label="当前进展">
-                <Input />
               </Form.Item>
 
               <Form.Item name="keyProject" label="是否重点跟进项目">
@@ -704,6 +702,14 @@ export function TenderForm({
                   </Dragger>
                 </Form.Item>
               )}
+
+              <Form.Item
+                name="currentProgress"
+                label="当前进展"
+                className="sm:col-span-2 md:col-span-3 lg:col-span-4"
+              >
+                <Input.TextArea />
+              </Form.Item>
 
               <Form.Item
                 name="remark"

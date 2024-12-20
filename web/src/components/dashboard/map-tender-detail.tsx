@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { ImageOff, Undo2 } from "lucide-react";
-import { fixAmount, isGA, ownerTypeText } from "~/lib/helper";
+import { fixAmount, isGA, ownerTypeText, visitTypeText } from "~/lib/helper";
 import dayjs from "dayjs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { TenderRatingChart } from "./tender-rating-chart";
@@ -88,7 +88,7 @@ export function MapTenderDetail() {
                 </div>
               </div>
               <div className="grid grid-cols-3">
-                <div className="text-gray-400">业主单位</div>
+                <div className="text-gray-400">业主</div>
                 <div className="col-span-2">
                   {selectedTender?.developer || "-"}
                 </div>
@@ -206,7 +206,7 @@ export function MapTenderDetail() {
                     </div>
                   </div>
                   <div className="grid grid-cols-3">
-                    <div className="text-gray-400">业主单位</div>
+                    <div className="text-gray-400">业主</div>
                     <div className="col-span-2">
                       {selectedTender?.customer?.name || "-"}
                     </div>
@@ -352,7 +352,7 @@ export function MapTenderDetail() {
                           <div className="grid grid-cols-3">
                             <div className="text-gray-400">沟通形式</div>
                             <div className="col-span-2">
-                              {record?.visitType == 1 ? "现场拜访" : "沟通内容"}
+                              {visitTypeText(record?.visitType)}
                             </div>
                           </div>
                           <div className="grid grid-cols-3">

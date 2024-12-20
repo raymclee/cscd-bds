@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fb28b60e481ffc86a9ad2f9f989d111d>>
+ * @generated SignedSource<<24bc4ee64085df58fbc97f2e281587d7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -70,10 +70,7 @@ v2 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v3 = [
-  (v2/*: any*/)
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -181,7 +178,9 @@ return {
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
-                    "selections": (v3/*: any*/),
+                    "selections": [
+                      (v2/*: any*/)
+                    ],
                     "storageKey": null
                   }
                 ],
@@ -197,7 +196,16 @@ return {
             "kind": "LinkedField",
             "name": "tender",
             "plural": false,
-            "selections": (v3/*: any*/),
+            "selections": [
+              (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           }
         ],
@@ -206,12 +214,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b81dc6e2b9f55a5c792566873c3172a2",
+    "cacheID": "6c8154cd3656765db2a8afbbd525e078",
     "id": null,
     "metadata": {},
     "name": "useUpdateVisitRecordMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateVisitRecordMutation(\n  $id: ID!\n  $input: UpdateVisitRecordInput!\n) {\n  updateVisitRecord(id: $id, input: $input) {\n    ...visitRecordItemFragment\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
+    "text": "mutation useUpdateVisitRecordMutation(\n  $id: ID!\n  $input: UpdateVisitRecordInput!\n) {\n  updateVisitRecord(id: $id, input: $input) {\n    ...visitRecordItemFragment\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n    name\n  }\n}\n"
   }
 };
 })();

@@ -51,9 +51,9 @@ function RouteComponent() {
     `,
     Route.useLoaderData(),
   );
-  const [activeTab, setActiveTab] = React.useState("1");
+  const { tab } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const customer = data.node;
-  const { session } = Route.useRouteContext();
 
   if (!customer) {
     return (
@@ -78,7 +78,10 @@ function RouteComponent() {
             showContact
           />
         }
-        onTabChange={(key) => setActiveTab(key)}
+        activeTabKey={String(tab)}
+        onTabChange={(key) =>
+          navigate({ to: ".", search: { tab: Number(key) }, replace: true })
+        }
         tabProps={{ style: { marginTop: 12 }, size: "small" }}
         tabList={[
           {
@@ -91,8 +94,8 @@ function RouteComponent() {
           },
         ]}
       >
-        {activeTab === "1" && <CustomerTenderList customer={customer} />}
-        {activeTab === "2" && <CustomerVisitRecordList customer={customer} />}
+        {tab === 1 && <CustomerTenderList customer={customer} />}
+        {tab === 2 && <CustomerVisitRecordList customer={customer} />}
       </Card>
     </>
   );

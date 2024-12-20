@@ -3,6 +3,17 @@ import { loadQuery } from "react-relay";
 import node, {
   customersDetailPageQuery,
 } from "__generated__/customersDetailPageQuery.graphql";
+import * as v from "valibot";
+
+const customerDetailSearchSchema = v.object({
+  tab: v.optional(
+    v.pipe(
+      v.number(),
+      v.transform((value) => Number(value)),
+    ),
+    1,
+  ),
+});
 
 export const Route = createFileRoute("/_auth/_portal/portal/customers_/$id")({
   loader({ context: { RelayEnvironment }, params: { id } }) {
@@ -11,4 +22,5 @@ export const Route = createFileRoute("/_auth/_portal/portal/customers_/$id")({
       orderBy: { field: "DATE", direction: "DESC" },
     });
   },
+  validateSearch: customerDetailSearchSchema,
 });

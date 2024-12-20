@@ -241,7 +241,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
           <Input.TextArea />
         </Form.Item>
 
-        <Form.Item label="商機" name="tenderID">
+        <Form.Item label="商机" name="tenderID">
           <Select
             optionFilterProp="label"
             showSearch

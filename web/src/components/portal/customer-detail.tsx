@@ -160,6 +160,14 @@ export function CustomerDetail(props: {
           //     <span className="font-normal">{customer.contactPersonEmail}</span>
           //   ),
           // },
+
+          {
+            key: "createdBy",
+            label: "创建人",
+            children: (
+              <span className="font-normal">{customer.createdBy.name}</span>
+            ),
+          },
           {
             key: "createdAt",
             label: "创建时间",
@@ -167,13 +175,6 @@ export function CustomerDetail(props: {
               <span className="font-normal">
                 {dayjs(customer.createdAt).format("LLL")}
               </span>
-            ),
-          },
-          {
-            key: "createdBy",
-            label: "创建人",
-            children: (
-              <span className="font-normal">{customer.createdBy.name}</span>
             ),
           },
           {

@@ -36,7 +36,9 @@ func (s *Sap) Close() error {
 }
 
 func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	t, err := st.Tender.Query().Where(tender.ID(t.ID)).
 		WithArea().
 		WithCustomer().
@@ -48,17 +50,19 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		fmt.Println(err)
 	}
 	var (
-		now                    = time.Now()
-		customerName           string
-		followingSalesNames    []string
-		mandt                  string
-		tenderDate             = ""
-		followingSalesNamesStr string
-		esAmount               string
-		projectCode            = ""
-		projectDefinition      = ""
-		projectType            = ""
-		location               = ""
+		now                       = time.Now()
+		customerName              string
+		followingSalesNames       []string
+		mandt                     string
+		tenderDate                = ""
+		followingSalesNamesStr    string
+		esAmount                  string
+		projectCode               = ""
+		projectDefinition         = ""
+		projectType               = ""
+		location                  = ""
+		estimatedProjectStartDate = "19700101"
+		estimatedProjectEndDate   = "19700101"
 	)
 	if config.IsProd {
 		mandt = "800"
@@ -92,6 +96,18 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 	followingSalesNamesStr = strings.Join(followingSalesNames, ",")
 	esAmount = strconv.FormatFloat(t.EstimatedAmount, 'f', -1, 64)
 
+	if !t.EstimatedProjectStartDate.IsZero() {
+		estimatedProjectStartDate = t.EstimatedProjectStartDate.Format("20060102")
+	}
+	if !t.EstimatedProjectEndDate.IsZero() {
+		estimatedProjectEndDate = t.EstimatedProjectEndDate.Format("20060102")
+	}
+
+	ca, _ := strconv.Atoi(now.Local().Format("20060102150405"))
+	ua, _ := strconv.Atoi(now.Local().Format("20060102150405"))
+
+	fmt.Println("Inserting tender to sap")
+
 	_, err = s.Hana.Exec(
 		`
 				INSERT INTO "ZTSD005" (
@@ -112,10 +128,12 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 					"ZXMDM",
 					"ZXMDY",
 					"ZXMLX",
+					"ZYJXMKSRQ",
+					"ZXMYJJSRQ",
 					"ZCRDATE",
 					"ZUPDATE"
 				) VALUES (
-					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+					?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 				)
 			`,
 		// `
@@ -162,10 +180,12 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		projectCode,
 		projectDefinition,
 		projectType,
-		now.Local().UnixMilli(),
-		now.Local().UnixMilli(),
+		estimatedProjectStartDate,
+		estimatedProjectEndDate,
+		int64(ca),
+		int64(ua),
 	)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(fmt.Errorf("failed to insert tender to sap: %w", err))
 	}
 }
