@@ -1,20 +1,23 @@
-import { useParams, useRouteContext } from "@tanstack/react-router";
 import { visitRecordFormDrawerQuery } from "__generated__/visitRecordFormDrawerQuery.graphql";
-import { App, Button, DatePicker, Input, Select, Space } from "antd";
-import { Form } from "antd";
-import { Drawer } from "antd";
+import {
+  App,
+  Button,
+  DatePicker,
+  Drawer,
+  Form,
+  Input,
+  Select,
+  Space,
+} from "antd";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import {
   ConnectionHandler,
   graphql,
   PreloadedQuery,
-  useFragment,
-  useMutation,
   usePreloadedQuery,
   useQueryLoader,
 } from "react-relay";
-import { fromTheme } from "tailwind-merge";
 import { useCreateVisitRecord } from "~/hooks/use-create-visit-record";
 import { useUpdateVisitRecord } from "~/hooks/use-update-visit-record";
 import { visitTypeOptions } from "~/lib/helper";
@@ -171,6 +174,10 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
                         field: "DATE",
                       },
                     },
+                  ),
+                  ConnectionHandler.getConnectionID(
+                    customerId,
+                    "customerDetailFragment_lastVisitRecord",
                   ),
                 ],
               },

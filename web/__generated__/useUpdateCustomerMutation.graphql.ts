@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ba71b1a0d3d560b0a26f1e5cc6aba388>>
+ * @generated SignedSource<<531cc459ea61dc39b01b318683acb871>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -94,6 +94,13 @@ v3 = {
 v4 = [
   (v2/*: any*/),
   (v3/*: any*/)
+],
+v5 = [
+  {
+    "kind": "Literal",
+    "name": "last",
+    "value": 1
+  }
 ];
 return {
   "fragment": {
@@ -236,13 +243,7 @@ return {
           },
           {
             "alias": "lastVisitRecord",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "last",
-                "value": 1
-              }
-            ],
+            "args": (v5/*: any*/),
             "concreteType": "VisitRecordConnection",
             "kind": "LinkedField",
             "name": "visitRecords",
@@ -271,8 +272,47 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "__typename",
+                        "storageKey": null
+                      }
                     ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cursor",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasPreviousPage",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startCursor",
                     "storageKey": null
                   }
                 ],
@@ -280,6 +320,15 @@ return {
               }
             ],
             "storageKey": "visitRecords(last:1)"
+          },
+          {
+            "alias": "lastVisitRecord",
+            "args": (v5/*: any*/),
+            "filters": null,
+            "handle": "connection",
+            "key": "customerDetailFragment_lastVisitRecord",
+            "kind": "LinkedHandle",
+            "name": "visitRecords"
           }
         ],
         "storageKey": null
@@ -287,12 +336,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "14009bbacb4ef6bf2fadec1fc1afaf34",
+    "cacheID": "668e2451b9e3cca2d2a77959934a1c23",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

@@ -41,7 +41,8 @@ export function CustomerDetail(props: {
         contactPersonPosition
         contactPersonPhone
         contactPersonEmail
-        lastVisitRecord: visitRecords(last: 1) {
+        lastVisitRecord: visitRecords(last: 1)
+          @connection(key: "customerDetailFragment_lastVisitRecord") {
           edges {
             node {
               date

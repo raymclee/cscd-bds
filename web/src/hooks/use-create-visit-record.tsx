@@ -10,7 +10,22 @@ export function useCreateVisitRecord() {
       createVisitRecord(input: $input) {
         edges @prependEdge(connections: $connections) {
           node {
-            ...visitRecordItemFragment
+            id
+            date
+            visitType
+            commPeople
+            commContent
+            nextStep
+            followupbys {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            tender {
+              id
+            }
           }
         }
       }

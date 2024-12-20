@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ef0bad3fadb1c8d4bd45e5a03898ff37>>
+ * @generated SignedSource<<f169e66d701d6b29430a832d9d8af5cb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,6 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type visitRecordItemFragment$data = {
   readonly commContent: string;
   readonly commPeople: string;
+  readonly customerID: string;
   readonly date: any;
   readonly followupbys: {
     readonly edges: ReadonlyArray<{
@@ -90,6 +91,13 @@ return {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "customerID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "UserConnection",
       "kind": "LinkedField",
       "name": "followupbys",
@@ -135,6 +143,6 @@ return {
 };
 })();
 
-(node as any).hash = "ec5f0e3eb5b67a877992b0f751669093";
+(node as any).hash = "366e0f1a61e5183828a5150834e7ebd6";
 
 export default node;

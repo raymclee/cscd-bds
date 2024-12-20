@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<44f0d380487344eaf52c4e06a3a38e77>>
+ * @generated SignedSource<<fb28b60e481ffc86a9ad2f9f989d111d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -154,6 +154,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "customerID",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "UserConnection",
             "kind": "LinkedField",
             "name": "followupbys",
@@ -199,12 +206,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "004bde0f29026818d78a3dbd72939228",
+    "cacheID": "b81dc6e2b9f55a5c792566873c3172a2",
     "id": null,
     "metadata": {},
     "name": "useUpdateVisitRecordMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateVisitRecordMutation(\n  $id: ID!\n  $input: UpdateVisitRecordInput!\n) {\n  updateVisitRecord(id: $id, input: $input) {\n    ...visitRecordItemFragment\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
+    "text": "mutation useUpdateVisitRecordMutation(\n  $id: ID!\n  $input: UpdateVisitRecordInput!\n) {\n  updateVisitRecord(id: $id, input: $input) {\n    ...visitRecordItemFragment\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
   }
 };
 })();

@@ -28,6 +28,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
         commPeople
         commContent
         nextStep
+        customerID
         followupbys {
           edges {
             node {
@@ -121,7 +122,13 @@ function DeleteVisitRecordButton(props: DeleteVisitRecordButtonProps) {
         commit({
           variables: {
             id: props.record.id,
-            connections: [props.connectionID],
+            connections: [
+              props.connectionID,
+              ConnectionHandler.getConnectionID(
+                props.record.customerID,
+                "customerDetailFragment_lastVisitRecord",
+              ),
+            ],
           },
         })
       }

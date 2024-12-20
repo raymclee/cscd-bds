@@ -38,15 +38,13 @@ export function MoreNewTenderBoard() {
     thisMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
   );
 
-  const amountPercent = thisMonthAmount / lastMonthAmount;
-
-  console.log(amountPercent);
+  const amountPercent = (thisMonthAmount / lastMonthAmount) * 100;
 
   const chartData = [{ amountPercent, fill: "var(--color-amountPercent)" }];
 
   const chartConfig = {
     amountPercent: {
-      color: "hsl(var(--chart-2))",
+      color: "red",
     },
   } satisfies ChartConfig;
 
@@ -96,23 +94,19 @@ export function MoreNewTenderBoard() {
               <RadialBarChart
                 data={chartData}
                 // startAngle={90}
-                endAngle={amountPercent * 360}
+                endAngle={(amountPercent / 100) * 360}
                 innerRadius={80}
-                outerRadius={140}
+                outerRadius={120}
               >
                 <PolarGrid
                   gridType="circle"
                   radialLines={false}
                   stroke="none"
-                  //   className="first:fill-muted last:fill-background"
-                  className="fill-transparent"
+                  className="first:fill-gray-800 last:fill-gray-700"
+                  //   className="fill-gray-800"
                   polarRadius={[86, 74]}
                 />
-                <RadialBar
-                  dataKey="amountPercent"
-                  background
-                  cornerRadius={100}
-                />
+                <RadialBar dataKey="amountPercent" cornerRadius={100} />
                 <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
                   <Label
                     content={({ viewBox }) => {
@@ -127,14 +121,14 @@ export function MoreNewTenderBoard() {
                             <tspan
                               x={viewBox.cx}
                               y={viewBox.cy}
-                              className="fill-white text-4xl font-bold"
+                              className="fill-white text-3xl font-bold"
                             >
                               {`${Number(chartData[0].amountPercent).toFixed(2)}%`}
                             </tspan>
                             <tspan
                               x={viewBox.cx}
                               y={(viewBox.cy || 0) + 24}
-                              className="fill-muted-foreground"
+                              className="fill-gray-400"
                             >
                               百分比
                             </tspan>

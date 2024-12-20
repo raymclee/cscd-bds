@@ -4,12 +4,12 @@ import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
-import { Eye } from "lucide-react";
+import { Ellipsis, Eye } from "lucide-react";
 import { useMapStore } from "~/store/map";
 import { motion } from "motion/react";
 
 const MotionCard = motion(Card);
-const MotionEye = motion(Eye);
+const MotionEllipsis = motion(Ellipsis);
 
 export function NewTenderBoard() {
   const tenders = useAreaTenders();
@@ -138,7 +138,7 @@ export function NewTenderBoard() {
           <motion.span layoutId="new-tender-board-title">
             本月新增商机
           </motion.span>
-          <MotionEye
+          <MotionEllipsis
             layoutId="new-tender-board-icon"
             className="cursor-pointer"
             onClick={() => {

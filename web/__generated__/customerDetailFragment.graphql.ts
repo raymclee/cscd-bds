@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<69991eb95552348bdee125364c3e25cc>>
+ * @generated SignedSource<<b4107b60452f6deb679e4628c74f4fe9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -69,7 +69,18 @@ v2 = [
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "backward",
+        "path": [
+          "lastVisitRecord"
+        ]
+      }
+    ]
+  },
   "name": "customerDetailFragment",
   "selections": [
     (v0/*: any*/),
@@ -171,16 +182,10 @@ return {
     },
     {
       "alias": "lastVisitRecord",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "last",
-          "value": 1
-        }
-      ],
+      "args": null,
       "concreteType": "VisitRecordConnection",
       "kind": "LinkedField",
-      "name": "visitRecords",
+      "name": "__customerDetailFragment_lastVisitRecord_connection",
       "plural": false,
       "selections": [
         {
@@ -205,15 +210,54 @@ return {
                   "kind": "ScalarField",
                   "name": "date",
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
                 }
               ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasPreviousPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "startCursor",
               "storageKey": null
             }
           ],
           "storageKey": null
         }
       ],
-      "storageKey": "visitRecords(last:1)"
+      "storageKey": null
     }
   ],
   "type": "Customer",
@@ -221,6 +265,6 @@ return {
 };
 })();
 
-(node as any).hash = "3392dad3eab16bcb476d8f0603bea8c2";
+(node as any).hash = "94288ed2f303273a0d8f3112c97e2bd3";
 
 export default node;

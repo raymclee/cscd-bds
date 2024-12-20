@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7f552472f5ecacc061d07374b5dbb56e>>
+ * @generated SignedSource<<370555d3ef179ea1ba6e185c867f1ffc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -116,6 +116,20 @@ v10 = {
 v11 = {
   "alias": null,
   "args": null,
+  "kind": "ScalarField",
+  "name": "hasPreviousPage",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "startCursor",
+  "storageKey": null
+},
+v13 = {
+  "alias": null,
+  "args": null,
   "concreteType": "PageInfo",
   "kind": "LinkedField",
   "name": "pageInfo",
@@ -135,72 +149,67 @@ v11 = {
       "name": "hasNextPage",
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "hasPreviousPage",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "startCursor",
-      "storageKey": null
-    }
+    (v11/*: any*/),
+    (v12/*: any*/)
   ],
   "storageKey": null
 },
-v12 = {
+v14 = {
   "kind": "Variable",
   "name": "orderBy",
   "variableName": "orderBy"
 },
-v13 = {
+v15 = {
   "kind": "Variable",
   "name": "first",
   "variableName": "first"
 },
-v14 = {
+v16 = {
   "kind": "Variable",
   "name": "last",
   "variableName": "last"
 },
-v15 = [
-  (v13/*: any*/),
-  (v14/*: any*/),
-  (v12/*: any*/)
-],
-v16 = [
-  (v13/*: any*/),
+v17 = [
+  (v15/*: any*/),
+  (v16/*: any*/),
   (v14/*: any*/)
 ],
-v17 = {
+v18 = [
+  (v15/*: any*/),
+  (v16/*: any*/)
+],
+v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v18 = [
+v20 = [
   (v5/*: any*/),
-  (v17/*: any*/)
+  (v19/*: any*/)
 ],
-v19 = {
+v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v20 = {
+v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "date",
   "storageKey": null
-};
+},
+v23 = [
+  {
+    "kind": "Literal",
+    "name": "last",
+    "value": 1
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -266,14 +275,14 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v11/*: any*/)
+                  (v13/*: any*/)
                 ],
                 "storageKey": null
               },
               {
                 "alias": "visitRecords",
                 "args": [
-                  (v12/*: any*/)
+                  (v14/*: any*/)
                 ],
                 "concreteType": "VisitRecordConnection",
                 "kind": "LinkedField",
@@ -303,7 +312,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v11/*: any*/)
+                  (v13/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -313,12 +322,12 @@ return {
                 "name": "customerDetailFragment"
               },
               {
-                "args": (v15/*: any*/),
+                "args": (v17/*: any*/),
                 "kind": "FragmentSpread",
                 "name": "customerVisitRecordListFragment"
               },
               {
-                "args": (v16/*: any*/),
+                "args": (v18/*: any*/),
                 "kind": "FragmentSpread",
                 "name": "customerTenderListFragment"
               }
@@ -364,12 +373,12 @@ return {
                 "kind": "LinkedField",
                 "name": "sales",
                 "plural": false,
-                "selections": (v18/*: any*/),
+                "selections": (v20/*: any*/),
                 "storageKey": null
               },
               {
                 "alias": null,
-                "args": (v16/*: any*/),
+                "args": (v18/*: any*/),
                 "concreteType": "TenderConnection",
                 "kind": "LinkedField",
                 "name": "tenders",
@@ -394,7 +403,7 @@ return {
                         "selections": [
                           (v8/*: any*/),
                           (v5/*: any*/),
-                          (v17/*: any*/),
+                          (v19/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -402,7 +411,7 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
-                          (v19/*: any*/),
+                          (v21/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -417,7 +426,7 @@ return {
                             "kind": "LinkedField",
                             "name": "customer",
                             "plural": false,
-                            "selections": (v18/*: any*/),
+                            "selections": (v20/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -464,7 +473,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v5/*: any*/),
-                              (v17/*: any*/),
+                              (v19/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -502,13 +511,13 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v11/*: any*/)
+                  (v13/*: any*/)
                 ],
                 "storageKey": null
               },
               {
                 "alias": null,
-                "args": (v16/*: any*/),
+                "args": (v18/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "customerTenderListFragment_tenders",
@@ -517,7 +526,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v15/*: any*/),
+                "args": (v17/*: any*/),
                 "concreteType": "VisitRecordConnection",
                 "kind": "LinkedField",
                 "name": "visitRecords",
@@ -542,7 +551,7 @@ return {
                         "selections": [
                           (v8/*: any*/),
                           (v5/*: any*/),
-                          (v20/*: any*/),
+                          (v22/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -569,6 +578,13 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "nextStep",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "customerID",
                             "storageKey": null
                           },
                           {
@@ -620,14 +636,14 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v11/*: any*/),
+                  (v13/*: any*/),
                   (v10/*: any*/)
                 ],
                 "storageKey": null
               },
               {
                 "alias": null,
-                "args": (v15/*: any*/),
+                "args": (v17/*: any*/),
                 "filters": [
                   "orderBy"
                 ],
@@ -636,8 +652,8 @@ return {
                 "kind": "LinkedHandle",
                 "name": "visitRecords"
               },
-              (v17/*: any*/),
               (v19/*: any*/),
+              (v21/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -646,7 +662,7 @@ return {
                 "name": "createdBy",
                 "plural": false,
                 "selections": [
-                  (v17/*: any*/),
+                  (v19/*: any*/),
                   (v5/*: any*/)
                 ],
                 "storageKey": null
@@ -686,7 +702,7 @@ return {
                 "kind": "LinkedField",
                 "name": "area",
                 "plural": false,
-                "selections": (v18/*: any*/),
+                "selections": (v20/*: any*/),
                 "storageKey": null
               },
               {
@@ -719,13 +735,7 @@ return {
               },
               {
                 "alias": "lastVisitRecord",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "last",
-                    "value": 1
-                  }
-                ],
+                "args": (v23/*: any*/),
                 "concreteType": "VisitRecordConnection",
                 "kind": "LinkedField",
                 "name": "visitRecords",
@@ -747,16 +757,40 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v20/*: any*/),
-                          (v5/*: any*/)
+                          (v22/*: any*/),
+                          (v5/*: any*/),
+                          (v8/*: any*/)
                         ],
                         "storageKey": null
-                      }
+                      },
+                      (v7/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "kind": "LinkedField",
+                    "name": "pageInfo",
+                    "plural": false,
+                    "selections": [
+                      (v11/*: any*/),
+                      (v12/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": "visitRecords(last:1)"
+              },
+              {
+                "alias": "lastVisitRecord",
+                "args": (v23/*: any*/),
+                "filters": null,
+                "handle": "connection",
+                "key": "customerDetailFragment_lastVisitRecord",
+                "kind": "LinkedHandle",
+                "name": "visitRecords"
               }
             ],
             "type": "Customer",
@@ -768,7 +802,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7cf80225dd5b7bd6af8d2ede602971a0",
+    "cacheID": "0175b024b1110664e29d64b25536b576",
     "id": null,
     "metadata": {
       "connection": [
@@ -794,7 +828,7 @@ return {
     },
     "name": "customersDetailPageQuery",
     "operationKind": "query",
-    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $orderBy: VisitRecordOrder\n  $first: Int\n  $last: Int\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      tenders(first: $first, last: $last) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      visitRecords(first: $first, last: $last, orderBy: $orderBy) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      ...customerDetailFragment\n      ...customerVisitRecordListFragment_4d76iu\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n      }\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerVisitRecordListFragment_4d76iu on Customer {\n  visitRecords(first: $first, last: $last, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        ...visitRecordItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
+    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $orderBy: VisitRecordOrder\n  $first: Int\n  $last: Int\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      tenders(first: $first, last: $last) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      visitRecords(first: $first, last: $last, orderBy: $orderBy) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      ...customerDetailFragment\n      ...customerVisitRecordListFragment_4d76iu\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerVisitRecordListFragment_4d76iu on Customer {\n  visitRecords(first: $first, last: $last, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        ...visitRecordItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
   }
 };
 })();

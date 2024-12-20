@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<55e93284ea988744b24ee3441a5c238a>>
+ * @generated SignedSource<<f6bd824870ff23b08152ce9a199afab4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -80,6 +80,13 @@ v4 = {
 v5 = [
   (v3/*: any*/),
   (v4/*: any*/)
+],
+v6 = [
+  {
+    "kind": "Literal",
+    "name": "last",
+    "value": 1
+  }
 ];
 return {
   "fragment": {
@@ -266,13 +273,7 @@ return {
                   },
                   {
                     "alias": "lastVisitRecord",
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "last",
-                        "value": 1
-                      }
-                    ],
+                    "args": (v6/*: any*/),
                     "concreteType": "VisitRecordConnection",
                     "kind": "LinkedField",
                     "name": "visitRecords",
@@ -301,8 +302,47 @@ return {
                                 "name": "date",
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v3/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "__typename",
+                                "storageKey": null
+                              }
                             ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "cursor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "PageInfo",
+                        "kind": "LinkedField",
+                        "name": "pageInfo",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "hasPreviousPage",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "startCursor",
                             "storageKey": null
                           }
                         ],
@@ -310,6 +350,15 @@ return {
                       }
                     ],
                     "storageKey": "visitRecords(last:1)"
+                  },
+                  {
+                    "alias": "lastVisitRecord",
+                    "args": (v6/*: any*/),
+                    "filters": null,
+                    "handle": "connection",
+                    "key": "customerDetailFragment_lastVisitRecord",
+                    "kind": "LinkedHandle",
+                    "name": "visitRecords"
                   }
                 ],
                 "storageKey": null
@@ -339,12 +388,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3d1f99cc20fa5d570850400ea19d388b",
+    "cacheID": "0e893f3db2b713ada6cee9312270574c",
     "id": null,
     "metadata": {},
     "name": "useCreateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f50fe6de5037ada3cef4ee023e6e7fc2>>
+ * @generated SignedSource<<b29a707ed2286fc2383695ba6956c316>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,6 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
 export type CreateVisitRecordInput = {
   commContent: string;
   commPeople: string;
@@ -30,7 +29,22 @@ export type useCreateVisitRecordMutation$data = {
   readonly createVisitRecord: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly " $fragmentSpreads": FragmentRefs<"visitRecordItemFragment">;
+        readonly commContent: string;
+        readonly commPeople: string;
+        readonly date: any;
+        readonly followupbys: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly id: string;
+            } | null | undefined;
+          } | null | undefined> | null | undefined;
+        };
+        readonly id: string;
+        readonly nextStep: string | null | undefined;
+        readonly tender: {
+          readonly id: string;
+        } | null | undefined;
+        readonly visitType: number;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -67,7 +81,107 @@ v3 = {
 },
 v4 = [
   (v3/*: any*/)
-];
+],
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "VisitRecordEdge",
+  "kind": "LinkedField",
+  "name": "edges",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "VisitRecord",
+      "kind": "LinkedField",
+      "name": "node",
+      "plural": false,
+      "selections": [
+        (v3/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "date",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "visitType",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "commPeople",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "commContent",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "nextStep",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "UserConnection",
+          "kind": "LinkedField",
+          "name": "followupbys",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "UserEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "User",
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": (v4/*: any*/),
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Tender",
+          "kind": "LinkedField",
+          "name": "tender",
+          "plural": false,
+          "selections": (v4/*: any*/),
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -86,33 +200,7 @@ return {
         "name": "createVisitRecord",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "VisitRecordEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "VisitRecord",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "visitRecordItemFragment"
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
@@ -137,106 +225,7 @@ return {
         "name": "createVisitRecord",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "VisitRecordEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "VisitRecord",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "date",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "visitType",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "commPeople",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "commContent",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "nextStep",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "UserConnection",
-                    "kind": "LinkedField",
-                    "name": "followupbys",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "UserEdge",
-                        "kind": "LinkedField",
-                        "name": "edges",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "User",
-                            "kind": "LinkedField",
-                            "name": "node",
-                            "plural": false,
-                            "selections": (v4/*: any*/),
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Tender",
-                    "kind": "LinkedField",
-                    "name": "tender",
-                    "plural": false,
-                    "selections": (v4/*: any*/),
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
+          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -259,16 +248,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "fd5703d4a3e734ed1262692132d791f7",
+    "cacheID": "e6064458293448ecccf0e750911a5da9",
     "id": null,
     "metadata": {},
     "name": "useCreateVisitRecordMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateVisitRecordMutation(\n  $input: CreateVisitRecordInput!\n) {\n  createVisitRecord(input: $input) {\n    edges {\n      node {\n        ...visitRecordItemFragment\n        id\n      }\n    }\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n  }\n}\n"
+    "text": "mutation useCreateVisitRecordMutation(\n  $input: CreateVisitRecordInput!\n) {\n  createVisitRecord(input: $input) {\n    edges {\n      node {\n        id\n        date\n        visitType\n        commPeople\n        commContent\n        nextStep\n        followupbys {\n          edges {\n            node {\n              id\n            }\n          }\n        }\n        tender {\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4474872793d5f01162580cf80424f367";
+(node as any).hash = "382372f646d9e7916a112f65be72a478";
 
 export default node;
