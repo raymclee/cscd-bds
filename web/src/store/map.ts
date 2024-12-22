@@ -204,7 +204,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
     //   label: {
     //     content: `
     //     <div class="flex flex-col">
-    //       <div class="font-medium mb-1">${props.name}</div>
+    //       <div class="mb-1 font-medium">${props.name}</div>
     //       <div class="flex items-baseline gap-2">
     //         <div>
     //           项目数量:<span class="ml-1 font-bold">${Math.floor(Math.random() * 100)}</span>
@@ -283,7 +283,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
         label: {
           content: `
           <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-            <div class="font-medium text-center text-sm text-wrap">${plot?.name}</div>
+            <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
           </div>
           `,
           offset: new AMap.Pixel(-100, 30),
@@ -313,7 +313,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
         label: {
           content: `
           <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-            <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+            <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
           </div>
           `,
           offset: new AMap.Pixel(-80, offsetY),
@@ -342,7 +342,7 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
         label: {
           content: `
           <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-            <div class="font-medium text-center text-sm text-wrap">${tender.name}</div>
+            <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
           </div>
           `,
           offset: new AMap.Pixel(-80, offsetY),

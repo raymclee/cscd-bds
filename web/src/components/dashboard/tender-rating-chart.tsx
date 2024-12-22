@@ -22,7 +22,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const scale = 10;
+const scale = 20;
 
 type TenderRatingChartProps = Pick<
   Tender,
@@ -41,7 +41,10 @@ export function TenderRatingChart({
   competitivePartnershipRating,
 }: TenderRatingChartProps) {
   const chartData = [
-    { month: "资信及付款", rating: (creditAndPaymentRating ?? 0) * scale },
+    {
+      month: "资信及付款",
+      rating: (creditAndPaymentRating ?? 0) * scale,
+    },
     { month: "规模及价值", rating: (sizeAndValueRating ?? 0) * scale },
     { month: "中标原则及时限", rating: (timeLimitRating ?? 0) * scale },
     { month: "客情关系", rating: (customerRelationshipRating ?? 0) * scale },
@@ -69,19 +72,18 @@ export function TenderRatingChart({
               content={
                 <ChartTooltipContent
                   cursor={false}
-                  className="border-0 bg-black/70 text-white"
+                  className="text-white border-0 bg-black/70"
                 />
               }
             /> */}
             <PolarGrid
               className="fill-[--brand] opacity-20"
               // polarRadius={[50, 60, 70, 80, 90, 100]}
-              polarRadius={[10, 20, 30, 40, 50].map((x) => x * 1.35)}
+              polarRadius={[1, 2, 3, 4, 5].map((x) => x * 15.7)}
             />
             {/* <PolarRadiusAxis angle={30} domain={[0, 3]} tickCount={5} /> */}
             <PolarAngleAxis
               dataKey="month"
-              tickSize={1}
               tick={({ x, y, textAnchor, value, index, ...props }) => {
                 const data = chartData[index];
                 return (
@@ -95,7 +97,7 @@ export function TenderRatingChart({
                     className="flex flex-col"
                   >
                     <tspan className="fill-gray-300">
-                      {data.rating / 10 || 0}
+                      {data.rating / 20 || 0}
                     </tspan>
                     <tspan
                       x={x}

@@ -92,19 +92,13 @@ export function getDistrictColor(code: number, i?: number): string {
 }
 
 export function tenderStatusBoundColor(tender: Partial<Tender>): string {
-  if (tender.status === 3) {
-    return "#f54a45";
-  }
-  if (tender.keyProject) {
-    return "#ffc60a";
-  }
   switch (tender.status) {
     case 1:
     case 4:
     case 6:
       return "#35bd4b";
     case 3:
-      return "#f54a45";
+      return tender.keyProject ? "#ffc60a" : "#f54a45";
     default:
       return "#000";
   }
