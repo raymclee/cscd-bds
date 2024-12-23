@@ -53,7 +53,8 @@ function RouteComponent() {
 
       <div className="fixed left-4 top-4 lg:top-2">
         {((session.hasMapAccess && session.hasEditAccess) ||
-          session.isAdmin) && (
+          session.isAdmin ||
+          session.isSuperAdmin) && (
           <Tooltip title="后台">
             <div>
               <Link to="/portal">
