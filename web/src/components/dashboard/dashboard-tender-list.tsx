@@ -15,6 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { motion } from "motion/react";
+import { Ellipsis } from "lucide-react";
+
+const MotionCard = motion.create(Card);
+const MotionCardHeader = motion.create(CardHeader);
+const MotionEllipsis = motion.create(Ellipsis);
 
 export function DashboardTenderList() {
   const navigateToTender = useMapStore((state) => state.navigateToTender);
@@ -22,14 +28,28 @@ export function DashboardTenderList() {
   const tenders = useAreaTenders();
 
   return (
-    <Card
+    <MotionCard
+      layoutId="dashboard-tender-list-board"
       className={cn(
         "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        项目列表
-      </CardHeader>
+      <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+        <div className="flex items-center justify-between">
+          <motion.span layoutId="dashboard-tender-list-board-title">
+            项目列表
+          </motion.span>
+          <MotionEllipsis
+            layoutId="dashboard-tender-list-board-icon"
+            className="cursor-pointer"
+            onClick={() => {
+              useMapStore.setState({
+                moreDashboardTenderListBoardVisible: true,
+              });
+            }}
+          />
+        </div>
+      </MotionCardHeader>
       <CardContent className="h-full px-0 pb-8">
         <ScrollArea className="h-full px-4">
           <Table className="my-4 h-full">
@@ -94,6 +114,6 @@ export function DashboardTenderList() {
           </Table>
         </ScrollArea>
       </CardContent>
-    </Card>
+    </MotionCard>
   );
 }

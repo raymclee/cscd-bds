@@ -32,6 +32,9 @@ type MapState = {
   mapCircles: AMap.CircleMarker[] | AMap.Polygon[];
   tenderViewTender: Tender | null;
   moreNewTenderBoardVisible: boolean;
+  moreTenderTypeBoardVisible: boolean;
+  moreRankingListBoardVisible: boolean;
+  moreDashboardTenderListBoardVisible: boolean;
 };
 
 type Action = {
@@ -75,6 +78,9 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   tenderViewTender: null,
   selectedTenderStatus: null,
   moreNewTenderBoardVisible: false,
+  moreTenderTypeBoardVisible: false,
+  moreRankingListBoardVisible: false,
+  moreDashboardTenderListBoardVisible: false,
   // districts,
   initMap: (container, opts) => {
     const map = new AMap.Map(container, { ...opts });

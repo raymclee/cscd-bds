@@ -9,6 +9,7 @@ import { AreaConnection, User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 import { SearchUserSelect } from "./search-user-select";
+import { useRouteContext } from "@tanstack/react-router";
 
 export type UserFormProps = {
   selectedUser: User | null;
@@ -35,6 +36,7 @@ export function UserForm({
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const [removedAreaIDs, setRemovedAreaIDs] = React.useState<string[]>([]);
+  const { session } = useRouteContext({ from: "/_auth" });
 
   useEffect(() => {
     if (selectedUser) {
@@ -133,23 +135,23 @@ export function UserForm({
         ) : (
           <>
             <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
-              <Input />
+              <Input disabled={!session.isSuperAdmin} />
             </Form.Item>
             <Form.Item name="email" label="邮箱" rules={[{ required: true }]}>
-              <Input type="email" />
+              <Input type="email" disabled={!session.isSuperAdmin} />
             </Form.Item>
             <Form.Item
               name="username"
               label="用户名"
               rules={[{ required: true }]}
             >
-              <Input />
+              <Input disabled={!session.isSuperAdmin} />
             </Form.Item>
             <Form.Item name="openID" label="中海通ID">
-              <Input />
+              <Input disabled={!session.isSuperAdmin} />
             </Form.Item>
             <Form.Item name="avatarURL" label="头像URL">
-              <Input />
+              <Input disabled={!session.isSuperAdmin} />
             </Form.Item>
           </>
         )}

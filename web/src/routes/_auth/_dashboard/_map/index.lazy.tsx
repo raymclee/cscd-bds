@@ -10,11 +10,12 @@ import { AmountBoard } from "~/components/dashboard/amount-board";
 import { DashboardTenderList } from "~/components/dashboard/dashboard-tender-list";
 import { MapTenderDetail } from "~/components/dashboard/map-tender-detail";
 import { MapTenderList } from "~/components/dashboard/map-tender-list";
-import { MoreNewTenderBoard } from "~/components/dashboard/more-new-tender-board";
+import { NewTenderBoardMore } from "~/components/dashboard/new-tender-board-more";
 import { NewTenderBoard } from "~/components/dashboard/new-tender-board";
 import { RankingListBoard } from "~/components/dashboard/ranking-list-board";
 import { TenderStatusList } from "~/components/dashboard/tender-status-list";
 import { TenderTypeBoard } from "~/components/dashboard/tender-type-board";
+import { TenderTypeBoardMore } from "~/components/dashboard/tender-type-board-more";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,6 +33,8 @@ import {
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
+import { RankingListBoardMore } from "~/components/dashboard/ranking-list-board-more";
+import { DashboardTenderListMore } from "~/components/dashboard/dashboard-tender-list-more";
 
 export const Route = createLazyFileRoute("/_auth/_dashboard/_map/")({
   component: RouteComponent,
@@ -194,23 +197,25 @@ function RouteComponent() {
     map,
     dashboardVisible,
     selectedArea,
-    setSelectedArea,
     navigations,
-    push,
     pop,
     selectedTenderStatus,
     moreNewTenderBoardVisible,
+    moreTenderTypeBoardVisible,
+    moreRankingListBoardVisible,
+    moreDashboardTenderListBoardVisible,
   ] = useMapStore(
     useShallow((state) => [
       state.map,
       state.dashboardVisible,
       state.selectedArea,
-      state.setSelectedArea,
       state.navigations,
-      state.push,
       state.pop,
       state.selectedTenderStatus,
       state.moreNewTenderBoardVisible,
+      state.moreTenderTypeBoardVisible,
+      state.moreRankingListBoardVisible,
+      state.moreDashboardTenderListBoardVisible,
     ]),
   );
   const satelliteLayer = useMapStore((state) => state.satelliteLayer);
@@ -1030,17 +1035,20 @@ function RouteComponent() {
         </div>
       </div>
 
-      {/* <AnimatePresence> */}
-      {/* <AnimiatedBoards gaOnly={gaOnly} /> */}
-      {/* {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
-        {moreNewTenderBoardVisible && <MoreNewTenderBoard />} */}
-      {/* </AnimatePresence> */}
-
       <AnimatePresence>
-        {/* <AnimiatedBoards gaOnly={gaOnly} /> */}
         {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
-
-        {moreNewTenderBoardVisible && <MoreNewTenderBoard />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {moreNewTenderBoardVisible && <NewTenderBoardMore />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {moreTenderTypeBoardVisible && <TenderTypeBoardMore />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {moreRankingListBoardVisible && <RankingListBoardMore />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {moreDashboardTenderListBoardVisible && <DashboardTenderListMore />}
       </AnimatePresence>
     </>
   );

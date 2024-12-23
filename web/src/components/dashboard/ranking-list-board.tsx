@@ -1,14 +1,16 @@
-import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { Tiny } from "@ant-design/plots";
+import { rankingListBoard_competitors$key } from "__generated__/rankingListBoard_competitors.graphql";
+import { graphql, useFragment } from "react-relay";
 import no1 from "~/assets/svg/ranking_no_1.svg";
 import no2 from "~/assets/svg/ranking_no_2.svg";
 import no3 from "~/assets/svg/ranking_no_3.svg";
-import { graphql, useFragment } from "react-relay";
-import {
-  rankingListBoard_competitors$data,
-  rankingListBoard_competitors$key,
-} from "__generated__/rankingListBoard_competitors.graphql";
+import { cn } from "~/lib/utils";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { motion } from "motion/react";
+import { Ellipsis } from "lucide-react";
+import { useMapStore } from "~/store/map";
+
+const MotionCard = motion.create(Card);
+const MotionEllipsis = motion.create(Ellipsis);
 
 const imagesMap = {
   1: no2,
@@ -57,16 +59,31 @@ export function RankingListBoard(props: {
   );
 
   return (
-    <Card
+    <MotionCard
+      layoutId="ranking-list-board"
       className={cn(
         "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        市场竞争龙虎榜
+        <div className="flex items-center justify-between">
+          <motion.span layoutId="ranking-list-board-title">
+            市场竞争龙虎榜
+          </motion.span>
+          <MotionEllipsis
+            layoutId="ranking-list-board-icon"
+            className="cursor-pointer"
+            onClick={() => {
+              console.log("click");
+              useMapStore.setState({
+                moreRankingListBoardVisible: true,
+              });
+            }}
+          />
+        </div>
       </CardHeader>
 
-      <CardContent className="flex h-full w-full items-stretch justify-center gap-6 px-2">
+      <CardContent className="flex h-full w-full items-stretch justify-center gap-8 overflow-hidden px-2">
         {/* <div className="flex-1">
           <div className="space-y-1">
             <h3 className="text-brand">数据对比</h3>
@@ -92,20 +109,22 @@ export function RankingListBoard(props: {
           if (i >= 3) return null;
           return (
             <div
-              className="relative flex flex-1 flex-col items-center justify-center"
+              className="relative -z-[1] flex flex-1 flex-col items-center justify-center"
               key={c.id}
             >
               <img
                 src={imagesMap[(i + 1) as keyof typeof imagesMap]}
                 className={cn(
-                  "absolute inset-0 h-full w-full",
-                  i === 1 && "scale-[1.35]",
+                  "h-full w-[80%]",
+                  i === 1 ? "scale-[1.8]" : "scale-[1.25]",
                 )}
               />
               <div
                 className={cn(
-                  "absolute top-1/2 z-[1] line-clamp-1 w-[70%] text-center text-xs",
-                  i === 1 ? "-translate-y-[100%]" : "-translate-y-[80%]",
+                  "absolute top-1/2 z-[1] line-clamp-1 w-[70%] text-center",
+                  i === 1
+                    ? "-translate-y-[110%] text-sm"
+                    : "-translate-y-[80%] text-xs",
                 )}
               >
                 {c.shortName}
@@ -114,6 +133,6 @@ export function RankingListBoard(props: {
           );
         })}
       </CardContent>
-    </Card>
+    </MotionCard>
   );
 }

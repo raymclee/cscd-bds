@@ -20,7 +20,7 @@ const MotionCardHeader = motion.create(CardHeader);
 const MotionCardContent = motion.create(CardContent);
 const MotionMinus = motion.create(Minus);
 
-export function MoreNewTenderBoard() {
+export function NewTenderBoardMore() {
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center">

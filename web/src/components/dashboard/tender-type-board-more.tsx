@@ -3,13 +3,14 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { motion } from "motion/react";
-import { Ellipsis } from "lucide-react";
+import { Minus } from "lucide-react";
 import { useMapStore } from "~/store/map";
-
 const MotionCard = motion.create(Card);
-const MotionEllipsis = motion.create(Ellipsis);
+const MotionCardHeader = motion.create(CardHeader);
+const MotionCardContent = motion.create(CardContent);
+const MotionMinus = motion.create(Minus);
 
-export function TenderTypeBoard() {
+export function TenderTypeBoardMore() {
   const tenders = useAreaTenders();
 
   const totalTenders = tenders?.length || 0;
@@ -130,38 +131,46 @@ export function TenderTypeBoard() {
   } satisfies PieConfig;
 
   return (
-    <MotionCard
-      layoutId="tender-type-board"
-      className={cn(
-        "h-[clamp(16.5rem,30dvh,16.5rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-      )}
-    >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
-        <div className="flex items-center justify-between">
-          <motion.span layoutId="tender-type-board-title">
-            项目商机类型金额占比
-          </motion.span>
-          <MotionEllipsis
-            layoutId="tender-type-board-icon"
-            className="cursor-pointer"
-            onClick={() => {
-              useMapStore.setState({ moreTenderTypeBoardVisible: true });
-            }}
-          />
-        </div>
-      </CardHeader>
+    <>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+          className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur"
+          onClick={() => {
+            useMapStore.setState({ moreTenderTypeBoardVisible: false });
+          }}
+        ></motion.div>
 
-      <CardContent className="flex h-full items-center justify-center gap-2">
-        {/* <div className="w-[24%] rounded bg-gradient-to-b from-brand/40 to-transparent p-6">
-          <div className="flex flex-col items-center gap-4 justify-evenly">
-            <Tiny.Ring {...winConfig} />
-            <Tiny.Ring {...loseConfig} />
-          </div>
-        </div> */}
-        <div className="h-full flex-1">
-          <Pie {...config} />
-        </div>
-      </CardContent>
-    </MotionCard>
+        <MotionCard
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+          layoutId="tender-type-board"
+          className={cn(
+            "mx-4 block h-[90vh] w-[clamp(400px,90vw,1800px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+          )}
+        >
+          <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+            <div className="flex items-center justify-between">
+              <motion.span layoutId="tender-type-board-title">
+                项目商机类型金额占比
+              </motion.span>
+              <MotionMinus
+                layoutId="tender-type-board-icon"
+                className="cursor-pointer"
+                onClick={() => {
+                  useMapStore.setState({ moreNewTenderBoardVisible: false });
+                }}
+              />
+            </div>
+          </MotionCardHeader>
+          <MotionCardContent className="grid h-[calc(100%-48px)] grid-cols-4 gap-4 p-4"></MotionCardContent>
+        </MotionCard>
+      </div>
+    </>
   );
 }

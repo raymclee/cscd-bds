@@ -1,5 +1,5 @@
 import { searchUserSelectQuery } from "__generated__/searchUserSelectQuery.graphql";
-import { Select, SelectProps, Spin } from "antd";
+import { Form, Select, SelectProps, Spin } from "antd";
 import { useRef, useState } from "react";
 import { useRelayEnvironment } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";
@@ -57,12 +57,15 @@ export function SearchUserSelect(props: SearchUserSelectProps) {
       onSearch={onSearch}
       filterOption={false}
       labelInValue
+      allowClear
       notFoundContent={
         fetching ? (
           <div className="flex items-center justify-center">
             <Spin size="small" />
           </div>
-        ) : null
+        ) : (
+          "没有找到记录"
+        )
       }
       labelRender={(label) => {
         const u = options?.find((u) => u.value === label.value);
