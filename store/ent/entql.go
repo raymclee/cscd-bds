@@ -221,10 +221,10 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCompetitivePartnershipRatingOverview: {Type: field.TypeString, Column: tender.FieldCompetitivePartnershipRatingOverview},
 			tender.FieldPrepareToBid:                         {Type: field.TypeBool, Column: tender.FieldPrepareToBid},
 			tender.FieldProjectCode:                          {Type: field.TypeString, Column: tender.FieldProjectCode},
+			tender.FieldProjectType:                          {Type: field.TypeString, Column: tender.FieldProjectType},
 			tender.FieldProjectDefinition:                    {Type: field.TypeString, Column: tender.FieldProjectDefinition},
 			tender.FieldEstimatedProjectStartDate:            {Type: field.TypeTime, Column: tender.FieldEstimatedProjectStartDate},
 			tender.FieldEstimatedProjectEndDate:              {Type: field.TypeTime, Column: tender.FieldEstimatedProjectEndDate},
-			tender.FieldProjectType:                          {Type: field.TypeString, Column: tender.FieldProjectType},
 			tender.FieldAttachements:                         {Type: field.TypeJSON, Column: tender.FieldAttachements},
 			tender.FieldGeoCoordinate:                        {Type: field.TypeOther, Column: tender.FieldGeoCoordinate},
 			tender.FieldGeoBounds:                            {Type: field.TypeJSON, Column: tender.FieldGeoBounds},
@@ -1939,6 +1939,11 @@ func (f *TenderFilter) WhereProjectCode(p entql.StringP) {
 	f.Where(p.Field(tender.FieldProjectCode))
 }
 
+// WhereProjectType applies the entql string predicate on the project_type field.
+func (f *TenderFilter) WhereProjectType(p entql.StringP) {
+	f.Where(p.Field(tender.FieldProjectType))
+}
+
 // WhereProjectDefinition applies the entql string predicate on the project_definition field.
 func (f *TenderFilter) WhereProjectDefinition(p entql.StringP) {
 	f.Where(p.Field(tender.FieldProjectDefinition))
@@ -1952,11 +1957,6 @@ func (f *TenderFilter) WhereEstimatedProjectStartDate(p entql.TimeP) {
 // WhereEstimatedProjectEndDate applies the entql time.Time predicate on the estimated_project_end_date field.
 func (f *TenderFilter) WhereEstimatedProjectEndDate(p entql.TimeP) {
 	f.Where(p.Field(tender.FieldEstimatedProjectEndDate))
-}
-
-// WhereProjectType applies the entql string predicate on the project_type field.
-func (f *TenderFilter) WhereProjectType(p entql.StringP) {
-	f.Where(p.Field(tender.FieldProjectType))
 }
 
 // WhereAttachements applies the entql json.RawMessage predicate on the attachements field.

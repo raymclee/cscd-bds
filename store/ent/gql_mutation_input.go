@@ -905,10 +905,10 @@ type CreateTenderInput struct {
 	CompetitivePartnershipRatingOverview *string
 	PrepareToBid                         *bool
 	ProjectCode                          *string
+	ProjectType                          *string
 	ProjectDefinition                    *string
 	EstimatedProjectStartDate            *time.Time
 	EstimatedProjectEndDate              *time.Time
-	ProjectType                          *string
 	Attachements                         []string
 	Remark                               *string
 	Images                               []string
@@ -1016,6 +1016,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.ProjectCode; v != nil {
 		m.SetProjectCode(*v)
 	}
+	if v := i.ProjectType; v != nil {
+		m.SetProjectType(*v)
+	}
 	if v := i.ProjectDefinition; v != nil {
 		m.SetProjectDefinition(*v)
 	}
@@ -1024,9 +1027,6 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.EstimatedProjectEndDate; v != nil {
 		m.SetEstimatedProjectEndDate(*v)
-	}
-	if v := i.ProjectType; v != nil {
-		m.SetProjectType(*v)
 	}
 	if v := i.Attachements; v != nil {
 		m.SetAttachements(v)
@@ -1183,14 +1183,14 @@ type UpdateTenderInput struct {
 	PrepareToBid                              *bool
 	ClearProjectCode                          bool
 	ProjectCode                               *string
+	ClearProjectType                          bool
+	ProjectType                               *string
 	ClearProjectDefinition                    bool
 	ProjectDefinition                         *string
 	ClearEstimatedProjectStartDate            bool
 	EstimatedProjectStartDate                 *time.Time
 	ClearEstimatedProjectEndDate              bool
 	EstimatedProjectEndDate                   *time.Time
-	ClearProjectType                          bool
-	ProjectType                               *string
 	ClearAttachements                         bool
 	Attachements                              []string
 	AppendAttachements                        []string
@@ -1389,6 +1389,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.ProjectCode; v != nil {
 		m.SetProjectCode(*v)
 	}
+	if i.ClearProjectType {
+		m.ClearProjectType()
+	}
+	if v := i.ProjectType; v != nil {
+		m.SetProjectType(*v)
+	}
 	if i.ClearProjectDefinition {
 		m.ClearProjectDefinition()
 	}
@@ -1406,12 +1412,6 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.EstimatedProjectEndDate; v != nil {
 		m.SetEstimatedProjectEndDate(*v)
-	}
-	if i.ClearProjectType {
-		m.ClearProjectType()
-	}
-	if v := i.ProjectType; v != nil {
-		m.SetProjectType(*v)
 	}
 	if i.ClearAttachements {
 		m.ClearAttachements()

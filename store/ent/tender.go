@@ -75,14 +75,14 @@ type Tender struct {
 	PrepareToBid bool `json:"prepare_to_bid,omitempty"`
 	// ProjectCode holds the value of the "project_code" field.
 	ProjectCode *string `json:"project_code,omitempty"`
+	// ProjectType holds the value of the "project_type" field.
+	ProjectType *string `json:"project_type,omitempty"`
 	// ProjectDefinition holds the value of the "project_definition" field.
 	ProjectDefinition *string `json:"project_definition,omitempty"`
 	// EstimatedProjectStartDate holds the value of the "estimated_project_start_date" field.
 	EstimatedProjectStartDate *time.Time `json:"estimated_project_start_date,omitempty"`
 	// EstimatedProjectEndDate holds the value of the "estimated_project_end_date" field.
 	EstimatedProjectEndDate *time.Time `json:"estimated_project_end_date,omitempty"`
-	// ProjectType holds the value of the "project_type" field.
-	ProjectType *string `json:"project_type,omitempty"`
 	// Attachements holds the value of the "attachements" field.
 	Attachements []string `json:"attachements,omitempty"`
 	// GeoCoordinate holds the value of the "geo_coordinate" field.
@@ -318,7 +318,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case tender.FieldStatus, tender.FieldLevelInvolved, tender.FieldSizeAndValueRating, tender.FieldCreditAndPaymentRating, tender.FieldTimeLimitRating, tender.FieldCustomerRelationshipRating, tender.FieldCompetitivePartnershipRating:
 			values[i] = new(sql.NullInt64)
-		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectDefinition, tender.FieldProjectType, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldCurrentProgress, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
+		case tender.FieldCode, tender.FieldName, tender.FieldAddress, tender.FieldFullAddress, tender.FieldContractor, tender.FieldSizeAndValueRatingOverview, tender.FieldCreditAndPaymentRatingOverview, tender.FieldTimeLimitRatingOverview, tender.FieldCustomerRelationshipRatingOverview, tender.FieldCompetitivePartnershipRatingOverview, tender.FieldProjectCode, tender.FieldProjectType, tender.FieldProjectDefinition, tender.FieldRemark, tender.FieldTenderSituations, tender.FieldOwnerSituations, tender.FieldBiddingInstructions, tender.FieldCompetitorSituations, tender.FieldCostEngineer, tender.FieldTenderForm, tender.FieldContractForm, tender.FieldManagementCompany, tender.FieldTenderingAgency, tender.FieldFacadeConsultant, tender.FieldDesignUnit, tender.FieldConsultingFirm, tender.FieldCurrentProgress, tender.FieldTenderWinCompany, tender.FieldTenderCode, tender.FieldArchitect, tender.FieldDeveloper, tender.FieldConstructionArea:
 			values[i] = new(sql.NullString)
 		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate, tender.FieldTenderClosingDate, tender.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
@@ -504,6 +504,13 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				t.ProjectCode = new(string)
 				*t.ProjectCode = value.String
 			}
+		case tender.FieldProjectType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field project_type", values[i])
+			} else if value.Valid {
+				t.ProjectType = new(string)
+				*t.ProjectType = value.String
+			}
 		case tender.FieldProjectDefinition:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field project_definition", values[i])
@@ -524,13 +531,6 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.EstimatedProjectEndDate = new(time.Time)
 				*t.EstimatedProjectEndDate = value.Time
-			}
-		case tender.FieldProjectType:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field project_type", values[i])
-			} else if value.Valid {
-				t.ProjectType = new(string)
-				*t.ProjectType = value.String
 			}
 		case tender.FieldAttachements:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -968,6 +968,11 @@ func (t *Tender) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
+	if v := t.ProjectType; v != nil {
+		builder.WriteString("project_type=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
 	if v := t.ProjectDefinition; v != nil {
 		builder.WriteString("project_definition=")
 		builder.WriteString(*v)
@@ -981,11 +986,6 @@ func (t *Tender) String() string {
 	if v := t.EstimatedProjectEndDate; v != nil {
 		builder.WriteString("estimated_project_end_date=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := t.ProjectType; v != nil {
-		builder.WriteString("project_type=")
-		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	builder.WriteString("attachements=")

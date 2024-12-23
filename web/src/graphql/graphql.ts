@@ -1330,17 +1330,20 @@ export type Location = {
 export type Mutation = {
   __typename?: 'Mutation';
   createArea: AreaConnection;
+  createCompetitor: Competitor;
   createCustomer: CustomerConnection;
   createPlot: PlotConnection;
   createTender: TenderConnection;
   createUser: UserConnection;
   createVisitRecord: VisitRecordConnection;
+  deleteCompetitor: Competitor;
   deleteCustomer: Customer;
   deletePlot: Plot;
   deleteTender: Tender;
   deleteUser: User;
   deleteVisitRecord: VisitRecord;
   updateArea: Area;
+  updateCompetitor: Competitor;
   updateCustomer: Customer;
   updatePlot: Plot;
   updateTender: Tender;
@@ -1351,6 +1354,11 @@ export type Mutation = {
 
 export type MutationCreateAreaArgs = {
   input: CreateAreaInput;
+};
+
+
+export type MutationCreateCompetitorArgs = {
+  input: CreateCompetitorInput;
 };
 
 
@@ -1383,6 +1391,11 @@ export type MutationCreateVisitRecordArgs = {
 };
 
 
+export type MutationDeleteCompetitorArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteCustomerArgs = {
   id: Scalars['ID']['input'];
 };
@@ -1411,6 +1424,12 @@ export type MutationDeleteVisitRecordArgs = {
 export type MutationUpdateAreaArgs = {
   id: Scalars['ID']['input'];
   input: UpdateAreaInput;
+};
+
+
+export type MutationUpdateCompetitorArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCompetitorInput;
 };
 
 
@@ -1812,6 +1831,7 @@ export type Query = {
   searchLocation: Array<Location>;
   session: Session;
   tenders: TenderConnection;
+  topCompetitors: Array<TopCompetitor>;
   users: UserConnection;
   visitRecords: VisitRecordConnection;
 };
@@ -1842,7 +1862,7 @@ export type QueryCompetitorsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<CompetitorOrder>;
+  orderBy?: InputMaybe<Array<CompetitorOrder>>;
   where?: InputMaybe<CompetitorWhereInput>;
 };
 
@@ -1924,6 +1944,11 @@ export type QueryTendersArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TenderOrder>>;
   where?: InputMaybe<TenderWhereInput>;
+};
+
+
+export type QueryTopCompetitorsArgs = {
+  first?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2978,6 +3003,14 @@ export type TenderWhereInput = {
   updatedAtLTE?: InputMaybe<Scalars['Time']['input']>;
   updatedAtNEQ?: InputMaybe<Scalars['Time']['input']>;
   updatedAtNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+};
+
+export type TopCompetitor = {
+  __typename?: 'TopCompetitor';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  shortName: Scalars['String']['output'];
+  wonTendersCount: Scalars['Int']['output'];
 };
 
 /**

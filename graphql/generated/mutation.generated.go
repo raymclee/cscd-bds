@@ -34,6 +34,9 @@ type MutationResolver interface {
 	CreateVisitRecord(ctx context.Context, input ent.CreateVisitRecordInput) (*ent.VisitRecordConnection, error)
 	UpdateVisitRecord(ctx context.Context, id xid.ID, input ent.UpdateVisitRecordInput) (*ent.VisitRecord, error)
 	DeleteVisitRecord(ctx context.Context, id xid.ID) (*ent.VisitRecord, error)
+	CreateCompetitor(ctx context.Context, input ent.CreateCompetitorInput) (*ent.Competitor, error)
+	UpdateCompetitor(ctx context.Context, id xid.ID, input ent.UpdateCompetitorInput) (*ent.Competitor, error)
+	DeleteCompetitor(ctx context.Context, id xid.ID) (*ent.Competitor, error)
 }
 
 // endregion ************************** generated!.gotpl **************************
@@ -69,6 +72,38 @@ func (ec *executionContext) field_Mutation_createArea_argsInput(
 	}
 
 	var zeroVal ent.CreateAreaInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCompetitor_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_createCompetitor_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_createCompetitor_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.CreateCompetitorInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.CreateCompetitorInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreateCompetitorInput2cscdᚑbdsᚋstoreᚋentᚐCreateCompetitorInput(ctx, tmp)
+	}
+
+	var zeroVal ent.CreateCompetitorInput
 	return zeroVal, nil
 }
 
@@ -340,6 +375,38 @@ func (ec *executionContext) field_Mutation_createVisitRecord_argsInput(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_deleteCompetitor_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_deleteCompetitor_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_deleteCompetitor_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_deleteCustomer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -556,6 +623,65 @@ func (ec *executionContext) field_Mutation_updateArea_argsInput(
 	}
 
 	var zeroVal ent.UpdateAreaInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateCompetitor_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_updateCompetitor_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	arg1, err := ec.field_Mutation_updateCompetitor_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_updateCompetitor_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateCompetitor_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.UpdateCompetitorInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.UpdateCompetitorInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNUpdateCompetitorInput2cscdᚑbdsᚋstoreᚋentᚐUpdateCompetitorInput(ctx, tmp)
+	}
+
+	var zeroVal ent.UpdateCompetitorInput
 	return zeroVal, nil
 }
 
@@ -1830,14 +1956,14 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_prepareToBid(ctx, field)
 			case "projectCode":
 				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "projectDefinition":
 				return ec.fieldContext_Tender_projectDefinition(ctx, field)
 			case "estimatedProjectStartDate":
 				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
 			case "estimatedProjectEndDate":
 				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "attachements":
 				return ec.fieldContext_Tender_attachements(ctx, field)
 			case "remark":
@@ -2039,14 +2165,14 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_prepareToBid(ctx, field)
 			case "projectCode":
 				return ec.fieldContext_Tender_projectCode(ctx, field)
+			case "projectType":
+				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "projectDefinition":
 				return ec.fieldContext_Tender_projectDefinition(ctx, field)
 			case "estimatedProjectStartDate":
 				return ec.fieldContext_Tender_estimatedProjectStartDate(ctx, field)
 			case "estimatedProjectEndDate":
 				return ec.fieldContext_Tender_estimatedProjectEndDate(ctx, field)
-			case "projectType":
-				return ec.fieldContext_Tender_projectType(ctx, field)
 			case "attachements":
 				return ec.fieldContext_Tender_attachements(ctx, field)
 			case "remark":
@@ -2597,6 +2723,213 @@ func (ec *executionContext) fieldContext_Mutation_deleteVisitRecord(ctx context.
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_createCompetitor(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createCompetitor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateCompetitor(rctx, fc.Args["input"].(ent.CreateCompetitorInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Competitor)
+	fc.Result = res
+	return ec.marshalNCompetitor2ᚖcscdᚑbdsᚋstoreᚋentᚐCompetitor(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createCompetitor(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Competitor_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Competitor_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Competitor_updatedAt(ctx, field)
+			case "shortName":
+				return ec.fieldContext_Competitor_shortName(ctx, field)
+			case "name":
+				return ec.fieldContext_Competitor_name(ctx, field)
+			case "wonTenders":
+				return ec.fieldContext_Competitor_wonTenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Competitor", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createCompetitor_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateCompetitor(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateCompetitor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateCompetitor(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateCompetitorInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Competitor)
+	fc.Result = res
+	return ec.marshalNCompetitor2ᚖcscdᚑbdsᚋstoreᚋentᚐCompetitor(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateCompetitor(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Competitor_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Competitor_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Competitor_updatedAt(ctx, field)
+			case "shortName":
+				return ec.fieldContext_Competitor_shortName(ctx, field)
+			case "name":
+				return ec.fieldContext_Competitor_name(ctx, field)
+			case "wonTenders":
+				return ec.fieldContext_Competitor_wonTenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Competitor", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateCompetitor_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteCompetitor(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteCompetitor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteCompetitor(rctx, fc.Args["id"].(xid.ID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Competitor)
+	fc.Result = res
+	return ec.marshalNCompetitor2ᚖcscdᚑbdsᚋstoreᚋentᚐCompetitor(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteCompetitor(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Competitor_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Competitor_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Competitor_updatedAt(ctx, field)
+			case "shortName":
+				return ec.fieldContext_Competitor_shortName(ctx, field)
+			case "name":
+				return ec.fieldContext_Competitor_name(ctx, field)
+			case "wonTenders":
+				return ec.fieldContext_Competitor_wonTenders(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Competitor", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteCompetitor_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
@@ -2743,6 +3076,27 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "deleteVisitRecord":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_deleteVisitRecord(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "createCompetitor":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createCompetitor(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "updateCompetitor":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateCompetitor(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deleteCompetitor":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteCompetitor(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

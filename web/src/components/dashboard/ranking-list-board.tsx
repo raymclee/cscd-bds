@@ -1,6 +1,20 @@
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Tiny } from "@ant-design/plots";
+import no1 from "~/assets/svg/ranking_no_1.svg";
+import no2 from "~/assets/svg/ranking_no_2.svg";
+import no3 from "~/assets/svg/ranking_no_3.svg";
+import { graphql, useFragment } from "react-relay";
+import {
+  rankingListBoard_competitors$data,
+  rankingListBoard_competitors$key,
+} from "__generated__/rankingListBoard_competitors.graphql";
+
+const imagesMap = {
+  1: no2,
+  2: no1,
+  3: no3,
+};
 
 const percent = 25.68;
 
@@ -26,7 +40,22 @@ const config = {
   ],
 };
 
-export function RankingListChart() {
+export function RankingListBoard(props: {
+  competitors: rankingListBoard_competitors$key;
+}) {
+  const data = useFragment(
+    graphql`
+      fragment rankingListBoard_competitors on Query {
+        topCompetitors {
+          id
+          shortName
+          wonTendersCount
+        }
+      }
+    `,
+    props.competitors,
+  );
+
   return (
     <Card
       className={cn(
@@ -37,8 +66,8 @@ export function RankingListChart() {
         市场竞争龙虎榜
       </CardHeader>
 
-      <CardContent className="flex h-full items-center">
-        <div className="flex-1">
+      <CardContent className="flex h-full w-full items-stretch justify-center gap-6 px-2">
+        {/* <div className="flex-1">
           <div className="space-y-1">
             <h3 className="text-brand">数据对比</h3>
             <div className="text-sm text-brand/60">
@@ -57,7 +86,33 @@ export function RankingListChart() {
         </div>
         <div>
           <Tiny.Ring {...config} />
-        </div>
+        </div> */}
+
+        {data.topCompetitors.map((c, i) => {
+          if (i >= 3) return null;
+          return (
+            <div
+              className="relative flex flex-1 flex-col items-center justify-center"
+              key={c.id}
+            >
+              <img
+                src={imagesMap[(i + 1) as keyof typeof imagesMap]}
+                className={cn(
+                  "absolute inset-0 h-full w-full",
+                  i === 1 && "scale-[1.35]",
+                )}
+              />
+              <div
+                className={cn(
+                  "absolute top-1/2 z-[1] line-clamp-1 w-[70%] text-center text-xs",
+                  i === 1 ? "-translate-y-[100%]" : "-translate-y-[80%]",
+                )}
+              >
+                {c.shortName}
+              </div>
+            </div>
+          );
+        })}
       </CardContent>
     </Card>
   );

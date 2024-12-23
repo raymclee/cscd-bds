@@ -37,26 +37,26 @@ export function NewTenderBoard() {
       {
         name: "金额(亿)",
         月份: "上月",
-        數量: lastMonthAmount,
+        数量: lastMonthAmount,
       },
       {
         name: "金额(亿)",
         月份: "本月",
-        數量: thisMonthAmount,
+        数量: thisMonthAmount,
       },
       {
         name: "数量(个)",
         月份: "上月",
-        數量: lastMonthCount,
+        数量: lastMonthCount,
       },
       {
         name: "数量(个)",
         月份: "本月",
-        數量: thisMonthCount,
+        数量: thisMonthCount,
       },
     ],
     xField: "月份",
-    yField: "數量",
+    yField: "数量",
     theme: "classicDark",
     colorField: "name",
     group: true,
@@ -156,11 +156,11 @@ export function NewTenderBoard() {
           {/* <AmountChart /> */}
           <div className="flex flex-col items-center justify-center gap-1">
             <Tiny.Ring {...amountConfig} />
-            <span className="text-xs text-gray-400">金額佔比上升</span>
+            <span className="text-xs text-gray-400">金额占比上升</span>
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
             <Tiny.Ring {...totalConfig} />
-            <span className="text-xs text-gray-400">數量佔比下降</span>
+            <span className="text-xs text-gray-400">数量占比下降</span>
           </div>
         </div>
         <Column {...barConfig} />

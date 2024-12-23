@@ -34,7 +34,7 @@ func (r *queryResolver) Cities(ctx context.Context, after *entgql.Cursor[xid.ID]
 }
 
 // Competitors is the resolver for the competitors field.
-func (r *queryResolver) Competitors(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CompetitorOrder, where *ent.CompetitorWhereInput) (*ent.CompetitorConnection, error) {
+func (r *queryResolver) Competitors(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) (*ent.CompetitorConnection, error) {
 	return r.store.Competitor.Query().Paginate(ctx, after, first, before, last, ent.WithCompetitorFilter(where.Filter))
 }
 

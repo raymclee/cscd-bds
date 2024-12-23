@@ -84,7 +84,7 @@ export function TenderRatingChart({
             />
             {/* <PolarRadiusAxis angle={30} domain={[0, 3]} tickCount={5} /> */}
             <PolarAngleAxis
-              tickSize={8}
+              tickSize={6}
               dataKey="month"
               tick={({ x, y, textAnchor, value, index, ...props }) => {
                 const data = chartData[index];

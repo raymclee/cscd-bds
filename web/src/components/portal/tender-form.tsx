@@ -531,6 +531,8 @@ export function TenderForm({
                     rules={[{ required: true, message: "请选择竞争对手" }]}
                   >
                     <Select
+                      showSearch
+                      optionFilterProp="label"
                       options={
                         competitorsData.competitors?.edges?.map((c) => ({
                           label: c?.node?.name,

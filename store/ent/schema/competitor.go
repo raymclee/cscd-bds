@@ -23,10 +23,12 @@ func (Competitor) Mixin() []ent.Mixin {
 // Fields of the Competitor.
 func (Competitor) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("short_name"),
-		field.String("name").Annotations(
-			entgql.OrderField("NAME"),
-		),
+		field.String("short_name").
+			Unique(),
+		field.String("name").
+			Annotations(
+				entgql.OrderField("NAME"),
+			),
 	}
 }
 
@@ -36,6 +38,7 @@ func (Competitor) Edges() []ent.Edge {
 		edge.To("won_tenders", Tender.Type).
 			Annotations(
 				entgql.RelayConnection(),
+				// entgql.OrderField("WON_TENDERS_COUNT"),
 			),
 	}
 }
@@ -44,6 +47,7 @@ func (Competitor) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),
 		entgql.QueryField(),
+		entgql.MultiOrder(),
 		entgql.Mutations(
 			entgql.MutationCreate(),
 			entgql.MutationUpdate(),

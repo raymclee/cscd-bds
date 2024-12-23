@@ -12,6 +12,10 @@ import (
 	larkauthen "github.com/larksuite/oapi-sdk-go/v3/service/authen/v1"
 )
 
+const (
+	accessDeniedUrl = "/access-denied"
+)
+
 func (h handler) AuthFeishuCallback(c echo.Context) error {
 	var url string
 	if config.IsProd {
@@ -38,20 +42,20 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	resp, err := h.feishu.Client.Authen.OidcAccessToken.Create(c.Request().Context(), req)
 	if err != nil {
 		fmt.Println(err)
-		return c.Redirect(301, url)
+		return c.Redirect(301, url+accessDeniedUrl)
 	}
 	if !resp.Success() {
 		fmt.Println(resp.Code, resp.Msg, resp.Data)
-		return c.Redirect(301, url)
+		return c.Redirect(301, url+accessDeniedUrl)
 	}
 	userInfo, err := h.feishu.Client.Authen.UserInfo.Get(c.Request().Context(), larkcore.WithUserAccessToken(*resp.Data.AccessToken))
 	if err != nil {
 		fmt.Println(err)
-		return c.Redirect(301, url)
+		return c.Redirect(301, url+accessDeniedUrl)
 	}
 	if !userInfo.Success() {
 		fmt.Println(userInfo.Code, userInfo.Msg, userInfo.Data)
-		return c.Redirect(301, url)
+		return c.Redirect(301, url+accessDeniedUrl)
 	}
 
 	fmt.Printf("username: %s, openId: %s\n", *userInfo.Data.EnName, *userInfo.Data.OpenId)
@@ -65,7 +69,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	if err != nil {
 		h.session.Clear(c.Request().Context())
 		h.session.RenewToken(c.Request().Context())
-		return c.Redirect(301, url)
+		return c.Redirect(301, url+accessDeniedUrl)
 	}
 
 	if err := h.store.User.UpdateOne(us).SetOpenID(*userInfo.Data.OpenId).SetAvatarURL(*userInfo.Data.AvatarUrl).Exec(c.Request().Context()); err != nil {
@@ -73,7 +77,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 	}
 
 	if err := h.session.RenewToken(c.Request().Context()); err != nil {
-		return c.Redirect(301, url+"/access-denied")
+		return c.Redirect(301, url+accessDeniedUrl)
 	}
 
 	u := session.User{

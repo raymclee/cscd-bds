@@ -345,6 +345,20 @@ func (tc *TenderCreate) SetNillableProjectCode(s *string) *TenderCreate {
 	return tc
 }
 
+// SetProjectType sets the "project_type" field.
+func (tc *TenderCreate) SetProjectType(s string) *TenderCreate {
+	tc.mutation.SetProjectType(s)
+	return tc
+}
+
+// SetNillableProjectType sets the "project_type" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableProjectType(s *string) *TenderCreate {
+	if s != nil {
+		tc.SetProjectType(*s)
+	}
+	return tc
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (tc *TenderCreate) SetProjectDefinition(s string) *TenderCreate {
 	tc.mutation.SetProjectDefinition(s)
@@ -383,20 +397,6 @@ func (tc *TenderCreate) SetEstimatedProjectEndDate(t time.Time) *TenderCreate {
 func (tc *TenderCreate) SetNillableEstimatedProjectEndDate(t *time.Time) *TenderCreate {
 	if t != nil {
 		tc.SetEstimatedProjectEndDate(*t)
-	}
-	return tc
-}
-
-// SetProjectType sets the "project_type" field.
-func (tc *TenderCreate) SetProjectType(s string) *TenderCreate {
-	tc.mutation.SetProjectType(s)
-	return tc
-}
-
-// SetNillableProjectType sets the "project_type" field if the given value is not nil.
-func (tc *TenderCreate) SetNillableProjectType(s *string) *TenderCreate {
-	if s != nil {
-		tc.SetProjectType(*s)
 	}
 	return tc
 }
@@ -1061,6 +1061,16 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.PrepareToBid(); !ok {
 		return &ValidationError{Name: "prepare_to_bid", err: errors.New(`ent: missing required field "Tender.prepare_to_bid"`)}
 	}
+	if v, ok := tc.mutation.ProjectType(); ok {
+		if err := tender.ProjectTypeValidator(v); err != nil {
+			return &ValidationError{Name: "project_type", err: fmt.Errorf(`ent: validator failed for field "Tender.project_type": %w`, err)}
+		}
+	}
+	if v, ok := tc.mutation.ProjectDefinition(); ok {
+		if err := tender.ProjectDefinitionValidator(v); err != nil {
+			return &ValidationError{Name: "project_definition", err: fmt.Errorf(`ent: validator failed for field "Tender.project_definition": %w`, err)}
+		}
+	}
 	if _, ok := tc.mutation.KeyProject(); !ok {
 		return &ValidationError{Name: "key_project", err: errors.New(`ent: missing required field "Tender.key_project"`)}
 	}
@@ -1214,6 +1224,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldProjectCode, field.TypeString, value)
 		_node.ProjectCode = &value
 	}
+	if value, ok := tc.mutation.ProjectType(); ok {
+		_spec.SetField(tender.FieldProjectType, field.TypeString, value)
+		_node.ProjectType = &value
+	}
 	if value, ok := tc.mutation.ProjectDefinition(); ok {
 		_spec.SetField(tender.FieldProjectDefinition, field.TypeString, value)
 		_node.ProjectDefinition = &value
@@ -1225,10 +1239,6 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.EstimatedProjectEndDate(); ok {
 		_spec.SetField(tender.FieldEstimatedProjectEndDate, field.TypeTime, value)
 		_node.EstimatedProjectEndDate = &value
-	}
-	if value, ok := tc.mutation.ProjectType(); ok {
-		_spec.SetField(tender.FieldProjectType, field.TypeString, value)
-		_node.ProjectType = &value
 	}
 	if value, ok := tc.mutation.Attachements(); ok {
 		_spec.SetField(tender.FieldAttachements, field.TypeJSON, value)
@@ -1992,6 +2002,24 @@ func (u *TenderUpsert) ClearProjectCode() *TenderUpsert {
 	return u
 }
 
+// SetProjectType sets the "project_type" field.
+func (u *TenderUpsert) SetProjectType(v string) *TenderUpsert {
+	u.Set(tender.FieldProjectType, v)
+	return u
+}
+
+// UpdateProjectType sets the "project_type" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateProjectType() *TenderUpsert {
+	u.SetExcluded(tender.FieldProjectType)
+	return u
+}
+
+// ClearProjectType clears the value of the "project_type" field.
+func (u *TenderUpsert) ClearProjectType() *TenderUpsert {
+	u.SetNull(tender.FieldProjectType)
+	return u
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (u *TenderUpsert) SetProjectDefinition(v string) *TenderUpsert {
 	u.Set(tender.FieldProjectDefinition, v)
@@ -2043,24 +2071,6 @@ func (u *TenderUpsert) UpdateEstimatedProjectEndDate() *TenderUpsert {
 // ClearEstimatedProjectEndDate clears the value of the "estimated_project_end_date" field.
 func (u *TenderUpsert) ClearEstimatedProjectEndDate() *TenderUpsert {
 	u.SetNull(tender.FieldEstimatedProjectEndDate)
-	return u
-}
-
-// SetProjectType sets the "project_type" field.
-func (u *TenderUpsert) SetProjectType(v string) *TenderUpsert {
-	u.Set(tender.FieldProjectType, v)
-	return u
-}
-
-// UpdateProjectType sets the "project_type" field to the value that was provided on create.
-func (u *TenderUpsert) UpdateProjectType() *TenderUpsert {
-	u.SetExcluded(tender.FieldProjectType)
-	return u
-}
-
-// ClearProjectType clears the value of the "project_type" field.
-func (u *TenderUpsert) ClearProjectType() *TenderUpsert {
-	u.SetNull(tender.FieldProjectType)
 	return u
 }
 
@@ -3266,6 +3276,27 @@ func (u *TenderUpsertOne) ClearProjectCode() *TenderUpsertOne {
 	})
 }
 
+// SetProjectType sets the "project_type" field.
+func (u *TenderUpsertOne) SetProjectType(v string) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetProjectType(v)
+	})
+}
+
+// UpdateProjectType sets the "project_type" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateProjectType() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateProjectType()
+	})
+}
+
+// ClearProjectType clears the value of the "project_type" field.
+func (u *TenderUpsertOne) ClearProjectType() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearProjectType()
+	})
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (u *TenderUpsertOne) SetProjectDefinition(v string) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -3326,27 +3357,6 @@ func (u *TenderUpsertOne) UpdateEstimatedProjectEndDate() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearEstimatedProjectEndDate() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearEstimatedProjectEndDate()
-	})
-}
-
-// SetProjectType sets the "project_type" field.
-func (u *TenderUpsertOne) SetProjectType(v string) *TenderUpsertOne {
-	return u.Update(func(s *TenderUpsert) {
-		s.SetProjectType(v)
-	})
-}
-
-// UpdateProjectType sets the "project_type" field to the value that was provided on create.
-func (u *TenderUpsertOne) UpdateProjectType() *TenderUpsertOne {
-	return u.Update(func(s *TenderUpsert) {
-		s.UpdateProjectType()
-	})
-}
-
-// ClearProjectType clears the value of the "project_type" field.
-func (u *TenderUpsertOne) ClearProjectType() *TenderUpsertOne {
-	return u.Update(func(s *TenderUpsert) {
-		s.ClearProjectType()
 	})
 }
 
@@ -4828,6 +4838,27 @@ func (u *TenderUpsertBulk) ClearProjectCode() *TenderUpsertBulk {
 	})
 }
 
+// SetProjectType sets the "project_type" field.
+func (u *TenderUpsertBulk) SetProjectType(v string) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetProjectType(v)
+	})
+}
+
+// UpdateProjectType sets the "project_type" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateProjectType() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateProjectType()
+	})
+}
+
+// ClearProjectType clears the value of the "project_type" field.
+func (u *TenderUpsertBulk) ClearProjectType() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearProjectType()
+	})
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (u *TenderUpsertBulk) SetProjectDefinition(v string) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -4888,27 +4919,6 @@ func (u *TenderUpsertBulk) UpdateEstimatedProjectEndDate() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearEstimatedProjectEndDate() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearEstimatedProjectEndDate()
-	})
-}
-
-// SetProjectType sets the "project_type" field.
-func (u *TenderUpsertBulk) SetProjectType(v string) *TenderUpsertBulk {
-	return u.Update(func(s *TenderUpsert) {
-		s.SetProjectType(v)
-	})
-}
-
-// UpdateProjectType sets the "project_type" field to the value that was provided on create.
-func (u *TenderUpsertBulk) UpdateProjectType() *TenderUpsertBulk {
-	return u.Update(func(s *TenderUpsert) {
-		s.UpdateProjectType()
-	})
-}
-
-// ClearProjectType clears the value of the "project_type" field.
-func (u *TenderUpsertBulk) ClearProjectType() *TenderUpsertBulk {
-	return u.Update(func(s *TenderUpsert) {
-		s.ClearProjectType()
 	})
 }
 

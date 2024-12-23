@@ -419,6 +419,28 @@ func (r *mutationResolver) DeleteVisitRecord(ctx context.Context, id xid.ID) (*e
 	return v, nil
 }
 
+// CreateCompetitor is the resolver for the createCompetitor field.
+func (r *mutationResolver) CreateCompetitor(ctx context.Context, input ent.CreateCompetitorInput) (*ent.Competitor, error) {
+	return r.store.Competitor.Create().SetInput(input).Save(ctx)
+}
+
+// UpdateCompetitor is the resolver for the updateCompetitor field.
+func (r *mutationResolver) UpdateCompetitor(ctx context.Context, id xid.ID, input ent.UpdateCompetitorInput) (*ent.Competitor, error) {
+	return r.store.Competitor.UpdateOneID(id).SetInput(input).Save(ctx)
+}
+
+// DeleteCompetitor is the resolver for the deleteCompetitor field.
+func (r *mutationResolver) DeleteCompetitor(ctx context.Context, id xid.ID) (*ent.Competitor, error) {
+	c, err := r.store.Competitor.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get competitor: %w", err)
+	}
+	if err := r.store.Competitor.DeleteOne(c).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to delete competitor: %w", err)
+	}
+	return c, nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

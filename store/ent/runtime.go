@@ -324,6 +324,14 @@ func init() {
 	tenderDescPrepareToBid := tenderFields[20].Descriptor()
 	// tender.DefaultPrepareToBid holds the default value on creation for the prepare_to_bid field.
 	tender.DefaultPrepareToBid = tenderDescPrepareToBid.Default.(bool)
+	// tenderDescProjectType is the schema descriptor for project_type field.
+	tenderDescProjectType := tenderFields[22].Descriptor()
+	// tender.ProjectTypeValidator is a validator for the "project_type" field. It is called by the builders before save.
+	tender.ProjectTypeValidator = tenderDescProjectType.Validators[0].(func(string) error)
+	// tenderDescProjectDefinition is the schema descriptor for project_definition field.
+	tenderDescProjectDefinition := tenderFields[23].Descriptor()
+	// tender.ProjectDefinitionValidator is a validator for the "project_definition" field. It is called by the builders before save.
+	tender.ProjectDefinitionValidator = tenderDescProjectDefinition.Validators[0].(func(string) error)
 	// tenderDescKeyProject is the schema descriptor for key_project field.
 	tenderDescKeyProject := tenderFields[44].Descriptor()
 	// tender.DefaultKeyProject holds the default value on creation for the key_project field.

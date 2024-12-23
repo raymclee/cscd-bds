@@ -63,14 +63,14 @@ const (
 	FieldPrepareToBid = "prepare_to_bid"
 	// FieldProjectCode holds the string denoting the project_code field in the database.
 	FieldProjectCode = "project_code"
+	// FieldProjectType holds the string denoting the project_type field in the database.
+	FieldProjectType = "project_type"
 	// FieldProjectDefinition holds the string denoting the project_definition field in the database.
 	FieldProjectDefinition = "project_definition"
 	// FieldEstimatedProjectStartDate holds the string denoting the estimated_project_start_date field in the database.
 	FieldEstimatedProjectStartDate = "estimated_project_start_date"
 	// FieldEstimatedProjectEndDate holds the string denoting the estimated_project_end_date field in the database.
 	FieldEstimatedProjectEndDate = "estimated_project_end_date"
-	// FieldProjectType holds the string denoting the project_type field in the database.
-	FieldProjectType = "project_type"
 	// FieldAttachements holds the string denoting the attachements field in the database.
 	FieldAttachements = "attachements"
 	// FieldGeoCoordinate holds the string denoting the geo_coordinate field in the database.
@@ -264,10 +264,10 @@ var Columns = []string{
 	FieldCompetitivePartnershipRatingOverview,
 	FieldPrepareToBid,
 	FieldProjectCode,
+	FieldProjectType,
 	FieldProjectDefinition,
 	FieldEstimatedProjectStartDate,
 	FieldEstimatedProjectEndDate,
-	FieldProjectType,
 	FieldAttachements,
 	FieldGeoCoordinate,
 	FieldGeoBounds,
@@ -346,6 +346,10 @@ var (
 	CompetitivePartnershipRatingValidator func(int) error
 	// DefaultPrepareToBid holds the default value on creation for the "prepare_to_bid" field.
 	DefaultPrepareToBid bool
+	// ProjectTypeValidator is a validator for the "project_type" field. It is called by the builders before save.
+	ProjectTypeValidator func(string) error
+	// ProjectDefinitionValidator is a validator for the "project_definition" field. It is called by the builders before save.
+	ProjectDefinitionValidator func(string) error
 	// DefaultKeyProject holds the default value on creation for the "key_project" field.
 	DefaultKeyProject bool
 	// DefaultID holds the default value on creation for the "id" field.
@@ -480,6 +484,11 @@ func ByProjectCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProjectCode, opts...).ToFunc()
 }
 
+// ByProjectType orders the results by the project_type field.
+func ByProjectType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProjectType, opts...).ToFunc()
+}
+
 // ByProjectDefinition orders the results by the project_definition field.
 func ByProjectDefinition(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProjectDefinition, opts...).ToFunc()
@@ -493,11 +502,6 @@ func ByEstimatedProjectStartDate(opts ...sql.OrderTermOption) OrderOption {
 // ByEstimatedProjectEndDate orders the results by the estimated_project_end_date field.
 func ByEstimatedProjectEndDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEstimatedProjectEndDate, opts...).ToFunc()
-}
-
-// ByProjectType orders the results by the project_type field.
-func ByProjectType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldProjectType, opts...).ToFunc()
 }
 
 // ByGeoCoordinate orders the results by the geo_coordinate field.

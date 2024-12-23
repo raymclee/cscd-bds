@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<94e40250d1c0451db56688ceb29055d3>>
+ * @generated SignedSource<<a3898b6400993edde39261b44dc5ba10>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,8 +11,11 @@
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type rankingListBoard_competitors$data = {
-  readonly id: string;
-  readonly name: string;
+  readonly topCompetitors: ReadonlyArray<{
+    readonly id: string;
+    readonly shortName: string;
+    readonly wonTendersCount: number;
+  }>;
   readonly " $fragmentType": "rankingListBoard_competitors";
 };
 export type rankingListBoard_competitors$key = {
@@ -29,22 +32,40 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
+      "concreteType": "TopCompetitor",
+      "kind": "LinkedField",
+      "name": "topCompetitors",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "id",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "shortName",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "wonTendersCount",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     }
   ],
-  "type": "Competitor",
+  "type": "Query",
   "abstractKey": null
 };
 
-(node as any).hash = "d99c95da04e1999504f4574fd8b71563";
+(node as any).hash = "f23782bb0495449969e781781f0f3426";
 
 export default node;

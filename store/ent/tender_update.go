@@ -511,6 +511,26 @@ func (tu *TenderUpdate) ClearProjectCode() *TenderUpdate {
 	return tu
 }
 
+// SetProjectType sets the "project_type" field.
+func (tu *TenderUpdate) SetProjectType(s string) *TenderUpdate {
+	tu.mutation.SetProjectType(s)
+	return tu
+}
+
+// SetNillableProjectType sets the "project_type" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableProjectType(s *string) *TenderUpdate {
+	if s != nil {
+		tu.SetProjectType(*s)
+	}
+	return tu
+}
+
+// ClearProjectType clears the value of the "project_type" field.
+func (tu *TenderUpdate) ClearProjectType() *TenderUpdate {
+	tu.mutation.ClearProjectType()
+	return tu
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (tu *TenderUpdate) SetProjectDefinition(s string) *TenderUpdate {
 	tu.mutation.SetProjectDefinition(s)
@@ -568,26 +588,6 @@ func (tu *TenderUpdate) SetNillableEstimatedProjectEndDate(t *time.Time) *Tender
 // ClearEstimatedProjectEndDate clears the value of the "estimated_project_end_date" field.
 func (tu *TenderUpdate) ClearEstimatedProjectEndDate() *TenderUpdate {
 	tu.mutation.ClearEstimatedProjectEndDate()
-	return tu
-}
-
-// SetProjectType sets the "project_type" field.
-func (tu *TenderUpdate) SetProjectType(s string) *TenderUpdate {
-	tu.mutation.SetProjectType(s)
-	return tu
-}
-
-// SetNillableProjectType sets the "project_type" field if the given value is not nil.
-func (tu *TenderUpdate) SetNillableProjectType(s *string) *TenderUpdate {
-	if s != nil {
-		tu.SetProjectType(*s)
-	}
-	return tu
-}
-
-// ClearProjectType clears the value of the "project_type" field.
-func (tu *TenderUpdate) ClearProjectType() *TenderUpdate {
-	tu.mutation.ClearProjectType()
 	return tu
 }
 
@@ -1540,6 +1540,16 @@ func (tu *TenderUpdate) check() error {
 			return &ValidationError{Name: "competitive_partnership_rating", err: fmt.Errorf(`ent: validator failed for field "Tender.competitive_partnership_rating": %w`, err)}
 		}
 	}
+	if v, ok := tu.mutation.ProjectType(); ok {
+		if err := tender.ProjectTypeValidator(v); err != nil {
+			return &ValidationError{Name: "project_type", err: fmt.Errorf(`ent: validator failed for field "Tender.project_type": %w`, err)}
+		}
+	}
+	if v, ok := tu.mutation.ProjectDefinition(); ok {
+		if err := tender.ProjectDefinitionValidator(v); err != nil {
+			return &ValidationError{Name: "project_definition", err: fmt.Errorf(`ent: validator failed for field "Tender.project_definition": %w`, err)}
+		}
+	}
 	if tu.mutation.AreaCleared() && len(tu.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
 	}
@@ -1708,6 +1718,12 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.ProjectCodeCleared() {
 		_spec.ClearField(tender.FieldProjectCode, field.TypeString)
 	}
+	if value, ok := tu.mutation.ProjectType(); ok {
+		_spec.SetField(tender.FieldProjectType, field.TypeString, value)
+	}
+	if tu.mutation.ProjectTypeCleared() {
+		_spec.ClearField(tender.FieldProjectType, field.TypeString)
+	}
 	if value, ok := tu.mutation.ProjectDefinition(); ok {
 		_spec.SetField(tender.FieldProjectDefinition, field.TypeString, value)
 	}
@@ -1725,12 +1741,6 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.EstimatedProjectEndDateCleared() {
 		_spec.ClearField(tender.FieldEstimatedProjectEndDate, field.TypeTime)
-	}
-	if value, ok := tu.mutation.ProjectType(); ok {
-		_spec.SetField(tender.FieldProjectType, field.TypeString, value)
-	}
-	if tu.mutation.ProjectTypeCleared() {
-		_spec.ClearField(tender.FieldProjectType, field.TypeString)
 	}
 	if value, ok := tu.mutation.Attachements(); ok {
 		_spec.SetField(tender.FieldAttachements, field.TypeJSON, value)
@@ -2738,6 +2748,26 @@ func (tuo *TenderUpdateOne) ClearProjectCode() *TenderUpdateOne {
 	return tuo
 }
 
+// SetProjectType sets the "project_type" field.
+func (tuo *TenderUpdateOne) SetProjectType(s string) *TenderUpdateOne {
+	tuo.mutation.SetProjectType(s)
+	return tuo
+}
+
+// SetNillableProjectType sets the "project_type" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableProjectType(s *string) *TenderUpdateOne {
+	if s != nil {
+		tuo.SetProjectType(*s)
+	}
+	return tuo
+}
+
+// ClearProjectType clears the value of the "project_type" field.
+func (tuo *TenderUpdateOne) ClearProjectType() *TenderUpdateOne {
+	tuo.mutation.ClearProjectType()
+	return tuo
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (tuo *TenderUpdateOne) SetProjectDefinition(s string) *TenderUpdateOne {
 	tuo.mutation.SetProjectDefinition(s)
@@ -2795,26 +2825,6 @@ func (tuo *TenderUpdateOne) SetNillableEstimatedProjectEndDate(t *time.Time) *Te
 // ClearEstimatedProjectEndDate clears the value of the "estimated_project_end_date" field.
 func (tuo *TenderUpdateOne) ClearEstimatedProjectEndDate() *TenderUpdateOne {
 	tuo.mutation.ClearEstimatedProjectEndDate()
-	return tuo
-}
-
-// SetProjectType sets the "project_type" field.
-func (tuo *TenderUpdateOne) SetProjectType(s string) *TenderUpdateOne {
-	tuo.mutation.SetProjectType(s)
-	return tuo
-}
-
-// SetNillableProjectType sets the "project_type" field if the given value is not nil.
-func (tuo *TenderUpdateOne) SetNillableProjectType(s *string) *TenderUpdateOne {
-	if s != nil {
-		tuo.SetProjectType(*s)
-	}
-	return tuo
-}
-
-// ClearProjectType clears the value of the "project_type" field.
-func (tuo *TenderUpdateOne) ClearProjectType() *TenderUpdateOne {
-	tuo.mutation.ClearProjectType()
 	return tuo
 }
 
@@ -3780,6 +3790,16 @@ func (tuo *TenderUpdateOne) check() error {
 			return &ValidationError{Name: "competitive_partnership_rating", err: fmt.Errorf(`ent: validator failed for field "Tender.competitive_partnership_rating": %w`, err)}
 		}
 	}
+	if v, ok := tuo.mutation.ProjectType(); ok {
+		if err := tender.ProjectTypeValidator(v); err != nil {
+			return &ValidationError{Name: "project_type", err: fmt.Errorf(`ent: validator failed for field "Tender.project_type": %w`, err)}
+		}
+	}
+	if v, ok := tuo.mutation.ProjectDefinition(); ok {
+		if err := tender.ProjectDefinitionValidator(v); err != nil {
+			return &ValidationError{Name: "project_definition", err: fmt.Errorf(`ent: validator failed for field "Tender.project_definition": %w`, err)}
+		}
+	}
 	if tuo.mutation.AreaCleared() && len(tuo.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
 	}
@@ -3965,6 +3985,12 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	if tuo.mutation.ProjectCodeCleared() {
 		_spec.ClearField(tender.FieldProjectCode, field.TypeString)
 	}
+	if value, ok := tuo.mutation.ProjectType(); ok {
+		_spec.SetField(tender.FieldProjectType, field.TypeString, value)
+	}
+	if tuo.mutation.ProjectTypeCleared() {
+		_spec.ClearField(tender.FieldProjectType, field.TypeString)
+	}
 	if value, ok := tuo.mutation.ProjectDefinition(); ok {
 		_spec.SetField(tender.FieldProjectDefinition, field.TypeString, value)
 	}
@@ -3982,12 +4008,6 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.EstimatedProjectEndDateCleared() {
 		_spec.ClearField(tender.FieldEstimatedProjectEndDate, field.TypeTime)
-	}
-	if value, ok := tuo.mutation.ProjectType(); ok {
-		_spec.SetField(tender.FieldProjectType, field.TypeString, value)
-	}
-	if tuo.mutation.ProjectTypeCleared() {
-		_spec.ClearField(tender.FieldProjectType, field.TypeString)
 	}
 	if value, ok := tuo.mutation.Attachements(); ok {
 		_spec.SetField(tender.FieldAttachements, field.TypeJSON, value)

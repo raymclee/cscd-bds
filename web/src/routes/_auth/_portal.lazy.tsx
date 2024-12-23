@@ -112,7 +112,7 @@ function RouteComponent() {
           <Map size={16} />,
         ),
         getItem(
-          <Link to="/portal/sa/competitors">竞争对手</Link>,
+          <Link to="/portal/competitors">竞争对手</Link>,
           "/portal/sa/competitors",
           <Angry size={16} />,
         ),
@@ -125,6 +125,11 @@ function RouteComponent() {
           <Link to="/portal/users">用户</Link>,
           "/portal/users",
           <Users size={16} />,
+        ),
+        getItem(
+          <Link to="/portal/competitors">竞争对手</Link>,
+          "/portal/sa/competitors",
+          <Angry size={16} />,
         ),
       ]),
     );
@@ -247,13 +252,13 @@ function pageTitle(pathname: string) {
         return "用户";
       } else if (pathname.split("/")?.[3] === "areas") {
         return "区域";
-      } else if (pathname.split("/")?.[3] === "competitors") {
-        return "竞争对手";
       }
     case "users":
       return "用户";
     case "areas":
       return "区域";
+    case "competitors":
+      return "竞争对手";
     default:
       return "";
   }

@@ -177,6 +177,11 @@ func ProjectCode(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldProjectCode, v))
 }
 
+// ProjectType applies equality check predicate on the "project_type" field. It's identical to ProjectTypeEQ.
+func ProjectType(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldProjectType, v))
+}
+
 // ProjectDefinition applies equality check predicate on the "project_definition" field. It's identical to ProjectDefinitionEQ.
 func ProjectDefinition(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldProjectDefinition, v))
@@ -190,11 +195,6 @@ func EstimatedProjectStartDate(v time.Time) predicate.Tender {
 // EstimatedProjectEndDate applies equality check predicate on the "estimated_project_end_date" field. It's identical to EstimatedProjectEndDateEQ.
 func EstimatedProjectEndDate(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldEstimatedProjectEndDate, v))
-}
-
-// ProjectType applies equality check predicate on the "project_type" field. It's identical to ProjectTypeEQ.
-func ProjectType(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldEQ(FieldProjectType, v))
 }
 
 // GeoCoordinate applies equality check predicate on the "geo_coordinate" field. It's identical to GeoCoordinateEQ.
@@ -1742,6 +1742,81 @@ func ProjectCodeContainsFold(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldProjectCode, v))
 }
 
+// ProjectTypeEQ applies the EQ predicate on the "project_type" field.
+func ProjectTypeEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldProjectType, v))
+}
+
+// ProjectTypeNEQ applies the NEQ predicate on the "project_type" field.
+func ProjectTypeNEQ(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldProjectType, v))
+}
+
+// ProjectTypeIn applies the In predicate on the "project_type" field.
+func ProjectTypeIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldProjectType, vs...))
+}
+
+// ProjectTypeNotIn applies the NotIn predicate on the "project_type" field.
+func ProjectTypeNotIn(vs ...string) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldProjectType, vs...))
+}
+
+// ProjectTypeGT applies the GT predicate on the "project_type" field.
+func ProjectTypeGT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldProjectType, v))
+}
+
+// ProjectTypeGTE applies the GTE predicate on the "project_type" field.
+func ProjectTypeGTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldProjectType, v))
+}
+
+// ProjectTypeLT applies the LT predicate on the "project_type" field.
+func ProjectTypeLT(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldProjectType, v))
+}
+
+// ProjectTypeLTE applies the LTE predicate on the "project_type" field.
+func ProjectTypeLTE(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldProjectType, v))
+}
+
+// ProjectTypeContains applies the Contains predicate on the "project_type" field.
+func ProjectTypeContains(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContains(FieldProjectType, v))
+}
+
+// ProjectTypeHasPrefix applies the HasPrefix predicate on the "project_type" field.
+func ProjectTypeHasPrefix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasPrefix(FieldProjectType, v))
+}
+
+// ProjectTypeHasSuffix applies the HasSuffix predicate on the "project_type" field.
+func ProjectTypeHasSuffix(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldHasSuffix(FieldProjectType, v))
+}
+
+// ProjectTypeIsNil applies the IsNil predicate on the "project_type" field.
+func ProjectTypeIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldProjectType))
+}
+
+// ProjectTypeNotNil applies the NotNil predicate on the "project_type" field.
+func ProjectTypeNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldProjectType))
+}
+
+// ProjectTypeEqualFold applies the EqualFold predicate on the "project_type" field.
+func ProjectTypeEqualFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldEqualFold(FieldProjectType, v))
+}
+
+// ProjectTypeContainsFold applies the ContainsFold predicate on the "project_type" field.
+func ProjectTypeContainsFold(v string) predicate.Tender {
+	return predicate.Tender(sql.FieldContainsFold(FieldProjectType, v))
+}
+
 // ProjectDefinitionEQ applies the EQ predicate on the "project_definition" field.
 func ProjectDefinitionEQ(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldProjectDefinition, v))
@@ -1915,81 +1990,6 @@ func EstimatedProjectEndDateIsNil() predicate.Tender {
 // EstimatedProjectEndDateNotNil applies the NotNil predicate on the "estimated_project_end_date" field.
 func EstimatedProjectEndDateNotNil() predicate.Tender {
 	return predicate.Tender(sql.FieldNotNull(FieldEstimatedProjectEndDate))
-}
-
-// ProjectTypeEQ applies the EQ predicate on the "project_type" field.
-func ProjectTypeEQ(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldEQ(FieldProjectType, v))
-}
-
-// ProjectTypeNEQ applies the NEQ predicate on the "project_type" field.
-func ProjectTypeNEQ(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldNEQ(FieldProjectType, v))
-}
-
-// ProjectTypeIn applies the In predicate on the "project_type" field.
-func ProjectTypeIn(vs ...string) predicate.Tender {
-	return predicate.Tender(sql.FieldIn(FieldProjectType, vs...))
-}
-
-// ProjectTypeNotIn applies the NotIn predicate on the "project_type" field.
-func ProjectTypeNotIn(vs ...string) predicate.Tender {
-	return predicate.Tender(sql.FieldNotIn(FieldProjectType, vs...))
-}
-
-// ProjectTypeGT applies the GT predicate on the "project_type" field.
-func ProjectTypeGT(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldGT(FieldProjectType, v))
-}
-
-// ProjectTypeGTE applies the GTE predicate on the "project_type" field.
-func ProjectTypeGTE(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldGTE(FieldProjectType, v))
-}
-
-// ProjectTypeLT applies the LT predicate on the "project_type" field.
-func ProjectTypeLT(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldLT(FieldProjectType, v))
-}
-
-// ProjectTypeLTE applies the LTE predicate on the "project_type" field.
-func ProjectTypeLTE(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldLTE(FieldProjectType, v))
-}
-
-// ProjectTypeContains applies the Contains predicate on the "project_type" field.
-func ProjectTypeContains(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldContains(FieldProjectType, v))
-}
-
-// ProjectTypeHasPrefix applies the HasPrefix predicate on the "project_type" field.
-func ProjectTypeHasPrefix(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldHasPrefix(FieldProjectType, v))
-}
-
-// ProjectTypeHasSuffix applies the HasSuffix predicate on the "project_type" field.
-func ProjectTypeHasSuffix(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldHasSuffix(FieldProjectType, v))
-}
-
-// ProjectTypeIsNil applies the IsNil predicate on the "project_type" field.
-func ProjectTypeIsNil() predicate.Tender {
-	return predicate.Tender(sql.FieldIsNull(FieldProjectType))
-}
-
-// ProjectTypeNotNil applies the NotNil predicate on the "project_type" field.
-func ProjectTypeNotNil() predicate.Tender {
-	return predicate.Tender(sql.FieldNotNull(FieldProjectType))
-}
-
-// ProjectTypeEqualFold applies the EqualFold predicate on the "project_type" field.
-func ProjectTypeEqualFold(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldEqualFold(FieldProjectType, v))
-}
-
-// ProjectTypeContainsFold applies the ContainsFold predicate on the "project_type" field.
-func ProjectTypeContainsFold(v string) predicate.Tender {
-	return predicate.Tender(sql.FieldContainsFold(FieldProjectType, v))
 }
 
 // AttachementsIsNil applies the IsNil predicate on the "attachements" field.

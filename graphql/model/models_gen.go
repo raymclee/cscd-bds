@@ -38,3 +38,10 @@ type Session struct {
 	HasMapAccess  bool   `json:"hasMapAccess"`
 	HasEditAccess bool   `json:"hasEditAccess"`
 }
+
+type TopCompetitor struct {
+	ID              xid.ID `json:"id"`
+	Name            string `json:"name"`
+	ShortName       string `json:"shortName"`
+	WonTendersCount int    `json:"wonTendersCount"`
+}

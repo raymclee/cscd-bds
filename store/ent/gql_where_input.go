@@ -4141,6 +4141,23 @@ type TenderWhereInput struct {
 	ProjectCodeEqualFold    *string  `json:"projectCodeEqualFold,omitempty"`
 	ProjectCodeContainsFold *string  `json:"projectCodeContainsFold,omitempty"`
 
+	// "project_type" field predicates.
+	ProjectType             *string  `json:"projectType,omitempty"`
+	ProjectTypeNEQ          *string  `json:"projectTypeNEQ,omitempty"`
+	ProjectTypeIn           []string `json:"projectTypeIn,omitempty"`
+	ProjectTypeNotIn        []string `json:"projectTypeNotIn,omitempty"`
+	ProjectTypeGT           *string  `json:"projectTypeGT,omitempty"`
+	ProjectTypeGTE          *string  `json:"projectTypeGTE,omitempty"`
+	ProjectTypeLT           *string  `json:"projectTypeLT,omitempty"`
+	ProjectTypeLTE          *string  `json:"projectTypeLTE,omitempty"`
+	ProjectTypeContains     *string  `json:"projectTypeContains,omitempty"`
+	ProjectTypeHasPrefix    *string  `json:"projectTypeHasPrefix,omitempty"`
+	ProjectTypeHasSuffix    *string  `json:"projectTypeHasSuffix,omitempty"`
+	ProjectTypeIsNil        bool     `json:"projectTypeIsNil,omitempty"`
+	ProjectTypeNotNil       bool     `json:"projectTypeNotNil,omitempty"`
+	ProjectTypeEqualFold    *string  `json:"projectTypeEqualFold,omitempty"`
+	ProjectTypeContainsFold *string  `json:"projectTypeContainsFold,omitempty"`
+
 	// "project_definition" field predicates.
 	ProjectDefinition             *string  `json:"projectDefinition,omitempty"`
 	ProjectDefinitionNEQ          *string  `json:"projectDefinitionNEQ,omitempty"`
@@ -4181,23 +4198,6 @@ type TenderWhereInput struct {
 	EstimatedProjectEndDateLTE    *time.Time  `json:"estimatedProjectEndDateLTE,omitempty"`
 	EstimatedProjectEndDateIsNil  bool        `json:"estimatedProjectEndDateIsNil,omitempty"`
 	EstimatedProjectEndDateNotNil bool        `json:"estimatedProjectEndDateNotNil,omitempty"`
-
-	// "project_type" field predicates.
-	ProjectType             *string  `json:"projectType,omitempty"`
-	ProjectTypeNEQ          *string  `json:"projectTypeNEQ,omitempty"`
-	ProjectTypeIn           []string `json:"projectTypeIn,omitempty"`
-	ProjectTypeNotIn        []string `json:"projectTypeNotIn,omitempty"`
-	ProjectTypeGT           *string  `json:"projectTypeGT,omitempty"`
-	ProjectTypeGTE          *string  `json:"projectTypeGTE,omitempty"`
-	ProjectTypeLT           *string  `json:"projectTypeLT,omitempty"`
-	ProjectTypeLTE          *string  `json:"projectTypeLTE,omitempty"`
-	ProjectTypeContains     *string  `json:"projectTypeContains,omitempty"`
-	ProjectTypeHasPrefix    *string  `json:"projectTypeHasPrefix,omitempty"`
-	ProjectTypeHasSuffix    *string  `json:"projectTypeHasSuffix,omitempty"`
-	ProjectTypeIsNil        bool     `json:"projectTypeIsNil,omitempty"`
-	ProjectTypeNotNil       bool     `json:"projectTypeNotNil,omitempty"`
-	ProjectTypeEqualFold    *string  `json:"projectTypeEqualFold,omitempty"`
-	ProjectTypeContainsFold *string  `json:"projectTypeContainsFold,omitempty"`
 
 	// "remark" field predicates.
 	Remark             *string  `json:"remark,omitempty"`
@@ -5677,6 +5677,51 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.ProjectCodeContainsFold != nil {
 		predicates = append(predicates, tender.ProjectCodeContainsFold(*i.ProjectCodeContainsFold))
 	}
+	if i.ProjectType != nil {
+		predicates = append(predicates, tender.ProjectTypeEQ(*i.ProjectType))
+	}
+	if i.ProjectTypeNEQ != nil {
+		predicates = append(predicates, tender.ProjectTypeNEQ(*i.ProjectTypeNEQ))
+	}
+	if len(i.ProjectTypeIn) > 0 {
+		predicates = append(predicates, tender.ProjectTypeIn(i.ProjectTypeIn...))
+	}
+	if len(i.ProjectTypeNotIn) > 0 {
+		predicates = append(predicates, tender.ProjectTypeNotIn(i.ProjectTypeNotIn...))
+	}
+	if i.ProjectTypeGT != nil {
+		predicates = append(predicates, tender.ProjectTypeGT(*i.ProjectTypeGT))
+	}
+	if i.ProjectTypeGTE != nil {
+		predicates = append(predicates, tender.ProjectTypeGTE(*i.ProjectTypeGTE))
+	}
+	if i.ProjectTypeLT != nil {
+		predicates = append(predicates, tender.ProjectTypeLT(*i.ProjectTypeLT))
+	}
+	if i.ProjectTypeLTE != nil {
+		predicates = append(predicates, tender.ProjectTypeLTE(*i.ProjectTypeLTE))
+	}
+	if i.ProjectTypeContains != nil {
+		predicates = append(predicates, tender.ProjectTypeContains(*i.ProjectTypeContains))
+	}
+	if i.ProjectTypeHasPrefix != nil {
+		predicates = append(predicates, tender.ProjectTypeHasPrefix(*i.ProjectTypeHasPrefix))
+	}
+	if i.ProjectTypeHasSuffix != nil {
+		predicates = append(predicates, tender.ProjectTypeHasSuffix(*i.ProjectTypeHasSuffix))
+	}
+	if i.ProjectTypeIsNil {
+		predicates = append(predicates, tender.ProjectTypeIsNil())
+	}
+	if i.ProjectTypeNotNil {
+		predicates = append(predicates, tender.ProjectTypeNotNil())
+	}
+	if i.ProjectTypeEqualFold != nil {
+		predicates = append(predicates, tender.ProjectTypeEqualFold(*i.ProjectTypeEqualFold))
+	}
+	if i.ProjectTypeContainsFold != nil {
+		predicates = append(predicates, tender.ProjectTypeContainsFold(*i.ProjectTypeContainsFold))
+	}
 	if i.ProjectDefinition != nil {
 		predicates = append(predicates, tender.ProjectDefinitionEQ(*i.ProjectDefinition))
 	}
@@ -5781,51 +5826,6 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.EstimatedProjectEndDateNotNil {
 		predicates = append(predicates, tender.EstimatedProjectEndDateNotNil())
-	}
-	if i.ProjectType != nil {
-		predicates = append(predicates, tender.ProjectTypeEQ(*i.ProjectType))
-	}
-	if i.ProjectTypeNEQ != nil {
-		predicates = append(predicates, tender.ProjectTypeNEQ(*i.ProjectTypeNEQ))
-	}
-	if len(i.ProjectTypeIn) > 0 {
-		predicates = append(predicates, tender.ProjectTypeIn(i.ProjectTypeIn...))
-	}
-	if len(i.ProjectTypeNotIn) > 0 {
-		predicates = append(predicates, tender.ProjectTypeNotIn(i.ProjectTypeNotIn...))
-	}
-	if i.ProjectTypeGT != nil {
-		predicates = append(predicates, tender.ProjectTypeGT(*i.ProjectTypeGT))
-	}
-	if i.ProjectTypeGTE != nil {
-		predicates = append(predicates, tender.ProjectTypeGTE(*i.ProjectTypeGTE))
-	}
-	if i.ProjectTypeLT != nil {
-		predicates = append(predicates, tender.ProjectTypeLT(*i.ProjectTypeLT))
-	}
-	if i.ProjectTypeLTE != nil {
-		predicates = append(predicates, tender.ProjectTypeLTE(*i.ProjectTypeLTE))
-	}
-	if i.ProjectTypeContains != nil {
-		predicates = append(predicates, tender.ProjectTypeContains(*i.ProjectTypeContains))
-	}
-	if i.ProjectTypeHasPrefix != nil {
-		predicates = append(predicates, tender.ProjectTypeHasPrefix(*i.ProjectTypeHasPrefix))
-	}
-	if i.ProjectTypeHasSuffix != nil {
-		predicates = append(predicates, tender.ProjectTypeHasSuffix(*i.ProjectTypeHasSuffix))
-	}
-	if i.ProjectTypeIsNil {
-		predicates = append(predicates, tender.ProjectTypeIsNil())
-	}
-	if i.ProjectTypeNotNil {
-		predicates = append(predicates, tender.ProjectTypeNotNil())
-	}
-	if i.ProjectTypeEqualFold != nil {
-		predicates = append(predicates, tender.ProjectTypeEqualFold(*i.ProjectTypeEqualFold))
-	}
-	if i.ProjectTypeContainsFold != nil {
-		predicates = append(predicates, tender.ProjectTypeContainsFold(*i.ProjectTypeContainsFold))
 	}
 	if i.Remark != nil {
 		predicates = append(predicates, tender.RemarkEQ(*i.Remark))

@@ -12,7 +12,7 @@ import { MapTenderDetail } from "~/components/dashboard/map-tender-detail";
 import { MapTenderList } from "~/components/dashboard/map-tender-list";
 import { MoreNewTenderBoard } from "~/components/dashboard/more-new-tender-board";
 import { NewTenderBoard } from "~/components/dashboard/new-tender-board";
-import { RankingListChart } from "~/components/dashboard/ranking-list-chart";
+import { RankingListBoard } from "~/components/dashboard/ranking-list-board";
 import { TenderStatusList } from "~/components/dashboard/tender-status-list";
 import { TenderTypeBoard } from "~/components/dashboard/tender-type-board";
 import {
@@ -163,6 +163,8 @@ export const mapIndexPageQuery = graphql`
         }
       }
     }
+
+    ...rankingListBoard_competitors
   }
 `;
 
@@ -190,10 +192,7 @@ export const districtsQuery = graphql`
 function RouteComponent() {
   const [
     map,
-    districtExplorer,
-    setCurrentAreaNode,
     dashboardVisible,
-    setDashboardVisible,
     selectedArea,
     setSelectedArea,
     navigations,
@@ -204,10 +203,7 @@ function RouteComponent() {
   ] = useMapStore(
     useShallow((state) => [
       state.map,
-      state.districtExplorer,
-      state.setCurrentAreaNode,
       state.dashboardVisible,
-      state.setDashboardVisible,
       state.selectedArea,
       state.setSelectedArea,
       state.navigations,
@@ -218,8 +214,8 @@ function RouteComponent() {
     ]),
   );
   const satelliteLayer = useMapStore((state) => state.satelliteLayer);
-  const environment = Route.useRouteContext().RelayEnvironment;
   const tenderViewTender = useMapStore((state) => state.tenderViewTender);
+  const environment = Route.useRouteContext().RelayEnvironment;
 
   const data = usePreloadedQuery<MapIndexPageQuery>(
     mapIndexPageQuery,
@@ -237,41 +233,344 @@ function RouteComponent() {
     });
   }, [map]);
 
-  function switch2AreaNode(
-    adcode: number,
-    zoomeToNode = true,
-    callback?: () => void,
-  ) {
-    // if (
-    //   currentAreaNode &&
-    //   "" + currentAreaNode.getAdcode() === "" + adcode
-    // ) {
-    //   return;
-    // }
+  //加载区域
+  const loadAreaNode = React.useCallback(
+    (adcode: number, callback: (error: any, areaNode?: any) => void) => {
+      useMapStore
+        .getState()
+        .districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
+          if (error) {
+            if (callback) {
+              callback(error);
+            }
 
-    map?.removeLayer(satelliteLayer!);
-    setDashboardVisible(true);
-    map?.remove(useMapStore.getState().markers);
+            console.error(error);
 
-    if (adcode === 100000) {
-      const markers: AMap.Marker[] = [];
-      for (const area of data.node?.areas?.edges?.map((e) => e?.node) || []) {
-        const amount = fixAmount(
-          area?.tenders?.edges
-            ?.map((e) => e?.node)
-            .reduce(
-              (acc, inc) =>
-                inc?.estimatedAmount ? acc + inc.estimatedAmount : acc,
-              0,
-            ),
-        );
+            return;
+          }
 
-        //@ts-expect-error
-        const marker = new AMapUI.SimpleMarker({
+          if (callback) {
+            callback(null, areaNode);
+          }
+        });
+    },
+    [data.node, map],
+  );
+
+  const onFeatureOrMarkerClick = React.useCallback(
+    async (props: any) => {
+      switch2AreaNode(props.adcode, props.childrenNum > 0);
+
+      if (props.childrenNum == 0) {
+        const districts = await fetchQuery<MapIndexPageDistrictQuery>(
+          environment,
+          districtsQuery,
+          {
+            adcode: props.adcode,
+          },
+        ).toPromise();
+
+        const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
+
+        for (const plot of districts?.districts.edges
+          ?.map((e) => e?.node)
+          .flatMap((d) => d?.plots.edges)
+          .map((e) => e?.node) || []) {
+          const polygon = new AMap.Polygon();
+
+          polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
+          polygon.setOptions({
+            fillColor: plot?.colorHex,
+            fillOpacity: 0.35,
+            strokeColor: plot?.colorHex,
+            strokeWeight: 2,
+          });
+
           // @ts-expect-error
-          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-          label: {
-            content: `
+          const label = new AMapUI.SimpleMarker({
+            // @ts-expect-error
+            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+            label: {
+              content: `
+            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
+            </div>
+            `,
+              offset: new AMap.Pixel(-100, 30),
+            },
+            map,
+            position: polygon.getBounds()?.getCenter(),
+          });
+
+          mapCircles.push(polygon);
+          mapCircles.push(label);
+        }
+
+        const tenders =
+          findTenderWithLevel(
+            props.adcode,
+            props.level,
+            useMapStore.getState().selectedArea?.tenders!,
+          ) || [];
+
+        for (const [i, tender] of tenders.entries()) {
+          if (tender?.geoBounds) {
+            const polygon = new AMap.Polygon();
+            polygon.setOptions({
+              fillColor: tenderStatusBoundColor(tender!),
+              strokeColor: tenderStatusBoundColor(tender!),
+              fillOpacity: 0.35,
+              strokeWeight: 2,
+            });
+            polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
+            const pBounds = polygon.getBounds();
+            const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+            // @ts-expect-error
+            const label = new AMapUI.SimpleMarker({
+              // @ts-expect-error
+              iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+              label: {
+                content: `
+              <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
+              </div>
+              `,
+                offset: new AMap.Pixel(-80, offsetY),
+              },
+              map,
+              position: pBounds?.getCenter(),
+              extData: {
+                tenderId: tender.id,
+              },
+            });
+            label.on("click", () => {
+              useMapStore.setState({
+                tenderListHovering: i,
+                selectedTender: tender,
+                tenderListVisible: false,
+              });
+            });
+            label.on("mouseover", () => {
+              label.setOptions({ zIndex: 13 });
+              useMapStore.setState({
+                tenderListHovering: i,
+              });
+            });
+            label.on("mouseout", () => {
+              label.setOptions({ zIndex: 12 });
+            });
+            mapCircles.push(polygon);
+            mapCircles.push(label);
+          } else if (tender?.geoCoordinate?.coordinates) {
+            const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
+            // @ts-expect-error
+            const label = new AMapUI.SimpleMarker({
+              // @ts-expect-error
+              iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+              label: {
+                content: `
+              <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
+                <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
+              </div>
+              `,
+                offset: new AMap.Pixel(-80, offsetY),
+              },
+              map,
+              position: new AMap.LngLat(
+                tender.geoCoordinate?.coordinates[0],
+                tender.geoCoordinate?.coordinates[1],
+              ),
+              extData: {
+                tenderId: tender.id,
+              },
+            });
+            label.on("click", () => {
+              useMapStore.setState({
+                tenderListHovering: i,
+                selectedTender: tender,
+                tenderListVisible: false,
+              });
+            });
+            label.on("mouseover", () => {
+              label.setOptions({ zIndex: 13 });
+              useMapStore.setState({
+                tenderListHovering: i,
+              });
+            });
+            label.on("mouseout", () => {
+              label.setOptions({ zIndex: 12 });
+            });
+
+            const circleMarker = new AMap.CircleMarker({
+              center: new AMap.LngLat(
+                tender.geoCoordinate?.coordinates[0],
+                tender.geoCoordinate?.coordinates[1],
+              ),
+              radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
+              fillColor: tenderStatusBoundColor(tender!),
+              strokeColor: tenderStatusBoundColor(tender!),
+              fillOpacity: 0.35,
+              strokeWeight: 2,
+              strokeOpacity: 1,
+              zIndex: 15,
+              bubble: true,
+              cursor: "pointer",
+            });
+            mapCircles.push(circleMarker);
+            mapCircles.push(label);
+            // map?.add(circleMarker);
+          }
+        }
+
+        const center =
+          tenders?.length > 0 && tenders[0]?.geoCoordinate
+            ? tenders[0]?.geoCoordinate?.coordinates
+            : props.center;
+        map?.setZoomAndCenter(15, center, false, 600);
+        map?.addLayer(satelliteLayer!);
+        for (const circle of mapCircles) {
+          // circle.setMap(map);
+          map?.add(circle);
+        }
+        useMapStore.setState({
+          tenderListVisible: true,
+          tenderList: tenders,
+          dashboardVisible: false,
+          mapCircles,
+        });
+      }
+    },
+    [data.node, map],
+  );
+
+  //绘制marker
+  const renderMarker = React.useCallback(
+    (props: any, hidable = false) => {
+      if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
+        return;
+      }
+
+      const selectedArea = useMapStore.getState().selectedArea;
+      const tendersWithinArea = selectedArea?.tenders.edges?.map(
+        (e) => e?.node,
+      );
+
+      const adcodes = [
+        ...(tendersWithinArea?.map((t) => t?.province?.adcode) || []),
+        ...(tendersWithinArea?.map((t) => t?.city?.adcode) || []),
+        ...(tendersWithinArea?.map((t) => t?.district?.adcode) || []),
+      ].filter(Boolean);
+
+      if (!adcodes.includes(props.adcode)) {
+        return;
+      }
+      // tendersWithinArea?.map(t => t.)
+
+      const tenderWithInLocation = tendersWithinArea
+        ?.map((t) => {
+          switch (props.level) {
+            case "province":
+              if (t?.province?.adcode === props.adcode) return t;
+            case "city":
+              if (t?.city?.adcode === props.adcode) return t;
+            case "district":
+              if (t?.district?.adcode === props.adcode) return t;
+          }
+        })
+        .filter(Boolean);
+
+      const projectCount = tenderWithInLocation?.length || 0;
+      const projectAmount = fixAmount(
+        tenderWithInLocation?.reduce(
+          (acc, inc) =>
+            inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc,
+          0,
+        ),
+      );
+
+      // if (projectCount < 0) {
+      //   return;
+      // }
+      // @ts-expect-error
+      const marker = new AMapUI.SimpleMarker({
+        // @ts-expect-error
+        iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+        label: {
+          content: `
+          <div class="flex flex-col gap-1 p-0.5 text-xs shadow-2xl">
+            <div class="font-medium">${props.name}(${projectCount})</div>
+            ${typeof projectAmount === "number" && projectAmount > 0 ? `<div>${projectAmount}亿</div>` : ""}
+          </div>
+          `,
+          offset: new AMap.Pixel(-50, 0),
+        },
+        map,
+        position: props.centroid || props.center,
+        extData: {
+          hidable,
+          adcode: props.adcode,
+        },
+      });
+
+      marker.on("click", () => {
+        const area = areas?.find((d) =>
+          d?.provinces?.edges
+            ?.map((e) => e?.node)
+            .map((p) => p?.adcode)
+            .includes(props.adcode),
+        ) as Area;
+        if (area) {
+          useMapStore.setState({ selectedArea: area });
+        }
+        useMapStore.getState().push({ name: props.name, adcode: props.adcode });
+        onFeatureOrMarkerClick(props);
+      });
+      marker.on("mouseover", () => {
+        marker.setOptions({ zIndex: 13 });
+      });
+      marker.on("mouseout", () => {
+        marker.setOptions({ zIndex: 12 });
+      });
+      useMapStore.setState((state) => ({
+        markers: [...state.markers, marker],
+      }));
+    },
+    [data.node, map, onFeatureOrMarkerClick],
+  );
+
+  const switch2AreaNode = React.useCallback(
+    (adcode: number, zoomeToNode = true, callback?: () => void) => {
+      // if (
+      //   currentAreaNode &&
+      //   "" + currentAreaNode.getAdcode() === "" + adcode
+      // ) {
+      //   return;
+      // }
+      const { map, satelliteLayer } = useMapStore.getState();
+
+      map?.removeLayer(satelliteLayer!);
+      map?.remove(useMapStore.getState().markers);
+      useMapStore.setState({ dashboardVisible: true });
+
+      if (adcode === 100000) {
+        const markers: AMap.Marker[] = [];
+        for (const area of data.node?.areas?.edges?.map((e) => e?.node) || []) {
+          const amount = fixAmount(
+            area?.tenders?.edges
+              ?.map((e) => e?.node)
+              .reduce(
+                (acc, inc) =>
+                  inc?.estimatedAmount ? acc + inc.estimatedAmount : acc,
+                0,
+              ),
+          );
+
+          //@ts-expect-error
+          const marker = new AMapUI.SimpleMarker({
+            // @ts-expect-error
+            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
+            label: {
+              content: `
               <div class="flex flex-col">
                 <div class="text-lg font-bold">${area?.name}</div>
                 <div class="flex items-baseline gap-3">
@@ -292,514 +591,236 @@ function RouteComponent() {
                 <div></div>
               </div>
           `,
-            // offset: new AMap.Pixel(-40, 40),
-          },
-          map,
-          position: area?.center?.coordinates,
-          extData: {
-            home: true,
-          },
-        });
-
-        marker.on("click", () => {
-          map?.remove(markers);
-
-          districtExplorer.clearFeaturePolygons();
-
-          districtExplorer.loadMultiAreaNodes(
-            area?.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
-            (error: any, areaNodes: any) => {
-              for (const [i, areaNode] of areaNodes.entries()) {
-                const props = areaNode.getProps();
-
-                const fillColor = getDistrictColor(
-                  props.adcode,
-                  props.childrenNum,
-                );
-                const strokeColor = getDistrictColor(
-                  props.adcode,
-                  props.childrenNum,
-                );
-                renderMarker(props, true);
-
-                districtExplorer.renderParentFeature(areaNode, {
-                  cursor: "default",
-                  bubble: true,
-                  strokeColor,
-                  // strokeColor: areaNode.getSubFeatures().length ? "black" : "white", //线颜色
-                  // strokeColor: areaNode.getSubFeatures().length ? "black" : "", //线颜色
-                  strokeOpacity: 1, //线透明度
-                  strokeWeight: 1, //线宽
-                  // fillColor: "", //填充色
-                  fillColor,
-                  //   fillColor: "black",
-                  //   fillColor: areaNode.getParentFeature() ? "black" : null,
-                  fillOpacity: 0.5, //填充透明度
-                });
-              }
+              // offset: new AMap.Pixel(-40, 40),
             },
-          );
+            map,
+            position: area?.center?.coordinates,
+            extData: {
+              home: true,
+            },
+          });
 
-          if (area) {
-            const zoom = getDistrictZoomLevel(area?.code);
-            setSelectedArea(area as Area);
-            push({ name: area.name });
-            map?.setZoomAndCenter(
-              zoom,
-              area.center?.coordinates as [number, number],
-              false,
-              600,
+          marker.on("click", () => {
+            const { markers, districtExplorer } = useMapStore.getState();
+            map?.remove(markers);
+
+            districtExplorer.clearFeaturePolygons();
+
+            districtExplorer.loadMultiAreaNodes(
+              area?.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
+              (error: any, areaNodes: any) => {
+                for (const [i, areaNode] of areaNodes.entries()) {
+                  const props = areaNode.getProps();
+
+                  const fillColor = getDistrictColor(
+                    props.adcode,
+                    props.childrenNum,
+                  );
+                  const strokeColor = getDistrictColor(
+                    props.adcode,
+                    props.childrenNum,
+                  );
+                  renderMarker(props, true);
+
+                  districtExplorer.renderParentFeature(areaNode, {
+                    cursor: "default",
+                    bubble: true,
+                    strokeColor,
+                    // strokeColor: areaNode.getSubFeatures().length ? "black" : "white", //线颜色
+                    // strokeColor: areaNode.getSubFeatures().length ? "black" : "", //线颜色
+                    strokeOpacity: 1, //线透明度
+                    strokeWeight: 1, //线宽
+                    // fillColor: "", //填充色
+                    fillColor,
+                    //   fillColor: "black",
+                    //   fillColor: areaNode.getParentFeature() ? "black" : null,
+                    fillOpacity: 0.5, //填充透明度
+                  });
+                }
+              },
             );
-          }
-        });
-        markers.push(marker);
+
+            if (area) {
+              const zoom = getDistrictZoomLevel(area?.code);
+              useMapStore.setState({ selectedArea: area as Area });
+              useMapStore.getState().push({ name: area.name });
+              map?.setZoomAndCenter(
+                zoom,
+                area.center?.coordinates as [number, number],
+                false,
+                600,
+              );
+            }
+          });
+          markers.push(marker);
+        }
+        useMapStore.setState({ markers });
       }
-      useMapStore.setState({ markers });
-    }
 
-    loadAreaNode(adcode, function (error: any, areaNode: any) {
-      if (error) {
-        return;
-      }
-
-      setCurrentAreaNode(areaNode);
-      // currentAreaNode = areaNode;
-
-      //设置当前使用的定位用节点
-      districtExplorer.setAreaNodesForLocating([areaNode]);
-
-      refreshAreaNode(areaNode, zoomeToNode, adcode === 100000);
-    });
-  }
-
-  //加载区域
-  function loadAreaNode(
-    adcode: number,
-    callback: (error: any, areaNode?: any) => void,
-  ) {
-    districtExplorer.loadAreaNode(adcode, (error: any, areaNode: any) => {
-      if (error) {
-        if (callback) {
-          callback(error);
+      loadAreaNode(adcode, function (error: any, areaNode: any) {
+        if (error) {
+          return;
         }
 
-        console.error(error);
+        useMapStore.setState({ currentAreaNode: areaNode });
+        // currentAreaNode = areaNode;
 
-        return;
-      }
+        //设置当前使用的定位用节点
+        useMapStore
+          .getState()
+          .districtExplorer.setAreaNodesForLocating([areaNode]);
 
-      if (callback) {
-        callback(null, areaNode);
-      }
-    });
-  }
-
-  const onFeatureOrMarkerClick = async (props: any) => {
-    const selectedArea = useMapStore.getState().selectedArea;
-
-    switch2AreaNode(props.adcode, props.childrenNum > 0);
-    if (props.childrenNum == 0) {
-      const districts = await fetchQuery<MapIndexPageDistrictQuery>(
-        environment,
-        districtsQuery,
-        {
-          adcode: props.adcode,
-        },
-      ).toPromise();
-
-      const mapCircles: AMap.CircleMarker[] | any[] | AMap.Polygon[] = [];
-
-      for (const plot of districts?.districts.edges
-        ?.map((e) => e?.node)
-        .flatMap((d) => d?.plots.edges)
-        .map((e) => e?.node) || []) {
-        const polygon = new AMap.Polygon();
-
-        polygon.setPath(plot?.geoBounds as AMap.LngLatLike[]);
-        polygon.setOptions({
-          fillColor: plot?.colorHex,
-          fillOpacity: 0.35,
-          strokeColor: plot?.colorHex,
-          strokeWeight: 2,
-        });
-
-        // @ts-expect-error
-        const label = new AMapUI.SimpleMarker({
-          // @ts-expect-error
-          iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-          label: {
-            content: `
-            <div class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-              <div class="text-sm font-medium text-center text-wrap">${plot?.name}</div>
-            </div>
-            `,
-            offset: new AMap.Pixel(-100, 30),
-          },
-          map,
-          position: polygon.getBounds()?.getCenter(),
-        });
-
-        mapCircles.push(polygon);
-        mapCircles.push(label);
-      }
-
-      const tenders =
-        findTenderWithLevel(
-          props.adcode,
-          props.level,
-          selectedArea?.tenders!,
-        ) || [];
-
-      for (const [i, tender] of tenders.entries()) {
-        if (tender?.geoBounds) {
-          const polygon = new AMap.Polygon();
-          polygon.setOptions({
-            fillColor: tenderStatusBoundColor(tender!),
-            strokeColor: tenderStatusBoundColor(tender!),
-            fillOpacity: 0.35,
-            strokeWeight: 2,
-          });
-          polygon.setPath(tender.geoBounds as AMap.LngLatLike[]);
-          const pBounds = polygon.getBounds();
-          const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
-          // @ts-expect-error
-          const label = new AMapUI.SimpleMarker({
-            // @ts-expect-error
-            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-            label: {
-              content: `
-              <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
-              </div>
-              `,
-              offset: new AMap.Pixel(-80, offsetY),
-            },
-            map,
-            position: pBounds?.getCenter(),
-            extData: {
-              tenderId: tender.id,
-            },
-          });
-          label.on("click", () => {
-            useMapStore.setState({
-              tenderListHovering: i,
-              selectedTender: tender,
-              tenderListVisible: false,
-            });
-          });
-          label.on("mouseover", () => {
-            label.setOptions({ zIndex: 13 });
-            useMapStore.setState({
-              tenderListHovering: i,
-            });
-          });
-          label.on("mouseout", () => {
-            label.setOptions({ zIndex: 12 });
-          });
-          mapCircles.push(polygon);
-          mapCircles.push(label);
-        } else if (tender?.geoCoordinate?.coordinates) {
-          const offsetY = tender.name && tender.name?.length > 10 ? -20 : -10;
-          // @ts-expect-error
-          const label = new AMapUI.SimpleMarker({
-            // @ts-expect-error
-            iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-            label: {
-              content: `
-              <div id="marker-${tender.id}" class="w-[10rem] rounded-lg px-1 py-0.5 line-clamp-2">
-                <div class="text-sm font-medium text-center text-wrap">${tender.name}</div>
-              </div>
-              `,
-              offset: new AMap.Pixel(-80, offsetY),
-            },
-            map,
-            position: new AMap.LngLat(
-              tender.geoCoordinate?.coordinates[0],
-              tender.geoCoordinate?.coordinates[1],
-            ),
-            extData: {
-              tenderId: tender.id,
-            },
-          });
-          label.on("click", () => {
-            useMapStore.setState({
-              tenderListHovering: i,
-              selectedTender: tender,
-              tenderListVisible: false,
-            });
-          });
-          label.on("mouseover", () => {
-            label.setOptions({ zIndex: 13 });
-            useMapStore.setState({
-              tenderListHovering: i,
-            });
-          });
-          label.on("mouseout", () => {
-            label.setOptions({ zIndex: 12 });
-          });
-
-          const circleMarker = new AMap.CircleMarker({
-            center: new AMap.LngLat(
-              tender.geoCoordinate?.coordinates[0],
-              tender.geoCoordinate?.coordinates[1],
-            ),
-            radius: 20 + Math.random() * 10, //3D视图下，CircleMarker半径不要超过64px
-            fillColor: tenderStatusBoundColor(tender!),
-            strokeColor: tenderStatusBoundColor(tender!),
-            fillOpacity: 0.35,
-            strokeWeight: 2,
-            strokeOpacity: 1,
-            zIndex: 15,
-            bubble: true,
-            cursor: "pointer",
-          });
-          mapCircles.push(circleMarker);
-          mapCircles.push(label);
-          // map?.add(circleMarker);
-        }
-      }
-
-      const center =
-        tenders?.length > 0 && tenders[0]?.geoCoordinate
-          ? tenders[0]?.geoCoordinate?.coordinates
-          : props.center;
-      map?.setZoomAndCenter(15, center, false, 600);
-      map?.addLayer(satelliteLayer!);
-      for (const circle of mapCircles) {
-        // circle.setMap(map);
-        map?.add(circle);
-      }
-      useMapStore.setState({
-        tenderListVisible: true,
-        tenderList: tenders,
-        dashboardVisible: false,
-        mapCircles,
+        refreshAreaNode(areaNode, zoomeToNode, adcode === 100000);
       });
-    }
-  };
+    },
+    [data.node, map, renderMarker],
+  );
 
   //绘制某个区域的边界
-  function renderAreaPolygons(
-    areaNode: any,
-    zoomeToNode: boolean,
-    topLevel: boolean,
-    clear: boolean = true,
-  ) {
-    //更新地图视野
-    if (zoomeToNode) {
-      map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);
-    }
-
-    if (clear) {
-      //清除已有的绘制内容
-      districtExplorer.clearFeaturePolygons();
-    }
-
-    //绘制子区域
-    districtExplorer.renderSubFeatures(
-      areaNode,
-      function (feature: any, i: number) {
-        const props = feature.properties;
-
-        if (!topLevel) {
-          renderMarker(props, true);
-        }
-
-        const colorIndex = topLevel ? 0 : i;
-        const strokeColor = getDistrictColor(
-          feature.properties.adcode,
-          colorIndex,
-        );
-        const fillColor = getDistrictColor(
-          feature.properties.adcode,
-          colorIndex,
-        );
-
-        return {
-          cursor: "default",
-          bubble: true,
-          strokeColor: strokeColor, //线颜色
-          strokeOpacity: 1, //线透明度
-          strokeWeight: 1, //线宽
-          fillColor: fillColor, //填充色
-          fillOpacity: 0.5, //填充透明度
-        };
-      },
-    );
-
-    const props = areaNode.getProps();
-
-    if (props.adcode !== 100000) {
-      push({ name: props.name, adcode: props.adcode });
-    }
-
-    if (!topLevel) {
-      renderMarker(props);
-    }
-
-    //绘制父区域;
-    districtExplorer.renderParentFeature(areaNode, {
-      cursor: "default",
-      bubble: true,
-      // strokeColor: "white", //线颜色
-      strokeColor:
-        props.adcode !== 100000 && areaNode.getSubFeatures().length
-          ? ""
-          : "#3cb8e6", //线颜色
-      strokeOpacity: 1, //线透明度
-      strokeWeight: 2, //线宽
-      // fillColor, //填充色
-      fillColor: "",
-      //   fillColor: "black",
-      //   fillColor: areaNode.getParentFeature() ? "black" : null,
-      // fillOpacity: 0.5, //填充透明度
-    });
-  }
-
-  //绘制marker
-  function renderMarker(props: any, hidable = false) {
-    if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
-      return;
-    }
-
-    const selectedArea = useMapStore.getState().selectedArea;
-    const tendersWithinArea = selectedArea?.tenders.edges?.map((e) => e?.node);
-
-    const adcodes = [
-      ...(tendersWithinArea?.map((t) => t?.province?.adcode) || []),
-      ...(tendersWithinArea?.map((t) => t?.city?.adcode) || []),
-      ...(tendersWithinArea?.map((t) => t?.district?.adcode) || []),
-    ];
-
-    if (!adcodes.includes(props.adcode)) {
-      return;
-    }
-    // tendersWithinArea?.map(t => t.)
-
-    const tenderWithInLocation = tendersWithinArea
-      ?.map((t) => {
-        switch (props.level) {
-          case "province":
-            if (t?.province?.adcode === props.adcode) return t;
-          case "city":
-            if (t?.city?.adcode === props.adcode) return t;
-          case "district":
-            if (t?.district?.adcode === props.adcode) return t;
-        }
-      })
-      .filter(Boolean);
-
-    const projectCount = tenderWithInLocation?.length || 0;
-    const projectAmount = fixAmount(
-      tenderWithInLocation?.reduce(
-        (acc, inc) => (inc?.estimatedAmount ? acc + inc?.estimatedAmount : acc),
-        0,
-      ),
-    );
-
-    // if (projectCount < 0) {
-    //   return;
-    // }
-    // @ts-expect-error
-    const marker = new AMapUI.SimpleMarker({
-      // @ts-expect-error
-      iconStyle: AMapUI.SimpleMarker.getBuiltInIconStyles("default"),
-      label: {
-        content: `
-        <div class="flex flex-col gap-1 p-0.5 text-xs shadow-2xl">
-          <div class="font-medium">${props.name}(${projectCount})</div>
-          ${typeof projectAmount === "number" && projectAmount > 0 ? `<div>${projectAmount}亿</div>` : ""}
-        </div>
-        `,
-        offset: new AMap.Pixel(-50, 0),
-      },
-      map,
-      position: props.centroid || props.center,
-      extData: {
-        hidable,
-        adcode: props.adcode,
-      },
-    });
-
-    marker.on("click", () => {
-      const area = areas?.find((d) =>
-        d?.provinces?.edges
-          ?.map((e) => e?.node)
-          .map((p) => p?.adcode)
-          .includes(props.adcode),
-      ) as Area;
-      if (area) {
-        setSelectedArea(area);
+  const renderAreaPolygons = React.useCallback(
+    (
+      areaNode: any,
+      zoomeToNode: boolean,
+      topLevel: boolean,
+      clear: boolean = true,
+    ) => {
+      const { map, districtExplorer, push } = useMapStore.getState();
+      //更新地图视野
+      if (zoomeToNode) {
+        map?.setBounds(areaNode.getBounds(), false, [140, 0, 20, 20]);
       }
-      push({ name: props.name, adcode: props.adcode });
-      onFeatureOrMarkerClick(props);
-    });
-    marker.on("mouseover", () => {
-      marker.setOptions({ zIndex: 13 });
-    });
-    marker.on("mouseout", () => {
-      marker.setOptions({ zIndex: 12 });
-    });
-    useMapStore.setState((state) => ({
-      markers: [...state.markers, marker],
-    }));
-  }
 
-  //切换区域后刷新显示内容
-  function refreshAreaNode(
-    areaNode: any,
-    zoomeToNode: boolean,
-    topLevel: boolean,
-  ) {
-    districtExplorer.setHoverFeature(null);
+      if (clear) {
+        //清除已有的绘制内容
+        districtExplorer.clearFeaturePolygons();
+      }
 
-    renderAreaPolygons(areaNode, zoomeToNode, topLevel);
-  }
+      //绘制子区域
+      districtExplorer.renderSubFeatures(
+        areaNode,
+        function (feature: any, i: number) {
+          const props = feature.properties;
 
-  function renderArea(area: Area) {
-    setDashboardVisible(true);
-    map?.remove(useMapStore.getState().markers);
-    districtExplorer.clearFeaturePolygons();
-    districtExplorer.setHoverFeature(null);
+          if (!topLevel) {
+            renderMarker(props, true);
+          }
 
-    districtExplorer.loadMultiAreaNodes(
-      area.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
-      (error: any, areaNodes: any) => {
-        for (const [i, areaNode] of areaNodes.entries()) {
-          const props = areaNode.getProps();
+          const colorIndex = topLevel ? 0 : i;
+          const strokeColor = getDistrictColor(
+            feature.properties.adcode,
+            colorIndex,
+          );
+          const fillColor = getDistrictColor(
+            feature.properties.adcode,
+            colorIndex,
+          );
 
-          const fillColor = getDistrictColor(props.adcode, props.childrenNum);
-          const strokeColor = getDistrictColor(props.adcode, props.childrenNum);
-          renderMarker(props, true);
-
-          districtExplorer.renderParentFeature(areaNode, {
+          return {
             cursor: "default",
             bubble: true,
-            strokeColor,
-            // strokeColor: areaNode.getSubFeatures().length
-            //   ? ""
-            //   : "#3cb8e6", //线颜色
-            // strokeColor: areaNode.getSubFeatures().length ? "black" : "", //线颜色
+            strokeColor: strokeColor, //线颜色
             strokeOpacity: 1, //线透明度
             strokeWeight: 1, //线宽
-            // fillColor: "", //填充色
-            fillColor,
-            //   fillColor: "black",
-            //   fillColor: areaNode.getParentFeature() ? "black" : null,
+            fillColor: fillColor, //填充色
             fillOpacity: 0.5, //填充透明度
-          });
-        }
-      },
-    );
+          };
+        },
+      );
 
-    const zoom = getDistrictZoomLevel(area.code);
-    map?.setZoomAndCenter(
-      zoom,
-      area.center?.coordinates as [number, number],
-      false,
-      600,
-    );
-  }
+      const props = areaNode.getProps();
+
+      if (props.adcode !== 100000) {
+        push({ name: props.name, adcode: props.adcode });
+      }
+
+      if (!topLevel) {
+        renderMarker(props);
+      }
+
+      //绘制父区域;
+      districtExplorer.renderParentFeature(areaNode, {
+        cursor: "default",
+        bubble: true,
+        // strokeColor: "white", //线颜色
+        strokeColor:
+          props.adcode !== 100000 && areaNode.getSubFeatures().length
+            ? ""
+            : "#3cb8e6", //线颜色
+        strokeOpacity: 1, //线透明度
+        strokeWeight: 2, //线宽
+        // fillColor, //填充色
+        fillColor: "",
+        //   fillColor: "black",
+        //   fillColor: areaNode.getParentFeature() ? "black" : null,
+        // fillOpacity: 0.5, //填充透明度
+      });
+    },
+    [data.node, map, renderMarker],
+  );
+
+  //切换区域后刷新显示内容
+  const refreshAreaNode = React.useCallback(
+    (areaNode: any, zoomeToNode: boolean, topLevel: boolean) => {
+      useMapStore.getState().districtExplorer.setHoverFeature(null);
+
+      renderAreaPolygons(areaNode, zoomeToNode, topLevel);
+    },
+    [data.node, map, renderAreaPolygons],
+  );
+
+  const renderArea = React.useCallback(
+    (area: Area) => {
+      const { map, districtExplorer } = useMapStore.getState();
+
+      map?.remove(useMapStore.getState().markers);
+      useMapStore.setState({ dashboardVisible: true });
+
+      districtExplorer.clearFeaturePolygons();
+      districtExplorer.setHoverFeature(null);
+
+      districtExplorer.loadMultiAreaNodes(
+        area.provinces?.edges?.map((e) => e?.node).map((p) => p?.adcode),
+        (error: any, areaNodes: any) => {
+          for (const [i, areaNode] of areaNodes.entries()) {
+            const props = areaNode.getProps();
+
+            const fillColor = getDistrictColor(props.adcode, props.childrenNum);
+            const strokeColor = getDistrictColor(
+              props.adcode,
+              props.childrenNum,
+            );
+            renderMarker(props, true);
+
+            districtExplorer.renderParentFeature(areaNode, {
+              cursor: "default",
+              bubble: true,
+              strokeColor,
+              // strokeColor: areaNode.getSubFeatures().length
+              //   ? ""
+              //   : "#3cb8e6", //线颜色
+              // strokeColor: areaNode.getSubFeatures().length ? "black" : "", //线颜色
+              strokeOpacity: 1, //线透明度
+              strokeWeight: 1, //线宽
+              // fillColor: "", //填充色
+              fillColor,
+              //   fillColor: "black",
+              //   fillColor: areaNode.getParentFeature() ? "black" : null,
+              fillOpacity: 0.5, //填充透明度
+            });
+          }
+        },
+      );
+
+      const zoom = getDistrictZoomLevel(area.code);
+      map?.setZoomAndCenter(
+        zoom,
+        area.center?.coordinates as [number, number],
+        false,
+        600,
+      );
+    },
+    [data.node, map, map, renderMarker],
+  );
 
   return (
     <>
@@ -1003,7 +1024,7 @@ function RouteComponent() {
         >
           <TenderTypeBoard />
 
-          <RankingListChart />
+          <RankingListBoard competitors={data} />
 
           <DashboardTenderList />
         </div>
@@ -1015,23 +1036,10 @@ function RouteComponent() {
         {moreNewTenderBoardVisible && <MoreNewTenderBoard />} */}
       {/* </AnimatePresence> */}
 
-      <AnimiatedBoards gaOnly={gaOnly} />
-    </>
-  );
-}
-
-function AnimiatedBoards({ gaOnly }: { gaOnly: boolean }) {
-  const selectedTenderStatus = useMapStore((s) => s.selectedTenderStatus);
-  const moreNewTenderBoardVisible = useMapStore(
-    (s) => s.moreNewTenderBoardVisible,
-  );
-
-  return (
-    <>
       <AnimatePresence>
+        {/* <AnimiatedBoards gaOnly={gaOnly} /> */}
         {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
-      </AnimatePresence>
-      <AnimatePresence>
+
         {moreNewTenderBoardVisible && <MoreNewTenderBoard />}
       </AnimatePresence>
     </>

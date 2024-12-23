@@ -2,6 +2,8 @@ extend type Query {
   searchFeishuUser(keyword: String!): [FeishuUser!]!
 
   searchLocation(keyword: String!): [Location!]!
+
+  topCompetitors(first: Int = 10): [TopCompetitor!]!
 }
 
 type FeishuUser {
@@ -16,4 +18,11 @@ type Location {
   province: Province!
   city: City
   district: District!
+}
+
+type TopCompetitor {
+  id: ID!
+  name: String!
+  shortName: String!
+  wonTendersCount: Int!
 }

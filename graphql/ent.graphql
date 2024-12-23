@@ -976,10 +976,10 @@ input CreateTenderInput {
   competitivePartnershipRatingOverview: String
   prepareToBid: Boolean
   projectCode: String
+  projectType: String
   projectDefinition: String
   estimatedProjectStartDate: Time
   estimatedProjectEndDate: Time
-  projectType: String
   attachements: [String!]
   remark: String
   images: [String!]
@@ -2317,7 +2317,7 @@ type Query {
     """
     Ordering options for Competitors returned from the connection.
     """
-    orderBy: CompetitorOrder
+    orderBy: [CompetitorOrder!]
 
     """
     Filtering options for Competitors returned from the connection.
@@ -2599,10 +2599,10 @@ type Tender implements Node {
   competitivePartnershipRatingOverview: String
   prepareToBid: Boolean!
   projectCode: String
+  projectType: String
   projectDefinition: String
   estimatedProjectStartDate: Time
   estimatedProjectEndDate: Time
-  projectType: String
   attachements: [String!]
   remark: String
   images: [String!]
@@ -3122,6 +3122,24 @@ input TenderWhereInput {
   projectCodeEqualFold: String
   projectCodeContainsFold: String
   """
+  project_type field predicates
+  """
+  projectType: String
+  projectTypeNEQ: String
+  projectTypeIn: [String!]
+  projectTypeNotIn: [String!]
+  projectTypeGT: String
+  projectTypeGTE: String
+  projectTypeLT: String
+  projectTypeLTE: String
+  projectTypeContains: String
+  projectTypeHasPrefix: String
+  projectTypeHasSuffix: String
+  projectTypeIsNil: Boolean
+  projectTypeNotNil: Boolean
+  projectTypeEqualFold: String
+  projectTypeContainsFold: String
+  """
   project_definition field predicates
   """
   projectDefinition: String
@@ -3165,24 +3183,6 @@ input TenderWhereInput {
   estimatedProjectEndDateLTE: Time
   estimatedProjectEndDateIsNil: Boolean
   estimatedProjectEndDateNotNil: Boolean
-  """
-  project_type field predicates
-  """
-  projectType: String
-  projectTypeNEQ: String
-  projectTypeIn: [String!]
-  projectTypeNotIn: [String!]
-  projectTypeGT: String
-  projectTypeGTE: String
-  projectTypeLT: String
-  projectTypeLTE: String
-  projectTypeContains: String
-  projectTypeHasPrefix: String
-  projectTypeHasSuffix: String
-  projectTypeIsNil: Boolean
-  projectTypeNotNil: Boolean
-  projectTypeEqualFold: String
-  projectTypeContainsFold: String
   """
   remark field predicates
   """
@@ -3974,14 +3974,14 @@ input UpdateTenderInput {
   prepareToBid: Boolean
   projectCode: String
   clearProjectCode: Boolean
+  projectType: String
+  clearProjectType: Boolean
   projectDefinition: String
   clearProjectDefinition: Boolean
   estimatedProjectStartDate: Time
   clearEstimatedProjectStartDate: Boolean
   estimatedProjectEndDate: Time
   clearEstimatedProjectEndDate: Boolean
-  projectType: String
-  clearProjectType: Boolean
   attachements: [String!]
   appendAttachements: [String!]
   clearAttachements: Boolean

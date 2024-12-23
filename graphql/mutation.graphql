@@ -34,4 +34,8 @@ type Mutation {
   createVisitRecord(input: CreateVisitRecordInput!): VisitRecordConnection!
   updateVisitRecord(id: ID!, input: UpdateVisitRecordInput!): VisitRecord!
   deleteVisitRecord(id: ID!): VisitRecord!
+
+  createCompetitor(input: CreateCompetitorInput!): Competitor!
+  updateCompetitor(id: ID!, input: UpdateCompetitorInput!): Competitor!
+  deleteCompetitor(id: ID!): Competitor!
 }

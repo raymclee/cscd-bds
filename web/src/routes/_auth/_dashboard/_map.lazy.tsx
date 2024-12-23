@@ -55,14 +55,16 @@ function RouteComponent() {
         {((session.hasMapAccess && session.hasEditAccess) ||
           session.isAdmin) && (
           <Tooltip title="后台">
-            <Link to="/portal">
-              <Button
-                className="border-0 bg-gradient-to-r from-sky-900 to-sky-600 text-white drop-shadow-2xl"
-                size="small"
-                shape="circle"
-                icon={<Blocks size={14} />}
-              ></Button>
-            </Link>
+            <div>
+              <Link to="/portal">
+                <Button
+                  className="border-0 bg-gradient-to-r from-sky-900 to-sky-600 text-white drop-shadow-2xl"
+                  size="small"
+                  shape="circle"
+                  icon={<Blocks size={14} />}
+                ></Button>
+              </Link>
+            </div>
           </Tooltip>
         )}
       </div>

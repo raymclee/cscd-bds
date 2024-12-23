@@ -962,24 +962,30 @@ func newCompetitorPaginateArgs(rv map[string]any) *competitorPaginateArgs {
 	}
 	if v, ok := rv[orderByField]; ok {
 		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &CompetitorOrder{Field: &CompetitorOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
+		case []*CompetitorOrder:
+			args.opts = append(args.opts, WithCompetitorOrder(v))
+		case []any:
+			var orders []*CompetitorOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &CompetitorOrder{Field: &CompetitorOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
 			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithCompetitorOrder(order))
-			}
-		case *CompetitorOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithCompetitorOrder(v))
-			}
+			args.opts = append(args.opts, WithCompetitorOrder(orders))
 		}
 	}
 	if v, ok := rv[whereField].(*CompetitorWhereInput); ok {
@@ -2789,6 +2795,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 				selectedFields = append(selectedFields, tender.FieldProjectCode)
 				fieldSeen[tender.FieldProjectCode] = struct{}{}
 			}
+		case "projectType":
+			if _, ok := fieldSeen[tender.FieldProjectType]; !ok {
+				selectedFields = append(selectedFields, tender.FieldProjectType)
+				fieldSeen[tender.FieldProjectType] = struct{}{}
+			}
 		case "projectDefinition":
 			if _, ok := fieldSeen[tender.FieldProjectDefinition]; !ok {
 				selectedFields = append(selectedFields, tender.FieldProjectDefinition)
@@ -2803,11 +2814,6 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 			if _, ok := fieldSeen[tender.FieldEstimatedProjectEndDate]; !ok {
 				selectedFields = append(selectedFields, tender.FieldEstimatedProjectEndDate)
 				fieldSeen[tender.FieldEstimatedProjectEndDate] = struct{}{}
-			}
-		case "projectType":
-			if _, ok := fieldSeen[tender.FieldProjectType]; !ok {
-				selectedFields = append(selectedFields, tender.FieldProjectType)
-				fieldSeen[tender.FieldProjectType] = struct{}{}
 			}
 		case "attachements":
 			if _, ok := fieldSeen[tender.FieldAttachements]; !ok {

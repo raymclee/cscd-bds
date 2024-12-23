@@ -221,17 +221,20 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		CreateArea        func(childComplexity int, input ent.CreateAreaInput) int
+		CreateCompetitor  func(childComplexity int, input ent.CreateCompetitorInput) int
 		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
 		CreatePlot        func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
 		CreateTender      func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
 		CreateUser        func(childComplexity int, input ent.CreateUserInput) int
 		CreateVisitRecord func(childComplexity int, input ent.CreateVisitRecordInput) int
+		DeleteCompetitor  func(childComplexity int, id xid.ID) int
 		DeleteCustomer    func(childComplexity int, id xid.ID) int
 		DeletePlot        func(childComplexity int, id xid.ID) int
 		DeleteTender      func(childComplexity int, id xid.ID) int
 		DeleteUser        func(childComplexity int, id xid.ID) int
 		DeleteVisitRecord func(childComplexity int, id xid.ID) int
 		UpdateArea        func(childComplexity int, id xid.ID, input ent.UpdateAreaInput) int
+		UpdateCompetitor  func(childComplexity int, id xid.ID, input ent.UpdateCompetitorInput) int
 		UpdateCustomer    func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
 		UpdatePlot        func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateTender      func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
@@ -298,7 +301,7 @@ type ComplexityRoot struct {
 	Query struct {
 		Areas            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
 		Cities           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
-		Competitors      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
+		Competitors      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
 		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
 		Customers        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
@@ -310,6 +313,7 @@ type ComplexityRoot struct {
 		SearchLocation   func(childComplexity int, keyword string) int
 		Session          func(childComplexity int) int
 		Tenders          func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
+		TopCompetitors   func(childComplexity int, first *int) int
 		Users            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 		VisitRecords     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) int
 	}
@@ -415,6 +419,13 @@ type ComplexityRoot struct {
 	TenderEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
+	}
+
+	TopCompetitor struct {
+		ID              func(childComplexity int) int
+		Name            func(childComplexity int) int
+		ShortName       func(childComplexity int) int
+		WonTendersCount func(childComplexity int) int
 	}
 
 	User struct {
@@ -1320,6 +1331,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateArea(childComplexity, args["input"].(ent.CreateAreaInput)), true
 
+	case "Mutation.createCompetitor":
+		if e.complexity.Mutation.CreateCompetitor == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCompetitor_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCompetitor(childComplexity, args["input"].(ent.CreateCompetitorInput)), true
+
 	case "Mutation.createCustomer":
 		if e.complexity.Mutation.CreateCustomer == nil {
 			break
@@ -1379,6 +1402,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateVisitRecord(childComplexity, args["input"].(ent.CreateVisitRecordInput)), true
+
+	case "Mutation.deleteCompetitor":
+		if e.complexity.Mutation.DeleteCompetitor == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteCompetitor_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteCompetitor(childComplexity, args["id"].(xid.ID)), true
 
 	case "Mutation.deleteCustomer":
 		if e.complexity.Mutation.DeleteCustomer == nil {
@@ -1451,6 +1486,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateArea(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateAreaInput)), true
+
+	case "Mutation.updateCompetitor":
+		if e.complexity.Mutation.UpdateCompetitor == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateCompetitor_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateCompetitor(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateCompetitorInput)), true
 
 	case "Mutation.updateCustomer":
 		if e.complexity.Mutation.UpdateCustomer == nil {
@@ -1806,7 +1853,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Competitors(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.CompetitorOrder), args["where"].(*ent.CompetitorWhereInput)), true
+		return e.complexity.Query.Competitors(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.CompetitorOrder), args["where"].(*ent.CompetitorWhereInput)), true
 
 	case "Query.countries":
 		if e.complexity.Query.Countries == nil {
@@ -1934,6 +1981,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Tenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
+
+	case "Query.topCompetitors":
+		if e.complexity.Query.TopCompetitors == nil {
+			break
+		}
+
+		args, err := ec.field_Query_topCompetitors_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TopCompetitors(childComplexity, args["first"].(*int)), true
 
 	case "Query.users":
 		if e.complexity.Query.Users == nil {
@@ -2600,6 +2659,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TenderEdge.Node(childComplexity), true
+
+	case "TopCompetitor.id":
+		if e.complexity.TopCompetitor.ID == nil {
+			break
+		}
+
+		return e.complexity.TopCompetitor.ID(childComplexity), true
+
+	case "TopCompetitor.name":
+		if e.complexity.TopCompetitor.Name == nil {
+			break
+		}
+
+		return e.complexity.TopCompetitor.Name(childComplexity), true
+
+	case "TopCompetitor.shortName":
+		if e.complexity.TopCompetitor.ShortName == nil {
+			break
+		}
+
+		return e.complexity.TopCompetitor.ShortName(childComplexity), true
+
+	case "TopCompetitor.wonTendersCount":
+		if e.complexity.TopCompetitor.WonTendersCount == nil {
+			break
+		}
+
+		return e.complexity.TopCompetitor.WonTendersCount(childComplexity), true
 
 	case "User.areas":
 		if e.complexity.User.Areas == nil {
@@ -4061,10 +4148,10 @@ input CreateTenderInput {
   competitivePartnershipRatingOverview: String
   prepareToBid: Boolean
   projectCode: String
+  projectType: String
   projectDefinition: String
   estimatedProjectStartDate: Time
   estimatedProjectEndDate: Time
-  projectType: String
   attachements: [String!]
   remark: String
   images: [String!]
@@ -5402,7 +5489,7 @@ type Query {
     """
     Ordering options for Competitors returned from the connection.
     """
-    orderBy: CompetitorOrder
+    orderBy: [CompetitorOrder!]
 
     """
     Filtering options for Competitors returned from the connection.
@@ -5684,10 +5771,10 @@ type Tender implements Node {
   competitivePartnershipRatingOverview: String
   prepareToBid: Boolean!
   projectCode: String
+  projectType: String
   projectDefinition: String
   estimatedProjectStartDate: Time
   estimatedProjectEndDate: Time
-  projectType: String
   attachements: [String!]
   remark: String
   images: [String!]
@@ -6207,6 +6294,24 @@ input TenderWhereInput {
   projectCodeEqualFold: String
   projectCodeContainsFold: String
   """
+  project_type field predicates
+  """
+  projectType: String
+  projectTypeNEQ: String
+  projectTypeIn: [String!]
+  projectTypeNotIn: [String!]
+  projectTypeGT: String
+  projectTypeGTE: String
+  projectTypeLT: String
+  projectTypeLTE: String
+  projectTypeContains: String
+  projectTypeHasPrefix: String
+  projectTypeHasSuffix: String
+  projectTypeIsNil: Boolean
+  projectTypeNotNil: Boolean
+  projectTypeEqualFold: String
+  projectTypeContainsFold: String
+  """
   project_definition field predicates
   """
   projectDefinition: String
@@ -6250,24 +6355,6 @@ input TenderWhereInput {
   estimatedProjectEndDateLTE: Time
   estimatedProjectEndDateIsNil: Boolean
   estimatedProjectEndDateNotNil: Boolean
-  """
-  project_type field predicates
-  """
-  projectType: String
-  projectTypeNEQ: String
-  projectTypeIn: [String!]
-  projectTypeNotIn: [String!]
-  projectTypeGT: String
-  projectTypeGTE: String
-  projectTypeLT: String
-  projectTypeLTE: String
-  projectTypeContains: String
-  projectTypeHasPrefix: String
-  projectTypeHasSuffix: String
-  projectTypeIsNil: Boolean
-  projectTypeNotNil: Boolean
-  projectTypeEqualFold: String
-  projectTypeContainsFold: String
   """
   remark field predicates
   """
@@ -7059,14 +7146,14 @@ input UpdateTenderInput {
   prepareToBid: Boolean
   projectCode: String
   clearProjectCode: Boolean
+  projectType: String
+  clearProjectType: Boolean
   projectDefinition: String
   clearProjectDefinition: Boolean
   estimatedProjectStartDate: Time
   clearEstimatedProjectStartDate: Boolean
   estimatedProjectEndDate: Time
   clearEstimatedProjectEndDate: Boolean
-  projectType: String
-  clearProjectType: Boolean
   attachements: [String!]
   appendAttachements: [String!]
   clearAttachements: Boolean
@@ -7943,6 +8030,10 @@ type GeoJson {
   createVisitRecord(input: CreateVisitRecordInput!): VisitRecordConnection!
   updateVisitRecord(id: ID!, input: UpdateVisitRecordInput!): VisitRecord!
   deleteVisitRecord(id: ID!): VisitRecord!
+
+  createCompetitor(input: CreateCompetitorInput!): Competitor!
+  updateCompetitor(id: ID!, input: UpdateCompetitorInput!): Competitor!
+  deleteCompetitor(id: ID!): Competitor!
 }
 `, BuiltIn: false},
 	{Name: "../plot.graphql", Input: `extend type Plot {
@@ -7953,6 +8044,8 @@ type GeoJson {
   searchFeishuUser(keyword: String!): [FeishuUser!]!
 
   searchLocation(keyword: String!): [Location!]!
+
+  topCompetitors(first: Int = 10): [TopCompetitor!]!
 }
 
 type FeishuUser {
@@ -7967,6 +8060,13 @@ type Location {
   province: Province!
   city: City
   district: District!
+}
+
+type TopCompetitor {
+  id: ID!
+  name: String!
+  shortName: String!
+  wonTendersCount: Int!
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time

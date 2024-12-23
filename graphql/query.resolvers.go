@@ -7,11 +7,14 @@ package graphql
 import (
 	"context"
 	"cscd-bds/graphql/model"
+	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/schema/xid"
 	"fmt"
 	"strconv"
+	"strings"
 
+	"entgo.io/ent/dialect/sql"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -65,6 +68,27 @@ func (r *queryResolver) SearchLocation(ctx context.Context, keyword string) ([]*
 	}
 	if err := wg.Wait(); err != nil {
 		return nil, err
+	}
+	return out, nil
+}
+
+// TopCompetitors is the resolver for the topCompetitors field.
+func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*model.TopCompetitor, error) {
+	comps, err := r.store.Competitor.Query().
+		Order(competitor.ByWonTendersCount(sql.OrderDesc())).
+		WithWonTenders().
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var out []*model.TopCompetitor
+	for _, comp := range comps {
+		out = append(out, &model.TopCompetitor{
+			ID:              xid.ID(fmt.Sprintf("TC-%s", strings.ReplaceAll(string(comp.ID), "CP-", ""))),
+			Name:            comp.Name,
+			ShortName:       comp.ShortName,
+			WonTendersCount: int(len(comp.Edges.WonTenders)),
+		})
 	}
 	return out, nil
 }

@@ -756,19 +756,14 @@ func (c *CompetitorConnection) build(nodes []*Competitor, pager *competitorPager
 type CompetitorPaginateOption func(*competitorPager) error
 
 // WithCompetitorOrder configures pagination ordering.
-func WithCompetitorOrder(order *CompetitorOrder) CompetitorPaginateOption {
-	if order == nil {
-		order = DefaultCompetitorOrder
-	}
-	o := *order
+func WithCompetitorOrder(order []*CompetitorOrder) CompetitorPaginateOption {
 	return func(pager *competitorPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultCompetitorOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -786,7 +781,7 @@ func WithCompetitorFilter(filter func(*CompetitorQuery) (*CompetitorQuery, error
 
 type competitorPager struct {
 	reverse bool
-	order   *CompetitorOrder
+	order   []*CompetitorOrder
 	filter  func(*CompetitorQuery) (*CompetitorQuery, error)
 }
 
@@ -797,8 +792,10 @@ func newCompetitorPager(opts []CompetitorPaginateOption, reverse bool) (*competi
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultCompetitorOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -811,48 +808,87 @@ func (p *competitorPager) applyFilter(query *CompetitorQuery) (*CompetitorQuery,
 }
 
 func (p *competitorPager) toCursor(c *Competitor) Cursor {
-	return p.order.Field.toCursor(c)
+	cs_ := make([]any, 0, len(p.order))
+	for _, o_ := range p.order {
+		cs_ = append(cs_, o_.Field.toCursor(c).Value)
+	}
+	return Cursor{ID: c.ID, Value: cs_}
 }
 
 func (p *competitorPager) applyCursors(query *CompetitorQuery, after, before *Cursor) (*CompetitorQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultCompetitorOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultCompetitorOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *competitorPager) applyOrder(query *CompetitorQuery) *CompetitorQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultCompetitorOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultCompetitorOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultCompetitorOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *competitorPager) orderExpr(query *CompetitorQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultCompetitorOrder.Field {
-			b.Comma().Ident(DefaultCompetitorOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultCompetitorOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 

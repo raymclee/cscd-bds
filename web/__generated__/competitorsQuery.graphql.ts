@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<99f027ee83f26a9fecf96c96f9a68ee5>>
+ * @generated SignedSource<<43c7dfe5a67ddd2d05c04328ffea422f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,10 +12,12 @@ import { ConcreteRequest } from 'relay-runtime';
 export type competitorsQuery$variables = Record<PropertyKey, never>;
 export type competitorsQuery$data = {
   readonly competitors: {
+    readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
         readonly name: string;
+        readonly shortName: string;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -64,12 +66,31 @@ var v0 = [
                 "kind": "ScalarField",
                 "name": "name",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "shortName",
+                "storageKey": null
               }
             ],
             "storageKey": null
           }
         ],
         "storageKey": null
+      },
+      {
+        "kind": "ClientExtension",
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "__id",
+            "storageKey": null
+          }
+        ]
       }
     ],
     "storageKey": null
@@ -93,16 +114,16 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "e6fa8fae90bbeeecfaa8767c5b7082e8",
+    "cacheID": "86a90556e72a56acfca3702bd5123388",
     "id": null,
     "metadata": {},
     "name": "competitorsQuery",
     "operationKind": "query",
-    "text": "query competitorsQuery {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query competitorsQuery {\n  competitors {\n    edges {\n      node {\n        id\n        name\n        shortName\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "02f2a1bb5d6ac07fc7bd4148832bd134";
+(node as any).hash = "a9977c219066f88711709e66fad75913";
 
 export default node;

@@ -53,7 +53,7 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "short_name", Type: field.TypeString},
+		{Name: "short_name", Type: field.TypeString, Unique: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// CompetitorsTable holds the schema information for the "competitors" table.
@@ -243,10 +243,10 @@ var (
 		{Name: "competitive_partnership_rating_overview", Type: field.TypeString, Nullable: true},
 		{Name: "prepare_to_bid", Type: field.TypeBool, Default: false},
 		{Name: "project_code", Type: field.TypeString, Nullable: true},
-		{Name: "project_definition", Type: field.TypeString, Nullable: true},
+		{Name: "project_type", Type: field.TypeString, Nullable: true, Size: 4},
+		{Name: "project_definition", Type: field.TypeString, Nullable: true, Size: 10},
 		{Name: "estimated_project_start_date", Type: field.TypeTime, Nullable: true},
 		{Name: "estimated_project_end_date", Type: field.TypeTime, Nullable: true},
-		{Name: "project_type", Type: field.TypeString, Nullable: true},
 		{Name: "attachements", Type: field.TypeJSON, Nullable: true},
 		{Name: "geo_coordinate", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
 		{Name: "geo_bounds", Type: field.TypeJSON, Nullable: true},

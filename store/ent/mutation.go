@@ -7754,10 +7754,10 @@ type TenderMutation struct {
 	competitive_partnership_rating_overview *string
 	prepare_to_bid                          *bool
 	project_code                            *string
+	project_type                            *string
 	project_definition                      *string
 	estimated_project_start_date            *time.Time
 	estimated_project_end_date              *time.Time
-	project_type                            *string
 	attachements                            *[]string
 	appendattachements                      []string
 	geo_coordinate                          **geo.GeoJson
@@ -9176,6 +9176,55 @@ func (m *TenderMutation) ResetProjectCode() {
 	delete(m.clearedFields, tender.FieldProjectCode)
 }
 
+// SetProjectType sets the "project_type" field.
+func (m *TenderMutation) SetProjectType(s string) {
+	m.project_type = &s
+}
+
+// ProjectType returns the value of the "project_type" field in the mutation.
+func (m *TenderMutation) ProjectType() (r string, exists bool) {
+	v := m.project_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProjectType returns the old "project_type" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldProjectType(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProjectType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProjectType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProjectType: %w", err)
+	}
+	return oldValue.ProjectType, nil
+}
+
+// ClearProjectType clears the value of the "project_type" field.
+func (m *TenderMutation) ClearProjectType() {
+	m.project_type = nil
+	m.clearedFields[tender.FieldProjectType] = struct{}{}
+}
+
+// ProjectTypeCleared returns if the "project_type" field was cleared in this mutation.
+func (m *TenderMutation) ProjectTypeCleared() bool {
+	_, ok := m.clearedFields[tender.FieldProjectType]
+	return ok
+}
+
+// ResetProjectType resets all changes to the "project_type" field.
+func (m *TenderMutation) ResetProjectType() {
+	m.project_type = nil
+	delete(m.clearedFields, tender.FieldProjectType)
+}
+
 // SetProjectDefinition sets the "project_definition" field.
 func (m *TenderMutation) SetProjectDefinition(s string) {
 	m.project_definition = &s
@@ -9321,55 +9370,6 @@ func (m *TenderMutation) EstimatedProjectEndDateCleared() bool {
 func (m *TenderMutation) ResetEstimatedProjectEndDate() {
 	m.estimated_project_end_date = nil
 	delete(m.clearedFields, tender.FieldEstimatedProjectEndDate)
-}
-
-// SetProjectType sets the "project_type" field.
-func (m *TenderMutation) SetProjectType(s string) {
-	m.project_type = &s
-}
-
-// ProjectType returns the value of the "project_type" field in the mutation.
-func (m *TenderMutation) ProjectType() (r string, exists bool) {
-	v := m.project_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldProjectType returns the old "project_type" field's value of the Tender entity.
-// If the Tender object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldProjectType(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldProjectType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldProjectType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldProjectType: %w", err)
-	}
-	return oldValue.ProjectType, nil
-}
-
-// ClearProjectType clears the value of the "project_type" field.
-func (m *TenderMutation) ClearProjectType() {
-	m.project_type = nil
-	m.clearedFields[tender.FieldProjectType] = struct{}{}
-}
-
-// ProjectTypeCleared returns if the "project_type" field was cleared in this mutation.
-func (m *TenderMutation) ProjectTypeCleared() bool {
-	_, ok := m.clearedFields[tender.FieldProjectType]
-	return ok
-}
-
-// ResetProjectType resets all changes to the "project_type" field.
-func (m *TenderMutation) ResetProjectType() {
-	m.project_type = nil
-	delete(m.clearedFields, tender.FieldProjectType)
 }
 
 // SetAttachements sets the "attachements" field.
@@ -11654,6 +11654,9 @@ func (m *TenderMutation) Fields() []string {
 	if m.project_code != nil {
 		fields = append(fields, tender.FieldProjectCode)
 	}
+	if m.project_type != nil {
+		fields = append(fields, tender.FieldProjectType)
+	}
 	if m.project_definition != nil {
 		fields = append(fields, tender.FieldProjectDefinition)
 	}
@@ -11662,9 +11665,6 @@ func (m *TenderMutation) Fields() []string {
 	}
 	if m.estimated_project_end_date != nil {
 		fields = append(fields, tender.FieldEstimatedProjectEndDate)
-	}
-	if m.project_type != nil {
-		fields = append(fields, tender.FieldProjectType)
 	}
 	if m.attachements != nil {
 		fields = append(fields, tender.FieldAttachements)
@@ -11833,14 +11833,14 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.PrepareToBid()
 	case tender.FieldProjectCode:
 		return m.ProjectCode()
+	case tender.FieldProjectType:
+		return m.ProjectType()
 	case tender.FieldProjectDefinition:
 		return m.ProjectDefinition()
 	case tender.FieldEstimatedProjectStartDate:
 		return m.EstimatedProjectStartDate()
 	case tender.FieldEstimatedProjectEndDate:
 		return m.EstimatedProjectEndDate()
-	case tender.FieldProjectType:
-		return m.ProjectType()
 	case tender.FieldAttachements:
 		return m.Attachements()
 	case tender.FieldGeoCoordinate:
@@ -11972,14 +11972,14 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldPrepareToBid(ctx)
 	case tender.FieldProjectCode:
 		return m.OldProjectCode(ctx)
+	case tender.FieldProjectType:
+		return m.OldProjectType(ctx)
 	case tender.FieldProjectDefinition:
 		return m.OldProjectDefinition(ctx)
 	case tender.FieldEstimatedProjectStartDate:
 		return m.OldEstimatedProjectStartDate(ctx)
 	case tender.FieldEstimatedProjectEndDate:
 		return m.OldEstimatedProjectEndDate(ctx)
-	case tender.FieldProjectType:
-		return m.OldProjectType(ctx)
 	case tender.FieldAttachements:
 		return m.OldAttachements(ctx)
 	case tender.FieldGeoCoordinate:
@@ -12231,6 +12231,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetProjectCode(v)
 		return nil
+	case tender.FieldProjectType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProjectType(v)
+		return nil
 	case tender.FieldProjectDefinition:
 		v, ok := value.(string)
 		if !ok {
@@ -12251,13 +12258,6 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEstimatedProjectEndDate(v)
-		return nil
-	case tender.FieldProjectType:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetProjectType(v)
 		return nil
 	case tender.FieldAttachements:
 		v, ok := value.([]string)
@@ -12722,6 +12722,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldProjectCode) {
 		fields = append(fields, tender.FieldProjectCode)
 	}
+	if m.FieldCleared(tender.FieldProjectType) {
+		fields = append(fields, tender.FieldProjectType)
+	}
 	if m.FieldCleared(tender.FieldProjectDefinition) {
 		fields = append(fields, tender.FieldProjectDefinition)
 	}
@@ -12730,9 +12733,6 @@ func (m *TenderMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(tender.FieldEstimatedProjectEndDate) {
 		fields = append(fields, tender.FieldEstimatedProjectEndDate)
-	}
-	if m.FieldCleared(tender.FieldProjectType) {
-		fields = append(fields, tender.FieldProjectType)
 	}
 	if m.FieldCleared(tender.FieldAttachements) {
 		fields = append(fields, tender.FieldAttachements)
@@ -12898,6 +12898,9 @@ func (m *TenderMutation) ClearField(name string) error {
 	case tender.FieldProjectCode:
 		m.ClearProjectCode()
 		return nil
+	case tender.FieldProjectType:
+		m.ClearProjectType()
+		return nil
 	case tender.FieldProjectDefinition:
 		m.ClearProjectDefinition()
 		return nil
@@ -12906,9 +12909,6 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldEstimatedProjectEndDate:
 		m.ClearEstimatedProjectEndDate()
-		return nil
-	case tender.FieldProjectType:
-		m.ClearProjectType()
 		return nil
 	case tender.FieldAttachements:
 		m.ClearAttachements()
@@ -13089,6 +13089,9 @@ func (m *TenderMutation) ResetField(name string) error {
 	case tender.FieldProjectCode:
 		m.ResetProjectCode()
 		return nil
+	case tender.FieldProjectType:
+		m.ResetProjectType()
+		return nil
 	case tender.FieldProjectDefinition:
 		m.ResetProjectDefinition()
 		return nil
@@ -13097,9 +13100,6 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldEstimatedProjectEndDate:
 		m.ResetEstimatedProjectEndDate()
-		return nil
-	case tender.FieldProjectType:
-		m.ResetProjectType()
 		return nil
 	case tender.FieldAttachements:
 		m.ResetAttachements()

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a693e7d46d7a17685ee09d20a203a66f>>
+ * @generated SignedSource<<f99d5319f754686554d2fc0fec3a37e2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,11 +17,14 @@ export type CreateCompetitorInput = {
   wonTenderIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateCompetitorMutation$variables = {
+  connections: ReadonlyArray<string>;
   input: CreateCompetitorInput;
 };
 export type useCreateCompetitorMutation$data = {
   readonly createCompetitor: {
     readonly id: string;
+    readonly name: string;
+    readonly shortName: string;
   };
 };
 export type useCreateCompetitorMutation = {
@@ -30,67 +33,114 @@ export type useCreateCompetitorMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v2 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
 ],
-v1 = [
-  {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "Competitor",
-    "kind": "LinkedField",
-    "name": "createCompetitor",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
-  }
-];
+v3 = {
+  "alias": null,
+  "args": (v2/*: any*/),
+  "concreteType": "Competitor",
+  "kind": "LinkedField",
+  "name": "createCompetitor",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "shortName",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+};
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateCompetitorMutation",
-    "selections": (v1/*: any*/),
+    "selections": [
+      (v3/*: any*/)
+    ],
     "type": "Mutation",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useCreateCompetitorMutation",
-    "selections": (v1/*: any*/)
+    "selections": [
+      (v3/*: any*/),
+      {
+        "alias": null,
+        "args": (v2/*: any*/),
+        "filters": null,
+        "handle": "appendNode",
+        "key": "",
+        "kind": "LinkedHandle",
+        "name": "createCompetitor",
+        "handleArgs": [
+          {
+            "kind": "Variable",
+            "name": "connections",
+            "variableName": "connections"
+          },
+          {
+            "kind": "Literal",
+            "name": "edgeTypeName",
+            "value": "CompetitorEdge"
+          }
+        ]
+      }
+    ]
   },
   "params": {
-    "cacheID": "3677fb06d7aad6bdf42d38793468e0dc",
+    "cacheID": "6fb45cb63767e9995568e7675801f8e6",
     "id": null,
     "metadata": {},
     "name": "useCreateCompetitorMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateCompetitorMutation(\n  $input: CreateCompetitorInput!\n) {\n  createCompetitor(input: $input) {\n    id\n  }\n}\n"
+    "text": "mutation useCreateCompetitorMutation(\n  $input: CreateCompetitorInput!\n) {\n  createCompetitor(input: $input) {\n    id\n    name\n    shortName\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a9c962b14a0e42c56b98228fd2a33589";
+(node as any).hash = "3bf2f66492daa1dcf70bc2f9d76645da";
 
 export default node;
