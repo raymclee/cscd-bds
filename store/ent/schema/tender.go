@@ -61,10 +61,10 @@ func (Tender) Fields() []ent.Field {
 
 		field.Bool("prepare_to_bid").Default(false),
 		field.String("project_code").Optional().Nillable(),
-		field.String("project_definition").Optional().Nillable(),
+		field.String("project_type").Optional().Nillable().MaxLen(4),
+		field.String("project_definition").Optional().Nillable().MaxLen(10),
 		field.Time("estimated_project_start_date").Optional().Nillable(),
 		field.Time("estimated_project_end_date").Optional().Nillable(),
-		field.String("project_type").Optional().Nillable(),
 		field.Strings("attachements").Optional(),
 		field.Other("geo_coordinate", &geo.GeoJson{}).
 			SchemaType(map[string]string{

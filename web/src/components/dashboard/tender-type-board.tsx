@@ -3,7 +3,7 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 
-export function TenderTypeChart() {
+export function TenderTypeBoard() {
   const tenders = useAreaTenders();
 
   const totalTenders = tenders?.length || 0;

@@ -77,12 +77,14 @@ export function TenderRatingChart({
               }
             /> */}
             <PolarGrid
+              // radialLines={false}
               className="fill-[--brand] opacity-20"
               // polarRadius={[50, 60, 70, 80, 90, 100]}
               polarRadius={[1, 2, 3, 4, 5].map((x) => x * 15.7)}
             />
             {/* <PolarRadiusAxis angle={30} domain={[0, 3]} tickCount={5} /> */}
             <PolarAngleAxis
+              tickSize={8}
               dataKey="month"
               tick={({ x, y, textAnchor, value, index, ...props }) => {
                 const data = chartData[index];

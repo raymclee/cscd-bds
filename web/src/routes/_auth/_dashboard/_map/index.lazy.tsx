@@ -14,7 +14,7 @@ import { MoreNewTenderBoard } from "~/components/dashboard/more-new-tender-board
 import { NewTenderBoard } from "~/components/dashboard/new-tender-board";
 import { RankingListChart } from "~/components/dashboard/ranking-list-chart";
 import { TenderStatusList } from "~/components/dashboard/tender-status-list";
-import { TenderTypeChart } from "~/components/dashboard/tender-type-chart";
+import { TenderTypeBoard } from "~/components/dashboard/tender-type-board";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -1001,7 +1001,7 @@ function RouteComponent() {
             !dashboardVisible && "translate-x-[110%]",
           )}
         >
-          <TenderTypeChart />
+          <TenderTypeBoard />
 
           <RankingListChart />
 

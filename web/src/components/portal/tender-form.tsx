@@ -505,7 +505,7 @@ export function TenderForm({
                     name="projectCode"
                     label="项目代码"
                     className="md:col-span-2"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, max: 4 }]}
                   >
                     <Input />
                   </Form.Item>
@@ -514,7 +514,7 @@ export function TenderForm({
                     name="projectDefinition"
                     label="项目定义"
                     className="md:col-span-2"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, max: 10 }]}
                   >
                     <Input />
                   </Form.Item>
