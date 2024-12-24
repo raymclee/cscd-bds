@@ -185,6 +185,7 @@ function CompetitorModal({ connectionID }: CompetitorModalProps) {
         onCancel={() => {
           onClose();
         }}
+        maskClosable={!!competitorFormCompetitor}
         destroyOnClose
         modalRender={(dom) => (
           <Form<CreateCompetitorInput>

@@ -67,7 +67,8 @@ export function UserForm({
         className="relative pb-16"
         form={form}
         layout="vertical"
-        disabled={isCreateUserInFlight}
+        clearOnDestroy
+        disabled={isCreateUserInFlight || isUpdateUserInFlight}
         // requiredMark="optional"
         onFinish={(values) => {
           if (selectedUser) {
