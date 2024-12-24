@@ -13,8 +13,8 @@ const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
 
 const imagesMap = {
-  1: no2,
-  2: no1,
+  1: no1,
+  2: no2,
   3: no3,
 };
 
@@ -62,7 +62,8 @@ export function RankingListBoard(props: {
     <MotionCard
       layoutId="ranking-list-board"
       className={cn(
-        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        // "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -74,7 +75,6 @@ export function RankingListBoard(props: {
             layoutId="ranking-list-board-icon"
             className="cursor-pointer"
             onClick={() => {
-              console.log("click");
               useMapStore.setState({
                 moreRankingListBoardVisible: true,
               });
@@ -109,20 +109,23 @@ export function RankingListBoard(props: {
           if (i >= 3) return null;
           return (
             <div
-              className="relative -z-[1] flex flex-1 flex-col items-center justify-center"
+              className={cn(
+                "relative -z-[1] flex flex-1 flex-col items-center justify-center",
+                i === 1 && "order-first",
+              )}
               key={c.id}
             >
               <img
                 src={imagesMap[(i + 1) as keyof typeof imagesMap]}
                 className={cn(
-                  "h-full w-[80%]",
-                  i === 1 ? "scale-[1.8]" : "scale-[1.25]",
+                  "h-full w-[77%]",
+                  i === 0 ? "scale-[1.9]" : "scale-[1.25]",
                 )}
               />
               <div
                 className={cn(
                   "absolute top-1/2 z-[1] line-clamp-1 w-[70%] text-center",
-                  i === 1
+                  i === 0
                     ? "-translate-y-[110%] text-sm"
                     : "-translate-y-[80%] text-xs",
                 )}

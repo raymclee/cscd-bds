@@ -41,7 +41,8 @@ export function AmountBoard() {
     <div className="@container">
       <Card
         className={cn(
-          "h-[clamp(34rem,60dvh,34rem)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+          // "flex h-[clamp(34rem,60dvh,34rem)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+          "flex h-[calc(((100vh-100px)/3)*2)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
         )}
       >
         <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -52,72 +53,74 @@ export function AmountBoard() {
             </Link> */}
           </div>
         </CardHeader>
-        <CardContent className="h-full">
-          <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
-            <div className="flex items-center justify-between rounded px-6 py-4">
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-white">¥</span>
-                <span className="text-4xl font-black text-white">
-                  {totalAmount}
-                </span>
-                <span className="hidden font-medium text-brand @xs:block">
-                  亿元
-                </span>
-              </div>
+        <CardContent className="flex flex-1 flex-col">
+          <div className="flex-1">
+            <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
+              <div className="flex items-center justify-between rounded px-6 py-4">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-black text-white">¥</span>
+                  <span className="text-4xl font-black text-white">
+                    {totalAmount}
+                  </span>
+                  <span className="hidden font-medium text-brand @xs:block">
+                    亿元
+                  </span>
+                </div>
 
-              <div className="rounded-full bg-brand/30 p-2">
-                <Wallet className="h-10 w-10 text-brand" />
+                <div className="rounded-full bg-brand/30 p-2">
+                  <Wallet className="h-10 w-10 text-brand" />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <div className="text-right text-xs text-brand/70">
+                单位: 项目数量
+              </div>
+              <div className="mt-2 space-y-4 text-sm text-brand">
+                {statusItems.map(({ status, value }) => {
+                  const tends = tenders?.filter((t) => t?.status === value);
+                  const percentage =
+                    tends?.length && tenders?.length
+                      ? Math.round((tends?.length / tenders?.length) * 100)
+                      : 0;
+                  const count = tends?.length || 0;
+                  return (
+                    <motion.div
+                      layoutId={`tender-status-${value}`}
+                      key={status}
+                      className="mt-2 flex cursor-pointer items-center justify-between gap-x-4"
+                      onClick={() => {
+                        useMapStore.setState({
+                          selectedTenderStatus: { status, value },
+                        });
+                      }}
+                    >
+                      <motion.div
+                        className="w-24"
+                        layoutId={`tender-status-${value}-status`}
+                      >
+                        {status}
+                      </motion.div>
+                      <motion.div
+                        className="w-8 text-white"
+                        layoutId={`tender-status-${value}-count`}
+                      >
+                        {count}
+                      </motion.div>
+                      <Progress
+                        value={percentage}
+                        className="h-2 w-[80%] text-brand"
+                      />
+                      <div className="w-12 text-right">{percentage}%</div>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </div>
 
-          <div className="mt-6">
-            <div className="text-right text-xs text-brand/70">
-              单位: 项目数量
-            </div>
-            <div className="mt-2 space-y-4 text-sm text-brand">
-              {statusItems.map(({ status, value }) => {
-                const tends = tenders?.filter((t) => t?.status === value);
-                const percentage =
-                  tends?.length && tenders?.length
-                    ? Math.round((tends?.length / tenders?.length) * 100)
-                    : 0;
-                const count = tends?.length || 0;
-                return (
-                  <motion.div
-                    layoutId={`tender-status-${value}`}
-                    key={status}
-                    className="mt-2 flex cursor-pointer items-center justify-between gap-x-4"
-                    onClick={() => {
-                      useMapStore.setState({
-                        selectedTenderStatus: { status, value },
-                      });
-                    }}
-                  >
-                    <motion.div
-                      className="w-24"
-                      layoutId={`tender-status-${value}-status`}
-                    >
-                      {status}
-                    </motion.div>
-                    <motion.div
-                      className="w-8 text-white"
-                      layoutId={`tender-status-${value}-count`}
-                    >
-                      {count}
-                    </motion.div>
-                    <Progress
-                      value={percentage}
-                      className="h-2 w-[80%] text-brand"
-                    />
-                    <div className="w-12 text-right">{percentage}%</div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="mt-6 h-[6rem]">
+          <div className="h-[6rem]">
             <div className="flex h-full items-center justify-between gap-6">
               <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
                 <div className="flex h-full flex-col rounded">

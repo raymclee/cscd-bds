@@ -40,10 +40,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div
-        id="map"
-        className="fixed bottom-0 left-0 right-0 top-0 h-full"
-      ></div>
+      <div id="map" className="absolute bottom-0 left-0 right-0 top-0"></div>
 
       <div className="fixed left-0 right-0 top-0 flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
         <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">

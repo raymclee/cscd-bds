@@ -163,7 +163,7 @@ export function TenderTypeBoardMore() {
                 layoutId="tender-type-board-icon"
                 className="cursor-pointer"
                 onClick={() => {
-                  useMapStore.setState({ moreNewTenderBoardVisible: false });
+                  useMapStore.setState({ moreTenderTypeBoardVisible: false });
                 }}
               />
             </div>

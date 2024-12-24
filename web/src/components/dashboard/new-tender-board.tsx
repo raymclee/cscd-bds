@@ -130,16 +130,14 @@ export function NewTenderBoard() {
     <MotionCard
       layoutId="new-tender-board"
       className={cn(
-        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        // "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
         <div className="flex items-center justify-between">
-          <motion.span layoutId="new-tender-board-title">
-            本月新增商机
-          </motion.span>
-          <MotionEllipsis
-            layoutId="new-tender-board-icon"
+          <span>本月新增商机</span>
+          <Ellipsis
             className="cursor-pointer"
             onClick={() => {
               useMapStore.setState({ moreNewTenderBoardVisible: true });
