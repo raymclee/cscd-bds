@@ -80,17 +80,17 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
         __html: Object.entries(THEMES)
           .map(
             ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join("\n")}
-}
-`,
+            ${prefix} [data-chart=${id}] {
+            ${colorConfig
+              .map(([key, itemConfig]) => {
+                const color =
+                  itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
+                  itemConfig.color;
+                return color ? `  --color-${key}: ${color};` : null;
+              })
+              .join("\n")}
+            }
+            `,
           )
           .join("\n"),
       }}
@@ -226,7 +226,7 @@ const ChartTooltipContent = React.forwardRef<
                     )}
                     <div
                       className={cn(
-                        "flex flex-1 justify-between leading-none",
+                        "flex justify-between flex-1 leading-none",
                         nestLabel ? "items-end" : "items-center",
                       )}
                     >
@@ -237,7 +237,7 @@ const ChartTooltipContent = React.forwardRef<
                         </span>
                       </div>
                       {item.value && (
-                        <span className="font-mono font-medium tabular-nums text-white">
+                        <span className="font-mono font-medium text-white tabular-nums">
                           {item.value.toLocaleString()}
                         </span>
                       )}

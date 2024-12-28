@@ -1,7 +1,7 @@
 package config
 
 func init() {
-	DatabaseUrl = "postgresql://postgres:postgres@localhost:5432/cscd_bds?sslmode=disable"
+	DatabaseUrl = "postgresql://postgres:postgres@localhost:5432/cscd_mkm?sslmode=disable"
 	IsProd = false
 	IsUat = false
 	FilePath = "static/"

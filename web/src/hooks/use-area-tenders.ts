@@ -1,5 +1,6 @@
 import { useLoaderData } from "@tanstack/react-router";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
+import { useMemo } from "react";
 import { usePreloadedQuery } from "react-relay";
 import { mapIndexPageQuery } from "~/routes/_auth/_dashboard/_map/index.lazy";
 import { useMapStore } from "~/store/map";
@@ -16,33 +17,39 @@ export function useAreaTenders() {
     ?.getSubFeatures()
     ?.map((f: any) => f.properties.adcode);
 
-  const allTenders =
-    data.node?.areas?.edges?.flatMap((e) =>
-      e?.node?.tenders.edges?.map((e) => e?.node),
-    ) || [];
+  const allTenders = useMemo(() => {
+    return (
+      data.node?.areas?.edges?.flatMap((e) =>
+        e?.node?.tenders.edges?.map((e) => e?.node),
+      ) || []
+    );
+  }, [data.node?.areas?.edges]);
 
-  const tenders =
-    nodeProps?.level === "province" || nodeProps?.level === "city"
-      ? allTenders.filter((t) => {
-          switch (nodeProps?.level) {
-            case "province":
-            case "city":
-              return (
-                adcodes?.includes(t?.city?.adcode) ||
-                adcodes?.includes(t?.district?.adcode)
-              );
-            // return t?.map(
-            //   (e) =>
-            //     adcodes?.includes(e?.node?.city?.adcode) ||
-            //     adcodes?.includes(e?.node?.district.adcode),
-            // );
-            // adcodes?.includes(t?.node?.city?.adcode) ||
-            // adcodes?.includes(t?.node?.district.adcode)
-          }
-        })
-      : selectedArea
-        ? selectedArea?.tenders?.edges?.map((e) => e?.node)
-        : allTenders;
+  const tenders = useMemo(() => {
+    if (nodeProps?.level === "province" || nodeProps?.level === "city") {
+      return allTenders.filter((t) => {
+        switch (nodeProps?.level) {
+          case "province":
+          case "city":
+            return (
+              adcodes?.includes(t?.city?.adcode) ||
+              adcodes?.includes(t?.district?.adcode)
+            );
+          // return t?.map(
+          //   (e) =>
+          //     adcodes?.includes(e?.node?.city?.adcode) ||
+          //     adcodes?.includes(e?.node?.district.adcode),
+          // );
+          // adcodes?.includes(t?.node?.city?.adcode) ||
+          // adcodes?.includes(t?.node?.district.adcode)
+        }
+      });
+    } else if (selectedArea) {
+      return selectedArea?.tenders?.edges?.map((e) => e?.node);
+    } else {
+      return allTenders;
+    }
+  }, [allTenders, adcodes, nodeProps, selectedArea]);
 
   return tenders;
 }

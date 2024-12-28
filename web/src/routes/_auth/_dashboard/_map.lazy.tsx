@@ -40,15 +40,15 @@ function RouteComponent() {
 
   return (
     <>
-      <div id="map" className="absolute bottom-0 left-0 right-0 top-0"></div>
+      <div id="map" className="absolute top-0 bottom-0 left-0 right-0"></div>
 
-      <div className="fixed left-0 right-0 top-0 flex h-[96px] w-full items-center justify-center bg-dashboard-head bg-cover bg-center text-white">
-        <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">
+      <div className="absolute left-0 right-0 top-0 flex h-[64px] w-full items-center justify-center bg-dashboard-head bg-cover bg-bottom bg-no-repeat text-white">
+        <div className="text-2xl font-bold select-none text-ellipsis whitespace-nowrap">
           远东幕墙市场拓展地图
         </div>
       </div>
 
-      <div className="fixed left-4 top-4 lg:top-2">
+      <div className="absolute left-2 top-4">
         {((session.hasMapAccess && session.hasEditAccess) ||
           session.isAdmin ||
           session.isSuperAdmin) && (
@@ -56,7 +56,7 @@ function RouteComponent() {
             <div>
               <Link to="/portal">
                 <Button
-                  className="border-0 bg-gradient-to-r from-sky-900 to-sky-600 text-white drop-shadow-2xl"
+                  className="text-white border-0 bg-gradient-to-r from-sky-900 to-sky-600 drop-shadow-2xl"
                   size="small"
                   shape="circle"
                   icon={<Blocks size={14} />}

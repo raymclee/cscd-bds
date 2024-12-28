@@ -3,7 +3,7 @@
 package config
 
 func init() {
-	DatabaseUrl = "postgresql://postgres:~!Wbvxwet=JdgcKB@localhost:5432/cscd_bds_uat"
+	DatabaseUrl = "postgresql://postgres:~!Wbvxwet=JdgcKB@localhost:5432/cscd_mkm_uat"
 	IsProd = false
 	IsUat = true
 

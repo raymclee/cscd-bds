@@ -62,11 +62,11 @@ export function RankingListBoard(props: {
     <MotionCard
       layoutId="ranking-list-board"
       className={cn(
-        "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        // "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
         <div className="flex items-center justify-between">
           <motion.span layoutId="ranking-list-board-title">
             市场竞争龙虎榜
@@ -83,7 +83,7 @@ export function RankingListBoard(props: {
         </div>
       </CardHeader>
 
-      <CardContent className="flex h-full w-full items-stretch justify-center gap-8 overflow-hidden px-2">
+      <CardContent className="flex items-stretch justify-center w-full h-full gap-4 px-4 overflow-hidden">
         {/* <div className="flex-1">
           <div className="space-y-1">
             <h3 className="text-brand">数据对比</h3>
@@ -110,7 +110,7 @@ export function RankingListBoard(props: {
           return (
             <div
               className={cn(
-                "relative -z-[1] flex flex-1 flex-col items-center justify-center",
+                "relative flex flex-col items-center justify-center flex-1",
                 i === 1 && "order-first",
               )}
               key={c.id}
@@ -118,16 +118,16 @@ export function RankingListBoard(props: {
               <img
                 src={imagesMap[(i + 1) as keyof typeof imagesMap]}
                 className={cn(
-                  "h-full w-[77%]",
-                  i === 0 ? "scale-[1.9]" : "scale-[1.25]",
+                  "w-full h-full",
+                  i === 0 ? "scale-x-[1.1] scale-y-[1.3]" : "scale-y-[1.1]",
                 )}
               />
               <div
                 className={cn(
-                  "absolute top-1/2 z-[1] line-clamp-1 w-[70%] text-center",
+                  "absolute top-1/2 line-clamp-1 w-[70%] text-center",
                   i === 0
                     ? "-translate-y-[110%] text-sm"
-                    : "-translate-y-[80%] text-xs",
+                    : "-translate-y-[100%] text-xs",
                 )}
               >
                 {c.shortName}

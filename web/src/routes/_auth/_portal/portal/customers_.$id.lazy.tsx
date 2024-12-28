@@ -69,6 +69,7 @@ function RouteComponent() {
   return (
     <>
       <Card
+        className="py-2"
         title={
           <CustomerDetail
             customer={customer}

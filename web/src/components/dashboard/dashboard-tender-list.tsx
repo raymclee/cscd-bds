@@ -31,8 +31,8 @@ export function DashboardTenderList() {
     <MotionCard
       layoutId="dashboard-tender-list-board"
       className={cn(
-        "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        // "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">

@@ -44,6 +44,15 @@ func main() {
 	h := handler.NewHandler(s, f, sm, sh, amap)
 	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, f, sm, sh, amap))
 	gs.Use(entgql.Transactioner{TxOpener: s.Client})
+	// gs.AddTransport(transport.Websocket{
+	// 	KeepAlivePingInterval: 10 * time.Second,
+	// 	Upgrader:              websocket.Upgrader{},
+	// })
+	// gs.AddTransport(transport.SSE{})
+	// gs.AddTransport(transport.Options{})
+	// gs.AddTransport(transport.GET{})
+	// gs.AddTransport(transport.POST{})
+	// gs.AddTransport(transport.MultipartForm{})
 	ph := playground.Handler("远东幕墙市场拓展地图", "/graphql")
 
 	publicApiV1 := e.Group("/api/v1", sm.Middlware())

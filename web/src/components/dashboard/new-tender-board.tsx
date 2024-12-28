@@ -7,6 +7,8 @@ import { Button } from "../ui/button";
 import { Ellipsis, Eye } from "lucide-react";
 import { useMapStore } from "~/store/map";
 import { motion } from "motion/react";
+import { NewTenderAmountChart } from "./new-tender-amount-chart";
+import { NewTenderTotalChart } from "./new-tender-total-chart";
 
 const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
@@ -130,14 +132,15 @@ export function NewTenderBoard() {
     <MotionCard
       layoutId="new-tender-board"
       className={cn(
-        // "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
         <div className="flex items-center justify-between">
           <span>本月新增商机</span>
-          <Ellipsis
+          <MotionEllipsis
+            layoutId="new-tender-board-more"
             className="cursor-pointer"
             onClick={() => {
               useMapStore.setState({ moreNewTenderBoardVisible: true });
@@ -145,11 +148,88 @@ export function NewTenderBoard() {
           />
         </div>
       </CardHeader>
-      <CardContent className="flex h-full">
+      <CardContent className="flex h-full justify-items-stretch">
         {/* <div className="w-[40%]"><Tiny {...monthConfig} /></div> */}
         {/* <div className="w-[60%]"> */}
         {/* <Column {...barConfig} /> */}
         {/* </div> */}
+        {/* <div className="flex flex-col items-stretch h-full justify-stretch"> */}
+        {/* <AmountChart /> */}
+        {/* <div className="flex flex-col flex-1 gap-1"> */}
+        {/* <Tiny.Ring {...amountConfig} /> */}
+        {/* <div className="relative w-full pb-[250px]">
+              <div className="absolute inset-0 overflow-hidden">
+                <NewTenderAmountChart
+                  // className="w-full h-full scale-50"
+                  periods={[
+                    `${new Date().getFullYear()}-${new Date().getMonth()}`,
+                    `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+                  ]}
+                />
+              </div>
+            </div> */}
+        {/* <div className="w-full h-full">
+              <NewTenderAmountChart
+                // className="w-full h-full scale-50"
+                periods={[
+                  `${new Date().getFullYear()}-${new Date().getMonth()}`,
+                  `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+                ]}
+              />
+            </div>
+            <span className="text-xs text-gray-400">金额占比上升</span>
+          </div>
+          <div className="flex flex-col items-center justify-center flex-1 gap-1">
+            <NewTenderTotalChart
+              periods={[
+                `${new Date().getFullYear()}-${new Date().getMonth()}`,
+                `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+              ]}
+            />
+            <span className="text-xs text-gray-400">数量占比下降</span>
+          </div>
+        </div> */}
+
+        {/* <div className="flex flex-col w-1/2 h-full">
+          <div className="relative h-full">
+            <div className="absolute inset-0">
+              <NewTenderAmountChart
+                height={80}
+                width={80}
+                short
+                className="w-full h-full m-auto"
+                // className="h-[80px] w-[80px]"
+                // className="w-full h-full scale-50"
+                periods={[
+                  `${new Date().getFullYear()}-${new Date().getMonth()}`,
+                  `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+                ]}
+              />
+            </div>
+            <div className="mx-auto text-xs text-center text-gray-400">
+              数量占比下降
+            </div>
+          </div>
+
+          <div className="relative h-full">
+            <div className="absolute inset-0">
+              <NewTenderTotalChart
+                height={80}
+                width={80}
+                short
+                className="m-auto"
+                periods={[
+                  `${new Date().getFullYear()}-${new Date().getMonth()}`,
+                  `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+                ]}
+              />
+              <div className="mx-auto text-xs text-center text-gray-400">
+                数量占比下降
+              </div>
+            </div>
+          </div>
+        </div> */}
+
         <div className="flex w-[40%] flex-col items-center justify-around py-4">
           {/* <AmountChart /> */}
           <div className="flex flex-col items-center justify-center gap-1">
@@ -161,6 +241,7 @@ export function NewTenderBoard() {
             <span className="text-xs text-gray-400">数量占比下降</span>
           </div>
         </div>
+
         <Column {...barConfig} />
       </CardContent>
     </MotionCard>

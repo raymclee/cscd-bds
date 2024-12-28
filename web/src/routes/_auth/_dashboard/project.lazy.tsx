@@ -20,13 +20,13 @@ export const Route = createLazyFileRoute("/_auth/_dashboard/project")({
 
 function RouteComponent() {
   return (
-    <div className="bg-project-dashboard min-h-screen bg-cover bg-center bg-no-repeat">
+    <div className="min-h-screen bg-center bg-no-repeat bg-cover bg-project-dashboard">
       {/* <ProjectHeader /> */}
-      {/* <header className="relative flex h-20 items-center justify-center"> */}
+      {/* <header className="relative flex items-center justify-center h-20"> */}
       <img src={top} className="w-full" />
       {/* </header> */}
-      <div className="grid-areas-project-small xl:grid-areas-project-large grid gap-x-8 gap-y-8 px-4 xl:h-[calc(100vh-90px)] xl:gap-x-28 xl:px-10">
-        <section className="grid-in-left left-side space-y-6">
+      <div className="grid h-[calc(100vh-90px)] gap-x-28 gap-y-8 px-10 grid-areas-project-large">
+        <section className="space-y-6 left-side grid-in-left">
           <div className="overflow-hidden">
             <img src={headerLeft1} />
             {/* <div className="grid h-[calc(100%-36px)] grid-cols-[1fr_1fr_2fr] gap-x-4 bg-gradient-to-tr from-[#0a3256] to-transparent p-4">
@@ -41,9 +41,9 @@ function RouteComponent() {
           </div>
         </section>
 
-        <section className="grid-in-center center-side py-3">
+        <section className="py-3 center-side grid-in-center">
           <img src={instantMessage} />
-          <div className="grid grid-cols-5 gap-x-2 pt-2 md:gap-x-4 xl:gap-x-6">
+          <div className="grid grid-cols-5 pt-2 gap-x-2 md:gap-x-4 xl:gap-x-6">
             <div className="relative flex justify-center @container">
               <img src={b1} className="absolute inset-0" />
               <div className="relative pt-[110%] font-bold text-white @[5rem]:text-xl">
@@ -57,7 +57,7 @@ function RouteComponent() {
           </div>
         </section>
 
-        <section className="grid-in-right right-side space-y-6">
+        <section className="space-y-6 right-side grid-in-right">
           <div>
             <img src={headerRight1} />
           </div>

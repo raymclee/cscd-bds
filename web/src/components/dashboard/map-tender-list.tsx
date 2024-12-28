@@ -27,29 +27,29 @@ export function MapTenderList() {
         className={cn(
           // "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
           // tenderListVisible && "mt-[60vh] xl:mt-0",
-          "absolute left-4 top-[7vh] h-full w-[440px] space-y-2 transition",
+          "absolute left-4 top-1/2 w-[440px] -translate-y-1/2 space-y-2 transition",
           !tenderListVisible && "-translate-x-[110%]",
         )}
       >
         <Card
           className={cn(
-            "h-[90vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+            "h-[89vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
           )}
         >
-          <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+          <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
             项目列表
           </CardHeader>
 
           <CardContent className="h-full px-0">
             <ScrollArea className="h-full pb-6">
-              <div className="space-y-4 px-4 py-2">
+              <div className="px-4 py-2 space-y-4">
                 {tenderList.map((tender, i) => {
                   const isGAorHWTender = isGA(tender) || isHW(tender);
                   return (
                     <div
                       key={tender?.id}
                       className={cn(
-                        "flex cursor-pointer items-center gap-x-4 rounded-md p-2 transition-shadow hover:bg-brand/50",
+                        "flex items-center p-2 transition-shadow rounded-md cursor-pointer gap-x-4 hover:bg-brand/50",
                         (tenderListHovering === i ||
                           tenderListHovering === tender?.id) &&
                           "ring ring-white",
@@ -120,7 +120,7 @@ export function MapTenderList() {
                         )}
                       </div>
                       <div className="w-[60%] space-y-2 py-1">
-                        <h3 className="line-clamp-1 font-bold">
+                        <h3 className="font-bold line-clamp-1">
                           {tender?.name}
                         </h3>
                         <div className="flex items-center justify-between text-sm">

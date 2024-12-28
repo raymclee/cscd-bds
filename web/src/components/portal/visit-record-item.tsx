@@ -72,6 +72,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
         )
       }
       // layout="vertical"
+      // labelStyle={{ width: 120 }}
       bordered
       className="py-4"
       items={[
@@ -84,12 +85,15 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
           key: "visitType",
           label: "拜访类型",
           children: visitTypeText(data.visitType),
+          labelStyle: { width: 120 },
+          // span: 3,
         },
         {
           key: "commPeople",
           label: "沟通人员",
           children: data.commPeople,
           span: 2,
+          labelStyle: { width: 120 },
         },
         {
           key: "tender",
