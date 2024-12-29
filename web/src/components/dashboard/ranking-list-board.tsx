@@ -58,15 +58,21 @@ export function RankingListBoard(props: {
     props.competitors,
   );
 
+  const [first, second, third] = data.topCompetitors || [
+    undefined,
+    undefined,
+    undefined,
+  ];
+
   return (
     <MotionCard
       layoutId="ranking-list-board"
       className={cn(
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(18rem,30dvh,18rem)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
         <div className="flex items-center justify-between">
           <motion.span layoutId="ranking-list-board-title">
             市场竞争龙虎榜
@@ -83,7 +89,7 @@ export function RankingListBoard(props: {
         </div>
       </CardHeader>
 
-      <CardContent className="flex items-stretch justify-center w-full h-full gap-4 px-4 overflow-hidden">
+      <CardContent className="flex h-full w-full items-stretch justify-center gap-4 overflow-hidden px-4">
         {/* <div className="flex-1">
           <div className="space-y-1">
             <h3 className="text-brand">数据对比</h3>
@@ -105,36 +111,52 @@ export function RankingListBoard(props: {
           <Tiny.Ring {...config} />
         </div> */}
 
-        {data.topCompetitors.map((c, i) => {
-          if (i >= 3) return null;
-          return (
-            <div
-              className={cn(
-                "relative flex flex-col items-center justify-center flex-1",
-                i === 1 && "order-first",
-              )}
-              key={c.id}
-            >
-              <img
-                src={imagesMap[(i + 1) as keyof typeof imagesMap]}
-                className={cn(
-                  "w-full h-full",
-                  i === 0 ? "scale-x-[1.1] scale-y-[1.3]" : "scale-y-[1.1]",
-                )}
-              />
-              <div
-                className={cn(
-                  "absolute top-1/2 line-clamp-1 w-[70%] text-center",
-                  i === 0
-                    ? "-translate-y-[110%] text-sm"
-                    : "-translate-y-[100%] text-xs",
-                )}
-              >
-                {c.shortName}
-              </div>
-            </div>
-          );
-        })}
+        <div
+          className={
+            "relative flex flex-1 flex-col items-center justify-center"
+          }
+        >
+          <img src={no2} className={cn("h-full w-full scale-y-[1.1]")} />
+          <div
+            className={
+              "absolute top-1/2 line-clamp-1 w-[70%] -translate-y-[100%] text-center text-xs"
+            }
+          >
+            {data.topCompetitors?.[0]?.shortName || ""}
+          </div>
+        </div>
+        <div
+          className={
+            "relative flex flex-1 flex-col items-center justify-center"
+          }
+        >
+          <img
+            src={no1}
+            className={"h-full w-full scale-x-[1.2] scale-y-[1.3]"}
+          />
+          <div
+            className={
+              "absolute top-1/2 line-clamp-1 w-[70%] -translate-y-[110%] text-center text-xs"
+            }
+          >
+            {data.topCompetitors?.[1]?.shortName || ""}
+          </div>
+        </div>
+
+        <div
+          className={
+            "relative flex flex-1 flex-col items-center justify-center"
+          }
+        >
+          <img src={no3} className={cn("h-full w-full scale-y-[1.1]")} />
+          <div
+            className={
+              "absolute top-1/2 line-clamp-1 w-[70%] -translate-y-[100%] text-center text-xs"
+            }
+          >
+            {data.topCompetitors?.[2]?.shortName || ""}
+          </div>
+        </div>
       </CardContent>
     </MotionCard>
   );

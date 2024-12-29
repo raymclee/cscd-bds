@@ -14,10 +14,15 @@ function RouteComponent() {
   useLayoutEffect(() => {
     const { width, height } = window.screen;
     if (ref.current) {
+      const scale =
+        width >= 1920 ? document.body.clientWidth / width : width / 1920;
+
       Object.assign(ref.current.style, {
-        width: `${width}px`,
-        height: `${height}px`,
-        transform: `scale(${document.body.clientWidth / width})`,
+        width: `${width > 1920 ? width : 1920}px`,
+        height: `${height > 1080 ? height : 1080}px`,
+        // width: "100vw",
+        // height: "100vh",
+        transform: `scale(${scale})`,
       });
     }
   }, [windowSize]);
@@ -26,7 +31,7 @@ function RouteComponent() {
     <LazyMotion features={domAnimation}>
       <div
         ref={ref}
-        className="fixed top-0 left-0 max-h-screen min-h-screen overflow-hidden origin-top-left max-w-screen min-w-screen bg-slate-900"
+        className="max-w-screen min-w-screen fixed left-0 top-0 max-h-screen min-h-screen origin-top-left overflow-hidden bg-slate-900"
       >
         {/* <div className="relative max-h-screen min-h-screen overflow-hidden max-w-screen bg-slate-900"> */}
         <Outlet />

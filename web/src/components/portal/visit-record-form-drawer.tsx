@@ -68,6 +68,7 @@ export function VisitRecordFormDrawer({
   const onClose = () => {
     usePortalStore.setState({
       visitRecordFormOpen: false,
+      visitRecordFormVisitRecord: null,
     });
   };
 
@@ -81,6 +82,8 @@ export function VisitRecordFormDrawer({
     <Drawer
       open={open}
       onClose={onClose}
+      destroyOnClose
+      maskClosable={!!visitRecord}
       width={520}
       title={visitRecord ? "修改拜访记录" : "添加拜访记录"}
     >
@@ -109,7 +112,6 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
   );
 
   const onClose = () => {
-    form.resetFields();
     usePortalStore.setState({
       visitRecordFormOpen: false,
       visitRecordFormVisitRecord: null,
@@ -253,7 +255,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

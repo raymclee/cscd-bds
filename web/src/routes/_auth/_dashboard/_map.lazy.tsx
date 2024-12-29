@@ -42,13 +42,13 @@ function RouteComponent() {
     <>
       <div id="map" className="absolute top-0 bottom-0 left-0 right-0"></div>
 
-      <div className="absolute left-0 right-0 top-0 flex h-[64px] w-full items-center justify-center bg-dashboard-head bg-cover bg-bottom bg-no-repeat text-white">
-        <div className="text-2xl font-bold select-none text-ellipsis whitespace-nowrap">
+      <div className="absolute left-0 right-0 top-0 flex h-[90px] w-full items-center justify-center bg-dashboard-head bg-cover bg-bottom bg-no-repeat text-white">
+        <div className="text-3xl font-bold select-none text-ellipsis whitespace-nowrap">
           远东幕墙市场拓展地图
         </div>
       </div>
 
-      <div className="absolute left-2 top-4">
+      <div className="absolute left-2 top-1">
         {((session.hasMapAccess && session.hasEditAccess) ||
           session.isAdmin ||
           session.isSuperAdmin) && (

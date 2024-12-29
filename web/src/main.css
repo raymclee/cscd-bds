@@ -9,6 +9,7 @@ body,
 #app {
   width: 100%;
   height: 100%;
+  @apply bg-project-dashboard bg-cover bg-center bg-no-repeat;
 }
 
 @layer base {
@@ -81,7 +82,7 @@ body,
 } */
 
 .amap-marker {
-  @apply transition-opacity rounded;
+  @apply rounded transition-opacity;
 }
 
 .amap-marker-label {

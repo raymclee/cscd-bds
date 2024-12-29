@@ -1,12 +1,12 @@
 import { Column, ColumnConfig, Tiny } from "@ant-design/plots";
+import { RadialChart } from "@ui5/webcomponents-react-charts";
+import { Ellipsis } from "lucide-react";
+import { motion } from "motion/react";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { Button } from "../ui/button";
-import { Ellipsis, Eye } from "lucide-react";
 import { useMapStore } from "~/store/map";
-import { motion } from "motion/react";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import { NewTenderAmountChart } from "./new-tender-amount-chart";
 import { NewTenderTotalChart } from "./new-tender-total-chart";
 
@@ -84,7 +84,10 @@ export function NewTenderBoard() {
     width: 80,
     height: 80,
     innerRadius: 0.65,
-    color: ["#E8EFF5", "#dc2626"],
+    color:
+      !isFinite(amountPercent) || amountPercent <= 0
+        ? ["#374151"]
+        : ["#374151", "#dc2626"],
     annotations: [
       {
         type: "text",
@@ -109,7 +112,7 @@ export function NewTenderBoard() {
     width: 80,
     height: 80,
     innerRadius: 0.65,
-    color: ["#E8EFF5", "#109618"],
+    color: ["#374151", "#109618"],
     annotations: [
       {
         type: "text",
@@ -132,11 +135,11 @@ export function NewTenderBoard() {
     <MotionCard
       layoutId="new-tender-board"
       className={cn(
-        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(18rem,30dvh,18rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
         <div className="flex items-center justify-between">
           <span>本月新增商机</span>
           <MotionEllipsis
@@ -190,14 +193,14 @@ export function NewTenderBoard() {
           </div>
         </div> */}
 
-        {/* <div className="flex flex-col w-1/2 h-full">
-          <div className="relative h-full">
-            <div className="absolute inset-0">
+        <div className="flex h-[calc(100%-12px)] w-1/2 flex-col">
+          <div className="relative flex flex-1 flex-col justify-center">
+            <div className="absolute left-0 right-0 top-2">
               <NewTenderAmountChart
                 height={80}
                 width={80}
                 short
-                className="w-full h-full m-auto"
+                className="m-auto"
                 // className="h-[80px] w-[80px]"
                 // className="w-full h-full scale-50"
                 periods={[
@@ -206,13 +209,13 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="mx-auto text-xs text-center text-gray-400">
-              数量占比下降
+            <div className="absolute bottom-0 left-0 right-0 text-center">
+              <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
 
-          <div className="relative h-full">
-            <div className="absolute inset-0">
+          <div className="relative flex flex-1 flex-col justify-center">
+            <div className="absolute left-0 right-0 top-2">
               <NewTenderTotalChart
                 height={80}
                 width={80}
@@ -223,22 +226,10 @@ export function NewTenderBoard() {
                   `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
                 ]}
               />
-              <div className="mx-auto text-xs text-center text-gray-400">
-                数量占比下降
-              </div>
             </div>
-          </div>
-        </div> */}
-
-        <div className="flex w-[40%] flex-col items-center justify-around py-4">
-          {/* <AmountChart /> */}
-          <div className="flex flex-col items-center justify-center gap-1">
-            <Tiny.Ring {...amountConfig} />
-            <span className="text-xs text-gray-400">金额占比上升</span>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-1">
-            <Tiny.Ring {...totalConfig} />
-            <span className="text-xs text-gray-400">数量占比下降</span>
+            <div className="absolute bottom-0 left-0 right-0 text-center">
+              <span className="text-xs text-gray-400">数量占比变化</span>
+            </div>
           </div>
         </div>
 

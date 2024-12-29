@@ -842,7 +842,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -896,7 +896,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -1008,7 +1008,7 @@ function RouteComponent() {
       <MapTenderList />
       <MapTenderDetail />
 
-      <div className="grid content-center h-full grid-cols-3 gap-2 px-2 place-content-between">
+      <div className="mt-4 grid h-full grid-cols-3 place-content-between content-center gap-2 px-2">
         {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
         <div
           className={cn(

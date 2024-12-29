@@ -51,7 +51,7 @@ export function NewTenderTotalChart({
   return (
     <ChartContainer
       config={chartConfig}
-      className={cn("aspect-square")}
+      // className={cn("aspect-square")}
       // className="mx-auto aspect-square max-h-[250px] flex-1"
     >
       <RadialBarChart
@@ -86,7 +86,7 @@ export function NewTenderTotalChart({
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="text-3xl font-bold fill-white"
+                      className="fill-white text-3xl font-bold"
                     >
                       {`${Number(chartData[0].countPercent).toFixed(short ? 0 : 2)}%`}
                     </tspan>

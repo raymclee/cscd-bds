@@ -56,7 +56,7 @@ export function NewTenderAmountChart({
   return (
     <ChartContainer
       config={chartConfig}
-      className={cn("aspect-square")}
+      // className={cn("aspect-square")}
       // className={
       //   cn("w-[60px] w-auto items-center")
       //   // "aspect-square h-full max-h-[250px] w-full flex-1",
@@ -96,7 +96,7 @@ export function NewTenderAmountChart({
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="text-3xl font-bold fill-white"
+                      className="fill-white text-3xl font-bold"
                     >
                       {`${Number(chartData[0].amountPercent).toFixed(short ? 0 : 2)}%`}
                     </tspan>

@@ -20,16 +20,16 @@ export function MapTenderDetail() {
       className={cn(
         // "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
         // selectedTender && "mt-[60vh] xl:mt-0",
-        "absolute left-4 top-1/2 w-[440px] -translate-y-1/2 space-y-2 transition",
+        "absolute left-4 top-10 w-[440px] space-y-2 transition",
         !selectedTender && "-translate-x-[110%]",
       )}
     >
       <Card
         className={cn(
-          "h-[89vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+          "h-[94.5dvh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
         )}
       >
-        <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+        <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
           <div className="flex items-center justify-between">
             <div className="line-clamp-1">{selectedTender?.name}</div>
             {!tenderViewTender && (
@@ -64,7 +64,7 @@ export function MapTenderDetail() {
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] flex-col items-center justify-center text-white">
-              <ImageOff className="w-16 h-16 mb-2" />
+              <ImageOff className="mb-2 h-16 w-16" />
               暂没图片
             </div>
           )}
@@ -171,9 +171,9 @@ export function MapTenderDetail() {
             <Tabs
               key={selectedTender?.id}
               defaultValue="detail"
-              className="w-full mt-4"
+              className="mt-4 w-full"
             >
-              <TabsList className="grid w-full grid-cols-3 text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+              <TabsList className="grid w-full grid-cols-3 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 text-white">
                 <TabsTrigger
                   value="detail"
                   className="data-[state=active]:bg-brand/70 data-[state=active]:text-white"
@@ -329,7 +329,7 @@ export function MapTenderDetail() {
                 <TabsContent value="follow-up" className="">
                   {selectedTender?.visitRecords?.edges &&
                   selectedTender?.visitRecords?.edges?.length < 1 ? (
-                    <div className="flex items-center justify-center mt-8">
+                    <div className="mt-8 flex items-center justify-center">
                       没有拜访记录
                     </div>
                   ) : (
