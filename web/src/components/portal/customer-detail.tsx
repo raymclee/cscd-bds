@@ -55,7 +55,7 @@ export function CustomerDetail(props: {
     props.customer,
   );
 
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
 
   return (
     <>

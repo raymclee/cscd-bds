@@ -59,7 +59,7 @@ export function CustomerFormDrawer() {
   const customerFormCustomer = usePortalStore(
     (state) => state.customerFormCustomer,
   );
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
   const [queryRef, loadQuery] = useQueryLoader<customerFormDrawerQuery>(
     CustomerFormDrawerQuery,
   );

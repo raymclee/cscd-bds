@@ -123,7 +123,7 @@ export function TenderDetail({ queryRef }: TenderDetailProps) {
 }
 
 function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
   const {
     id,
     name,
@@ -449,7 +449,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
 }
 
 function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
   const {
     id,
     name,

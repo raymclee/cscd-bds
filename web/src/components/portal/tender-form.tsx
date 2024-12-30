@@ -92,7 +92,7 @@ export function TenderForm({
   const [form] = Form.useForm<CreateTenderInput>();
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
   const competitorsData = useFragment(
     graphql`
       fragment tenderFormFragment_competitors on Query {
@@ -1043,7 +1043,11 @@ function ProvinceCityDistrictSelector({
 
   return (
     <>
-      <Form.Item name="provinceID" label="省" rules={[{ required: true }]}>
+      <Form.Item
+        name="provinceID"
+        label="省"
+        rules={[{ required: provinces && provinces.length > 0 }]}
+      >
         <Select
           options={provinces?.map((p) => ({
             label: p?.name,
@@ -1082,7 +1086,13 @@ function ProvinceCityDistrictSelector({
         />
       </Form.Item>
 
-      <Form.Item name="districtID" label="区" rules={[{ required: true }]}>
+      <Form.Item
+        name="districtID"
+        label="区"
+        rules={[
+          { required: districts?.edges ? districts?.edges?.length > 0 : false },
+        ]}
+      >
         <Select
           options={districts?.edges
             ?.map((e) => e?.node)

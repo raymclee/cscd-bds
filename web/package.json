@@ -8,7 +8,7 @@
     "dev": "concurrently 'pnpm:relay:watch' 'pnpm:start'",
     "build": "vite build",
     "serve": "vite preview",
-    "start": "vite --host",
+    "start": "vite",
     "gen": "graphql-codegen --config codegen.ts",
     "relay": "relay-compiler",
     "relay:watch": "relay-compiler --watch"

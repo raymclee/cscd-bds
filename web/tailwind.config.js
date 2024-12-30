@@ -38,6 +38,7 @@ export default {
       },
       colors: {
         brand: "#3cb8e6",
+        "brand-project": "#00f2ff",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

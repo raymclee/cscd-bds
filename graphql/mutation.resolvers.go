@@ -147,7 +147,7 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	code := fmt.Sprintf("%s%s%03d", a.Code, date.Format("20060102"), n)
 	q.SetCode(code)
 
-	if input.Address != nil {
+	if a.Code != "HW" && input.Address != nil {
 
 		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
 		if err != nil {

@@ -44,7 +44,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
     `,
     props.record,
   );
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
 
   return (
     <Descriptions

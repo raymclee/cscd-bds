@@ -36,7 +36,7 @@ export function UserForm({
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const [removedAreaIDs, setRemovedAreaIDs] = React.useState<string[]>([]);
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
 
   useEffect(() => {
     if (selectedUser) {

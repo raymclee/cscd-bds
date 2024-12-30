@@ -55,7 +55,7 @@ export function TenderListItem({
     `,
     tender,
   );
-  const { session } = useRouteContext({ from: "/_auth" });
+  const { session } = useRouteContext({ from: "/__auth" });
 
   const isGAOrHW = item.area.code === "GA" || item.area.code === "HW";
 

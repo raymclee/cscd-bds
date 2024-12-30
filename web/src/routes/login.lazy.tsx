@@ -22,4 +22,3 @@ function HomeComponent() {
   // )
   return null;
 }
-d;

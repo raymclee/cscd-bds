@@ -9,7 +9,8 @@ body,
 #app {
   width: 100%;
   height: 100%;
-  @apply bg-project-dashboard bg-cover bg-center bg-no-repeat;
+  /* @apply bg-project-dashboard bg-cover bg-center bg-no-repeat; */
+  @apply bg-slate-900
 }
 
 @layer base {
