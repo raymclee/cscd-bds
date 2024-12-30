@@ -64,382 +64,378 @@ export const Route = createLazyFileRoute("/__auth/__dashboard/project")({
 function RouteComponent() {
   return (
     <div className="min-h-screen">
-      <ScrollArea className="mb-8 h-screen">
-        {/* <ProjectHeader /> */}
-        {/* <header className="relative flex items-center justify-center h-20"> */}
-        <img src={top} className="w-full" />
-        {/* </header> */}
-        <div className="grid grid-cols-[1fr_1.8fr_1fr] gap-x-24 gap-y-8 px-10">
-          <section className="space-y-4">
-            <div>
-              <SubTitle>成本管理</SubTitle>
-              {/* <img src={headerLeft1} /> */}
-              {/* <div className="grid h-[calc(100%-36px)] grid-cols-[1fr_1fr_2fr] gap-x-4 bg-gradient-to-tr from-[#0a3256] to-transparent p-4">
+      {/* <ProjectHeader /> */}
+      {/* <header className="relative flex items-center justify-center h-20"> */}
+      <img src={top} className="w-full" />
+      {/* </header> */}
+      <div className="grid grid-cols-[1fr_1.8fr_1fr] gap-x-24 gap-y-8 px-10">
+        <section className="space-y-3">
+          <div>
+            <SubTitle>成本管理</SubTitle>
+            {/* <img src={headerLeft1} /> */}
+            {/* <div className="grid h-[calc(100%-36px)] grid-cols-[1fr_1fr_2fr] gap-x-4 bg-gradient-to-tr from-[#0a3256] to-transparent p-4">
               <div className="bg-[#021734]"></div>
               <div className="bg-[#021734]"></div>
               <div className="bg-[#021734]"></div>
             </div> */}
-              <div className="grid grid-cols-[1fr_1fr_1.525fr] gap-1 bg-gradient-to-tr from-[#0a3256] to-transparent p-2 shadow-lg">
-                <div>
-                  <img
-                    src={costManagement1}
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
-                <div>
-                  <img
-                    src={costManagement2}
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
-                <div className="relative">
-                  <img
-                    src={costManagement3}
-                    className="h-full w-auto object-contain"
-                  />
-                </div>
+            <div className="grid grid-cols-[1fr_1fr_1.525fr] gap-1 bg-gradient-to-tr from-[#0a3256] to-transparent p-2 shadow-lg">
+              <div>
+                <img
+                  src={costManagement1}
+                  className="h-full w-auto object-contain"
+                />
+              </div>
+              <div>
+                <img
+                  src={costManagement2}
+                  className="h-full w-auto object-contain"
+                />
+              </div>
+              <div className="relative">
+                <img
+                  src={costManagement3}
+                  className="h-full w-auto object-contain"
+                />
               </div>
             </div>
+          </div>
 
-            <div>
-              <SubTitle>合约收支</SubTitle>
+          <div>
+            <SubTitle>合约收支</SubTitle>
 
-              <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
-                <div className="flex">
-                  <div className="flex flex-1 flex-col items-center justify-center">
-                    <div className="font-bold text-red-600">50万</div>
-                    <div className="text-xs font-semibold text-slate-400">
-                      本期非法定扣款
-                    </div>
-                  </div>
-                  <img src={costDivider} className="h-16 opacity-60" />
-                  <div className="flex flex-1 flex-col items-center justify-center">
-                    <div className="text-brand-project font-bold">120,658</div>
-                    <div className="text-xs font-semibold text-slate-400">
-                      累计非法定扣款
-                    </div>
-                  </div>
-                  <img src={costDivider} className="h-16 opacity-60" />
-                  <div className="flex flex-1 flex-col items-center justify-center">
-                    <div className="font-bold text-red-600">2%</div>
-                    <div className="text-xs font-semibold text-slate-400">
-                      累计非法定扣款占比
-                    </div>
+            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
+              <div className="flex">
+                <div className="flex flex-1 flex-col items-center justify-center">
+                  <div className="font-bold text-red-600">50万</div>
+                  <div className="text-xs font-semibold text-slate-400">
+                    本期非法定扣款
                   </div>
                 </div>
-                <div className="mt-2">
-                  <img
-                    src={costIncome}
-                    className="h-full w-auto object-contain"
-                  />
+                <img src={costDivider} className="h-16 opacity-60" />
+                <div className="flex flex-1 flex-col items-center justify-center">
+                  <div className="font-bold text-brand-project">120,658</div>
+                  <div className="text-xs font-semibold text-slate-400">
+                    累计非法定扣款
+                  </div>
+                </div>
+                <img src={costDivider} className="h-16 opacity-60" />
+                <div className="flex flex-1 flex-col items-center justify-center">
+                  <div className="font-bold text-red-600">2%</div>
+                  <div className="text-xs font-semibold text-slate-400">
+                    累计非法定扣款占比
+                  </div>
                 </div>
               </div>
+              <div className="mt-2">
+                <img
+                  src={costIncome}
+                  className="h-full w-auto object-contain"
+                />
+              </div>
             </div>
+          </div>
 
-            <div>
-              <SubTitle>材料预算预警</SubTitle>
-              <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
-                <div>
-                  <div className="flex gap-8 px-1">
-                    <div className="flex items-center gap-1">
-                      <StatusIcon className="h-3 w-3 text-red-600" />
-                      <span className="text-xs text-red-200">已超预算</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <StatusIcon className="h-3 w-3 text-yellow-500" />
-                      <span className="text-xs text-red-200">可能超预算</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <StatusIcon className="h-3 w-3 text-green-400" />
-                      <span className="text-xs text-red-200">未超预算</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex h-16 justify-around border border-[#5dc2ec] bg-gradient-to-b from-transparent from-5% via-[#09102c] to-transparent to-95% p-2">
-                  <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+          <div>
+            <SubTitle>材料预算预警</SubTitle>
+            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
+              <div>
+                <div className="flex gap-8 px-1">
+                  <div className="flex items-center gap-1">
                     <StatusIcon className="h-3 w-3 text-red-600" />
-                    <span className="text-xs text-red-200">铝板</span>
-                    <span className="text-sm font-bold text-red-600">16%</span>
+                    <span className="text-xs text-red-200">已超预算</span>
                   </div>
-                  <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+                  <div className="flex items-center gap-1">
                     <StatusIcon className="h-3 w-3 text-yellow-500" />
-                    <span className="text-xs text-red-200">铝型材</span>
-                    <span className="text-sm font-bold text-yellow-500">
-                      2%
-                    </span>
+                    <span className="text-xs text-red-200">可能超预算</span>
                   </div>
-                  <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                    <StatusIcon className="h-3 w-3 text-green-600" />
-                    <span className="text-xs text-red-200">玻璃</span>
-                    <span className="text-sm font-bold text-green-600">0%</span>
+                  <div className="flex items-center gap-1">
+                    <StatusIcon className="h-3 w-3 text-green-400" />
+                    <span className="text-xs text-red-200">未超预算</span>
                   </div>
-                  <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                    <StatusIcon className="h-3 w-3 text-green-600" />
-                    <span className="text-xs text-red-200">其它材料</span>
-                    <span className="text-sm font-bold text-green-600">0%</span>
-                  </div>
-                  {/* <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+                </div>
+              </div>
+
+              <div className="mt-4 flex h-16 justify-around border border-[#5dc2ec] bg-gradient-to-b from-transparent from-5% via-[#09102c] to-transparent to-95% p-2">
+                <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+                  <StatusIcon className="h-3 w-3 text-red-600" />
+                  <span className="text-xs text-red-200">铝板</span>
+                  <span className="text-sm font-bold text-red-600">16%</span>
+                </div>
+                <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+                  <StatusIcon className="h-3 w-3 text-yellow-500" />
+                  <span className="text-xs text-red-200">铝型材</span>
+                  <span className="text-sm font-bold text-yellow-500">2%</span>
+                </div>
+                <div className="flex items-center gap-1 text-ellipsis text-nowrap">
                   <StatusIcon className="h-3 w-3 text-green-600" />
+                  <span className="text-xs text-red-200">玻璃</span>
+                  <span className="text-sm font-bold text-green-600">0%</span>
+                </div>
+                <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+                  <StatusIcon className="h-3 w-3 text-green-600" />
+                  <span className="text-xs text-red-200">其它材料</span>
+                  <span className="text-sm font-bold text-green-600">0%</span>
+                </div>
+                {/* <div className="flex items-center gap-1 text-ellipsis text-nowrap">
+                  <StatusIcon className="w-3 h-3 text-green-600" />
                   <span className="text-[9px] text-red-200">其它材料</span>
                   <span className="text-xs font-bold text-green-600">16%</span>
                 </div> */}
-                </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <SubTitle>库存情况</SubTitle>
-              <div className="flex h-20 gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-4 shadow-lg">
-                <div className="relative flex-1">
-                  <img src={stockLeft} className="absolute inset-0" />
-                  <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
-                    <span>12</span>
-                    <span className="ml-1 text-xs">件</span>
-                  </div>
-                </div>
-                <div className="relative flex-1">
-                  <img src={stockRight} className="absolute inset-0" />
-                  <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
-                    <span>683</span>
-                    <span className="ml-1 text-xs">
-                      m<sup>2</sup>
-                    </span>
-                  </div>
+          <div>
+            <SubTitle>库存情况</SubTitle>
+            <div className="flex h-16 gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
+              <div className="relative flex-1">
+                <img src={stockLeft} className="absolute inset-0" />
+                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
+                  <span>12</span>
+                  <span className="ml-1 text-xs">件</span>
                 </div>
               </div>
-            </div>
-
-            <div>
-              <SubTitle>套裁耗损展示</SubTitle>
-              <div className="flex h-20 items-center gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
-                <div className="flex-1">
-                  <img src={tailoringLeft} />
-                </div>
-                <div className="flex-1">
-                  <img src={tailoringRight} />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <SubTitle>项目物料损失</SubTitle>
-              <div className="flex items-center gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-6 py-3 shadow-lg">
-                <div>
-                  <img src={materialsLostIcon} className="w-16" />
-                </div>
-                <div className="flex flex-1 items-baseline justify-around">
-                  <span className="text-brand-project/70">损失累计金额</span>
-                  <span className="text-brand-project text-2xl font-bold">
-                    1,450,118
+              <div className="relative flex-1">
+                <img src={stockRight} className="absolute inset-0" />
+                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
+                  <span>683</span>
+                  <span className="ml-1 text-xs">
+                    m<sup>2</sup>
                   </span>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
 
-          <section className="py-3">
-            <div>
-              {/* <img src={instantMessage} /> */}
-              <div className="grid grid-cols-5 gap-x-2 pt-2 md:gap-x-4 xl:gap-x-6">
-                <div className="relative flex justify-center @container">
-                  <img src={b1} className="absolute inset-0" />
-                  <div className="text-brand-project relative pt-[110%] font-bold @[5rem]:text-xl">
-                    {Intl.NumberFormat("en-US").format(49688)}
-                  </div>
-                </div>
-                <img src={b2} />
-                <img src={b3} />
-                <img src={b4} />
-                <img src={b5} />
-              </div>
-            </div>
-
-            <img src={projectProgressTitle} className="mx-auto mt-4 w-[70%]" />
-
-            <img src={projectManagementTitle} className="mx-auto mt-4 w-52" />
-
-            <div className="mt-4">
-              <div className="mt-4 flex gap-12">
-                <div className="flex w-full flex-col">
-                  <div className="relative h-9">
-                    <img
-                      src={projectManagementLeft}
-                      className="absolute inset-0"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
-                      100
-                    </div>
-                  </div>
-                  <div className="flex w-[85%] items-center justify-around gap-6 self-end bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        累计完成
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        199
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        累计占比
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        87%
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        当月完成
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        56
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        当月占比
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        65%
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex w-full flex-col">
-                  <div className="relative h-9">
-                    <img
-                      src={projectManagementRight}
-                      className="absolute inset-0"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
-                      6%
-                    </div>
-                  </div>
-                  <div className="flex w-[85%] items-center justify-around gap-6 self-end bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        累计完成
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        199
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        累计占比
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        87%
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        当月完成
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        56
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="text-brand-project/50 text-xs">
-                        当月占比
-                      </div>
-                      <div className="text-brand-project text-sm font-bold">
-                        65%
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <img src={projectOverviewTitle} className="mx-auto mt-4 w-[70%]" />
-
-            <div className="mt-6 flex gap-6">
-              <div className="flex flex-1 flex-col justify-center gap-4">
-                <img src={projectOverviewLeft} className="mx-auto" />
-                <img src={projectOverviewTab} className="mx-auto w-[80%]" />
+          <div>
+            <SubTitle>套裁耗损展示</SubTitle>
+            <div className="flex h-16 items-center gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
+              <div className="flex-1">
+                <img src={tailoringLeft} />
               </div>
               <div className="flex-1">
-                <img src={basicInfo} />
+                <img src={tailoringRight} />
               </div>
             </div>
-          </section>
+          </div>
 
-          <section className="space-y-4">
-            <div>
-              <SubTitle>图纸进度管理</SubTitle>
-              <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
-                <div className="flex gap-1">
-                  <div>
-                    <img src={drawingLeft} />
+          <div>
+            <SubTitle>项目物料损失</SubTitle>
+            <div className="flex h-[4.5rem] items-center gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-6 py-2 shadow-lg">
+              <div>
+                <img src={materialsLostIcon} className="w-14" />
+              </div>
+              <div className="flex flex-1 items-baseline justify-around">
+                <span className="text-brand-project/70">损失累计金额</span>
+                <span className="text-2xl font-bold text-brand-project">
+                  1,450,118
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-3">
+          <div>
+            {/* <img src={instantMessage} /> */}
+            <div className="grid grid-cols-5 gap-x-2 pt-1 md:gap-x-4 xl:gap-x-6">
+              <div className="relative flex justify-center @container">
+                <img src={b1} className="absolute inset-0" />
+                <div className="relative pt-[110%] font-bold text-brand-project @[5rem]:text-xl">
+                  {Intl.NumberFormat("en-US").format(49688)}
+                </div>
+              </div>
+              <img src={b2} />
+              <img src={b3} />
+              <img src={b4} />
+              <img src={b5} />
+            </div>
+          </div>
+
+          <img src={projectProgressTitle} className="mx-auto mt-4 w-[70%]" />
+
+          <img src={projectManagementTitle} className="mx-auto mt-2 w-48" />
+
+          <div className="mt-4">
+            <div className="mt-4 flex gap-12">
+              <div className="flex w-full flex-col">
+                <div className="relative h-9">
+                  <img
+                    src={projectManagementLeft}
+                    className="absolute inset-0"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
+                    100
                   </div>
-                  <div>
-                    <img src={drawingCenter} />
+                </div>
+                <div className="flex w-[85%] items-center justify-around gap-6 self-end bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      累计完成
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      199
+                    </div>
                   </div>
-                  <div>
-                    <img src={drawingRight} />
+
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      累计占比
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      87%
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      当月完成
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      56
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      当月占比
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      65%
+                    </div>
                   </div>
                 </div>
-                <div className="mt-1">
-                  <img src={drawingBottom} />
-                </div>
               </div>
-            </div>
+              <div className="flex w-full flex-col">
+                <div className="relative h-9">
+                  <img
+                    src={projectManagementRight}
+                    className="absolute inset-0"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
+                    6%
+                  </div>
+                </div>
+                <div className="flex w-[85%] items-center justify-around gap-6 self-end bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      累计完成
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      199
+                    </div>
+                  </div>
 
-            <div>
-              <SubTitle>生产管理</SubTitle>
-              <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
-                <div>
-                  <img src={productionManagement1} />
-                </div>
-                <div>
-                  <img src={productionManagement2} />
-                </div>
-                <div>
-                  <img src={productionManagement3} />
-                </div>
-                <div>
-                  <img src={productionManagement4} />
-                </div>
-              </div>
-            </div>
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      累计占比
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      87%
+                    </div>
+                  </div>
 
-            <div>
-              <SubTitle>单元件与散料</SubTitle>
-              <div className="space-y-2 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-3 shadow-lg">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      当月完成
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      56
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xs text-brand-project/50">
+                      当月占比
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      65%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <img src={projectOverviewTitle} className="mx-auto mt-4 w-[70%]" />
+
+          <div className="mt-4 flex gap-6">
+            <div className="flex flex-1 flex-col justify-center gap-4">
+              <img src={projectOverviewLeft} className="mx-auto w-[85%]" />
+              <img src={projectOverviewTab} className="mx-auto w-[80%]" />
+            </div>
+            <div className="flex-1">
+              <img src={basicInfo} className="mx-auto w-[90%]" />
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <div>
+            <SubTitle>图纸进度管理</SubTitle>
+            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+              <div className="flex gap-1">
                 <div>
-                  <img src={componentTop} />
+                  <img src={drawingLeft} />
                 </div>
                 <div>
-                  <img src={componentBottom} />
+                  <img src={drawingCenter} />
+                </div>
+                <div>
+                  <img src={drawingRight} />
                 </div>
               </div>
-            </div>
-
-            <div>
-              <SubTitle>近2季度 质量内审分数</SubTitle>
-              <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg">
-                <img src={quality} />
+              <div className="mt-0.5">
+                <img src={drawingBottom} />
               </div>
             </div>
+          </div>
 
-            <div>
-              <SubTitle>近2季度 安全内审分数</SubTitle>
-              <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg">
-                <img src={safty} />
+          <div>
+            <SubTitle>生产管理</SubTitle>
+            <div className="space-y-0.5 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+              <div>
+                <img src={productionManagement1} />
+              </div>
+              <div>
+                <img src={productionManagement2} />
+              </div>
+              <div>
+                <img src={productionManagement3} />
+              </div>
+              <div>
+                <img src={productionManagement4} />
               </div>
             </div>
-          </section>
-        </div>
-      </ScrollArea>
+          </div>
+
+          <div>
+            <SubTitle>单元件与散料</SubTitle>
+            <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+              <div>
+                <img src={componentTop} />
+              </div>
+              <div>
+                <img src={componentBottom} />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <SubTitle>近2季度 质量内审分数</SubTitle>
+            <div className="relative bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg">
+              <img src={quality} />
+            </div>
+          </div>
+
+          <div>
+            <SubTitle>近2季度 安全内审分数</SubTitle>
+            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg">
+              <img src={safty} />
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

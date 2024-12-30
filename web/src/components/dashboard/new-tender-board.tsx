@@ -135,7 +135,7 @@ export function NewTenderBoard() {
     <MotionCard
       layoutId="new-tender-board"
       className={cn(
-        "h-[clamp(18rem,30dvh,18rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[clamp(17rem,30dvh,17rem)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
@@ -209,7 +209,7 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="absolute -left-6 bottom-2 right-0 text-center">
+            <div className="absolute -left-6 bottom-0 right-0 text-center">
               <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
@@ -227,7 +227,7 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="absolute -left-6 bottom-2 right-0 text-center">
+            <div className="absolute -left-6 bottom-0 right-0 text-center">
               <span className="text-xs text-gray-400">数量占比变化</span>
             </div>
           </div>

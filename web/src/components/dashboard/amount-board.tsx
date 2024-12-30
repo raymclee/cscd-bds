@@ -41,7 +41,7 @@ export function AmountBoard() {
     <div className="@container">
       <Card
         className={cn(
-          "flex h-[clamp(36.5rem,60dvh,36.5rem)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+          "flex h-[clamp(34rem,60dvh,34rem)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           // "flex h-[calc(((100vh-100px)/3)*2)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
         )}
       >
@@ -53,9 +53,9 @@ export function AmountBoard() {
             </Link> */}
           </div>
         </CardHeader>
-        <CardContent className="flex flex-1 flex-col">
+        <CardContent className="flex flex-1 flex-col py-4">
           <div className="flex-1">
-            <div className="mt-5 rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
+            <div className="rounded bg-gradient-to-b from-brand/40 to-transparent p-px">
               <div className="flex items-center justify-between rounded px-6 py-4">
                 <div className="flex items-baseline gap-1">
                   <span className="text-4xl font-black text-white">¥</span>
@@ -120,7 +120,7 @@ export function AmountBoard() {
             </div>
           </div>
 
-          <div className="h-[6rem]">
+          <div className="h-[5.5rem]">
             <div className="flex h-full items-center justify-between gap-6">
               <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
                 <div className="flex h-full flex-col rounded">

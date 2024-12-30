@@ -34,6 +34,20 @@ func main() {
 		middleware.CORS(),
 	)
 
+	if config.IsProd || config.IsUat {
+		e.Use(middleware.Secure())
+		e.Use(
+			middleware.Gzip(),
+			middleware.StaticWithConfig(middleware.StaticConfig{
+				Skipper:    nil,
+				Index:      "index.html",
+				HTML5:      true,
+				Browse:     false,
+				IgnoreBase: false,
+				Filesystem: http.FS(web.DistDirFS),
+			}))
+	}
+
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.NewStore()
 	sm := session.NewSession(lc, s)
@@ -72,20 +86,6 @@ func main() {
 
 		return c.Redirect(http.StatusFound, "/logout")
 	})
-
-	if config.IsProd || config.IsUat {
-		e.Use(middleware.Secure())
-		e.Use(
-			middleware.Gzip(),
-			middleware.StaticWithConfig(middleware.StaticConfig{
-				Skipper:    nil,
-				Index:      "index.html",
-				HTML5:      true,
-				Browse:     false,
-				IgnoreBase: false,
-				Filesystem: http.FS(web.DistDirFS),
-			}))
-	}
 
 	var port string
 	if config.IsProd {
