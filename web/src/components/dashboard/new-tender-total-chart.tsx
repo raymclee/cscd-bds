@@ -44,7 +44,7 @@ export function NewTenderTotalChart({
 
   const chartConfig = {
     countPercent: {
-      color: "green",
+      color: "hsl(var(--bar-chart-1))",
     },
   } satisfies ChartConfig;
 

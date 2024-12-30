@@ -62,7 +62,7 @@ export function NewTenderBoardMore() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
-          className="absolute p-1 text-white border-2 border-gray-600 rounded-full cursor-pointer right-6 top-6 hover:bg-gray-600"
+          className="absolute right-6 top-6 cursor-pointer rounded-full border-2 border-gray-600 p-1 text-white hover:bg-gray-600"
           onClick={() => {
             useMapStore.setState({ moreNewTenderBoardVisible: false });
           }}
@@ -81,19 +81,22 @@ export function NewTenderBoardMore() {
           )}
         >
           <MotionCardContent className="my-auto grid h-[95vh] grid-cols-[1fr_1fr_2.5fr] gap-4 p-4">
-            <div className="flex flex-col h-full overflow-hidden border rounded border-brand">
-              <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+            <div className="flex h-full flex-col overflow-hidden rounded border border-brand">
+              <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
                 金額佔比
               </div>
 
               <div className="flex flex-1 pt-4">
-                <div className={cn("flex flex-col flex-1 w-full h-full gap-4")}>
+                <div className={cn("flex h-full w-full flex-1 flex-col gap-4")}>
                   <div className="px-4 py-2 font-bold text-white">
                     {thisMonthAmountPeriods[0]} 與 {thisMonthAmountPeriods[1]}{" "}
                     對比
                   </div>
 
                   <NewTenderAmountChart periods={thisMonthAmountPeriods} />
+                  <span className="text-center text-gray-400">
+                    金额占比变化
+                  </span>
                 </div>
               </div>
 
@@ -101,28 +104,35 @@ export function NewTenderBoardMore() {
               <div className="mx-auto mb-8 h-px w-[90%] bg-slate-700"></div>
 
               <div className="flex flex-1">
-                <div className={cn("flex flex-col flex-1 w-full h-full gap-4")}>
+                <div className={cn("flex h-full w-full flex-1 flex-col gap-4")}>
                   <div className="px-4 py-2 font-bold text-white">
                     {lastMonthAmountPeriods[0]} 與 {lastMonthAmountPeriods[1]}{" "}
                     對比
                   </div>
 
                   <NewTenderAmountChart periods={lastMonthAmountPeriods} />
+                  <span className="text-center text-gray-400">
+                    金额占比变化
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col h-full overflow-hidden border rounded border-brand">
-              <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+            <div className="flex h-full flex-col overflow-hidden rounded border border-brand">
+              <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
                 數量佔比
               </div>
 
               <div className="flex flex-1 pt-4">
-                <div className="flex flex-col flex-1 w-full h-full gap-4">
+                <div className="flex h-full w-full flex-1 flex-col gap-4">
                   <div className="px-4 py-2 font-bold text-white">
                     {thisMountTotalPeriods[0]} 與 {thisMountTotalPeriods[1]}{" "}
                     對比
                   </div>
+
                   <NewTenderTotalChart periods={thisMountTotalPeriods} />
+                  <span className="text-center text-gray-400">
+                    数量占比变化
+                  </span>
                 </div>
               </div>
 
@@ -130,26 +140,30 @@ export function NewTenderBoardMore() {
               <div className="mx-auto mb-8 h-px w-[90%] bg-slate-700"></div>
 
               <div className="flex flex-1">
-                <div className="flex flex-col flex-1 w-full h-full gap-4">
+                <div className="flex h-full w-full flex-1 flex-col gap-4">
                   <div className="px-4 py-2 font-bold text-white">
                     {lastMonthTotalPeriods[0]} 與 {lastMonthTotalPeriods[1]}{" "}
                     對比
                   </div>
+
                   <NewTenderTotalChart periods={lastMonthTotalPeriods} />
+                  <span className="text-center text-gray-400">
+                    数量占比变化
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col h-full gap-4">
-              <div className="flex-1 overflow-hidden border rounded border-brand">
+            <div className="flex h-full flex-col gap-4">
+              <div className="flex-1 overflow-hidden rounded border border-brand">
                 <div>
-                  <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+                  <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
                     月度數量金額對比數據
                   </div>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-hidden border rounded border-brand">
-                <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+              <div className="flex-1 overflow-hidden rounded border border-brand">
+                <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
                   本月度數量金額對比數據
                 </div>
               </div>

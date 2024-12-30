@@ -1,5 +1,4 @@
 import { Column, ColumnConfig, Tiny } from "@ant-design/plots";
-import { RadialChart } from "@ui5/webcomponents-react-charts";
 import { Ellipsis } from "lucide-react";
 import { motion } from "motion/react";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
@@ -9,6 +8,7 @@ import { useMapStore } from "~/store/map";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { NewTenderAmountChart } from "./new-tender-amount-chart";
 import { NewTenderTotalChart } from "./new-tender-total-chart";
+import { NewTenderBarChart } from "./new-tender-board/new-tender-bar-chart";
 
 const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
@@ -151,7 +151,7 @@ export function NewTenderBoard() {
           />
         </div>
       </CardHeader>
-      <CardContent className="flex h-full justify-items-stretch">
+      <CardContent className="flex h-full">
         {/* <div className="w-[40%]"><Tiny {...monthConfig} /></div> */}
         {/* <div className="w-[60%]"> */}
         {/* <Column {...barConfig} /> */}
@@ -194,8 +194,8 @@ export function NewTenderBoard() {
         </div> */}
 
         <div className="flex h-[calc(100%-12px)] w-1/2 flex-col">
-          <div className="relative flex flex-1 flex-col justify-center">
-            <div className="absolute left-0 right-0 top-2">
+          <div className="relative mt-1 flex flex-1 justify-center">
+            <div className="absolute -left-6 right-0 top-2">
               <NewTenderAmountChart
                 height={80}
                 width={80}
@@ -209,13 +209,13 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="absolute bottom-0 left-0 right-0 text-center">
+            <div className="absolute -left-6 bottom-2 right-0 text-center">
               <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
 
           <div className="relative flex flex-1 flex-col justify-center">
-            <div className="absolute left-0 right-0 top-2">
+            <div className="absolute -left-6 right-0 top-2">
               <NewTenderTotalChart
                 height={80}
                 width={80}
@@ -227,13 +227,23 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="absolute bottom-0 left-0 right-0 text-center">
+            <div className="absolute -left-6 bottom-2 right-0 text-center">
               <span className="text-xs text-gray-400">数量占比变化</span>
             </div>
           </div>
         </div>
 
-        <Column {...barConfig} />
+        {/* <Column {...barConfig} /> */}
+        <div className="relative h-[calc(100%-12px)] flex-1">
+          <div className="absolute -left-10 bottom-0 right-0 top-4">
+            <NewTenderBarChart
+              data={[
+                { month: "上月", amount: 186, total: 80 },
+                { month: "本月", amount: 305, total: 200 },
+              ]}
+            />
+          </div>
+        </div>
       </CardContent>
     </MotionCard>
   );

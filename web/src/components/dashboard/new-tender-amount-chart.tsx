@@ -49,7 +49,7 @@ export function NewTenderAmountChart({
 
   const chartConfig = {
     amountPercent: {
-      color: "red",
+      color: "hsl(var(--chart-red-1))",
     },
   } satisfies ChartConfig;
 
