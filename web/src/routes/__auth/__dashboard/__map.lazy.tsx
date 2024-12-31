@@ -61,7 +61,7 @@ function RouteComponent() {
 
           {session.hasMapAccess && (
             <Tooltip title="运营大屏">
-              <Link to="/project">
+              <Link to="/operations">
                 <Button
                   className="border-0 bg-gradient-to-r from-sky-900 to-sky-600 text-white drop-shadow-2xl"
                   size="small"

@@ -19,6 +19,9 @@ export default {
         mono: [...defaultTheme.fontFamily.mono],
         title: ["Microsoft YaHei", ...defaultTheme.fontFamily.sans],
       },
+      fontSize: {
+        xxs: "10px",
+      },
       backgroundImage: {
         dashboard: "url('/src/assets/bg.png')",
         "dashboard-head": "url('/src/assets/head.png')",

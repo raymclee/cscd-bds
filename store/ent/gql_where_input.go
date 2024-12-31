@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
@@ -2916,6 +2917,534 @@ func (i *DistrictWhereInput) P() (predicate.District, error) {
 		return predicates[0], nil
 	default:
 		return district.And(predicates...), nil
+	}
+}
+
+// OperationWhereInput represents a where input for filtering Operation queries.
+type OperationWhereInput struct {
+	Predicates []predicate.Operation  `json:"-"`
+	Not        *OperationWhereInput   `json:"not,omitempty"`
+	Or         []*OperationWhereInput `json:"or,omitempty"`
+	And        []*OperationWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "cje_ys" field predicates.
+	CjeYs       *int  `json:"cjeYs,omitempty"`
+	CjeYsNEQ    *int  `json:"cjeYsNEQ,omitempty"`
+	CjeYsIn     []int `json:"cjeYsIn,omitempty"`
+	CjeYsNotIn  []int `json:"cjeYsNotIn,omitempty"`
+	CjeYsGT     *int  `json:"cjeYsGT,omitempty"`
+	CjeYsGTE    *int  `json:"cjeYsGTE,omitempty"`
+	CjeYsLT     *int  `json:"cjeYsLT,omitempty"`
+	CjeYsLTE    *int  `json:"cjeYsLTE,omitempty"`
+	CjeYsIsNil  bool  `json:"cjeYsIsNil,omitempty"`
+	CjeYsNotNil bool  `json:"cjeYsNotNil,omitempty"`
+
+	// "cje_lj" field predicates.
+	CjeLj       *int  `json:"cjeLj,omitempty"`
+	CjeLjNEQ    *int  `json:"cjeLjNEQ,omitempty"`
+	CjeLjIn     []int `json:"cjeLjIn,omitempty"`
+	CjeLjNotIn  []int `json:"cjeLjNotIn,omitempty"`
+	CjeLjGT     *int  `json:"cjeLjGT,omitempty"`
+	CjeLjGTE    *int  `json:"cjeLjGTE,omitempty"`
+	CjeLjLT     *int  `json:"cjeLjLT,omitempty"`
+	CjeLjLTE    *int  `json:"cjeLjLTE,omitempty"`
+	CjeLjIsNil  bool  `json:"cjeLjIsNil,omitempty"`
+	CjeLjNotNil bool  `json:"cjeLjNotNil,omitempty"`
+
+	// "yye_ys" field predicates.
+	YyeYs       *int  `json:"yyeYs,omitempty"`
+	YyeYsNEQ    *int  `json:"yyeYsNEQ,omitempty"`
+	YyeYsIn     []int `json:"yyeYsIn,omitempty"`
+	YyeYsNotIn  []int `json:"yyeYsNotIn,omitempty"`
+	YyeYsGT     *int  `json:"yyeYsGT,omitempty"`
+	YyeYsGTE    *int  `json:"yyeYsGTE,omitempty"`
+	YyeYsLT     *int  `json:"yyeYsLT,omitempty"`
+	YyeYsLTE    *int  `json:"yyeYsLTE,omitempty"`
+	YyeYsIsNil  bool  `json:"yyeYsIsNil,omitempty"`
+	YyeYsNotNil bool  `json:"yyeYsNotNil,omitempty"`
+
+	// "yye_lj" field predicates.
+	YyeLj       *int  `json:"yyeLj,omitempty"`
+	YyeLjNEQ    *int  `json:"yyeLjNEQ,omitempty"`
+	YyeLjIn     []int `json:"yyeLjIn,omitempty"`
+	YyeLjNotIn  []int `json:"yyeLjNotIn,omitempty"`
+	YyeLjGT     *int  `json:"yyeLjGT,omitempty"`
+	YyeLjGTE    *int  `json:"yyeLjGTE,omitempty"`
+	YyeLjLT     *int  `json:"yyeLjLT,omitempty"`
+	YyeLjLTE    *int  `json:"yyeLjLTE,omitempty"`
+	YyeLjIsNil  bool  `json:"yyeLjIsNil,omitempty"`
+	YyeLjNotNil bool  `json:"yyeLjNotNil,omitempty"`
+
+	// "xjl_ys" field predicates.
+	XjlYs       *int  `json:"xjlYs,omitempty"`
+	XjlYsNEQ    *int  `json:"xjlYsNEQ,omitempty"`
+	XjlYsIn     []int `json:"xjlYsIn,omitempty"`
+	XjlYsNotIn  []int `json:"xjlYsNotIn,omitempty"`
+	XjlYsGT     *int  `json:"xjlYsGT,omitempty"`
+	XjlYsGTE    *int  `json:"xjlYsGTE,omitempty"`
+	XjlYsLT     *int  `json:"xjlYsLT,omitempty"`
+	XjlYsLTE    *int  `json:"xjlYsLTE,omitempty"`
+	XjlYsIsNil  bool  `json:"xjlYsIsNil,omitempty"`
+	XjlYsNotNil bool  `json:"xjlYsNotNil,omitempty"`
+
+	// "xjl_lj" field predicates.
+	XjlLj       *int  `json:"xjlLj,omitempty"`
+	XjlLjNEQ    *int  `json:"xjlLjNEQ,omitempty"`
+	XjlLjIn     []int `json:"xjlLjIn,omitempty"`
+	XjlLjNotIn  []int `json:"xjlLjNotIn,omitempty"`
+	XjlLjGT     *int  `json:"xjlLjGT,omitempty"`
+	XjlLjGTE    *int  `json:"xjlLjGTE,omitempty"`
+	XjlLjLT     *int  `json:"xjlLjLT,omitempty"`
+	XjlLjLTE    *int  `json:"xjlLjLTE,omitempty"`
+	XjlLjIsNil  bool  `json:"xjlLjIsNil,omitempty"`
+	XjlLjNotNil bool  `json:"xjlLjNotNil,omitempty"`
+
+	// "xmglf" field predicates.
+	Xmglf       *int  `json:"xmglf,omitempty"`
+	XmglfNEQ    *int  `json:"xmglfNEQ,omitempty"`
+	XmglfIn     []int `json:"xmglfIn,omitempty"`
+	XmglfNotIn  []int `json:"xmglfNotIn,omitempty"`
+	XmglfGT     *int  `json:"xmglfGT,omitempty"`
+	XmglfGTE    *int  `json:"xmglfGTE,omitempty"`
+	XmglfLT     *int  `json:"xmglfLT,omitempty"`
+	XmglfLTE    *int  `json:"xmglfLTE,omitempty"`
+	XmglfIsNil  bool  `json:"xmglfIsNil,omitempty"`
+	XmglfNotNil bool  `json:"xmglfNotNil,omitempty"`
+
+	// "xmsjf" field predicates.
+	Xmsjf       *int  `json:"xmsjf,omitempty"`
+	XmsjfNEQ    *int  `json:"xmsjfNEQ,omitempty"`
+	XmsjfIn     []int `json:"xmsjfIn,omitempty"`
+	XmsjfNotIn  []int `json:"xmsjfNotIn,omitempty"`
+	XmsjfGT     *int  `json:"xmsjfGT,omitempty"`
+	XmsjfGTE    *int  `json:"xmsjfGTE,omitempty"`
+	XmsjfLT     *int  `json:"xmsjfLT,omitempty"`
+	XmsjfLTE    *int  `json:"xmsjfLTE,omitempty"`
+	XmsjfIsNil  bool  `json:"xmsjfIsNil,omitempty"`
+	XmsjfNotNil bool  `json:"xmsjfNotNil,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *OperationWhereInput) AddPredicates(predicates ...predicate.Operation) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the OperationWhereInput filter on the OperationQuery builder.
+func (i *OperationWhereInput) Filter(q *OperationQuery) (*OperationQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyOperationWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyOperationWhereInput is returned in case the OperationWhereInput is empty.
+var ErrEmptyOperationWhereInput = errors.New("ent: empty predicate OperationWhereInput")
+
+// P returns a predicate for filtering operations.
+// An error is returned if the input is empty or invalid.
+func (i *OperationWhereInput) P() (predicate.Operation, error) {
+	var predicates []predicate.Operation
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, operation.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.Operation, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, operation.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.Operation, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, operation.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, operation.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, operation.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, operation.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, operation.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, operation.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, operation.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, operation.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, operation.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, operation.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, operation.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, operation.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, operation.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, operation.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, operation.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, operation.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, operation.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, operation.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, operation.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, operation.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, operation.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, operation.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, operation.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, operation.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, operation.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.CjeYs != nil {
+		predicates = append(predicates, operation.CjeYsEQ(*i.CjeYs))
+	}
+	if i.CjeYsNEQ != nil {
+		predicates = append(predicates, operation.CjeYsNEQ(*i.CjeYsNEQ))
+	}
+	if len(i.CjeYsIn) > 0 {
+		predicates = append(predicates, operation.CjeYsIn(i.CjeYsIn...))
+	}
+	if len(i.CjeYsNotIn) > 0 {
+		predicates = append(predicates, operation.CjeYsNotIn(i.CjeYsNotIn...))
+	}
+	if i.CjeYsGT != nil {
+		predicates = append(predicates, operation.CjeYsGT(*i.CjeYsGT))
+	}
+	if i.CjeYsGTE != nil {
+		predicates = append(predicates, operation.CjeYsGTE(*i.CjeYsGTE))
+	}
+	if i.CjeYsLT != nil {
+		predicates = append(predicates, operation.CjeYsLT(*i.CjeYsLT))
+	}
+	if i.CjeYsLTE != nil {
+		predicates = append(predicates, operation.CjeYsLTE(*i.CjeYsLTE))
+	}
+	if i.CjeYsIsNil {
+		predicates = append(predicates, operation.CjeYsIsNil())
+	}
+	if i.CjeYsNotNil {
+		predicates = append(predicates, operation.CjeYsNotNil())
+	}
+	if i.CjeLj != nil {
+		predicates = append(predicates, operation.CjeLjEQ(*i.CjeLj))
+	}
+	if i.CjeLjNEQ != nil {
+		predicates = append(predicates, operation.CjeLjNEQ(*i.CjeLjNEQ))
+	}
+	if len(i.CjeLjIn) > 0 {
+		predicates = append(predicates, operation.CjeLjIn(i.CjeLjIn...))
+	}
+	if len(i.CjeLjNotIn) > 0 {
+		predicates = append(predicates, operation.CjeLjNotIn(i.CjeLjNotIn...))
+	}
+	if i.CjeLjGT != nil {
+		predicates = append(predicates, operation.CjeLjGT(*i.CjeLjGT))
+	}
+	if i.CjeLjGTE != nil {
+		predicates = append(predicates, operation.CjeLjGTE(*i.CjeLjGTE))
+	}
+	if i.CjeLjLT != nil {
+		predicates = append(predicates, operation.CjeLjLT(*i.CjeLjLT))
+	}
+	if i.CjeLjLTE != nil {
+		predicates = append(predicates, operation.CjeLjLTE(*i.CjeLjLTE))
+	}
+	if i.CjeLjIsNil {
+		predicates = append(predicates, operation.CjeLjIsNil())
+	}
+	if i.CjeLjNotNil {
+		predicates = append(predicates, operation.CjeLjNotNil())
+	}
+	if i.YyeYs != nil {
+		predicates = append(predicates, operation.YyeYsEQ(*i.YyeYs))
+	}
+	if i.YyeYsNEQ != nil {
+		predicates = append(predicates, operation.YyeYsNEQ(*i.YyeYsNEQ))
+	}
+	if len(i.YyeYsIn) > 0 {
+		predicates = append(predicates, operation.YyeYsIn(i.YyeYsIn...))
+	}
+	if len(i.YyeYsNotIn) > 0 {
+		predicates = append(predicates, operation.YyeYsNotIn(i.YyeYsNotIn...))
+	}
+	if i.YyeYsGT != nil {
+		predicates = append(predicates, operation.YyeYsGT(*i.YyeYsGT))
+	}
+	if i.YyeYsGTE != nil {
+		predicates = append(predicates, operation.YyeYsGTE(*i.YyeYsGTE))
+	}
+	if i.YyeYsLT != nil {
+		predicates = append(predicates, operation.YyeYsLT(*i.YyeYsLT))
+	}
+	if i.YyeYsLTE != nil {
+		predicates = append(predicates, operation.YyeYsLTE(*i.YyeYsLTE))
+	}
+	if i.YyeYsIsNil {
+		predicates = append(predicates, operation.YyeYsIsNil())
+	}
+	if i.YyeYsNotNil {
+		predicates = append(predicates, operation.YyeYsNotNil())
+	}
+	if i.YyeLj != nil {
+		predicates = append(predicates, operation.YyeLjEQ(*i.YyeLj))
+	}
+	if i.YyeLjNEQ != nil {
+		predicates = append(predicates, operation.YyeLjNEQ(*i.YyeLjNEQ))
+	}
+	if len(i.YyeLjIn) > 0 {
+		predicates = append(predicates, operation.YyeLjIn(i.YyeLjIn...))
+	}
+	if len(i.YyeLjNotIn) > 0 {
+		predicates = append(predicates, operation.YyeLjNotIn(i.YyeLjNotIn...))
+	}
+	if i.YyeLjGT != nil {
+		predicates = append(predicates, operation.YyeLjGT(*i.YyeLjGT))
+	}
+	if i.YyeLjGTE != nil {
+		predicates = append(predicates, operation.YyeLjGTE(*i.YyeLjGTE))
+	}
+	if i.YyeLjLT != nil {
+		predicates = append(predicates, operation.YyeLjLT(*i.YyeLjLT))
+	}
+	if i.YyeLjLTE != nil {
+		predicates = append(predicates, operation.YyeLjLTE(*i.YyeLjLTE))
+	}
+	if i.YyeLjIsNil {
+		predicates = append(predicates, operation.YyeLjIsNil())
+	}
+	if i.YyeLjNotNil {
+		predicates = append(predicates, operation.YyeLjNotNil())
+	}
+	if i.XjlYs != nil {
+		predicates = append(predicates, operation.XjlYsEQ(*i.XjlYs))
+	}
+	if i.XjlYsNEQ != nil {
+		predicates = append(predicates, operation.XjlYsNEQ(*i.XjlYsNEQ))
+	}
+	if len(i.XjlYsIn) > 0 {
+		predicates = append(predicates, operation.XjlYsIn(i.XjlYsIn...))
+	}
+	if len(i.XjlYsNotIn) > 0 {
+		predicates = append(predicates, operation.XjlYsNotIn(i.XjlYsNotIn...))
+	}
+	if i.XjlYsGT != nil {
+		predicates = append(predicates, operation.XjlYsGT(*i.XjlYsGT))
+	}
+	if i.XjlYsGTE != nil {
+		predicates = append(predicates, operation.XjlYsGTE(*i.XjlYsGTE))
+	}
+	if i.XjlYsLT != nil {
+		predicates = append(predicates, operation.XjlYsLT(*i.XjlYsLT))
+	}
+	if i.XjlYsLTE != nil {
+		predicates = append(predicates, operation.XjlYsLTE(*i.XjlYsLTE))
+	}
+	if i.XjlYsIsNil {
+		predicates = append(predicates, operation.XjlYsIsNil())
+	}
+	if i.XjlYsNotNil {
+		predicates = append(predicates, operation.XjlYsNotNil())
+	}
+	if i.XjlLj != nil {
+		predicates = append(predicates, operation.XjlLjEQ(*i.XjlLj))
+	}
+	if i.XjlLjNEQ != nil {
+		predicates = append(predicates, operation.XjlLjNEQ(*i.XjlLjNEQ))
+	}
+	if len(i.XjlLjIn) > 0 {
+		predicates = append(predicates, operation.XjlLjIn(i.XjlLjIn...))
+	}
+	if len(i.XjlLjNotIn) > 0 {
+		predicates = append(predicates, operation.XjlLjNotIn(i.XjlLjNotIn...))
+	}
+	if i.XjlLjGT != nil {
+		predicates = append(predicates, operation.XjlLjGT(*i.XjlLjGT))
+	}
+	if i.XjlLjGTE != nil {
+		predicates = append(predicates, operation.XjlLjGTE(*i.XjlLjGTE))
+	}
+	if i.XjlLjLT != nil {
+		predicates = append(predicates, operation.XjlLjLT(*i.XjlLjLT))
+	}
+	if i.XjlLjLTE != nil {
+		predicates = append(predicates, operation.XjlLjLTE(*i.XjlLjLTE))
+	}
+	if i.XjlLjIsNil {
+		predicates = append(predicates, operation.XjlLjIsNil())
+	}
+	if i.XjlLjNotNil {
+		predicates = append(predicates, operation.XjlLjNotNil())
+	}
+	if i.Xmglf != nil {
+		predicates = append(predicates, operation.XmglfEQ(*i.Xmglf))
+	}
+	if i.XmglfNEQ != nil {
+		predicates = append(predicates, operation.XmglfNEQ(*i.XmglfNEQ))
+	}
+	if len(i.XmglfIn) > 0 {
+		predicates = append(predicates, operation.XmglfIn(i.XmglfIn...))
+	}
+	if len(i.XmglfNotIn) > 0 {
+		predicates = append(predicates, operation.XmglfNotIn(i.XmglfNotIn...))
+	}
+	if i.XmglfGT != nil {
+		predicates = append(predicates, operation.XmglfGT(*i.XmglfGT))
+	}
+	if i.XmglfGTE != nil {
+		predicates = append(predicates, operation.XmglfGTE(*i.XmglfGTE))
+	}
+	if i.XmglfLT != nil {
+		predicates = append(predicates, operation.XmglfLT(*i.XmglfLT))
+	}
+	if i.XmglfLTE != nil {
+		predicates = append(predicates, operation.XmglfLTE(*i.XmglfLTE))
+	}
+	if i.XmglfIsNil {
+		predicates = append(predicates, operation.XmglfIsNil())
+	}
+	if i.XmglfNotNil {
+		predicates = append(predicates, operation.XmglfNotNil())
+	}
+	if i.Xmsjf != nil {
+		predicates = append(predicates, operation.XmsjfEQ(*i.Xmsjf))
+	}
+	if i.XmsjfNEQ != nil {
+		predicates = append(predicates, operation.XmsjfNEQ(*i.XmsjfNEQ))
+	}
+	if len(i.XmsjfIn) > 0 {
+		predicates = append(predicates, operation.XmsjfIn(i.XmsjfIn...))
+	}
+	if len(i.XmsjfNotIn) > 0 {
+		predicates = append(predicates, operation.XmsjfNotIn(i.XmsjfNotIn...))
+	}
+	if i.XmsjfGT != nil {
+		predicates = append(predicates, operation.XmsjfGT(*i.XmsjfGT))
+	}
+	if i.XmsjfGTE != nil {
+		predicates = append(predicates, operation.XmsjfGTE(*i.XmsjfGTE))
+	}
+	if i.XmsjfLT != nil {
+		predicates = append(predicates, operation.XmsjfLT(*i.XmsjfLT))
+	}
+	if i.XmsjfLTE != nil {
+		predicates = append(predicates, operation.XmsjfLTE(*i.XmsjfLTE))
+	}
+	if i.XmsjfIsNil {
+		predicates = append(predicates, operation.XmsjfIsNil())
+	}
+	if i.XmsjfNotNil {
+		predicates = append(predicates, operation.XmsjfNotNil())
+	}
+
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyOperationWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return operation.And(predicates...), nil
 	}
 }
 

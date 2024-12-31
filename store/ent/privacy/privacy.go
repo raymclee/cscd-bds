@@ -255,6 +255,30 @@ func (f DistrictMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutati
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.DistrictMutation", m)
 }
 
+// The OperationQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type OperationQueryRuleFunc func(context.Context, *ent.OperationQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f OperationQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.OperationQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.OperationQuery", q)
+}
+
+// The OperationMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type OperationMutationRuleFunc func(context.Context, *ent.OperationMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f OperationMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.OperationMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.OperationMutation", m)
+}
+
 // The PlotQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type PlotQueryRuleFunc func(context.Context, *ent.PlotQuery) error
@@ -422,6 +446,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.DistrictQuery:
 		return q.Filter(), nil
+	case *ent.OperationQuery:
+		return q.Filter(), nil
 	case *ent.PlotQuery:
 		return q.Filter(), nil
 	case *ent.ProvinceQuery:
@@ -450,6 +476,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.CustomerMutation:
 		return m.Filter(), nil
 	case *ent.DistrictMutation:
+		return m.Filter(), nil
+	case *ent.OperationMutation:
 		return m.Filter(), nil
 	case *ent.PlotMutation:
 		return m.Filter(), nil

@@ -38,7 +38,7 @@ func main() {
 	}()
 
 	ctx := context.Background()
-	st := store.NewStore()
+	st := store.New(false)
 	wg := &errgroup.Group{}
 
 	hkProvince, err := st.Province.Query().Where(province.Adcode(810000)).Only(ctx)

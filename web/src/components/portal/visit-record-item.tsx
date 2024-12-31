@@ -1,3 +1,4 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import {
   visitRecordItemFragment$data,
@@ -53,6 +54,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
         canEdit(session) ? (
           <Space>
             <Button
+              icon={<EditOutlined />}
               onClick={() => {
                 usePortalStore.setState({
                   visitRecordFormVisitRecord: data,
@@ -154,7 +156,7 @@ function DeleteVisitRecordButton(props: DeleteVisitRecordButtonProps) {
         })
       }
     >
-      <Button danger disabled={isInFlight}>
+      <Button danger disabled={isInFlight} icon={<DeleteOutlined />}>
         删除
       </Button>
     </Popconfirm>

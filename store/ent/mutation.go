@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/province"
@@ -43,6 +44,7 @@ const (
 	TypeCountry     = "Country"
 	TypeCustomer    = "Customer"
 	TypeDistrict    = "District"
+	TypeOperation   = "Operation"
 	TypePlot        = "Plot"
 	TypeProvince    = "Province"
 	TypeTender      = "Tender"
@@ -5954,6 +5956,1254 @@ func (m *DistrictMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown District edge %s", name)
+}
+
+// OperationMutation represents an operation that mutates the Operation nodes in the graph.
+type OperationMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *xid.ID
+	created_at    *time.Time
+	updated_at    *time.Time
+	cje_ys        *int
+	addcje_ys     *int
+	cje_lj        *int
+	addcje_lj     *int
+	yye_ys        *int
+	addyye_ys     *int
+	yye_lj        *int
+	addyye_lj     *int
+	xjl_ys        *int
+	addxjl_ys     *int
+	xjl_lj        *int
+	addxjl_lj     *int
+	xmglf         *int
+	addxmglf      *int
+	xmsjf         *int
+	addxmsjf      *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*Operation, error)
+	predicates    []predicate.Operation
+}
+
+var _ ent.Mutation = (*OperationMutation)(nil)
+
+// operationOption allows management of the mutation configuration using functional options.
+type operationOption func(*OperationMutation)
+
+// newOperationMutation creates new mutation for the Operation entity.
+func newOperationMutation(c config, op Op, opts ...operationOption) *OperationMutation {
+	m := &OperationMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeOperation,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withOperationID sets the ID field of the mutation.
+func withOperationID(id xid.ID) operationOption {
+	return func(m *OperationMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Operation
+		)
+		m.oldValue = func(ctx context.Context) (*Operation, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Operation.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withOperation sets the old Operation of the mutation.
+func withOperation(node *Operation) operationOption {
+	return func(m *OperationMutation) {
+		m.oldValue = func(context.Context) (*Operation, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m OperationMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m OperationMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Operation entities.
+func (m *OperationMutation) SetID(id xid.ID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *OperationMutation) ID() (id xid.ID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *OperationMutation) IDs(ctx context.Context) ([]xid.ID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []xid.ID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Operation.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *OperationMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *OperationMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *OperationMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *OperationMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *OperationMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *OperationMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetCjeYs sets the "cje_ys" field.
+func (m *OperationMutation) SetCjeYs(i int) {
+	m.cje_ys = &i
+	m.addcje_ys = nil
+}
+
+// CjeYs returns the value of the "cje_ys" field in the mutation.
+func (m *OperationMutation) CjeYs() (r int, exists bool) {
+	v := m.cje_ys
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCjeYs returns the old "cje_ys" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldCjeYs(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCjeYs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCjeYs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCjeYs: %w", err)
+	}
+	return oldValue.CjeYs, nil
+}
+
+// AddCjeYs adds i to the "cje_ys" field.
+func (m *OperationMutation) AddCjeYs(i int) {
+	if m.addcje_ys != nil {
+		*m.addcje_ys += i
+	} else {
+		m.addcje_ys = &i
+	}
+}
+
+// AddedCjeYs returns the value that was added to the "cje_ys" field in this mutation.
+func (m *OperationMutation) AddedCjeYs() (r int, exists bool) {
+	v := m.addcje_ys
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCjeYs clears the value of the "cje_ys" field.
+func (m *OperationMutation) ClearCjeYs() {
+	m.cje_ys = nil
+	m.addcje_ys = nil
+	m.clearedFields[operation.FieldCjeYs] = struct{}{}
+}
+
+// CjeYsCleared returns if the "cje_ys" field was cleared in this mutation.
+func (m *OperationMutation) CjeYsCleared() bool {
+	_, ok := m.clearedFields[operation.FieldCjeYs]
+	return ok
+}
+
+// ResetCjeYs resets all changes to the "cje_ys" field.
+func (m *OperationMutation) ResetCjeYs() {
+	m.cje_ys = nil
+	m.addcje_ys = nil
+	delete(m.clearedFields, operation.FieldCjeYs)
+}
+
+// SetCjeLj sets the "cje_lj" field.
+func (m *OperationMutation) SetCjeLj(i int) {
+	m.cje_lj = &i
+	m.addcje_lj = nil
+}
+
+// CjeLj returns the value of the "cje_lj" field in the mutation.
+func (m *OperationMutation) CjeLj() (r int, exists bool) {
+	v := m.cje_lj
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCjeLj returns the old "cje_lj" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldCjeLj(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCjeLj is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCjeLj requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCjeLj: %w", err)
+	}
+	return oldValue.CjeLj, nil
+}
+
+// AddCjeLj adds i to the "cje_lj" field.
+func (m *OperationMutation) AddCjeLj(i int) {
+	if m.addcje_lj != nil {
+		*m.addcje_lj += i
+	} else {
+		m.addcje_lj = &i
+	}
+}
+
+// AddedCjeLj returns the value that was added to the "cje_lj" field in this mutation.
+func (m *OperationMutation) AddedCjeLj() (r int, exists bool) {
+	v := m.addcje_lj
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCjeLj clears the value of the "cje_lj" field.
+func (m *OperationMutation) ClearCjeLj() {
+	m.cje_lj = nil
+	m.addcje_lj = nil
+	m.clearedFields[operation.FieldCjeLj] = struct{}{}
+}
+
+// CjeLjCleared returns if the "cje_lj" field was cleared in this mutation.
+func (m *OperationMutation) CjeLjCleared() bool {
+	_, ok := m.clearedFields[operation.FieldCjeLj]
+	return ok
+}
+
+// ResetCjeLj resets all changes to the "cje_lj" field.
+func (m *OperationMutation) ResetCjeLj() {
+	m.cje_lj = nil
+	m.addcje_lj = nil
+	delete(m.clearedFields, operation.FieldCjeLj)
+}
+
+// SetYyeYs sets the "yye_ys" field.
+func (m *OperationMutation) SetYyeYs(i int) {
+	m.yye_ys = &i
+	m.addyye_ys = nil
+}
+
+// YyeYs returns the value of the "yye_ys" field in the mutation.
+func (m *OperationMutation) YyeYs() (r int, exists bool) {
+	v := m.yye_ys
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldYyeYs returns the old "yye_ys" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldYyeYs(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldYyeYs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldYyeYs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldYyeYs: %w", err)
+	}
+	return oldValue.YyeYs, nil
+}
+
+// AddYyeYs adds i to the "yye_ys" field.
+func (m *OperationMutation) AddYyeYs(i int) {
+	if m.addyye_ys != nil {
+		*m.addyye_ys += i
+	} else {
+		m.addyye_ys = &i
+	}
+}
+
+// AddedYyeYs returns the value that was added to the "yye_ys" field in this mutation.
+func (m *OperationMutation) AddedYyeYs() (r int, exists bool) {
+	v := m.addyye_ys
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearYyeYs clears the value of the "yye_ys" field.
+func (m *OperationMutation) ClearYyeYs() {
+	m.yye_ys = nil
+	m.addyye_ys = nil
+	m.clearedFields[operation.FieldYyeYs] = struct{}{}
+}
+
+// YyeYsCleared returns if the "yye_ys" field was cleared in this mutation.
+func (m *OperationMutation) YyeYsCleared() bool {
+	_, ok := m.clearedFields[operation.FieldYyeYs]
+	return ok
+}
+
+// ResetYyeYs resets all changes to the "yye_ys" field.
+func (m *OperationMutation) ResetYyeYs() {
+	m.yye_ys = nil
+	m.addyye_ys = nil
+	delete(m.clearedFields, operation.FieldYyeYs)
+}
+
+// SetYyeLj sets the "yye_lj" field.
+func (m *OperationMutation) SetYyeLj(i int) {
+	m.yye_lj = &i
+	m.addyye_lj = nil
+}
+
+// YyeLj returns the value of the "yye_lj" field in the mutation.
+func (m *OperationMutation) YyeLj() (r int, exists bool) {
+	v := m.yye_lj
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldYyeLj returns the old "yye_lj" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldYyeLj(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldYyeLj is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldYyeLj requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldYyeLj: %w", err)
+	}
+	return oldValue.YyeLj, nil
+}
+
+// AddYyeLj adds i to the "yye_lj" field.
+func (m *OperationMutation) AddYyeLj(i int) {
+	if m.addyye_lj != nil {
+		*m.addyye_lj += i
+	} else {
+		m.addyye_lj = &i
+	}
+}
+
+// AddedYyeLj returns the value that was added to the "yye_lj" field in this mutation.
+func (m *OperationMutation) AddedYyeLj() (r int, exists bool) {
+	v := m.addyye_lj
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearYyeLj clears the value of the "yye_lj" field.
+func (m *OperationMutation) ClearYyeLj() {
+	m.yye_lj = nil
+	m.addyye_lj = nil
+	m.clearedFields[operation.FieldYyeLj] = struct{}{}
+}
+
+// YyeLjCleared returns if the "yye_lj" field was cleared in this mutation.
+func (m *OperationMutation) YyeLjCleared() bool {
+	_, ok := m.clearedFields[operation.FieldYyeLj]
+	return ok
+}
+
+// ResetYyeLj resets all changes to the "yye_lj" field.
+func (m *OperationMutation) ResetYyeLj() {
+	m.yye_lj = nil
+	m.addyye_lj = nil
+	delete(m.clearedFields, operation.FieldYyeLj)
+}
+
+// SetXjlYs sets the "xjl_ys" field.
+func (m *OperationMutation) SetXjlYs(i int) {
+	m.xjl_ys = &i
+	m.addxjl_ys = nil
+}
+
+// XjlYs returns the value of the "xjl_ys" field in the mutation.
+func (m *OperationMutation) XjlYs() (r int, exists bool) {
+	v := m.xjl_ys
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldXjlYs returns the old "xjl_ys" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldXjlYs(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldXjlYs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldXjlYs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldXjlYs: %w", err)
+	}
+	return oldValue.XjlYs, nil
+}
+
+// AddXjlYs adds i to the "xjl_ys" field.
+func (m *OperationMutation) AddXjlYs(i int) {
+	if m.addxjl_ys != nil {
+		*m.addxjl_ys += i
+	} else {
+		m.addxjl_ys = &i
+	}
+}
+
+// AddedXjlYs returns the value that was added to the "xjl_ys" field in this mutation.
+func (m *OperationMutation) AddedXjlYs() (r int, exists bool) {
+	v := m.addxjl_ys
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearXjlYs clears the value of the "xjl_ys" field.
+func (m *OperationMutation) ClearXjlYs() {
+	m.xjl_ys = nil
+	m.addxjl_ys = nil
+	m.clearedFields[operation.FieldXjlYs] = struct{}{}
+}
+
+// XjlYsCleared returns if the "xjl_ys" field was cleared in this mutation.
+func (m *OperationMutation) XjlYsCleared() bool {
+	_, ok := m.clearedFields[operation.FieldXjlYs]
+	return ok
+}
+
+// ResetXjlYs resets all changes to the "xjl_ys" field.
+func (m *OperationMutation) ResetXjlYs() {
+	m.xjl_ys = nil
+	m.addxjl_ys = nil
+	delete(m.clearedFields, operation.FieldXjlYs)
+}
+
+// SetXjlLj sets the "xjl_lj" field.
+func (m *OperationMutation) SetXjlLj(i int) {
+	m.xjl_lj = &i
+	m.addxjl_lj = nil
+}
+
+// XjlLj returns the value of the "xjl_lj" field in the mutation.
+func (m *OperationMutation) XjlLj() (r int, exists bool) {
+	v := m.xjl_lj
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldXjlLj returns the old "xjl_lj" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldXjlLj(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldXjlLj is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldXjlLj requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldXjlLj: %w", err)
+	}
+	return oldValue.XjlLj, nil
+}
+
+// AddXjlLj adds i to the "xjl_lj" field.
+func (m *OperationMutation) AddXjlLj(i int) {
+	if m.addxjl_lj != nil {
+		*m.addxjl_lj += i
+	} else {
+		m.addxjl_lj = &i
+	}
+}
+
+// AddedXjlLj returns the value that was added to the "xjl_lj" field in this mutation.
+func (m *OperationMutation) AddedXjlLj() (r int, exists bool) {
+	v := m.addxjl_lj
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearXjlLj clears the value of the "xjl_lj" field.
+func (m *OperationMutation) ClearXjlLj() {
+	m.xjl_lj = nil
+	m.addxjl_lj = nil
+	m.clearedFields[operation.FieldXjlLj] = struct{}{}
+}
+
+// XjlLjCleared returns if the "xjl_lj" field was cleared in this mutation.
+func (m *OperationMutation) XjlLjCleared() bool {
+	_, ok := m.clearedFields[operation.FieldXjlLj]
+	return ok
+}
+
+// ResetXjlLj resets all changes to the "xjl_lj" field.
+func (m *OperationMutation) ResetXjlLj() {
+	m.xjl_lj = nil
+	m.addxjl_lj = nil
+	delete(m.clearedFields, operation.FieldXjlLj)
+}
+
+// SetXmglf sets the "xmglf" field.
+func (m *OperationMutation) SetXmglf(i int) {
+	m.xmglf = &i
+	m.addxmglf = nil
+}
+
+// Xmglf returns the value of the "xmglf" field in the mutation.
+func (m *OperationMutation) Xmglf() (r int, exists bool) {
+	v := m.xmglf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldXmglf returns the old "xmglf" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldXmglf(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldXmglf is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldXmglf requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldXmglf: %w", err)
+	}
+	return oldValue.Xmglf, nil
+}
+
+// AddXmglf adds i to the "xmglf" field.
+func (m *OperationMutation) AddXmglf(i int) {
+	if m.addxmglf != nil {
+		*m.addxmglf += i
+	} else {
+		m.addxmglf = &i
+	}
+}
+
+// AddedXmglf returns the value that was added to the "xmglf" field in this mutation.
+func (m *OperationMutation) AddedXmglf() (r int, exists bool) {
+	v := m.addxmglf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearXmglf clears the value of the "xmglf" field.
+func (m *OperationMutation) ClearXmglf() {
+	m.xmglf = nil
+	m.addxmglf = nil
+	m.clearedFields[operation.FieldXmglf] = struct{}{}
+}
+
+// XmglfCleared returns if the "xmglf" field was cleared in this mutation.
+func (m *OperationMutation) XmglfCleared() bool {
+	_, ok := m.clearedFields[operation.FieldXmglf]
+	return ok
+}
+
+// ResetXmglf resets all changes to the "xmglf" field.
+func (m *OperationMutation) ResetXmglf() {
+	m.xmglf = nil
+	m.addxmglf = nil
+	delete(m.clearedFields, operation.FieldXmglf)
+}
+
+// SetXmsjf sets the "xmsjf" field.
+func (m *OperationMutation) SetXmsjf(i int) {
+	m.xmsjf = &i
+	m.addxmsjf = nil
+}
+
+// Xmsjf returns the value of the "xmsjf" field in the mutation.
+func (m *OperationMutation) Xmsjf() (r int, exists bool) {
+	v := m.xmsjf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldXmsjf returns the old "xmsjf" field's value of the Operation entity.
+// If the Operation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OperationMutation) OldXmsjf(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldXmsjf is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldXmsjf requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldXmsjf: %w", err)
+	}
+	return oldValue.Xmsjf, nil
+}
+
+// AddXmsjf adds i to the "xmsjf" field.
+func (m *OperationMutation) AddXmsjf(i int) {
+	if m.addxmsjf != nil {
+		*m.addxmsjf += i
+	} else {
+		m.addxmsjf = &i
+	}
+}
+
+// AddedXmsjf returns the value that was added to the "xmsjf" field in this mutation.
+func (m *OperationMutation) AddedXmsjf() (r int, exists bool) {
+	v := m.addxmsjf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearXmsjf clears the value of the "xmsjf" field.
+func (m *OperationMutation) ClearXmsjf() {
+	m.xmsjf = nil
+	m.addxmsjf = nil
+	m.clearedFields[operation.FieldXmsjf] = struct{}{}
+}
+
+// XmsjfCleared returns if the "xmsjf" field was cleared in this mutation.
+func (m *OperationMutation) XmsjfCleared() bool {
+	_, ok := m.clearedFields[operation.FieldXmsjf]
+	return ok
+}
+
+// ResetXmsjf resets all changes to the "xmsjf" field.
+func (m *OperationMutation) ResetXmsjf() {
+	m.xmsjf = nil
+	m.addxmsjf = nil
+	delete(m.clearedFields, operation.FieldXmsjf)
+}
+
+// Where appends a list predicates to the OperationMutation builder.
+func (m *OperationMutation) Where(ps ...predicate.Operation) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the OperationMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *OperationMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Operation, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *OperationMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *OperationMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Operation).
+func (m *OperationMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *OperationMutation) Fields() []string {
+	fields := make([]string, 0, 10)
+	if m.created_at != nil {
+		fields = append(fields, operation.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, operation.FieldUpdatedAt)
+	}
+	if m.cje_ys != nil {
+		fields = append(fields, operation.FieldCjeYs)
+	}
+	if m.cje_lj != nil {
+		fields = append(fields, operation.FieldCjeLj)
+	}
+	if m.yye_ys != nil {
+		fields = append(fields, operation.FieldYyeYs)
+	}
+	if m.yye_lj != nil {
+		fields = append(fields, operation.FieldYyeLj)
+	}
+	if m.xjl_ys != nil {
+		fields = append(fields, operation.FieldXjlYs)
+	}
+	if m.xjl_lj != nil {
+		fields = append(fields, operation.FieldXjlLj)
+	}
+	if m.xmglf != nil {
+		fields = append(fields, operation.FieldXmglf)
+	}
+	if m.xmsjf != nil {
+		fields = append(fields, operation.FieldXmsjf)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *OperationMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case operation.FieldCreatedAt:
+		return m.CreatedAt()
+	case operation.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case operation.FieldCjeYs:
+		return m.CjeYs()
+	case operation.FieldCjeLj:
+		return m.CjeLj()
+	case operation.FieldYyeYs:
+		return m.YyeYs()
+	case operation.FieldYyeLj:
+		return m.YyeLj()
+	case operation.FieldXjlYs:
+		return m.XjlYs()
+	case operation.FieldXjlLj:
+		return m.XjlLj()
+	case operation.FieldXmglf:
+		return m.Xmglf()
+	case operation.FieldXmsjf:
+		return m.Xmsjf()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *OperationMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case operation.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case operation.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case operation.FieldCjeYs:
+		return m.OldCjeYs(ctx)
+	case operation.FieldCjeLj:
+		return m.OldCjeLj(ctx)
+	case operation.FieldYyeYs:
+		return m.OldYyeYs(ctx)
+	case operation.FieldYyeLj:
+		return m.OldYyeLj(ctx)
+	case operation.FieldXjlYs:
+		return m.OldXjlYs(ctx)
+	case operation.FieldXjlLj:
+		return m.OldXjlLj(ctx)
+	case operation.FieldXmglf:
+		return m.OldXmglf(ctx)
+	case operation.FieldXmsjf:
+		return m.OldXmsjf(ctx)
+	}
+	return nil, fmt.Errorf("unknown Operation field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *OperationMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case operation.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case operation.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case operation.FieldCjeYs:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCjeYs(v)
+		return nil
+	case operation.FieldCjeLj:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCjeLj(v)
+		return nil
+	case operation.FieldYyeYs:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetYyeYs(v)
+		return nil
+	case operation.FieldYyeLj:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetYyeLj(v)
+		return nil
+	case operation.FieldXjlYs:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetXjlYs(v)
+		return nil
+	case operation.FieldXjlLj:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetXjlLj(v)
+		return nil
+	case operation.FieldXmglf:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetXmglf(v)
+		return nil
+	case operation.FieldXmsjf:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetXmsjf(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Operation field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *OperationMutation) AddedFields() []string {
+	var fields []string
+	if m.addcje_ys != nil {
+		fields = append(fields, operation.FieldCjeYs)
+	}
+	if m.addcje_lj != nil {
+		fields = append(fields, operation.FieldCjeLj)
+	}
+	if m.addyye_ys != nil {
+		fields = append(fields, operation.FieldYyeYs)
+	}
+	if m.addyye_lj != nil {
+		fields = append(fields, operation.FieldYyeLj)
+	}
+	if m.addxjl_ys != nil {
+		fields = append(fields, operation.FieldXjlYs)
+	}
+	if m.addxjl_lj != nil {
+		fields = append(fields, operation.FieldXjlLj)
+	}
+	if m.addxmglf != nil {
+		fields = append(fields, operation.FieldXmglf)
+	}
+	if m.addxmsjf != nil {
+		fields = append(fields, operation.FieldXmsjf)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *OperationMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case operation.FieldCjeYs:
+		return m.AddedCjeYs()
+	case operation.FieldCjeLj:
+		return m.AddedCjeLj()
+	case operation.FieldYyeYs:
+		return m.AddedYyeYs()
+	case operation.FieldYyeLj:
+		return m.AddedYyeLj()
+	case operation.FieldXjlYs:
+		return m.AddedXjlYs()
+	case operation.FieldXjlLj:
+		return m.AddedXjlLj()
+	case operation.FieldXmglf:
+		return m.AddedXmglf()
+	case operation.FieldXmsjf:
+		return m.AddedXmsjf()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *OperationMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case operation.FieldCjeYs:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCjeYs(v)
+		return nil
+	case operation.FieldCjeLj:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCjeLj(v)
+		return nil
+	case operation.FieldYyeYs:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddYyeYs(v)
+		return nil
+	case operation.FieldYyeLj:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddYyeLj(v)
+		return nil
+	case operation.FieldXjlYs:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddXjlYs(v)
+		return nil
+	case operation.FieldXjlLj:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddXjlLj(v)
+		return nil
+	case operation.FieldXmglf:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddXmglf(v)
+		return nil
+	case operation.FieldXmsjf:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddXmsjf(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Operation numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *OperationMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(operation.FieldCjeYs) {
+		fields = append(fields, operation.FieldCjeYs)
+	}
+	if m.FieldCleared(operation.FieldCjeLj) {
+		fields = append(fields, operation.FieldCjeLj)
+	}
+	if m.FieldCleared(operation.FieldYyeYs) {
+		fields = append(fields, operation.FieldYyeYs)
+	}
+	if m.FieldCleared(operation.FieldYyeLj) {
+		fields = append(fields, operation.FieldYyeLj)
+	}
+	if m.FieldCleared(operation.FieldXjlYs) {
+		fields = append(fields, operation.FieldXjlYs)
+	}
+	if m.FieldCleared(operation.FieldXjlLj) {
+		fields = append(fields, operation.FieldXjlLj)
+	}
+	if m.FieldCleared(operation.FieldXmglf) {
+		fields = append(fields, operation.FieldXmglf)
+	}
+	if m.FieldCleared(operation.FieldXmsjf) {
+		fields = append(fields, operation.FieldXmsjf)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *OperationMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *OperationMutation) ClearField(name string) error {
+	switch name {
+	case operation.FieldCjeYs:
+		m.ClearCjeYs()
+		return nil
+	case operation.FieldCjeLj:
+		m.ClearCjeLj()
+		return nil
+	case operation.FieldYyeYs:
+		m.ClearYyeYs()
+		return nil
+	case operation.FieldYyeLj:
+		m.ClearYyeLj()
+		return nil
+	case operation.FieldXjlYs:
+		m.ClearXjlYs()
+		return nil
+	case operation.FieldXjlLj:
+		m.ClearXjlLj()
+		return nil
+	case operation.FieldXmglf:
+		m.ClearXmglf()
+		return nil
+	case operation.FieldXmsjf:
+		m.ClearXmsjf()
+		return nil
+	}
+	return fmt.Errorf("unknown Operation nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *OperationMutation) ResetField(name string) error {
+	switch name {
+	case operation.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case operation.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case operation.FieldCjeYs:
+		m.ResetCjeYs()
+		return nil
+	case operation.FieldCjeLj:
+		m.ResetCjeLj()
+		return nil
+	case operation.FieldYyeYs:
+		m.ResetYyeYs()
+		return nil
+	case operation.FieldYyeLj:
+		m.ResetYyeLj()
+		return nil
+	case operation.FieldXjlYs:
+		m.ResetXjlYs()
+		return nil
+	case operation.FieldXjlLj:
+		m.ResetXjlLj()
+		return nil
+	case operation.FieldXmglf:
+		m.ResetXmglf()
+		return nil
+	case operation.FieldXmsjf:
+		m.ResetXmsjf()
+		return nil
+	}
+	return fmt.Errorf("unknown Operation field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *OperationMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *OperationMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *OperationMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *OperationMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *OperationMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *OperationMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *OperationMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Operation unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *OperationMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Operation edge %s", name)
 }
 
 // PlotMutation represents an operation that mutates the Plot nodes in the graph.

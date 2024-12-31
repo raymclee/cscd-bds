@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -1893,6 +1894,140 @@ func newDistrictPaginateArgs(rv map[string]any) *districtPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*DistrictWhereInput); ok {
 		args.opts = append(args.opts, WithDistrictFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (o *OperationQuery) CollectFields(ctx context.Context, satisfies ...string) (*OperationQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return o, nil
+	}
+	if err := o.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return o, nil
+}
+
+func (o *OperationQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(operation.Columns))
+		selectedFields = []string{operation.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "createdAt":
+			if _, ok := fieldSeen[operation.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, operation.FieldCreatedAt)
+				fieldSeen[operation.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[operation.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, operation.FieldUpdatedAt)
+				fieldSeen[operation.FieldUpdatedAt] = struct{}{}
+			}
+		case "cjeYs":
+			if _, ok := fieldSeen[operation.FieldCjeYs]; !ok {
+				selectedFields = append(selectedFields, operation.FieldCjeYs)
+				fieldSeen[operation.FieldCjeYs] = struct{}{}
+			}
+		case "cjeLj":
+			if _, ok := fieldSeen[operation.FieldCjeLj]; !ok {
+				selectedFields = append(selectedFields, operation.FieldCjeLj)
+				fieldSeen[operation.FieldCjeLj] = struct{}{}
+			}
+		case "yyeYs":
+			if _, ok := fieldSeen[operation.FieldYyeYs]; !ok {
+				selectedFields = append(selectedFields, operation.FieldYyeYs)
+				fieldSeen[operation.FieldYyeYs] = struct{}{}
+			}
+		case "yyeLj":
+			if _, ok := fieldSeen[operation.FieldYyeLj]; !ok {
+				selectedFields = append(selectedFields, operation.FieldYyeLj)
+				fieldSeen[operation.FieldYyeLj] = struct{}{}
+			}
+		case "xjlYs":
+			if _, ok := fieldSeen[operation.FieldXjlYs]; !ok {
+				selectedFields = append(selectedFields, operation.FieldXjlYs)
+				fieldSeen[operation.FieldXjlYs] = struct{}{}
+			}
+		case "xjlLj":
+			if _, ok := fieldSeen[operation.FieldXjlLj]; !ok {
+				selectedFields = append(selectedFields, operation.FieldXjlLj)
+				fieldSeen[operation.FieldXjlLj] = struct{}{}
+			}
+		case "xmglf":
+			if _, ok := fieldSeen[operation.FieldXmglf]; !ok {
+				selectedFields = append(selectedFields, operation.FieldXmglf)
+				fieldSeen[operation.FieldXmglf] = struct{}{}
+			}
+		case "xmsjf":
+			if _, ok := fieldSeen[operation.FieldXmsjf]; !ok {
+				selectedFields = append(selectedFields, operation.FieldXmsjf)
+				fieldSeen[operation.FieldXmsjf] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		o.Select(selectedFields...)
+	}
+	return nil
+}
+
+type operationPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []OperationPaginateOption
+}
+
+func newOperationPaginateArgs(rv map[string]any) *operationPaginateArgs {
+	args := &operationPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &OperationOrder{Field: &OperationOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithOperationOrder(order))
+			}
+		case *OperationOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithOperationOrder(v))
+			}
+		}
+	}
+	if v, ok := rv[whereField].(*OperationWhereInput); ok {
+		args.opts = append(args.opts, WithOperationFilter(v.Filter))
 	}
 	return args
 }

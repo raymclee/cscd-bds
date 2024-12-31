@@ -242,6 +242,31 @@ type ComplexityRoot struct {
 		UpdateVisitRecord func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 	}
 
+	Operation struct {
+		CjeLj     func(childComplexity int) int
+		CjeYs     func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+		XjlLj     func(childComplexity int) int
+		XjlYs     func(childComplexity int) int
+		Xmglf     func(childComplexity int) int
+		Xmsjf     func(childComplexity int) int
+		YyeLj     func(childComplexity int) int
+		YyeYs     func(childComplexity int) int
+	}
+
+	OperationConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	OperationEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	PageInfo struct {
 		EndCursor       func(childComplexity int) int
 		HasNextPage     func(childComplexity int) int
@@ -307,6 +332,7 @@ type ComplexityRoot struct {
 		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
 		Node             func(childComplexity int, id xid.ID) int
 		Nodes            func(childComplexity int, ids []xid.ID) int
+		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
 		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
 		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		SearchFeishuUser func(childComplexity int, keyword string) int
@@ -1559,6 +1585,118 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateVisitRecord(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateVisitRecordInput)), true
 
+	case "Operation.cjeLj":
+		if e.complexity.Operation.CjeLj == nil {
+			break
+		}
+
+		return e.complexity.Operation.CjeLj(childComplexity), true
+
+	case "Operation.cjeYs":
+		if e.complexity.Operation.CjeYs == nil {
+			break
+		}
+
+		return e.complexity.Operation.CjeYs(childComplexity), true
+
+	case "Operation.createdAt":
+		if e.complexity.Operation.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Operation.CreatedAt(childComplexity), true
+
+	case "Operation.id":
+		if e.complexity.Operation.ID == nil {
+			break
+		}
+
+		return e.complexity.Operation.ID(childComplexity), true
+
+	case "Operation.updatedAt":
+		if e.complexity.Operation.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Operation.UpdatedAt(childComplexity), true
+
+	case "Operation.xjlLj":
+		if e.complexity.Operation.XjlLj == nil {
+			break
+		}
+
+		return e.complexity.Operation.XjlLj(childComplexity), true
+
+	case "Operation.xjlYs":
+		if e.complexity.Operation.XjlYs == nil {
+			break
+		}
+
+		return e.complexity.Operation.XjlYs(childComplexity), true
+
+	case "Operation.xmglf":
+		if e.complexity.Operation.Xmglf == nil {
+			break
+		}
+
+		return e.complexity.Operation.Xmglf(childComplexity), true
+
+	case "Operation.xmsjf":
+		if e.complexity.Operation.Xmsjf == nil {
+			break
+		}
+
+		return e.complexity.Operation.Xmsjf(childComplexity), true
+
+	case "Operation.yyeLj":
+		if e.complexity.Operation.YyeLj == nil {
+			break
+		}
+
+		return e.complexity.Operation.YyeLj(childComplexity), true
+
+	case "Operation.yyeYs":
+		if e.complexity.Operation.YyeYs == nil {
+			break
+		}
+
+		return e.complexity.Operation.YyeYs(childComplexity), true
+
+	case "OperationConnection.edges":
+		if e.complexity.OperationConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.OperationConnection.Edges(childComplexity), true
+
+	case "OperationConnection.pageInfo":
+		if e.complexity.OperationConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.OperationConnection.PageInfo(childComplexity), true
+
+	case "OperationConnection.totalCount":
+		if e.complexity.OperationConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.OperationConnection.TotalCount(childComplexity), true
+
+	case "OperationEdge.cursor":
+		if e.complexity.OperationEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.OperationEdge.Cursor(childComplexity), true
+
+	case "OperationEdge.node":
+		if e.complexity.OperationEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.OperationEdge.Node(childComplexity), true
+
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
 			break
@@ -1914,6 +2052,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]xid.ID)), true
+
+	case "Query.operations":
+		if e.complexity.Query.Operations == nil {
+			break
+		}
+
+		args, err := ec.field_Query_operations_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Operations(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.OperationOrder), args["where"].(*ent.OperationWhereInput)), true
 
 	case "Query.plots":
 		if e.complexity.Query.Plots == nil {
@@ -3052,6 +3202,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputDistrictOrder,
 		ec.unmarshalInputDistrictWhereInput,
+		ec.unmarshalInputOperationOrder,
+		ec.unmarshalInputOperationWhereInput,
 		ec.unmarshalInputPlotOrder,
 		ec.unmarshalInputPlotWhereInput,
 		ec.unmarshalInputProvinceOrder,
@@ -4915,6 +5067,238 @@ interface Node @goModel(model: "cscd-bds/store/ent.Noder") {
   """
   id: ID!
 }
+type Operation implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  """
+  成交额预算
+  """
+  cjeYs: Int
+  """
+  成交额累计
+  """
+  cjeLj: Int
+  """
+  营业额预算
+  """
+  yyeYs: Int
+  """
+  营业额累计
+  """
+  yyeLj: Int
+  """
+  现金流预算
+  """
+  xjlYs: Int
+  """
+  现金流累计
+  """
+  xjlLj: Int
+  """
+  项目管理费
+  """
+  xmglf: Int
+  """
+  项目设计费
+  """
+  xmsjf: Int
+}
+"""
+A connection to a list of items.
+"""
+type OperationConnection {
+  """
+  A list of edges.
+  """
+  edges: [OperationEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type OperationEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Operation
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for Operation connections
+"""
+input OperationOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Operations.
+  """
+  field: OperationOrderField!
+}
+"""
+Properties by which Operation connections can be ordered.
+"""
+enum OperationOrderField {
+  CREATED_AT
+}
+"""
+OperationWhereInput is used for filtering Operation objects.
+Input was generated by ent.
+"""
+input OperationWhereInput {
+  not: OperationWhereInput
+  and: [OperationWhereInput!]
+  or: [OperationWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  cje_ys field predicates
+  """
+  cjeYs: Int
+  cjeYsNEQ: Int
+  cjeYsIn: [Int!]
+  cjeYsNotIn: [Int!]
+  cjeYsGT: Int
+  cjeYsGTE: Int
+  cjeYsLT: Int
+  cjeYsLTE: Int
+  cjeYsIsNil: Boolean
+  cjeYsNotNil: Boolean
+  """
+  cje_lj field predicates
+  """
+  cjeLj: Int
+  cjeLjNEQ: Int
+  cjeLjIn: [Int!]
+  cjeLjNotIn: [Int!]
+  cjeLjGT: Int
+  cjeLjGTE: Int
+  cjeLjLT: Int
+  cjeLjLTE: Int
+  cjeLjIsNil: Boolean
+  cjeLjNotNil: Boolean
+  """
+  yye_ys field predicates
+  """
+  yyeYs: Int
+  yyeYsNEQ: Int
+  yyeYsIn: [Int!]
+  yyeYsNotIn: [Int!]
+  yyeYsGT: Int
+  yyeYsGTE: Int
+  yyeYsLT: Int
+  yyeYsLTE: Int
+  yyeYsIsNil: Boolean
+  yyeYsNotNil: Boolean
+  """
+  yye_lj field predicates
+  """
+  yyeLj: Int
+  yyeLjNEQ: Int
+  yyeLjIn: [Int!]
+  yyeLjNotIn: [Int!]
+  yyeLjGT: Int
+  yyeLjGTE: Int
+  yyeLjLT: Int
+  yyeLjLTE: Int
+  yyeLjIsNil: Boolean
+  yyeLjNotNil: Boolean
+  """
+  xjl_ys field predicates
+  """
+  xjlYs: Int
+  xjlYsNEQ: Int
+  xjlYsIn: [Int!]
+  xjlYsNotIn: [Int!]
+  xjlYsGT: Int
+  xjlYsGTE: Int
+  xjlYsLT: Int
+  xjlYsLTE: Int
+  xjlYsIsNil: Boolean
+  xjlYsNotNil: Boolean
+  """
+  xjl_lj field predicates
+  """
+  xjlLj: Int
+  xjlLjNEQ: Int
+  xjlLjIn: [Int!]
+  xjlLjNotIn: [Int!]
+  xjlLjGT: Int
+  xjlLjGTE: Int
+  xjlLjLT: Int
+  xjlLjLTE: Int
+  xjlLjIsNil: Boolean
+  xjlLjNotNil: Boolean
+  """
+  xmglf field predicates
+  """
+  xmglf: Int
+  xmglfNEQ: Int
+  xmglfIn: [Int!]
+  xmglfNotIn: [Int!]
+  xmglfGT: Int
+  xmglfGTE: Int
+  xmglfLT: Int
+  xmglfLTE: Int
+  xmglfIsNil: Boolean
+  xmglfNotNil: Boolean
+  """
+  xmsjf field predicates
+  """
+  xmsjf: Int
+  xmsjfNEQ: Int
+  xmsjfIn: [Int!]
+  xmsjfNotIn: [Int!]
+  xmsjfGT: Int
+  xmsjfGTE: Int
+  xmsjfLT: Int
+  xmsjfLTE: Int
+  xmsjfIsNil: Boolean
+  xmsjfNotNil: Boolean
+}
 """
 Possible directions in which to order a list of items when provided an ` + "`" + `orderBy` + "`" + ` argument.
 """
@@ -5589,6 +5973,37 @@ type Query {
     """
     where: DistrictWhereInput
   ): DistrictConnection!
+  operations(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Operations returned from the connection.
+    """
+    orderBy: OperationOrder
+
+    """
+    Filtering options for Operations returned from the connection.
+    """
+    where: OperationWhereInput
+  ): OperationConnection!
   plots(
     """
     Returns the elements in the list that come after the specified cursor.

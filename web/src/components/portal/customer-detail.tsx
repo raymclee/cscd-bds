@@ -64,7 +64,6 @@ export function CustomerDetail(props: {
           canEdit(session) && (
             <Space>
               <Button
-                type="primary"
                 icon={<EditOutlined />}
                 onClick={() => {
                   usePortalStore.setState({

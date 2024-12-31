@@ -16,6 +16,7 @@ import { routeTree } from "./routeTree.gen";
 
 import "@amap/amap-jsapi-types";
 import "./main.css";
+import NotFound from "./components/not-found";
 
 // const tenderResultModalToTenderMask = createRouteMask({
 //   routeTree,
@@ -35,11 +36,12 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
   // defaultPendingMs: 5000,
   defaultErrorComponent: () => (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-2">
+    <div className="flex min-h-screen flex-col items-center justify-center space-y-2">
       <div className="text-2xl font-bold">500</div>
       <div className="text-lg">服务器错误</div>
     </div>
   ),
+  defaultNotFoundComponent: () => <NotFound />,
 });
 
 // Register things for typesafety

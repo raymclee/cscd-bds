@@ -35,17 +35,19 @@ func Open(databaseUrl string) *ent.Client {
 	return ent.NewClient(o...)
 }
 
-func NewStore() *Store {
+func New(shouldMigrate bool) *Store {
 	// client := Open("postgresql://postgres:postgres@localhost:5432/cscd_mkm?sslmode=disable")
 	client := Open(config.DatabaseUrl)
-	if err := client.Schema.Create(
-		context.Background(),
-		migrate.WithGlobalUniqueID(true),
-		migrate.WithDropColumn(true),
-		migrate.WithDropIndex(true),
-		migrate.WithForeignKeys(true),
-	); err != nil {
-		log.Fatal("opening ent client", err)
+	if shouldMigrate {
+		if err := client.Schema.Create(
+			context.Background(),
+			migrate.WithGlobalUniqueID(true),
+			migrate.WithDropColumn(true),
+			migrate.WithDropIndex(true),
+			migrate.WithForeignKeys(true),
+		); err != nil {
+			log.Fatal("opening ent client", err)
+		}
 	}
 	return &Store{client}
 }

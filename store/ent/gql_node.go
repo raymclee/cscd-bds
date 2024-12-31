@@ -10,6 +10,7 @@ import (
 	"cscd-bds/store/ent/country"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -57,6 +58,11 @@ var districtImplementors = []string{"District", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*District) IsNode() {}
+
+var operationImplementors = []string{"Operation", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*Operation) IsNode() {}
 
 var plotImplementors = []string{"Plot", "Node"}
 
@@ -215,6 +221,19 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(district.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, districtImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case operation.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Operation.Query().
+			Where(operation.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, operationImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -441,6 +460,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		query := c.District.Query().
 			Where(district.IDIn(ids...))
 		query, err := query.CollectFields(ctx, districtImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case operation.Table:
+		query := c.Operation.Query().
+			Where(operation.IDIn(ids...))
+		query, err := query.CollectFields(ctx, operationImplementors...)
 		if err != nil {
 			return nil, err
 		}

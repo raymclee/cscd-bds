@@ -161,6 +161,26 @@ var (
 			},
 		},
 	}
+	// OperationsColumns holds the columns for the "operations" table.
+	OperationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "cje_ys", Type: field.TypeInt, Nullable: true},
+		{Name: "cje_lj", Type: field.TypeInt, Nullable: true},
+		{Name: "yye_ys", Type: field.TypeInt, Nullable: true},
+		{Name: "yye_lj", Type: field.TypeInt, Nullable: true},
+		{Name: "xjl_ys", Type: field.TypeInt, Nullable: true},
+		{Name: "xjl_lj", Type: field.TypeInt, Nullable: true},
+		{Name: "xmglf", Type: field.TypeInt, Nullable: true},
+		{Name: "xmsjf", Type: field.TypeInt, Nullable: true},
+	}
+	// OperationsTable holds the schema information for the "operations" table.
+	OperationsTable = &schema.Table{
+		Name:       "operations",
+		Columns:    OperationsColumns,
+		PrimaryKey: []*schema.Column{OperationsColumns[0]},
+	}
 	// PlotsColumns holds the columns for the "plots" table.
 	PlotsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
@@ -489,6 +509,7 @@ var (
 		CountriesTable,
 		CustomersTable,
 		DistrictsTable,
+		OperationsTable,
 		PlotsTable,
 		ProvincesTable,
 		TendersTable,
