@@ -11,6 +11,8 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema"
 	"cscd-bds/store/ent/schema/xid"
@@ -192,6 +194,60 @@ func init() {
 	plotDescID := plotMixinFields0[0].Descriptor()
 	// plot.DefaultID holds the default value on creation for the id field.
 	plot.DefaultID = plotDescID.Default.(func() xid.ID)
+	projectMixin := schema.Project{}.Mixin()
+	projectMixinFields0 := projectMixin[0].Fields()
+	_ = projectMixinFields0
+	projectMixinFields1 := projectMixin[1].Fields()
+	_ = projectMixinFields1
+	projectFields := schema.Project{}.Fields()
+	_ = projectFields
+	// projectDescCreatedAt is the schema descriptor for created_at field.
+	projectDescCreatedAt := projectMixinFields1[0].Descriptor()
+	// project.DefaultCreatedAt holds the default value on creation for the created_at field.
+	project.DefaultCreatedAt = projectDescCreatedAt.Default.(func() time.Time)
+	// projectDescUpdatedAt is the schema descriptor for updated_at field.
+	projectDescUpdatedAt := projectMixinFields1[1].Descriptor()
+	// project.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	project.DefaultUpdatedAt = projectDescUpdatedAt.Default.(func() time.Time)
+	// project.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	project.UpdateDefaultUpdatedAt = projectDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// projectDescIsFinished is the schema descriptor for is_finished field.
+	projectDescIsFinished := projectFields[2].Descriptor()
+	// project.DefaultIsFinished holds the default value on creation for the is_finished field.
+	project.DefaultIsFinished = projectDescIsFinished.Default.(bool)
+	// projectDescID is the schema descriptor for id field.
+	projectDescID := projectMixinFields0[0].Descriptor()
+	// project.DefaultID holds the default value on creation for the id field.
+	project.DefaultID = projectDescID.Default.(func() xid.ID)
+	projectvoMixin := schema.ProjectVO{}.Mixin()
+	projectvoMixinFields0 := projectvoMixin[0].Fields()
+	_ = projectvoMixinFields0
+	projectvoMixinFields1 := projectvoMixin[1].Fields()
+	_ = projectvoMixinFields1
+	projectvoFields := schema.ProjectVO{}.Fields()
+	_ = projectvoFields
+	// projectvoDescCreatedAt is the schema descriptor for created_at field.
+	projectvoDescCreatedAt := projectvoMixinFields1[0].Descriptor()
+	// projectvo.DefaultCreatedAt holds the default value on creation for the created_at field.
+	projectvo.DefaultCreatedAt = projectvoDescCreatedAt.Default.(func() time.Time)
+	// projectvoDescUpdatedAt is the schema descriptor for updated_at field.
+	projectvoDescUpdatedAt := projectvoMixinFields1[1].Descriptor()
+	// projectvo.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	projectvo.DefaultUpdatedAt = projectvoDescUpdatedAt.Default.(func() time.Time)
+	// projectvo.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	projectvo.UpdateDefaultUpdatedAt = projectvoDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// projectvoDescChangeType is the schema descriptor for change_type field.
+	projectvoDescChangeType := projectvoFields[1].Descriptor()
+	// projectvo.DefaultChangeType holds the default value on creation for the change_type field.
+	projectvo.DefaultChangeType = projectvoDescChangeType.Default.(int)
+	// projectvoDescIsApproved is the schema descriptor for is_approved field.
+	projectvoDescIsApproved := projectvoFields[2].Descriptor()
+	// projectvo.DefaultIsApproved holds the default value on creation for the is_approved field.
+	projectvo.DefaultIsApproved = projectvoDescIsApproved.Default.(bool)
+	// projectvoDescID is the schema descriptor for id field.
+	projectvoDescID := projectvoMixinFields0[0].Descriptor()
+	// projectvo.DefaultID holds the default value on creation for the id field.
+	projectvo.DefaultID = projectvoDescID.Default.(func() xid.ID)
 	provinceMixin := schema.Province{}.Mixin()
 	provinceMixinFields0 := provinceMixin[0].Fields()
 	_ = provinceMixinFields0

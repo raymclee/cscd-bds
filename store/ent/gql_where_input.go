@@ -12,6 +12,8 @@ import (
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -2958,100 +2960,100 @@ type OperationWhereInput struct {
 	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
 	// "cje_ys" field predicates.
-	CjeYs       *int  `json:"cjeYs,omitempty"`
-	CjeYsNEQ    *int  `json:"cjeYsNEQ,omitempty"`
-	CjeYsIn     []int `json:"cjeYsIn,omitempty"`
-	CjeYsNotIn  []int `json:"cjeYsNotIn,omitempty"`
-	CjeYsGT     *int  `json:"cjeYsGT,omitempty"`
-	CjeYsGTE    *int  `json:"cjeYsGTE,omitempty"`
-	CjeYsLT     *int  `json:"cjeYsLT,omitempty"`
-	CjeYsLTE    *int  `json:"cjeYsLTE,omitempty"`
-	CjeYsIsNil  bool  `json:"cjeYsIsNil,omitempty"`
-	CjeYsNotNil bool  `json:"cjeYsNotNil,omitempty"`
+	CjeYs       *float64  `json:"cjeYs,omitempty"`
+	CjeYsNEQ    *float64  `json:"cjeYsNEQ,omitempty"`
+	CjeYsIn     []float64 `json:"cjeYsIn,omitempty"`
+	CjeYsNotIn  []float64 `json:"cjeYsNotIn,omitempty"`
+	CjeYsGT     *float64  `json:"cjeYsGT,omitempty"`
+	CjeYsGTE    *float64  `json:"cjeYsGTE,omitempty"`
+	CjeYsLT     *float64  `json:"cjeYsLT,omitempty"`
+	CjeYsLTE    *float64  `json:"cjeYsLTE,omitempty"`
+	CjeYsIsNil  bool      `json:"cjeYsIsNil,omitempty"`
+	CjeYsNotNil bool      `json:"cjeYsNotNil,omitempty"`
 
 	// "cje_lj" field predicates.
-	CjeLj       *int  `json:"cjeLj,omitempty"`
-	CjeLjNEQ    *int  `json:"cjeLjNEQ,omitempty"`
-	CjeLjIn     []int `json:"cjeLjIn,omitempty"`
-	CjeLjNotIn  []int `json:"cjeLjNotIn,omitempty"`
-	CjeLjGT     *int  `json:"cjeLjGT,omitempty"`
-	CjeLjGTE    *int  `json:"cjeLjGTE,omitempty"`
-	CjeLjLT     *int  `json:"cjeLjLT,omitempty"`
-	CjeLjLTE    *int  `json:"cjeLjLTE,omitempty"`
-	CjeLjIsNil  bool  `json:"cjeLjIsNil,omitempty"`
-	CjeLjNotNil bool  `json:"cjeLjNotNil,omitempty"`
+	CjeLj       *float64  `json:"cjeLj,omitempty"`
+	CjeLjNEQ    *float64  `json:"cjeLjNEQ,omitempty"`
+	CjeLjIn     []float64 `json:"cjeLjIn,omitempty"`
+	CjeLjNotIn  []float64 `json:"cjeLjNotIn,omitempty"`
+	CjeLjGT     *float64  `json:"cjeLjGT,omitempty"`
+	CjeLjGTE    *float64  `json:"cjeLjGTE,omitempty"`
+	CjeLjLT     *float64  `json:"cjeLjLT,omitempty"`
+	CjeLjLTE    *float64  `json:"cjeLjLTE,omitempty"`
+	CjeLjIsNil  bool      `json:"cjeLjIsNil,omitempty"`
+	CjeLjNotNil bool      `json:"cjeLjNotNil,omitempty"`
 
 	// "yye_ys" field predicates.
-	YyeYs       *int  `json:"yyeYs,omitempty"`
-	YyeYsNEQ    *int  `json:"yyeYsNEQ,omitempty"`
-	YyeYsIn     []int `json:"yyeYsIn,omitempty"`
-	YyeYsNotIn  []int `json:"yyeYsNotIn,omitempty"`
-	YyeYsGT     *int  `json:"yyeYsGT,omitempty"`
-	YyeYsGTE    *int  `json:"yyeYsGTE,omitempty"`
-	YyeYsLT     *int  `json:"yyeYsLT,omitempty"`
-	YyeYsLTE    *int  `json:"yyeYsLTE,omitempty"`
-	YyeYsIsNil  bool  `json:"yyeYsIsNil,omitempty"`
-	YyeYsNotNil bool  `json:"yyeYsNotNil,omitempty"`
+	YyeYs       *float64  `json:"yyeYs,omitempty"`
+	YyeYsNEQ    *float64  `json:"yyeYsNEQ,omitempty"`
+	YyeYsIn     []float64 `json:"yyeYsIn,omitempty"`
+	YyeYsNotIn  []float64 `json:"yyeYsNotIn,omitempty"`
+	YyeYsGT     *float64  `json:"yyeYsGT,omitempty"`
+	YyeYsGTE    *float64  `json:"yyeYsGTE,omitempty"`
+	YyeYsLT     *float64  `json:"yyeYsLT,omitempty"`
+	YyeYsLTE    *float64  `json:"yyeYsLTE,omitempty"`
+	YyeYsIsNil  bool      `json:"yyeYsIsNil,omitempty"`
+	YyeYsNotNil bool      `json:"yyeYsNotNil,omitempty"`
 
 	// "yye_lj" field predicates.
-	YyeLj       *int  `json:"yyeLj,omitempty"`
-	YyeLjNEQ    *int  `json:"yyeLjNEQ,omitempty"`
-	YyeLjIn     []int `json:"yyeLjIn,omitempty"`
-	YyeLjNotIn  []int `json:"yyeLjNotIn,omitempty"`
-	YyeLjGT     *int  `json:"yyeLjGT,omitempty"`
-	YyeLjGTE    *int  `json:"yyeLjGTE,omitempty"`
-	YyeLjLT     *int  `json:"yyeLjLT,omitempty"`
-	YyeLjLTE    *int  `json:"yyeLjLTE,omitempty"`
-	YyeLjIsNil  bool  `json:"yyeLjIsNil,omitempty"`
-	YyeLjNotNil bool  `json:"yyeLjNotNil,omitempty"`
+	YyeLj       *float64  `json:"yyeLj,omitempty"`
+	YyeLjNEQ    *float64  `json:"yyeLjNEQ,omitempty"`
+	YyeLjIn     []float64 `json:"yyeLjIn,omitempty"`
+	YyeLjNotIn  []float64 `json:"yyeLjNotIn,omitempty"`
+	YyeLjGT     *float64  `json:"yyeLjGT,omitempty"`
+	YyeLjGTE    *float64  `json:"yyeLjGTE,omitempty"`
+	YyeLjLT     *float64  `json:"yyeLjLT,omitempty"`
+	YyeLjLTE    *float64  `json:"yyeLjLTE,omitempty"`
+	YyeLjIsNil  bool      `json:"yyeLjIsNil,omitempty"`
+	YyeLjNotNil bool      `json:"yyeLjNotNil,omitempty"`
 
 	// "xjl_ys" field predicates.
-	XjlYs       *int  `json:"xjlYs,omitempty"`
-	XjlYsNEQ    *int  `json:"xjlYsNEQ,omitempty"`
-	XjlYsIn     []int `json:"xjlYsIn,omitempty"`
-	XjlYsNotIn  []int `json:"xjlYsNotIn,omitempty"`
-	XjlYsGT     *int  `json:"xjlYsGT,omitempty"`
-	XjlYsGTE    *int  `json:"xjlYsGTE,omitempty"`
-	XjlYsLT     *int  `json:"xjlYsLT,omitempty"`
-	XjlYsLTE    *int  `json:"xjlYsLTE,omitempty"`
-	XjlYsIsNil  bool  `json:"xjlYsIsNil,omitempty"`
-	XjlYsNotNil bool  `json:"xjlYsNotNil,omitempty"`
+	XjlYs       *float64  `json:"xjlYs,omitempty"`
+	XjlYsNEQ    *float64  `json:"xjlYsNEQ,omitempty"`
+	XjlYsIn     []float64 `json:"xjlYsIn,omitempty"`
+	XjlYsNotIn  []float64 `json:"xjlYsNotIn,omitempty"`
+	XjlYsGT     *float64  `json:"xjlYsGT,omitempty"`
+	XjlYsGTE    *float64  `json:"xjlYsGTE,omitempty"`
+	XjlYsLT     *float64  `json:"xjlYsLT,omitempty"`
+	XjlYsLTE    *float64  `json:"xjlYsLTE,omitempty"`
+	XjlYsIsNil  bool      `json:"xjlYsIsNil,omitempty"`
+	XjlYsNotNil bool      `json:"xjlYsNotNil,omitempty"`
 
 	// "xjl_lj" field predicates.
-	XjlLj       *int  `json:"xjlLj,omitempty"`
-	XjlLjNEQ    *int  `json:"xjlLjNEQ,omitempty"`
-	XjlLjIn     []int `json:"xjlLjIn,omitempty"`
-	XjlLjNotIn  []int `json:"xjlLjNotIn,omitempty"`
-	XjlLjGT     *int  `json:"xjlLjGT,omitempty"`
-	XjlLjGTE    *int  `json:"xjlLjGTE,omitempty"`
-	XjlLjLT     *int  `json:"xjlLjLT,omitempty"`
-	XjlLjLTE    *int  `json:"xjlLjLTE,omitempty"`
-	XjlLjIsNil  bool  `json:"xjlLjIsNil,omitempty"`
-	XjlLjNotNil bool  `json:"xjlLjNotNil,omitempty"`
+	XjlLj       *float64  `json:"xjlLj,omitempty"`
+	XjlLjNEQ    *float64  `json:"xjlLjNEQ,omitempty"`
+	XjlLjIn     []float64 `json:"xjlLjIn,omitempty"`
+	XjlLjNotIn  []float64 `json:"xjlLjNotIn,omitempty"`
+	XjlLjGT     *float64  `json:"xjlLjGT,omitempty"`
+	XjlLjGTE    *float64  `json:"xjlLjGTE,omitempty"`
+	XjlLjLT     *float64  `json:"xjlLjLT,omitempty"`
+	XjlLjLTE    *float64  `json:"xjlLjLTE,omitempty"`
+	XjlLjIsNil  bool      `json:"xjlLjIsNil,omitempty"`
+	XjlLjNotNil bool      `json:"xjlLjNotNil,omitempty"`
 
 	// "xmglf" field predicates.
-	Xmglf       *int  `json:"xmglf,omitempty"`
-	XmglfNEQ    *int  `json:"xmglfNEQ,omitempty"`
-	XmglfIn     []int `json:"xmglfIn,omitempty"`
-	XmglfNotIn  []int `json:"xmglfNotIn,omitempty"`
-	XmglfGT     *int  `json:"xmglfGT,omitempty"`
-	XmglfGTE    *int  `json:"xmglfGTE,omitempty"`
-	XmglfLT     *int  `json:"xmglfLT,omitempty"`
-	XmglfLTE    *int  `json:"xmglfLTE,omitempty"`
-	XmglfIsNil  bool  `json:"xmglfIsNil,omitempty"`
-	XmglfNotNil bool  `json:"xmglfNotNil,omitempty"`
+	Xmglf       *float64  `json:"xmglf,omitempty"`
+	XmglfNEQ    *float64  `json:"xmglfNEQ,omitempty"`
+	XmglfIn     []float64 `json:"xmglfIn,omitempty"`
+	XmglfNotIn  []float64 `json:"xmglfNotIn,omitempty"`
+	XmglfGT     *float64  `json:"xmglfGT,omitempty"`
+	XmglfGTE    *float64  `json:"xmglfGTE,omitempty"`
+	XmglfLT     *float64  `json:"xmglfLT,omitempty"`
+	XmglfLTE    *float64  `json:"xmglfLTE,omitempty"`
+	XmglfIsNil  bool      `json:"xmglfIsNil,omitempty"`
+	XmglfNotNil bool      `json:"xmglfNotNil,omitempty"`
 
 	// "xmsjf" field predicates.
-	Xmsjf       *int  `json:"xmsjf,omitempty"`
-	XmsjfNEQ    *int  `json:"xmsjfNEQ,omitempty"`
-	XmsjfIn     []int `json:"xmsjfIn,omitempty"`
-	XmsjfNotIn  []int `json:"xmsjfNotIn,omitempty"`
-	XmsjfGT     *int  `json:"xmsjfGT,omitempty"`
-	XmsjfGTE    *int  `json:"xmsjfGTE,omitempty"`
-	XmsjfLT     *int  `json:"xmsjfLT,omitempty"`
-	XmsjfLTE    *int  `json:"xmsjfLTE,omitempty"`
-	XmsjfIsNil  bool  `json:"xmsjfIsNil,omitempty"`
-	XmsjfNotNil bool  `json:"xmsjfNotNil,omitempty"`
+	Xmsjf       *float64  `json:"xmsjf,omitempty"`
+	XmsjfNEQ    *float64  `json:"xmsjfNEQ,omitempty"`
+	XmsjfIn     []float64 `json:"xmsjfIn,omitempty"`
+	XmsjfNotIn  []float64 `json:"xmsjfNotIn,omitempty"`
+	XmsjfGT     *float64  `json:"xmsjfGT,omitempty"`
+	XmsjfGTE    *float64  `json:"xmsjfGTE,omitempty"`
+	XmsjfLT     *float64  `json:"xmsjfLT,omitempty"`
+	XmsjfLTE    *float64  `json:"xmsjfLTE,omitempty"`
+	XmsjfIsNil  bool      `json:"xmsjfIsNil,omitempty"`
+	XmsjfNotNil bool      `json:"xmsjfNotNil,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -3821,6 +3823,1644 @@ func (i *PlotWhereInput) P() (predicate.Plot, error) {
 		return predicates[0], nil
 	default:
 		return plot.And(predicates...), nil
+	}
+}
+
+// ProjectWhereInput represents a where input for filtering Project queries.
+type ProjectWhereInput struct {
+	Predicates []predicate.Project  `json:"-"`
+	Not        *ProjectWhereInput   `json:"not,omitempty"`
+	Or         []*ProjectWhereInput `json:"or,omitempty"`
+	And        []*ProjectWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "code" field predicates.
+	Code             *string  `json:"code,omitempty"`
+	CodeNEQ          *string  `json:"codeNEQ,omitempty"`
+	CodeIn           []string `json:"codeIn,omitempty"`
+	CodeNotIn        []string `json:"codeNotIn,omitempty"`
+	CodeGT           *string  `json:"codeGT,omitempty"`
+	CodeGTE          *string  `json:"codeGTE,omitempty"`
+	CodeLT           *string  `json:"codeLT,omitempty"`
+	CodeLTE          *string  `json:"codeLTE,omitempty"`
+	CodeContains     *string  `json:"codeContains,omitempty"`
+	CodeHasPrefix    *string  `json:"codeHasPrefix,omitempty"`
+	CodeHasSuffix    *string  `json:"codeHasSuffix,omitempty"`
+	CodeEqualFold    *string  `json:"codeEqualFold,omitempty"`
+	CodeContainsFold *string  `json:"codeContainsFold,omitempty"`
+
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameIsNil        bool     `json:"nameIsNil,omitempty"`
+	NameNotNil       bool     `json:"nameNotNil,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
+	// "is_finished" field predicates.
+	IsFinished    *bool `json:"isFinished,omitempty"`
+	IsFinishedNEQ *bool `json:"isFinishedNEQ,omitempty"`
+
+	// "cje" field predicates.
+	Cje       *float64  `json:"cje,omitempty"`
+	CjeNEQ    *float64  `json:"cjeNEQ,omitempty"`
+	CjeIn     []float64 `json:"cjeIn,omitempty"`
+	CjeNotIn  []float64 `json:"cjeNotIn,omitempty"`
+	CjeGT     *float64  `json:"cjeGT,omitempty"`
+	CjeGTE    *float64  `json:"cjeGTE,omitempty"`
+	CjeLT     *float64  `json:"cjeLT,omitempty"`
+	CjeLTE    *float64  `json:"cjeLTE,omitempty"`
+	CjeIsNil  bool      `json:"cjeIsNil,omitempty"`
+	CjeNotNil bool      `json:"cjeNotNil,omitempty"`
+
+	// "yye" field predicates.
+	Yye       *float64  `json:"yye,omitempty"`
+	YyeNEQ    *float64  `json:"yyeNEQ,omitempty"`
+	YyeIn     []float64 `json:"yyeIn,omitempty"`
+	YyeNotIn  []float64 `json:"yyeNotIn,omitempty"`
+	YyeGT     *float64  `json:"yyeGT,omitempty"`
+	YyeGTE    *float64  `json:"yyeGTE,omitempty"`
+	YyeLT     *float64  `json:"yyeLT,omitempty"`
+	YyeLTE    *float64  `json:"yyeLTE,omitempty"`
+	YyeIsNil  bool      `json:"yyeIsNil,omitempty"`
+	YyeNotNil bool      `json:"yyeNotNil,omitempty"`
+
+	// "xjl" field predicates.
+	Xjl       *float64  `json:"xjl,omitempty"`
+	XjlNEQ    *float64  `json:"xjlNEQ,omitempty"`
+	XjlIn     []float64 `json:"xjlIn,omitempty"`
+	XjlNotIn  []float64 `json:"xjlNotIn,omitempty"`
+	XjlGT     *float64  `json:"xjlGT,omitempty"`
+	XjlGTE    *float64  `json:"xjlGTE,omitempty"`
+	XjlLT     *float64  `json:"xjlLT,omitempty"`
+	XjlLTE    *float64  `json:"xjlLTE,omitempty"`
+	XjlIsNil  bool      `json:"xjlIsNil,omitempty"`
+	XjlNotNil bool      `json:"xjlNotNil,omitempty"`
+
+	// "xmglf_ys" field predicates.
+	XmglfYs       *float64  `json:"xmglfYs,omitempty"`
+	XmglfYsNEQ    *float64  `json:"xmglfYsNEQ,omitempty"`
+	XmglfYsIn     []float64 `json:"xmglfYsIn,omitempty"`
+	XmglfYsNotIn  []float64 `json:"xmglfYsNotIn,omitempty"`
+	XmglfYsGT     *float64  `json:"xmglfYsGT,omitempty"`
+	XmglfYsGTE    *float64  `json:"xmglfYsGTE,omitempty"`
+	XmglfYsLT     *float64  `json:"xmglfYsLT,omitempty"`
+	XmglfYsLTE    *float64  `json:"xmglfYsLTE,omitempty"`
+	XmglfYsIsNil  bool      `json:"xmglfYsIsNil,omitempty"`
+	XmglfYsNotNil bool      `json:"xmglfYsNotNil,omitempty"`
+
+	// "xmglf_lj" field predicates.
+	XmglfLj       *float64  `json:"xmglfLj,omitempty"`
+	XmglfLjNEQ    *float64  `json:"xmglfLjNEQ,omitempty"`
+	XmglfLjIn     []float64 `json:"xmglfLjIn,omitempty"`
+	XmglfLjNotIn  []float64 `json:"xmglfLjNotIn,omitempty"`
+	XmglfLjGT     *float64  `json:"xmglfLjGT,omitempty"`
+	XmglfLjGTE    *float64  `json:"xmglfLjGTE,omitempty"`
+	XmglfLjLT     *float64  `json:"xmglfLjLT,omitempty"`
+	XmglfLjLTE    *float64  `json:"xmglfLjLTE,omitempty"`
+	XmglfLjIsNil  bool      `json:"xmglfLjIsNil,omitempty"`
+	XmglfLjNotNil bool      `json:"xmglfLjNotNil,omitempty"`
+
+	// "xmsjf" field predicates.
+	Xmsjf       *float64  `json:"xmsjf,omitempty"`
+	XmsjfNEQ    *float64  `json:"xmsjfNEQ,omitempty"`
+	XmsjfIn     []float64 `json:"xmsjfIn,omitempty"`
+	XmsjfNotIn  []float64 `json:"xmsjfNotIn,omitempty"`
+	XmsjfGT     *float64  `json:"xmsjfGT,omitempty"`
+	XmsjfGTE    *float64  `json:"xmsjfGTE,omitempty"`
+	XmsjfLT     *float64  `json:"xmsjfLT,omitempty"`
+	XmsjfLTE    *float64  `json:"xmsjfLTE,omitempty"`
+	XmsjfIsNil  bool      `json:"xmsjfIsNil,omitempty"`
+	XmsjfNotNil bool      `json:"xmsjfNotNil,omitempty"`
+
+	// "xmfzr" field predicates.
+	Xmfzr             *string  `json:"xmfzr,omitempty"`
+	XmfzrNEQ          *string  `json:"xmfzrNEQ,omitempty"`
+	XmfzrIn           []string `json:"xmfzrIn,omitempty"`
+	XmfzrNotIn        []string `json:"xmfzrNotIn,omitempty"`
+	XmfzrGT           *string  `json:"xmfzrGT,omitempty"`
+	XmfzrGTE          *string  `json:"xmfzrGTE,omitempty"`
+	XmfzrLT           *string  `json:"xmfzrLT,omitempty"`
+	XmfzrLTE          *string  `json:"xmfzrLTE,omitempty"`
+	XmfzrContains     *string  `json:"xmfzrContains,omitempty"`
+	XmfzrHasPrefix    *string  `json:"xmfzrHasPrefix,omitempty"`
+	XmfzrHasSuffix    *string  `json:"xmfzrHasSuffix,omitempty"`
+	XmfzrIsNil        bool     `json:"xmfzrIsNil,omitempty"`
+	XmfzrNotNil       bool     `json:"xmfzrNotNil,omitempty"`
+	XmfzrEqualFold    *string  `json:"xmfzrEqualFold,omitempty"`
+	XmfzrContainsFold *string  `json:"xmfzrContainsFold,omitempty"`
+
+	// "owner_apply_amount" field predicates.
+	OwnerApplyAmount       *float64  `json:"ownerApplyAmount,omitempty"`
+	OwnerApplyAmountNEQ    *float64  `json:"ownerApplyAmountNEQ,omitempty"`
+	OwnerApplyAmountIn     []float64 `json:"ownerApplyAmountIn,omitempty"`
+	OwnerApplyAmountNotIn  []float64 `json:"ownerApplyAmountNotIn,omitempty"`
+	OwnerApplyAmountGT     *float64  `json:"ownerApplyAmountGT,omitempty"`
+	OwnerApplyAmountGTE    *float64  `json:"ownerApplyAmountGTE,omitempty"`
+	OwnerApplyAmountLT     *float64  `json:"ownerApplyAmountLT,omitempty"`
+	OwnerApplyAmountLTE    *float64  `json:"ownerApplyAmountLTE,omitempty"`
+	OwnerApplyAmountIsNil  bool      `json:"ownerApplyAmountIsNil,omitempty"`
+	OwnerApplyAmountNotNil bool      `json:"ownerApplyAmountNotNil,omitempty"`
+
+	// "owner_apply_count" field predicates.
+	OwnerApplyCount       *int  `json:"ownerApplyCount,omitempty"`
+	OwnerApplyCountNEQ    *int  `json:"ownerApplyCountNEQ,omitempty"`
+	OwnerApplyCountIn     []int `json:"ownerApplyCountIn,omitempty"`
+	OwnerApplyCountNotIn  []int `json:"ownerApplyCountNotIn,omitempty"`
+	OwnerApplyCountGT     *int  `json:"ownerApplyCountGT,omitempty"`
+	OwnerApplyCountGTE    *int  `json:"ownerApplyCountGTE,omitempty"`
+	OwnerApplyCountLT     *int  `json:"ownerApplyCountLT,omitempty"`
+	OwnerApplyCountLTE    *int  `json:"ownerApplyCountLTE,omitempty"`
+	OwnerApplyCountIsNil  bool  `json:"ownerApplyCountIsNil,omitempty"`
+	OwnerApplyCountNotNil bool  `json:"ownerApplyCountNotNil,omitempty"`
+
+	// "owner_approve_amount" field predicates.
+	OwnerApproveAmount       *float64  `json:"ownerApproveAmount,omitempty"`
+	OwnerApproveAmountNEQ    *float64  `json:"ownerApproveAmountNEQ,omitempty"`
+	OwnerApproveAmountIn     []float64 `json:"ownerApproveAmountIn,omitempty"`
+	OwnerApproveAmountNotIn  []float64 `json:"ownerApproveAmountNotIn,omitempty"`
+	OwnerApproveAmountGT     *float64  `json:"ownerApproveAmountGT,omitempty"`
+	OwnerApproveAmountGTE    *float64  `json:"ownerApproveAmountGTE,omitempty"`
+	OwnerApproveAmountLT     *float64  `json:"ownerApproveAmountLT,omitempty"`
+	OwnerApproveAmountLTE    *float64  `json:"ownerApproveAmountLTE,omitempty"`
+	OwnerApproveAmountIsNil  bool      `json:"ownerApproveAmountIsNil,omitempty"`
+	OwnerApproveAmountNotNil bool      `json:"ownerApproveAmountNotNil,omitempty"`
+
+	// "owner_approve_count" field predicates.
+	OwnerApproveCount       *int  `json:"ownerApproveCount,omitempty"`
+	OwnerApproveCountNEQ    *int  `json:"ownerApproveCountNEQ,omitempty"`
+	OwnerApproveCountIn     []int `json:"ownerApproveCountIn,omitempty"`
+	OwnerApproveCountNotIn  []int `json:"ownerApproveCountNotIn,omitempty"`
+	OwnerApproveCountGT     *int  `json:"ownerApproveCountGT,omitempty"`
+	OwnerApproveCountGTE    *int  `json:"ownerApproveCountGTE,omitempty"`
+	OwnerApproveCountLT     *int  `json:"ownerApproveCountLT,omitempty"`
+	OwnerApproveCountLTE    *int  `json:"ownerApproveCountLTE,omitempty"`
+	OwnerApproveCountIsNil  bool  `json:"ownerApproveCountIsNil,omitempty"`
+	OwnerApproveCountNotNil bool  `json:"ownerApproveCountNotNil,omitempty"`
+
+	// "contractor_apply_amount" field predicates.
+	ContractorApplyAmount       *float64  `json:"contractorApplyAmount,omitempty"`
+	ContractorApplyAmountNEQ    *float64  `json:"contractorApplyAmountNEQ,omitempty"`
+	ContractorApplyAmountIn     []float64 `json:"contractorApplyAmountIn,omitempty"`
+	ContractorApplyAmountNotIn  []float64 `json:"contractorApplyAmountNotIn,omitempty"`
+	ContractorApplyAmountGT     *float64  `json:"contractorApplyAmountGT,omitempty"`
+	ContractorApplyAmountGTE    *float64  `json:"contractorApplyAmountGTE,omitempty"`
+	ContractorApplyAmountLT     *float64  `json:"contractorApplyAmountLT,omitempty"`
+	ContractorApplyAmountLTE    *float64  `json:"contractorApplyAmountLTE,omitempty"`
+	ContractorApplyAmountIsNil  bool      `json:"contractorApplyAmountIsNil,omitempty"`
+	ContractorApplyAmountNotNil bool      `json:"contractorApplyAmountNotNil,omitempty"`
+
+	// "contractor_apply_count" field predicates.
+	ContractorApplyCount       *int  `json:"contractorApplyCount,omitempty"`
+	ContractorApplyCountNEQ    *int  `json:"contractorApplyCountNEQ,omitempty"`
+	ContractorApplyCountIn     []int `json:"contractorApplyCountIn,omitempty"`
+	ContractorApplyCountNotIn  []int `json:"contractorApplyCountNotIn,omitempty"`
+	ContractorApplyCountGT     *int  `json:"contractorApplyCountGT,omitempty"`
+	ContractorApplyCountGTE    *int  `json:"contractorApplyCountGTE,omitempty"`
+	ContractorApplyCountLT     *int  `json:"contractorApplyCountLT,omitempty"`
+	ContractorApplyCountLTE    *int  `json:"contractorApplyCountLTE,omitempty"`
+	ContractorApplyCountIsNil  bool  `json:"contractorApplyCountIsNil,omitempty"`
+	ContractorApplyCountNotNil bool  `json:"contractorApplyCountNotNil,omitempty"`
+
+	// "contractor_approve_amount" field predicates.
+	ContractorApproveAmount       *float64  `json:"contractorApproveAmount,omitempty"`
+	ContractorApproveAmountNEQ    *float64  `json:"contractorApproveAmountNEQ,omitempty"`
+	ContractorApproveAmountIn     []float64 `json:"contractorApproveAmountIn,omitempty"`
+	ContractorApproveAmountNotIn  []float64 `json:"contractorApproveAmountNotIn,omitempty"`
+	ContractorApproveAmountGT     *float64  `json:"contractorApproveAmountGT,omitempty"`
+	ContractorApproveAmountGTE    *float64  `json:"contractorApproveAmountGTE,omitempty"`
+	ContractorApproveAmountLT     *float64  `json:"contractorApproveAmountLT,omitempty"`
+	ContractorApproveAmountLTE    *float64  `json:"contractorApproveAmountLTE,omitempty"`
+	ContractorApproveAmountIsNil  bool      `json:"contractorApproveAmountIsNil,omitempty"`
+	ContractorApproveAmountNotNil bool      `json:"contractorApproveAmountNotNil,omitempty"`
+
+	// "contractor_approve_count" field predicates.
+	ContractorApproveCount       *int  `json:"contractorApproveCount,omitempty"`
+	ContractorApproveCountNEQ    *int  `json:"contractorApproveCountNEQ,omitempty"`
+	ContractorApproveCountIn     []int `json:"contractorApproveCountIn,omitempty"`
+	ContractorApproveCountNotIn  []int `json:"contractorApproveCountNotIn,omitempty"`
+	ContractorApproveCountGT     *int  `json:"contractorApproveCountGT,omitempty"`
+	ContractorApproveCountGTE    *int  `json:"contractorApproveCountGTE,omitempty"`
+	ContractorApproveCountLT     *int  `json:"contractorApproveCountLT,omitempty"`
+	ContractorApproveCountLTE    *int  `json:"contractorApproveCountLTE,omitempty"`
+	ContractorApproveCountIsNil  bool  `json:"contractorApproveCountIsNil,omitempty"`
+	ContractorApproveCountNotNil bool  `json:"contractorApproveCountNotNil,omitempty"`
+
+	// "install_progress" field predicates.
+	InstallProgress       *float64  `json:"installProgress,omitempty"`
+	InstallProgressNEQ    *float64  `json:"installProgressNEQ,omitempty"`
+	InstallProgressIn     []float64 `json:"installProgressIn,omitempty"`
+	InstallProgressNotIn  []float64 `json:"installProgressNotIn,omitempty"`
+	InstallProgressGT     *float64  `json:"installProgressGT,omitempty"`
+	InstallProgressGTE    *float64  `json:"installProgressGTE,omitempty"`
+	InstallProgressLT     *float64  `json:"installProgressLT,omitempty"`
+	InstallProgressLTE    *float64  `json:"installProgressLTE,omitempty"`
+	InstallProgressIsNil  bool      `json:"installProgressIsNil,omitempty"`
+	InstallProgressNotNil bool      `json:"installProgressNotNil,omitempty"`
+
+	// "effective_contract_amount" field predicates.
+	EffectiveContractAmount       *float64  `json:"effectiveContractAmount,omitempty"`
+	EffectiveContractAmountNEQ    *float64  `json:"effectiveContractAmountNEQ,omitempty"`
+	EffectiveContractAmountIn     []float64 `json:"effectiveContractAmountIn,omitempty"`
+	EffectiveContractAmountNotIn  []float64 `json:"effectiveContractAmountNotIn,omitempty"`
+	EffectiveContractAmountGT     *float64  `json:"effectiveContractAmountGT,omitempty"`
+	EffectiveContractAmountGTE    *float64  `json:"effectiveContractAmountGTE,omitempty"`
+	EffectiveContractAmountLT     *float64  `json:"effectiveContractAmountLT,omitempty"`
+	EffectiveContractAmountLTE    *float64  `json:"effectiveContractAmountLTE,omitempty"`
+	EffectiveContractAmountIsNil  bool      `json:"effectiveContractAmountIsNil,omitempty"`
+	EffectiveContractAmountNotNil bool      `json:"effectiveContractAmountNotNil,omitempty"`
+
+	// "va_apply_amount" field predicates.
+	VaApplyAmount       *float64  `json:"vaApplyAmount,omitempty"`
+	VaApplyAmountNEQ    *float64  `json:"vaApplyAmountNEQ,omitempty"`
+	VaApplyAmountIn     []float64 `json:"vaApplyAmountIn,omitempty"`
+	VaApplyAmountNotIn  []float64 `json:"vaApplyAmountNotIn,omitempty"`
+	VaApplyAmountGT     *float64  `json:"vaApplyAmountGT,omitempty"`
+	VaApplyAmountGTE    *float64  `json:"vaApplyAmountGTE,omitempty"`
+	VaApplyAmountLT     *float64  `json:"vaApplyAmountLT,omitempty"`
+	VaApplyAmountLTE    *float64  `json:"vaApplyAmountLTE,omitempty"`
+	VaApplyAmountIsNil  bool      `json:"vaApplyAmountIsNil,omitempty"`
+	VaApplyAmountNotNil bool      `json:"vaApplyAmountNotNil,omitempty"`
+
+	// "va_approve_amount" field predicates.
+	VaApproveAmount       *float64  `json:"vaApproveAmount,omitempty"`
+	VaApproveAmountNEQ    *float64  `json:"vaApproveAmountNEQ,omitempty"`
+	VaApproveAmountIn     []float64 `json:"vaApproveAmountIn,omitempty"`
+	VaApproveAmountNotIn  []float64 `json:"vaApproveAmountNotIn,omitempty"`
+	VaApproveAmountGT     *float64  `json:"vaApproveAmountGT,omitempty"`
+	VaApproveAmountGTE    *float64  `json:"vaApproveAmountGTE,omitempty"`
+	VaApproveAmountLT     *float64  `json:"vaApproveAmountLT,omitempty"`
+	VaApproveAmountLTE    *float64  `json:"vaApproveAmountLTE,omitempty"`
+	VaApproveAmountIsNil  bool      `json:"vaApproveAmountIsNil,omitempty"`
+	VaApproveAmountNotNil bool      `json:"vaApproveAmountNotNil,omitempty"`
+
+	// "vos" edge predicates.
+	HasVos     *bool                  `json:"hasVos,omitempty"`
+	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *ProjectWhereInput) AddPredicates(predicates ...predicate.Project) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the ProjectWhereInput filter on the ProjectQuery builder.
+func (i *ProjectWhereInput) Filter(q *ProjectQuery) (*ProjectQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyProjectWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyProjectWhereInput is returned in case the ProjectWhereInput is empty.
+var ErrEmptyProjectWhereInput = errors.New("ent: empty predicate ProjectWhereInput")
+
+// P returns a predicate for filtering projects.
+// An error is returned if the input is empty or invalid.
+func (i *ProjectWhereInput) P() (predicate.Project, error) {
+	var predicates []predicate.Project
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, project.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.Project, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, project.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.Project, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, project.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, project.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, project.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, project.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, project.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, project.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, project.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, project.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, project.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, project.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, project.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, project.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, project.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, project.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, project.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, project.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, project.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, project.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, project.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, project.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, project.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, project.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, project.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, project.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, project.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.Code != nil {
+		predicates = append(predicates, project.CodeEQ(*i.Code))
+	}
+	if i.CodeNEQ != nil {
+		predicates = append(predicates, project.CodeNEQ(*i.CodeNEQ))
+	}
+	if len(i.CodeIn) > 0 {
+		predicates = append(predicates, project.CodeIn(i.CodeIn...))
+	}
+	if len(i.CodeNotIn) > 0 {
+		predicates = append(predicates, project.CodeNotIn(i.CodeNotIn...))
+	}
+	if i.CodeGT != nil {
+		predicates = append(predicates, project.CodeGT(*i.CodeGT))
+	}
+	if i.CodeGTE != nil {
+		predicates = append(predicates, project.CodeGTE(*i.CodeGTE))
+	}
+	if i.CodeLT != nil {
+		predicates = append(predicates, project.CodeLT(*i.CodeLT))
+	}
+	if i.CodeLTE != nil {
+		predicates = append(predicates, project.CodeLTE(*i.CodeLTE))
+	}
+	if i.CodeContains != nil {
+		predicates = append(predicates, project.CodeContains(*i.CodeContains))
+	}
+	if i.CodeHasPrefix != nil {
+		predicates = append(predicates, project.CodeHasPrefix(*i.CodeHasPrefix))
+	}
+	if i.CodeHasSuffix != nil {
+		predicates = append(predicates, project.CodeHasSuffix(*i.CodeHasSuffix))
+	}
+	if i.CodeEqualFold != nil {
+		predicates = append(predicates, project.CodeEqualFold(*i.CodeEqualFold))
+	}
+	if i.CodeContainsFold != nil {
+		predicates = append(predicates, project.CodeContainsFold(*i.CodeContainsFold))
+	}
+	if i.Name != nil {
+		predicates = append(predicates, project.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, project.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, project.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, project.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, project.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, project.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, project.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, project.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, project.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, project.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, project.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameIsNil {
+		predicates = append(predicates, project.NameIsNil())
+	}
+	if i.NameNotNil {
+		predicates = append(predicates, project.NameNotNil())
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, project.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, project.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.IsFinished != nil {
+		predicates = append(predicates, project.IsFinishedEQ(*i.IsFinished))
+	}
+	if i.IsFinishedNEQ != nil {
+		predicates = append(predicates, project.IsFinishedNEQ(*i.IsFinishedNEQ))
+	}
+	if i.Cje != nil {
+		predicates = append(predicates, project.CjeEQ(*i.Cje))
+	}
+	if i.CjeNEQ != nil {
+		predicates = append(predicates, project.CjeNEQ(*i.CjeNEQ))
+	}
+	if len(i.CjeIn) > 0 {
+		predicates = append(predicates, project.CjeIn(i.CjeIn...))
+	}
+	if len(i.CjeNotIn) > 0 {
+		predicates = append(predicates, project.CjeNotIn(i.CjeNotIn...))
+	}
+	if i.CjeGT != nil {
+		predicates = append(predicates, project.CjeGT(*i.CjeGT))
+	}
+	if i.CjeGTE != nil {
+		predicates = append(predicates, project.CjeGTE(*i.CjeGTE))
+	}
+	if i.CjeLT != nil {
+		predicates = append(predicates, project.CjeLT(*i.CjeLT))
+	}
+	if i.CjeLTE != nil {
+		predicates = append(predicates, project.CjeLTE(*i.CjeLTE))
+	}
+	if i.CjeIsNil {
+		predicates = append(predicates, project.CjeIsNil())
+	}
+	if i.CjeNotNil {
+		predicates = append(predicates, project.CjeNotNil())
+	}
+	if i.Yye != nil {
+		predicates = append(predicates, project.YyeEQ(*i.Yye))
+	}
+	if i.YyeNEQ != nil {
+		predicates = append(predicates, project.YyeNEQ(*i.YyeNEQ))
+	}
+	if len(i.YyeIn) > 0 {
+		predicates = append(predicates, project.YyeIn(i.YyeIn...))
+	}
+	if len(i.YyeNotIn) > 0 {
+		predicates = append(predicates, project.YyeNotIn(i.YyeNotIn...))
+	}
+	if i.YyeGT != nil {
+		predicates = append(predicates, project.YyeGT(*i.YyeGT))
+	}
+	if i.YyeGTE != nil {
+		predicates = append(predicates, project.YyeGTE(*i.YyeGTE))
+	}
+	if i.YyeLT != nil {
+		predicates = append(predicates, project.YyeLT(*i.YyeLT))
+	}
+	if i.YyeLTE != nil {
+		predicates = append(predicates, project.YyeLTE(*i.YyeLTE))
+	}
+	if i.YyeIsNil {
+		predicates = append(predicates, project.YyeIsNil())
+	}
+	if i.YyeNotNil {
+		predicates = append(predicates, project.YyeNotNil())
+	}
+	if i.Xjl != nil {
+		predicates = append(predicates, project.XjlEQ(*i.Xjl))
+	}
+	if i.XjlNEQ != nil {
+		predicates = append(predicates, project.XjlNEQ(*i.XjlNEQ))
+	}
+	if len(i.XjlIn) > 0 {
+		predicates = append(predicates, project.XjlIn(i.XjlIn...))
+	}
+	if len(i.XjlNotIn) > 0 {
+		predicates = append(predicates, project.XjlNotIn(i.XjlNotIn...))
+	}
+	if i.XjlGT != nil {
+		predicates = append(predicates, project.XjlGT(*i.XjlGT))
+	}
+	if i.XjlGTE != nil {
+		predicates = append(predicates, project.XjlGTE(*i.XjlGTE))
+	}
+	if i.XjlLT != nil {
+		predicates = append(predicates, project.XjlLT(*i.XjlLT))
+	}
+	if i.XjlLTE != nil {
+		predicates = append(predicates, project.XjlLTE(*i.XjlLTE))
+	}
+	if i.XjlIsNil {
+		predicates = append(predicates, project.XjlIsNil())
+	}
+	if i.XjlNotNil {
+		predicates = append(predicates, project.XjlNotNil())
+	}
+	if i.XmglfYs != nil {
+		predicates = append(predicates, project.XmglfYsEQ(*i.XmglfYs))
+	}
+	if i.XmglfYsNEQ != nil {
+		predicates = append(predicates, project.XmglfYsNEQ(*i.XmglfYsNEQ))
+	}
+	if len(i.XmglfYsIn) > 0 {
+		predicates = append(predicates, project.XmglfYsIn(i.XmglfYsIn...))
+	}
+	if len(i.XmglfYsNotIn) > 0 {
+		predicates = append(predicates, project.XmglfYsNotIn(i.XmglfYsNotIn...))
+	}
+	if i.XmglfYsGT != nil {
+		predicates = append(predicates, project.XmglfYsGT(*i.XmglfYsGT))
+	}
+	if i.XmglfYsGTE != nil {
+		predicates = append(predicates, project.XmglfYsGTE(*i.XmglfYsGTE))
+	}
+	if i.XmglfYsLT != nil {
+		predicates = append(predicates, project.XmglfYsLT(*i.XmglfYsLT))
+	}
+	if i.XmglfYsLTE != nil {
+		predicates = append(predicates, project.XmglfYsLTE(*i.XmglfYsLTE))
+	}
+	if i.XmglfYsIsNil {
+		predicates = append(predicates, project.XmglfYsIsNil())
+	}
+	if i.XmglfYsNotNil {
+		predicates = append(predicates, project.XmglfYsNotNil())
+	}
+	if i.XmglfLj != nil {
+		predicates = append(predicates, project.XmglfLjEQ(*i.XmglfLj))
+	}
+	if i.XmglfLjNEQ != nil {
+		predicates = append(predicates, project.XmglfLjNEQ(*i.XmglfLjNEQ))
+	}
+	if len(i.XmglfLjIn) > 0 {
+		predicates = append(predicates, project.XmglfLjIn(i.XmglfLjIn...))
+	}
+	if len(i.XmglfLjNotIn) > 0 {
+		predicates = append(predicates, project.XmglfLjNotIn(i.XmglfLjNotIn...))
+	}
+	if i.XmglfLjGT != nil {
+		predicates = append(predicates, project.XmglfLjGT(*i.XmglfLjGT))
+	}
+	if i.XmglfLjGTE != nil {
+		predicates = append(predicates, project.XmglfLjGTE(*i.XmglfLjGTE))
+	}
+	if i.XmglfLjLT != nil {
+		predicates = append(predicates, project.XmglfLjLT(*i.XmglfLjLT))
+	}
+	if i.XmglfLjLTE != nil {
+		predicates = append(predicates, project.XmglfLjLTE(*i.XmglfLjLTE))
+	}
+	if i.XmglfLjIsNil {
+		predicates = append(predicates, project.XmglfLjIsNil())
+	}
+	if i.XmglfLjNotNil {
+		predicates = append(predicates, project.XmglfLjNotNil())
+	}
+	if i.Xmsjf != nil {
+		predicates = append(predicates, project.XmsjfEQ(*i.Xmsjf))
+	}
+	if i.XmsjfNEQ != nil {
+		predicates = append(predicates, project.XmsjfNEQ(*i.XmsjfNEQ))
+	}
+	if len(i.XmsjfIn) > 0 {
+		predicates = append(predicates, project.XmsjfIn(i.XmsjfIn...))
+	}
+	if len(i.XmsjfNotIn) > 0 {
+		predicates = append(predicates, project.XmsjfNotIn(i.XmsjfNotIn...))
+	}
+	if i.XmsjfGT != nil {
+		predicates = append(predicates, project.XmsjfGT(*i.XmsjfGT))
+	}
+	if i.XmsjfGTE != nil {
+		predicates = append(predicates, project.XmsjfGTE(*i.XmsjfGTE))
+	}
+	if i.XmsjfLT != nil {
+		predicates = append(predicates, project.XmsjfLT(*i.XmsjfLT))
+	}
+	if i.XmsjfLTE != nil {
+		predicates = append(predicates, project.XmsjfLTE(*i.XmsjfLTE))
+	}
+	if i.XmsjfIsNil {
+		predicates = append(predicates, project.XmsjfIsNil())
+	}
+	if i.XmsjfNotNil {
+		predicates = append(predicates, project.XmsjfNotNil())
+	}
+	if i.Xmfzr != nil {
+		predicates = append(predicates, project.XmfzrEQ(*i.Xmfzr))
+	}
+	if i.XmfzrNEQ != nil {
+		predicates = append(predicates, project.XmfzrNEQ(*i.XmfzrNEQ))
+	}
+	if len(i.XmfzrIn) > 0 {
+		predicates = append(predicates, project.XmfzrIn(i.XmfzrIn...))
+	}
+	if len(i.XmfzrNotIn) > 0 {
+		predicates = append(predicates, project.XmfzrNotIn(i.XmfzrNotIn...))
+	}
+	if i.XmfzrGT != nil {
+		predicates = append(predicates, project.XmfzrGT(*i.XmfzrGT))
+	}
+	if i.XmfzrGTE != nil {
+		predicates = append(predicates, project.XmfzrGTE(*i.XmfzrGTE))
+	}
+	if i.XmfzrLT != nil {
+		predicates = append(predicates, project.XmfzrLT(*i.XmfzrLT))
+	}
+	if i.XmfzrLTE != nil {
+		predicates = append(predicates, project.XmfzrLTE(*i.XmfzrLTE))
+	}
+	if i.XmfzrContains != nil {
+		predicates = append(predicates, project.XmfzrContains(*i.XmfzrContains))
+	}
+	if i.XmfzrHasPrefix != nil {
+		predicates = append(predicates, project.XmfzrHasPrefix(*i.XmfzrHasPrefix))
+	}
+	if i.XmfzrHasSuffix != nil {
+		predicates = append(predicates, project.XmfzrHasSuffix(*i.XmfzrHasSuffix))
+	}
+	if i.XmfzrIsNil {
+		predicates = append(predicates, project.XmfzrIsNil())
+	}
+	if i.XmfzrNotNil {
+		predicates = append(predicates, project.XmfzrNotNil())
+	}
+	if i.XmfzrEqualFold != nil {
+		predicates = append(predicates, project.XmfzrEqualFold(*i.XmfzrEqualFold))
+	}
+	if i.XmfzrContainsFold != nil {
+		predicates = append(predicates, project.XmfzrContainsFold(*i.XmfzrContainsFold))
+	}
+	if i.OwnerApplyAmount != nil {
+		predicates = append(predicates, project.OwnerApplyAmountEQ(*i.OwnerApplyAmount))
+	}
+	if i.OwnerApplyAmountNEQ != nil {
+		predicates = append(predicates, project.OwnerApplyAmountNEQ(*i.OwnerApplyAmountNEQ))
+	}
+	if len(i.OwnerApplyAmountIn) > 0 {
+		predicates = append(predicates, project.OwnerApplyAmountIn(i.OwnerApplyAmountIn...))
+	}
+	if len(i.OwnerApplyAmountNotIn) > 0 {
+		predicates = append(predicates, project.OwnerApplyAmountNotIn(i.OwnerApplyAmountNotIn...))
+	}
+	if i.OwnerApplyAmountGT != nil {
+		predicates = append(predicates, project.OwnerApplyAmountGT(*i.OwnerApplyAmountGT))
+	}
+	if i.OwnerApplyAmountGTE != nil {
+		predicates = append(predicates, project.OwnerApplyAmountGTE(*i.OwnerApplyAmountGTE))
+	}
+	if i.OwnerApplyAmountLT != nil {
+		predicates = append(predicates, project.OwnerApplyAmountLT(*i.OwnerApplyAmountLT))
+	}
+	if i.OwnerApplyAmountLTE != nil {
+		predicates = append(predicates, project.OwnerApplyAmountLTE(*i.OwnerApplyAmountLTE))
+	}
+	if i.OwnerApplyAmountIsNil {
+		predicates = append(predicates, project.OwnerApplyAmountIsNil())
+	}
+	if i.OwnerApplyAmountNotNil {
+		predicates = append(predicates, project.OwnerApplyAmountNotNil())
+	}
+	if i.OwnerApplyCount != nil {
+		predicates = append(predicates, project.OwnerApplyCountEQ(*i.OwnerApplyCount))
+	}
+	if i.OwnerApplyCountNEQ != nil {
+		predicates = append(predicates, project.OwnerApplyCountNEQ(*i.OwnerApplyCountNEQ))
+	}
+	if len(i.OwnerApplyCountIn) > 0 {
+		predicates = append(predicates, project.OwnerApplyCountIn(i.OwnerApplyCountIn...))
+	}
+	if len(i.OwnerApplyCountNotIn) > 0 {
+		predicates = append(predicates, project.OwnerApplyCountNotIn(i.OwnerApplyCountNotIn...))
+	}
+	if i.OwnerApplyCountGT != nil {
+		predicates = append(predicates, project.OwnerApplyCountGT(*i.OwnerApplyCountGT))
+	}
+	if i.OwnerApplyCountGTE != nil {
+		predicates = append(predicates, project.OwnerApplyCountGTE(*i.OwnerApplyCountGTE))
+	}
+	if i.OwnerApplyCountLT != nil {
+		predicates = append(predicates, project.OwnerApplyCountLT(*i.OwnerApplyCountLT))
+	}
+	if i.OwnerApplyCountLTE != nil {
+		predicates = append(predicates, project.OwnerApplyCountLTE(*i.OwnerApplyCountLTE))
+	}
+	if i.OwnerApplyCountIsNil {
+		predicates = append(predicates, project.OwnerApplyCountIsNil())
+	}
+	if i.OwnerApplyCountNotNil {
+		predicates = append(predicates, project.OwnerApplyCountNotNil())
+	}
+	if i.OwnerApproveAmount != nil {
+		predicates = append(predicates, project.OwnerApproveAmountEQ(*i.OwnerApproveAmount))
+	}
+	if i.OwnerApproveAmountNEQ != nil {
+		predicates = append(predicates, project.OwnerApproveAmountNEQ(*i.OwnerApproveAmountNEQ))
+	}
+	if len(i.OwnerApproveAmountIn) > 0 {
+		predicates = append(predicates, project.OwnerApproveAmountIn(i.OwnerApproveAmountIn...))
+	}
+	if len(i.OwnerApproveAmountNotIn) > 0 {
+		predicates = append(predicates, project.OwnerApproveAmountNotIn(i.OwnerApproveAmountNotIn...))
+	}
+	if i.OwnerApproveAmountGT != nil {
+		predicates = append(predicates, project.OwnerApproveAmountGT(*i.OwnerApproveAmountGT))
+	}
+	if i.OwnerApproveAmountGTE != nil {
+		predicates = append(predicates, project.OwnerApproveAmountGTE(*i.OwnerApproveAmountGTE))
+	}
+	if i.OwnerApproveAmountLT != nil {
+		predicates = append(predicates, project.OwnerApproveAmountLT(*i.OwnerApproveAmountLT))
+	}
+	if i.OwnerApproveAmountLTE != nil {
+		predicates = append(predicates, project.OwnerApproveAmountLTE(*i.OwnerApproveAmountLTE))
+	}
+	if i.OwnerApproveAmountIsNil {
+		predicates = append(predicates, project.OwnerApproveAmountIsNil())
+	}
+	if i.OwnerApproveAmountNotNil {
+		predicates = append(predicates, project.OwnerApproveAmountNotNil())
+	}
+	if i.OwnerApproveCount != nil {
+		predicates = append(predicates, project.OwnerApproveCountEQ(*i.OwnerApproveCount))
+	}
+	if i.OwnerApproveCountNEQ != nil {
+		predicates = append(predicates, project.OwnerApproveCountNEQ(*i.OwnerApproveCountNEQ))
+	}
+	if len(i.OwnerApproveCountIn) > 0 {
+		predicates = append(predicates, project.OwnerApproveCountIn(i.OwnerApproveCountIn...))
+	}
+	if len(i.OwnerApproveCountNotIn) > 0 {
+		predicates = append(predicates, project.OwnerApproveCountNotIn(i.OwnerApproveCountNotIn...))
+	}
+	if i.OwnerApproveCountGT != nil {
+		predicates = append(predicates, project.OwnerApproveCountGT(*i.OwnerApproveCountGT))
+	}
+	if i.OwnerApproveCountGTE != nil {
+		predicates = append(predicates, project.OwnerApproveCountGTE(*i.OwnerApproveCountGTE))
+	}
+	if i.OwnerApproveCountLT != nil {
+		predicates = append(predicates, project.OwnerApproveCountLT(*i.OwnerApproveCountLT))
+	}
+	if i.OwnerApproveCountLTE != nil {
+		predicates = append(predicates, project.OwnerApproveCountLTE(*i.OwnerApproveCountLTE))
+	}
+	if i.OwnerApproveCountIsNil {
+		predicates = append(predicates, project.OwnerApproveCountIsNil())
+	}
+	if i.OwnerApproveCountNotNil {
+		predicates = append(predicates, project.OwnerApproveCountNotNil())
+	}
+	if i.ContractorApplyAmount != nil {
+		predicates = append(predicates, project.ContractorApplyAmountEQ(*i.ContractorApplyAmount))
+	}
+	if i.ContractorApplyAmountNEQ != nil {
+		predicates = append(predicates, project.ContractorApplyAmountNEQ(*i.ContractorApplyAmountNEQ))
+	}
+	if len(i.ContractorApplyAmountIn) > 0 {
+		predicates = append(predicates, project.ContractorApplyAmountIn(i.ContractorApplyAmountIn...))
+	}
+	if len(i.ContractorApplyAmountNotIn) > 0 {
+		predicates = append(predicates, project.ContractorApplyAmountNotIn(i.ContractorApplyAmountNotIn...))
+	}
+	if i.ContractorApplyAmountGT != nil {
+		predicates = append(predicates, project.ContractorApplyAmountGT(*i.ContractorApplyAmountGT))
+	}
+	if i.ContractorApplyAmountGTE != nil {
+		predicates = append(predicates, project.ContractorApplyAmountGTE(*i.ContractorApplyAmountGTE))
+	}
+	if i.ContractorApplyAmountLT != nil {
+		predicates = append(predicates, project.ContractorApplyAmountLT(*i.ContractorApplyAmountLT))
+	}
+	if i.ContractorApplyAmountLTE != nil {
+		predicates = append(predicates, project.ContractorApplyAmountLTE(*i.ContractorApplyAmountLTE))
+	}
+	if i.ContractorApplyAmountIsNil {
+		predicates = append(predicates, project.ContractorApplyAmountIsNil())
+	}
+	if i.ContractorApplyAmountNotNil {
+		predicates = append(predicates, project.ContractorApplyAmountNotNil())
+	}
+	if i.ContractorApplyCount != nil {
+		predicates = append(predicates, project.ContractorApplyCountEQ(*i.ContractorApplyCount))
+	}
+	if i.ContractorApplyCountNEQ != nil {
+		predicates = append(predicates, project.ContractorApplyCountNEQ(*i.ContractorApplyCountNEQ))
+	}
+	if len(i.ContractorApplyCountIn) > 0 {
+		predicates = append(predicates, project.ContractorApplyCountIn(i.ContractorApplyCountIn...))
+	}
+	if len(i.ContractorApplyCountNotIn) > 0 {
+		predicates = append(predicates, project.ContractorApplyCountNotIn(i.ContractorApplyCountNotIn...))
+	}
+	if i.ContractorApplyCountGT != nil {
+		predicates = append(predicates, project.ContractorApplyCountGT(*i.ContractorApplyCountGT))
+	}
+	if i.ContractorApplyCountGTE != nil {
+		predicates = append(predicates, project.ContractorApplyCountGTE(*i.ContractorApplyCountGTE))
+	}
+	if i.ContractorApplyCountLT != nil {
+		predicates = append(predicates, project.ContractorApplyCountLT(*i.ContractorApplyCountLT))
+	}
+	if i.ContractorApplyCountLTE != nil {
+		predicates = append(predicates, project.ContractorApplyCountLTE(*i.ContractorApplyCountLTE))
+	}
+	if i.ContractorApplyCountIsNil {
+		predicates = append(predicates, project.ContractorApplyCountIsNil())
+	}
+	if i.ContractorApplyCountNotNil {
+		predicates = append(predicates, project.ContractorApplyCountNotNil())
+	}
+	if i.ContractorApproveAmount != nil {
+		predicates = append(predicates, project.ContractorApproveAmountEQ(*i.ContractorApproveAmount))
+	}
+	if i.ContractorApproveAmountNEQ != nil {
+		predicates = append(predicates, project.ContractorApproveAmountNEQ(*i.ContractorApproveAmountNEQ))
+	}
+	if len(i.ContractorApproveAmountIn) > 0 {
+		predicates = append(predicates, project.ContractorApproveAmountIn(i.ContractorApproveAmountIn...))
+	}
+	if len(i.ContractorApproveAmountNotIn) > 0 {
+		predicates = append(predicates, project.ContractorApproveAmountNotIn(i.ContractorApproveAmountNotIn...))
+	}
+	if i.ContractorApproveAmountGT != nil {
+		predicates = append(predicates, project.ContractorApproveAmountGT(*i.ContractorApproveAmountGT))
+	}
+	if i.ContractorApproveAmountGTE != nil {
+		predicates = append(predicates, project.ContractorApproveAmountGTE(*i.ContractorApproveAmountGTE))
+	}
+	if i.ContractorApproveAmountLT != nil {
+		predicates = append(predicates, project.ContractorApproveAmountLT(*i.ContractorApproveAmountLT))
+	}
+	if i.ContractorApproveAmountLTE != nil {
+		predicates = append(predicates, project.ContractorApproveAmountLTE(*i.ContractorApproveAmountLTE))
+	}
+	if i.ContractorApproveAmountIsNil {
+		predicates = append(predicates, project.ContractorApproveAmountIsNil())
+	}
+	if i.ContractorApproveAmountNotNil {
+		predicates = append(predicates, project.ContractorApproveAmountNotNil())
+	}
+	if i.ContractorApproveCount != nil {
+		predicates = append(predicates, project.ContractorApproveCountEQ(*i.ContractorApproveCount))
+	}
+	if i.ContractorApproveCountNEQ != nil {
+		predicates = append(predicates, project.ContractorApproveCountNEQ(*i.ContractorApproveCountNEQ))
+	}
+	if len(i.ContractorApproveCountIn) > 0 {
+		predicates = append(predicates, project.ContractorApproveCountIn(i.ContractorApproveCountIn...))
+	}
+	if len(i.ContractorApproveCountNotIn) > 0 {
+		predicates = append(predicates, project.ContractorApproveCountNotIn(i.ContractorApproveCountNotIn...))
+	}
+	if i.ContractorApproveCountGT != nil {
+		predicates = append(predicates, project.ContractorApproveCountGT(*i.ContractorApproveCountGT))
+	}
+	if i.ContractorApproveCountGTE != nil {
+		predicates = append(predicates, project.ContractorApproveCountGTE(*i.ContractorApproveCountGTE))
+	}
+	if i.ContractorApproveCountLT != nil {
+		predicates = append(predicates, project.ContractorApproveCountLT(*i.ContractorApproveCountLT))
+	}
+	if i.ContractorApproveCountLTE != nil {
+		predicates = append(predicates, project.ContractorApproveCountLTE(*i.ContractorApproveCountLTE))
+	}
+	if i.ContractorApproveCountIsNil {
+		predicates = append(predicates, project.ContractorApproveCountIsNil())
+	}
+	if i.ContractorApproveCountNotNil {
+		predicates = append(predicates, project.ContractorApproveCountNotNil())
+	}
+	if i.InstallProgress != nil {
+		predicates = append(predicates, project.InstallProgressEQ(*i.InstallProgress))
+	}
+	if i.InstallProgressNEQ != nil {
+		predicates = append(predicates, project.InstallProgressNEQ(*i.InstallProgressNEQ))
+	}
+	if len(i.InstallProgressIn) > 0 {
+		predicates = append(predicates, project.InstallProgressIn(i.InstallProgressIn...))
+	}
+	if len(i.InstallProgressNotIn) > 0 {
+		predicates = append(predicates, project.InstallProgressNotIn(i.InstallProgressNotIn...))
+	}
+	if i.InstallProgressGT != nil {
+		predicates = append(predicates, project.InstallProgressGT(*i.InstallProgressGT))
+	}
+	if i.InstallProgressGTE != nil {
+		predicates = append(predicates, project.InstallProgressGTE(*i.InstallProgressGTE))
+	}
+	if i.InstallProgressLT != nil {
+		predicates = append(predicates, project.InstallProgressLT(*i.InstallProgressLT))
+	}
+	if i.InstallProgressLTE != nil {
+		predicates = append(predicates, project.InstallProgressLTE(*i.InstallProgressLTE))
+	}
+	if i.InstallProgressIsNil {
+		predicates = append(predicates, project.InstallProgressIsNil())
+	}
+	if i.InstallProgressNotNil {
+		predicates = append(predicates, project.InstallProgressNotNil())
+	}
+	if i.EffectiveContractAmount != nil {
+		predicates = append(predicates, project.EffectiveContractAmountEQ(*i.EffectiveContractAmount))
+	}
+	if i.EffectiveContractAmountNEQ != nil {
+		predicates = append(predicates, project.EffectiveContractAmountNEQ(*i.EffectiveContractAmountNEQ))
+	}
+	if len(i.EffectiveContractAmountIn) > 0 {
+		predicates = append(predicates, project.EffectiveContractAmountIn(i.EffectiveContractAmountIn...))
+	}
+	if len(i.EffectiveContractAmountNotIn) > 0 {
+		predicates = append(predicates, project.EffectiveContractAmountNotIn(i.EffectiveContractAmountNotIn...))
+	}
+	if i.EffectiveContractAmountGT != nil {
+		predicates = append(predicates, project.EffectiveContractAmountGT(*i.EffectiveContractAmountGT))
+	}
+	if i.EffectiveContractAmountGTE != nil {
+		predicates = append(predicates, project.EffectiveContractAmountGTE(*i.EffectiveContractAmountGTE))
+	}
+	if i.EffectiveContractAmountLT != nil {
+		predicates = append(predicates, project.EffectiveContractAmountLT(*i.EffectiveContractAmountLT))
+	}
+	if i.EffectiveContractAmountLTE != nil {
+		predicates = append(predicates, project.EffectiveContractAmountLTE(*i.EffectiveContractAmountLTE))
+	}
+	if i.EffectiveContractAmountIsNil {
+		predicates = append(predicates, project.EffectiveContractAmountIsNil())
+	}
+	if i.EffectiveContractAmountNotNil {
+		predicates = append(predicates, project.EffectiveContractAmountNotNil())
+	}
+	if i.VaApplyAmount != nil {
+		predicates = append(predicates, project.VaApplyAmountEQ(*i.VaApplyAmount))
+	}
+	if i.VaApplyAmountNEQ != nil {
+		predicates = append(predicates, project.VaApplyAmountNEQ(*i.VaApplyAmountNEQ))
+	}
+	if len(i.VaApplyAmountIn) > 0 {
+		predicates = append(predicates, project.VaApplyAmountIn(i.VaApplyAmountIn...))
+	}
+	if len(i.VaApplyAmountNotIn) > 0 {
+		predicates = append(predicates, project.VaApplyAmountNotIn(i.VaApplyAmountNotIn...))
+	}
+	if i.VaApplyAmountGT != nil {
+		predicates = append(predicates, project.VaApplyAmountGT(*i.VaApplyAmountGT))
+	}
+	if i.VaApplyAmountGTE != nil {
+		predicates = append(predicates, project.VaApplyAmountGTE(*i.VaApplyAmountGTE))
+	}
+	if i.VaApplyAmountLT != nil {
+		predicates = append(predicates, project.VaApplyAmountLT(*i.VaApplyAmountLT))
+	}
+	if i.VaApplyAmountLTE != nil {
+		predicates = append(predicates, project.VaApplyAmountLTE(*i.VaApplyAmountLTE))
+	}
+	if i.VaApplyAmountIsNil {
+		predicates = append(predicates, project.VaApplyAmountIsNil())
+	}
+	if i.VaApplyAmountNotNil {
+		predicates = append(predicates, project.VaApplyAmountNotNil())
+	}
+	if i.VaApproveAmount != nil {
+		predicates = append(predicates, project.VaApproveAmountEQ(*i.VaApproveAmount))
+	}
+	if i.VaApproveAmountNEQ != nil {
+		predicates = append(predicates, project.VaApproveAmountNEQ(*i.VaApproveAmountNEQ))
+	}
+	if len(i.VaApproveAmountIn) > 0 {
+		predicates = append(predicates, project.VaApproveAmountIn(i.VaApproveAmountIn...))
+	}
+	if len(i.VaApproveAmountNotIn) > 0 {
+		predicates = append(predicates, project.VaApproveAmountNotIn(i.VaApproveAmountNotIn...))
+	}
+	if i.VaApproveAmountGT != nil {
+		predicates = append(predicates, project.VaApproveAmountGT(*i.VaApproveAmountGT))
+	}
+	if i.VaApproveAmountGTE != nil {
+		predicates = append(predicates, project.VaApproveAmountGTE(*i.VaApproveAmountGTE))
+	}
+	if i.VaApproveAmountLT != nil {
+		predicates = append(predicates, project.VaApproveAmountLT(*i.VaApproveAmountLT))
+	}
+	if i.VaApproveAmountLTE != nil {
+		predicates = append(predicates, project.VaApproveAmountLTE(*i.VaApproveAmountLTE))
+	}
+	if i.VaApproveAmountIsNil {
+		predicates = append(predicates, project.VaApproveAmountIsNil())
+	}
+	if i.VaApproveAmountNotNil {
+		predicates = append(predicates, project.VaApproveAmountNotNil())
+	}
+
+	if i.HasVos != nil {
+		p := project.HasVos()
+		if !*i.HasVos {
+			p = project.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasVosWith) > 0 {
+		with := make([]predicate.ProjectVO, 0, len(i.HasVosWith))
+		for _, w := range i.HasVosWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasVosWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, project.HasVosWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyProjectWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return project.And(predicates...), nil
+	}
+}
+
+// ProjectVOWhereInput represents a where input for filtering ProjectVO queries.
+type ProjectVOWhereInput struct {
+	Predicates []predicate.ProjectVO  `json:"-"`
+	Not        *ProjectVOWhereInput   `json:"not,omitempty"`
+	Or         []*ProjectVOWhereInput `json:"or,omitempty"`
+	And        []*ProjectVOWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "project_id" field predicates.
+	ProjectID             *xid.ID  `json:"projectID,omitempty"`
+	ProjectIDNEQ          *xid.ID  `json:"projectIDNEQ,omitempty"`
+	ProjectIDIn           []xid.ID `json:"projectIDIn,omitempty"`
+	ProjectIDNotIn        []xid.ID `json:"projectIDNotIn,omitempty"`
+	ProjectIDGT           *xid.ID  `json:"projectIDGT,omitempty"`
+	ProjectIDGTE          *xid.ID  `json:"projectIDGTE,omitempty"`
+	ProjectIDLT           *xid.ID  `json:"projectIDLT,omitempty"`
+	ProjectIDLTE          *xid.ID  `json:"projectIDLTE,omitempty"`
+	ProjectIDContains     *xid.ID  `json:"projectIDContains,omitempty"`
+	ProjectIDHasPrefix    *xid.ID  `json:"projectIDHasPrefix,omitempty"`
+	ProjectIDHasSuffix    *xid.ID  `json:"projectIDHasSuffix,omitempty"`
+	ProjectIDEqualFold    *xid.ID  `json:"projectIDEqualFold,omitempty"`
+	ProjectIDContainsFold *xid.ID  `json:"projectIDContainsFold,omitempty"`
+
+	// "change_type" field predicates.
+	ChangeType      *int  `json:"changeType,omitempty"`
+	ChangeTypeNEQ   *int  `json:"changeTypeNEQ,omitempty"`
+	ChangeTypeIn    []int `json:"changeTypeIn,omitempty"`
+	ChangeTypeNotIn []int `json:"changeTypeNotIn,omitempty"`
+	ChangeTypeGT    *int  `json:"changeTypeGT,omitempty"`
+	ChangeTypeGTE   *int  `json:"changeTypeGTE,omitempty"`
+	ChangeTypeLT    *int  `json:"changeTypeLT,omitempty"`
+	ChangeTypeLTE   *int  `json:"changeTypeLTE,omitempty"`
+
+	// "is_approved" field predicates.
+	IsApproved    *bool `json:"isApproved,omitempty"`
+	IsApprovedNEQ *bool `json:"isApprovedNEQ,omitempty"`
+
+	// "azjd" field predicates.
+	Azjd       *float64  `json:"azjd,omitempty"`
+	AzjdNEQ    *float64  `json:"azjdNEQ,omitempty"`
+	AzjdIn     []float64 `json:"azjdIn,omitempty"`
+	AzjdNotIn  []float64 `json:"azjdNotIn,omitempty"`
+	AzjdGT     *float64  `json:"azjdGT,omitempty"`
+	AzjdGTE    *float64  `json:"azjdGTE,omitempty"`
+	AzjdLT     *float64  `json:"azjdLT,omitempty"`
+	AzjdLTE    *float64  `json:"azjdLTE,omitempty"`
+	AzjdIsNil  bool      `json:"azjdIsNil,omitempty"`
+	AzjdNotNil bool      `json:"azjdNotNil,omitempty"`
+
+	// "yxhyze" field predicates.
+	Yxhyze       *float64  `json:"yxhyze,omitempty"`
+	YxhyzeNEQ    *float64  `json:"yxhyzeNEQ,omitempty"`
+	YxhyzeIn     []float64 `json:"yxhyzeIn,omitempty"`
+	YxhyzeNotIn  []float64 `json:"yxhyzeNotIn,omitempty"`
+	YxhyzeGT     *float64  `json:"yxhyzeGT,omitempty"`
+	YxhyzeGTE    *float64  `json:"yxhyzeGTE,omitempty"`
+	YxhyzeLT     *float64  `json:"yxhyzeLT,omitempty"`
+	YxhyzeLTE    *float64  `json:"yxhyzeLTE,omitempty"`
+	YxhyzeIsNil  bool      `json:"yxhyzeIsNil,omitempty"`
+	YxhyzeNotNil bool      `json:"yxhyzeNotNil,omitempty"`
+
+	// "apply_amount" field predicates.
+	ApplyAmount       *float64  `json:"applyAmount,omitempty"`
+	ApplyAmountNEQ    *float64  `json:"applyAmountNEQ,omitempty"`
+	ApplyAmountIn     []float64 `json:"applyAmountIn,omitempty"`
+	ApplyAmountNotIn  []float64 `json:"applyAmountNotIn,omitempty"`
+	ApplyAmountGT     *float64  `json:"applyAmountGT,omitempty"`
+	ApplyAmountGTE    *float64  `json:"applyAmountGTE,omitempty"`
+	ApplyAmountLT     *float64  `json:"applyAmountLT,omitempty"`
+	ApplyAmountLTE    *float64  `json:"applyAmountLTE,omitempty"`
+	ApplyAmountIsNil  bool      `json:"applyAmountIsNil,omitempty"`
+	ApplyAmountNotNil bool      `json:"applyAmountNotNil,omitempty"`
+
+	// "approve_amount" field predicates.
+	ApproveAmount       *float64  `json:"approveAmount,omitempty"`
+	ApproveAmountNEQ    *float64  `json:"approveAmountNEQ,omitempty"`
+	ApproveAmountIn     []float64 `json:"approveAmountIn,omitempty"`
+	ApproveAmountNotIn  []float64 `json:"approveAmountNotIn,omitempty"`
+	ApproveAmountGT     *float64  `json:"approveAmountGT,omitempty"`
+	ApproveAmountGTE    *float64  `json:"approveAmountGTE,omitempty"`
+	ApproveAmountLT     *float64  `json:"approveAmountLT,omitempty"`
+	ApproveAmountLTE    *float64  `json:"approveAmountLTE,omitempty"`
+	ApproveAmountIsNil  bool      `json:"approveAmountIsNil,omitempty"`
+	ApproveAmountNotNil bool      `json:"approveAmountNotNil,omitempty"`
+
+	// "project" edge predicates.
+	HasProject     *bool                `json:"hasProject,omitempty"`
+	HasProjectWith []*ProjectWhereInput `json:"hasProjectWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *ProjectVOWhereInput) AddPredicates(predicates ...predicate.ProjectVO) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the ProjectVOWhereInput filter on the ProjectVOQuery builder.
+func (i *ProjectVOWhereInput) Filter(q *ProjectVOQuery) (*ProjectVOQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyProjectVOWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyProjectVOWhereInput is returned in case the ProjectVOWhereInput is empty.
+var ErrEmptyProjectVOWhereInput = errors.New("ent: empty predicate ProjectVOWhereInput")
+
+// P returns a predicate for filtering projectvos.
+// An error is returned if the input is empty or invalid.
+func (i *ProjectVOWhereInput) P() (predicate.ProjectVO, error) {
+	var predicates []predicate.ProjectVO
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, projectvo.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.ProjectVO, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, projectvo.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.ProjectVO, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, projectvo.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, projectvo.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, projectvo.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, projectvo.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, projectvo.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, projectvo.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, projectvo.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, projectvo.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, projectvo.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, projectvo.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, projectvo.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, projectvo.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, projectvo.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, projectvo.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, projectvo.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, projectvo.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, projectvo.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, projectvo.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, projectvo.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, projectvo.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, projectvo.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, projectvo.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, projectvo.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, projectvo.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, projectvo.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.ProjectID != nil {
+		predicates = append(predicates, projectvo.ProjectIDEQ(*i.ProjectID))
+	}
+	if i.ProjectIDNEQ != nil {
+		predicates = append(predicates, projectvo.ProjectIDNEQ(*i.ProjectIDNEQ))
+	}
+	if len(i.ProjectIDIn) > 0 {
+		predicates = append(predicates, projectvo.ProjectIDIn(i.ProjectIDIn...))
+	}
+	if len(i.ProjectIDNotIn) > 0 {
+		predicates = append(predicates, projectvo.ProjectIDNotIn(i.ProjectIDNotIn...))
+	}
+	if i.ProjectIDGT != nil {
+		predicates = append(predicates, projectvo.ProjectIDGT(*i.ProjectIDGT))
+	}
+	if i.ProjectIDGTE != nil {
+		predicates = append(predicates, projectvo.ProjectIDGTE(*i.ProjectIDGTE))
+	}
+	if i.ProjectIDLT != nil {
+		predicates = append(predicates, projectvo.ProjectIDLT(*i.ProjectIDLT))
+	}
+	if i.ProjectIDLTE != nil {
+		predicates = append(predicates, projectvo.ProjectIDLTE(*i.ProjectIDLTE))
+	}
+	if i.ProjectIDContains != nil {
+		predicates = append(predicates, projectvo.ProjectIDContains(*i.ProjectIDContains))
+	}
+	if i.ProjectIDHasPrefix != nil {
+		predicates = append(predicates, projectvo.ProjectIDHasPrefix(*i.ProjectIDHasPrefix))
+	}
+	if i.ProjectIDHasSuffix != nil {
+		predicates = append(predicates, projectvo.ProjectIDHasSuffix(*i.ProjectIDHasSuffix))
+	}
+	if i.ProjectIDEqualFold != nil {
+		predicates = append(predicates, projectvo.ProjectIDEqualFold(*i.ProjectIDEqualFold))
+	}
+	if i.ProjectIDContainsFold != nil {
+		predicates = append(predicates, projectvo.ProjectIDContainsFold(*i.ProjectIDContainsFold))
+	}
+	if i.ChangeType != nil {
+		predicates = append(predicates, projectvo.ChangeTypeEQ(*i.ChangeType))
+	}
+	if i.ChangeTypeNEQ != nil {
+		predicates = append(predicates, projectvo.ChangeTypeNEQ(*i.ChangeTypeNEQ))
+	}
+	if len(i.ChangeTypeIn) > 0 {
+		predicates = append(predicates, projectvo.ChangeTypeIn(i.ChangeTypeIn...))
+	}
+	if len(i.ChangeTypeNotIn) > 0 {
+		predicates = append(predicates, projectvo.ChangeTypeNotIn(i.ChangeTypeNotIn...))
+	}
+	if i.ChangeTypeGT != nil {
+		predicates = append(predicates, projectvo.ChangeTypeGT(*i.ChangeTypeGT))
+	}
+	if i.ChangeTypeGTE != nil {
+		predicates = append(predicates, projectvo.ChangeTypeGTE(*i.ChangeTypeGTE))
+	}
+	if i.ChangeTypeLT != nil {
+		predicates = append(predicates, projectvo.ChangeTypeLT(*i.ChangeTypeLT))
+	}
+	if i.ChangeTypeLTE != nil {
+		predicates = append(predicates, projectvo.ChangeTypeLTE(*i.ChangeTypeLTE))
+	}
+	if i.IsApproved != nil {
+		predicates = append(predicates, projectvo.IsApprovedEQ(*i.IsApproved))
+	}
+	if i.IsApprovedNEQ != nil {
+		predicates = append(predicates, projectvo.IsApprovedNEQ(*i.IsApprovedNEQ))
+	}
+	if i.Azjd != nil {
+		predicates = append(predicates, projectvo.AzjdEQ(*i.Azjd))
+	}
+	if i.AzjdNEQ != nil {
+		predicates = append(predicates, projectvo.AzjdNEQ(*i.AzjdNEQ))
+	}
+	if len(i.AzjdIn) > 0 {
+		predicates = append(predicates, projectvo.AzjdIn(i.AzjdIn...))
+	}
+	if len(i.AzjdNotIn) > 0 {
+		predicates = append(predicates, projectvo.AzjdNotIn(i.AzjdNotIn...))
+	}
+	if i.AzjdGT != nil {
+		predicates = append(predicates, projectvo.AzjdGT(*i.AzjdGT))
+	}
+	if i.AzjdGTE != nil {
+		predicates = append(predicates, projectvo.AzjdGTE(*i.AzjdGTE))
+	}
+	if i.AzjdLT != nil {
+		predicates = append(predicates, projectvo.AzjdLT(*i.AzjdLT))
+	}
+	if i.AzjdLTE != nil {
+		predicates = append(predicates, projectvo.AzjdLTE(*i.AzjdLTE))
+	}
+	if i.AzjdIsNil {
+		predicates = append(predicates, projectvo.AzjdIsNil())
+	}
+	if i.AzjdNotNil {
+		predicates = append(predicates, projectvo.AzjdNotNil())
+	}
+	if i.Yxhyze != nil {
+		predicates = append(predicates, projectvo.YxhyzeEQ(*i.Yxhyze))
+	}
+	if i.YxhyzeNEQ != nil {
+		predicates = append(predicates, projectvo.YxhyzeNEQ(*i.YxhyzeNEQ))
+	}
+	if len(i.YxhyzeIn) > 0 {
+		predicates = append(predicates, projectvo.YxhyzeIn(i.YxhyzeIn...))
+	}
+	if len(i.YxhyzeNotIn) > 0 {
+		predicates = append(predicates, projectvo.YxhyzeNotIn(i.YxhyzeNotIn...))
+	}
+	if i.YxhyzeGT != nil {
+		predicates = append(predicates, projectvo.YxhyzeGT(*i.YxhyzeGT))
+	}
+	if i.YxhyzeGTE != nil {
+		predicates = append(predicates, projectvo.YxhyzeGTE(*i.YxhyzeGTE))
+	}
+	if i.YxhyzeLT != nil {
+		predicates = append(predicates, projectvo.YxhyzeLT(*i.YxhyzeLT))
+	}
+	if i.YxhyzeLTE != nil {
+		predicates = append(predicates, projectvo.YxhyzeLTE(*i.YxhyzeLTE))
+	}
+	if i.YxhyzeIsNil {
+		predicates = append(predicates, projectvo.YxhyzeIsNil())
+	}
+	if i.YxhyzeNotNil {
+		predicates = append(predicates, projectvo.YxhyzeNotNil())
+	}
+	if i.ApplyAmount != nil {
+		predicates = append(predicates, projectvo.ApplyAmountEQ(*i.ApplyAmount))
+	}
+	if i.ApplyAmountNEQ != nil {
+		predicates = append(predicates, projectvo.ApplyAmountNEQ(*i.ApplyAmountNEQ))
+	}
+	if len(i.ApplyAmountIn) > 0 {
+		predicates = append(predicates, projectvo.ApplyAmountIn(i.ApplyAmountIn...))
+	}
+	if len(i.ApplyAmountNotIn) > 0 {
+		predicates = append(predicates, projectvo.ApplyAmountNotIn(i.ApplyAmountNotIn...))
+	}
+	if i.ApplyAmountGT != nil {
+		predicates = append(predicates, projectvo.ApplyAmountGT(*i.ApplyAmountGT))
+	}
+	if i.ApplyAmountGTE != nil {
+		predicates = append(predicates, projectvo.ApplyAmountGTE(*i.ApplyAmountGTE))
+	}
+	if i.ApplyAmountLT != nil {
+		predicates = append(predicates, projectvo.ApplyAmountLT(*i.ApplyAmountLT))
+	}
+	if i.ApplyAmountLTE != nil {
+		predicates = append(predicates, projectvo.ApplyAmountLTE(*i.ApplyAmountLTE))
+	}
+	if i.ApplyAmountIsNil {
+		predicates = append(predicates, projectvo.ApplyAmountIsNil())
+	}
+	if i.ApplyAmountNotNil {
+		predicates = append(predicates, projectvo.ApplyAmountNotNil())
+	}
+	if i.ApproveAmount != nil {
+		predicates = append(predicates, projectvo.ApproveAmountEQ(*i.ApproveAmount))
+	}
+	if i.ApproveAmountNEQ != nil {
+		predicates = append(predicates, projectvo.ApproveAmountNEQ(*i.ApproveAmountNEQ))
+	}
+	if len(i.ApproveAmountIn) > 0 {
+		predicates = append(predicates, projectvo.ApproveAmountIn(i.ApproveAmountIn...))
+	}
+	if len(i.ApproveAmountNotIn) > 0 {
+		predicates = append(predicates, projectvo.ApproveAmountNotIn(i.ApproveAmountNotIn...))
+	}
+	if i.ApproveAmountGT != nil {
+		predicates = append(predicates, projectvo.ApproveAmountGT(*i.ApproveAmountGT))
+	}
+	if i.ApproveAmountGTE != nil {
+		predicates = append(predicates, projectvo.ApproveAmountGTE(*i.ApproveAmountGTE))
+	}
+	if i.ApproveAmountLT != nil {
+		predicates = append(predicates, projectvo.ApproveAmountLT(*i.ApproveAmountLT))
+	}
+	if i.ApproveAmountLTE != nil {
+		predicates = append(predicates, projectvo.ApproveAmountLTE(*i.ApproveAmountLTE))
+	}
+	if i.ApproveAmountIsNil {
+		predicates = append(predicates, projectvo.ApproveAmountIsNil())
+	}
+	if i.ApproveAmountNotNil {
+		predicates = append(predicates, projectvo.ApproveAmountNotNil())
+	}
+
+	if i.HasProject != nil {
+		p := projectvo.HasProject()
+		if !*i.HasProject {
+			p = projectvo.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProjectWith) > 0 {
+		with := make([]predicate.Project, 0, len(i.HasProjectWith))
+		for _, w := range i.HasProjectWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProjectWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, projectvo.HasProjectWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyProjectVOWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return projectvo.And(predicates...), nil
 	}
 }
 

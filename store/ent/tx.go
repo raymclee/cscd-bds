@@ -28,6 +28,10 @@ type Tx struct {
 	Operation *OperationClient
 	// Plot is the client for interacting with the Plot builders.
 	Plot *PlotClient
+	// Project is the client for interacting with the Project builders.
+	Project *ProjectClient
+	// ProjectVO is the client for interacting with the ProjectVO builders.
+	ProjectVO *ProjectVOClient
 	// Province is the client for interacting with the Province builders.
 	Province *ProvinceClient
 	// Tender is the client for interacting with the Tender builders.
@@ -175,6 +179,8 @@ func (tx *Tx) init() {
 	tx.District = NewDistrictClient(tx.config)
 	tx.Operation = NewOperationClient(tx.config)
 	tx.Plot = NewPlotClient(tx.config)
+	tx.Project = NewProjectClient(tx.config)
+	tx.ProjectVO = NewProjectVOClient(tx.config)
 	tx.Province = NewProvinceClient(tx.config)
 	tx.Tender = NewTenderClient(tx.config)
 	tx.User = NewUserClient(tx.config)

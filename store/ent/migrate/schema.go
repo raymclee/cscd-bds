@@ -166,14 +166,14 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "cje_ys", Type: field.TypeInt, Nullable: true},
-		{Name: "cje_lj", Type: field.TypeInt, Nullable: true},
-		{Name: "yye_ys", Type: field.TypeInt, Nullable: true},
-		{Name: "yye_lj", Type: field.TypeInt, Nullable: true},
-		{Name: "xjl_ys", Type: field.TypeInt, Nullable: true},
-		{Name: "xjl_lj", Type: field.TypeInt, Nullable: true},
-		{Name: "xmglf", Type: field.TypeInt, Nullable: true},
-		{Name: "xmsjf", Type: field.TypeInt, Nullable: true},
+		{Name: "cje_ys", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "cje_lj", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "yye_ys", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "yye_lj", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xjl_ys", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xjl_lj", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xmglf", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xmsjf", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
 	}
 	// OperationsTable holds the schema information for the "operations" table.
 	OperationsTable = &schema.Table{
@@ -201,6 +201,67 @@ var (
 				Symbol:     "plots_districts_plots",
 				Columns:    []*schema.Column{PlotsColumns[6]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
+	// ProjectsColumns holds the columns for the "projects" table.
+	ProjectsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "is_finished", Type: field.TypeBool, Default: false},
+		{Name: "cje", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "yye", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xjl", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xmglf_ys", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xmglf_lj", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xmsjf", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "xmfzr", Type: field.TypeString, Nullable: true},
+		{Name: "owner_apply_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "owner_apply_count", Type: field.TypeInt, Nullable: true},
+		{Name: "owner_approve_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "owner_approve_count", Type: field.TypeInt, Nullable: true},
+		{Name: "contractor_apply_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "contractor_apply_count", Type: field.TypeInt, Nullable: true},
+		{Name: "contractor_approve_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "contractor_approve_count", Type: field.TypeInt, Nullable: true},
+		{Name: "install_progress", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "effective_contract_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "va_apply_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "va_approve_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+	}
+	// ProjectsTable holds the schema information for the "projects" table.
+	ProjectsTable = &schema.Table{
+		Name:       "projects",
+		Columns:    ProjectsColumns,
+		PrimaryKey: []*schema.Column{ProjectsColumns[0]},
+	}
+	// ProjectVosColumns holds the columns for the "project_vos" table.
+	ProjectVosColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "change_type", Type: field.TypeInt, Default: 0},
+		{Name: "is_approved", Type: field.TypeBool, Default: false},
+		{Name: "azjd", Type: field.TypeFloat64, Nullable: true},
+		{Name: "yxhyze", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "apply_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "approve_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "project_id", Type: field.TypeString},
+	}
+	// ProjectVosTable holds the schema information for the "project_vos" table.
+	ProjectVosTable = &schema.Table{
+		Name:       "project_vos",
+		Columns:    ProjectVosColumns,
+		PrimaryKey: []*schema.Column{ProjectVosColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "project_vos_projects_vos",
+				Columns:    []*schema.Column{ProjectVosColumns[9]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 		},
@@ -511,6 +572,8 @@ var (
 		DistrictsTable,
 		OperationsTable,
 		PlotsTable,
+		ProjectsTable,
+		ProjectVosTable,
 		ProvincesTable,
 		TendersTable,
 		UsersTable,
@@ -529,6 +592,7 @@ func init() {
 	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
 	PlotsTable.ForeignKeys[0].RefTable = DistrictsTable
+	ProjectVosTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProvincesTable.ForeignKeys[0].RefTable = AreasTable
 	ProvincesTable.ForeignKeys[1].RefTable = CountriesTable
 	TendersTable.ForeignKeys[0].RefTable = AreasTable

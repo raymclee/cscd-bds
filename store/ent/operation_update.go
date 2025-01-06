@@ -35,23 +35,23 @@ func (ou *OperationUpdate) SetUpdatedAt(t time.Time) *OperationUpdate {
 }
 
 // SetCjeYs sets the "cje_ys" field.
-func (ou *OperationUpdate) SetCjeYs(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetCjeYs(f float64) *OperationUpdate {
 	ou.mutation.ResetCjeYs()
-	ou.mutation.SetCjeYs(i)
+	ou.mutation.SetCjeYs(f)
 	return ou
 }
 
 // SetNillableCjeYs sets the "cje_ys" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableCjeYs(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetCjeYs(*i)
+func (ou *OperationUpdate) SetNillableCjeYs(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetCjeYs(*f)
 	}
 	return ou
 }
 
-// AddCjeYs adds i to the "cje_ys" field.
-func (ou *OperationUpdate) AddCjeYs(i int) *OperationUpdate {
-	ou.mutation.AddCjeYs(i)
+// AddCjeYs adds f to the "cje_ys" field.
+func (ou *OperationUpdate) AddCjeYs(f float64) *OperationUpdate {
+	ou.mutation.AddCjeYs(f)
 	return ou
 }
 
@@ -62,23 +62,23 @@ func (ou *OperationUpdate) ClearCjeYs() *OperationUpdate {
 }
 
 // SetCjeLj sets the "cje_lj" field.
-func (ou *OperationUpdate) SetCjeLj(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetCjeLj(f float64) *OperationUpdate {
 	ou.mutation.ResetCjeLj()
-	ou.mutation.SetCjeLj(i)
+	ou.mutation.SetCjeLj(f)
 	return ou
 }
 
 // SetNillableCjeLj sets the "cje_lj" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableCjeLj(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetCjeLj(*i)
+func (ou *OperationUpdate) SetNillableCjeLj(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetCjeLj(*f)
 	}
 	return ou
 }
 
-// AddCjeLj adds i to the "cje_lj" field.
-func (ou *OperationUpdate) AddCjeLj(i int) *OperationUpdate {
-	ou.mutation.AddCjeLj(i)
+// AddCjeLj adds f to the "cje_lj" field.
+func (ou *OperationUpdate) AddCjeLj(f float64) *OperationUpdate {
+	ou.mutation.AddCjeLj(f)
 	return ou
 }
 
@@ -89,23 +89,23 @@ func (ou *OperationUpdate) ClearCjeLj() *OperationUpdate {
 }
 
 // SetYyeYs sets the "yye_ys" field.
-func (ou *OperationUpdate) SetYyeYs(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetYyeYs(f float64) *OperationUpdate {
 	ou.mutation.ResetYyeYs()
-	ou.mutation.SetYyeYs(i)
+	ou.mutation.SetYyeYs(f)
 	return ou
 }
 
 // SetNillableYyeYs sets the "yye_ys" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableYyeYs(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetYyeYs(*i)
+func (ou *OperationUpdate) SetNillableYyeYs(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetYyeYs(*f)
 	}
 	return ou
 }
 
-// AddYyeYs adds i to the "yye_ys" field.
-func (ou *OperationUpdate) AddYyeYs(i int) *OperationUpdate {
-	ou.mutation.AddYyeYs(i)
+// AddYyeYs adds f to the "yye_ys" field.
+func (ou *OperationUpdate) AddYyeYs(f float64) *OperationUpdate {
+	ou.mutation.AddYyeYs(f)
 	return ou
 }
 
@@ -116,23 +116,23 @@ func (ou *OperationUpdate) ClearYyeYs() *OperationUpdate {
 }
 
 // SetYyeLj sets the "yye_lj" field.
-func (ou *OperationUpdate) SetYyeLj(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetYyeLj(f float64) *OperationUpdate {
 	ou.mutation.ResetYyeLj()
-	ou.mutation.SetYyeLj(i)
+	ou.mutation.SetYyeLj(f)
 	return ou
 }
 
 // SetNillableYyeLj sets the "yye_lj" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableYyeLj(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetYyeLj(*i)
+func (ou *OperationUpdate) SetNillableYyeLj(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetYyeLj(*f)
 	}
 	return ou
 }
 
-// AddYyeLj adds i to the "yye_lj" field.
-func (ou *OperationUpdate) AddYyeLj(i int) *OperationUpdate {
-	ou.mutation.AddYyeLj(i)
+// AddYyeLj adds f to the "yye_lj" field.
+func (ou *OperationUpdate) AddYyeLj(f float64) *OperationUpdate {
+	ou.mutation.AddYyeLj(f)
 	return ou
 }
 
@@ -143,23 +143,23 @@ func (ou *OperationUpdate) ClearYyeLj() *OperationUpdate {
 }
 
 // SetXjlYs sets the "xjl_ys" field.
-func (ou *OperationUpdate) SetXjlYs(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetXjlYs(f float64) *OperationUpdate {
 	ou.mutation.ResetXjlYs()
-	ou.mutation.SetXjlYs(i)
+	ou.mutation.SetXjlYs(f)
 	return ou
 }
 
 // SetNillableXjlYs sets the "xjl_ys" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableXjlYs(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetXjlYs(*i)
+func (ou *OperationUpdate) SetNillableXjlYs(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetXjlYs(*f)
 	}
 	return ou
 }
 
-// AddXjlYs adds i to the "xjl_ys" field.
-func (ou *OperationUpdate) AddXjlYs(i int) *OperationUpdate {
-	ou.mutation.AddXjlYs(i)
+// AddXjlYs adds f to the "xjl_ys" field.
+func (ou *OperationUpdate) AddXjlYs(f float64) *OperationUpdate {
+	ou.mutation.AddXjlYs(f)
 	return ou
 }
 
@@ -170,23 +170,23 @@ func (ou *OperationUpdate) ClearXjlYs() *OperationUpdate {
 }
 
 // SetXjlLj sets the "xjl_lj" field.
-func (ou *OperationUpdate) SetXjlLj(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetXjlLj(f float64) *OperationUpdate {
 	ou.mutation.ResetXjlLj()
-	ou.mutation.SetXjlLj(i)
+	ou.mutation.SetXjlLj(f)
 	return ou
 }
 
 // SetNillableXjlLj sets the "xjl_lj" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableXjlLj(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetXjlLj(*i)
+func (ou *OperationUpdate) SetNillableXjlLj(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetXjlLj(*f)
 	}
 	return ou
 }
 
-// AddXjlLj adds i to the "xjl_lj" field.
-func (ou *OperationUpdate) AddXjlLj(i int) *OperationUpdate {
-	ou.mutation.AddXjlLj(i)
+// AddXjlLj adds f to the "xjl_lj" field.
+func (ou *OperationUpdate) AddXjlLj(f float64) *OperationUpdate {
+	ou.mutation.AddXjlLj(f)
 	return ou
 }
 
@@ -197,23 +197,23 @@ func (ou *OperationUpdate) ClearXjlLj() *OperationUpdate {
 }
 
 // SetXmglf sets the "xmglf" field.
-func (ou *OperationUpdate) SetXmglf(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetXmglf(f float64) *OperationUpdate {
 	ou.mutation.ResetXmglf()
-	ou.mutation.SetXmglf(i)
+	ou.mutation.SetXmglf(f)
 	return ou
 }
 
 // SetNillableXmglf sets the "xmglf" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableXmglf(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetXmglf(*i)
+func (ou *OperationUpdate) SetNillableXmglf(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetXmglf(*f)
 	}
 	return ou
 }
 
-// AddXmglf adds i to the "xmglf" field.
-func (ou *OperationUpdate) AddXmglf(i int) *OperationUpdate {
-	ou.mutation.AddXmglf(i)
+// AddXmglf adds f to the "xmglf" field.
+func (ou *OperationUpdate) AddXmglf(f float64) *OperationUpdate {
+	ou.mutation.AddXmglf(f)
 	return ou
 }
 
@@ -224,23 +224,23 @@ func (ou *OperationUpdate) ClearXmglf() *OperationUpdate {
 }
 
 // SetXmsjf sets the "xmsjf" field.
-func (ou *OperationUpdate) SetXmsjf(i int) *OperationUpdate {
+func (ou *OperationUpdate) SetXmsjf(f float64) *OperationUpdate {
 	ou.mutation.ResetXmsjf()
-	ou.mutation.SetXmsjf(i)
+	ou.mutation.SetXmsjf(f)
 	return ou
 }
 
 // SetNillableXmsjf sets the "xmsjf" field if the given value is not nil.
-func (ou *OperationUpdate) SetNillableXmsjf(i *int) *OperationUpdate {
-	if i != nil {
-		ou.SetXmsjf(*i)
+func (ou *OperationUpdate) SetNillableXmsjf(f *float64) *OperationUpdate {
+	if f != nil {
+		ou.SetXmsjf(*f)
 	}
 	return ou
 }
 
-// AddXmsjf adds i to the "xmsjf" field.
-func (ou *OperationUpdate) AddXmsjf(i int) *OperationUpdate {
-	ou.mutation.AddXmsjf(i)
+// AddXmsjf adds f to the "xmsjf" field.
+func (ou *OperationUpdate) AddXmsjf(f float64) *OperationUpdate {
+	ou.mutation.AddXmsjf(f)
 	return ou
 }
 
@@ -304,76 +304,76 @@ func (ou *OperationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(operation.FieldUpdatedAt, field.TypeTime, value)
 	}
 	if value, ok := ou.mutation.CjeYs(); ok {
-		_spec.SetField(operation.FieldCjeYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldCjeYs, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedCjeYs(); ok {
-		_spec.AddField(operation.FieldCjeYs, field.TypeInt, value)
+		_spec.AddField(operation.FieldCjeYs, field.TypeFloat64, value)
 	}
 	if ou.mutation.CjeYsCleared() {
-		_spec.ClearField(operation.FieldCjeYs, field.TypeInt)
+		_spec.ClearField(operation.FieldCjeYs, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.CjeLj(); ok {
-		_spec.SetField(operation.FieldCjeLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldCjeLj, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedCjeLj(); ok {
-		_spec.AddField(operation.FieldCjeLj, field.TypeInt, value)
+		_spec.AddField(operation.FieldCjeLj, field.TypeFloat64, value)
 	}
 	if ou.mutation.CjeLjCleared() {
-		_spec.ClearField(operation.FieldCjeLj, field.TypeInt)
+		_spec.ClearField(operation.FieldCjeLj, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.YyeYs(); ok {
-		_spec.SetField(operation.FieldYyeYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldYyeYs, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedYyeYs(); ok {
-		_spec.AddField(operation.FieldYyeYs, field.TypeInt, value)
+		_spec.AddField(operation.FieldYyeYs, field.TypeFloat64, value)
 	}
 	if ou.mutation.YyeYsCleared() {
-		_spec.ClearField(operation.FieldYyeYs, field.TypeInt)
+		_spec.ClearField(operation.FieldYyeYs, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.YyeLj(); ok {
-		_spec.SetField(operation.FieldYyeLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldYyeLj, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedYyeLj(); ok {
-		_spec.AddField(operation.FieldYyeLj, field.TypeInt, value)
+		_spec.AddField(operation.FieldYyeLj, field.TypeFloat64, value)
 	}
 	if ou.mutation.YyeLjCleared() {
-		_spec.ClearField(operation.FieldYyeLj, field.TypeInt)
+		_spec.ClearField(operation.FieldYyeLj, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.XjlYs(); ok {
-		_spec.SetField(operation.FieldXjlYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldXjlYs, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedXjlYs(); ok {
-		_spec.AddField(operation.FieldXjlYs, field.TypeInt, value)
+		_spec.AddField(operation.FieldXjlYs, field.TypeFloat64, value)
 	}
 	if ou.mutation.XjlYsCleared() {
-		_spec.ClearField(operation.FieldXjlYs, field.TypeInt)
+		_spec.ClearField(operation.FieldXjlYs, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.XjlLj(); ok {
-		_spec.SetField(operation.FieldXjlLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldXjlLj, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedXjlLj(); ok {
-		_spec.AddField(operation.FieldXjlLj, field.TypeInt, value)
+		_spec.AddField(operation.FieldXjlLj, field.TypeFloat64, value)
 	}
 	if ou.mutation.XjlLjCleared() {
-		_spec.ClearField(operation.FieldXjlLj, field.TypeInt)
+		_spec.ClearField(operation.FieldXjlLj, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.Xmglf(); ok {
-		_spec.SetField(operation.FieldXmglf, field.TypeInt, value)
+		_spec.SetField(operation.FieldXmglf, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedXmglf(); ok {
-		_spec.AddField(operation.FieldXmglf, field.TypeInt, value)
+		_spec.AddField(operation.FieldXmglf, field.TypeFloat64, value)
 	}
 	if ou.mutation.XmglfCleared() {
-		_spec.ClearField(operation.FieldXmglf, field.TypeInt)
+		_spec.ClearField(operation.FieldXmglf, field.TypeFloat64)
 	}
 	if value, ok := ou.mutation.Xmsjf(); ok {
-		_spec.SetField(operation.FieldXmsjf, field.TypeInt, value)
+		_spec.SetField(operation.FieldXmsjf, field.TypeFloat64, value)
 	}
 	if value, ok := ou.mutation.AddedXmsjf(); ok {
-		_spec.AddField(operation.FieldXmsjf, field.TypeInt, value)
+		_spec.AddField(operation.FieldXmsjf, field.TypeFloat64, value)
 	}
 	if ou.mutation.XmsjfCleared() {
-		_spec.ClearField(operation.FieldXmsjf, field.TypeInt)
+		_spec.ClearField(operation.FieldXmsjf, field.TypeFloat64)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ou.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -402,23 +402,23 @@ func (ouo *OperationUpdateOne) SetUpdatedAt(t time.Time) *OperationUpdateOne {
 }
 
 // SetCjeYs sets the "cje_ys" field.
-func (ouo *OperationUpdateOne) SetCjeYs(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetCjeYs(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetCjeYs()
-	ouo.mutation.SetCjeYs(i)
+	ouo.mutation.SetCjeYs(f)
 	return ouo
 }
 
 // SetNillableCjeYs sets the "cje_ys" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableCjeYs(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetCjeYs(*i)
+func (ouo *OperationUpdateOne) SetNillableCjeYs(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetCjeYs(*f)
 	}
 	return ouo
 }
 
-// AddCjeYs adds i to the "cje_ys" field.
-func (ouo *OperationUpdateOne) AddCjeYs(i int) *OperationUpdateOne {
-	ouo.mutation.AddCjeYs(i)
+// AddCjeYs adds f to the "cje_ys" field.
+func (ouo *OperationUpdateOne) AddCjeYs(f float64) *OperationUpdateOne {
+	ouo.mutation.AddCjeYs(f)
 	return ouo
 }
 
@@ -429,23 +429,23 @@ func (ouo *OperationUpdateOne) ClearCjeYs() *OperationUpdateOne {
 }
 
 // SetCjeLj sets the "cje_lj" field.
-func (ouo *OperationUpdateOne) SetCjeLj(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetCjeLj(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetCjeLj()
-	ouo.mutation.SetCjeLj(i)
+	ouo.mutation.SetCjeLj(f)
 	return ouo
 }
 
 // SetNillableCjeLj sets the "cje_lj" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableCjeLj(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetCjeLj(*i)
+func (ouo *OperationUpdateOne) SetNillableCjeLj(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetCjeLj(*f)
 	}
 	return ouo
 }
 
-// AddCjeLj adds i to the "cje_lj" field.
-func (ouo *OperationUpdateOne) AddCjeLj(i int) *OperationUpdateOne {
-	ouo.mutation.AddCjeLj(i)
+// AddCjeLj adds f to the "cje_lj" field.
+func (ouo *OperationUpdateOne) AddCjeLj(f float64) *OperationUpdateOne {
+	ouo.mutation.AddCjeLj(f)
 	return ouo
 }
 
@@ -456,23 +456,23 @@ func (ouo *OperationUpdateOne) ClearCjeLj() *OperationUpdateOne {
 }
 
 // SetYyeYs sets the "yye_ys" field.
-func (ouo *OperationUpdateOne) SetYyeYs(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetYyeYs(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetYyeYs()
-	ouo.mutation.SetYyeYs(i)
+	ouo.mutation.SetYyeYs(f)
 	return ouo
 }
 
 // SetNillableYyeYs sets the "yye_ys" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableYyeYs(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetYyeYs(*i)
+func (ouo *OperationUpdateOne) SetNillableYyeYs(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetYyeYs(*f)
 	}
 	return ouo
 }
 
-// AddYyeYs adds i to the "yye_ys" field.
-func (ouo *OperationUpdateOne) AddYyeYs(i int) *OperationUpdateOne {
-	ouo.mutation.AddYyeYs(i)
+// AddYyeYs adds f to the "yye_ys" field.
+func (ouo *OperationUpdateOne) AddYyeYs(f float64) *OperationUpdateOne {
+	ouo.mutation.AddYyeYs(f)
 	return ouo
 }
 
@@ -483,23 +483,23 @@ func (ouo *OperationUpdateOne) ClearYyeYs() *OperationUpdateOne {
 }
 
 // SetYyeLj sets the "yye_lj" field.
-func (ouo *OperationUpdateOne) SetYyeLj(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetYyeLj(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetYyeLj()
-	ouo.mutation.SetYyeLj(i)
+	ouo.mutation.SetYyeLj(f)
 	return ouo
 }
 
 // SetNillableYyeLj sets the "yye_lj" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableYyeLj(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetYyeLj(*i)
+func (ouo *OperationUpdateOne) SetNillableYyeLj(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetYyeLj(*f)
 	}
 	return ouo
 }
 
-// AddYyeLj adds i to the "yye_lj" field.
-func (ouo *OperationUpdateOne) AddYyeLj(i int) *OperationUpdateOne {
-	ouo.mutation.AddYyeLj(i)
+// AddYyeLj adds f to the "yye_lj" field.
+func (ouo *OperationUpdateOne) AddYyeLj(f float64) *OperationUpdateOne {
+	ouo.mutation.AddYyeLj(f)
 	return ouo
 }
 
@@ -510,23 +510,23 @@ func (ouo *OperationUpdateOne) ClearYyeLj() *OperationUpdateOne {
 }
 
 // SetXjlYs sets the "xjl_ys" field.
-func (ouo *OperationUpdateOne) SetXjlYs(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetXjlYs(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetXjlYs()
-	ouo.mutation.SetXjlYs(i)
+	ouo.mutation.SetXjlYs(f)
 	return ouo
 }
 
 // SetNillableXjlYs sets the "xjl_ys" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableXjlYs(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetXjlYs(*i)
+func (ouo *OperationUpdateOne) SetNillableXjlYs(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetXjlYs(*f)
 	}
 	return ouo
 }
 
-// AddXjlYs adds i to the "xjl_ys" field.
-func (ouo *OperationUpdateOne) AddXjlYs(i int) *OperationUpdateOne {
-	ouo.mutation.AddXjlYs(i)
+// AddXjlYs adds f to the "xjl_ys" field.
+func (ouo *OperationUpdateOne) AddXjlYs(f float64) *OperationUpdateOne {
+	ouo.mutation.AddXjlYs(f)
 	return ouo
 }
 
@@ -537,23 +537,23 @@ func (ouo *OperationUpdateOne) ClearXjlYs() *OperationUpdateOne {
 }
 
 // SetXjlLj sets the "xjl_lj" field.
-func (ouo *OperationUpdateOne) SetXjlLj(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetXjlLj(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetXjlLj()
-	ouo.mutation.SetXjlLj(i)
+	ouo.mutation.SetXjlLj(f)
 	return ouo
 }
 
 // SetNillableXjlLj sets the "xjl_lj" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableXjlLj(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetXjlLj(*i)
+func (ouo *OperationUpdateOne) SetNillableXjlLj(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetXjlLj(*f)
 	}
 	return ouo
 }
 
-// AddXjlLj adds i to the "xjl_lj" field.
-func (ouo *OperationUpdateOne) AddXjlLj(i int) *OperationUpdateOne {
-	ouo.mutation.AddXjlLj(i)
+// AddXjlLj adds f to the "xjl_lj" field.
+func (ouo *OperationUpdateOne) AddXjlLj(f float64) *OperationUpdateOne {
+	ouo.mutation.AddXjlLj(f)
 	return ouo
 }
 
@@ -564,23 +564,23 @@ func (ouo *OperationUpdateOne) ClearXjlLj() *OperationUpdateOne {
 }
 
 // SetXmglf sets the "xmglf" field.
-func (ouo *OperationUpdateOne) SetXmglf(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetXmglf(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetXmglf()
-	ouo.mutation.SetXmglf(i)
+	ouo.mutation.SetXmglf(f)
 	return ouo
 }
 
 // SetNillableXmglf sets the "xmglf" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableXmglf(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetXmglf(*i)
+func (ouo *OperationUpdateOne) SetNillableXmglf(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetXmglf(*f)
 	}
 	return ouo
 }
 
-// AddXmglf adds i to the "xmglf" field.
-func (ouo *OperationUpdateOne) AddXmglf(i int) *OperationUpdateOne {
-	ouo.mutation.AddXmglf(i)
+// AddXmglf adds f to the "xmglf" field.
+func (ouo *OperationUpdateOne) AddXmglf(f float64) *OperationUpdateOne {
+	ouo.mutation.AddXmglf(f)
 	return ouo
 }
 
@@ -591,23 +591,23 @@ func (ouo *OperationUpdateOne) ClearXmglf() *OperationUpdateOne {
 }
 
 // SetXmsjf sets the "xmsjf" field.
-func (ouo *OperationUpdateOne) SetXmsjf(i int) *OperationUpdateOne {
+func (ouo *OperationUpdateOne) SetXmsjf(f float64) *OperationUpdateOne {
 	ouo.mutation.ResetXmsjf()
-	ouo.mutation.SetXmsjf(i)
+	ouo.mutation.SetXmsjf(f)
 	return ouo
 }
 
 // SetNillableXmsjf sets the "xmsjf" field if the given value is not nil.
-func (ouo *OperationUpdateOne) SetNillableXmsjf(i *int) *OperationUpdateOne {
-	if i != nil {
-		ouo.SetXmsjf(*i)
+func (ouo *OperationUpdateOne) SetNillableXmsjf(f *float64) *OperationUpdateOne {
+	if f != nil {
+		ouo.SetXmsjf(*f)
 	}
 	return ouo
 }
 
-// AddXmsjf adds i to the "xmsjf" field.
-func (ouo *OperationUpdateOne) AddXmsjf(i int) *OperationUpdateOne {
-	ouo.mutation.AddXmsjf(i)
+// AddXmsjf adds f to the "xmsjf" field.
+func (ouo *OperationUpdateOne) AddXmsjf(f float64) *OperationUpdateOne {
+	ouo.mutation.AddXmsjf(f)
 	return ouo
 }
 
@@ -701,76 +701,76 @@ func (ouo *OperationUpdateOne) sqlSave(ctx context.Context) (_node *Operation, e
 		_spec.SetField(operation.FieldUpdatedAt, field.TypeTime, value)
 	}
 	if value, ok := ouo.mutation.CjeYs(); ok {
-		_spec.SetField(operation.FieldCjeYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldCjeYs, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedCjeYs(); ok {
-		_spec.AddField(operation.FieldCjeYs, field.TypeInt, value)
+		_spec.AddField(operation.FieldCjeYs, field.TypeFloat64, value)
 	}
 	if ouo.mutation.CjeYsCleared() {
-		_spec.ClearField(operation.FieldCjeYs, field.TypeInt)
+		_spec.ClearField(operation.FieldCjeYs, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.CjeLj(); ok {
-		_spec.SetField(operation.FieldCjeLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldCjeLj, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedCjeLj(); ok {
-		_spec.AddField(operation.FieldCjeLj, field.TypeInt, value)
+		_spec.AddField(operation.FieldCjeLj, field.TypeFloat64, value)
 	}
 	if ouo.mutation.CjeLjCleared() {
-		_spec.ClearField(operation.FieldCjeLj, field.TypeInt)
+		_spec.ClearField(operation.FieldCjeLj, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.YyeYs(); ok {
-		_spec.SetField(operation.FieldYyeYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldYyeYs, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedYyeYs(); ok {
-		_spec.AddField(operation.FieldYyeYs, field.TypeInt, value)
+		_spec.AddField(operation.FieldYyeYs, field.TypeFloat64, value)
 	}
 	if ouo.mutation.YyeYsCleared() {
-		_spec.ClearField(operation.FieldYyeYs, field.TypeInt)
+		_spec.ClearField(operation.FieldYyeYs, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.YyeLj(); ok {
-		_spec.SetField(operation.FieldYyeLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldYyeLj, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedYyeLj(); ok {
-		_spec.AddField(operation.FieldYyeLj, field.TypeInt, value)
+		_spec.AddField(operation.FieldYyeLj, field.TypeFloat64, value)
 	}
 	if ouo.mutation.YyeLjCleared() {
-		_spec.ClearField(operation.FieldYyeLj, field.TypeInt)
+		_spec.ClearField(operation.FieldYyeLj, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.XjlYs(); ok {
-		_spec.SetField(operation.FieldXjlYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldXjlYs, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedXjlYs(); ok {
-		_spec.AddField(operation.FieldXjlYs, field.TypeInt, value)
+		_spec.AddField(operation.FieldXjlYs, field.TypeFloat64, value)
 	}
 	if ouo.mutation.XjlYsCleared() {
-		_spec.ClearField(operation.FieldXjlYs, field.TypeInt)
+		_spec.ClearField(operation.FieldXjlYs, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.XjlLj(); ok {
-		_spec.SetField(operation.FieldXjlLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldXjlLj, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedXjlLj(); ok {
-		_spec.AddField(operation.FieldXjlLj, field.TypeInt, value)
+		_spec.AddField(operation.FieldXjlLj, field.TypeFloat64, value)
 	}
 	if ouo.mutation.XjlLjCleared() {
-		_spec.ClearField(operation.FieldXjlLj, field.TypeInt)
+		_spec.ClearField(operation.FieldXjlLj, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.Xmglf(); ok {
-		_spec.SetField(operation.FieldXmglf, field.TypeInt, value)
+		_spec.SetField(operation.FieldXmglf, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedXmglf(); ok {
-		_spec.AddField(operation.FieldXmglf, field.TypeInt, value)
+		_spec.AddField(operation.FieldXmglf, field.TypeFloat64, value)
 	}
 	if ouo.mutation.XmglfCleared() {
-		_spec.ClearField(operation.FieldXmglf, field.TypeInt)
+		_spec.ClearField(operation.FieldXmglf, field.TypeFloat64)
 	}
 	if value, ok := ouo.mutation.Xmsjf(); ok {
-		_spec.SetField(operation.FieldXmsjf, field.TypeInt, value)
+		_spec.SetField(operation.FieldXmsjf, field.TypeFloat64, value)
 	}
 	if value, ok := ouo.mutation.AddedXmsjf(); ok {
-		_spec.AddField(operation.FieldXmsjf, field.TypeInt, value)
+		_spec.AddField(operation.FieldXmsjf, field.TypeFloat64, value)
 	}
 	if ouo.mutation.XmsjfCleared() {
-		_spec.ClearField(operation.FieldXmsjf, field.TypeInt)
+		_spec.ClearField(operation.FieldXmsjf, field.TypeFloat64)
 	}
 	_node = &Operation{config: ouo.config}
 	_spec.Assign = _node.assignValues

@@ -316,6 +316,26 @@ func (pl *Plot) District(ctx context.Context) (*District, error) {
 	return result, err
 }
 
+func (pr *Project) Vos(ctx context.Context) (result []*ProjectVO, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pr.NamedVos(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pr.Edges.VosOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pr.QueryVos().All(ctx)
+	}
+	return result, err
+}
+
+func (pv *ProjectVO) Project(ctx context.Context) (*Project, error) {
+	result, err := pv.Edges.ProjectOrErr()
+	if IsNotLoaded(err) {
+		result, err = pv.QueryProject().Only(ctx)
+	}
+	return result, err
+}
+
 func (pr *Province) Districts(
 	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *DistrictOrder, where *DistrictWhereInput,
 ) (*DistrictConnection, error) {

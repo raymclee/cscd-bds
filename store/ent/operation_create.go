@@ -53,113 +53,113 @@ func (oc *OperationCreate) SetNillableUpdatedAt(t *time.Time) *OperationCreate {
 }
 
 // SetCjeYs sets the "cje_ys" field.
-func (oc *OperationCreate) SetCjeYs(i int) *OperationCreate {
-	oc.mutation.SetCjeYs(i)
+func (oc *OperationCreate) SetCjeYs(f float64) *OperationCreate {
+	oc.mutation.SetCjeYs(f)
 	return oc
 }
 
 // SetNillableCjeYs sets the "cje_ys" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableCjeYs(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetCjeYs(*i)
+func (oc *OperationCreate) SetNillableCjeYs(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetCjeYs(*f)
 	}
 	return oc
 }
 
 // SetCjeLj sets the "cje_lj" field.
-func (oc *OperationCreate) SetCjeLj(i int) *OperationCreate {
-	oc.mutation.SetCjeLj(i)
+func (oc *OperationCreate) SetCjeLj(f float64) *OperationCreate {
+	oc.mutation.SetCjeLj(f)
 	return oc
 }
 
 // SetNillableCjeLj sets the "cje_lj" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableCjeLj(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetCjeLj(*i)
+func (oc *OperationCreate) SetNillableCjeLj(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetCjeLj(*f)
 	}
 	return oc
 }
 
 // SetYyeYs sets the "yye_ys" field.
-func (oc *OperationCreate) SetYyeYs(i int) *OperationCreate {
-	oc.mutation.SetYyeYs(i)
+func (oc *OperationCreate) SetYyeYs(f float64) *OperationCreate {
+	oc.mutation.SetYyeYs(f)
 	return oc
 }
 
 // SetNillableYyeYs sets the "yye_ys" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableYyeYs(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetYyeYs(*i)
+func (oc *OperationCreate) SetNillableYyeYs(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetYyeYs(*f)
 	}
 	return oc
 }
 
 // SetYyeLj sets the "yye_lj" field.
-func (oc *OperationCreate) SetYyeLj(i int) *OperationCreate {
-	oc.mutation.SetYyeLj(i)
+func (oc *OperationCreate) SetYyeLj(f float64) *OperationCreate {
+	oc.mutation.SetYyeLj(f)
 	return oc
 }
 
 // SetNillableYyeLj sets the "yye_lj" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableYyeLj(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetYyeLj(*i)
+func (oc *OperationCreate) SetNillableYyeLj(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetYyeLj(*f)
 	}
 	return oc
 }
 
 // SetXjlYs sets the "xjl_ys" field.
-func (oc *OperationCreate) SetXjlYs(i int) *OperationCreate {
-	oc.mutation.SetXjlYs(i)
+func (oc *OperationCreate) SetXjlYs(f float64) *OperationCreate {
+	oc.mutation.SetXjlYs(f)
 	return oc
 }
 
 // SetNillableXjlYs sets the "xjl_ys" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableXjlYs(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetXjlYs(*i)
+func (oc *OperationCreate) SetNillableXjlYs(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetXjlYs(*f)
 	}
 	return oc
 }
 
 // SetXjlLj sets the "xjl_lj" field.
-func (oc *OperationCreate) SetXjlLj(i int) *OperationCreate {
-	oc.mutation.SetXjlLj(i)
+func (oc *OperationCreate) SetXjlLj(f float64) *OperationCreate {
+	oc.mutation.SetXjlLj(f)
 	return oc
 }
 
 // SetNillableXjlLj sets the "xjl_lj" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableXjlLj(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetXjlLj(*i)
+func (oc *OperationCreate) SetNillableXjlLj(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetXjlLj(*f)
 	}
 	return oc
 }
 
 // SetXmglf sets the "xmglf" field.
-func (oc *OperationCreate) SetXmglf(i int) *OperationCreate {
-	oc.mutation.SetXmglf(i)
+func (oc *OperationCreate) SetXmglf(f float64) *OperationCreate {
+	oc.mutation.SetXmglf(f)
 	return oc
 }
 
 // SetNillableXmglf sets the "xmglf" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableXmglf(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetXmglf(*i)
+func (oc *OperationCreate) SetNillableXmglf(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetXmglf(*f)
 	}
 	return oc
 }
 
 // SetXmsjf sets the "xmsjf" field.
-func (oc *OperationCreate) SetXmsjf(i int) *OperationCreate {
-	oc.mutation.SetXmsjf(i)
+func (oc *OperationCreate) SetXmsjf(f float64) *OperationCreate {
+	oc.mutation.SetXmsjf(f)
 	return oc
 }
 
 // SetNillableXmsjf sets the "xmsjf" field if the given value is not nil.
-func (oc *OperationCreate) SetNillableXmsjf(i *int) *OperationCreate {
-	if i != nil {
-		oc.SetXmsjf(*i)
+func (oc *OperationCreate) SetNillableXmsjf(f *float64) *OperationCreate {
+	if f != nil {
+		oc.SetXmsjf(*f)
 	}
 	return oc
 }
@@ -280,35 +280,35 @@ func (oc *OperationCreate) createSpec() (*Operation, *sqlgraph.CreateSpec) {
 		_node.UpdatedAt = value
 	}
 	if value, ok := oc.mutation.CjeYs(); ok {
-		_spec.SetField(operation.FieldCjeYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldCjeYs, field.TypeFloat64, value)
 		_node.CjeYs = &value
 	}
 	if value, ok := oc.mutation.CjeLj(); ok {
-		_spec.SetField(operation.FieldCjeLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldCjeLj, field.TypeFloat64, value)
 		_node.CjeLj = &value
 	}
 	if value, ok := oc.mutation.YyeYs(); ok {
-		_spec.SetField(operation.FieldYyeYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldYyeYs, field.TypeFloat64, value)
 		_node.YyeYs = &value
 	}
 	if value, ok := oc.mutation.YyeLj(); ok {
-		_spec.SetField(operation.FieldYyeLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldYyeLj, field.TypeFloat64, value)
 		_node.YyeLj = &value
 	}
 	if value, ok := oc.mutation.XjlYs(); ok {
-		_spec.SetField(operation.FieldXjlYs, field.TypeInt, value)
+		_spec.SetField(operation.FieldXjlYs, field.TypeFloat64, value)
 		_node.XjlYs = &value
 	}
 	if value, ok := oc.mutation.XjlLj(); ok {
-		_spec.SetField(operation.FieldXjlLj, field.TypeInt, value)
+		_spec.SetField(operation.FieldXjlLj, field.TypeFloat64, value)
 		_node.XjlLj = &value
 	}
 	if value, ok := oc.mutation.Xmglf(); ok {
-		_spec.SetField(operation.FieldXmglf, field.TypeInt, value)
+		_spec.SetField(operation.FieldXmglf, field.TypeFloat64, value)
 		_node.Xmglf = &value
 	}
 	if value, ok := oc.mutation.Xmsjf(); ok {
-		_spec.SetField(operation.FieldXmsjf, field.TypeInt, value)
+		_spec.SetField(operation.FieldXmsjf, field.TypeFloat64, value)
 		_node.Xmsjf = &value
 	}
 	return _node, _spec
@@ -376,7 +376,7 @@ func (u *OperationUpsert) UpdateUpdatedAt() *OperationUpsert {
 }
 
 // SetCjeYs sets the "cje_ys" field.
-func (u *OperationUpsert) SetCjeYs(v int) *OperationUpsert {
+func (u *OperationUpsert) SetCjeYs(v float64) *OperationUpsert {
 	u.Set(operation.FieldCjeYs, v)
 	return u
 }
@@ -388,7 +388,7 @@ func (u *OperationUpsert) UpdateCjeYs() *OperationUpsert {
 }
 
 // AddCjeYs adds v to the "cje_ys" field.
-func (u *OperationUpsert) AddCjeYs(v int) *OperationUpsert {
+func (u *OperationUpsert) AddCjeYs(v float64) *OperationUpsert {
 	u.Add(operation.FieldCjeYs, v)
 	return u
 }
@@ -400,7 +400,7 @@ func (u *OperationUpsert) ClearCjeYs() *OperationUpsert {
 }
 
 // SetCjeLj sets the "cje_lj" field.
-func (u *OperationUpsert) SetCjeLj(v int) *OperationUpsert {
+func (u *OperationUpsert) SetCjeLj(v float64) *OperationUpsert {
 	u.Set(operation.FieldCjeLj, v)
 	return u
 }
@@ -412,7 +412,7 @@ func (u *OperationUpsert) UpdateCjeLj() *OperationUpsert {
 }
 
 // AddCjeLj adds v to the "cje_lj" field.
-func (u *OperationUpsert) AddCjeLj(v int) *OperationUpsert {
+func (u *OperationUpsert) AddCjeLj(v float64) *OperationUpsert {
 	u.Add(operation.FieldCjeLj, v)
 	return u
 }
@@ -424,7 +424,7 @@ func (u *OperationUpsert) ClearCjeLj() *OperationUpsert {
 }
 
 // SetYyeYs sets the "yye_ys" field.
-func (u *OperationUpsert) SetYyeYs(v int) *OperationUpsert {
+func (u *OperationUpsert) SetYyeYs(v float64) *OperationUpsert {
 	u.Set(operation.FieldYyeYs, v)
 	return u
 }
@@ -436,7 +436,7 @@ func (u *OperationUpsert) UpdateYyeYs() *OperationUpsert {
 }
 
 // AddYyeYs adds v to the "yye_ys" field.
-func (u *OperationUpsert) AddYyeYs(v int) *OperationUpsert {
+func (u *OperationUpsert) AddYyeYs(v float64) *OperationUpsert {
 	u.Add(operation.FieldYyeYs, v)
 	return u
 }
@@ -448,7 +448,7 @@ func (u *OperationUpsert) ClearYyeYs() *OperationUpsert {
 }
 
 // SetYyeLj sets the "yye_lj" field.
-func (u *OperationUpsert) SetYyeLj(v int) *OperationUpsert {
+func (u *OperationUpsert) SetYyeLj(v float64) *OperationUpsert {
 	u.Set(operation.FieldYyeLj, v)
 	return u
 }
@@ -460,7 +460,7 @@ func (u *OperationUpsert) UpdateYyeLj() *OperationUpsert {
 }
 
 // AddYyeLj adds v to the "yye_lj" field.
-func (u *OperationUpsert) AddYyeLj(v int) *OperationUpsert {
+func (u *OperationUpsert) AddYyeLj(v float64) *OperationUpsert {
 	u.Add(operation.FieldYyeLj, v)
 	return u
 }
@@ -472,7 +472,7 @@ func (u *OperationUpsert) ClearYyeLj() *OperationUpsert {
 }
 
 // SetXjlYs sets the "xjl_ys" field.
-func (u *OperationUpsert) SetXjlYs(v int) *OperationUpsert {
+func (u *OperationUpsert) SetXjlYs(v float64) *OperationUpsert {
 	u.Set(operation.FieldXjlYs, v)
 	return u
 }
@@ -484,7 +484,7 @@ func (u *OperationUpsert) UpdateXjlYs() *OperationUpsert {
 }
 
 // AddXjlYs adds v to the "xjl_ys" field.
-func (u *OperationUpsert) AddXjlYs(v int) *OperationUpsert {
+func (u *OperationUpsert) AddXjlYs(v float64) *OperationUpsert {
 	u.Add(operation.FieldXjlYs, v)
 	return u
 }
@@ -496,7 +496,7 @@ func (u *OperationUpsert) ClearXjlYs() *OperationUpsert {
 }
 
 // SetXjlLj sets the "xjl_lj" field.
-func (u *OperationUpsert) SetXjlLj(v int) *OperationUpsert {
+func (u *OperationUpsert) SetXjlLj(v float64) *OperationUpsert {
 	u.Set(operation.FieldXjlLj, v)
 	return u
 }
@@ -508,7 +508,7 @@ func (u *OperationUpsert) UpdateXjlLj() *OperationUpsert {
 }
 
 // AddXjlLj adds v to the "xjl_lj" field.
-func (u *OperationUpsert) AddXjlLj(v int) *OperationUpsert {
+func (u *OperationUpsert) AddXjlLj(v float64) *OperationUpsert {
 	u.Add(operation.FieldXjlLj, v)
 	return u
 }
@@ -520,7 +520,7 @@ func (u *OperationUpsert) ClearXjlLj() *OperationUpsert {
 }
 
 // SetXmglf sets the "xmglf" field.
-func (u *OperationUpsert) SetXmglf(v int) *OperationUpsert {
+func (u *OperationUpsert) SetXmglf(v float64) *OperationUpsert {
 	u.Set(operation.FieldXmglf, v)
 	return u
 }
@@ -532,7 +532,7 @@ func (u *OperationUpsert) UpdateXmglf() *OperationUpsert {
 }
 
 // AddXmglf adds v to the "xmglf" field.
-func (u *OperationUpsert) AddXmglf(v int) *OperationUpsert {
+func (u *OperationUpsert) AddXmglf(v float64) *OperationUpsert {
 	u.Add(operation.FieldXmglf, v)
 	return u
 }
@@ -544,7 +544,7 @@ func (u *OperationUpsert) ClearXmglf() *OperationUpsert {
 }
 
 // SetXmsjf sets the "xmsjf" field.
-func (u *OperationUpsert) SetXmsjf(v int) *OperationUpsert {
+func (u *OperationUpsert) SetXmsjf(v float64) *OperationUpsert {
 	u.Set(operation.FieldXmsjf, v)
 	return u
 }
@@ -556,7 +556,7 @@ func (u *OperationUpsert) UpdateXmsjf() *OperationUpsert {
 }
 
 // AddXmsjf adds v to the "xmsjf" field.
-func (u *OperationUpsert) AddXmsjf(v int) *OperationUpsert {
+func (u *OperationUpsert) AddXmsjf(v float64) *OperationUpsert {
 	u.Add(operation.FieldXmsjf, v)
 	return u
 }
@@ -633,14 +633,14 @@ func (u *OperationUpsertOne) UpdateUpdatedAt() *OperationUpsertOne {
 }
 
 // SetCjeYs sets the "cje_ys" field.
-func (u *OperationUpsertOne) SetCjeYs(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetCjeYs(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetCjeYs(v)
 	})
 }
 
 // AddCjeYs adds v to the "cje_ys" field.
-func (u *OperationUpsertOne) AddCjeYs(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddCjeYs(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddCjeYs(v)
 	})
@@ -661,14 +661,14 @@ func (u *OperationUpsertOne) ClearCjeYs() *OperationUpsertOne {
 }
 
 // SetCjeLj sets the "cje_lj" field.
-func (u *OperationUpsertOne) SetCjeLj(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetCjeLj(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetCjeLj(v)
 	})
 }
 
 // AddCjeLj adds v to the "cje_lj" field.
-func (u *OperationUpsertOne) AddCjeLj(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddCjeLj(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddCjeLj(v)
 	})
@@ -689,14 +689,14 @@ func (u *OperationUpsertOne) ClearCjeLj() *OperationUpsertOne {
 }
 
 // SetYyeYs sets the "yye_ys" field.
-func (u *OperationUpsertOne) SetYyeYs(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetYyeYs(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetYyeYs(v)
 	})
 }
 
 // AddYyeYs adds v to the "yye_ys" field.
-func (u *OperationUpsertOne) AddYyeYs(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddYyeYs(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddYyeYs(v)
 	})
@@ -717,14 +717,14 @@ func (u *OperationUpsertOne) ClearYyeYs() *OperationUpsertOne {
 }
 
 // SetYyeLj sets the "yye_lj" field.
-func (u *OperationUpsertOne) SetYyeLj(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetYyeLj(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetYyeLj(v)
 	})
 }
 
 // AddYyeLj adds v to the "yye_lj" field.
-func (u *OperationUpsertOne) AddYyeLj(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddYyeLj(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddYyeLj(v)
 	})
@@ -745,14 +745,14 @@ func (u *OperationUpsertOne) ClearYyeLj() *OperationUpsertOne {
 }
 
 // SetXjlYs sets the "xjl_ys" field.
-func (u *OperationUpsertOne) SetXjlYs(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetXjlYs(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXjlYs(v)
 	})
 }
 
 // AddXjlYs adds v to the "xjl_ys" field.
-func (u *OperationUpsertOne) AddXjlYs(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddXjlYs(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXjlYs(v)
 	})
@@ -773,14 +773,14 @@ func (u *OperationUpsertOne) ClearXjlYs() *OperationUpsertOne {
 }
 
 // SetXjlLj sets the "xjl_lj" field.
-func (u *OperationUpsertOne) SetXjlLj(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetXjlLj(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXjlLj(v)
 	})
 }
 
 // AddXjlLj adds v to the "xjl_lj" field.
-func (u *OperationUpsertOne) AddXjlLj(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddXjlLj(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXjlLj(v)
 	})
@@ -801,14 +801,14 @@ func (u *OperationUpsertOne) ClearXjlLj() *OperationUpsertOne {
 }
 
 // SetXmglf sets the "xmglf" field.
-func (u *OperationUpsertOne) SetXmglf(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetXmglf(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXmglf(v)
 	})
 }
 
 // AddXmglf adds v to the "xmglf" field.
-func (u *OperationUpsertOne) AddXmglf(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddXmglf(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXmglf(v)
 	})
@@ -829,14 +829,14 @@ func (u *OperationUpsertOne) ClearXmglf() *OperationUpsertOne {
 }
 
 // SetXmsjf sets the "xmsjf" field.
-func (u *OperationUpsertOne) SetXmsjf(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) SetXmsjf(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXmsjf(v)
 	})
 }
 
 // AddXmsjf adds v to the "xmsjf" field.
-func (u *OperationUpsertOne) AddXmsjf(v int) *OperationUpsertOne {
+func (u *OperationUpsertOne) AddXmsjf(v float64) *OperationUpsertOne {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXmsjf(v)
 	})
@@ -1089,14 +1089,14 @@ func (u *OperationUpsertBulk) UpdateUpdatedAt() *OperationUpsertBulk {
 }
 
 // SetCjeYs sets the "cje_ys" field.
-func (u *OperationUpsertBulk) SetCjeYs(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetCjeYs(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetCjeYs(v)
 	})
 }
 
 // AddCjeYs adds v to the "cje_ys" field.
-func (u *OperationUpsertBulk) AddCjeYs(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddCjeYs(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddCjeYs(v)
 	})
@@ -1117,14 +1117,14 @@ func (u *OperationUpsertBulk) ClearCjeYs() *OperationUpsertBulk {
 }
 
 // SetCjeLj sets the "cje_lj" field.
-func (u *OperationUpsertBulk) SetCjeLj(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetCjeLj(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetCjeLj(v)
 	})
 }
 
 // AddCjeLj adds v to the "cje_lj" field.
-func (u *OperationUpsertBulk) AddCjeLj(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddCjeLj(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddCjeLj(v)
 	})
@@ -1145,14 +1145,14 @@ func (u *OperationUpsertBulk) ClearCjeLj() *OperationUpsertBulk {
 }
 
 // SetYyeYs sets the "yye_ys" field.
-func (u *OperationUpsertBulk) SetYyeYs(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetYyeYs(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetYyeYs(v)
 	})
 }
 
 // AddYyeYs adds v to the "yye_ys" field.
-func (u *OperationUpsertBulk) AddYyeYs(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddYyeYs(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddYyeYs(v)
 	})
@@ -1173,14 +1173,14 @@ func (u *OperationUpsertBulk) ClearYyeYs() *OperationUpsertBulk {
 }
 
 // SetYyeLj sets the "yye_lj" field.
-func (u *OperationUpsertBulk) SetYyeLj(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetYyeLj(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetYyeLj(v)
 	})
 }
 
 // AddYyeLj adds v to the "yye_lj" field.
-func (u *OperationUpsertBulk) AddYyeLj(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddYyeLj(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddYyeLj(v)
 	})
@@ -1201,14 +1201,14 @@ func (u *OperationUpsertBulk) ClearYyeLj() *OperationUpsertBulk {
 }
 
 // SetXjlYs sets the "xjl_ys" field.
-func (u *OperationUpsertBulk) SetXjlYs(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetXjlYs(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXjlYs(v)
 	})
 }
 
 // AddXjlYs adds v to the "xjl_ys" field.
-func (u *OperationUpsertBulk) AddXjlYs(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddXjlYs(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXjlYs(v)
 	})
@@ -1229,14 +1229,14 @@ func (u *OperationUpsertBulk) ClearXjlYs() *OperationUpsertBulk {
 }
 
 // SetXjlLj sets the "xjl_lj" field.
-func (u *OperationUpsertBulk) SetXjlLj(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetXjlLj(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXjlLj(v)
 	})
 }
 
 // AddXjlLj adds v to the "xjl_lj" field.
-func (u *OperationUpsertBulk) AddXjlLj(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddXjlLj(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXjlLj(v)
 	})
@@ -1257,14 +1257,14 @@ func (u *OperationUpsertBulk) ClearXjlLj() *OperationUpsertBulk {
 }
 
 // SetXmglf sets the "xmglf" field.
-func (u *OperationUpsertBulk) SetXmglf(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetXmglf(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXmglf(v)
 	})
 }
 
 // AddXmglf adds v to the "xmglf" field.
-func (u *OperationUpsertBulk) AddXmglf(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddXmglf(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXmglf(v)
 	})
@@ -1285,14 +1285,14 @@ func (u *OperationUpsertBulk) ClearXmglf() *OperationUpsertBulk {
 }
 
 // SetXmsjf sets the "xmsjf" field.
-func (u *OperationUpsertBulk) SetXmsjf(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) SetXmsjf(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.SetXmsjf(v)
 	})
 }
 
 // AddXmsjf adds v to the "xmsjf" field.
-func (u *OperationUpsertBulk) AddXmsjf(v int) *OperationUpsertBulk {
+func (u *OperationUpsertBulk) AddXmsjf(v float64) *OperationUpsertBulk {
 	return u.Update(func(s *OperationUpsert) {
 		s.AddXmsjf(v)
 	})

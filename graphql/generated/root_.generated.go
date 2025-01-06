@@ -296,6 +296,60 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	Project struct {
+		Cje                     func(childComplexity int) int
+		Code                    func(childComplexity int) int
+		ContractorApplyAmount   func(childComplexity int) int
+		ContractorApplyCount    func(childComplexity int) int
+		ContractorApproveAmount func(childComplexity int) int
+		ContractorApproveCount  func(childComplexity int) int
+		CreatedAt               func(childComplexity int) int
+		EffectiveContractAmount func(childComplexity int) int
+		ID                      func(childComplexity int) int
+		InstallProgress         func(childComplexity int) int
+		IsFinished              func(childComplexity int) int
+		Name                    func(childComplexity int) int
+		OwnerApplyAmount        func(childComplexity int) int
+		OwnerApplyCount         func(childComplexity int) int
+		OwnerApproveAmount      func(childComplexity int) int
+		OwnerApproveCount       func(childComplexity int) int
+		UpdatedAt               func(childComplexity int) int
+		VaApplyAmount           func(childComplexity int) int
+		VaApproveAmount         func(childComplexity int) int
+		Vos                     func(childComplexity int) int
+		Xjl                     func(childComplexity int) int
+		Xmfzr                   func(childComplexity int) int
+		XmglfLj                 func(childComplexity int) int
+		XmglfYs                 func(childComplexity int) int
+		Xmsjf                   func(childComplexity int) int
+		Yye                     func(childComplexity int) int
+	}
+
+	ProjectConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	ProjectEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	ProjectVO struct {
+		ApplyAmount   func(childComplexity int) int
+		ApproveAmount func(childComplexity int) int
+		Azjd          func(childComplexity int) int
+		ChangeType    func(childComplexity int) int
+		CreatedAt     func(childComplexity int) int
+		ID            func(childComplexity int) int
+		IsApproved    func(childComplexity int) int
+		Project       func(childComplexity int) int
+		ProjectID     func(childComplexity int) int
+		UpdatedAt     func(childComplexity int) int
+		Yxhyze        func(childComplexity int) int
+	}
+
 	Province struct {
 		Adcode    func(childComplexity int) int
 		Area      func(childComplexity int) int
@@ -334,6 +388,7 @@ type ComplexityRoot struct {
 		Nodes            func(childComplexity int, ids []xid.ID) int
 		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
 		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		Projects         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProjectOrder, where *ent.ProjectWhereInput) int
 		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		SearchFeishuUser func(childComplexity int, keyword string) int
 		SearchLocation   func(childComplexity int, keyword string) int
@@ -1816,6 +1871,300 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PlotEdge.Node(childComplexity), true
 
+	case "Project.cje":
+		if e.complexity.Project.Cje == nil {
+			break
+		}
+
+		return e.complexity.Project.Cje(childComplexity), true
+
+	case "Project.code":
+		if e.complexity.Project.Code == nil {
+			break
+		}
+
+		return e.complexity.Project.Code(childComplexity), true
+
+	case "Project.contractorApplyAmount":
+		if e.complexity.Project.ContractorApplyAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.ContractorApplyAmount(childComplexity), true
+
+	case "Project.contractorApplyCount":
+		if e.complexity.Project.ContractorApplyCount == nil {
+			break
+		}
+
+		return e.complexity.Project.ContractorApplyCount(childComplexity), true
+
+	case "Project.contractorApproveAmount":
+		if e.complexity.Project.ContractorApproveAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.ContractorApproveAmount(childComplexity), true
+
+	case "Project.contractorApproveCount":
+		if e.complexity.Project.ContractorApproveCount == nil {
+			break
+		}
+
+		return e.complexity.Project.ContractorApproveCount(childComplexity), true
+
+	case "Project.createdAt":
+		if e.complexity.Project.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Project.CreatedAt(childComplexity), true
+
+	case "Project.effectiveContractAmount":
+		if e.complexity.Project.EffectiveContractAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.EffectiveContractAmount(childComplexity), true
+
+	case "Project.id":
+		if e.complexity.Project.ID == nil {
+			break
+		}
+
+		return e.complexity.Project.ID(childComplexity), true
+
+	case "Project.installProgress":
+		if e.complexity.Project.InstallProgress == nil {
+			break
+		}
+
+		return e.complexity.Project.InstallProgress(childComplexity), true
+
+	case "Project.isFinished":
+		if e.complexity.Project.IsFinished == nil {
+			break
+		}
+
+		return e.complexity.Project.IsFinished(childComplexity), true
+
+	case "Project.name":
+		if e.complexity.Project.Name == nil {
+			break
+		}
+
+		return e.complexity.Project.Name(childComplexity), true
+
+	case "Project.ownerApplyAmount":
+		if e.complexity.Project.OwnerApplyAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.OwnerApplyAmount(childComplexity), true
+
+	case "Project.ownerApplyCount":
+		if e.complexity.Project.OwnerApplyCount == nil {
+			break
+		}
+
+		return e.complexity.Project.OwnerApplyCount(childComplexity), true
+
+	case "Project.ownerApproveAmount":
+		if e.complexity.Project.OwnerApproveAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.OwnerApproveAmount(childComplexity), true
+
+	case "Project.ownerApproveCount":
+		if e.complexity.Project.OwnerApproveCount == nil {
+			break
+		}
+
+		return e.complexity.Project.OwnerApproveCount(childComplexity), true
+
+	case "Project.updatedAt":
+		if e.complexity.Project.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Project.UpdatedAt(childComplexity), true
+
+	case "Project.vaApplyAmount":
+		if e.complexity.Project.VaApplyAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.VaApplyAmount(childComplexity), true
+
+	case "Project.vaApproveAmount":
+		if e.complexity.Project.VaApproveAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.VaApproveAmount(childComplexity), true
+
+	case "Project.vos":
+		if e.complexity.Project.Vos == nil {
+			break
+		}
+
+		return e.complexity.Project.Vos(childComplexity), true
+
+	case "Project.xjl":
+		if e.complexity.Project.Xjl == nil {
+			break
+		}
+
+		return e.complexity.Project.Xjl(childComplexity), true
+
+	case "Project.xmfzr":
+		if e.complexity.Project.Xmfzr == nil {
+			break
+		}
+
+		return e.complexity.Project.Xmfzr(childComplexity), true
+
+	case "Project.xmglfLj":
+		if e.complexity.Project.XmglfLj == nil {
+			break
+		}
+
+		return e.complexity.Project.XmglfLj(childComplexity), true
+
+	case "Project.xmglfYs":
+		if e.complexity.Project.XmglfYs == nil {
+			break
+		}
+
+		return e.complexity.Project.XmglfYs(childComplexity), true
+
+	case "Project.xmsjf":
+		if e.complexity.Project.Xmsjf == nil {
+			break
+		}
+
+		return e.complexity.Project.Xmsjf(childComplexity), true
+
+	case "Project.yye":
+		if e.complexity.Project.Yye == nil {
+			break
+		}
+
+		return e.complexity.Project.Yye(childComplexity), true
+
+	case "ProjectConnection.edges":
+		if e.complexity.ProjectConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.ProjectConnection.Edges(childComplexity), true
+
+	case "ProjectConnection.pageInfo":
+		if e.complexity.ProjectConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.ProjectConnection.PageInfo(childComplexity), true
+
+	case "ProjectConnection.totalCount":
+		if e.complexity.ProjectConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.ProjectConnection.TotalCount(childComplexity), true
+
+	case "ProjectEdge.cursor":
+		if e.complexity.ProjectEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.ProjectEdge.Cursor(childComplexity), true
+
+	case "ProjectEdge.node":
+		if e.complexity.ProjectEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.ProjectEdge.Node(childComplexity), true
+
+	case "ProjectVO.applyAmount":
+		if e.complexity.ProjectVO.ApplyAmount == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.ApplyAmount(childComplexity), true
+
+	case "ProjectVO.approveAmount":
+		if e.complexity.ProjectVO.ApproveAmount == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.ApproveAmount(childComplexity), true
+
+	case "ProjectVO.azjd":
+		if e.complexity.ProjectVO.Azjd == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.Azjd(childComplexity), true
+
+	case "ProjectVO.changeType":
+		if e.complexity.ProjectVO.ChangeType == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.ChangeType(childComplexity), true
+
+	case "ProjectVO.createdAt":
+		if e.complexity.ProjectVO.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.CreatedAt(childComplexity), true
+
+	case "ProjectVO.id":
+		if e.complexity.ProjectVO.ID == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.ID(childComplexity), true
+
+	case "ProjectVO.isApproved":
+		if e.complexity.ProjectVO.IsApproved == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.IsApproved(childComplexity), true
+
+	case "ProjectVO.project":
+		if e.complexity.ProjectVO.Project == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.Project(childComplexity), true
+
+	case "ProjectVO.projectID":
+		if e.complexity.ProjectVO.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.ProjectID(childComplexity), true
+
+	case "ProjectVO.updatedAt":
+		if e.complexity.ProjectVO.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.UpdatedAt(childComplexity), true
+
+	case "ProjectVO.yxhyze":
+		if e.complexity.ProjectVO.Yxhyze == nil {
+			break
+		}
+
+		return e.complexity.ProjectVO.Yxhyze(childComplexity), true
+
 	case "Province.adcode":
 		if e.complexity.Province.Adcode == nil {
 			break
@@ -2076,6 +2425,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.PlotOrder), args["where"].(*ent.PlotWhereInput)), true
+
+	case "Query.projects":
+		if e.complexity.Query.Projects == nil {
+			break
+		}
+
+		args, err := ec.field_Query_projects_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Projects(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProjectOrder), args["where"].(*ent.ProjectWhereInput)), true
 
 	case "Query.provinces":
 		if e.complexity.Query.Provinces == nil {
@@ -3206,6 +3567,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputOperationWhereInput,
 		ec.unmarshalInputPlotOrder,
 		ec.unmarshalInputPlotWhereInput,
+		ec.unmarshalInputProjectOrder,
+		ec.unmarshalInputProjectVOOrder,
+		ec.unmarshalInputProjectVOWhereInput,
+		ec.unmarshalInputProjectWhereInput,
 		ec.unmarshalInputProvinceOrder,
 		ec.unmarshalInputProvinceWhereInput,
 		ec.unmarshalInputTenderOrder,
@@ -5074,35 +5439,35 @@ type Operation implements Node {
   """
   成交额预算
   """
-  cjeYs: Int
+  cjeYs: Float
   """
   成交额累计
   """
-  cjeLj: Int
+  cjeLj: Float
   """
   营业额预算
   """
-  yyeYs: Int
+  yyeYs: Float
   """
   营业额累计
   """
-  yyeLj: Int
+  yyeLj: Float
   """
   现金流预算
   """
-  xjlYs: Int
+  xjlYs: Float
   """
   现金流累计
   """
-  xjlLj: Int
+  xjlLj: Float
   """
   项目管理费
   """
-  xmglf: Int
+  xmglf: Float
   """
   项目设计费
   """
-  xmsjf: Int
+  xmsjf: Float
 }
 """
 A connection to a list of items.
@@ -5197,105 +5562,105 @@ input OperationWhereInput {
   """
   cje_ys field predicates
   """
-  cjeYs: Int
-  cjeYsNEQ: Int
-  cjeYsIn: [Int!]
-  cjeYsNotIn: [Int!]
-  cjeYsGT: Int
-  cjeYsGTE: Int
-  cjeYsLT: Int
-  cjeYsLTE: Int
+  cjeYs: Float
+  cjeYsNEQ: Float
+  cjeYsIn: [Float!]
+  cjeYsNotIn: [Float!]
+  cjeYsGT: Float
+  cjeYsGTE: Float
+  cjeYsLT: Float
+  cjeYsLTE: Float
   cjeYsIsNil: Boolean
   cjeYsNotNil: Boolean
   """
   cje_lj field predicates
   """
-  cjeLj: Int
-  cjeLjNEQ: Int
-  cjeLjIn: [Int!]
-  cjeLjNotIn: [Int!]
-  cjeLjGT: Int
-  cjeLjGTE: Int
-  cjeLjLT: Int
-  cjeLjLTE: Int
+  cjeLj: Float
+  cjeLjNEQ: Float
+  cjeLjIn: [Float!]
+  cjeLjNotIn: [Float!]
+  cjeLjGT: Float
+  cjeLjGTE: Float
+  cjeLjLT: Float
+  cjeLjLTE: Float
   cjeLjIsNil: Boolean
   cjeLjNotNil: Boolean
   """
   yye_ys field predicates
   """
-  yyeYs: Int
-  yyeYsNEQ: Int
-  yyeYsIn: [Int!]
-  yyeYsNotIn: [Int!]
-  yyeYsGT: Int
-  yyeYsGTE: Int
-  yyeYsLT: Int
-  yyeYsLTE: Int
+  yyeYs: Float
+  yyeYsNEQ: Float
+  yyeYsIn: [Float!]
+  yyeYsNotIn: [Float!]
+  yyeYsGT: Float
+  yyeYsGTE: Float
+  yyeYsLT: Float
+  yyeYsLTE: Float
   yyeYsIsNil: Boolean
   yyeYsNotNil: Boolean
   """
   yye_lj field predicates
   """
-  yyeLj: Int
-  yyeLjNEQ: Int
-  yyeLjIn: [Int!]
-  yyeLjNotIn: [Int!]
-  yyeLjGT: Int
-  yyeLjGTE: Int
-  yyeLjLT: Int
-  yyeLjLTE: Int
+  yyeLj: Float
+  yyeLjNEQ: Float
+  yyeLjIn: [Float!]
+  yyeLjNotIn: [Float!]
+  yyeLjGT: Float
+  yyeLjGTE: Float
+  yyeLjLT: Float
+  yyeLjLTE: Float
   yyeLjIsNil: Boolean
   yyeLjNotNil: Boolean
   """
   xjl_ys field predicates
   """
-  xjlYs: Int
-  xjlYsNEQ: Int
-  xjlYsIn: [Int!]
-  xjlYsNotIn: [Int!]
-  xjlYsGT: Int
-  xjlYsGTE: Int
-  xjlYsLT: Int
-  xjlYsLTE: Int
+  xjlYs: Float
+  xjlYsNEQ: Float
+  xjlYsIn: [Float!]
+  xjlYsNotIn: [Float!]
+  xjlYsGT: Float
+  xjlYsGTE: Float
+  xjlYsLT: Float
+  xjlYsLTE: Float
   xjlYsIsNil: Boolean
   xjlYsNotNil: Boolean
   """
   xjl_lj field predicates
   """
-  xjlLj: Int
-  xjlLjNEQ: Int
-  xjlLjIn: [Int!]
-  xjlLjNotIn: [Int!]
-  xjlLjGT: Int
-  xjlLjGTE: Int
-  xjlLjLT: Int
-  xjlLjLTE: Int
+  xjlLj: Float
+  xjlLjNEQ: Float
+  xjlLjIn: [Float!]
+  xjlLjNotIn: [Float!]
+  xjlLjGT: Float
+  xjlLjGTE: Float
+  xjlLjLT: Float
+  xjlLjLTE: Float
   xjlLjIsNil: Boolean
   xjlLjNotNil: Boolean
   """
   xmglf field predicates
   """
-  xmglf: Int
-  xmglfNEQ: Int
-  xmglfIn: [Int!]
-  xmglfNotIn: [Int!]
-  xmglfGT: Int
-  xmglfGTE: Int
-  xmglfLT: Int
-  xmglfLTE: Int
+  xmglf: Float
+  xmglfNEQ: Float
+  xmglfIn: [Float!]
+  xmglfNotIn: [Float!]
+  xmglfGT: Float
+  xmglfGTE: Float
+  xmglfLT: Float
+  xmglfLTE: Float
   xmglfIsNil: Boolean
   xmglfNotNil: Boolean
   """
   xmsjf field predicates
   """
-  xmsjf: Int
-  xmsjfNEQ: Int
-  xmsjfIn: [Int!]
-  xmsjfNotIn: [Int!]
-  xmsjfGT: Int
-  xmsjfGTE: Int
-  xmsjfLT: Int
-  xmsjfLTE: Int
+  xmsjf: Float
+  xmsjfNEQ: Float
+  xmsjfIn: [Float!]
+  xmsjfNotIn: [Float!]
+  xmsjfGT: Float
+  xmsjfGTE: Float
+  xmsjfLT: Float
+  xmsjfLTE: Float
   xmsjfIsNil: Boolean
   xmsjfNotNil: Boolean
 }
@@ -5486,6 +5851,662 @@ input PlotWhereInput {
   """
   hasDistrict: Boolean
   hasDistrictWith: [DistrictWhereInput!]
+}
+type Project implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  code: String!
+  name: String
+  """
+  是否完成
+  """
+  isFinished: Boolean!
+  """
+  成交额
+  """
+  cje: Float
+  """
+  营业额
+  """
+  yye: Float
+  """
+  现金流
+  """
+  xjl: Float
+  """
+  项目管理费预算
+  """
+  xmglfYs: Float
+  """
+  项目管理费累计
+  """
+  xmglfLj: Float
+  """
+  项目设计费
+  """
+  xmsjf: Float
+  """
+  项目负责人
+  """
+  xmfzr: String
+  """
+  业主申请总额
+  """
+  ownerApplyAmount: Float
+  """
+  业主申请数量
+  """
+  ownerApplyCount: Int
+  """
+  业主批复总额
+  """
+  ownerApproveAmount: Float
+  """
+  业主批复数量
+  """
+  ownerApproveCount: Int
+  """
+  总包申请总额
+  """
+  contractorApplyAmount: Float
+  """
+  总包申请数量
+  """
+  contractorApplyCount: Int
+  """
+  总包批复总额
+  """
+  contractorApproveAmount: Float
+  """
+  总包批复数量
+  """
+  contractorApproveCount: Int
+  """
+  安装进度
+  """
+  installProgress: Float
+  """
+  有效合同金额
+  """
+  effectiveContractAmount: Float
+  """
+  分判VA申请总额
+  """
+  vaApplyAmount: Float
+  """
+  分判VA批复总额
+  """
+  vaApproveAmount: Float
+  vos: [ProjectVO!]
+}
+"""
+A connection to a list of items.
+"""
+type ProjectConnection {
+  """
+  A list of edges.
+  """
+  edges: [ProjectEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type ProjectEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Project
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for Project connections
+"""
+input ProjectOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Projects.
+  """
+  field: ProjectOrderField!
+}
+"""
+Properties by which Project connections can be ordered.
+"""
+enum ProjectOrderField {
+  CREATED_AT
+}
+type ProjectVO implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  projectID: ID!
+  """
+  变更类型
+  """
+  changeType: Int!
+  """
+  是否已批复
+  """
+  isApproved: Boolean!
+  """
+  安装进度
+  """
+  azjd: Float
+  """
+  有效合约总额
+  """
+  yxhyze: Float
+  """
+  申请总额
+  """
+  applyAmount: Float
+  """
+  批复总额
+  """
+  approveAmount: Float
+  project: Project!
+}
+"""
+Ordering options for ProjectVO connections
+"""
+input ProjectVOOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order ProjectVOs.
+  """
+  field: ProjectVOOrderField!
+}
+"""
+Properties by which ProjectVO connections can be ordered.
+"""
+enum ProjectVOOrderField {
+  CREATED_AT
+}
+"""
+ProjectVOWhereInput is used for filtering ProjectVO objects.
+Input was generated by ent.
+"""
+input ProjectVOWhereInput {
+  not: ProjectVOWhereInput
+  and: [ProjectVOWhereInput!]
+  or: [ProjectVOWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  project_id field predicates
+  """
+  projectID: ID
+  projectIDNEQ: ID
+  projectIDIn: [ID!]
+  projectIDNotIn: [ID!]
+  projectIDGT: ID
+  projectIDGTE: ID
+  projectIDLT: ID
+  projectIDLTE: ID
+  projectIDContains: ID
+  projectIDHasPrefix: ID
+  projectIDHasSuffix: ID
+  projectIDEqualFold: ID
+  projectIDContainsFold: ID
+  """
+  change_type field predicates
+  """
+  changeType: Int
+  changeTypeNEQ: Int
+  changeTypeIn: [Int!]
+  changeTypeNotIn: [Int!]
+  changeTypeGT: Int
+  changeTypeGTE: Int
+  changeTypeLT: Int
+  changeTypeLTE: Int
+  """
+  is_approved field predicates
+  """
+  isApproved: Boolean
+  isApprovedNEQ: Boolean
+  """
+  azjd field predicates
+  """
+  azjd: Float
+  azjdNEQ: Float
+  azjdIn: [Float!]
+  azjdNotIn: [Float!]
+  azjdGT: Float
+  azjdGTE: Float
+  azjdLT: Float
+  azjdLTE: Float
+  azjdIsNil: Boolean
+  azjdNotNil: Boolean
+  """
+  yxhyze field predicates
+  """
+  yxhyze: Float
+  yxhyzeNEQ: Float
+  yxhyzeIn: [Float!]
+  yxhyzeNotIn: [Float!]
+  yxhyzeGT: Float
+  yxhyzeGTE: Float
+  yxhyzeLT: Float
+  yxhyzeLTE: Float
+  yxhyzeIsNil: Boolean
+  yxhyzeNotNil: Boolean
+  """
+  apply_amount field predicates
+  """
+  applyAmount: Float
+  applyAmountNEQ: Float
+  applyAmountIn: [Float!]
+  applyAmountNotIn: [Float!]
+  applyAmountGT: Float
+  applyAmountGTE: Float
+  applyAmountLT: Float
+  applyAmountLTE: Float
+  applyAmountIsNil: Boolean
+  applyAmountNotNil: Boolean
+  """
+  approve_amount field predicates
+  """
+  approveAmount: Float
+  approveAmountNEQ: Float
+  approveAmountIn: [Float!]
+  approveAmountNotIn: [Float!]
+  approveAmountGT: Float
+  approveAmountGTE: Float
+  approveAmountLT: Float
+  approveAmountLTE: Float
+  approveAmountIsNil: Boolean
+  approveAmountNotNil: Boolean
+  """
+  project edge predicates
+  """
+  hasProject: Boolean
+  hasProjectWith: [ProjectWhereInput!]
+}
+"""
+ProjectWhereInput is used for filtering Project objects.
+Input was generated by ent.
+"""
+input ProjectWhereInput {
+  not: ProjectWhereInput
+  and: [ProjectWhereInput!]
+  or: [ProjectWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  code field predicates
+  """
+  code: String
+  codeNEQ: String
+  codeIn: [String!]
+  codeNotIn: [String!]
+  codeGT: String
+  codeGTE: String
+  codeLT: String
+  codeLTE: String
+  codeContains: String
+  codeHasPrefix: String
+  codeHasSuffix: String
+  codeEqualFold: String
+  codeContainsFold: String
+  """
+  name field predicates
+  """
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameIsNil: Boolean
+  nameNotNil: Boolean
+  nameEqualFold: String
+  nameContainsFold: String
+  """
+  is_finished field predicates
+  """
+  isFinished: Boolean
+  isFinishedNEQ: Boolean
+  """
+  cje field predicates
+  """
+  cje: Float
+  cjeNEQ: Float
+  cjeIn: [Float!]
+  cjeNotIn: [Float!]
+  cjeGT: Float
+  cjeGTE: Float
+  cjeLT: Float
+  cjeLTE: Float
+  cjeIsNil: Boolean
+  cjeNotNil: Boolean
+  """
+  yye field predicates
+  """
+  yye: Float
+  yyeNEQ: Float
+  yyeIn: [Float!]
+  yyeNotIn: [Float!]
+  yyeGT: Float
+  yyeGTE: Float
+  yyeLT: Float
+  yyeLTE: Float
+  yyeIsNil: Boolean
+  yyeNotNil: Boolean
+  """
+  xjl field predicates
+  """
+  xjl: Float
+  xjlNEQ: Float
+  xjlIn: [Float!]
+  xjlNotIn: [Float!]
+  xjlGT: Float
+  xjlGTE: Float
+  xjlLT: Float
+  xjlLTE: Float
+  xjlIsNil: Boolean
+  xjlNotNil: Boolean
+  """
+  xmglf_ys field predicates
+  """
+  xmglfYs: Float
+  xmglfYsNEQ: Float
+  xmglfYsIn: [Float!]
+  xmglfYsNotIn: [Float!]
+  xmglfYsGT: Float
+  xmglfYsGTE: Float
+  xmglfYsLT: Float
+  xmglfYsLTE: Float
+  xmglfYsIsNil: Boolean
+  xmglfYsNotNil: Boolean
+  """
+  xmglf_lj field predicates
+  """
+  xmglfLj: Float
+  xmglfLjNEQ: Float
+  xmglfLjIn: [Float!]
+  xmglfLjNotIn: [Float!]
+  xmglfLjGT: Float
+  xmglfLjGTE: Float
+  xmglfLjLT: Float
+  xmglfLjLTE: Float
+  xmglfLjIsNil: Boolean
+  xmglfLjNotNil: Boolean
+  """
+  xmsjf field predicates
+  """
+  xmsjf: Float
+  xmsjfNEQ: Float
+  xmsjfIn: [Float!]
+  xmsjfNotIn: [Float!]
+  xmsjfGT: Float
+  xmsjfGTE: Float
+  xmsjfLT: Float
+  xmsjfLTE: Float
+  xmsjfIsNil: Boolean
+  xmsjfNotNil: Boolean
+  """
+  xmfzr field predicates
+  """
+  xmfzr: String
+  xmfzrNEQ: String
+  xmfzrIn: [String!]
+  xmfzrNotIn: [String!]
+  xmfzrGT: String
+  xmfzrGTE: String
+  xmfzrLT: String
+  xmfzrLTE: String
+  xmfzrContains: String
+  xmfzrHasPrefix: String
+  xmfzrHasSuffix: String
+  xmfzrIsNil: Boolean
+  xmfzrNotNil: Boolean
+  xmfzrEqualFold: String
+  xmfzrContainsFold: String
+  """
+  owner_apply_amount field predicates
+  """
+  ownerApplyAmount: Float
+  ownerApplyAmountNEQ: Float
+  ownerApplyAmountIn: [Float!]
+  ownerApplyAmountNotIn: [Float!]
+  ownerApplyAmountGT: Float
+  ownerApplyAmountGTE: Float
+  ownerApplyAmountLT: Float
+  ownerApplyAmountLTE: Float
+  ownerApplyAmountIsNil: Boolean
+  ownerApplyAmountNotNil: Boolean
+  """
+  owner_apply_count field predicates
+  """
+  ownerApplyCount: Int
+  ownerApplyCountNEQ: Int
+  ownerApplyCountIn: [Int!]
+  ownerApplyCountNotIn: [Int!]
+  ownerApplyCountGT: Int
+  ownerApplyCountGTE: Int
+  ownerApplyCountLT: Int
+  ownerApplyCountLTE: Int
+  ownerApplyCountIsNil: Boolean
+  ownerApplyCountNotNil: Boolean
+  """
+  owner_approve_amount field predicates
+  """
+  ownerApproveAmount: Float
+  ownerApproveAmountNEQ: Float
+  ownerApproveAmountIn: [Float!]
+  ownerApproveAmountNotIn: [Float!]
+  ownerApproveAmountGT: Float
+  ownerApproveAmountGTE: Float
+  ownerApproveAmountLT: Float
+  ownerApproveAmountLTE: Float
+  ownerApproveAmountIsNil: Boolean
+  ownerApproveAmountNotNil: Boolean
+  """
+  owner_approve_count field predicates
+  """
+  ownerApproveCount: Int
+  ownerApproveCountNEQ: Int
+  ownerApproveCountIn: [Int!]
+  ownerApproveCountNotIn: [Int!]
+  ownerApproveCountGT: Int
+  ownerApproveCountGTE: Int
+  ownerApproveCountLT: Int
+  ownerApproveCountLTE: Int
+  ownerApproveCountIsNil: Boolean
+  ownerApproveCountNotNil: Boolean
+  """
+  contractor_apply_amount field predicates
+  """
+  contractorApplyAmount: Float
+  contractorApplyAmountNEQ: Float
+  contractorApplyAmountIn: [Float!]
+  contractorApplyAmountNotIn: [Float!]
+  contractorApplyAmountGT: Float
+  contractorApplyAmountGTE: Float
+  contractorApplyAmountLT: Float
+  contractorApplyAmountLTE: Float
+  contractorApplyAmountIsNil: Boolean
+  contractorApplyAmountNotNil: Boolean
+  """
+  contractor_apply_count field predicates
+  """
+  contractorApplyCount: Int
+  contractorApplyCountNEQ: Int
+  contractorApplyCountIn: [Int!]
+  contractorApplyCountNotIn: [Int!]
+  contractorApplyCountGT: Int
+  contractorApplyCountGTE: Int
+  contractorApplyCountLT: Int
+  contractorApplyCountLTE: Int
+  contractorApplyCountIsNil: Boolean
+  contractorApplyCountNotNil: Boolean
+  """
+  contractor_approve_amount field predicates
+  """
+  contractorApproveAmount: Float
+  contractorApproveAmountNEQ: Float
+  contractorApproveAmountIn: [Float!]
+  contractorApproveAmountNotIn: [Float!]
+  contractorApproveAmountGT: Float
+  contractorApproveAmountGTE: Float
+  contractorApproveAmountLT: Float
+  contractorApproveAmountLTE: Float
+  contractorApproveAmountIsNil: Boolean
+  contractorApproveAmountNotNil: Boolean
+  """
+  contractor_approve_count field predicates
+  """
+  contractorApproveCount: Int
+  contractorApproveCountNEQ: Int
+  contractorApproveCountIn: [Int!]
+  contractorApproveCountNotIn: [Int!]
+  contractorApproveCountGT: Int
+  contractorApproveCountGTE: Int
+  contractorApproveCountLT: Int
+  contractorApproveCountLTE: Int
+  contractorApproveCountIsNil: Boolean
+  contractorApproveCountNotNil: Boolean
+  """
+  install_progress field predicates
+  """
+  installProgress: Float
+  installProgressNEQ: Float
+  installProgressIn: [Float!]
+  installProgressNotIn: [Float!]
+  installProgressGT: Float
+  installProgressGTE: Float
+  installProgressLT: Float
+  installProgressLTE: Float
+  installProgressIsNil: Boolean
+  installProgressNotNil: Boolean
+  """
+  effective_contract_amount field predicates
+  """
+  effectiveContractAmount: Float
+  effectiveContractAmountNEQ: Float
+  effectiveContractAmountIn: [Float!]
+  effectiveContractAmountNotIn: [Float!]
+  effectiveContractAmountGT: Float
+  effectiveContractAmountGTE: Float
+  effectiveContractAmountLT: Float
+  effectiveContractAmountLTE: Float
+  effectiveContractAmountIsNil: Boolean
+  effectiveContractAmountNotNil: Boolean
+  """
+  va_apply_amount field predicates
+  """
+  vaApplyAmount: Float
+  vaApplyAmountNEQ: Float
+  vaApplyAmountIn: [Float!]
+  vaApplyAmountNotIn: [Float!]
+  vaApplyAmountGT: Float
+  vaApplyAmountGTE: Float
+  vaApplyAmountLT: Float
+  vaApplyAmountLTE: Float
+  vaApplyAmountIsNil: Boolean
+  vaApplyAmountNotNil: Boolean
+  """
+  va_approve_amount field predicates
+  """
+  vaApproveAmount: Float
+  vaApproveAmountNEQ: Float
+  vaApproveAmountIn: [Float!]
+  vaApproveAmountNotIn: [Float!]
+  vaApproveAmountGT: Float
+  vaApproveAmountGTE: Float
+  vaApproveAmountLT: Float
+  vaApproveAmountLTE: Float
+  vaApproveAmountIsNil: Boolean
+  vaApproveAmountNotNil: Boolean
+  """
+  vos edge predicates
+  """
+  hasVos: Boolean
+  hasVosWith: [ProjectVOWhereInput!]
 }
 type Province implements Node {
   id: ID!
@@ -6035,6 +7056,37 @@ type Query {
     """
     where: PlotWhereInput
   ): PlotConnection!
+  projects(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Projects returned from the connection.
+    """
+    orderBy: ProjectOrder
+
+    """
+    Filtering options for Projects returned from the connection.
+    """
+    where: ProjectWhereInput
+  ): ProjectConnection!
   provinces(
     """
     Returns the elements in the list that come after the specified cursor.

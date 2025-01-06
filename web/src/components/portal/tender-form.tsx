@@ -135,6 +135,7 @@ export function TenderForm({
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
     [data, areaID],
   );
+  const isGA = area?.some((a) => a?.node?.code === "GA") || false;
 
   const customerOptions = useMemo(
     () =>
@@ -351,6 +352,7 @@ export function TenderForm({
                   "developer",
                   "tenderClosingDate",
                   "tenderDate",
+                  "address",
                 ]);
               }}
             />
@@ -440,7 +442,7 @@ export function TenderForm({
                 rules={[{ required: true }]}
                 className="md:col-span-2"
               >
-                <Input />
+                {isGA ? <SearchLocationSelect /> : <Input />}
               </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">

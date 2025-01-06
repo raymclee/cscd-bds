@@ -23,21 +23,21 @@ type Operation struct {
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// 成交额预算
-	CjeYs *int `json:"cje_ys,omitempty"`
+	CjeYs *float64 `json:"cje_ys,omitempty"`
 	// 成交额累计
-	CjeLj *int `json:"cje_lj,omitempty"`
+	CjeLj *float64 `json:"cje_lj,omitempty"`
 	// 营业额预算
-	YyeYs *int `json:"yye_ys,omitempty"`
+	YyeYs *float64 `json:"yye_ys,omitempty"`
 	// 营业额累计
-	YyeLj *int `json:"yye_lj,omitempty"`
+	YyeLj *float64 `json:"yye_lj,omitempty"`
 	// 现金流预算
-	XjlYs *int `json:"xjl_ys,omitempty"`
+	XjlYs *float64 `json:"xjl_ys,omitempty"`
 	// 现金流累计
-	XjlLj *int `json:"xjl_lj,omitempty"`
+	XjlLj *float64 `json:"xjl_lj,omitempty"`
 	// 项目管理费
-	Xmglf *int `json:"xmglf,omitempty"`
+	Xmglf *float64 `json:"xmglf,omitempty"`
 	// 项目设计费
-	Xmsjf        *int `json:"xmsjf,omitempty"`
+	Xmsjf        *float64 `json:"xmsjf,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -47,7 +47,7 @@ func (*Operation) scanValues(columns []string) ([]any, error) {
 	for i := range columns {
 		switch columns[i] {
 		case operation.FieldCjeYs, operation.FieldCjeLj, operation.FieldYyeYs, operation.FieldYyeLj, operation.FieldXjlYs, operation.FieldXjlLj, operation.FieldXmglf, operation.FieldXmsjf:
-			values[i] = new(sql.NullInt64)
+			values[i] = new(sql.NullFloat64)
 		case operation.FieldCreatedAt, operation.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		case operation.FieldID:
@@ -86,60 +86,60 @@ func (o *Operation) assignValues(columns []string, values []any) error {
 				o.UpdatedAt = value.Time
 			}
 		case operation.FieldCjeYs:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field cje_ys", values[i])
 			} else if value.Valid {
-				o.CjeYs = new(int)
-				*o.CjeYs = int(value.Int64)
+				o.CjeYs = new(float64)
+				*o.CjeYs = value.Float64
 			}
 		case operation.FieldCjeLj:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field cje_lj", values[i])
 			} else if value.Valid {
-				o.CjeLj = new(int)
-				*o.CjeLj = int(value.Int64)
+				o.CjeLj = new(float64)
+				*o.CjeLj = value.Float64
 			}
 		case operation.FieldYyeYs:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field yye_ys", values[i])
 			} else if value.Valid {
-				o.YyeYs = new(int)
-				*o.YyeYs = int(value.Int64)
+				o.YyeYs = new(float64)
+				*o.YyeYs = value.Float64
 			}
 		case operation.FieldYyeLj:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field yye_lj", values[i])
 			} else if value.Valid {
-				o.YyeLj = new(int)
-				*o.YyeLj = int(value.Int64)
+				o.YyeLj = new(float64)
+				*o.YyeLj = value.Float64
 			}
 		case operation.FieldXjlYs:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field xjl_ys", values[i])
 			} else if value.Valid {
-				o.XjlYs = new(int)
-				*o.XjlYs = int(value.Int64)
+				o.XjlYs = new(float64)
+				*o.XjlYs = value.Float64
 			}
 		case operation.FieldXjlLj:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field xjl_lj", values[i])
 			} else if value.Valid {
-				o.XjlLj = new(int)
-				*o.XjlLj = int(value.Int64)
+				o.XjlLj = new(float64)
+				*o.XjlLj = value.Float64
 			}
 		case operation.FieldXmglf:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field xmglf", values[i])
 			} else if value.Valid {
-				o.Xmglf = new(int)
-				*o.Xmglf = int(value.Int64)
+				o.Xmglf = new(float64)
+				*o.Xmglf = value.Float64
 			}
 		case operation.FieldXmsjf:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field xmsjf", values[i])
 			} else if value.Valid {
-				o.Xmsjf = new(int)
-				*o.Xmsjf = int(value.Int64)
+				o.Xmsjf = new(float64)
+				*o.Xmsjf = value.Float64
 			}
 		default:
 			o.selectValues.Set(columns[i], values[i])

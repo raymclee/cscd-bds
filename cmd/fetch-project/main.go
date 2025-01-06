@@ -1,0 +1,259 @@
+package main
+
+import (
+	"context"
+	"cscd-bds/store"
+	"cscd-bds/store/ent/project"
+	"database/sql"
+	"fmt"
+
+	_ "github.com/microsoft/go-mssqldb"
+)
+
+const (
+	STG_HOST     = "10.1.8.37"
+	STG_PORT     = 1433
+	STG_USER     = "bi830"
+	STG_PASSWORD = "Csci!830"
+	STG_DATABASE = "BI_STG_830"
+)
+
+func main() {
+	ctx := context.Background()
+
+	stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
+	if err != nil {
+		panic(err)
+	}
+	defer stgDb.Close()
+
+	err = stgDb.PingContext(ctx)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected to STG DB")
+
+	s := store.New(false)
+
+	// success := 0
+	// q := s.Operation.Create()
+
+	// today := time.Now()
+	// var (
+	// 	year = 2024
+	// )
+
+	// wg := errgroup.Group{}
+
+	rows, err := stgDb.Query(`
+		SELECT 
+			jobcode,
+			jobname,
+			finishedflag
+		FROM [BI_STG_830].[dbo].[view_fefacade_jobbasfil_NY]
+	`)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		// wg.Go(func() error {
+
+		var (
+			jobcode      *string
+			jobname      *string
+			finishedflag string
+			isFinished   bool
+		)
+		err := rows.Scan(&jobcode, &jobname, &finishedflag)
+		if err != nil {
+			fmt.Printf("扫描失败: %s\n", err.Error())
+		}
+
+		if jobcode == nil {
+			continue
+		}
+
+		if finishedflag == "N" {
+			isFinished = false
+		} else {
+			isFinished = true
+		}
+
+		p := s.Project.Create().
+			SetCode(*jobcode).
+			SetNillableName(jobname).
+			SetIsFinished(isFinished)
+
+			// 抓取成交额
+		{
+
+			// 	var (
+			// 		total float64
+			// 	)
+
+			// 	row := stgDb.QueryRow(`
+			// 	SELECT sum(suscntrtsum) / 10000 as total FROM mst_jobbasfil mj
+			// 		where pk_corp='2837' and jobtype='J' and finishedflag = 'M3'
+			// 		and zbyr = @year
+			// `, sql.Named("year", year))
+
+			// 	err := row.Scan(&total)
+			// 	if err != nil {
+			// 		fmt.Printf("抓取成交额失败: %s\n", err.Error())
+			// 	} else {
+			// 		p.SetCje(total)
+			// 		// success++
+			// 	}
+		}
+
+		// 抓取VO
+		{
+
+			rs, err := stgDb.Query(`
+					SELECT 
+					change_type,
+					sum(total_amount) as total_amount, 
+					sum(elv_amount) as elv_amount, 
+					sum(elv_quantity) as elv_count,
+					count(1) as total_count
+					FROM [BI_STG_830].[dbo].[project_changes_v]
+					WHERE project_code = @code
+					group by project_code,change_type
+				`, sql.Named("code", jobcode))
+			if err != nil {
+				fmt.Printf("抓取VO失败: %s\n", err.Error())
+			}
+			defer rs.Close()
+
+			for rs.Next() {
+				var (
+					changeType  string
+					totalAmount *float64
+					totalCount  int
+					elvAmount   *float64
+					elvCount    int
+				)
+				err := rs.Scan(&changeType, &totalAmount, &elvAmount, &elvCount, &totalCount)
+				if err != nil {
+					fmt.Printf("抓取VO失败: %s\n", err.Error())
+				}
+
+				if changeType == "總包變更" {
+					p.SetContractorApplyCount(totalCount)
+					p.SetNillableContractorApplyAmount(totalAmount)
+					p.SetContractorApproveCount(elvCount)
+					p.SetNillableContractorApproveAmount(elvAmount)
+				} else if changeType == "業主變更" {
+					p.SetOwnerApplyCount(totalCount)
+					p.SetNillableOwnerApplyAmount(totalAmount)
+					p.SetOwnerApproveCount(elvCount)
+					p.SetNillableOwnerApproveAmount(elvAmount)
+				}
+
+			}
+
+		}
+
+		// 抓取安装进度
+		{
+			var (
+				cfsum      float64
+				efcntrtsum float64
+			)
+
+			row := stgDb.QueryRow(`
+					select
+					cfsum as cfsum,
+					efcntrtsum as efcntrtsum 
+					from (select * from (select *,row_number() over(PARTITION by pk_jobbasfil order by sid desc) rn  from bd_pjpayroll where 1=1 
+					) a where a.rn=1) bp
+					inner join mst_jobbasfil mj on bp.pk_jobbasfil = mj.pk_jobbasfil
+					where aprvsts in ( '0','1') AND jobcode = @code;
+				`, sql.Named("code", jobcode))
+
+			err := row.Scan(&cfsum, &efcntrtsum)
+			if err != nil {
+				fmt.Printf("抓取安装进度失败: %s\n", err.Error())
+			} else {
+				if efcntrtsum > 0 {
+					p.SetInstallProgress(cfsum / efcntrtsum)
+				} else {
+					p.SetInstallProgress(0)
+				}
+				p.SetEffectiveContractAmount(cfsum)
+			}
+
+		}
+
+		// 抓取分判VA
+		{
+
+			row := stgDb.QueryRow(`
+					select
+						va_apply, va_approve
+					from 
+					(select
+					SUM(CAST(FIELD0059 AS FLOAT)) va_apply
+					,field0004 jobcode
+					from FORMMAIN_51028 fm
+					left join formson_57860 fs on CAST(fm.ID as nvarchar)=CAST(fs.FORMMAIN_ID as nvarchar)
+					INNER JOIN view_fefacade_jobbasfil VJ ON VJ.JOBCODE=FM.field0004
+					where 1=1
+					and fm.FINISHEDFLAG = 1
+					and APPROVE_DATE>='2021-04-01'
+					AND jobcode = @code
+					group by field0004)  a
+					inner join 
+					(select
+					SUM(CAST(FIELD0059 AS FLOAT)) va_approve
+					,field0004 jobcode
+					from FORMMAIN_51028 fm
+					left join formson_57860 fs on CAST(fm.ID as nvarchar)=CAST(fs.FORMMAIN_ID as nvarchar)
+					INNER JOIN view_fefacade_jobbasfil VJ ON VJ.JOBCODE=FM.field0004
+					where 1=1
+					and fm.FINISHEDFLAG between 0 and 1
+					and APPROVE_DATE>='2021-04-01'
+					AND jobcode = @code
+					group by field0004) b 
+					on a.jobcode=b.jobcode
+				`, sql.Named("code", jobcode))
+			if err != nil {
+				fmt.Printf("抓取分判VA失败: %s\n", err.Error())
+			}
+			defer rows.Close()
+
+			var (
+				vaApply   float64 = 0
+				vaApprove float64 = 0
+			)
+
+			err := row.Scan(&vaApply, &vaApprove)
+			if err != nil {
+				fmt.Printf("抓取分判VA失败: %s\n", err.Error())
+			} else {
+				p.SetVaApplyAmount(vaApply)
+				p.SetVaApproveAmount(vaApprove)
+			}
+		}
+
+		if err := p.
+			OnConflictColumns(project.FieldCode).
+			UpdateNewValues().Exec(ctx); err != nil {
+			panic(err)
+		}
+
+		// if success > 0 {
+		// 	if err := p.Exec(ctx); err != nil {
+		// 		panic(err)
+		// 	}
+		// }
+		// return nil
+		// })
+	}
+
+	// if err := wg.Wait(); err != nil {
+	// 	fmt.Println(err)
+	// }
+}

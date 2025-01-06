@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => ({
               target: "http://localhost:3000",
               changeOrigin: true,
             },
+            "/3dm": {
+              target: "http://localhost:3000",
+              changeOrigin: true,
+            },
             "/api/v1": {
               target: "http://localhost:3000",
               changeOrigin: true,

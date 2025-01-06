@@ -66,42 +66,42 @@ func UpdatedAt(v time.Time) predicate.Operation {
 }
 
 // CjeYs applies equality check predicate on the "cje_ys" field. It's identical to CjeYsEQ.
-func CjeYs(v int) predicate.Operation {
+func CjeYs(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldCjeYs, v))
 }
 
 // CjeLj applies equality check predicate on the "cje_lj" field. It's identical to CjeLjEQ.
-func CjeLj(v int) predicate.Operation {
+func CjeLj(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldCjeLj, v))
 }
 
 // YyeYs applies equality check predicate on the "yye_ys" field. It's identical to YyeYsEQ.
-func YyeYs(v int) predicate.Operation {
+func YyeYs(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldYyeYs, v))
 }
 
 // YyeLj applies equality check predicate on the "yye_lj" field. It's identical to YyeLjEQ.
-func YyeLj(v int) predicate.Operation {
+func YyeLj(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldYyeLj, v))
 }
 
 // XjlYs applies equality check predicate on the "xjl_ys" field. It's identical to XjlYsEQ.
-func XjlYs(v int) predicate.Operation {
+func XjlYs(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXjlYs, v))
 }
 
 // XjlLj applies equality check predicate on the "xjl_lj" field. It's identical to XjlLjEQ.
-func XjlLj(v int) predicate.Operation {
+func XjlLj(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXjlLj, v))
 }
 
 // Xmglf applies equality check predicate on the "xmglf" field. It's identical to XmglfEQ.
-func Xmglf(v int) predicate.Operation {
+func Xmglf(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXmglf, v))
 }
 
 // Xmsjf applies equality check predicate on the "xmsjf" field. It's identical to XmsjfEQ.
-func Xmsjf(v int) predicate.Operation {
+func Xmsjf(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXmsjf, v))
 }
 
@@ -186,42 +186,42 @@ func UpdatedAtLTE(v time.Time) predicate.Operation {
 }
 
 // CjeYsEQ applies the EQ predicate on the "cje_ys" field.
-func CjeYsEQ(v int) predicate.Operation {
+func CjeYsEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldCjeYs, v))
 }
 
 // CjeYsNEQ applies the NEQ predicate on the "cje_ys" field.
-func CjeYsNEQ(v int) predicate.Operation {
+func CjeYsNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldCjeYs, v))
 }
 
 // CjeYsIn applies the In predicate on the "cje_ys" field.
-func CjeYsIn(vs ...int) predicate.Operation {
+func CjeYsIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldCjeYs, vs...))
 }
 
 // CjeYsNotIn applies the NotIn predicate on the "cje_ys" field.
-func CjeYsNotIn(vs ...int) predicate.Operation {
+func CjeYsNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldCjeYs, vs...))
 }
 
 // CjeYsGT applies the GT predicate on the "cje_ys" field.
-func CjeYsGT(v int) predicate.Operation {
+func CjeYsGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldCjeYs, v))
 }
 
 // CjeYsGTE applies the GTE predicate on the "cje_ys" field.
-func CjeYsGTE(v int) predicate.Operation {
+func CjeYsGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldCjeYs, v))
 }
 
 // CjeYsLT applies the LT predicate on the "cje_ys" field.
-func CjeYsLT(v int) predicate.Operation {
+func CjeYsLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldCjeYs, v))
 }
 
 // CjeYsLTE applies the LTE predicate on the "cje_ys" field.
-func CjeYsLTE(v int) predicate.Operation {
+func CjeYsLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldCjeYs, v))
 }
 
@@ -236,42 +236,42 @@ func CjeYsNotNil() predicate.Operation {
 }
 
 // CjeLjEQ applies the EQ predicate on the "cje_lj" field.
-func CjeLjEQ(v int) predicate.Operation {
+func CjeLjEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldCjeLj, v))
 }
 
 // CjeLjNEQ applies the NEQ predicate on the "cje_lj" field.
-func CjeLjNEQ(v int) predicate.Operation {
+func CjeLjNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldCjeLj, v))
 }
 
 // CjeLjIn applies the In predicate on the "cje_lj" field.
-func CjeLjIn(vs ...int) predicate.Operation {
+func CjeLjIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldCjeLj, vs...))
 }
 
 // CjeLjNotIn applies the NotIn predicate on the "cje_lj" field.
-func CjeLjNotIn(vs ...int) predicate.Operation {
+func CjeLjNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldCjeLj, vs...))
 }
 
 // CjeLjGT applies the GT predicate on the "cje_lj" field.
-func CjeLjGT(v int) predicate.Operation {
+func CjeLjGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldCjeLj, v))
 }
 
 // CjeLjGTE applies the GTE predicate on the "cje_lj" field.
-func CjeLjGTE(v int) predicate.Operation {
+func CjeLjGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldCjeLj, v))
 }
 
 // CjeLjLT applies the LT predicate on the "cje_lj" field.
-func CjeLjLT(v int) predicate.Operation {
+func CjeLjLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldCjeLj, v))
 }
 
 // CjeLjLTE applies the LTE predicate on the "cje_lj" field.
-func CjeLjLTE(v int) predicate.Operation {
+func CjeLjLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldCjeLj, v))
 }
 
@@ -286,42 +286,42 @@ func CjeLjNotNil() predicate.Operation {
 }
 
 // YyeYsEQ applies the EQ predicate on the "yye_ys" field.
-func YyeYsEQ(v int) predicate.Operation {
+func YyeYsEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldYyeYs, v))
 }
 
 // YyeYsNEQ applies the NEQ predicate on the "yye_ys" field.
-func YyeYsNEQ(v int) predicate.Operation {
+func YyeYsNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldYyeYs, v))
 }
 
 // YyeYsIn applies the In predicate on the "yye_ys" field.
-func YyeYsIn(vs ...int) predicate.Operation {
+func YyeYsIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldYyeYs, vs...))
 }
 
 // YyeYsNotIn applies the NotIn predicate on the "yye_ys" field.
-func YyeYsNotIn(vs ...int) predicate.Operation {
+func YyeYsNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldYyeYs, vs...))
 }
 
 // YyeYsGT applies the GT predicate on the "yye_ys" field.
-func YyeYsGT(v int) predicate.Operation {
+func YyeYsGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldYyeYs, v))
 }
 
 // YyeYsGTE applies the GTE predicate on the "yye_ys" field.
-func YyeYsGTE(v int) predicate.Operation {
+func YyeYsGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldYyeYs, v))
 }
 
 // YyeYsLT applies the LT predicate on the "yye_ys" field.
-func YyeYsLT(v int) predicate.Operation {
+func YyeYsLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldYyeYs, v))
 }
 
 // YyeYsLTE applies the LTE predicate on the "yye_ys" field.
-func YyeYsLTE(v int) predicate.Operation {
+func YyeYsLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldYyeYs, v))
 }
 
@@ -336,42 +336,42 @@ func YyeYsNotNil() predicate.Operation {
 }
 
 // YyeLjEQ applies the EQ predicate on the "yye_lj" field.
-func YyeLjEQ(v int) predicate.Operation {
+func YyeLjEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldYyeLj, v))
 }
 
 // YyeLjNEQ applies the NEQ predicate on the "yye_lj" field.
-func YyeLjNEQ(v int) predicate.Operation {
+func YyeLjNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldYyeLj, v))
 }
 
 // YyeLjIn applies the In predicate on the "yye_lj" field.
-func YyeLjIn(vs ...int) predicate.Operation {
+func YyeLjIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldYyeLj, vs...))
 }
 
 // YyeLjNotIn applies the NotIn predicate on the "yye_lj" field.
-func YyeLjNotIn(vs ...int) predicate.Operation {
+func YyeLjNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldYyeLj, vs...))
 }
 
 // YyeLjGT applies the GT predicate on the "yye_lj" field.
-func YyeLjGT(v int) predicate.Operation {
+func YyeLjGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldYyeLj, v))
 }
 
 // YyeLjGTE applies the GTE predicate on the "yye_lj" field.
-func YyeLjGTE(v int) predicate.Operation {
+func YyeLjGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldYyeLj, v))
 }
 
 // YyeLjLT applies the LT predicate on the "yye_lj" field.
-func YyeLjLT(v int) predicate.Operation {
+func YyeLjLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldYyeLj, v))
 }
 
 // YyeLjLTE applies the LTE predicate on the "yye_lj" field.
-func YyeLjLTE(v int) predicate.Operation {
+func YyeLjLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldYyeLj, v))
 }
 
@@ -386,42 +386,42 @@ func YyeLjNotNil() predicate.Operation {
 }
 
 // XjlYsEQ applies the EQ predicate on the "xjl_ys" field.
-func XjlYsEQ(v int) predicate.Operation {
+func XjlYsEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXjlYs, v))
 }
 
 // XjlYsNEQ applies the NEQ predicate on the "xjl_ys" field.
-func XjlYsNEQ(v int) predicate.Operation {
+func XjlYsNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldXjlYs, v))
 }
 
 // XjlYsIn applies the In predicate on the "xjl_ys" field.
-func XjlYsIn(vs ...int) predicate.Operation {
+func XjlYsIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldXjlYs, vs...))
 }
 
 // XjlYsNotIn applies the NotIn predicate on the "xjl_ys" field.
-func XjlYsNotIn(vs ...int) predicate.Operation {
+func XjlYsNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldXjlYs, vs...))
 }
 
 // XjlYsGT applies the GT predicate on the "xjl_ys" field.
-func XjlYsGT(v int) predicate.Operation {
+func XjlYsGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldXjlYs, v))
 }
 
 // XjlYsGTE applies the GTE predicate on the "xjl_ys" field.
-func XjlYsGTE(v int) predicate.Operation {
+func XjlYsGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldXjlYs, v))
 }
 
 // XjlYsLT applies the LT predicate on the "xjl_ys" field.
-func XjlYsLT(v int) predicate.Operation {
+func XjlYsLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldXjlYs, v))
 }
 
 // XjlYsLTE applies the LTE predicate on the "xjl_ys" field.
-func XjlYsLTE(v int) predicate.Operation {
+func XjlYsLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldXjlYs, v))
 }
 
@@ -436,42 +436,42 @@ func XjlYsNotNil() predicate.Operation {
 }
 
 // XjlLjEQ applies the EQ predicate on the "xjl_lj" field.
-func XjlLjEQ(v int) predicate.Operation {
+func XjlLjEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXjlLj, v))
 }
 
 // XjlLjNEQ applies the NEQ predicate on the "xjl_lj" field.
-func XjlLjNEQ(v int) predicate.Operation {
+func XjlLjNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldXjlLj, v))
 }
 
 // XjlLjIn applies the In predicate on the "xjl_lj" field.
-func XjlLjIn(vs ...int) predicate.Operation {
+func XjlLjIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldXjlLj, vs...))
 }
 
 // XjlLjNotIn applies the NotIn predicate on the "xjl_lj" field.
-func XjlLjNotIn(vs ...int) predicate.Operation {
+func XjlLjNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldXjlLj, vs...))
 }
 
 // XjlLjGT applies the GT predicate on the "xjl_lj" field.
-func XjlLjGT(v int) predicate.Operation {
+func XjlLjGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldXjlLj, v))
 }
 
 // XjlLjGTE applies the GTE predicate on the "xjl_lj" field.
-func XjlLjGTE(v int) predicate.Operation {
+func XjlLjGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldXjlLj, v))
 }
 
 // XjlLjLT applies the LT predicate on the "xjl_lj" field.
-func XjlLjLT(v int) predicate.Operation {
+func XjlLjLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldXjlLj, v))
 }
 
 // XjlLjLTE applies the LTE predicate on the "xjl_lj" field.
-func XjlLjLTE(v int) predicate.Operation {
+func XjlLjLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldXjlLj, v))
 }
 
@@ -486,42 +486,42 @@ func XjlLjNotNil() predicate.Operation {
 }
 
 // XmglfEQ applies the EQ predicate on the "xmglf" field.
-func XmglfEQ(v int) predicate.Operation {
+func XmglfEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXmglf, v))
 }
 
 // XmglfNEQ applies the NEQ predicate on the "xmglf" field.
-func XmglfNEQ(v int) predicate.Operation {
+func XmglfNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldXmglf, v))
 }
 
 // XmglfIn applies the In predicate on the "xmglf" field.
-func XmglfIn(vs ...int) predicate.Operation {
+func XmglfIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldXmglf, vs...))
 }
 
 // XmglfNotIn applies the NotIn predicate on the "xmglf" field.
-func XmglfNotIn(vs ...int) predicate.Operation {
+func XmglfNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldXmglf, vs...))
 }
 
 // XmglfGT applies the GT predicate on the "xmglf" field.
-func XmglfGT(v int) predicate.Operation {
+func XmglfGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldXmglf, v))
 }
 
 // XmglfGTE applies the GTE predicate on the "xmglf" field.
-func XmglfGTE(v int) predicate.Operation {
+func XmglfGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldXmglf, v))
 }
 
 // XmglfLT applies the LT predicate on the "xmglf" field.
-func XmglfLT(v int) predicate.Operation {
+func XmglfLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldXmglf, v))
 }
 
 // XmglfLTE applies the LTE predicate on the "xmglf" field.
-func XmglfLTE(v int) predicate.Operation {
+func XmglfLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldXmglf, v))
 }
 
@@ -536,42 +536,42 @@ func XmglfNotNil() predicate.Operation {
 }
 
 // XmsjfEQ applies the EQ predicate on the "xmsjf" field.
-func XmsjfEQ(v int) predicate.Operation {
+func XmsjfEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldEQ(FieldXmsjf, v))
 }
 
 // XmsjfNEQ applies the NEQ predicate on the "xmsjf" field.
-func XmsjfNEQ(v int) predicate.Operation {
+func XmsjfNEQ(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNEQ(FieldXmsjf, v))
 }
 
 // XmsjfIn applies the In predicate on the "xmsjf" field.
-func XmsjfIn(vs ...int) predicate.Operation {
+func XmsjfIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldIn(FieldXmsjf, vs...))
 }
 
 // XmsjfNotIn applies the NotIn predicate on the "xmsjf" field.
-func XmsjfNotIn(vs ...int) predicate.Operation {
+func XmsjfNotIn(vs ...float64) predicate.Operation {
 	return predicate.Operation(sql.FieldNotIn(FieldXmsjf, vs...))
 }
 
 // XmsjfGT applies the GT predicate on the "xmsjf" field.
-func XmsjfGT(v int) predicate.Operation {
+func XmsjfGT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGT(FieldXmsjf, v))
 }
 
 // XmsjfGTE applies the GTE predicate on the "xmsjf" field.
-func XmsjfGTE(v int) predicate.Operation {
+func XmsjfGTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldGTE(FieldXmsjf, v))
 }
 
 // XmsjfLT applies the LT predicate on the "xmsjf" field.
-func XmsjfLT(v int) predicate.Operation {
+func XmsjfLT(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLT(FieldXmsjf, v))
 }
 
 // XmsjfLTE applies the LTE predicate on the "xmsjf" field.
-func XmsjfLTE(v int) predicate.Operation {
+func XmsjfLTE(v float64) predicate.Operation {
 	return predicate.Operation(sql.FieldLTE(FieldXmsjf, v))
 }
 

@@ -13,12 +13,8 @@ import (
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -28,7 +24,6 @@ import (
 	larkbitable "github.com/larksuite/oapi-sdk-go/v3/service/bitable/v1"
 	"github.com/twpayne/go-geom"
 	"github.com/twpayne/go-geom/encoding/geojson"
-	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -57,7 +52,7 @@ func main() {
 	// fetchSales()
 	// fetchCustomer()
 	fetchTender()
-	// fetchVisitRecord()
+	fetchVisitRecord()
 	// fetchCompetitor()
 
 }
@@ -287,7 +282,7 @@ func fetchVisitRecord() {
 }
 
 func fetchTender() {
-	httpClient := &http.Client{}
+	// httpClient := &http.Client{}
 
 	token, err := client.Auth.TenantAccessToken.Internal(ctx,
 		larkauth.NewInternalTenantAccessTokenReqBuilder().Body(
@@ -329,7 +324,7 @@ func fetchTender() {
 			fullAddress   *string
 			contractor    *string
 
-			photos                               []interface{}
+			// photos                               []interface{}
 			sizeAndValueRating                   *int
 			sizeAndValueRatingOverview           *string
 			creditAndPaymentRating               *int
@@ -474,8 +469,14 @@ func fetchTender() {
 		}
 
 		if f, ok := item.Fields["竞争合作关系-评分（5分制）"]; ok {
-			if v, ok := f.(float64); ok {
-				estimatedAmount = &v
+			if v, ok := f.(string); ok {
+				v, err := strconv.Atoi(v)
+				if err != nil {
+					panic(err)
+				}
+				if v > 0 {
+					competitivePartnershipRating = &v
+				}
 			}
 		}
 
@@ -536,7 +537,9 @@ func fetchTender() {
 				if err != nil {
 					panic(err)
 				}
-				sizeAndValueRating = &v
+				if v > 0 {
+					sizeAndValueRating = &v
+				}
 			}
 		}
 
@@ -655,7 +658,9 @@ func fetchTender() {
 				if err != nil {
 					panic(err)
 				}
-				customerRelationshipRating = &v
+				if v > 0 {
+					customerRelationshipRating = &v
+				}
 			}
 		}
 
@@ -671,7 +676,9 @@ func fetchTender() {
 				if err != nil {
 					panic(err)
 				}
-				creditAndPaymentRating = &v
+				if v > 0 {
+					creditAndPaymentRating = &v
+				}
 			}
 		}
 
@@ -739,7 +746,9 @@ func fetchTender() {
 				if err != nil {
 					panic(err)
 				}
-				competitivePartnershipRating = &v
+				if v > 0 {
+					competitivePartnershipRating = &v
+				}
 			}
 		}
 
@@ -762,7 +771,9 @@ func fetchTender() {
 				if err != nil {
 					panic(err)
 				}
-				timeLimitRating = &v
+				if v > 0 {
+					timeLimitRating = &v
+				}
 			}
 		}
 
@@ -851,13 +862,13 @@ func fetchTender() {
 			continue
 		}
 
-		if f, ok := item.Fields["效果图"]; ok {
-			ps, ok := f.([]interface{})
-			if !ok {
-				continue
-			}
-			photos = ps
-		}
+		// if f, ok := item.Fields["效果图"]; ok {
+		// 	ps, ok := f.([]interface{})
+		// 	if !ok {
+		// 		continue
+		// 	}
+		// 	photos = ps
+		// }
 
 		// fmt.Println(code, status, name, estimatedAmount, tenderDate, discoveryDate, prov, cit, distr)
 
@@ -934,75 +945,79 @@ func fetchTender() {
 		}
 
 		if err := q.OnConflictColumns(tender.FieldCode).UpdateNewValues().Exec(ctx); err != nil {
-			fmt.Println(err)
+			fmt.Printf("update err: %v\n", err)
 		}
 
-		t, err := s.Tender.Query().Where(tender.Code(code)).Only(ctx)
-		if err != nil {
-			fmt.Println(err)
-		}
-		wg := errgroup.Group{}
-		for _, photo := range photos {
-			fmt.Println("photo", photo)
-			wg.Go(func() error {
-				// id := xid.New().String()
-				p, ok := photo.(map[string]interface{})
-				if !ok {
-					fmt.Println("photo is not a map")
-					return errors.New("photo is not a map")
-				}
-				url, ok := p["url"].(string)
-				if !ok {
-					fmt.Println("url is not a string")
-					return errors.New("url is not a string")
-				}
-				name, ok := p["name"].(string)
-				if !ok {
-					fmt.Println("name is not a string")
-					return errors.New("name is not a string")
-				}
+		// t, err := s.Tender.Query().Where(tender.Code(code)).Only(ctx)
+		// if err != nil {
+		// 	fmt.Printf("query tender err: %v\n", err)
+		// 	continue
+		// }
 
-				req, err := http.NewRequest("GET", url, nil)
-				if err != nil {
-					fmt.Println("req err", err)
-					return errors.New("req err")
-				}
-				req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
-				res, err := httpClient.Do(req)
-				if err != nil {
-					fmt.Println("res err", err)
-					return errors.New("res err")
-				}
-				defer res.Body.Close()
+		// wg := errgroup.Group{}
+		// for _, photo := range photos {
+		// 	fmt.Println("photo", photo)
+		// 	wg.Go(func() error {
+		// 		// id := xid.New().String()
+		// 		p, ok := photo.(map[string]interface{})
+		// 		if !ok {
+		// 			fmt.Println("photo is not a map")
+		// 			return errors.New("photo is not a map")
+		// 		}
+		// 		url, ok := p["url"].(string)
+		// 		if !ok {
+		// 			fmt.Println("url is not a string")
+		// 			return errors.New("url is not a string")
+		// 		}
+		// 		name, ok := p["name"].(string)
+		// 		if !ok {
+		// 			fmt.Println("name is not a string")
+		// 			return errors.New("name is not a string")
+		// 		}
 
-				// splited := strings.Split(name, ".")
-				if err := os.MkdirAll(fmt.Sprintf("static/%s", t.ID), 0755); err != nil {
-					fmt.Println("mkdir err", err)
-					return errors.New("mkdir err")
-				}
-				file, err := os.Create(fmt.Sprintf("static/%s/%s", t.ID, name))
-				if err != nil {
-					fmt.Println("create file err", err)
-					return errors.New("create file err")
-				}
-				defer file.Close()
+		// 		req, err := http.NewRequest("GET", url, nil)
+		// 		if err != nil {
+		// 			fmt.Println("req err", err)
+		// 			return errors.New("req err")
+		// 		}
+		// 		req.Header.Set("Authorization", "Bearer "+out.TenantAccessToken)
+		// 		res, err := httpClient.Do(req)
+		// 		if err != nil {
+		// 			fmt.Println("res err", err)
+		// 			return errors.New("res err")
+		// 		}
+		// 		defer res.Body.Close()
 
-				_, err = io.Copy(file, res.Body)
-				if err != nil {
-					fmt.Println("copy err", err)
-					return errors.New("copy err")
-				}
-				fmt.Println(name + " Success!")
+		// 		// splited := strings.Split(name, ".")
+		// 		if err := os.MkdirAll(fmt.Sprintf("static/%s", t.ID), 0755); err != nil {
+		// 			fmt.Println("mkdir err", err)
+		// 			return errors.New("mkdir err")
+		// 		}
+		// 		file, err := os.Create(fmt.Sprintf("static/%s/%s", t.ID, name))
+		// 		if err != nil {
+		// 			fmt.Println("create file err", err)
+		// 			return errors.New("create file err")
+		// 		}
+		// 		defer file.Close()
 
-				images = append(images, fmt.Sprintf("/static/%s/%s", t.ID, name))
-				return nil
-			})
-		}
-		if err := wg.Wait(); err != nil {
-			panic(err)
-		}
+		// 		_, err = io.Copy(file, res.Body)
+		// 		if err != nil {
+		// 			fmt.Println("copy err", err)
+		// 			return errors.New("copy err")
+		// 		}
+		// 		fmt.Println(name + " Success!")
 
-		t.Update().SetImages(images).Exec(ctx)
+		// 		images = append(images, fmt.Sprintf("/static/%s/%s", t.ID, name))
+		// 		return nil
+		// 	})
+		// }
+		// if err := wg.Wait(); err != nil {
+		// 	fmt.Printf("wg err: %v\n", err)
+		// }
+
+		// if err := t.Update().SetImages(images).Exec(ctx); err != nil {
+		// 	fmt.Printf("update err: %v\n", err)
+		// }
 
 	}
 }

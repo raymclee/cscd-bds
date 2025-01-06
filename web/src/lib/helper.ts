@@ -95,6 +95,13 @@ export function fixAmount(amount: Maybe<number> | undefined): number {
   return Number((Math.abs(Number(amount)) / 1.0e8).toFixed(2));
 }
 
+export function formatProjectAmount(amount: Maybe<number> | undefined): number {
+  if (!amount) {
+    return 0;
+  }
+  return Math.floor(Number(Number(amount) / 1.0e4));
+}
+
 export function toActualAmount(amount: InputMaybe<number> | undefined): number {
   if (!amount) {
     return 0;

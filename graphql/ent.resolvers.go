@@ -63,6 +63,11 @@ func (r *queryResolver) Plots(ctx context.Context, after *entgql.Cursor[xid.ID],
 	return r.store.Plot.Query().Paginate(ctx, after, first, before, last, ent.WithPlotFilter(where.Filter))
 }
 
+// Projects is the resolver for the projects field.
+func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProjectOrder, where *ent.ProjectWhereInput) (*ent.ProjectConnection, error) {
+	return r.store.Project.Query().Paginate(ctx, after, first, before, last, ent.WithProjectFilter(where.Filter))
+}
+
 // Provinces is the resolver for the provinces field.
 func (r *queryResolver) Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error) {
 	return r.store.Province.Query().Paginate(ctx, after, first, before, last, ent.WithProvinceFilter(where.Filter))

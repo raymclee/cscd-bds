@@ -5,7 +5,6 @@ import (
 	"cscd-bds/store"
 	"database/sql"
 	"fmt"
-	"time"
 
 	_ "github.com/microsoft/go-mssqldb"
 )
@@ -34,31 +33,29 @@ func main() {
 	}
 	fmt.Println("Connected to STG DB")
 
-	today := time.Now()
 	s := store.New(false)
 
 	success := 0
 	q := s.Operation.Create()
 
+	// today := time.Now()
+	year := 2024
+
 	// 抓取成交额
 	{
 		var (
-			budget int
-			total  int
+			budget float64
+			total  float64
 		)
 
 		row := stgDb.QueryRow(`
 			select
 				600000 budget,
-         		CAST(
-					ROUND(	
-						(SELECT sum(suscntrtsum) / 10000 FROM mst_jobbasfil mj 
-							where pk_corp='2837' and jobtype='J' and finishedflag = 'M3'
-							and zbyr = @year
-						)
-         			, 0) as int
+				(SELECT sum(suscntrtsum) / 10000 FROM mst_jobbasfil mj 
+					where pk_corp='2837' and jobtype='J' and finishedflag = 'M3'
+					and zbyr = @year
          		) as total
-		`, sql.Named("year", today.Year()))
+		`, sql.Named("year", year))
 
 		err := row.Scan(&budget, &total)
 		if err != nil {
@@ -72,17 +69,17 @@ func main() {
 	// 抓取营业额
 	{
 		var (
-			budget int
-			total  int
+			budget float64
+			total  float64
 		)
 
 		row := stgDb.QueryRow(`
-			select top 1 537500 as budget,CAST(ROUND(income, 0) as int) as total
+			select top 1 537500 as budget, income as total
 			from bd_income_yr
 			where 1=1
 			and yr=@year
 			order by mth desc
-		`, sql.Named("year", today.Year()))
+		`, sql.Named("year", year))
 
 		err := row.Scan(&budget, &total)
 		if err != nil {
@@ -96,18 +93,18 @@ func main() {
 	// 抓取现金流
 	{
 		var (
-			budget int
-			total  int
+			budget float64
+			total  float64
 		)
 
 		row := stgDb.QueryRow(`
-			select 50000 as 预算, jyyw-jyyw0 累计
+			select 50000 as budget, jyyw-jyyw0 as total
 			from fi_cpbsdtl_yr
 			where 1=1
 			and pk_corp='2837'
 			and ccy='HKD'
-			and ym=@year
-		`, sql.Named("year", today.Year()))
+			and ym like @year
+		`, sql.Named("year", fmt.Sprintf("%d-11%%", year)))
 
 		err := row.Scan(&budget, &total)
 		if err != nil {
@@ -130,7 +127,7 @@ func main() {
 		// 	from bd_income_yr
 		// 	where 1=1
 		// 	and yr=@year
-		// `, sql.Named("year", today.Year()))
+		// `, sql.Named("year", year))
 
 		// err := row.Scan(&budget, &total)
 		// if err != nil {

@@ -1,8 +1,3 @@
-{
-  "src": "./src",
-  "language": "typescript",
-  "schema": "./schema.graphql",
-  "artifactDirectory": "__generated__",
-  "exclude": ["**/node_modules/**", "**/__mocks__/**", "**/__generated__/**"],
-  "eagerEsModules": true
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:aa30f2eac9f18fc9f95bd6aa24a2ed6907b32c501818d71080fe85c1c74add87
+size 226

@@ -37,6 +37,7 @@ import { Route as authportalPortalSuperAdminSaAreasImport } from './routes/__aut
 
 // Create Virtual Routes
 
+const RLazyImport = createFileRoute('/r')()
 const LogoutLazyImport = createFileRoute('/logout')()
 const LoginLazyImport = createFileRoute('/login')()
 const AccessDeniedLazyImport = createFileRoute('/access-denied')()
@@ -46,6 +47,12 @@ const authdashboardmapTendersLazyImport = createFileRoute(
 )()
 
 // Create/Update Routes
+
+const RLazyRoute = RLazyImport.update({
+  id: '/r',
+  path: '/r',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/r.lazy').then((d) => d.Route))
 
 const LogoutLazyRoute = LogoutLazyImport.update({
   id: '/logout',
@@ -324,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/logout'
       fullPath: '/logout'
       preLoaderRoute: typeof LogoutLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/r': {
+      id: '/r'
+      path: '/r'
+      fullPath: '/r'
+      preLoaderRoute: typeof RLazyImport
       parentRoute: typeof rootRoute
     }
     '/__auth/__dashboard': {
@@ -605,6 +619,7 @@ export interface FileRoutesByFullPath {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
+  '/r': typeof RLazyRoute
   '/operations': typeof authdashboardOperationsRoute
   '/portal': typeof authportalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof authportalPortalCustomersRoute
@@ -629,6 +644,7 @@ export interface FileRoutesByTo {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
+  '/r': typeof RLazyRoute
   '/operations': typeof authdashboardOperationsRoute
   '/portal': typeof authportalPortalIndexRoute
   '/portal/customers': typeof authportalPortalCustomersRoute
@@ -653,6 +669,7 @@ export interface FileRoutesById {
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
+  '/r': typeof RLazyRoute
   '/__auth/__dashboard': typeof authdashboardRouteWithChildren
   '/__auth/__portal': typeof authportalRouteWithChildren
   '/__auth/__dashboard/__map': typeof authdashboardmapRouteWithChildren
@@ -684,6 +701,7 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
+    | '/r'
     | '/operations'
     | '/portal'
     | '/portal/customers'
@@ -707,6 +725,7 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
+    | '/r'
     | '/operations'
     | '/portal'
     | '/portal/customers'
@@ -729,6 +748,7 @@ export interface FileRouteTypes {
     | '/access-denied'
     | '/login'
     | '/logout'
+    | '/r'
     | '/__auth/__dashboard'
     | '/__auth/__portal'
     | '/__auth/__dashboard/__map'
@@ -759,6 +779,7 @@ export interface RootRouteChildren {
   AccessDeniedLazyRoute: typeof AccessDeniedLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
   LogoutLazyRoute: typeof LogoutLazyRoute
+  RLazyRoute: typeof RLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -766,6 +787,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccessDeniedLazyRoute: AccessDeniedLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
   LogoutLazyRoute: LogoutLazyRoute,
+  RLazyRoute: RLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -781,7 +803,8 @@ export const routeTree = rootRoute
         "/__auth",
         "/access-denied",
         "/login",
-        "/logout"
+        "/logout",
+        "/r"
       ]
     },
     "/__auth": {
@@ -799,6 +822,9 @@ export const routeTree = rootRoute
     },
     "/logout": {
       "filePath": "logout.lazy.tsx"
+    },
+    "/r": {
+      "filePath": "r.lazy.tsx"
     },
     "/__auth/__dashboard": {
       "filePath": "__auth/__dashboard.tsx",

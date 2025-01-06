@@ -34,20 +34,6 @@ func main() {
 		middleware.CORS(),
 	)
 
-	if config.IsProd || config.IsUat {
-		e.Use(middleware.Secure())
-		e.Use(
-			middleware.Gzip(),
-			middleware.StaticWithConfig(middleware.StaticConfig{
-				Skipper:    nil,
-				Index:      "index.html",
-				HTML5:      true,
-				Browse:     false,
-				IgnoreBase: false,
-				Filesystem: http.FS(web.DistDirFS),
-			}))
-	}
-
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.New(true)
 	sm := session.NewSession(lc, s)
@@ -72,12 +58,13 @@ func main() {
 	publicApiV1 := e.Group("/api/v1", sm.Middlware())
 	publicApiV1.GET("/auth/feishu/callback", h.AuthFeishuCallback)
 
-	protected := e.Group("", sm.Middlware(), h.AuthMiddleware())
-	protected.Any("/playground", echo.WrapHandler(ph), h.AdminOnly())
-	protected.Any("/graphql", echo.WrapHandler(gs))
-	protected.Static("/static", "static")
+	// protected := e.Group("", sm.Middlware(), h.AuthMiddleware())
+	e.Any("/playground", echo.WrapHandler(ph), sm.Middlware(), h.AuthMiddleware(), h.AdminOnly())
+	e.Any("/graphql", echo.WrapHandler(gs), sm.Middlware(), h.AuthMiddleware())
+	// protected.Static("/static", "static")
+	e.Group("/static", sm.Middlware(), h.AuthMiddleware()).Static("/", "static")
 
-	projectedApiV1 := protected.Group("/api/v1")
+	projectedApiV1 := e.Group("/api/v1", sm.Middlware(), h.AuthMiddleware())
 	projectedApiV1.POST("/file/upload", h.UploadFile)
 	projectedApiV1.GET("/logout", func(c echo.Context) error {
 		if err := sm.Destroy(c.Request().Context()); err != nil {
@@ -86,6 +73,21 @@ func main() {
 
 		return c.Redirect(http.StatusFound, "/logout")
 	})
+
+	e.Static("/3dm", "3dm")
+	if config.IsProd || config.IsUat {
+		e.Use(middleware.Secure())
+		e.Use(
+			middleware.Gzip(),
+			middleware.StaticWithConfig(middleware.StaticConfig{
+				Skipper:    nil,
+				Index:      "index.html",
+				HTML5:      true,
+				Browse:     false,
+				IgnoreBase: false,
+				Filesystem: http.FS(web.DistDirFS),
+			}))
+	}
 
 	var port string
 	if config.IsProd {
