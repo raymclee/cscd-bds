@@ -124,7 +124,7 @@ function RouteComponent() {
   const vaApproveAmount = pj?.vaApproveAmount ?? 0;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <div className="absolute left-8 top-2">{/* <ProjectSelect /> */}</div>
       {/* <ProjectHeader /> */}
       {/* <header className="relative flex items-center justify-center h-20"> */}
@@ -147,10 +147,10 @@ function RouteComponent() {
                   className="absolute inset-0 h-full w-auto object-contain"
                 />
 
-                <div className="absolute left-4 right-4 top-[2.75rem]">
+                <div className="absolute left-0 right-0 top-[2.75rem]">
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
-                      <div className="flex w-full cursor-pointer items-center justify-between">
+                      <div className="flex cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
@@ -161,7 +161,7 @@ function RouteComponent() {
                           万
                         </div>
                       </div>
-                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
+                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
@@ -246,7 +246,7 @@ function RouteComponent() {
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
-                  <div className="mt-1 flex w-full items-center justify-between">
+                  <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
                     <div className="text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
@@ -276,10 +276,10 @@ function RouteComponent() {
                   className="absolute inset-0 h-full w-auto object-contain"
                 />
 
-                <div className="absolute left-4 right-4 top-[2.75rem]">
+                <div className="absolute left-0 right-0 top-[2.75rem]">
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
-                      <div className="flex w-full cursor-pointer items-center justify-between">
+                      <div className="flex w-full cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
@@ -291,7 +291,7 @@ function RouteComponent() {
                           万
                         </div>
                       </div>
-                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
+                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
@@ -376,7 +376,7 @@ function RouteComponent() {
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
-                  <div className="mt-1 flex w-full items-center justify-between">
+                  <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
                     <div className="text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
@@ -406,49 +406,56 @@ function RouteComponent() {
                   className="h-full w-auto object-contain"
                 />
 
-                <div className="absolute left-4 right-4 top-[2.75rem]">
-                  <div className="flex w-full cursor-pointer items-center justify-between">
+                <div className="absolute left-4 right-4 top-[2.75rem] space-y-1">
+                  <div className="grid w-full grid-cols-[1.4fr_2.2fr_1fr] gap-1">
                     <div className="text-xs text-brand-project-3">业主VO</div>
-                    <progress
-                      className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-[50%] [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
-                      value={(ownerApproveAmount / ownerApplyAmount) * 100}
-                      max={100}
-                    />
+                    <div className="flex flex-1 items-center">
+                      <progress
+                        className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
+                        value={(ownerApproveAmount / ownerApplyAmount) * 100}
+                        max={100}
+                      />
+                    </div>
                     {/* <div className="h-1 w-[80px] bg-brand-project"></div> */}
-                    <div className="ml-1 text-xs font-bold text-brand-project-2">
+                    <div className="text-xs font-bold text-brand-project-2">
                       {Math.floor(
                         (ownerApproveAmount / ownerApplyAmount) * 100,
                       )}
                       %
                     </div>
                   </div>
-                  <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
+
+                  <div className="grid w-full grid-cols-[1.4fr_2.2fr_1fr] gap-1">
                     <div className="text-xs text-brand-project-3">总包VO</div>
-                    <progress
-                      className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-[50%] [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
-                      value={
-                        (contractorApproveAmount / contractorApplyAmount) * 100
-                      }
-                      max={100}
-                    />
+                    <div className="flex flex-1 items-center">
+                      <progress
+                        className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
+                        value={
+                          (contractorApproveAmount / contractorApplyAmount) *
+                          100
+                        }
+                        max={100}
+                      />
+                    </div>
                     {/* <div className="h-1 w-[80px] bg-brand-project"></div> */}
-                    <div className="ml-1 text-xs font-bold text-brand-project-2">
+                    <div className="text-xs font-bold text-brand-project-2">
                       {Math.floor(
                         (contractorApproveAmount / contractorApplyAmount) * 100,
                       )}
                       %
                     </div>
                   </div>
-                  <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
-                    <div className="w-[30%] text-xs text-brand-project-3">
-                      分判VA
+
+                  <div className="grid w-full grid-cols-[1.4fr_2.2fr_1fr] gap-1">
+                    <div className="text-xs text-brand-project-3">分判VA</div>
+                    <div className="flex flex-1 items-center">
+                      <progress
+                        className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
+                        value={(vaApproveAmount / vaApproveAmount) * 100}
+                        max={100}
+                      />
                     </div>
-                    <progress
-                      className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-[50%] [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
-                      value={(vaApproveAmount / vaApproveAmount) * 100}
-                      max={100}
-                    />
-                    <div className="ml-1 text-xs font-bold text-brand-project-2">
+                    <div className="text-xs font-bold text-brand-project-2">
                       {Math.floor((vaApproveAmount / vaApproveAmount) * 100)}%
                     </div>
                   </div>
@@ -765,7 +772,7 @@ function RouteComponent() {
           <img src={projectOverviewTitle} className="mx-auto mt-3 w-[65%]" />
 
           <div className="mt-4 flex gap-6">
-            <div className="flex flex-1 flex-col justify-center gap-4">
+            <div className="flex h-[340px] flex-1 flex-col justify-center gap-4">
               {/* <img src={projectOverviewLeft} /> */}
               {/* <div className="mx-auto h-full w-[85%]">
                 <Rhino />
@@ -773,27 +780,29 @@ function RouteComponent() {
               <img src={projectOverviewTab} className="mx-auto w-[80%]" /> */}
               <ProjectOverviewTab />
             </div>
-            <div className="flex-1">
+            <div className="relative h-[360px] flex-1">
               {/* <img src={basicInfo} className="mx-auto w-[90%]" /> */}
-              <div className="relative mx-auto w-[90%] px-3 py-4">
-                <img
-                  src={basicInfoBg}
-                  className="absolute inset-0 object-contain"
-                />
-                <div className="space-y-1">
+              <div className="relative mx-auto h-full w-[90%] px-3 py-3">
+                <img src={basicInfoBg} className="absolute inset-0" />
+                <div className="h-full space-y-1">
                   <BasicInfoItem title="项目名称" value={pj?.name ?? "-"} />
-                  <BasicInfoItem title="业主单位" value="恆基" />
-
-                  <BasicInfoItem title="业主类型" value="其他国企" />
-                  <BasicInfoItem title="总包单位" value="協興建築" />
-                  <BasicInfoItem title="设计单位" value="劄哈·哈蒂/呂元祥" />
-                  <BasicInfoItem title="预计金额" value="1.5亿" />
-                  <BasicInfoItem title="幕墙顾问" value="劄哈·哈蒂/呂元祥" />
-                  <BasicInfoItem title="咨询公司" value="-" />
-                  <BasicInfoItem title="招标代理" value="-" />
-                  <BasicInfoItem title="招采形式" value="-" />
-                  <BasicInfoItem title="预计招标时间" value="-" />
-                  <BasicInfoItem title="合同形式" value="-" />
+                  <BasicInfoItem
+                    title="客户"
+                    value="Century Base Development Limited"
+                  />
+                  <BasicInfoItem
+                    title="建筑师"
+                    value="Zaha Hadid / Ronald Lu & Partners"
+                  />
+                  <BasicInfoItem title="总承包商" value="协兴建筑" />
+                  <BasicInfoItem title="幕墙顾问" value="-" />
+                  <BasicInfoItem title="工程规模" value="25401㎡" />
+                  <BasicInfoItem title="中标形式" value="NSC" />
+                  <BasicInfoItem title="开工日期" value="2019-01-01" />
+                  <BasicInfoItem title="FS日期" value="2023-08-30" />
+                  <BasicInfoItem title="OP日期" value="-" />
+                  <BasicInfoItem title="竣工日期" value="2023-12-31" />
+                  <BasicInfoItem title="维修保养期" value="18个月" />
                 </div>
               </div>
             </div>
@@ -872,7 +881,7 @@ function RouteComponent() {
 
 function BasicInfoItem({ title, value }: { title: string; value: string }) {
   return (
-    <div className="relative h-[23px]">
+    <div className="relative h-[22px]">
       <img src={basicInfoRowBg} className="absolute inset-0" />
       <div className="relative left-12 flex h-full items-center">
         <div className="w-20 text-xxs">{title}</div>
@@ -895,12 +904,15 @@ function ProjectOverviewTab() {
 
   return (
     <Tabs.Root
-      className="relative mx-auto h-full w-full"
+      className="relative mx-auto flex h-[340px] w-full flex-col p-1"
       defaultValue={selectedTab}
     >
-      <div className="mx-auto h-[calc(100%-36px-8px)] w-[90%] overflow-hidden">
-        <Tabs.Content value={tabs[0]}>
-          <img src={hmrtImg} />
+      <div className="mx-auto h-[calc(100%-40px)] w-[90%] overflow-hidden">
+        <Tabs.Content value={tabs[0]} className="relative">
+          <img
+            src={hmrtImg}
+            className="mx-auto h-[280px] w-auto object-contain"
+          />
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-full w-full">
@@ -910,23 +922,20 @@ function ProjectOverviewTab() {
         <Tabs.Content value={tabs[2]}>地盘人员分布</Tabs.Content>
       </div>
 
-      <Tabs.List className="absolute bottom-0 left-1/2 right-4 grid h-8 w-[85%] -translate-x-1/2 grid-cols-3">
+      <Tabs.List className="absolute bottom-2 left-1/2 right-4 grid h-8 w-[85%] -translate-x-1/2 grid-cols-3">
         <img src={projectOverviewTab} className="absolute inset-0 h-8 w-full" />
         {tabs.map((tab) => (
-          <Tabs.Trigger
-            key={tab}
-            value={tab}
-            className="relative"
-            onClick={() => onChange(tab)}
-          >
-            {selectedTab == tab && (
-              <img
-                src={projectOverviewTabSelected}
-                className="absolute inset-0 h-8"
-              />
-            )}
-            <div className="relative text-xs">{tab}</div>
-          </Tabs.Trigger>
+          <div className="relative flex h-8 items-center justify-center">
+            <Tabs.Trigger key={tab} value={tab} onClick={() => onChange(tab)}>
+              {selectedTab == tab && (
+                <img
+                  src={projectOverviewTabSelected}
+                  className="absolute inset-0 h-8"
+                />
+              )}
+              <div className="relative text-xs">{tab}</div>
+            </Tabs.Trigger>
+          </div>
         ))}
       </Tabs.List>
     </Tabs.Root>
