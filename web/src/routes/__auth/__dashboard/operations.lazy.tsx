@@ -56,6 +56,8 @@ import componentTop from "~/assets/svg/component_top.png";
 import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
 
+import hmrtImg from "~/assets/hmrt.jpg";
+
 import * as Tabs from "@radix-ui/react-tabs";
 import { operationsPageQuery } from "__generated__/operationsPageQuery.graphql";
 import { useState, useTransition } from "react";
@@ -149,10 +151,10 @@ function RouteComponent() {
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
                       <div className="flex w-full cursor-pointer items-center justify-between">
-                        <div className="text-brand-project-3 text-xs">
+                        <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
-                        <div className="text-brand-project-2 text-xs font-bold">
+                        <div className="text-xs font-bold text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(ownerApplyAmount),
                           )}
@@ -160,10 +162,10 @@ function RouteComponent() {
                         </div>
                       </div>
                       <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
-                        <div className="text-brand-project-3 text-xs">
+                        <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
-                        <div className="text-brand-project-2 text-xs font-bold">
+                        <div className="text-xs font-bold text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(contractorApplyAmount),
                           )}
@@ -192,13 +194,13 @@ function RouteComponent() {
                           )}
                           万
                         </div>
-                        <div className="text-brand-project-2 col-span-2">
+                        <div className="col-span-2 text-brand-project-2">
                           申请数量
                         </div>
                         <div className="text-brand-project">
                           {contractorApplyCount + ownerApplyCount}个
                         </div>
-                        <div className="text-brand-project-2 col-span-2">
+                        <div className="col-span-2 text-brand-project-2">
                           申请总额(B)
                         </div>
                         <div className="text-brand-project">
@@ -207,7 +209,7 @@ function RouteComponent() {
                           )}
                           万
                         </div>
-                        <div className="text-brand-project-2 col-span-2">
+                        <div className="col-span-2 text-brand-project-2">
                           申请总额占比(B/A)
                         </div>
                         <div className="text-brand-project">
@@ -245,8 +247,8 @@ function RouteComponent() {
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
                   <div className="mt-1 flex w-full items-center justify-between">
-                    <div className="text-brand-project-3 text-xs">分判VA</div>
-                    <div className="text-brand-project-2 text-xs font-bold">
+                    <div className="text-xs text-brand-project-3">分判VA</div>
+                    <div className="text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                       {currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
@@ -278,10 +280,10 @@ function RouteComponent() {
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
                       <div className="flex w-full cursor-pointer items-center justify-between">
-                        <div className="text-brand-project-3 text-xs">
+                        <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
-                        <div className="text-brand-project-2 text-xs font-bold">
+                        <div className="text-xs font-bold text-brand-project-2">
                           {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                           {currentFormatter.format(
                             formatProjectAmount(ownerApproveAmount),
@@ -290,10 +292,10 @@ function RouteComponent() {
                         </div>
                       </div>
                       <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
-                        <div className="text-brand-project-3 text-xs">
+                        <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
-                        <div className="text-brand-project-2 text-xs font-bold">
+                        <div className="text-xs font-bold text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(contractorApproveAmount),
                           )}
@@ -342,13 +344,13 @@ function RouteComponent() {
                           )}
                           %
                         </div>
-                        <div className="text-brand-project-2 col-span-2">
+                        <div className="col-span-2 text-brand-project-2">
                           批复数量
                         </div>
                         <div className="text-brand-project">
                           {contractorApproveCount + ownerApproveCount}个
                         </div>
-                        <div className="text-brand-project-2 col-span-2">
+                        <div className="col-span-2 text-brand-project-2">
                           批复总额(C)
                         </div>
                         <div className="text-brand-project">
@@ -357,7 +359,7 @@ function RouteComponent() {
                           )}
                           万
                         </div>
-                        <div className="text-brand-project-2 col-span-2">
+                        <div className="col-span-2 text-brand-project-2">
                           批复总额占比(C/A)
                         </div>
                         <div className="text-brand-project">
@@ -375,8 +377,8 @@ function RouteComponent() {
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
                   <div className="mt-1 flex w-full items-center justify-between">
-                    <div className="text-brand-project-3 text-xs">分判VA</div>
-                    <div className="text-brand-project-2 text-xs font-bold">
+                    <div className="text-xs text-brand-project-3">分判VA</div>
+                    <div className="text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                       {currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
@@ -406,14 +408,14 @@ function RouteComponent() {
 
                 <div className="absolute left-4 right-4 top-[2.75rem]">
                   <div className="flex w-full cursor-pointer items-center justify-between">
-                    <div className="text-brand-project-3 text-xs">业主VO</div>
+                    <div className="text-xs text-brand-project-3">业主VO</div>
                     <progress
                       className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-[50%] [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                       value={(ownerApproveAmount / ownerApplyAmount) * 100}
                       max={100}
                     />
                     {/* <div className="h-1 w-[80px] bg-brand-project"></div> */}
-                    <div className="text-brand-project-2 ml-1 text-xs font-bold">
+                    <div className="ml-1 text-xs font-bold text-brand-project-2">
                       {Math.floor(
                         (ownerApproveAmount / ownerApplyAmount) * 100,
                       )}
@@ -421,7 +423,7 @@ function RouteComponent() {
                     </div>
                   </div>
                   <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
-                    <div className="text-brand-project-3 text-xs">总包VO</div>
+                    <div className="text-xs text-brand-project-3">总包VO</div>
                     <progress
                       className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-[50%] [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                       value={
@@ -430,7 +432,7 @@ function RouteComponent() {
                       max={100}
                     />
                     {/* <div className="h-1 w-[80px] bg-brand-project"></div> */}
-                    <div className="text-brand-project-2 ml-1 text-xs font-bold">
+                    <div className="ml-1 text-xs font-bold text-brand-project-2">
                       {Math.floor(
                         (contractorApproveAmount / contractorApplyAmount) * 100,
                       )}
@@ -438,7 +440,7 @@ function RouteComponent() {
                     </div>
                   </div>
                   <div className="mt-1 flex w-full cursor-pointer items-center justify-between">
-                    <div className="text-brand-project-3 w-[30%] text-xs">
+                    <div className="w-[30%] text-xs text-brand-project-3">
                       分判VA
                     </div>
                     <progress
@@ -446,7 +448,7 @@ function RouteComponent() {
                       value={(vaApproveAmount / vaApproveAmount) * 100}
                       max={100}
                     />
-                    <div className="text-brand-project-2 ml-1 text-xs font-bold">
+                    <div className="ml-1 text-xs font-bold text-brand-project-2">
                       {Math.floor((vaApproveAmount / vaApproveAmount) * 100)}%
                     </div>
                   </div>
@@ -774,35 +776,24 @@ function RouteComponent() {
             <div className="flex-1">
               {/* <img src={basicInfo} className="mx-auto w-[90%]" /> */}
               <div className="relative mx-auto w-[90%] px-3 py-4">
-                <img src={basicInfoBg} className="absolute inset-0" />
+                <img
+                  src={basicInfoBg}
+                  className="absolute inset-0 object-contain"
+                />
                 <div className="space-y-1">
                   <BasicInfoItem title="项目名称" value={pj?.name ?? "-"} />
-                  <BasicInfoItem title="业主单位" value="广州羊城晚报社" />
-                  <BasicInfoItem
-                    title="总包单位"
-                    value="中建三局华南公司广州分公司"
-                  />
-                  <BasicInfoItem title="业主类型" value="央企国企" />
-                  <BasicInfoItem
-                    title="设计单位"
-                    value="广州市城市规划勘测设计研究院有限公司"
-                  />
+                  <BasicInfoItem title="业主单位" value="恆基" />
+
+                  <BasicInfoItem title="业主类型" value="其他国企" />
+                  <BasicInfoItem title="总包单位" value="協興建築" />
+                  <BasicInfoItem title="设计单位" value="劄哈·哈蒂/呂元祥" />
                   <BasicInfoItem title="预计金额" value="1.5亿" />
-                  <BasicInfoItem
-                    title="幕墙顾问"
-                    value="上海力进铝质工程有限公司"
-                  />
-                  <BasicInfoItem
-                    title="咨询公司"
-                    value="务腾咨询（上海）有限公司"
-                  />
-                  <BasicInfoItem
-                    title="招标代理"
-                    value="华联世纪工程咨询股份有限公司"
-                  />
-                  <BasicInfoItem title="招采形式" value="邀请招标" />
-                  <BasicInfoItem title="预计招标时间" value="20241028" />
-                  <BasicInfoItem title="合同形式" value="固定总价包干" />
+                  <BasicInfoItem title="幕墙顾问" value="劄哈·哈蒂/呂元祥" />
+                  <BasicInfoItem title="咨询公司" value="-" />
+                  <BasicInfoItem title="招标代理" value="-" />
+                  <BasicInfoItem title="招采形式" value="-" />
+                  <BasicInfoItem title="预计招标时间" value="-" />
+                  <BasicInfoItem title="合同形式" value="-" />
                 </div>
               </div>
             </div>
@@ -909,7 +900,7 @@ function ProjectOverviewTab() {
     >
       <div className="mx-auto h-[calc(100%-36px-8px)] w-[90%] overflow-hidden">
         <Tabs.Content value={tabs[0]}>
-          <img src={projectOverviewLeft} />
+          <img src={hmrtImg} />
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-full w-full">
