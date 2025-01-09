@@ -321,7 +321,7 @@ func main() {
 				var (
 					claimMonth  *int
 					claimYear   *int
-					claimAmount float64
+					claimAmount *float64
 					claimType   string
 				)
 				err := rows.Scan(&claimMonth, &claimYear, &claimAmount, &claimType)
@@ -330,15 +330,22 @@ func main() {
 				}
 
 				if claimType == "肺塵埃稅" {
-					accumulatedStatutoryDeductions += claimAmount
-					if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
-						accumulatedStatutoryDeductionsPeriod += claimAmount
+					if claimAmount != nil {
+						accumulatedStatutoryDeductions += *claimAmount
+
+						if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
+							accumulatedStatutoryDeductionsPeriod += *claimAmount
+						}
 					}
 				} else {
-					accumulatedNonStatutoryDeductions += claimAmount
-					if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
-						accumulatedNonStatutoryDeductionsPeriod += claimAmount
+					if claimAmount != nil {
+						accumulatedNonStatutoryDeductions += *claimAmount
+
+						if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
+							accumulatedNonStatutoryDeductionsPeriod += *claimAmount
+						}
 					}
+
 				}
 			}
 
