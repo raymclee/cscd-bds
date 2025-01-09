@@ -20,13 +20,13 @@ export function MapTenderDetail() {
       className={cn(
         // "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
         // selectedTender && "mt-[60vh] xl:mt-0",
-        "absolute left-4 top-[4.5rem] w-[440px] space-y-2 transition",
+        "absolute left-4 top-[3.2rem] w-[440px] space-y-2 transition",
         !selectedTender && "-translate-x-[110%]",
       )}
     >
       <Card
         className={cn(
-          "h-[89dvh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+          "h-[56.5rem] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
         )}
       >
         <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">

@@ -10,8 +10,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+} from "~/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 
 type ProjectSelectProps = {
   defaultCode?: string;
@@ -68,7 +72,6 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
                   key={item?.code}
                   value={item?.code ?? ""}
                   onSelect={(currentValue) => {
-                    // setValue(currentValue === value ? "" : currentValue)
                     setOpen(false);
                     navigate({
                       to: "/operations",

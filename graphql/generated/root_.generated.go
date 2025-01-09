@@ -302,22 +302,34 @@ type ComplexityRoot struct {
 		AccumulatedNonStatutoryDeductionsPeriod func(childComplexity int) int
 		AccumulatedStatutoryDeductions          func(childComplexity int) int
 		AccumulatedStatutoryDeductionsPeriod    func(childComplexity int) int
+		Areas                                   func(childComplexity int) int
 		Cje                                     func(childComplexity int) int
 		Code                                    func(childComplexity int) int
+		ConType                                 func(childComplexity int) int
+		Consultant                              func(childComplexity int) int
 		ContractorApplyAmount                   func(childComplexity int) int
 		ContractorApplyCount                    func(childComplexity int) int
 		ContractorApproveAmount                 func(childComplexity int) int
 		ContractorApproveCount                  func(childComplexity int) int
 		CreatedAt                               func(childComplexity int) int
 		EffectiveContractAmount                 func(childComplexity int) int
+		EndDate                                 func(childComplexity int) int
+		FsDate                                  func(childComplexity int) int
 		ID                                      func(childComplexity int) int
 		InstallProgress                         func(childComplexity int) int
 		IsFinished                              func(childComplexity int) int
+		Jzs                                     func(childComplexity int) int
+		Manager                                 func(childComplexity int) int
+		Mcn                                     func(childComplexity int) int
+		Mntyr                                   func(childComplexity int) int
 		Name                                    func(childComplexity int) int
+		OpDate                                  func(childComplexity int) int
+		Owner                                   func(childComplexity int) int
 		OwnerApplyAmount                        func(childComplexity int) int
 		OwnerApplyCount                         func(childComplexity int) int
 		OwnerApproveAmount                      func(childComplexity int) int
 		OwnerApproveCount                       func(childComplexity int) int
+		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
 		UpdatedAt                               func(childComplexity int) int
 		VaApplyAmount                           func(childComplexity int) int
@@ -1912,6 +1924,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.AccumulatedStatutoryDeductionsPeriod(childComplexity), true
 
+	case "Project.areas":
+		if e.complexity.Project.Areas == nil {
+			break
+		}
+
+		return e.complexity.Project.Areas(childComplexity), true
+
 	case "Project.cje":
 		if e.complexity.Project.Cje == nil {
 			break
@@ -1925,6 +1944,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.Code(childComplexity), true
+
+	case "Project.conType":
+		if e.complexity.Project.ConType == nil {
+			break
+		}
+
+		return e.complexity.Project.ConType(childComplexity), true
+
+	case "Project.consultant":
+		if e.complexity.Project.Consultant == nil {
+			break
+		}
+
+		return e.complexity.Project.Consultant(childComplexity), true
 
 	case "Project.contractorApplyAmount":
 		if e.complexity.Project.ContractorApplyAmount == nil {
@@ -1968,6 +2001,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.EffectiveContractAmount(childComplexity), true
 
+	case "Project.endDate":
+		if e.complexity.Project.EndDate == nil {
+			break
+		}
+
+		return e.complexity.Project.EndDate(childComplexity), true
+
+	case "Project.fsDate":
+		if e.complexity.Project.FsDate == nil {
+			break
+		}
+
+		return e.complexity.Project.FsDate(childComplexity), true
+
 	case "Project.id":
 		if e.complexity.Project.ID == nil {
 			break
@@ -1989,12 +2036,54 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.IsFinished(childComplexity), true
 
+	case "Project.jzs":
+		if e.complexity.Project.Jzs == nil {
+			break
+		}
+
+		return e.complexity.Project.Jzs(childComplexity), true
+
+	case "Project.manager":
+		if e.complexity.Project.Manager == nil {
+			break
+		}
+
+		return e.complexity.Project.Manager(childComplexity), true
+
+	case "Project.mcn":
+		if e.complexity.Project.Mcn == nil {
+			break
+		}
+
+		return e.complexity.Project.Mcn(childComplexity), true
+
+	case "Project.mntyr":
+		if e.complexity.Project.Mntyr == nil {
+			break
+		}
+
+		return e.complexity.Project.Mntyr(childComplexity), true
+
 	case "Project.name":
 		if e.complexity.Project.Name == nil {
 			break
 		}
 
 		return e.complexity.Project.Name(childComplexity), true
+
+	case "Project.opDate":
+		if e.complexity.Project.OpDate == nil {
+			break
+		}
+
+		return e.complexity.Project.OpDate(childComplexity), true
+
+	case "Project.owner":
+		if e.complexity.Project.Owner == nil {
+			break
+		}
+
+		return e.complexity.Project.Owner(childComplexity), true
 
 	case "Project.ownerApplyAmount":
 		if e.complexity.Project.OwnerApplyAmount == nil {
@@ -2023,6 +2112,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.OwnerApproveCount(childComplexity), true
+
+	case "Project.startDate":
+		if e.complexity.Project.StartDate == nil {
+			break
+		}
+
+		return e.complexity.Project.StartDate(childComplexity), true
 
 	case "Project.totalContractAmount":
 		if e.complexity.Project.TotalContractAmount == nil {
@@ -5907,7 +6003,55 @@ type Project implements Node {
   createdAt: Time!
   updatedAt: Time!
   code: String!
+  """
+  地盤經理
+  """
+  manager: String
   name: String
+  """
+  客戶
+  """
+  owner: String
+  """
+  建築師
+  """
+  jzs: String
+  """
+  總承包商
+  """
+  mcn: String
+  """
+  幕墻顧問
+  """
+  consultant: String
+  """
+  工程規模
+  """
+  areas: String
+  """
+  開工日期
+  """
+  startDate: Time
+  """
+  封頂日期
+  """
+  fsDate: Time
+  """
+  開始安裝日期
+  """
+  opDate: Time
+  """
+  竣工日期
+  """
+  endDate: Time
+  """
+  維修保養期
+  """
+  mntyr: String
+  """
+  中標形式
+  """
+  conType: String
   """
   是否完成
   """
@@ -6300,6 +6444,24 @@ input ProjectWhereInput {
   codeEqualFold: String
   codeContainsFold: String
   """
+  manager field predicates
+  """
+  manager: String
+  managerNEQ: String
+  managerIn: [String!]
+  managerNotIn: [String!]
+  managerGT: String
+  managerGTE: String
+  managerLT: String
+  managerLTE: String
+  managerContains: String
+  managerHasPrefix: String
+  managerHasSuffix: String
+  managerIsNil: Boolean
+  managerNotNil: Boolean
+  managerEqualFold: String
+  managerContainsFold: String
+  """
   name field predicates
   """
   name: String
@@ -6317,6 +6479,184 @@ input ProjectWhereInput {
   nameNotNil: Boolean
   nameEqualFold: String
   nameContainsFold: String
+  """
+  owner field predicates
+  """
+  owner: String
+  ownerNEQ: String
+  ownerIn: [String!]
+  ownerNotIn: [String!]
+  ownerGT: String
+  ownerGTE: String
+  ownerLT: String
+  ownerLTE: String
+  ownerContains: String
+  ownerHasPrefix: String
+  ownerHasSuffix: String
+  ownerIsNil: Boolean
+  ownerNotNil: Boolean
+  ownerEqualFold: String
+  ownerContainsFold: String
+  """
+  jzs field predicates
+  """
+  jzs: String
+  jzsNEQ: String
+  jzsIn: [String!]
+  jzsNotIn: [String!]
+  jzsGT: String
+  jzsGTE: String
+  jzsLT: String
+  jzsLTE: String
+  jzsContains: String
+  jzsHasPrefix: String
+  jzsHasSuffix: String
+  jzsIsNil: Boolean
+  jzsNotNil: Boolean
+  jzsEqualFold: String
+  jzsContainsFold: String
+  """
+  mcn field predicates
+  """
+  mcn: String
+  mcnNEQ: String
+  mcnIn: [String!]
+  mcnNotIn: [String!]
+  mcnGT: String
+  mcnGTE: String
+  mcnLT: String
+  mcnLTE: String
+  mcnContains: String
+  mcnHasPrefix: String
+  mcnHasSuffix: String
+  mcnIsNil: Boolean
+  mcnNotNil: Boolean
+  mcnEqualFold: String
+  mcnContainsFold: String
+  """
+  consultant field predicates
+  """
+  consultant: String
+  consultantNEQ: String
+  consultantIn: [String!]
+  consultantNotIn: [String!]
+  consultantGT: String
+  consultantGTE: String
+  consultantLT: String
+  consultantLTE: String
+  consultantContains: String
+  consultantHasPrefix: String
+  consultantHasSuffix: String
+  consultantIsNil: Boolean
+  consultantNotNil: Boolean
+  consultantEqualFold: String
+  consultantContainsFold: String
+  """
+  areas field predicates
+  """
+  areas: String
+  areasNEQ: String
+  areasIn: [String!]
+  areasNotIn: [String!]
+  areasGT: String
+  areasGTE: String
+  areasLT: String
+  areasLTE: String
+  areasContains: String
+  areasHasPrefix: String
+  areasHasSuffix: String
+  areasIsNil: Boolean
+  areasNotNil: Boolean
+  areasEqualFold: String
+  areasContainsFold: String
+  """
+  start_date field predicates
+  """
+  startDate: Time
+  startDateNEQ: Time
+  startDateIn: [Time!]
+  startDateNotIn: [Time!]
+  startDateGT: Time
+  startDateGTE: Time
+  startDateLT: Time
+  startDateLTE: Time
+  startDateIsNil: Boolean
+  startDateNotNil: Boolean
+  """
+  fs_date field predicates
+  """
+  fsDate: Time
+  fsDateNEQ: Time
+  fsDateIn: [Time!]
+  fsDateNotIn: [Time!]
+  fsDateGT: Time
+  fsDateGTE: Time
+  fsDateLT: Time
+  fsDateLTE: Time
+  fsDateIsNil: Boolean
+  fsDateNotNil: Boolean
+  """
+  op_date field predicates
+  """
+  opDate: Time
+  opDateNEQ: Time
+  opDateIn: [Time!]
+  opDateNotIn: [Time!]
+  opDateGT: Time
+  opDateGTE: Time
+  opDateLT: Time
+  opDateLTE: Time
+  opDateIsNil: Boolean
+  opDateNotNil: Boolean
+  """
+  end_date field predicates
+  """
+  endDate: Time
+  endDateNEQ: Time
+  endDateIn: [Time!]
+  endDateNotIn: [Time!]
+  endDateGT: Time
+  endDateGTE: Time
+  endDateLT: Time
+  endDateLTE: Time
+  endDateIsNil: Boolean
+  endDateNotNil: Boolean
+  """
+  mntyr field predicates
+  """
+  mntyr: String
+  mntyrNEQ: String
+  mntyrIn: [String!]
+  mntyrNotIn: [String!]
+  mntyrGT: String
+  mntyrGTE: String
+  mntyrLT: String
+  mntyrLTE: String
+  mntyrContains: String
+  mntyrHasPrefix: String
+  mntyrHasSuffix: String
+  mntyrIsNil: Boolean
+  mntyrNotNil: Boolean
+  mntyrEqualFold: String
+  mntyrContainsFold: String
+  """
+  con_type field predicates
+  """
+  conType: String
+  conTypeNEQ: String
+  conTypeIn: [String!]
+  conTypeNotIn: [String!]
+  conTypeGT: String
+  conTypeGTE: String
+  conTypeLT: String
+  conTypeLTE: String
+  conTypeContains: String
+  conTypeHasPrefix: String
+  conTypeHasSuffix: String
+  conTypeIsNil: Boolean
+  conTypeNotNil: Boolean
+  conTypeEqualFold: String
+  conTypeContainsFold: String
   """
   is_finished field predicates
   """

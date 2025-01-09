@@ -1728,9 +1728,15 @@ type Project implements Node {
   accumulatedStatutoryDeductions: Float
   """本期法定扣款"""
   accumulatedStatutoryDeductionsPeriod: Float
+  """工程規模"""
+  areas: String
   """成交额"""
   cje: Float
   code: String!
+  """中標形式"""
+  conType: String
+  """幕墻顧問"""
+  consultant: String
   """总包申请总额"""
   contractorApplyAmount: Float
   """总包申请数量"""
@@ -1742,12 +1748,28 @@ type Project implements Node {
   createdAt: Time!
   """有效合同金额"""
   effectiveContractAmount: Float
+  """竣工日期"""
+  endDate: Time
+  """封頂日期"""
+  fsDate: Time
   id: ID!
   """安装进度"""
   installProgress: Float
   """是否完成"""
   isFinished: Boolean!
+  """建築師"""
+  jzs: String
+  """地盤經理"""
+  manager: String
+  """總承包商"""
+  mcn: String
+  """維修保養期"""
+  mntyr: String
   name: String
+  """開始安裝日期"""
+  opDate: Time
+  """客戶"""
+  owner: String
   """业主申请总额"""
   ownerApplyAmount: Float
   """业主申请数量"""
@@ -1756,6 +1778,8 @@ type Project implements Node {
   ownerApproveAmount: Float
   """业主批复数量"""
   ownerApproveCount: Int
+  """開工日期"""
+  startDate: Time
   """合約总额"""
   totalContractAmount: Float
   updatedAt: Time!
@@ -2004,6 +2028,22 @@ input ProjectWhereInput {
   accumulatedStatutoryDeductionsPeriodNotIn: [Float!]
   accumulatedStatutoryDeductionsPeriodNotNil: Boolean
   and: [ProjectWhereInput!]
+  """areas field predicates"""
+  areas: String
+  areasContains: String
+  areasContainsFold: String
+  areasEqualFold: String
+  areasGT: String
+  areasGTE: String
+  areasHasPrefix: String
+  areasHasSuffix: String
+  areasIn: [String!]
+  areasIsNil: Boolean
+  areasLT: String
+  areasLTE: String
+  areasNEQ: String
+  areasNotIn: [String!]
+  areasNotNil: Boolean
   """cje field predicates"""
   cje: Float
   cjeGT: Float
@@ -2029,6 +2069,38 @@ input ProjectWhereInput {
   codeLTE: String
   codeNEQ: String
   codeNotIn: [String!]
+  """con_type field predicates"""
+  conType: String
+  conTypeContains: String
+  conTypeContainsFold: String
+  conTypeEqualFold: String
+  conTypeGT: String
+  conTypeGTE: String
+  conTypeHasPrefix: String
+  conTypeHasSuffix: String
+  conTypeIn: [String!]
+  conTypeIsNil: Boolean
+  conTypeLT: String
+  conTypeLTE: String
+  conTypeNEQ: String
+  conTypeNotIn: [String!]
+  conTypeNotNil: Boolean
+  """consultant field predicates"""
+  consultant: String
+  consultantContains: String
+  consultantContainsFold: String
+  consultantEqualFold: String
+  consultantGT: String
+  consultantGTE: String
+  consultantHasPrefix: String
+  consultantHasSuffix: String
+  consultantIn: [String!]
+  consultantIsNil: Boolean
+  consultantLT: String
+  consultantLTE: String
+  consultantNEQ: String
+  consultantNotIn: [String!]
+  consultantNotNil: Boolean
   """contractor_apply_amount field predicates"""
   contractorApplyAmount: Float
   contractorApplyAmountGT: Float
@@ -2093,6 +2165,28 @@ input ProjectWhereInput {
   effectiveContractAmountNEQ: Float
   effectiveContractAmountNotIn: [Float!]
   effectiveContractAmountNotNil: Boolean
+  """end_date field predicates"""
+  endDate: Time
+  endDateGT: Time
+  endDateGTE: Time
+  endDateIn: [Time!]
+  endDateIsNil: Boolean
+  endDateLT: Time
+  endDateLTE: Time
+  endDateNEQ: Time
+  endDateNotIn: [Time!]
+  endDateNotNil: Boolean
+  """fs_date field predicates"""
+  fsDate: Time
+  fsDateGT: Time
+  fsDateGTE: Time
+  fsDateIn: [Time!]
+  fsDateIsNil: Boolean
+  fsDateLT: Time
+  fsDateLTE: Time
+  fsDateNEQ: Time
+  fsDateNotIn: [Time!]
+  fsDateNotNil: Boolean
   """vos edge predicates"""
   hasVos: Boolean
   hasVosWith: [ProjectVOWhereInput!]
@@ -2119,6 +2213,70 @@ input ProjectWhereInput {
   """is_finished field predicates"""
   isFinished: Boolean
   isFinishedNEQ: Boolean
+  """jzs field predicates"""
+  jzs: String
+  jzsContains: String
+  jzsContainsFold: String
+  jzsEqualFold: String
+  jzsGT: String
+  jzsGTE: String
+  jzsHasPrefix: String
+  jzsHasSuffix: String
+  jzsIn: [String!]
+  jzsIsNil: Boolean
+  jzsLT: String
+  jzsLTE: String
+  jzsNEQ: String
+  jzsNotIn: [String!]
+  jzsNotNil: Boolean
+  """manager field predicates"""
+  manager: String
+  managerContains: String
+  managerContainsFold: String
+  managerEqualFold: String
+  managerGT: String
+  managerGTE: String
+  managerHasPrefix: String
+  managerHasSuffix: String
+  managerIn: [String!]
+  managerIsNil: Boolean
+  managerLT: String
+  managerLTE: String
+  managerNEQ: String
+  managerNotIn: [String!]
+  managerNotNil: Boolean
+  """mcn field predicates"""
+  mcn: String
+  mcnContains: String
+  mcnContainsFold: String
+  mcnEqualFold: String
+  mcnGT: String
+  mcnGTE: String
+  mcnHasPrefix: String
+  mcnHasSuffix: String
+  mcnIn: [String!]
+  mcnIsNil: Boolean
+  mcnLT: String
+  mcnLTE: String
+  mcnNEQ: String
+  mcnNotIn: [String!]
+  mcnNotNil: Boolean
+  """mntyr field predicates"""
+  mntyr: String
+  mntyrContains: String
+  mntyrContainsFold: String
+  mntyrEqualFold: String
+  mntyrGT: String
+  mntyrGTE: String
+  mntyrHasPrefix: String
+  mntyrHasSuffix: String
+  mntyrIn: [String!]
+  mntyrIsNil: Boolean
+  mntyrLT: String
+  mntyrLTE: String
+  mntyrNEQ: String
+  mntyrNotIn: [String!]
+  mntyrNotNil: Boolean
   """name field predicates"""
   name: String
   nameContains: String
@@ -2136,7 +2294,20 @@ input ProjectWhereInput {
   nameNotIn: [String!]
   nameNotNil: Boolean
   not: ProjectWhereInput
+  """op_date field predicates"""
+  opDate: Time
+  opDateGT: Time
+  opDateGTE: Time
+  opDateIn: [Time!]
+  opDateIsNil: Boolean
+  opDateLT: Time
+  opDateLTE: Time
+  opDateNEQ: Time
+  opDateNotIn: [Time!]
+  opDateNotNil: Boolean
   or: [ProjectWhereInput!]
+  """owner field predicates"""
+  owner: String
   """owner_apply_amount field predicates"""
   ownerApplyAmount: Float
   ownerApplyAmountGT: Float
@@ -2181,6 +2352,31 @@ input ProjectWhereInput {
   ownerApproveCountNEQ: Int
   ownerApproveCountNotIn: [Int!]
   ownerApproveCountNotNil: Boolean
+  ownerContains: String
+  ownerContainsFold: String
+  ownerEqualFold: String
+  ownerGT: String
+  ownerGTE: String
+  ownerHasPrefix: String
+  ownerHasSuffix: String
+  ownerIn: [String!]
+  ownerIsNil: Boolean
+  ownerLT: String
+  ownerLTE: String
+  ownerNEQ: String
+  ownerNotIn: [String!]
+  ownerNotNil: Boolean
+  """start_date field predicates"""
+  startDate: Time
+  startDateGT: Time
+  startDateGTE: Time
+  startDateIn: [Time!]
+  startDateIsNil: Boolean
+  startDateLT: Time
+  startDateLTE: Time
+  startDateNEQ: Time
+  startDateNotIn: [Time!]
+  startDateNotNil: Boolean
   """total_contract_amount field predicates"""
   totalContractAmount: Float
   totalContractAmountGT: Float

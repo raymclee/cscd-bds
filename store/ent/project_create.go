@@ -59,6 +59,20 @@ func (pc *ProjectCreate) SetCode(s string) *ProjectCreate {
 	return pc
 }
 
+// SetManager sets the "manager" field.
+func (pc *ProjectCreate) SetManager(s string) *ProjectCreate {
+	pc.mutation.SetManager(s)
+	return pc
+}
+
+// SetNillableManager sets the "manager" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableManager(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetManager(*s)
+	}
+	return pc
+}
+
 // SetName sets the "name" field.
 func (pc *ProjectCreate) SetName(s string) *ProjectCreate {
 	pc.mutation.SetName(s)
@@ -69,6 +83,160 @@ func (pc *ProjectCreate) SetName(s string) *ProjectCreate {
 func (pc *ProjectCreate) SetNillableName(s *string) *ProjectCreate {
 	if s != nil {
 		pc.SetName(*s)
+	}
+	return pc
+}
+
+// SetOwner sets the "owner" field.
+func (pc *ProjectCreate) SetOwner(s string) *ProjectCreate {
+	pc.mutation.SetOwner(s)
+	return pc
+}
+
+// SetNillableOwner sets the "owner" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableOwner(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetOwner(*s)
+	}
+	return pc
+}
+
+// SetJzs sets the "jzs" field.
+func (pc *ProjectCreate) SetJzs(s string) *ProjectCreate {
+	pc.mutation.SetJzs(s)
+	return pc
+}
+
+// SetNillableJzs sets the "jzs" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableJzs(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetJzs(*s)
+	}
+	return pc
+}
+
+// SetMcn sets the "mcn" field.
+func (pc *ProjectCreate) SetMcn(s string) *ProjectCreate {
+	pc.mutation.SetMcn(s)
+	return pc
+}
+
+// SetNillableMcn sets the "mcn" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMcn(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetMcn(*s)
+	}
+	return pc
+}
+
+// SetConsultant sets the "consultant" field.
+func (pc *ProjectCreate) SetConsultant(s string) *ProjectCreate {
+	pc.mutation.SetConsultant(s)
+	return pc
+}
+
+// SetNillableConsultant sets the "consultant" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableConsultant(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetConsultant(*s)
+	}
+	return pc
+}
+
+// SetAreas sets the "areas" field.
+func (pc *ProjectCreate) SetAreas(s string) *ProjectCreate {
+	pc.mutation.SetAreas(s)
+	return pc
+}
+
+// SetNillableAreas sets the "areas" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAreas(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetAreas(*s)
+	}
+	return pc
+}
+
+// SetStartDate sets the "start_date" field.
+func (pc *ProjectCreate) SetStartDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetStartDate(t)
+	return pc
+}
+
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableStartDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetStartDate(*t)
+	}
+	return pc
+}
+
+// SetFsDate sets the "fs_date" field.
+func (pc *ProjectCreate) SetFsDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetFsDate(t)
+	return pc
+}
+
+// SetNillableFsDate sets the "fs_date" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableFsDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetFsDate(*t)
+	}
+	return pc
+}
+
+// SetOpDate sets the "op_date" field.
+func (pc *ProjectCreate) SetOpDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetOpDate(t)
+	return pc
+}
+
+// SetNillableOpDate sets the "op_date" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableOpDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetOpDate(*t)
+	}
+	return pc
+}
+
+// SetEndDate sets the "end_date" field.
+func (pc *ProjectCreate) SetEndDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetEndDate(t)
+	return pc
+}
+
+// SetNillableEndDate sets the "end_date" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableEndDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetEndDate(*t)
+	}
+	return pc
+}
+
+// SetMntyr sets the "mntyr" field.
+func (pc *ProjectCreate) SetMntyr(s string) *ProjectCreate {
+	pc.mutation.SetMntyr(s)
+	return pc
+}
+
+// SetNillableMntyr sets the "mntyr" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMntyr(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetMntyr(*s)
+	}
+	return pc
+}
+
+// SetConType sets the "con_type" field.
+func (pc *ProjectCreate) SetConType(s string) *ProjectCreate {
+	pc.mutation.SetConType(s)
+	return pc
+}
+
+// SetNillableConType sets the "con_type" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableConType(s *string) *ProjectCreate {
+	if s != nil {
+		pc.SetConType(*s)
 	}
 	return pc
 }
@@ -567,9 +735,57 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec.SetField(project.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
+	if value, ok := pc.mutation.Manager(); ok {
+		_spec.SetField(project.FieldManager, field.TypeString, value)
+		_node.Manager = &value
+	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(project.FieldName, field.TypeString, value)
 		_node.Name = &value
+	}
+	if value, ok := pc.mutation.Owner(); ok {
+		_spec.SetField(project.FieldOwner, field.TypeString, value)
+		_node.Owner = &value
+	}
+	if value, ok := pc.mutation.Jzs(); ok {
+		_spec.SetField(project.FieldJzs, field.TypeString, value)
+		_node.Jzs = &value
+	}
+	if value, ok := pc.mutation.Mcn(); ok {
+		_spec.SetField(project.FieldMcn, field.TypeString, value)
+		_node.Mcn = &value
+	}
+	if value, ok := pc.mutation.Consultant(); ok {
+		_spec.SetField(project.FieldConsultant, field.TypeString, value)
+		_node.Consultant = &value
+	}
+	if value, ok := pc.mutation.Areas(); ok {
+		_spec.SetField(project.FieldAreas, field.TypeString, value)
+		_node.Areas = &value
+	}
+	if value, ok := pc.mutation.StartDate(); ok {
+		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
+		_node.StartDate = &value
+	}
+	if value, ok := pc.mutation.FsDate(); ok {
+		_spec.SetField(project.FieldFsDate, field.TypeTime, value)
+		_node.FsDate = &value
+	}
+	if value, ok := pc.mutation.OpDate(); ok {
+		_spec.SetField(project.FieldOpDate, field.TypeTime, value)
+		_node.OpDate = &value
+	}
+	if value, ok := pc.mutation.EndDate(); ok {
+		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
+		_node.EndDate = &value
+	}
+	if value, ok := pc.mutation.Mntyr(); ok {
+		_spec.SetField(project.FieldMntyr, field.TypeString, value)
+		_node.Mntyr = &value
+	}
+	if value, ok := pc.mutation.ConType(); ok {
+		_spec.SetField(project.FieldConType, field.TypeString, value)
+		_node.ConType = &value
 	}
 	if value, ok := pc.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
@@ -763,6 +979,24 @@ func (u *ProjectUpsert) UpdateCode() *ProjectUpsert {
 	return u
 }
 
+// SetManager sets the "manager" field.
+func (u *ProjectUpsert) SetManager(v string) *ProjectUpsert {
+	u.Set(project.FieldManager, v)
+	return u
+}
+
+// UpdateManager sets the "manager" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateManager() *ProjectUpsert {
+	u.SetExcluded(project.FieldManager)
+	return u
+}
+
+// ClearManager clears the value of the "manager" field.
+func (u *ProjectUpsert) ClearManager() *ProjectUpsert {
+	u.SetNull(project.FieldManager)
+	return u
+}
+
 // SetName sets the "name" field.
 func (u *ProjectUpsert) SetName(v string) *ProjectUpsert {
 	u.Set(project.FieldName, v)
@@ -778,6 +1012,204 @@ func (u *ProjectUpsert) UpdateName() *ProjectUpsert {
 // ClearName clears the value of the "name" field.
 func (u *ProjectUpsert) ClearName() *ProjectUpsert {
 	u.SetNull(project.FieldName)
+	return u
+}
+
+// SetOwner sets the "owner" field.
+func (u *ProjectUpsert) SetOwner(v string) *ProjectUpsert {
+	u.Set(project.FieldOwner, v)
+	return u
+}
+
+// UpdateOwner sets the "owner" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateOwner() *ProjectUpsert {
+	u.SetExcluded(project.FieldOwner)
+	return u
+}
+
+// ClearOwner clears the value of the "owner" field.
+func (u *ProjectUpsert) ClearOwner() *ProjectUpsert {
+	u.SetNull(project.FieldOwner)
+	return u
+}
+
+// SetJzs sets the "jzs" field.
+func (u *ProjectUpsert) SetJzs(v string) *ProjectUpsert {
+	u.Set(project.FieldJzs, v)
+	return u
+}
+
+// UpdateJzs sets the "jzs" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateJzs() *ProjectUpsert {
+	u.SetExcluded(project.FieldJzs)
+	return u
+}
+
+// ClearJzs clears the value of the "jzs" field.
+func (u *ProjectUpsert) ClearJzs() *ProjectUpsert {
+	u.SetNull(project.FieldJzs)
+	return u
+}
+
+// SetMcn sets the "mcn" field.
+func (u *ProjectUpsert) SetMcn(v string) *ProjectUpsert {
+	u.Set(project.FieldMcn, v)
+	return u
+}
+
+// UpdateMcn sets the "mcn" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMcn() *ProjectUpsert {
+	u.SetExcluded(project.FieldMcn)
+	return u
+}
+
+// ClearMcn clears the value of the "mcn" field.
+func (u *ProjectUpsert) ClearMcn() *ProjectUpsert {
+	u.SetNull(project.FieldMcn)
+	return u
+}
+
+// SetConsultant sets the "consultant" field.
+func (u *ProjectUpsert) SetConsultant(v string) *ProjectUpsert {
+	u.Set(project.FieldConsultant, v)
+	return u
+}
+
+// UpdateConsultant sets the "consultant" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateConsultant() *ProjectUpsert {
+	u.SetExcluded(project.FieldConsultant)
+	return u
+}
+
+// ClearConsultant clears the value of the "consultant" field.
+func (u *ProjectUpsert) ClearConsultant() *ProjectUpsert {
+	u.SetNull(project.FieldConsultant)
+	return u
+}
+
+// SetAreas sets the "areas" field.
+func (u *ProjectUpsert) SetAreas(v string) *ProjectUpsert {
+	u.Set(project.FieldAreas, v)
+	return u
+}
+
+// UpdateAreas sets the "areas" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAreas() *ProjectUpsert {
+	u.SetExcluded(project.FieldAreas)
+	return u
+}
+
+// ClearAreas clears the value of the "areas" field.
+func (u *ProjectUpsert) ClearAreas() *ProjectUpsert {
+	u.SetNull(project.FieldAreas)
+	return u
+}
+
+// SetStartDate sets the "start_date" field.
+func (u *ProjectUpsert) SetStartDate(v time.Time) *ProjectUpsert {
+	u.Set(project.FieldStartDate, v)
+	return u
+}
+
+// UpdateStartDate sets the "start_date" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateStartDate() *ProjectUpsert {
+	u.SetExcluded(project.FieldStartDate)
+	return u
+}
+
+// ClearStartDate clears the value of the "start_date" field.
+func (u *ProjectUpsert) ClearStartDate() *ProjectUpsert {
+	u.SetNull(project.FieldStartDate)
+	return u
+}
+
+// SetFsDate sets the "fs_date" field.
+func (u *ProjectUpsert) SetFsDate(v time.Time) *ProjectUpsert {
+	u.Set(project.FieldFsDate, v)
+	return u
+}
+
+// UpdateFsDate sets the "fs_date" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateFsDate() *ProjectUpsert {
+	u.SetExcluded(project.FieldFsDate)
+	return u
+}
+
+// ClearFsDate clears the value of the "fs_date" field.
+func (u *ProjectUpsert) ClearFsDate() *ProjectUpsert {
+	u.SetNull(project.FieldFsDate)
+	return u
+}
+
+// SetOpDate sets the "op_date" field.
+func (u *ProjectUpsert) SetOpDate(v time.Time) *ProjectUpsert {
+	u.Set(project.FieldOpDate, v)
+	return u
+}
+
+// UpdateOpDate sets the "op_date" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateOpDate() *ProjectUpsert {
+	u.SetExcluded(project.FieldOpDate)
+	return u
+}
+
+// ClearOpDate clears the value of the "op_date" field.
+func (u *ProjectUpsert) ClearOpDate() *ProjectUpsert {
+	u.SetNull(project.FieldOpDate)
+	return u
+}
+
+// SetEndDate sets the "end_date" field.
+func (u *ProjectUpsert) SetEndDate(v time.Time) *ProjectUpsert {
+	u.Set(project.FieldEndDate, v)
+	return u
+}
+
+// UpdateEndDate sets the "end_date" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateEndDate() *ProjectUpsert {
+	u.SetExcluded(project.FieldEndDate)
+	return u
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (u *ProjectUpsert) ClearEndDate() *ProjectUpsert {
+	u.SetNull(project.FieldEndDate)
+	return u
+}
+
+// SetMntyr sets the "mntyr" field.
+func (u *ProjectUpsert) SetMntyr(v string) *ProjectUpsert {
+	u.Set(project.FieldMntyr, v)
+	return u
+}
+
+// UpdateMntyr sets the "mntyr" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMntyr() *ProjectUpsert {
+	u.SetExcluded(project.FieldMntyr)
+	return u
+}
+
+// ClearMntyr clears the value of the "mntyr" field.
+func (u *ProjectUpsert) ClearMntyr() *ProjectUpsert {
+	u.SetNull(project.FieldMntyr)
+	return u
+}
+
+// SetConType sets the "con_type" field.
+func (u *ProjectUpsert) SetConType(v string) *ProjectUpsert {
+	u.Set(project.FieldConType, v)
+	return u
+}
+
+// UpdateConType sets the "con_type" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateConType() *ProjectUpsert {
+	u.SetExcluded(project.FieldConType)
+	return u
+}
+
+// ClearConType clears the value of the "con_type" field.
+func (u *ProjectUpsert) ClearConType() *ProjectUpsert {
+	u.SetNull(project.FieldConType)
 	return u
 }
 
@@ -1442,6 +1874,27 @@ func (u *ProjectUpsertOne) UpdateCode() *ProjectUpsertOne {
 	})
 }
 
+// SetManager sets the "manager" field.
+func (u *ProjectUpsertOne) SetManager(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetManager(v)
+	})
+}
+
+// UpdateManager sets the "manager" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateManager() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateManager()
+	})
+}
+
+// ClearManager clears the value of the "manager" field.
+func (u *ProjectUpsertOne) ClearManager() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearManager()
+	})
+}
+
 // SetName sets the "name" field.
 func (u *ProjectUpsertOne) SetName(v string) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
@@ -1460,6 +1913,237 @@ func (u *ProjectUpsertOne) UpdateName() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearName() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearName()
+	})
+}
+
+// SetOwner sets the "owner" field.
+func (u *ProjectUpsertOne) SetOwner(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetOwner(v)
+	})
+}
+
+// UpdateOwner sets the "owner" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateOwner() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateOwner()
+	})
+}
+
+// ClearOwner clears the value of the "owner" field.
+func (u *ProjectUpsertOne) ClearOwner() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearOwner()
+	})
+}
+
+// SetJzs sets the "jzs" field.
+func (u *ProjectUpsertOne) SetJzs(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetJzs(v)
+	})
+}
+
+// UpdateJzs sets the "jzs" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateJzs() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateJzs()
+	})
+}
+
+// ClearJzs clears the value of the "jzs" field.
+func (u *ProjectUpsertOne) ClearJzs() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearJzs()
+	})
+}
+
+// SetMcn sets the "mcn" field.
+func (u *ProjectUpsertOne) SetMcn(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMcn(v)
+	})
+}
+
+// UpdateMcn sets the "mcn" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMcn() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMcn()
+	})
+}
+
+// ClearMcn clears the value of the "mcn" field.
+func (u *ProjectUpsertOne) ClearMcn() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMcn()
+	})
+}
+
+// SetConsultant sets the "consultant" field.
+func (u *ProjectUpsertOne) SetConsultant(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetConsultant(v)
+	})
+}
+
+// UpdateConsultant sets the "consultant" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateConsultant() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateConsultant()
+	})
+}
+
+// ClearConsultant clears the value of the "consultant" field.
+func (u *ProjectUpsertOne) ClearConsultant() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearConsultant()
+	})
+}
+
+// SetAreas sets the "areas" field.
+func (u *ProjectUpsertOne) SetAreas(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAreas(v)
+	})
+}
+
+// UpdateAreas sets the "areas" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAreas() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAreas()
+	})
+}
+
+// ClearAreas clears the value of the "areas" field.
+func (u *ProjectUpsertOne) ClearAreas() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAreas()
+	})
+}
+
+// SetStartDate sets the "start_date" field.
+func (u *ProjectUpsertOne) SetStartDate(v time.Time) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetStartDate(v)
+	})
+}
+
+// UpdateStartDate sets the "start_date" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateStartDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateStartDate()
+	})
+}
+
+// ClearStartDate clears the value of the "start_date" field.
+func (u *ProjectUpsertOne) ClearStartDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearStartDate()
+	})
+}
+
+// SetFsDate sets the "fs_date" field.
+func (u *ProjectUpsertOne) SetFsDate(v time.Time) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetFsDate(v)
+	})
+}
+
+// UpdateFsDate sets the "fs_date" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateFsDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateFsDate()
+	})
+}
+
+// ClearFsDate clears the value of the "fs_date" field.
+func (u *ProjectUpsertOne) ClearFsDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearFsDate()
+	})
+}
+
+// SetOpDate sets the "op_date" field.
+func (u *ProjectUpsertOne) SetOpDate(v time.Time) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetOpDate(v)
+	})
+}
+
+// UpdateOpDate sets the "op_date" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateOpDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateOpDate()
+	})
+}
+
+// ClearOpDate clears the value of the "op_date" field.
+func (u *ProjectUpsertOne) ClearOpDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearOpDate()
+	})
+}
+
+// SetEndDate sets the "end_date" field.
+func (u *ProjectUpsertOne) SetEndDate(v time.Time) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetEndDate(v)
+	})
+}
+
+// UpdateEndDate sets the "end_date" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateEndDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateEndDate()
+	})
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (u *ProjectUpsertOne) ClearEndDate() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearEndDate()
+	})
+}
+
+// SetMntyr sets the "mntyr" field.
+func (u *ProjectUpsertOne) SetMntyr(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMntyr(v)
+	})
+}
+
+// UpdateMntyr sets the "mntyr" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMntyr() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMntyr()
+	})
+}
+
+// ClearMntyr clears the value of the "mntyr" field.
+func (u *ProjectUpsertOne) ClearMntyr() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMntyr()
+	})
+}
+
+// SetConType sets the "con_type" field.
+func (u *ProjectUpsertOne) SetConType(v string) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetConType(v)
+	})
+}
+
+// UpdateConType sets the "con_type" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateConType() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateConType()
+	})
+}
+
+// ClearConType clears the value of the "con_type" field.
+func (u *ProjectUpsertOne) ClearConType() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearConType()
 	})
 }
 
@@ -2388,6 +3072,27 @@ func (u *ProjectUpsertBulk) UpdateCode() *ProjectUpsertBulk {
 	})
 }
 
+// SetManager sets the "manager" field.
+func (u *ProjectUpsertBulk) SetManager(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetManager(v)
+	})
+}
+
+// UpdateManager sets the "manager" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateManager() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateManager()
+	})
+}
+
+// ClearManager clears the value of the "manager" field.
+func (u *ProjectUpsertBulk) ClearManager() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearManager()
+	})
+}
+
 // SetName sets the "name" field.
 func (u *ProjectUpsertBulk) SetName(v string) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
@@ -2406,6 +3111,237 @@ func (u *ProjectUpsertBulk) UpdateName() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearName() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearName()
+	})
+}
+
+// SetOwner sets the "owner" field.
+func (u *ProjectUpsertBulk) SetOwner(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetOwner(v)
+	})
+}
+
+// UpdateOwner sets the "owner" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateOwner() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateOwner()
+	})
+}
+
+// ClearOwner clears the value of the "owner" field.
+func (u *ProjectUpsertBulk) ClearOwner() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearOwner()
+	})
+}
+
+// SetJzs sets the "jzs" field.
+func (u *ProjectUpsertBulk) SetJzs(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetJzs(v)
+	})
+}
+
+// UpdateJzs sets the "jzs" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateJzs() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateJzs()
+	})
+}
+
+// ClearJzs clears the value of the "jzs" field.
+func (u *ProjectUpsertBulk) ClearJzs() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearJzs()
+	})
+}
+
+// SetMcn sets the "mcn" field.
+func (u *ProjectUpsertBulk) SetMcn(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMcn(v)
+	})
+}
+
+// UpdateMcn sets the "mcn" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMcn() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMcn()
+	})
+}
+
+// ClearMcn clears the value of the "mcn" field.
+func (u *ProjectUpsertBulk) ClearMcn() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMcn()
+	})
+}
+
+// SetConsultant sets the "consultant" field.
+func (u *ProjectUpsertBulk) SetConsultant(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetConsultant(v)
+	})
+}
+
+// UpdateConsultant sets the "consultant" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateConsultant() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateConsultant()
+	})
+}
+
+// ClearConsultant clears the value of the "consultant" field.
+func (u *ProjectUpsertBulk) ClearConsultant() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearConsultant()
+	})
+}
+
+// SetAreas sets the "areas" field.
+func (u *ProjectUpsertBulk) SetAreas(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAreas(v)
+	})
+}
+
+// UpdateAreas sets the "areas" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAreas() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAreas()
+	})
+}
+
+// ClearAreas clears the value of the "areas" field.
+func (u *ProjectUpsertBulk) ClearAreas() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAreas()
+	})
+}
+
+// SetStartDate sets the "start_date" field.
+func (u *ProjectUpsertBulk) SetStartDate(v time.Time) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetStartDate(v)
+	})
+}
+
+// UpdateStartDate sets the "start_date" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateStartDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateStartDate()
+	})
+}
+
+// ClearStartDate clears the value of the "start_date" field.
+func (u *ProjectUpsertBulk) ClearStartDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearStartDate()
+	})
+}
+
+// SetFsDate sets the "fs_date" field.
+func (u *ProjectUpsertBulk) SetFsDate(v time.Time) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetFsDate(v)
+	})
+}
+
+// UpdateFsDate sets the "fs_date" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateFsDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateFsDate()
+	})
+}
+
+// ClearFsDate clears the value of the "fs_date" field.
+func (u *ProjectUpsertBulk) ClearFsDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearFsDate()
+	})
+}
+
+// SetOpDate sets the "op_date" field.
+func (u *ProjectUpsertBulk) SetOpDate(v time.Time) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetOpDate(v)
+	})
+}
+
+// UpdateOpDate sets the "op_date" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateOpDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateOpDate()
+	})
+}
+
+// ClearOpDate clears the value of the "op_date" field.
+func (u *ProjectUpsertBulk) ClearOpDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearOpDate()
+	})
+}
+
+// SetEndDate sets the "end_date" field.
+func (u *ProjectUpsertBulk) SetEndDate(v time.Time) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetEndDate(v)
+	})
+}
+
+// UpdateEndDate sets the "end_date" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateEndDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateEndDate()
+	})
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (u *ProjectUpsertBulk) ClearEndDate() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearEndDate()
+	})
+}
+
+// SetMntyr sets the "mntyr" field.
+func (u *ProjectUpsertBulk) SetMntyr(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMntyr(v)
+	})
+}
+
+// UpdateMntyr sets the "mntyr" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMntyr() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMntyr()
+	})
+}
+
+// ClearMntyr clears the value of the "mntyr" field.
+func (u *ProjectUpsertBulk) ClearMntyr() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMntyr()
+	})
+}
+
+// SetConType sets the "con_type" field.
+func (u *ProjectUpsertBulk) SetConType(v string) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetConType(v)
+	})
+}
+
+// UpdateConType sets the "con_type" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateConType() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateConType()
+	})
+}
+
+// ClearConType clears the value of the "con_type" field.
+func (u *ProjectUpsertBulk) ClearConType() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearConType()
 	})
 }
 

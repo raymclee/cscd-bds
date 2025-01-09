@@ -2170,7 +2170,55 @@ type Project implements Node {
   createdAt: Time!
   updatedAt: Time!
   code: String!
+  """
+  地盤經理
+  """
+  manager: String
   name: String
+  """
+  客戶
+  """
+  owner: String
+  """
+  建築師
+  """
+  jzs: String
+  """
+  總承包商
+  """
+  mcn: String
+  """
+  幕墻顧問
+  """
+  consultant: String
+  """
+  工程規模
+  """
+  areas: String
+  """
+  開工日期
+  """
+  startDate: Time
+  """
+  封頂日期
+  """
+  fsDate: Time
+  """
+  開始安裝日期
+  """
+  opDate: Time
+  """
+  竣工日期
+  """
+  endDate: Time
+  """
+  維修保養期
+  """
+  mntyr: String
+  """
+  中標形式
+  """
+  conType: String
   """
   是否完成
   """
@@ -2563,6 +2611,24 @@ input ProjectWhereInput {
   codeEqualFold: String
   codeContainsFold: String
   """
+  manager field predicates
+  """
+  manager: String
+  managerNEQ: String
+  managerIn: [String!]
+  managerNotIn: [String!]
+  managerGT: String
+  managerGTE: String
+  managerLT: String
+  managerLTE: String
+  managerContains: String
+  managerHasPrefix: String
+  managerHasSuffix: String
+  managerIsNil: Boolean
+  managerNotNil: Boolean
+  managerEqualFold: String
+  managerContainsFold: String
+  """
   name field predicates
   """
   name: String
@@ -2580,6 +2646,184 @@ input ProjectWhereInput {
   nameNotNil: Boolean
   nameEqualFold: String
   nameContainsFold: String
+  """
+  owner field predicates
+  """
+  owner: String
+  ownerNEQ: String
+  ownerIn: [String!]
+  ownerNotIn: [String!]
+  ownerGT: String
+  ownerGTE: String
+  ownerLT: String
+  ownerLTE: String
+  ownerContains: String
+  ownerHasPrefix: String
+  ownerHasSuffix: String
+  ownerIsNil: Boolean
+  ownerNotNil: Boolean
+  ownerEqualFold: String
+  ownerContainsFold: String
+  """
+  jzs field predicates
+  """
+  jzs: String
+  jzsNEQ: String
+  jzsIn: [String!]
+  jzsNotIn: [String!]
+  jzsGT: String
+  jzsGTE: String
+  jzsLT: String
+  jzsLTE: String
+  jzsContains: String
+  jzsHasPrefix: String
+  jzsHasSuffix: String
+  jzsIsNil: Boolean
+  jzsNotNil: Boolean
+  jzsEqualFold: String
+  jzsContainsFold: String
+  """
+  mcn field predicates
+  """
+  mcn: String
+  mcnNEQ: String
+  mcnIn: [String!]
+  mcnNotIn: [String!]
+  mcnGT: String
+  mcnGTE: String
+  mcnLT: String
+  mcnLTE: String
+  mcnContains: String
+  mcnHasPrefix: String
+  mcnHasSuffix: String
+  mcnIsNil: Boolean
+  mcnNotNil: Boolean
+  mcnEqualFold: String
+  mcnContainsFold: String
+  """
+  consultant field predicates
+  """
+  consultant: String
+  consultantNEQ: String
+  consultantIn: [String!]
+  consultantNotIn: [String!]
+  consultantGT: String
+  consultantGTE: String
+  consultantLT: String
+  consultantLTE: String
+  consultantContains: String
+  consultantHasPrefix: String
+  consultantHasSuffix: String
+  consultantIsNil: Boolean
+  consultantNotNil: Boolean
+  consultantEqualFold: String
+  consultantContainsFold: String
+  """
+  areas field predicates
+  """
+  areas: String
+  areasNEQ: String
+  areasIn: [String!]
+  areasNotIn: [String!]
+  areasGT: String
+  areasGTE: String
+  areasLT: String
+  areasLTE: String
+  areasContains: String
+  areasHasPrefix: String
+  areasHasSuffix: String
+  areasIsNil: Boolean
+  areasNotNil: Boolean
+  areasEqualFold: String
+  areasContainsFold: String
+  """
+  start_date field predicates
+  """
+  startDate: Time
+  startDateNEQ: Time
+  startDateIn: [Time!]
+  startDateNotIn: [Time!]
+  startDateGT: Time
+  startDateGTE: Time
+  startDateLT: Time
+  startDateLTE: Time
+  startDateIsNil: Boolean
+  startDateNotNil: Boolean
+  """
+  fs_date field predicates
+  """
+  fsDate: Time
+  fsDateNEQ: Time
+  fsDateIn: [Time!]
+  fsDateNotIn: [Time!]
+  fsDateGT: Time
+  fsDateGTE: Time
+  fsDateLT: Time
+  fsDateLTE: Time
+  fsDateIsNil: Boolean
+  fsDateNotNil: Boolean
+  """
+  op_date field predicates
+  """
+  opDate: Time
+  opDateNEQ: Time
+  opDateIn: [Time!]
+  opDateNotIn: [Time!]
+  opDateGT: Time
+  opDateGTE: Time
+  opDateLT: Time
+  opDateLTE: Time
+  opDateIsNil: Boolean
+  opDateNotNil: Boolean
+  """
+  end_date field predicates
+  """
+  endDate: Time
+  endDateNEQ: Time
+  endDateIn: [Time!]
+  endDateNotIn: [Time!]
+  endDateGT: Time
+  endDateGTE: Time
+  endDateLT: Time
+  endDateLTE: Time
+  endDateIsNil: Boolean
+  endDateNotNil: Boolean
+  """
+  mntyr field predicates
+  """
+  mntyr: String
+  mntyrNEQ: String
+  mntyrIn: [String!]
+  mntyrNotIn: [String!]
+  mntyrGT: String
+  mntyrGTE: String
+  mntyrLT: String
+  mntyrLTE: String
+  mntyrContains: String
+  mntyrHasPrefix: String
+  mntyrHasSuffix: String
+  mntyrIsNil: Boolean
+  mntyrNotNil: Boolean
+  mntyrEqualFold: String
+  mntyrContainsFold: String
+  """
+  con_type field predicates
+  """
+  conType: String
+  conTypeNEQ: String
+  conTypeIn: [String!]
+  conTypeNotIn: [String!]
+  conTypeGT: String
+  conTypeGTE: String
+  conTypeLT: String
+  conTypeLTE: String
+  conTypeContains: String
+  conTypeHasPrefix: String
+  conTypeHasSuffix: String
+  conTypeIsNil: Boolean
+  conTypeNotNil: Boolean
+  conTypeEqualFold: String
+  conTypeContainsFold: String
   """
   is_finished field predicates
   """

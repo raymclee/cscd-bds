@@ -15,7 +15,7 @@ function RouteComponent() {
 
   React.useEffect(() => {
     initMap("map", {
-      zoom: 4,
+      zoom: 3,
       // mapStyle: "amap://styles/grey",
       mapStyle: "amap://styles/darkblue",
       // viewMode: "3D",
@@ -40,7 +40,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div id="map" className="absolute bottom-0 left-0 right-0 top-0"></div>
+      <div id="map" className="absolute bottom-32 left-0 right-0 top-0"></div>
 
       <div className="absolute left-0 right-0 top-0 flex h-[90px] w-full items-center justify-between bg-dashboard-head bg-cover bg-bottom bg-no-repeat text-white">
         <div className="relative left-2 flex -translate-y-full gap-2">
@@ -98,7 +98,9 @@ function RouteComponent() {
           </Tooltip>
         )}
       </div> */}
-      <Outlet />
+      <div>
+        <Outlet />
+      </div>
     </>
   );
 }

@@ -24,8 +24,32 @@ type Project struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
+	// 地盤經理
+	Manager *string `json:"manager,omitempty"`
 	// Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
+	// 客戶
+	Owner *string `json:"owner,omitempty"`
+	// 建築師
+	Jzs *string `json:"jzs,omitempty"`
+	// 總承包商
+	Mcn *string `json:"mcn,omitempty"`
+	// 幕墻顧問
+	Consultant *string `json:"consultant,omitempty"`
+	// 工程規模
+	Areas *string `json:"areas,omitempty"`
+	// 開工日期
+	StartDate *time.Time `json:"start_date,omitempty"`
+	// 封頂日期
+	FsDate *time.Time `json:"fs_date,omitempty"`
+	// 開始安裝日期
+	OpDate *time.Time `json:"op_date,omitempty"`
+	// 竣工日期
+	EndDate *time.Time `json:"end_date,omitempty"`
+	// 維修保養期
+	Mntyr *string `json:"mntyr,omitempty"`
+	// 中標形式
+	ConType *string `json:"con_type,omitempty"`
 	// 是否完成
 	IsFinished bool `json:"is_finished,omitempty"`
 	// 成交额
@@ -115,9 +139,9 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount:
 			values[i] = new(sql.NullInt64)
-		case project.FieldCode, project.FieldName, project.FieldXmfzr:
+		case project.FieldCode, project.FieldManager, project.FieldName, project.FieldOwner, project.FieldJzs, project.FieldMcn, project.FieldConsultant, project.FieldAreas, project.FieldMntyr, project.FieldConType, project.FieldXmfzr:
 			values[i] = new(sql.NullString)
-		case project.FieldCreatedAt, project.FieldUpdatedAt:
+		case project.FieldCreatedAt, project.FieldUpdatedAt, project.FieldStartDate, project.FieldFsDate, project.FieldOpDate, project.FieldEndDate:
 			values[i] = new(sql.NullTime)
 		case project.FieldID:
 			values[i] = new(xid.ID)
@@ -160,12 +184,96 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.Code = value.String
 			}
+		case project.FieldManager:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field manager", values[i])
+			} else if value.Valid {
+				pr.Manager = new(string)
+				*pr.Manager = value.String
+			}
 		case project.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				pr.Name = new(string)
 				*pr.Name = value.String
+			}
+		case project.FieldOwner:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field owner", values[i])
+			} else if value.Valid {
+				pr.Owner = new(string)
+				*pr.Owner = value.String
+			}
+		case project.FieldJzs:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field jzs", values[i])
+			} else if value.Valid {
+				pr.Jzs = new(string)
+				*pr.Jzs = value.String
+			}
+		case project.FieldMcn:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field mcn", values[i])
+			} else if value.Valid {
+				pr.Mcn = new(string)
+				*pr.Mcn = value.String
+			}
+		case project.FieldConsultant:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field consultant", values[i])
+			} else if value.Valid {
+				pr.Consultant = new(string)
+				*pr.Consultant = value.String
+			}
+		case project.FieldAreas:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field areas", values[i])
+			} else if value.Valid {
+				pr.Areas = new(string)
+				*pr.Areas = value.String
+			}
+		case project.FieldStartDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field start_date", values[i])
+			} else if value.Valid {
+				pr.StartDate = new(time.Time)
+				*pr.StartDate = value.Time
+			}
+		case project.FieldFsDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field fs_date", values[i])
+			} else if value.Valid {
+				pr.FsDate = new(time.Time)
+				*pr.FsDate = value.Time
+			}
+		case project.FieldOpDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field op_date", values[i])
+			} else if value.Valid {
+				pr.OpDate = new(time.Time)
+				*pr.OpDate = value.Time
+			}
+		case project.FieldEndDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field end_date", values[i])
+			} else if value.Valid {
+				pr.EndDate = new(time.Time)
+				*pr.EndDate = value.Time
+			}
+		case project.FieldMntyr:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field mntyr", values[i])
+			} else if value.Valid {
+				pr.Mntyr = new(string)
+				*pr.Mntyr = value.String
+			}
+		case project.FieldConType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field con_type", values[i])
+			} else if value.Valid {
+				pr.ConType = new(string)
+				*pr.ConType = value.String
 			}
 		case project.FieldIsFinished:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -391,8 +499,68 @@ func (pr *Project) String() string {
 	builder.WriteString("code=")
 	builder.WriteString(pr.Code)
 	builder.WriteString(", ")
+	if v := pr.Manager; v != nil {
+		builder.WriteString("manager=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
 	if v := pr.Name; v != nil {
 		builder.WriteString("name=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.Owner; v != nil {
+		builder.WriteString("owner=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.Jzs; v != nil {
+		builder.WriteString("jzs=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.Mcn; v != nil {
+		builder.WriteString("mcn=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.Consultant; v != nil {
+		builder.WriteString("consultant=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.Areas; v != nil {
+		builder.WriteString("areas=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.StartDate; v != nil {
+		builder.WriteString("start_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := pr.FsDate; v != nil {
+		builder.WriteString("fs_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := pr.OpDate; v != nil {
+		builder.WriteString("op_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := pr.EndDate; v != nil {
+		builder.WriteString("end_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := pr.Mntyr; v != nil {
+		builder.WriteString("mntyr=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pr.ConType; v != nil {
+		builder.WriteString("con_type=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")

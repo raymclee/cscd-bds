@@ -843,8 +843,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "fixed bottom-[5vh] left-1/2 -translate-x-1/2 transition",
-          !tenderViewTender && "translate-y-[10vh]",
+          "fixed bottom-[13rem] left-1/2 -translate-x-1/2 opacity-100 transition",
+          !tenderViewTender && "translate-y-[200%] opacity-0",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -897,8 +897,8 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "fixed bottom-[5vh] left-1/2 -translate-x-1/2 transition",
-          navigations.length < 1 && "translate-y-[10vh]",
+          "fixed bottom-[13rem] left-1/2 -translate-x-1/2 opacity-100 transition",
+          navigations.length < 1 && "translate-y-[200%] opacity-0",
         )}
       >
         <Breadcrumb className="mt-px">
@@ -1018,7 +1018,7 @@ function RouteComponent() {
       {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
       <div
         className={cn(
-          "absolute left-0 top-[4.5rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          "absolute left-0 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
           !dashboardVisible && "-translate-x-[110%]",
         )}
       >
@@ -1029,7 +1029,7 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute right-0 top-[4.5rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          "absolute right-0 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
           !dashboardVisible && "translate-x-[110%]",
         )}
       >

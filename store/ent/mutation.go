@@ -7933,7 +7933,19 @@ type ProjectMutation struct {
 	created_at                                     *time.Time
 	updated_at                                     *time.Time
 	code                                           *string
+	manager                                        *string
 	name                                           *string
+	owner                                          *string
+	jzs                                            *string
+	mcn                                            *string
+	consultant                                     *string
+	areas                                          *string
+	start_date                                     *time.Time
+	fs_date                                        *time.Time
+	op_date                                        *time.Time
+	end_date                                       *time.Time
+	mntyr                                          *string
+	con_type                                       *string
 	is_finished                                    *bool
 	cje                                            *float64
 	addcje                                         *float64
@@ -8203,6 +8215,55 @@ func (m *ProjectMutation) ResetCode() {
 	m.code = nil
 }
 
+// SetManager sets the "manager" field.
+func (m *ProjectMutation) SetManager(s string) {
+	m.manager = &s
+}
+
+// Manager returns the value of the "manager" field in the mutation.
+func (m *ProjectMutation) Manager() (r string, exists bool) {
+	v := m.manager
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldManager returns the old "manager" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldManager(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldManager is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldManager requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldManager: %w", err)
+	}
+	return oldValue.Manager, nil
+}
+
+// ClearManager clears the value of the "manager" field.
+func (m *ProjectMutation) ClearManager() {
+	m.manager = nil
+	m.clearedFields[project.FieldManager] = struct{}{}
+}
+
+// ManagerCleared returns if the "manager" field was cleared in this mutation.
+func (m *ProjectMutation) ManagerCleared() bool {
+	_, ok := m.clearedFields[project.FieldManager]
+	return ok
+}
+
+// ResetManager resets all changes to the "manager" field.
+func (m *ProjectMutation) ResetManager() {
+	m.manager = nil
+	delete(m.clearedFields, project.FieldManager)
+}
+
 // SetName sets the "name" field.
 func (m *ProjectMutation) SetName(s string) {
 	m.name = &s
@@ -8250,6 +8311,545 @@ func (m *ProjectMutation) NameCleared() bool {
 func (m *ProjectMutation) ResetName() {
 	m.name = nil
 	delete(m.clearedFields, project.FieldName)
+}
+
+// SetOwner sets the "owner" field.
+func (m *ProjectMutation) SetOwner(s string) {
+	m.owner = &s
+}
+
+// Owner returns the value of the "owner" field in the mutation.
+func (m *ProjectMutation) Owner() (r string, exists bool) {
+	v := m.owner
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOwner returns the old "owner" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldOwner(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOwner is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOwner requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOwner: %w", err)
+	}
+	return oldValue.Owner, nil
+}
+
+// ClearOwner clears the value of the "owner" field.
+func (m *ProjectMutation) ClearOwner() {
+	m.owner = nil
+	m.clearedFields[project.FieldOwner] = struct{}{}
+}
+
+// OwnerCleared returns if the "owner" field was cleared in this mutation.
+func (m *ProjectMutation) OwnerCleared() bool {
+	_, ok := m.clearedFields[project.FieldOwner]
+	return ok
+}
+
+// ResetOwner resets all changes to the "owner" field.
+func (m *ProjectMutation) ResetOwner() {
+	m.owner = nil
+	delete(m.clearedFields, project.FieldOwner)
+}
+
+// SetJzs sets the "jzs" field.
+func (m *ProjectMutation) SetJzs(s string) {
+	m.jzs = &s
+}
+
+// Jzs returns the value of the "jzs" field in the mutation.
+func (m *ProjectMutation) Jzs() (r string, exists bool) {
+	v := m.jzs
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJzs returns the old "jzs" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldJzs(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldJzs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldJzs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJzs: %w", err)
+	}
+	return oldValue.Jzs, nil
+}
+
+// ClearJzs clears the value of the "jzs" field.
+func (m *ProjectMutation) ClearJzs() {
+	m.jzs = nil
+	m.clearedFields[project.FieldJzs] = struct{}{}
+}
+
+// JzsCleared returns if the "jzs" field was cleared in this mutation.
+func (m *ProjectMutation) JzsCleared() bool {
+	_, ok := m.clearedFields[project.FieldJzs]
+	return ok
+}
+
+// ResetJzs resets all changes to the "jzs" field.
+func (m *ProjectMutation) ResetJzs() {
+	m.jzs = nil
+	delete(m.clearedFields, project.FieldJzs)
+}
+
+// SetMcn sets the "mcn" field.
+func (m *ProjectMutation) SetMcn(s string) {
+	m.mcn = &s
+}
+
+// Mcn returns the value of the "mcn" field in the mutation.
+func (m *ProjectMutation) Mcn() (r string, exists bool) {
+	v := m.mcn
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMcn returns the old "mcn" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldMcn(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMcn is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMcn requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMcn: %w", err)
+	}
+	return oldValue.Mcn, nil
+}
+
+// ClearMcn clears the value of the "mcn" field.
+func (m *ProjectMutation) ClearMcn() {
+	m.mcn = nil
+	m.clearedFields[project.FieldMcn] = struct{}{}
+}
+
+// McnCleared returns if the "mcn" field was cleared in this mutation.
+func (m *ProjectMutation) McnCleared() bool {
+	_, ok := m.clearedFields[project.FieldMcn]
+	return ok
+}
+
+// ResetMcn resets all changes to the "mcn" field.
+func (m *ProjectMutation) ResetMcn() {
+	m.mcn = nil
+	delete(m.clearedFields, project.FieldMcn)
+}
+
+// SetConsultant sets the "consultant" field.
+func (m *ProjectMutation) SetConsultant(s string) {
+	m.consultant = &s
+}
+
+// Consultant returns the value of the "consultant" field in the mutation.
+func (m *ProjectMutation) Consultant() (r string, exists bool) {
+	v := m.consultant
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConsultant returns the old "consultant" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldConsultant(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConsultant is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConsultant requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConsultant: %w", err)
+	}
+	return oldValue.Consultant, nil
+}
+
+// ClearConsultant clears the value of the "consultant" field.
+func (m *ProjectMutation) ClearConsultant() {
+	m.consultant = nil
+	m.clearedFields[project.FieldConsultant] = struct{}{}
+}
+
+// ConsultantCleared returns if the "consultant" field was cleared in this mutation.
+func (m *ProjectMutation) ConsultantCleared() bool {
+	_, ok := m.clearedFields[project.FieldConsultant]
+	return ok
+}
+
+// ResetConsultant resets all changes to the "consultant" field.
+func (m *ProjectMutation) ResetConsultant() {
+	m.consultant = nil
+	delete(m.clearedFields, project.FieldConsultant)
+}
+
+// SetAreas sets the "areas" field.
+func (m *ProjectMutation) SetAreas(s string) {
+	m.areas = &s
+}
+
+// Areas returns the value of the "areas" field in the mutation.
+func (m *ProjectMutation) Areas() (r string, exists bool) {
+	v := m.areas
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAreas returns the old "areas" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAreas(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAreas is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAreas requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAreas: %w", err)
+	}
+	return oldValue.Areas, nil
+}
+
+// ClearAreas clears the value of the "areas" field.
+func (m *ProjectMutation) ClearAreas() {
+	m.areas = nil
+	m.clearedFields[project.FieldAreas] = struct{}{}
+}
+
+// AreasCleared returns if the "areas" field was cleared in this mutation.
+func (m *ProjectMutation) AreasCleared() bool {
+	_, ok := m.clearedFields[project.FieldAreas]
+	return ok
+}
+
+// ResetAreas resets all changes to the "areas" field.
+func (m *ProjectMutation) ResetAreas() {
+	m.areas = nil
+	delete(m.clearedFields, project.FieldAreas)
+}
+
+// SetStartDate sets the "start_date" field.
+func (m *ProjectMutation) SetStartDate(t time.Time) {
+	m.start_date = &t
+}
+
+// StartDate returns the value of the "start_date" field in the mutation.
+func (m *ProjectMutation) StartDate() (r time.Time, exists bool) {
+	v := m.start_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartDate returns the old "start_date" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldStartDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStartDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStartDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStartDate: %w", err)
+	}
+	return oldValue.StartDate, nil
+}
+
+// ClearStartDate clears the value of the "start_date" field.
+func (m *ProjectMutation) ClearStartDate() {
+	m.start_date = nil
+	m.clearedFields[project.FieldStartDate] = struct{}{}
+}
+
+// StartDateCleared returns if the "start_date" field was cleared in this mutation.
+func (m *ProjectMutation) StartDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldStartDate]
+	return ok
+}
+
+// ResetStartDate resets all changes to the "start_date" field.
+func (m *ProjectMutation) ResetStartDate() {
+	m.start_date = nil
+	delete(m.clearedFields, project.FieldStartDate)
+}
+
+// SetFsDate sets the "fs_date" field.
+func (m *ProjectMutation) SetFsDate(t time.Time) {
+	m.fs_date = &t
+}
+
+// FsDate returns the value of the "fs_date" field in the mutation.
+func (m *ProjectMutation) FsDate() (r time.Time, exists bool) {
+	v := m.fs_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFsDate returns the old "fs_date" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldFsDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFsDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFsDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFsDate: %w", err)
+	}
+	return oldValue.FsDate, nil
+}
+
+// ClearFsDate clears the value of the "fs_date" field.
+func (m *ProjectMutation) ClearFsDate() {
+	m.fs_date = nil
+	m.clearedFields[project.FieldFsDate] = struct{}{}
+}
+
+// FsDateCleared returns if the "fs_date" field was cleared in this mutation.
+func (m *ProjectMutation) FsDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldFsDate]
+	return ok
+}
+
+// ResetFsDate resets all changes to the "fs_date" field.
+func (m *ProjectMutation) ResetFsDate() {
+	m.fs_date = nil
+	delete(m.clearedFields, project.FieldFsDate)
+}
+
+// SetOpDate sets the "op_date" field.
+func (m *ProjectMutation) SetOpDate(t time.Time) {
+	m.op_date = &t
+}
+
+// OpDate returns the value of the "op_date" field in the mutation.
+func (m *ProjectMutation) OpDate() (r time.Time, exists bool) {
+	v := m.op_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOpDate returns the old "op_date" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldOpDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOpDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOpDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOpDate: %w", err)
+	}
+	return oldValue.OpDate, nil
+}
+
+// ClearOpDate clears the value of the "op_date" field.
+func (m *ProjectMutation) ClearOpDate() {
+	m.op_date = nil
+	m.clearedFields[project.FieldOpDate] = struct{}{}
+}
+
+// OpDateCleared returns if the "op_date" field was cleared in this mutation.
+func (m *ProjectMutation) OpDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldOpDate]
+	return ok
+}
+
+// ResetOpDate resets all changes to the "op_date" field.
+func (m *ProjectMutation) ResetOpDate() {
+	m.op_date = nil
+	delete(m.clearedFields, project.FieldOpDate)
+}
+
+// SetEndDate sets the "end_date" field.
+func (m *ProjectMutation) SetEndDate(t time.Time) {
+	m.end_date = &t
+}
+
+// EndDate returns the value of the "end_date" field in the mutation.
+func (m *ProjectMutation) EndDate() (r time.Time, exists bool) {
+	v := m.end_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEndDate returns the old "end_date" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldEndDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEndDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEndDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEndDate: %w", err)
+	}
+	return oldValue.EndDate, nil
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (m *ProjectMutation) ClearEndDate() {
+	m.end_date = nil
+	m.clearedFields[project.FieldEndDate] = struct{}{}
+}
+
+// EndDateCleared returns if the "end_date" field was cleared in this mutation.
+func (m *ProjectMutation) EndDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldEndDate]
+	return ok
+}
+
+// ResetEndDate resets all changes to the "end_date" field.
+func (m *ProjectMutation) ResetEndDate() {
+	m.end_date = nil
+	delete(m.clearedFields, project.FieldEndDate)
+}
+
+// SetMntyr sets the "mntyr" field.
+func (m *ProjectMutation) SetMntyr(s string) {
+	m.mntyr = &s
+}
+
+// Mntyr returns the value of the "mntyr" field in the mutation.
+func (m *ProjectMutation) Mntyr() (r string, exists bool) {
+	v := m.mntyr
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMntyr returns the old "mntyr" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldMntyr(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMntyr is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMntyr requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMntyr: %w", err)
+	}
+	return oldValue.Mntyr, nil
+}
+
+// ClearMntyr clears the value of the "mntyr" field.
+func (m *ProjectMutation) ClearMntyr() {
+	m.mntyr = nil
+	m.clearedFields[project.FieldMntyr] = struct{}{}
+}
+
+// MntyrCleared returns if the "mntyr" field was cleared in this mutation.
+func (m *ProjectMutation) MntyrCleared() bool {
+	_, ok := m.clearedFields[project.FieldMntyr]
+	return ok
+}
+
+// ResetMntyr resets all changes to the "mntyr" field.
+func (m *ProjectMutation) ResetMntyr() {
+	m.mntyr = nil
+	delete(m.clearedFields, project.FieldMntyr)
+}
+
+// SetConType sets the "con_type" field.
+func (m *ProjectMutation) SetConType(s string) {
+	m.con_type = &s
+}
+
+// ConType returns the value of the "con_type" field in the mutation.
+func (m *ProjectMutation) ConType() (r string, exists bool) {
+	v := m.con_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConType returns the old "con_type" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldConType(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConType: %w", err)
+	}
+	return oldValue.ConType, nil
+}
+
+// ClearConType clears the value of the "con_type" field.
+func (m *ProjectMutation) ClearConType() {
+	m.con_type = nil
+	m.clearedFields[project.FieldConType] = struct{}{}
+}
+
+// ConTypeCleared returns if the "con_type" field was cleared in this mutation.
+func (m *ProjectMutation) ConTypeCleared() bool {
+	_, ok := m.clearedFields[project.FieldConType]
+	return ok
+}
+
+// ResetConType resets all changes to the "con_type" field.
+func (m *ProjectMutation) ResetConType() {
+	m.con_type = nil
+	delete(m.clearedFields, project.FieldConType)
 }
 
 // SetIsFinished sets the "is_finished" field.
@@ -10035,7 +10635,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 29)
+	fields := make([]string, 0, 41)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -10045,8 +10645,44 @@ func (m *ProjectMutation) Fields() []string {
 	if m.code != nil {
 		fields = append(fields, project.FieldCode)
 	}
+	if m.manager != nil {
+		fields = append(fields, project.FieldManager)
+	}
 	if m.name != nil {
 		fields = append(fields, project.FieldName)
+	}
+	if m.owner != nil {
+		fields = append(fields, project.FieldOwner)
+	}
+	if m.jzs != nil {
+		fields = append(fields, project.FieldJzs)
+	}
+	if m.mcn != nil {
+		fields = append(fields, project.FieldMcn)
+	}
+	if m.consultant != nil {
+		fields = append(fields, project.FieldConsultant)
+	}
+	if m.areas != nil {
+		fields = append(fields, project.FieldAreas)
+	}
+	if m.start_date != nil {
+		fields = append(fields, project.FieldStartDate)
+	}
+	if m.fs_date != nil {
+		fields = append(fields, project.FieldFsDate)
+	}
+	if m.op_date != nil {
+		fields = append(fields, project.FieldOpDate)
+	}
+	if m.end_date != nil {
+		fields = append(fields, project.FieldEndDate)
+	}
+	if m.mntyr != nil {
+		fields = append(fields, project.FieldMntyr)
+	}
+	if m.con_type != nil {
+		fields = append(fields, project.FieldConType)
 	}
 	if m.is_finished != nil {
 		fields = append(fields, project.FieldIsFinished)
@@ -10137,8 +10773,32 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case project.FieldCode:
 		return m.Code()
+	case project.FieldManager:
+		return m.Manager()
 	case project.FieldName:
 		return m.Name()
+	case project.FieldOwner:
+		return m.Owner()
+	case project.FieldJzs:
+		return m.Jzs()
+	case project.FieldMcn:
+		return m.Mcn()
+	case project.FieldConsultant:
+		return m.Consultant()
+	case project.FieldAreas:
+		return m.Areas()
+	case project.FieldStartDate:
+		return m.StartDate()
+	case project.FieldFsDate:
+		return m.FsDate()
+	case project.FieldOpDate:
+		return m.OpDate()
+	case project.FieldEndDate:
+		return m.EndDate()
+	case project.FieldMntyr:
+		return m.Mntyr()
+	case project.FieldConType:
+		return m.ConType()
 	case project.FieldIsFinished:
 		return m.IsFinished()
 	case project.FieldCje:
@@ -10204,8 +10864,32 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUpdatedAt(ctx)
 	case project.FieldCode:
 		return m.OldCode(ctx)
+	case project.FieldManager:
+		return m.OldManager(ctx)
 	case project.FieldName:
 		return m.OldName(ctx)
+	case project.FieldOwner:
+		return m.OldOwner(ctx)
+	case project.FieldJzs:
+		return m.OldJzs(ctx)
+	case project.FieldMcn:
+		return m.OldMcn(ctx)
+	case project.FieldConsultant:
+		return m.OldConsultant(ctx)
+	case project.FieldAreas:
+		return m.OldAreas(ctx)
+	case project.FieldStartDate:
+		return m.OldStartDate(ctx)
+	case project.FieldFsDate:
+		return m.OldFsDate(ctx)
+	case project.FieldOpDate:
+		return m.OldOpDate(ctx)
+	case project.FieldEndDate:
+		return m.OldEndDate(ctx)
+	case project.FieldMntyr:
+		return m.OldMntyr(ctx)
+	case project.FieldConType:
+		return m.OldConType(ctx)
 	case project.FieldIsFinished:
 		return m.OldIsFinished(ctx)
 	case project.FieldCje:
@@ -10286,12 +10970,96 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCode(v)
 		return nil
+	case project.FieldManager:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetManager(v)
+		return nil
 	case project.FieldName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetName(v)
+		return nil
+	case project.FieldOwner:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOwner(v)
+		return nil
+	case project.FieldJzs:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJzs(v)
+		return nil
+	case project.FieldMcn:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMcn(v)
+		return nil
+	case project.FieldConsultant:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConsultant(v)
+		return nil
+	case project.FieldAreas:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAreas(v)
+		return nil
+	case project.FieldStartDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartDate(v)
+		return nil
+	case project.FieldFsDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFsDate(v)
+		return nil
+	case project.FieldOpDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOpDate(v)
+		return nil
+	case project.FieldEndDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEndDate(v)
+		return nil
+	case project.FieldMntyr:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMntyr(v)
+		return nil
+	case project.FieldConType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConType(v)
 		return nil
 	case project.FieldIsFinished:
 		v, ok := value.(bool)
@@ -10777,8 +11545,44 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *ProjectMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(project.FieldManager) {
+		fields = append(fields, project.FieldManager)
+	}
 	if m.FieldCleared(project.FieldName) {
 		fields = append(fields, project.FieldName)
+	}
+	if m.FieldCleared(project.FieldOwner) {
+		fields = append(fields, project.FieldOwner)
+	}
+	if m.FieldCleared(project.FieldJzs) {
+		fields = append(fields, project.FieldJzs)
+	}
+	if m.FieldCleared(project.FieldMcn) {
+		fields = append(fields, project.FieldMcn)
+	}
+	if m.FieldCleared(project.FieldConsultant) {
+		fields = append(fields, project.FieldConsultant)
+	}
+	if m.FieldCleared(project.FieldAreas) {
+		fields = append(fields, project.FieldAreas)
+	}
+	if m.FieldCleared(project.FieldStartDate) {
+		fields = append(fields, project.FieldStartDate)
+	}
+	if m.FieldCleared(project.FieldFsDate) {
+		fields = append(fields, project.FieldFsDate)
+	}
+	if m.FieldCleared(project.FieldOpDate) {
+		fields = append(fields, project.FieldOpDate)
+	}
+	if m.FieldCleared(project.FieldEndDate) {
+		fields = append(fields, project.FieldEndDate)
+	}
+	if m.FieldCleared(project.FieldMntyr) {
+		fields = append(fields, project.FieldMntyr)
+	}
+	if m.FieldCleared(project.FieldConType) {
+		fields = append(fields, project.FieldConType)
 	}
 	if m.FieldCleared(project.FieldCje) {
 		fields = append(fields, project.FieldCje)
@@ -10866,8 +11670,44 @@ func (m *ProjectMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *ProjectMutation) ClearField(name string) error {
 	switch name {
+	case project.FieldManager:
+		m.ClearManager()
+		return nil
 	case project.FieldName:
 		m.ClearName()
+		return nil
+	case project.FieldOwner:
+		m.ClearOwner()
+		return nil
+	case project.FieldJzs:
+		m.ClearJzs()
+		return nil
+	case project.FieldMcn:
+		m.ClearMcn()
+		return nil
+	case project.FieldConsultant:
+		m.ClearConsultant()
+		return nil
+	case project.FieldAreas:
+		m.ClearAreas()
+		return nil
+	case project.FieldStartDate:
+		m.ClearStartDate()
+		return nil
+	case project.FieldFsDate:
+		m.ClearFsDate()
+		return nil
+	case project.FieldOpDate:
+		m.ClearOpDate()
+		return nil
+	case project.FieldEndDate:
+		m.ClearEndDate()
+		return nil
+	case project.FieldMntyr:
+		m.ClearMntyr()
+		return nil
+	case project.FieldConType:
+		m.ClearConType()
 		return nil
 	case project.FieldCje:
 		m.ClearCje()
@@ -10958,8 +11798,44 @@ func (m *ProjectMutation) ResetField(name string) error {
 	case project.FieldCode:
 		m.ResetCode()
 		return nil
+	case project.FieldManager:
+		m.ResetManager()
+		return nil
 	case project.FieldName:
 		m.ResetName()
+		return nil
+	case project.FieldOwner:
+		m.ResetOwner()
+		return nil
+	case project.FieldJzs:
+		m.ResetJzs()
+		return nil
+	case project.FieldMcn:
+		m.ResetMcn()
+		return nil
+	case project.FieldConsultant:
+		m.ResetConsultant()
+		return nil
+	case project.FieldAreas:
+		m.ResetAreas()
+		return nil
+	case project.FieldStartDate:
+		m.ResetStartDate()
+		return nil
+	case project.FieldFsDate:
+		m.ResetFsDate()
+		return nil
+	case project.FieldOpDate:
+		m.ResetOpDate()
+		return nil
+	case project.FieldEndDate:
+		m.ResetEndDate()
+		return nil
+	case project.FieldMntyr:
+		m.ResetMntyr()
+		return nil
+	case project.FieldConType:
+		m.ResetConType()
 		return nil
 	case project.FieldIsFinished:
 		m.ResetIsFinished()

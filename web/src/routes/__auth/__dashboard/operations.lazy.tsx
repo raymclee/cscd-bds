@@ -71,8 +71,9 @@ import { SubTitle } from "~/components/project/sub-title";
 import { Rhino } from "~/components/rhino";
 import { StatusIcon } from "~/components/ui/status-icon";
 import { ProjectSelect } from "~/components/dashboard/project-select";
-import { formatProjectAmount, percent } from "~/lib/helper";
+import { fixAmount, formatProjectAmount, percent } from "~/lib/helper";
 import { cn } from "~/lib/utils";
+import dayjs from "dayjs";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -87,6 +88,20 @@ function RouteComponent() {
             node {
               name
               code
+              manager
+              owner
+              jzs
+              mcn
+              consultant
+              areas
+              fsDate
+              opDate
+              startDate
+              endDate
+              mntyr
+              conType
+              cje
+              yye
               ownerApplyCount
               ownerApplyAmount
               ownerApproveCount
@@ -210,6 +225,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
     (accumulatedStatutoryDeductions + accumulatedNonStatutoryDeductions);
   const totalContractAmount = pj?.totalContractAmount ?? 0;
 
+  console.log(pj);
   return (
     <>
       <div className="absolute left-5 top-2">
@@ -331,10 +347,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <div className="text-xs text-brand-project-3">分判VA</div>
                     <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                      {currentFormatter.format(
+                      {`${currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
-                      )}
-                      万
+                      )}万`}
                     </div>
                   </div>
                   {/* </HoverCard.Trigger>
@@ -601,7 +616,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative mt-2 h-14">
                 <img
                   src={costIncome}
-                  className="absolute inset-0 h-full w-full"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
                 <div className="absolute right-14 top-1/2 -translate-y-1/2">
                   <div className="text-lg font-bold text-brand-project">
@@ -730,7 +745,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b1} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">成交额</div>
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(64711)}万
+                {currentFormatter.format(formatProjectAmount(pj?.cje))}万
               </div>
             </div>
 
@@ -739,7 +754,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b2} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">营业额</div>
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(58357)}万
+                {currentFormatter.format(formatProjectAmount(pj?.yye))}万
               </div>
             </div>
 
@@ -923,24 +938,35 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="mx-auto items-center overflow-hidden">
                 <img src={basicInfoBg} className="absolute h-[340px] w-full" />
                 <div className="relative mx-auto flex h-full w-[94%] flex-1 flex-col justify-center gap-1 pt-2.5">
-                  <BasicInfoItem title="项目名称" value={pj?.name ?? "-"} />
+                  <BasicInfoItem title="项目名称" value={pj?.name || "-"} />
+                  <BasicInfoItem title="客户" value={pj?.owner || "-"} />
+                  <BasicInfoItem title="建筑师" value={pj?.jzs || "-"} />
+                  <BasicInfoItem title="总承包商" value={pj?.mcn || "-"} />
                   <BasicInfoItem
-                    title="客户"
-                    value="Century Base Development Limited"
+                    title="幕墙顾问"
+                    value={pj?.consultant || "-"}
+                  />
+                  <BasicInfoItem title="工程规模" value={pj?.areas || "-"} />
+                  <BasicInfoItem title="中标形式" value={pj?.conType || "-"} />
+                  <BasicInfoItem
+                    title="开工日期"
+                    value={
+                      pj?.startDate ? dayjs(pj?.startDate).format("LL") : "-"
+                    }
                   />
                   <BasicInfoItem
-                    title="建筑师"
-                    value="Zaha Hadid / Ronald Lu & Partners"
+                    title="FS日期"
+                    value={pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
                   />
-                  <BasicInfoItem title="总承包商" value="协兴建筑" />
-                  <BasicInfoItem title="幕墙顾问" value="-" />
-                  <BasicInfoItem title="工程规模" value="25401㎡" />
-                  <BasicInfoItem title="中标形式" value="NSC" />
-                  <BasicInfoItem title="开工日期" value="2019-01-01" />
-                  <BasicInfoItem title="FS日期" value="2023-08-30" />
-                  <BasicInfoItem title="OP日期" value="-" />
-                  <BasicInfoItem title="竣工日期" value="2023-12-31" />
-                  <BasicInfoItem title="维修保养期" value="18个月" />
+                  <BasicInfoItem
+                    title="OP日期"
+                    value={pj?.opDate ? dayjs(pj?.opDate).format("LL") : "-"}
+                  />
+                  <BasicInfoItem
+                    title="竣工日期"
+                    value={pj?.endDate ? dayjs(pj?.endDate).format("LL") : "-"}
+                  />
+                  <BasicInfoItem title="维修保养期" value={pj?.mntyr || "-"} />
                 </div>
               </div>
             </div>
@@ -1001,14 +1027,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>近2季度 质量内审分数</SubTitle>
             {/* <div className="relative bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={quality} className="h-[6.5rem] w-full" />
+            <img src={quality} className="h-[6.5rem] w-full object-cover" />
             {/* </div> */}
           </div>
 
           <div>
             <SubTitle>近2季度 安全内审分数</SubTitle>
             {/* <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={safty} className="h-[6.5rem] w-full" />
+            <img src={safty} className="h-[6.5rem] w-full object-cover" />
             {/* </div> */}
           </div>
         </section>
@@ -1070,11 +1096,8 @@ function ProjectOverviewTab() {
       <Tabs.List className="relative mx-auto mt-4 grid h-8 w-[85%] grid-cols-3">
         <img src={projectOverviewTab} className="absolute inset-0 h-8 w-full" />
         {tabs.map((tab) => (
-          <div
-            key={`overview-tab-${tab}`}
-            className="relative flex h-8 items-center justify-center"
-          >
-            <Tabs.Trigger key={tab} value={tab} onClick={() => onChange(tab)}>
+          <Tabs.Trigger key={tab} value={tab} onClick={() => onChange(tab)}>
+            <div className="relative flex h-8 items-center justify-center">
               {selectedTab == tab && (
                 <img
                   src={projectOverviewTabSelected}
@@ -1082,8 +1105,8 @@ function ProjectOverviewTab() {
                 />
               )}
               <div className="relative text-xs">{tab}</div>
-            </Tabs.Trigger>
-          </div>
+            </div>
+          </Tabs.Trigger>
         ))}
       </Tabs.List>
     </Tabs.Root>

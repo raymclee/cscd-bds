@@ -50,6 +50,26 @@ func (pu *ProjectUpdate) SetNillableCode(s *string) *ProjectUpdate {
 	return pu
 }
 
+// SetManager sets the "manager" field.
+func (pu *ProjectUpdate) SetManager(s string) *ProjectUpdate {
+	pu.mutation.SetManager(s)
+	return pu
+}
+
+// SetNillableManager sets the "manager" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableManager(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetManager(*s)
+	}
+	return pu
+}
+
+// ClearManager clears the value of the "manager" field.
+func (pu *ProjectUpdate) ClearManager() *ProjectUpdate {
+	pu.mutation.ClearManager()
+	return pu
+}
+
 // SetName sets the "name" field.
 func (pu *ProjectUpdate) SetName(s string) *ProjectUpdate {
 	pu.mutation.SetName(s)
@@ -67,6 +87,226 @@ func (pu *ProjectUpdate) SetNillableName(s *string) *ProjectUpdate {
 // ClearName clears the value of the "name" field.
 func (pu *ProjectUpdate) ClearName() *ProjectUpdate {
 	pu.mutation.ClearName()
+	return pu
+}
+
+// SetOwner sets the "owner" field.
+func (pu *ProjectUpdate) SetOwner(s string) *ProjectUpdate {
+	pu.mutation.SetOwner(s)
+	return pu
+}
+
+// SetNillableOwner sets the "owner" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableOwner(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetOwner(*s)
+	}
+	return pu
+}
+
+// ClearOwner clears the value of the "owner" field.
+func (pu *ProjectUpdate) ClearOwner() *ProjectUpdate {
+	pu.mutation.ClearOwner()
+	return pu
+}
+
+// SetJzs sets the "jzs" field.
+func (pu *ProjectUpdate) SetJzs(s string) *ProjectUpdate {
+	pu.mutation.SetJzs(s)
+	return pu
+}
+
+// SetNillableJzs sets the "jzs" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableJzs(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetJzs(*s)
+	}
+	return pu
+}
+
+// ClearJzs clears the value of the "jzs" field.
+func (pu *ProjectUpdate) ClearJzs() *ProjectUpdate {
+	pu.mutation.ClearJzs()
+	return pu
+}
+
+// SetMcn sets the "mcn" field.
+func (pu *ProjectUpdate) SetMcn(s string) *ProjectUpdate {
+	pu.mutation.SetMcn(s)
+	return pu
+}
+
+// SetNillableMcn sets the "mcn" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMcn(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetMcn(*s)
+	}
+	return pu
+}
+
+// ClearMcn clears the value of the "mcn" field.
+func (pu *ProjectUpdate) ClearMcn() *ProjectUpdate {
+	pu.mutation.ClearMcn()
+	return pu
+}
+
+// SetConsultant sets the "consultant" field.
+func (pu *ProjectUpdate) SetConsultant(s string) *ProjectUpdate {
+	pu.mutation.SetConsultant(s)
+	return pu
+}
+
+// SetNillableConsultant sets the "consultant" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableConsultant(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetConsultant(*s)
+	}
+	return pu
+}
+
+// ClearConsultant clears the value of the "consultant" field.
+func (pu *ProjectUpdate) ClearConsultant() *ProjectUpdate {
+	pu.mutation.ClearConsultant()
+	return pu
+}
+
+// SetAreas sets the "areas" field.
+func (pu *ProjectUpdate) SetAreas(s string) *ProjectUpdate {
+	pu.mutation.SetAreas(s)
+	return pu
+}
+
+// SetNillableAreas sets the "areas" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAreas(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetAreas(*s)
+	}
+	return pu
+}
+
+// ClearAreas clears the value of the "areas" field.
+func (pu *ProjectUpdate) ClearAreas() *ProjectUpdate {
+	pu.mutation.ClearAreas()
+	return pu
+}
+
+// SetStartDate sets the "start_date" field.
+func (pu *ProjectUpdate) SetStartDate(t time.Time) *ProjectUpdate {
+	pu.mutation.SetStartDate(t)
+	return pu
+}
+
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableStartDate(t *time.Time) *ProjectUpdate {
+	if t != nil {
+		pu.SetStartDate(*t)
+	}
+	return pu
+}
+
+// ClearStartDate clears the value of the "start_date" field.
+func (pu *ProjectUpdate) ClearStartDate() *ProjectUpdate {
+	pu.mutation.ClearStartDate()
+	return pu
+}
+
+// SetFsDate sets the "fs_date" field.
+func (pu *ProjectUpdate) SetFsDate(t time.Time) *ProjectUpdate {
+	pu.mutation.SetFsDate(t)
+	return pu
+}
+
+// SetNillableFsDate sets the "fs_date" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableFsDate(t *time.Time) *ProjectUpdate {
+	if t != nil {
+		pu.SetFsDate(*t)
+	}
+	return pu
+}
+
+// ClearFsDate clears the value of the "fs_date" field.
+func (pu *ProjectUpdate) ClearFsDate() *ProjectUpdate {
+	pu.mutation.ClearFsDate()
+	return pu
+}
+
+// SetOpDate sets the "op_date" field.
+func (pu *ProjectUpdate) SetOpDate(t time.Time) *ProjectUpdate {
+	pu.mutation.SetOpDate(t)
+	return pu
+}
+
+// SetNillableOpDate sets the "op_date" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableOpDate(t *time.Time) *ProjectUpdate {
+	if t != nil {
+		pu.SetOpDate(*t)
+	}
+	return pu
+}
+
+// ClearOpDate clears the value of the "op_date" field.
+func (pu *ProjectUpdate) ClearOpDate() *ProjectUpdate {
+	pu.mutation.ClearOpDate()
+	return pu
+}
+
+// SetEndDate sets the "end_date" field.
+func (pu *ProjectUpdate) SetEndDate(t time.Time) *ProjectUpdate {
+	pu.mutation.SetEndDate(t)
+	return pu
+}
+
+// SetNillableEndDate sets the "end_date" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableEndDate(t *time.Time) *ProjectUpdate {
+	if t != nil {
+		pu.SetEndDate(*t)
+	}
+	return pu
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (pu *ProjectUpdate) ClearEndDate() *ProjectUpdate {
+	pu.mutation.ClearEndDate()
+	return pu
+}
+
+// SetMntyr sets the "mntyr" field.
+func (pu *ProjectUpdate) SetMntyr(s string) *ProjectUpdate {
+	pu.mutation.SetMntyr(s)
+	return pu
+}
+
+// SetNillableMntyr sets the "mntyr" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMntyr(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetMntyr(*s)
+	}
+	return pu
+}
+
+// ClearMntyr clears the value of the "mntyr" field.
+func (pu *ProjectUpdate) ClearMntyr() *ProjectUpdate {
+	pu.mutation.ClearMntyr()
+	return pu
+}
+
+// SetConType sets the "con_type" field.
+func (pu *ProjectUpdate) SetConType(s string) *ProjectUpdate {
+	pu.mutation.SetConType(s)
+	return pu
+}
+
+// SetNillableConType sets the "con_type" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableConType(s *string) *ProjectUpdate {
+	if s != nil {
+		pu.SetConType(*s)
+	}
+	return pu
+}
+
+// ClearConType clears the value of the "con_type" field.
+func (pu *ProjectUpdate) ClearConType() *ProjectUpdate {
+	pu.mutation.ClearConType()
 	return pu
 }
 
@@ -817,11 +1057,83 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.Code(); ok {
 		_spec.SetField(project.FieldCode, field.TypeString, value)
 	}
+	if value, ok := pu.mutation.Manager(); ok {
+		_spec.SetField(project.FieldManager, field.TypeString, value)
+	}
+	if pu.mutation.ManagerCleared() {
+		_spec.ClearField(project.FieldManager, field.TypeString)
+	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(project.FieldName, field.TypeString, value)
 	}
 	if pu.mutation.NameCleared() {
 		_spec.ClearField(project.FieldName, field.TypeString)
+	}
+	if value, ok := pu.mutation.Owner(); ok {
+		_spec.SetField(project.FieldOwner, field.TypeString, value)
+	}
+	if pu.mutation.OwnerCleared() {
+		_spec.ClearField(project.FieldOwner, field.TypeString)
+	}
+	if value, ok := pu.mutation.Jzs(); ok {
+		_spec.SetField(project.FieldJzs, field.TypeString, value)
+	}
+	if pu.mutation.JzsCleared() {
+		_spec.ClearField(project.FieldJzs, field.TypeString)
+	}
+	if value, ok := pu.mutation.Mcn(); ok {
+		_spec.SetField(project.FieldMcn, field.TypeString, value)
+	}
+	if pu.mutation.McnCleared() {
+		_spec.ClearField(project.FieldMcn, field.TypeString)
+	}
+	if value, ok := pu.mutation.Consultant(); ok {
+		_spec.SetField(project.FieldConsultant, field.TypeString, value)
+	}
+	if pu.mutation.ConsultantCleared() {
+		_spec.ClearField(project.FieldConsultant, field.TypeString)
+	}
+	if value, ok := pu.mutation.Areas(); ok {
+		_spec.SetField(project.FieldAreas, field.TypeString, value)
+	}
+	if pu.mutation.AreasCleared() {
+		_spec.ClearField(project.FieldAreas, field.TypeString)
+	}
+	if value, ok := pu.mutation.StartDate(); ok {
+		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
+	}
+	if pu.mutation.StartDateCleared() {
+		_spec.ClearField(project.FieldStartDate, field.TypeTime)
+	}
+	if value, ok := pu.mutation.FsDate(); ok {
+		_spec.SetField(project.FieldFsDate, field.TypeTime, value)
+	}
+	if pu.mutation.FsDateCleared() {
+		_spec.ClearField(project.FieldFsDate, field.TypeTime)
+	}
+	if value, ok := pu.mutation.OpDate(); ok {
+		_spec.SetField(project.FieldOpDate, field.TypeTime, value)
+	}
+	if pu.mutation.OpDateCleared() {
+		_spec.ClearField(project.FieldOpDate, field.TypeTime)
+	}
+	if value, ok := pu.mutation.EndDate(); ok {
+		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
+	}
+	if pu.mutation.EndDateCleared() {
+		_spec.ClearField(project.FieldEndDate, field.TypeTime)
+	}
+	if value, ok := pu.mutation.Mntyr(); ok {
+		_spec.SetField(project.FieldMntyr, field.TypeString, value)
+	}
+	if pu.mutation.MntyrCleared() {
+		_spec.ClearField(project.FieldMntyr, field.TypeString)
+	}
+	if value, ok := pu.mutation.ConType(); ok {
+		_spec.SetField(project.FieldConType, field.TypeString, value)
+	}
+	if pu.mutation.ConTypeCleared() {
+		_spec.ClearField(project.FieldConType, field.TypeString)
 	}
 	if value, ok := pu.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)
@@ -1124,6 +1436,26 @@ func (puo *ProjectUpdateOne) SetNillableCode(s *string) *ProjectUpdateOne {
 	return puo
 }
 
+// SetManager sets the "manager" field.
+func (puo *ProjectUpdateOne) SetManager(s string) *ProjectUpdateOne {
+	puo.mutation.SetManager(s)
+	return puo
+}
+
+// SetNillableManager sets the "manager" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableManager(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetManager(*s)
+	}
+	return puo
+}
+
+// ClearManager clears the value of the "manager" field.
+func (puo *ProjectUpdateOne) ClearManager() *ProjectUpdateOne {
+	puo.mutation.ClearManager()
+	return puo
+}
+
 // SetName sets the "name" field.
 func (puo *ProjectUpdateOne) SetName(s string) *ProjectUpdateOne {
 	puo.mutation.SetName(s)
@@ -1141,6 +1473,226 @@ func (puo *ProjectUpdateOne) SetNillableName(s *string) *ProjectUpdateOne {
 // ClearName clears the value of the "name" field.
 func (puo *ProjectUpdateOne) ClearName() *ProjectUpdateOne {
 	puo.mutation.ClearName()
+	return puo
+}
+
+// SetOwner sets the "owner" field.
+func (puo *ProjectUpdateOne) SetOwner(s string) *ProjectUpdateOne {
+	puo.mutation.SetOwner(s)
+	return puo
+}
+
+// SetNillableOwner sets the "owner" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableOwner(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetOwner(*s)
+	}
+	return puo
+}
+
+// ClearOwner clears the value of the "owner" field.
+func (puo *ProjectUpdateOne) ClearOwner() *ProjectUpdateOne {
+	puo.mutation.ClearOwner()
+	return puo
+}
+
+// SetJzs sets the "jzs" field.
+func (puo *ProjectUpdateOne) SetJzs(s string) *ProjectUpdateOne {
+	puo.mutation.SetJzs(s)
+	return puo
+}
+
+// SetNillableJzs sets the "jzs" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableJzs(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetJzs(*s)
+	}
+	return puo
+}
+
+// ClearJzs clears the value of the "jzs" field.
+func (puo *ProjectUpdateOne) ClearJzs() *ProjectUpdateOne {
+	puo.mutation.ClearJzs()
+	return puo
+}
+
+// SetMcn sets the "mcn" field.
+func (puo *ProjectUpdateOne) SetMcn(s string) *ProjectUpdateOne {
+	puo.mutation.SetMcn(s)
+	return puo
+}
+
+// SetNillableMcn sets the "mcn" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMcn(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetMcn(*s)
+	}
+	return puo
+}
+
+// ClearMcn clears the value of the "mcn" field.
+func (puo *ProjectUpdateOne) ClearMcn() *ProjectUpdateOne {
+	puo.mutation.ClearMcn()
+	return puo
+}
+
+// SetConsultant sets the "consultant" field.
+func (puo *ProjectUpdateOne) SetConsultant(s string) *ProjectUpdateOne {
+	puo.mutation.SetConsultant(s)
+	return puo
+}
+
+// SetNillableConsultant sets the "consultant" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableConsultant(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetConsultant(*s)
+	}
+	return puo
+}
+
+// ClearConsultant clears the value of the "consultant" field.
+func (puo *ProjectUpdateOne) ClearConsultant() *ProjectUpdateOne {
+	puo.mutation.ClearConsultant()
+	return puo
+}
+
+// SetAreas sets the "areas" field.
+func (puo *ProjectUpdateOne) SetAreas(s string) *ProjectUpdateOne {
+	puo.mutation.SetAreas(s)
+	return puo
+}
+
+// SetNillableAreas sets the "areas" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAreas(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetAreas(*s)
+	}
+	return puo
+}
+
+// ClearAreas clears the value of the "areas" field.
+func (puo *ProjectUpdateOne) ClearAreas() *ProjectUpdateOne {
+	puo.mutation.ClearAreas()
+	return puo
+}
+
+// SetStartDate sets the "start_date" field.
+func (puo *ProjectUpdateOne) SetStartDate(t time.Time) *ProjectUpdateOne {
+	puo.mutation.SetStartDate(t)
+	return puo
+}
+
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableStartDate(t *time.Time) *ProjectUpdateOne {
+	if t != nil {
+		puo.SetStartDate(*t)
+	}
+	return puo
+}
+
+// ClearStartDate clears the value of the "start_date" field.
+func (puo *ProjectUpdateOne) ClearStartDate() *ProjectUpdateOne {
+	puo.mutation.ClearStartDate()
+	return puo
+}
+
+// SetFsDate sets the "fs_date" field.
+func (puo *ProjectUpdateOne) SetFsDate(t time.Time) *ProjectUpdateOne {
+	puo.mutation.SetFsDate(t)
+	return puo
+}
+
+// SetNillableFsDate sets the "fs_date" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableFsDate(t *time.Time) *ProjectUpdateOne {
+	if t != nil {
+		puo.SetFsDate(*t)
+	}
+	return puo
+}
+
+// ClearFsDate clears the value of the "fs_date" field.
+func (puo *ProjectUpdateOne) ClearFsDate() *ProjectUpdateOne {
+	puo.mutation.ClearFsDate()
+	return puo
+}
+
+// SetOpDate sets the "op_date" field.
+func (puo *ProjectUpdateOne) SetOpDate(t time.Time) *ProjectUpdateOne {
+	puo.mutation.SetOpDate(t)
+	return puo
+}
+
+// SetNillableOpDate sets the "op_date" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableOpDate(t *time.Time) *ProjectUpdateOne {
+	if t != nil {
+		puo.SetOpDate(*t)
+	}
+	return puo
+}
+
+// ClearOpDate clears the value of the "op_date" field.
+func (puo *ProjectUpdateOne) ClearOpDate() *ProjectUpdateOne {
+	puo.mutation.ClearOpDate()
+	return puo
+}
+
+// SetEndDate sets the "end_date" field.
+func (puo *ProjectUpdateOne) SetEndDate(t time.Time) *ProjectUpdateOne {
+	puo.mutation.SetEndDate(t)
+	return puo
+}
+
+// SetNillableEndDate sets the "end_date" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableEndDate(t *time.Time) *ProjectUpdateOne {
+	if t != nil {
+		puo.SetEndDate(*t)
+	}
+	return puo
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (puo *ProjectUpdateOne) ClearEndDate() *ProjectUpdateOne {
+	puo.mutation.ClearEndDate()
+	return puo
+}
+
+// SetMntyr sets the "mntyr" field.
+func (puo *ProjectUpdateOne) SetMntyr(s string) *ProjectUpdateOne {
+	puo.mutation.SetMntyr(s)
+	return puo
+}
+
+// SetNillableMntyr sets the "mntyr" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMntyr(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetMntyr(*s)
+	}
+	return puo
+}
+
+// ClearMntyr clears the value of the "mntyr" field.
+func (puo *ProjectUpdateOne) ClearMntyr() *ProjectUpdateOne {
+	puo.mutation.ClearMntyr()
+	return puo
+}
+
+// SetConType sets the "con_type" field.
+func (puo *ProjectUpdateOne) SetConType(s string) *ProjectUpdateOne {
+	puo.mutation.SetConType(s)
+	return puo
+}
+
+// SetNillableConType sets the "con_type" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableConType(s *string) *ProjectUpdateOne {
+	if s != nil {
+		puo.SetConType(*s)
+	}
+	return puo
+}
+
+// ClearConType clears the value of the "con_type" field.
+func (puo *ProjectUpdateOne) ClearConType() *ProjectUpdateOne {
+	puo.mutation.ClearConType()
 	return puo
 }
 
@@ -1921,11 +2473,83 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	if value, ok := puo.mutation.Code(); ok {
 		_spec.SetField(project.FieldCode, field.TypeString, value)
 	}
+	if value, ok := puo.mutation.Manager(); ok {
+		_spec.SetField(project.FieldManager, field.TypeString, value)
+	}
+	if puo.mutation.ManagerCleared() {
+		_spec.ClearField(project.FieldManager, field.TypeString)
+	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(project.FieldName, field.TypeString, value)
 	}
 	if puo.mutation.NameCleared() {
 		_spec.ClearField(project.FieldName, field.TypeString)
+	}
+	if value, ok := puo.mutation.Owner(); ok {
+		_spec.SetField(project.FieldOwner, field.TypeString, value)
+	}
+	if puo.mutation.OwnerCleared() {
+		_spec.ClearField(project.FieldOwner, field.TypeString)
+	}
+	if value, ok := puo.mutation.Jzs(); ok {
+		_spec.SetField(project.FieldJzs, field.TypeString, value)
+	}
+	if puo.mutation.JzsCleared() {
+		_spec.ClearField(project.FieldJzs, field.TypeString)
+	}
+	if value, ok := puo.mutation.Mcn(); ok {
+		_spec.SetField(project.FieldMcn, field.TypeString, value)
+	}
+	if puo.mutation.McnCleared() {
+		_spec.ClearField(project.FieldMcn, field.TypeString)
+	}
+	if value, ok := puo.mutation.Consultant(); ok {
+		_spec.SetField(project.FieldConsultant, field.TypeString, value)
+	}
+	if puo.mutation.ConsultantCleared() {
+		_spec.ClearField(project.FieldConsultant, field.TypeString)
+	}
+	if value, ok := puo.mutation.Areas(); ok {
+		_spec.SetField(project.FieldAreas, field.TypeString, value)
+	}
+	if puo.mutation.AreasCleared() {
+		_spec.ClearField(project.FieldAreas, field.TypeString)
+	}
+	if value, ok := puo.mutation.StartDate(); ok {
+		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
+	}
+	if puo.mutation.StartDateCleared() {
+		_spec.ClearField(project.FieldStartDate, field.TypeTime)
+	}
+	if value, ok := puo.mutation.FsDate(); ok {
+		_spec.SetField(project.FieldFsDate, field.TypeTime, value)
+	}
+	if puo.mutation.FsDateCleared() {
+		_spec.ClearField(project.FieldFsDate, field.TypeTime)
+	}
+	if value, ok := puo.mutation.OpDate(); ok {
+		_spec.SetField(project.FieldOpDate, field.TypeTime, value)
+	}
+	if puo.mutation.OpDateCleared() {
+		_spec.ClearField(project.FieldOpDate, field.TypeTime)
+	}
+	if value, ok := puo.mutation.EndDate(); ok {
+		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
+	}
+	if puo.mutation.EndDateCleared() {
+		_spec.ClearField(project.FieldEndDate, field.TypeTime)
+	}
+	if value, ok := puo.mutation.Mntyr(); ok {
+		_spec.SetField(project.FieldMntyr, field.TypeString, value)
+	}
+	if puo.mutation.MntyrCleared() {
+		_spec.ClearField(project.FieldMntyr, field.TypeString)
+	}
+	if value, ok := puo.mutation.ConType(); ok {
+		_spec.SetField(project.FieldConType, field.TypeString, value)
+	}
+	if puo.mutation.ConTypeCleared() {
+		_spec.ClearField(project.FieldConType, field.TypeString)
 	}
 	if value, ok := puo.mutation.IsFinished(); ok {
 		_spec.SetField(project.FieldIsFinished, field.TypeBool, value)

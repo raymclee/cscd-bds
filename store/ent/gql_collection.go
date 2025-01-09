@@ -2207,10 +2207,70 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldCode)
 				fieldSeen[project.FieldCode] = struct{}{}
 			}
+		case "manager":
+			if _, ok := fieldSeen[project.FieldManager]; !ok {
+				selectedFields = append(selectedFields, project.FieldManager)
+				fieldSeen[project.FieldManager] = struct{}{}
+			}
 		case "name":
 			if _, ok := fieldSeen[project.FieldName]; !ok {
 				selectedFields = append(selectedFields, project.FieldName)
 				fieldSeen[project.FieldName] = struct{}{}
+			}
+		case "owner":
+			if _, ok := fieldSeen[project.FieldOwner]; !ok {
+				selectedFields = append(selectedFields, project.FieldOwner)
+				fieldSeen[project.FieldOwner] = struct{}{}
+			}
+		case "jzs":
+			if _, ok := fieldSeen[project.FieldJzs]; !ok {
+				selectedFields = append(selectedFields, project.FieldJzs)
+				fieldSeen[project.FieldJzs] = struct{}{}
+			}
+		case "mcn":
+			if _, ok := fieldSeen[project.FieldMcn]; !ok {
+				selectedFields = append(selectedFields, project.FieldMcn)
+				fieldSeen[project.FieldMcn] = struct{}{}
+			}
+		case "consultant":
+			if _, ok := fieldSeen[project.FieldConsultant]; !ok {
+				selectedFields = append(selectedFields, project.FieldConsultant)
+				fieldSeen[project.FieldConsultant] = struct{}{}
+			}
+		case "areas":
+			if _, ok := fieldSeen[project.FieldAreas]; !ok {
+				selectedFields = append(selectedFields, project.FieldAreas)
+				fieldSeen[project.FieldAreas] = struct{}{}
+			}
+		case "startDate":
+			if _, ok := fieldSeen[project.FieldStartDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldStartDate)
+				fieldSeen[project.FieldStartDate] = struct{}{}
+			}
+		case "fsDate":
+			if _, ok := fieldSeen[project.FieldFsDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldFsDate)
+				fieldSeen[project.FieldFsDate] = struct{}{}
+			}
+		case "opDate":
+			if _, ok := fieldSeen[project.FieldOpDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldOpDate)
+				fieldSeen[project.FieldOpDate] = struct{}{}
+			}
+		case "endDate":
+			if _, ok := fieldSeen[project.FieldEndDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldEndDate)
+				fieldSeen[project.FieldEndDate] = struct{}{}
+			}
+		case "mntyr":
+			if _, ok := fieldSeen[project.FieldMntyr]; !ok {
+				selectedFields = append(selectedFields, project.FieldMntyr)
+				fieldSeen[project.FieldMntyr] = struct{}{}
+			}
+		case "conType":
+			if _, ok := fieldSeen[project.FieldConType]; !ok {
+				selectedFields = append(selectedFields, project.FieldConType)
+				fieldSeen[project.FieldConType] = struct{}{}
 			}
 		case "isFinished":
 			if _, ok := fieldSeen[project.FieldIsFinished]; !ok {

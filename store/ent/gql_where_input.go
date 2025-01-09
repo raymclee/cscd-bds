@@ -3886,6 +3886,23 @@ type ProjectWhereInput struct {
 	CodeEqualFold    *string  `json:"codeEqualFold,omitempty"`
 	CodeContainsFold *string  `json:"codeContainsFold,omitempty"`
 
+	// "manager" field predicates.
+	Manager             *string  `json:"manager,omitempty"`
+	ManagerNEQ          *string  `json:"managerNEQ,omitempty"`
+	ManagerIn           []string `json:"managerIn,omitempty"`
+	ManagerNotIn        []string `json:"managerNotIn,omitempty"`
+	ManagerGT           *string  `json:"managerGT,omitempty"`
+	ManagerGTE          *string  `json:"managerGTE,omitempty"`
+	ManagerLT           *string  `json:"managerLT,omitempty"`
+	ManagerLTE          *string  `json:"managerLTE,omitempty"`
+	ManagerContains     *string  `json:"managerContains,omitempty"`
+	ManagerHasPrefix    *string  `json:"managerHasPrefix,omitempty"`
+	ManagerHasSuffix    *string  `json:"managerHasSuffix,omitempty"`
+	ManagerIsNil        bool     `json:"managerIsNil,omitempty"`
+	ManagerNotNil       bool     `json:"managerNotNil,omitempty"`
+	ManagerEqualFold    *string  `json:"managerEqualFold,omitempty"`
+	ManagerContainsFold *string  `json:"managerContainsFold,omitempty"`
+
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
 	NameNEQ          *string  `json:"nameNEQ,omitempty"`
@@ -3902,6 +3919,173 @@ type ProjectWhereInput struct {
 	NameNotNil       bool     `json:"nameNotNil,omitempty"`
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
+	// "owner" field predicates.
+	Owner             *string  `json:"owner,omitempty"`
+	OwnerNEQ          *string  `json:"ownerNEQ,omitempty"`
+	OwnerIn           []string `json:"ownerIn,omitempty"`
+	OwnerNotIn        []string `json:"ownerNotIn,omitempty"`
+	OwnerGT           *string  `json:"ownerGT,omitempty"`
+	OwnerGTE          *string  `json:"ownerGTE,omitempty"`
+	OwnerLT           *string  `json:"ownerLT,omitempty"`
+	OwnerLTE          *string  `json:"ownerLTE,omitempty"`
+	OwnerContains     *string  `json:"ownerContains,omitempty"`
+	OwnerHasPrefix    *string  `json:"ownerHasPrefix,omitempty"`
+	OwnerHasSuffix    *string  `json:"ownerHasSuffix,omitempty"`
+	OwnerIsNil        bool     `json:"ownerIsNil,omitempty"`
+	OwnerNotNil       bool     `json:"ownerNotNil,omitempty"`
+	OwnerEqualFold    *string  `json:"ownerEqualFold,omitempty"`
+	OwnerContainsFold *string  `json:"ownerContainsFold,omitempty"`
+
+	// "jzs" field predicates.
+	Jzs             *string  `json:"jzs,omitempty"`
+	JzsNEQ          *string  `json:"jzsNEQ,omitempty"`
+	JzsIn           []string `json:"jzsIn,omitempty"`
+	JzsNotIn        []string `json:"jzsNotIn,omitempty"`
+	JzsGT           *string  `json:"jzsGT,omitempty"`
+	JzsGTE          *string  `json:"jzsGTE,omitempty"`
+	JzsLT           *string  `json:"jzsLT,omitempty"`
+	JzsLTE          *string  `json:"jzsLTE,omitempty"`
+	JzsContains     *string  `json:"jzsContains,omitempty"`
+	JzsHasPrefix    *string  `json:"jzsHasPrefix,omitempty"`
+	JzsHasSuffix    *string  `json:"jzsHasSuffix,omitempty"`
+	JzsIsNil        bool     `json:"jzsIsNil,omitempty"`
+	JzsNotNil       bool     `json:"jzsNotNil,omitempty"`
+	JzsEqualFold    *string  `json:"jzsEqualFold,omitempty"`
+	JzsContainsFold *string  `json:"jzsContainsFold,omitempty"`
+
+	// "mcn" field predicates.
+	Mcn             *string  `json:"mcn,omitempty"`
+	McnNEQ          *string  `json:"mcnNEQ,omitempty"`
+	McnIn           []string `json:"mcnIn,omitempty"`
+	McnNotIn        []string `json:"mcnNotIn,omitempty"`
+	McnGT           *string  `json:"mcnGT,omitempty"`
+	McnGTE          *string  `json:"mcnGTE,omitempty"`
+	McnLT           *string  `json:"mcnLT,omitempty"`
+	McnLTE          *string  `json:"mcnLTE,omitempty"`
+	McnContains     *string  `json:"mcnContains,omitempty"`
+	McnHasPrefix    *string  `json:"mcnHasPrefix,omitempty"`
+	McnHasSuffix    *string  `json:"mcnHasSuffix,omitempty"`
+	McnIsNil        bool     `json:"mcnIsNil,omitempty"`
+	McnNotNil       bool     `json:"mcnNotNil,omitempty"`
+	McnEqualFold    *string  `json:"mcnEqualFold,omitempty"`
+	McnContainsFold *string  `json:"mcnContainsFold,omitempty"`
+
+	// "consultant" field predicates.
+	Consultant             *string  `json:"consultant,omitempty"`
+	ConsultantNEQ          *string  `json:"consultantNEQ,omitempty"`
+	ConsultantIn           []string `json:"consultantIn,omitempty"`
+	ConsultantNotIn        []string `json:"consultantNotIn,omitempty"`
+	ConsultantGT           *string  `json:"consultantGT,omitempty"`
+	ConsultantGTE          *string  `json:"consultantGTE,omitempty"`
+	ConsultantLT           *string  `json:"consultantLT,omitempty"`
+	ConsultantLTE          *string  `json:"consultantLTE,omitempty"`
+	ConsultantContains     *string  `json:"consultantContains,omitempty"`
+	ConsultantHasPrefix    *string  `json:"consultantHasPrefix,omitempty"`
+	ConsultantHasSuffix    *string  `json:"consultantHasSuffix,omitempty"`
+	ConsultantIsNil        bool     `json:"consultantIsNil,omitempty"`
+	ConsultantNotNil       bool     `json:"consultantNotNil,omitempty"`
+	ConsultantEqualFold    *string  `json:"consultantEqualFold,omitempty"`
+	ConsultantContainsFold *string  `json:"consultantContainsFold,omitempty"`
+
+	// "areas" field predicates.
+	Areas             *string  `json:"areas,omitempty"`
+	AreasNEQ          *string  `json:"areasNEQ,omitempty"`
+	AreasIn           []string `json:"areasIn,omitempty"`
+	AreasNotIn        []string `json:"areasNotIn,omitempty"`
+	AreasGT           *string  `json:"areasGT,omitempty"`
+	AreasGTE          *string  `json:"areasGTE,omitempty"`
+	AreasLT           *string  `json:"areasLT,omitempty"`
+	AreasLTE          *string  `json:"areasLTE,omitempty"`
+	AreasContains     *string  `json:"areasContains,omitempty"`
+	AreasHasPrefix    *string  `json:"areasHasPrefix,omitempty"`
+	AreasHasSuffix    *string  `json:"areasHasSuffix,omitempty"`
+	AreasIsNil        bool     `json:"areasIsNil,omitempty"`
+	AreasNotNil       bool     `json:"areasNotNil,omitempty"`
+	AreasEqualFold    *string  `json:"areasEqualFold,omitempty"`
+	AreasContainsFold *string  `json:"areasContainsFold,omitempty"`
+
+	// "start_date" field predicates.
+	StartDate       *time.Time  `json:"startDate,omitempty"`
+	StartDateNEQ    *time.Time  `json:"startDateNEQ,omitempty"`
+	StartDateIn     []time.Time `json:"startDateIn,omitempty"`
+	StartDateNotIn  []time.Time `json:"startDateNotIn,omitempty"`
+	StartDateGT     *time.Time  `json:"startDateGT,omitempty"`
+	StartDateGTE    *time.Time  `json:"startDateGTE,omitempty"`
+	StartDateLT     *time.Time  `json:"startDateLT,omitempty"`
+	StartDateLTE    *time.Time  `json:"startDateLTE,omitempty"`
+	StartDateIsNil  bool        `json:"startDateIsNil,omitempty"`
+	StartDateNotNil bool        `json:"startDateNotNil,omitempty"`
+
+	// "fs_date" field predicates.
+	FsDate       *time.Time  `json:"fsDate,omitempty"`
+	FsDateNEQ    *time.Time  `json:"fsDateNEQ,omitempty"`
+	FsDateIn     []time.Time `json:"fsDateIn,omitempty"`
+	FsDateNotIn  []time.Time `json:"fsDateNotIn,omitempty"`
+	FsDateGT     *time.Time  `json:"fsDateGT,omitempty"`
+	FsDateGTE    *time.Time  `json:"fsDateGTE,omitempty"`
+	FsDateLT     *time.Time  `json:"fsDateLT,omitempty"`
+	FsDateLTE    *time.Time  `json:"fsDateLTE,omitempty"`
+	FsDateIsNil  bool        `json:"fsDateIsNil,omitempty"`
+	FsDateNotNil bool        `json:"fsDateNotNil,omitempty"`
+
+	// "op_date" field predicates.
+	OpDate       *time.Time  `json:"opDate,omitempty"`
+	OpDateNEQ    *time.Time  `json:"opDateNEQ,omitempty"`
+	OpDateIn     []time.Time `json:"opDateIn,omitempty"`
+	OpDateNotIn  []time.Time `json:"opDateNotIn,omitempty"`
+	OpDateGT     *time.Time  `json:"opDateGT,omitempty"`
+	OpDateGTE    *time.Time  `json:"opDateGTE,omitempty"`
+	OpDateLT     *time.Time  `json:"opDateLT,omitempty"`
+	OpDateLTE    *time.Time  `json:"opDateLTE,omitempty"`
+	OpDateIsNil  bool        `json:"opDateIsNil,omitempty"`
+	OpDateNotNil bool        `json:"opDateNotNil,omitempty"`
+
+	// "end_date" field predicates.
+	EndDate       *time.Time  `json:"endDate,omitempty"`
+	EndDateNEQ    *time.Time  `json:"endDateNEQ,omitempty"`
+	EndDateIn     []time.Time `json:"endDateIn,omitempty"`
+	EndDateNotIn  []time.Time `json:"endDateNotIn,omitempty"`
+	EndDateGT     *time.Time  `json:"endDateGT,omitempty"`
+	EndDateGTE    *time.Time  `json:"endDateGTE,omitempty"`
+	EndDateLT     *time.Time  `json:"endDateLT,omitempty"`
+	EndDateLTE    *time.Time  `json:"endDateLTE,omitempty"`
+	EndDateIsNil  bool        `json:"endDateIsNil,omitempty"`
+	EndDateNotNil bool        `json:"endDateNotNil,omitempty"`
+
+	// "mntyr" field predicates.
+	Mntyr             *string  `json:"mntyr,omitempty"`
+	MntyrNEQ          *string  `json:"mntyrNEQ,omitempty"`
+	MntyrIn           []string `json:"mntyrIn,omitempty"`
+	MntyrNotIn        []string `json:"mntyrNotIn,omitempty"`
+	MntyrGT           *string  `json:"mntyrGT,omitempty"`
+	MntyrGTE          *string  `json:"mntyrGTE,omitempty"`
+	MntyrLT           *string  `json:"mntyrLT,omitempty"`
+	MntyrLTE          *string  `json:"mntyrLTE,omitempty"`
+	MntyrContains     *string  `json:"mntyrContains,omitempty"`
+	MntyrHasPrefix    *string  `json:"mntyrHasPrefix,omitempty"`
+	MntyrHasSuffix    *string  `json:"mntyrHasSuffix,omitempty"`
+	MntyrIsNil        bool     `json:"mntyrIsNil,omitempty"`
+	MntyrNotNil       bool     `json:"mntyrNotNil,omitempty"`
+	MntyrEqualFold    *string  `json:"mntyrEqualFold,omitempty"`
+	MntyrContainsFold *string  `json:"mntyrContainsFold,omitempty"`
+
+	// "con_type" field predicates.
+	ConType             *string  `json:"conType,omitempty"`
+	ConTypeNEQ          *string  `json:"conTypeNEQ,omitempty"`
+	ConTypeIn           []string `json:"conTypeIn,omitempty"`
+	ConTypeNotIn        []string `json:"conTypeNotIn,omitempty"`
+	ConTypeGT           *string  `json:"conTypeGT,omitempty"`
+	ConTypeGTE          *string  `json:"conTypeGTE,omitempty"`
+	ConTypeLT           *string  `json:"conTypeLT,omitempty"`
+	ConTypeLTE          *string  `json:"conTypeLTE,omitempty"`
+	ConTypeContains     *string  `json:"conTypeContains,omitempty"`
+	ConTypeHasPrefix    *string  `json:"conTypeHasPrefix,omitempty"`
+	ConTypeHasSuffix    *string  `json:"conTypeHasSuffix,omitempty"`
+	ConTypeIsNil        bool     `json:"conTypeIsNil,omitempty"`
+	ConTypeNotNil       bool     `json:"conTypeNotNil,omitempty"`
+	ConTypeEqualFold    *string  `json:"conTypeEqualFold,omitempty"`
+	ConTypeContainsFold *string  `json:"conTypeContainsFold,omitempty"`
 
 	// "is_finished" field predicates.
 	IsFinished    *bool `json:"isFinished,omitempty"`
@@ -4387,6 +4571,51 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	if i.CodeContainsFold != nil {
 		predicates = append(predicates, project.CodeContainsFold(*i.CodeContainsFold))
 	}
+	if i.Manager != nil {
+		predicates = append(predicates, project.ManagerEQ(*i.Manager))
+	}
+	if i.ManagerNEQ != nil {
+		predicates = append(predicates, project.ManagerNEQ(*i.ManagerNEQ))
+	}
+	if len(i.ManagerIn) > 0 {
+		predicates = append(predicates, project.ManagerIn(i.ManagerIn...))
+	}
+	if len(i.ManagerNotIn) > 0 {
+		predicates = append(predicates, project.ManagerNotIn(i.ManagerNotIn...))
+	}
+	if i.ManagerGT != nil {
+		predicates = append(predicates, project.ManagerGT(*i.ManagerGT))
+	}
+	if i.ManagerGTE != nil {
+		predicates = append(predicates, project.ManagerGTE(*i.ManagerGTE))
+	}
+	if i.ManagerLT != nil {
+		predicates = append(predicates, project.ManagerLT(*i.ManagerLT))
+	}
+	if i.ManagerLTE != nil {
+		predicates = append(predicates, project.ManagerLTE(*i.ManagerLTE))
+	}
+	if i.ManagerContains != nil {
+		predicates = append(predicates, project.ManagerContains(*i.ManagerContains))
+	}
+	if i.ManagerHasPrefix != nil {
+		predicates = append(predicates, project.ManagerHasPrefix(*i.ManagerHasPrefix))
+	}
+	if i.ManagerHasSuffix != nil {
+		predicates = append(predicates, project.ManagerHasSuffix(*i.ManagerHasSuffix))
+	}
+	if i.ManagerIsNil {
+		predicates = append(predicates, project.ManagerIsNil())
+	}
+	if i.ManagerNotNil {
+		predicates = append(predicates, project.ManagerNotNil())
+	}
+	if i.ManagerEqualFold != nil {
+		predicates = append(predicates, project.ManagerEqualFold(*i.ManagerEqualFold))
+	}
+	if i.ManagerContainsFold != nil {
+		predicates = append(predicates, project.ManagerContainsFold(*i.ManagerContainsFold))
+	}
 	if i.Name != nil {
 		predicates = append(predicates, project.NameEQ(*i.Name))
 	}
@@ -4431,6 +4660,441 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, project.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.Owner != nil {
+		predicates = append(predicates, project.OwnerEQ(*i.Owner))
+	}
+	if i.OwnerNEQ != nil {
+		predicates = append(predicates, project.OwnerNEQ(*i.OwnerNEQ))
+	}
+	if len(i.OwnerIn) > 0 {
+		predicates = append(predicates, project.OwnerIn(i.OwnerIn...))
+	}
+	if len(i.OwnerNotIn) > 0 {
+		predicates = append(predicates, project.OwnerNotIn(i.OwnerNotIn...))
+	}
+	if i.OwnerGT != nil {
+		predicates = append(predicates, project.OwnerGT(*i.OwnerGT))
+	}
+	if i.OwnerGTE != nil {
+		predicates = append(predicates, project.OwnerGTE(*i.OwnerGTE))
+	}
+	if i.OwnerLT != nil {
+		predicates = append(predicates, project.OwnerLT(*i.OwnerLT))
+	}
+	if i.OwnerLTE != nil {
+		predicates = append(predicates, project.OwnerLTE(*i.OwnerLTE))
+	}
+	if i.OwnerContains != nil {
+		predicates = append(predicates, project.OwnerContains(*i.OwnerContains))
+	}
+	if i.OwnerHasPrefix != nil {
+		predicates = append(predicates, project.OwnerHasPrefix(*i.OwnerHasPrefix))
+	}
+	if i.OwnerHasSuffix != nil {
+		predicates = append(predicates, project.OwnerHasSuffix(*i.OwnerHasSuffix))
+	}
+	if i.OwnerIsNil {
+		predicates = append(predicates, project.OwnerIsNil())
+	}
+	if i.OwnerNotNil {
+		predicates = append(predicates, project.OwnerNotNil())
+	}
+	if i.OwnerEqualFold != nil {
+		predicates = append(predicates, project.OwnerEqualFold(*i.OwnerEqualFold))
+	}
+	if i.OwnerContainsFold != nil {
+		predicates = append(predicates, project.OwnerContainsFold(*i.OwnerContainsFold))
+	}
+	if i.Jzs != nil {
+		predicates = append(predicates, project.JzsEQ(*i.Jzs))
+	}
+	if i.JzsNEQ != nil {
+		predicates = append(predicates, project.JzsNEQ(*i.JzsNEQ))
+	}
+	if len(i.JzsIn) > 0 {
+		predicates = append(predicates, project.JzsIn(i.JzsIn...))
+	}
+	if len(i.JzsNotIn) > 0 {
+		predicates = append(predicates, project.JzsNotIn(i.JzsNotIn...))
+	}
+	if i.JzsGT != nil {
+		predicates = append(predicates, project.JzsGT(*i.JzsGT))
+	}
+	if i.JzsGTE != nil {
+		predicates = append(predicates, project.JzsGTE(*i.JzsGTE))
+	}
+	if i.JzsLT != nil {
+		predicates = append(predicates, project.JzsLT(*i.JzsLT))
+	}
+	if i.JzsLTE != nil {
+		predicates = append(predicates, project.JzsLTE(*i.JzsLTE))
+	}
+	if i.JzsContains != nil {
+		predicates = append(predicates, project.JzsContains(*i.JzsContains))
+	}
+	if i.JzsHasPrefix != nil {
+		predicates = append(predicates, project.JzsHasPrefix(*i.JzsHasPrefix))
+	}
+	if i.JzsHasSuffix != nil {
+		predicates = append(predicates, project.JzsHasSuffix(*i.JzsHasSuffix))
+	}
+	if i.JzsIsNil {
+		predicates = append(predicates, project.JzsIsNil())
+	}
+	if i.JzsNotNil {
+		predicates = append(predicates, project.JzsNotNil())
+	}
+	if i.JzsEqualFold != nil {
+		predicates = append(predicates, project.JzsEqualFold(*i.JzsEqualFold))
+	}
+	if i.JzsContainsFold != nil {
+		predicates = append(predicates, project.JzsContainsFold(*i.JzsContainsFold))
+	}
+	if i.Mcn != nil {
+		predicates = append(predicates, project.McnEQ(*i.Mcn))
+	}
+	if i.McnNEQ != nil {
+		predicates = append(predicates, project.McnNEQ(*i.McnNEQ))
+	}
+	if len(i.McnIn) > 0 {
+		predicates = append(predicates, project.McnIn(i.McnIn...))
+	}
+	if len(i.McnNotIn) > 0 {
+		predicates = append(predicates, project.McnNotIn(i.McnNotIn...))
+	}
+	if i.McnGT != nil {
+		predicates = append(predicates, project.McnGT(*i.McnGT))
+	}
+	if i.McnGTE != nil {
+		predicates = append(predicates, project.McnGTE(*i.McnGTE))
+	}
+	if i.McnLT != nil {
+		predicates = append(predicates, project.McnLT(*i.McnLT))
+	}
+	if i.McnLTE != nil {
+		predicates = append(predicates, project.McnLTE(*i.McnLTE))
+	}
+	if i.McnContains != nil {
+		predicates = append(predicates, project.McnContains(*i.McnContains))
+	}
+	if i.McnHasPrefix != nil {
+		predicates = append(predicates, project.McnHasPrefix(*i.McnHasPrefix))
+	}
+	if i.McnHasSuffix != nil {
+		predicates = append(predicates, project.McnHasSuffix(*i.McnHasSuffix))
+	}
+	if i.McnIsNil {
+		predicates = append(predicates, project.McnIsNil())
+	}
+	if i.McnNotNil {
+		predicates = append(predicates, project.McnNotNil())
+	}
+	if i.McnEqualFold != nil {
+		predicates = append(predicates, project.McnEqualFold(*i.McnEqualFold))
+	}
+	if i.McnContainsFold != nil {
+		predicates = append(predicates, project.McnContainsFold(*i.McnContainsFold))
+	}
+	if i.Consultant != nil {
+		predicates = append(predicates, project.ConsultantEQ(*i.Consultant))
+	}
+	if i.ConsultantNEQ != nil {
+		predicates = append(predicates, project.ConsultantNEQ(*i.ConsultantNEQ))
+	}
+	if len(i.ConsultantIn) > 0 {
+		predicates = append(predicates, project.ConsultantIn(i.ConsultantIn...))
+	}
+	if len(i.ConsultantNotIn) > 0 {
+		predicates = append(predicates, project.ConsultantNotIn(i.ConsultantNotIn...))
+	}
+	if i.ConsultantGT != nil {
+		predicates = append(predicates, project.ConsultantGT(*i.ConsultantGT))
+	}
+	if i.ConsultantGTE != nil {
+		predicates = append(predicates, project.ConsultantGTE(*i.ConsultantGTE))
+	}
+	if i.ConsultantLT != nil {
+		predicates = append(predicates, project.ConsultantLT(*i.ConsultantLT))
+	}
+	if i.ConsultantLTE != nil {
+		predicates = append(predicates, project.ConsultantLTE(*i.ConsultantLTE))
+	}
+	if i.ConsultantContains != nil {
+		predicates = append(predicates, project.ConsultantContains(*i.ConsultantContains))
+	}
+	if i.ConsultantHasPrefix != nil {
+		predicates = append(predicates, project.ConsultantHasPrefix(*i.ConsultantHasPrefix))
+	}
+	if i.ConsultantHasSuffix != nil {
+		predicates = append(predicates, project.ConsultantHasSuffix(*i.ConsultantHasSuffix))
+	}
+	if i.ConsultantIsNil {
+		predicates = append(predicates, project.ConsultantIsNil())
+	}
+	if i.ConsultantNotNil {
+		predicates = append(predicates, project.ConsultantNotNil())
+	}
+	if i.ConsultantEqualFold != nil {
+		predicates = append(predicates, project.ConsultantEqualFold(*i.ConsultantEqualFold))
+	}
+	if i.ConsultantContainsFold != nil {
+		predicates = append(predicates, project.ConsultantContainsFold(*i.ConsultantContainsFold))
+	}
+	if i.Areas != nil {
+		predicates = append(predicates, project.AreasEQ(*i.Areas))
+	}
+	if i.AreasNEQ != nil {
+		predicates = append(predicates, project.AreasNEQ(*i.AreasNEQ))
+	}
+	if len(i.AreasIn) > 0 {
+		predicates = append(predicates, project.AreasIn(i.AreasIn...))
+	}
+	if len(i.AreasNotIn) > 0 {
+		predicates = append(predicates, project.AreasNotIn(i.AreasNotIn...))
+	}
+	if i.AreasGT != nil {
+		predicates = append(predicates, project.AreasGT(*i.AreasGT))
+	}
+	if i.AreasGTE != nil {
+		predicates = append(predicates, project.AreasGTE(*i.AreasGTE))
+	}
+	if i.AreasLT != nil {
+		predicates = append(predicates, project.AreasLT(*i.AreasLT))
+	}
+	if i.AreasLTE != nil {
+		predicates = append(predicates, project.AreasLTE(*i.AreasLTE))
+	}
+	if i.AreasContains != nil {
+		predicates = append(predicates, project.AreasContains(*i.AreasContains))
+	}
+	if i.AreasHasPrefix != nil {
+		predicates = append(predicates, project.AreasHasPrefix(*i.AreasHasPrefix))
+	}
+	if i.AreasHasSuffix != nil {
+		predicates = append(predicates, project.AreasHasSuffix(*i.AreasHasSuffix))
+	}
+	if i.AreasIsNil {
+		predicates = append(predicates, project.AreasIsNil())
+	}
+	if i.AreasNotNil {
+		predicates = append(predicates, project.AreasNotNil())
+	}
+	if i.AreasEqualFold != nil {
+		predicates = append(predicates, project.AreasEqualFold(*i.AreasEqualFold))
+	}
+	if i.AreasContainsFold != nil {
+		predicates = append(predicates, project.AreasContainsFold(*i.AreasContainsFold))
+	}
+	if i.StartDate != nil {
+		predicates = append(predicates, project.StartDateEQ(*i.StartDate))
+	}
+	if i.StartDateNEQ != nil {
+		predicates = append(predicates, project.StartDateNEQ(*i.StartDateNEQ))
+	}
+	if len(i.StartDateIn) > 0 {
+		predicates = append(predicates, project.StartDateIn(i.StartDateIn...))
+	}
+	if len(i.StartDateNotIn) > 0 {
+		predicates = append(predicates, project.StartDateNotIn(i.StartDateNotIn...))
+	}
+	if i.StartDateGT != nil {
+		predicates = append(predicates, project.StartDateGT(*i.StartDateGT))
+	}
+	if i.StartDateGTE != nil {
+		predicates = append(predicates, project.StartDateGTE(*i.StartDateGTE))
+	}
+	if i.StartDateLT != nil {
+		predicates = append(predicates, project.StartDateLT(*i.StartDateLT))
+	}
+	if i.StartDateLTE != nil {
+		predicates = append(predicates, project.StartDateLTE(*i.StartDateLTE))
+	}
+	if i.StartDateIsNil {
+		predicates = append(predicates, project.StartDateIsNil())
+	}
+	if i.StartDateNotNil {
+		predicates = append(predicates, project.StartDateNotNil())
+	}
+	if i.FsDate != nil {
+		predicates = append(predicates, project.FsDateEQ(*i.FsDate))
+	}
+	if i.FsDateNEQ != nil {
+		predicates = append(predicates, project.FsDateNEQ(*i.FsDateNEQ))
+	}
+	if len(i.FsDateIn) > 0 {
+		predicates = append(predicates, project.FsDateIn(i.FsDateIn...))
+	}
+	if len(i.FsDateNotIn) > 0 {
+		predicates = append(predicates, project.FsDateNotIn(i.FsDateNotIn...))
+	}
+	if i.FsDateGT != nil {
+		predicates = append(predicates, project.FsDateGT(*i.FsDateGT))
+	}
+	if i.FsDateGTE != nil {
+		predicates = append(predicates, project.FsDateGTE(*i.FsDateGTE))
+	}
+	if i.FsDateLT != nil {
+		predicates = append(predicates, project.FsDateLT(*i.FsDateLT))
+	}
+	if i.FsDateLTE != nil {
+		predicates = append(predicates, project.FsDateLTE(*i.FsDateLTE))
+	}
+	if i.FsDateIsNil {
+		predicates = append(predicates, project.FsDateIsNil())
+	}
+	if i.FsDateNotNil {
+		predicates = append(predicates, project.FsDateNotNil())
+	}
+	if i.OpDate != nil {
+		predicates = append(predicates, project.OpDateEQ(*i.OpDate))
+	}
+	if i.OpDateNEQ != nil {
+		predicates = append(predicates, project.OpDateNEQ(*i.OpDateNEQ))
+	}
+	if len(i.OpDateIn) > 0 {
+		predicates = append(predicates, project.OpDateIn(i.OpDateIn...))
+	}
+	if len(i.OpDateNotIn) > 0 {
+		predicates = append(predicates, project.OpDateNotIn(i.OpDateNotIn...))
+	}
+	if i.OpDateGT != nil {
+		predicates = append(predicates, project.OpDateGT(*i.OpDateGT))
+	}
+	if i.OpDateGTE != nil {
+		predicates = append(predicates, project.OpDateGTE(*i.OpDateGTE))
+	}
+	if i.OpDateLT != nil {
+		predicates = append(predicates, project.OpDateLT(*i.OpDateLT))
+	}
+	if i.OpDateLTE != nil {
+		predicates = append(predicates, project.OpDateLTE(*i.OpDateLTE))
+	}
+	if i.OpDateIsNil {
+		predicates = append(predicates, project.OpDateIsNil())
+	}
+	if i.OpDateNotNil {
+		predicates = append(predicates, project.OpDateNotNil())
+	}
+	if i.EndDate != nil {
+		predicates = append(predicates, project.EndDateEQ(*i.EndDate))
+	}
+	if i.EndDateNEQ != nil {
+		predicates = append(predicates, project.EndDateNEQ(*i.EndDateNEQ))
+	}
+	if len(i.EndDateIn) > 0 {
+		predicates = append(predicates, project.EndDateIn(i.EndDateIn...))
+	}
+	if len(i.EndDateNotIn) > 0 {
+		predicates = append(predicates, project.EndDateNotIn(i.EndDateNotIn...))
+	}
+	if i.EndDateGT != nil {
+		predicates = append(predicates, project.EndDateGT(*i.EndDateGT))
+	}
+	if i.EndDateGTE != nil {
+		predicates = append(predicates, project.EndDateGTE(*i.EndDateGTE))
+	}
+	if i.EndDateLT != nil {
+		predicates = append(predicates, project.EndDateLT(*i.EndDateLT))
+	}
+	if i.EndDateLTE != nil {
+		predicates = append(predicates, project.EndDateLTE(*i.EndDateLTE))
+	}
+	if i.EndDateIsNil {
+		predicates = append(predicates, project.EndDateIsNil())
+	}
+	if i.EndDateNotNil {
+		predicates = append(predicates, project.EndDateNotNil())
+	}
+	if i.Mntyr != nil {
+		predicates = append(predicates, project.MntyrEQ(*i.Mntyr))
+	}
+	if i.MntyrNEQ != nil {
+		predicates = append(predicates, project.MntyrNEQ(*i.MntyrNEQ))
+	}
+	if len(i.MntyrIn) > 0 {
+		predicates = append(predicates, project.MntyrIn(i.MntyrIn...))
+	}
+	if len(i.MntyrNotIn) > 0 {
+		predicates = append(predicates, project.MntyrNotIn(i.MntyrNotIn...))
+	}
+	if i.MntyrGT != nil {
+		predicates = append(predicates, project.MntyrGT(*i.MntyrGT))
+	}
+	if i.MntyrGTE != nil {
+		predicates = append(predicates, project.MntyrGTE(*i.MntyrGTE))
+	}
+	if i.MntyrLT != nil {
+		predicates = append(predicates, project.MntyrLT(*i.MntyrLT))
+	}
+	if i.MntyrLTE != nil {
+		predicates = append(predicates, project.MntyrLTE(*i.MntyrLTE))
+	}
+	if i.MntyrContains != nil {
+		predicates = append(predicates, project.MntyrContains(*i.MntyrContains))
+	}
+	if i.MntyrHasPrefix != nil {
+		predicates = append(predicates, project.MntyrHasPrefix(*i.MntyrHasPrefix))
+	}
+	if i.MntyrHasSuffix != nil {
+		predicates = append(predicates, project.MntyrHasSuffix(*i.MntyrHasSuffix))
+	}
+	if i.MntyrIsNil {
+		predicates = append(predicates, project.MntyrIsNil())
+	}
+	if i.MntyrNotNil {
+		predicates = append(predicates, project.MntyrNotNil())
+	}
+	if i.MntyrEqualFold != nil {
+		predicates = append(predicates, project.MntyrEqualFold(*i.MntyrEqualFold))
+	}
+	if i.MntyrContainsFold != nil {
+		predicates = append(predicates, project.MntyrContainsFold(*i.MntyrContainsFold))
+	}
+	if i.ConType != nil {
+		predicates = append(predicates, project.ConTypeEQ(*i.ConType))
+	}
+	if i.ConTypeNEQ != nil {
+		predicates = append(predicates, project.ConTypeNEQ(*i.ConTypeNEQ))
+	}
+	if len(i.ConTypeIn) > 0 {
+		predicates = append(predicates, project.ConTypeIn(i.ConTypeIn...))
+	}
+	if len(i.ConTypeNotIn) > 0 {
+		predicates = append(predicates, project.ConTypeNotIn(i.ConTypeNotIn...))
+	}
+	if i.ConTypeGT != nil {
+		predicates = append(predicates, project.ConTypeGT(*i.ConTypeGT))
+	}
+	if i.ConTypeGTE != nil {
+		predicates = append(predicates, project.ConTypeGTE(*i.ConTypeGTE))
+	}
+	if i.ConTypeLT != nil {
+		predicates = append(predicates, project.ConTypeLT(*i.ConTypeLT))
+	}
+	if i.ConTypeLTE != nil {
+		predicates = append(predicates, project.ConTypeLTE(*i.ConTypeLTE))
+	}
+	if i.ConTypeContains != nil {
+		predicates = append(predicates, project.ConTypeContains(*i.ConTypeContains))
+	}
+	if i.ConTypeHasPrefix != nil {
+		predicates = append(predicates, project.ConTypeHasPrefix(*i.ConTypeHasPrefix))
+	}
+	if i.ConTypeHasSuffix != nil {
+		predicates = append(predicates, project.ConTypeHasSuffix(*i.ConTypeHasSuffix))
+	}
+	if i.ConTypeIsNil {
+		predicates = append(predicates, project.ConTypeIsNil())
+	}
+	if i.ConTypeNotNil {
+		predicates = append(predicates, project.ConTypeNotNil())
+	}
+	if i.ConTypeEqualFold != nil {
+		predicates = append(predicates, project.ConTypeEqualFold(*i.ConTypeEqualFold))
+	}
+	if i.ConTypeContainsFold != nil {
+		predicates = append(predicates, project.ConTypeContainsFold(*i.ConTypeContainsFold))
 	}
 	if i.IsFinished != nil {
 		predicates = append(predicates, project.IsFinishedEQ(*i.IsFinished))

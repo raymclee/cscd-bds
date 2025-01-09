@@ -206,7 +206,19 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldCreatedAt:                               {Type: field.TypeTime, Column: project.FieldCreatedAt},
 			project.FieldUpdatedAt:                               {Type: field.TypeTime, Column: project.FieldUpdatedAt},
 			project.FieldCode:                                    {Type: field.TypeString, Column: project.FieldCode},
+			project.FieldManager:                                 {Type: field.TypeString, Column: project.FieldManager},
 			project.FieldName:                                    {Type: field.TypeString, Column: project.FieldName},
+			project.FieldOwner:                                   {Type: field.TypeString, Column: project.FieldOwner},
+			project.FieldJzs:                                     {Type: field.TypeString, Column: project.FieldJzs},
+			project.FieldMcn:                                     {Type: field.TypeString, Column: project.FieldMcn},
+			project.FieldConsultant:                              {Type: field.TypeString, Column: project.FieldConsultant},
+			project.FieldAreas:                                   {Type: field.TypeString, Column: project.FieldAreas},
+			project.FieldStartDate:                               {Type: field.TypeTime, Column: project.FieldStartDate},
+			project.FieldFsDate:                                  {Type: field.TypeTime, Column: project.FieldFsDate},
+			project.FieldOpDate:                                  {Type: field.TypeTime, Column: project.FieldOpDate},
+			project.FieldEndDate:                                 {Type: field.TypeTime, Column: project.FieldEndDate},
+			project.FieldMntyr:                                   {Type: field.TypeString, Column: project.FieldMntyr},
+			project.FieldConType:                                 {Type: field.TypeString, Column: project.FieldConType},
 			project.FieldIsFinished:                              {Type: field.TypeBool, Column: project.FieldIsFinished},
 			project.FieldCje:                                     {Type: field.TypeFloat64, Column: project.FieldCje},
 			project.FieldYye:                                     {Type: field.TypeFloat64, Column: project.FieldYye},
@@ -1893,9 +1905,69 @@ func (f *ProjectFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(project.FieldCode))
 }
 
+// WhereManager applies the entql string predicate on the manager field.
+func (f *ProjectFilter) WhereManager(p entql.StringP) {
+	f.Where(p.Field(project.FieldManager))
+}
+
 // WhereName applies the entql string predicate on the name field.
 func (f *ProjectFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(project.FieldName))
+}
+
+// WhereOwner applies the entql string predicate on the owner field.
+func (f *ProjectFilter) WhereOwner(p entql.StringP) {
+	f.Where(p.Field(project.FieldOwner))
+}
+
+// WhereJzs applies the entql string predicate on the jzs field.
+func (f *ProjectFilter) WhereJzs(p entql.StringP) {
+	f.Where(p.Field(project.FieldJzs))
+}
+
+// WhereMcn applies the entql string predicate on the mcn field.
+func (f *ProjectFilter) WhereMcn(p entql.StringP) {
+	f.Where(p.Field(project.FieldMcn))
+}
+
+// WhereConsultant applies the entql string predicate on the consultant field.
+func (f *ProjectFilter) WhereConsultant(p entql.StringP) {
+	f.Where(p.Field(project.FieldConsultant))
+}
+
+// WhereAreas applies the entql string predicate on the areas field.
+func (f *ProjectFilter) WhereAreas(p entql.StringP) {
+	f.Where(p.Field(project.FieldAreas))
+}
+
+// WhereStartDate applies the entql time.Time predicate on the start_date field.
+func (f *ProjectFilter) WhereStartDate(p entql.TimeP) {
+	f.Where(p.Field(project.FieldStartDate))
+}
+
+// WhereFsDate applies the entql time.Time predicate on the fs_date field.
+func (f *ProjectFilter) WhereFsDate(p entql.TimeP) {
+	f.Where(p.Field(project.FieldFsDate))
+}
+
+// WhereOpDate applies the entql time.Time predicate on the op_date field.
+func (f *ProjectFilter) WhereOpDate(p entql.TimeP) {
+	f.Where(p.Field(project.FieldOpDate))
+}
+
+// WhereEndDate applies the entql time.Time predicate on the end_date field.
+func (f *ProjectFilter) WhereEndDate(p entql.TimeP) {
+	f.Where(p.Field(project.FieldEndDate))
+}
+
+// WhereMntyr applies the entql string predicate on the mntyr field.
+func (f *ProjectFilter) WhereMntyr(p entql.StringP) {
+	f.Where(p.Field(project.FieldMntyr))
+}
+
+// WhereConType applies the entql string predicate on the con_type field.
+func (f *ProjectFilter) WhereConType(p entql.StringP) {
+	f.Where(p.Field(project.FieldConType))
 }
 
 // WhereIsFinished applies the entql bool predicate on the is_finished field.

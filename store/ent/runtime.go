@@ -212,7 +212,7 @@ func init() {
 	// project.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	project.UpdateDefaultUpdatedAt = projectDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// projectDescIsFinished is the schema descriptor for is_finished field.
-	projectDescIsFinished := projectFields[2].Descriptor()
+	projectDescIsFinished := projectFields[14].Descriptor()
 	// project.DefaultIsFinished holds the default value on creation for the is_finished field.
 	project.DefaultIsFinished = projectDescIsFinished.Default.(bool)
 	// projectDescID is the schema descriptor for id field.

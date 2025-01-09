@@ -44,7 +44,7 @@ export function AmountBoard() {
     <div className="@container">
       <Card
         className={cn(
-          "flex h-[clamp(34rem,60dvh,34rem)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+          "flex h-[38rem] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           // "flex h-[calc(((100vh-100px)/3)*2)] flex-col overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
         )}
       >

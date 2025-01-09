@@ -71,9 +71,69 @@ func Code(v string) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCode, v))
 }
 
+// Manager applies equality check predicate on the "manager" field. It's identical to ManagerEQ.
+func Manager(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldManager, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldName, v))
+}
+
+// Owner applies equality check predicate on the "owner" field. It's identical to OwnerEQ.
+func Owner(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldOwner, v))
+}
+
+// Jzs applies equality check predicate on the "jzs" field. It's identical to JzsEQ.
+func Jzs(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldJzs, v))
+}
+
+// Mcn applies equality check predicate on the "mcn" field. It's identical to McnEQ.
+func Mcn(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMcn, v))
+}
+
+// Consultant applies equality check predicate on the "consultant" field. It's identical to ConsultantEQ.
+func Consultant(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldConsultant, v))
+}
+
+// Areas applies equality check predicate on the "areas" field. It's identical to AreasEQ.
+func Areas(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAreas, v))
+}
+
+// StartDate applies equality check predicate on the "start_date" field. It's identical to StartDateEQ.
+func StartDate(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldStartDate, v))
+}
+
+// FsDate applies equality check predicate on the "fs_date" field. It's identical to FsDateEQ.
+func FsDate(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldFsDate, v))
+}
+
+// OpDate applies equality check predicate on the "op_date" field. It's identical to OpDateEQ.
+func OpDate(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldOpDate, v))
+}
+
+// EndDate applies equality check predicate on the "end_date" field. It's identical to EndDateEQ.
+func EndDate(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldEndDate, v))
+}
+
+// Mntyr applies equality check predicate on the "mntyr" field. It's identical to MntyrEQ.
+func Mntyr(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMntyr, v))
+}
+
+// ConType applies equality check predicate on the "con_type" field. It's identical to ConTypeEQ.
+func ConType(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldConType, v))
 }
 
 // IsFinished applies equality check predicate on the "is_finished" field. It's identical to IsFinishedEQ.
@@ -346,6 +406,81 @@ func CodeContainsFold(v string) predicate.Project {
 	return predicate.Project(sql.FieldContainsFold(FieldCode, v))
 }
 
+// ManagerEQ applies the EQ predicate on the "manager" field.
+func ManagerEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldManager, v))
+}
+
+// ManagerNEQ applies the NEQ predicate on the "manager" field.
+func ManagerNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldManager, v))
+}
+
+// ManagerIn applies the In predicate on the "manager" field.
+func ManagerIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldManager, vs...))
+}
+
+// ManagerNotIn applies the NotIn predicate on the "manager" field.
+func ManagerNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldManager, vs...))
+}
+
+// ManagerGT applies the GT predicate on the "manager" field.
+func ManagerGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldManager, v))
+}
+
+// ManagerGTE applies the GTE predicate on the "manager" field.
+func ManagerGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldManager, v))
+}
+
+// ManagerLT applies the LT predicate on the "manager" field.
+func ManagerLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldManager, v))
+}
+
+// ManagerLTE applies the LTE predicate on the "manager" field.
+func ManagerLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldManager, v))
+}
+
+// ManagerContains applies the Contains predicate on the "manager" field.
+func ManagerContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldManager, v))
+}
+
+// ManagerHasPrefix applies the HasPrefix predicate on the "manager" field.
+func ManagerHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldManager, v))
+}
+
+// ManagerHasSuffix applies the HasSuffix predicate on the "manager" field.
+func ManagerHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldManager, v))
+}
+
+// ManagerIsNil applies the IsNil predicate on the "manager" field.
+func ManagerIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldManager))
+}
+
+// ManagerNotNil applies the NotNil predicate on the "manager" field.
+func ManagerNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldManager))
+}
+
+// ManagerEqualFold applies the EqualFold predicate on the "manager" field.
+func ManagerEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldManager, v))
+}
+
+// ManagerContainsFold applies the ContainsFold predicate on the "manager" field.
+func ManagerContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldManager, v))
+}
+
 // NameEQ applies the EQ predicate on the "name" field.
 func NameEQ(v string) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldName, v))
@@ -419,6 +554,731 @@ func NameEqualFold(v string) predicate.Project {
 // NameContainsFold applies the ContainsFold predicate on the "name" field.
 func NameContainsFold(v string) predicate.Project {
 	return predicate.Project(sql.FieldContainsFold(FieldName, v))
+}
+
+// OwnerEQ applies the EQ predicate on the "owner" field.
+func OwnerEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldOwner, v))
+}
+
+// OwnerNEQ applies the NEQ predicate on the "owner" field.
+func OwnerNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldOwner, v))
+}
+
+// OwnerIn applies the In predicate on the "owner" field.
+func OwnerIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldOwner, vs...))
+}
+
+// OwnerNotIn applies the NotIn predicate on the "owner" field.
+func OwnerNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldOwner, vs...))
+}
+
+// OwnerGT applies the GT predicate on the "owner" field.
+func OwnerGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldOwner, v))
+}
+
+// OwnerGTE applies the GTE predicate on the "owner" field.
+func OwnerGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldOwner, v))
+}
+
+// OwnerLT applies the LT predicate on the "owner" field.
+func OwnerLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldOwner, v))
+}
+
+// OwnerLTE applies the LTE predicate on the "owner" field.
+func OwnerLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldOwner, v))
+}
+
+// OwnerContains applies the Contains predicate on the "owner" field.
+func OwnerContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldOwner, v))
+}
+
+// OwnerHasPrefix applies the HasPrefix predicate on the "owner" field.
+func OwnerHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldOwner, v))
+}
+
+// OwnerHasSuffix applies the HasSuffix predicate on the "owner" field.
+func OwnerHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldOwner, v))
+}
+
+// OwnerIsNil applies the IsNil predicate on the "owner" field.
+func OwnerIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldOwner))
+}
+
+// OwnerNotNil applies the NotNil predicate on the "owner" field.
+func OwnerNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldOwner))
+}
+
+// OwnerEqualFold applies the EqualFold predicate on the "owner" field.
+func OwnerEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldOwner, v))
+}
+
+// OwnerContainsFold applies the ContainsFold predicate on the "owner" field.
+func OwnerContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldOwner, v))
+}
+
+// JzsEQ applies the EQ predicate on the "jzs" field.
+func JzsEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldJzs, v))
+}
+
+// JzsNEQ applies the NEQ predicate on the "jzs" field.
+func JzsNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldJzs, v))
+}
+
+// JzsIn applies the In predicate on the "jzs" field.
+func JzsIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldJzs, vs...))
+}
+
+// JzsNotIn applies the NotIn predicate on the "jzs" field.
+func JzsNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldJzs, vs...))
+}
+
+// JzsGT applies the GT predicate on the "jzs" field.
+func JzsGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldJzs, v))
+}
+
+// JzsGTE applies the GTE predicate on the "jzs" field.
+func JzsGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldJzs, v))
+}
+
+// JzsLT applies the LT predicate on the "jzs" field.
+func JzsLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldJzs, v))
+}
+
+// JzsLTE applies the LTE predicate on the "jzs" field.
+func JzsLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldJzs, v))
+}
+
+// JzsContains applies the Contains predicate on the "jzs" field.
+func JzsContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldJzs, v))
+}
+
+// JzsHasPrefix applies the HasPrefix predicate on the "jzs" field.
+func JzsHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldJzs, v))
+}
+
+// JzsHasSuffix applies the HasSuffix predicate on the "jzs" field.
+func JzsHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldJzs, v))
+}
+
+// JzsIsNil applies the IsNil predicate on the "jzs" field.
+func JzsIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldJzs))
+}
+
+// JzsNotNil applies the NotNil predicate on the "jzs" field.
+func JzsNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldJzs))
+}
+
+// JzsEqualFold applies the EqualFold predicate on the "jzs" field.
+func JzsEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldJzs, v))
+}
+
+// JzsContainsFold applies the ContainsFold predicate on the "jzs" field.
+func JzsContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldJzs, v))
+}
+
+// McnEQ applies the EQ predicate on the "mcn" field.
+func McnEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMcn, v))
+}
+
+// McnNEQ applies the NEQ predicate on the "mcn" field.
+func McnNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMcn, v))
+}
+
+// McnIn applies the In predicate on the "mcn" field.
+func McnIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMcn, vs...))
+}
+
+// McnNotIn applies the NotIn predicate on the "mcn" field.
+func McnNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMcn, vs...))
+}
+
+// McnGT applies the GT predicate on the "mcn" field.
+func McnGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMcn, v))
+}
+
+// McnGTE applies the GTE predicate on the "mcn" field.
+func McnGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMcn, v))
+}
+
+// McnLT applies the LT predicate on the "mcn" field.
+func McnLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMcn, v))
+}
+
+// McnLTE applies the LTE predicate on the "mcn" field.
+func McnLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMcn, v))
+}
+
+// McnContains applies the Contains predicate on the "mcn" field.
+func McnContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldMcn, v))
+}
+
+// McnHasPrefix applies the HasPrefix predicate on the "mcn" field.
+func McnHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldMcn, v))
+}
+
+// McnHasSuffix applies the HasSuffix predicate on the "mcn" field.
+func McnHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldMcn, v))
+}
+
+// McnIsNil applies the IsNil predicate on the "mcn" field.
+func McnIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMcn))
+}
+
+// McnNotNil applies the NotNil predicate on the "mcn" field.
+func McnNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMcn))
+}
+
+// McnEqualFold applies the EqualFold predicate on the "mcn" field.
+func McnEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldMcn, v))
+}
+
+// McnContainsFold applies the ContainsFold predicate on the "mcn" field.
+func McnContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldMcn, v))
+}
+
+// ConsultantEQ applies the EQ predicate on the "consultant" field.
+func ConsultantEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldConsultant, v))
+}
+
+// ConsultantNEQ applies the NEQ predicate on the "consultant" field.
+func ConsultantNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldConsultant, v))
+}
+
+// ConsultantIn applies the In predicate on the "consultant" field.
+func ConsultantIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldConsultant, vs...))
+}
+
+// ConsultantNotIn applies the NotIn predicate on the "consultant" field.
+func ConsultantNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldConsultant, vs...))
+}
+
+// ConsultantGT applies the GT predicate on the "consultant" field.
+func ConsultantGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldConsultant, v))
+}
+
+// ConsultantGTE applies the GTE predicate on the "consultant" field.
+func ConsultantGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldConsultant, v))
+}
+
+// ConsultantLT applies the LT predicate on the "consultant" field.
+func ConsultantLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldConsultant, v))
+}
+
+// ConsultantLTE applies the LTE predicate on the "consultant" field.
+func ConsultantLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldConsultant, v))
+}
+
+// ConsultantContains applies the Contains predicate on the "consultant" field.
+func ConsultantContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldConsultant, v))
+}
+
+// ConsultantHasPrefix applies the HasPrefix predicate on the "consultant" field.
+func ConsultantHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldConsultant, v))
+}
+
+// ConsultantHasSuffix applies the HasSuffix predicate on the "consultant" field.
+func ConsultantHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldConsultant, v))
+}
+
+// ConsultantIsNil applies the IsNil predicate on the "consultant" field.
+func ConsultantIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldConsultant))
+}
+
+// ConsultantNotNil applies the NotNil predicate on the "consultant" field.
+func ConsultantNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldConsultant))
+}
+
+// ConsultantEqualFold applies the EqualFold predicate on the "consultant" field.
+func ConsultantEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldConsultant, v))
+}
+
+// ConsultantContainsFold applies the ContainsFold predicate on the "consultant" field.
+func ConsultantContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldConsultant, v))
+}
+
+// AreasEQ applies the EQ predicate on the "areas" field.
+func AreasEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAreas, v))
+}
+
+// AreasNEQ applies the NEQ predicate on the "areas" field.
+func AreasNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAreas, v))
+}
+
+// AreasIn applies the In predicate on the "areas" field.
+func AreasIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAreas, vs...))
+}
+
+// AreasNotIn applies the NotIn predicate on the "areas" field.
+func AreasNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAreas, vs...))
+}
+
+// AreasGT applies the GT predicate on the "areas" field.
+func AreasGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAreas, v))
+}
+
+// AreasGTE applies the GTE predicate on the "areas" field.
+func AreasGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAreas, v))
+}
+
+// AreasLT applies the LT predicate on the "areas" field.
+func AreasLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAreas, v))
+}
+
+// AreasLTE applies the LTE predicate on the "areas" field.
+func AreasLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAreas, v))
+}
+
+// AreasContains applies the Contains predicate on the "areas" field.
+func AreasContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldAreas, v))
+}
+
+// AreasHasPrefix applies the HasPrefix predicate on the "areas" field.
+func AreasHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldAreas, v))
+}
+
+// AreasHasSuffix applies the HasSuffix predicate on the "areas" field.
+func AreasHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldAreas, v))
+}
+
+// AreasIsNil applies the IsNil predicate on the "areas" field.
+func AreasIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAreas))
+}
+
+// AreasNotNil applies the NotNil predicate on the "areas" field.
+func AreasNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAreas))
+}
+
+// AreasEqualFold applies the EqualFold predicate on the "areas" field.
+func AreasEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldAreas, v))
+}
+
+// AreasContainsFold applies the ContainsFold predicate on the "areas" field.
+func AreasContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldAreas, v))
+}
+
+// StartDateEQ applies the EQ predicate on the "start_date" field.
+func StartDateEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldStartDate, v))
+}
+
+// StartDateNEQ applies the NEQ predicate on the "start_date" field.
+func StartDateNEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldStartDate, v))
+}
+
+// StartDateIn applies the In predicate on the "start_date" field.
+func StartDateIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldStartDate, vs...))
+}
+
+// StartDateNotIn applies the NotIn predicate on the "start_date" field.
+func StartDateNotIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldStartDate, vs...))
+}
+
+// StartDateGT applies the GT predicate on the "start_date" field.
+func StartDateGT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldStartDate, v))
+}
+
+// StartDateGTE applies the GTE predicate on the "start_date" field.
+func StartDateGTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldStartDate, v))
+}
+
+// StartDateLT applies the LT predicate on the "start_date" field.
+func StartDateLT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldStartDate, v))
+}
+
+// StartDateLTE applies the LTE predicate on the "start_date" field.
+func StartDateLTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldStartDate, v))
+}
+
+// StartDateIsNil applies the IsNil predicate on the "start_date" field.
+func StartDateIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldStartDate))
+}
+
+// StartDateNotNil applies the NotNil predicate on the "start_date" field.
+func StartDateNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldStartDate))
+}
+
+// FsDateEQ applies the EQ predicate on the "fs_date" field.
+func FsDateEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldFsDate, v))
+}
+
+// FsDateNEQ applies the NEQ predicate on the "fs_date" field.
+func FsDateNEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldFsDate, v))
+}
+
+// FsDateIn applies the In predicate on the "fs_date" field.
+func FsDateIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldFsDate, vs...))
+}
+
+// FsDateNotIn applies the NotIn predicate on the "fs_date" field.
+func FsDateNotIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldFsDate, vs...))
+}
+
+// FsDateGT applies the GT predicate on the "fs_date" field.
+func FsDateGT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldFsDate, v))
+}
+
+// FsDateGTE applies the GTE predicate on the "fs_date" field.
+func FsDateGTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldFsDate, v))
+}
+
+// FsDateLT applies the LT predicate on the "fs_date" field.
+func FsDateLT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldFsDate, v))
+}
+
+// FsDateLTE applies the LTE predicate on the "fs_date" field.
+func FsDateLTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldFsDate, v))
+}
+
+// FsDateIsNil applies the IsNil predicate on the "fs_date" field.
+func FsDateIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldFsDate))
+}
+
+// FsDateNotNil applies the NotNil predicate on the "fs_date" field.
+func FsDateNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldFsDate))
+}
+
+// OpDateEQ applies the EQ predicate on the "op_date" field.
+func OpDateEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldOpDate, v))
+}
+
+// OpDateNEQ applies the NEQ predicate on the "op_date" field.
+func OpDateNEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldOpDate, v))
+}
+
+// OpDateIn applies the In predicate on the "op_date" field.
+func OpDateIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldOpDate, vs...))
+}
+
+// OpDateNotIn applies the NotIn predicate on the "op_date" field.
+func OpDateNotIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldOpDate, vs...))
+}
+
+// OpDateGT applies the GT predicate on the "op_date" field.
+func OpDateGT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldOpDate, v))
+}
+
+// OpDateGTE applies the GTE predicate on the "op_date" field.
+func OpDateGTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldOpDate, v))
+}
+
+// OpDateLT applies the LT predicate on the "op_date" field.
+func OpDateLT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldOpDate, v))
+}
+
+// OpDateLTE applies the LTE predicate on the "op_date" field.
+func OpDateLTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldOpDate, v))
+}
+
+// OpDateIsNil applies the IsNil predicate on the "op_date" field.
+func OpDateIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldOpDate))
+}
+
+// OpDateNotNil applies the NotNil predicate on the "op_date" field.
+func OpDateNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldOpDate))
+}
+
+// EndDateEQ applies the EQ predicate on the "end_date" field.
+func EndDateEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldEndDate, v))
+}
+
+// EndDateNEQ applies the NEQ predicate on the "end_date" field.
+func EndDateNEQ(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldEndDate, v))
+}
+
+// EndDateIn applies the In predicate on the "end_date" field.
+func EndDateIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldEndDate, vs...))
+}
+
+// EndDateNotIn applies the NotIn predicate on the "end_date" field.
+func EndDateNotIn(vs ...time.Time) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldEndDate, vs...))
+}
+
+// EndDateGT applies the GT predicate on the "end_date" field.
+func EndDateGT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldEndDate, v))
+}
+
+// EndDateGTE applies the GTE predicate on the "end_date" field.
+func EndDateGTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldEndDate, v))
+}
+
+// EndDateLT applies the LT predicate on the "end_date" field.
+func EndDateLT(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldEndDate, v))
+}
+
+// EndDateLTE applies the LTE predicate on the "end_date" field.
+func EndDateLTE(v time.Time) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldEndDate, v))
+}
+
+// EndDateIsNil applies the IsNil predicate on the "end_date" field.
+func EndDateIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldEndDate))
+}
+
+// EndDateNotNil applies the NotNil predicate on the "end_date" field.
+func EndDateNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldEndDate))
+}
+
+// MntyrEQ applies the EQ predicate on the "mntyr" field.
+func MntyrEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMntyr, v))
+}
+
+// MntyrNEQ applies the NEQ predicate on the "mntyr" field.
+func MntyrNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMntyr, v))
+}
+
+// MntyrIn applies the In predicate on the "mntyr" field.
+func MntyrIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMntyr, vs...))
+}
+
+// MntyrNotIn applies the NotIn predicate on the "mntyr" field.
+func MntyrNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMntyr, vs...))
+}
+
+// MntyrGT applies the GT predicate on the "mntyr" field.
+func MntyrGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMntyr, v))
+}
+
+// MntyrGTE applies the GTE predicate on the "mntyr" field.
+func MntyrGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMntyr, v))
+}
+
+// MntyrLT applies the LT predicate on the "mntyr" field.
+func MntyrLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMntyr, v))
+}
+
+// MntyrLTE applies the LTE predicate on the "mntyr" field.
+func MntyrLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMntyr, v))
+}
+
+// MntyrContains applies the Contains predicate on the "mntyr" field.
+func MntyrContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldMntyr, v))
+}
+
+// MntyrHasPrefix applies the HasPrefix predicate on the "mntyr" field.
+func MntyrHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldMntyr, v))
+}
+
+// MntyrHasSuffix applies the HasSuffix predicate on the "mntyr" field.
+func MntyrHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldMntyr, v))
+}
+
+// MntyrIsNil applies the IsNil predicate on the "mntyr" field.
+func MntyrIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMntyr))
+}
+
+// MntyrNotNil applies the NotNil predicate on the "mntyr" field.
+func MntyrNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMntyr))
+}
+
+// MntyrEqualFold applies the EqualFold predicate on the "mntyr" field.
+func MntyrEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldMntyr, v))
+}
+
+// MntyrContainsFold applies the ContainsFold predicate on the "mntyr" field.
+func MntyrContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldMntyr, v))
+}
+
+// ConTypeEQ applies the EQ predicate on the "con_type" field.
+func ConTypeEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldConType, v))
+}
+
+// ConTypeNEQ applies the NEQ predicate on the "con_type" field.
+func ConTypeNEQ(v string) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldConType, v))
+}
+
+// ConTypeIn applies the In predicate on the "con_type" field.
+func ConTypeIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldConType, vs...))
+}
+
+// ConTypeNotIn applies the NotIn predicate on the "con_type" field.
+func ConTypeNotIn(vs ...string) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldConType, vs...))
+}
+
+// ConTypeGT applies the GT predicate on the "con_type" field.
+func ConTypeGT(v string) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldConType, v))
+}
+
+// ConTypeGTE applies the GTE predicate on the "con_type" field.
+func ConTypeGTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldConType, v))
+}
+
+// ConTypeLT applies the LT predicate on the "con_type" field.
+func ConTypeLT(v string) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldConType, v))
+}
+
+// ConTypeLTE applies the LTE predicate on the "con_type" field.
+func ConTypeLTE(v string) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldConType, v))
+}
+
+// ConTypeContains applies the Contains predicate on the "con_type" field.
+func ConTypeContains(v string) predicate.Project {
+	return predicate.Project(sql.FieldContains(FieldConType, v))
+}
+
+// ConTypeHasPrefix applies the HasPrefix predicate on the "con_type" field.
+func ConTypeHasPrefix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasPrefix(FieldConType, v))
+}
+
+// ConTypeHasSuffix applies the HasSuffix predicate on the "con_type" field.
+func ConTypeHasSuffix(v string) predicate.Project {
+	return predicate.Project(sql.FieldHasSuffix(FieldConType, v))
+}
+
+// ConTypeIsNil applies the IsNil predicate on the "con_type" field.
+func ConTypeIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldConType))
+}
+
+// ConTypeNotNil applies the NotNil predicate on the "con_type" field.
+func ConTypeNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldConType))
+}
+
+// ConTypeEqualFold applies the EqualFold predicate on the "con_type" field.
+func ConTypeEqualFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldEqualFold(FieldConType, v))
+}
+
+// ConTypeContainsFold applies the ContainsFold predicate on the "con_type" field.
+func ConTypeContainsFold(v string) predicate.Project {
+	return predicate.Project(sql.FieldContainsFold(FieldConType, v))
 }
 
 // IsFinishedEQ applies the EQ predicate on the "is_finished" field.

@@ -47,8 +47,22 @@ func main() {
 		SELECT 
 			jobcode,
 			jobname,
-			finishedflag
-		FROM [BI_STG_830].[dbo].[view_fefacade_jobbasfil_NY]
+			jobmgr,
+			owner,
+			jzs,
+			mcn,
+			conslt,
+			areas,
+			fsdate,
+			opdate,
+			finishedflag,
+			startdate,
+			enddate,
+			mntyr
+		FROM mst_jobbasfil
+		where 1=1
+		and pk_corp='2837' and finishedflag in ('N','Y')
+		AND JOBTYPE='J'
 	`)
 	if err != nil {
 		panic(err)
@@ -61,10 +75,23 @@ func main() {
 		var (
 			jobcode      *string
 			jobname      *string
+			jobmgr       *string
+			owner        *string
+			jzs          *string
+			mcn          *string
+			conslt       *string
+			areas        *string
+			fsdate       *time.Time
+			opdate       *time.Time
 			finishedflag string
-			isFinished   bool
+			startdate    *time.Time
+			enddate      *time.Time
+			mntyr        *string
 		)
-		err := rows.Scan(&jobcode, &jobname, &finishedflag)
+		err := rows.Scan(
+			&jobcode, &jobname, &jobmgr, &owner, &jzs, &mcn, &conslt, &areas,
+			&fsdate, &opdate, &finishedflag, &startdate, &enddate, &mntyr,
+		)
 		if err != nil {
 			fmt.Printf("扫描失败: %s\n", err.Error())
 		}
@@ -73,18 +100,49 @@ func main() {
 			continue
 		}
 
-		if finishedflag == "N" {
-			isFinished = false
-		} else {
-			isFinished = true
-		}
+		isFinished := finishedflag == "Y"
 
 		p := s.Project.Create().
 			SetCode(*jobcode).
 			SetNillableName(jobname).
-			SetIsFinished(isFinished)
+			SetIsFinished(isFinished).
+			SetNillableManager(jobmgr).
+			SetNillableOwner(owner).
+			SetNillableJzs(jzs).
+			SetNillableMcn(mcn).
+			SetNillableConsultant(conslt).
+			SetNillableAreas(areas).
+			SetNillableFsDate(fsdate).
+			SetNillableOpDate(opdate).
+			SetNillableStartDate(startdate).
+			SetNillableEndDate(enddate).
+			SetNillableMntyr(mntyr)
 
-			// 抓取成交额
+		// 抓取营业额
+		{
+			var (
+				amount *float64
+			)
+			row := stgDb.QueryRow(`
+					select 
+						bp.gscfamnt amount
+					from (select * from (select *,row_number() over(PARTITION by pk_jobbasfil order by sid desc) rn  from bd_pjpayroll where aprvsts = '1'
+					) a where a.rn=1) bp
+					inner join mst_jobbasfil mj on mj.pk_jobbasfil=bp.pk_jobbasfil
+					and pk_corp='2837' and jobtype='J'
+					and finishedflag in ('Y','N')
+					where aprvsts = '1' 
+					and jobcode = @code
+				`, sql.Named("code", jobcode))
+			err := row.Scan(&amount)
+			if err != nil {
+				fmt.Printf("抓取营业额失败: %s\n", err.Error())
+			} else {
+				p.SetNillableYye(amount)
+			}
+		}
+
+		// 抓取成交额
 		{
 
 			// 	var (

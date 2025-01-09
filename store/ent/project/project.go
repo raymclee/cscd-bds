@@ -21,8 +21,32 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
+	// FieldManager holds the string denoting the manager field in the database.
+	FieldManager = "manager"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldOwner holds the string denoting the owner field in the database.
+	FieldOwner = "owner"
+	// FieldJzs holds the string denoting the jzs field in the database.
+	FieldJzs = "jzs"
+	// FieldMcn holds the string denoting the mcn field in the database.
+	FieldMcn = "mcn"
+	// FieldConsultant holds the string denoting the consultant field in the database.
+	FieldConsultant = "consultant"
+	// FieldAreas holds the string denoting the areas field in the database.
+	FieldAreas = "areas"
+	// FieldStartDate holds the string denoting the start_date field in the database.
+	FieldStartDate = "start_date"
+	// FieldFsDate holds the string denoting the fs_date field in the database.
+	FieldFsDate = "fs_date"
+	// FieldOpDate holds the string denoting the op_date field in the database.
+	FieldOpDate = "op_date"
+	// FieldEndDate holds the string denoting the end_date field in the database.
+	FieldEndDate = "end_date"
+	// FieldMntyr holds the string denoting the mntyr field in the database.
+	FieldMntyr = "mntyr"
+	// FieldConType holds the string denoting the con_type field in the database.
+	FieldConType = "con_type"
 	// FieldIsFinished holds the string denoting the is_finished field in the database.
 	FieldIsFinished = "is_finished"
 	// FieldCje holds the string denoting the cje field in the database.
@@ -92,7 +116,19 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldCode,
+	FieldManager,
 	FieldName,
+	FieldOwner,
+	FieldJzs,
+	FieldMcn,
+	FieldConsultant,
+	FieldAreas,
+	FieldStartDate,
+	FieldFsDate,
+	FieldOpDate,
+	FieldEndDate,
+	FieldMntyr,
+	FieldConType,
 	FieldIsFinished,
 	FieldCje,
 	FieldYye,
@@ -166,9 +202,69 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
 }
 
+// ByManager orders the results by the manager field.
+func ByManager(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldManager, opts...).ToFunc()
+}
+
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
+// ByOwner orders the results by the owner field.
+func ByOwner(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOwner, opts...).ToFunc()
+}
+
+// ByJzs orders the results by the jzs field.
+func ByJzs(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldJzs, opts...).ToFunc()
+}
+
+// ByMcn orders the results by the mcn field.
+func ByMcn(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMcn, opts...).ToFunc()
+}
+
+// ByConsultant orders the results by the consultant field.
+func ByConsultant(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldConsultant, opts...).ToFunc()
+}
+
+// ByAreas orders the results by the areas field.
+func ByAreas(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAreas, opts...).ToFunc()
+}
+
+// ByStartDate orders the results by the start_date field.
+func ByStartDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStartDate, opts...).ToFunc()
+}
+
+// ByFsDate orders the results by the fs_date field.
+func ByFsDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFsDate, opts...).ToFunc()
+}
+
+// ByOpDate orders the results by the op_date field.
+func ByOpDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOpDate, opts...).ToFunc()
+}
+
+// ByEndDate orders the results by the end_date field.
+func ByEndDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEndDate, opts...).ToFunc()
+}
+
+// ByMntyr orders the results by the mntyr field.
+func ByMntyr(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMntyr, opts...).ToFunc()
+}
+
+// ByConType orders the results by the con_type field.
+func ByConType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldConType, opts...).ToFunc()
 }
 
 // ByIsFinished orders the results by the is_finished field.

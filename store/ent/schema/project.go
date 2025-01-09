@@ -28,10 +28,70 @@ func (Project) Fields() []ent.Field {
 			Unique().
 			Annotations(entgql.OrderField("CODE")),
 
+		field.String("manager").
+			Optional().
+			Nillable().
+			Comment("地盤經理"),
+
 		field.String("name").
 			Optional().
 			Nillable().
 			Annotations(entgql.OrderField("NAME")),
+
+		field.String("owner").
+			Optional().
+			Nillable().
+			Comment("客戶"),
+
+		field.String("jzs").
+			Optional().
+			Nillable().
+			Comment("建築師"),
+
+		field.String("mcn").
+			Optional().
+			Nillable().
+			Comment("總承包商"),
+
+		field.String("consultant").
+			Optional().
+			Nillable().
+			Comment("幕墻顧問"),
+
+		field.String("areas").
+			Optional().
+			Nillable().
+			Comment("工程規模"),
+
+		field.Time("start_date").
+			Optional().
+			Nillable().
+			Comment("開工日期"),
+
+		field.Time("fs_date").
+			Optional().
+			Nillable().
+			Comment("封頂日期"),
+
+		field.Time("op_date").
+			Optional().
+			Nillable().
+			Comment("開始安裝日期"),
+
+		field.Time("end_date").
+			Optional().
+			Nillable().
+			Comment("竣工日期"),
+
+		field.String("mntyr").
+			Optional().
+			Nillable().
+			Comment("維修保養期"),
+
+		field.String("con_type").
+			Optional().
+			Nillable().
+			Comment("中標形式"),
 
 		field.Bool("is_finished").
 			Default(false).
