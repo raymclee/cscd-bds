@@ -1670,6 +1670,8 @@ type CustomerWhereInput struct {
 	CreatedByIDContains     *xid.ID  `json:"createdByIDContains,omitempty"`
 	CreatedByIDHasPrefix    *xid.ID  `json:"createdByIDHasPrefix,omitempty"`
 	CreatedByIDHasSuffix    *xid.ID  `json:"createdByIDHasSuffix,omitempty"`
+	CreatedByIDIsNil        bool     `json:"createdByIDIsNil,omitempty"`
+	CreatedByIDNotNil       bool     `json:"createdByIDNotNil,omitempty"`
 	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
 	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
 
@@ -2262,6 +2264,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	}
 	if i.CreatedByIDHasSuffix != nil {
 		predicates = append(predicates, customer.CreatedByIDHasSuffix(*i.CreatedByIDHasSuffix))
+	}
+	if i.CreatedByIDIsNil {
+		predicates = append(predicates, customer.CreatedByIDIsNil())
+	}
+	if i.CreatedByIDNotNil {
+		predicates = append(predicates, customer.CreatedByIDNotNil())
 	}
 	if i.CreatedByIDEqualFold != nil {
 		predicates = append(predicates, customer.CreatedByIDEqualFold(*i.CreatedByIDEqualFold))
@@ -7060,6 +7068,8 @@ type TenderWhereInput struct {
 	FinderIDContains     *xid.ID  `json:"finderIDContains,omitempty"`
 	FinderIDHasPrefix    *xid.ID  `json:"finderIDHasPrefix,omitempty"`
 	FinderIDHasSuffix    *xid.ID  `json:"finderIDHasSuffix,omitempty"`
+	FinderIDIsNil        bool     `json:"finderIDIsNil,omitempty"`
+	FinderIDNotNil       bool     `json:"finderIDNotNil,omitempty"`
 	FinderIDEqualFold    *xid.ID  `json:"finderIDEqualFold,omitempty"`
 	FinderIDContainsFold *xid.ID  `json:"finderIDContainsFold,omitempty"`
 
@@ -7075,6 +7085,8 @@ type TenderWhereInput struct {
 	CreatedByIDContains     *xid.ID  `json:"createdByIDContains,omitempty"`
 	CreatedByIDHasPrefix    *xid.ID  `json:"createdByIDHasPrefix,omitempty"`
 	CreatedByIDHasSuffix    *xid.ID  `json:"createdByIDHasSuffix,omitempty"`
+	CreatedByIDIsNil        bool     `json:"createdByIDIsNil,omitempty"`
+	CreatedByIDNotNil       bool     `json:"createdByIDNotNil,omitempty"`
 	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
 	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
 
@@ -9469,6 +9481,12 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.FinderIDHasSuffix != nil {
 		predicates = append(predicates, tender.FinderIDHasSuffix(*i.FinderIDHasSuffix))
 	}
+	if i.FinderIDIsNil {
+		predicates = append(predicates, tender.FinderIDIsNil())
+	}
+	if i.FinderIDNotNil {
+		predicates = append(predicates, tender.FinderIDNotNil())
+	}
 	if i.FinderIDEqualFold != nil {
 		predicates = append(predicates, tender.FinderIDEqualFold(*i.FinderIDEqualFold))
 	}
@@ -9507,6 +9525,12 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.CreatedByIDHasSuffix != nil {
 		predicates = append(predicates, tender.CreatedByIDHasSuffix(*i.CreatedByIDHasSuffix))
+	}
+	if i.CreatedByIDIsNil {
+		predicates = append(predicates, tender.CreatedByIDIsNil())
+	}
+	if i.CreatedByIDNotNil {
+		predicates = append(predicates, tender.CreatedByIDNotNil())
 	}
 	if i.CreatedByIDEqualFold != nil {
 		predicates = append(predicates, tender.CreatedByIDEqualFold(*i.CreatedByIDEqualFold))

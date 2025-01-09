@@ -1,7 +1,7 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { operationsPageQuery$data } from "__generated__/operationsPageQuery.graphql";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
 import {
   Command,
@@ -22,6 +22,17 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
   const [open, setOpen] = useState(false);
   const search = useSearch({ from: "/__auth/__dashboard/operations" });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((o) => !o);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   const code = search.code ?? defaultCode;
 

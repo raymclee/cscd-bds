@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b4107b60452f6deb679e4628c74f4fe9>>
+ * @generated SignedSource<<dd7148d3b097d6275b6ccd711e71ef2b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -22,7 +22,7 @@ export type customerDetailFragment$data = {
   readonly createdAt: any;
   readonly createdBy: {
     readonly name: string;
-  };
+  } | null | undefined;
   readonly id: string;
   readonly industry: number | null | undefined;
   readonly lastVisitRecord: {

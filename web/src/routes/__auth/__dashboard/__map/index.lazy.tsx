@@ -74,8 +74,12 @@ export const mapIndexPageQuery = graphql`
                   }
                 }
               }
-              tenders(orderBy: $orderBy, first: $first, last: $last)
-                @connection(key: "MapIndexPageQuery_tenders") {
+              tenders(
+                orderBy: $orderBy
+                first: $first
+                last: $last
+                where: { statusNEQ: 7 }
+              ) @connection(key: "MapIndexPageQuery_tenders") {
                 edges {
                   node {
                     id

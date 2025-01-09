@@ -663,7 +663,7 @@ input CreateCustomerInput {
   contactPersonPhone: String
   contactPersonPosition: String
   createdAt: Time
-  createdByID: ID!
+  createdByID: ID
   industry: Int
   name: String!
   ownerType: Int
@@ -744,7 +744,7 @@ input CreateTenderInput {
   contractor: String
   costEngineer: String
   createdAt: Time
-  createdByID: ID!
+  createdByID: ID
   creditAndPaymentRating: Int
   creditAndPaymentRatingOverview: String
   currentProgress: String
@@ -760,7 +760,7 @@ input CreateTenderInput {
   estimatedProjectEndDate: Time
   estimatedProjectStartDate: Time
   facadeConsultant: String
-  finderID: ID!
+  finderID: ID
   followingSaleIDs: [ID!]
   fullAddress: String
   images: [String!]
@@ -856,8 +856,8 @@ type Customer implements Node {
   contactPersonPhone: String
   contactPersonPosition: String
   createdAt: Time!
-  createdBy: User!
-  createdByID: ID!
+  createdBy: User
+  createdByID: ID
   id: ID!
   industry: Int
   name: String!
@@ -1036,10 +1036,12 @@ input CustomerWhereInput {
   createdByIDHasPrefix: ID
   createdByIDHasSuffix: ID
   createdByIDIn: [ID!]
+  createdByIDIsNil: Boolean
   createdByIDLT: ID
   createdByIDLTE: ID
   createdByIDNEQ: ID
   createdByIDNotIn: [ID!]
+  createdByIDNotNil: Boolean
   """area edge predicates"""
   hasArea: Boolean
   hasAreaWith: [AreaWhereInput!]
@@ -1340,6 +1342,7 @@ input DistrictWhereInput {
 
 type FeishuUser {
   avatarUrl: String!
+  email: String!
   name: String!
   openId: String!
 }
@@ -2752,8 +2755,8 @@ type Tender implements Node {
   contractor: String
   costEngineer: String
   createdAt: Time!
-  createdBy: User!
-  createdByID: ID!
+  createdBy: User
+  createdByID: ID
   creditAndPaymentRating: Int
   creditAndPaymentRatingOverview: String
   currentProgress: String
@@ -2771,8 +2774,8 @@ type Tender implements Node {
   estimatedProjectEndDate: Time
   estimatedProjectStartDate: Time
   facadeConsultant: String
-  finder: User!
-  finderID: ID!
+  finder: User
+  finderID: ID
   followingSales: [User!]
   fullAddress: String
   geoBounds: [[Float]]
@@ -3131,10 +3134,12 @@ input TenderWhereInput {
   createdByIDHasPrefix: ID
   createdByIDHasSuffix: ID
   createdByIDIn: [ID!]
+  createdByIDIsNil: Boolean
   createdByIDLT: ID
   createdByIDLTE: ID
   createdByIDNEQ: ID
   createdByIDNotIn: [ID!]
+  createdByIDNotNil: Boolean
   """credit_and_payment_rating field predicates"""
   creditAndPaymentRating: Int
   creditAndPaymentRatingGT: Int
@@ -3337,10 +3342,12 @@ input TenderWhereInput {
   finderIDHasPrefix: ID
   finderIDHasSuffix: ID
   finderIDIn: [ID!]
+  finderIDIsNil: Boolean
   finderIDLT: ID
   finderIDLTE: ID
   finderIDNEQ: ID
   finderIDNotIn: [ID!]
+  finderIDNotNil: Boolean
   """full_address field predicates"""
   fullAddress: String
   fullAddressContains: String
@@ -3837,6 +3844,7 @@ input UpdateCustomerInput {
   clearContactPersonEmail: Boolean
   clearContactPersonPhone: Boolean
   clearContactPersonPosition: Boolean
+  clearCreatedBy: Boolean
   clearIndustry: Boolean
   clearOwnerType: Boolean
   clearSales: Boolean
@@ -3944,6 +3952,7 @@ input UpdateTenderInput {
   clearContractForm: Boolean
   clearContractor: Boolean
   clearCostEngineer: Boolean
+  clearCreatedBy: Boolean
   clearCreditAndPaymentRating: Boolean
   clearCreditAndPaymentRatingOverview: Boolean
   clearCurrentProgress: Boolean
@@ -3957,6 +3966,7 @@ input UpdateTenderInput {
   clearEstimatedProjectEndDate: Boolean
   clearEstimatedProjectStartDate: Boolean
   clearFacadeConsultant: Boolean
+  clearFinder: Boolean
   clearFollowingSales: Boolean
   clearFullAddress: Boolean
   clearImages: Boolean

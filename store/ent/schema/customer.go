@@ -67,7 +67,9 @@ func (Customer) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 		field.String("created_by_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -89,8 +91,7 @@ func (Customer) Edges() []ent.Edge {
 			Unique(),
 		edge.To("created_by", User.Type).
 			Field("created_by_id").
-			Unique().
-			Required(),
+			Unique(),
 		edge.To("visit_records", VisitRecord.Type).
 			Annotations(
 				entgql.RelayConnection(),

@@ -700,7 +700,10 @@ func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, no
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Customer)
 	for i := range nodes {
-		fk := nodes[i].CreatedByID
+		if nodes[i].CreatedByID == nil {
+			continue
+		}
+		fk := *nodes[i].CreatedByID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}

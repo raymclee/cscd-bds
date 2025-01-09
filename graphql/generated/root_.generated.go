@@ -202,6 +202,7 @@ type ComplexityRoot struct {
 
 	FeishuUser struct {
 		AvatarURL func(childComplexity int) int
+		Email     func(childComplexity int) int
 		Name      func(childComplexity int) int
 		OpenID    func(childComplexity int) int
 	}
@@ -1341,6 +1342,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.FeishuUser.AvatarURL(childComplexity), true
+
+	case "FeishuUser.email":
+		if e.complexity.FeishuUser.Email == nil {
+			break
+		}
+
+		return e.complexity.FeishuUser.Email(childComplexity), true
 
 	case "FeishuUser.name":
 		if e.complexity.FeishuUser.Name == nil {
@@ -4631,7 +4639,7 @@ input CreateCustomerInput {
   areaID: ID!
   tenderIDs: [ID!]
   salesID: ID
-  createdByID: ID!
+  createdByID: ID
   visitRecordIDs: [ID!]
 }
 """
@@ -4762,8 +4770,8 @@ input CreateTenderInput {
   lastTenderAmount: Float
   areaID: ID!
   customerID: ID
-  finderID: ID!
-  createdByID: ID!
+  finderID: ID
+  createdByID: ID
   followingSaleIDs: [ID!]
   provinceID: ID
   cityID: ID
@@ -4831,7 +4839,7 @@ type Customer implements Node {
   contactPersonEmail: String
   areaID: ID!
   salesID: ID
-  createdByID: ID!
+  createdByID: ID
   area: Area!
   tenders(
     """
@@ -4865,7 +4873,7 @@ type Customer implements Node {
     where: TenderWhereInput
   ): TenderConnection!
   sales: User
-  createdBy: User!
+  createdBy: User
   visitRecords(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -5165,6 +5173,8 @@ input CustomerWhereInput {
   createdByIDContains: ID
   createdByIDHasPrefix: ID
   createdByIDHasSuffix: ID
+  createdByIDIsNil: Boolean
+  createdByIDNotNil: Boolean
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
@@ -7425,13 +7435,13 @@ type Tender implements Node {
   cityID: ID
   districtID: ID
   customerID: ID
-  finderID: ID!
-  createdByID: ID!
+  finderID: ID
+  createdByID: ID
   competitorID: ID
   area: Area!
   customer: Customer
-  finder: User!
-  createdBy: User!
+  finder: User
+  createdBy: User
   followingSales: [User!]
   province: Province
   city: City
@@ -8463,6 +8473,8 @@ input TenderWhereInput {
   finderIDContains: ID
   finderIDHasPrefix: ID
   finderIDHasSuffix: ID
+  finderIDIsNil: Boolean
+  finderIDNotNil: Boolean
   finderIDEqualFold: ID
   finderIDContainsFold: ID
   """
@@ -8479,6 +8491,8 @@ input TenderWhereInput {
   createdByIDContains: ID
   createdByIDHasPrefix: ID
   createdByIDHasSuffix: ID
+  createdByIDIsNil: Boolean
+  createdByIDNotNil: Boolean
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
@@ -8640,6 +8654,7 @@ input UpdateCustomerInput {
   salesID: ID
   clearSales: Boolean
   createdByID: ID
+  clearCreatedBy: Boolean
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
@@ -8831,7 +8846,9 @@ input UpdateTenderInput {
   customerID: ID
   clearCustomer: Boolean
   finderID: ID
+  clearFinder: Boolean
   createdByID: ID
+  clearCreatedBy: Boolean
   addFollowingSaleIDs: [ID!]
   removeFollowingSaleIDs: [ID!]
   clearFollowingSales: Boolean
@@ -9645,6 +9662,7 @@ type GeoJson {
 type FeishuUser {
   openId: String!
   name: String!
+  email: String!
   avatarUrl: String!
 }
 

@@ -275,6 +275,12 @@ func (cu *CustomerUpdate) SetNillableCreatedByID(x *xid.ID) *CustomerUpdate {
 	return cu
 }
 
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (cu *CustomerUpdate) ClearCreatedByID() *CustomerUpdate {
+	cu.mutation.ClearCreatedByID()
+	return cu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (cu *CustomerUpdate) SetArea(a *Area) *CustomerUpdate {
 	return cu.SetAreaID(a.ID)
@@ -425,9 +431,6 @@ func (cu *CustomerUpdate) defaults() {
 func (cu *CustomerUpdate) check() error {
 	if cu.mutation.AreaCleared() && len(cu.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Customer.area"`)
-	}
-	if cu.mutation.CreatedByCleared() && len(cu.mutation.CreatedByIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Customer.created_by"`)
 	}
 	return nil
 }
@@ -945,6 +948,12 @@ func (cuo *CustomerUpdateOne) SetNillableCreatedByID(x *xid.ID) *CustomerUpdateO
 	return cuo
 }
 
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (cuo *CustomerUpdateOne) ClearCreatedByID() *CustomerUpdateOne {
+	cuo.mutation.ClearCreatedByID()
+	return cuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (cuo *CustomerUpdateOne) SetArea(a *Area) *CustomerUpdateOne {
 	return cuo.SetAreaID(a.ID)
@@ -1108,9 +1117,6 @@ func (cuo *CustomerUpdateOne) defaults() {
 func (cuo *CustomerUpdateOne) check() error {
 	if cuo.mutation.AreaCleared() && len(cuo.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Customer.area"`)
-	}
-	if cuo.mutation.CreatedByCleared() && len(cuo.mutation.CreatedByIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Customer.created_by"`)
 	}
 	return nil
 }

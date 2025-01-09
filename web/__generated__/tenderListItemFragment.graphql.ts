@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<79592fb57a32fac513da544cac085064>>
+ * @generated SignedSource<<97d05670bf937d505a22b55e9aaeec49>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,7 @@ export type tenderListItemFragment$data = {
   readonly createdAt: any;
   readonly createdBy: {
     readonly id: string;
-  };
+  } | null | undefined;
   readonly customer: {
     readonly id: string;
     readonly name: string;

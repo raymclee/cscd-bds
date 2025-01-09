@@ -4205,6 +4205,16 @@ func FinderIDHasSuffix(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldHasSuffix(FieldFinderID, vc))
 }
 
+// FinderIDIsNil applies the IsNil predicate on the "finder_id" field.
+func FinderIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldFinderID))
+}
+
+// FinderIDNotNil applies the NotNil predicate on the "finder_id" field.
+func FinderIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldFinderID))
+}
+
 // FinderIDEqualFold applies the EqualFold predicate on the "finder_id" field.
 func FinderIDEqualFold(v xid.ID) predicate.Tender {
 	vc := string(v)
@@ -4273,6 +4283,16 @@ func CreatedByIDHasPrefix(v xid.ID) predicate.Tender {
 func CreatedByIDHasSuffix(v xid.ID) predicate.Tender {
 	vc := string(v)
 	return predicate.Tender(sql.FieldHasSuffix(FieldCreatedByID, vc))
+}
+
+// CreatedByIDIsNil applies the IsNil predicate on the "created_by_id" field.
+func CreatedByIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldCreatedByID))
+}
+
+// CreatedByIDNotNil applies the NotNil predicate on the "created_by_id" field.
+func CreatedByIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldCreatedByID))
 }
 
 // CreatedByIDEqualFold applies the EqualFold predicate on the "created_by_id" field.

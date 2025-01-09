@@ -49,7 +49,7 @@ type Customer struct {
 	// SalesID holds the value of the "sales_id" field.
 	SalesID *xid.ID `json:"sales_id,omitempty"`
 	// CreatedByID holds the value of the "created_by_id" field.
-	CreatedByID xid.ID `json:"created_by_id,omitempty"`
+	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CustomerQuery when eager-loading is set.
 	Edges        CustomerEdges `json:"edges"`
@@ -134,7 +134,7 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case customer.FieldSalesID:
+		case customer.FieldSalesID, customer.FieldCreatedByID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case customer.FieldFeishuGroup:
 			values[i] = new([]byte)
@@ -144,7 +144,7 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case customer.FieldCreatedAt, customer.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case customer.FieldID, customer.FieldAreaID, customer.FieldCreatedByID:
+		case customer.FieldID, customer.FieldAreaID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -256,10 +256,11 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				*c.SalesID = *value.S.(*xid.ID)
 			}
 		case customer.FieldCreatedByID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field created_by_id", values[i])
-			} else if value != nil {
-				c.CreatedByID = *value
+			} else if value.Valid {
+				c.CreatedByID = new(xid.ID)
+				*c.CreatedByID = *value.S.(*xid.ID)
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -377,8 +378,10 @@ func (c *Customer) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("created_by_id=")
-	builder.WriteString(fmt.Sprintf("%v", c.CreatedByID))
+	if v := c.CreatedByID; v != nil {
+		builder.WriteString("created_by_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

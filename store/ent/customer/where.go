@@ -934,6 +934,16 @@ func CreatedByIDHasSuffix(v xid.ID) predicate.Customer {
 	return predicate.Customer(sql.FieldHasSuffix(FieldCreatedByID, vc))
 }
 
+// CreatedByIDIsNil applies the IsNil predicate on the "created_by_id" field.
+func CreatedByIDIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldCreatedByID))
+}
+
+// CreatedByIDNotNil applies the NotNil predicate on the "created_by_id" field.
+func CreatedByIDNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldCreatedByID))
+}
+
 // CreatedByIDEqualFold applies the EqualFold predicate on the "created_by_id" field.
 func CreatedByIDEqualFold(v xid.ID) predicate.Customer {
 	vc := string(v)

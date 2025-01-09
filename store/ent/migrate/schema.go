@@ -92,7 +92,7 @@ var (
 		{Name: "contact_person_email", Type: field.TypeString, Nullable: true},
 		{Name: "feishu_group", Type: field.TypeJSON, Nullable: true},
 		{Name: "area_id", Type: field.TypeString},
-		{Name: "created_by_id", Type: field.TypeString},
+		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
 		{Name: "sales_id", Type: field.TypeString, Nullable: true},
 	}
 	// CustomersTable holds the schema information for the "customers" table.
@@ -111,7 +111,7 @@ var (
 				Symbol:     "customers_users_created_by",
 				Columns:    []*schema.Column{CustomersColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "customers_users_customers",
@@ -368,8 +368,8 @@ var (
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "district_id", Type: field.TypeString, Nullable: true},
 		{Name: "province_id", Type: field.TypeString, Nullable: true},
-		{Name: "finder_id", Type: field.TypeString},
-		{Name: "created_by_id", Type: field.TypeString},
+		{Name: "finder_id", Type: field.TypeString, Nullable: true},
+		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
 	}
 	// TendersTable holds the schema information for the "tenders" table.
 	TendersTable = &schema.Table{
@@ -417,13 +417,13 @@ var (
 				Symbol:     "tenders_users_finder",
 				Columns:    []*schema.Column{TendersColumns[64]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
 				Columns:    []*schema.Column{TendersColumns[65]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}

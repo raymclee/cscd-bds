@@ -650,7 +650,7 @@ export type CreateCustomerInput = {
   contactPersonPhone?: InputMaybe<Scalars['String']['input']>;
   contactPersonPosition?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Time']['input']>;
-  createdByID: Scalars['ID']['input'];
+  createdByID?: InputMaybe<Scalars['ID']['input']>;
   industry?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   ownerType?: InputMaybe<Scalars['Int']['input']>;
@@ -731,7 +731,7 @@ export type CreateTenderInput = {
   contractor?: InputMaybe<Scalars['String']['input']>;
   costEngineer?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Time']['input']>;
-  createdByID: Scalars['ID']['input'];
+  createdByID?: InputMaybe<Scalars['ID']['input']>;
   creditAndPaymentRating?: InputMaybe<Scalars['Int']['input']>;
   creditAndPaymentRatingOverview?: InputMaybe<Scalars['String']['input']>;
   currentProgress?: InputMaybe<Scalars['String']['input']>;
@@ -747,7 +747,7 @@ export type CreateTenderInput = {
   estimatedProjectEndDate?: InputMaybe<Scalars['Time']['input']>;
   estimatedProjectStartDate?: InputMaybe<Scalars['Time']['input']>;
   facadeConsultant?: InputMaybe<Scalars['String']['input']>;
-  finderID: Scalars['ID']['input'];
+  finderID?: InputMaybe<Scalars['ID']['input']>;
   followingSaleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   fullAddress?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -838,8 +838,8 @@ export type Customer = Node & {
   contactPersonPhone?: Maybe<Scalars['String']['output']>;
   contactPersonPosition?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Time']['output'];
-  createdBy: User;
-  createdByID: Scalars['ID']['output'];
+  createdBy?: Maybe<User>;
+  createdByID?: Maybe<Scalars['ID']['output']>;
   id: Scalars['ID']['output'];
   industry?: Maybe<Scalars['Int']['output']>;
   name: Scalars['String']['output'];
@@ -1010,10 +1010,12 @@ export type CustomerWhereInput = {
   createdByIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   createdByIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   createdByIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  createdByIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   createdByIDLT?: InputMaybe<Scalars['ID']['input']>;
   createdByIDLTE?: InputMaybe<Scalars['ID']['input']>;
   createdByIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   createdByIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  createdByIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** area edge predicates */
   hasArea?: InputMaybe<Scalars['Boolean']['input']>;
   hasAreaWith?: InputMaybe<Array<AreaWhereInput>>;
@@ -1308,6 +1310,7 @@ export type DistrictWhereInput = {
 export type FeishuUser = {
   __typename?: 'FeishuUser';
   avatarUrl: Scalars['String']['output'];
+  email: Scalars['String']['output'];
   name: Scalars['String']['output'];
   openId: Scalars['String']['output'];
 };
@@ -2794,8 +2797,8 @@ export type Tender = Node & {
   contractor?: Maybe<Scalars['String']['output']>;
   costEngineer?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Time']['output'];
-  createdBy: User;
-  createdByID: Scalars['ID']['output'];
+  createdBy?: Maybe<User>;
+  createdByID?: Maybe<Scalars['ID']['output']>;
   creditAndPaymentRating?: Maybe<Scalars['Int']['output']>;
   creditAndPaymentRatingOverview?: Maybe<Scalars['String']['output']>;
   currentProgress?: Maybe<Scalars['String']['output']>;
@@ -2813,8 +2816,8 @@ export type Tender = Node & {
   estimatedProjectEndDate?: Maybe<Scalars['Time']['output']>;
   estimatedProjectStartDate?: Maybe<Scalars['Time']['output']>;
   facadeConsultant?: Maybe<Scalars['String']['output']>;
-  finder: User;
-  finderID: Scalars['ID']['output'];
+  finder?: Maybe<User>;
+  finderID?: Maybe<Scalars['ID']['output']>;
   followingSales?: Maybe<Array<User>>;
   fullAddress?: Maybe<Scalars['String']['output']>;
   geoBounds?: Maybe<Array<Maybe<Array<Maybe<Scalars['Float']['output']>>>>>;
@@ -3170,10 +3173,12 @@ export type TenderWhereInput = {
   createdByIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   createdByIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   createdByIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  createdByIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   createdByIDLT?: InputMaybe<Scalars['ID']['input']>;
   createdByIDLTE?: InputMaybe<Scalars['ID']['input']>;
   createdByIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   createdByIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  createdByIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** credit_and_payment_rating field predicates */
   creditAndPaymentRating?: InputMaybe<Scalars['Int']['input']>;
   creditAndPaymentRatingGT?: InputMaybe<Scalars['Int']['input']>;
@@ -3376,10 +3381,12 @@ export type TenderWhereInput = {
   finderIDHasPrefix?: InputMaybe<Scalars['ID']['input']>;
   finderIDHasSuffix?: InputMaybe<Scalars['ID']['input']>;
   finderIDIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  finderIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   finderIDLT?: InputMaybe<Scalars['ID']['input']>;
   finderIDLTE?: InputMaybe<Scalars['ID']['input']>;
   finderIDNEQ?: InputMaybe<Scalars['ID']['input']>;
   finderIDNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  finderIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** full_address field predicates */
   fullAddress?: InputMaybe<Scalars['String']['input']>;
   fullAddressContains?: InputMaybe<Scalars['String']['input']>;
@@ -3875,6 +3882,7 @@ export type UpdateCustomerInput = {
   clearContactPersonEmail?: InputMaybe<Scalars['Boolean']['input']>;
   clearContactPersonPhone?: InputMaybe<Scalars['Boolean']['input']>;
   clearContactPersonPosition?: InputMaybe<Scalars['Boolean']['input']>;
+  clearCreatedBy?: InputMaybe<Scalars['Boolean']['input']>;
   clearIndustry?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerType?: InputMaybe<Scalars['Boolean']['input']>;
   clearSales?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3982,6 +3990,7 @@ export type UpdateTenderInput = {
   clearContractForm?: InputMaybe<Scalars['Boolean']['input']>;
   clearContractor?: InputMaybe<Scalars['Boolean']['input']>;
   clearCostEngineer?: InputMaybe<Scalars['Boolean']['input']>;
+  clearCreatedBy?: InputMaybe<Scalars['Boolean']['input']>;
   clearCreditAndPaymentRating?: InputMaybe<Scalars['Boolean']['input']>;
   clearCreditAndPaymentRatingOverview?: InputMaybe<Scalars['Boolean']['input']>;
   clearCurrentProgress?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3995,6 +4004,7 @@ export type UpdateTenderInput = {
   clearEstimatedProjectEndDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearEstimatedProjectStartDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearFacadeConsultant?: InputMaybe<Scalars['Boolean']['input']>;
+  clearFinder?: InputMaybe<Scalars['Boolean']['input']>;
   clearFollowingSales?: InputMaybe<Scalars['Boolean']['input']>;
   clearFullAddress?: InputMaybe<Scalars['Boolean']['input']>;
   clearImages?: InputMaybe<Scalars['Boolean']['input']>;

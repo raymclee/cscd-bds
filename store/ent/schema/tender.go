@@ -132,9 +132,13 @@ func (Tender) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 		field.String("finder_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 		field.String("created_by_id").
-			GoType(xid.ID("")),
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 		field.String("competitor_id").
 			GoType(xid.ID("")).
 			Optional().
@@ -156,12 +160,10 @@ func (Tender) Edges() []ent.Edge {
 			Unique(),
 		edge.To("finder", User.Type).
 			Field("finder_id").
-			Unique().
-			Required(),
+			Unique(),
 		edge.To("created_by", User.Type).
 			Field("created_by_id").
-			Unique().
-			Required(),
+			Unique(),
 		edge.To("following_sales", User.Type),
 		edge.From("province", Province.Type).
 			Ref("tenders").

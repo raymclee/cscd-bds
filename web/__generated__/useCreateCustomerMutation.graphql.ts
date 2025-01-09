@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f6bd824870ff23b08152ce9a199afab4>>
+ * @generated SignedSource<<8253d9b635ec20c54ef289f2b3ed39ab>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,7 @@ export type CreateCustomerInput = {
   contactPersonPhone?: string | null | undefined;
   contactPersonPosition?: string | null | undefined;
   createdAt?: any | null | undefined;
-  createdByID: string;
+  createdByID?: string | null | undefined;
   industry?: number | null | undefined;
   name: string;
   ownerType?: number | null | undefined;

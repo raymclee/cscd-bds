@@ -24,14 +24,32 @@ func (r *queryResolver) SearchFeishuUser(ctx context.Context, keyword string) ([
 	if err != nil {
 		return nil, err
 	}
-	var out []*model.FeishuUser
+
+	userIds := make([]string, 0, len(*users))
 	for _, user := range *users {
-		out = append(out, &model.FeishuUser{
-			OpenID:    user.OpenID,
-			Name:      user.Name,
-			AvatarURL: user.Avatar.AvatarOrigin,
-		})
+		userIds = append(userIds, user.OpenID)
+
 	}
+
+	userInfos, err := r.feishu.GetUserInfos(ctx, userIds)
+	if err != nil {
+		return nil, err
+	}
+
+	var out []*model.FeishuUser
+	for _, userInfo := range userInfos {
+		for _, user := range *users {
+			if userInfo.OpenId != nil && userInfo.Email != nil && *userInfo.OpenId == user.OpenID {
+				out = append(out, &model.FeishuUser{
+					OpenID:    user.OpenID,
+					Name:      user.Name,
+					AvatarURL: user.Avatar.AvatarOrigin,
+					Email:     *userInfo.Email,
+				})
+			}
+		}
+	}
+
 	return out, nil
 }
 

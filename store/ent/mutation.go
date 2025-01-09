@@ -3986,7 +3986,7 @@ func (m *CustomerMutation) CreatedByID() (r xid.ID, exists bool) {
 // OldCreatedByID returns the old "created_by_id" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldCreatedByID(ctx context.Context) (v xid.ID, err error) {
+func (m *CustomerMutation) OldCreatedByID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreatedByID is only allowed on UpdateOne operations")
 	}
@@ -4000,9 +4000,22 @@ func (m *CustomerMutation) OldCreatedByID(ctx context.Context) (v xid.ID, err er
 	return oldValue.CreatedByID, nil
 }
 
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (m *CustomerMutation) ClearCreatedByID() {
+	m.created_by = nil
+	m.clearedFields[customer.FieldCreatedByID] = struct{}{}
+}
+
+// CreatedByIDCleared returns if the "created_by_id" field was cleared in this mutation.
+func (m *CustomerMutation) CreatedByIDCleared() bool {
+	_, ok := m.clearedFields[customer.FieldCreatedByID]
+	return ok
+}
+
 // ResetCreatedByID resets all changes to the "created_by_id" field.
 func (m *CustomerMutation) ResetCreatedByID() {
 	m.created_by = nil
+	delete(m.clearedFields, customer.FieldCreatedByID)
 }
 
 // ClearArea clears the "area" edge to the Area entity.
@@ -4121,7 +4134,7 @@ func (m *CustomerMutation) ClearCreatedBy() {
 
 // CreatedByCleared reports if the "created_by" edge to the User entity was cleared.
 func (m *CustomerMutation) CreatedByCleared() bool {
-	return m.clearedcreated_by
+	return m.CreatedByIDCleared() || m.clearedcreated_by
 }
 
 // CreatedByIDs returns the "created_by" edge IDs in the mutation.
@@ -4547,6 +4560,9 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldSalesID) {
 		fields = append(fields, customer.FieldSalesID)
 	}
+	if m.FieldCleared(customer.FieldCreatedByID) {
+		fields = append(fields, customer.FieldCreatedByID)
+	}
 	return fields
 }
 
@@ -4587,6 +4603,9 @@ func (m *CustomerMutation) ClearField(name string) error {
 		return nil
 	case customer.FieldSalesID:
 		m.ClearSalesID()
+		return nil
+	case customer.FieldCreatedByID:
+		m.ClearCreatedByID()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer nullable field %s", name)
@@ -16642,7 +16661,7 @@ func (m *TenderMutation) FinderID() (r xid.ID, exists bool) {
 // OldFinderID returns the old "finder_id" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldFinderID(ctx context.Context) (v xid.ID, err error) {
+func (m *TenderMutation) OldFinderID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldFinderID is only allowed on UpdateOne operations")
 	}
@@ -16656,9 +16675,22 @@ func (m *TenderMutation) OldFinderID(ctx context.Context) (v xid.ID, err error) 
 	return oldValue.FinderID, nil
 }
 
+// ClearFinderID clears the value of the "finder_id" field.
+func (m *TenderMutation) ClearFinderID() {
+	m.finder = nil
+	m.clearedFields[tender.FieldFinderID] = struct{}{}
+}
+
+// FinderIDCleared returns if the "finder_id" field was cleared in this mutation.
+func (m *TenderMutation) FinderIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldFinderID]
+	return ok
+}
+
 // ResetFinderID resets all changes to the "finder_id" field.
 func (m *TenderMutation) ResetFinderID() {
 	m.finder = nil
+	delete(m.clearedFields, tender.FieldFinderID)
 }
 
 // SetCreatedByID sets the "created_by_id" field.
@@ -16678,7 +16710,7 @@ func (m *TenderMutation) CreatedByID() (r xid.ID, exists bool) {
 // OldCreatedByID returns the old "created_by_id" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldCreatedByID(ctx context.Context) (v xid.ID, err error) {
+func (m *TenderMutation) OldCreatedByID(ctx context.Context) (v *xid.ID, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreatedByID is only allowed on UpdateOne operations")
 	}
@@ -16692,9 +16724,22 @@ func (m *TenderMutation) OldCreatedByID(ctx context.Context) (v xid.ID, err erro
 	return oldValue.CreatedByID, nil
 }
 
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (m *TenderMutation) ClearCreatedByID() {
+	m.created_by = nil
+	m.clearedFields[tender.FieldCreatedByID] = struct{}{}
+}
+
+// CreatedByIDCleared returns if the "created_by_id" field was cleared in this mutation.
+func (m *TenderMutation) CreatedByIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldCreatedByID]
+	return ok
+}
+
 // ResetCreatedByID resets all changes to the "created_by_id" field.
 func (m *TenderMutation) ResetCreatedByID() {
 	m.created_by = nil
+	delete(m.clearedFields, tender.FieldCreatedByID)
 }
 
 // SetCompetitorID sets the "competitor_id" field.
@@ -16808,7 +16853,7 @@ func (m *TenderMutation) ClearFinder() {
 
 // FinderCleared reports if the "finder" edge to the User entity was cleared.
 func (m *TenderMutation) FinderCleared() bool {
-	return m.clearedfinder
+	return m.FinderIDCleared() || m.clearedfinder
 }
 
 // FinderIDs returns the "finder" edge IDs in the mutation.
@@ -16835,7 +16880,7 @@ func (m *TenderMutation) ClearCreatedBy() {
 
 // CreatedByCleared reports if the "created_by" edge to the User entity was cleared.
 func (m *TenderMutation) CreatedByCleared() bool {
-	return m.clearedcreated_by
+	return m.CreatedByIDCleared() || m.clearedcreated_by
 }
 
 // CreatedByIDs returns the "created_by" edge IDs in the mutation.
@@ -18353,6 +18398,12 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldCustomerID) {
 		fields = append(fields, tender.FieldCustomerID)
 	}
+	if m.FieldCleared(tender.FieldFinderID) {
+		fields = append(fields, tender.FieldFinderID)
+	}
+	if m.FieldCleared(tender.FieldCreatedByID) {
+		fields = append(fields, tender.FieldCreatedByID)
+	}
 	if m.FieldCleared(tender.FieldCompetitorID) {
 		fields = append(fields, tender.FieldCompetitorID)
 	}
@@ -18528,6 +18579,12 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldCustomerID:
 		m.ClearCustomerID()
+		return nil
+	case tender.FieldFinderID:
+		m.ClearFinderID()
+		return nil
+	case tender.FieldCreatedByID:
+		m.ClearCreatedByID()
 		return nil
 	case tender.FieldCompetitorID:
 		m.ClearCompetitorID()

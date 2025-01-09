@@ -10,6 +10,7 @@ import (
 type FeishuUser struct {
 	OpenID    string `json:"openId"`
 	Name      string `json:"name"`
+	Email     string `json:"email"`
 	AvatarURL string `json:"avatarUrl"`
 }
 

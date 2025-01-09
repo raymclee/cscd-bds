@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<04035269d4c0bea7ba783875163b0ccf>>
+ * @generated SignedSource<<b25474832419e5551b939fa88f05e0c7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,7 +29,7 @@ export type CreateTenderInput = {
   contractor?: string | null | undefined;
   costEngineer?: string | null | undefined;
   createdAt?: any | null | undefined;
-  createdByID: string;
+  createdByID?: string | null | undefined;
   creditAndPaymentRating?: number | null | undefined;
   creditAndPaymentRatingOverview?: string | null | undefined;
   currentProgress?: string | null | undefined;
@@ -44,7 +44,7 @@ export type CreateTenderInput = {
   estimatedProjectEndDate?: any | null | undefined;
   estimatedProjectStartDate?: any | null | undefined;
   facadeConsultant?: string | null | undefined;
-  finderID: string;
+  finderID?: string | null | undefined;
   followingSaleIDs?: ReadonlyArray<string> | null | undefined;
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;

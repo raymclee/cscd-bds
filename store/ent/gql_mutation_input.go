@@ -394,7 +394,7 @@ type CreateCustomerInput struct {
 	AreaID                xid.ID
 	TenderIDs             []xid.ID
 	SalesID               *xid.ID
-	CreatedByID           xid.ID
+	CreatedByID           *xid.ID
 	VisitRecordIDs        []xid.ID
 }
 
@@ -435,7 +435,9 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.SalesID; v != nil {
 		m.SetSalesID(*v)
 	}
-	m.SetCreatedByID(i.CreatedByID)
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
@@ -471,6 +473,7 @@ type UpdateCustomerInput struct {
 	RemoveTenderIDs            []xid.ID
 	ClearSales                 bool
 	SalesID                    *xid.ID
+	ClearCreatedBy             bool
 	CreatedByID                *xid.ID
 	ClearVisitRecords          bool
 	AddVisitRecordIDs          []xid.ID
@@ -544,6 +547,9 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.SalesID; v != nil {
 		m.SetSalesID(*v)
+	}
+	if i.ClearCreatedBy {
+		m.ClearCreatedBy()
 	}
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)
@@ -938,8 +944,8 @@ type CreateTenderInput struct {
 	LastTenderAmount                     *float64
 	AreaID                               xid.ID
 	CustomerID                           *xid.ID
-	FinderID                             xid.ID
-	CreatedByID                          xid.ID
+	FinderID                             *xid.ID
+	CreatedByID                          *xid.ID
 	FollowingSaleIDs                     []xid.ID
 	ProvinceID                           *xid.ID
 	CityID                               *xid.ID
@@ -1113,8 +1119,12 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.CustomerID; v != nil {
 		m.SetCustomerID(*v)
 	}
-	m.SetFinderID(i.FinderID)
-	m.SetCreatedByID(i.CreatedByID)
+	if v := i.FinderID; v != nil {
+		m.SetFinderID(*v)
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
 	if v := i.FollowingSaleIDs; len(v) > 0 {
 		m.AddFollowingSaleIDs(v...)
 	}
@@ -1249,7 +1259,9 @@ type UpdateTenderInput struct {
 	AreaID                                    *xid.ID
 	ClearCustomer                             bool
 	CustomerID                                *xid.ID
+	ClearFinder                               bool
 	FinderID                                  *xid.ID
+	ClearCreatedBy                            bool
 	CreatedByID                               *xid.ID
 	ClearFollowingSales                       bool
 	AddFollowingSaleIDs                       []xid.ID
@@ -1587,8 +1599,14 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.CustomerID; v != nil {
 		m.SetCustomerID(*v)
 	}
+	if i.ClearFinder {
+		m.ClearFinder()
+	}
 	if v := i.FinderID; v != nil {
 		m.SetFinderID(*v)
+	}
+	if i.ClearCreatedBy {
+		m.ClearCreatedBy()
 	}
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)

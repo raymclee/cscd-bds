@@ -1273,6 +1273,12 @@ func (tu *TenderUpdate) SetNillableFinderID(x *xid.ID) *TenderUpdate {
 	return tu
 }
 
+// ClearFinderID clears the value of the "finder_id" field.
+func (tu *TenderUpdate) ClearFinderID() *TenderUpdate {
+	tu.mutation.ClearFinderID()
+	return tu
+}
+
 // SetCreatedByID sets the "created_by_id" field.
 func (tu *TenderUpdate) SetCreatedByID(x xid.ID) *TenderUpdate {
 	tu.mutation.SetCreatedByID(x)
@@ -1284,6 +1290,12 @@ func (tu *TenderUpdate) SetNillableCreatedByID(x *xid.ID) *TenderUpdate {
 	if x != nil {
 		tu.SetCreatedByID(*x)
 	}
+	return tu
+}
+
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (tu *TenderUpdate) ClearCreatedByID() *TenderUpdate {
+	tu.mutation.ClearCreatedByID()
 	return tu
 }
 
@@ -1552,12 +1564,6 @@ func (tu *TenderUpdate) check() error {
 	}
 	if tu.mutation.AreaCleared() && len(tu.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
-	}
-	if tu.mutation.FinderCleared() && len(tu.mutation.FinderIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.finder"`)
-	}
-	if tu.mutation.CreatedByCleared() && len(tu.mutation.CreatedByIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.created_by"`)
 	}
 	return nil
 }
@@ -3510,6 +3516,12 @@ func (tuo *TenderUpdateOne) SetNillableFinderID(x *xid.ID) *TenderUpdateOne {
 	return tuo
 }
 
+// ClearFinderID clears the value of the "finder_id" field.
+func (tuo *TenderUpdateOne) ClearFinderID() *TenderUpdateOne {
+	tuo.mutation.ClearFinderID()
+	return tuo
+}
+
 // SetCreatedByID sets the "created_by_id" field.
 func (tuo *TenderUpdateOne) SetCreatedByID(x xid.ID) *TenderUpdateOne {
 	tuo.mutation.SetCreatedByID(x)
@@ -3521,6 +3533,12 @@ func (tuo *TenderUpdateOne) SetNillableCreatedByID(x *xid.ID) *TenderUpdateOne {
 	if x != nil {
 		tuo.SetCreatedByID(*x)
 	}
+	return tuo
+}
+
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (tuo *TenderUpdateOne) ClearCreatedByID() *TenderUpdateOne {
+	tuo.mutation.ClearCreatedByID()
 	return tuo
 }
 
@@ -3802,12 +3820,6 @@ func (tuo *TenderUpdateOne) check() error {
 	}
 	if tuo.mutation.AreaCleared() && len(tuo.mutation.AreaIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Tender.area"`)
-	}
-	if tuo.mutation.FinderCleared() && len(tuo.mutation.FinderIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.finder"`)
-	}
-	if tuo.mutation.CreatedByCleared() && len(tuo.mutation.CreatedByIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "Tender.created_by"`)
 	}
 	return nil
 }

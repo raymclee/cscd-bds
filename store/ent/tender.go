@@ -152,9 +152,9 @@ type Tender struct {
 	// CustomerID holds the value of the "customer_id" field.
 	CustomerID *xid.ID `json:"customer_id,omitempty"`
 	// FinderID holds the value of the "finder_id" field.
-	FinderID xid.ID `json:"finder_id,omitempty"`
+	FinderID *xid.ID `json:"finder_id,omitempty"`
 	// CreatedByID holds the value of the "created_by_id" field.
-	CreatedByID xid.ID `json:"created_by_id,omitempty"`
+	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
 	// CompetitorID holds the value of the "competitor_id" field.
 	CompetitorID *xid.ID `json:"competitor_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -308,7 +308,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldCompetitorID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldCompetitorID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
@@ -322,7 +322,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case tender.FieldCreatedAt, tender.FieldUpdatedAt, tender.FieldTenderDate, tender.FieldDiscoveryDate, tender.FieldEstimatedProjectStartDate, tender.FieldEstimatedProjectEndDate, tender.FieldBiddingDate, tender.FieldTenderClosingDate, tender.FieldTenderWinDate:
 			values[i] = new(sql.NullTime)
-		case tender.FieldID, tender.FieldAreaID, tender.FieldFinderID, tender.FieldCreatedByID:
+		case tender.FieldID, tender.FieldAreaID:
 			values[i] = new(xid.ID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -762,16 +762,18 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				*t.CustomerID = *value.S.(*xid.ID)
 			}
 		case tender.FieldFinderID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field finder_id", values[i])
-			} else if value != nil {
-				t.FinderID = *value
+			} else if value.Valid {
+				t.FinderID = new(xid.ID)
+				*t.FinderID = *value.S.(*xid.ID)
 			}
 		case tender.FieldCreatedByID:
-			if value, ok := values[i].(*xid.ID); !ok {
+			if value, ok := values[i].(*sql.NullScanner); !ok {
 				return fmt.Errorf("unexpected type %T for field created_by_id", values[i])
-			} else if value != nil {
-				t.CreatedByID = *value
+			} else if value.Valid {
+				t.CreatedByID = new(xid.ID)
+				*t.CreatedByID = *value.S.(*xid.ID)
 			}
 		case tender.FieldCompetitorID:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -1130,11 +1132,15 @@ func (t *Tender) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("finder_id=")
-	builder.WriteString(fmt.Sprintf("%v", t.FinderID))
+	if v := t.FinderID; v != nil {
+		builder.WriteString("finder_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("created_by_id=")
-	builder.WriteString(fmt.Sprintf("%v", t.CreatedByID))
+	if v := t.CreatedByID; v != nil {
+		builder.WriteString("created_by_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	if v := t.CompetitorID; v != nil {
 		builder.WriteString("competitor_id=")

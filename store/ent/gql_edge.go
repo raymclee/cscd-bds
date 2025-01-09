@@ -226,7 +226,7 @@ func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
 	if IsNotLoaded(err) {
 		result, err = c.QueryCreatedBy().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (c *Customer) VisitRecords(
@@ -436,7 +436,7 @@ func (t *Tender) Finder(ctx context.Context) (*User, error) {
 	if IsNotLoaded(err) {
 		result, err = t.QueryFinder().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (t *Tender) CreatedBy(ctx context.Context) (*User, error) {
@@ -444,7 +444,7 @@ func (t *Tender) CreatedBy(ctx context.Context) (*User, error) {
 	if IsNotLoaded(err) {
 		result, err = t.QueryCreatedBy().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (t *Tender) FollowingSales(ctx context.Context) (result []*User, err error) {

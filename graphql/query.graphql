@@ -9,6 +9,7 @@ extend type Query {
 type FeishuUser {
   openId: String!
   name: String!
+  email: String!
   avatarUrl: String!
 }
 

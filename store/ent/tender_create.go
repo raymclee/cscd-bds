@@ -843,9 +843,25 @@ func (tc *TenderCreate) SetFinderID(x xid.ID) *TenderCreate {
 	return tc
 }
 
+// SetNillableFinderID sets the "finder_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableFinderID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetFinderID(*x)
+	}
+	return tc
+}
+
 // SetCreatedByID sets the "created_by_id" field.
 func (tc *TenderCreate) SetCreatedByID(x xid.ID) *TenderCreate {
 	tc.mutation.SetCreatedByID(x)
+	return tc
+}
+
+// SetNillableCreatedByID sets the "created_by_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableCreatedByID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetCreatedByID(*x)
+	}
 	return tc
 }
 
@@ -1077,20 +1093,8 @@ func (tc *TenderCreate) check() error {
 	if _, ok := tc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Tender.area_id"`)}
 	}
-	if _, ok := tc.mutation.FinderID(); !ok {
-		return &ValidationError{Name: "finder_id", err: errors.New(`ent: missing required field "Tender.finder_id"`)}
-	}
-	if _, ok := tc.mutation.CreatedByID(); !ok {
-		return &ValidationError{Name: "created_by_id", err: errors.New(`ent: missing required field "Tender.created_by_id"`)}
-	}
 	if len(tc.mutation.AreaIDs()) == 0 {
 		return &ValidationError{Name: "area", err: errors.New(`ent: missing required edge "Tender.area"`)}
-	}
-	if len(tc.mutation.FinderIDs()) == 0 {
-		return &ValidationError{Name: "finder", err: errors.New(`ent: missing required edge "Tender.finder"`)}
-	}
-	if len(tc.mutation.CreatedByIDs()) == 0 {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required edge "Tender.created_by"`)}
 	}
 	return nil
 }
@@ -1404,7 +1408,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.FinderID = nodes[0]
+		_node.FinderID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := tc.mutation.CreatedByIDs(); len(nodes) > 0 {
@@ -1421,7 +1425,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.CreatedByID = nodes[0]
+		_node.CreatedByID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := tc.mutation.FollowingSalesIDs(); len(nodes) > 0 {
@@ -2698,6 +2702,12 @@ func (u *TenderUpsert) UpdateFinderID() *TenderUpsert {
 	return u
 }
 
+// ClearFinderID clears the value of the "finder_id" field.
+func (u *TenderUpsert) ClearFinderID() *TenderUpsert {
+	u.SetNull(tender.FieldFinderID)
+	return u
+}
+
 // SetCreatedByID sets the "created_by_id" field.
 func (u *TenderUpsert) SetCreatedByID(v xid.ID) *TenderUpsert {
 	u.Set(tender.FieldCreatedByID, v)
@@ -2707,6 +2717,12 @@ func (u *TenderUpsert) SetCreatedByID(v xid.ID) *TenderUpsert {
 // UpdateCreatedByID sets the "created_by_id" field to the value that was provided on create.
 func (u *TenderUpsert) UpdateCreatedByID() *TenderUpsert {
 	u.SetExcluded(tender.FieldCreatedByID)
+	return u
+}
+
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (u *TenderUpsert) ClearCreatedByID() *TenderUpsert {
+	u.SetNull(tender.FieldCreatedByID)
 	return u
 }
 
@@ -4088,6 +4104,13 @@ func (u *TenderUpsertOne) UpdateFinderID() *TenderUpsertOne {
 	})
 }
 
+// ClearFinderID clears the value of the "finder_id" field.
+func (u *TenderUpsertOne) ClearFinderID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearFinderID()
+	})
+}
+
 // SetCreatedByID sets the "created_by_id" field.
 func (u *TenderUpsertOne) SetCreatedByID(v xid.ID) *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
@@ -4099,6 +4122,13 @@ func (u *TenderUpsertOne) SetCreatedByID(v xid.ID) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateCreatedByID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCreatedByID()
+	})
+}
+
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (u *TenderUpsertOne) ClearCreatedByID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCreatedByID()
 	})
 }
 
@@ -5650,6 +5680,13 @@ func (u *TenderUpsertBulk) UpdateFinderID() *TenderUpsertBulk {
 	})
 }
 
+// ClearFinderID clears the value of the "finder_id" field.
+func (u *TenderUpsertBulk) ClearFinderID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearFinderID()
+	})
+}
+
 // SetCreatedByID sets the "created_by_id" field.
 func (u *TenderUpsertBulk) SetCreatedByID(v xid.ID) *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
@@ -5661,6 +5698,13 @@ func (u *TenderUpsertBulk) SetCreatedByID(v xid.ID) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateCreatedByID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateCreatedByID()
+	})
+}
+
+// ClearCreatedByID clears the value of the "created_by_id" field.
+func (u *TenderUpsertBulk) ClearCreatedByID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearCreatedByID()
 	})
 }
 

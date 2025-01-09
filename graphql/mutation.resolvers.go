@@ -76,9 +76,19 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id xid.ID, input ent.
 
 // DeleteUser is the resolver for the deleteUser field.
 func (r *mutationResolver) DeleteUser(ctx context.Context, id xid.ID) (*ent.User, error) {
+	sess, err := r.session.GetSession(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session: %w", err)
+	}
+	if string(id) == sess.UserId {
+		return nil, fmt.Errorf("failed to delete user: %w", errors.New("cannot delete self"))
+	}
 	u, err := r.store.User.Get(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user: %w", err)
+	}
+	if sess.IsAdmin && (u.IsSuperAdmin || u.IsCeo) {
+		return nil, fmt.Errorf("failed to delete user: %w", errors.New("cannot delete super admin or ceo"))
 	}
 	return u, r.store.User.DeleteOne(u).Exec(ctx)
 }
@@ -229,7 +239,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
 
-	if string(t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
+	if t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
 	}
 

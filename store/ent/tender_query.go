@@ -881,7 +881,10 @@ func (tq *TenderQuery) loadFinder(ctx context.Context, query *UserQuery, nodes [
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Tender)
 	for i := range nodes {
-		fk := nodes[i].FinderID
+		if nodes[i].FinderID == nil {
+			continue
+		}
+		fk := *nodes[i].FinderID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -910,7 +913,10 @@ func (tq *TenderQuery) loadCreatedBy(ctx context.Context, query *UserQuery, node
 	ids := make([]xid.ID, 0, len(nodes))
 	nodeids := make(map[xid.ID][]*Tender)
 	for i := range nodes {
-		fk := nodes[i].CreatedByID
+		if nodes[i].CreatedByID == nil {
+			continue
+		}
+		fk := *nodes[i].CreatedByID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}

@@ -98,4 +98,43 @@ type FeishuUser struct {
 	DepartmentIds []string `json:"department_ids"`
 	Name          string   `json:"name"`
 	OpenID        string   `json:"open_id"`
+	Email         string   `json:"email"`
+}
+
+func (f *Feishu) GetUserInfos(ctx context.Context, userIds []string) ([]*larkcontact.User, error) {
+	accessToken, err := f.session.GetAccessToken(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println("userIds", userIds)
+
+	req := larkcontact.NewBatchUserReqBuilder().
+		UserIdType(`open_id`).
+		UserIds(userIds).
+		DepartmentIdType(`open_department_id`).
+		Build()
+
+	// 发起请求
+	resp, err := f.Client.Contact.User.Batch(ctx, req, larkcore.WithUserAccessToken(accessToken))
+
+	// 处理错误
+	if err != nil {
+		return nil, fmt.Errorf("get user infos error: %v", err)
+	}
+
+	// 服务端错误处理
+	if !resp.Success() {
+		return nil, fmt.Errorf("get user infos error: %v", resp.CodeError)
+	}
+
+	var out []*larkcontact.User
+	for _, user := range resp.Data.Items {
+		fmt.Println("user", user)
+		if user.Status.IsFrozen != nil && !*user.Status.IsFrozen {
+			out = append(out, user)
+		}
+	}
+
+	return out, nil
 }

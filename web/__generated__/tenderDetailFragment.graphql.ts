@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<96e82a61e64b29f18d9366f5c767b99c>>
+ * @generated SignedSource<<0aefda34ce6c079e09121fbefc32a5e5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,7 +37,7 @@ export type tenderDetailFragment$data = {
   readonly costEngineer: string | null | undefined;
   readonly createdBy: {
     readonly id: string;
-  };
+  } | null | undefined;
   readonly creditAndPaymentRating: number | null | undefined;
   readonly creditAndPaymentRatingOverview: string | null | undefined;
   readonly currentProgress: string | null | undefined;
@@ -62,7 +62,7 @@ export type tenderDetailFragment$data = {
   readonly facadeConsultant: string | null | undefined;
   readonly finder: {
     readonly id: string;
-  };
+  } | null | undefined;
   readonly followingSales: ReadonlyArray<{
     readonly id: string;
     readonly name: string;

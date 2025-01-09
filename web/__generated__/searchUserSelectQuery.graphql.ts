@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fdf505de29de84488e86525ffa964c2a>>
+ * @generated SignedSource<<8673ece68f6007e08f99c2a562d4a6e6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type searchUserSelectQuery$variables = {
 export type searchUserSelectQuery$data = {
   readonly searchFeishuUser: ReadonlyArray<{
     readonly avatarUrl: string;
+    readonly email: string;
     readonly name: string;
     readonly openId: string;
   }>;
@@ -67,6 +68,13 @@ v1 = [
         "kind": "ScalarField",
         "name": "avatarUrl",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "email",
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -90,16 +98,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "82cf47675ef4516b3f1186f4b4b819ba",
+    "cacheID": "d5077200df9a8f9049f77063a3603ca8",
     "id": null,
     "metadata": {},
     "name": "searchUserSelectQuery",
     "operationKind": "query",
-    "text": "query searchUserSelectQuery(\n  $keyword: String!\n) {\n  searchFeishuUser(keyword: $keyword) {\n    openId\n    name\n    avatarUrl\n  }\n}\n"
+    "text": "query searchUserSelectQuery(\n  $keyword: String!\n) {\n  searchFeishuUser(keyword: $keyword) {\n    openId\n    name\n    avatarUrl\n    email\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "600a3c68c34a1f4dea14f858dc005066";
+(node as any).hash = "34eaee0da5344926b5e9c174e603f14e";
 
 export default node;

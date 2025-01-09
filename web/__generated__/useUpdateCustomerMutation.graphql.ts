@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<531cc459ea61dc39b01b318683acb871>>
+ * @generated SignedSource<<c81bbd2864caacf08937b84ff280c645>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,7 @@ export type UpdateCustomerInput = {
   clearContactPersonEmail?: boolean | null | undefined;
   clearContactPersonPhone?: boolean | null | undefined;
   clearContactPersonPosition?: boolean | null | undefined;
+  clearCreatedBy?: boolean | null | undefined;
   clearIndustry?: boolean | null | undefined;
   clearOwnerType?: boolean | null | undefined;
   clearSales?: boolean | null | undefined;

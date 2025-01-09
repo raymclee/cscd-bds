@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7f4ab08d1cc5b32af4e8d9b6945d200b>>
+ * @generated SignedSource<<7e4f26247e1aa3f53c698df447d0c47a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -36,6 +36,7 @@ export type UpdateTenderInput = {
   clearContractForm?: boolean | null | undefined;
   clearContractor?: boolean | null | undefined;
   clearCostEngineer?: boolean | null | undefined;
+  clearCreatedBy?: boolean | null | undefined;
   clearCreditAndPaymentRating?: boolean | null | undefined;
   clearCreditAndPaymentRatingOverview?: boolean | null | undefined;
   clearCurrentProgress?: boolean | null | undefined;
@@ -49,6 +50,7 @@ export type UpdateTenderInput = {
   clearEstimatedProjectEndDate?: boolean | null | undefined;
   clearEstimatedProjectStartDate?: boolean | null | undefined;
   clearFacadeConsultant?: boolean | null | undefined;
+  clearFinder?: boolean | null | undefined;
   clearFollowingSales?: boolean | null | undefined;
   clearFullAddress?: boolean | null | undefined;
   clearImages?: boolean | null | undefined;

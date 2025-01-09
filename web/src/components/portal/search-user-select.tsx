@@ -25,6 +25,7 @@ export function SearchUserSelect(props: SearchUserSelectProps) {
             openId
             name
             avatarUrl
+            email
           }
         }
       `,
@@ -38,6 +39,7 @@ export function SearchUserSelect(props: SearchUserSelectProps) {
               label: u.name,
               value: u.openId,
               avatarUrl: u.avatarUrl,
+              email: u.email,
             })),
           );
         }
@@ -77,7 +79,7 @@ export function SearchUserSelect(props: SearchUserSelectProps) {
               className="mr-1 h-6 w-6 rounded-full"
               alt={String(u?.label) || ""}
             />
-            {u?.label}
+            {`${u?.label} (${u?.email})`}
           </div>
         );
       }}
@@ -89,7 +91,7 @@ export function SearchUserSelect(props: SearchUserSelectProps) {
               className="mr-1 h-6 w-6 rounded-full"
               alt={String(option.data.label) || ""}
             />
-            {option.data.label}
+            {`${option.data.label} (${option.data.email})`}
           </div>
         );
       }}
