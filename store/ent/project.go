@@ -66,6 +66,16 @@ type Project struct {
 	VaApplyAmount *float64 `json:"va_apply_amount,omitempty"`
 	// 分判VA批复总额
 	VaApproveAmount *float64 `json:"va_approve_amount,omitempty"`
+	// 累计法定扣款
+	AccumulatedStatutoryDeductions *float64 `json:"accumulated_statutory_deductions,omitempty"`
+	// 累计非法定扣款
+	AccumulatedNonStatutoryDeductions *float64 `json:"accumulated_non_statutory_deductions,omitempty"`
+	// 本期法定扣款
+	AccumulatedStatutoryDeductionsPeriod *float64 `json:"accumulated_statutory_deductions_period,omitempty"`
+	// 本期非法定扣款
+	AccumulatedNonStatutoryDeductionsPeriod *float64 `json:"accumulated_non_statutory_deductions_period,omitempty"`
+	// 合約总额
+	TotalContractAmount *float64 `json:"total_contract_amount,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -101,7 +111,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount:
+		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount:
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount:
 			values[i] = new(sql.NullInt64)
@@ -296,6 +306,41 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.VaApproveAmount = new(float64)
 				*pr.VaApproveAmount = value.Float64
 			}
+		case project.FieldAccumulatedStatutoryDeductions:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field accumulated_statutory_deductions", values[i])
+			} else if value.Valid {
+				pr.AccumulatedStatutoryDeductions = new(float64)
+				*pr.AccumulatedStatutoryDeductions = value.Float64
+			}
+		case project.FieldAccumulatedNonStatutoryDeductions:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field accumulated_non_statutory_deductions", values[i])
+			} else if value.Valid {
+				pr.AccumulatedNonStatutoryDeductions = new(float64)
+				*pr.AccumulatedNonStatutoryDeductions = value.Float64
+			}
+		case project.FieldAccumulatedStatutoryDeductionsPeriod:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field accumulated_statutory_deductions_period", values[i])
+			} else if value.Valid {
+				pr.AccumulatedStatutoryDeductionsPeriod = new(float64)
+				*pr.AccumulatedStatutoryDeductionsPeriod = value.Float64
+			}
+		case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field accumulated_non_statutory_deductions_period", values[i])
+			} else if value.Valid {
+				pr.AccumulatedNonStatutoryDeductionsPeriod = new(float64)
+				*pr.AccumulatedNonStatutoryDeductionsPeriod = value.Float64
+			}
+		case project.FieldTotalContractAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field total_contract_amount", values[i])
+			} else if value.Valid {
+				pr.TotalContractAmount = new(float64)
+				*pr.TotalContractAmount = value.Float64
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -446,6 +491,31 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.VaApproveAmount; v != nil {
 		builder.WriteString("va_approve_amount=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.AccumulatedStatutoryDeductions; v != nil {
+		builder.WriteString("accumulated_statutory_deductions=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.AccumulatedNonStatutoryDeductions; v != nil {
+		builder.WriteString("accumulated_non_statutory_deductions=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.AccumulatedStatutoryDeductionsPeriod; v != nil {
+		builder.WriteString("accumulated_statutory_deductions_period=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.AccumulatedNonStatutoryDeductionsPeriod; v != nil {
+		builder.WriteString("accumulated_non_statutory_deductions_period=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.TotalContractAmount; v != nil {
+		builder.WriteString("total_contract_amount=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

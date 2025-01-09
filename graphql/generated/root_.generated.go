@@ -297,32 +297,37 @@ type ComplexityRoot struct {
 	}
 
 	Project struct {
-		Cje                     func(childComplexity int) int
-		Code                    func(childComplexity int) int
-		ContractorApplyAmount   func(childComplexity int) int
-		ContractorApplyCount    func(childComplexity int) int
-		ContractorApproveAmount func(childComplexity int) int
-		ContractorApproveCount  func(childComplexity int) int
-		CreatedAt               func(childComplexity int) int
-		EffectiveContractAmount func(childComplexity int) int
-		ID                      func(childComplexity int) int
-		InstallProgress         func(childComplexity int) int
-		IsFinished              func(childComplexity int) int
-		Name                    func(childComplexity int) int
-		OwnerApplyAmount        func(childComplexity int) int
-		OwnerApplyCount         func(childComplexity int) int
-		OwnerApproveAmount      func(childComplexity int) int
-		OwnerApproveCount       func(childComplexity int) int
-		UpdatedAt               func(childComplexity int) int
-		VaApplyAmount           func(childComplexity int) int
-		VaApproveAmount         func(childComplexity int) int
-		Vos                     func(childComplexity int) int
-		Xjl                     func(childComplexity int) int
-		Xmfzr                   func(childComplexity int) int
-		XmglfLj                 func(childComplexity int) int
-		XmglfYs                 func(childComplexity int) int
-		Xmsjf                   func(childComplexity int) int
-		Yye                     func(childComplexity int) int
+		AccumulatedNonStatutoryDeductions       func(childComplexity int) int
+		AccumulatedNonStatutoryDeductionsPeriod func(childComplexity int) int
+		AccumulatedStatutoryDeductions          func(childComplexity int) int
+		AccumulatedStatutoryDeductionsPeriod    func(childComplexity int) int
+		Cje                                     func(childComplexity int) int
+		Code                                    func(childComplexity int) int
+		ContractorApplyAmount                   func(childComplexity int) int
+		ContractorApplyCount                    func(childComplexity int) int
+		ContractorApproveAmount                 func(childComplexity int) int
+		ContractorApproveCount                  func(childComplexity int) int
+		CreatedAt                               func(childComplexity int) int
+		EffectiveContractAmount                 func(childComplexity int) int
+		ID                                      func(childComplexity int) int
+		InstallProgress                         func(childComplexity int) int
+		IsFinished                              func(childComplexity int) int
+		Name                                    func(childComplexity int) int
+		OwnerApplyAmount                        func(childComplexity int) int
+		OwnerApplyCount                         func(childComplexity int) int
+		OwnerApproveAmount                      func(childComplexity int) int
+		OwnerApproveCount                       func(childComplexity int) int
+		TotalContractAmount                     func(childComplexity int) int
+		UpdatedAt                               func(childComplexity int) int
+		VaApplyAmount                           func(childComplexity int) int
+		VaApproveAmount                         func(childComplexity int) int
+		Vos                                     func(childComplexity int) int
+		Xjl                                     func(childComplexity int) int
+		Xmfzr                                   func(childComplexity int) int
+		XmglfLj                                 func(childComplexity int) int
+		XmglfYs                                 func(childComplexity int) int
+		Xmsjf                                   func(childComplexity int) int
+		Yye                                     func(childComplexity int) int
 	}
 
 	ProjectConnection struct {
@@ -388,7 +393,7 @@ type ComplexityRoot struct {
 		Nodes            func(childComplexity int, ids []xid.ID) int
 		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
 		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
-		Projects         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProjectOrder, where *ent.ProjectWhereInput) int
+		Projects         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
 		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		SearchFeishuUser func(childComplexity int, keyword string) int
 		SearchLocation   func(childComplexity int, keyword string) int
@@ -1871,6 +1876,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PlotEdge.Node(childComplexity), true
 
+	case "Project.accumulatedNonStatutoryDeductions":
+		if e.complexity.Project.AccumulatedNonStatutoryDeductions == nil {
+			break
+		}
+
+		return e.complexity.Project.AccumulatedNonStatutoryDeductions(childComplexity), true
+
+	case "Project.accumulatedNonStatutoryDeductionsPeriod":
+		if e.complexity.Project.AccumulatedNonStatutoryDeductionsPeriod == nil {
+			break
+		}
+
+		return e.complexity.Project.AccumulatedNonStatutoryDeductionsPeriod(childComplexity), true
+
+	case "Project.accumulatedStatutoryDeductions":
+		if e.complexity.Project.AccumulatedStatutoryDeductions == nil {
+			break
+		}
+
+		return e.complexity.Project.AccumulatedStatutoryDeductions(childComplexity), true
+
+	case "Project.accumulatedStatutoryDeductionsPeriod":
+		if e.complexity.Project.AccumulatedStatutoryDeductionsPeriod == nil {
+			break
+		}
+
+		return e.complexity.Project.AccumulatedStatutoryDeductionsPeriod(childComplexity), true
+
 	case "Project.cje":
 		if e.complexity.Project.Cje == nil {
 			break
@@ -1982,6 +2015,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.OwnerApproveCount(childComplexity), true
+
+	case "Project.totalContractAmount":
+		if e.complexity.Project.TotalContractAmount == nil {
+			break
+		}
+
+		return e.complexity.Project.TotalContractAmount(childComplexity), true
 
 	case "Project.updatedAt":
 		if e.complexity.Project.UpdatedAt == nil {
@@ -2436,7 +2476,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Projects(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProjectOrder), args["where"].(*ent.ProjectWhereInput)), true
+		return e.complexity.Query.Projects(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.ProjectOrder), args["where"].(*ent.ProjectWhereInput)), true
 
 	case "Query.provinces":
 		if e.complexity.Query.Provinces == nil {
@@ -5938,6 +5978,26 @@ type Project implements Node {
   分判VA批复总额
   """
   vaApproveAmount: Float
+  """
+  累计法定扣款
+  """
+  accumulatedStatutoryDeductions: Float
+  """
+  累计非法定扣款
+  """
+  accumulatedNonStatutoryDeductions: Float
+  """
+  本期法定扣款
+  """
+  accumulatedStatutoryDeductionsPeriod: Float
+  """
+  本期非法定扣款
+  """
+  accumulatedNonStatutoryDeductionsPeriod: Float
+  """
+  合約总额
+  """
+  totalContractAmount: Float
   vos: [ProjectVO!]
 }
 """
@@ -5988,6 +6048,8 @@ Properties by which Project connections can be ordered.
 """
 enum ProjectOrderField {
   CREATED_AT
+  CODE
+  NAME
 }
 type ProjectVO implements Node {
   id: ID!
@@ -6502,6 +6564,71 @@ input ProjectWhereInput {
   vaApproveAmountLTE: Float
   vaApproveAmountIsNil: Boolean
   vaApproveAmountNotNil: Boolean
+  """
+  accumulated_statutory_deductions field predicates
+  """
+  accumulatedStatutoryDeductions: Float
+  accumulatedStatutoryDeductionsNEQ: Float
+  accumulatedStatutoryDeductionsIn: [Float!]
+  accumulatedStatutoryDeductionsNotIn: [Float!]
+  accumulatedStatutoryDeductionsGT: Float
+  accumulatedStatutoryDeductionsGTE: Float
+  accumulatedStatutoryDeductionsLT: Float
+  accumulatedStatutoryDeductionsLTE: Float
+  accumulatedStatutoryDeductionsIsNil: Boolean
+  accumulatedStatutoryDeductionsNotNil: Boolean
+  """
+  accumulated_non_statutory_deductions field predicates
+  """
+  accumulatedNonStatutoryDeductions: Float
+  accumulatedNonStatutoryDeductionsNEQ: Float
+  accumulatedNonStatutoryDeductionsIn: [Float!]
+  accumulatedNonStatutoryDeductionsNotIn: [Float!]
+  accumulatedNonStatutoryDeductionsGT: Float
+  accumulatedNonStatutoryDeductionsGTE: Float
+  accumulatedNonStatutoryDeductionsLT: Float
+  accumulatedNonStatutoryDeductionsLTE: Float
+  accumulatedNonStatutoryDeductionsIsNil: Boolean
+  accumulatedNonStatutoryDeductionsNotNil: Boolean
+  """
+  accumulated_statutory_deductions_period field predicates
+  """
+  accumulatedStatutoryDeductionsPeriod: Float
+  accumulatedStatutoryDeductionsPeriodNEQ: Float
+  accumulatedStatutoryDeductionsPeriodIn: [Float!]
+  accumulatedStatutoryDeductionsPeriodNotIn: [Float!]
+  accumulatedStatutoryDeductionsPeriodGT: Float
+  accumulatedStatutoryDeductionsPeriodGTE: Float
+  accumulatedStatutoryDeductionsPeriodLT: Float
+  accumulatedStatutoryDeductionsPeriodLTE: Float
+  accumulatedStatutoryDeductionsPeriodIsNil: Boolean
+  accumulatedStatutoryDeductionsPeriodNotNil: Boolean
+  """
+  accumulated_non_statutory_deductions_period field predicates
+  """
+  accumulatedNonStatutoryDeductionsPeriod: Float
+  accumulatedNonStatutoryDeductionsPeriodNEQ: Float
+  accumulatedNonStatutoryDeductionsPeriodIn: [Float!]
+  accumulatedNonStatutoryDeductionsPeriodNotIn: [Float!]
+  accumulatedNonStatutoryDeductionsPeriodGT: Float
+  accumulatedNonStatutoryDeductionsPeriodGTE: Float
+  accumulatedNonStatutoryDeductionsPeriodLT: Float
+  accumulatedNonStatutoryDeductionsPeriodLTE: Float
+  accumulatedNonStatutoryDeductionsPeriodIsNil: Boolean
+  accumulatedNonStatutoryDeductionsPeriodNotNil: Boolean
+  """
+  total_contract_amount field predicates
+  """
+  totalContractAmount: Float
+  totalContractAmountNEQ: Float
+  totalContractAmountIn: [Float!]
+  totalContractAmountNotIn: [Float!]
+  totalContractAmountGT: Float
+  totalContractAmountGTE: Float
+  totalContractAmountLT: Float
+  totalContractAmountLTE: Float
+  totalContractAmountIsNil: Boolean
+  totalContractAmountNotNil: Boolean
   """
   vos edge predicates
   """
@@ -7080,7 +7207,7 @@ type Query {
     """
     Ordering options for Projects returned from the connection.
     """
-    orderBy: ProjectOrder
+    orderBy: [ProjectOrder!]
 
     """
     Filtering options for Projects returned from the connection.

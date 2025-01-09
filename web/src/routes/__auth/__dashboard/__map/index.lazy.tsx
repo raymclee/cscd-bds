@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useLayoutEffect } from "@tanstack/react-router";
 import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQuery.graphql";
 import { MapIndexPageQuery } from "__generated__/MapIndexPageQuery.graphql";
 import { AnimatePresence } from "motion/react";
@@ -35,6 +35,8 @@ import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
 import { RankingListBoardMore } from "~/components/dashboard/ranking-list-board-more";
 import { DashboardTenderListMore } from "~/components/dashboard/dashboard-tender-list-more";
+import { useRef } from "react";
+import { useWindowSize } from "usehooks-ts";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__map/")({
   component: RouteComponent,
@@ -1008,32 +1010,32 @@ function RouteComponent() {
       <MapTenderList />
       <MapTenderDetail />
 
-      <div className="mt-16 grid grid-cols-3 gap-2 px-2">
-        {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
-        <div
-          className={cn(
-            "w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
-            !dashboardVisible && "-translate-x-[110%]",
-          )}
-        >
-          <AmountBoard />
+      {/* <div className="mt-16 grid grid-cols-3 gap-2 px-2"> */}
+      {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
+      <div
+        className={cn(
+          "absolute left-0 top-[4.5rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          !dashboardVisible && "-translate-x-[110%]",
+        )}
+      >
+        <AmountBoard />
 
-          <NewTenderBoard />
-        </div>
-
-        <div
-          className={cn(
-            "col-span-2 w-[clamp(380px,20vw,380px)] space-y-2 place-self-end self-end transition",
-            !dashboardVisible && "translate-x-[110%]",
-          )}
-        >
-          <TenderTypeBoard />
-
-          <RankingListBoard competitors={data} />
-
-          <DashboardTenderList />
-        </div>
+        <NewTenderBoard />
       </div>
+
+      <div
+        className={cn(
+          "absolute right-0 top-[4.5rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          !dashboardVisible && "translate-x-[110%]",
+        )}
+      >
+        <TenderTypeBoard />
+
+        <RankingListBoard competitors={data} />
+
+        <DashboardTenderList />
+      </div>
+      {/* </div> */}
 
       <AnimatePresence>
         {selectedTenderStatus && <TenderStatusList gaOnly={gaOnly} />}
@@ -1051,5 +1053,42 @@ function RouteComponent() {
         {moreDashboardTenderListBoardVisible && <DashboardTenderListMore />}
       </AnimatePresence>
     </>
+  );
+}
+
+function LeftBoard() {
+  const dashboardVisible = useMapStore((state) => state.dashboardVisible);
+  const windowSize = useWindowSize();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const { width, height } = window.screen;
+    if (ref.current) {
+      const scale =
+        width >= 1920 ? document.body.clientWidth / width : width / 1920;
+
+      Object.assign(ref.current.style, {
+        // height: `${height > 1080 ? height : 1080}px`,
+        // width: "100vw",
+        // height: "100vh",
+        top: "0",
+        left: "0",
+        // transform: `scale(${document.body.clientWidth / width})`,
+        height: ref.current.clientHeight / document.body.clientHeight,
+      });
+    }
+  }, [windowSize, ref]);
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "absolute left-0 top-0 w-[clamp(380px,20vw,380px)] space-y-2 transition",
+        !dashboardVisible && "-translate-x-[110%]",
+      )}
+    >
+      <AmountBoard />
+
+      <NewTenderBoard />
+    </div>
   );
 }

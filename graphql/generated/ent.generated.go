@@ -48,7 +48,7 @@ type QueryResolver interface {
 	Districts(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) (*ent.DistrictConnection, error)
 	Operations(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) (*ent.OperationConnection, error)
 	Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) (*ent.PlotConnection, error)
-	Projects(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProjectOrder, where *ent.ProjectWhereInput) (*ent.ProjectConnection, error)
+	Projects(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) (*ent.ProjectConnection, error)
 	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
 	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
 	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error)
@@ -4129,22 +4129,22 @@ func (ec *executionContext) field_Query_projects_argsLast(
 func (ec *executionContext) field_Query_projects_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProjectOrder, error) {
+) ([]*ent.ProjectOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.ProjectOrder
+		var zeroVal []*ent.ProjectOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOProjectOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrder(ctx, tmp)
+		return ec.unmarshalOProjectOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProjectOrder
+	var zeroVal []*ent.ProjectOrder
 	return zeroVal, nil
 }
 
@@ -13366,6 +13366,211 @@ func (ec *executionContext) fieldContext_Project_vaApproveAmount(_ context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Project_accumulatedStatutoryDeductions(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_accumulatedStatutoryDeductions(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccumulatedStatutoryDeductions, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_accumulatedStatutoryDeductions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_accumulatedNonStatutoryDeductions(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_accumulatedNonStatutoryDeductions(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccumulatedNonStatutoryDeductions, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_accumulatedNonStatutoryDeductions(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_accumulatedStatutoryDeductionsPeriod(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_accumulatedStatutoryDeductionsPeriod(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccumulatedStatutoryDeductionsPeriod, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_accumulatedStatutoryDeductionsPeriod(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_accumulatedNonStatutoryDeductionsPeriod(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccumulatedNonStatutoryDeductionsPeriod, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_totalContractAmount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_totalContractAmount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalContractAmount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_totalContractAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Project_vos(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Project_vos(ctx, field)
 	if err != nil {
@@ -13662,6 +13867,16 @@ func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, fie
 				return ec.fieldContext_Project_vaApplyAmount(ctx, field)
 			case "vaApproveAmount":
 				return ec.fieldContext_Project_vaApproveAmount(ctx, field)
+			case "accumulatedStatutoryDeductions":
+				return ec.fieldContext_Project_accumulatedStatutoryDeductions(ctx, field)
+			case "accumulatedNonStatutoryDeductions":
+				return ec.fieldContext_Project_accumulatedNonStatutoryDeductions(ctx, field)
+			case "accumulatedStatutoryDeductionsPeriod":
+				return ec.fieldContext_Project_accumulatedStatutoryDeductionsPeriod(ctx, field)
+			case "accumulatedNonStatutoryDeductionsPeriod":
+				return ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
+			case "totalContractAmount":
+				return ec.fieldContext_Project_totalContractAmount(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			}
@@ -14232,6 +14447,16 @@ func (ec *executionContext) fieldContext_ProjectVO_project(_ context.Context, fi
 				return ec.fieldContext_Project_vaApplyAmount(ctx, field)
 			case "vaApproveAmount":
 				return ec.fieldContext_Project_vaApproveAmount(ctx, field)
+			case "accumulatedStatutoryDeductions":
+				return ec.fieldContext_Project_accumulatedStatutoryDeductions(ctx, field)
+			case "accumulatedNonStatutoryDeductions":
+				return ec.fieldContext_Project_accumulatedNonStatutoryDeductions(ctx, field)
+			case "accumulatedStatutoryDeductionsPeriod":
+				return ec.fieldContext_Project_accumulatedStatutoryDeductionsPeriod(ctx, field)
+			case "accumulatedNonStatutoryDeductionsPeriod":
+				return ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
+			case "totalContractAmount":
+				return ec.fieldContext_Project_totalContractAmount(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			}
@@ -15788,7 +16013,7 @@ func (ec *executionContext) _Query_projects(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Projects(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.ProjectOrder), fc.Args["where"].(*ent.ProjectWhereInput))
+		return ec.resolvers.Query().Projects(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.ProjectOrder), fc.Args["where"].(*ent.ProjectWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -30150,7 +30375,7 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "hasVos", "hasVosWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "hasVos", "hasVosWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -31921,6 +32146,356 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.VaApproveAmountNotNil = data
+		case "accumulatedStatutoryDeductions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductions"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductions = data
+		case "accumulatedStatutoryDeductionsNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsNEQ = data
+		case "accumulatedStatutoryDeductionsIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsIn = data
+		case "accumulatedStatutoryDeductionsNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsNotIn = data
+		case "accumulatedStatutoryDeductionsGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsGT = data
+		case "accumulatedStatutoryDeductionsGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsGTE = data
+		case "accumulatedStatutoryDeductionsLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsLT = data
+		case "accumulatedStatutoryDeductionsLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsLTE = data
+		case "accumulatedStatutoryDeductionsIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsIsNil = data
+		case "accumulatedStatutoryDeductionsNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsNotNil = data
+		case "accumulatedNonStatutoryDeductions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductions"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductions = data
+		case "accumulatedNonStatutoryDeductionsNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsNEQ = data
+		case "accumulatedNonStatutoryDeductionsIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsIn = data
+		case "accumulatedNonStatutoryDeductionsNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsNotIn = data
+		case "accumulatedNonStatutoryDeductionsGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsGT = data
+		case "accumulatedNonStatutoryDeductionsGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsGTE = data
+		case "accumulatedNonStatutoryDeductionsLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsLT = data
+		case "accumulatedNonStatutoryDeductionsLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsLTE = data
+		case "accumulatedNonStatutoryDeductionsIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsIsNil = data
+		case "accumulatedNonStatutoryDeductionsNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsNotNil = data
+		case "accumulatedStatutoryDeductionsPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriod"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriod = data
+		case "accumulatedStatutoryDeductionsPeriodNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodNEQ = data
+		case "accumulatedStatutoryDeductionsPeriodIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodIn = data
+		case "accumulatedStatutoryDeductionsPeriodNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodNotIn = data
+		case "accumulatedStatutoryDeductionsPeriodGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodGT = data
+		case "accumulatedStatutoryDeductionsPeriodGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodGTE = data
+		case "accumulatedStatutoryDeductionsPeriodLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodLT = data
+		case "accumulatedStatutoryDeductionsPeriodLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodLTE = data
+		case "accumulatedStatutoryDeductionsPeriodIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodIsNil = data
+		case "accumulatedStatutoryDeductionsPeriodNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriodNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriodNotNil = data
+		case "accumulatedNonStatutoryDeductionsPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriod"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriod = data
+		case "accumulatedNonStatutoryDeductionsPeriodNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodNEQ = data
+		case "accumulatedNonStatutoryDeductionsPeriodIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodIn = data
+		case "accumulatedNonStatutoryDeductionsPeriodNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodNotIn = data
+		case "accumulatedNonStatutoryDeductionsPeriodGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodGT = data
+		case "accumulatedNonStatutoryDeductionsPeriodGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodGTE = data
+		case "accumulatedNonStatutoryDeductionsPeriodLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodLT = data
+		case "accumulatedNonStatutoryDeductionsPeriodLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodLTE = data
+		case "accumulatedNonStatutoryDeductionsPeriodIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodIsNil = data
+		case "accumulatedNonStatutoryDeductionsPeriodNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriodNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriodNotNil = data
+		case "totalContractAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmount = data
+		case "totalContractAmountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountNEQ = data
+		case "totalContractAmountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountIn = data
+		case "totalContractAmountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountNotIn = data
+		case "totalContractAmountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountGT = data
+		case "totalContractAmountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountGTE = data
+		case "totalContractAmountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountLT = data
+		case "totalContractAmountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountLTE = data
+		case "totalContractAmountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountIsNil = data
+		case "totalContractAmountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmountNotNil = data
 		case "hasVos":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasVos"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -44506,6 +45081,16 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Project_vaApplyAmount(ctx, field, obj)
 		case "vaApproveAmount":
 			out.Values[i] = ec._Project_vaApproveAmount(ctx, field, obj)
+		case "accumulatedStatutoryDeductions":
+			out.Values[i] = ec._Project_accumulatedStatutoryDeductions(ctx, field, obj)
+		case "accumulatedNonStatutoryDeductions":
+			out.Values[i] = ec._Project_accumulatedNonStatutoryDeductions(ctx, field, obj)
+		case "accumulatedStatutoryDeductionsPeriod":
+			out.Values[i] = ec._Project_accumulatedStatutoryDeductionsPeriod(ctx, field, obj)
+		case "accumulatedNonStatutoryDeductionsPeriod":
+			out.Values[i] = ec._Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field, obj)
+		case "totalContractAmount":
+			out.Values[i] = ec._Project_totalContractAmount(ctx, field, obj)
 		case "vos":
 			field := field
 
@@ -47405,6 +47990,11 @@ func (ec *executionContext) marshalNProjectConnection2ᚖcscdᚑbdsᚋstoreᚋen
 	return ec._ProjectConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNProjectOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrder(ctx context.Context, v interface{}) (*ent.ProjectOrder, error) {
+	res, err := ec.unmarshalInputProjectOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNProjectOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrderField(ctx context.Context, v interface{}) (*ent.ProjectOrderField, error) {
 	var res = new(ent.ProjectOrderField)
 	err := res.UnmarshalGQL(v)
@@ -48519,12 +49109,24 @@ func (ec *executionContext) marshalOProjectEdge2ᚖcscdᚑbdsᚋstoreᚋentᚐPr
 	return ec._ProjectEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOProjectOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrder(ctx context.Context, v interface{}) (*ent.ProjectOrder, error) {
+func (ec *executionContext) unmarshalOProjectOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrderᚄ(ctx context.Context, v interface{}) ([]*ent.ProjectOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalInputProjectOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*ent.ProjectOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNProjectOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) marshalOProjectVO2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProjectVOᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.ProjectVO) graphql.Marshaler {

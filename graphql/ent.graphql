@@ -2249,6 +2249,26 @@ type Project implements Node {
   分判VA批复总额
   """
   vaApproveAmount: Float
+  """
+  累计法定扣款
+  """
+  accumulatedStatutoryDeductions: Float
+  """
+  累计非法定扣款
+  """
+  accumulatedNonStatutoryDeductions: Float
+  """
+  本期法定扣款
+  """
+  accumulatedStatutoryDeductionsPeriod: Float
+  """
+  本期非法定扣款
+  """
+  accumulatedNonStatutoryDeductionsPeriod: Float
+  """
+  合約总额
+  """
+  totalContractAmount: Float
   vos: [ProjectVO!]
 }
 """
@@ -2299,6 +2319,8 @@ Properties by which Project connections can be ordered.
 """
 enum ProjectOrderField {
   CREATED_AT
+  CODE
+  NAME
 }
 type ProjectVO implements Node {
   id: ID!
@@ -2813,6 +2835,71 @@ input ProjectWhereInput {
   vaApproveAmountLTE: Float
   vaApproveAmountIsNil: Boolean
   vaApproveAmountNotNil: Boolean
+  """
+  accumulated_statutory_deductions field predicates
+  """
+  accumulatedStatutoryDeductions: Float
+  accumulatedStatutoryDeductionsNEQ: Float
+  accumulatedStatutoryDeductionsIn: [Float!]
+  accumulatedStatutoryDeductionsNotIn: [Float!]
+  accumulatedStatutoryDeductionsGT: Float
+  accumulatedStatutoryDeductionsGTE: Float
+  accumulatedStatutoryDeductionsLT: Float
+  accumulatedStatutoryDeductionsLTE: Float
+  accumulatedStatutoryDeductionsIsNil: Boolean
+  accumulatedStatutoryDeductionsNotNil: Boolean
+  """
+  accumulated_non_statutory_deductions field predicates
+  """
+  accumulatedNonStatutoryDeductions: Float
+  accumulatedNonStatutoryDeductionsNEQ: Float
+  accumulatedNonStatutoryDeductionsIn: [Float!]
+  accumulatedNonStatutoryDeductionsNotIn: [Float!]
+  accumulatedNonStatutoryDeductionsGT: Float
+  accumulatedNonStatutoryDeductionsGTE: Float
+  accumulatedNonStatutoryDeductionsLT: Float
+  accumulatedNonStatutoryDeductionsLTE: Float
+  accumulatedNonStatutoryDeductionsIsNil: Boolean
+  accumulatedNonStatutoryDeductionsNotNil: Boolean
+  """
+  accumulated_statutory_deductions_period field predicates
+  """
+  accumulatedStatutoryDeductionsPeriod: Float
+  accumulatedStatutoryDeductionsPeriodNEQ: Float
+  accumulatedStatutoryDeductionsPeriodIn: [Float!]
+  accumulatedStatutoryDeductionsPeriodNotIn: [Float!]
+  accumulatedStatutoryDeductionsPeriodGT: Float
+  accumulatedStatutoryDeductionsPeriodGTE: Float
+  accumulatedStatutoryDeductionsPeriodLT: Float
+  accumulatedStatutoryDeductionsPeriodLTE: Float
+  accumulatedStatutoryDeductionsPeriodIsNil: Boolean
+  accumulatedStatutoryDeductionsPeriodNotNil: Boolean
+  """
+  accumulated_non_statutory_deductions_period field predicates
+  """
+  accumulatedNonStatutoryDeductionsPeriod: Float
+  accumulatedNonStatutoryDeductionsPeriodNEQ: Float
+  accumulatedNonStatutoryDeductionsPeriodIn: [Float!]
+  accumulatedNonStatutoryDeductionsPeriodNotIn: [Float!]
+  accumulatedNonStatutoryDeductionsPeriodGT: Float
+  accumulatedNonStatutoryDeductionsPeriodGTE: Float
+  accumulatedNonStatutoryDeductionsPeriodLT: Float
+  accumulatedNonStatutoryDeductionsPeriodLTE: Float
+  accumulatedNonStatutoryDeductionsPeriodIsNil: Boolean
+  accumulatedNonStatutoryDeductionsPeriodNotNil: Boolean
+  """
+  total_contract_amount field predicates
+  """
+  totalContractAmount: Float
+  totalContractAmountNEQ: Float
+  totalContractAmountIn: [Float!]
+  totalContractAmountNotIn: [Float!]
+  totalContractAmountGT: Float
+  totalContractAmountGTE: Float
+  totalContractAmountLT: Float
+  totalContractAmountLTE: Float
+  totalContractAmountIsNil: Boolean
+  totalContractAmountNotNil: Boolean
   """
   vos edge predicates
   """
@@ -3391,7 +3478,7 @@ type Query {
     """
     Ordering options for Projects returned from the connection.
     """
-    orderBy: ProjectOrder
+    orderBy: [ProjectOrder!]
 
     """
     Filtering options for Projects returned from the connection.

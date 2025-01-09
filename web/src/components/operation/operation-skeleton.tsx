@@ -13,9 +13,6 @@ import top from "~/assets/svg/top.png";
 import projectManagementTitle from "~/assets/svg/project_management_title.png";
 import projectProgressTitle from "~/assets/svg/project_progress_title.png";
 
-import leftArrow from "~/assets/svg/left_arrow.png";
-import rightArrow from "~/assets/svg/right_arrow.png";
-
 import projectManagementLeft from "~/assets/svg/project_management_left.png";
 import projectManagementRight from "~/assets/svg/project_management_right.png";
 
@@ -59,170 +56,29 @@ import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
 
 import hmrtImg from "~/assets/hmrt.jpg";
+import { SubTitle } from "../project/sub-title";
+import { Skeleton } from "../ui/skeleton";
+import { StatusIcon } from "../ui/status-icon";
 
-import * as Tabs from "@radix-ui/react-tabs";
-import {
-  operationsPageQuery,
-  operationsPageQuery$data,
-} from "__generated__/operationsPageQuery.graphql";
-import { useEffect, useState, useTransition } from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
-import { SubTitle } from "~/components/project/sub-title";
-import { Rhino } from "~/components/rhino";
-import { StatusIcon } from "~/components/ui/status-icon";
-import { ProjectSelect } from "~/components/dashboard/project-select";
-import { formatProjectAmount, percent } from "~/lib/helper";
-import { cn } from "~/lib/utils";
-
-export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
-  component: RouteComponent,
-});
-
-function RouteComponent() {
-  const data = usePreloadedQuery<operationsPageQuery>(
-    graphql`
-      query operationsPageQuery {
-        projects(where: { isFinishedNEQ: true }) {
-          edges {
-            node {
-              name
-              code
-              ownerApplyCount
-              ownerApplyAmount
-              ownerApproveCount
-              ownerApproveAmount
-              contractorApplyCount
-              contractorApplyAmount
-              contractorApproveCount
-              contractorApproveAmount
-              installProgress
-              effectiveContractAmount
-              vaApplyAmount
-              vaApproveAmount
-              accumulatedStatutoryDeductions
-              accumulatedNonStatutoryDeductions
-              accumulatedNonStatutoryDeductionsPeriod
-              totalContractAmount
-            }
-          }
-        }
-      }
-    `,
-    Route.useLoaderData(),
-  );
-
-  return <Operation data={data} />;
-}
-
-function Operation({ data }: { data: operationsPageQuery$data }) {
-  const navigate = Route.useNavigate();
-  const defaultCode =
-    Route.useSearch().code ?? data.projects?.edges?.at(0)?.node?.code;
-
-  const defaultProjectIdx = 0;
-  const pj =
-    data.projects?.edges?.find((item) => item?.node?.code === defaultCode)
-      ?.node ?? data.projects?.edges?.at(defaultProjectIdx)?.node;
-
-  const prevProject = pj
-    ? data.projects.edges?.at(
-        data.projects.edges?.findIndex(
-          (item) => item?.node?.code === pj?.code,
-        ) - 1,
-      )?.node
-    : data.projects.edges?.at(
-        defaultProjectIdx > 0 ? defaultProjectIdx - 1 : defaultProjectIdx,
-      )?.node;
-
-  const nextProject = pj
-    ? data.projects.edges?.at(
-        data.projects.edges?.findIndex(
-          (item) => item?.node?.code === pj?.code,
-        ) + 1,
-      )?.node
-    : data.projects.edges?.at(
-        defaultProjectIdx < data.projects.edges?.length - 1
-          ? defaultProjectIdx + 1
-          : defaultProjectIdx,
-      )?.node;
-
-  useEffect(() => {
-    const handleLeftKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        navigate({
-          to: "/operations",
-          search: { code: prevProject?.code },
-        });
-      }
-    };
-
-    document.addEventListener("keydown", handleLeftKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleLeftKeyDown);
-    };
-  }, [prevProject]);
-
-  useEffect(() => {
-    const handleRightKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        navigate({
-          to: "/operations",
-          search: { code: nextProject?.code },
-        });
-      }
-    };
-
-    document.addEventListener("keydown", handleRightKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleRightKeyDown);
-    };
-  }, [nextProject]);
-
-  const currentFormatter = Intl.NumberFormat("en-US");
-
-  const ownerApplyCount = pj?.ownerApplyCount ?? 0;
-  const ownerApproveCount = pj?.ownerApproveCount ?? 0;
-  const contractorApplyCount = pj?.contractorApplyCount ?? 0;
-  const contractorApproveCount = pj?.contractorApproveCount ?? 0;
-  const ownerApplyAmount = pj?.ownerApplyAmount ?? 0;
-  const ownerApproveAmount = pj?.ownerApproveAmount ?? 0;
-  const contractorApplyAmount = pj?.contractorApplyAmount ?? 0;
-  const contractorApproveAmount = pj?.contractorApproveAmount ?? 0;
-  // const installProgress = 100;
-  const installProgress = pj?.installProgress ?? 0;
-  const effectiveContractAmount = pj?.effectiveContractAmount ?? 0;
-  const vaApplyAmount = pj?.vaApplyAmount ?? 0;
-  const vaApproveAmount = pj?.vaApproveAmount ?? 0;
-  const accumulatedStatutoryDeductions =
-    pj?.accumulatedStatutoryDeductions ?? 0;
-  const accumulatedNonStatutoryDeductions =
-    pj?.accumulatedNonStatutoryDeductions ?? 0;
-  const accumulatedNonStatutoryDeductionsPeriod =
-    pj?.accumulatedNonStatutoryDeductionsPeriod ?? 0;
-  const contractBudgetRevenue =
-    ownerApproveAmount +
-    contractorApproveAmount +
-    ownerApplyAmount +
-    contractorApplyAmount -
-    (vaApplyAmount + vaApproveAmount) -
-    (accumulatedStatutoryDeductions + accumulatedNonStatutoryDeductions);
-  const totalContractAmount = pj?.totalContractAmount ?? 0;
-
+export function OperationSkeleton() {
   return (
-    <>
+    <div className="min-h-dvh">
       <div className="absolute left-5 top-2">
-        <ProjectSelect data={data} defaultCode={defaultCode} />
+        {/* <ProjectSelect projects={data} defaultCode={defaultCode} /> */}
       </div>
 
       <img src={top} className="w-full" />
-
+      {/* </header> */}
       <div className="grid grid-cols-[1fr_1.8fr_1fr] gap-x-24 px-6">
         <section className="space-y-3">
           <div>
             <SubTitle>成本管理</SubTitle>
-
+            {/* <img src={headerLeft1} /> */}
+            {/* <div className="grid h-[calc(100%-36px)] grid-cols-[1fr_1fr_2fr] gap-x-4 bg-gradient-to-tr from-[#0a3256] to-transparent p-4">
+                  <div className="bg-[#021734]"></div>
+                  <div className="bg-[#021734]"></div>
+                  <div className="bg-[#021734]"></div>
+                </div> */}
             <div className="grid grid-cols-[1fr_1fr_1.525fr] gap-1 bg-gradient-to-tr from-[#0a3256] to-transparent p-2 shadow-lg">
               <div className="relative">
                 <img
@@ -231,123 +87,38 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem]">
-                  <HoverCard.Root openDelay={100} closeDelay={100}>
-                    <HoverCard.Trigger>
-                      <div className="flex cursor-pointer items-center justify-between gap-4 px-2">
-                        <div className="text-xs text-brand-project-3">
-                          业主VO
-                        </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {currentFormatter.format(
-                            formatProjectAmount(ownerApplyAmount),
-                          )}
-                          万
-                        </div>
-                      </div>
-                      <div className="w mt-1 flex cursor-pointer items-center justify-between gap-4 px-2">
-                        <div className="text-xs text-brand-project-3">
-                          总包VO
-                        </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {currentFormatter.format(
-                            formatProjectAmount(contractorApplyAmount),
-                          )}
-                          万
-                        </div>
-                      </div>
-                    </HoverCard.Trigger>
-                    <HoverCard.Content
-                      side="right"
-                      sideOffset={10}
-                      align="start"
-                      className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
-                    >
-                      <h3 className="mb-2 text-sm font-bold underline">
-                        累计VO情况
-                      </h3>
-                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm">
-                        <div className="col-span-2">安装进度</div>
-                        <div className="text-brand-project">
-                          {installProgress}%
-                        </div>
-                        <div className="col-span-2">有效合约总额(A)</div>
-                        <div className="text-brand-project">
-                          {currentFormatter.format(
-                            formatProjectAmount(effectiveContractAmount),
-                          )}
-                          万
-                        </div>
-                        <div className="col-span-2 text-brand-project-2">
-                          申请数量
-                        </div>
-                        <div className="text-brand-project">
-                          {contractorApplyCount + ownerApplyCount}个
-                        </div>
-                        <div className="col-span-2 text-brand-project-2">
-                          申请总额(B)
-                        </div>
-                        <div className="text-brand-project">
-                          {formatProjectAmount(
-                            contractorApplyAmount + ownerApplyAmount,
-                          )}
-                          万
-                        </div>
-                        <div className="col-span-2 text-brand-project-2">
-                          申请总额占比(B/A)
-                        </div>
-                        <div className="text-brand-project">
-                          {percent(
-                            contractorApproveAmount + ownerApproveAmount,
-                            effectiveContractAmount,
-                          )}
-                          %
-                        </div>
-                        <div className="col-span-2">批复数量</div>
-                        <div className="text-brand-project">
-                          {contractorApproveCount + ownerApproveCount}个
-                        </div>
-                        <div className="col-span-2">批复总额(C)</div>
-                        <div className="text-brand-project">
-                          {formatProjectAmount(
-                            contractorApproveAmount + ownerApproveAmount,
-                          )}
-                          万
-                        </div>
-                        <div className="col-span-2">批复总额占比(C/A)</div>
-                        <div className="text-brand-project">
-                          {percent(
-                            contractorApproveAmount + ownerApproveAmount,
-                            contractorApplyAmount + ownerApplyAmount,
-                          )}
-                          %
-                        </div>
-                      </div>
-                    </HoverCard.Content>
-                  </HoverCard.Root>
+                  <div className="flex cursor-pointer items-center justify-between gap-4 px-2">
+                    <div className="text-xs text-brand-project-3">业主VO</div>
+                    <div className="text-xs font-bold text-brand-project-2">
+                      <Skeleton className="h-1.5 w-12" />
+                    </div>
+                  </div>
+                  <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
+                    <div className="text-xs text-brand-project-3">总包VO</div>
+                    <div className="text-xs font-bold text-brand-project-2">
+                      <Skeleton className="h-1.5 w-12" />
+                    </div>
+                  </div>
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
-                    <HoverCard.Trigger asChild> */}
-                  <div className="mt-1 flex items-center justify-between gap-4 px-2">
+                        <HoverCard.Trigger asChild> */}
+                  <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                      {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                      {currentFormatter.format(
-                        formatProjectAmount(vaApproveAmount),
-                      )}
-                      万
+                    <div className="text-xs font-bold text-brand-project-2">
+                      <Skeleton className="h-1.5 w-12" />
                     </div>
                   </div>
                   {/* </HoverCard.Trigger>
-                    <HoverCard.Content
-                      side="right"
-                      sideOffset={10}
-                      align="start"
-                      className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
-                    >
-                      <h3 className="mb-2 text-sm font-bold underline">VA</h3>
-                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm"></div>
-                    </HoverCard.Content>
-                  </HoverCard.Root> */}
+                        <HoverCard.Content
+                          side="right"
+                          sideOffset={10}
+                          align="start"
+                          className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
+                        >
+                          <h3 className="mb-2 text-sm font-bold underline">VA</h3>
+                          <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm"></div>
+                        </HoverCard.Content>
+                      </HoverCard.Root> */}
                 </div>
               </div>
 
@@ -358,124 +129,38 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem]">
-                  <HoverCard.Root openDelay={100} closeDelay={100}>
-                    <HoverCard.Trigger>
-                      <div className="flex w-full cursor-pointer items-center justify-between gap-4 px-2">
-                        <div className="text-xs text-brand-project-3">
-                          业主VO
-                        </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                          {currentFormatter.format(
-                            formatProjectAmount(ownerApproveAmount),
-                          )}
-                          万
-                        </div>
-                      </div>
-                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
-                        <div className="text-xs text-brand-project-3">
-                          总包VO
-                        </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {currentFormatter.format(
-                            formatProjectAmount(contractorApproveAmount),
-                          )}
-                          万
-                        </div>
-                      </div>
-                    </HoverCard.Trigger>
-                    <HoverCard.Content
-                      side="right"
-                      sideOffset={10}
-                      align="start"
-                      className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
-                    >
-                      <h3 className="mb-2 text-sm font-bold underline">
-                        累计VO情况
-                      </h3>
-                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm">
-                        <div className="col-span-2">安装进度</div>
-                        <div className="text-brand-project">
-                          {installProgress}%
-                        </div>
-                        <div className="col-span-2">有效合约总额(A)</div>
-                        <div className="text-brand-project">
-                          {currentFormatter.format(
-                            formatProjectAmount(effectiveContractAmount),
-                          )}
-                          万
-                        </div>
-                        <div className="col-span-2">申请数量</div>
-                        <div className="text-brand-project">
-                          {contractorApplyCount + ownerApplyCount}个
-                        </div>
-                        <div className="col-span-2">申请总额(B)</div>
-                        <div className="text-brand-project">
-                          {formatProjectAmount(
-                            contractorApplyAmount + ownerApplyAmount,
-                          )}
-                          万
-                        </div>
-                        <div className="col-span-2">申请总额占比(B/A)</div>
-                        <div className="text-brand-project">
-                          {percent(
-                            contractorApproveAmount + ownerApproveAmount,
-                            effectiveContractAmount,
-                          )}
-                          %
-                        </div>
-                        <div className="col-span-2 text-brand-project-2">
-                          批复数量
-                        </div>
-                        <div className="text-brand-project">
-                          {contractorApproveCount + ownerApproveCount}个
-                        </div>
-                        <div className="col-span-2 text-brand-project-2">
-                          批复总额(C)
-                        </div>
-                        <div className="text-brand-project">
-                          {formatProjectAmount(
-                            contractorApproveAmount + ownerApproveAmount,
-                          )}
-                          万
-                        </div>
-                        <div className="col-span-2 text-brand-project-2">
-                          批复总额占比(C/A)
-                        </div>
-                        <div className="text-brand-project">
-                          {percent(
-                            contractorApproveAmount + ownerApproveAmount,
-                            contractorApplyAmount + ownerApplyAmount,
-                          )}
-                          %
-                        </div>
-                      </div>
-                    </HoverCard.Content>
-                  </HoverCard.Root>
+                  <div className="flex w-full cursor-pointer items-center justify-between gap-4 px-2">
+                    <div className="text-xs text-brand-project-3">业主VO</div>
+                    <div className="text-xs font-bold text-brand-project-2">
+                      <Skeleton className="h-1.5 w-12" />
+                    </div>
+                  </div>
+                  <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
+                    <div className="text-xs text-brand-project-3">总包VO</div>
+                    <div className="text-xs font-bold text-brand-project-2">
+                      <Skeleton className="h-1.5 w-12" />
+                    </div>
+                  </div>
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
-                    <HoverCard.Trigger asChild> */}
+                        <HoverCard.Trigger asChild> */}
                   <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                      {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                      {currentFormatter.format(
-                        formatProjectAmount(vaApproveAmount),
-                      )}
-                      万
+                    <div className="text-xs font-bold text-brand-project-2">
+                      <Skeleton className="h-1.5 w-12" />
                     </div>
                   </div>
                   {/* </HoverCard.Trigger>
-                    <HoverCard.Content
-                      side="right"
-                      sideOffset={10}
-                      align="start"
-                      className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
-                    >
-                      <h3 className="mb-2 text-sm font-bold underline">VA</h3>
-                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm"></div>
-                    </HoverCard.Content>
-                  </HoverCard.Root> */}
+                        <HoverCard.Content
+                          side="right"
+                          sideOffset={10}
+                          align="start"
+                          className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
+                        >
+                          <h3 className="mb-2 text-sm font-bold underline">VA</h3>
+                          <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm"></div>
+                        </HoverCard.Content>
+                      </HoverCard.Root> */}
                 </div>
               </div>
 
@@ -491,13 +176,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <div className="flex flex-1 items-center">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
-                        value={percent(ownerApproveAmount, ownerApplyAmount)}
+                        value={0}
                         max={100}
                       />
                     </div>
                     {/* <div className="h-1 w-[80px] bg-brand-project"></div> */}
                     <div className="text-xs font-bold text-brand-project-2">
-                      {percent(ownerApproveAmount, ownerApplyAmount)}%
+                      {/* <Skeleton className="h-1.5 w-16" /> */}
                     </div>
                   </div>
 
@@ -506,16 +191,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <div className="flex flex-1 items-center">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
-                        value={percent(
-                          contractorApproveAmount,
-                          contractorApplyAmount,
-                        )}
+                        value={0}
                         max={100}
                       />
                     </div>
                     {/* <div className="h-1 w-[80px] bg-brand-project"></div> */}
                     <div className="text-xs font-bold text-brand-project-2">
-                      {percent(contractorApproveAmount, contractorApplyAmount)}%
+                      {/* <Skeleton className="h-1.5 w-16" /> */}
                     </div>
                   </div>
 
@@ -524,12 +206,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <div className="flex flex-1 items-center">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
-                        value={percent(vaApproveAmount, vaApproveAmount)}
+                        value={0}
                         max={100}
                       />
                     </div>
                     <div className="text-xs font-bold text-brand-project-2">
-                      {percent(vaApproveAmount, vaApproveAmount)}%
+                      {/* <Skeleton className="h-1.5 w-16" /> */}
                     </div>
                   </div>
                 </div>
@@ -543,20 +225,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
               <div className="flex">
                 <div className="flex flex-1 flex-col items-center justify-center">
-                  <div
-                    className={cn(
-                      "font-bold",
-                      accumulatedNonStatutoryDeductionsPeriod > 50_0000
-                        ? "text-red-600"
-                        : "text-brand-project",
-                    )}
-                  >
-                    {currentFormatter.format(
-                      formatProjectAmount(
-                        accumulatedNonStatutoryDeductionsPeriod,
-                      ),
-                    )}
-                    万
+                  <div className="font-bold text-red-600">
+                    <Skeleton className="h-1.5 w-16" />
                   </div>
                   <div className="text-xxs font-semibold text-slate-400">
                     本期非法定扣款
@@ -564,11 +234,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
                 <div className="flex flex-1 flex-col items-center justify-center">
-                  <div className={"font-bold text-brand-project"}>
-                    {currentFormatter.format(
-                      formatProjectAmount(accumulatedNonStatutoryDeductions),
-                    )}
-                    万
+                  <div className="font-bold text-brand-project">
+                    <Skeleton className="h-1.5 w-16" />
                   </div>
                   <div className="text-xxs font-semibold text-slate-400">
                     累计非法定扣款
@@ -576,22 +243,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
                 <div className="flex flex-1 flex-col items-center justify-center">
-                  <div
-                    className={cn(
-                      "font-bold",
-                      percent(
-                        accumulatedNonStatutoryDeductions,
-                        totalContractAmount,
-                      ) > 2
-                        ? "text-red-600"
-                        : "text-brand-project",
-                    )}
-                  >
-                    {percent(
-                      accumulatedNonStatutoryDeductions,
-                      totalContractAmount,
-                    )}
-                    %
+                  <div className="font-bold text-red-600">
+                    <Skeleton className="h-1.5 w-16" />
                   </div>
                   <div className="text-xxs font-semibold text-slate-400">
                     累计非法定扣款占比
@@ -605,10 +258,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 />
                 <div className="absolute right-14 top-1/2 -translate-y-1/2">
                   <div className="text-lg font-bold text-brand-project">
-                    {currentFormatter.format(
-                      formatProjectAmount(contractBudgetRevenue),
-                    )}
-                    万
+                    <Skeleton className="h-1.5 w-16" />
                   </div>
                 </div>
               </div>
@@ -664,10 +314,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 </div>
 
                 {/* <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                  <StatusIcon className="w-3 h-3 text-green-600" />
-                  <span className="text-[9px] text-red-200">其它材料</span>
-                  <span className="text-xs font-bold text-green-600">16%</span>
-                </div> */}
+                      <StatusIcon className="w-3 h-3 text-green-600" />
+                      <span className="text-[9px] text-red-200">其它材料</span>
+                      <span className="text-xs font-bold text-green-600">16%</span>
+                    </div> */}
               </div>
             </div>
           </div>
@@ -730,7 +380,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b1} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">成交额</div>
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(64711)}万
+                <Skeleton className="h-1.5 w-16" />
               </div>
             </div>
 
@@ -739,7 +389,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b2} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">营业额</div>
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(58357)}万
+                <Skeleton className="h-1.5 w-16" />
               </div>
             </div>
 
@@ -748,7 +398,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b3} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">现金流</div>
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(9895)}万
+                <Skeleton className="h-1.5 w-16" />
               </div>
             </div>
 
@@ -757,20 +407,20 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b4} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">项目管理费</div>
               {/* <div className="relative w-[80%] space-y-1 pt-[106%]">
-                <div className="flex items-baseline justify-between">
-                  <div className="text-xs">全年預算</div>
-                  <div className="text-sm font-bold text-brand-project">
-                  </div>
-                </div>
-
-                <div className="flex items-baseline justify-between">
-                  <div className="text-xs">累计完成</div>
-                  <div className="text-left text-sm font-bold text-brand-project">
-                  </div>
-                </div>
-              </div> */}
+                    <div className="flex items-baseline justify-between">
+                      <div className="text-xs">全年預算</div>
+                      <div className="text-sm font-bold text-brand-project">
+                      </div>
+                    </div>
+    
+                    <div className="flex items-baseline justify-between">
+                      <div className="text-xs">累计完成</div>
+                      <div className="text-left text-sm font-bold text-brand-project">
+                      </div>
+                    </div>
+                  </div> */}
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(520)}万
+                <Skeleton className="h-1.5 w-16" />
               </div>
             </div>
 
@@ -779,34 +429,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <img src={b5} className="absolute inset-0" />
               <div className="absolute top-5 text-lg font-bold">项目设计费</div>
               <div className="relative pt-[114%] font-bold text-brand-project">
-                {currentFormatter.format(1598)}万
+                <Skeleton className="h-1.5 w-16" />
               </div>
             </div>
           </div>
           <img src={projectProgressTitle} className="mx-auto mt-3 w-[65%]" />
           <img src={projectManagementTitle} className="mx-auto mt-2 w-44" />
-
-          <div className="relative mt-4">
-            <img
-              src={leftArrow}
-              className="absolute -left-[4rem] top-1/2 h-12 w-auto -translate-y-1/2 cursor-pointer"
-              onClick={() => {
-                navigate({
-                  to: ".",
-                  search: { code: prevProject?.code },
-                });
-              }}
-            />
-            <img
-              src={rightArrow}
-              className="absolute -right-[4rem] top-1/2 h-12 w-auto -translate-y-1/2 cursor-pointer"
-              onClick={() => {
-                navigate({
-                  to: ".",
-                  search: { code: nextProject?.code },
-                });
-              }}
-            />
+          <div className="mt-4">
             <div className="mt-4 flex gap-12">
               <div className="flex w-full flex-col">
                 <div className="relative h-9">
@@ -913,17 +542,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* <div className="flex h-[340px] flex-1 flex-col justify-center gap-4"> */}
             {/* <img src={projectOverviewLeft} /> */}
             {/* <div className="mx-auto h-full w-[85%]">
-                <Rhino />
-              </div>
-              <img src={projectOverviewTab} className="mx-auto w-[80%]" /> */}
-            <ProjectOverviewTab />
+                    <Rhino />
+                  </div>
+                  <img src={projectOverviewTab} className="mx-auto w-[80%]" /> */}
+            {/* <ProjectOverviewTab /> */}
             {/* </div> */}
             <div className="relative flex-1">
               {/* <img src={basicInfo} className="mx-auto w-[90%]" /> */}
               <div className="mx-auto items-center overflow-hidden">
                 <img src={basicInfoBg} className="absolute h-[340px] w-full" />
                 <div className="relative mx-auto flex h-full w-[94%] flex-1 flex-col justify-center gap-1 pt-2.5">
-                  <BasicInfoItem title="项目名称" value={pj?.name ?? "-"} />
+                  {/* <BasicInfoItem title="项目名称" value={pj?.name ?? "-"} />
                   <BasicInfoItem
                     title="客户"
                     value="Century Base Development Limited"
@@ -940,7 +569,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <BasicInfoItem title="FS日期" value="2023-08-30" />
                   <BasicInfoItem title="OP日期" value="-" />
                   <BasicInfoItem title="竣工日期" value="2023-12-31" />
-                  <BasicInfoItem title="维修保养期" value="18个月" />
+                  <BasicInfoItem title="维修保养期" value="18个月" /> */}
                 </div>
               </div>
             </div>
@@ -1001,91 +630,18 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>近2季度 质量内审分数</SubTitle>
             {/* <div className="relative bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={quality} className="h-[6.5rem] w-full" />
+            <img src={quality} />
             {/* </div> */}
           </div>
 
           <div>
             <SubTitle>近2季度 安全内审分数</SubTitle>
             {/* <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={safty} className="h-[6.5rem] w-full" />
+            <img src={safty} />
             {/* </div> */}
           </div>
         </section>
       </div>
-    </>
-  );
-}
-
-function BasicInfoItem({ title, value }: { title: string; value: string }) {
-  return (
-    <div className="relative py-1">
-      <img
-        src={basicInfoRowBg}
-        className="absolute inset-0 mx-auto h-full w-full"
-      />
-      <div className="relative left-12 flex h-full w-[21rem] items-center">
-        <div className="w-20 text-xxs">{title}</div>
-        <span className="line-clamp-1 flex-1 text-xxs text-brand-project">
-          {value}
-        </span>
-      </div>
     </div>
-  );
-}
-
-function ProjectOverviewTab() {
-  const tabs = ["形象进度", "BIM模型", "地盘人员分布"];
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  const [, startTransition] = useTransition();
-
-  const onChange = (tab: string) => {
-    startTransition(() => {
-      setSelectedTab(tab);
-    });
-  };
-
-  return (
-    <Tabs.Root
-      className="relative mx-auto flex flex-1 flex-col p-1"
-      defaultValue={selectedTab}
-    >
-      <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
-        <Tabs.Content value={tabs[0]} className="relative h-full">
-          <img
-            src={hmrtImg}
-            className="mx-auto h-[280px] w-auto object-contain"
-          />
-        </Tabs.Content>
-
-        <Tabs.Content value={tabs[1]} className="relative h-[280px] w-full">
-          <Rhino />
-        </Tabs.Content>
-
-        <Tabs.Content value={tabs[2]} className="h-[280px] w-full">
-          地盘人员分布
-        </Tabs.Content>
-      </div>
-
-      <Tabs.List className="relative mx-auto mt-4 grid h-8 w-[85%] grid-cols-3">
-        <img src={projectOverviewTab} className="absolute inset-0 h-8 w-full" />
-        {tabs.map((tab) => (
-          <div
-            key={`overview-tab-${tab}`}
-            className="relative flex h-8 items-center justify-center"
-          >
-            <Tabs.Trigger key={tab} value={tab} onClick={() => onChange(tab)}>
-              {selectedTab == tab && (
-                <img
-                  src={projectOverviewTabSelected}
-                  className="absolute inset-0 h-8"
-                />
-              )}
-              <div className="relative text-xs">{tab}</div>
-            </Tabs.Trigger>
-          </div>
-        ))}
-      </Tabs.List>
-    </Tabs.Root>
   );
 }

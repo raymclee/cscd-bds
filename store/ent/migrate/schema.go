@@ -232,6 +232,11 @@ var (
 		{Name: "effective_contract_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
 		{Name: "va_apply_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
 		{Name: "va_approve_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "accumulated_statutory_deductions", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "accumulated_non_statutory_deductions", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "accumulated_statutory_deductions_period", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "accumulated_non_statutory_deductions_period", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "total_contract_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{

@@ -25,67 +25,67 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []xid.ID) ([]ent.Noder, e
 
 // Areas is the resolver for the areas field.
 func (r *queryResolver) Areas(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) (*ent.AreaConnection, error) {
-	return r.store.Area.Query().Paginate(ctx, after, first, before, last, ent.WithAreaFilter(where.Filter))
+	return r.store.Area.Query().Paginate(ctx, after, first, before, last, ent.WithAreaFilter(where.Filter), ent.WithAreaOrder(orderBy))
 }
 
 // Cities is the resolver for the cities field.
 func (r *queryResolver) Cities(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) (*ent.CityConnection, error) {
-	return r.store.City.Query().Paginate(ctx, after, first, before, last, ent.WithCityFilter(where.Filter))
+	return r.store.City.Query().Paginate(ctx, after, first, before, last, ent.WithCityFilter(where.Filter), ent.WithCityOrder(orderBy))
 }
 
 // Competitors is the resolver for the competitors field.
 func (r *queryResolver) Competitors(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) (*ent.CompetitorConnection, error) {
-	return r.store.Competitor.Query().Paginate(ctx, after, first, before, last, ent.WithCompetitorFilter(where.Filter))
+	return r.store.Competitor.Query().Paginate(ctx, after, first, before, last, ent.WithCompetitorFilter(where.Filter), ent.WithCompetitorOrder(orderBy))
 }
 
 // Countries is the resolver for the countries field.
 func (r *queryResolver) Countries(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) (*ent.CountryConnection, error) {
-	return r.store.Country.Query().Paginate(ctx, after, first, before, last, ent.WithCountryFilter(where.Filter))
+	return r.store.Country.Query().Paginate(ctx, after, first, before, last, ent.WithCountryFilter(where.Filter), ent.WithCountryOrder(orderBy))
 }
 
 // Customers is the resolver for the customers field.
 func (r *queryResolver) Customers(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) (*ent.CustomerConnection, error) {
-	return r.store.Customer.Query().Paginate(ctx, after, first, before, last, ent.WithCustomerFilter(where.Filter))
+	return r.store.Customer.Query().Paginate(ctx, after, first, before, last, ent.WithCustomerFilter(where.Filter), ent.WithCustomerOrder(orderBy))
 }
 
 // Districts is the resolver for the districts field.
 func (r *queryResolver) Districts(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) (*ent.DistrictConnection, error) {
-	return r.store.District.Query().Paginate(ctx, after, first, before, last, ent.WithDistrictFilter(where.Filter))
+	return r.store.District.Query().Paginate(ctx, after, first, before, last, ent.WithDistrictFilter(where.Filter), ent.WithDistrictOrder(orderBy))
 }
 
 // Operations is the resolver for the operations field.
 func (r *queryResolver) Operations(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) (*ent.OperationConnection, error) {
-	return r.store.Operation.Query().Paginate(ctx, after, first, before, last, ent.WithOperationFilter(where.Filter))
+	return r.store.Operation.Query().Paginate(ctx, after, first, before, last, ent.WithOperationFilter(where.Filter), ent.WithOperationOrder(orderBy))
 }
 
 // Plots is the resolver for the plots field.
 func (r *queryResolver) Plots(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) (*ent.PlotConnection, error) {
-	return r.store.Plot.Query().Paginate(ctx, after, first, before, last, ent.WithPlotFilter(where.Filter))
+	return r.store.Plot.Query().Paginate(ctx, after, first, before, last, ent.WithPlotFilter(where.Filter), ent.WithPlotOrder(orderBy))
 }
 
 // Projects is the resolver for the projects field.
-func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProjectOrder, where *ent.ProjectWhereInput) (*ent.ProjectConnection, error) {
-	return r.store.Project.Query().Paginate(ctx, after, first, before, last, ent.WithProjectFilter(where.Filter))
+func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) (*ent.ProjectConnection, error) {
+	return r.store.Project.Query().Paginate(ctx, after, first, before, last, ent.WithProjectFilter(where.Filter), ent.WithProjectOrder(orderBy))
 }
 
 // Provinces is the resolver for the provinces field.
 func (r *queryResolver) Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error) {
-	return r.store.Province.Query().Paginate(ctx, after, first, before, last, ent.WithProvinceFilter(where.Filter))
+	return r.store.Province.Query().Paginate(ctx, after, first, before, last, ent.WithProvinceFilter(where.Filter), ent.WithProvinceOrder(orderBy))
 }
 
 // Tenders is the resolver for the tenders field.
 func (r *queryResolver) Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
-	return r.store.Tender.Query().Paginate(ctx, after, first, before, last, ent.WithTenderFilter(where.Filter))
+	return r.store.Tender.Query().Paginate(ctx, after, first, before, last, ent.WithTenderFilter(where.Filter), ent.WithTenderOrder(orderBy))
 }
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error) {
-	return r.store.User.Query().Paginate(ctx, after, first, before, last, ent.WithUserFilter(where.Filter))
+	return r.store.User.Query().Paginate(ctx, after, first, before, last, ent.WithUserFilter(where.Filter), ent.WithUserOrder(orderBy))
 }
 
 // VisitRecords is the resolver for the visitRecords field.
 func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
-	return r.store.VisitRecord.Query().Paginate(ctx, after, first, before, last, ent.WithVisitRecordFilter(where.Filter))
+	return r.store.VisitRecord.Query().Paginate(ctx, after, first, before, last, ent.WithVisitRecordFilter(where.Filter), ent.WithVisitRecordOrder(orderBy))
 }
 
 // Area returns generated.AreaResolver implementation.

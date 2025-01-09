@@ -203,30 +203,35 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Project",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			project.FieldCreatedAt:               {Type: field.TypeTime, Column: project.FieldCreatedAt},
-			project.FieldUpdatedAt:               {Type: field.TypeTime, Column: project.FieldUpdatedAt},
-			project.FieldCode:                    {Type: field.TypeString, Column: project.FieldCode},
-			project.FieldName:                    {Type: field.TypeString, Column: project.FieldName},
-			project.FieldIsFinished:              {Type: field.TypeBool, Column: project.FieldIsFinished},
-			project.FieldCje:                     {Type: field.TypeFloat64, Column: project.FieldCje},
-			project.FieldYye:                     {Type: field.TypeFloat64, Column: project.FieldYye},
-			project.FieldXjl:                     {Type: field.TypeFloat64, Column: project.FieldXjl},
-			project.FieldXmglfYs:                 {Type: field.TypeFloat64, Column: project.FieldXmglfYs},
-			project.FieldXmglfLj:                 {Type: field.TypeFloat64, Column: project.FieldXmglfLj},
-			project.FieldXmsjf:                   {Type: field.TypeFloat64, Column: project.FieldXmsjf},
-			project.FieldXmfzr:                   {Type: field.TypeString, Column: project.FieldXmfzr},
-			project.FieldOwnerApplyAmount:        {Type: field.TypeFloat64, Column: project.FieldOwnerApplyAmount},
-			project.FieldOwnerApplyCount:         {Type: field.TypeInt, Column: project.FieldOwnerApplyCount},
-			project.FieldOwnerApproveAmount:      {Type: field.TypeFloat64, Column: project.FieldOwnerApproveAmount},
-			project.FieldOwnerApproveCount:       {Type: field.TypeInt, Column: project.FieldOwnerApproveCount},
-			project.FieldContractorApplyAmount:   {Type: field.TypeFloat64, Column: project.FieldContractorApplyAmount},
-			project.FieldContractorApplyCount:    {Type: field.TypeInt, Column: project.FieldContractorApplyCount},
-			project.FieldContractorApproveAmount: {Type: field.TypeFloat64, Column: project.FieldContractorApproveAmount},
-			project.FieldContractorApproveCount:  {Type: field.TypeInt, Column: project.FieldContractorApproveCount},
-			project.FieldInstallProgress:         {Type: field.TypeFloat64, Column: project.FieldInstallProgress},
-			project.FieldEffectiveContractAmount: {Type: field.TypeFloat64, Column: project.FieldEffectiveContractAmount},
-			project.FieldVaApplyAmount:           {Type: field.TypeFloat64, Column: project.FieldVaApplyAmount},
-			project.FieldVaApproveAmount:         {Type: field.TypeFloat64, Column: project.FieldVaApproveAmount},
+			project.FieldCreatedAt:                               {Type: field.TypeTime, Column: project.FieldCreatedAt},
+			project.FieldUpdatedAt:                               {Type: field.TypeTime, Column: project.FieldUpdatedAt},
+			project.FieldCode:                                    {Type: field.TypeString, Column: project.FieldCode},
+			project.FieldName:                                    {Type: field.TypeString, Column: project.FieldName},
+			project.FieldIsFinished:                              {Type: field.TypeBool, Column: project.FieldIsFinished},
+			project.FieldCje:                                     {Type: field.TypeFloat64, Column: project.FieldCje},
+			project.FieldYye:                                     {Type: field.TypeFloat64, Column: project.FieldYye},
+			project.FieldXjl:                                     {Type: field.TypeFloat64, Column: project.FieldXjl},
+			project.FieldXmglfYs:                                 {Type: field.TypeFloat64, Column: project.FieldXmglfYs},
+			project.FieldXmglfLj:                                 {Type: field.TypeFloat64, Column: project.FieldXmglfLj},
+			project.FieldXmsjf:                                   {Type: field.TypeFloat64, Column: project.FieldXmsjf},
+			project.FieldXmfzr:                                   {Type: field.TypeString, Column: project.FieldXmfzr},
+			project.FieldOwnerApplyAmount:                        {Type: field.TypeFloat64, Column: project.FieldOwnerApplyAmount},
+			project.FieldOwnerApplyCount:                         {Type: field.TypeInt, Column: project.FieldOwnerApplyCount},
+			project.FieldOwnerApproveAmount:                      {Type: field.TypeFloat64, Column: project.FieldOwnerApproveAmount},
+			project.FieldOwnerApproveCount:                       {Type: field.TypeInt, Column: project.FieldOwnerApproveCount},
+			project.FieldContractorApplyAmount:                   {Type: field.TypeFloat64, Column: project.FieldContractorApplyAmount},
+			project.FieldContractorApplyCount:                    {Type: field.TypeInt, Column: project.FieldContractorApplyCount},
+			project.FieldContractorApproveAmount:                 {Type: field.TypeFloat64, Column: project.FieldContractorApproveAmount},
+			project.FieldContractorApproveCount:                  {Type: field.TypeInt, Column: project.FieldContractorApproveCount},
+			project.FieldInstallProgress:                         {Type: field.TypeFloat64, Column: project.FieldInstallProgress},
+			project.FieldEffectiveContractAmount:                 {Type: field.TypeFloat64, Column: project.FieldEffectiveContractAmount},
+			project.FieldVaApplyAmount:                           {Type: field.TypeFloat64, Column: project.FieldVaApplyAmount},
+			project.FieldVaApproveAmount:                         {Type: field.TypeFloat64, Column: project.FieldVaApproveAmount},
+			project.FieldAccumulatedStatutoryDeductions:          {Type: field.TypeFloat64, Column: project.FieldAccumulatedStatutoryDeductions},
+			project.FieldAccumulatedNonStatutoryDeductions:       {Type: field.TypeFloat64, Column: project.FieldAccumulatedNonStatutoryDeductions},
+			project.FieldAccumulatedStatutoryDeductionsPeriod:    {Type: field.TypeFloat64, Column: project.FieldAccumulatedStatutoryDeductionsPeriod},
+			project.FieldAccumulatedNonStatutoryDeductionsPeriod: {Type: field.TypeFloat64, Column: project.FieldAccumulatedNonStatutoryDeductionsPeriod},
+			project.FieldTotalContractAmount:                     {Type: field.TypeFloat64, Column: project.FieldTotalContractAmount},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -1991,6 +1996,31 @@ func (f *ProjectFilter) WhereVaApplyAmount(p entql.Float64P) {
 // WhereVaApproveAmount applies the entql float64 predicate on the va_approve_amount field.
 func (f *ProjectFilter) WhereVaApproveAmount(p entql.Float64P) {
 	f.Where(p.Field(project.FieldVaApproveAmount))
+}
+
+// WhereAccumulatedStatutoryDeductions applies the entql float64 predicate on the accumulated_statutory_deductions field.
+func (f *ProjectFilter) WhereAccumulatedStatutoryDeductions(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAccumulatedStatutoryDeductions))
+}
+
+// WhereAccumulatedNonStatutoryDeductions applies the entql float64 predicate on the accumulated_non_statutory_deductions field.
+func (f *ProjectFilter) WhereAccumulatedNonStatutoryDeductions(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAccumulatedNonStatutoryDeductions))
+}
+
+// WhereAccumulatedStatutoryDeductionsPeriod applies the entql float64 predicate on the accumulated_statutory_deductions_period field.
+func (f *ProjectFilter) WhereAccumulatedStatutoryDeductionsPeriod(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAccumulatedStatutoryDeductionsPeriod))
+}
+
+// WhereAccumulatedNonStatutoryDeductionsPeriod applies the entql float64 predicate on the accumulated_non_statutory_deductions_period field.
+func (f *ProjectFilter) WhereAccumulatedNonStatutoryDeductionsPeriod(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAccumulatedNonStatutoryDeductionsPeriod))
+}
+
+// WhereTotalContractAmount applies the entql float64 predicate on the total_contract_amount field.
+func (f *ProjectFilter) WhereTotalContractAmount(p entql.Float64P) {
+	f.Where(p.Field(project.FieldTotalContractAmount))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.

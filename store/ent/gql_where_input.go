@@ -4132,6 +4132,66 @@ type ProjectWhereInput struct {
 	VaApproveAmountIsNil  bool      `json:"vaApproveAmountIsNil,omitempty"`
 	VaApproveAmountNotNil bool      `json:"vaApproveAmountNotNil,omitempty"`
 
+	// "accumulated_statutory_deductions" field predicates.
+	AccumulatedStatutoryDeductions       *float64  `json:"accumulatedStatutoryDeductions,omitempty"`
+	AccumulatedStatutoryDeductionsNEQ    *float64  `json:"accumulatedStatutoryDeductionsNEQ,omitempty"`
+	AccumulatedStatutoryDeductionsIn     []float64 `json:"accumulatedStatutoryDeductionsIn,omitempty"`
+	AccumulatedStatutoryDeductionsNotIn  []float64 `json:"accumulatedStatutoryDeductionsNotIn,omitempty"`
+	AccumulatedStatutoryDeductionsGT     *float64  `json:"accumulatedStatutoryDeductionsGT,omitempty"`
+	AccumulatedStatutoryDeductionsGTE    *float64  `json:"accumulatedStatutoryDeductionsGTE,omitempty"`
+	AccumulatedStatutoryDeductionsLT     *float64  `json:"accumulatedStatutoryDeductionsLT,omitempty"`
+	AccumulatedStatutoryDeductionsLTE    *float64  `json:"accumulatedStatutoryDeductionsLTE,omitempty"`
+	AccumulatedStatutoryDeductionsIsNil  bool      `json:"accumulatedStatutoryDeductionsIsNil,omitempty"`
+	AccumulatedStatutoryDeductionsNotNil bool      `json:"accumulatedStatutoryDeductionsNotNil,omitempty"`
+
+	// "accumulated_non_statutory_deductions" field predicates.
+	AccumulatedNonStatutoryDeductions       *float64  `json:"accumulatedNonStatutoryDeductions,omitempty"`
+	AccumulatedNonStatutoryDeductionsNEQ    *float64  `json:"accumulatedNonStatutoryDeductionsNEQ,omitempty"`
+	AccumulatedNonStatutoryDeductionsIn     []float64 `json:"accumulatedNonStatutoryDeductionsIn,omitempty"`
+	AccumulatedNonStatutoryDeductionsNotIn  []float64 `json:"accumulatedNonStatutoryDeductionsNotIn,omitempty"`
+	AccumulatedNonStatutoryDeductionsGT     *float64  `json:"accumulatedNonStatutoryDeductionsGT,omitempty"`
+	AccumulatedNonStatutoryDeductionsGTE    *float64  `json:"accumulatedNonStatutoryDeductionsGTE,omitempty"`
+	AccumulatedNonStatutoryDeductionsLT     *float64  `json:"accumulatedNonStatutoryDeductionsLT,omitempty"`
+	AccumulatedNonStatutoryDeductionsLTE    *float64  `json:"accumulatedNonStatutoryDeductionsLTE,omitempty"`
+	AccumulatedNonStatutoryDeductionsIsNil  bool      `json:"accumulatedNonStatutoryDeductionsIsNil,omitempty"`
+	AccumulatedNonStatutoryDeductionsNotNil bool      `json:"accumulatedNonStatutoryDeductionsNotNil,omitempty"`
+
+	// "accumulated_statutory_deductions_period" field predicates.
+	AccumulatedStatutoryDeductionsPeriod       *float64  `json:"accumulatedStatutoryDeductionsPeriod,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodNEQ    *float64  `json:"accumulatedStatutoryDeductionsPeriodNEQ,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodIn     []float64 `json:"accumulatedStatutoryDeductionsPeriodIn,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodNotIn  []float64 `json:"accumulatedStatutoryDeductionsPeriodNotIn,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodGT     *float64  `json:"accumulatedStatutoryDeductionsPeriodGT,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodGTE    *float64  `json:"accumulatedStatutoryDeductionsPeriodGTE,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodLT     *float64  `json:"accumulatedStatutoryDeductionsPeriodLT,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodLTE    *float64  `json:"accumulatedStatutoryDeductionsPeriodLTE,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodIsNil  bool      `json:"accumulatedStatutoryDeductionsPeriodIsNil,omitempty"`
+	AccumulatedStatutoryDeductionsPeriodNotNil bool      `json:"accumulatedStatutoryDeductionsPeriodNotNil,omitempty"`
+
+	// "accumulated_non_statutory_deductions_period" field predicates.
+	AccumulatedNonStatutoryDeductionsPeriod       *float64  `json:"accumulatedNonStatutoryDeductionsPeriod,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodNEQ    *float64  `json:"accumulatedNonStatutoryDeductionsPeriodNEQ,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodIn     []float64 `json:"accumulatedNonStatutoryDeductionsPeriodIn,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodNotIn  []float64 `json:"accumulatedNonStatutoryDeductionsPeriodNotIn,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodGT     *float64  `json:"accumulatedNonStatutoryDeductionsPeriodGT,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodGTE    *float64  `json:"accumulatedNonStatutoryDeductionsPeriodGTE,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodLT     *float64  `json:"accumulatedNonStatutoryDeductionsPeriodLT,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodLTE    *float64  `json:"accumulatedNonStatutoryDeductionsPeriodLTE,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodIsNil  bool      `json:"accumulatedNonStatutoryDeductionsPeriodIsNil,omitempty"`
+	AccumulatedNonStatutoryDeductionsPeriodNotNil bool      `json:"accumulatedNonStatutoryDeductionsPeriodNotNil,omitempty"`
+
+	// "total_contract_amount" field predicates.
+	TotalContractAmount       *float64  `json:"totalContractAmount,omitempty"`
+	TotalContractAmountNEQ    *float64  `json:"totalContractAmountNEQ,omitempty"`
+	TotalContractAmountIn     []float64 `json:"totalContractAmountIn,omitempty"`
+	TotalContractAmountNotIn  []float64 `json:"totalContractAmountNotIn,omitempty"`
+	TotalContractAmountGT     *float64  `json:"totalContractAmountGT,omitempty"`
+	TotalContractAmountGTE    *float64  `json:"totalContractAmountGTE,omitempty"`
+	TotalContractAmountLT     *float64  `json:"totalContractAmountLT,omitempty"`
+	TotalContractAmountLTE    *float64  `json:"totalContractAmountLTE,omitempty"`
+	TotalContractAmountIsNil  bool      `json:"totalContractAmountIsNil,omitempty"`
+	TotalContractAmountNotNil bool      `json:"totalContractAmountNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -4954,6 +5014,156 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.VaApproveAmountNotNil {
 		predicates = append(predicates, project.VaApproveAmountNotNil())
+	}
+	if i.AccumulatedStatutoryDeductions != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsEQ(*i.AccumulatedStatutoryDeductions))
+	}
+	if i.AccumulatedStatutoryDeductionsNEQ != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsNEQ(*i.AccumulatedStatutoryDeductionsNEQ))
+	}
+	if len(i.AccumulatedStatutoryDeductionsIn) > 0 {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsIn(i.AccumulatedStatutoryDeductionsIn...))
+	}
+	if len(i.AccumulatedStatutoryDeductionsNotIn) > 0 {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsNotIn(i.AccumulatedStatutoryDeductionsNotIn...))
+	}
+	if i.AccumulatedStatutoryDeductionsGT != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsGT(*i.AccumulatedStatutoryDeductionsGT))
+	}
+	if i.AccumulatedStatutoryDeductionsGTE != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsGTE(*i.AccumulatedStatutoryDeductionsGTE))
+	}
+	if i.AccumulatedStatutoryDeductionsLT != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsLT(*i.AccumulatedStatutoryDeductionsLT))
+	}
+	if i.AccumulatedStatutoryDeductionsLTE != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsLTE(*i.AccumulatedStatutoryDeductionsLTE))
+	}
+	if i.AccumulatedStatutoryDeductionsIsNil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsIsNil())
+	}
+	if i.AccumulatedStatutoryDeductionsNotNil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsNotNil())
+	}
+	if i.AccumulatedNonStatutoryDeductions != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsEQ(*i.AccumulatedNonStatutoryDeductions))
+	}
+	if i.AccumulatedNonStatutoryDeductionsNEQ != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsNEQ(*i.AccumulatedNonStatutoryDeductionsNEQ))
+	}
+	if len(i.AccumulatedNonStatutoryDeductionsIn) > 0 {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsIn(i.AccumulatedNonStatutoryDeductionsIn...))
+	}
+	if len(i.AccumulatedNonStatutoryDeductionsNotIn) > 0 {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsNotIn(i.AccumulatedNonStatutoryDeductionsNotIn...))
+	}
+	if i.AccumulatedNonStatutoryDeductionsGT != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsGT(*i.AccumulatedNonStatutoryDeductionsGT))
+	}
+	if i.AccumulatedNonStatutoryDeductionsGTE != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsGTE(*i.AccumulatedNonStatutoryDeductionsGTE))
+	}
+	if i.AccumulatedNonStatutoryDeductionsLT != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsLT(*i.AccumulatedNonStatutoryDeductionsLT))
+	}
+	if i.AccumulatedNonStatutoryDeductionsLTE != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsLTE(*i.AccumulatedNonStatutoryDeductionsLTE))
+	}
+	if i.AccumulatedNonStatutoryDeductionsIsNil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsIsNil())
+	}
+	if i.AccumulatedNonStatutoryDeductionsNotNil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsNotNil())
+	}
+	if i.AccumulatedStatutoryDeductionsPeriod != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodEQ(*i.AccumulatedStatutoryDeductionsPeriod))
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodNEQ != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodNEQ(*i.AccumulatedStatutoryDeductionsPeriodNEQ))
+	}
+	if len(i.AccumulatedStatutoryDeductionsPeriodIn) > 0 {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodIn(i.AccumulatedStatutoryDeductionsPeriodIn...))
+	}
+	if len(i.AccumulatedStatutoryDeductionsPeriodNotIn) > 0 {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodNotIn(i.AccumulatedStatutoryDeductionsPeriodNotIn...))
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodGT != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodGT(*i.AccumulatedStatutoryDeductionsPeriodGT))
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodGTE != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodGTE(*i.AccumulatedStatutoryDeductionsPeriodGTE))
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodLT != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodLT(*i.AccumulatedStatutoryDeductionsPeriodLT))
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodLTE != nil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodLTE(*i.AccumulatedStatutoryDeductionsPeriodLTE))
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodIsNil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodIsNil())
+	}
+	if i.AccumulatedStatutoryDeductionsPeriodNotNil {
+		predicates = append(predicates, project.AccumulatedStatutoryDeductionsPeriodNotNil())
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriod != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodEQ(*i.AccumulatedNonStatutoryDeductionsPeriod))
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodNEQ != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodNEQ(*i.AccumulatedNonStatutoryDeductionsPeriodNEQ))
+	}
+	if len(i.AccumulatedNonStatutoryDeductionsPeriodIn) > 0 {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodIn(i.AccumulatedNonStatutoryDeductionsPeriodIn...))
+	}
+	if len(i.AccumulatedNonStatutoryDeductionsPeriodNotIn) > 0 {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodNotIn(i.AccumulatedNonStatutoryDeductionsPeriodNotIn...))
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodGT != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodGT(*i.AccumulatedNonStatutoryDeductionsPeriodGT))
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodGTE != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodGTE(*i.AccumulatedNonStatutoryDeductionsPeriodGTE))
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodLT != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodLT(*i.AccumulatedNonStatutoryDeductionsPeriodLT))
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodLTE != nil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodLTE(*i.AccumulatedNonStatutoryDeductionsPeriodLTE))
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodIsNil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodIsNil())
+	}
+	if i.AccumulatedNonStatutoryDeductionsPeriodNotNil {
+		predicates = append(predicates, project.AccumulatedNonStatutoryDeductionsPeriodNotNil())
+	}
+	if i.TotalContractAmount != nil {
+		predicates = append(predicates, project.TotalContractAmountEQ(*i.TotalContractAmount))
+	}
+	if i.TotalContractAmountNEQ != nil {
+		predicates = append(predicates, project.TotalContractAmountNEQ(*i.TotalContractAmountNEQ))
+	}
+	if len(i.TotalContractAmountIn) > 0 {
+		predicates = append(predicates, project.TotalContractAmountIn(i.TotalContractAmountIn...))
+	}
+	if len(i.TotalContractAmountNotIn) > 0 {
+		predicates = append(predicates, project.TotalContractAmountNotIn(i.TotalContractAmountNotIn...))
+	}
+	if i.TotalContractAmountGT != nil {
+		predicates = append(predicates, project.TotalContractAmountGT(*i.TotalContractAmountGT))
+	}
+	if i.TotalContractAmountGTE != nil {
+		predicates = append(predicates, project.TotalContractAmountGTE(*i.TotalContractAmountGTE))
+	}
+	if i.TotalContractAmountLT != nil {
+		predicates = append(predicates, project.TotalContractAmountLT(*i.TotalContractAmountLT))
+	}
+	if i.TotalContractAmountLTE != nil {
+		predicates = append(predicates, project.TotalContractAmountLTE(*i.TotalContractAmountLTE))
+	}
+	if i.TotalContractAmountIsNil {
+		predicates = append(predicates, project.TotalContractAmountIsNil())
+	}
+	if i.TotalContractAmountNotNil {
+		predicates = append(predicates, project.TotalContractAmountNotNil())
 	}
 
 	if i.HasVos != nil {

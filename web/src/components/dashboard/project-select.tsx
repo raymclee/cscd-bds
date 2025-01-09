@@ -1,85 +1,84 @@
-import * as Select from "@radix-ui/react-select";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { CheckIcon } from "lucide-react";
-import { forwardRef } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { operationsPageQuery$data } from "__generated__/operationsPageQuery.graphql";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
 import { cn } from "~/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
-export function ProjectSelect() {
+type ProjectSelectProps = {
+  defaultCode?: string;
+  data: operationsPageQuery$data;
+};
+
+export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
+  const [open, setOpen] = useState(false);
+  const search = useSearch({ from: "/__auth/__dashboard/operations" });
+  const navigate = useNavigate();
+
+  const code = search.code ?? defaultCode;
+
+  const projectsArray = data?.projects?.edges
+    ?.map((item) => item?.node)
+    .filter((item) => item?.code);
+
   return (
-    <Select.Root>
-      <Select.Trigger
-        className="inline-flex h-8 items-center justify-center gap-1 rounded px-4 text-sm leading-[1]"
-        aria-label="project"
-      >
-        <Select.Value placeholder="请选择项目" />
-        <Select.Icon className="SelectIcon">
-          <ChevronDownIcon size={20} />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content className="overflow-hidden rounded bg-white shadow-lg">
-          <Select.ScrollUpButton className="SelectScrollButton">
-            <ChevronUpIcon />
-          </Select.ScrollUpButton>
-          <Select.Viewport className="SelectViewport">
-            <Select.Group>
-              <Select.Label className="SelectLabel">Fruits</Select.Label>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
-            </Select.Group>
-
-            <Select.Separator className="SelectSeparator" />
-
-            <Select.Group>
-              <Select.Label className="SelectLabel">Vegetables</Select.Label>
-              <SelectItem value="aubergine">Aubergine</SelectItem>
-              <SelectItem value="broccoli">Broccoli</SelectItem>
-              <SelectItem value="carrot" disabled>
-                Carrot
-              </SelectItem>
-              <SelectItem value="courgette">Courgette</SelectItem>
-              <SelectItem value="leek">Leek</SelectItem>
-            </Select.Group>
-
-            <Select.Separator className="SelectSeparator" />
-
-            <Select.Group>
-              <Select.Label className="SelectLabel">Meat</Select.Label>
-              <SelectItem value="beef">Beef</SelectItem>
-              <SelectItem value="chicken">Chicken</SelectItem>
-              <SelectItem value="lamb">Lamb</SelectItem>
-              <SelectItem value="pork">Pork</SelectItem>
-            </Select.Group>
-          </Select.Viewport>
-          <Select.ScrollDownButton className="SelectScrollButton">
-            <ChevronDownIcon />
-          </Select.ScrollDownButton>
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          role="combobox"
+          aria-expanded={open}
+          className="inline-flex w-[200px] items-center justify-between px-2 py-1 text-sm font-medium outline-brand-project"
+        >
+          <div className="line-clamp-1 flex-1 text-left">
+            {code
+              ? projectsArray?.find((item) => item?.code === code)?.name
+              : "请选择项目..."}
+          </div>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[280px] border-none bg-transparent p-0">
+        <Command className="bg-slate-900/90 text-white backdrop-blur-2xl">
+          <CommandInput placeholder="请选择项目..." />
+          <CommandList>
+            <CommandEmpty>没有相关项目</CommandEmpty>
+            <CommandGroup>
+              {projectsArray?.map((item) => (
+                <CommandItem
+                  className="text-white data-[selected='true']:bg-slate-600 data-[selected=true]:text-white"
+                  key={item?.code}
+                  value={item?.code ?? ""}
+                  onSelect={(currentValue) => {
+                    // setValue(currentValue === value ? "" : currentValue)
+                    setOpen(false);
+                    navigate({
+                      to: "/operations",
+                      search: { code: currentValue },
+                      replace: true,
+                    });
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      defaultCode === item?.code ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                  {item?.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
-
-const SelectItem = forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof Select.Item>
->(({ children, className, ...props }, forwardedRef) => {
-  return (
-    <Select.Item
-      className={cn(
-        "relative flex h-6 select-none items-center pl-6 pr-9 text-sm leading-[1] text-black",
-        className,
-      )}
-      {...props}
-      ref={forwardedRef}
-    >
-      <Select.ItemText>{children}</Select.ItemText>
-      <Select.ItemIndicator className="SelectItemIndicator">
-        <CheckIcon />
-      </Select.ItemIndicator>
-    </Select.Item>
-  );
-});

@@ -176,6 +176,31 @@ func VaApproveAmount(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldVaApproveAmount, v))
 }
 
+// AccumulatedStatutoryDeductions applies equality check predicate on the "accumulated_statutory_deductions" field. It's identical to AccumulatedStatutoryDeductionsEQ.
+func AccumulatedStatutoryDeductions(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductions applies equality check predicate on the "accumulated_non_statutory_deductions" field. It's identical to AccumulatedNonStatutoryDeductionsEQ.
+func AccumulatedNonStatutoryDeductions(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriod applies equality check predicate on the "accumulated_statutory_deductions_period" field. It's identical to AccumulatedStatutoryDeductionsPeriodEQ.
+func AccumulatedStatutoryDeductionsPeriod(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriod applies equality check predicate on the "accumulated_non_statutory_deductions_period" field. It's identical to AccumulatedNonStatutoryDeductionsPeriodEQ.
+func AccumulatedNonStatutoryDeductionsPeriod(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// TotalContractAmount applies equality check predicate on the "total_contract_amount" field. It's identical to TotalContractAmountEQ.
+func TotalContractAmount(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldTotalContractAmount, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -1379,6 +1404,256 @@ func VaApproveAmountIsNil() predicate.Project {
 // VaApproveAmountNotNil applies the NotNil predicate on the "va_approve_amount" field.
 func VaApproveAmountNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldVaApproveAmount))
+}
+
+// AccumulatedStatutoryDeductionsEQ applies the EQ predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsNEQ applies the NEQ predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsIn applies the In predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAccumulatedStatutoryDeductions, vs...))
+}
+
+// AccumulatedStatutoryDeductionsNotIn applies the NotIn predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAccumulatedStatutoryDeductions, vs...))
+}
+
+// AccumulatedStatutoryDeductionsGT applies the GT predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsGTE applies the GTE predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsLT applies the LT predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsLTE applies the LTE predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAccumulatedStatutoryDeductions, v))
+}
+
+// AccumulatedStatutoryDeductionsIsNil applies the IsNil predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAccumulatedStatutoryDeductions))
+}
+
+// AccumulatedStatutoryDeductionsNotNil applies the NotNil predicate on the "accumulated_statutory_deductions" field.
+func AccumulatedStatutoryDeductionsNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAccumulatedStatutoryDeductions))
+}
+
+// AccumulatedNonStatutoryDeductionsEQ applies the EQ predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductionsNEQ applies the NEQ predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductionsIn applies the In predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAccumulatedNonStatutoryDeductions, vs...))
+}
+
+// AccumulatedNonStatutoryDeductionsNotIn applies the NotIn predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAccumulatedNonStatutoryDeductions, vs...))
+}
+
+// AccumulatedNonStatutoryDeductionsGT applies the GT predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductionsGTE applies the GTE predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductionsLT applies the LT predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductionsLTE applies the LTE predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAccumulatedNonStatutoryDeductions, v))
+}
+
+// AccumulatedNonStatutoryDeductionsIsNil applies the IsNil predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAccumulatedNonStatutoryDeductions))
+}
+
+// AccumulatedNonStatutoryDeductionsNotNil applies the NotNil predicate on the "accumulated_non_statutory_deductions" field.
+func AccumulatedNonStatutoryDeductionsNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAccumulatedNonStatutoryDeductions))
+}
+
+// AccumulatedStatutoryDeductionsPeriodEQ applies the EQ predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriodNEQ applies the NEQ predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriodIn applies the In predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAccumulatedStatutoryDeductionsPeriod, vs...))
+}
+
+// AccumulatedStatutoryDeductionsPeriodNotIn applies the NotIn predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAccumulatedStatutoryDeductionsPeriod, vs...))
+}
+
+// AccumulatedStatutoryDeductionsPeriodGT applies the GT predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriodGTE applies the GTE predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriodLT applies the LT predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriodLTE applies the LTE predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAccumulatedStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedStatutoryDeductionsPeriodIsNil applies the IsNil predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAccumulatedStatutoryDeductionsPeriod))
+}
+
+// AccumulatedStatutoryDeductionsPeriodNotNil applies the NotNil predicate on the "accumulated_statutory_deductions_period" field.
+func AccumulatedStatutoryDeductionsPeriodNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAccumulatedStatutoryDeductionsPeriod))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodEQ applies the EQ predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodNEQ applies the NEQ predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodIn applies the In predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAccumulatedNonStatutoryDeductionsPeriod, vs...))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodNotIn applies the NotIn predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAccumulatedNonStatutoryDeductionsPeriod, vs...))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodGT applies the GT predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodGTE applies the GTE predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodLT applies the LT predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodLTE applies the LTE predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAccumulatedNonStatutoryDeductionsPeriod, v))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodIsNil applies the IsNil predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAccumulatedNonStatutoryDeductionsPeriod))
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodNotNil applies the NotNil predicate on the "accumulated_non_statutory_deductions_period" field.
+func AccumulatedNonStatutoryDeductionsPeriodNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAccumulatedNonStatutoryDeductionsPeriod))
+}
+
+// TotalContractAmountEQ applies the EQ predicate on the "total_contract_amount" field.
+func TotalContractAmountEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldTotalContractAmount, v))
+}
+
+// TotalContractAmountNEQ applies the NEQ predicate on the "total_contract_amount" field.
+func TotalContractAmountNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldTotalContractAmount, v))
+}
+
+// TotalContractAmountIn applies the In predicate on the "total_contract_amount" field.
+func TotalContractAmountIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldTotalContractAmount, vs...))
+}
+
+// TotalContractAmountNotIn applies the NotIn predicate on the "total_contract_amount" field.
+func TotalContractAmountNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldTotalContractAmount, vs...))
+}
+
+// TotalContractAmountGT applies the GT predicate on the "total_contract_amount" field.
+func TotalContractAmountGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldTotalContractAmount, v))
+}
+
+// TotalContractAmountGTE applies the GTE predicate on the "total_contract_amount" field.
+func TotalContractAmountGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldTotalContractAmount, v))
+}
+
+// TotalContractAmountLT applies the LT predicate on the "total_contract_amount" field.
+func TotalContractAmountLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldTotalContractAmount, v))
+}
+
+// TotalContractAmountLTE applies the LTE predicate on the "total_contract_amount" field.
+func TotalContractAmountLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldTotalContractAmount, v))
+}
+
+// TotalContractAmountIsNil applies the IsNil predicate on the "total_contract_amount" field.
+func TotalContractAmountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldTotalContractAmount))
+}
+
+// TotalContractAmountNotNil applies the NotNil predicate on the "total_contract_amount" field.
+func TotalContractAmountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldTotalContractAmount))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

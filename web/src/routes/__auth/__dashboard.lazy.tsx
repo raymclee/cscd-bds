@@ -31,7 +31,7 @@ function RouteComponent() {
     <LazyMotion features={domAnimation}>
       <div
         ref={ref}
-        className="max-w-screen min-w-screen fixed left-0 top-0 max-h-screen min-h-screen origin-top-left bg-slate-900"
+        className="fixed left-0 top-0 max-h-screen min-h-screen origin-top-left overflow-hidden bg-slate-900"
       >
         {/* <div className="relative max-h-screen min-h-screen overflow-hidden max-w-screen bg-slate-900"> */}
         <Outlet />

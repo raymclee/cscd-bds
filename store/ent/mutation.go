@@ -7908,58 +7908,68 @@ func (m *PlotMutation) ResetEdge(name string) error {
 // ProjectMutation represents an operation that mutates the Project nodes in the graph.
 type ProjectMutation struct {
 	config
-	op                           Op
-	typ                          string
-	id                           *xid.ID
-	created_at                   *time.Time
-	updated_at                   *time.Time
-	code                         *string
-	name                         *string
-	is_finished                  *bool
-	cje                          *float64
-	addcje                       *float64
-	yye                          *float64
-	addyye                       *float64
-	xjl                          *float64
-	addxjl                       *float64
-	xmglf_ys                     *float64
-	addxmglf_ys                  *float64
-	xmglf_lj                     *float64
-	addxmglf_lj                  *float64
-	xmsjf                        *float64
-	addxmsjf                     *float64
-	xmfzr                        *string
-	owner_apply_amount           *float64
-	addowner_apply_amount        *float64
-	owner_apply_count            *int
-	addowner_apply_count         *int
-	owner_approve_amount         *float64
-	addowner_approve_amount      *float64
-	owner_approve_count          *int
-	addowner_approve_count       *int
-	contractor_apply_amount      *float64
-	addcontractor_apply_amount   *float64
-	contractor_apply_count       *int
-	addcontractor_apply_count    *int
-	contractor_approve_amount    *float64
-	addcontractor_approve_amount *float64
-	contractor_approve_count     *int
-	addcontractor_approve_count  *int
-	install_progress             *float64
-	addinstall_progress          *float64
-	effective_contract_amount    *float64
-	addeffective_contract_amount *float64
-	va_apply_amount              *float64
-	addva_apply_amount           *float64
-	va_approve_amount            *float64
-	addva_approve_amount         *float64
-	clearedFields                map[string]struct{}
-	vos                          map[xid.ID]struct{}
-	removedvos                   map[xid.ID]struct{}
-	clearedvos                   bool
-	done                         bool
-	oldValue                     func(context.Context) (*Project, error)
-	predicates                   []predicate.Project
+	op                                             Op
+	typ                                            string
+	id                                             *xid.ID
+	created_at                                     *time.Time
+	updated_at                                     *time.Time
+	code                                           *string
+	name                                           *string
+	is_finished                                    *bool
+	cje                                            *float64
+	addcje                                         *float64
+	yye                                            *float64
+	addyye                                         *float64
+	xjl                                            *float64
+	addxjl                                         *float64
+	xmglf_ys                                       *float64
+	addxmglf_ys                                    *float64
+	xmglf_lj                                       *float64
+	addxmglf_lj                                    *float64
+	xmsjf                                          *float64
+	addxmsjf                                       *float64
+	xmfzr                                          *string
+	owner_apply_amount                             *float64
+	addowner_apply_amount                          *float64
+	owner_apply_count                              *int
+	addowner_apply_count                           *int
+	owner_approve_amount                           *float64
+	addowner_approve_amount                        *float64
+	owner_approve_count                            *int
+	addowner_approve_count                         *int
+	contractor_apply_amount                        *float64
+	addcontractor_apply_amount                     *float64
+	contractor_apply_count                         *int
+	addcontractor_apply_count                      *int
+	contractor_approve_amount                      *float64
+	addcontractor_approve_amount                   *float64
+	contractor_approve_count                       *int
+	addcontractor_approve_count                    *int
+	install_progress                               *float64
+	addinstall_progress                            *float64
+	effective_contract_amount                      *float64
+	addeffective_contract_amount                   *float64
+	va_apply_amount                                *float64
+	addva_apply_amount                             *float64
+	va_approve_amount                              *float64
+	addva_approve_amount                           *float64
+	accumulated_statutory_deductions               *float64
+	addaccumulated_statutory_deductions            *float64
+	accumulated_non_statutory_deductions           *float64
+	addaccumulated_non_statutory_deductions        *float64
+	accumulated_statutory_deductions_period        *float64
+	addaccumulated_statutory_deductions_period     *float64
+	accumulated_non_statutory_deductions_period    *float64
+	addaccumulated_non_statutory_deductions_period *float64
+	total_contract_amount                          *float64
+	addtotal_contract_amount                       *float64
+	clearedFields                                  map[string]struct{}
+	vos                                            map[xid.ID]struct{}
+	removedvos                                     map[xid.ID]struct{}
+	clearedvos                                     bool
+	done                                           bool
+	oldValue                                       func(context.Context) (*Project, error)
+	predicates                                     []predicate.Project
 }
 
 var _ ent.Mutation = (*ProjectMutation)(nil)
@@ -9568,6 +9578,356 @@ func (m *ProjectMutation) ResetVaApproveAmount() {
 	delete(m.clearedFields, project.FieldVaApproveAmount)
 }
 
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (m *ProjectMutation) SetAccumulatedStatutoryDeductions(f float64) {
+	m.accumulated_statutory_deductions = &f
+	m.addaccumulated_statutory_deductions = nil
+}
+
+// AccumulatedStatutoryDeductions returns the value of the "accumulated_statutory_deductions" field in the mutation.
+func (m *ProjectMutation) AccumulatedStatutoryDeductions() (r float64, exists bool) {
+	v := m.accumulated_statutory_deductions
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccumulatedStatutoryDeductions returns the old "accumulated_statutory_deductions" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAccumulatedStatutoryDeductions(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccumulatedStatutoryDeductions is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccumulatedStatutoryDeductions requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccumulatedStatutoryDeductions: %w", err)
+	}
+	return oldValue.AccumulatedStatutoryDeductions, nil
+}
+
+// AddAccumulatedStatutoryDeductions adds f to the "accumulated_statutory_deductions" field.
+func (m *ProjectMutation) AddAccumulatedStatutoryDeductions(f float64) {
+	if m.addaccumulated_statutory_deductions != nil {
+		*m.addaccumulated_statutory_deductions += f
+	} else {
+		m.addaccumulated_statutory_deductions = &f
+	}
+}
+
+// AddedAccumulatedStatutoryDeductions returns the value that was added to the "accumulated_statutory_deductions" field in this mutation.
+func (m *ProjectMutation) AddedAccumulatedStatutoryDeductions() (r float64, exists bool) {
+	v := m.addaccumulated_statutory_deductions
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
+func (m *ProjectMutation) ClearAccumulatedStatutoryDeductions() {
+	m.accumulated_statutory_deductions = nil
+	m.addaccumulated_statutory_deductions = nil
+	m.clearedFields[project.FieldAccumulatedStatutoryDeductions] = struct{}{}
+}
+
+// AccumulatedStatutoryDeductionsCleared returns if the "accumulated_statutory_deductions" field was cleared in this mutation.
+func (m *ProjectMutation) AccumulatedStatutoryDeductionsCleared() bool {
+	_, ok := m.clearedFields[project.FieldAccumulatedStatutoryDeductions]
+	return ok
+}
+
+// ResetAccumulatedStatutoryDeductions resets all changes to the "accumulated_statutory_deductions" field.
+func (m *ProjectMutation) ResetAccumulatedStatutoryDeductions() {
+	m.accumulated_statutory_deductions = nil
+	m.addaccumulated_statutory_deductions = nil
+	delete(m.clearedFields, project.FieldAccumulatedStatutoryDeductions)
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (m *ProjectMutation) SetAccumulatedNonStatutoryDeductions(f float64) {
+	m.accumulated_non_statutory_deductions = &f
+	m.addaccumulated_non_statutory_deductions = nil
+}
+
+// AccumulatedNonStatutoryDeductions returns the value of the "accumulated_non_statutory_deductions" field in the mutation.
+func (m *ProjectMutation) AccumulatedNonStatutoryDeductions() (r float64, exists bool) {
+	v := m.accumulated_non_statutory_deductions
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccumulatedNonStatutoryDeductions returns the old "accumulated_non_statutory_deductions" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAccumulatedNonStatutoryDeductions(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccumulatedNonStatutoryDeductions is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccumulatedNonStatutoryDeductions requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccumulatedNonStatutoryDeductions: %w", err)
+	}
+	return oldValue.AccumulatedNonStatutoryDeductions, nil
+}
+
+// AddAccumulatedNonStatutoryDeductions adds f to the "accumulated_non_statutory_deductions" field.
+func (m *ProjectMutation) AddAccumulatedNonStatutoryDeductions(f float64) {
+	if m.addaccumulated_non_statutory_deductions != nil {
+		*m.addaccumulated_non_statutory_deductions += f
+	} else {
+		m.addaccumulated_non_statutory_deductions = &f
+	}
+}
+
+// AddedAccumulatedNonStatutoryDeductions returns the value that was added to the "accumulated_non_statutory_deductions" field in this mutation.
+func (m *ProjectMutation) AddedAccumulatedNonStatutoryDeductions() (r float64, exists bool) {
+	v := m.addaccumulated_non_statutory_deductions
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
+func (m *ProjectMutation) ClearAccumulatedNonStatutoryDeductions() {
+	m.accumulated_non_statutory_deductions = nil
+	m.addaccumulated_non_statutory_deductions = nil
+	m.clearedFields[project.FieldAccumulatedNonStatutoryDeductions] = struct{}{}
+}
+
+// AccumulatedNonStatutoryDeductionsCleared returns if the "accumulated_non_statutory_deductions" field was cleared in this mutation.
+func (m *ProjectMutation) AccumulatedNonStatutoryDeductionsCleared() bool {
+	_, ok := m.clearedFields[project.FieldAccumulatedNonStatutoryDeductions]
+	return ok
+}
+
+// ResetAccumulatedNonStatutoryDeductions resets all changes to the "accumulated_non_statutory_deductions" field.
+func (m *ProjectMutation) ResetAccumulatedNonStatutoryDeductions() {
+	m.accumulated_non_statutory_deductions = nil
+	m.addaccumulated_non_statutory_deductions = nil
+	delete(m.clearedFields, project.FieldAccumulatedNonStatutoryDeductions)
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (m *ProjectMutation) SetAccumulatedStatutoryDeductionsPeriod(f float64) {
+	m.accumulated_statutory_deductions_period = &f
+	m.addaccumulated_statutory_deductions_period = nil
+}
+
+// AccumulatedStatutoryDeductionsPeriod returns the value of the "accumulated_statutory_deductions_period" field in the mutation.
+func (m *ProjectMutation) AccumulatedStatutoryDeductionsPeriod() (r float64, exists bool) {
+	v := m.accumulated_statutory_deductions_period
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccumulatedStatutoryDeductionsPeriod returns the old "accumulated_statutory_deductions_period" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAccumulatedStatutoryDeductionsPeriod(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccumulatedStatutoryDeductionsPeriod is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccumulatedStatutoryDeductionsPeriod requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccumulatedStatutoryDeductionsPeriod: %w", err)
+	}
+	return oldValue.AccumulatedStatutoryDeductionsPeriod, nil
+}
+
+// AddAccumulatedStatutoryDeductionsPeriod adds f to the "accumulated_statutory_deductions_period" field.
+func (m *ProjectMutation) AddAccumulatedStatutoryDeductionsPeriod(f float64) {
+	if m.addaccumulated_statutory_deductions_period != nil {
+		*m.addaccumulated_statutory_deductions_period += f
+	} else {
+		m.addaccumulated_statutory_deductions_period = &f
+	}
+}
+
+// AddedAccumulatedStatutoryDeductionsPeriod returns the value that was added to the "accumulated_statutory_deductions_period" field in this mutation.
+func (m *ProjectMutation) AddedAccumulatedStatutoryDeductionsPeriod() (r float64, exists bool) {
+	v := m.addaccumulated_statutory_deductions_period
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
+func (m *ProjectMutation) ClearAccumulatedStatutoryDeductionsPeriod() {
+	m.accumulated_statutory_deductions_period = nil
+	m.addaccumulated_statutory_deductions_period = nil
+	m.clearedFields[project.FieldAccumulatedStatutoryDeductionsPeriod] = struct{}{}
+}
+
+// AccumulatedStatutoryDeductionsPeriodCleared returns if the "accumulated_statutory_deductions_period" field was cleared in this mutation.
+func (m *ProjectMutation) AccumulatedStatutoryDeductionsPeriodCleared() bool {
+	_, ok := m.clearedFields[project.FieldAccumulatedStatutoryDeductionsPeriod]
+	return ok
+}
+
+// ResetAccumulatedStatutoryDeductionsPeriod resets all changes to the "accumulated_statutory_deductions_period" field.
+func (m *ProjectMutation) ResetAccumulatedStatutoryDeductionsPeriod() {
+	m.accumulated_statutory_deductions_period = nil
+	m.addaccumulated_statutory_deductions_period = nil
+	delete(m.clearedFields, project.FieldAccumulatedStatutoryDeductionsPeriod)
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (m *ProjectMutation) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) {
+	m.accumulated_non_statutory_deductions_period = &f
+	m.addaccumulated_non_statutory_deductions_period = nil
+}
+
+// AccumulatedNonStatutoryDeductionsPeriod returns the value of the "accumulated_non_statutory_deductions_period" field in the mutation.
+func (m *ProjectMutation) AccumulatedNonStatutoryDeductionsPeriod() (r float64, exists bool) {
+	v := m.accumulated_non_statutory_deductions_period
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccumulatedNonStatutoryDeductionsPeriod returns the old "accumulated_non_statutory_deductions_period" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAccumulatedNonStatutoryDeductionsPeriod(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccumulatedNonStatutoryDeductionsPeriod is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccumulatedNonStatutoryDeductionsPeriod requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccumulatedNonStatutoryDeductionsPeriod: %w", err)
+	}
+	return oldValue.AccumulatedNonStatutoryDeductionsPeriod, nil
+}
+
+// AddAccumulatedNonStatutoryDeductionsPeriod adds f to the "accumulated_non_statutory_deductions_period" field.
+func (m *ProjectMutation) AddAccumulatedNonStatutoryDeductionsPeriod(f float64) {
+	if m.addaccumulated_non_statutory_deductions_period != nil {
+		*m.addaccumulated_non_statutory_deductions_period += f
+	} else {
+		m.addaccumulated_non_statutory_deductions_period = &f
+	}
+}
+
+// AddedAccumulatedNonStatutoryDeductionsPeriod returns the value that was added to the "accumulated_non_statutory_deductions_period" field in this mutation.
+func (m *ProjectMutation) AddedAccumulatedNonStatutoryDeductionsPeriod() (r float64, exists bool) {
+	v := m.addaccumulated_non_statutory_deductions_period
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
+func (m *ProjectMutation) ClearAccumulatedNonStatutoryDeductionsPeriod() {
+	m.accumulated_non_statutory_deductions_period = nil
+	m.addaccumulated_non_statutory_deductions_period = nil
+	m.clearedFields[project.FieldAccumulatedNonStatutoryDeductionsPeriod] = struct{}{}
+}
+
+// AccumulatedNonStatutoryDeductionsPeriodCleared returns if the "accumulated_non_statutory_deductions_period" field was cleared in this mutation.
+func (m *ProjectMutation) AccumulatedNonStatutoryDeductionsPeriodCleared() bool {
+	_, ok := m.clearedFields[project.FieldAccumulatedNonStatutoryDeductionsPeriod]
+	return ok
+}
+
+// ResetAccumulatedNonStatutoryDeductionsPeriod resets all changes to the "accumulated_non_statutory_deductions_period" field.
+func (m *ProjectMutation) ResetAccumulatedNonStatutoryDeductionsPeriod() {
+	m.accumulated_non_statutory_deductions_period = nil
+	m.addaccumulated_non_statutory_deductions_period = nil
+	delete(m.clearedFields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (m *ProjectMutation) SetTotalContractAmount(f float64) {
+	m.total_contract_amount = &f
+	m.addtotal_contract_amount = nil
+}
+
+// TotalContractAmount returns the value of the "total_contract_amount" field in the mutation.
+func (m *ProjectMutation) TotalContractAmount() (r float64, exists bool) {
+	v := m.total_contract_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTotalContractAmount returns the old "total_contract_amount" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldTotalContractAmount(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTotalContractAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTotalContractAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTotalContractAmount: %w", err)
+	}
+	return oldValue.TotalContractAmount, nil
+}
+
+// AddTotalContractAmount adds f to the "total_contract_amount" field.
+func (m *ProjectMutation) AddTotalContractAmount(f float64) {
+	if m.addtotal_contract_amount != nil {
+		*m.addtotal_contract_amount += f
+	} else {
+		m.addtotal_contract_amount = &f
+	}
+}
+
+// AddedTotalContractAmount returns the value that was added to the "total_contract_amount" field in this mutation.
+func (m *ProjectMutation) AddedTotalContractAmount() (r float64, exists bool) {
+	v := m.addtotal_contract_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
+func (m *ProjectMutation) ClearTotalContractAmount() {
+	m.total_contract_amount = nil
+	m.addtotal_contract_amount = nil
+	m.clearedFields[project.FieldTotalContractAmount] = struct{}{}
+}
+
+// TotalContractAmountCleared returns if the "total_contract_amount" field was cleared in this mutation.
+func (m *ProjectMutation) TotalContractAmountCleared() bool {
+	_, ok := m.clearedFields[project.FieldTotalContractAmount]
+	return ok
+}
+
+// ResetTotalContractAmount resets all changes to the "total_contract_amount" field.
+func (m *ProjectMutation) ResetTotalContractAmount() {
+	m.total_contract_amount = nil
+	m.addtotal_contract_amount = nil
+	delete(m.clearedFields, project.FieldTotalContractAmount)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -9656,7 +10016,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 24)
+	fields := make([]string, 0, 29)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -9729,6 +10089,21 @@ func (m *ProjectMutation) Fields() []string {
 	if m.va_approve_amount != nil {
 		fields = append(fields, project.FieldVaApproveAmount)
 	}
+	if m.accumulated_statutory_deductions != nil {
+		fields = append(fields, project.FieldAccumulatedStatutoryDeductions)
+	}
+	if m.accumulated_non_statutory_deductions != nil {
+		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductions)
+	}
+	if m.accumulated_statutory_deductions_period != nil {
+		fields = append(fields, project.FieldAccumulatedStatutoryDeductionsPeriod)
+	}
+	if m.accumulated_non_statutory_deductions_period != nil {
+		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+	}
+	if m.total_contract_amount != nil {
+		fields = append(fields, project.FieldTotalContractAmount)
+	}
 	return fields
 }
 
@@ -9785,6 +10160,16 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.VaApplyAmount()
 	case project.FieldVaApproveAmount:
 		return m.VaApproveAmount()
+	case project.FieldAccumulatedStatutoryDeductions:
+		return m.AccumulatedStatutoryDeductions()
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		return m.AccumulatedNonStatutoryDeductions()
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		return m.AccumulatedStatutoryDeductionsPeriod()
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		return m.AccumulatedNonStatutoryDeductionsPeriod()
+	case project.FieldTotalContractAmount:
+		return m.TotalContractAmount()
 	}
 	return nil, false
 }
@@ -9842,6 +10227,16 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldVaApplyAmount(ctx)
 	case project.FieldVaApproveAmount:
 		return m.OldVaApproveAmount(ctx)
+	case project.FieldAccumulatedStatutoryDeductions:
+		return m.OldAccumulatedStatutoryDeductions(ctx)
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		return m.OldAccumulatedNonStatutoryDeductions(ctx)
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		return m.OldAccumulatedStatutoryDeductionsPeriod(ctx)
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		return m.OldAccumulatedNonStatutoryDeductionsPeriod(ctx)
+	case project.FieldTotalContractAmount:
+		return m.OldTotalContractAmount(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -10019,6 +10414,41 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetVaApproveAmount(v)
 		return nil
+	case project.FieldAccumulatedStatutoryDeductions:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccumulatedStatutoryDeductions(v)
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccumulatedNonStatutoryDeductions(v)
+		return nil
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccumulatedStatutoryDeductionsPeriod(v)
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccumulatedNonStatutoryDeductionsPeriod(v)
+		return nil
+	case project.FieldTotalContractAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTotalContractAmount(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -10081,6 +10511,21 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addva_approve_amount != nil {
 		fields = append(fields, project.FieldVaApproveAmount)
 	}
+	if m.addaccumulated_statutory_deductions != nil {
+		fields = append(fields, project.FieldAccumulatedStatutoryDeductions)
+	}
+	if m.addaccumulated_non_statutory_deductions != nil {
+		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductions)
+	}
+	if m.addaccumulated_statutory_deductions_period != nil {
+		fields = append(fields, project.FieldAccumulatedStatutoryDeductionsPeriod)
+	}
+	if m.addaccumulated_non_statutory_deductions_period != nil {
+		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+	}
+	if m.addtotal_contract_amount != nil {
+		fields = append(fields, project.FieldTotalContractAmount)
+	}
 	return fields
 }
 
@@ -10125,6 +10570,16 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedVaApplyAmount()
 	case project.FieldVaApproveAmount:
 		return m.AddedVaApproveAmount()
+	case project.FieldAccumulatedStatutoryDeductions:
+		return m.AddedAccumulatedStatutoryDeductions()
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		return m.AddedAccumulatedNonStatutoryDeductions()
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		return m.AddedAccumulatedStatutoryDeductionsPeriod()
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		return m.AddedAccumulatedNonStatutoryDeductionsPeriod()
+	case project.FieldTotalContractAmount:
+		return m.AddedTotalContractAmount()
 	}
 	return nil, false
 }
@@ -10260,6 +10715,41 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddVaApproveAmount(v)
 		return nil
+	case project.FieldAccumulatedStatutoryDeductions:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAccumulatedStatutoryDeductions(v)
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAccumulatedNonStatutoryDeductions(v)
+		return nil
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAccumulatedStatutoryDeductionsPeriod(v)
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAccumulatedNonStatutoryDeductionsPeriod(v)
+		return nil
+	case project.FieldTotalContractAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTotalContractAmount(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -10327,6 +10817,21 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldVaApproveAmount) {
 		fields = append(fields, project.FieldVaApproveAmount)
+	}
+	if m.FieldCleared(project.FieldAccumulatedStatutoryDeductions) {
+		fields = append(fields, project.FieldAccumulatedStatutoryDeductions)
+	}
+	if m.FieldCleared(project.FieldAccumulatedNonStatutoryDeductions) {
+		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductions)
+	}
+	if m.FieldCleared(project.FieldAccumulatedStatutoryDeductionsPeriod) {
+		fields = append(fields, project.FieldAccumulatedStatutoryDeductionsPeriod)
+	}
+	if m.FieldCleared(project.FieldAccumulatedNonStatutoryDeductionsPeriod) {
+		fields = append(fields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+	}
+	if m.FieldCleared(project.FieldTotalContractAmount) {
+		fields = append(fields, project.FieldTotalContractAmount)
 	}
 	return fields
 }
@@ -10401,6 +10906,21 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldVaApproveAmount:
 		m.ClearVaApproveAmount()
+		return nil
+	case project.FieldAccumulatedStatutoryDeductions:
+		m.ClearAccumulatedStatutoryDeductions()
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		m.ClearAccumulatedNonStatutoryDeductions()
+		return nil
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		m.ClearAccumulatedStatutoryDeductionsPeriod()
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		m.ClearAccumulatedNonStatutoryDeductionsPeriod()
+		return nil
+	case project.FieldTotalContractAmount:
+		m.ClearTotalContractAmount()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -10481,6 +11001,21 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldVaApproveAmount:
 		m.ResetVaApproveAmount()
+		return nil
+	case project.FieldAccumulatedStatutoryDeductions:
+		m.ResetAccumulatedStatutoryDeductions()
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductions:
+		m.ResetAccumulatedNonStatutoryDeductions()
+		return nil
+	case project.FieldAccumulatedStatutoryDeductionsPeriod:
+		m.ResetAccumulatedStatutoryDeductionsPeriod()
+		return nil
+	case project.FieldAccumulatedNonStatutoryDeductionsPeriod:
+		m.ResetAccumulatedNonStatutoryDeductionsPeriod()
+		return nil
+	case project.FieldTotalContractAmount:
+		m.ResetTotalContractAmount()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

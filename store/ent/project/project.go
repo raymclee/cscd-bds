@@ -63,6 +63,16 @@ const (
 	FieldVaApplyAmount = "va_apply_amount"
 	// FieldVaApproveAmount holds the string denoting the va_approve_amount field in the database.
 	FieldVaApproveAmount = "va_approve_amount"
+	// FieldAccumulatedStatutoryDeductions holds the string denoting the accumulated_statutory_deductions field in the database.
+	FieldAccumulatedStatutoryDeductions = "accumulated_statutory_deductions"
+	// FieldAccumulatedNonStatutoryDeductions holds the string denoting the accumulated_non_statutory_deductions field in the database.
+	FieldAccumulatedNonStatutoryDeductions = "accumulated_non_statutory_deductions"
+	// FieldAccumulatedStatutoryDeductionsPeriod holds the string denoting the accumulated_statutory_deductions_period field in the database.
+	FieldAccumulatedStatutoryDeductionsPeriod = "accumulated_statutory_deductions_period"
+	// FieldAccumulatedNonStatutoryDeductionsPeriod holds the string denoting the accumulated_non_statutory_deductions_period field in the database.
+	FieldAccumulatedNonStatutoryDeductionsPeriod = "accumulated_non_statutory_deductions_period"
+	// FieldTotalContractAmount holds the string denoting the total_contract_amount field in the database.
+	FieldTotalContractAmount = "total_contract_amount"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// Table holds the table name of the project in the database.
@@ -103,6 +113,11 @@ var Columns = []string{
 	FieldEffectiveContractAmount,
 	FieldVaApplyAmount,
 	FieldVaApproveAmount,
+	FieldAccumulatedStatutoryDeductions,
+	FieldAccumulatedNonStatutoryDeductions,
+	FieldAccumulatedStatutoryDeductionsPeriod,
+	FieldAccumulatedNonStatutoryDeductionsPeriod,
+	FieldTotalContractAmount,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -254,6 +269,31 @@ func ByVaApplyAmount(opts ...sql.OrderTermOption) OrderOption {
 // ByVaApproveAmount orders the results by the va_approve_amount field.
 func ByVaApproveAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldVaApproveAmount, opts...).ToFunc()
+}
+
+// ByAccumulatedStatutoryDeductions orders the results by the accumulated_statutory_deductions field.
+func ByAccumulatedStatutoryDeductions(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAccumulatedStatutoryDeductions, opts...).ToFunc()
+}
+
+// ByAccumulatedNonStatutoryDeductions orders the results by the accumulated_non_statutory_deductions field.
+func ByAccumulatedNonStatutoryDeductions(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAccumulatedNonStatutoryDeductions, opts...).ToFunc()
+}
+
+// ByAccumulatedStatutoryDeductionsPeriod orders the results by the accumulated_statutory_deductions_period field.
+func ByAccumulatedStatutoryDeductionsPeriod(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAccumulatedStatutoryDeductionsPeriod, opts...).ToFunc()
+}
+
+// ByAccumulatedNonStatutoryDeductionsPeriod orders the results by the accumulated_non_statutory_deductions_period field.
+func ByAccumulatedNonStatutoryDeductionsPeriod(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAccumulatedNonStatutoryDeductionsPeriod, opts...).ToFunc()
+}
+
+// ByTotalContractAmount orders the results by the total_contract_amount field.
+func ByTotalContractAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTotalContractAmount, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

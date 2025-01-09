@@ -2312,6 +2312,31 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldVaApproveAmount)
 				fieldSeen[project.FieldVaApproveAmount] = struct{}{}
 			}
+		case "accumulatedStatutoryDeductions":
+			if _, ok := fieldSeen[project.FieldAccumulatedStatutoryDeductions]; !ok {
+				selectedFields = append(selectedFields, project.FieldAccumulatedStatutoryDeductions)
+				fieldSeen[project.FieldAccumulatedStatutoryDeductions] = struct{}{}
+			}
+		case "accumulatedNonStatutoryDeductions":
+			if _, ok := fieldSeen[project.FieldAccumulatedNonStatutoryDeductions]; !ok {
+				selectedFields = append(selectedFields, project.FieldAccumulatedNonStatutoryDeductions)
+				fieldSeen[project.FieldAccumulatedNonStatutoryDeductions] = struct{}{}
+			}
+		case "accumulatedStatutoryDeductionsPeriod":
+			if _, ok := fieldSeen[project.FieldAccumulatedStatutoryDeductionsPeriod]; !ok {
+				selectedFields = append(selectedFields, project.FieldAccumulatedStatutoryDeductionsPeriod)
+				fieldSeen[project.FieldAccumulatedStatutoryDeductionsPeriod] = struct{}{}
+			}
+		case "accumulatedNonStatutoryDeductionsPeriod":
+			if _, ok := fieldSeen[project.FieldAccumulatedNonStatutoryDeductionsPeriod]; !ok {
+				selectedFields = append(selectedFields, project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+				fieldSeen[project.FieldAccumulatedNonStatutoryDeductionsPeriod] = struct{}{}
+			}
+		case "totalContractAmount":
+			if _, ok := fieldSeen[project.FieldTotalContractAmount]; !ok {
+				selectedFields = append(selectedFields, project.FieldTotalContractAmount)
+				fieldSeen[project.FieldTotalContractAmount] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:
@@ -2349,24 +2374,30 @@ func newProjectPaginateArgs(rv map[string]any) *projectPaginateArgs {
 	}
 	if v, ok := rv[orderByField]; ok {
 		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &ProjectOrder{Field: &ProjectOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
+		case []*ProjectOrder:
+			args.opts = append(args.opts, WithProjectOrder(v))
+		case []any:
+			var orders []*ProjectOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &ProjectOrder{Field: &ProjectOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
 			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithProjectOrder(order))
-			}
-		case *ProjectOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithProjectOrder(v))
-			}
+			args.opts = append(args.opts, WithProjectOrder(orders))
 		}
 	}
 	if v, ok := rv[whereField].(*ProjectWhereInput); ok {

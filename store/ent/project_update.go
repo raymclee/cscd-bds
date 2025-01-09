@@ -590,6 +590,141 @@ func (pu *ProjectUpdate) ClearVaApproveAmount() *ProjectUpdate {
 	return pu
 }
 
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (pu *ProjectUpdate) SetAccumulatedStatutoryDeductions(f float64) *ProjectUpdate {
+	pu.mutation.ResetAccumulatedStatutoryDeductions()
+	pu.mutation.SetAccumulatedStatutoryDeductions(f)
+	return pu
+}
+
+// SetNillableAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAccumulatedStatutoryDeductions(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetAccumulatedStatutoryDeductions(*f)
+	}
+	return pu
+}
+
+// AddAccumulatedStatutoryDeductions adds f to the "accumulated_statutory_deductions" field.
+func (pu *ProjectUpdate) AddAccumulatedStatutoryDeductions(f float64) *ProjectUpdate {
+	pu.mutation.AddAccumulatedStatutoryDeductions(f)
+	return pu
+}
+
+// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
+func (pu *ProjectUpdate) ClearAccumulatedStatutoryDeductions() *ProjectUpdate {
+	pu.mutation.ClearAccumulatedStatutoryDeductions()
+	return pu
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (pu *ProjectUpdate) SetAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdate {
+	pu.mutation.ResetAccumulatedNonStatutoryDeductions()
+	pu.mutation.SetAccumulatedNonStatutoryDeductions(f)
+	return pu
+}
+
+// SetNillableAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAccumulatedNonStatutoryDeductions(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetAccumulatedNonStatutoryDeductions(*f)
+	}
+	return pu
+}
+
+// AddAccumulatedNonStatutoryDeductions adds f to the "accumulated_non_statutory_deductions" field.
+func (pu *ProjectUpdate) AddAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdate {
+	pu.mutation.AddAccumulatedNonStatutoryDeductions(f)
+	return pu
+}
+
+// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
+func (pu *ProjectUpdate) ClearAccumulatedNonStatutoryDeductions() *ProjectUpdate {
+	pu.mutation.ClearAccumulatedNonStatutoryDeductions()
+	return pu
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (pu *ProjectUpdate) SetAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
+	pu.mutation.ResetAccumulatedStatutoryDeductionsPeriod()
+	pu.mutation.SetAccumulatedStatutoryDeductionsPeriod(f)
+	return pu
+}
+
+// SetNillableAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAccumulatedStatutoryDeductionsPeriod(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetAccumulatedStatutoryDeductionsPeriod(*f)
+	}
+	return pu
+}
+
+// AddAccumulatedStatutoryDeductionsPeriod adds f to the "accumulated_statutory_deductions_period" field.
+func (pu *ProjectUpdate) AddAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
+	pu.mutation.AddAccumulatedStatutoryDeductionsPeriod(f)
+	return pu
+}
+
+// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
+func (pu *ProjectUpdate) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpdate {
+	pu.mutation.ClearAccumulatedStatutoryDeductionsPeriod()
+	return pu
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (pu *ProjectUpdate) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
+	pu.mutation.ResetAccumulatedNonStatutoryDeductionsPeriod()
+	pu.mutation.SetAccumulatedNonStatutoryDeductionsPeriod(f)
+	return pu
+}
+
+// SetNillableAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAccumulatedNonStatutoryDeductionsPeriod(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetAccumulatedNonStatutoryDeductionsPeriod(*f)
+	}
+	return pu
+}
+
+// AddAccumulatedNonStatutoryDeductionsPeriod adds f to the "accumulated_non_statutory_deductions_period" field.
+func (pu *ProjectUpdate) AddAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdate {
+	pu.mutation.AddAccumulatedNonStatutoryDeductionsPeriod(f)
+	return pu
+}
+
+// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
+func (pu *ProjectUpdate) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpdate {
+	pu.mutation.ClearAccumulatedNonStatutoryDeductionsPeriod()
+	return pu
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (pu *ProjectUpdate) SetTotalContractAmount(f float64) *ProjectUpdate {
+	pu.mutation.ResetTotalContractAmount()
+	pu.mutation.SetTotalContractAmount(f)
+	return pu
+}
+
+// SetNillableTotalContractAmount sets the "total_contract_amount" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableTotalContractAmount(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetTotalContractAmount(*f)
+	}
+	return pu
+}
+
+// AddTotalContractAmount adds f to the "total_contract_amount" field.
+func (pu *ProjectUpdate) AddTotalContractAmount(f float64) *ProjectUpdate {
+	pu.mutation.AddTotalContractAmount(f)
+	return pu
+}
+
+// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
+func (pu *ProjectUpdate) ClearTotalContractAmount() *ProjectUpdate {
+	pu.mutation.ClearTotalContractAmount()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -858,6 +993,51 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.VaApproveAmountCleared() {
 		_spec.ClearField(project.FieldVaApproveAmount, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.AccumulatedStatutoryDeductions(); ok {
+		_spec.SetField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAccumulatedStatutoryDeductions(); ok {
+		_spec.AddField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if pu.mutation.AccumulatedStatutoryDeductionsCleared() {
+		_spec.ClearField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.AccumulatedNonStatutoryDeductions(); ok {
+		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAccumulatedNonStatutoryDeductions(); ok {
+		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if pu.mutation.AccumulatedNonStatutoryDeductionsCleared() {
+		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.AccumulatedStatutoryDeductionsPeriod(); ok {
+		_spec.SetField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAccumulatedStatutoryDeductionsPeriod(); ok {
+		_spec.AddField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if pu.mutation.AccumulatedStatutoryDeductionsPeriodCleared() {
+		_spec.ClearField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.AccumulatedNonStatutoryDeductionsPeriod(); ok {
+		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAccumulatedNonStatutoryDeductionsPeriod(); ok {
+		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if pu.mutation.AccumulatedNonStatutoryDeductionsPeriodCleared() {
+		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.TotalContractAmount(); ok {
+		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedTotalContractAmount(); ok {
+		_spec.AddField(project.FieldTotalContractAmount, field.TypeFloat64, value)
+	}
+	if pu.mutation.TotalContractAmountCleared() {
+		_spec.ClearField(project.FieldTotalContractAmount, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1484,6 +1664,141 @@ func (puo *ProjectUpdateOne) ClearVaApproveAmount() *ProjectUpdateOne {
 	return puo
 }
 
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (puo *ProjectUpdateOne) SetAccumulatedStatutoryDeductions(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAccumulatedStatutoryDeductions()
+	puo.mutation.SetAccumulatedStatutoryDeductions(f)
+	return puo
+}
+
+// SetNillableAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAccumulatedStatutoryDeductions(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetAccumulatedStatutoryDeductions(*f)
+	}
+	return puo
+}
+
+// AddAccumulatedStatutoryDeductions adds f to the "accumulated_statutory_deductions" field.
+func (puo *ProjectUpdateOne) AddAccumulatedStatutoryDeductions(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAccumulatedStatutoryDeductions(f)
+	return puo
+}
+
+// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
+func (puo *ProjectUpdateOne) ClearAccumulatedStatutoryDeductions() *ProjectUpdateOne {
+	puo.mutation.ClearAccumulatedStatutoryDeductions()
+	return puo
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (puo *ProjectUpdateOne) SetAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAccumulatedNonStatutoryDeductions()
+	puo.mutation.SetAccumulatedNonStatutoryDeductions(f)
+	return puo
+}
+
+// SetNillableAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAccumulatedNonStatutoryDeductions(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetAccumulatedNonStatutoryDeductions(*f)
+	}
+	return puo
+}
+
+// AddAccumulatedNonStatutoryDeductions adds f to the "accumulated_non_statutory_deductions" field.
+func (puo *ProjectUpdateOne) AddAccumulatedNonStatutoryDeductions(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAccumulatedNonStatutoryDeductions(f)
+	return puo
+}
+
+// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
+func (puo *ProjectUpdateOne) ClearAccumulatedNonStatutoryDeductions() *ProjectUpdateOne {
+	puo.mutation.ClearAccumulatedNonStatutoryDeductions()
+	return puo
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (puo *ProjectUpdateOne) SetAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAccumulatedStatutoryDeductionsPeriod()
+	puo.mutation.SetAccumulatedStatutoryDeductionsPeriod(f)
+	return puo
+}
+
+// SetNillableAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAccumulatedStatutoryDeductionsPeriod(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetAccumulatedStatutoryDeductionsPeriod(*f)
+	}
+	return puo
+}
+
+// AddAccumulatedStatutoryDeductionsPeriod adds f to the "accumulated_statutory_deductions_period" field.
+func (puo *ProjectUpdateOne) AddAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAccumulatedStatutoryDeductionsPeriod(f)
+	return puo
+}
+
+// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
+func (puo *ProjectUpdateOne) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpdateOne {
+	puo.mutation.ClearAccumulatedStatutoryDeductionsPeriod()
+	return puo
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (puo *ProjectUpdateOne) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAccumulatedNonStatutoryDeductionsPeriod()
+	puo.mutation.SetAccumulatedNonStatutoryDeductionsPeriod(f)
+	return puo
+}
+
+// SetNillableAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAccumulatedNonStatutoryDeductionsPeriod(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetAccumulatedNonStatutoryDeductionsPeriod(*f)
+	}
+	return puo
+}
+
+// AddAccumulatedNonStatutoryDeductionsPeriod adds f to the "accumulated_non_statutory_deductions_period" field.
+func (puo *ProjectUpdateOne) AddAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAccumulatedNonStatutoryDeductionsPeriod(f)
+	return puo
+}
+
+// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
+func (puo *ProjectUpdateOne) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpdateOne {
+	puo.mutation.ClearAccumulatedNonStatutoryDeductionsPeriod()
+	return puo
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (puo *ProjectUpdateOne) SetTotalContractAmount(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetTotalContractAmount()
+	puo.mutation.SetTotalContractAmount(f)
+	return puo
+}
+
+// SetNillableTotalContractAmount sets the "total_contract_amount" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableTotalContractAmount(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetTotalContractAmount(*f)
+	}
+	return puo
+}
+
+// AddTotalContractAmount adds f to the "total_contract_amount" field.
+func (puo *ProjectUpdateOne) AddTotalContractAmount(f float64) *ProjectUpdateOne {
+	puo.mutation.AddTotalContractAmount(f)
+	return puo
+}
+
+// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
+func (puo *ProjectUpdateOne) ClearTotalContractAmount() *ProjectUpdateOne {
+	puo.mutation.ClearTotalContractAmount()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -1782,6 +2097,51 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.VaApproveAmountCleared() {
 		_spec.ClearField(project.FieldVaApproveAmount, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.AccumulatedStatutoryDeductions(); ok {
+		_spec.SetField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAccumulatedStatutoryDeductions(); ok {
+		_spec.AddField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if puo.mutation.AccumulatedStatutoryDeductionsCleared() {
+		_spec.ClearField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.AccumulatedNonStatutoryDeductions(); ok {
+		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAccumulatedNonStatutoryDeductions(); ok {
+		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
+	}
+	if puo.mutation.AccumulatedNonStatutoryDeductionsCleared() {
+		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.AccumulatedStatutoryDeductionsPeriod(); ok {
+		_spec.SetField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAccumulatedStatutoryDeductionsPeriod(); ok {
+		_spec.AddField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if puo.mutation.AccumulatedStatutoryDeductionsPeriodCleared() {
+		_spec.ClearField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.AccumulatedNonStatutoryDeductionsPeriod(); ok {
+		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAccumulatedNonStatutoryDeductionsPeriod(); ok {
+		_spec.AddField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
+	}
+	if puo.mutation.AccumulatedNonStatutoryDeductionsPeriodCleared() {
+		_spec.ClearField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.TotalContractAmount(); ok {
+		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedTotalContractAmount(); ok {
+		_spec.AddField(project.FieldTotalContractAmount, field.TypeFloat64, value)
+	}
+	if puo.mutation.TotalContractAmountCleared() {
+		_spec.ClearField(project.FieldTotalContractAmount, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -6,6 +6,7 @@ import (
 	"cscd-bds/store/ent/project"
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/microsoft/go-mssqldb"
 )
@@ -38,10 +39,7 @@ func main() {
 	// success := 0
 	// q := s.Operation.Create()
 
-	// today := time.Now()
-	// var (
-	// 	year = 2024
-	// )
+	today := time.Now()
 
 	// wg := errgroup.Group{}
 
@@ -178,7 +176,7 @@ func main() {
 				fmt.Printf("抓取安装进度失败: %s\n", err.Error())
 			} else {
 				if efcntrtsum > 0 {
-					p.SetInstallProgress(cfsum / efcntrtsum)
+					p.SetInstallProgress(cfsum / efcntrtsum * 100)
 				} else {
 					p.SetInstallProgress(0)
 				}
@@ -236,6 +234,95 @@ func main() {
 				p.SetVaApplyAmount(vaApply)
 				p.SetVaApproveAmount(vaApprove)
 			}
+		}
+
+		{
+			rows, err := stgDb.Query(`
+					SELECT
+						claim_month,
+						claim_year,
+						claim_amount,
+						claim_type
+  					FROM [BI_STG_830].[dbo].[project_claims_v] 
+					WHERE claim_type <> '肺塵埃稅' 
+					AND project_code = @code;
+				`, sql.Named("code", jobcode))
+			if err != nil {
+				fmt.Printf("抓取非法定扣款失败: %s\n", err.Error())
+			}
+			defer rows.Close()
+
+			var (
+				accumulatedStatutoryDeductions          float64 = 0
+				accumulatedNonStatutoryDeductions       float64 = 0
+				accumulatedStatutoryDeductionsPeriod    float64 = 0
+				accumulatedNonStatutoryDeductionsPeriod float64 = 0
+			)
+
+			for rows.Next() {
+				var (
+					claimMonth  *int
+					claimYear   *int
+					claimAmount float64
+					claimType   string
+				)
+				err := rows.Scan(&claimMonth, &claimYear, &claimAmount, &claimType)
+				if err != nil {
+					fmt.Printf("抓取非法定扣款失败: %s\n", err.Error())
+				}
+
+				if claimType == "肺塵埃稅" {
+					accumulatedStatutoryDeductions += claimAmount
+					if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
+						accumulatedStatutoryDeductionsPeriod += claimAmount
+					}
+				} else {
+					accumulatedNonStatutoryDeductions += claimAmount
+					if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
+						accumulatedNonStatutoryDeductionsPeriod += claimAmount
+					}
+				}
+			}
+
+			p.SetAccumulatedStatutoryDeductions(accumulatedStatutoryDeductions)
+			p.SetAccumulatedNonStatutoryDeductions(accumulatedNonStatutoryDeductions)
+			p.SetAccumulatedStatutoryDeductionsPeriod(accumulatedStatutoryDeductionsPeriod)
+			p.SetAccumulatedNonStatutoryDeductionsPeriod(accumulatedNonStatutoryDeductionsPeriod)
+		}
+
+		// 抓取合約總額
+		{
+			row := stgDb.QueryRow(`
+				SELECT
+					cntrtsum =
+					CASE
+						WHEN ccy = 'USD' THEN
+						cntrtsum / 7.8 
+						WHEN ccy = 'GBP' THEN
+						cntrtsum / 10 ELSE cntrtsum 
+					END
+				FROM
+					mst_jobbasfil 
+				WHERE
+					pk_corp = '2837' 
+					AND jobtype = 'J' 
+					AND finishedflag IN ( 'Y', 'N' ) 
+					AND jobcode = @code
+				`, sql.Named("code", jobcode))
+			if err != nil {
+				fmt.Printf("抓取合約總額失败: %s\n", err.Error())
+			}
+			defer rows.Close()
+
+			var (
+				cntrtsum float64
+			)
+
+			err := row.Scan(&cntrtsum)
+			if err != nil {
+				fmt.Printf("抓取合約總額失败: %s\n", err.Error())
+			}
+			p.SetTotalContractAmount(cntrtsum)
 		}
 
 		if err := p.

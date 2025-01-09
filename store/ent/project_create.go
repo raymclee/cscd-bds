@@ -353,6 +353,76 @@ func (pc *ProjectCreate) SetNillableVaApproveAmount(f *float64) *ProjectCreate {
 	return pc
 }
 
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (pc *ProjectCreate) SetAccumulatedStatutoryDeductions(f float64) *ProjectCreate {
+	pc.mutation.SetAccumulatedStatutoryDeductions(f)
+	return pc
+}
+
+// SetNillableAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAccumulatedStatutoryDeductions(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetAccumulatedStatutoryDeductions(*f)
+	}
+	return pc
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (pc *ProjectCreate) SetAccumulatedNonStatutoryDeductions(f float64) *ProjectCreate {
+	pc.mutation.SetAccumulatedNonStatutoryDeductions(f)
+	return pc
+}
+
+// SetNillableAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAccumulatedNonStatutoryDeductions(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetAccumulatedNonStatutoryDeductions(*f)
+	}
+	return pc
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (pc *ProjectCreate) SetAccumulatedStatutoryDeductionsPeriod(f float64) *ProjectCreate {
+	pc.mutation.SetAccumulatedStatutoryDeductionsPeriod(f)
+	return pc
+}
+
+// SetNillableAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAccumulatedStatutoryDeductionsPeriod(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetAccumulatedStatutoryDeductionsPeriod(*f)
+	}
+	return pc
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (pc *ProjectCreate) SetAccumulatedNonStatutoryDeductionsPeriod(f float64) *ProjectCreate {
+	pc.mutation.SetAccumulatedNonStatutoryDeductionsPeriod(f)
+	return pc
+}
+
+// SetNillableAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAccumulatedNonStatutoryDeductionsPeriod(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetAccumulatedNonStatutoryDeductionsPeriod(*f)
+	}
+	return pc
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (pc *ProjectCreate) SetTotalContractAmount(f float64) *ProjectCreate {
+	pc.mutation.SetTotalContractAmount(f)
+	return pc
+}
+
+// SetNillableTotalContractAmount sets the "total_contract_amount" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableTotalContractAmount(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetTotalContractAmount(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -580,6 +650,26 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.VaApproveAmount(); ok {
 		_spec.SetField(project.FieldVaApproveAmount, field.TypeFloat64, value)
 		_node.VaApproveAmount = &value
+	}
+	if value, ok := pc.mutation.AccumulatedStatutoryDeductions(); ok {
+		_spec.SetField(project.FieldAccumulatedStatutoryDeductions, field.TypeFloat64, value)
+		_node.AccumulatedStatutoryDeductions = &value
+	}
+	if value, ok := pc.mutation.AccumulatedNonStatutoryDeductions(); ok {
+		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductions, field.TypeFloat64, value)
+		_node.AccumulatedNonStatutoryDeductions = &value
+	}
+	if value, ok := pc.mutation.AccumulatedStatutoryDeductionsPeriod(); ok {
+		_spec.SetField(project.FieldAccumulatedStatutoryDeductionsPeriod, field.TypeFloat64, value)
+		_node.AccumulatedStatutoryDeductionsPeriod = &value
+	}
+	if value, ok := pc.mutation.AccumulatedNonStatutoryDeductionsPeriod(); ok {
+		_spec.SetField(project.FieldAccumulatedNonStatutoryDeductionsPeriod, field.TypeFloat64, value)
+		_node.AccumulatedNonStatutoryDeductionsPeriod = &value
+	}
+	if value, ok := pc.mutation.TotalContractAmount(); ok {
+		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
+		_node.TotalContractAmount = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -1150,6 +1240,126 @@ func (u *ProjectUpsert) AddVaApproveAmount(v float64) *ProjectUpsert {
 // ClearVaApproveAmount clears the value of the "va_approve_amount" field.
 func (u *ProjectUpsert) ClearVaApproveAmount() *ProjectUpsert {
 	u.SetNull(project.FieldVaApproveAmount)
+	return u
+}
+
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsert) SetAccumulatedStatutoryDeductions(v float64) *ProjectUpsert {
+	u.Set(project.FieldAccumulatedStatutoryDeductions, v)
+	return u
+}
+
+// UpdateAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAccumulatedStatutoryDeductions() *ProjectUpsert {
+	u.SetExcluded(project.FieldAccumulatedStatutoryDeductions)
+	return u
+}
+
+// AddAccumulatedStatutoryDeductions adds v to the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsert) AddAccumulatedStatutoryDeductions(v float64) *ProjectUpsert {
+	u.Add(project.FieldAccumulatedStatutoryDeductions, v)
+	return u
+}
+
+// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsert) ClearAccumulatedStatutoryDeductions() *ProjectUpsert {
+	u.SetNull(project.FieldAccumulatedStatutoryDeductions)
+	return u
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsert) SetAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsert {
+	u.Set(project.FieldAccumulatedNonStatutoryDeductions, v)
+	return u
+}
+
+// UpdateAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAccumulatedNonStatutoryDeductions() *ProjectUpsert {
+	u.SetExcluded(project.FieldAccumulatedNonStatutoryDeductions)
+	return u
+}
+
+// AddAccumulatedNonStatutoryDeductions adds v to the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsert) AddAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsert {
+	u.Add(project.FieldAccumulatedNonStatutoryDeductions, v)
+	return u
+}
+
+// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsert) ClearAccumulatedNonStatutoryDeductions() *ProjectUpsert {
+	u.SetNull(project.FieldAccumulatedNonStatutoryDeductions)
+	return u
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsert) SetAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
+	u.Set(project.FieldAccumulatedStatutoryDeductionsPeriod, v)
+	return u
+}
+
+// UpdateAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAccumulatedStatutoryDeductionsPeriod() *ProjectUpsert {
+	u.SetExcluded(project.FieldAccumulatedStatutoryDeductionsPeriod)
+	return u
+}
+
+// AddAccumulatedStatutoryDeductionsPeriod adds v to the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsert) AddAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
+	u.Add(project.FieldAccumulatedStatutoryDeductionsPeriod, v)
+	return u
+}
+
+// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsert) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpsert {
+	u.SetNull(project.FieldAccumulatedStatutoryDeductionsPeriod)
+	return u
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsert) SetAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
+	u.Set(project.FieldAccumulatedNonStatutoryDeductionsPeriod, v)
+	return u
+}
+
+// UpdateAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsert {
+	u.SetExcluded(project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+	return u
+}
+
+// AddAccumulatedNonStatutoryDeductionsPeriod adds v to the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsert) AddAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsert {
+	u.Add(project.FieldAccumulatedNonStatutoryDeductionsPeriod, v)
+	return u
+}
+
+// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsert) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsert {
+	u.SetNull(project.FieldAccumulatedNonStatutoryDeductionsPeriod)
+	return u
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (u *ProjectUpsert) SetTotalContractAmount(v float64) *ProjectUpsert {
+	u.Set(project.FieldTotalContractAmount, v)
+	return u
+}
+
+// UpdateTotalContractAmount sets the "total_contract_amount" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateTotalContractAmount() *ProjectUpsert {
+	u.SetExcluded(project.FieldTotalContractAmount)
+	return u
+}
+
+// AddTotalContractAmount adds v to the "total_contract_amount" field.
+func (u *ProjectUpsert) AddTotalContractAmount(v float64) *ProjectUpsert {
+	u.Add(project.FieldTotalContractAmount, v)
+	return u
+}
+
+// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
+func (u *ProjectUpsert) ClearTotalContractAmount() *ProjectUpsert {
+	u.SetNull(project.FieldTotalContractAmount)
 	return u
 }
 
@@ -1789,6 +1999,146 @@ func (u *ProjectUpsertOne) UpdateVaApproveAmount() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearVaApproveAmount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearVaApproveAmount()
+	})
+}
+
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsertOne) SetAccumulatedStatutoryDeductions(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedStatutoryDeductions(v)
+	})
+}
+
+// AddAccumulatedStatutoryDeductions adds v to the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsertOne) AddAccumulatedStatutoryDeductions(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedStatutoryDeductions(v)
+	})
+}
+
+// UpdateAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAccumulatedStatutoryDeductions() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedStatutoryDeductions()
+	})
+}
+
+// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsertOne) ClearAccumulatedStatutoryDeductions() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedStatutoryDeductions()
+	})
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsertOne) SetAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedNonStatutoryDeductions(v)
+	})
+}
+
+// AddAccumulatedNonStatutoryDeductions adds v to the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsertOne) AddAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedNonStatutoryDeductions(v)
+	})
+}
+
+// UpdateAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAccumulatedNonStatutoryDeductions() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedNonStatutoryDeductions()
+	})
+}
+
+// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsertOne) ClearAccumulatedNonStatutoryDeductions() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedNonStatutoryDeductions()
+	})
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsertOne) SetAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedStatutoryDeductionsPeriod(v)
+	})
+}
+
+// AddAccumulatedStatutoryDeductionsPeriod adds v to the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsertOne) AddAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedStatutoryDeductionsPeriod(v)
+	})
+}
+
+// UpdateAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedStatutoryDeductionsPeriod()
+	})
+}
+
+// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsertOne) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedStatutoryDeductionsPeriod()
+	})
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsertOne) SetAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedNonStatutoryDeductionsPeriod(v)
+	})
+}
+
+// AddAccumulatedNonStatutoryDeductionsPeriod adds v to the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsertOne) AddAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedNonStatutoryDeductionsPeriod(v)
+	})
+}
+
+// UpdateAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedNonStatutoryDeductionsPeriod()
+	})
+}
+
+// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsertOne) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedNonStatutoryDeductionsPeriod()
+	})
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (u *ProjectUpsertOne) SetTotalContractAmount(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetTotalContractAmount(v)
+	})
+}
+
+// AddTotalContractAmount adds v to the "total_contract_amount" field.
+func (u *ProjectUpsertOne) AddTotalContractAmount(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddTotalContractAmount(v)
+	})
+}
+
+// UpdateTotalContractAmount sets the "total_contract_amount" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateTotalContractAmount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateTotalContractAmount()
+	})
+}
+
+// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
+func (u *ProjectUpsertOne) ClearTotalContractAmount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearTotalContractAmount()
 	})
 }
 
@@ -2595,6 +2945,146 @@ func (u *ProjectUpsertBulk) UpdateVaApproveAmount() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearVaApproveAmount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearVaApproveAmount()
+	})
+}
+
+// SetAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsertBulk) SetAccumulatedStatutoryDeductions(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedStatutoryDeductions(v)
+	})
+}
+
+// AddAccumulatedStatutoryDeductions adds v to the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsertBulk) AddAccumulatedStatutoryDeductions(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedStatutoryDeductions(v)
+	})
+}
+
+// UpdateAccumulatedStatutoryDeductions sets the "accumulated_statutory_deductions" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAccumulatedStatutoryDeductions() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedStatutoryDeductions()
+	})
+}
+
+// ClearAccumulatedStatutoryDeductions clears the value of the "accumulated_statutory_deductions" field.
+func (u *ProjectUpsertBulk) ClearAccumulatedStatutoryDeductions() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedStatutoryDeductions()
+	})
+}
+
+// SetAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsertBulk) SetAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedNonStatutoryDeductions(v)
+	})
+}
+
+// AddAccumulatedNonStatutoryDeductions adds v to the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsertBulk) AddAccumulatedNonStatutoryDeductions(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedNonStatutoryDeductions(v)
+	})
+}
+
+// UpdateAccumulatedNonStatutoryDeductions sets the "accumulated_non_statutory_deductions" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAccumulatedNonStatutoryDeductions() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedNonStatutoryDeductions()
+	})
+}
+
+// ClearAccumulatedNonStatutoryDeductions clears the value of the "accumulated_non_statutory_deductions" field.
+func (u *ProjectUpsertBulk) ClearAccumulatedNonStatutoryDeductions() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedNonStatutoryDeductions()
+	})
+}
+
+// SetAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsertBulk) SetAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedStatutoryDeductionsPeriod(v)
+	})
+}
+
+// AddAccumulatedStatutoryDeductionsPeriod adds v to the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsertBulk) AddAccumulatedStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedStatutoryDeductionsPeriod(v)
+	})
+}
+
+// UpdateAccumulatedStatutoryDeductionsPeriod sets the "accumulated_statutory_deductions_period" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedStatutoryDeductionsPeriod()
+	})
+}
+
+// ClearAccumulatedStatutoryDeductionsPeriod clears the value of the "accumulated_statutory_deductions_period" field.
+func (u *ProjectUpsertBulk) ClearAccumulatedStatutoryDeductionsPeriod() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedStatutoryDeductionsPeriod()
+	})
+}
+
+// SetAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsertBulk) SetAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAccumulatedNonStatutoryDeductionsPeriod(v)
+	})
+}
+
+// AddAccumulatedNonStatutoryDeductionsPeriod adds v to the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsertBulk) AddAccumulatedNonStatutoryDeductionsPeriod(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAccumulatedNonStatutoryDeductionsPeriod(v)
+	})
+}
+
+// UpdateAccumulatedNonStatutoryDeductionsPeriod sets the "accumulated_non_statutory_deductions_period" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAccumulatedNonStatutoryDeductionsPeriod()
+	})
+}
+
+// ClearAccumulatedNonStatutoryDeductionsPeriod clears the value of the "accumulated_non_statutory_deductions_period" field.
+func (u *ProjectUpsertBulk) ClearAccumulatedNonStatutoryDeductionsPeriod() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAccumulatedNonStatutoryDeductionsPeriod()
+	})
+}
+
+// SetTotalContractAmount sets the "total_contract_amount" field.
+func (u *ProjectUpsertBulk) SetTotalContractAmount(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetTotalContractAmount(v)
+	})
+}
+
+// AddTotalContractAmount adds v to the "total_contract_amount" field.
+func (u *ProjectUpsertBulk) AddTotalContractAmount(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddTotalContractAmount(v)
+	})
+}
+
+// UpdateTotalContractAmount sets the "total_contract_amount" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateTotalContractAmount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateTotalContractAmount()
+	})
+}
+
+// ClearTotalContractAmount clears the value of the "total_contract_amount" field.
+func (u *ProjectUpsertBulk) ClearTotalContractAmount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearTotalContractAmount()
 	})
 }
 

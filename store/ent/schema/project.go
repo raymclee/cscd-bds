@@ -25,11 +25,13 @@ func (Project) Mixin() []ent.Mixin {
 func (Project) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("code").
-			Unique(),
+			Unique().
+			Annotations(entgql.OrderField("CODE")),
 
 		field.String("name").
 			Optional().
-			Nillable(),
+			Nillable().
+			Annotations(entgql.OrderField("NAME")),
 
 		field.Bool("is_finished").
 			Default(false).
@@ -185,6 +187,51 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("分判VA批复总额"),
+
+		field.Float("accumulated_statutory_deductions").
+			SchemaType(map[string]string{
+				dialect.MySQL:    "decimal(18,2)", // Override MySQL.
+				dialect.Postgres: "numeric(18,2)", // Override Postgres.
+			}).
+			Optional().
+			Nillable().
+			Comment("累计法定扣款"),
+
+		field.Float("accumulated_non_statutory_deductions").
+			SchemaType(map[string]string{
+				dialect.MySQL:    "decimal(18,2)", // Override MySQL.
+				dialect.Postgres: "numeric(18,2)", // Override Postgres.
+			}).
+			Optional().
+			Nillable().
+			Comment("累计非法定扣款"),
+
+		field.Float("accumulated_statutory_deductions_period").
+			SchemaType(map[string]string{
+				dialect.MySQL:    "decimal(18,2)", // Override MySQL.
+				dialect.Postgres: "numeric(18,2)", // Override Postgres.
+			}).
+			Optional().
+			Nillable().
+			Comment("本期法定扣款"),
+
+		field.Float("accumulated_non_statutory_deductions_period").
+			SchemaType(map[string]string{
+				dialect.MySQL:    "decimal(18,2)", // Override MySQL.
+				dialect.Postgres: "numeric(18,2)", // Override Postgres.
+			}).
+			Optional().
+			Nillable().
+			Comment("本期非法定扣款"),
+
+		field.Float("total_contract_amount").
+			SchemaType(map[string]string{
+				dialect.MySQL:    "decimal(18,2)", // Override MySQL.
+				dialect.Postgres: "numeric(18,2)", // Override Postgres.
+			}).
+			Optional().
+			Nillable().
+			Comment("合約总额"),
 	}
 }
 
@@ -199,5 +246,6 @@ func (Project) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),
 		entgql.QueryField(),
+		entgql.MultiOrder(),
 	}
 }

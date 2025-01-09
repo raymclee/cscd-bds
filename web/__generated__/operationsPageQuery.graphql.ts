@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<004244ac17d9604f785df1eda4a6dbe9>>
+ * @generated SignedSource<<af784dd6dcc810c805ac65ab2c229fc6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,9 @@ export type operationsPageQuery$data = {
   readonly projects: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly accumulatedNonStatutoryDeductions: number | null | undefined;
+        readonly accumulatedNonStatutoryDeductionsPeriod: number | null | undefined;
+        readonly accumulatedStatutoryDeductions: number | null | undefined;
         readonly code: string;
         readonly contractorApplyAmount: number | null | undefined;
         readonly contractorApplyCount: number | null | undefined;
@@ -26,6 +29,7 @@ export type operationsPageQuery$data = {
         readonly ownerApplyCount: number | null | undefined;
         readonly ownerApproveAmount: number | null | undefined;
         readonly ownerApproveCount: number | null | undefined;
+        readonly totalContractAmount: number | null | undefined;
         readonly vaApplyAmount: number | null | undefined;
         readonly vaApproveAmount: number | null | undefined;
       } | null | undefined;
@@ -43,7 +47,6 @@ var v0 = [
     "kind": "Literal",
     "name": "where",
     "value": {
-      "code": "HMRT",
       "isFinishedNEQ": true
     }
   }
@@ -145,6 +148,34 @@ v14 = {
   "kind": "ScalarField",
   "name": "vaApproveAmount",
   "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "accumulatedStatutoryDeductions",
+  "storageKey": null
+},
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "accumulatedNonStatutoryDeductions",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "accumulatedNonStatutoryDeductionsPeriod",
+  "storageKey": null
+},
+v18 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "totalContractAmount",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -190,7 +221,11 @@ return {
                   (v11/*: any*/),
                   (v12/*: any*/),
                   (v13/*: any*/),
-                  (v14/*: any*/)
+                  (v14/*: any*/),
+                  (v15/*: any*/),
+                  (v16/*: any*/),
+                  (v17/*: any*/),
+                  (v18/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -198,7 +233,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "projects(where:{\"code\":\"HMRT\",\"isFinishedNEQ\":true})"
+        "storageKey": "projects(where:{\"isFinishedNEQ\":true})"
       }
     ],
     "type": "Query",
@@ -248,6 +283,10 @@ return {
                   (v12/*: any*/),
                   (v13/*: any*/),
                   (v14/*: any*/),
+                  (v15/*: any*/),
+                  (v16/*: any*/),
+                  (v17/*: any*/),
+                  (v18/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -262,21 +301,21 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "projects(where:{\"code\":\"HMRT\",\"isFinishedNEQ\":true})"
+        "storageKey": "projects(where:{\"isFinishedNEQ\":true})"
       }
     ]
   },
   "params": {
-    "cacheID": "47d71b3a4367cd4b2ce97cac634b3278",
+    "cacheID": "2aefed98e6689b1e1304a7d107b76eac",
     "id": null,
     "metadata": {},
     "name": "operationsPageQuery",
     "operationKind": "query",
-    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true, code: \"HMRT\"}) {\n    edges {\n      node {\n        name\n        code\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        name\n        code\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "1364e0ce5544aa3710cb7600e41ad831";
+(node as any).hash = "80ed842b64fb6c6876351530e010f995";
 
 export default node;

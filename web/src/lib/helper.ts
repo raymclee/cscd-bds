@@ -7,6 +7,10 @@ import {
   TenderConnection,
 } from "~/graphql/graphql";
 
+export function percent(numerator: number, denominator: number): number {
+  return denominator === 0 ? 0 : Math.floor((numerator / denominator) * 100);
+}
+
 export function projectTypeText(typ: Maybe<string> | undefined): string {
   if (!typ) {
     return "";
