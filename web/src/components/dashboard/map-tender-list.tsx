@@ -27,7 +27,7 @@ export function MapTenderList() {
         className={cn(
           // "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
           // tenderListVisible && "mt-[60vh] xl:mt-0",
-          "absolute bottom-[9.6rem] left-4 top-[3.2rem] w-[440px] space-y-2 transition",
+          "absolute bottom-[10rem] left-4 top-[2.8rem] w-[440px] space-y-2 transition",
           !tenderListVisible && "-translate-x-[110%]",
         )}
       >
