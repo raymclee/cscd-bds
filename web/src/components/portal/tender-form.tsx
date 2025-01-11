@@ -382,9 +382,7 @@ export function TenderForm({
                 rules={[{ required: true }]}
               >
                 <Select
-                  options={tenderStatusOptions.filter(
-                    (o) => o.value !== 3 && o.value !== 4,
-                  )}
+                  options={tenderStatusOptions}
                   showSearch
                   optionFilterProp="label"
                 />
