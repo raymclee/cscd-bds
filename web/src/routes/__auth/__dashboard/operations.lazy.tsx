@@ -1,5 +1,24 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import * as HoverCard from "@radix-ui/react-hover-card";
+import * as Tabs from "@radix-ui/react-tabs";
+import {
+  operationsPageQuery,
+  operationsPageQuery$data,
+} from "__generated__/operationsPageQuery.graphql";
+import { ReactNode, useEffect, useState, useTransition } from "react";
+import { graphql, usePreloadedQuery } from "react-relay";
+import { SubTitle } from "~/components/project/sub-title";
+import { Rhino } from "~/components/rhino";
+import { MaterialStatusIcon } from "~/components/ui/material-status-icon";
+import { ProjectSelect } from "~/components/dashboard/project-select";
+import {
+  formatProjectAmount,
+  materialStatusIconColor,
+  percent,
+} from "~/lib/helper";
+import { cn } from "~/lib/utils";
+import dayjs from "dayjs";
+import { TextScramble } from "~/components/ui/text-scramble";
 
 import b1 from "~/assets/svg/box1.png";
 import b2 from "~/assets/svg/box2.png";
@@ -56,27 +75,6 @@ import componentTop from "~/assets/svg/component_top.png";
 
 import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
-
-import * as Tabs from "@radix-ui/react-tabs";
-import {
-  operationsPageQuery,
-  operationsPageQuery$data,
-} from "__generated__/operationsPageQuery.graphql";
-import { ReactNode, useEffect, useState, useTransition } from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
-import { SubTitle } from "~/components/project/sub-title";
-import { Rhino } from "~/components/rhino";
-import { MaterialStatusIcon } from "~/components/ui/material-status-icon";
-import { ProjectSelect } from "~/components/dashboard/project-select";
-import {
-  fixAmount,
-  formatProjectAmount,
-  materialStatusIconColor,
-  percent,
-} from "~/lib/helper";
-import { cn } from "~/lib/utils";
-import dayjs from "dayjs";
-import { TextScramble } from "~/components/ui/text-scramble";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -218,7 +216,6 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const ownerApproveAmount = pj?.ownerApproveAmount ?? 0;
   const contractorApplyAmount = pj?.contractorApplyAmount ?? 0;
   const contractorApproveAmount = pj?.contractorApproveAmount ?? 0;
-  // const installProgress = 100;
   const installProgress = pj?.installProgress ?? 0;
   const effectiveContractAmount = pj?.effectiveContractAmount ?? 0;
   const vaApplyAmount = pj?.vaApplyAmount ?? 0;
@@ -259,28 +256,28 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative">
                 <img
                   src={costManagement1}
-                  className="absolute inset-0 h-full w-auto object-contain"
+                  className="absolute inset-0 object-contain w-auto h-full"
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem]">
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
-                      <div className="flex cursor-pointer items-center justify-between gap-4 px-2">
+                      <div className="flex items-center justify-between gap-4 px-2 cursor-pointer">
                         <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
+                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(ownerApplyAmount),
                           )}
                           万
                         </div>
                       </div>
-                      <div className="w mt-1 flex cursor-pointer items-center justify-between gap-4 px-2">
+                      <div className="flex items-center justify-between gap-4 px-2 mt-1 cursor-pointer w">
                         <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
+                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(contractorApplyAmount),
                           )}
@@ -292,12 +289,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       side="right"
                       sideOffset={10}
                       align="start"
-                      className="z-10 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/5 px-6 py-4 shadow-dashboard-card backdrop-blur-xl"
+                      className="z-10 px-6 py-4 overflow-hidden border rounded-lg border-slate-700 bg-slate-800/5 shadow-dashboard-card backdrop-blur-xl"
                     >
                       <h3 className="mb-2 text-sm font-bold underline">
                         累计VO情况
                       </h3>
-                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm">
+                      <div className="grid grid-cols-3 text-sm gap-x-8 gap-y-2">
                         <div className="col-span-2">安装进度</div>
                         <div className="text-brand-project">
                           {installProgress}%
@@ -359,9 +356,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
-                  <div className="mt-1 flex items-center justify-between gap-4 px-2">
+                  <div className="flex items-center justify-between gap-4 px-2 mt-1">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
+                    <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                       {`${currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
@@ -385,17 +382,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative">
                 <img
                   src={costManagement2}
-                  className="absolute inset-0 h-full w-auto object-contain"
+                  className="absolute inset-0 object-contain w-auto h-full"
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem]">
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
-                      <div className="flex w-full cursor-pointer items-center justify-between gap-4 px-2">
+                      <div className="flex items-center justify-between w-full gap-4 px-2 cursor-pointer">
                         <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
+                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
                           {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                           {currentFormatter.format(
                             formatProjectAmount(ownerApproveAmount),
@@ -403,11 +400,11 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                           万
                         </div>
                       </div>
-                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
+                      <div className="flex items-center justify-between w-full gap-4 px-2 mt-1 cursor-pointer">
                         <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
-                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
+                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(contractorApproveAmount),
                           )}
@@ -419,12 +416,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       side="right"
                       sideOffset={10}
                       align="start"
-                      className="z-10 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/5 px-6 py-4 shadow-dashboard-card backdrop-blur-xl"
+                      className="z-10 px-6 py-4 overflow-hidden border rounded-lg border-slate-700 bg-slate-800/5 shadow-dashboard-card backdrop-blur-xl"
                     >
                       <h3 className="mb-2 text-sm font-bold underline">
                         累计VO情况
                       </h3>
-                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm">
+                      <div className="grid grid-cols-3 text-sm gap-x-8 gap-y-2">
                         <div className="col-span-2">安装进度</div>
                         <div className="text-brand-project">
                           {installProgress}%
@@ -486,9 +483,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
-                  <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
+                  <div className="flex items-center justify-between w-full gap-4 px-2 mt-1">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
+                    <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                       {currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
@@ -513,13 +510,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative">
                 <img
                   src={costManagement3}
-                  className="h-full w-auto object-contain"
+                  className="object-contain w-auto h-full"
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem] space-y-1">
                   <div className="grid w-full grid-cols-[1.2fr_2.2fr_1fr] gap-1 px-2">
                     <div className="text-xs text-brand-project-3">业主VO</div>
-                    <div className="flex flex-1 items-center">
+                    <div className="flex items-center flex-1">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={percent(ownerApproveAmount, ownerApplyAmount)}
@@ -534,7 +531,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   <div className="grid w-full grid-cols-[1.2fr_2.2fr_1fr] gap-1 px-2">
                     <div className="text-xs text-brand-project-3">总包VO</div>
-                    <div className="flex flex-1 items-center">
+                    <div className="flex items-center flex-1">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={percent(
@@ -552,7 +549,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   <div className="grid w-full grid-cols-[1.2fr_2.2fr_1fr] gap-1 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="flex flex-1 items-center">
+                    <div className="flex items-center flex-1">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={percent(vaApproveAmount, vaApproveAmount)}
@@ -573,7 +570,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
             <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
               <div className="flex">
-                <div className="flex flex-1 flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center flex-1">
                   <div
                     className={cn(
                       "font-bold",
@@ -595,12 +592,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </TextScramble>
                     万
                   </div>
-                  <div className="text-xxs font-semibold text-slate-400">
+                  <div className="font-semibold text-xxs text-slate-400">
                     本期非法定扣款
                   </div>
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
-                <div className="flex flex-1 flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center flex-1">
                   <div className={"font-bold text-brand-project"}>
                     <TextScramble
                       characterSet="0123456789"
@@ -613,12 +610,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </TextScramble>
                     万
                   </div>
-                  <div className="text-xxs font-semibold text-slate-400">
+                  <div className="font-semibold text-xxs text-slate-400">
                     累计非法定扣款
                   </div>
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
-                <div className="flex flex-1 flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center flex-1">
                   <div
                     className={cn(
                       "font-bold",
@@ -642,7 +639,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </TextScramble>
                     %
                   </div>
-                  <div className="text-xxs font-semibold text-slate-400">
+                  <div className="font-semibold text-xxs text-slate-400">
                     累计非法定扣款占比
                   </div>
                 </div>
@@ -650,9 +647,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative mt-2 h-14">
                 <img
                   src={costIncome}
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 object-cover w-full h-full"
                 />
-                <div className="absolute right-14 top-1/2 -translate-y-1/2">
+                <div className="absolute -translate-y-1/2 right-14 top-1/2">
                   <div className="flex items-baseline text-lg font-bold text-brand-project">
                     <TextScramble characterSet="0123456789" key={pj?.code}>
                       {currentFormatter.format(
@@ -672,16 +669,16 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="mt-1">
                 <div className="flex gap-8 px-1">
                   <div className="flex items-center gap-1">
-                    <MaterialStatusIcon className="h-3 w-3 text-red-600" />
-                    <span className="text-xxs text-red-200">已超预算</span>
+                    <MaterialStatusIcon className="w-3 h-3 text-red-600" />
+                    <span className="text-red-200 text-xxs">已超预算</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MaterialStatusIcon className="h-3 w-3 text-yellow-500" />
-                    <span className="text-xxs text-red-200">可能超预算</span>
+                    <MaterialStatusIcon className="w-3 h-3 text-yellow-500" />
+                    <span className="text-red-200 text-xxs">可能超预算</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MaterialStatusIcon className="h-3 w-3 text-green-400" />
-                    <span className="text-xxs text-red-200">未超预算</span>
+                    <MaterialStatusIcon className="w-3 h-3 text-green-400" />
+                    <span className="text-red-200 text-xxs">未超预算</span>
                   </div>
                 </div>
               </div>
@@ -689,18 +686,18 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative mt-2">
                 <img
                   src={materialsAlertBg}
-                  className="absolute inset-0 h-14 w-full"
+                  className="absolute inset-0 w-full h-14"
                 />
 
-                <div className="relative grid h-14 grid-cols-4 justify-items-stretch">
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
+                <div className="relative grid grid-cols-4 h-14 justify-items-stretch">
+                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        "w-3 h-3",
                         materialStatusIconColor(aluminumPlateBudgetPercentage),
                       )}
                     />
-                    <span className="text-xxs text-red-200">铝板</span>
+                    <span className="text-red-200 text-xxs">铝板</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -717,14 +714,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
+                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        "w-3 h-3",
                         materialStatusIconColor(aluminumBudgetPercentage),
                       )}
                     />
-                    <span className="text-xxs text-red-200">铝型材</span>
+                    <span className="text-red-200 text-xxs">铝型材</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -741,14 +738,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
+                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        "w-3 h-3",
                         materialStatusIconColor(glassBudgetPercentage),
                       )}
                     />
-                    <span className="text-xxs text-red-200">玻璃</span>
+                    <span className="text-red-200 text-xxs">玻璃</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -765,14 +762,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
+                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        "w-3 h-3",
                         materialStatusIconColor(ironBudgetPercentage),
                       )}
                     />
-                    <span className="text-xxs text-red-200">铁型材</span>
+                    <span className="text-red-200 text-xxs">铁型材</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -805,7 +802,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             <div className="flex gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
               <div className="relative h-[4.8rem] flex-1">
                 <img src={stockLeft} className="absolute inset-0 my-auto" />
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
+                <div className="absolute font-bold text-yellow-500 -translate-y-1/2 right-8 top-1/2">
                   <TextScramble
                     as="span"
                     characterSet="0123456789"
@@ -818,7 +815,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               </div>
               <div className="relative h-[4.8rem] flex-1">
                 <img src={stockRight} className="absolute inset-0 my-auto" />
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
+                <div className="absolute font-bold text-yellow-500 -translate-y-1/2 right-8 top-1/2">
                   <TextScramble
                     as="span"
                     characterSet="0123456789"
@@ -849,9 +846,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>项目物料损失</SubTitle>
             <div className="flex h-[5rem] items-center gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-6 shadow-lg">
-              <img src={materialsLostIcon} className="h-14 w-auto" />
+              <img src={materialsLostIcon} className="w-auto h-14" />
 
-              <div className="flex flex-1 items-baseline justify-between px-6">
+              <div className="flex items-baseline justify-between flex-1 px-6">
                 <span className="text-sm text-brand-project/70">
                   损失累计金额
                 </span>
@@ -867,13 +864,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           </div>
         </section>
 
-        <section className="relative my-auto py-2">
+        <section className="relative py-2 my-auto">
           <img src={instantMessage} />
           <div className="grid h-[15.5rem] grid-cols-5 gap-x-3 pt-1">
             {/* 成交额 */}
             <div className="relative flex justify-center">
               <img src={b1} className="absolute inset-0" />
-              <div className="absolute top-5 text-lg font-bold">成交额</div>
+              <div className="absolute text-lg font-bold top-5">成交额</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -889,7 +886,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 营业额 */}
             <div className="relative flex justify-center">
               <img src={b2} className="absolute inset-0" />
-              <div className="absolute top-5 text-lg font-bold">营业额</div>
+              <div className="absolute text-lg font-bold top-5">营业额</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -905,7 +902,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 现金流 */}
             <div className="relative flex justify-center">
               <img src={b3} className="absolute inset-0" />
-              <div className="absolute top-5 text-lg font-bold">现金流</div>
+              <div className="absolute text-lg font-bold top-5">现金流</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -921,7 +918,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 项目管理费 */}
             <div className="relative flex justify-center">
               <img src={b4} className="absolute inset-0" />
-              <div className="absolute top-5 text-lg font-bold">项目管理费</div>
+              <div className="absolute text-lg font-bold top-5">项目管理费</div>
               <div className="relative w-[80%] space-y-1 pt-[110%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">預算</div>
@@ -941,7 +938,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">累计</div>
-                  <div className="text-left text-sm font-bold text-brand-project">
+                  <div className="text-sm font-bold text-left text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -970,7 +967,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 项目设计费 */}
             <div className="relative flex justify-center">
               <img src={b5} className="absolute inset-0" />
-              <div className="absolute top-5 text-lg font-bold">项目设计费</div>
+              <div className="absolute text-lg font-bold top-5">项目设计费</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -1007,14 +1004,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 });
               }}
             />
-            <div className="mt-2 flex gap-12">
-              <div className="flex w-full flex-col">
+            <div className="flex gap-12 mt-2">
+              <div className="flex flex-col w-full">
                 <div className="relative h-9">
                   <img
                     src={projectManagementLeft}
                     className="absolute inset-0"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
+                  <div className="absolute text-sm font-bold text-yellow-500 -translate-y-1/2 right-4 top-1/2">
                     100
                   </div>
                 </div>
@@ -1056,13 +1053,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   </div>
                 </div>
               </div>
-              <div className="flex w-full flex-col">
+              <div className="flex flex-col w-full">
                 <div className="relative h-9">
                   <img
                     src={projectManagementRight}
                     className="absolute inset-0"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
+                  <div className="absolute text-sm font-bold text-yellow-500 -translate-y-1/2 right-4 top-1/2">
                     6%
                   </div>
                 </div>
@@ -1109,7 +1106,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
           <img src={projectOverviewTitle} className="mx-auto mt-3 w-[65%]" />
 
-          <div className="mt-2 flex gap-6">
+          <div className="flex gap-6 mt-2">
             {/* <div className="flex h-[340px] flex-1 flex-col justify-center gap-4"> */}
             {/* <img src={projectOverviewLeft} /> */}
             {/* <div className="mx-auto h-full w-[85%]">
@@ -1120,7 +1117,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* </div> */}
             <div className="relative flex-1">
               {/* <img src={basicInfo} className="mx-auto w-[90%]" /> */}
-              <div className="mx-auto items-center overflow-hidden">
+              <div className="items-center mx-auto overflow-hidden">
                 <img src={basicInfoBg} className="absolute h-[340px] w-full" />
                 <div className="relative mx-auto flex h-full w-[94%] flex-1 flex-col justify-center gap-1 pt-2.5">
                   <BasicInfoItem title="项目名称">
@@ -1248,11 +1245,11 @@ function BasicInfoItem({
     <div className="relative py-1">
       <img
         src={basicInfoRowBg}
-        className="absolute inset-0 mx-auto h-full w-full"
+        className="absolute inset-0 w-full h-full mx-auto"
       />
       <div className="relative left-12 flex h-full w-[19rem] items-center">
         <div className="w-20 text-xxs">{title}</div>
-        <span className="line-clamp-1 flex-1 text-xxs text-brand-project">
+        <span className="flex-1 line-clamp-1 text-xxs text-brand-project">
           {children}
         </span>
       </div>
@@ -1274,7 +1271,7 @@ function ProjectOverviewTab() {
 
   return (
     <Tabs.Root
-      className="relative mx-auto flex flex-1 flex-col p-1"
+      className="relative flex flex-col flex-1 p-1 mx-auto"
       defaultValue={selectedTab}
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
@@ -1297,10 +1294,10 @@ function ProjectOverviewTab() {
       </div>
 
       <Tabs.List className="relative mx-auto mt-4 grid h-8 w-[85%] grid-cols-3">
-        <img src={projectOverviewTab} className="absolute inset-0 h-8 w-full" />
+        <img src={projectOverviewTab} className="absolute inset-0 w-full h-8" />
         {tabs.map((tab) => (
           <Tabs.Trigger key={tab} value={tab} onClick={() => onChange(tab)}>
-            <div className="relative flex h-8 items-center justify-center">
+            <div className="relative flex items-center justify-center h-8">
               {selectedTab == tab && (
                 <img
                   src={projectOverviewTabSelected}
