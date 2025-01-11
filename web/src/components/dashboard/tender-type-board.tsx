@@ -143,7 +143,7 @@ export function TenderTypeBoard() {
             项目商机类型金额占比
           </motion.span>
           <MotionEllipsis
-            layoutId="tender-type-board-icon"
+            layoutId="tender-type-board-more-icon"
             className="cursor-pointer"
             onClick={() => {
               useMapStore.setState({ moreTenderTypeBoardVisible: true });

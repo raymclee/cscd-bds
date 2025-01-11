@@ -78,7 +78,7 @@ export function RankingListBoard(props: {
             市场竞争龙虎榜
           </motion.span>
           <MotionEllipsis
-            layoutId="ranking-list-board-icon"
+            layoutId="ranking-list-board-more-icon"
             className="cursor-pointer"
             onClick={() => {
               useMapStore.setState({

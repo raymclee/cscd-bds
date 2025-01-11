@@ -98,9 +98,8 @@ function RouteComponent() {
           </Tooltip>
         )}
       </div> */}
-      <div>
-        <Outlet />
-      </div>
+
+      <Outlet />
     </>
   );
 }

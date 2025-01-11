@@ -143,7 +143,7 @@ export function NewTenderBoard() {
         <div className="flex items-center justify-between">
           <span>本月新增商机</span>
           <MotionEllipsis
-            layoutId="new-tender-board-more"
+            layoutId="new-tender-board-more-icon"
             className="cursor-pointer"
             onClick={() => {
               useMapStore.setState({ moreNewTenderBoardVisible: true });
@@ -209,7 +209,7 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="absolute -left-6 bottom-0 right-0 text-center">
+            <div className="absolute -left-6 bottom-4 right-0 text-center">
               <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
@@ -227,7 +227,7 @@ export function NewTenderBoard() {
                 ]}
               />
             </div>
-            <div className="absolute -left-6 bottom-0 right-0 text-center">
+            <div className="absolute -left-6 bottom-4 right-0 text-center">
               <span className="text-xs text-gray-400">数量占比变化</span>
             </div>
           </div>
@@ -238,8 +238,16 @@ export function NewTenderBoard() {
           <div className="absolute -left-10 bottom-0 right-0 top-4">
             <NewTenderBarChart
               data={[
-                { month: "上月", amount: 186, total: 80 },
-                { month: "本月", amount: 305, total: 200 },
+                {
+                  month: "上月",
+                  amount: lastMonthAmount,
+                  total: lastMonthCount,
+                },
+                {
+                  month: "本月",
+                  amount: thisMonthAmount,
+                  total: thisMonthCount,
+                },
               ]}
             />
           </div>

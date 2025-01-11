@@ -3,7 +3,7 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { motion } from "motion/react";
-import { Minus } from "lucide-react";
+import { Minus, X } from "lucide-react";
 import { useMapStore } from "~/store/map";
 const MotionCard = motion.create(Card);
 const MotionCardHeader = motion.create(CardHeader);
@@ -13,7 +13,7 @@ const MotionMinus = motion.create(Minus);
 export function RankingListBoardMore() {
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -24,6 +24,20 @@ export function RankingListBoardMore() {
             useMapStore.setState({ moreRankingListBoardVisible: false });
           }}
         ></motion.div>
+
+        <motion.button
+          layoutId="ranking-list-board-more-icon"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+          className="absolute right-6 top-6 cursor-pointer rounded-full border-2 border-gray-600 p-1 text-white hover:bg-gray-600"
+          onClick={() => {
+            useMapStore.setState({ moreRankingListBoardVisible: false });
+          }}
+        >
+          <X size={14} />
+        </motion.button>
 
         <MotionCard
           initial={{ opacity: 0 }}
@@ -40,13 +54,6 @@ export function RankingListBoardMore() {
               <motion.span layoutId="ranking-list-board-title">
                 市场竞争龙虎榜
               </motion.span>
-              <MotionMinus
-                layoutId="ranking-list-board-icon"
-                className="cursor-pointer"
-                onClick={() => {
-                  useMapStore.setState({ moreRankingListBoardVisible: false });
-                }}
-              />
             </div>
           </MotionCardHeader>
           <MotionCardContent className="grid h-[calc(100%-48px)] grid-cols-4 gap-4 p-4"></MotionCardContent>

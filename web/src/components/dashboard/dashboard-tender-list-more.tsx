@@ -3,7 +3,7 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { motion } from "motion/react";
-import { Minus } from "lucide-react";
+import { Minus, X } from "lucide-react";
 import { useMapStore } from "~/store/map";
 const MotionCard = motion.create(Card);
 const MotionCardHeader = motion.create(CardHeader);
@@ -13,7 +13,7 @@ const MotionMinus = motion.create(Minus);
 export function DashboardTenderListMore() {
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -26,6 +26,22 @@ export function DashboardTenderListMore() {
             });
           }}
         ></motion.div>
+
+        <motion.button
+          layoutId="dashboard-tender-list-board-icon"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+          className="absolute right-6 top-6 cursor-pointer rounded-full border-2 border-gray-600 p-1 text-white hover:bg-gray-600"
+          onClick={() => {
+            useMapStore.setState({
+              moreDashboardTenderListBoardVisible: false,
+            });
+          }}
+        >
+          <X size={14} />
+        </motion.button>
 
         <MotionCard
           initial={{ opacity: 0 }}
@@ -40,17 +56,8 @@ export function DashboardTenderListMore() {
           <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
             <div className="flex items-center justify-between">
               <motion.span layoutId="dashboard-tender-list-board-title">
-                市场竞争龙虎榜
+                项目列表
               </motion.span>
-              <MotionMinus
-                layoutId="dashboard-tender-list-board-icon"
-                className="cursor-pointer"
-                onClick={() => {
-                  useMapStore.setState({
-                    moreDashboardTenderListBoardVisible: false,
-                  });
-                }}
-              />
             </div>
           </MotionCardHeader>
           <MotionCardContent className="grid h-[calc(100%-48px)] grid-cols-4 gap-4 p-4"></MotionCardContent>
