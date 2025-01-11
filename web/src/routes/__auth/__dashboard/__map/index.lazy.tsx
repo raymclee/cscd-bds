@@ -1019,7 +1019,7 @@ function RouteComponent() {
       {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
       <div
         className={cn(
-          "absolute bottom-[10rem] left-2 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          "absolute bottom-[10rem] left-2 top-[3.2rem] w-[360px] space-y-2 self-end transition",
           !dashboardVisible && "-translate-x-[110%]",
         )}
       >
@@ -1030,7 +1030,7 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute bottom-[10rem] right-2 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          "absolute bottom-[10rem] right-2 top-[3.2rem] w-[360px] space-y-2 self-end transition",
           !dashboardVisible && "translate-x-[110%]",
         )}
       >
