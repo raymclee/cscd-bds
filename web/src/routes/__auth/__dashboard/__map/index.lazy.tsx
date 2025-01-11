@@ -849,7 +849,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
+          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -903,7 +903,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
+          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -1015,11 +1015,11 @@ function RouteComponent() {
       <MapTenderList />
       <MapTenderDetail />
 
-      {/* <div className="mt-16 grid grid-cols-3 gap-2 px-2"> */}
+      {/* <div className="grid grid-cols-3 gap-2 px-2 mt-16"> */}
       {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
       <div
         className={cn(
-          "absolute left-0 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          "absolute bottom-[9.6rem] left-2 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
           !dashboardVisible && "-translate-x-[110%]",
         )}
       >
@@ -1030,7 +1030,7 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute right-0 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
+          "absolute bottom-[9.6rem] right-2 top-[3.2rem] w-[clamp(380px,20vw,380px)] space-y-2 self-end transition",
           !dashboardVisible && "translate-x-[110%]",
         )}
       >

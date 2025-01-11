@@ -33,10 +33,10 @@ export function RankingListBoard(props: {
       layoutId="ranking-list-board"
       className={cn(
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        "h-[18.5rem] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[17.9rem] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
         <div className="flex items-center justify-between">
           <motion.span layoutId="ranking-list-board-title">
             市场竞争龙虎榜
@@ -53,10 +53,10 @@ export function RankingListBoard(props: {
         </div>
       </CardHeader>
 
-      <CardContent className="flex h-full w-full items-stretch justify-center gap-4 overflow-hidden px-4">
+      <CardContent className="flex items-stretch justify-center w-full h-full gap-4 px-4 overflow-hidden">
         <div
           className={
-            "relative flex flex-1 flex-col items-center justify-center"
+            "relative flex flex-col items-center justify-center flex-1"
           }
         >
           <img src={no2} className={cn("h-full w-full scale-y-[1.1]")} />
@@ -70,7 +70,7 @@ export function RankingListBoard(props: {
         </div>
         <div
           className={
-            "relative flex flex-1 flex-col items-center justify-center"
+            "relative flex flex-col items-center justify-center flex-1"
           }
         >
           <img
@@ -88,7 +88,7 @@ export function RankingListBoard(props: {
 
         <div
           className={
-            "relative flex flex-1 flex-col items-center justify-center"
+            "relative flex flex-col items-center justify-center flex-1"
           }
         >
           <img src={no3} className={cn("h-full w-full scale-y-[1.1]")} />
