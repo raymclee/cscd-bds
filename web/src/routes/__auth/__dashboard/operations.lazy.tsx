@@ -1218,14 +1218,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>近2季度 质量内审分数</SubTitle>
             {/* <div className="relative bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={quality} className="h-[6.5rem] w-full object-cover" />
+            <img src={quality} className="h-[7rem] w-full object-cover" />
             {/* </div> */}
           </div>
 
           <div>
             <SubTitle>近2季度 安全内审分数</SubTitle>
             {/* <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={safty} className="h-[6.5rem] w-full object-cover" />
+            <img src={safty} className="h-[7rem] w-full object-cover" />
             {/* </div> */}
           </div>
         </section>
