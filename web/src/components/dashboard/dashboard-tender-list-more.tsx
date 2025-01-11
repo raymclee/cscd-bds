@@ -50,7 +50,7 @@ export function DashboardTenderListMore() {
           transition={{ duration: 0.2, delay: 0.1 }}
           layoutId="dashboard-tender-list-board"
           className={cn(
-            "mx-4 block h-[90vh] w-[clamp(400px,90vw,1800px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[90vh] w-[90%] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
           <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">

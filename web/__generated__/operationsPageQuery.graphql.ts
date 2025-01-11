@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<afbb1a8649358c72224084021fee567d>>
+ * @generated SignedSource<<d5151096c2f67e3655661c3cf9de6cb6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -52,6 +52,7 @@ export type operationsPageQuery$data = {
         readonly xjl: number | null | undefined;
         readonly xmglfLj: number | null | undefined;
         readonly xmglfYs: number | null | undefined;
+        readonly xmsjf: number | null | undefined;
         readonly yye: number | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -64,6 +65,15 @@ export type operationsPageQuery = {
 
 const node: ConcreteRequest = (function(){
 var v0 = [
+  {
+    "kind": "Literal",
+    "name": "orderBy",
+    "value": [
+      {
+        "field": "CODE"
+      }
+    ]
+  },
   {
     "kind": "Literal",
     "name": "where",
@@ -209,136 +219,143 @@ v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApplyCount",
+  "name": "xmsjf",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApplyAmount",
+  "name": "ownerApplyCount",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApproveCount",
+  "name": "ownerApplyAmount",
   "storageKey": null
 },
 v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApproveAmount",
+  "name": "ownerApproveCount",
   "storageKey": null
 },
 v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApplyCount",
+  "name": "ownerApproveAmount",
   "storageKey": null
 },
 v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApplyAmount",
+  "name": "contractorApplyCount",
   "storageKey": null
 },
 v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApproveCount",
+  "name": "contractorApplyAmount",
   "storageKey": null
 },
 v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApproveAmount",
+  "name": "contractorApproveCount",
   "storageKey": null
 },
 v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "installProgress",
+  "name": "contractorApproveAmount",
   "storageKey": null
 },
 v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "effectiveContractAmount",
+  "name": "installProgress",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "vaApplyAmount",
+  "name": "effectiveContractAmount",
   "storageKey": null
 },
 v31 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "vaApproveAmount",
+  "name": "vaApplyAmount",
   "storageKey": null
 },
 v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedStatutoryDeductions",
+  "name": "vaApproveAmount",
   "storageKey": null
 },
 v33 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedNonStatutoryDeductions",
+  "name": "accumulatedStatutoryDeductions",
   "storageKey": null
 },
 v34 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedNonStatutoryDeductionsPeriod",
+  "name": "accumulatedNonStatutoryDeductions",
   "storageKey": null
 },
 v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "totalContractAmount",
+  "name": "accumulatedNonStatutoryDeductionsPeriod",
   "storageKey": null
 },
 v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "aluminumPlateBudgetPercentage",
+  "name": "totalContractAmount",
   "storageKey": null
 },
 v37 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "aluminumBudgetPercentage",
+  "name": "aluminumPlateBudgetPercentage",
   "storageKey": null
 },
 v38 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "glassBudgetPercentage",
+  "name": "aluminumBudgetPercentage",
   "storageKey": null
 },
 v39 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "glassBudgetPercentage",
+  "storageKey": null
+},
+v40 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -414,7 +431,8 @@ return {
                   (v36/*: any*/),
                   (v37/*: any*/),
                   (v38/*: any*/),
-                  (v39/*: any*/)
+                  (v39/*: any*/),
+                  (v40/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -422,7 +440,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "projects(where:{\"isFinishedNEQ\":true})"
+        "storageKey": "projects(orderBy:[{\"field\":\"CODE\"}],where:{\"isFinishedNEQ\":true})"
       }
     ],
     "type": "Query",
@@ -497,6 +515,7 @@ return {
                   (v37/*: any*/),
                   (v38/*: any*/),
                   (v39/*: any*/),
+                  (v40/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -511,21 +530,21 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "projects(where:{\"isFinishedNEQ\":true})"
+        "storageKey": "projects(orderBy:[{\"field\":\"CODE\"}],where:{\"isFinishedNEQ\":true})"
       }
     ]
   },
   "params": {
-    "cacheID": "9d4282a7dbe4789ab4721e2d81e12523",
+    "cacheID": "940a861af225a8367793f68ba5207a51",
     "id": null,
     "metadata": {},
     "name": "operationsPageQuery",
     "operationKind": "query",
-    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "804123b6f742cb6afc34b08dce91c967";
+(node as any).hash = "8414dab9c549f650507cab31706e1723";
 
 export default node;

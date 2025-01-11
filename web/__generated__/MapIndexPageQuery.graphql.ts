@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fb0f501177d64bc331fe8b194ce1dee6>>
+ * @generated SignedSource<<1b2b8a695c673ed83537a2d903a07187>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -143,7 +143,7 @@ export type MapIndexPageQuery$data = {
       } | null | undefined> | null | undefined;
     };
   } | null | undefined;
-  readonly " $fragmentSpreads": FragmentRefs<"rankingListBoard_competitors">;
+  readonly " $fragmentSpreads": FragmentRefs<"rankingListBoard_competitors" | "topCompetitors_competitors">;
 };
 export type MapIndexPageQuery = {
   response: MapIndexPageQuery$data;
@@ -941,6 +941,11 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
+        "name": "topCompetitors_competitors"
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
         "name": "rankingListBoard_competitors"
       }
     ],
@@ -1248,7 +1253,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "dfed72e4ca9b3a1db49e48ba2231fde4",
+    "cacheID": "db3dee46c2b1a03e256cbdfb728f4f17",
     "id": null,
     "metadata": {
       "connection": [
@@ -1262,11 +1267,11 @@ return {
     },
     "name": "MapIndexPageQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n  $visitOrderBy: VisitRecordOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last, where: {statusNEQ: 7}) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    name\n                    ownerType\n                    id\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  visitRecords(orderBy: $visitOrderBy) {\n                    edges {\n                      node {\n                        visitType\n                        nextStep\n                        commPeople\n                        commContent\n                        date\n                        customer {\n                          name\n                          id\n                        }\n                        tender {\n                          id\n                          name\n                        }\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n  ...rankingListBoard_competitors\n}\n\nfragment rankingListBoard_competitors on Query {\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n}\n"
+    "text": "query MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n  $visitOrderBy: VisitRecordOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last, where: {statusNEQ: 7}) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    name\n                    ownerType\n                    id\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  visitRecords(orderBy: $visitOrderBy) {\n                    edges {\n                      node {\n                        visitType\n                        nextStep\n                        commPeople\n                        commContent\n                        date\n                        customer {\n                          name\n                          id\n                        }\n                        tender {\n                          id\n                          name\n                        }\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n  ...topCompetitors_competitors\n  ...rankingListBoard_competitors\n}\n\nfragment rankingListBoard_competitors on Query {\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n}\n\nfragment topCompetitors_competitors on Query {\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6c5319f98e3a115cec8527876faf87c1";
+(node as any).hash = "373beed4c2c987eb95ca12a897d7c6a2";
 
 export default node;

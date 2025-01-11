@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import {
   Label,
   PolarGrid,
@@ -17,7 +18,7 @@ export function NewTenderAmountChart({
   width,
   short = false,
 }: {
-  periods: [string, string];
+  periods: [Dayjs, Dayjs];
   className?: string;
   height?: number;
   width?: number;
@@ -27,7 +28,7 @@ export function NewTenderAmountChart({
 
   const lastMontDateFormat = periods[0];
   const lastMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(lastMontDateFormat),
+    e?.createdAt.includes(lastMontDateFormat.format("YYYY-MM")),
   );
   const lastMonthAmount = fixAmount(
     lastMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
@@ -35,7 +36,7 @@ export function NewTenderAmountChart({
 
   const thisMonthDateFormat = periods[1];
   const thisMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(thisMonthDateFormat),
+    e?.createdAt.includes(thisMonthDateFormat.format("YYYY-MM")),
   );
   const thisMonthAmount = fixAmount(
     thisMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),

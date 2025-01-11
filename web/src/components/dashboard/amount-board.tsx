@@ -6,9 +6,6 @@ import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Progress } from "../ui/progress";
-import { useWindowSize } from "usehooks-ts";
-import { useLayoutEffect } from "react";
-import { useRef } from "react";
 
 const statusItems = [
   { status: "跟进中", value: 1 },
@@ -128,10 +125,12 @@ export function AmountBoard() {
               <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
                 <div className="flex h-full flex-col rounded">
                   <div className="flex flex-1 items-center justify-center gap-1">
-                    <span className="text-3xl font-bold">
+                    <span className="text-2xl font-bold">
                       {processingAmount}
                     </span>
-                    <span className="pt-2 font-medium text-brand">亿元</span>
+                    <span className="pt-2 text-sm font-medium text-brand">
+                      亿元
+                    </span>
                   </div>
                   <div className="bg-gray-500/50 py-1 text-center text-xs">
                     跟进中的金额(亿元)
@@ -142,8 +141,10 @@ export function AmountBoard() {
               <div className="h-full flex-1 overflow-hidden rounded bg-gradient-to-b from-brand/40 to-transparent">
                 <div className="flex h-full flex-col rounded">
                   <div className="flex flex-1 items-center justify-center gap-1">
-                    <span className="text-3xl font-bold">{tenderCount}</span>
-                    <span className="pt-2 font-medium text-brand">个项目</span>
+                    <span className="text-2xl font-bold">{tenderCount}</span>
+                    <span className="pt-2 text-sm font-medium text-brand">
+                      个项目
+                    </span>
                   </div>
                   <div className="bg-gray-500/50 py-1 text-center text-xs">
                     总体情况

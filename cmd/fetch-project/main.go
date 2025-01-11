@@ -9,11 +9,10 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"math/big"
 	"os"
 	"time"
 
-	"github.com/SAP/go-hdb/driver"
+	_ "github.com/SAP/go-hdb/driver"
 	_ "github.com/microsoft/go-mssqldb"
 )
 
@@ -255,6 +254,44 @@ func main() {
 				fmt.Printf("%s 抓取项目管理费预算失败: %s\n", *jobcode, err.Error())
 			} else {
 				p.SetNillableXmglfYs(budget)
+			}
+		}
+
+		// 抓取設計費
+		{
+			var (
+				amount *float64
+			)
+			row := stgDb.QueryRow(`
+				select 
+					SUM(FE1) amount
+				from(select 项目代码描述,投标预算
+								, ROUND(SUM(远东香港累计汇总),2) FE1
+								, ROUND(SUM(远东珠海累计汇总),0) FE2
+								, ROUND(SUM(远东深圳累计汇总),2) FE3
+								, ROUND(SUM(远东香港累计汇总),2) - FE11 FE11
+								, ROUND(SUM(远东珠海累计汇总),2) - FE22 FE22
+								, ROUND(SUM(远东深圳累计汇总),2) - FE33 FE33  
+						from CostAggregateOfProject_fromSub cf
+						inner join mst_jobbasfil mj on mj.jobcode=left(cf.项目代码描述,4) and finishedflag = 'N' and pk_corp='2837'
+						left join (select mj.jobcode
+														, ROUND(SUM(远东香港累计汇总),2) FE11,ROUND(SUM(远东珠海累计汇总),2) FE22,ROUND(SUM(远东深圳累计汇总),2) FE33 
+												from CostAggregateOfProject_fromSub cf
+												inner join mst_jobbasfil mj on mj.jobcode=left(cf.项目代码描述,4)
+												where 1=1
+												AND left([成本代码描述],3) = '060'
+												and finishedflag in ('N','Y') and pk_corp='2837'
+												GROUP BY mj.jobcode ) lasty on lasty.jobcode = mj.jobcode 
+						where 1=1
+						AND left([成本代码描述],3) = '060'
+						and mj.jobcode = @code
+						GROUP BY 项目代码描述,投标预算, FE11, FE22, FE33 ) o 
+			`, sql.Named("code", jobcode))
+			err := row.Scan(&amount)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取设计费失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableXmsjf(amount)
 			}
 		}
 
@@ -539,28 +576,26 @@ func main() {
 			for _, material := range materials {
 				row := bwpHanaDb.QueryRow(`
 					SELECT 
-						A00_MENGE as a00menge
+						CAST(A00_MENGE as float) as budget
 					FROM ZJK2BW.FI_PRCOST_SUM fps
 					WHERE USR00 = ?
 					AND cost_code = ?
 					AND A00_MENGE > 1
-					ORDER BY GJAHR DESC, poper DESC
 					LIMIT 1
 				`, jobcode, material)
 
 				var (
-					a00menge driver.Decimal
-					djsl     *int
+					budget *float64
+					djsl   *float64
 				)
-				err := row.Scan(&a00menge)
+				err := row.Scan(&budget)
 				if err != nil && err != sql.ErrNoRows {
 					fmt.Printf("%s 抓取材料预算百分比失败: %s\n", *jobcode, err.Error())
 				} else {
-					budget, ok := (*big.Rat)(&a00menge).Float64()
-					if ok {
+					if budget != nil && *budget > 0 {
 						row = bwpHanaDb.QueryRow(`
 							SELECT
-									sum(djsl) AS djsl
+									cast(sum(djsl) as float) AS djsl
 							FROM
 									(
 								SELECT
@@ -592,8 +627,6 @@ func main() {
 									AND jobcode = ?
 									AND costCode = ?
 								) o
-							ORDER BY
-									djsl DESC
 						`, jobcode, material, jobcode, material)
 						err = row.Scan(&djsl)
 						if err != nil && err != sql.ErrNoRows {
@@ -602,13 +635,13 @@ func main() {
 							if djsl != nil {
 								switch material {
 								case "011":
-									p.SetAluminumPlateBudgetPercentage(float64(*djsl) / budget * 100)
+									p.SetAluminumPlateBudgetPercentage(*djsl / *budget * 100)
 								case "013":
-									p.SetIronBudgetPercentage(float64(*djsl) / budget * 100)
+									p.SetIronBudgetPercentage(*djsl / *budget * 100)
 								case "022":
-									p.SetAluminumBudgetPercentage(float64(*djsl) / budget * 100)
+									p.SetAluminumBudgetPercentage(*djsl / *budget * 100)
 								case "024":
-									p.SetGlassBudgetPercentage(float64(*djsl) / budget * 100)
+									p.SetGlassBudgetPercentage(*djsl / *budget * 100)
 								}
 							}
 						}

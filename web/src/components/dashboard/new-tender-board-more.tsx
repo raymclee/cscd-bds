@@ -27,7 +27,7 @@ import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { NewTenderAmountChart } from "./new-tender-amount-chart";
 import { NewTenderTotalChart } from "./new-tender-total-chart";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 const MotionCard = motion.create(Card);
 const MotionCardHeader = motion.create(CardHeader);
@@ -37,25 +37,25 @@ const MotionMinus = motion.create(Minus);
 export function NewTenderBoardMore() {
   const now = dayjs();
 
-  const thisMonthAmountPeriods = [
-    now.subtract(1, "month").format("YYYY-MM"),
-    now.format("YYYY-MM"),
-  ] as [string, string];
+  const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
+    Dayjs,
+    Dayjs,
+  ];
 
   const lastMonthAmountPeriods = [
-    now.subtract(2, "month").format("YYYY-MM"),
-    now.subtract(1, "month").format("YYYY-MM"),
-  ] as [string, string];
+    now.subtract(1, "month"),
+    now.subtract(2, "month"),
+  ] as [Dayjs, Dayjs];
 
-  const thisMountTotalPeriods = [
-    now.subtract(1, "month").format("YYYY-MM"),
-    now.format("YYYY-MM"),
-  ] as [string, string];
+  const thisMountTotalPeriods = [now, now.subtract(1, "month")] as [
+    Dayjs,
+    Dayjs,
+  ];
 
   const lastMonthTotalPeriods = [
-    now.subtract(2, "month").format("YYYY-MM"),
-    now.subtract(1, "month").format("YYYY-MM"),
-  ] as [string, string];
+    now.subtract(1, "month"),
+    now.subtract(2, "month"),
+  ] as [Dayjs, Dayjs];
 
   return (
     <>
@@ -104,8 +104,8 @@ export function NewTenderBoardMore() {
               <div className="flex flex-1 pt-4">
                 <div className={cn("flex h-full w-full flex-1 flex-col gap-4")}>
                   <div className="px-4 py-2 font-bold text-white">
-                    {thisMonthAmountPeriods[1]} 與 {thisMonthAmountPeriods[0]}{" "}
-                    對比
+                    {thisMonthAmountPeriods[0].format("M月")} 與{" "}
+                    {thisMonthAmountPeriods[1].format("M月")} 對比
                   </div>
 
                   <div className="text-center">
@@ -121,8 +121,8 @@ export function NewTenderBoardMore() {
               <div className="flex flex-1">
                 <div className={cn("flex h-full w-full flex-1 flex-col gap-4")}>
                   <div className="px-4 py-2 font-bold text-white">
-                    {lastMonthAmountPeriods[1]} 與 {lastMonthAmountPeriods[0]}{" "}
-                    對比
+                    {lastMonthAmountPeriods[0].format("M月")} 與{" "}
+                    {lastMonthAmountPeriods[1].format("M月")} 對比
                   </div>
 
                   <div className="text-center">
@@ -140,8 +140,8 @@ export function NewTenderBoardMore() {
               <div className="flex flex-1 pt-4">
                 <div className="flex w-full flex-1 flex-col gap-4">
                   <div className="px-4 py-2 font-bold text-white">
-                    {thisMountTotalPeriods[1]} 與 {thisMountTotalPeriods[0]}{" "}
-                    對比
+                    {thisMountTotalPeriods[0].format("M月")} 與{" "}
+                    {thisMountTotalPeriods[1].format("M月")} 對比
                   </div>
 
                   <div className="text-center">
@@ -157,8 +157,8 @@ export function NewTenderBoardMore() {
               <div className="flex flex-1">
                 <div className="flex h-full w-full flex-1 flex-col gap-4">
                   <div className="px-4 py-2 font-bold text-white">
-                    {lastMonthTotalPeriods[1]} 與 {lastMonthTotalPeriods[0]}{" "}
-                    對比
+                    {lastMonthTotalPeriods[0].format("M月")} 與{" "}
+                    {lastMonthTotalPeriods[1].format("M月")} 對比
                   </div>
 
                   <div className="text-center">
@@ -211,7 +211,7 @@ function MonthlyAmountChart() {
     const monthCount = monthTenders?.length ?? 0;
 
     return {
-      month: index === 0 ? "本月" : index === 1 ? "上月" : month.format("MM月"),
+      month: index === 0 ? "本月" : index === 1 ? "上月" : month.format("M月"),
       amount: monthAmount,
       total: monthCount,
     };
@@ -231,7 +231,11 @@ function MonthlyAmountChart() {
   return (
     <ChartContainer config={chartConfig} className="my-auto h-[340px] w-full">
       <BarChart accessibilityLayer data={data}>
-        <CartesianGrid vertical={false} />
+        <CartesianGrid
+          vertical={false}
+          horizontalFill={["#555555", "#444444"]}
+          fillOpacity={0.4}
+        />
         <XAxis
           dataKey="month"
           tickLine={false}
@@ -262,18 +266,19 @@ function DailyTotalChart() {
   const now = dayjs();
 
   const data = Array.from({ length: now.daysInMonth() }).map((_, index) => {
-    const day = now.subtract(index, "day");
+    const day = now.date(index + 1);
+
     const dayTenders = areaTenders?.filter((e) =>
       e?.createdAt.includes(day.format("YYYY-MM-DD")),
     );
-    console.log(dayTenders);
+
     const dayAmount = fixAmount(
       dayTenders?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
     );
     const dayCount = dayTenders?.length ?? 0;
 
     return {
-      day: index === 0 ? "今日" : index === 1 ? "昨日" : day.format("DD日"),
+      day: `${day.format("D")}`,
       amount: dayAmount,
       total: dayCount,
     };
@@ -292,21 +297,19 @@ function DailyTotalChart() {
 
   return (
     <ChartContainer config={chartConfig} className="my-auto h-[340px] w-full">
-      <AreaChart
-        accessibilityLayer
-        data={data}
-        margin={{
-          left: 12,
-          right: 12,
-        }}
-      >
-        <CartesianGrid vertical={false} />
+      <AreaChart accessibilityLayer data={data}>
+        <CartesianGrid
+          vertical={false}
+          horizontalFill={["#555555", "#444444"]}
+          fillOpacity={0.4}
+        />
         <XAxis
           dataKey="day"
           tickLine={false}
           axisLine={false}
           tickMargin={8}
           tickFormatter={(value) => value.slice(0, 3)}
+          className="bg-white fill-white stroke-orange-500 text-white"
         />
         <ChartTooltip
           cursor={false}

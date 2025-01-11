@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { NewTenderAmountChart } from "./new-tender-amount-chart";
 import { NewTenderTotalChart } from "./new-tender-total-chart";
 import { NewTenderBarChart } from "./new-tender-board/new-tender-bar-chart";
+import dayjs, { Dayjs } from "dayjs";
 
 const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
@@ -34,102 +35,12 @@ export function NewTenderBoard() {
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
-  const barConfig = {
-    data: [
-      {
-        name: "金额(亿)",
-        月份: "上月",
-        数量: lastMonthAmount,
-      },
-      {
-        name: "金额(亿)",
-        月份: "本月",
-        数量: thisMonthAmount,
-      },
-      {
-        name: "数量(个)",
-        月份: "上月",
-        数量: lastMonthCount,
-      },
-      {
-        name: "数量(个)",
-        月份: "本月",
-        数量: thisMonthCount,
-      },
-    ],
-    xField: "月份",
-    yField: "数量",
-    theme: "classicDark",
-    colorField: "name",
-    group: true,
-    style: {
-      inset: 5,
-      width: 20,
-      // color: "white",
-    },
-    legend: {
-      color: {
-        layout: {
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        },
-      },
-    },
-  } satisfies ColumnConfig;
+  const now = dayjs();
 
-  const amountPercent = thisMonthAmount / lastMonthAmount;
-  const amountConfig = {
-    percent: isFinite(amountPercent) ? amountPercent || 1 : 1,
-    width: 80,
-    height: 80,
-    innerRadius: 0.65,
-    color:
-      !isFinite(amountPercent) || amountPercent <= 0
-        ? ["#374151"]
-        : ["#374151", "#dc2626"],
-    annotations: [
-      {
-        type: "text",
-        style: {
-          text: isFinite(amountPercent)
-            ? `${Math.round(amountPercent * 100)}%`
-            : "0%",
-          x: "50%",
-          y: "50%",
-          textAlign: "center",
-          fontSize: 16,
-          fontStyle: "bold",
-          fill: "white",
-        },
-      },
-    ],
-  };
-
-  const totalPercent = lastMonthCount / thisMonthCount;
-  const totalConfig = {
-    percent: isFinite(totalPercent) ? totalPercent || 1 : 1,
-    width: 80,
-    height: 80,
-    innerRadius: 0.65,
-    color: ["#374151", "#109618"],
-    annotations: [
-      {
-        type: "text",
-        style: {
-          text: isFinite(totalPercent)
-            ? `${Math.round(totalPercent * 100)}%`
-            : "0%",
-          x: "50%",
-          y: "50%",
-          textAlign: "center",
-          fontSize: 16,
-          fontStyle: "bold",
-          fill: "white",
-        },
-      },
-    ],
-  };
+  const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
+    Dayjs,
+    Dayjs,
+  ];
 
   return (
     <MotionCard
@@ -203,10 +114,7 @@ export function NewTenderBoard() {
                 className="m-auto"
                 // className="h-[80px] w-[80px]"
                 // className="w-full h-full scale-50"
-                periods={[
-                  `${new Date().getFullYear()}-${new Date().getMonth()}`,
-                  `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
-                ]}
+                periods={thisMonthAmountPeriods}
               />
             </div>
             <div className="absolute -left-6 bottom-4 right-0 text-center">
@@ -221,10 +129,7 @@ export function NewTenderBoard() {
                 width={80}
                 short
                 className="m-auto"
-                periods={[
-                  `${new Date().getFullYear()}-${new Date().getMonth()}`,
-                  `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
-                ]}
+                periods={thisMonthAmountPeriods}
               />
             </div>
             <div className="absolute -left-6 bottom-4 right-0 text-center">

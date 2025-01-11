@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import {
   Label,
   PolarGrid,
@@ -16,7 +17,7 @@ export function NewTenderTotalChart({
   className,
   short = false,
 }: {
-  periods: [string, string];
+  periods: [Dayjs, Dayjs];
   height?: number;
   width?: number;
   className?: string;
@@ -26,13 +27,13 @@ export function NewTenderTotalChart({
 
   const lastMontDateFormat = periods[0];
   const lastMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(lastMontDateFormat),
+    e?.createdAt.includes(lastMontDateFormat.format("YYYY-MM")),
   );
   const lastMonthCount = lastMonth?.length ?? 0;
 
   const thisMonthDateFormat = periods[1];
   const thisMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(thisMonthDateFormat),
+    e?.createdAt.includes(thisMonthDateFormat.format("YYYY-MM")),
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 

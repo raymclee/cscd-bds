@@ -173,6 +173,7 @@ export const mapIndexPageQuery = graphql`
       }
     }
 
+    ...topCompetitors_competitors
     ...rankingListBoard_competitors
   }
 `;
@@ -1051,48 +1052,13 @@ function RouteComponent() {
         {moreTenderTypeBoardVisible && <TenderTypeBoardMore />}
       </AnimatePresence>
       <AnimatePresence>
-        {moreRankingListBoardVisible && <RankingListBoardMore />}
+        {moreRankingListBoardVisible && (
+          <RankingListBoardMore competitors={data} />
+        )}
       </AnimatePresence>
       <AnimatePresence>
         {moreDashboardTenderListBoardVisible && <DashboardTenderListMore />}
       </AnimatePresence>
     </>
-  );
-}
-
-function LeftBoard() {
-  const dashboardVisible = useMapStore((state) => state.dashboardVisible);
-  const windowSize = useWindowSize();
-  const ref = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const { width, height } = window.screen;
-    if (ref.current) {
-      const scale =
-        width >= 1920 ? document.body.clientWidth / width : width / 1920;
-
-      Object.assign(ref.current.style, {
-        // height: `${height > 1080 ? height : 1080}px`,
-        // width: "100vw",
-        // height: "100vh",
-        top: "0",
-        left: "0",
-        // transform: `scale(${document.body.clientWidth / width})`,
-        height: ref.current.clientHeight / document.body.clientHeight,
-      });
-    }
-  }, [windowSize, ref]);
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "absolute left-0 top-0 w-[clamp(380px,20vw,380px)] space-y-2 transition",
-        !dashboardVisible && "-translate-x-[110%]",
-      )}
-    >
-      <AmountBoard />
-
-      <NewTenderBoard />
-    </div>
   );
 }

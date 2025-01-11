@@ -1,16 +1,20 @@
-import { Pie, PieConfig } from "@ant-design/plots";
-import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { motion } from "motion/react";
-import { Minus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useMapStore } from "~/store/map";
+import { rankingListBoard_competitors$key } from "__generated__/rankingListBoard_competitors.graphql";
+import { TopCompetitors } from "./top-competitors";
+
 const MotionCard = motion.create(Card);
 const MotionCardHeader = motion.create(CardHeader);
 const MotionCardContent = motion.create(CardContent);
-const MotionMinus = motion.create(Minus);
 
-export function RankingListBoardMore() {
+export function RankingListBoardMore({
+  competitors,
+}: {
+  competitors: rankingListBoard_competitors$key;
+}) {
   return (
     <>
       <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
@@ -46,7 +50,7 @@ export function RankingListBoardMore() {
           transition={{ duration: 0.2, delay: 0.1 }}
           layoutId="ranking-list-board"
           className={cn(
-            "mx-4 block h-[90vh] w-[clamp(400px,90vw,1800px)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[90vh] w-[60%] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
           <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -56,7 +60,9 @@ export function RankingListBoardMore() {
               </motion.span>
             </div>
           </MotionCardHeader>
-          <MotionCardContent className="grid h-[calc(100%-48px)] grid-cols-4 gap-4 p-4"></MotionCardContent>
+          <MotionCardContent className="grid h-[calc(100%-48px)] grid-cols-4 gap-4 p-4">
+            <TopCompetitors competitors={competitors} className="w-full" />
+          </MotionCardContent>
         </MotionCard>
       </div>
     </>

@@ -62,7 +62,7 @@ import {
   operationsPageQuery,
   operationsPageQuery$data,
 } from "__generated__/operationsPageQuery.graphql";
-import { useEffect, useState, useTransition } from "react";
+import { ReactNode, useEffect, useState, useTransition } from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { SubTitle } from "~/components/project/sub-title";
 import { Rhino } from "~/components/rhino";
@@ -86,7 +86,7 @@ function RouteComponent() {
   const data = usePreloadedQuery<operationsPageQuery>(
     graphql`
       query operationsPageQuery {
-        projects(where: { isFinishedNEQ: true }) {
+        projects(where: { isFinishedNEQ: true }, orderBy: [{ field: CODE }]) {
           edges {
             node {
               name
@@ -108,6 +108,7 @@ function RouteComponent() {
               xjl
               xmglfYs
               xmglfLj
+              xmsjf
               ownerApplyCount
               ownerApplyAmount
               ownerApproveCount
@@ -177,6 +178,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
         navigate({
           to: "/operations",
           search: { code: prevProject?.code },
+          replace: true,
         });
       }
     };
@@ -194,6 +196,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
         navigate({
           to: "/operations",
           search: { code: nextProject?.code },
+          replace: true,
         });
       }
     };
@@ -289,7 +292,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       side="right"
                       sideOffset={10}
                       align="start"
-                      className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
+                      className="z-10 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/5 px-6 py-4 shadow-dashboard-card backdrop-blur-xl"
                     >
                       <h3 className="mb-2 text-sm font-bold underline">
                         累计VO情况
@@ -416,7 +419,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       side="right"
                       sideOffset={10}
                       align="start"
-                      className="z-10 overflow-hidden rounded-lg bg-slate-800/5 px-6 py-4 shadow-2xl backdrop-blur-xl"
+                      className="z-10 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/5 px-6 py-4 shadow-dashboard-card backdrop-blur-xl"
                     >
                       <h3 className="mb-2 text-sm font-bold underline">
                         累计VO情况
@@ -689,8 +692,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   className="absolute inset-0 h-14 w-full"
                 />
 
-                <div className="relative grid h-14 grid-cols-4 items-center justify-items-stretch">
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap">
+                <div className="relative grid h-14 grid-cols-4 justify-items-stretch">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -714,7 +717,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -738,7 +741,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -762,7 +765,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
                         "h-3 w-3",
@@ -974,7 +977,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   as="span"
                 >
-                  {currentFormatter.format(1598)}
+                  {currentFormatter.format(formatProjectAmount(pj?.xmsjf))}
                 </TextScramble>
                 <span className="ml-1 text-sm">万</span>
               </div>
@@ -1120,38 +1123,44 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="mx-auto items-center overflow-hidden">
                 <img src={basicInfoBg} className="absolute h-[340px] w-full" />
                 <div className="relative mx-auto flex h-full w-[94%] flex-1 flex-col justify-center gap-1 pt-2.5">
-                  <BasicInfoItem title="项目名称" value={pj?.name || "-"} />
-                  <BasicInfoItem title="客户" value={pj?.owner || "-"} />
-                  <BasicInfoItem title="建筑师" value={pj?.jzs || "-"} />
-                  <BasicInfoItem title="总承包商" value={pj?.mcn || "-"} />
-                  <BasicInfoItem
-                    title="幕墙顾问"
-                    value={pj?.consultant || "-"}
-                  />
-                  <BasicInfoItem
-                    title="工程规模"
-                    value={pj?.areas ? `${pj?.areas}m` : "-"}
-                  />
-                  <BasicInfoItem title="中标形式" value={pj?.conType || "-"} />
-                  <BasicInfoItem
-                    title="开工日期"
-                    value={
-                      pj?.startDate ? dayjs(pj?.startDate).format("LL") : "-"
-                    }
-                  />
-                  <BasicInfoItem
-                    title="FS日期"
-                    value={pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
-                  />
-                  <BasicInfoItem
-                    title="OP日期"
-                    value={pj?.opDate ? dayjs(pj?.opDate).format("LL") : "-"}
-                  />
-                  <BasicInfoItem
-                    title="竣工日期"
-                    value={pj?.endDate ? dayjs(pj?.endDate).format("LL") : "-"}
-                  />
-                  <BasicInfoItem title="维修保养期" value={pj?.mntyr || "-"} />
+                  <BasicInfoItem title="项目名称">
+                    {pj?.name || "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="客户">{pj?.owner || "-"}</BasicInfoItem>
+                  <BasicInfoItem title="建筑师">{pj?.jzs || "-"}</BasicInfoItem>
+                  <BasicInfoItem title="总承包商">
+                    {pj?.mcn || "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="幕墙顾问">
+                    {pj?.consultant || "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="工程规模">
+                    {pj?.areas ? (
+                      <span className="text-brand-project">
+                        {pj?.areas}m<sup>2</sup>
+                      </span>
+                    ) : (
+                      "-"
+                    )}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="中标形式">
+                    {pj?.conType || "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="开工日期">
+                    {pj?.startDate ? dayjs(pj?.startDate).format("LL") : "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="FS日期">
+                    {pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="OP日期">
+                    {pj?.opDate ? dayjs(pj?.opDate).format("LL") : "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="竣工日期">
+                    {pj?.endDate ? dayjs(pj?.endDate).format("LL") : "-"}
+                  </BasicInfoItem>
+                  <BasicInfoItem title="维修保养期">
+                    {pj?.mntyr || "-"}
+                  </BasicInfoItem>
                 </div>
               </div>
             </div>
@@ -1228,7 +1237,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   );
 }
 
-function BasicInfoItem({ title, value }: { title: string; value: string }) {
+function BasicInfoItem({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <div className="relative py-1">
       <img
@@ -1238,7 +1253,7 @@ function BasicInfoItem({ title, value }: { title: string; value: string }) {
       <div className="relative left-12 flex h-full w-[19rem] items-center">
         <div className="w-20 text-xxs">{title}</div>
         <span className="line-clamp-1 flex-1 text-xxs text-brand-project">
-          {value}
+          {children}
         </span>
       </div>
     </div>
@@ -1264,10 +1279,12 @@ function ProjectOverviewTab() {
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
         <Tabs.Content value={tabs[0]} className="relative h-full">
-          <ProjectImage
-            src={`/static/projects/${code}/${code}.png`}
-            key={code}
-          />
+          {code && (
+            <ProjectImage
+              src={`/static/projects/${code}/${code}.png`}
+              key={code}
+            />
+          )}
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-[280px] w-full">

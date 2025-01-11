@@ -50,17 +50,20 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
         <button
           role="combobox"
           aria-expanded={open}
-          className="inline-flex w-[200px] items-center justify-between px-2 py-1 text-sm font-medium outline-brand-project"
+          className="inline-flex w-[310px] items-center justify-between gap-2 px-2 py-1 text-sm font-medium outline-brand-project"
         >
           <div className="line-clamp-1 flex-1 text-left">
             {code
               ? projectsArray?.find((item) => item?.code === code)?.name
               : "请选择项目..."}
           </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <div className="flex items-center gap-1">
+            <span className="text-xxs text-slate-400">Ctrl/Cmd K</span>
+            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+          </div>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[280px] border-none bg-transparent p-0">
+      <PopoverContent className="w-[310px] border-none bg-transparent p-0">
         <Command className="bg-slate-900/90 text-white backdrop-blur-2xl">
           <CommandInput placeholder="请选择项目..." />
           <CommandList>
@@ -68,7 +71,7 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
             <CommandGroup>
               {projectsArray?.map((item) => (
                 <CommandItem
-                  className="text-white data-[selected='true']:bg-slate-600 data-[selected=true]:text-white"
+                  className="cursor-pointer text-white data-[selected='true']:bg-slate-600 data-[selected=true]:text-white"
                   key={item?.code}
                   value={item?.code ?? ""}
                   onSelect={(currentValue) => {
