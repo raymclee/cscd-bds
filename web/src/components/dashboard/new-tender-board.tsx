@@ -46,7 +46,7 @@ export function NewTenderBoard() {
     <MotionCard
       layoutId="new-tender-board"
       className={cn(
-        "h-[calc(100vh/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[18.1rem] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
