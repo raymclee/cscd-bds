@@ -100,6 +100,14 @@ type Project struct {
 	AccumulatedNonStatutoryDeductionsPeriod *float64 `json:"accumulated_non_statutory_deductions_period,omitempty"`
 	// 合約总额
 	TotalContractAmount *float64 `json:"total_contract_amount,omitempty"`
+	// 鋁板預算百分比
+	AluminumPlateBudgetPercentage *float64 `json:"aluminum_plate_budget_percentage,omitempty"`
+	// 鋁型材預算百分比
+	AluminumBudgetPercentage *float64 `json:"aluminum_budget_percentage,omitempty"`
+	// 玻璃預算百分比
+	GlassBudgetPercentage *float64 `json:"glass_budget_percentage,omitempty"`
+	// 鐵型材預算百分比
+	IronBudgetPercentage *float64 `json:"iron_budget_percentage,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -135,7 +143,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount:
+		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage:
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount:
 			values[i] = new(sql.NullInt64)
@@ -449,6 +457,34 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.TotalContractAmount = new(float64)
 				*pr.TotalContractAmount = value.Float64
 			}
+		case project.FieldAluminumPlateBudgetPercentage:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field aluminum_plate_budget_percentage", values[i])
+			} else if value.Valid {
+				pr.AluminumPlateBudgetPercentage = new(float64)
+				*pr.AluminumPlateBudgetPercentage = value.Float64
+			}
+		case project.FieldAluminumBudgetPercentage:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field aluminum_budget_percentage", values[i])
+			} else if value.Valid {
+				pr.AluminumBudgetPercentage = new(float64)
+				*pr.AluminumBudgetPercentage = value.Float64
+			}
+		case project.FieldGlassBudgetPercentage:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field glass_budget_percentage", values[i])
+			} else if value.Valid {
+				pr.GlassBudgetPercentage = new(float64)
+				*pr.GlassBudgetPercentage = value.Float64
+			}
+		case project.FieldIronBudgetPercentage:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field iron_budget_percentage", values[i])
+			} else if value.Valid {
+				pr.IronBudgetPercentage = new(float64)
+				*pr.IronBudgetPercentage = value.Float64
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -684,6 +720,26 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.TotalContractAmount; v != nil {
 		builder.WriteString("total_contract_amount=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.AluminumPlateBudgetPercentage; v != nil {
+		builder.WriteString("aluminum_plate_budget_percentage=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.AluminumBudgetPercentage; v != nil {
+		builder.WriteString("aluminum_budget_percentage=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.GlassBudgetPercentage; v != nil {
+		builder.WriteString("glass_budget_percentage=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.IronBudgetPercentage; v != nil {
+		builder.WriteString("iron_budget_percentage=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

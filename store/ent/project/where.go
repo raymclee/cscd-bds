@@ -261,6 +261,26 @@ func TotalContractAmount(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldTotalContractAmount, v))
 }
 
+// AluminumPlateBudgetPercentage applies equality check predicate on the "aluminum_plate_budget_percentage" field. It's identical to AluminumPlateBudgetPercentageEQ.
+func AluminumPlateBudgetPercentage(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentage applies equality check predicate on the "aluminum_budget_percentage" field. It's identical to AluminumBudgetPercentageEQ.
+func AluminumBudgetPercentage(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAluminumBudgetPercentage, v))
+}
+
+// GlassBudgetPercentage applies equality check predicate on the "glass_budget_percentage" field. It's identical to GlassBudgetPercentageEQ.
+func GlassBudgetPercentage(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldGlassBudgetPercentage, v))
+}
+
+// IronBudgetPercentage applies equality check predicate on the "iron_budget_percentage" field. It's identical to IronBudgetPercentageEQ.
+func IronBudgetPercentage(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldIronBudgetPercentage, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -2514,6 +2534,206 @@ func TotalContractAmountIsNil() predicate.Project {
 // TotalContractAmountNotNil applies the NotNil predicate on the "total_contract_amount" field.
 func TotalContractAmountNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldTotalContractAmount))
+}
+
+// AluminumPlateBudgetPercentageEQ applies the EQ predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumPlateBudgetPercentageNEQ applies the NEQ predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumPlateBudgetPercentageIn applies the In predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAluminumPlateBudgetPercentage, vs...))
+}
+
+// AluminumPlateBudgetPercentageNotIn applies the NotIn predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAluminumPlateBudgetPercentage, vs...))
+}
+
+// AluminumPlateBudgetPercentageGT applies the GT predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumPlateBudgetPercentageGTE applies the GTE predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumPlateBudgetPercentageLT applies the LT predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumPlateBudgetPercentageLTE applies the LTE predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAluminumPlateBudgetPercentage, v))
+}
+
+// AluminumPlateBudgetPercentageIsNil applies the IsNil predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAluminumPlateBudgetPercentage))
+}
+
+// AluminumPlateBudgetPercentageNotNil applies the NotNil predicate on the "aluminum_plate_budget_percentage" field.
+func AluminumPlateBudgetPercentageNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAluminumPlateBudgetPercentage))
+}
+
+// AluminumBudgetPercentageEQ applies the EQ predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldAluminumBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentageNEQ applies the NEQ predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldAluminumBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentageIn applies the In predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldAluminumBudgetPercentage, vs...))
+}
+
+// AluminumBudgetPercentageNotIn applies the NotIn predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldAluminumBudgetPercentage, vs...))
+}
+
+// AluminumBudgetPercentageGT applies the GT predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldAluminumBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentageGTE applies the GTE predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldAluminumBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentageLT applies the LT predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldAluminumBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentageLTE applies the LTE predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldAluminumBudgetPercentage, v))
+}
+
+// AluminumBudgetPercentageIsNil applies the IsNil predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldAluminumBudgetPercentage))
+}
+
+// AluminumBudgetPercentageNotNil applies the NotNil predicate on the "aluminum_budget_percentage" field.
+func AluminumBudgetPercentageNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldAluminumBudgetPercentage))
+}
+
+// GlassBudgetPercentageEQ applies the EQ predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldGlassBudgetPercentage, v))
+}
+
+// GlassBudgetPercentageNEQ applies the NEQ predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldGlassBudgetPercentage, v))
+}
+
+// GlassBudgetPercentageIn applies the In predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldGlassBudgetPercentage, vs...))
+}
+
+// GlassBudgetPercentageNotIn applies the NotIn predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldGlassBudgetPercentage, vs...))
+}
+
+// GlassBudgetPercentageGT applies the GT predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldGlassBudgetPercentage, v))
+}
+
+// GlassBudgetPercentageGTE applies the GTE predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldGlassBudgetPercentage, v))
+}
+
+// GlassBudgetPercentageLT applies the LT predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldGlassBudgetPercentage, v))
+}
+
+// GlassBudgetPercentageLTE applies the LTE predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldGlassBudgetPercentage, v))
+}
+
+// GlassBudgetPercentageIsNil applies the IsNil predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldGlassBudgetPercentage))
+}
+
+// GlassBudgetPercentageNotNil applies the NotNil predicate on the "glass_budget_percentage" field.
+func GlassBudgetPercentageNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldGlassBudgetPercentage))
+}
+
+// IronBudgetPercentageEQ applies the EQ predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldIronBudgetPercentage, v))
+}
+
+// IronBudgetPercentageNEQ applies the NEQ predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldIronBudgetPercentage, v))
+}
+
+// IronBudgetPercentageIn applies the In predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldIronBudgetPercentage, vs...))
+}
+
+// IronBudgetPercentageNotIn applies the NotIn predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldIronBudgetPercentage, vs...))
+}
+
+// IronBudgetPercentageGT applies the GT predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldIronBudgetPercentage, v))
+}
+
+// IronBudgetPercentageGTE applies the GTE predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldIronBudgetPercentage, v))
+}
+
+// IronBudgetPercentageLT applies the LT predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldIronBudgetPercentage, v))
+}
+
+// IronBudgetPercentageLTE applies the LTE predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldIronBudgetPercentage, v))
+}
+
+// IronBudgetPercentageIsNil applies the IsNil predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldIronBudgetPercentage))
+}
+
+// IronBudgetPercentageNotNil applies the NotNil predicate on the "iron_budget_percentage" field.
+func IronBudgetPercentageNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldIronBudgetPercentage))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

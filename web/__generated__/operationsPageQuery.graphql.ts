@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<539a7edfa56607d17184b08c890f8a47>>
+ * @generated SignedSource<<afbb1a8649358c72224084021fee567d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,8 @@ export type operationsPageQuery$data = {
         readonly accumulatedNonStatutoryDeductions: number | null | undefined;
         readonly accumulatedNonStatutoryDeductionsPeriod: number | null | undefined;
         readonly accumulatedStatutoryDeductions: number | null | undefined;
+        readonly aluminumBudgetPercentage: number | null | undefined;
+        readonly aluminumPlateBudgetPercentage: number | null | undefined;
         readonly areas: string | null | undefined;
         readonly cje: number | null | undefined;
         readonly code: string;
@@ -29,7 +31,9 @@ export type operationsPageQuery$data = {
         readonly effectiveContractAmount: number | null | undefined;
         readonly endDate: any | null | undefined;
         readonly fsDate: any | null | undefined;
+        readonly glassBudgetPercentage: number | null | undefined;
         readonly installProgress: number | null | undefined;
+        readonly ironBudgetPercentage: number | null | undefined;
         readonly jzs: string | null | undefined;
         readonly manager: string | null | undefined;
         readonly mcn: string | null | undefined;
@@ -45,6 +49,9 @@ export type operationsPageQuery$data = {
         readonly totalContractAmount: number | null | undefined;
         readonly vaApplyAmount: number | null | undefined;
         readonly vaApproveAmount: number | null | undefined;
+        readonly xjl: number | null | undefined;
+        readonly xmglfLj: number | null | undefined;
+        readonly xmglfYs: number | null | undefined;
         readonly yye: number | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -181,112 +188,161 @@ v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApplyCount",
+  "name": "xjl",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApplyAmount",
+  "name": "xmglfYs",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApproveCount",
+  "name": "xmglfLj",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApproveAmount",
+  "name": "ownerApplyCount",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApplyCount",
+  "name": "ownerApplyAmount",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApplyAmount",
+  "name": "ownerApproveCount",
   "storageKey": null
 },
 v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApproveCount",
+  "name": "ownerApproveAmount",
   "storageKey": null
 },
 v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApproveAmount",
+  "name": "contractorApplyCount",
   "storageKey": null
 },
 v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "installProgress",
+  "name": "contractorApplyAmount",
   "storageKey": null
 },
 v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "effectiveContractAmount",
+  "name": "contractorApproveCount",
   "storageKey": null
 },
 v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "vaApplyAmount",
+  "name": "contractorApproveAmount",
   "storageKey": null
 },
 v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "vaApproveAmount",
+  "name": "installProgress",
   "storageKey": null
 },
 v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedStatutoryDeductions",
+  "name": "effectiveContractAmount",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedNonStatutoryDeductions",
+  "name": "vaApplyAmount",
   "storageKey": null
 },
 v31 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedNonStatutoryDeductionsPeriod",
+  "name": "vaApproveAmount",
   "storageKey": null
 },
 v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "accumulatedStatutoryDeductions",
+  "storageKey": null
+},
+v33 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "accumulatedNonStatutoryDeductions",
+  "storageKey": null
+},
+v34 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "accumulatedNonStatutoryDeductionsPeriod",
+  "storageKey": null
+},
+v35 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "totalContractAmount",
+  "storageKey": null
+},
+v36 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "aluminumPlateBudgetPercentage",
+  "storageKey": null
+},
+v37 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "aluminumBudgetPercentage",
+  "storageKey": null
+},
+v38 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "glassBudgetPercentage",
+  "storageKey": null
+},
+v39 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "ironBudgetPercentage",
   "storageKey": null
 };
 return {
@@ -351,7 +407,14 @@ return {
                   (v29/*: any*/),
                   (v30/*: any*/),
                   (v31/*: any*/),
-                  (v32/*: any*/)
+                  (v32/*: any*/),
+                  (v33/*: any*/),
+                  (v34/*: any*/),
+                  (v35/*: any*/),
+                  (v36/*: any*/),
+                  (v37/*: any*/),
+                  (v38/*: any*/),
+                  (v39/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -427,6 +490,13 @@ return {
                   (v30/*: any*/),
                   (v31/*: any*/),
                   (v32/*: any*/),
+                  (v33/*: any*/),
+                  (v34/*: any*/),
+                  (v35/*: any*/),
+                  (v36/*: any*/),
+                  (v37/*: any*/),
+                  (v38/*: any*/),
+                  (v39/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -446,16 +516,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5518cca48abeb41c71ea7a5b74fa83f8",
+    "cacheID": "9d4282a7dbe4789ab4721e2d81e12523",
     "id": null,
     "metadata": {},
     "name": "operationsPageQuery",
     "operationKind": "query",
-    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "0df452a46914a9d1c84f91dcb8efd7f5";
+(node as any).hash = "804123b6f742cb6afc34b08dce91c967";
 
 export default node;

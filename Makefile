@@ -10,6 +10,9 @@ build-pull: export GOOS=linux
 build-pull-image: export CGO_ENABLED=0
 build-pull-image: export GOOS=linux
 
+build-fetch-project: export CGO_ENABLED=0
+build-fetch-project: export GOOS=linux
+
 create:
 	go run -mod=mod entgo.io/ent/cmd/ent new --target store/ent/schema
 
@@ -34,4 +37,8 @@ build-pull:
 
 build-pull-image:
 	go build -tags prod -o ./bin/pull-image ./cmd/pull-image/.
+
+build-fetch-project:
+	go build -tags prod -o ./bin/fetch-project ./cmd/fetch-project/.
+
 

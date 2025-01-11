@@ -97,6 +97,14 @@ const (
 	FieldAccumulatedNonStatutoryDeductionsPeriod = "accumulated_non_statutory_deductions_period"
 	// FieldTotalContractAmount holds the string denoting the total_contract_amount field in the database.
 	FieldTotalContractAmount = "total_contract_amount"
+	// FieldAluminumPlateBudgetPercentage holds the string denoting the aluminum_plate_budget_percentage field in the database.
+	FieldAluminumPlateBudgetPercentage = "aluminum_plate_budget_percentage"
+	// FieldAluminumBudgetPercentage holds the string denoting the aluminum_budget_percentage field in the database.
+	FieldAluminumBudgetPercentage = "aluminum_budget_percentage"
+	// FieldGlassBudgetPercentage holds the string denoting the glass_budget_percentage field in the database.
+	FieldGlassBudgetPercentage = "glass_budget_percentage"
+	// FieldIronBudgetPercentage holds the string denoting the iron_budget_percentage field in the database.
+	FieldIronBudgetPercentage = "iron_budget_percentage"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// Table holds the table name of the project in the database.
@@ -154,6 +162,10 @@ var Columns = []string{
 	FieldAccumulatedStatutoryDeductionsPeriod,
 	FieldAccumulatedNonStatutoryDeductionsPeriod,
 	FieldTotalContractAmount,
+	FieldAluminumPlateBudgetPercentage,
+	FieldAluminumBudgetPercentage,
+	FieldGlassBudgetPercentage,
+	FieldIronBudgetPercentage,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -390,6 +402,26 @@ func ByAccumulatedNonStatutoryDeductionsPeriod(opts ...sql.OrderTermOption) Orde
 // ByTotalContractAmount orders the results by the total_contract_amount field.
 func ByTotalContractAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTotalContractAmount, opts...).ToFunc()
+}
+
+// ByAluminumPlateBudgetPercentage orders the results by the aluminum_plate_budget_percentage field.
+func ByAluminumPlateBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAluminumPlateBudgetPercentage, opts...).ToFunc()
+}
+
+// ByAluminumBudgetPercentage orders the results by the aluminum_budget_percentage field.
+func ByAluminumBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAluminumBudgetPercentage, opts...).ToFunc()
+}
+
+// ByGlassBudgetPercentage orders the results by the glass_budget_percentage field.
+func ByGlassBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGlassBudgetPercentage, opts...).ToFunc()
+}
+
+// ByIronBudgetPercentage orders the results by the iron_budget_percentage field.
+func ByIronBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIronBudgetPercentage, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

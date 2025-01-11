@@ -292,6 +292,26 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("合約总额"),
+
+		field.Float("aluminum_plate_budget_percentage").
+			Optional().
+			Nillable().
+			Comment("鋁板預算百分比"),
+
+		field.Float("aluminum_budget_percentage").
+			Optional().
+			Nillable().
+			Comment("鋁型材預算百分比"),
+
+		field.Float("glass_budget_percentage").
+			Optional().
+			Nillable().
+			Comment("玻璃預算百分比"),
+
+		field.Float("iron_budget_percentage").
+			Optional().
+			Nillable().
+			Comment("鐵型材預算百分比"),
 	}
 }
 

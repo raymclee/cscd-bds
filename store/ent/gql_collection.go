@@ -2397,6 +2397,26 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldTotalContractAmount)
 				fieldSeen[project.FieldTotalContractAmount] = struct{}{}
 			}
+		case "aluminumPlateBudgetPercentage":
+			if _, ok := fieldSeen[project.FieldAluminumPlateBudgetPercentage]; !ok {
+				selectedFields = append(selectedFields, project.FieldAluminumPlateBudgetPercentage)
+				fieldSeen[project.FieldAluminumPlateBudgetPercentage] = struct{}{}
+			}
+		case "aluminumBudgetPercentage":
+			if _, ok := fieldSeen[project.FieldAluminumBudgetPercentage]; !ok {
+				selectedFields = append(selectedFields, project.FieldAluminumBudgetPercentage)
+				fieldSeen[project.FieldAluminumBudgetPercentage] = struct{}{}
+			}
+		case "glassBudgetPercentage":
+			if _, ok := fieldSeen[project.FieldGlassBudgetPercentage]; !ok {
+				selectedFields = append(selectedFields, project.FieldGlassBudgetPercentage)
+				fieldSeen[project.FieldGlassBudgetPercentage] = struct{}{}
+			}
+		case "ironBudgetPercentage":
+			if _, ok := fieldSeen[project.FieldIronBudgetPercentage]; !ok {
+				selectedFields = append(selectedFields, project.FieldIronBudgetPercentage)
+				fieldSeen[project.FieldIronBudgetPercentage] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

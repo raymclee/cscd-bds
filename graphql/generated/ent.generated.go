@@ -14057,6 +14057,170 @@ func (ec *executionContext) fieldContext_Project_totalContractAmount(_ context.C
 	return fc, nil
 }
 
+func (ec *executionContext) _Project_aluminumPlateBudgetPercentage(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_aluminumPlateBudgetPercentage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AluminumPlateBudgetPercentage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_aluminumPlateBudgetPercentage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_aluminumBudgetPercentage(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_aluminumBudgetPercentage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AluminumBudgetPercentage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_aluminumBudgetPercentage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_glassBudgetPercentage(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_glassBudgetPercentage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.GlassBudgetPercentage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_glassBudgetPercentage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_ironBudgetPercentage(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_ironBudgetPercentage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IronBudgetPercentage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_ironBudgetPercentage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Project_vos(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Project_vos(ctx, field)
 	if err != nil {
@@ -14387,6 +14551,14 @@ func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, fie
 				return ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
 			case "totalContractAmount":
 				return ec.fieldContext_Project_totalContractAmount(ctx, field)
+			case "aluminumPlateBudgetPercentage":
+				return ec.fieldContext_Project_aluminumPlateBudgetPercentage(ctx, field)
+			case "aluminumBudgetPercentage":
+				return ec.fieldContext_Project_aluminumBudgetPercentage(ctx, field)
+			case "glassBudgetPercentage":
+				return ec.fieldContext_Project_glassBudgetPercentage(ctx, field)
+			case "ironBudgetPercentage":
+				return ec.fieldContext_Project_ironBudgetPercentage(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			}
@@ -14991,6 +15163,14 @@ func (ec *executionContext) fieldContext_ProjectVO_project(_ context.Context, fi
 				return ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
 			case "totalContractAmount":
 				return ec.fieldContext_Project_totalContractAmount(ctx, field)
+			case "aluminumPlateBudgetPercentage":
+				return ec.fieldContext_Project_aluminumPlateBudgetPercentage(ctx, field)
+			case "aluminumBudgetPercentage":
+				return ec.fieldContext_Project_aluminumBudgetPercentage(ctx, field)
+			case "glassBudgetPercentage":
+				return ec.fieldContext_Project_glassBudgetPercentage(ctx, field)
+			case "ironBudgetPercentage":
+				return ec.fieldContext_Project_ironBudgetPercentage(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			}
@@ -30913,7 +31093,7 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "manager", "managerNEQ", "managerIn", "managerNotIn", "managerGT", "managerGTE", "managerLT", "managerLTE", "managerContains", "managerHasPrefix", "managerHasSuffix", "managerIsNil", "managerNotNil", "managerEqualFold", "managerContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "owner", "ownerNEQ", "ownerIn", "ownerNotIn", "ownerGT", "ownerGTE", "ownerLT", "ownerLTE", "ownerContains", "ownerHasPrefix", "ownerHasSuffix", "ownerIsNil", "ownerNotNil", "ownerEqualFold", "ownerContainsFold", "jzs", "jzsNEQ", "jzsIn", "jzsNotIn", "jzsGT", "jzsGTE", "jzsLT", "jzsLTE", "jzsContains", "jzsHasPrefix", "jzsHasSuffix", "jzsIsNil", "jzsNotNil", "jzsEqualFold", "jzsContainsFold", "mcn", "mcnNEQ", "mcnIn", "mcnNotIn", "mcnGT", "mcnGTE", "mcnLT", "mcnLTE", "mcnContains", "mcnHasPrefix", "mcnHasSuffix", "mcnIsNil", "mcnNotNil", "mcnEqualFold", "mcnContainsFold", "consultant", "consultantNEQ", "consultantIn", "consultantNotIn", "consultantGT", "consultantGTE", "consultantLT", "consultantLTE", "consultantContains", "consultantHasPrefix", "consultantHasSuffix", "consultantIsNil", "consultantNotNil", "consultantEqualFold", "consultantContainsFold", "areas", "areasNEQ", "areasIn", "areasNotIn", "areasGT", "areasGTE", "areasLT", "areasLTE", "areasContains", "areasHasPrefix", "areasHasSuffix", "areasIsNil", "areasNotNil", "areasEqualFold", "areasContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "startDateIsNil", "startDateNotNil", "fsDate", "fsDateNEQ", "fsDateIn", "fsDateNotIn", "fsDateGT", "fsDateGTE", "fsDateLT", "fsDateLTE", "fsDateIsNil", "fsDateNotNil", "opDate", "opDateNEQ", "opDateIn", "opDateNotIn", "opDateGT", "opDateGTE", "opDateLT", "opDateLTE", "opDateIsNil", "opDateNotNil", "endDate", "endDateNEQ", "endDateIn", "endDateNotIn", "endDateGT", "endDateGTE", "endDateLT", "endDateLTE", "endDateIsNil", "endDateNotNil", "mntyr", "mntyrNEQ", "mntyrIn", "mntyrNotIn", "mntyrGT", "mntyrGTE", "mntyrLT", "mntyrLTE", "mntyrContains", "mntyrHasPrefix", "mntyrHasSuffix", "mntyrIsNil", "mntyrNotNil", "mntyrEqualFold", "mntyrContainsFold", "conType", "conTypeNEQ", "conTypeIn", "conTypeNotIn", "conTypeGT", "conTypeGTE", "conTypeLT", "conTypeLTE", "conTypeContains", "conTypeHasPrefix", "conTypeHasSuffix", "conTypeIsNil", "conTypeNotNil", "conTypeEqualFold", "conTypeContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "hasVos", "hasVosWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "manager", "managerNEQ", "managerIn", "managerNotIn", "managerGT", "managerGTE", "managerLT", "managerLTE", "managerContains", "managerHasPrefix", "managerHasSuffix", "managerIsNil", "managerNotNil", "managerEqualFold", "managerContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "owner", "ownerNEQ", "ownerIn", "ownerNotIn", "ownerGT", "ownerGTE", "ownerLT", "ownerLTE", "ownerContains", "ownerHasPrefix", "ownerHasSuffix", "ownerIsNil", "ownerNotNil", "ownerEqualFold", "ownerContainsFold", "jzs", "jzsNEQ", "jzsIn", "jzsNotIn", "jzsGT", "jzsGTE", "jzsLT", "jzsLTE", "jzsContains", "jzsHasPrefix", "jzsHasSuffix", "jzsIsNil", "jzsNotNil", "jzsEqualFold", "jzsContainsFold", "mcn", "mcnNEQ", "mcnIn", "mcnNotIn", "mcnGT", "mcnGTE", "mcnLT", "mcnLTE", "mcnContains", "mcnHasPrefix", "mcnHasSuffix", "mcnIsNil", "mcnNotNil", "mcnEqualFold", "mcnContainsFold", "consultant", "consultantNEQ", "consultantIn", "consultantNotIn", "consultantGT", "consultantGTE", "consultantLT", "consultantLTE", "consultantContains", "consultantHasPrefix", "consultantHasSuffix", "consultantIsNil", "consultantNotNil", "consultantEqualFold", "consultantContainsFold", "areas", "areasNEQ", "areasIn", "areasNotIn", "areasGT", "areasGTE", "areasLT", "areasLTE", "areasContains", "areasHasPrefix", "areasHasSuffix", "areasIsNil", "areasNotNil", "areasEqualFold", "areasContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "startDateIsNil", "startDateNotNil", "fsDate", "fsDateNEQ", "fsDateIn", "fsDateNotIn", "fsDateGT", "fsDateGTE", "fsDateLT", "fsDateLTE", "fsDateIsNil", "fsDateNotNil", "opDate", "opDateNEQ", "opDateIn", "opDateNotIn", "opDateGT", "opDateGTE", "opDateLT", "opDateLTE", "opDateIsNil", "opDateNotNil", "endDate", "endDateNEQ", "endDateIn", "endDateNotIn", "endDateGT", "endDateGTE", "endDateLT", "endDateLTE", "endDateIsNil", "endDateNotNil", "mntyr", "mntyrNEQ", "mntyrIn", "mntyrNotIn", "mntyrGT", "mntyrGTE", "mntyrLT", "mntyrLTE", "mntyrContains", "mntyrHasPrefix", "mntyrHasSuffix", "mntyrIsNil", "mntyrNotNil", "mntyrEqualFold", "mntyrContainsFold", "conType", "conTypeNEQ", "conTypeIn", "conTypeNotIn", "conTypeGT", "conTypeGTE", "conTypeLT", "conTypeLTE", "conTypeContains", "conTypeHasPrefix", "conTypeHasSuffix", "conTypeIsNil", "conTypeNotNil", "conTypeEqualFold", "conTypeContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "aluminumPlateBudgetPercentage", "aluminumPlateBudgetPercentageNEQ", "aluminumPlateBudgetPercentageIn", "aluminumPlateBudgetPercentageNotIn", "aluminumPlateBudgetPercentageGT", "aluminumPlateBudgetPercentageGTE", "aluminumPlateBudgetPercentageLT", "aluminumPlateBudgetPercentageLTE", "aluminumPlateBudgetPercentageIsNil", "aluminumPlateBudgetPercentageNotNil", "aluminumBudgetPercentage", "aluminumBudgetPercentageNEQ", "aluminumBudgetPercentageIn", "aluminumBudgetPercentageNotIn", "aluminumBudgetPercentageGT", "aluminumBudgetPercentageGTE", "aluminumBudgetPercentageLT", "aluminumBudgetPercentageLTE", "aluminumBudgetPercentageIsNil", "aluminumBudgetPercentageNotNil", "glassBudgetPercentage", "glassBudgetPercentageNEQ", "glassBudgetPercentageIn", "glassBudgetPercentageNotIn", "glassBudgetPercentageGT", "glassBudgetPercentageGTE", "glassBudgetPercentageLT", "glassBudgetPercentageLTE", "glassBudgetPercentageIsNil", "glassBudgetPercentageNotNil", "ironBudgetPercentage", "ironBudgetPercentageNEQ", "ironBudgetPercentageIn", "ironBudgetPercentageNotIn", "ironBudgetPercentageGT", "ironBudgetPercentageGTE", "ironBudgetPercentageLT", "ironBudgetPercentageLTE", "ironBudgetPercentageIsNil", "ironBudgetPercentageNotNil", "hasVos", "hasVosWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -34154,6 +34334,286 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.TotalContractAmountNotNil = data
+		case "aluminumPlateBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentage = data
+		case "aluminumPlateBudgetPercentageNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageNEQ = data
+		case "aluminumPlateBudgetPercentageIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageIn = data
+		case "aluminumPlateBudgetPercentageNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageNotIn = data
+		case "aluminumPlateBudgetPercentageGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageGT = data
+		case "aluminumPlateBudgetPercentageGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageGTE = data
+		case "aluminumPlateBudgetPercentageLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageLT = data
+		case "aluminumPlateBudgetPercentageLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageLTE = data
+		case "aluminumPlateBudgetPercentageIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageIsNil = data
+		case "aluminumPlateBudgetPercentageNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentageNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentageNotNil = data
+		case "aluminumBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentage = data
+		case "aluminumBudgetPercentageNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageNEQ = data
+		case "aluminumBudgetPercentageIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageIn = data
+		case "aluminumBudgetPercentageNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageNotIn = data
+		case "aluminumBudgetPercentageGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageGT = data
+		case "aluminumBudgetPercentageGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageGTE = data
+		case "aluminumBudgetPercentageLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageLT = data
+		case "aluminumBudgetPercentageLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageLTE = data
+		case "aluminumBudgetPercentageIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageIsNil = data
+		case "aluminumBudgetPercentageNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentageNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentageNotNil = data
+		case "glassBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentage = data
+		case "glassBudgetPercentageNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageNEQ = data
+		case "glassBudgetPercentageIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageIn = data
+		case "glassBudgetPercentageNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageNotIn = data
+		case "glassBudgetPercentageGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageGT = data
+		case "glassBudgetPercentageGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageGTE = data
+		case "glassBudgetPercentageLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageLT = data
+		case "glassBudgetPercentageLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageLTE = data
+		case "glassBudgetPercentageIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageIsNil = data
+		case "glassBudgetPercentageNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentageNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentageNotNil = data
+		case "ironBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentage = data
+		case "ironBudgetPercentageNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageNEQ = data
+		case "ironBudgetPercentageIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageIn = data
+		case "ironBudgetPercentageNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageNotIn = data
+		case "ironBudgetPercentageGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageGT = data
+		case "ironBudgetPercentageGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageGTE = data
+		case "ironBudgetPercentageLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageLT = data
+		case "ironBudgetPercentageLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageLTE = data
+		case "ironBudgetPercentageIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageIsNil = data
+		case "ironBudgetPercentageNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentageNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentageNotNil = data
 		case "hasVos":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasVos"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -46816,6 +47276,14 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field, obj)
 		case "totalContractAmount":
 			out.Values[i] = ec._Project_totalContractAmount(ctx, field, obj)
+		case "aluminumPlateBudgetPercentage":
+			out.Values[i] = ec._Project_aluminumPlateBudgetPercentage(ctx, field, obj)
+		case "aluminumBudgetPercentage":
+			out.Values[i] = ec._Project_aluminumBudgetPercentage(ctx, field, obj)
+		case "glassBudgetPercentage":
+			out.Values[i] = ec._Project_glassBudgetPercentage(ctx, field, obj)
+		case "ironBudgetPercentage":
+			out.Values[i] = ec._Project_ironBudgetPercentage(ctx, field, obj)
 		case "vos":
 			field := field
 

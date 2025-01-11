@@ -302,6 +302,8 @@ type ComplexityRoot struct {
 		AccumulatedNonStatutoryDeductionsPeriod func(childComplexity int) int
 		AccumulatedStatutoryDeductions          func(childComplexity int) int
 		AccumulatedStatutoryDeductionsPeriod    func(childComplexity int) int
+		AluminumBudgetPercentage                func(childComplexity int) int
+		AluminumPlateBudgetPercentage           func(childComplexity int) int
 		Areas                                   func(childComplexity int) int
 		Cje                                     func(childComplexity int) int
 		Code                                    func(childComplexity int) int
@@ -315,8 +317,10 @@ type ComplexityRoot struct {
 		EffectiveContractAmount                 func(childComplexity int) int
 		EndDate                                 func(childComplexity int) int
 		FsDate                                  func(childComplexity int) int
+		GlassBudgetPercentage                   func(childComplexity int) int
 		ID                                      func(childComplexity int) int
 		InstallProgress                         func(childComplexity int) int
+		IronBudgetPercentage                    func(childComplexity int) int
 		IsFinished                              func(childComplexity int) int
 		Jzs                                     func(childComplexity int) int
 		Manager                                 func(childComplexity int) int
@@ -1924,6 +1928,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.AccumulatedStatutoryDeductionsPeriod(childComplexity), true
 
+	case "Project.aluminumBudgetPercentage":
+		if e.complexity.Project.AluminumBudgetPercentage == nil {
+			break
+		}
+
+		return e.complexity.Project.AluminumBudgetPercentage(childComplexity), true
+
+	case "Project.aluminumPlateBudgetPercentage":
+		if e.complexity.Project.AluminumPlateBudgetPercentage == nil {
+			break
+		}
+
+		return e.complexity.Project.AluminumPlateBudgetPercentage(childComplexity), true
+
 	case "Project.areas":
 		if e.complexity.Project.Areas == nil {
 			break
@@ -2015,6 +2033,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.FsDate(childComplexity), true
 
+	case "Project.glassBudgetPercentage":
+		if e.complexity.Project.GlassBudgetPercentage == nil {
+			break
+		}
+
+		return e.complexity.Project.GlassBudgetPercentage(childComplexity), true
+
 	case "Project.id":
 		if e.complexity.Project.ID == nil {
 			break
@@ -2028,6 +2053,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.InstallProgress(childComplexity), true
+
+	case "Project.ironBudgetPercentage":
+		if e.complexity.Project.IronBudgetPercentage == nil {
+			break
+		}
+
+		return e.complexity.Project.IronBudgetPercentage(childComplexity), true
 
 	case "Project.isFinished":
 		if e.complexity.Project.IsFinished == nil {
@@ -6152,6 +6184,22 @@ type Project implements Node {
   合約总额
   """
   totalContractAmount: Float
+  """
+  鋁板預算百分比
+  """
+  aluminumPlateBudgetPercentage: Float
+  """
+  鋁型材預算百分比
+  """
+  aluminumBudgetPercentage: Float
+  """
+  玻璃預算百分比
+  """
+  glassBudgetPercentage: Float
+  """
+  鐵型材預算百分比
+  """
+  ironBudgetPercentage: Float
   vos: [ProjectVO!]
 }
 """
@@ -6979,6 +7027,58 @@ input ProjectWhereInput {
   totalContractAmountLTE: Float
   totalContractAmountIsNil: Boolean
   totalContractAmountNotNil: Boolean
+  """
+  aluminum_plate_budget_percentage field predicates
+  """
+  aluminumPlateBudgetPercentage: Float
+  aluminumPlateBudgetPercentageNEQ: Float
+  aluminumPlateBudgetPercentageIn: [Float!]
+  aluminumPlateBudgetPercentageNotIn: [Float!]
+  aluminumPlateBudgetPercentageGT: Float
+  aluminumPlateBudgetPercentageGTE: Float
+  aluminumPlateBudgetPercentageLT: Float
+  aluminumPlateBudgetPercentageLTE: Float
+  aluminumPlateBudgetPercentageIsNil: Boolean
+  aluminumPlateBudgetPercentageNotNil: Boolean
+  """
+  aluminum_budget_percentage field predicates
+  """
+  aluminumBudgetPercentage: Float
+  aluminumBudgetPercentageNEQ: Float
+  aluminumBudgetPercentageIn: [Float!]
+  aluminumBudgetPercentageNotIn: [Float!]
+  aluminumBudgetPercentageGT: Float
+  aluminumBudgetPercentageGTE: Float
+  aluminumBudgetPercentageLT: Float
+  aluminumBudgetPercentageLTE: Float
+  aluminumBudgetPercentageIsNil: Boolean
+  aluminumBudgetPercentageNotNil: Boolean
+  """
+  glass_budget_percentage field predicates
+  """
+  glassBudgetPercentage: Float
+  glassBudgetPercentageNEQ: Float
+  glassBudgetPercentageIn: [Float!]
+  glassBudgetPercentageNotIn: [Float!]
+  glassBudgetPercentageGT: Float
+  glassBudgetPercentageGTE: Float
+  glassBudgetPercentageLT: Float
+  glassBudgetPercentageLTE: Float
+  glassBudgetPercentageIsNil: Boolean
+  glassBudgetPercentageNotNil: Boolean
+  """
+  iron_budget_percentage field predicates
+  """
+  ironBudgetPercentage: Float
+  ironBudgetPercentageNEQ: Float
+  ironBudgetPercentageIn: [Float!]
+  ironBudgetPercentageNotIn: [Float!]
+  ironBudgetPercentageGT: Float
+  ironBudgetPercentageGTE: Float
+  ironBudgetPercentageLT: Float
+  ironBudgetPercentageLTE: Float
+  ironBudgetPercentageIsNil: Boolean
+  ironBudgetPercentageNotNil: Boolean
   """
   vos edge predicates
   """

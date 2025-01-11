@@ -7994,6 +7994,14 @@ type ProjectMutation struct {
 	addaccumulated_non_statutory_deductions_period *float64
 	total_contract_amount                          *float64
 	addtotal_contract_amount                       *float64
+	aluminum_plate_budget_percentage               *float64
+	addaluminum_plate_budget_percentage            *float64
+	aluminum_budget_percentage                     *float64
+	addaluminum_budget_percentage                  *float64
+	glass_budget_percentage                        *float64
+	addglass_budget_percentage                     *float64
+	iron_budget_percentage                         *float64
+	addiron_budget_percentage                      *float64
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -10547,6 +10555,286 @@ func (m *ProjectMutation) ResetTotalContractAmount() {
 	delete(m.clearedFields, project.FieldTotalContractAmount)
 }
 
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (m *ProjectMutation) SetAluminumPlateBudgetPercentage(f float64) {
+	m.aluminum_plate_budget_percentage = &f
+	m.addaluminum_plate_budget_percentage = nil
+}
+
+// AluminumPlateBudgetPercentage returns the value of the "aluminum_plate_budget_percentage" field in the mutation.
+func (m *ProjectMutation) AluminumPlateBudgetPercentage() (r float64, exists bool) {
+	v := m.aluminum_plate_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAluminumPlateBudgetPercentage returns the old "aluminum_plate_budget_percentage" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAluminumPlateBudgetPercentage(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAluminumPlateBudgetPercentage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAluminumPlateBudgetPercentage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAluminumPlateBudgetPercentage: %w", err)
+	}
+	return oldValue.AluminumPlateBudgetPercentage, nil
+}
+
+// AddAluminumPlateBudgetPercentage adds f to the "aluminum_plate_budget_percentage" field.
+func (m *ProjectMutation) AddAluminumPlateBudgetPercentage(f float64) {
+	if m.addaluminum_plate_budget_percentage != nil {
+		*m.addaluminum_plate_budget_percentage += f
+	} else {
+		m.addaluminum_plate_budget_percentage = &f
+	}
+}
+
+// AddedAluminumPlateBudgetPercentage returns the value that was added to the "aluminum_plate_budget_percentage" field in this mutation.
+func (m *ProjectMutation) AddedAluminumPlateBudgetPercentage() (r float64, exists bool) {
+	v := m.addaluminum_plate_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
+func (m *ProjectMutation) ClearAluminumPlateBudgetPercentage() {
+	m.aluminum_plate_budget_percentage = nil
+	m.addaluminum_plate_budget_percentage = nil
+	m.clearedFields[project.FieldAluminumPlateBudgetPercentage] = struct{}{}
+}
+
+// AluminumPlateBudgetPercentageCleared returns if the "aluminum_plate_budget_percentage" field was cleared in this mutation.
+func (m *ProjectMutation) AluminumPlateBudgetPercentageCleared() bool {
+	_, ok := m.clearedFields[project.FieldAluminumPlateBudgetPercentage]
+	return ok
+}
+
+// ResetAluminumPlateBudgetPercentage resets all changes to the "aluminum_plate_budget_percentage" field.
+func (m *ProjectMutation) ResetAluminumPlateBudgetPercentage() {
+	m.aluminum_plate_budget_percentage = nil
+	m.addaluminum_plate_budget_percentage = nil
+	delete(m.clearedFields, project.FieldAluminumPlateBudgetPercentage)
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (m *ProjectMutation) SetAluminumBudgetPercentage(f float64) {
+	m.aluminum_budget_percentage = &f
+	m.addaluminum_budget_percentage = nil
+}
+
+// AluminumBudgetPercentage returns the value of the "aluminum_budget_percentage" field in the mutation.
+func (m *ProjectMutation) AluminumBudgetPercentage() (r float64, exists bool) {
+	v := m.aluminum_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAluminumBudgetPercentage returns the old "aluminum_budget_percentage" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldAluminumBudgetPercentage(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAluminumBudgetPercentage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAluminumBudgetPercentage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAluminumBudgetPercentage: %w", err)
+	}
+	return oldValue.AluminumBudgetPercentage, nil
+}
+
+// AddAluminumBudgetPercentage adds f to the "aluminum_budget_percentage" field.
+func (m *ProjectMutation) AddAluminumBudgetPercentage(f float64) {
+	if m.addaluminum_budget_percentage != nil {
+		*m.addaluminum_budget_percentage += f
+	} else {
+		m.addaluminum_budget_percentage = &f
+	}
+}
+
+// AddedAluminumBudgetPercentage returns the value that was added to the "aluminum_budget_percentage" field in this mutation.
+func (m *ProjectMutation) AddedAluminumBudgetPercentage() (r float64, exists bool) {
+	v := m.addaluminum_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
+func (m *ProjectMutation) ClearAluminumBudgetPercentage() {
+	m.aluminum_budget_percentage = nil
+	m.addaluminum_budget_percentage = nil
+	m.clearedFields[project.FieldAluminumBudgetPercentage] = struct{}{}
+}
+
+// AluminumBudgetPercentageCleared returns if the "aluminum_budget_percentage" field was cleared in this mutation.
+func (m *ProjectMutation) AluminumBudgetPercentageCleared() bool {
+	_, ok := m.clearedFields[project.FieldAluminumBudgetPercentage]
+	return ok
+}
+
+// ResetAluminumBudgetPercentage resets all changes to the "aluminum_budget_percentage" field.
+func (m *ProjectMutation) ResetAluminumBudgetPercentage() {
+	m.aluminum_budget_percentage = nil
+	m.addaluminum_budget_percentage = nil
+	delete(m.clearedFields, project.FieldAluminumBudgetPercentage)
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (m *ProjectMutation) SetGlassBudgetPercentage(f float64) {
+	m.glass_budget_percentage = &f
+	m.addglass_budget_percentage = nil
+}
+
+// GlassBudgetPercentage returns the value of the "glass_budget_percentage" field in the mutation.
+func (m *ProjectMutation) GlassBudgetPercentage() (r float64, exists bool) {
+	v := m.glass_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGlassBudgetPercentage returns the old "glass_budget_percentage" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldGlassBudgetPercentage(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGlassBudgetPercentage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGlassBudgetPercentage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGlassBudgetPercentage: %w", err)
+	}
+	return oldValue.GlassBudgetPercentage, nil
+}
+
+// AddGlassBudgetPercentage adds f to the "glass_budget_percentage" field.
+func (m *ProjectMutation) AddGlassBudgetPercentage(f float64) {
+	if m.addglass_budget_percentage != nil {
+		*m.addglass_budget_percentage += f
+	} else {
+		m.addglass_budget_percentage = &f
+	}
+}
+
+// AddedGlassBudgetPercentage returns the value that was added to the "glass_budget_percentage" field in this mutation.
+func (m *ProjectMutation) AddedGlassBudgetPercentage() (r float64, exists bool) {
+	v := m.addglass_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
+func (m *ProjectMutation) ClearGlassBudgetPercentage() {
+	m.glass_budget_percentage = nil
+	m.addglass_budget_percentage = nil
+	m.clearedFields[project.FieldGlassBudgetPercentage] = struct{}{}
+}
+
+// GlassBudgetPercentageCleared returns if the "glass_budget_percentage" field was cleared in this mutation.
+func (m *ProjectMutation) GlassBudgetPercentageCleared() bool {
+	_, ok := m.clearedFields[project.FieldGlassBudgetPercentage]
+	return ok
+}
+
+// ResetGlassBudgetPercentage resets all changes to the "glass_budget_percentage" field.
+func (m *ProjectMutation) ResetGlassBudgetPercentage() {
+	m.glass_budget_percentage = nil
+	m.addglass_budget_percentage = nil
+	delete(m.clearedFields, project.FieldGlassBudgetPercentage)
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (m *ProjectMutation) SetIronBudgetPercentage(f float64) {
+	m.iron_budget_percentage = &f
+	m.addiron_budget_percentage = nil
+}
+
+// IronBudgetPercentage returns the value of the "iron_budget_percentage" field in the mutation.
+func (m *ProjectMutation) IronBudgetPercentage() (r float64, exists bool) {
+	v := m.iron_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIronBudgetPercentage returns the old "iron_budget_percentage" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldIronBudgetPercentage(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIronBudgetPercentage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIronBudgetPercentage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIronBudgetPercentage: %w", err)
+	}
+	return oldValue.IronBudgetPercentage, nil
+}
+
+// AddIronBudgetPercentage adds f to the "iron_budget_percentage" field.
+func (m *ProjectMutation) AddIronBudgetPercentage(f float64) {
+	if m.addiron_budget_percentage != nil {
+		*m.addiron_budget_percentage += f
+	} else {
+		m.addiron_budget_percentage = &f
+	}
+}
+
+// AddedIronBudgetPercentage returns the value that was added to the "iron_budget_percentage" field in this mutation.
+func (m *ProjectMutation) AddedIronBudgetPercentage() (r float64, exists bool) {
+	v := m.addiron_budget_percentage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
+func (m *ProjectMutation) ClearIronBudgetPercentage() {
+	m.iron_budget_percentage = nil
+	m.addiron_budget_percentage = nil
+	m.clearedFields[project.FieldIronBudgetPercentage] = struct{}{}
+}
+
+// IronBudgetPercentageCleared returns if the "iron_budget_percentage" field was cleared in this mutation.
+func (m *ProjectMutation) IronBudgetPercentageCleared() bool {
+	_, ok := m.clearedFields[project.FieldIronBudgetPercentage]
+	return ok
+}
+
+// ResetIronBudgetPercentage resets all changes to the "iron_budget_percentage" field.
+func (m *ProjectMutation) ResetIronBudgetPercentage() {
+	m.iron_budget_percentage = nil
+	m.addiron_budget_percentage = nil
+	delete(m.clearedFields, project.FieldIronBudgetPercentage)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -10635,7 +10923,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 41)
+	fields := make([]string, 0, 45)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -10759,6 +11047,18 @@ func (m *ProjectMutation) Fields() []string {
 	if m.total_contract_amount != nil {
 		fields = append(fields, project.FieldTotalContractAmount)
 	}
+	if m.aluminum_plate_budget_percentage != nil {
+		fields = append(fields, project.FieldAluminumPlateBudgetPercentage)
+	}
+	if m.aluminum_budget_percentage != nil {
+		fields = append(fields, project.FieldAluminumBudgetPercentage)
+	}
+	if m.glass_budget_percentage != nil {
+		fields = append(fields, project.FieldGlassBudgetPercentage)
+	}
+	if m.iron_budget_percentage != nil {
+		fields = append(fields, project.FieldIronBudgetPercentage)
+	}
 	return fields
 }
 
@@ -10849,6 +11149,14 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.AccumulatedNonStatutoryDeductionsPeriod()
 	case project.FieldTotalContractAmount:
 		return m.TotalContractAmount()
+	case project.FieldAluminumPlateBudgetPercentage:
+		return m.AluminumPlateBudgetPercentage()
+	case project.FieldAluminumBudgetPercentage:
+		return m.AluminumBudgetPercentage()
+	case project.FieldGlassBudgetPercentage:
+		return m.GlassBudgetPercentage()
+	case project.FieldIronBudgetPercentage:
+		return m.IronBudgetPercentage()
 	}
 	return nil, false
 }
@@ -10940,6 +11248,14 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldAccumulatedNonStatutoryDeductionsPeriod(ctx)
 	case project.FieldTotalContractAmount:
 		return m.OldTotalContractAmount(ctx)
+	case project.FieldAluminumPlateBudgetPercentage:
+		return m.OldAluminumPlateBudgetPercentage(ctx)
+	case project.FieldAluminumBudgetPercentage:
+		return m.OldAluminumBudgetPercentage(ctx)
+	case project.FieldGlassBudgetPercentage:
+		return m.OldGlassBudgetPercentage(ctx)
+	case project.FieldIronBudgetPercentage:
+		return m.OldIronBudgetPercentage(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -11236,6 +11552,34 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetTotalContractAmount(v)
 		return nil
+	case project.FieldAluminumPlateBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAluminumPlateBudgetPercentage(v)
+		return nil
+	case project.FieldAluminumBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAluminumBudgetPercentage(v)
+		return nil
+	case project.FieldGlassBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGlassBudgetPercentage(v)
+		return nil
+	case project.FieldIronBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIronBudgetPercentage(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -11313,6 +11657,18 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addtotal_contract_amount != nil {
 		fields = append(fields, project.FieldTotalContractAmount)
 	}
+	if m.addaluminum_plate_budget_percentage != nil {
+		fields = append(fields, project.FieldAluminumPlateBudgetPercentage)
+	}
+	if m.addaluminum_budget_percentage != nil {
+		fields = append(fields, project.FieldAluminumBudgetPercentage)
+	}
+	if m.addglass_budget_percentage != nil {
+		fields = append(fields, project.FieldGlassBudgetPercentage)
+	}
+	if m.addiron_budget_percentage != nil {
+		fields = append(fields, project.FieldIronBudgetPercentage)
+	}
 	return fields
 }
 
@@ -11367,6 +11723,14 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedAccumulatedNonStatutoryDeductionsPeriod()
 	case project.FieldTotalContractAmount:
 		return m.AddedTotalContractAmount()
+	case project.FieldAluminumPlateBudgetPercentage:
+		return m.AddedAluminumPlateBudgetPercentage()
+	case project.FieldAluminumBudgetPercentage:
+		return m.AddedAluminumBudgetPercentage()
+	case project.FieldGlassBudgetPercentage:
+		return m.AddedGlassBudgetPercentage()
+	case project.FieldIronBudgetPercentage:
+		return m.AddedIronBudgetPercentage()
 	}
 	return nil, false
 }
@@ -11537,6 +11901,34 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddTotalContractAmount(v)
 		return nil
+	case project.FieldAluminumPlateBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAluminumPlateBudgetPercentage(v)
+		return nil
+	case project.FieldAluminumBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAluminumBudgetPercentage(v)
+		return nil
+	case project.FieldGlassBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGlassBudgetPercentage(v)
+		return nil
+	case project.FieldIronBudgetPercentage:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIronBudgetPercentage(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -11655,6 +12047,18 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldTotalContractAmount) {
 		fields = append(fields, project.FieldTotalContractAmount)
+	}
+	if m.FieldCleared(project.FieldAluminumPlateBudgetPercentage) {
+		fields = append(fields, project.FieldAluminumPlateBudgetPercentage)
+	}
+	if m.FieldCleared(project.FieldAluminumBudgetPercentage) {
+		fields = append(fields, project.FieldAluminumBudgetPercentage)
+	}
+	if m.FieldCleared(project.FieldGlassBudgetPercentage) {
+		fields = append(fields, project.FieldGlassBudgetPercentage)
+	}
+	if m.FieldCleared(project.FieldIronBudgetPercentage) {
+		fields = append(fields, project.FieldIronBudgetPercentage)
 	}
 	return fields
 }
@@ -11780,6 +12184,18 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldTotalContractAmount:
 		m.ClearTotalContractAmount()
+		return nil
+	case project.FieldAluminumPlateBudgetPercentage:
+		m.ClearAluminumPlateBudgetPercentage()
+		return nil
+	case project.FieldAluminumBudgetPercentage:
+		m.ClearAluminumBudgetPercentage()
+		return nil
+	case project.FieldGlassBudgetPercentage:
+		m.ClearGlassBudgetPercentage()
+		return nil
+	case project.FieldIronBudgetPercentage:
+		m.ClearIronBudgetPercentage()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -11911,6 +12327,18 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldTotalContractAmount:
 		m.ResetTotalContractAmount()
+		return nil
+	case project.FieldAluminumPlateBudgetPercentage:
+		m.ResetAluminumPlateBudgetPercentage()
+		return nil
+	case project.FieldAluminumBudgetPercentage:
+		m.ResetAluminumBudgetPercentage()
+		return nil
+	case project.FieldGlassBudgetPercentage:
+		m.ResetGlassBudgetPercentage()
+		return nil
+	case project.FieldIronBudgetPercentage:
+		m.ResetIronBudgetPercentage()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

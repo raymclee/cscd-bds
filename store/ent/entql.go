@@ -244,6 +244,10 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldAccumulatedStatutoryDeductionsPeriod:    {Type: field.TypeFloat64, Column: project.FieldAccumulatedStatutoryDeductionsPeriod},
 			project.FieldAccumulatedNonStatutoryDeductionsPeriod: {Type: field.TypeFloat64, Column: project.FieldAccumulatedNonStatutoryDeductionsPeriod},
 			project.FieldTotalContractAmount:                     {Type: field.TypeFloat64, Column: project.FieldTotalContractAmount},
+			project.FieldAluminumPlateBudgetPercentage:           {Type: field.TypeFloat64, Column: project.FieldAluminumPlateBudgetPercentage},
+			project.FieldAluminumBudgetPercentage:                {Type: field.TypeFloat64, Column: project.FieldAluminumBudgetPercentage},
+			project.FieldGlassBudgetPercentage:                   {Type: field.TypeFloat64, Column: project.FieldGlassBudgetPercentage},
+			project.FieldIronBudgetPercentage:                    {Type: field.TypeFloat64, Column: project.FieldIronBudgetPercentage},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2093,6 +2097,26 @@ func (f *ProjectFilter) WhereAccumulatedNonStatutoryDeductionsPeriod(p entql.Flo
 // WhereTotalContractAmount applies the entql float64 predicate on the total_contract_amount field.
 func (f *ProjectFilter) WhereTotalContractAmount(p entql.Float64P) {
 	f.Where(p.Field(project.FieldTotalContractAmount))
+}
+
+// WhereAluminumPlateBudgetPercentage applies the entql float64 predicate on the aluminum_plate_budget_percentage field.
+func (f *ProjectFilter) WhereAluminumPlateBudgetPercentage(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAluminumPlateBudgetPercentage))
+}
+
+// WhereAluminumBudgetPercentage applies the entql float64 predicate on the aluminum_budget_percentage field.
+func (f *ProjectFilter) WhereAluminumBudgetPercentage(p entql.Float64P) {
+	f.Where(p.Field(project.FieldAluminumBudgetPercentage))
+}
+
+// WhereGlassBudgetPercentage applies the entql float64 predicate on the glass_budget_percentage field.
+func (f *ProjectFilter) WhereGlassBudgetPercentage(p entql.Float64P) {
+	f.Where(p.Field(project.FieldGlassBudgetPercentage))
+}
+
+// WhereIronBudgetPercentage applies the entql float64 predicate on the iron_budget_percentage field.
+func (f *ProjectFilter) WhereIronBudgetPercentage(p entql.Float64P) {
+	f.Where(p.Field(project.FieldIronBudgetPercentage))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.

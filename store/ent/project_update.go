@@ -965,6 +965,114 @@ func (pu *ProjectUpdate) ClearTotalContractAmount() *ProjectUpdate {
 	return pu
 }
 
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (pu *ProjectUpdate) SetAluminumPlateBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.ResetAluminumPlateBudgetPercentage()
+	pu.mutation.SetAluminumPlateBudgetPercentage(f)
+	return pu
+}
+
+// SetNillableAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAluminumPlateBudgetPercentage(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetAluminumPlateBudgetPercentage(*f)
+	}
+	return pu
+}
+
+// AddAluminumPlateBudgetPercentage adds f to the "aluminum_plate_budget_percentage" field.
+func (pu *ProjectUpdate) AddAluminumPlateBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.AddAluminumPlateBudgetPercentage(f)
+	return pu
+}
+
+// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
+func (pu *ProjectUpdate) ClearAluminumPlateBudgetPercentage() *ProjectUpdate {
+	pu.mutation.ClearAluminumPlateBudgetPercentage()
+	return pu
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (pu *ProjectUpdate) SetAluminumBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.ResetAluminumBudgetPercentage()
+	pu.mutation.SetAluminumBudgetPercentage(f)
+	return pu
+}
+
+// SetNillableAluminumBudgetPercentage sets the "aluminum_budget_percentage" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableAluminumBudgetPercentage(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetAluminumBudgetPercentage(*f)
+	}
+	return pu
+}
+
+// AddAluminumBudgetPercentage adds f to the "aluminum_budget_percentage" field.
+func (pu *ProjectUpdate) AddAluminumBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.AddAluminumBudgetPercentage(f)
+	return pu
+}
+
+// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
+func (pu *ProjectUpdate) ClearAluminumBudgetPercentage() *ProjectUpdate {
+	pu.mutation.ClearAluminumBudgetPercentage()
+	return pu
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (pu *ProjectUpdate) SetGlassBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.ResetGlassBudgetPercentage()
+	pu.mutation.SetGlassBudgetPercentage(f)
+	return pu
+}
+
+// SetNillableGlassBudgetPercentage sets the "glass_budget_percentage" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableGlassBudgetPercentage(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetGlassBudgetPercentage(*f)
+	}
+	return pu
+}
+
+// AddGlassBudgetPercentage adds f to the "glass_budget_percentage" field.
+func (pu *ProjectUpdate) AddGlassBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.AddGlassBudgetPercentage(f)
+	return pu
+}
+
+// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
+func (pu *ProjectUpdate) ClearGlassBudgetPercentage() *ProjectUpdate {
+	pu.mutation.ClearGlassBudgetPercentage()
+	return pu
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (pu *ProjectUpdate) SetIronBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.ResetIronBudgetPercentage()
+	pu.mutation.SetIronBudgetPercentage(f)
+	return pu
+}
+
+// SetNillableIronBudgetPercentage sets the "iron_budget_percentage" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableIronBudgetPercentage(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetIronBudgetPercentage(*f)
+	}
+	return pu
+}
+
+// AddIronBudgetPercentage adds f to the "iron_budget_percentage" field.
+func (pu *ProjectUpdate) AddIronBudgetPercentage(f float64) *ProjectUpdate {
+	pu.mutation.AddIronBudgetPercentage(f)
+	return pu
+}
+
+// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
+func (pu *ProjectUpdate) ClearIronBudgetPercentage() *ProjectUpdate {
+	pu.mutation.ClearIronBudgetPercentage()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -1350,6 +1458,42 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.TotalContractAmountCleared() {
 		_spec.ClearField(project.FieldTotalContractAmount, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.AluminumPlateBudgetPercentage(); ok {
+		_spec.SetField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAluminumPlateBudgetPercentage(); ok {
+		_spec.AddField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
+	}
+	if pu.mutation.AluminumPlateBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.AluminumBudgetPercentage(); ok {
+		_spec.SetField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAluminumBudgetPercentage(); ok {
+		_spec.AddField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
+	}
+	if pu.mutation.AluminumBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldAluminumBudgetPercentage, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.GlassBudgetPercentage(); ok {
+		_spec.SetField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedGlassBudgetPercentage(); ok {
+		_spec.AddField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
+	}
+	if pu.mutation.GlassBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldGlassBudgetPercentage, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.IronBudgetPercentage(); ok {
+		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedIronBudgetPercentage(); ok {
+		_spec.AddField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
+	}
+	if pu.mutation.IronBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldIronBudgetPercentage, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -2351,6 +2495,114 @@ func (puo *ProjectUpdateOne) ClearTotalContractAmount() *ProjectUpdateOne {
 	return puo
 }
 
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (puo *ProjectUpdateOne) SetAluminumPlateBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAluminumPlateBudgetPercentage()
+	puo.mutation.SetAluminumPlateBudgetPercentage(f)
+	return puo
+}
+
+// SetNillableAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAluminumPlateBudgetPercentage(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetAluminumPlateBudgetPercentage(*f)
+	}
+	return puo
+}
+
+// AddAluminumPlateBudgetPercentage adds f to the "aluminum_plate_budget_percentage" field.
+func (puo *ProjectUpdateOne) AddAluminumPlateBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAluminumPlateBudgetPercentage(f)
+	return puo
+}
+
+// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
+func (puo *ProjectUpdateOne) ClearAluminumPlateBudgetPercentage() *ProjectUpdateOne {
+	puo.mutation.ClearAluminumPlateBudgetPercentage()
+	return puo
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (puo *ProjectUpdateOne) SetAluminumBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetAluminumBudgetPercentage()
+	puo.mutation.SetAluminumBudgetPercentage(f)
+	return puo
+}
+
+// SetNillableAluminumBudgetPercentage sets the "aluminum_budget_percentage" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableAluminumBudgetPercentage(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetAluminumBudgetPercentage(*f)
+	}
+	return puo
+}
+
+// AddAluminumBudgetPercentage adds f to the "aluminum_budget_percentage" field.
+func (puo *ProjectUpdateOne) AddAluminumBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.AddAluminumBudgetPercentage(f)
+	return puo
+}
+
+// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
+func (puo *ProjectUpdateOne) ClearAluminumBudgetPercentage() *ProjectUpdateOne {
+	puo.mutation.ClearAluminumBudgetPercentage()
+	return puo
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (puo *ProjectUpdateOne) SetGlassBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetGlassBudgetPercentage()
+	puo.mutation.SetGlassBudgetPercentage(f)
+	return puo
+}
+
+// SetNillableGlassBudgetPercentage sets the "glass_budget_percentage" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableGlassBudgetPercentage(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetGlassBudgetPercentage(*f)
+	}
+	return puo
+}
+
+// AddGlassBudgetPercentage adds f to the "glass_budget_percentage" field.
+func (puo *ProjectUpdateOne) AddGlassBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.AddGlassBudgetPercentage(f)
+	return puo
+}
+
+// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
+func (puo *ProjectUpdateOne) ClearGlassBudgetPercentage() *ProjectUpdateOne {
+	puo.mutation.ClearGlassBudgetPercentage()
+	return puo
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (puo *ProjectUpdateOne) SetIronBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetIronBudgetPercentage()
+	puo.mutation.SetIronBudgetPercentage(f)
+	return puo
+}
+
+// SetNillableIronBudgetPercentage sets the "iron_budget_percentage" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableIronBudgetPercentage(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetIronBudgetPercentage(*f)
+	}
+	return puo
+}
+
+// AddIronBudgetPercentage adds f to the "iron_budget_percentage" field.
+func (puo *ProjectUpdateOne) AddIronBudgetPercentage(f float64) *ProjectUpdateOne {
+	puo.mutation.AddIronBudgetPercentage(f)
+	return puo
+}
+
+// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
+func (puo *ProjectUpdateOne) ClearIronBudgetPercentage() *ProjectUpdateOne {
+	puo.mutation.ClearIronBudgetPercentage()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -2766,6 +3018,42 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.TotalContractAmountCleared() {
 		_spec.ClearField(project.FieldTotalContractAmount, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.AluminumPlateBudgetPercentage(); ok {
+		_spec.SetField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAluminumPlateBudgetPercentage(); ok {
+		_spec.AddField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
+	}
+	if puo.mutation.AluminumPlateBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.AluminumBudgetPercentage(); ok {
+		_spec.SetField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAluminumBudgetPercentage(); ok {
+		_spec.AddField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
+	}
+	if puo.mutation.AluminumBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldAluminumBudgetPercentage, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.GlassBudgetPercentage(); ok {
+		_spec.SetField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedGlassBudgetPercentage(); ok {
+		_spec.AddField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
+	}
+	if puo.mutation.GlassBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldGlassBudgetPercentage, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.IronBudgetPercentage(); ok {
+		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedIronBudgetPercentage(); ok {
+		_spec.AddField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
+	}
+	if puo.mutation.IronBudgetPercentageCleared() {
+		_spec.ClearField(project.FieldIronBudgetPercentage, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

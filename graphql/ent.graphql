@@ -2319,6 +2319,22 @@ type Project implements Node {
   合約总额
   """
   totalContractAmount: Float
+  """
+  鋁板預算百分比
+  """
+  aluminumPlateBudgetPercentage: Float
+  """
+  鋁型材預算百分比
+  """
+  aluminumBudgetPercentage: Float
+  """
+  玻璃預算百分比
+  """
+  glassBudgetPercentage: Float
+  """
+  鐵型材預算百分比
+  """
+  ironBudgetPercentage: Float
   vos: [ProjectVO!]
 }
 """
@@ -3146,6 +3162,58 @@ input ProjectWhereInput {
   totalContractAmountLTE: Float
   totalContractAmountIsNil: Boolean
   totalContractAmountNotNil: Boolean
+  """
+  aluminum_plate_budget_percentage field predicates
+  """
+  aluminumPlateBudgetPercentage: Float
+  aluminumPlateBudgetPercentageNEQ: Float
+  aluminumPlateBudgetPercentageIn: [Float!]
+  aluminumPlateBudgetPercentageNotIn: [Float!]
+  aluminumPlateBudgetPercentageGT: Float
+  aluminumPlateBudgetPercentageGTE: Float
+  aluminumPlateBudgetPercentageLT: Float
+  aluminumPlateBudgetPercentageLTE: Float
+  aluminumPlateBudgetPercentageIsNil: Boolean
+  aluminumPlateBudgetPercentageNotNil: Boolean
+  """
+  aluminum_budget_percentage field predicates
+  """
+  aluminumBudgetPercentage: Float
+  aluminumBudgetPercentageNEQ: Float
+  aluminumBudgetPercentageIn: [Float!]
+  aluminumBudgetPercentageNotIn: [Float!]
+  aluminumBudgetPercentageGT: Float
+  aluminumBudgetPercentageGTE: Float
+  aluminumBudgetPercentageLT: Float
+  aluminumBudgetPercentageLTE: Float
+  aluminumBudgetPercentageIsNil: Boolean
+  aluminumBudgetPercentageNotNil: Boolean
+  """
+  glass_budget_percentage field predicates
+  """
+  glassBudgetPercentage: Float
+  glassBudgetPercentageNEQ: Float
+  glassBudgetPercentageIn: [Float!]
+  glassBudgetPercentageNotIn: [Float!]
+  glassBudgetPercentageGT: Float
+  glassBudgetPercentageGTE: Float
+  glassBudgetPercentageLT: Float
+  glassBudgetPercentageLTE: Float
+  glassBudgetPercentageIsNil: Boolean
+  glassBudgetPercentageNotNil: Boolean
+  """
+  iron_budget_percentage field predicates
+  """
+  ironBudgetPercentage: Float
+  ironBudgetPercentageNEQ: Float
+  ironBudgetPercentageIn: [Float!]
+  ironBudgetPercentageNotIn: [Float!]
+  ironBudgetPercentageGT: Float
+  ironBudgetPercentageGTE: Float
+  ironBudgetPercentageLT: Float
+  ironBudgetPercentageLTE: Float
+  ironBudgetPercentageIsNil: Boolean
+  ironBudgetPercentageNotNil: Boolean
   """
   vos edge predicates
   """

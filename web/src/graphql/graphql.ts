@@ -1822,6 +1822,10 @@ export type Project = Node & {
   accumulatedStatutoryDeductions?: Maybe<Scalars['Float']['output']>;
   /** 本期法定扣款 */
   accumulatedStatutoryDeductionsPeriod?: Maybe<Scalars['Float']['output']>;
+  /** 鋁型材預算百分比 */
+  aluminumBudgetPercentage?: Maybe<Scalars['Float']['output']>;
+  /** 鋁板預算百分比 */
+  aluminumPlateBudgetPercentage?: Maybe<Scalars['Float']['output']>;
   /** 工程規模 */
   areas?: Maybe<Scalars['String']['output']>;
   /** 成交额 */
@@ -1846,9 +1850,13 @@ export type Project = Node & {
   endDate?: Maybe<Scalars['Time']['output']>;
   /** 封頂日期 */
   fsDate?: Maybe<Scalars['Time']['output']>;
+  /** 玻璃預算百分比 */
+  glassBudgetPercentage?: Maybe<Scalars['Float']['output']>;
   id: Scalars['ID']['output'];
   /** 安装进度 */
   installProgress?: Maybe<Scalars['Float']['output']>;
+  /** 鐵型材預算百分比 */
+  ironBudgetPercentage?: Maybe<Scalars['Float']['output']>;
   /** 是否完成 */
   isFinished: Scalars['Boolean']['output'];
   /** 建築師 */
@@ -2124,6 +2132,28 @@ export type ProjectWhereInput = {
   accumulatedStatutoryDeductionsPeriodNEQ?: InputMaybe<Scalars['Float']['input']>;
   accumulatedStatutoryDeductionsPeriodNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   accumulatedStatutoryDeductionsPeriodNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** aluminum_budget_percentage field predicates */
+  aluminumBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
+  aluminumBudgetPercentageGT?: InputMaybe<Scalars['Float']['input']>;
+  aluminumBudgetPercentageGTE?: InputMaybe<Scalars['Float']['input']>;
+  aluminumBudgetPercentageIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  aluminumBudgetPercentageIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  aluminumBudgetPercentageLT?: InputMaybe<Scalars['Float']['input']>;
+  aluminumBudgetPercentageLTE?: InputMaybe<Scalars['Float']['input']>;
+  aluminumBudgetPercentageNEQ?: InputMaybe<Scalars['Float']['input']>;
+  aluminumBudgetPercentageNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  aluminumBudgetPercentageNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** aluminum_plate_budget_percentage field predicates */
+  aluminumPlateBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
+  aluminumPlateBudgetPercentageGT?: InputMaybe<Scalars['Float']['input']>;
+  aluminumPlateBudgetPercentageGTE?: InputMaybe<Scalars['Float']['input']>;
+  aluminumPlateBudgetPercentageIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  aluminumPlateBudgetPercentageIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  aluminumPlateBudgetPercentageLT?: InputMaybe<Scalars['Float']['input']>;
+  aluminumPlateBudgetPercentageLTE?: InputMaybe<Scalars['Float']['input']>;
+  aluminumPlateBudgetPercentageNEQ?: InputMaybe<Scalars['Float']['input']>;
+  aluminumPlateBudgetPercentageNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  aluminumPlateBudgetPercentageNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   and?: InputMaybe<Array<ProjectWhereInput>>;
   /** areas field predicates */
   areas?: InputMaybe<Scalars['String']['input']>;
@@ -2284,6 +2314,17 @@ export type ProjectWhereInput = {
   fsDateNEQ?: InputMaybe<Scalars['Time']['input']>;
   fsDateNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
   fsDateNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** glass_budget_percentage field predicates */
+  glassBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
+  glassBudgetPercentageGT?: InputMaybe<Scalars['Float']['input']>;
+  glassBudgetPercentageGTE?: InputMaybe<Scalars['Float']['input']>;
+  glassBudgetPercentageIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  glassBudgetPercentageIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  glassBudgetPercentageLT?: InputMaybe<Scalars['Float']['input']>;
+  glassBudgetPercentageLTE?: InputMaybe<Scalars['Float']['input']>;
+  glassBudgetPercentageNEQ?: InputMaybe<Scalars['Float']['input']>;
+  glassBudgetPercentageNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  glassBudgetPercentageNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** vos edge predicates */
   hasVos?: InputMaybe<Scalars['Boolean']['input']>;
   hasVosWith?: InputMaybe<Array<ProjectVoWhereInput>>;
@@ -2307,6 +2348,17 @@ export type ProjectWhereInput = {
   installProgressNEQ?: InputMaybe<Scalars['Float']['input']>;
   installProgressNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   installProgressNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** iron_budget_percentage field predicates */
+  ironBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
+  ironBudgetPercentageGT?: InputMaybe<Scalars['Float']['input']>;
+  ironBudgetPercentageGTE?: InputMaybe<Scalars['Float']['input']>;
+  ironBudgetPercentageIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  ironBudgetPercentageIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  ironBudgetPercentageLT?: InputMaybe<Scalars['Float']['input']>;
+  ironBudgetPercentageLTE?: InputMaybe<Scalars['Float']['input']>;
+  ironBudgetPercentageNEQ?: InputMaybe<Scalars['Float']['input']>;
+  ironBudgetPercentageNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  ironBudgetPercentageNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** is_finished field predicates */
   isFinished?: InputMaybe<Scalars['Boolean']['input']>;
   isFinishedNEQ?: InputMaybe<Scalars['Boolean']['input']>;

@@ -4,8 +4,8 @@ import {
   Outlet,
   ScrollRestoration,
   useLocation,
-} from '@tanstack/react-router'
-import type { MenuProps } from 'antd'
+} from "@tanstack/react-router";
+import type { MenuProps } from "antd";
 import {
   App,
   Avatar,
@@ -17,8 +17,8 @@ import {
   Result,
   Tooltip,
   Typography,
-} from 'antd'
-import zhCN from 'antd/lib/locale/zh_CN'
+} from "antd";
+import zhCN from "antd/lib/locale/zh_CN";
 import {
   Angry,
   Building2,
@@ -28,29 +28,29 @@ import {
   Monitor,
   SlidersHorizontal,
   Users,
-} from 'lucide-react'
-import * as React from 'react'
-import logoImg from '~/assets/logo.jpg'
-import { Loading } from '~/components/loading'
-import { CustomerFormDrawer } from '~/components/portal/customer-form-drawer'
-import { canEdit } from '~/lib/permission'
-import { cn } from '~/lib/utils'
-import { usePortalStore } from '~/store/portal'
+} from "lucide-react";
+import * as React from "react";
+import logoImg from "~/assets/logo.jpg";
+import { Loading } from "~/components/loading";
+import { CustomerFormDrawer } from "~/components/portal/customer-form-drawer";
+import { canEdit } from "~/lib/permission";
+import { cn } from "~/lib/utils";
+import { usePortalStore } from "~/store/portal";
 
-export const Route = createLazyFileRoute('/__auth/__portal')({
+export const Route = createLazyFileRoute("/__auth/__portal")({
   component: RouteComponent,
   errorComponent: ({ error }) => {
-    console.error(error)
+    console.error(error);
     return (
-      <Result status="500" title="500" subTitle={'手有点抖，等等再试试吧'} />
-    )
+      <Result status="500" title="500" subTitle={"手有点抖，等等再试试吧"} />
+    );
   },
   pendingComponent: () => <Loading />,
-})
+});
 
-const { Header, Content, Sider } = Layout
+const { Header, Content, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>['items'][number]
+type MenuItem = Required<MenuProps>["items"][number];
 
 function getItem(
   label: React.ReactNode,
@@ -63,76 +63,76 @@ function getItem(
     icon,
     children,
     label,
-  } as MenuItem
+  } as MenuItem;
 }
 
 function RouteComponent() {
-  const navigate = Route.useNavigate()
-  const { pathname } = useLocation()
-  const { session } = Route.useRouteContext()
-  const sidebarCollapsed = usePortalStore((s) => s.sidebarCollapsed)
+  const navigate = Route.useNavigate();
+  const { pathname } = useLocation();
+  const { session } = Route.useRouteContext();
+  const sidebarCollapsed = usePortalStore((s) => s.sidebarCollapsed);
 
   const items: MenuItem[] = React.useMemo(
     () => [
       getItem(
         <Link to="/portal/tenders">商机</Link>,
-        '/portal/tenders',
+        "/portal/tenders",
         <Building2 size={16} />,
       ),
       getItem(
         <Link to="/portal/customers">客户</Link>,
-        '/portal/customers',
+        "/portal/customers",
         <ContactRound size={16} />,
       ),
     ],
     [],
-  )
+  );
 
-  if (canEdit(session)) {
-    items.push(
-      getItem(
-        <Link to="/portal/plots">区域地块</Link>,
-        '/portal/plots',
-        <Map size={16} />,
-      ),
-    )
-  }
+  // if (canEdit(session)) {
+  //   items.push(
+  //     getItem(
+  //       <Link to="/portal/plots">区域地块</Link>,
+  //       '/portal/plots',
+  //       <Map size={16} />,
+  //     ),
+  //   )
+  // }
 
   if (session.isSuperAdmin) {
     items.push(
-      getItem('管理员', 'admins', <SlidersHorizontal size={16} />, [
+      getItem("管理员", "admins", <SlidersHorizontal size={16} />, [
         getItem(
           <Link to="/portal/sa/users">用户</Link>,
-          '/portal/sa/users',
+          "/portal/sa/users",
           <Users size={16} />,
         ),
         getItem(
           <Link to="/portal/sa/areas">区域</Link>,
-          '/portal/sa/areas',
+          "/portal/sa/areas",
           <Map size={16} />,
         ),
         getItem(
           <Link to="/portal/competitors">竞争对手</Link>,
-          '/portal/sa/competitors',
+          "/portal/sa/competitors",
           <Angry size={16} />,
         ),
       ]),
-    )
+    );
   } else if (session.isAdmin) {
     items.push(
-      getItem('管理员', 'admins', <SlidersHorizontal size={16} />, [
+      getItem("管理员", "admins", <SlidersHorizontal size={16} />, [
         getItem(
           <Link to="/portal/users">用户</Link>,
-          '/portal/users',
+          "/portal/users",
           <Users size={16} />,
         ),
         getItem(
           <Link to="/portal/competitors">竞争对手</Link>,
-          '/portal/sa/competitors',
+          "/portal/sa/competitors",
           <Angry size={16} />,
         ),
       ]),
-    )
+    );
   }
 
   // console.log(`/${pathname.split("/")?.at(1)}/${pathname.split("/")?.at(2)}`);
@@ -142,12 +142,12 @@ function RouteComponent() {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <ConfigProvider
         locale={zhCN}
-        input={{ variant: 'filled' }}
-        treeSelect={{ variant: 'filled' }}
-        select={{ variant: 'filled' }}
-        datePicker={{ variant: 'filled' }}
-        textArea={{ variant: 'filled' }}
-        inputNumber={{ variant: 'filled' }}
+        input={{ variant: "filled" }}
+        treeSelect={{ variant: "filled" }}
+        select={{ variant: "filled" }}
+        datePicker={{ variant: "filled" }}
+        textArea={{ variant: "filled" }}
+        inputNumber={{ variant: "filled" }}
         // componentSize="large"
       >
         <App>
@@ -169,17 +169,17 @@ function RouteComponent() {
               <Menu
                 theme="dark"
                 defaultSelectedKeys={[
-                  `/${pathname.split('/')?.at(1)}/${pathname.split('/')?.at(2)}`,
+                  `/${pathname.split("/")?.at(1)}/${pathname.split("/")?.at(2)}`,
                 ]}
-                defaultOpenKeys={['admins']}
+                defaultOpenKeys={["admins"]}
                 mode="inline"
                 items={items}
               />
             </Sider>
             <Layout
               className={cn(
-                'transition-all',
-                sidebarCollapsed ? 'ms-[70px]' : 'ms-[200px]',
+                "transition-all",
+                sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
               )}
             >
               <Header className="flex items-center justify-between bg-white px-4">
@@ -201,11 +201,11 @@ function RouteComponent() {
                     <Popconfirm
                       title="确定退出吗？"
                       onConfirm={() => {
-                        fetch('/api/v1/logout').then((res) => {
+                        fetch("/api/v1/logout").then((res) => {
                           if (res.redirected) {
-                            navigate({ to: '/logout' })
+                            navigate({ to: "/logout" });
                           }
-                        })
+                        });
                       }}
                     >
                       <Button
@@ -231,35 +231,35 @@ function RouteComponent() {
         </App>
       </ConfigProvider>
     </>
-  )
+  );
 }
 
 function pageTitle(pathname: string) {
-  switch (pathname.split('/')[2]) {
-    case 'tenders':
-      if (pathname.split('/')?.[3] === 'new') {
-        return '新建商机'
+  switch (pathname.split("/")[2]) {
+    case "tenders":
+      if (pathname.split("/")?.[3] === "new") {
+        return "新建商机";
       }
-      return '商机'
-    case 'plots':
-      return '区域地块'
-    case 'customers':
-      return '客户'
-    case 'visit-records':
-      return '拜访记录'
-    case 'sa':
-      if (pathname.split('/')?.[3] === 'users') {
-        return '用户'
-      } else if (pathname.split('/')?.[3] === 'areas') {
-        return '区域'
+      return "商机";
+    case "plots":
+      return "区域地块";
+    case "customers":
+      return "客户";
+    case "visit-records":
+      return "拜访记录";
+    case "sa":
+      if (pathname.split("/")?.[3] === "users") {
+        return "用户";
+      } else if (pathname.split("/")?.[3] === "areas") {
+        return "区域";
       }
-    case 'users':
-      return '用户'
-    case 'areas':
-      return '区域'
-    case 'competitors':
-      return '竞争对手'
+    case "users":
+      return "用户";
+    case "areas":
+      return "区域";
+    case "competitors":
+      return "竞争对手";
     default:
-      return ''
+      return "";
   }
 }

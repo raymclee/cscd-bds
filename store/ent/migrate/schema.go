@@ -249,6 +249,10 @@ var (
 		{Name: "accumulated_statutory_deductions_period", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
 		{Name: "accumulated_non_statutory_deductions_period", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
 		{Name: "total_contract_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(18,2)", "postgres": "numeric(18,2)"}},
+		{Name: "aluminum_plate_budget_percentage", Type: field.TypeFloat64, Nullable: true},
+		{Name: "aluminum_budget_percentage", Type: field.TypeFloat64, Nullable: true},
+		{Name: "glass_budget_percentage", Type: field.TypeFloat64, Nullable: true},
+		{Name: "iron_budget_percentage", Type: field.TypeFloat64, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{

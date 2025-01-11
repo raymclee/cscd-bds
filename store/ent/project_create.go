@@ -591,6 +591,62 @@ func (pc *ProjectCreate) SetNillableTotalContractAmount(f *float64) *ProjectCrea
 	return pc
 }
 
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (pc *ProjectCreate) SetAluminumPlateBudgetPercentage(f float64) *ProjectCreate {
+	pc.mutation.SetAluminumPlateBudgetPercentage(f)
+	return pc
+}
+
+// SetNillableAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAluminumPlateBudgetPercentage(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetAluminumPlateBudgetPercentage(*f)
+	}
+	return pc
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (pc *ProjectCreate) SetAluminumBudgetPercentage(f float64) *ProjectCreate {
+	pc.mutation.SetAluminumBudgetPercentage(f)
+	return pc
+}
+
+// SetNillableAluminumBudgetPercentage sets the "aluminum_budget_percentage" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableAluminumBudgetPercentage(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetAluminumBudgetPercentage(*f)
+	}
+	return pc
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (pc *ProjectCreate) SetGlassBudgetPercentage(f float64) *ProjectCreate {
+	pc.mutation.SetGlassBudgetPercentage(f)
+	return pc
+}
+
+// SetNillableGlassBudgetPercentage sets the "glass_budget_percentage" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableGlassBudgetPercentage(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetGlassBudgetPercentage(*f)
+	}
+	return pc
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (pc *ProjectCreate) SetIronBudgetPercentage(f float64) *ProjectCreate {
+	pc.mutation.SetIronBudgetPercentage(f)
+	return pc
+}
+
+// SetNillableIronBudgetPercentage sets the "iron_budget_percentage" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableIronBudgetPercentage(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetIronBudgetPercentage(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -886,6 +942,22 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.TotalContractAmount(); ok {
 		_spec.SetField(project.FieldTotalContractAmount, field.TypeFloat64, value)
 		_node.TotalContractAmount = &value
+	}
+	if value, ok := pc.mutation.AluminumPlateBudgetPercentage(); ok {
+		_spec.SetField(project.FieldAluminumPlateBudgetPercentage, field.TypeFloat64, value)
+		_node.AluminumPlateBudgetPercentage = &value
+	}
+	if value, ok := pc.mutation.AluminumBudgetPercentage(); ok {
+		_spec.SetField(project.FieldAluminumBudgetPercentage, field.TypeFloat64, value)
+		_node.AluminumBudgetPercentage = &value
+	}
+	if value, ok := pc.mutation.GlassBudgetPercentage(); ok {
+		_spec.SetField(project.FieldGlassBudgetPercentage, field.TypeFloat64, value)
+		_node.GlassBudgetPercentage = &value
+	}
+	if value, ok := pc.mutation.IronBudgetPercentage(); ok {
+		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
+		_node.IronBudgetPercentage = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -1792,6 +1864,102 @@ func (u *ProjectUpsert) AddTotalContractAmount(v float64) *ProjectUpsert {
 // ClearTotalContractAmount clears the value of the "total_contract_amount" field.
 func (u *ProjectUpsert) ClearTotalContractAmount() *ProjectUpsert {
 	u.SetNull(project.FieldTotalContractAmount)
+	return u
+}
+
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsert) SetAluminumPlateBudgetPercentage(v float64) *ProjectUpsert {
+	u.Set(project.FieldAluminumPlateBudgetPercentage, v)
+	return u
+}
+
+// UpdateAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAluminumPlateBudgetPercentage() *ProjectUpsert {
+	u.SetExcluded(project.FieldAluminumPlateBudgetPercentage)
+	return u
+}
+
+// AddAluminumPlateBudgetPercentage adds v to the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsert) AddAluminumPlateBudgetPercentage(v float64) *ProjectUpsert {
+	u.Add(project.FieldAluminumPlateBudgetPercentage, v)
+	return u
+}
+
+// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsert) ClearAluminumPlateBudgetPercentage() *ProjectUpsert {
+	u.SetNull(project.FieldAluminumPlateBudgetPercentage)
+	return u
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (u *ProjectUpsert) SetAluminumBudgetPercentage(v float64) *ProjectUpsert {
+	u.Set(project.FieldAluminumBudgetPercentage, v)
+	return u
+}
+
+// UpdateAluminumBudgetPercentage sets the "aluminum_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateAluminumBudgetPercentage() *ProjectUpsert {
+	u.SetExcluded(project.FieldAluminumBudgetPercentage)
+	return u
+}
+
+// AddAluminumBudgetPercentage adds v to the "aluminum_budget_percentage" field.
+func (u *ProjectUpsert) AddAluminumBudgetPercentage(v float64) *ProjectUpsert {
+	u.Add(project.FieldAluminumBudgetPercentage, v)
+	return u
+}
+
+// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
+func (u *ProjectUpsert) ClearAluminumBudgetPercentage() *ProjectUpsert {
+	u.SetNull(project.FieldAluminumBudgetPercentage)
+	return u
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (u *ProjectUpsert) SetGlassBudgetPercentage(v float64) *ProjectUpsert {
+	u.Set(project.FieldGlassBudgetPercentage, v)
+	return u
+}
+
+// UpdateGlassBudgetPercentage sets the "glass_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateGlassBudgetPercentage() *ProjectUpsert {
+	u.SetExcluded(project.FieldGlassBudgetPercentage)
+	return u
+}
+
+// AddGlassBudgetPercentage adds v to the "glass_budget_percentage" field.
+func (u *ProjectUpsert) AddGlassBudgetPercentage(v float64) *ProjectUpsert {
+	u.Add(project.FieldGlassBudgetPercentage, v)
+	return u
+}
+
+// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
+func (u *ProjectUpsert) ClearGlassBudgetPercentage() *ProjectUpsert {
+	u.SetNull(project.FieldGlassBudgetPercentage)
+	return u
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (u *ProjectUpsert) SetIronBudgetPercentage(v float64) *ProjectUpsert {
+	u.Set(project.FieldIronBudgetPercentage, v)
+	return u
+}
+
+// UpdateIronBudgetPercentage sets the "iron_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateIronBudgetPercentage() *ProjectUpsert {
+	u.SetExcluded(project.FieldIronBudgetPercentage)
+	return u
+}
+
+// AddIronBudgetPercentage adds v to the "iron_budget_percentage" field.
+func (u *ProjectUpsert) AddIronBudgetPercentage(v float64) *ProjectUpsert {
+	u.Add(project.FieldIronBudgetPercentage, v)
+	return u
+}
+
+// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
+func (u *ProjectUpsert) ClearIronBudgetPercentage() *ProjectUpsert {
+	u.SetNull(project.FieldIronBudgetPercentage)
 	return u
 }
 
@@ -2823,6 +2991,118 @@ func (u *ProjectUpsertOne) UpdateTotalContractAmount() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearTotalContractAmount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearTotalContractAmount()
+	})
+}
+
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsertOne) SetAluminumPlateBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAluminumPlateBudgetPercentage(v)
+	})
+}
+
+// AddAluminumPlateBudgetPercentage adds v to the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsertOne) AddAluminumPlateBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAluminumPlateBudgetPercentage(v)
+	})
+}
+
+// UpdateAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAluminumPlateBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAluminumPlateBudgetPercentage()
+	})
+}
+
+// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsertOne) ClearAluminumPlateBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAluminumPlateBudgetPercentage()
+	})
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (u *ProjectUpsertOne) SetAluminumBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAluminumBudgetPercentage(v)
+	})
+}
+
+// AddAluminumBudgetPercentage adds v to the "aluminum_budget_percentage" field.
+func (u *ProjectUpsertOne) AddAluminumBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAluminumBudgetPercentage(v)
+	})
+}
+
+// UpdateAluminumBudgetPercentage sets the "aluminum_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateAluminumBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAluminumBudgetPercentage()
+	})
+}
+
+// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
+func (u *ProjectUpsertOne) ClearAluminumBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAluminumBudgetPercentage()
+	})
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (u *ProjectUpsertOne) SetGlassBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetGlassBudgetPercentage(v)
+	})
+}
+
+// AddGlassBudgetPercentage adds v to the "glass_budget_percentage" field.
+func (u *ProjectUpsertOne) AddGlassBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddGlassBudgetPercentage(v)
+	})
+}
+
+// UpdateGlassBudgetPercentage sets the "glass_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateGlassBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateGlassBudgetPercentage()
+	})
+}
+
+// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
+func (u *ProjectUpsertOne) ClearGlassBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearGlassBudgetPercentage()
+	})
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (u *ProjectUpsertOne) SetIronBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetIronBudgetPercentage(v)
+	})
+}
+
+// AddIronBudgetPercentage adds v to the "iron_budget_percentage" field.
+func (u *ProjectUpsertOne) AddIronBudgetPercentage(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddIronBudgetPercentage(v)
+	})
+}
+
+// UpdateIronBudgetPercentage sets the "iron_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateIronBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateIronBudgetPercentage()
+	})
+}
+
+// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
+func (u *ProjectUpsertOne) ClearIronBudgetPercentage() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearIronBudgetPercentage()
 	})
 }
 
@@ -4021,6 +4301,118 @@ func (u *ProjectUpsertBulk) UpdateTotalContractAmount() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearTotalContractAmount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearTotalContractAmount()
+	})
+}
+
+// SetAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsertBulk) SetAluminumPlateBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAluminumPlateBudgetPercentage(v)
+	})
+}
+
+// AddAluminumPlateBudgetPercentage adds v to the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsertBulk) AddAluminumPlateBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAluminumPlateBudgetPercentage(v)
+	})
+}
+
+// UpdateAluminumPlateBudgetPercentage sets the "aluminum_plate_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAluminumPlateBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAluminumPlateBudgetPercentage()
+	})
+}
+
+// ClearAluminumPlateBudgetPercentage clears the value of the "aluminum_plate_budget_percentage" field.
+func (u *ProjectUpsertBulk) ClearAluminumPlateBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAluminumPlateBudgetPercentage()
+	})
+}
+
+// SetAluminumBudgetPercentage sets the "aluminum_budget_percentage" field.
+func (u *ProjectUpsertBulk) SetAluminumBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetAluminumBudgetPercentage(v)
+	})
+}
+
+// AddAluminumBudgetPercentage adds v to the "aluminum_budget_percentage" field.
+func (u *ProjectUpsertBulk) AddAluminumBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddAluminumBudgetPercentage(v)
+	})
+}
+
+// UpdateAluminumBudgetPercentage sets the "aluminum_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateAluminumBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateAluminumBudgetPercentage()
+	})
+}
+
+// ClearAluminumBudgetPercentage clears the value of the "aluminum_budget_percentage" field.
+func (u *ProjectUpsertBulk) ClearAluminumBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearAluminumBudgetPercentage()
+	})
+}
+
+// SetGlassBudgetPercentage sets the "glass_budget_percentage" field.
+func (u *ProjectUpsertBulk) SetGlassBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetGlassBudgetPercentage(v)
+	})
+}
+
+// AddGlassBudgetPercentage adds v to the "glass_budget_percentage" field.
+func (u *ProjectUpsertBulk) AddGlassBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddGlassBudgetPercentage(v)
+	})
+}
+
+// UpdateGlassBudgetPercentage sets the "glass_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateGlassBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateGlassBudgetPercentage()
+	})
+}
+
+// ClearGlassBudgetPercentage clears the value of the "glass_budget_percentage" field.
+func (u *ProjectUpsertBulk) ClearGlassBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearGlassBudgetPercentage()
+	})
+}
+
+// SetIronBudgetPercentage sets the "iron_budget_percentage" field.
+func (u *ProjectUpsertBulk) SetIronBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetIronBudgetPercentage(v)
+	})
+}
+
+// AddIronBudgetPercentage adds v to the "iron_budget_percentage" field.
+func (u *ProjectUpsertBulk) AddIronBudgetPercentage(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddIronBudgetPercentage(v)
+	})
+}
+
+// UpdateIronBudgetPercentage sets the "iron_budget_percentage" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateIronBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateIronBudgetPercentage()
+	})
+}
+
+// ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
+func (u *ProjectUpsertBulk) ClearIronBudgetPercentage() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearIronBudgetPercentage()
 	})
 }
 

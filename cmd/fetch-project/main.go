@@ -1,13 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"cscd-bds/store"
 	"cscd-bds/store/ent/project"
 	"database/sql"
+	"flag"
 	"fmt"
+	"io"
+	"math/big"
+	"os"
 	"time"
 
+	"github.com/SAP/go-hdb/driver"
 	_ "github.com/microsoft/go-mssqldb"
 )
 
@@ -17,9 +23,28 @@ const (
 	STG_USER     = "bi830"
 	STG_PASSWORD = "Csci!830"
 	STG_DATABASE = "BI_STG_830"
+
+	CW_HOST     = "10.106.8.130"
+	CW_PORT     = 1433
+	CW_USER     = "bi830"
+	CW_PASSWORD = "dW@102019"
+	CW_DATABASE = "FEHK830"
+
+	BWP_HANA_HOST     = "10.148.7.4"
+	BWP_HANA_PORT     = 30044
+	BWP_HANA_USER     = "SAPHANADB"
+	BWP_HANA_PASSWORD = "Sap2cool"
+	BWP_HANA_DATABASE = "SAPHANADB"
+)
+
+var (
+	materials = []string{"011", "013", "022", "024"}
 )
 
 func main() {
+	imgFlag := flag.Bool("image", false, "fetch image")
+	flag.Parse()
+
 	ctx := context.Background()
 
 	stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
@@ -34,14 +59,33 @@ func main() {
 	}
 	fmt.Println("Connected to STG DB")
 
+	cwDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", CW_USER, CW_PASSWORD, CW_HOST, CW_PORT, CW_DATABASE))
+	if err != nil {
+		panic(err)
+	}
+	defer cwDb.Close()
+
+	err = cwDb.PingContext(ctx)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected to CW DB")
+
+	bwpHanaDb, err := sql.Open("hdb", fmt.Sprintf("hdb://%s:%s@%s:%d", BWP_HANA_USER, BWP_HANA_PASSWORD, BWP_HANA_HOST, BWP_HANA_PORT))
+	if err != nil {
+		panic(err)
+	}
+	defer bwpHanaDb.Close()
+
+	err = bwpHanaDb.PingContext(ctx)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected to BWP HANA DB")
+
 	s := store.New(false)
 
-	// success := 0
-	// q := s.Operation.Create()
-
 	today := time.Now()
-
-	// wg := errgroup.Group{}
 
 	rows, err := stgDb.Query(`
 		SELECT 
@@ -58,7 +102,8 @@ func main() {
 			finishedflag,
 			startdate,
 			enddate,
-			mntyr
+			mntyr,
+			cntrtsum
 		FROM mst_jobbasfil
 		where 1=1
 		and pk_corp='2837' and finishedflag in ('N','Y')
@@ -87,10 +132,11 @@ func main() {
 			startdate    *time.Time
 			enddate      *time.Time
 			mntyr        *string
+			cntrtsum     *float64
 		)
 		err := rows.Scan(
 			&jobcode, &jobname, &jobmgr, &owner, &jzs, &mcn, &conslt, &areas,
-			&fsdate, &opdate, &finishedflag, &startdate, &enddate, &mntyr,
+			&fsdate, &opdate, &finishedflag, &startdate, &enddate, &mntyr, &cntrtsum,
 		)
 		if err != nil {
 			fmt.Printf("扫描失败: %s\n", err.Error())
@@ -116,7 +162,8 @@ func main() {
 			SetNillableOpDate(opdate).
 			SetNillableStartDate(startdate).
 			SetNillableEndDate(enddate).
-			SetNillableMntyr(mntyr)
+			SetNillableMntyr(mntyr).
+			SetNillableCje(cntrtsum)
 
 		// 抓取营业额
 		{
@@ -135,33 +182,80 @@ func main() {
 					and jobcode = @code
 				`, sql.Named("code", jobcode))
 			err := row.Scan(&amount)
-			if err != nil {
-				fmt.Printf("抓取营业额失败: %s\n", err.Error())
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取营业额失败: %s\n", *jobcode, err.Error())
 			} else {
 				p.SetNillableYye(amount)
 			}
 		}
 
-		// 抓取成交额
+		// 抓取现金流
 		{
+			var (
+				amount *float64
+			)
+			row := stgDb.QueryRow(`
+				select top 1 cntx * 10000 as amount
+				from fi_jobbs_batch_nwty
+				where 1=1
+				and vtype='N2'
+				and corp='2837'
+				and job = @code
+				order by yr desc, mth desc
+			`, sql.Named("code", jobcode))
+			err := row.Scan(&amount)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取现金流失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableXjl(amount)
+			}
+		}
 
-			// 	var (
-			// 		total float64
-			// 	)
+		// 抓取项目管理费
+		{
+			var (
+				amount *float64
+				budget *float64
+			)
+			row := stgDb.QueryRow(`
+				select sum(dyje) from FI_MGNFEE_SUM fs
+				left join view_fefacade_jobbasfil_NY vj on fs.XMBH = vj.fijobcode
+				where vj.jobcode = @code
+			`, sql.Named("code", jobcode))
+			err := row.Scan(&amount)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取项目管理费失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableXmglfLj(amount)
+			}
 
-			// 	row := stgDb.QueryRow(`
-			// 	SELECT sum(suscntrtsum) / 10000 as total FROM mst_jobbasfil mj
-			// 		where pk_corp='2837' and jobtype='J' and finishedflag = 'M3'
-			// 		and zbyr = @year
-			// `, sql.Named("year", year))
-
-			// 	err := row.Scan(&total)
-			// 	if err != nil {
-			// 		fmt.Printf("抓取成交额失败: %s\n", err.Error())
-			// 	} else {
-			// 		p.SetCje(total)
-			// 		// success++
-			// 	}
+			row = stgDb.QueryRow(`
+				SELECT
+					sum(A00_BUDGET) as budget
+				FROM
+					(
+					SELECT
+						usr00,
+						cost_code,
+						A00_BUDGET,
+						A00_MENGE,
+						row_number ( ) OVER ( PARTITION BY USR00, COST_CODE, GJAHR ORDER BY POPER DESC ) rn 
+					FROM
+						FI_PRCOST_SUM 
+					WHERE
+						1=1
+					) a 
+				WHERE
+					a.rn= 1 
+					and COST_CODE in ('045','048','049')
+				and usr00 = @code
+			`, sql.Named("code", jobcode))
+			err = row.Scan(&budget)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取项目管理费预算失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableXmglfYs(budget)
+			}
 		}
 
 		// 抓取VO
@@ -178,8 +272,8 @@ func main() {
 					WHERE project_code = @code
 					group by project_code,change_type
 				`, sql.Named("code", jobcode))
-			if err != nil {
-				fmt.Printf("抓取VO失败: %s\n", err.Error())
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取VO失败: %s\n", *jobcode, err.Error())
 			}
 			defer rs.Close()
 
@@ -193,7 +287,7 @@ func main() {
 				)
 				err := rs.Scan(&changeType, &totalAmount, &elvAmount, &elvCount, &totalCount)
 				if err != nil {
-					fmt.Printf("抓取VO失败: %s\n", err.Error())
+					fmt.Printf("%s 抓取VO失败: %s\n", *jobcode, err.Error())
 				}
 
 				if changeType == "總包變更" {
@@ -215,8 +309,8 @@ func main() {
 		// 抓取安装进度
 		{
 			var (
-				cfsum      float64
-				efcntrtsum float64
+				cfsum      *float64
+				efcntrtsum *float64
 			)
 
 			row := stgDb.QueryRow(`
@@ -230,15 +324,15 @@ func main() {
 				`, sql.Named("code", jobcode))
 
 			err := row.Scan(&cfsum, &efcntrtsum)
-			if err != nil {
-				fmt.Printf("抓取安装进度失败: %s\n", err.Error())
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取安装进度失败: %s\n", *jobcode, err.Error())
 			} else {
-				if efcntrtsum > 0 {
-					p.SetInstallProgress(cfsum / efcntrtsum * 100)
+				if cfsum != nil && efcntrtsum != nil && *efcntrtsum > 0 {
+					p.SetInstallProgress(*cfsum / *efcntrtsum * 100)
 				} else {
 					p.SetInstallProgress(0)
 				}
-				p.SetEffectiveContractAmount(cfsum)
+				p.SetNillableEffectiveContractAmount(cfsum)
 			}
 
 		}
@@ -275,10 +369,6 @@ func main() {
 					group by field0004) b 
 					on a.jobcode=b.jobcode
 				`, sql.Named("code", jobcode))
-			if err != nil {
-				fmt.Printf("抓取分判VA失败: %s\n", err.Error())
-			}
-			defer rows.Close()
 
 			var (
 				vaApply   float64 = 0
@@ -286,8 +376,8 @@ func main() {
 			)
 
 			err := row.Scan(&vaApply, &vaApprove)
-			if err != nil {
-				fmt.Printf("抓取分判VA失败: %s\n", err.Error())
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取分判VA失败: %s\n", *jobcode, err.Error())
 			} else {
 				p.SetVaApplyAmount(vaApply)
 				p.SetVaApproveAmount(vaApprove)
@@ -306,7 +396,7 @@ func main() {
 					AND project_code = @code;
 				`, sql.Named("code", jobcode))
 			if err != nil {
-				fmt.Printf("抓取非法定扣款失败: %s\n", err.Error())
+				fmt.Printf("%s 抓取非法定扣款失败: %s\n", *jobcode, err.Error())
 			}
 			defer rows.Close()
 
@@ -325,27 +415,27 @@ func main() {
 					claimType   string
 				)
 				err := rows.Scan(&claimMonth, &claimYear, &claimAmount, &claimType)
-				if err != nil {
-					fmt.Printf("抓取非法定扣款失败: %s\n", err.Error())
-				}
-
-				if claimType == "肺塵埃稅" {
-					if claimAmount != nil {
-						accumulatedStatutoryDeductions += *claimAmount
-
-						if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
-							accumulatedStatutoryDeductionsPeriod += *claimAmount
-						}
-					}
+				if err != nil && err != sql.ErrNoRows {
+					fmt.Printf("%s 抓取非法定扣款失败: %s\n", *jobcode, err.Error())
 				} else {
-					if claimAmount != nil {
-						accumulatedNonStatutoryDeductions += *claimAmount
 
-						if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
-							accumulatedNonStatutoryDeductionsPeriod += *claimAmount
+					if claimType == "肺塵埃稅" {
+						if claimAmount != nil {
+							accumulatedStatutoryDeductions += *claimAmount
+
+							if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
+								accumulatedStatutoryDeductionsPeriod += *claimAmount
+							}
+						}
+					} else {
+						if claimAmount != nil {
+							accumulatedNonStatutoryDeductions += *claimAmount
+
+							if claimMonth != nil && *claimMonth == int(today.Month()) && *claimYear == today.Year() {
+								accumulatedNonStatutoryDeductionsPeriod += *claimAmount
+							}
 						}
 					}
-
 				}
 			}
 
@@ -375,37 +465,195 @@ func main() {
 					AND jobcode = @code
 				`, sql.Named("code", jobcode))
 			if err != nil {
-				fmt.Printf("抓取合約總額失败: %s\n", err.Error())
+				fmt.Printf("%s 抓取合約總額失败: %s\n", *jobcode, err.Error())
 			}
 			defer rows.Close()
 
 			var (
-				cntrtsum float64
+				cntrtsum *float64
 			)
 
 			err := row.Scan(&cntrtsum)
-			if err != nil {
-				fmt.Printf("抓取合約總額失败: %s\n", err.Error())
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取合約總額失败: %s\n", *jobcode, err.Error())
 			}
-			p.SetTotalContractAmount(cntrtsum)
+			p.SetNillableTotalContractAmount(cntrtsum)
+		}
+
+		// 抓取材料预算百分比
+		{
+			// rows, err := cwDb.Query(`
+			// 	SELECT DISTINCT rlcnt.cost_code,  round( pocnt / a00_menge * 100,0) d
+			// 	FROM(SELECT usr00, cost_code, a00_menge
+			// 					, row_number ( ) OVER ( PARTITION BY USR00, COST_CODE, GJAHR
+			// 															ORDER BY POPER DESC ) rn
+			// 			FROM FI_PRCOST_SUM
+			// 			WHERE 1=1
+			// 			and cost_code in ('011','013','022','024')) as bdgt
+			// 	inner join(select jobcode, cost_code, sum(pocnt) pocnt
+			// 							, case cost_code when '011' then '鋁板' when '013' then '鐵件'
+			// 														when '022' then '鋁材' when '024' then '玻璃'
+			// 									end cost_name
+			// 					from bd_fezhpocnt
+			// 					where cntcode in ('PO','POSAP') and cost_code in ('011','013','022','024')
+			// 					group by jobcode, cost_code
+			// 							) as rlcnt
+			// 							on rlcnt.jobcode = bdgt.usr00 and rlcnt.cost_code = bdgt.cost_code
+			// 	inner join dbo.mst_jobbasfil nam on nam.pk_corp = '2837'
+			// 			and jobtype='J'
+			// 			and nam.jobcode = rlcnt.jobcode
+			// 			and nam.finishedflag = 'N'  --in ('N','Y')
+			// 	WHERE bdgt.rn= 1
+			// 	and usr00 = @code
+			// `, sql.Named("code", jobcode))
+			// if err != nil {
+			// 	fmt.Printf("%s 抓取材料预算百分比失败: %s\n", *jobcode, err.Error())
+			// } else {
+			// 	defer rows.Close()
+
+			// 	for rows.Next() {
+			// 		var (
+			// 			costCode   string
+			// 			percentage float64
+			// 		)
+
+			// 		err := rows.Scan(&costCode, &percentage)
+			// 		if err != nil {
+			// 			fmt.Printf("%s 抓取材料预算百分比失败: %s\n", *jobcode, err.Error())
+			// 		} else {
+			// 			switch costCode {
+			// 			case "011":
+			// 				p.SetAluminumPlateBudgetPercentage(percentage)
+			// 			case "013":
+			// 				p.SetIronBudgetPercentage(percentage)
+			// 			case "022":
+			// 				p.SetAluminumBudgetPercentage(percentage)
+			// 			case "024":
+			// 				p.SetGlassBudgetPercentage(percentage)
+			// 			}
+			// 		}
+
+			// 	}
+			// }
+
+			for _, material := range materials {
+				row := bwpHanaDb.QueryRow(`
+					SELECT 
+						A00_MENGE as a00menge
+					FROM ZJK2BW.FI_PRCOST_SUM fps
+					WHERE USR00 = ?
+					AND cost_code = ?
+					AND A00_MENGE > 1
+					ORDER BY GJAHR DESC, poper DESC
+					LIMIT 1
+				`, jobcode, material)
+
+				var (
+					a00menge driver.Decimal
+					djsl     *int
+				)
+				err := row.Scan(&a00menge)
+				if err != nil && err != sql.ErrNoRows {
+					fmt.Printf("%s 抓取材料预算百分比失败: %s\n", *jobcode, err.Error())
+				} else {
+					budget, ok := (*big.Rat)(&a00menge).Float64()
+					if ok {
+						row = bwpHanaDb.QueryRow(`
+							SELECT
+									sum(djsl) AS djsl
+							FROM
+									(
+								SELECT
+										zgcdh,
+										djsl
+								FROM
+										"_SYS_BIC"."ZMQ_BI.DM.MM/ZCS_DM_MM001_CGGLBB_DDMX_DATE"('PLACEHOLDER' = ('$$STADA$$',
+										'20200101'),
+										'PLACEHOLDER' = ('$$ENDDA$$',
+										'20251231'))
+								WHERE
+										SJLB = '发单明细'
+									AND NOT ( djje = 0
+										AND djsl = 0 )
+									--AND HBM='CNY'
+									AND "GYSBM" NOT IN ('0001011492', '0200531071', '0001011536')
+									AND "ZGCDH" = ?
+									AND zcbdh = ?
+							UNION ALL
+								SELECT
+										jobcode AS zgcdh,
+										POCNT AS djsl
+								FROM
+										"ZJK2BW"."BD_FezhPoData"
+								WHERE
+										CATEGORY = 'NCFD'
+									AND NOT ( POMNY = 0
+										AND POCNT = 0 )
+									AND jobcode = ?
+									AND costCode = ?
+								) o
+							ORDER BY
+									djsl DESC
+						`, jobcode, material, jobcode, material)
+						err = row.Scan(&djsl)
+						if err != nil && err != sql.ErrNoRows {
+							fmt.Printf("%s 抓取材料使用量失败: %s\n", *jobcode, err.Error())
+						} else {
+							if djsl != nil {
+								switch material {
+								case "011":
+									p.SetAluminumPlateBudgetPercentage(float64(*djsl) / budget * 100)
+								case "013":
+									p.SetIronBudgetPercentage(float64(*djsl) / budget * 100)
+								case "022":
+									p.SetAluminumBudgetPercentage(float64(*djsl) / budget * 100)
+								case "024":
+									p.SetGlassBudgetPercentage(float64(*djsl) / budget * 100)
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+
+		if *imgFlag {
+			row := cwDb.QueryRow(`
+				SELECT 
+					img
+				FROM [dbo].[BI_XMZTB]
+ 				where xmbm = @code
+			`, sql.Named("code", jobcode))
+
+			var (
+				img []byte
+			)
+			err := row.Scan(&img)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取图片失败: %s\n", *jobcode, err.Error())
+			} else {
+				err = os.MkdirAll(fmt.Sprintf("static/projects/%s", *jobcode), 0755)
+				if err != nil {
+					fmt.Printf("%s 创建目录失败: %s\n", *jobcode, err.Error())
+				} else {
+					out, _ := os.Create(fmt.Sprintf("static/projects/%s/%s.png", *jobcode, *jobcode))
+					defer out.Close()
+
+					_, err = io.Copy(out, bytes.NewReader(img))
+					if err != nil {
+						fmt.Printf("%s 保存图片失败: %s\n", *jobcode, err.Error())
+					}
+				}
+			}
 		}
 
 		if err := p.
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {
-			panic(err)
+			fmt.Printf("%s 保存项目失败: %s\n", *jobcode, err.Error())
 		}
 
-		// if success > 0 {
-		// 	if err := p.Exec(ctx); err != nil {
-		// 		panic(err)
-		// 	}
-		// }
-		// return nil
-		// })
 	}
 
-	// if err := wg.Wait(); err != nil {
-	// 	fmt.Println(err)
-	// }
 }

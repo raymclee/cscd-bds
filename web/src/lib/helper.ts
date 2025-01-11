@@ -103,7 +103,7 @@ export function formatProjectAmount(amount: Maybe<number> | undefined): number {
   if (!amount) {
     return 0;
   }
-  return Math.floor(Number(Number(amount) / 1.0e4));
+  return Math.round(Number(Number(amount) / 1.0e4));
 }
 
 export function toActualAmount(amount: InputMaybe<number> | undefined): number {
@@ -298,4 +298,17 @@ export function tenderStatusTagColor(
       return "warning";
   }
   return "default";
+}
+
+export function materialStatusIconColor(percentage?: number | null): string {
+  if (!percentage) {
+    return "text-gray-400";
+  }
+  if (percentage > 100) {
+    return "text-red-600";
+  } else if (percentage > 80) {
+    return "text-yellow-500";
+  } else {
+    return "text-green-400";
+  }
 }

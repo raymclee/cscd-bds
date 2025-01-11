@@ -58,7 +58,7 @@ import safty from "~/assets/svg/safty.png";
 import hmrtImg from "~/assets/hmrt.jpg";
 import { SubTitle } from "../project/sub-title";
 import { Skeleton } from "../ui/skeleton";
-import { StatusIcon } from "../ui/status-icon";
+import { MaterialStatusIcon } from "../ui/status-icon";
 
 export function OperationSkeleton() {
   return (
@@ -271,15 +271,15 @@ export function OperationSkeleton() {
               <div className="mt-1">
                 <div className="flex gap-8 px-1">
                   <div className="flex items-center gap-1">
-                    <StatusIcon className="h-3 w-3 text-red-600" />
+                    <MaterialStatusIcon className="h-3 w-3 text-red-600" />
                     <span className="text-xxs text-red-200">已超预算</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <StatusIcon className="h-3 w-3 text-yellow-500" />
+                    <MaterialStatusIcon className="h-3 w-3 text-yellow-500" />
                     <span className="text-xxs text-red-200">可能超预算</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <StatusIcon className="h-3 w-3 text-green-400" />
+                    <MaterialStatusIcon className="h-3 w-3 text-green-400" />
                     <span className="text-xxs text-red-200">未超预算</span>
                   </div>
                 </div>
@@ -290,24 +290,24 @@ export function OperationSkeleton() {
 
                 <div className="relative flex h-full items-center justify-around">
                   <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                    <StatusIcon className="h-3 w-3 text-red-600" />
+                    <MaterialStatusIcon className="h-3 w-3 text-red-600" />
                     <span className="text-xxs text-red-200">铝板</span>
                     <span className="text-sm font-bold text-red-600">16%</span>
                   </div>
                   <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                    <StatusIcon className="h-3 w-3 text-yellow-500" />
+                    <MaterialStatusIcon className="h-3 w-3 text-yellow-500" />
                     <span className="text-xxs text-red-200">铝型材</span>
                     <span className="text-sm font-bold text-yellow-500">
                       2%
                     </span>
                   </div>
                   <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                    <StatusIcon className="h-3 w-3 text-green-600" />
+                    <MaterialStatusIcon className="h-3 w-3 text-green-600" />
                     <span className="text-xxs text-red-200">玻璃</span>
                     <span className="text-sm font-bold text-green-600">0%</span>
                   </div>
                   <div className="flex items-center gap-1 text-ellipsis text-nowrap">
-                    <StatusIcon className="h-3 w-3 text-green-600" />
+                    <MaterialStatusIcon className="h-3 w-3 text-green-600" />
                     <span className="text-xxs text-red-200">其它材料</span>
                     <span className="text-sm font-bold text-green-600">0%</span>
                   </div>

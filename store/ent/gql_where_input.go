@@ -4384,6 +4384,54 @@ type ProjectWhereInput struct {
 	TotalContractAmountIsNil  bool      `json:"totalContractAmountIsNil,omitempty"`
 	TotalContractAmountNotNil bool      `json:"totalContractAmountNotNil,omitempty"`
 
+	// "aluminum_plate_budget_percentage" field predicates.
+	AluminumPlateBudgetPercentage       *float64  `json:"aluminumPlateBudgetPercentage,omitempty"`
+	AluminumPlateBudgetPercentageNEQ    *float64  `json:"aluminumPlateBudgetPercentageNEQ,omitempty"`
+	AluminumPlateBudgetPercentageIn     []float64 `json:"aluminumPlateBudgetPercentageIn,omitempty"`
+	AluminumPlateBudgetPercentageNotIn  []float64 `json:"aluminumPlateBudgetPercentageNotIn,omitempty"`
+	AluminumPlateBudgetPercentageGT     *float64  `json:"aluminumPlateBudgetPercentageGT,omitempty"`
+	AluminumPlateBudgetPercentageGTE    *float64  `json:"aluminumPlateBudgetPercentageGTE,omitempty"`
+	AluminumPlateBudgetPercentageLT     *float64  `json:"aluminumPlateBudgetPercentageLT,omitempty"`
+	AluminumPlateBudgetPercentageLTE    *float64  `json:"aluminumPlateBudgetPercentageLTE,omitempty"`
+	AluminumPlateBudgetPercentageIsNil  bool      `json:"aluminumPlateBudgetPercentageIsNil,omitempty"`
+	AluminumPlateBudgetPercentageNotNil bool      `json:"aluminumPlateBudgetPercentageNotNil,omitempty"`
+
+	// "aluminum_budget_percentage" field predicates.
+	AluminumBudgetPercentage       *float64  `json:"aluminumBudgetPercentage,omitempty"`
+	AluminumBudgetPercentageNEQ    *float64  `json:"aluminumBudgetPercentageNEQ,omitempty"`
+	AluminumBudgetPercentageIn     []float64 `json:"aluminumBudgetPercentageIn,omitempty"`
+	AluminumBudgetPercentageNotIn  []float64 `json:"aluminumBudgetPercentageNotIn,omitempty"`
+	AluminumBudgetPercentageGT     *float64  `json:"aluminumBudgetPercentageGT,omitempty"`
+	AluminumBudgetPercentageGTE    *float64  `json:"aluminumBudgetPercentageGTE,omitempty"`
+	AluminumBudgetPercentageLT     *float64  `json:"aluminumBudgetPercentageLT,omitempty"`
+	AluminumBudgetPercentageLTE    *float64  `json:"aluminumBudgetPercentageLTE,omitempty"`
+	AluminumBudgetPercentageIsNil  bool      `json:"aluminumBudgetPercentageIsNil,omitempty"`
+	AluminumBudgetPercentageNotNil bool      `json:"aluminumBudgetPercentageNotNil,omitempty"`
+
+	// "glass_budget_percentage" field predicates.
+	GlassBudgetPercentage       *float64  `json:"glassBudgetPercentage,omitempty"`
+	GlassBudgetPercentageNEQ    *float64  `json:"glassBudgetPercentageNEQ,omitempty"`
+	GlassBudgetPercentageIn     []float64 `json:"glassBudgetPercentageIn,omitempty"`
+	GlassBudgetPercentageNotIn  []float64 `json:"glassBudgetPercentageNotIn,omitempty"`
+	GlassBudgetPercentageGT     *float64  `json:"glassBudgetPercentageGT,omitempty"`
+	GlassBudgetPercentageGTE    *float64  `json:"glassBudgetPercentageGTE,omitempty"`
+	GlassBudgetPercentageLT     *float64  `json:"glassBudgetPercentageLT,omitempty"`
+	GlassBudgetPercentageLTE    *float64  `json:"glassBudgetPercentageLTE,omitempty"`
+	GlassBudgetPercentageIsNil  bool      `json:"glassBudgetPercentageIsNil,omitempty"`
+	GlassBudgetPercentageNotNil bool      `json:"glassBudgetPercentageNotNil,omitempty"`
+
+	// "iron_budget_percentage" field predicates.
+	IronBudgetPercentage       *float64  `json:"ironBudgetPercentage,omitempty"`
+	IronBudgetPercentageNEQ    *float64  `json:"ironBudgetPercentageNEQ,omitempty"`
+	IronBudgetPercentageIn     []float64 `json:"ironBudgetPercentageIn,omitempty"`
+	IronBudgetPercentageNotIn  []float64 `json:"ironBudgetPercentageNotIn,omitempty"`
+	IronBudgetPercentageGT     *float64  `json:"ironBudgetPercentageGT,omitempty"`
+	IronBudgetPercentageGTE    *float64  `json:"ironBudgetPercentageGTE,omitempty"`
+	IronBudgetPercentageLT     *float64  `json:"ironBudgetPercentageLT,omitempty"`
+	IronBudgetPercentageLTE    *float64  `json:"ironBudgetPercentageLTE,omitempty"`
+	IronBudgetPercentageIsNil  bool      `json:"ironBudgetPercentageIsNil,omitempty"`
+	IronBudgetPercentageNotNil bool      `json:"ironBudgetPercentageNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -5836,6 +5884,126 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.TotalContractAmountNotNil {
 		predicates = append(predicates, project.TotalContractAmountNotNil())
+	}
+	if i.AluminumPlateBudgetPercentage != nil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageEQ(*i.AluminumPlateBudgetPercentage))
+	}
+	if i.AluminumPlateBudgetPercentageNEQ != nil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageNEQ(*i.AluminumPlateBudgetPercentageNEQ))
+	}
+	if len(i.AluminumPlateBudgetPercentageIn) > 0 {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageIn(i.AluminumPlateBudgetPercentageIn...))
+	}
+	if len(i.AluminumPlateBudgetPercentageNotIn) > 0 {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageNotIn(i.AluminumPlateBudgetPercentageNotIn...))
+	}
+	if i.AluminumPlateBudgetPercentageGT != nil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageGT(*i.AluminumPlateBudgetPercentageGT))
+	}
+	if i.AluminumPlateBudgetPercentageGTE != nil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageGTE(*i.AluminumPlateBudgetPercentageGTE))
+	}
+	if i.AluminumPlateBudgetPercentageLT != nil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageLT(*i.AluminumPlateBudgetPercentageLT))
+	}
+	if i.AluminumPlateBudgetPercentageLTE != nil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageLTE(*i.AluminumPlateBudgetPercentageLTE))
+	}
+	if i.AluminumPlateBudgetPercentageIsNil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageIsNil())
+	}
+	if i.AluminumPlateBudgetPercentageNotNil {
+		predicates = append(predicates, project.AluminumPlateBudgetPercentageNotNil())
+	}
+	if i.AluminumBudgetPercentage != nil {
+		predicates = append(predicates, project.AluminumBudgetPercentageEQ(*i.AluminumBudgetPercentage))
+	}
+	if i.AluminumBudgetPercentageNEQ != nil {
+		predicates = append(predicates, project.AluminumBudgetPercentageNEQ(*i.AluminumBudgetPercentageNEQ))
+	}
+	if len(i.AluminumBudgetPercentageIn) > 0 {
+		predicates = append(predicates, project.AluminumBudgetPercentageIn(i.AluminumBudgetPercentageIn...))
+	}
+	if len(i.AluminumBudgetPercentageNotIn) > 0 {
+		predicates = append(predicates, project.AluminumBudgetPercentageNotIn(i.AluminumBudgetPercentageNotIn...))
+	}
+	if i.AluminumBudgetPercentageGT != nil {
+		predicates = append(predicates, project.AluminumBudgetPercentageGT(*i.AluminumBudgetPercentageGT))
+	}
+	if i.AluminumBudgetPercentageGTE != nil {
+		predicates = append(predicates, project.AluminumBudgetPercentageGTE(*i.AluminumBudgetPercentageGTE))
+	}
+	if i.AluminumBudgetPercentageLT != nil {
+		predicates = append(predicates, project.AluminumBudgetPercentageLT(*i.AluminumBudgetPercentageLT))
+	}
+	if i.AluminumBudgetPercentageLTE != nil {
+		predicates = append(predicates, project.AluminumBudgetPercentageLTE(*i.AluminumBudgetPercentageLTE))
+	}
+	if i.AluminumBudgetPercentageIsNil {
+		predicates = append(predicates, project.AluminumBudgetPercentageIsNil())
+	}
+	if i.AluminumBudgetPercentageNotNil {
+		predicates = append(predicates, project.AluminumBudgetPercentageNotNil())
+	}
+	if i.GlassBudgetPercentage != nil {
+		predicates = append(predicates, project.GlassBudgetPercentageEQ(*i.GlassBudgetPercentage))
+	}
+	if i.GlassBudgetPercentageNEQ != nil {
+		predicates = append(predicates, project.GlassBudgetPercentageNEQ(*i.GlassBudgetPercentageNEQ))
+	}
+	if len(i.GlassBudgetPercentageIn) > 0 {
+		predicates = append(predicates, project.GlassBudgetPercentageIn(i.GlassBudgetPercentageIn...))
+	}
+	if len(i.GlassBudgetPercentageNotIn) > 0 {
+		predicates = append(predicates, project.GlassBudgetPercentageNotIn(i.GlassBudgetPercentageNotIn...))
+	}
+	if i.GlassBudgetPercentageGT != nil {
+		predicates = append(predicates, project.GlassBudgetPercentageGT(*i.GlassBudgetPercentageGT))
+	}
+	if i.GlassBudgetPercentageGTE != nil {
+		predicates = append(predicates, project.GlassBudgetPercentageGTE(*i.GlassBudgetPercentageGTE))
+	}
+	if i.GlassBudgetPercentageLT != nil {
+		predicates = append(predicates, project.GlassBudgetPercentageLT(*i.GlassBudgetPercentageLT))
+	}
+	if i.GlassBudgetPercentageLTE != nil {
+		predicates = append(predicates, project.GlassBudgetPercentageLTE(*i.GlassBudgetPercentageLTE))
+	}
+	if i.GlassBudgetPercentageIsNil {
+		predicates = append(predicates, project.GlassBudgetPercentageIsNil())
+	}
+	if i.GlassBudgetPercentageNotNil {
+		predicates = append(predicates, project.GlassBudgetPercentageNotNil())
+	}
+	if i.IronBudgetPercentage != nil {
+		predicates = append(predicates, project.IronBudgetPercentageEQ(*i.IronBudgetPercentage))
+	}
+	if i.IronBudgetPercentageNEQ != nil {
+		predicates = append(predicates, project.IronBudgetPercentageNEQ(*i.IronBudgetPercentageNEQ))
+	}
+	if len(i.IronBudgetPercentageIn) > 0 {
+		predicates = append(predicates, project.IronBudgetPercentageIn(i.IronBudgetPercentageIn...))
+	}
+	if len(i.IronBudgetPercentageNotIn) > 0 {
+		predicates = append(predicates, project.IronBudgetPercentageNotIn(i.IronBudgetPercentageNotIn...))
+	}
+	if i.IronBudgetPercentageGT != nil {
+		predicates = append(predicates, project.IronBudgetPercentageGT(*i.IronBudgetPercentageGT))
+	}
+	if i.IronBudgetPercentageGTE != nil {
+		predicates = append(predicates, project.IronBudgetPercentageGTE(*i.IronBudgetPercentageGTE))
+	}
+	if i.IronBudgetPercentageLT != nil {
+		predicates = append(predicates, project.IronBudgetPercentageLT(*i.IronBudgetPercentageLT))
+	}
+	if i.IronBudgetPercentageLTE != nil {
+		predicates = append(predicates, project.IronBudgetPercentageLTE(*i.IronBudgetPercentageLTE))
+	}
+	if i.IronBudgetPercentageIsNil {
+		predicates = append(predicates, project.IronBudgetPercentageIsNil())
+	}
+	if i.IronBudgetPercentageNotNil {
+		predicates = append(predicates, project.IronBudgetPercentageNotNil())
 	}
 
 	if i.HasVos != nil {

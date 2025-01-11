@@ -1728,6 +1728,10 @@ type Project implements Node {
   accumulatedStatutoryDeductions: Float
   """本期法定扣款"""
   accumulatedStatutoryDeductionsPeriod: Float
+  """鋁型材預算百分比"""
+  aluminumBudgetPercentage: Float
+  """鋁板預算百分比"""
+  aluminumPlateBudgetPercentage: Float
   """工程規模"""
   areas: String
   """成交额"""
@@ -1752,9 +1756,13 @@ type Project implements Node {
   endDate: Time
   """封頂日期"""
   fsDate: Time
+  """玻璃預算百分比"""
+  glassBudgetPercentage: Float
   id: ID!
   """安装进度"""
   installProgress: Float
+  """鐵型材預算百分比"""
+  ironBudgetPercentage: Float
   """是否完成"""
   isFinished: Boolean!
   """建築師"""
@@ -2027,6 +2035,28 @@ input ProjectWhereInput {
   accumulatedStatutoryDeductionsPeriodNEQ: Float
   accumulatedStatutoryDeductionsPeriodNotIn: [Float!]
   accumulatedStatutoryDeductionsPeriodNotNil: Boolean
+  """aluminum_budget_percentage field predicates"""
+  aluminumBudgetPercentage: Float
+  aluminumBudgetPercentageGT: Float
+  aluminumBudgetPercentageGTE: Float
+  aluminumBudgetPercentageIn: [Float!]
+  aluminumBudgetPercentageIsNil: Boolean
+  aluminumBudgetPercentageLT: Float
+  aluminumBudgetPercentageLTE: Float
+  aluminumBudgetPercentageNEQ: Float
+  aluminumBudgetPercentageNotIn: [Float!]
+  aluminumBudgetPercentageNotNil: Boolean
+  """aluminum_plate_budget_percentage field predicates"""
+  aluminumPlateBudgetPercentage: Float
+  aluminumPlateBudgetPercentageGT: Float
+  aluminumPlateBudgetPercentageGTE: Float
+  aluminumPlateBudgetPercentageIn: [Float!]
+  aluminumPlateBudgetPercentageIsNil: Boolean
+  aluminumPlateBudgetPercentageLT: Float
+  aluminumPlateBudgetPercentageLTE: Float
+  aluminumPlateBudgetPercentageNEQ: Float
+  aluminumPlateBudgetPercentageNotIn: [Float!]
+  aluminumPlateBudgetPercentageNotNil: Boolean
   and: [ProjectWhereInput!]
   """areas field predicates"""
   areas: String
@@ -2187,6 +2217,17 @@ input ProjectWhereInput {
   fsDateNEQ: Time
   fsDateNotIn: [Time!]
   fsDateNotNil: Boolean
+  """glass_budget_percentage field predicates"""
+  glassBudgetPercentage: Float
+  glassBudgetPercentageGT: Float
+  glassBudgetPercentageGTE: Float
+  glassBudgetPercentageIn: [Float!]
+  glassBudgetPercentageIsNil: Boolean
+  glassBudgetPercentageLT: Float
+  glassBudgetPercentageLTE: Float
+  glassBudgetPercentageNEQ: Float
+  glassBudgetPercentageNotIn: [Float!]
+  glassBudgetPercentageNotNil: Boolean
   """vos edge predicates"""
   hasVos: Boolean
   hasVosWith: [ProjectVOWhereInput!]
@@ -2210,6 +2251,17 @@ input ProjectWhereInput {
   installProgressNEQ: Float
   installProgressNotIn: [Float!]
   installProgressNotNil: Boolean
+  """iron_budget_percentage field predicates"""
+  ironBudgetPercentage: Float
+  ironBudgetPercentageGT: Float
+  ironBudgetPercentageGTE: Float
+  ironBudgetPercentageIn: [Float!]
+  ironBudgetPercentageIsNil: Boolean
+  ironBudgetPercentageLT: Float
+  ironBudgetPercentageLTE: Float
+  ironBudgetPercentageNEQ: Float
+  ironBudgetPercentageNotIn: [Float!]
+  ironBudgetPercentageNotNil: Boolean
   """is_finished field predicates"""
   isFinished: Boolean
   isFinishedNEQ: Boolean
