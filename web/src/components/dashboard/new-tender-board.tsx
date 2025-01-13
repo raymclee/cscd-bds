@@ -35,12 +35,109 @@ export function NewTenderBoard() {
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
-  const now = dayjs();
+  // const now = dayjs();
 
-  const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
-    Dayjs,
-    Dayjs,
-  ];
+  // const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
+  //   Dayjs,
+  //   Dayjs,
+  // ];
+
+  const barConfig = {
+    data: [
+      {
+        name: "金额(亿)",
+        月份: "上月",
+        数量: lastMonthAmount,
+      },
+      {
+        name: "金额(亿)",
+        月份: "本月",
+        数量: thisMonthAmount,
+      },
+      {
+        name: "数量(个)",
+        月份: "上月",
+        数量: lastMonthCount,
+      },
+      {
+        name: "数量(个)",
+        月份: "本月",
+        数量: thisMonthCount,
+      },
+    ],
+    xField: "月份",
+    yField: "数量",
+    theme: "classicDark",
+    colorField: "name",
+    group: true,
+    style: {
+      inset: 5,
+      width: 20,
+      // color: "white",
+    },
+    legend: {
+      color: {
+        layout: {
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        },
+      },
+    },
+  } satisfies ColumnConfig;
+
+  const amountPercent = thisMonthAmount / lastMonthAmount;
+  const amountConfig = {
+    percent: isFinite(amountPercent) ? amountPercent || 1 : 1,
+    width: 80,
+    height: 80,
+    innerRadius: 0.65,
+    color:
+      !isFinite(amountPercent) || amountPercent <= 0
+        ? ["#374151"]
+        : ["#374151", "#dc2626"],
+    annotations: [
+      {
+        type: "text",
+        style: {
+          text: isFinite(amountPercent)
+            ? `${Math.round(amountPercent * 100)}%`
+            : "0%",
+          x: "50%",
+          y: "50%",
+          textAlign: "center",
+          fontSize: 16,
+          fontStyle: "bold",
+          fill: "white",
+        },
+      },
+    ],
+  };
+
+  const totalPercent = lastMonthCount / thisMonthCount;
+  const totalConfig = {
+    percent: isFinite(totalPercent) ? totalPercent || 1 : 1,
+    width: 80,
+    height: 80,
+    innerRadius: 0.65,
+    color: ["#374151", "#109618"],
+    annotations: [
+      {
+        type: "text",
+        style: {
+          text: isFinite(totalPercent)
+            ? `${Math.round(totalPercent * 100)}%`
+            : "0%",
+          x: "50%",
+          y: "50%",
+          textAlign: "center",
+          fontSize: 16,
+          fontStyle: "bold",
+          fill: "white",
+        },
+      },
+    ],
+  };
 
   return (
     <MotionCard
@@ -50,7 +147,7 @@ export function NewTenderBoard() {
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
         <div className="flex items-center justify-between">
           <span>本月新增商机</span>
           <MotionEllipsis
@@ -104,9 +201,9 @@ export function NewTenderBoard() {
           </div>
         </div> */}
 
-        <div className="flex h-[calc(100%-12px)] w-[45%] flex-col">
-          <div className="relative mt-1 flex flex-1 justify-center">
-            <div className="absolute -left-6 right-0 top-2">
+        {/* <div className="flex h-[calc(100%-12px)] w-[45%] flex-col">
+          <div className="relative flex justify-center flex-1 mt-1">
+            <div className="absolute right-0 -left-6 top-2">
               <NewTenderAmountChart
                 height={80}
                 width={80}
@@ -117,13 +214,13 @@ export function NewTenderBoard() {
                 periods={thisMonthAmountPeriods}
               />
             </div>
-            <div className="absolute -left-6 bottom-4 right-0 text-center">
+            <div className="absolute right-0 text-center -left-6 bottom-4">
               <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
 
-          <div className="relative flex flex-1 flex-col justify-center">
-            <div className="absolute -left-6 right-0 top-2">
+          <div className="relative flex flex-col justify-center flex-1">
+            <div className="absolute right-0 -left-6 top-2">
               <NewTenderTotalChart
                 height={80}
                 width={80}
@@ -132,15 +229,15 @@ export function NewTenderBoard() {
                 periods={thisMonthAmountPeriods}
               />
             </div>
-            <div className="absolute -left-6 bottom-4 right-0 text-center">
+            <div className="absolute right-0 text-center -left-6 bottom-4">
               <span className="text-xs text-gray-400">数量占比变化</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* <Column {...barConfig} /> */}
-        <div className="relative h-[calc(100%-12px)] flex-1">
-          <div className="absolute -left-10 bottom-0 right-0 top-4">
+        {/* <div className="relative h-[calc(100%-12px)] flex-1">
+          <div className="absolute bottom-0 right-0 -left-10 top-4">
             <NewTenderBarChart
               data={[
                 {
@@ -156,7 +253,20 @@ export function NewTenderBoard() {
               ]}
             />
           </div>
+        </div> */}
+
+        <div className="flex w-[40%] flex-col items-center justify-around py-4">
+          {/* <AmountChart /> */}
+          <div className="flex flex-col items-center justify-center gap-1">
+            <Tiny.Ring {...amountConfig} />
+            <span className="text-xs text-gray-400">金额占比上升</span>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-1">
+            <Tiny.Ring {...totalConfig} />
+            <span className="text-xs text-gray-400">数量占比下降</span>
+          </div>
         </div>
+        <Column {...barConfig} />
       </CardContent>
     </MotionCard>
   );
