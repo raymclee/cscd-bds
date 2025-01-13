@@ -7,7 +7,7 @@ import { usePreloadedQuery } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";
 import { useShallow } from "zustand/shallow";
 import { AmountBoard } from "~/components/dashboard/amount-board";
-import { DashboardTenderList } from "~/components/dashboard/dashboard-tender-list";
+import { DashboardTenderListBoard } from "~/components/dashboard/dashboard-tender-list-board";
 import { MapTenderDetail } from "~/components/dashboard/map-tender-detail";
 import { MapTenderList } from "~/components/dashboard/map-tender-list";
 import { NewTenderBoardMore } from "~/components/dashboard/new-tender-board-more";
@@ -34,7 +34,7 @@ import {
 import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
 import { RankingListBoardMore } from "~/components/dashboard/ranking-list-board-more";
-import { DashboardTenderListMore } from "~/components/dashboard/dashboard-tender-list-more";
+import { DashboardTenderListBoardMore } from "~/components/dashboard/dashboard-tender-list-board-more";
 import { useRef } from "react";
 import { useWindowSize } from "usehooks-ts";
 
@@ -257,7 +257,8 @@ function RouteComponent() {
   }, [map]);
 
   //加载区域
-  const loadAreaNode = React.useCallback(
+  const loadAreaNode =
+    // React.useCallback(
     (adcode: number, callback: (error: any, areaNode?: any) => void) => {
       useMapStore
         .getState()
@@ -276,11 +277,12 @@ function RouteComponent() {
             callback(null, areaNode);
           }
         });
-    },
-    [data.node, map],
-  );
+    };
+  //   [data.node, map],
+  // );
 
-  const onFeatureOrMarkerClick = React.useCallback(
+  const onFeatureOrMarkerClick =
+    // React.useCallback(
     async (props: any) => {
       switch2AreaNode(props.adcode, props.childrenNum > 0);
 
@@ -462,12 +464,13 @@ function RouteComponent() {
           mapCircles,
         });
       }
-    },
-    [data.node, map],
-  );
+    };
+  //   [data.node, map],
+  // );
 
   //绘制marker
-  const renderMarker = React.useCallback(
+  const renderMarker =
+    // React.useCallback(
     (props: any, hidable = false) => {
       if (props.adcode === useMapStore.getState().currentAreaNode?.adcode) {
         return;
@@ -557,11 +560,12 @@ function RouteComponent() {
       useMapStore.setState((state) => ({
         markers: [...state.markers, marker],
       }));
-    },
-    [data.node, map, onFeatureOrMarkerClick],
-  );
+    };
+  //   [data.node, map, onFeatureOrMarkerClick],
+  // );
 
-  const switch2AreaNode = React.useCallback(
+  const switch2AreaNode =
+    // React.useCallback(
     (adcode: number, zoomeToNode = true, callback?: () => void) => {
       // if (
       //   currentAreaNode &&
@@ -695,12 +699,13 @@ function RouteComponent() {
 
         refreshAreaNode(areaNode, zoomeToNode, adcode === 100000);
       });
-    },
-    [data.node, map, renderMarker],
-  );
+    };
+  //   [data.node, map, renderMarker],
+  // );
 
   //绘制某个区域的边界
-  const renderAreaPolygons = React.useCallback(
+  const renderAreaPolygons =
+    // React.useCallback(
     (
       areaNode: any,
       zoomeToNode: boolean,
@@ -777,21 +782,23 @@ function RouteComponent() {
         //   fillColor: areaNode.getParentFeature() ? "black" : null,
         // fillOpacity: 0.5, //填充透明度
       });
-    },
-    [data.node, map, renderMarker],
-  );
+    };
+  //   [data.node, map, renderMarker],
+  // );
 
   //切换区域后刷新显示内容
-  const refreshAreaNode = React.useCallback(
+  const refreshAreaNode =
+    // React.useCallback(
     (areaNode: any, zoomeToNode: boolean, topLevel: boolean) => {
       useMapStore.getState().districtExplorer.setHoverFeature(null);
 
       renderAreaPolygons(areaNode, zoomeToNode, topLevel);
-    },
-    [data.node, map, renderAreaPolygons],
-  );
+    };
+  //   [data.node, map, renderAreaPolygons],
+  // );
 
-  const renderArea = React.useCallback(
+  const renderArea =
+    // React.useCallback(
     (area: Area) => {
       const { map, districtExplorer } = useMapStore.getState();
 
@@ -841,9 +848,9 @@ function RouteComponent() {
         false,
         600,
       );
-    },
-    [data.node, map, map, renderMarker],
-  );
+    };
+  //   [data.node, map, map, renderMarker],
+  // );
 
   return (
     <>
@@ -1049,7 +1056,7 @@ function RouteComponent() {
 
         <RankingListBoard />
 
-        <DashboardTenderList />
+        <DashboardTenderListBoard />
       </div>
       {/* </div> */}
 
@@ -1068,7 +1075,9 @@ function RouteComponent() {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {moreDashboardTenderListBoardVisible && <DashboardTenderListMore />}
+        {moreDashboardTenderListBoardVisible && (
+          <DashboardTenderListBoardMore />
+        )}
       </AnimatePresence>
     </>
   );

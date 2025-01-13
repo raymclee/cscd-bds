@@ -89,13 +89,23 @@ export function TenderTypeBoard() {
     }
   }
 
+  const data = [];
+
+  if (government > 0) {
+    data.push({ type: "央企国企", value: government });
+  }
+  if (highTech > 0) {
+    data.push({ type: "高科技企业", value: highTech });
+  }
+  if (csoe > 0) {
+    data.push({ type: "政府平台", value: csoe });
+  }
+  if (other > 0) {
+    data.push({ type: "其他企业", value: other });
+  }
+
   const config = {
-    data: [
-      { type: "央企国企", value: government },
-      { type: "高科技企业", value: highTech },
-      { type: "政府平台", value: csoe },
-      { type: "其他企业", value: other },
-    ],
+    data,
     theme: "classicDark",
     angleField: "value",
     colorField: "type",
@@ -134,7 +144,7 @@ export function TenderTypeBoard() {
       layoutId="tender-type-board"
       className={cn(
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        "h-[18.8rem] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "h-[calc(90vh/3)] overflow-hidden rounded border border-brand bg-transparent pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
       <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -152,14 +162,14 @@ export function TenderTypeBoard() {
         </div>
       </CardHeader>
 
-      <CardContent className="flex h-full items-center justify-center gap-2">
+      <CardContent className="h-full items-center justify-center gap-2">
         {/* <div className="w-[24%] rounded bg-gradient-to-b from-brand/40 to-transparent p-6">
           <div className="flex flex-col items-center gap-4 justify-evenly">
             <Tiny.Ring {...winConfig} />
             <Tiny.Ring {...loseConfig} />
           </div>
         </div> */}
-        <div className="h-full flex-1">
+        <div className="h-full w-full flex-1">
           <Pie {...config} />
         </div>
       </CardContent>

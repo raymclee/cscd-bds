@@ -108,6 +108,14 @@ type Project struct {
 	GlassBudgetPercentage *float64 `json:"glass_budget_percentage,omitempty"`
 	// 鐵型材預算百分比
 	IronBudgetPercentage *float64 `json:"iron_budget_percentage,omitempty"`
+	// 里程碑計劃年份
+	MilestonePlanYear *int `json:"milestone_plan_year,omitempty"`
+	// 里程碑計劃月份
+	MilestonePlanMonth *int `json:"milestone_plan_month,omitempty"`
+	// 里程碑完成年份
+	MilestoneDoneYear *int `json:"milestone_done_year,omitempty"`
+	// 里程碑完成月份
+	MilestoneDoneMonth *int `json:"milestone_done_month,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -118,13 +126,16 @@ type Project struct {
 type ProjectEdges struct {
 	// Vos holds the value of the vos edge.
 	Vos []*ProjectVO `json:"vos,omitempty"`
+	// ProjectStaffs holds the value of the project_staffs edge.
+	ProjectStaffs []*ProjectStaff `json:"project_staffs,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 	// totalCount holds the count of the edges above.
-	totalCount [1]map[string]int
+	totalCount [2]map[string]int
 
-	namedVos map[string][]*ProjectVO
+	namedVos           map[string][]*ProjectVO
+	namedProjectStaffs map[string][]*ProjectStaff
 }
 
 // VosOrErr returns the Vos value or an error if the edge
@@ -136,6 +147,15 @@ func (e ProjectEdges) VosOrErr() ([]*ProjectVO, error) {
 	return nil, &NotLoadedError{edge: "vos"}
 }
 
+// ProjectStaffsOrErr returns the ProjectStaffs value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectEdges) ProjectStaffsOrErr() ([]*ProjectStaff, error) {
+	if e.loadedTypes[1] {
+		return e.ProjectStaffs, nil
+	}
+	return nil, &NotLoadedError{edge: "project_staffs"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Project) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -145,7 +165,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage:
 			values[i] = new(sql.NullFloat64)
-		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount:
+		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth:
 			values[i] = new(sql.NullInt64)
 		case project.FieldCode, project.FieldManager, project.FieldName, project.FieldOwner, project.FieldJzs, project.FieldMcn, project.FieldConsultant, project.FieldAreas, project.FieldMntyr, project.FieldConType, project.FieldXmfzr:
 			values[i] = new(sql.NullString)
@@ -485,6 +505,34 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.IronBudgetPercentage = new(float64)
 				*pr.IronBudgetPercentage = value.Float64
 			}
+		case project.FieldMilestonePlanYear:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field milestone_plan_year", values[i])
+			} else if value.Valid {
+				pr.MilestonePlanYear = new(int)
+				*pr.MilestonePlanYear = int(value.Int64)
+			}
+		case project.FieldMilestonePlanMonth:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field milestone_plan_month", values[i])
+			} else if value.Valid {
+				pr.MilestonePlanMonth = new(int)
+				*pr.MilestonePlanMonth = int(value.Int64)
+			}
+		case project.FieldMilestoneDoneYear:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field milestone_done_year", values[i])
+			} else if value.Valid {
+				pr.MilestoneDoneYear = new(int)
+				*pr.MilestoneDoneYear = int(value.Int64)
+			}
+		case project.FieldMilestoneDoneMonth:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field milestone_done_month", values[i])
+			} else if value.Valid {
+				pr.MilestoneDoneMonth = new(int)
+				*pr.MilestoneDoneMonth = int(value.Int64)
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -501,6 +549,11 @@ func (pr *Project) Value(name string) (ent.Value, error) {
 // QueryVos queries the "vos" edge of the Project entity.
 func (pr *Project) QueryVos() *ProjectVOQuery {
 	return NewProjectClient(pr.config).QueryVos(pr)
+}
+
+// QueryProjectStaffs queries the "project_staffs" edge of the Project entity.
+func (pr *Project) QueryProjectStaffs() *ProjectStaffQuery {
+	return NewProjectClient(pr.config).QueryProjectStaffs(pr)
 }
 
 // Update returns a builder for updating this Project.
@@ -742,6 +795,26 @@ func (pr *Project) String() string {
 		builder.WriteString("iron_budget_percentage=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
+	builder.WriteString(", ")
+	if v := pr.MilestonePlanYear; v != nil {
+		builder.WriteString("milestone_plan_year=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.MilestonePlanMonth; v != nil {
+		builder.WriteString("milestone_plan_month=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.MilestoneDoneYear; v != nil {
+		builder.WriteString("milestone_done_year=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.MilestoneDoneMonth; v != nil {
+		builder.WriteString("milestone_done_month=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }
@@ -767,6 +840,30 @@ func (pr *Project) appendNamedVos(name string, edges ...*ProjectVO) {
 		pr.Edges.namedVos[name] = []*ProjectVO{}
 	} else {
 		pr.Edges.namedVos[name] = append(pr.Edges.namedVos[name], edges...)
+	}
+}
+
+// NamedProjectStaffs returns the ProjectStaffs named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (pr *Project) NamedProjectStaffs(name string) ([]*ProjectStaff, error) {
+	if pr.Edges.namedProjectStaffs == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := pr.Edges.namedProjectStaffs[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (pr *Project) appendNamedProjectStaffs(name string, edges ...*ProjectStaff) {
+	if pr.Edges.namedProjectStaffs == nil {
+		pr.Edges.namedProjectStaffs = make(map[string][]*ProjectStaff)
+	}
+	if len(edges) == 0 {
+		pr.Edges.namedProjectStaffs[name] = []*ProjectStaff{}
+	} else {
+		pr.Edges.namedProjectStaffs[name] = append(pr.Edges.namedProjectStaffs[name], edges...)
 	}
 }
 

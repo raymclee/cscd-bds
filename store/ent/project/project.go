@@ -105,8 +105,18 @@ const (
 	FieldGlassBudgetPercentage = "glass_budget_percentage"
 	// FieldIronBudgetPercentage holds the string denoting the iron_budget_percentage field in the database.
 	FieldIronBudgetPercentage = "iron_budget_percentage"
+	// FieldMilestonePlanYear holds the string denoting the milestone_plan_year field in the database.
+	FieldMilestonePlanYear = "milestone_plan_year"
+	// FieldMilestonePlanMonth holds the string denoting the milestone_plan_month field in the database.
+	FieldMilestonePlanMonth = "milestone_plan_month"
+	// FieldMilestoneDoneYear holds the string denoting the milestone_done_year field in the database.
+	FieldMilestoneDoneYear = "milestone_done_year"
+	// FieldMilestoneDoneMonth holds the string denoting the milestone_done_month field in the database.
+	FieldMilestoneDoneMonth = "milestone_done_month"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
+	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
+	EdgeProjectStaffs = "project_staffs"
 	// Table holds the table name of the project in the database.
 	Table = "projects"
 	// VosTable is the table that holds the vos relation/edge.
@@ -116,6 +126,13 @@ const (
 	VosInverseTable = "project_vos"
 	// VosColumn is the table column denoting the vos relation/edge.
 	VosColumn = "project_id"
+	// ProjectStaffsTable is the table that holds the project_staffs relation/edge.
+	ProjectStaffsTable = "project_staffs"
+	// ProjectStaffsInverseTable is the table name for the ProjectStaff entity.
+	// It exists in this package in order to avoid circular dependency with the "projectstaff" package.
+	ProjectStaffsInverseTable = "project_staffs"
+	// ProjectStaffsColumn is the table column denoting the project_staffs relation/edge.
+	ProjectStaffsColumn = "project_id"
 )
 
 // Columns holds all SQL columns for project fields.
@@ -166,6 +183,10 @@ var Columns = []string{
 	FieldAluminumBudgetPercentage,
 	FieldGlassBudgetPercentage,
 	FieldIronBudgetPercentage,
+	FieldMilestonePlanYear,
+	FieldMilestonePlanMonth,
+	FieldMilestoneDoneYear,
+	FieldMilestoneDoneMonth,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -424,6 +445,26 @@ func ByIronBudgetPercentage(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIronBudgetPercentage, opts...).ToFunc()
 }
 
+// ByMilestonePlanYear orders the results by the milestone_plan_year field.
+func ByMilestonePlanYear(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMilestonePlanYear, opts...).ToFunc()
+}
+
+// ByMilestonePlanMonth orders the results by the milestone_plan_month field.
+func ByMilestonePlanMonth(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMilestonePlanMonth, opts...).ToFunc()
+}
+
+// ByMilestoneDoneYear orders the results by the milestone_done_year field.
+func ByMilestoneDoneYear(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMilestoneDoneYear, opts...).ToFunc()
+}
+
+// ByMilestoneDoneMonth orders the results by the milestone_done_month field.
+func ByMilestoneDoneMonth(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMilestoneDoneMonth, opts...).ToFunc()
+}
+
 // ByVosCount orders the results by vos count.
 func ByVosCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -437,10 +478,31 @@ func ByVos(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newVosStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByProjectStaffsCount orders the results by project_staffs count.
+func ByProjectStaffsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newProjectStaffsStep(), opts...)
+	}
+}
+
+// ByProjectStaffs orders the results by project_staffs terms.
+func ByProjectStaffs(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProjectStaffsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newVosStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(VosInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, VosTable, VosColumn),
+	)
+}
+func newProjectStaffsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProjectStaffsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ProjectStaffsTable, ProjectStaffsColumn),
 	)
 }

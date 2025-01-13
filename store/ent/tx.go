@@ -30,6 +30,8 @@ type Tx struct {
 	Plot *PlotClient
 	// Project is the client for interacting with the Project builders.
 	Project *ProjectClient
+	// ProjectStaff is the client for interacting with the ProjectStaff builders.
+	ProjectStaff *ProjectStaffClient
 	// ProjectVO is the client for interacting with the ProjectVO builders.
 	ProjectVO *ProjectVOClient
 	// Province is the client for interacting with the Province builders.
@@ -180,6 +182,7 @@ func (tx *Tx) init() {
 	tx.Operation = NewOperationClient(tx.config)
 	tx.Plot = NewPlotClient(tx.config)
 	tx.Project = NewProjectClient(tx.config)
+	tx.ProjectStaff = NewProjectStaffClient(tx.config)
 	tx.ProjectVO = NewProjectVOClient(tx.config)
 	tx.Province = NewProvinceClient(tx.config)
 	tx.Tender = NewTenderClient(tx.config)

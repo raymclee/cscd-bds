@@ -21,6 +21,7 @@ import (
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
@@ -56,6 +57,8 @@ type Client struct {
 	Plot *PlotClient
 	// Project is the client for interacting with the Project builders.
 	Project *ProjectClient
+	// ProjectStaff is the client for interacting with the ProjectStaff builders.
+	ProjectStaff *ProjectStaffClient
 	// ProjectVO is the client for interacting with the ProjectVO builders.
 	ProjectVO *ProjectVOClient
 	// Province is the client for interacting with the Province builders.
@@ -86,6 +89,7 @@ func (c *Client) init() {
 	c.Operation = NewOperationClient(c.config)
 	c.Plot = NewPlotClient(c.config)
 	c.Project = NewProjectClient(c.config)
+	c.ProjectStaff = NewProjectStaffClient(c.config)
 	c.ProjectVO = NewProjectVOClient(c.config)
 	c.Province = NewProvinceClient(c.config)
 	c.Tender = NewTenderClient(c.config)
@@ -181,22 +185,23 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:         ctx,
-		config:      cfg,
-		Area:        NewAreaClient(cfg),
-		City:        NewCityClient(cfg),
-		Competitor:  NewCompetitorClient(cfg),
-		Country:     NewCountryClient(cfg),
-		Customer:    NewCustomerClient(cfg),
-		District:    NewDistrictClient(cfg),
-		Operation:   NewOperationClient(cfg),
-		Plot:        NewPlotClient(cfg),
-		Project:     NewProjectClient(cfg),
-		ProjectVO:   NewProjectVOClient(cfg),
-		Province:    NewProvinceClient(cfg),
-		Tender:      NewTenderClient(cfg),
-		User:        NewUserClient(cfg),
-		VisitRecord: NewVisitRecordClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Area:         NewAreaClient(cfg),
+		City:         NewCityClient(cfg),
+		Competitor:   NewCompetitorClient(cfg),
+		Country:      NewCountryClient(cfg),
+		Customer:     NewCustomerClient(cfg),
+		District:     NewDistrictClient(cfg),
+		Operation:    NewOperationClient(cfg),
+		Plot:         NewPlotClient(cfg),
+		Project:      NewProjectClient(cfg),
+		ProjectStaff: NewProjectStaffClient(cfg),
+		ProjectVO:    NewProjectVOClient(cfg),
+		Province:     NewProvinceClient(cfg),
+		Tender:       NewTenderClient(cfg),
+		User:         NewUserClient(cfg),
+		VisitRecord:  NewVisitRecordClient(cfg),
 	}, nil
 }
 
@@ -214,22 +219,23 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:         ctx,
-		config:      cfg,
-		Area:        NewAreaClient(cfg),
-		City:        NewCityClient(cfg),
-		Competitor:  NewCompetitorClient(cfg),
-		Country:     NewCountryClient(cfg),
-		Customer:    NewCustomerClient(cfg),
-		District:    NewDistrictClient(cfg),
-		Operation:   NewOperationClient(cfg),
-		Plot:        NewPlotClient(cfg),
-		Project:     NewProjectClient(cfg),
-		ProjectVO:   NewProjectVOClient(cfg),
-		Province:    NewProvinceClient(cfg),
-		Tender:      NewTenderClient(cfg),
-		User:        NewUserClient(cfg),
-		VisitRecord: NewVisitRecordClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Area:         NewAreaClient(cfg),
+		City:         NewCityClient(cfg),
+		Competitor:   NewCompetitorClient(cfg),
+		Country:      NewCountryClient(cfg),
+		Customer:     NewCustomerClient(cfg),
+		District:     NewDistrictClient(cfg),
+		Operation:    NewOperationClient(cfg),
+		Plot:         NewPlotClient(cfg),
+		Project:      NewProjectClient(cfg),
+		ProjectStaff: NewProjectStaffClient(cfg),
+		ProjectVO:    NewProjectVOClient(cfg),
+		Province:     NewProvinceClient(cfg),
+		Tender:       NewTenderClient(cfg),
+		User:         NewUserClient(cfg),
+		VisitRecord:  NewVisitRecordClient(cfg),
 	}, nil
 }
 
@@ -260,7 +266,8 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
-		c.Plot, c.Project, c.ProjectVO, c.Province, c.Tender, c.User, c.VisitRecord,
+		c.Plot, c.Project, c.ProjectStaff, c.ProjectVO, c.Province, c.Tender, c.User,
+		c.VisitRecord,
 	} {
 		n.Use(hooks...)
 	}
@@ -271,7 +278,8 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Area, c.City, c.Competitor, c.Country, c.Customer, c.District, c.Operation,
-		c.Plot, c.Project, c.ProjectVO, c.Province, c.Tender, c.User, c.VisitRecord,
+		c.Plot, c.Project, c.ProjectStaff, c.ProjectVO, c.Province, c.Tender, c.User,
+		c.VisitRecord,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -298,6 +306,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Plot.mutate(ctx, m)
 	case *ProjectMutation:
 		return c.Project.mutate(ctx, m)
+	case *ProjectStaffMutation:
+		return c.ProjectStaff.mutate(ctx, m)
 	case *ProjectVOMutation:
 		return c.ProjectVO.mutate(ctx, m)
 	case *ProvinceMutation:
@@ -1805,6 +1815,22 @@ func (c *ProjectClient) QueryVos(pr *Project) *ProjectVOQuery {
 	return query
 }
 
+// QueryProjectStaffs queries the project_staffs edge of a Project.
+func (c *ProjectClient) QueryProjectStaffs(pr *Project) *ProjectStaffQuery {
+	query := (&ProjectStaffClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(project.Table, project.FieldID, id),
+			sqlgraph.To(projectstaff.Table, projectstaff.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, project.ProjectStaffsTable, project.ProjectStaffsColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *ProjectClient) Hooks() []Hook {
 	return c.hooks.Project
@@ -1827,6 +1853,155 @@ func (c *ProjectClient) mutate(ctx context.Context, m *ProjectMutation) (Value, 
 		return (&ProjectDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Project mutation op: %q", m.Op())
+	}
+}
+
+// ProjectStaffClient is a client for the ProjectStaff schema.
+type ProjectStaffClient struct {
+	config
+}
+
+// NewProjectStaffClient returns a client for the ProjectStaff from the given config.
+func NewProjectStaffClient(c config) *ProjectStaffClient {
+	return &ProjectStaffClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `projectstaff.Hooks(f(g(h())))`.
+func (c *ProjectStaffClient) Use(hooks ...Hook) {
+	c.hooks.ProjectStaff = append(c.hooks.ProjectStaff, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `projectstaff.Intercept(f(g(h())))`.
+func (c *ProjectStaffClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ProjectStaff = append(c.inters.ProjectStaff, interceptors...)
+}
+
+// Create returns a builder for creating a ProjectStaff entity.
+func (c *ProjectStaffClient) Create() *ProjectStaffCreate {
+	mutation := newProjectStaffMutation(c.config, OpCreate)
+	return &ProjectStaffCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ProjectStaff entities.
+func (c *ProjectStaffClient) CreateBulk(builders ...*ProjectStaffCreate) *ProjectStaffCreateBulk {
+	return &ProjectStaffCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ProjectStaffClient) MapCreateBulk(slice any, setFunc func(*ProjectStaffCreate, int)) *ProjectStaffCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ProjectStaffCreateBulk{err: fmt.Errorf("calling to ProjectStaffClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ProjectStaffCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ProjectStaffCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ProjectStaff.
+func (c *ProjectStaffClient) Update() *ProjectStaffUpdate {
+	mutation := newProjectStaffMutation(c.config, OpUpdate)
+	return &ProjectStaffUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ProjectStaffClient) UpdateOne(ps *ProjectStaff) *ProjectStaffUpdateOne {
+	mutation := newProjectStaffMutation(c.config, OpUpdateOne, withProjectStaff(ps))
+	return &ProjectStaffUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ProjectStaffClient) UpdateOneID(id xid.ID) *ProjectStaffUpdateOne {
+	mutation := newProjectStaffMutation(c.config, OpUpdateOne, withProjectStaffID(id))
+	return &ProjectStaffUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ProjectStaff.
+func (c *ProjectStaffClient) Delete() *ProjectStaffDelete {
+	mutation := newProjectStaffMutation(c.config, OpDelete)
+	return &ProjectStaffDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ProjectStaffClient) DeleteOne(ps *ProjectStaff) *ProjectStaffDeleteOne {
+	return c.DeleteOneID(ps.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ProjectStaffClient) DeleteOneID(id xid.ID) *ProjectStaffDeleteOne {
+	builder := c.Delete().Where(projectstaff.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ProjectStaffDeleteOne{builder}
+}
+
+// Query returns a query builder for ProjectStaff.
+func (c *ProjectStaffClient) Query() *ProjectStaffQuery {
+	return &ProjectStaffQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeProjectStaff},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ProjectStaff entity by its id.
+func (c *ProjectStaffClient) Get(ctx context.Context, id xid.ID) (*ProjectStaff, error) {
+	return c.Query().Where(projectstaff.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ProjectStaffClient) GetX(ctx context.Context, id xid.ID) *ProjectStaff {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryProject queries the project edge of a ProjectStaff.
+func (c *ProjectStaffClient) QueryProject(ps *ProjectStaff) *ProjectQuery {
+	query := (&ProjectClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ps.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(projectstaff.Table, projectstaff.FieldID, id),
+			sqlgraph.To(project.Table, project.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, projectstaff.ProjectTable, projectstaff.ProjectColumn),
+		)
+		fromV = sqlgraph.Neighbors(ps.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ProjectStaffClient) Hooks() []Hook {
+	return c.hooks.ProjectStaff
+}
+
+// Interceptors returns the client interceptors.
+func (c *ProjectStaffClient) Interceptors() []Interceptor {
+	return c.inters.ProjectStaff
+}
+
+func (c *ProjectStaffClient) mutate(ctx context.Context, m *ProjectStaffMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ProjectStaffCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ProjectStaffUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ProjectStaffUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ProjectStaffDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown ProjectStaff mutation op: %q", m.Op())
 	}
 }
 
@@ -2899,10 +3074,10 @@ func (c *VisitRecordClient) mutate(ctx context.Context, m *VisitRecordMutation) 
 type (
 	hooks struct {
 		Area, City, Competitor, Country, Customer, District, Operation, Plot, Project,
-		ProjectVO, Province, Tender, User, VisitRecord []ent.Hook
+		ProjectStaff, ProjectVO, Province, Tender, User, VisitRecord []ent.Hook
 	}
 	inters struct {
 		Area, City, Competitor, Country, Customer, District, Operation, Plot, Project,
-		ProjectVO, Province, Tender, User, VisitRecord []ent.Interceptor
+		ProjectStaff, ProjectVO, Province, Tender, User, VisitRecord []ent.Interceptor
 	}
 )

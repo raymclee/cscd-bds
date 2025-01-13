@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema"
@@ -219,6 +220,27 @@ func init() {
 	projectDescID := projectMixinFields0[0].Descriptor()
 	// project.DefaultID holds the default value on creation for the id field.
 	project.DefaultID = projectDescID.Default.(func() xid.ID)
+	projectstaffMixin := schema.ProjectStaff{}.Mixin()
+	projectstaffMixinFields0 := projectstaffMixin[0].Fields()
+	_ = projectstaffMixinFields0
+	projectstaffMixinFields1 := projectstaffMixin[1].Fields()
+	_ = projectstaffMixinFields1
+	projectstaffFields := schema.ProjectStaff{}.Fields()
+	_ = projectstaffFields
+	// projectstaffDescCreatedAt is the schema descriptor for created_at field.
+	projectstaffDescCreatedAt := projectstaffMixinFields1[0].Descriptor()
+	// projectstaff.DefaultCreatedAt holds the default value on creation for the created_at field.
+	projectstaff.DefaultCreatedAt = projectstaffDescCreatedAt.Default.(func() time.Time)
+	// projectstaffDescUpdatedAt is the schema descriptor for updated_at field.
+	projectstaffDescUpdatedAt := projectstaffMixinFields1[1].Descriptor()
+	// projectstaff.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	projectstaff.DefaultUpdatedAt = projectstaffDescUpdatedAt.Default.(func() time.Time)
+	// projectstaff.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	projectstaff.UpdateDefaultUpdatedAt = projectstaffDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// projectstaffDescID is the schema descriptor for id field.
+	projectstaffDescID := projectstaffMixinFields0[0].Descriptor()
+	// projectstaff.DefaultID holds the default value on creation for the id field.
+	projectstaff.DefaultID = projectstaffDescID.Default.(func() xid.ID)
 	projectvoMixin := schema.ProjectVO{}.Mixin()
 	projectvoMixinFields0 := projectvoMixin[0].Fields()
 	_ = projectvoMixinFields0

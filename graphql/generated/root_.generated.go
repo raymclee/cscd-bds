@@ -325,6 +325,10 @@ type ComplexityRoot struct {
 		Jzs                                     func(childComplexity int) int
 		Manager                                 func(childComplexity int) int
 		Mcn                                     func(childComplexity int) int
+		MilestoneDoneMonth                      func(childComplexity int) int
+		MilestoneDoneYear                       func(childComplexity int) int
+		MilestonePlanMonth                      func(childComplexity int) int
+		MilestonePlanYear                       func(childComplexity int) int
 		Mntyr                                   func(childComplexity int) int
 		Name                                    func(childComplexity int) int
 		OpDate                                  func(childComplexity int) int
@@ -333,6 +337,7 @@ type ComplexityRoot struct {
 		OwnerApplyCount                         func(childComplexity int) int
 		OwnerApproveAmount                      func(childComplexity int) int
 		OwnerApproveCount                       func(childComplexity int) int
+		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
 		UpdatedAt                               func(childComplexity int) int
@@ -354,6 +359,29 @@ type ComplexityRoot struct {
 	}
 
 	ProjectEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	ProjectStaff struct {
+		CreatedAt    func(childComplexity int) int
+		Cym          func(childComplexity int) int
+		Design       func(childComplexity int) int
+		ID           func(childComplexity int) int
+		Installation func(childComplexity int) int
+		Management   func(childComplexity int) int
+		Project      func(childComplexity int) int
+		ProjectID    func(childComplexity int) int
+		UpdatedAt    func(childComplexity int) int
+	}
+
+	ProjectStaffConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	ProjectStaffEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
 	}
@@ -410,6 +438,7 @@ type ComplexityRoot struct {
 		Nodes            func(childComplexity int, ids []xid.ID) int
 		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
 		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		ProjectStaffs    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		Projects         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
 		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
 		SearchFeishuUser func(childComplexity int, keyword string) int
@@ -2089,6 +2118,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.Mcn(childComplexity), true
 
+	case "Project.milestoneDoneMonth":
+		if e.complexity.Project.MilestoneDoneMonth == nil {
+			break
+		}
+
+		return e.complexity.Project.MilestoneDoneMonth(childComplexity), true
+
+	case "Project.milestoneDoneYear":
+		if e.complexity.Project.MilestoneDoneYear == nil {
+			break
+		}
+
+		return e.complexity.Project.MilestoneDoneYear(childComplexity), true
+
+	case "Project.milestonePlanMonth":
+		if e.complexity.Project.MilestonePlanMonth == nil {
+			break
+		}
+
+		return e.complexity.Project.MilestonePlanMonth(childComplexity), true
+
+	case "Project.milestonePlanYear":
+		if e.complexity.Project.MilestonePlanYear == nil {
+			break
+		}
+
+		return e.complexity.Project.MilestonePlanYear(childComplexity), true
+
 	case "Project.mntyr":
 		if e.complexity.Project.Mntyr == nil {
 			break
@@ -2144,6 +2201,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.OwnerApproveCount(childComplexity), true
+
+	case "Project.projectStaffs":
+		if e.complexity.Project.ProjectStaffs == nil {
+			break
+		}
+
+		args, err := ec.field_Project_projectStaffs_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Project.ProjectStaffs(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.ProjectStaffOrder), args["where"].(*ent.ProjectStaffWhereInput)), true
 
 	case "Project.startDate":
 		if e.complexity.Project.StartDate == nil {
@@ -2263,6 +2332,104 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ProjectEdge.Node(childComplexity), true
+
+	case "ProjectStaff.createdAt":
+		if e.complexity.ProjectStaff.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.CreatedAt(childComplexity), true
+
+	case "ProjectStaff.cym":
+		if e.complexity.ProjectStaff.Cym == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.Cym(childComplexity), true
+
+	case "ProjectStaff.design":
+		if e.complexity.ProjectStaff.Design == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.Design(childComplexity), true
+
+	case "ProjectStaff.id":
+		if e.complexity.ProjectStaff.ID == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.ID(childComplexity), true
+
+	case "ProjectStaff.installation":
+		if e.complexity.ProjectStaff.Installation == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.Installation(childComplexity), true
+
+	case "ProjectStaff.management":
+		if e.complexity.ProjectStaff.Management == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.Management(childComplexity), true
+
+	case "ProjectStaff.project":
+		if e.complexity.ProjectStaff.Project == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.Project(childComplexity), true
+
+	case "ProjectStaff.projectID":
+		if e.complexity.ProjectStaff.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.ProjectID(childComplexity), true
+
+	case "ProjectStaff.updatedAt":
+		if e.complexity.ProjectStaff.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaff.UpdatedAt(childComplexity), true
+
+	case "ProjectStaffConnection.edges":
+		if e.complexity.ProjectStaffConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaffConnection.Edges(childComplexity), true
+
+	case "ProjectStaffConnection.pageInfo":
+		if e.complexity.ProjectStaffConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaffConnection.PageInfo(childComplexity), true
+
+	case "ProjectStaffConnection.totalCount":
+		if e.complexity.ProjectStaffConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaffConnection.TotalCount(childComplexity), true
+
+	case "ProjectStaffEdge.cursor":
+		if e.complexity.ProjectStaffEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaffEdge.Cursor(childComplexity), true
+
+	case "ProjectStaffEdge.node":
+		if e.complexity.ProjectStaffEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.ProjectStaffEdge.Node(childComplexity), true
 
 	case "ProjectVO.applyAmount":
 		if e.complexity.ProjectVO.ApplyAmount == nil {
@@ -2601,6 +2768,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.PlotOrder), args["where"].(*ent.PlotWhereInput)), true
+
+	case "Query.projectStaffs":
+		if e.complexity.Query.ProjectStaffs == nil {
+			break
+		}
+
+		args, err := ec.field_Query_projectStaffs_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ProjectStaffs(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.ProjectStaffOrder), args["where"].(*ent.ProjectStaffWhereInput)), true
 
 	case "Query.projects":
 		if e.complexity.Query.Projects == nil {
@@ -3744,6 +3923,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputPlotOrder,
 		ec.unmarshalInputPlotWhereInput,
 		ec.unmarshalInputProjectOrder,
+		ec.unmarshalInputProjectStaffOrder,
+		ec.unmarshalInputProjectStaffWhereInput,
 		ec.unmarshalInputProjectVOOrder,
 		ec.unmarshalInputProjectVOWhereInput,
 		ec.unmarshalInputProjectWhereInput,
@@ -6200,7 +6381,54 @@ type Project implements Node {
   鐵型材預算百分比
   """
   ironBudgetPercentage: Float
+  """
+  里程碑計劃年份
+  """
+  milestonePlanYear: Int
+  """
+  里程碑計劃月份
+  """
+  milestonePlanMonth: Int
+  """
+  里程碑完成年份
+  """
+  milestoneDoneYear: Int
+  """
+  里程碑完成月份
+  """
+  milestoneDoneMonth: Int
   vos: [ProjectVO!]
+  projectStaffs(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for ProjectStaffs returned from the connection.
+    """
+    orderBy: [ProjectStaffOrder!]
+
+    """
+    Filtering options for ProjectStaffs returned from the connection.
+    """
+    where: ProjectStaffWhereInput
+  ): ProjectStaffConnection!
 }
 """
 A connection to a list of items.
@@ -6252,6 +6480,196 @@ enum ProjectOrderField {
   CREATED_AT
   CODE
   NAME
+}
+type ProjectStaff implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  """
+  Code-YYYY-MM
+  """
+  cym: String!
+  """
+  安裝人數
+  """
+  installation: Float
+  """
+  管理人數
+  """
+  management: Float
+  """
+  設計人數
+  """
+  design: Float
+  projectID: ID!
+  project: Project!
+}
+"""
+A connection to a list of items.
+"""
+type ProjectStaffConnection {
+  """
+  A list of edges.
+  """
+  edges: [ProjectStaffEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type ProjectStaffEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: ProjectStaff
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for ProjectStaff connections
+"""
+input ProjectStaffOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order ProjectStaffs.
+  """
+  field: ProjectStaffOrderField!
+}
+"""
+Properties by which ProjectStaff connections can be ordered.
+"""
+enum ProjectStaffOrderField {
+  CREATED_AT
+}
+"""
+ProjectStaffWhereInput is used for filtering ProjectStaff objects.
+Input was generated by ent.
+"""
+input ProjectStaffWhereInput {
+  not: ProjectStaffWhereInput
+  and: [ProjectStaffWhereInput!]
+  or: [ProjectStaffWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
+  """
+  cym field predicates
+  """
+  cym: String
+  cymNEQ: String
+  cymIn: [String!]
+  cymNotIn: [String!]
+  cymGT: String
+  cymGTE: String
+  cymLT: String
+  cymLTE: String
+  cymContains: String
+  cymHasPrefix: String
+  cymHasSuffix: String
+  cymEqualFold: String
+  cymContainsFold: String
+  """
+  installation field predicates
+  """
+  installation: Float
+  installationNEQ: Float
+  installationIn: [Float!]
+  installationNotIn: [Float!]
+  installationGT: Float
+  installationGTE: Float
+  installationLT: Float
+  installationLTE: Float
+  installationIsNil: Boolean
+  installationNotNil: Boolean
+  """
+  management field predicates
+  """
+  management: Float
+  managementNEQ: Float
+  managementIn: [Float!]
+  managementNotIn: [Float!]
+  managementGT: Float
+  managementGTE: Float
+  managementLT: Float
+  managementLTE: Float
+  managementIsNil: Boolean
+  managementNotNil: Boolean
+  """
+  design field predicates
+  """
+  design: Float
+  designNEQ: Float
+  designIn: [Float!]
+  designNotIn: [Float!]
+  designGT: Float
+  designGTE: Float
+  designLT: Float
+  designLTE: Float
+  designIsNil: Boolean
+  designNotNil: Boolean
+  """
+  project_id field predicates
+  """
+  projectID: ID
+  projectIDNEQ: ID
+  projectIDIn: [ID!]
+  projectIDNotIn: [ID!]
+  projectIDGT: ID
+  projectIDGTE: ID
+  projectIDLT: ID
+  projectIDLTE: ID
+  projectIDContains: ID
+  projectIDHasPrefix: ID
+  projectIDHasSuffix: ID
+  projectIDEqualFold: ID
+  projectIDContainsFold: ID
+  """
+  project edge predicates
+  """
+  hasProject: Boolean
+  hasProjectWith: [ProjectWhereInput!]
 }
 type ProjectVO implements Node {
   id: ID!
@@ -7080,10 +7498,67 @@ input ProjectWhereInput {
   ironBudgetPercentageIsNil: Boolean
   ironBudgetPercentageNotNil: Boolean
   """
+  milestone_plan_year field predicates
+  """
+  milestonePlanYear: Int
+  milestonePlanYearNEQ: Int
+  milestonePlanYearIn: [Int!]
+  milestonePlanYearNotIn: [Int!]
+  milestonePlanYearGT: Int
+  milestonePlanYearGTE: Int
+  milestonePlanYearLT: Int
+  milestonePlanYearLTE: Int
+  milestonePlanYearIsNil: Boolean
+  milestonePlanYearNotNil: Boolean
+  """
+  milestone_plan_month field predicates
+  """
+  milestonePlanMonth: Int
+  milestonePlanMonthNEQ: Int
+  milestonePlanMonthIn: [Int!]
+  milestonePlanMonthNotIn: [Int!]
+  milestonePlanMonthGT: Int
+  milestonePlanMonthGTE: Int
+  milestonePlanMonthLT: Int
+  milestonePlanMonthLTE: Int
+  milestonePlanMonthIsNil: Boolean
+  milestonePlanMonthNotNil: Boolean
+  """
+  milestone_done_year field predicates
+  """
+  milestoneDoneYear: Int
+  milestoneDoneYearNEQ: Int
+  milestoneDoneYearIn: [Int!]
+  milestoneDoneYearNotIn: [Int!]
+  milestoneDoneYearGT: Int
+  milestoneDoneYearGTE: Int
+  milestoneDoneYearLT: Int
+  milestoneDoneYearLTE: Int
+  milestoneDoneYearIsNil: Boolean
+  milestoneDoneYearNotNil: Boolean
+  """
+  milestone_done_month field predicates
+  """
+  milestoneDoneMonth: Int
+  milestoneDoneMonthNEQ: Int
+  milestoneDoneMonthIn: [Int!]
+  milestoneDoneMonthNotIn: [Int!]
+  milestoneDoneMonthGT: Int
+  milestoneDoneMonthGTE: Int
+  milestoneDoneMonthLT: Int
+  milestoneDoneMonthLTE: Int
+  milestoneDoneMonthIsNil: Boolean
+  milestoneDoneMonthNotNil: Boolean
+  """
   vos edge predicates
   """
   hasVos: Boolean
   hasVosWith: [ProjectVOWhereInput!]
+  """
+  project_staffs edge predicates
+  """
+  hasProjectStaffs: Boolean
+  hasProjectStaffsWith: [ProjectStaffWhereInput!]
 }
 type Province implements Node {
   id: ID!
@@ -7664,6 +8139,37 @@ type Query {
     """
     where: ProjectWhereInput
   ): ProjectConnection!
+  projectStaffs(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for ProjectStaffs returned from the connection.
+    """
+    orderBy: [ProjectStaffOrder!]
+
+    """
+    Filtering options for ProjectStaffs returned from the connection.
+    """
+    where: ProjectStaffWhereInput
+  ): ProjectStaffConnection!
   provinces(
     """
     Returns the elements in the list that come after the specified cursor.

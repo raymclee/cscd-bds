@@ -53,7 +53,7 @@ func main() {
 	fetchCustomer()
 	fetchTender()
 	fetchVisitRecord()
-	fetchCompetitor()
+	// fetchCompetitor()
 
 }
 
@@ -338,36 +338,36 @@ func fetchTender() {
 			prepareToBid                         bool = false
 			currentProgress                      *string
 			projectCode                          *string
-			projectDefinition                    *string
-			estimatedProjectStartDate            *time.Time
-			estimatedProjectEndDate              *time.Time
-			projectType                          *string
-			tenderSituations                     *string
-			ownerSituation                       *string
-			costEngineer                         *string
-			biddingInstructions                  *string
-			competitorSituation                  *string
-			contractForm                         *string
-			tenderForm                           *string
-			remark                               *string
-			tenderingAgency                      *string
-			managementCompany                    *string
-			designUnit                           *string
-			keyProject                           = false
-			consultingFirm                       *string
-			facadeConsultant                     *string
-			biddingDate                          *time.Time
-			createdAt                            *time.Time
-			updatedAt                            *time.Time
-			coordinate                           *geo.GeoJson
-			followingSales                       *ent.User
-			prov                                 *ent.Province
-			cit                                  *ent.City
-			distr                                *ent.District
-			are                                  *ent.Area
-			cust                                 *ent.Customer
-			finder                               *ent.User
-			createdBy                            *ent.User
+			// projectType                          *string
+			// projectDefinition                    *string
+			estimatedProjectStartDate *time.Time
+			estimatedProjectEndDate   *time.Time
+			tenderSituations          *string
+			ownerSituation            *string
+			costEngineer              *string
+			biddingInstructions       *string
+			competitorSituation       *string
+			contractForm              *string
+			tenderForm                *string
+			remark                    *string
+			tenderingAgency           *string
+			managementCompany         *string
+			designUnit                *string
+			keyProject                = false
+			consultingFirm            *string
+			facadeConsultant          *string
+			biddingDate               *time.Time
+			createdAt                 *time.Time
+			updatedAt                 *time.Time
+			coordinate                *geo.GeoJson
+			followingSales            *ent.User
+			prov                      *ent.Province
+			cit                       *ent.City
+			distr                     *ent.District
+			are                       *ent.Area
+			cust                      *ent.Customer
+			finder                    *ent.User
+			createdBy                 *ent.User
 
 			images []string
 		)
@@ -566,6 +566,7 @@ func fetchTender() {
 							cust, err = s.Customer.Query().Where(customer.NameEQ(t)).Only(ctx)
 							if err != nil {
 								if ent.IsNotFound(err) {
+									fmt.Printf("%s 客户不存在\n", t)
 									continue
 								}
 								panic(err)
@@ -831,17 +832,17 @@ func fetchTender() {
 			}
 		}
 
-		if f, ok := item.Fields["项目定义"]; ok {
-			if v, ok := f.(string); ok {
-				projectDefinition = &v
-			}
-		}
+		// if f, ok := item.Fields["项目定义"]; ok {
+		// 	if v, ok := f.(string); ok {
+		// 		projectDefinition = &v
+		// 	}
+		// }
 
-		if f, ok := item.Fields["项目类型"]; ok {
-			if v, ok := f.(string); ok {
-				projectType = &v
-			}
-		}
+		// if f, ok := item.Fields["项目类型"]; ok {
+		// 	if v, ok := f.(string); ok {
+		// 		projectType = &v
+		// 	}
+		// }
 
 		if f, ok := item.Fields["商机发现人"]; ok {
 			if v, ok := f.([]interface{}); ok {
@@ -888,10 +889,10 @@ func fetchTender() {
 			SetNillableEstimatedAmount(estimatedAmount).
 			SetPrepareToBid(prepareToBid).
 			SetNillableProjectCode(projectCode).
-			SetNillableProjectDefinition(projectDefinition).
+			// SetNillableProjectType(projectType).
+			// SetNillableProjectDefinition(projectDefinition).
 			SetNillableEstimatedProjectStartDate(estimatedProjectStartDate).
 			SetNillableEstimatedProjectEndDate(estimatedProjectEndDate).
-			SetNillableProjectType(projectType).
 			SetNillableTenderSituations(tenderSituations).
 			SetNillableCostEngineer(costEngineer).
 			SetNillableBiddingInstructions(biddingInstructions).
@@ -1230,7 +1231,6 @@ func fetchCustomer() {
 		}
 
 		if f, ok := item.Fields["对接人邮箱"]; ok {
-			fmt.Printf("%T\n", f)
 			if v, ok := f.(string); ok {
 				contactPersonEmail = &v
 			}

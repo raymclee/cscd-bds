@@ -1,16 +1,16 @@
-import { Pie, PieConfig } from "@ant-design/plots";
-import { useAreaTenders } from "~/hooks/use-area-tenders";
-import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { X } from "lucide-react";
 import { motion } from "motion/react";
-import { Minus, X } from "lucide-react";
+import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { TenderListTable } from "./tender-list-table";
+import { ScrollArea } from "../ui/scroll-area";
+
 const MotionCard = motion.create(Card);
 const MotionCardHeader = motion.create(CardHeader);
 const MotionCardContent = motion.create(CardContent);
-const MotionMinus = motion.create(Minus);
 
-export function DashboardTenderListMore() {
+export function DashboardTenderListBoardMore() {
   return (
     <>
       <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
@@ -50,7 +50,7 @@ export function DashboardTenderListMore() {
           transition={{ duration: 0.2, delay: 0.1 }}
           layoutId="dashboard-tender-list-board"
           className={cn(
-            "mx-4 block h-[90vh] w-[90%] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[90vh] w-[800px] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
           <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -60,7 +60,11 @@ export function DashboardTenderListMore() {
               </motion.span>
             </div>
           </MotionCardHeader>
-          <MotionCardContent className="grid h-[calc(100%-48px)] grid-cols-4 gap-4 p-4"></MotionCardContent>
+          <MotionCardContent className="h-[calc(100%-16px)]">
+            <ScrollArea className="-mx-4 h-full px-4">
+              <TenderListTable />
+            </ScrollArea>
+          </MotionCardContent>
         </MotionCard>
       </div>
     </>

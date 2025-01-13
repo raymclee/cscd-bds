@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
@@ -86,20 +87,21 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			area.Table:        area.ValidColumn,
-			city.Table:        city.ValidColumn,
-			competitor.Table:  competitor.ValidColumn,
-			country.Table:     country.ValidColumn,
-			customer.Table:    customer.ValidColumn,
-			district.Table:    district.ValidColumn,
-			operation.Table:   operation.ValidColumn,
-			plot.Table:        plot.ValidColumn,
-			project.Table:     project.ValidColumn,
-			projectvo.Table:   projectvo.ValidColumn,
-			province.Table:    province.ValidColumn,
-			tender.Table:      tender.ValidColumn,
-			user.Table:        user.ValidColumn,
-			visitrecord.Table: visitrecord.ValidColumn,
+			area.Table:         area.ValidColumn,
+			city.Table:         city.ValidColumn,
+			competitor.Table:   competitor.ValidColumn,
+			country.Table:      country.ValidColumn,
+			customer.Table:     customer.ValidColumn,
+			district.Table:     district.ValidColumn,
+			operation.Table:    operation.ValidColumn,
+			plot.Table:         plot.ValidColumn,
+			project.Table:      project.ValidColumn,
+			projectstaff.Table: projectstaff.ValidColumn,
+			projectvo.Table:    projectvo.ValidColumn,
+			province.Table:     province.ValidColumn,
+			tender.Table:       tender.ValidColumn,
+			user.Table:         user.ValidColumn,
+			visitrecord.Table:  visitrecord.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

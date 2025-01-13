@@ -33,6 +33,10 @@ function RouteComponent() {
         tenderListVisible: false,
         tenderViewTender: null,
         selectedTenderStatus: null,
+        moreDashboardTenderListBoardVisible: false,
+        moreNewTenderBoardVisible: false,
+        moreRankingListBoardVisible: false,
+        moreTenderTypeBoardVisible: false,
       });
       map?.destroy();
     };

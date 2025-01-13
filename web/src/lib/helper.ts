@@ -7,8 +7,14 @@ import {
   TenderConnection,
 } from "~/graphql/graphql";
 
-export function percent(numerator: number, denominator: number): number {
-  return denominator === 0 ? 0 : Math.floor((numerator / denominator) * 100);
+export function percent(
+  numerator?: number | null,
+  denominator?: number | null,
+): number {
+  if (!numerator || !denominator) {
+    return 0;
+  }
+  return Math.floor((numerator / denominator) * 100);
 }
 
 export function projectTypeText(typ: Maybe<string> | undefined): string {
@@ -305,6 +311,7 @@ export function materialStatusIconColor(percentage?: number | null): string {
     return "text-gray-400";
   }
   if (percentage > 100) {
+    console.log(percentage);
     return "text-red-600";
   } else if (percentage > 80) {
     return "text-yellow-500";

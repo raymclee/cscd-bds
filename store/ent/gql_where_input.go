@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -4432,9 +4433,61 @@ type ProjectWhereInput struct {
 	IronBudgetPercentageIsNil  bool      `json:"ironBudgetPercentageIsNil,omitempty"`
 	IronBudgetPercentageNotNil bool      `json:"ironBudgetPercentageNotNil,omitempty"`
 
+	// "milestone_plan_year" field predicates.
+	MilestonePlanYear       *int  `json:"milestonePlanYear,omitempty"`
+	MilestonePlanYearNEQ    *int  `json:"milestonePlanYearNEQ,omitempty"`
+	MilestonePlanYearIn     []int `json:"milestonePlanYearIn,omitempty"`
+	MilestonePlanYearNotIn  []int `json:"milestonePlanYearNotIn,omitempty"`
+	MilestonePlanYearGT     *int  `json:"milestonePlanYearGT,omitempty"`
+	MilestonePlanYearGTE    *int  `json:"milestonePlanYearGTE,omitempty"`
+	MilestonePlanYearLT     *int  `json:"milestonePlanYearLT,omitempty"`
+	MilestonePlanYearLTE    *int  `json:"milestonePlanYearLTE,omitempty"`
+	MilestonePlanYearIsNil  bool  `json:"milestonePlanYearIsNil,omitempty"`
+	MilestonePlanYearNotNil bool  `json:"milestonePlanYearNotNil,omitempty"`
+
+	// "milestone_plan_month" field predicates.
+	MilestonePlanMonth       *int  `json:"milestonePlanMonth,omitempty"`
+	MilestonePlanMonthNEQ    *int  `json:"milestonePlanMonthNEQ,omitempty"`
+	MilestonePlanMonthIn     []int `json:"milestonePlanMonthIn,omitempty"`
+	MilestonePlanMonthNotIn  []int `json:"milestonePlanMonthNotIn,omitempty"`
+	MilestonePlanMonthGT     *int  `json:"milestonePlanMonthGT,omitempty"`
+	MilestonePlanMonthGTE    *int  `json:"milestonePlanMonthGTE,omitempty"`
+	MilestonePlanMonthLT     *int  `json:"milestonePlanMonthLT,omitempty"`
+	MilestonePlanMonthLTE    *int  `json:"milestonePlanMonthLTE,omitempty"`
+	MilestonePlanMonthIsNil  bool  `json:"milestonePlanMonthIsNil,omitempty"`
+	MilestonePlanMonthNotNil bool  `json:"milestonePlanMonthNotNil,omitempty"`
+
+	// "milestone_done_year" field predicates.
+	MilestoneDoneYear       *int  `json:"milestoneDoneYear,omitempty"`
+	MilestoneDoneYearNEQ    *int  `json:"milestoneDoneYearNEQ,omitempty"`
+	MilestoneDoneYearIn     []int `json:"milestoneDoneYearIn,omitempty"`
+	MilestoneDoneYearNotIn  []int `json:"milestoneDoneYearNotIn,omitempty"`
+	MilestoneDoneYearGT     *int  `json:"milestoneDoneYearGT,omitempty"`
+	MilestoneDoneYearGTE    *int  `json:"milestoneDoneYearGTE,omitempty"`
+	MilestoneDoneYearLT     *int  `json:"milestoneDoneYearLT,omitempty"`
+	MilestoneDoneYearLTE    *int  `json:"milestoneDoneYearLTE,omitempty"`
+	MilestoneDoneYearIsNil  bool  `json:"milestoneDoneYearIsNil,omitempty"`
+	MilestoneDoneYearNotNil bool  `json:"milestoneDoneYearNotNil,omitempty"`
+
+	// "milestone_done_month" field predicates.
+	MilestoneDoneMonth       *int  `json:"milestoneDoneMonth,omitempty"`
+	MilestoneDoneMonthNEQ    *int  `json:"milestoneDoneMonthNEQ,omitempty"`
+	MilestoneDoneMonthIn     []int `json:"milestoneDoneMonthIn,omitempty"`
+	MilestoneDoneMonthNotIn  []int `json:"milestoneDoneMonthNotIn,omitempty"`
+	MilestoneDoneMonthGT     *int  `json:"milestoneDoneMonthGT,omitempty"`
+	MilestoneDoneMonthGTE    *int  `json:"milestoneDoneMonthGTE,omitempty"`
+	MilestoneDoneMonthLT     *int  `json:"milestoneDoneMonthLT,omitempty"`
+	MilestoneDoneMonthLTE    *int  `json:"milestoneDoneMonthLTE,omitempty"`
+	MilestoneDoneMonthIsNil  bool  `json:"milestoneDoneMonthIsNil,omitempty"`
+	MilestoneDoneMonthNotNil bool  `json:"milestoneDoneMonthNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
+
+	// "project_staffs" edge predicates.
+	HasProjectStaffs     *bool                     `json:"hasProjectStaffs,omitempty"`
+	HasProjectStaffsWith []*ProjectStaffWhereInput `json:"hasProjectStaffsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -6005,6 +6058,126 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	if i.IronBudgetPercentageNotNil {
 		predicates = append(predicates, project.IronBudgetPercentageNotNil())
 	}
+	if i.MilestonePlanYear != nil {
+		predicates = append(predicates, project.MilestonePlanYearEQ(*i.MilestonePlanYear))
+	}
+	if i.MilestonePlanYearNEQ != nil {
+		predicates = append(predicates, project.MilestonePlanYearNEQ(*i.MilestonePlanYearNEQ))
+	}
+	if len(i.MilestonePlanYearIn) > 0 {
+		predicates = append(predicates, project.MilestonePlanYearIn(i.MilestonePlanYearIn...))
+	}
+	if len(i.MilestonePlanYearNotIn) > 0 {
+		predicates = append(predicates, project.MilestonePlanYearNotIn(i.MilestonePlanYearNotIn...))
+	}
+	if i.MilestonePlanYearGT != nil {
+		predicates = append(predicates, project.MilestonePlanYearGT(*i.MilestonePlanYearGT))
+	}
+	if i.MilestonePlanYearGTE != nil {
+		predicates = append(predicates, project.MilestonePlanYearGTE(*i.MilestonePlanYearGTE))
+	}
+	if i.MilestonePlanYearLT != nil {
+		predicates = append(predicates, project.MilestonePlanYearLT(*i.MilestonePlanYearLT))
+	}
+	if i.MilestonePlanYearLTE != nil {
+		predicates = append(predicates, project.MilestonePlanYearLTE(*i.MilestonePlanYearLTE))
+	}
+	if i.MilestonePlanYearIsNil {
+		predicates = append(predicates, project.MilestonePlanYearIsNil())
+	}
+	if i.MilestonePlanYearNotNil {
+		predicates = append(predicates, project.MilestonePlanYearNotNil())
+	}
+	if i.MilestonePlanMonth != nil {
+		predicates = append(predicates, project.MilestonePlanMonthEQ(*i.MilestonePlanMonth))
+	}
+	if i.MilestonePlanMonthNEQ != nil {
+		predicates = append(predicates, project.MilestonePlanMonthNEQ(*i.MilestonePlanMonthNEQ))
+	}
+	if len(i.MilestonePlanMonthIn) > 0 {
+		predicates = append(predicates, project.MilestonePlanMonthIn(i.MilestonePlanMonthIn...))
+	}
+	if len(i.MilestonePlanMonthNotIn) > 0 {
+		predicates = append(predicates, project.MilestonePlanMonthNotIn(i.MilestonePlanMonthNotIn...))
+	}
+	if i.MilestonePlanMonthGT != nil {
+		predicates = append(predicates, project.MilestonePlanMonthGT(*i.MilestonePlanMonthGT))
+	}
+	if i.MilestonePlanMonthGTE != nil {
+		predicates = append(predicates, project.MilestonePlanMonthGTE(*i.MilestonePlanMonthGTE))
+	}
+	if i.MilestonePlanMonthLT != nil {
+		predicates = append(predicates, project.MilestonePlanMonthLT(*i.MilestonePlanMonthLT))
+	}
+	if i.MilestonePlanMonthLTE != nil {
+		predicates = append(predicates, project.MilestonePlanMonthLTE(*i.MilestonePlanMonthLTE))
+	}
+	if i.MilestonePlanMonthIsNil {
+		predicates = append(predicates, project.MilestonePlanMonthIsNil())
+	}
+	if i.MilestonePlanMonthNotNil {
+		predicates = append(predicates, project.MilestonePlanMonthNotNil())
+	}
+	if i.MilestoneDoneYear != nil {
+		predicates = append(predicates, project.MilestoneDoneYearEQ(*i.MilestoneDoneYear))
+	}
+	if i.MilestoneDoneYearNEQ != nil {
+		predicates = append(predicates, project.MilestoneDoneYearNEQ(*i.MilestoneDoneYearNEQ))
+	}
+	if len(i.MilestoneDoneYearIn) > 0 {
+		predicates = append(predicates, project.MilestoneDoneYearIn(i.MilestoneDoneYearIn...))
+	}
+	if len(i.MilestoneDoneYearNotIn) > 0 {
+		predicates = append(predicates, project.MilestoneDoneYearNotIn(i.MilestoneDoneYearNotIn...))
+	}
+	if i.MilestoneDoneYearGT != nil {
+		predicates = append(predicates, project.MilestoneDoneYearGT(*i.MilestoneDoneYearGT))
+	}
+	if i.MilestoneDoneYearGTE != nil {
+		predicates = append(predicates, project.MilestoneDoneYearGTE(*i.MilestoneDoneYearGTE))
+	}
+	if i.MilestoneDoneYearLT != nil {
+		predicates = append(predicates, project.MilestoneDoneYearLT(*i.MilestoneDoneYearLT))
+	}
+	if i.MilestoneDoneYearLTE != nil {
+		predicates = append(predicates, project.MilestoneDoneYearLTE(*i.MilestoneDoneYearLTE))
+	}
+	if i.MilestoneDoneYearIsNil {
+		predicates = append(predicates, project.MilestoneDoneYearIsNil())
+	}
+	if i.MilestoneDoneYearNotNil {
+		predicates = append(predicates, project.MilestoneDoneYearNotNil())
+	}
+	if i.MilestoneDoneMonth != nil {
+		predicates = append(predicates, project.MilestoneDoneMonthEQ(*i.MilestoneDoneMonth))
+	}
+	if i.MilestoneDoneMonthNEQ != nil {
+		predicates = append(predicates, project.MilestoneDoneMonthNEQ(*i.MilestoneDoneMonthNEQ))
+	}
+	if len(i.MilestoneDoneMonthIn) > 0 {
+		predicates = append(predicates, project.MilestoneDoneMonthIn(i.MilestoneDoneMonthIn...))
+	}
+	if len(i.MilestoneDoneMonthNotIn) > 0 {
+		predicates = append(predicates, project.MilestoneDoneMonthNotIn(i.MilestoneDoneMonthNotIn...))
+	}
+	if i.MilestoneDoneMonthGT != nil {
+		predicates = append(predicates, project.MilestoneDoneMonthGT(*i.MilestoneDoneMonthGT))
+	}
+	if i.MilestoneDoneMonthGTE != nil {
+		predicates = append(predicates, project.MilestoneDoneMonthGTE(*i.MilestoneDoneMonthGTE))
+	}
+	if i.MilestoneDoneMonthLT != nil {
+		predicates = append(predicates, project.MilestoneDoneMonthLT(*i.MilestoneDoneMonthLT))
+	}
+	if i.MilestoneDoneMonthLTE != nil {
+		predicates = append(predicates, project.MilestoneDoneMonthLTE(*i.MilestoneDoneMonthLTE))
+	}
+	if i.MilestoneDoneMonthIsNil {
+		predicates = append(predicates, project.MilestoneDoneMonthIsNil())
+	}
+	if i.MilestoneDoneMonthNotNil {
+		predicates = append(predicates, project.MilestoneDoneMonthNotNil())
+	}
 
 	if i.HasVos != nil {
 		p := project.HasVos()
@@ -6024,6 +6197,24 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 		}
 		predicates = append(predicates, project.HasVosWith(with...))
 	}
+	if i.HasProjectStaffs != nil {
+		p := project.HasProjectStaffs()
+		if !*i.HasProjectStaffs {
+			p = project.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProjectStaffsWith) > 0 {
+		with := make([]predicate.ProjectStaff, 0, len(i.HasProjectStaffsWith))
+		for _, w := range i.HasProjectStaffsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProjectStaffsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, project.HasProjectStaffsWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyProjectWhereInput
@@ -6031,6 +6222,454 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 		return predicates[0], nil
 	default:
 		return project.And(predicates...), nil
+	}
+}
+
+// ProjectStaffWhereInput represents a where input for filtering ProjectStaff queries.
+type ProjectStaffWhereInput struct {
+	Predicates []predicate.ProjectStaff  `json:"-"`
+	Not        *ProjectStaffWhereInput   `json:"not,omitempty"`
+	Or         []*ProjectStaffWhereInput `json:"or,omitempty"`
+	And        []*ProjectStaffWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "cym" field predicates.
+	Cym             *string  `json:"cym,omitempty"`
+	CymNEQ          *string  `json:"cymNEQ,omitempty"`
+	CymIn           []string `json:"cymIn,omitempty"`
+	CymNotIn        []string `json:"cymNotIn,omitempty"`
+	CymGT           *string  `json:"cymGT,omitempty"`
+	CymGTE          *string  `json:"cymGTE,omitempty"`
+	CymLT           *string  `json:"cymLT,omitempty"`
+	CymLTE          *string  `json:"cymLTE,omitempty"`
+	CymContains     *string  `json:"cymContains,omitempty"`
+	CymHasPrefix    *string  `json:"cymHasPrefix,omitempty"`
+	CymHasSuffix    *string  `json:"cymHasSuffix,omitempty"`
+	CymEqualFold    *string  `json:"cymEqualFold,omitempty"`
+	CymContainsFold *string  `json:"cymContainsFold,omitempty"`
+
+	// "installation" field predicates.
+	Installation       *float64  `json:"installation,omitempty"`
+	InstallationNEQ    *float64  `json:"installationNEQ,omitempty"`
+	InstallationIn     []float64 `json:"installationIn,omitempty"`
+	InstallationNotIn  []float64 `json:"installationNotIn,omitempty"`
+	InstallationGT     *float64  `json:"installationGT,omitempty"`
+	InstallationGTE    *float64  `json:"installationGTE,omitempty"`
+	InstallationLT     *float64  `json:"installationLT,omitempty"`
+	InstallationLTE    *float64  `json:"installationLTE,omitempty"`
+	InstallationIsNil  bool      `json:"installationIsNil,omitempty"`
+	InstallationNotNil bool      `json:"installationNotNil,omitempty"`
+
+	// "management" field predicates.
+	Management       *float64  `json:"management,omitempty"`
+	ManagementNEQ    *float64  `json:"managementNEQ,omitempty"`
+	ManagementIn     []float64 `json:"managementIn,omitempty"`
+	ManagementNotIn  []float64 `json:"managementNotIn,omitempty"`
+	ManagementGT     *float64  `json:"managementGT,omitempty"`
+	ManagementGTE    *float64  `json:"managementGTE,omitempty"`
+	ManagementLT     *float64  `json:"managementLT,omitempty"`
+	ManagementLTE    *float64  `json:"managementLTE,omitempty"`
+	ManagementIsNil  bool      `json:"managementIsNil,omitempty"`
+	ManagementNotNil bool      `json:"managementNotNil,omitempty"`
+
+	// "design" field predicates.
+	Design       *float64  `json:"design,omitempty"`
+	DesignNEQ    *float64  `json:"designNEQ,omitempty"`
+	DesignIn     []float64 `json:"designIn,omitempty"`
+	DesignNotIn  []float64 `json:"designNotIn,omitempty"`
+	DesignGT     *float64  `json:"designGT,omitempty"`
+	DesignGTE    *float64  `json:"designGTE,omitempty"`
+	DesignLT     *float64  `json:"designLT,omitempty"`
+	DesignLTE    *float64  `json:"designLTE,omitempty"`
+	DesignIsNil  bool      `json:"designIsNil,omitempty"`
+	DesignNotNil bool      `json:"designNotNil,omitempty"`
+
+	// "project_id" field predicates.
+	ProjectID             *xid.ID  `json:"projectID,omitempty"`
+	ProjectIDNEQ          *xid.ID  `json:"projectIDNEQ,omitempty"`
+	ProjectIDIn           []xid.ID `json:"projectIDIn,omitempty"`
+	ProjectIDNotIn        []xid.ID `json:"projectIDNotIn,omitempty"`
+	ProjectIDGT           *xid.ID  `json:"projectIDGT,omitempty"`
+	ProjectIDGTE          *xid.ID  `json:"projectIDGTE,omitempty"`
+	ProjectIDLT           *xid.ID  `json:"projectIDLT,omitempty"`
+	ProjectIDLTE          *xid.ID  `json:"projectIDLTE,omitempty"`
+	ProjectIDContains     *xid.ID  `json:"projectIDContains,omitempty"`
+	ProjectIDHasPrefix    *xid.ID  `json:"projectIDHasPrefix,omitempty"`
+	ProjectIDHasSuffix    *xid.ID  `json:"projectIDHasSuffix,omitempty"`
+	ProjectIDEqualFold    *xid.ID  `json:"projectIDEqualFold,omitempty"`
+	ProjectIDContainsFold *xid.ID  `json:"projectIDContainsFold,omitempty"`
+
+	// "project" edge predicates.
+	HasProject     *bool                `json:"hasProject,omitempty"`
+	HasProjectWith []*ProjectWhereInput `json:"hasProjectWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *ProjectStaffWhereInput) AddPredicates(predicates ...predicate.ProjectStaff) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the ProjectStaffWhereInput filter on the ProjectStaffQuery builder.
+func (i *ProjectStaffWhereInput) Filter(q *ProjectStaffQuery) (*ProjectStaffQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyProjectStaffWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyProjectStaffWhereInput is returned in case the ProjectStaffWhereInput is empty.
+var ErrEmptyProjectStaffWhereInput = errors.New("ent: empty predicate ProjectStaffWhereInput")
+
+// P returns a predicate for filtering projectstaffs.
+// An error is returned if the input is empty or invalid.
+func (i *ProjectStaffWhereInput) P() (predicate.ProjectStaff, error) {
+	var predicates []predicate.ProjectStaff
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, projectstaff.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.ProjectStaff, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, projectstaff.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.ProjectStaff, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, projectstaff.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, projectstaff.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, projectstaff.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, projectstaff.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, projectstaff.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, projectstaff.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, projectstaff.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, projectstaff.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, projectstaff.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, projectstaff.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, projectstaff.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, projectstaff.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, projectstaff.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, projectstaff.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, projectstaff.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, projectstaff.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, projectstaff.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, projectstaff.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, projectstaff.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, projectstaff.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, projectstaff.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, projectstaff.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, projectstaff.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, projectstaff.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, projectstaff.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.Cym != nil {
+		predicates = append(predicates, projectstaff.CymEQ(*i.Cym))
+	}
+	if i.CymNEQ != nil {
+		predicates = append(predicates, projectstaff.CymNEQ(*i.CymNEQ))
+	}
+	if len(i.CymIn) > 0 {
+		predicates = append(predicates, projectstaff.CymIn(i.CymIn...))
+	}
+	if len(i.CymNotIn) > 0 {
+		predicates = append(predicates, projectstaff.CymNotIn(i.CymNotIn...))
+	}
+	if i.CymGT != nil {
+		predicates = append(predicates, projectstaff.CymGT(*i.CymGT))
+	}
+	if i.CymGTE != nil {
+		predicates = append(predicates, projectstaff.CymGTE(*i.CymGTE))
+	}
+	if i.CymLT != nil {
+		predicates = append(predicates, projectstaff.CymLT(*i.CymLT))
+	}
+	if i.CymLTE != nil {
+		predicates = append(predicates, projectstaff.CymLTE(*i.CymLTE))
+	}
+	if i.CymContains != nil {
+		predicates = append(predicates, projectstaff.CymContains(*i.CymContains))
+	}
+	if i.CymHasPrefix != nil {
+		predicates = append(predicates, projectstaff.CymHasPrefix(*i.CymHasPrefix))
+	}
+	if i.CymHasSuffix != nil {
+		predicates = append(predicates, projectstaff.CymHasSuffix(*i.CymHasSuffix))
+	}
+	if i.CymEqualFold != nil {
+		predicates = append(predicates, projectstaff.CymEqualFold(*i.CymEqualFold))
+	}
+	if i.CymContainsFold != nil {
+		predicates = append(predicates, projectstaff.CymContainsFold(*i.CymContainsFold))
+	}
+	if i.Installation != nil {
+		predicates = append(predicates, projectstaff.InstallationEQ(*i.Installation))
+	}
+	if i.InstallationNEQ != nil {
+		predicates = append(predicates, projectstaff.InstallationNEQ(*i.InstallationNEQ))
+	}
+	if len(i.InstallationIn) > 0 {
+		predicates = append(predicates, projectstaff.InstallationIn(i.InstallationIn...))
+	}
+	if len(i.InstallationNotIn) > 0 {
+		predicates = append(predicates, projectstaff.InstallationNotIn(i.InstallationNotIn...))
+	}
+	if i.InstallationGT != nil {
+		predicates = append(predicates, projectstaff.InstallationGT(*i.InstallationGT))
+	}
+	if i.InstallationGTE != nil {
+		predicates = append(predicates, projectstaff.InstallationGTE(*i.InstallationGTE))
+	}
+	if i.InstallationLT != nil {
+		predicates = append(predicates, projectstaff.InstallationLT(*i.InstallationLT))
+	}
+	if i.InstallationLTE != nil {
+		predicates = append(predicates, projectstaff.InstallationLTE(*i.InstallationLTE))
+	}
+	if i.InstallationIsNil {
+		predicates = append(predicates, projectstaff.InstallationIsNil())
+	}
+	if i.InstallationNotNil {
+		predicates = append(predicates, projectstaff.InstallationNotNil())
+	}
+	if i.Management != nil {
+		predicates = append(predicates, projectstaff.ManagementEQ(*i.Management))
+	}
+	if i.ManagementNEQ != nil {
+		predicates = append(predicates, projectstaff.ManagementNEQ(*i.ManagementNEQ))
+	}
+	if len(i.ManagementIn) > 0 {
+		predicates = append(predicates, projectstaff.ManagementIn(i.ManagementIn...))
+	}
+	if len(i.ManagementNotIn) > 0 {
+		predicates = append(predicates, projectstaff.ManagementNotIn(i.ManagementNotIn...))
+	}
+	if i.ManagementGT != nil {
+		predicates = append(predicates, projectstaff.ManagementGT(*i.ManagementGT))
+	}
+	if i.ManagementGTE != nil {
+		predicates = append(predicates, projectstaff.ManagementGTE(*i.ManagementGTE))
+	}
+	if i.ManagementLT != nil {
+		predicates = append(predicates, projectstaff.ManagementLT(*i.ManagementLT))
+	}
+	if i.ManagementLTE != nil {
+		predicates = append(predicates, projectstaff.ManagementLTE(*i.ManagementLTE))
+	}
+	if i.ManagementIsNil {
+		predicates = append(predicates, projectstaff.ManagementIsNil())
+	}
+	if i.ManagementNotNil {
+		predicates = append(predicates, projectstaff.ManagementNotNil())
+	}
+	if i.Design != nil {
+		predicates = append(predicates, projectstaff.DesignEQ(*i.Design))
+	}
+	if i.DesignNEQ != nil {
+		predicates = append(predicates, projectstaff.DesignNEQ(*i.DesignNEQ))
+	}
+	if len(i.DesignIn) > 0 {
+		predicates = append(predicates, projectstaff.DesignIn(i.DesignIn...))
+	}
+	if len(i.DesignNotIn) > 0 {
+		predicates = append(predicates, projectstaff.DesignNotIn(i.DesignNotIn...))
+	}
+	if i.DesignGT != nil {
+		predicates = append(predicates, projectstaff.DesignGT(*i.DesignGT))
+	}
+	if i.DesignGTE != nil {
+		predicates = append(predicates, projectstaff.DesignGTE(*i.DesignGTE))
+	}
+	if i.DesignLT != nil {
+		predicates = append(predicates, projectstaff.DesignLT(*i.DesignLT))
+	}
+	if i.DesignLTE != nil {
+		predicates = append(predicates, projectstaff.DesignLTE(*i.DesignLTE))
+	}
+	if i.DesignIsNil {
+		predicates = append(predicates, projectstaff.DesignIsNil())
+	}
+	if i.DesignNotNil {
+		predicates = append(predicates, projectstaff.DesignNotNil())
+	}
+	if i.ProjectID != nil {
+		predicates = append(predicates, projectstaff.ProjectIDEQ(*i.ProjectID))
+	}
+	if i.ProjectIDNEQ != nil {
+		predicates = append(predicates, projectstaff.ProjectIDNEQ(*i.ProjectIDNEQ))
+	}
+	if len(i.ProjectIDIn) > 0 {
+		predicates = append(predicates, projectstaff.ProjectIDIn(i.ProjectIDIn...))
+	}
+	if len(i.ProjectIDNotIn) > 0 {
+		predicates = append(predicates, projectstaff.ProjectIDNotIn(i.ProjectIDNotIn...))
+	}
+	if i.ProjectIDGT != nil {
+		predicates = append(predicates, projectstaff.ProjectIDGT(*i.ProjectIDGT))
+	}
+	if i.ProjectIDGTE != nil {
+		predicates = append(predicates, projectstaff.ProjectIDGTE(*i.ProjectIDGTE))
+	}
+	if i.ProjectIDLT != nil {
+		predicates = append(predicates, projectstaff.ProjectIDLT(*i.ProjectIDLT))
+	}
+	if i.ProjectIDLTE != nil {
+		predicates = append(predicates, projectstaff.ProjectIDLTE(*i.ProjectIDLTE))
+	}
+	if i.ProjectIDContains != nil {
+		predicates = append(predicates, projectstaff.ProjectIDContains(*i.ProjectIDContains))
+	}
+	if i.ProjectIDHasPrefix != nil {
+		predicates = append(predicates, projectstaff.ProjectIDHasPrefix(*i.ProjectIDHasPrefix))
+	}
+	if i.ProjectIDHasSuffix != nil {
+		predicates = append(predicates, projectstaff.ProjectIDHasSuffix(*i.ProjectIDHasSuffix))
+	}
+	if i.ProjectIDEqualFold != nil {
+		predicates = append(predicates, projectstaff.ProjectIDEqualFold(*i.ProjectIDEqualFold))
+	}
+	if i.ProjectIDContainsFold != nil {
+		predicates = append(predicates, projectstaff.ProjectIDContainsFold(*i.ProjectIDContainsFold))
+	}
+
+	if i.HasProject != nil {
+		p := projectstaff.HasProject()
+		if !*i.HasProject {
+			p = projectstaff.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProjectWith) > 0 {
+		with := make([]predicate.Project, 0, len(i.HasProjectWith))
+		for _, w := range i.HasProjectWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProjectWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, projectstaff.HasProjectWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyProjectStaffWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return projectstaff.And(predicates...), nil
 	}
 }
 

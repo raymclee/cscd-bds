@@ -281,6 +281,26 @@ func IronBudgetPercentage(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldIronBudgetPercentage, v))
 }
 
+// MilestonePlanYear applies equality check predicate on the "milestone_plan_year" field. It's identical to MilestonePlanYearEQ.
+func MilestonePlanYear(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanMonth applies equality check predicate on the "milestone_plan_month" field. It's identical to MilestonePlanMonthEQ.
+func MilestonePlanMonth(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestonePlanMonth, v))
+}
+
+// MilestoneDoneYear applies equality check predicate on the "milestone_done_year" field. It's identical to MilestoneDoneYearEQ.
+func MilestoneDoneYear(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneMonth applies equality check predicate on the "milestone_done_month" field. It's identical to MilestoneDoneMonthEQ.
+func MilestoneDoneMonth(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneMonth, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -2736,6 +2756,206 @@ func IronBudgetPercentageNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldIronBudgetPercentage))
 }
 
+// MilestonePlanYearEQ applies the EQ predicate on the "milestone_plan_year" field.
+func MilestonePlanYearEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanYearNEQ applies the NEQ predicate on the "milestone_plan_year" field.
+func MilestonePlanYearNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanYearIn applies the In predicate on the "milestone_plan_year" field.
+func MilestonePlanYearIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMilestonePlanYear, vs...))
+}
+
+// MilestonePlanYearNotIn applies the NotIn predicate on the "milestone_plan_year" field.
+func MilestonePlanYearNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMilestonePlanYear, vs...))
+}
+
+// MilestonePlanYearGT applies the GT predicate on the "milestone_plan_year" field.
+func MilestonePlanYearGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanYearGTE applies the GTE predicate on the "milestone_plan_year" field.
+func MilestonePlanYearGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanYearLT applies the LT predicate on the "milestone_plan_year" field.
+func MilestonePlanYearLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanYearLTE applies the LTE predicate on the "milestone_plan_year" field.
+func MilestonePlanYearLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMilestonePlanYear, v))
+}
+
+// MilestonePlanYearIsNil applies the IsNil predicate on the "milestone_plan_year" field.
+func MilestonePlanYearIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMilestonePlanYear))
+}
+
+// MilestonePlanYearNotNil applies the NotNil predicate on the "milestone_plan_year" field.
+func MilestonePlanYearNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMilestonePlanYear))
+}
+
+// MilestonePlanMonthEQ applies the EQ predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestonePlanMonth, v))
+}
+
+// MilestonePlanMonthNEQ applies the NEQ predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMilestonePlanMonth, v))
+}
+
+// MilestonePlanMonthIn applies the In predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMilestonePlanMonth, vs...))
+}
+
+// MilestonePlanMonthNotIn applies the NotIn predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMilestonePlanMonth, vs...))
+}
+
+// MilestonePlanMonthGT applies the GT predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMilestonePlanMonth, v))
+}
+
+// MilestonePlanMonthGTE applies the GTE predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMilestonePlanMonth, v))
+}
+
+// MilestonePlanMonthLT applies the LT predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMilestonePlanMonth, v))
+}
+
+// MilestonePlanMonthLTE applies the LTE predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMilestonePlanMonth, v))
+}
+
+// MilestonePlanMonthIsNil applies the IsNil predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMilestonePlanMonth))
+}
+
+// MilestonePlanMonthNotNil applies the NotNil predicate on the "milestone_plan_month" field.
+func MilestonePlanMonthNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMilestonePlanMonth))
+}
+
+// MilestoneDoneYearEQ applies the EQ predicate on the "milestone_done_year" field.
+func MilestoneDoneYearEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneYearNEQ applies the NEQ predicate on the "milestone_done_year" field.
+func MilestoneDoneYearNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneYearIn applies the In predicate on the "milestone_done_year" field.
+func MilestoneDoneYearIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMilestoneDoneYear, vs...))
+}
+
+// MilestoneDoneYearNotIn applies the NotIn predicate on the "milestone_done_year" field.
+func MilestoneDoneYearNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMilestoneDoneYear, vs...))
+}
+
+// MilestoneDoneYearGT applies the GT predicate on the "milestone_done_year" field.
+func MilestoneDoneYearGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneYearGTE applies the GTE predicate on the "milestone_done_year" field.
+func MilestoneDoneYearGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneYearLT applies the LT predicate on the "milestone_done_year" field.
+func MilestoneDoneYearLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneYearLTE applies the LTE predicate on the "milestone_done_year" field.
+func MilestoneDoneYearLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMilestoneDoneYear, v))
+}
+
+// MilestoneDoneYearIsNil applies the IsNil predicate on the "milestone_done_year" field.
+func MilestoneDoneYearIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMilestoneDoneYear))
+}
+
+// MilestoneDoneYearNotNil applies the NotNil predicate on the "milestone_done_year" field.
+func MilestoneDoneYearNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMilestoneDoneYear))
+}
+
+// MilestoneDoneMonthEQ applies the EQ predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneMonth, v))
+}
+
+// MilestoneDoneMonthNEQ applies the NEQ predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMilestoneDoneMonth, v))
+}
+
+// MilestoneDoneMonthIn applies the In predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMilestoneDoneMonth, vs...))
+}
+
+// MilestoneDoneMonthNotIn applies the NotIn predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMilestoneDoneMonth, vs...))
+}
+
+// MilestoneDoneMonthGT applies the GT predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMilestoneDoneMonth, v))
+}
+
+// MilestoneDoneMonthGTE applies the GTE predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMilestoneDoneMonth, v))
+}
+
+// MilestoneDoneMonthLT applies the LT predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMilestoneDoneMonth, v))
+}
+
+// MilestoneDoneMonthLTE applies the LTE predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMilestoneDoneMonth, v))
+}
+
+// MilestoneDoneMonthIsNil applies the IsNil predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMilestoneDoneMonth))
+}
+
+// MilestoneDoneMonthNotNil applies the NotNil predicate on the "milestone_done_month" field.
+func MilestoneDoneMonthNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMilestoneDoneMonth))
+}
+
 // HasVos applies the HasEdge predicate on the "vos" edge.
 func HasVos() predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
@@ -2751,6 +2971,29 @@ func HasVos() predicate.Project {
 func HasVosWith(preds ...predicate.ProjectVO) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		step := newVosStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProjectStaffs applies the HasEdge predicate on the "project_staffs" edge.
+func HasProjectStaffs() predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProjectStaffsTable, ProjectStaffsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProjectStaffsWith applies the HasEdge predicate on the "project_staffs" edge with a given conditions (other predicates).
+func HasProjectStaffsWith(preds ...predicate.ProjectStaff) predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := newProjectStaffsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

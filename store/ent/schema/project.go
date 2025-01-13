@@ -312,6 +312,41 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("鐵型材預算百分比"),
+
+		// field.Float("staff_install").
+		// 	Optional().
+		// 	Nillable().
+		// 	Comment("安裝人員"),
+
+		// field.Float("staff_management").
+		// 	Optional().
+		// 	Nillable().
+		// 	Comment("管理人員"),
+
+		// field.Float("staff_design").
+		// 	Optional().
+		// 	Nillable().
+		// 	Comment("設計人員"),
+
+		field.Int("milestone_plan_year").
+			Optional().
+			Nillable().
+			Comment("里程碑計劃年份"),
+
+		field.Int("milestone_plan_month").
+			Optional().
+			Nillable().
+			Comment("里程碑計劃月份"),
+
+		field.Int("milestone_done_year").
+			Optional().
+			Nillable().
+			Comment("里程碑完成年份"),
+
+		field.Int("milestone_done_month").
+			Optional().
+			Nillable().
+			Comment("里程碑完成月份"),
 	}
 }
 
@@ -319,6 +354,10 @@ func (Project) Fields() []ent.Field {
 func (Project) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("vos", ProjectVO.Type),
+		edge.To("project_staffs", ProjectStaff.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

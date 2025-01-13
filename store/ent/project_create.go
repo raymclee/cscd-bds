@@ -5,6 +5,7 @@ package ent
 import (
 	"context"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
 	"errors"
@@ -647,6 +648,62 @@ func (pc *ProjectCreate) SetNillableIronBudgetPercentage(f *float64) *ProjectCre
 	return pc
 }
 
+// SetMilestonePlanYear sets the "milestone_plan_year" field.
+func (pc *ProjectCreate) SetMilestonePlanYear(i int) *ProjectCreate {
+	pc.mutation.SetMilestonePlanYear(i)
+	return pc
+}
+
+// SetNillableMilestonePlanYear sets the "milestone_plan_year" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMilestonePlanYear(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetMilestonePlanYear(*i)
+	}
+	return pc
+}
+
+// SetMilestonePlanMonth sets the "milestone_plan_month" field.
+func (pc *ProjectCreate) SetMilestonePlanMonth(i int) *ProjectCreate {
+	pc.mutation.SetMilestonePlanMonth(i)
+	return pc
+}
+
+// SetNillableMilestonePlanMonth sets the "milestone_plan_month" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMilestonePlanMonth(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetMilestonePlanMonth(*i)
+	}
+	return pc
+}
+
+// SetMilestoneDoneYear sets the "milestone_done_year" field.
+func (pc *ProjectCreate) SetMilestoneDoneYear(i int) *ProjectCreate {
+	pc.mutation.SetMilestoneDoneYear(i)
+	return pc
+}
+
+// SetNillableMilestoneDoneYear sets the "milestone_done_year" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMilestoneDoneYear(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetMilestoneDoneYear(*i)
+	}
+	return pc
+}
+
+// SetMilestoneDoneMonth sets the "milestone_done_month" field.
+func (pc *ProjectCreate) SetMilestoneDoneMonth(i int) *ProjectCreate {
+	pc.mutation.SetMilestoneDoneMonth(i)
+	return pc
+}
+
+// SetNillableMilestoneDoneMonth sets the "milestone_done_month" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMilestoneDoneMonth(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetMilestoneDoneMonth(*i)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -674,6 +731,21 @@ func (pc *ProjectCreate) AddVos(p ...*ProjectVO) *ProjectCreate {
 		ids[i] = p[i].ID
 	}
 	return pc.AddVoIDs(ids...)
+}
+
+// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by IDs.
+func (pc *ProjectCreate) AddProjectStaffIDs(ids ...xid.ID) *ProjectCreate {
+	pc.mutation.AddProjectStaffIDs(ids...)
+	return pc
+}
+
+// AddProjectStaffs adds the "project_staffs" edges to the ProjectStaff entity.
+func (pc *ProjectCreate) AddProjectStaffs(p ...*ProjectStaff) *ProjectCreate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pc.AddProjectStaffIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -959,6 +1031,22 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec.SetField(project.FieldIronBudgetPercentage, field.TypeFloat64, value)
 		_node.IronBudgetPercentage = &value
 	}
+	if value, ok := pc.mutation.MilestonePlanYear(); ok {
+		_spec.SetField(project.FieldMilestonePlanYear, field.TypeInt, value)
+		_node.MilestonePlanYear = &value
+	}
+	if value, ok := pc.mutation.MilestonePlanMonth(); ok {
+		_spec.SetField(project.FieldMilestonePlanMonth, field.TypeInt, value)
+		_node.MilestonePlanMonth = &value
+	}
+	if value, ok := pc.mutation.MilestoneDoneYear(); ok {
+		_spec.SetField(project.FieldMilestoneDoneYear, field.TypeInt, value)
+		_node.MilestoneDoneYear = &value
+	}
+	if value, ok := pc.mutation.MilestoneDoneMonth(); ok {
+		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
+		_node.MilestoneDoneMonth = &value
+	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -968,6 +1056,22 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.ProjectStaffsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -1960,6 +2064,102 @@ func (u *ProjectUpsert) AddIronBudgetPercentage(v float64) *ProjectUpsert {
 // ClearIronBudgetPercentage clears the value of the "iron_budget_percentage" field.
 func (u *ProjectUpsert) ClearIronBudgetPercentage() *ProjectUpsert {
 	u.SetNull(project.FieldIronBudgetPercentage)
+	return u
+}
+
+// SetMilestonePlanYear sets the "milestone_plan_year" field.
+func (u *ProjectUpsert) SetMilestonePlanYear(v int) *ProjectUpsert {
+	u.Set(project.FieldMilestonePlanYear, v)
+	return u
+}
+
+// UpdateMilestonePlanYear sets the "milestone_plan_year" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMilestonePlanYear() *ProjectUpsert {
+	u.SetExcluded(project.FieldMilestonePlanYear)
+	return u
+}
+
+// AddMilestonePlanYear adds v to the "milestone_plan_year" field.
+func (u *ProjectUpsert) AddMilestonePlanYear(v int) *ProjectUpsert {
+	u.Add(project.FieldMilestonePlanYear, v)
+	return u
+}
+
+// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
+func (u *ProjectUpsert) ClearMilestonePlanYear() *ProjectUpsert {
+	u.SetNull(project.FieldMilestonePlanYear)
+	return u
+}
+
+// SetMilestonePlanMonth sets the "milestone_plan_month" field.
+func (u *ProjectUpsert) SetMilestonePlanMonth(v int) *ProjectUpsert {
+	u.Set(project.FieldMilestonePlanMonth, v)
+	return u
+}
+
+// UpdateMilestonePlanMonth sets the "milestone_plan_month" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMilestonePlanMonth() *ProjectUpsert {
+	u.SetExcluded(project.FieldMilestonePlanMonth)
+	return u
+}
+
+// AddMilestonePlanMonth adds v to the "milestone_plan_month" field.
+func (u *ProjectUpsert) AddMilestonePlanMonth(v int) *ProjectUpsert {
+	u.Add(project.FieldMilestonePlanMonth, v)
+	return u
+}
+
+// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
+func (u *ProjectUpsert) ClearMilestonePlanMonth() *ProjectUpsert {
+	u.SetNull(project.FieldMilestonePlanMonth)
+	return u
+}
+
+// SetMilestoneDoneYear sets the "milestone_done_year" field.
+func (u *ProjectUpsert) SetMilestoneDoneYear(v int) *ProjectUpsert {
+	u.Set(project.FieldMilestoneDoneYear, v)
+	return u
+}
+
+// UpdateMilestoneDoneYear sets the "milestone_done_year" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMilestoneDoneYear() *ProjectUpsert {
+	u.SetExcluded(project.FieldMilestoneDoneYear)
+	return u
+}
+
+// AddMilestoneDoneYear adds v to the "milestone_done_year" field.
+func (u *ProjectUpsert) AddMilestoneDoneYear(v int) *ProjectUpsert {
+	u.Add(project.FieldMilestoneDoneYear, v)
+	return u
+}
+
+// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
+func (u *ProjectUpsert) ClearMilestoneDoneYear() *ProjectUpsert {
+	u.SetNull(project.FieldMilestoneDoneYear)
+	return u
+}
+
+// SetMilestoneDoneMonth sets the "milestone_done_month" field.
+func (u *ProjectUpsert) SetMilestoneDoneMonth(v int) *ProjectUpsert {
+	u.Set(project.FieldMilestoneDoneMonth, v)
+	return u
+}
+
+// UpdateMilestoneDoneMonth sets the "milestone_done_month" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMilestoneDoneMonth() *ProjectUpsert {
+	u.SetExcluded(project.FieldMilestoneDoneMonth)
+	return u
+}
+
+// AddMilestoneDoneMonth adds v to the "milestone_done_month" field.
+func (u *ProjectUpsert) AddMilestoneDoneMonth(v int) *ProjectUpsert {
+	u.Add(project.FieldMilestoneDoneMonth, v)
+	return u
+}
+
+// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
+func (u *ProjectUpsert) ClearMilestoneDoneMonth() *ProjectUpsert {
+	u.SetNull(project.FieldMilestoneDoneMonth)
 	return u
 }
 
@@ -3103,6 +3303,118 @@ func (u *ProjectUpsertOne) UpdateIronBudgetPercentage() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearIronBudgetPercentage() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearIronBudgetPercentage()
+	})
+}
+
+// SetMilestonePlanYear sets the "milestone_plan_year" field.
+func (u *ProjectUpsertOne) SetMilestonePlanYear(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestonePlanYear(v)
+	})
+}
+
+// AddMilestonePlanYear adds v to the "milestone_plan_year" field.
+func (u *ProjectUpsertOne) AddMilestonePlanYear(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestonePlanYear(v)
+	})
+}
+
+// UpdateMilestonePlanYear sets the "milestone_plan_year" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMilestonePlanYear() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestonePlanYear()
+	})
+}
+
+// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
+func (u *ProjectUpsertOne) ClearMilestonePlanYear() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestonePlanYear()
+	})
+}
+
+// SetMilestonePlanMonth sets the "milestone_plan_month" field.
+func (u *ProjectUpsertOne) SetMilestonePlanMonth(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestonePlanMonth(v)
+	})
+}
+
+// AddMilestonePlanMonth adds v to the "milestone_plan_month" field.
+func (u *ProjectUpsertOne) AddMilestonePlanMonth(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestonePlanMonth(v)
+	})
+}
+
+// UpdateMilestonePlanMonth sets the "milestone_plan_month" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMilestonePlanMonth() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestonePlanMonth()
+	})
+}
+
+// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
+func (u *ProjectUpsertOne) ClearMilestonePlanMonth() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestonePlanMonth()
+	})
+}
+
+// SetMilestoneDoneYear sets the "milestone_done_year" field.
+func (u *ProjectUpsertOne) SetMilestoneDoneYear(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestoneDoneYear(v)
+	})
+}
+
+// AddMilestoneDoneYear adds v to the "milestone_done_year" field.
+func (u *ProjectUpsertOne) AddMilestoneDoneYear(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestoneDoneYear(v)
+	})
+}
+
+// UpdateMilestoneDoneYear sets the "milestone_done_year" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMilestoneDoneYear() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestoneDoneYear()
+	})
+}
+
+// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
+func (u *ProjectUpsertOne) ClearMilestoneDoneYear() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestoneDoneYear()
+	})
+}
+
+// SetMilestoneDoneMonth sets the "milestone_done_month" field.
+func (u *ProjectUpsertOne) SetMilestoneDoneMonth(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestoneDoneMonth(v)
+	})
+}
+
+// AddMilestoneDoneMonth adds v to the "milestone_done_month" field.
+func (u *ProjectUpsertOne) AddMilestoneDoneMonth(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestoneDoneMonth(v)
+	})
+}
+
+// UpdateMilestoneDoneMonth sets the "milestone_done_month" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMilestoneDoneMonth() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestoneDoneMonth()
+	})
+}
+
+// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
+func (u *ProjectUpsertOne) ClearMilestoneDoneMonth() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestoneDoneMonth()
 	})
 }
 
@@ -4413,6 +4725,118 @@ func (u *ProjectUpsertBulk) UpdateIronBudgetPercentage() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearIronBudgetPercentage() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearIronBudgetPercentage()
+	})
+}
+
+// SetMilestonePlanYear sets the "milestone_plan_year" field.
+func (u *ProjectUpsertBulk) SetMilestonePlanYear(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestonePlanYear(v)
+	})
+}
+
+// AddMilestonePlanYear adds v to the "milestone_plan_year" field.
+func (u *ProjectUpsertBulk) AddMilestonePlanYear(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestonePlanYear(v)
+	})
+}
+
+// UpdateMilestonePlanYear sets the "milestone_plan_year" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMilestonePlanYear() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestonePlanYear()
+	})
+}
+
+// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
+func (u *ProjectUpsertBulk) ClearMilestonePlanYear() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestonePlanYear()
+	})
+}
+
+// SetMilestonePlanMonth sets the "milestone_plan_month" field.
+func (u *ProjectUpsertBulk) SetMilestonePlanMonth(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestonePlanMonth(v)
+	})
+}
+
+// AddMilestonePlanMonth adds v to the "milestone_plan_month" field.
+func (u *ProjectUpsertBulk) AddMilestonePlanMonth(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestonePlanMonth(v)
+	})
+}
+
+// UpdateMilestonePlanMonth sets the "milestone_plan_month" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMilestonePlanMonth() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestonePlanMonth()
+	})
+}
+
+// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
+func (u *ProjectUpsertBulk) ClearMilestonePlanMonth() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestonePlanMonth()
+	})
+}
+
+// SetMilestoneDoneYear sets the "milestone_done_year" field.
+func (u *ProjectUpsertBulk) SetMilestoneDoneYear(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestoneDoneYear(v)
+	})
+}
+
+// AddMilestoneDoneYear adds v to the "milestone_done_year" field.
+func (u *ProjectUpsertBulk) AddMilestoneDoneYear(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestoneDoneYear(v)
+	})
+}
+
+// UpdateMilestoneDoneYear sets the "milestone_done_year" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMilestoneDoneYear() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestoneDoneYear()
+	})
+}
+
+// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
+func (u *ProjectUpsertBulk) ClearMilestoneDoneYear() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestoneDoneYear()
+	})
+}
+
+// SetMilestoneDoneMonth sets the "milestone_done_month" field.
+func (u *ProjectUpsertBulk) SetMilestoneDoneMonth(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMilestoneDoneMonth(v)
+	})
+}
+
+// AddMilestoneDoneMonth adds v to the "milestone_done_month" field.
+func (u *ProjectUpsertBulk) AddMilestoneDoneMonth(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMilestoneDoneMonth(v)
+	})
+}
+
+// UpdateMilestoneDoneMonth sets the "milestone_done_month" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMilestoneDoneMonth() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMilestoneDoneMonth()
+	})
+}
+
+// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
+func (u *ProjectUpsertBulk) ClearMilestoneDoneMonth() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMilestoneDoneMonth()
 	})
 }
 

@@ -19,6 +19,7 @@ import {
 import { cn } from "~/lib/utils";
 import dayjs from "dayjs";
 import { TextScramble } from "~/components/ui/text-scramble";
+import { Column, ColumnConfig } from "@ant-design/plots";
 
 import b1 from "~/assets/svg/box1.png";
 import b2 from "~/assets/svg/box2.png";
@@ -75,6 +76,7 @@ import componentTop from "~/assets/svg/component_top.png";
 
 import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
+import { Project } from "~/graphql/graphql";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -127,6 +129,23 @@ function RouteComponent() {
               aluminumBudgetPercentage
               glassBudgetPercentage
               ironBudgetPercentage
+              milestonePlanYear
+              milestonePlanMonth
+              milestoneDoneYear
+              milestoneDoneMonth
+              projectStaffs(
+                first: 3
+                orderBy: { field: CREATED_AT, direction: DESC }
+              ) {
+                edges {
+                  node {
+                    installation
+                    management
+                    design
+                    createdAt
+                  }
+                }
+              }
             }
           }
         }
@@ -238,6 +257,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const aluminumBudgetPercentage = pj?.aluminumBudgetPercentage ?? 0;
   const glassBudgetPercentage = pj?.glassBudgetPercentage ?? 0;
   const ironBudgetPercentage = pj?.ironBudgetPercentage ?? 0;
+  const milestonePlanYear = pj?.milestonePlanYear || 0;
+  const milestonePlanMonth = pj?.milestonePlanMonth || 0;
+  const milestoneDoneYear = pj?.milestoneDoneYear || 0;
+  const milestoneDoneMonth = pj?.milestoneDoneMonth || 0;
 
   return (
     <>
@@ -256,28 +279,28 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative">
                 <img
                   src={costManagement1}
-                  className="absolute inset-0 object-contain w-auto h-full"
+                  className="absolute inset-0 h-full w-auto object-contain"
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem]">
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
-                      <div className="flex items-center justify-between gap-4 px-2 cursor-pointer">
+                      <div className="flex cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
-                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
+                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(ownerApplyAmount),
                           )}
                           万
                         </div>
                       </div>
-                      <div className="flex items-center justify-between gap-4 px-2 mt-1 cursor-pointer w">
+                      <div className="w mt-1 flex cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
-                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
+                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(contractorApplyAmount),
                           )}
@@ -289,12 +312,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       side="right"
                       sideOffset={10}
                       align="start"
-                      className="z-10 px-6 py-4 overflow-hidden border rounded-lg border-slate-700 bg-slate-800/5 shadow-dashboard-card backdrop-blur-xl"
+                      className="z-10 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/5 px-6 py-4 shadow-dashboard-card backdrop-blur-xl"
                     >
                       <h3 className="mb-2 text-sm font-bold underline">
                         累计VO情况
                       </h3>
-                      <div className="grid grid-cols-3 text-sm gap-x-8 gap-y-2">
+                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm">
                         <div className="col-span-2">安装进度</div>
                         <div className="text-brand-project">
                           {installProgress}%
@@ -356,9 +379,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
-                  <div className="flex items-center justify-between gap-4 px-2 mt-1">
+                  <div className="mt-1 flex items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
+                    <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                       {`${currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
@@ -382,17 +405,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative">
                 <img
                   src={costManagement2}
-                  className="absolute inset-0 object-contain w-auto h-full"
+                  className="absolute inset-0 h-full w-auto object-contain"
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem]">
                   <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger>
-                      <div className="flex items-center justify-between w-full gap-4 px-2 cursor-pointer">
+                      <div className="flex w-full cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           业主VO
                         </div>
-                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
+                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                           {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                           {currentFormatter.format(
                             formatProjectAmount(ownerApproveAmount),
@@ -400,11 +423,11 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                           万
                         </div>
                       </div>
-                      <div className="flex items-center justify-between w-full gap-4 px-2 mt-1 cursor-pointer">
+                      <div className="mt-1 flex w-full cursor-pointer items-center justify-between gap-4 px-2">
                         <div className="text-xs text-brand-project-3">
                           总包VO
                         </div>
-                        <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
+                        <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                           {currentFormatter.format(
                             formatProjectAmount(contractorApproveAmount),
                           )}
@@ -416,12 +439,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       side="right"
                       sideOffset={10}
                       align="start"
-                      className="z-10 px-6 py-4 overflow-hidden border rounded-lg border-slate-700 bg-slate-800/5 shadow-dashboard-card backdrop-blur-xl"
+                      className="z-10 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/5 px-6 py-4 shadow-dashboard-card backdrop-blur-xl"
                     >
                       <h3 className="mb-2 text-sm font-bold underline">
                         累计VO情况
                       </h3>
-                      <div className="grid grid-cols-3 text-sm gap-x-8 gap-y-2">
+                      <div className="grid grid-cols-3 gap-x-8 gap-y-2 text-sm">
                         <div className="col-span-2">安装进度</div>
                         <div className="text-brand-project">
                           {installProgress}%
@@ -483,9 +506,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   {/* <HoverCard.Root openDelay={100} closeDelay={100}>
                     <HoverCard.Trigger asChild> */}
-                  <div className="flex items-center justify-between w-full gap-4 px-2 mt-1">
+                  <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="flex-1 text-xs font-bold text-right line-clamp-1 text-brand-project-2">
+                    <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
                       {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
                       {currentFormatter.format(
                         formatProjectAmount(vaApproveAmount),
@@ -510,13 +533,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative">
                 <img
                   src={costManagement3}
-                  className="object-contain w-auto h-full"
+                  className="h-full w-auto object-contain"
                 />
 
                 <div className="absolute left-0 right-0 top-[2.75rem] space-y-1">
                   <div className="grid w-full grid-cols-[1.2fr_2.2fr_1fr] gap-1 px-2">
                     <div className="text-xs text-brand-project-3">业主VO</div>
-                    <div className="flex items-center flex-1">
+                    <div className="flex flex-1 items-center">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={percent(ownerApproveAmount, ownerApplyAmount)}
@@ -531,7 +554,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   <div className="grid w-full grid-cols-[1.2fr_2.2fr_1fr] gap-1 px-2">
                     <div className="text-xs text-brand-project-3">总包VO</div>
-                    <div className="flex items-center flex-1">
+                    <div className="flex flex-1 items-center">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={percent(
@@ -549,7 +572,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                   <div className="grid w-full grid-cols-[1.2fr_2.2fr_1fr] gap-1 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
-                    <div className="flex items-center flex-1">
+                    <div className="flex flex-1 items-center">
                       <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-1.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={percent(vaApproveAmount, vaApproveAmount)}
@@ -570,7 +593,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
             <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2 shadow-lg">
               <div className="flex">
-                <div className="flex flex-col items-center justify-center flex-1">
+                <div className="flex flex-1 flex-col items-center justify-center">
                   <div
                     className={cn(
                       "font-bold",
@@ -592,12 +615,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </TextScramble>
                     万
                   </div>
-                  <div className="font-semibold text-xxs text-slate-400">
+                  <div className="text-xxs font-semibold text-slate-400">
                     本期非法定扣款
                   </div>
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
-                <div className="flex flex-col items-center justify-center flex-1">
+                <div className="flex flex-1 flex-col items-center justify-center">
                   <div className={"font-bold text-brand-project"}>
                     <TextScramble
                       characterSet="0123456789"
@@ -610,12 +633,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </TextScramble>
                     万
                   </div>
-                  <div className="font-semibold text-xxs text-slate-400">
+                  <div className="text-xxs font-semibold text-slate-400">
                     累计非法定扣款
                   </div>
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
-                <div className="flex flex-col items-center justify-center flex-1">
+                <div className="flex flex-1 flex-col items-center justify-center">
                   <div
                     className={cn(
                       "font-bold",
@@ -639,7 +662,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </TextScramble>
                     %
                   </div>
-                  <div className="font-semibold text-xxs text-slate-400">
+                  <div className="text-xxs font-semibold text-slate-400">
                     累计非法定扣款占比
                   </div>
                 </div>
@@ -647,9 +670,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative mt-2 h-14">
                 <img
                   src={costIncome}
-                  className="absolute inset-0 object-cover w-full h-full"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
-                <div className="absolute -translate-y-1/2 right-14 top-1/2">
+                <div className="absolute right-14 top-1/2 -translate-y-1/2">
                   <div className="flex items-baseline text-lg font-bold text-brand-project">
                     <TextScramble characterSet="0123456789" key={pj?.code}>
                       {currentFormatter.format(
@@ -665,20 +688,20 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
           <div>
             <SubTitle>材料预算预警</SubTitle>
-            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 pb-2 pt-2 shadow-lg">
+            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-1 pb-2 pt-2 shadow-lg">
               <div className="mt-1">
                 <div className="flex gap-8 px-1">
                   <div className="flex items-center gap-1">
-                    <MaterialStatusIcon className="w-3 h-3 text-red-600" />
-                    <span className="text-red-200 text-xxs">已超预算</span>
+                    <MaterialStatusIcon className="h-3 w-3 text-red-600" />
+                    <span className="text-xxs text-red-200">已超预算</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MaterialStatusIcon className="w-3 h-3 text-yellow-500" />
-                    <span className="text-red-200 text-xxs">可能超预算</span>
+                    <MaterialStatusIcon className="h-3 w-3 text-yellow-500" />
+                    <span className="text-xxs text-red-200">可能超预算</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MaterialStatusIcon className="w-3 h-3 text-green-400" />
-                    <span className="text-red-200 text-xxs">未超预算</span>
+                    <MaterialStatusIcon className="h-3 w-3 text-green-400" />
+                    <span className="text-xxs text-red-200">未超预算</span>
                   </div>
                 </div>
               </div>
@@ -686,18 +709,18 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative mt-2">
                 <img
                   src={materialsAlertBg}
-                  className="absolute inset-0 w-full h-14"
+                  className="absolute inset-0 h-14 w-full"
                 />
 
-                <div className="relative grid grid-cols-4 h-14 justify-items-stretch">
-                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
+                <div className="relative grid h-14 grid-cols-4 justify-items-stretch">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "w-3 h-3",
+                        "h-3 w-3",
                         materialStatusIconColor(aluminumPlateBudgetPercentage),
                       )}
                     />
-                    <span className="text-red-200 text-xxs">铝板</span>
+                    <span className="text-xxs text-red-200">铝板</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -709,19 +732,19 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(aluminumPlateBudgetPercentage)}`}
+                        {`${aluminumPlateBudgetPercentage.toFixed(1)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "w-3 h-3",
+                        "h-3 w-3",
                         materialStatusIconColor(aluminumBudgetPercentage),
                       )}
                     />
-                    <span className="text-red-200 text-xxs">铝型材</span>
+                    <span className="text-xxs text-red-200">铝型材</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -733,19 +756,19 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(aluminumBudgetPercentage)}`}
+                        {`${aluminumBudgetPercentage.toFixed(1)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "w-3 h-3",
+                        "h-3 w-3",
                         materialStatusIconColor(glassBudgetPercentage),
                       )}
                     />
-                    <span className="text-red-200 text-xxs">玻璃</span>
+                    <span className="text-xxs text-red-200">玻璃</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -757,19 +780,19 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(glassBudgetPercentage)}`}
+                        {`${glassBudgetPercentage.toFixed(1)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 pb-1 mx-auto text-ellipsis text-nowrap">
+                  <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "w-3 h-3",
+                        "h-3 w-3",
                         materialStatusIconColor(ironBudgetPercentage),
                       )}
                     />
-                    <span className="text-red-200 text-xxs">铁型材</span>
+                    <span className="text-xxs text-red-200">铁型材</span>
                     <div
                       className={cn(
                         "text-sm font-bold",
@@ -781,7 +804,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(ironBudgetPercentage)}`}
+                        {`${ironBudgetPercentage.toFixed(1)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
@@ -802,7 +825,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             <div className="flex gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
               <div className="relative h-[4.8rem] flex-1">
                 <img src={stockLeft} className="absolute inset-0 my-auto" />
-                <div className="absolute font-bold text-yellow-500 -translate-y-1/2 right-8 top-1/2">
+                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
                   <TextScramble
                     as="span"
                     characterSet="0123456789"
@@ -815,7 +838,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               </div>
               <div className="relative h-[4.8rem] flex-1">
                 <img src={stockRight} className="absolute inset-0 my-auto" />
-                <div className="absolute font-bold text-yellow-500 -translate-y-1/2 right-8 top-1/2">
+                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
                   <TextScramble
                     as="span"
                     characterSet="0123456789"
@@ -846,9 +869,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>项目物料损失</SubTitle>
             <div className="flex h-[5rem] items-center gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-6 shadow-lg">
-              <img src={materialsLostIcon} className="w-auto h-14" />
+              <img src={materialsLostIcon} className="h-14 w-auto" />
 
-              <div className="flex items-baseline justify-between flex-1 px-6">
+              <div className="flex flex-1 items-baseline justify-between px-6">
                 <span className="text-sm text-brand-project/70">
                   损失累计金额
                 </span>
@@ -864,13 +887,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           </div>
         </section>
 
-        <section className="relative py-2 my-auto">
+        <section className="relative my-auto py-2">
           <img src={instantMessage} />
-          <div className="grid h-[15.5rem] grid-cols-5 gap-x-3 pt-1">
+          <div className="grid h-[240px] grid-cols-5 gap-x-3 pt-1">
             {/* 成交额 */}
             <div className="relative flex justify-center">
               <img src={b1} className="absolute inset-0" />
-              <div className="absolute text-lg font-bold top-5">成交额</div>
+              <div className="absolute top-5 text-lg font-bold">成交额</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -886,7 +909,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 营业额 */}
             <div className="relative flex justify-center">
               <img src={b2} className="absolute inset-0" />
-              <div className="absolute text-lg font-bold top-5">营业额</div>
+              <div className="absolute top-5 text-lg font-bold">营业额</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -902,7 +925,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 现金流 */}
             <div className="relative flex justify-center">
               <img src={b3} className="absolute inset-0" />
-              <div className="absolute text-lg font-bold top-5">现金流</div>
+              <div className="absolute top-5 text-lg font-bold">现金流</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -918,7 +941,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 项目管理费 */}
             <div className="relative flex justify-center">
               <img src={b4} className="absolute inset-0" />
-              <div className="absolute text-lg font-bold top-5">项目管理费</div>
+              <div className="absolute top-5 text-lg font-bold">项目管理费</div>
               <div className="relative w-[80%] space-y-1 pt-[110%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">預算</div>
@@ -938,7 +961,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">累计</div>
-                  <div className="text-sm font-bold text-left text-brand-project">
+                  <div className="text-left text-sm font-bold text-brand-project">
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -967,7 +990,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* 项目设计费 */}
             <div className="relative flex justify-center">
               <img src={b5} className="absolute inset-0" />
-              <div className="absolute text-lg font-bold top-5">项目设计费</div>
+              <div className="absolute top-5 text-lg font-bold">项目设计费</div>
               <div className="relative pt-[114%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
@@ -1004,14 +1027,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 });
               }}
             />
-            <div className="flex gap-12 mt-2">
-              <div className="flex flex-col w-full">
+            <div className="mt-2 flex gap-12">
+              <div className="flex w-full flex-col">
                 <div className="relative h-9">
                   <img
                     src={projectManagementLeft}
                     className="absolute inset-0"
                   />
-                  <div className="absolute text-sm font-bold text-yellow-500 -translate-y-1/2 right-4 top-1/2">
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
                     100
                   </div>
                 </div>
@@ -1021,7 +1044,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       累计完成
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      199
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${milestoneDoneYear}`}
+                      </TextScramble>
                     </div>
                   </div>
 
@@ -1030,7 +1059,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       累计占比
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      87%
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${percent(milestoneDoneYear, milestonePlanYear)}`}
+                      </TextScramble>
+                      <span className="ml-1 text-xs">%</span>
                     </div>
                   </div>
 
@@ -1039,7 +1075,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       当月完成
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      56
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${milestoneDoneMonth}`}
+                      </TextScramble>
                     </div>
                   </div>
 
@@ -1048,18 +1090,25 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       当月占比
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      65%
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${percent(milestoneDoneMonth, milestonePlanMonth)}`}
+                      </TextScramble>
+                      <span className="ml-1 text-xs">%</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col w-full">
+              <div className="flex w-full flex-col">
                 <div className="relative h-9">
                   <img
                     src={projectManagementRight}
                     className="absolute inset-0"
                   />
-                  <div className="absolute text-sm font-bold text-yellow-500 -translate-y-1/2 right-4 top-1/2">
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
                     6%
                   </div>
                 </div>
@@ -1106,18 +1155,18 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
           <img src={projectOverviewTitle} className="mx-auto mt-3 w-[65%]" />
 
-          <div className="flex gap-6 mt-2">
+          <div className="mt-2 flex gap-6">
             {/* <div className="flex h-[340px] flex-1 flex-col justify-center gap-4"> */}
             {/* <img src={projectOverviewLeft} /> */}
             {/* <div className="mx-auto h-full w-[85%]">
                 <Rhino />
               </div>
               <img src={projectOverviewTab} className="mx-auto w-[80%]" /> */}
-            <ProjectOverviewTab />
+            <ProjectOverviewTab pj={pj} />
             {/* </div> */}
             <div className="relative flex-1">
               {/* <img src={basicInfo} className="mx-auto w-[90%]" /> */}
-              <div className="items-center mx-auto overflow-hidden">
+              <div className="mx-auto items-center overflow-hidden">
                 <img src={basicInfoBg} className="absolute h-[340px] w-full" />
                 <div className="relative mx-auto flex h-full w-[94%] flex-1 flex-col justify-center gap-1 pt-2.5">
                   <BasicInfoItem title="项目名称">
@@ -1245,11 +1294,11 @@ function BasicInfoItem({
     <div className="relative py-1">
       <img
         src={basicInfoRowBg}
-        className="absolute inset-0 w-full h-full mx-auto"
+        className="absolute inset-0 mx-auto h-full w-full"
       />
       <div className="relative left-12 flex h-full w-[19rem] items-center">
         <div className="w-20 text-xxs">{title}</div>
-        <span className="flex-1 line-clamp-1 text-xxs text-brand-project">
+        <span className="line-clamp-1 flex-1 text-xxs text-brand-project">
           {children}
         </span>
       </div>
@@ -1257,7 +1306,7 @@ function BasicInfoItem({
   );
 }
 
-function ProjectOverviewTab() {
+function ProjectOverviewTab({ pj }: { pj?: any }) {
   const tabs = ["形象进度", "BIM模型", "地盘人员分布"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [, startTransition] = useTransition();
@@ -1271,7 +1320,7 @@ function ProjectOverviewTab() {
 
   return (
     <Tabs.Root
-      className="relative flex flex-col flex-1 p-1 mx-auto"
+      className="relative mx-auto flex flex-1 flex-col p-1"
       defaultValue={selectedTab}
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
@@ -1289,15 +1338,17 @@ function ProjectOverviewTab() {
         </Tabs.Content>
 
         <Tabs.Content value={tabs[2]} className="h-[280px] w-full">
-          地盘人员分布
+          <StaffDistribution
+            data={pj.projectStaffs?.edges?.map((edge: any) => edge.node)}
+          />
         </Tabs.Content>
       </div>
 
       <Tabs.List className="relative mx-auto mt-4 grid h-8 w-[85%] grid-cols-3">
-        <img src={projectOverviewTab} className="absolute inset-0 w-full h-8" />
+        <img src={projectOverviewTab} className="absolute inset-0 h-8 w-full" />
         {tabs.map((tab) => (
           <Tabs.Trigger key={tab} value={tab} onClick={() => onChange(tab)}>
-            <div className="relative flex items-center justify-center h-8">
+            <div className="relative flex h-8 items-center justify-center">
               {selectedTab == tab && (
                 <img
                   src={projectOverviewTabSelected}
@@ -1311,6 +1362,81 @@ function ProjectOverviewTab() {
       </Tabs.List>
     </Tabs.Root>
   );
+}
+
+function StaffDistribution(props: { data: any }) {
+  const data = [];
+
+  for (const node of props.data) {
+    data.push({
+      name: "安裝人員",
+      number: node.installation,
+      month: dayjs(node.createdAt).format("YYYY年MMM"),
+    });
+    data.push({
+      name: "管理人員",
+      number: node.management,
+      month: dayjs(node.createdAt).format("YYYY年MMM"),
+    });
+    data.push({
+      name: "設計人員",
+      number: node.design,
+      month: dayjs(node.createdAt).format("YYYY年MMM"),
+    });
+  }
+
+  const config = {
+    // data: {
+    //   type: "fetch",
+    //   value:
+    //     "https://gw.alipayobjects.com/os/antfincdn/iPY8JFnxdb/dodge-padding.json",
+    // },
+    theme: "classicDark",
+    data,
+    xField: "month",
+    yField: "number",
+    colorField: "name",
+    group: true,
+    // style: {
+    //   inset: 5,
+    // },
+    y: {
+      domain: [0, 0.5],
+    },
+    // axis: {
+    //   x: {
+    //     titleSroke: "white",
+    //   },
+    // },
+    legend: {
+      color: {
+        layout: {
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        },
+      },
+    },
+    // label: {
+    //   fill: "white",
+    //   position: "outside",
+    // },
+    onReady: ({ chart }) => {
+      try {
+        chart.on("afterrender", () => {
+          chart.emit("legend:filter", {
+            data: {
+              channel: "color",
+              values: ["安裝人員", "管理人員", "設計人員"],
+            },
+          });
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  } satisfies ColumnConfig;
+  return <Column {...config} />;
 }
 
 function ProjectImage({ src }: { src: string }) {

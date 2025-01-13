@@ -8,7 +8,9 @@ export function TopCompetitors(props: { className?: string }) {
   const data = useTopCompetitions();
 
   return (
-    <div className={cn("grid grid-cols-[1fr_1.4fr_1fr]", props.className)}>
+    <div
+      className={cn("grid grid-cols-[1fr_1.4fr_1fr] gap-x-2", props.className)}
+    >
       <div
         className={"relative flex flex-1 flex-col items-center justify-center"}
       >

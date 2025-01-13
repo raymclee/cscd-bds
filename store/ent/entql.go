@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/tender"
@@ -27,7 +28,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 14)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 15)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -248,9 +249,33 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldAluminumBudgetPercentage:                {Type: field.TypeFloat64, Column: project.FieldAluminumBudgetPercentage},
 			project.FieldGlassBudgetPercentage:                   {Type: field.TypeFloat64, Column: project.FieldGlassBudgetPercentage},
 			project.FieldIronBudgetPercentage:                    {Type: field.TypeFloat64, Column: project.FieldIronBudgetPercentage},
+			project.FieldMilestonePlanYear:                       {Type: field.TypeInt, Column: project.FieldMilestonePlanYear},
+			project.FieldMilestonePlanMonth:                      {Type: field.TypeInt, Column: project.FieldMilestonePlanMonth},
+			project.FieldMilestoneDoneYear:                       {Type: field.TypeInt, Column: project.FieldMilestoneDoneYear},
+			project.FieldMilestoneDoneMonth:                      {Type: field.TypeInt, Column: project.FieldMilestoneDoneMonth},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   projectstaff.Table,
+			Columns: projectstaff.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: projectstaff.FieldID,
+			},
+		},
+		Type: "ProjectStaff",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			projectstaff.FieldCreatedAt:    {Type: field.TypeTime, Column: projectstaff.FieldCreatedAt},
+			projectstaff.FieldUpdatedAt:    {Type: field.TypeTime, Column: projectstaff.FieldUpdatedAt},
+			projectstaff.FieldCym:          {Type: field.TypeString, Column: projectstaff.FieldCym},
+			projectstaff.FieldInstallation: {Type: field.TypeFloat64, Column: projectstaff.FieldInstallation},
+			projectstaff.FieldManagement:   {Type: field.TypeFloat64, Column: projectstaff.FieldManagement},
+			projectstaff.FieldDesign:       {Type: field.TypeFloat64, Column: projectstaff.FieldDesign},
+			projectstaff.FieldProjectID:    {Type: field.TypeString, Column: projectstaff.FieldProjectID},
+		},
+	}
+	graph.Nodes[10] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   projectvo.Table,
 			Columns: projectvo.Columns,
@@ -272,7 +297,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			projectvo.FieldApproveAmount: {Type: field.TypeFloat64, Column: projectvo.FieldApproveAmount},
 		},
 	}
-	graph.Nodes[10] = &sqlgraph.Node{
+	graph.Nodes[11] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   province.Table,
 			Columns: province.Columns,
@@ -292,7 +317,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			province.FieldAreaID:    {Type: field.TypeString, Column: province.FieldAreaID},
 		},
 	}
-	graph.Nodes[11] = &sqlgraph.Node{
+	graph.Nodes[12] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tender.Table,
 			Columns: tender.Columns,
@@ -370,7 +395,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCompetitorID:                         {Type: field.TypeString, Column: tender.FieldCompetitorID},
 		},
 	}
-	graph.Nodes[12] = &sqlgraph.Node{
+	graph.Nodes[13] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -397,7 +422,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
-	graph.Nodes[13] = &sqlgraph.Node{
+	graph.Nodes[14] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   visitrecord.Table,
 			Columns: visitrecord.Columns,
@@ -658,6 +683,30 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Project",
 		"ProjectVO",
+	)
+	graph.MustAddE(
+		"project_staffs",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+		},
+		"Project",
+		"ProjectStaff",
+	)
+	graph.MustAddE(
+		"project",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   projectstaff.ProjectTable,
+			Columns: []string{projectstaff.ProjectColumn},
+			Bidi:    false,
+		},
+		"ProjectStaff",
+		"Project",
 	)
 	graph.MustAddE(
 		"project",
@@ -2119,6 +2168,26 @@ func (f *ProjectFilter) WhereIronBudgetPercentage(p entql.Float64P) {
 	f.Where(p.Field(project.FieldIronBudgetPercentage))
 }
 
+// WhereMilestonePlanYear applies the entql int predicate on the milestone_plan_year field.
+func (f *ProjectFilter) WhereMilestonePlanYear(p entql.IntP) {
+	f.Where(p.Field(project.FieldMilestonePlanYear))
+}
+
+// WhereMilestonePlanMonth applies the entql int predicate on the milestone_plan_month field.
+func (f *ProjectFilter) WhereMilestonePlanMonth(p entql.IntP) {
+	f.Where(p.Field(project.FieldMilestonePlanMonth))
+}
+
+// WhereMilestoneDoneYear applies the entql int predicate on the milestone_done_year field.
+func (f *ProjectFilter) WhereMilestoneDoneYear(p entql.IntP) {
+	f.Where(p.Field(project.FieldMilestoneDoneYear))
+}
+
+// WhereMilestoneDoneMonth applies the entql int predicate on the milestone_done_month field.
+func (f *ProjectFilter) WhereMilestoneDoneMonth(p entql.IntP) {
+	f.Where(p.Field(project.FieldMilestoneDoneMonth))
+}
+
 // WhereHasVos applies a predicate to check if query has an edge vos.
 func (f *ProjectFilter) WhereHasVos() {
 	f.Where(entql.HasEdge("vos"))
@@ -2127,6 +2196,109 @@ func (f *ProjectFilter) WhereHasVos() {
 // WhereHasVosWith applies a predicate to check if query has an edge vos with a given conditions (other predicates).
 func (f *ProjectFilter) WhereHasVosWith(preds ...predicate.ProjectVO) {
 	f.Where(entql.HasEdgeWith("vos", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasProjectStaffs applies a predicate to check if query has an edge project_staffs.
+func (f *ProjectFilter) WhereHasProjectStaffs() {
+	f.Where(entql.HasEdge("project_staffs"))
+}
+
+// WhereHasProjectStaffsWith applies a predicate to check if query has an edge project_staffs with a given conditions (other predicates).
+func (f *ProjectFilter) WhereHasProjectStaffsWith(preds ...predicate.ProjectStaff) {
+	f.Where(entql.HasEdgeWith("project_staffs", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (psq *ProjectStaffQuery) addPredicate(pred func(s *sql.Selector)) {
+	psq.predicates = append(psq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the ProjectStaffQuery builder.
+func (psq *ProjectStaffQuery) Filter() *ProjectStaffFilter {
+	return &ProjectStaffFilter{config: psq.config, predicateAdder: psq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *ProjectStaffMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the ProjectStaffMutation builder.
+func (m *ProjectStaffMutation) Filter() *ProjectStaffFilter {
+	return &ProjectStaffFilter{config: m.config, predicateAdder: m}
+}
+
+// ProjectStaffFilter provides a generic filtering capability at runtime for ProjectStaffQuery.
+type ProjectStaffFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *ProjectStaffFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *ProjectStaffFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(projectstaff.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *ProjectStaffFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(projectstaff.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *ProjectStaffFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(projectstaff.FieldUpdatedAt))
+}
+
+// WhereCym applies the entql string predicate on the cym field.
+func (f *ProjectStaffFilter) WhereCym(p entql.StringP) {
+	f.Where(p.Field(projectstaff.FieldCym))
+}
+
+// WhereInstallation applies the entql float64 predicate on the installation field.
+func (f *ProjectStaffFilter) WhereInstallation(p entql.Float64P) {
+	f.Where(p.Field(projectstaff.FieldInstallation))
+}
+
+// WhereManagement applies the entql float64 predicate on the management field.
+func (f *ProjectStaffFilter) WhereManagement(p entql.Float64P) {
+	f.Where(p.Field(projectstaff.FieldManagement))
+}
+
+// WhereDesign applies the entql float64 predicate on the design field.
+func (f *ProjectStaffFilter) WhereDesign(p entql.Float64P) {
+	f.Where(p.Field(projectstaff.FieldDesign))
+}
+
+// WhereProjectID applies the entql string predicate on the project_id field.
+func (f *ProjectStaffFilter) WhereProjectID(p entql.StringP) {
+	f.Where(p.Field(projectstaff.FieldProjectID))
+}
+
+// WhereHasProject applies a predicate to check if query has an edge project.
+func (f *ProjectStaffFilter) WhereHasProject() {
+	f.Where(entql.HasEdge("project"))
+}
+
+// WhereHasProjectWith applies a predicate to check if query has an edge project with a given conditions (other predicates).
+func (f *ProjectStaffFilter) WhereHasProjectWith(preds ...predicate.Project) {
+	f.Where(entql.HasEdgeWith("project", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -2162,7 +2334,7 @@ type ProjectVOFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectVOFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2261,7 +2433,7 @@ type ProvinceFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProvinceFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2406,7 +2578,7 @@ type TenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2911,7 +3083,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3105,7 +3277,7 @@ type VisitRecordFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *VisitRecordFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

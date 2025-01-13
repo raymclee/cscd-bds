@@ -5,6 +5,7 @@ import (
 	"context"
 	"cscd-bds/store"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"database/sql"
 	"flag"
 	"fmt"
@@ -34,6 +35,12 @@ const (
 	BWP_HANA_USER     = "SAPHANADB"
 	BWP_HANA_PASSWORD = "Sap2cool"
 	BWP_HANA_DATABASE = "SAPHANADB"
+
+	S4P_HANA_HOST     = "10.148.7.17"
+	S4P_HANA_PORT     = 30015
+	S4P_HANA_USER     = "SAPHANADB"
+	S4P_HANA_PASSWORD = "Sap2cool"
+	S4P_HANA_DATABASE = "SAPHANADB"
 )
 
 var (
@@ -42,6 +49,7 @@ var (
 
 func main() {
 	imgFlag := flag.Bool("image", false, "fetch image")
+	workingFlag := flag.Bool("working", false, "fetch working")
 	flag.Parse()
 
 	ctx := context.Background()
@@ -81,6 +89,18 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Connected to BWP HANA DB")
+
+	s4pHanaDb, err := sql.Open("hdb", fmt.Sprintf("hdb://%s:%s@%s:%d", S4P_HANA_USER, S4P_HANA_PASSWORD, S4P_HANA_HOST, S4P_HANA_PORT))
+	if err != nil {
+		panic(err)
+	}
+	defer s4pHanaDb.Close()
+
+	err = s4pHanaDb.PingContext(ctx)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected to S4P HANA DB")
 
 	s := store.New(false)
 
@@ -573,20 +593,53 @@ func main() {
 			// 	}
 			// }
 
+			// SELECT
+			// 		cast(sum(djsl) as float) AS djsl
+			// FROM
+			// 		(
+			// 	SELECT
+			// 			zgcdh,
+			// 			djsl
+			// 	FROM
+			// 			"_SYS_BIC"."ZMQ_BI.DM.MM/ZCS_DM_MM001_CGGLBB_DDMX_DATE"('PLACEHOLDER' = ('$$STADA$$',
+			// 			'20200101'),
+			// 			'PLACEHOLDER' = ('$$ENDDA$$',
+			// 			'20251231'))
+			// 	WHERE
+			// 			SJLB = '发单明细'
+			// 		AND NOT ( djje = 0
+			// 			AND djsl = 0 )
+			// 		--AND HBM='CNY'
+			// 		AND "GYSBM" NOT IN ('0001011492', '0200531071', '0001011536')
+			// 		AND "ZGCDH" = ?
+			// 		AND zcbdh = ?
+			// UNION ALL
+			// 	SELECT
+			// 			jobcode AS zgcdh,
+			// 			POCNT AS djsl
+			// 	FROM
+			// 			"ZJK2BW"."BD_FezhPoData"
+			// 	WHERE
+			// 			CATEGORY = 'NCFD'
+			// 		AND NOT ( POMNY = 0
+			// 			AND POCNT = 0 )
+			// 		AND jobcode = ?
+			// 		AND costCode = ?
+			// 	) o
+
 			for _, material := range materials {
 				row := bwpHanaDb.QueryRow(`
 					SELECT 
-						CAST(A00_MENGE as float) as budget
+						CAST(A00_BUDGET as float) as budget
 					FROM ZJK2BW.FI_PRCOST_SUM fps
 					WHERE USR00 = ?
 					AND cost_code = ?
-					AND A00_MENGE > 1
 					LIMIT 1
 				`, jobcode, material)
 
 				var (
 					budget *float64
-					djsl   *float64
+					djje   *float64
 				)
 				err := row.Scan(&budget)
 				if err != nil && err != sql.ErrNoRows {
@@ -594,54 +647,40 @@ func main() {
 				} else {
 					if budget != nil && *budget > 0 {
 						row = bwpHanaDb.QueryRow(`
-							SELECT
-									cast(sum(djsl) as float) AS djsl
-							FROM
-									(
-								SELECT
-										zgcdh,
-										djsl
-								FROM
-										"_SYS_BIC"."ZMQ_BI.DM.MM/ZCS_DM_MM001_CGGLBB_DDMX_DATE"('PLACEHOLDER' = ('$$STADA$$',
-										'20200101'),
-										'PLACEHOLDER' = ('$$ENDDA$$',
-										'20251231'))
-								WHERE
-										SJLB = '发单明细'
-									AND NOT ( djje = 0
-										AND djsl = 0 )
-									--AND HBM='CNY'
-									AND "GYSBM" NOT IN ('0001011492', '0200531071', '0001011536')
-									AND "ZGCDH" = ?
+							SELECT  sum(djje) AS djje
+							FROM (
+								select zgcdh, zcbdh as costCode, GYSMC, HBM, djje, djsl--, GYSBM
+								from "_SYS_BIC"."ZMQ_BI.DM.MM/ZCS_DM_MM001_CGGLBB_DDMX_DATE"('PLACEHOLDER' = ('$$STADA$$', '20200101'),'PLACEHOLDER' = ('$$ENDDA$$','20251231'))
+								WHERE SJLB='发单明细' and not ( djje = 0 and djsl = 0 ) --AND HBM='CNY'
+									AND "GYSBM" not in ('0001011492','0200531071','0001011536')
+									AND zgcdh = ?
 									AND zcbdh = ?
-							UNION ALL
-								SELECT
-										jobcode AS zgcdh,
-										POCNT AS djsl
-								FROM
-										"ZJK2BW"."BD_FezhPoData"
-								WHERE
-										CATEGORY = 'NCFD'
-									AND NOT ( POMNY = 0
-										AND POCNT = 0 )
-									AND jobcode = ?
-									AND costCode = ?
+								union all
+								select jobcode as zgcdh, costCode, SupplierName as GYSMC
+								--, SUPPLIERCODE as GYSBM
+									, CCY AS HBM, POMNY as djje, POCNT as djsl
+								from "ZJK2BW"."BD_FezhPoData"
+								where CATEGORY = 'NCFD' and not ( POMNY = 0 and POCNT = 0 )
+								AND jobcode = ?
+								AND costCode = ?
 								) o
+							GROUP BY zgcdh, costCode, HBM
+							order by djje desc
 						`, jobcode, material, jobcode, material)
-						err = row.Scan(&djsl)
+						err = row.Scan(&djje)
 						if err != nil && err != sql.ErrNoRows {
 							fmt.Printf("%s 抓取材料使用量失败: %s\n", *jobcode, err.Error())
 						} else {
-							if djsl != nil {
+							if djje != nil {
 								switch material {
 								case "011":
-									p.SetAluminumPlateBudgetPercentage(*djsl / *budget * 100)
+									p.SetAluminumPlateBudgetPercentage(*djje / *budget * 100)
 								case "013":
-									p.SetIronBudgetPercentage(*djsl / *budget * 100)
+									p.SetIronBudgetPercentage(*djje / *budget * 100)
 								case "022":
-									p.SetAluminumBudgetPercentage(*djsl / *budget * 100)
+									p.SetAluminumBudgetPercentage(*djje / *budget * 100)
 								case "024":
-									p.SetGlassBudgetPercentage(*djsl / *budget * 100)
+									p.SetGlassBudgetPercentage(*djje / *budget * 100)
 								}
 							}
 						}
@@ -649,6 +688,68 @@ func main() {
 				}
 			}
 
+		}
+
+		// 抓取里程碑
+		{
+			var year = 2024
+			rows, err := stgDb.Query(
+				`
+					select 
+						plan_done_month,
+						plan_done_year,
+						done_month,
+						done_year
+					from pg_milestone_v 
+					where project_code = @code
+					and plan_done_date is not null
+					and plan_done_year = @year;
+				`,
+				sql.Named("code", jobcode),
+				sql.Named("year", year),
+			)
+
+			if err != nil {
+				fmt.Printf("%s 抓取里程碑失败: %s\n", *jobcode, err.Error())
+			} else {
+				defer rows.Close()
+
+				var (
+					milestonePlanYear  int
+					milestonePlanMonth int
+					milestoneDoneYear  int
+					milestoneDoneMonth int
+				)
+
+				for rows.Next() {
+					var (
+						planDoneMonth *int
+						planDoneYear  *int
+						doneMonth     *int
+						doneYear      *int
+					)
+					err := rows.Scan(&planDoneMonth, &planDoneYear, &doneMonth, &doneYear)
+					if err != nil {
+						fmt.Printf("%s 抓取里程碑失败: %s\n", *jobcode, err.Error())
+					} else {
+						milestonePlanYear += 1
+						if planDoneMonth != nil && planDoneYear != nil && *planDoneMonth == int(today.Month()) && *planDoneYear == year {
+							milestonePlanMonth += 1
+						}
+						if doneMonth != nil && doneYear != nil && *doneYear == year && *doneMonth == int(today.Month()) {
+							milestoneDoneMonth += 1
+						}
+						if doneYear != nil && *doneYear == year {
+							milestoneDoneYear += 1
+						}
+					}
+				}
+
+				p.SetMilestonePlanYear(milestonePlanYear)
+				p.SetMilestonePlanMonth(milestonePlanMonth)
+				p.SetMilestoneDoneYear(milestoneDoneYear)
+				p.SetMilestoneDoneMonth(milestoneDoneMonth)
+			}
 		}
 
 		if *imgFlag {
@@ -685,6 +786,78 @@ func main() {
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {
 			fmt.Printf("%s 保存项目失败: %s\n", *jobcode, err.Error())
+		}
+
+		// 地盤人員
+		{
+			if today.Day() == 21 || *workingFlag {
+
+				pj, err := s.Project.Query().Where(project.Code(*jobcode)).Only(ctx)
+				if err != nil {
+					fmt.Printf("%s 地盤人員 抓取项目失败: %s\n", *jobcode, err.Error())
+					continue
+				}
+
+				rows, err := stgDb.Query(
+					`
+							SELECT jobtitle, whr FROM EM_PROJECT_V
+							WHERE jobcode like @code + '%'
+						`,
+					sql.Named("code", jobcode),
+				)
+				if err != nil {
+					fmt.Printf("%s 抓取地盤人員失败: %s\n", *jobcode, err.Error())
+				} else {
+					defer rows.Close()
+
+					var (
+						staffInstall    float64 = 0
+						staffManagement float64 = 0
+						staffDesign     float64 = 0
+					)
+
+					for rows.Next() {
+						var (
+							jobtitle *string
+							whr      *float64
+						)
+						err := rows.Scan(&jobtitle, &whr)
+						if err != nil {
+							fmt.Printf("%s 抓取地盤人員失败: %s\n", *jobcode, err.Error())
+						} else {
+							if jobtitle != nil && whr != nil {
+								switch *jobtitle {
+								case "助理/副/安裝經理":
+								case "地盤監督/高級地盤監督":
+									staffInstall += *whr
+								case "助理/副項目總監/總監":
+								case "助理/副/項目協調員":
+								case "助理/副/項目經理":
+									staffManagement += *whr
+								case "設計主管":
+									staffDesign += *whr
+								}
+							}
+						}
+					}
+
+					if err := s.ProjectStaff.Create().
+						SetCym(fmt.Sprintf("%s-%d-%d", *jobcode, today.Year(), today.Month())).
+						SetInstallation(staffInstall).
+						SetManagement(staffManagement).
+						SetDesign(staffDesign).
+						SetProject(pj).
+						OnConflictColumns(projectstaff.FieldCym).
+						UpdateNewValues().
+						Exec(ctx); err != nil {
+						fmt.Printf("%s 保存地盤人員失败: %s\n", *jobcode, err.Error())
+					}
+
+					// p.SetStaffInstall(staffInstall)
+					// p.SetStaffManagement(staffManagement)
+					// p.SetStaffDesign(staffDesign)
+				}
+			}
 		}
 
 	}

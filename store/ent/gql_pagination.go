@@ -13,6 +13,7 @@ import (
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
@@ -2971,6 +2972,338 @@ func (pr *Project) ToEdge(order *ProjectOrder) *ProjectEdge {
 	return &ProjectEdge{
 		Node:   pr,
 		Cursor: order.Field.toCursor(pr),
+	}
+}
+
+// ProjectStaffEdge is the edge representation of ProjectStaff.
+type ProjectStaffEdge struct {
+	Node   *ProjectStaff `json:"node"`
+	Cursor Cursor        `json:"cursor"`
+}
+
+// ProjectStaffConnection is the connection containing edges to ProjectStaff.
+type ProjectStaffConnection struct {
+	Edges      []*ProjectStaffEdge `json:"edges"`
+	PageInfo   PageInfo            `json:"pageInfo"`
+	TotalCount int                 `json:"totalCount"`
+}
+
+func (c *ProjectStaffConnection) build(nodes []*ProjectStaff, pager *projectstaffPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *ProjectStaff
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *ProjectStaff {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *ProjectStaff {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*ProjectStaffEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &ProjectStaffEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// ProjectStaffPaginateOption enables pagination customization.
+type ProjectStaffPaginateOption func(*projectstaffPager) error
+
+// WithProjectStaffOrder configures pagination ordering.
+func WithProjectStaffOrder(order []*ProjectStaffOrder) ProjectStaffPaginateOption {
+	return func(pager *projectstaffPager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithProjectStaffFilter configures pagination filter.
+func WithProjectStaffFilter(filter func(*ProjectStaffQuery) (*ProjectStaffQuery, error)) ProjectStaffPaginateOption {
+	return func(pager *projectstaffPager) error {
+		if filter == nil {
+			return errors.New("ProjectStaffQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type projectstaffPager struct {
+	reverse bool
+	order   []*ProjectStaffOrder
+	filter  func(*ProjectStaffQuery) (*ProjectStaffQuery, error)
+}
+
+func newProjectStaffPager(opts []ProjectStaffPaginateOption, reverse bool) (*projectstaffPager, error) {
+	pager := &projectstaffPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *projectstaffPager) applyFilter(query *ProjectStaffQuery) (*ProjectStaffQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *projectstaffPager) toCursor(ps *ProjectStaff) Cursor {
+	cs_ := make([]any, 0, len(p.order))
+	for _, o_ := range p.order {
+		cs_ = append(cs_, o_.Field.toCursor(ps).Value)
+	}
+	return Cursor{ID: ps.ID, Value: cs_}
+}
+
+func (p *projectstaffPager) applyCursors(query *ProjectStaffQuery, after, before *Cursor) (*ProjectStaffQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultProjectStaffOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *projectstaffPager) applyOrder(query *ProjectStaffQuery) *ProjectStaffQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultProjectStaffOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultProjectStaffOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *projectstaffPager) orderExpr(query *ProjectStaffQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultProjectStaffOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to ProjectStaff.
+func (ps *ProjectStaffQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...ProjectStaffPaginateOption,
+) (*ProjectStaffConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newProjectStaffPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if ps, err = pager.applyFilter(ps); err != nil {
+		return nil, err
+	}
+	conn := &ProjectStaffConnection{Edges: []*ProjectStaffEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			c := ps.Clone()
+			c.ctx.Fields = nil
+			if conn.TotalCount, err = c.Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if ps, err = pager.applyCursors(ps, after, before); err != nil {
+		return nil, err
+	}
+	limit := paginateLimit(first, last)
+	if limit != 0 {
+		ps.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := ps.collectField(ctx, limit == 1, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	ps = pager.applyOrder(ps)
+	nodes, err := ps.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// ProjectStaffOrderFieldCreatedAt orders ProjectStaff by created_at.
+	ProjectStaffOrderFieldCreatedAt = &ProjectStaffOrderField{
+		Value: func(ps *ProjectStaff) (ent.Value, error) {
+			return ps.CreatedAt, nil
+		},
+		column: projectstaff.FieldCreatedAt,
+		toTerm: projectstaff.ByCreatedAt,
+		toCursor: func(ps *ProjectStaff) Cursor {
+			return Cursor{
+				ID:    ps.ID,
+				Value: ps.CreatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f ProjectStaffOrderField) String() string {
+	var str string
+	switch f.column {
+	case ProjectStaffOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f ProjectStaffOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *ProjectStaffOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("ProjectStaffOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *ProjectStaffOrderFieldCreatedAt
+	default:
+		return fmt.Errorf("%s is not a valid ProjectStaffOrderField", str)
+	}
+	return nil
+}
+
+// ProjectStaffOrderField defines the ordering field of ProjectStaff.
+type ProjectStaffOrderField struct {
+	// Value extracts the ordering value from the given ProjectStaff.
+	Value    func(*ProjectStaff) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) projectstaff.OrderOption
+	toCursor func(*ProjectStaff) Cursor
+}
+
+// ProjectStaffOrder defines the ordering of ProjectStaff.
+type ProjectStaffOrder struct {
+	Direction OrderDirection          `json:"direction"`
+	Field     *ProjectStaffOrderField `json:"field"`
+}
+
+// DefaultProjectStaffOrder is the default ordering of ProjectStaff.
+var DefaultProjectStaffOrder = &ProjectStaffOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &ProjectStaffOrderField{
+		Value: func(ps *ProjectStaff) (ent.Value, error) {
+			return ps.ID, nil
+		},
+		column: projectstaff.FieldID,
+		toTerm: projectstaff.ByID,
+		toCursor: func(ps *ProjectStaff) Cursor {
+			return Cursor{ID: ps.ID}
+		},
+	},
+}
+
+// ToEdge converts ProjectStaff into ProjectStaffEdge.
+func (ps *ProjectStaff) ToEdge(order *ProjectStaffOrder) *ProjectStaffEdge {
+	if order == nil {
+		order = DefaultProjectStaffOrder
+	}
+	return &ProjectStaffEdge{
+		Node:   ps,
+		Cursor: order.Field.toCursor(ps),
 	}
 }
 

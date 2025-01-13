@@ -328,6 +328,35 @@ func (pr *Project) Vos(ctx context.Context) (result []*ProjectVO, err error) {
 	return result, err
 }
 
+func (pr *Project) ProjectStaffs(
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*ProjectStaffOrder, where *ProjectStaffWhereInput,
+) (*ProjectStaffConnection, error) {
+	opts := []ProjectStaffPaginateOption{
+		WithProjectStaffOrder(orderBy),
+		WithProjectStaffFilter(where.Filter),
+	}
+	alias := graphql.GetFieldContext(ctx).Field.Alias
+	totalCount, hasTotalCount := pr.Edges.totalCount[1][alias]
+	if nodes, err := pr.NamedProjectStaffs(alias); err == nil || hasTotalCount {
+		pager, err := newProjectStaffPager(opts, last != nil)
+		if err != nil {
+			return nil, err
+		}
+		conn := &ProjectStaffConnection{Edges: []*ProjectStaffEdge{}, TotalCount: totalCount}
+		conn.build(nodes, pager, after, first, before, last)
+		return conn, nil
+	}
+	return pr.QueryProjectStaffs().Paginate(ctx, after, first, before, last, opts...)
+}
+
+func (ps *ProjectStaff) Project(ctx context.Context) (*Project, error) {
+	result, err := ps.Edges.ProjectOrErr()
+	if IsNotLoaded(err) {
+		result, err = ps.QueryProject().Only(ctx)
+	}
+	return result, err
+}
+
 func (pv *ProjectVO) Project(ctx context.Context) (*Project, error) {
 	result, err := pv.Edges.ProjectOrErr()
 	if IsNotLoaded(err) {

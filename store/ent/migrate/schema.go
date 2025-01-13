@@ -253,12 +253,41 @@ var (
 		{Name: "aluminum_budget_percentage", Type: field.TypeFloat64, Nullable: true},
 		{Name: "glass_budget_percentage", Type: field.TypeFloat64, Nullable: true},
 		{Name: "iron_budget_percentage", Type: field.TypeFloat64, Nullable: true},
+		{Name: "milestone_plan_year", Type: field.TypeInt, Nullable: true},
+		{Name: "milestone_plan_month", Type: field.TypeInt, Nullable: true},
+		{Name: "milestone_done_year", Type: field.TypeInt, Nullable: true},
+		{Name: "milestone_done_month", Type: field.TypeInt, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{
 		Name:       "projects",
 		Columns:    ProjectsColumns,
 		PrimaryKey: []*schema.Column{ProjectsColumns[0]},
+	}
+	// ProjectStaffsColumns holds the columns for the "project_staffs" table.
+	ProjectStaffsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "cym", Type: field.TypeString, Unique: true},
+		{Name: "installation", Type: field.TypeFloat64, Nullable: true},
+		{Name: "management", Type: field.TypeFloat64, Nullable: true},
+		{Name: "design", Type: field.TypeFloat64, Nullable: true},
+		{Name: "project_id", Type: field.TypeString},
+	}
+	// ProjectStaffsTable holds the schema information for the "project_staffs" table.
+	ProjectStaffsTable = &schema.Table{
+		Name:       "project_staffs",
+		Columns:    ProjectStaffsColumns,
+		PrimaryKey: []*schema.Column{ProjectStaffsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "project_staffs_projects_project_staffs",
+				Columns:    []*schema.Column{ProjectStaffsColumns[7]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
 	}
 	// ProjectVosColumns holds the columns for the "project_vos" table.
 	ProjectVosColumns = []*schema.Column{
@@ -594,6 +623,7 @@ var (
 		OperationsTable,
 		PlotsTable,
 		ProjectsTable,
+		ProjectStaffsTable,
 		ProjectVosTable,
 		ProvincesTable,
 		TendersTable,
@@ -613,6 +643,7 @@ func init() {
 	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
 	PlotsTable.ForeignKeys[0].RefTable = DistrictsTable
+	ProjectStaffsTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProjectVosTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProvincesTable.ForeignKeys[0].RefTable = AreasTable
 	ProvincesTable.ForeignKeys[1].RefTable = CountriesTable

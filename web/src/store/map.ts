@@ -263,6 +263,10 @@ export const useMapStore = create<MapState & Action>()((set, get) => ({
   navigateToTender(tender, plots) {
     const { map, districtExplorer, satelliteLayer, markers } = get();
 
+    set({
+      moreDashboardTenderListBoardVisible: false,
+    });
+
     for (const marker of markers) {
       marker.remove();
     }

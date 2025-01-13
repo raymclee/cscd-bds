@@ -6,6 +6,7 @@ import (
 	"context"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
+	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
 	"errors"
@@ -1073,6 +1074,114 @@ func (pu *ProjectUpdate) ClearIronBudgetPercentage() *ProjectUpdate {
 	return pu
 }
 
+// SetMilestonePlanYear sets the "milestone_plan_year" field.
+func (pu *ProjectUpdate) SetMilestonePlanYear(i int) *ProjectUpdate {
+	pu.mutation.ResetMilestonePlanYear()
+	pu.mutation.SetMilestonePlanYear(i)
+	return pu
+}
+
+// SetNillableMilestonePlanYear sets the "milestone_plan_year" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMilestonePlanYear(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetMilestonePlanYear(*i)
+	}
+	return pu
+}
+
+// AddMilestonePlanYear adds i to the "milestone_plan_year" field.
+func (pu *ProjectUpdate) AddMilestonePlanYear(i int) *ProjectUpdate {
+	pu.mutation.AddMilestonePlanYear(i)
+	return pu
+}
+
+// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
+func (pu *ProjectUpdate) ClearMilestonePlanYear() *ProjectUpdate {
+	pu.mutation.ClearMilestonePlanYear()
+	return pu
+}
+
+// SetMilestonePlanMonth sets the "milestone_plan_month" field.
+func (pu *ProjectUpdate) SetMilestonePlanMonth(i int) *ProjectUpdate {
+	pu.mutation.ResetMilestonePlanMonth()
+	pu.mutation.SetMilestonePlanMonth(i)
+	return pu
+}
+
+// SetNillableMilestonePlanMonth sets the "milestone_plan_month" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMilestonePlanMonth(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetMilestonePlanMonth(*i)
+	}
+	return pu
+}
+
+// AddMilestonePlanMonth adds i to the "milestone_plan_month" field.
+func (pu *ProjectUpdate) AddMilestonePlanMonth(i int) *ProjectUpdate {
+	pu.mutation.AddMilestonePlanMonth(i)
+	return pu
+}
+
+// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
+func (pu *ProjectUpdate) ClearMilestonePlanMonth() *ProjectUpdate {
+	pu.mutation.ClearMilestonePlanMonth()
+	return pu
+}
+
+// SetMilestoneDoneYear sets the "milestone_done_year" field.
+func (pu *ProjectUpdate) SetMilestoneDoneYear(i int) *ProjectUpdate {
+	pu.mutation.ResetMilestoneDoneYear()
+	pu.mutation.SetMilestoneDoneYear(i)
+	return pu
+}
+
+// SetNillableMilestoneDoneYear sets the "milestone_done_year" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMilestoneDoneYear(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetMilestoneDoneYear(*i)
+	}
+	return pu
+}
+
+// AddMilestoneDoneYear adds i to the "milestone_done_year" field.
+func (pu *ProjectUpdate) AddMilestoneDoneYear(i int) *ProjectUpdate {
+	pu.mutation.AddMilestoneDoneYear(i)
+	return pu
+}
+
+// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
+func (pu *ProjectUpdate) ClearMilestoneDoneYear() *ProjectUpdate {
+	pu.mutation.ClearMilestoneDoneYear()
+	return pu
+}
+
+// SetMilestoneDoneMonth sets the "milestone_done_month" field.
+func (pu *ProjectUpdate) SetMilestoneDoneMonth(i int) *ProjectUpdate {
+	pu.mutation.ResetMilestoneDoneMonth()
+	pu.mutation.SetMilestoneDoneMonth(i)
+	return pu
+}
+
+// SetNillableMilestoneDoneMonth sets the "milestone_done_month" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMilestoneDoneMonth(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetMilestoneDoneMonth(*i)
+	}
+	return pu
+}
+
+// AddMilestoneDoneMonth adds i to the "milestone_done_month" field.
+func (pu *ProjectUpdate) AddMilestoneDoneMonth(i int) *ProjectUpdate {
+	pu.mutation.AddMilestoneDoneMonth(i)
+	return pu
+}
+
+// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
+func (pu *ProjectUpdate) ClearMilestoneDoneMonth() *ProjectUpdate {
+	pu.mutation.ClearMilestoneDoneMonth()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -1086,6 +1195,21 @@ func (pu *ProjectUpdate) AddVos(p ...*ProjectVO) *ProjectUpdate {
 		ids[i] = p[i].ID
 	}
 	return pu.AddVoIDs(ids...)
+}
+
+// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by IDs.
+func (pu *ProjectUpdate) AddProjectStaffIDs(ids ...xid.ID) *ProjectUpdate {
+	pu.mutation.AddProjectStaffIDs(ids...)
+	return pu
+}
+
+// AddProjectStaffs adds the "project_staffs" edges to the ProjectStaff entity.
+func (pu *ProjectUpdate) AddProjectStaffs(p ...*ProjectStaff) *ProjectUpdate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.AddProjectStaffIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -1112,6 +1236,27 @@ func (pu *ProjectUpdate) RemoveVos(p ...*ProjectVO) *ProjectUpdate {
 		ids[i] = p[i].ID
 	}
 	return pu.RemoveVoIDs(ids...)
+}
+
+// ClearProjectStaffs clears all "project_staffs" edges to the ProjectStaff entity.
+func (pu *ProjectUpdate) ClearProjectStaffs() *ProjectUpdate {
+	pu.mutation.ClearProjectStaffs()
+	return pu
+}
+
+// RemoveProjectStaffIDs removes the "project_staffs" edge to ProjectStaff entities by IDs.
+func (pu *ProjectUpdate) RemoveProjectStaffIDs(ids ...xid.ID) *ProjectUpdate {
+	pu.mutation.RemoveProjectStaffIDs(ids...)
+	return pu
+}
+
+// RemoveProjectStaffs removes "project_staffs" edges to ProjectStaff entities.
+func (pu *ProjectUpdate) RemoveProjectStaffs(p ...*ProjectStaff) *ProjectUpdate {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.RemoveProjectStaffIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -1495,6 +1640,42 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if pu.mutation.IronBudgetPercentageCleared() {
 		_spec.ClearField(project.FieldIronBudgetPercentage, field.TypeFloat64)
 	}
+	if value, ok := pu.mutation.MilestonePlanYear(); ok {
+		_spec.SetField(project.FieldMilestonePlanYear, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedMilestonePlanYear(); ok {
+		_spec.AddField(project.FieldMilestonePlanYear, field.TypeInt, value)
+	}
+	if pu.mutation.MilestonePlanYearCleared() {
+		_spec.ClearField(project.FieldMilestonePlanYear, field.TypeInt)
+	}
+	if value, ok := pu.mutation.MilestonePlanMonth(); ok {
+		_spec.SetField(project.FieldMilestonePlanMonth, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedMilestonePlanMonth(); ok {
+		_spec.AddField(project.FieldMilestonePlanMonth, field.TypeInt, value)
+	}
+	if pu.mutation.MilestonePlanMonthCleared() {
+		_spec.ClearField(project.FieldMilestonePlanMonth, field.TypeInt)
+	}
+	if value, ok := pu.mutation.MilestoneDoneYear(); ok {
+		_spec.SetField(project.FieldMilestoneDoneYear, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedMilestoneDoneYear(); ok {
+		_spec.AddField(project.FieldMilestoneDoneYear, field.TypeInt, value)
+	}
+	if pu.mutation.MilestoneDoneYearCleared() {
+		_spec.ClearField(project.FieldMilestoneDoneYear, field.TypeInt)
+	}
+	if value, ok := pu.mutation.MilestoneDoneMonth(); ok {
+		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedMilestoneDoneMonth(); ok {
+		_spec.AddField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
+	}
+	if pu.mutation.MilestoneDoneMonthCleared() {
+		_spec.ClearField(project.FieldMilestoneDoneMonth, field.TypeInt)
+	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -1533,6 +1714,51 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pu.mutation.ProjectStaffsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedProjectStaffsIDs(); len(nodes) > 0 && !pu.mutation.ProjectStaffsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.ProjectStaffsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -2603,6 +2829,114 @@ func (puo *ProjectUpdateOne) ClearIronBudgetPercentage() *ProjectUpdateOne {
 	return puo
 }
 
+// SetMilestonePlanYear sets the "milestone_plan_year" field.
+func (puo *ProjectUpdateOne) SetMilestonePlanYear(i int) *ProjectUpdateOne {
+	puo.mutation.ResetMilestonePlanYear()
+	puo.mutation.SetMilestonePlanYear(i)
+	return puo
+}
+
+// SetNillableMilestonePlanYear sets the "milestone_plan_year" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMilestonePlanYear(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetMilestonePlanYear(*i)
+	}
+	return puo
+}
+
+// AddMilestonePlanYear adds i to the "milestone_plan_year" field.
+func (puo *ProjectUpdateOne) AddMilestonePlanYear(i int) *ProjectUpdateOne {
+	puo.mutation.AddMilestonePlanYear(i)
+	return puo
+}
+
+// ClearMilestonePlanYear clears the value of the "milestone_plan_year" field.
+func (puo *ProjectUpdateOne) ClearMilestonePlanYear() *ProjectUpdateOne {
+	puo.mutation.ClearMilestonePlanYear()
+	return puo
+}
+
+// SetMilestonePlanMonth sets the "milestone_plan_month" field.
+func (puo *ProjectUpdateOne) SetMilestonePlanMonth(i int) *ProjectUpdateOne {
+	puo.mutation.ResetMilestonePlanMonth()
+	puo.mutation.SetMilestonePlanMonth(i)
+	return puo
+}
+
+// SetNillableMilestonePlanMonth sets the "milestone_plan_month" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMilestonePlanMonth(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetMilestonePlanMonth(*i)
+	}
+	return puo
+}
+
+// AddMilestonePlanMonth adds i to the "milestone_plan_month" field.
+func (puo *ProjectUpdateOne) AddMilestonePlanMonth(i int) *ProjectUpdateOne {
+	puo.mutation.AddMilestonePlanMonth(i)
+	return puo
+}
+
+// ClearMilestonePlanMonth clears the value of the "milestone_plan_month" field.
+func (puo *ProjectUpdateOne) ClearMilestonePlanMonth() *ProjectUpdateOne {
+	puo.mutation.ClearMilestonePlanMonth()
+	return puo
+}
+
+// SetMilestoneDoneYear sets the "milestone_done_year" field.
+func (puo *ProjectUpdateOne) SetMilestoneDoneYear(i int) *ProjectUpdateOne {
+	puo.mutation.ResetMilestoneDoneYear()
+	puo.mutation.SetMilestoneDoneYear(i)
+	return puo
+}
+
+// SetNillableMilestoneDoneYear sets the "milestone_done_year" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMilestoneDoneYear(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetMilestoneDoneYear(*i)
+	}
+	return puo
+}
+
+// AddMilestoneDoneYear adds i to the "milestone_done_year" field.
+func (puo *ProjectUpdateOne) AddMilestoneDoneYear(i int) *ProjectUpdateOne {
+	puo.mutation.AddMilestoneDoneYear(i)
+	return puo
+}
+
+// ClearMilestoneDoneYear clears the value of the "milestone_done_year" field.
+func (puo *ProjectUpdateOne) ClearMilestoneDoneYear() *ProjectUpdateOne {
+	puo.mutation.ClearMilestoneDoneYear()
+	return puo
+}
+
+// SetMilestoneDoneMonth sets the "milestone_done_month" field.
+func (puo *ProjectUpdateOne) SetMilestoneDoneMonth(i int) *ProjectUpdateOne {
+	puo.mutation.ResetMilestoneDoneMonth()
+	puo.mutation.SetMilestoneDoneMonth(i)
+	return puo
+}
+
+// SetNillableMilestoneDoneMonth sets the "milestone_done_month" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMilestoneDoneMonth(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetMilestoneDoneMonth(*i)
+	}
+	return puo
+}
+
+// AddMilestoneDoneMonth adds i to the "milestone_done_month" field.
+func (puo *ProjectUpdateOne) AddMilestoneDoneMonth(i int) *ProjectUpdateOne {
+	puo.mutation.AddMilestoneDoneMonth(i)
+	return puo
+}
+
+// ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
+func (puo *ProjectUpdateOne) ClearMilestoneDoneMonth() *ProjectUpdateOne {
+	puo.mutation.ClearMilestoneDoneMonth()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -2616,6 +2950,21 @@ func (puo *ProjectUpdateOne) AddVos(p ...*ProjectVO) *ProjectUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return puo.AddVoIDs(ids...)
+}
+
+// AddProjectStaffIDs adds the "project_staffs" edge to the ProjectStaff entity by IDs.
+func (puo *ProjectUpdateOne) AddProjectStaffIDs(ids ...xid.ID) *ProjectUpdateOne {
+	puo.mutation.AddProjectStaffIDs(ids...)
+	return puo
+}
+
+// AddProjectStaffs adds the "project_staffs" edges to the ProjectStaff entity.
+func (puo *ProjectUpdateOne) AddProjectStaffs(p ...*ProjectStaff) *ProjectUpdateOne {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.AddProjectStaffIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -2642,6 +2991,27 @@ func (puo *ProjectUpdateOne) RemoveVos(p ...*ProjectVO) *ProjectUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return puo.RemoveVoIDs(ids...)
+}
+
+// ClearProjectStaffs clears all "project_staffs" edges to the ProjectStaff entity.
+func (puo *ProjectUpdateOne) ClearProjectStaffs() *ProjectUpdateOne {
+	puo.mutation.ClearProjectStaffs()
+	return puo
+}
+
+// RemoveProjectStaffIDs removes the "project_staffs" edge to ProjectStaff entities by IDs.
+func (puo *ProjectUpdateOne) RemoveProjectStaffIDs(ids ...xid.ID) *ProjectUpdateOne {
+	puo.mutation.RemoveProjectStaffIDs(ids...)
+	return puo
+}
+
+// RemoveProjectStaffs removes "project_staffs" edges to ProjectStaff entities.
+func (puo *ProjectUpdateOne) RemoveProjectStaffs(p ...*ProjectStaff) *ProjectUpdateOne {
+	ids := make([]xid.ID, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.RemoveProjectStaffIDs(ids...)
 }
 
 // Where appends a list predicates to the ProjectUpdate builder.
@@ -3055,6 +3425,42 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	if puo.mutation.IronBudgetPercentageCleared() {
 		_spec.ClearField(project.FieldIronBudgetPercentage, field.TypeFloat64)
 	}
+	if value, ok := puo.mutation.MilestonePlanYear(); ok {
+		_spec.SetField(project.FieldMilestonePlanYear, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedMilestonePlanYear(); ok {
+		_spec.AddField(project.FieldMilestonePlanYear, field.TypeInt, value)
+	}
+	if puo.mutation.MilestonePlanYearCleared() {
+		_spec.ClearField(project.FieldMilestonePlanYear, field.TypeInt)
+	}
+	if value, ok := puo.mutation.MilestonePlanMonth(); ok {
+		_spec.SetField(project.FieldMilestonePlanMonth, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedMilestonePlanMonth(); ok {
+		_spec.AddField(project.FieldMilestonePlanMonth, field.TypeInt, value)
+	}
+	if puo.mutation.MilestonePlanMonthCleared() {
+		_spec.ClearField(project.FieldMilestonePlanMonth, field.TypeInt)
+	}
+	if value, ok := puo.mutation.MilestoneDoneYear(); ok {
+		_spec.SetField(project.FieldMilestoneDoneYear, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedMilestoneDoneYear(); ok {
+		_spec.AddField(project.FieldMilestoneDoneYear, field.TypeInt, value)
+	}
+	if puo.mutation.MilestoneDoneYearCleared() {
+		_spec.ClearField(project.FieldMilestoneDoneYear, field.TypeInt)
+	}
+	if value, ok := puo.mutation.MilestoneDoneMonth(); ok {
+		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedMilestoneDoneMonth(); ok {
+		_spec.AddField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
+	}
+	if puo.mutation.MilestoneDoneMonthCleared() {
+		_spec.ClearField(project.FieldMilestoneDoneMonth, field.TypeInt)
+	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -3093,6 +3499,51 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(projectvo.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.ProjectStaffsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedProjectStaffsIDs(); len(nodes) > 0 && !puo.mutation.ProjectStaffsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.ProjectStaffsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   project.ProjectStaffsTable,
+			Columns: []string{project.ProjectStaffsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
