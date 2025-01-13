@@ -49,7 +49,6 @@ var (
 
 func main() {
 	imgFlag := flag.Bool("image", false, "fetch image")
-	workingFlag := flag.Bool("working", false, "fetch working")
 	flag.Parse()
 
 	ctx := context.Background()
@@ -790,73 +789,71 @@ func main() {
 
 		// 地盤人員
 		{
-			if today.Day() == 21 || *workingFlag {
 
-				pj, err := s.Project.Query().Where(project.Code(*jobcode)).Only(ctx)
-				if err != nil {
-					fmt.Printf("%s 地盤人員 抓取项目失败: %s\n", *jobcode, err.Error())
-					continue
-				}
+			pj, err := s.Project.Query().Where(project.Code(*jobcode)).Only(ctx)
+			if err != nil {
+				fmt.Printf("%s 地盤人員 抓取项目失败: %s\n", *jobcode, err.Error())
+				continue
+			}
 
-				rows, err := stgDb.Query(
-					`
+			rows, err := stgDb.Query(
+				`
 							SELECT jobtitle, whr FROM EM_PROJECT_V
 							WHERE jobcode like @code + '%'
 						`,
-					sql.Named("code", jobcode),
+				sql.Named("code", jobcode),
+			)
+			if err != nil {
+				fmt.Printf("%s 抓取地盤人員失败: %s\n", *jobcode, err.Error())
+			} else {
+				defer rows.Close()
+
+				var (
+					staffInstall    float64 = 0
+					staffManagement float64 = 0
+					staffDesign     float64 = 0
 				)
-				if err != nil {
-					fmt.Printf("%s 抓取地盤人員失败: %s\n", *jobcode, err.Error())
-				} else {
-					defer rows.Close()
 
+				for rows.Next() {
 					var (
-						staffInstall    float64 = 0
-						staffManagement float64 = 0
-						staffDesign     float64 = 0
+						jobtitle *string
+						whr      *float64
 					)
-
-					for rows.Next() {
-						var (
-							jobtitle *string
-							whr      *float64
-						)
-						err := rows.Scan(&jobtitle, &whr)
-						if err != nil {
-							fmt.Printf("%s 抓取地盤人員失败: %s\n", *jobcode, err.Error())
-						} else {
-							if jobtitle != nil && whr != nil {
-								switch *jobtitle {
-								case "助理/副/安裝經理":
-								case "地盤監督/高級地盤監督":
-									staffInstall += *whr
-								case "助理/副項目總監/總監":
-								case "助理/副/項目協調員":
-								case "助理/副/項目經理":
-									staffManagement += *whr
-								case "設計主管":
-									staffDesign += *whr
-								}
+					err := rows.Scan(&jobtitle, &whr)
+					if err != nil {
+						fmt.Printf("%s 抓取地盤人員失败: %s\n", *jobcode, err.Error())
+					} else {
+						if jobtitle != nil && whr != nil {
+							switch *jobtitle {
+							case "助理/副/安裝經理":
+							case "地盤監督/高級地盤監督":
+								staffInstall += *whr
+							case "助理/副項目總監/總監":
+							case "助理/副/項目協調員":
+							case "助理/副/項目經理":
+								staffManagement += *whr
+							case "設計主管":
+								staffDesign += *whr
 							}
 						}
 					}
-
-					if err := s.ProjectStaff.Create().
-						SetCym(fmt.Sprintf("%s-%d-%d", *jobcode, today.Year(), today.Month())).
-						SetInstallation(staffInstall).
-						SetManagement(staffManagement).
-						SetDesign(staffDesign).
-						SetProject(pj).
-						OnConflictColumns(projectstaff.FieldCym).
-						UpdateNewValues().
-						Exec(ctx); err != nil {
-						fmt.Printf("%s 保存地盤人員失败: %s\n", *jobcode, err.Error())
-					}
-
-					// p.SetStaffInstall(staffInstall)
-					// p.SetStaffManagement(staffManagement)
-					// p.SetStaffDesign(staffDesign)
 				}
+
+				if err := s.ProjectStaff.Create().
+					SetCym(fmt.Sprintf("%s-%d-%d", *jobcode, today.Year(), today.Month())).
+					SetInstallation(staffInstall).
+					SetManagement(staffManagement).
+					SetDesign(staffDesign).
+					SetProject(pj).
+					OnConflictColumns(projectstaff.FieldCym).
+					UpdateNewValues().
+					Exec(ctx); err != nil {
+					fmt.Printf("%s 保存地盤人員失败: %s\n", *jobcode, err.Error())
+				}
+
+				// p.SetStaffInstall(staffInstall)
+				// p.SetStaffManagement(staffManagement)
+				// p.SetStaffDesign(staffDesign)
 			}
 		}
 
