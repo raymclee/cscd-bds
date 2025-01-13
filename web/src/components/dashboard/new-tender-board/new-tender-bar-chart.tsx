@@ -11,16 +11,18 @@ export function NewTenderBarChart({ data }: { data: any }) {
   const chartConfig = {
     amount: {
       label: "金额",
-      color: "hsl(var(--bar-chart-1))",
+      // color: "hsl(var(--bar-chart-1))",
+      color: "rgb(91, 143, 249)",
     },
     total: {
       label: "数量",
-      color: "hsl(var(--bar-chart-2))",
+      // color: "hsl(var(--bar-chart-2))",
+      color: "rgb(90, 216, 166)",
     },
   } satisfies ChartConfig;
 
   return (
-    <ChartContainer config={chartConfig} className="aspect-auto h-full">
+    <ChartContainer config={chartConfig} className="h-full aspect-auto">
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <XAxis

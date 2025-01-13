@@ -35,12 +35,12 @@ export function NewTenderBoard() {
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
-  // const now = dayjs();
+  const now = dayjs();
 
-  // const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
-  //   Dayjs,
-  //   Dayjs,
-  // ];
+  const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
+    Dayjs,
+    Dayjs,
+  ];
 
   const barConfig = {
     data: [
@@ -201,7 +201,7 @@ export function NewTenderBoard() {
           </div>
         </div> */}
 
-        {/* <div className="flex h-[calc(100%-12px)] w-[45%] flex-col">
+        <div className="flex h-[calc(100%-12px)] w-[45%] flex-col">
           <div className="relative flex justify-center flex-1 mt-1">
             <div className="absolute right-0 -left-6 top-2">
               <NewTenderAmountChart
@@ -214,7 +214,7 @@ export function NewTenderBoard() {
                 periods={thisMonthAmountPeriods}
               />
             </div>
-            <div className="absolute right-0 text-center -left-6 bottom-4">
+            <div className="absolute right-0 text-center -left-6 bottom-2">
               <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
@@ -229,14 +229,14 @@ export function NewTenderBoard() {
                 periods={thisMonthAmountPeriods}
               />
             </div>
-            <div className="absolute right-0 text-center -left-6 bottom-4">
+            <div className="absolute right-0 text-center -left-6 bottom-2">
               <span className="text-xs text-gray-400">数量占比变化</span>
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* <Column {...barConfig} /> */}
-        {/* <div className="relative h-[calc(100%-12px)] flex-1">
+        <div className="relative h-[calc(100%-12px)] flex-1">
           <div className="absolute bottom-0 right-0 -left-10 top-4">
             <NewTenderBarChart
               data={[
@@ -253,10 +253,9 @@ export function NewTenderBoard() {
               ]}
             />
           </div>
-        </div> */}
+        </div>
 
-        <div className="flex w-[40%] flex-col items-center justify-around py-4">
-          {/* <AmountChart /> */}
+        {/* <div className="flex w-[40%] flex-col items-center justify-around py-4">
           <div className="flex flex-col items-center justify-center gap-1">
             <Tiny.Ring {...amountConfig} />
             <span className="text-xs text-gray-400">金额占比上升</span>
@@ -266,7 +265,7 @@ export function NewTenderBoard() {
             <span className="text-xs text-gray-400">数量占比下降</span>
           </div>
         </div>
-        <Column {...barConfig} />
+        <Column {...barConfig} /> */}
       </CardContent>
     </MotionCard>
   );

@@ -59,7 +59,7 @@ export function NewTenderBoardMore() {
 
   return (
     <>
-      <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-center bottom-32">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,7 +77,7 @@ export function NewTenderBoardMore() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
-          className="absolute right-6 top-6 cursor-pointer rounded-full border-2 border-gray-600 p-1 text-white hover:bg-gray-600"
+          className="absolute p-1 text-white border-2 border-gray-600 rounded-full cursor-pointer right-6 top-6 hover:bg-gray-600"
           onClick={() => {
             useMapStore.setState({ moreNewTenderBoardVisible: false });
           }}
@@ -96,13 +96,13 @@ export function NewTenderBoardMore() {
           )}
         >
           <MotionCardContent className="my-auto grid h-[95vh] grid-cols-[1fr_1fr_2.5fr] gap-4 p-4">
-            <div className="flex h-full flex-col overflow-hidden rounded border border-brand">
-              <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
+            <div className="flex flex-col h-full overflow-hidden border rounded border-brand">
+              <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
                 金額佔比
               </div>
 
               <div className="flex flex-1 pt-4">
-                <div className={cn("flex h-full w-full flex-1 flex-col gap-4")}>
+                <div className={cn("flex flex-col flex-1 w-full h-full gap-4")}>
                   <div className="px-4 py-2 font-bold text-white">
                     {thisMonthAmountPeriods[0].format("M月")} 與{" "}
                     {thisMonthAmountPeriods[1].format("M月")} 對比
@@ -119,7 +119,7 @@ export function NewTenderBoardMore() {
               <div className="mx-auto mb-8 h-px w-[90%] bg-slate-700"></div>
 
               <div className="flex flex-1">
-                <div className={cn("flex h-full w-full flex-1 flex-col gap-4")}>
+                <div className={cn("flex flex-col flex-1 w-full h-full gap-4")}>
                   <div className="px-4 py-2 font-bold text-white">
                     {lastMonthAmountPeriods[0].format("M月")} 與{" "}
                     {lastMonthAmountPeriods[1].format("M月")} 對比
@@ -132,13 +132,13 @@ export function NewTenderBoardMore() {
                 </div>
               </div>
             </div>
-            <div className="flex h-full flex-col overflow-hidden rounded border border-brand">
-              <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
+            <div className="flex flex-col h-full overflow-hidden border rounded border-brand">
+              <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
                 數量佔比
               </div>
 
               <div className="flex flex-1 pt-4">
-                <div className="flex w-full flex-1 flex-col gap-4">
+                <div className="flex flex-col flex-1 w-full gap-4">
                   <div className="px-4 py-2 font-bold text-white">
                     {thisMountTotalPeriods[0].format("M月")} 與{" "}
                     {thisMountTotalPeriods[1].format("M月")} 對比
@@ -155,7 +155,7 @@ export function NewTenderBoardMore() {
               <div className="mx-auto mb-8 h-px w-[90%] bg-slate-700"></div>
 
               <div className="flex flex-1">
-                <div className="flex h-full w-full flex-1 flex-col gap-4">
+                <div className="flex flex-col flex-1 w-full h-full gap-4">
                   <div className="px-4 py-2 font-bold text-white">
                     {lastMonthTotalPeriods[0].format("M月")} 與{" "}
                     {lastMonthTotalPeriods[1].format("M月")} 對比
@@ -168,23 +168,23 @@ export function NewTenderBoardMore() {
                 </div>
               </div>
             </div>
-            <div className="flex h-full flex-col gap-4">
-              <div className="flex-1 overflow-hidden rounded border border-brand">
-                <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
+            <div className="flex flex-col h-full gap-4">
+              <div className="flex-1 overflow-hidden border rounded border-brand">
+                <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
                   月度數量金額對比數據
                 </div>
 
-                <div className="relative flex h-full items-center justify-center pr-6">
+                <div className="relative flex items-center justify-center h-full pr-6">
                   <MonthlyAmountChart />
                 </div>
               </div>
 
-              <div className="flex-1 overflow-hidden rounded border border-brand">
-                <div className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 px-3 py-2 font-bold text-white">
+              <div className="flex-1 overflow-hidden border rounded border-brand">
+                <div className="px-3 py-2 font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
                   本月度數量金額對比數據
                 </div>
 
-                <div className="relative flex h-full items-center justify-center px-6">
+                <div className="relative flex items-center justify-center h-full px-6">
                   <DailyTotalChart />
                 </div>
               </div>
@@ -220,11 +220,13 @@ function MonthlyAmountChart() {
   const chartConfig = {
     amount: {
       label: "金额(亿)",
-      color: "hsl(var(--bar-chart-1))",
+      // color: "hsl(var(--bar-chart-1))",
+      color: "rgb(91, 143, 249)",
     },
     total: {
       label: "数量(个)",
-      color: "hsl(var(--bar-chart-2))",
+      // color: "hsl(var(--bar-chart-2))",
+      color: "rgb(90, 216, 166)",
     },
   } satisfies ChartConfig;
 
@@ -287,11 +289,13 @@ function DailyTotalChart() {
   const chartConfig = {
     amount: {
       label: "金额(亿)",
-      color: "hsl(var(--bar-chart-1))",
+      // color: "hsl(var(--bar-chart-1))",
+      color: "rgb(91, 143, 249)",
     },
     total: {
       label: "数量(个)",
-      color: "hsl(var(--bar-chart-2))",
+      // color: "hsl(var(--bar-chart-2))",
+      color: "rgb(90, 216, 166)",
     },
   } satisfies ChartConfig;
 
@@ -309,7 +313,7 @@ function DailyTotalChart() {
           axisLine={false}
           tickMargin={8}
           tickFormatter={(value) => value.slice(0, 3)}
-          className="bg-white fill-white stroke-orange-500 text-white"
+          className="text-white bg-white fill-white stroke-orange-500"
         />
         <ChartTooltip
           cursor={false}
