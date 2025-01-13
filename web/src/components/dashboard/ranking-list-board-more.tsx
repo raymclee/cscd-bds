@@ -51,7 +51,7 @@ export function RankingListBoardMore({ tenderCount }: { tenderCount: number }) {
           transition={{ duration: 0.2, delay: 0.1 }}
           layoutId="ranking-list-board"
           className={cn(
-            "mx-4 block overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[90vh] w-[600px] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
           <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
