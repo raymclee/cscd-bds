@@ -173,8 +173,11 @@ export const mapIndexPageQuery = graphql`
       }
     }
 
-    ...topCompetitors_competitors
-    ...rankingListBoard_competitors
+    topCompetitors {
+      id
+      shortName
+      wonTendersCount
+    }
   }
 `;
 
@@ -236,6 +239,14 @@ function RouteComponent() {
 
   const areas = data.node?.areas?.edges?.map((e) => e?.node);
   const gaOnly = isGAorHWOnly(data.node?.areas as any);
+
+  const tenderCount =
+    areas?.reduce(
+      (acc, inc) =>
+        acc +
+        (inc?.tenders?.edges?.map((e) => e?.node).filter(Boolean).length || 0),
+      0,
+    ) || 0;
 
   React.useEffect(() => {
     map?.on("complete", () => {
@@ -1036,7 +1047,7 @@ function RouteComponent() {
       >
         <TenderTypeBoard />
 
-        <RankingListBoard competitors={data} />
+        <RankingListBoard />
 
         <DashboardTenderList />
       </div>
@@ -1053,7 +1064,7 @@ function RouteComponent() {
       </AnimatePresence>
       <AnimatePresence>
         {moreRankingListBoardVisible && (
-          <RankingListBoardMore competitors={data} />
+          <RankingListBoardMore tenderCount={tenderCount} />
         )}
       </AnimatePresence>
       <AnimatePresence>

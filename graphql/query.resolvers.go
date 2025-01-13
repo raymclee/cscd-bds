@@ -94,6 +94,7 @@ func (r *queryResolver) SearchLocation(ctx context.Context, keyword string) ([]*
 func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*model.TopCompetitor, error) {
 	comps, err := r.store.Competitor.Query().
 		Order(competitor.ByWonTendersCount(sql.OrderDesc())).
+		Limit(13).
 		WithWonTenders().
 		All(ctx)
 	if err != nil {

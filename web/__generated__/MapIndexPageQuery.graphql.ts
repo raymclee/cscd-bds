@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1b2b8a695c673ed83537a2d903a07187>>
+ * @generated SignedSource<<c0d09ebf0412266c02210583c0dde768>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,6 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
 export type OrderDirection = "ASC" | "DESC" | "%future added value";
 export type TenderOrderField = "CLOSING_DATE" | "CREATED_AT" | "NAME" | "TENDER_DATE" | "%future added value";
 export type VisitRecordOrderField = "CREATED_AT" | "DATE" | "%future added value";
@@ -143,7 +142,11 @@ export type MapIndexPageQuery$data = {
       } | null | undefined> | null | undefined;
     };
   } | null | undefined;
-  readonly " $fragmentSpreads": FragmentRefs<"rankingListBoard_competitors" | "topCompetitors_competitors">;
+  readonly topCompetitors: ReadonlyArray<{
+    readonly id: string;
+    readonly shortName: string;
+    readonly wonTendersCount: number;
+  }>;
 };
 export type MapIndexPageQuery = {
   response: MapIndexPageQuery$data;
@@ -657,7 +660,33 @@ v63 = {
   ],
   "storageKey": null
 },
-v64 = [
+v64 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "TopCompetitor",
+  "kind": "LinkedField",
+  "name": "topCompetitors",
+  "plural": true,
+  "selections": [
+    (v6/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "shortName",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "wonTendersCount",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v65 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -671,7 +700,7 @@ v64 = [
   (v14/*: any*/),
   (v15/*: any*/)
 ],
-v65 = [
+v66 = [
   (v7/*: any*/),
   (v12/*: any*/),
   (v6/*: any*/)
@@ -938,16 +967,7 @@ return {
         ],
         "storageKey": null
       },
-      {
-        "args": null,
-        "kind": "FragmentSpread",
-        "name": "topCompetitors_competitors"
-      },
-      {
-        "args": null,
-        "kind": "FragmentSpread",
-        "name": "rankingListBoard_competitors"
-      }
+      (v64/*: any*/)
     ],
     "type": "Query",
     "abstractKey": null
@@ -1008,7 +1028,7 @@ return {
                           (v13/*: any*/),
                           {
                             "alias": null,
-                            "args": (v64/*: any*/),
+                            "args": (v65/*: any*/),
                             "concreteType": "TenderConnection",
                             "kind": "LinkedField",
                             "name": "tenders",
@@ -1115,7 +1135,7 @@ return {
                                         "kind": "LinkedField",
                                         "name": "city",
                                         "plural": false,
-                                        "selections": (v65/*: any*/),
+                                        "selections": (v66/*: any*/),
                                         "storageKey": null
                                       },
                                       {
@@ -1125,7 +1145,7 @@ return {
                                         "kind": "LinkedField",
                                         "name": "district",
                                         "plural": false,
-                                        "selections": (v65/*: any*/),
+                                        "selections": (v66/*: any*/),
                                         "storageKey": null
                                       },
                                       (v52/*: any*/),
@@ -1197,7 +1217,7 @@ return {
                           },
                           {
                             "alias": null,
-                            "args": (v64/*: any*/),
+                            "args": (v65/*: any*/),
                             "filters": [
                               "orderBy",
                               "where"
@@ -1224,36 +1244,11 @@ return {
         ],
         "storageKey": null
       },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "TopCompetitor",
-        "kind": "LinkedField",
-        "name": "topCompetitors",
-        "plural": true,
-        "selections": [
-          (v6/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "shortName",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "wonTendersCount",
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
+      (v64/*: any*/)
     ]
   },
   "params": {
-    "cacheID": "db3dee46c2b1a03e256cbdfb728f4f17",
+    "cacheID": "281e6702965c4c4485ab274bdc5a923b",
     "id": null,
     "metadata": {
       "connection": [
@@ -1267,11 +1262,11 @@ return {
     },
     "name": "MapIndexPageQuery",
     "operationKind": "query",
-    "text": "query MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n  $visitOrderBy: VisitRecordOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last, where: {statusNEQ: 7}) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    name\n                    ownerType\n                    id\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  visitRecords(orderBy: $visitOrderBy) {\n                    edges {\n                      node {\n                        visitType\n                        nextStep\n                        commPeople\n                        commContent\n                        date\n                        customer {\n                          name\n                          id\n                        }\n                        tender {\n                          id\n                          name\n                        }\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n  ...topCompetitors_competitors\n  ...rankingListBoard_competitors\n}\n\nfragment rankingListBoard_competitors on Query {\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n}\n\nfragment topCompetitors_competitors on Query {\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n}\n"
+    "text": "query MapIndexPageQuery(\n  $userId: ID!\n  $orderBy: [TenderOrder!]\n  $first: Int\n  $last: Int\n  $visitOrderBy: VisitRecordOrder\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            createdAt\n            center {\n              coordinates\n            }\n            provinces {\n              edges {\n                node {\n                  id\n                  name\n                  adcode\n                  center {\n                    coordinates\n                  }\n                }\n              }\n            }\n            tenders(orderBy: $orderBy, first: $first, last: $last, where: {statusNEQ: 7}) {\n              edges {\n                node {\n                  id\n                  name\n                  status\n                  createdAt\n                  estimatedAmount\n                  customer {\n                    name\n                    ownerType\n                    id\n                  }\n                  followingSales {\n                    id\n                    name\n                  }\n                  images\n                  fullAddress\n                  tenderDate\n                  discoveryDate\n                  contractor\n                  designUnit\n                  tenderForm\n                  keyProject\n                  contractForm\n                  tenderingAgency\n                  consultingFirm\n                  facadeConsultant\n                  timeLimitRating\n                  sizeAndValueRating\n                  creditAndPaymentRating\n                  customerRelationshipRating\n                  competitivePartnershipRating\n                  timeLimitRatingOverview\n                  sizeAndValueRatingOverview\n                  creditAndPaymentRatingOverview\n                  customerRelationshipRatingOverview\n                  competitivePartnershipRatingOverview\n                  tenderWinCompany\n                  tenderCode\n                  developer\n                  architect\n                  tenderClosingDate\n                  constructionArea\n                  tenderWinAmount\n                  tenderWinDate\n                  area {\n                    code\n                    name\n                    id\n                  }\n                  province {\n                    adcode\n                    name\n                    id\n                  }\n                  city {\n                    name\n                    adcode\n                    id\n                  }\n                  district {\n                    name\n                    adcode\n                    id\n                  }\n                  geoCoordinate {\n                    coordinates\n                  }\n                  geoBounds\n                  visitRecords(orderBy: $visitOrderBy) {\n                    edges {\n                      node {\n                        visitType\n                        nextStep\n                        commPeople\n                        commContent\n                        date\n                        customer {\n                          name\n                          id\n                        }\n                        tender {\n                          id\n                          name\n                        }\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n  topCompetitors {\n    id\n    shortName\n    wonTendersCount\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "373beed4c2c987eb95ca12a897d7c6a2";
+(node as any).hash = "51bef4e72ba2488828c0e157f79c6d4b";
 
 export default node;

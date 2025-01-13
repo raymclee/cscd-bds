@@ -57,16 +57,16 @@ export function DashboardTenderList() {
             {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
             <TableHeader className="bg-brand/10">
               <TableRow className="items-center">
-                <TableHead className="w-[55px] text-center text-[0.7rem] text-gray-300">
+                <TableHead className="w-[60px] text-center text-[0.7rem] text-gray-300">
                   序号
                 </TableHead>
                 <TableHead className="text-center text-[0.7rem] text-gray-300">
                   名称
                 </TableHead>
-                <TableHead className="w-[80px] text-center text-[0.7rem] text-gray-300">
+                <TableHead className="w-[60px] text-center text-[0.7rem] text-gray-300">
                   区域
                 </TableHead>
-                <TableHead className="w-[70px] text-center text-[0.7rem] text-gray-300">
+                <TableHead className="w-[80px] text-center text-[0.7rem] text-gray-300">
                   <div>金额</div>
                   (亿元)
                 </TableHead>
@@ -97,7 +97,9 @@ export function DashboardTenderList() {
                 >
                   <TableCell className="text-center">{i + 1}</TableCell>
                   <TableCell>{tender?.name}</TableCell>
-                  <TableCell>{tender?.area.name}</TableCell>
+                  <TableCell>
+                    {tender?.area.name.replace("地区", "").replace("区域", "")}
+                  </TableCell>
                   <TableCell className="text-center">
                     {/* {new Intl.NumberFormat("zh-Hans-CN", {
                             style: "currency",

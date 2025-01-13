@@ -50,10 +50,10 @@ func main() {
 
 	// fetchArea()
 	// fetchSales()
-	// fetchCustomer()
+	fetchCustomer()
 	fetchTender()
 	fetchVisitRecord()
-	// fetchCompetitor()
+	fetchCompetitor()
 
 }
 
@@ -68,7 +68,6 @@ func fetchCompetitor() {
 	}
 
 	for _, item := range resp.Data.Items {
-		fmt.Println(item.Fields)
 
 		var (
 			shortName string

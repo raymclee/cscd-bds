@@ -104,7 +104,7 @@ export function NewTenderBoard() {
           </div>
         </div> */}
 
-        <div className="flex h-[calc(100%-12px)] w-1/2 flex-col">
+        <div className="flex h-[calc(100%-12px)] w-[45%] flex-col">
           <div className="relative mt-1 flex flex-1 justify-center">
             <div className="absolute -left-6 right-0 top-2">
               <NewTenderAmountChart

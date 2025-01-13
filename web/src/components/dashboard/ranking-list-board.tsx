@@ -1,32 +1,20 @@
-import { rankingListBoard_competitors$key } from "__generated__/rankingListBoard_competitors.graphql";
 import { graphql, useFragment } from "react-relay";
-import no1 from "~/assets/svg/ranking_no_1.svg";
-import no2 from "~/assets/svg/ranking_no_2.svg";
-import no3 from "~/assets/svg/ranking_no_3.svg";
+import no1 from "~/assets/svg/ranking_no_1.png";
+import no2 from "~/assets/svg/ranking_no_2.png";
+import no3 from "~/assets/svg/ranking_no_3.png";
 import { cn } from "~/lib/utils";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { motion } from "motion/react";
 import { Ellipsis } from "lucide-react";
 import { useMapStore } from "~/store/map";
+import { useTopCompetitions } from "~/hooks/use-top-competitions";
+import { TopCompetitors } from "./top-competitors";
 
 const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
 
-export function RankingListBoard(props: {
-  competitors: rankingListBoard_competitors$key;
-}) {
-  const data = useFragment(
-    graphql`
-      fragment rankingListBoard_competitors on Query {
-        topCompetitors {
-          id
-          shortName
-          wonTendersCount
-        }
-      }
-    `,
-    props.competitors,
-  );
+export function RankingListBoard() {
+  const data = useTopCompetitions();
 
   return (
     <MotionCard
@@ -53,53 +41,8 @@ export function RankingListBoard(props: {
         </div>
       </CardHeader>
 
-      <CardContent className="flex h-full w-full items-stretch justify-center gap-4 overflow-hidden px-4">
-        <div
-          className={
-            "relative flex flex-1 flex-col items-center justify-center"
-          }
-        >
-          <img src={no2} className={cn("h-full w-full scale-y-[1.1]")} />
-          <div
-            className={
-              "absolute top-1/2 line-clamp-1 w-[70%] -translate-y-[100%] text-center text-xs"
-            }
-          >
-            {data.topCompetitors?.[0]?.shortName || ""}
-          </div>
-        </div>
-        <div
-          className={
-            "relative flex flex-1 flex-col items-center justify-center"
-          }
-        >
-          <img
-            src={no1}
-            className={"h-full w-full scale-x-[1.2] scale-y-[1.3]"}
-          />
-          <div
-            className={
-              "absolute top-1/2 line-clamp-1 w-[70%] -translate-y-[110%] text-center text-xs"
-            }
-          >
-            {data.topCompetitors?.[1]?.shortName || ""}
-          </div>
-        </div>
-
-        <div
-          className={
-            "relative flex flex-1 flex-col items-center justify-center"
-          }
-        >
-          <img src={no3} className={cn("h-full w-full scale-y-[1.1]")} />
-          <div
-            className={
-              "absolute top-1/2 line-clamp-1 w-[70%] -translate-y-[100%] text-center text-xs"
-            }
-          >
-            {data.topCompetitors?.[2]?.shortName || ""}
-          </div>
-        </div>
+      <CardContent className="flex h-full w-full items-stretch justify-center gap-2 overflow-hidden px-4">
+        <TopCompetitors />
       </CardContent>
     </MotionCard>
   );
