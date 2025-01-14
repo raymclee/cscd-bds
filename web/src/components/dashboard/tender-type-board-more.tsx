@@ -39,7 +39,7 @@ export function TenderTypeBoardMore() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-center bottom-20">
+      <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -57,7 +57,7 @@ export function TenderTypeBoardMore() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
-          className="absolute p-1 text-white border-2 border-gray-600 rounded-full cursor-pointer right-6 top-6 hover:bg-gray-600"
+          className="absolute right-6 top-6 cursor-pointer rounded-full border-2 border-gray-600 p-1 text-white hover:bg-gray-600"
           onClick={() => {
             useMapStore.setState({ moreTenderTypeBoardVisible: false });
           }}
@@ -75,7 +75,7 @@ export function TenderTypeBoardMore() {
             "mx-4 block h-[90vh] w-[520px] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
-          <MotionCardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+          <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
             <div className="flex items-center justify-between">
               <motion.span layoutId="tender-type-board-title">
                 客户列表
@@ -83,8 +83,8 @@ export function TenderTypeBoardMore() {
             </div>
           </MotionCardHeader>
           <MotionCardContent className="h-[calc(100%-16px)]">
-            <ScrollArea className="h-full px-4 -mx-4">
-              <Table className="h-full my-4">
+            <ScrollArea className="-mx-4 h-full px-4">
+              <Table className="my-4 h-full">
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="sticky top-0 bg-gray-900">
                   <TableRow className="items-center">

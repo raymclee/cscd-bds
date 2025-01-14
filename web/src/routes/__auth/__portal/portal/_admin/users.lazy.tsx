@@ -149,6 +149,13 @@ function RouteComponent() {
       ),
     },
     {
+      dataIndex: "hasEditAccess",
+      title: "编辑",
+      render: (hasEditAccess, record) => (
+        <UserToggle user={record} field="hasEditAccess" value={hasEditAccess} />
+      ),
+    },
+    {
       dataIndex: "isAdmin",
       title: "管理员",
       render: (isAdmin, record) => (

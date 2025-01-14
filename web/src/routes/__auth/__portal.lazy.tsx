@@ -88,15 +88,15 @@ function RouteComponent() {
     [],
   );
 
-  // if (canEdit(session)) {
-  //   items.push(
-  //     getItem(
-  //       <Link to="/portal/plots">区域地块</Link>,
-  //       '/portal/plots',
-  //       <Map size={16} />,
-  //     ),
-  //   )
-  // }
+  if (canEdit(session)) {
+    items.push(
+      getItem(
+        <Link to="/portal/plots">区域地块</Link>,
+        "/portal/plots",
+        <Map size={16} />,
+      ),
+    );
+  }
 
   if (session.isSuperAdmin) {
     items.push(

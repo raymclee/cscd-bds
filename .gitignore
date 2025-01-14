@@ -7,3 +7,4 @@ node_modules
 bin/*
 static/*
 3dm/*
+smb/*

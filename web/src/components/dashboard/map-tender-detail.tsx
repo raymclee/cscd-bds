@@ -193,7 +193,7 @@ export function MapTenderDetail() {
                   跟进情况
                 </TabsTrigger>
               </TabsList>
-              <ScrollArea className="h-[480px]">
+              <ScrollArea className="-mx-4 h-[60vh] px-4 pb-6">
                 <TabsContent value="detail" className="mt-4 space-y-2">
                   <div className="grid grid-cols-3">
                     <div className="text-gray-400">项目名称</div>

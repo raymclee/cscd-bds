@@ -147,7 +147,7 @@ export function NewTenderBoard() {
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent pb-2 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
       )}
     >
-      <CardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+      <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
         <div className="flex items-center justify-between">
           <span>本月新增商机</span>
           <MotionEllipsis
@@ -201,9 +201,9 @@ export function NewTenderBoard() {
           </div>
         </div> */}
 
-        <div className="flex h-[calc(100%-12px)] w-[45%] flex-col">
-          <div className="relative flex justify-center flex-1 mt-1">
-            <div className="absolute right-0 -left-6 top-2">
+        <div className="flex h-[calc(100%-12px)] w-1/2 flex-col">
+          <div className="relative mt-1 flex flex-1 justify-center">
+            <div className="absolute -left-6 right-0 top-2">
               <NewTenderAmountChart
                 height={80}
                 width={80}
@@ -214,13 +214,13 @@ export function NewTenderBoard() {
                 periods={thisMonthAmountPeriods}
               />
             </div>
-            <div className="absolute right-0 text-center -left-6 bottom-2">
+            <div className="absolute -left-6 bottom-1 right-0 text-center">
               <span className="text-xs text-gray-400">金额占比变化</span>
             </div>
           </div>
 
-          <div className="relative flex flex-col justify-center flex-1">
-            <div className="absolute right-0 -left-6 top-2">
+          <div className="relative flex flex-1 flex-col justify-center">
+            <div className="absolute -left-6 right-0 top-2">
               <NewTenderTotalChart
                 height={80}
                 width={80}
@@ -229,7 +229,7 @@ export function NewTenderBoard() {
                 periods={thisMonthAmountPeriods}
               />
             </div>
-            <div className="absolute right-0 text-center -left-6 bottom-2">
+            <div className="absolute -left-6 bottom-1 right-0 text-center">
               <span className="text-xs text-gray-400">数量占比变化</span>
             </div>
           </div>
@@ -237,7 +237,7 @@ export function NewTenderBoard() {
 
         {/* <Column {...barConfig} /> */}
         <div className="relative h-[calc(100%-12px)] flex-1">
-          <div className="absolute bottom-0 right-0 -left-10 top-4">
+          <div className="absolute -left-10 bottom-0 right-0 top-4">
             <NewTenderBarChart
               data={[
                 {

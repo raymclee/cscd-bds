@@ -63,7 +63,7 @@ function RouteComponent() {
             </Tooltip>
           )}
 
-          {session.hasMapAccess && (
+          {(session.isAdmin || session.isSuperAdmin || session.isCeo) && (
             <Tooltip title="运营大屏">
               <Link to="/operations">
                 <Button

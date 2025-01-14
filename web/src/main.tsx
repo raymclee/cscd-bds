@@ -1,4 +1,8 @@
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+  RouterProvider,
+  createRouteMask,
+  createRouter,
+} from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 import { RelayEnvironment } from "~/lib/relay";
 import dayjs from "dayjs";

@@ -1,6 +1,6 @@
-import { InfoCircleOutlined } from '@ant-design/icons'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { usersSuperAdminUsersPageQuery } from '__generated__/usersSuperAdminUsersPageQuery.graphql'
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { usersSuperAdminUsersPageQuery } from "__generated__/usersSuperAdminUsersPageQuery.graphql";
 import {
   App,
   Button,
@@ -10,22 +10,22 @@ import {
   Table,
   TableProps,
   Tooltip,
-} from 'antd'
-import { Plus } from 'lucide-react'
-import * as React from 'react'
-import { usePreloadedQuery } from 'react-relay'
-import { graphql } from 'relay-runtime'
-import { ListFilter } from '~/components/portal/list-filter'
-import { UserForm } from '~/components/portal/user-form'
-import { AreaConnection, User } from '~/graphql/graphql'
-import { useDeleteUser } from '~/hooks/use-delete-user'
-import { useUpdateUser } from '~/hooks/use-update-user'
+} from "antd";
+import { Plus } from "lucide-react";
+import * as React from "react";
+import { usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { ListFilter } from "~/components/portal/list-filter";
+import { UserForm } from "~/components/portal/user-form";
+import { AreaConnection, User } from "~/graphql/graphql";
+import { useDeleteUser } from "~/hooks/use-delete-user";
+import { useUpdateUser } from "~/hooks/use-update-user";
 
 export const Route = createLazyFileRoute(
-  '/__auth/__portal/portal/_super-admin/sa/users',
+  "/__auth/__portal/portal/_super-admin/sa/users",
 )({
   component: RouteComponent,
-})
+});
 
 const query = graphql`
   query usersSuperAdminUsersPageQuery($first: Int, $last: Int) {
@@ -68,22 +68,22 @@ const query = graphql`
       }
     }
   }
-`
+`;
 
 function RouteComponent() {
   const data = usePreloadedQuery<usersSuperAdminUsersPageQuery>(
     query,
     Route.useLoaderData(),
-  )
-  const searchParams = Route.useSearch()
-  const navigate = Route.useNavigate()
-  const [selectedUser, setSelectedUser] = React.useState<User | null>(null)
-  const [commitDeleteUser, isDeleteUserInFlight] = useDeleteUser()
-  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser()
-  const { message } = App.useApp()
-  const { session } = Route.useRouteContext()
-  const searchText = searchParams.q || ''
-  const area = searchParams.area
+  );
+  const searchParams = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+  const [commitDeleteUser, isDeleteUserInFlight] = useDeleteUser();
+  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
+  const { message } = App.useApp();
+  const { session } = Route.useRouteContext();
+  const searchText = searchParams.q || "";
+  const area = searchParams.area;
 
   const dataSource =
     data.users.edges
@@ -93,12 +93,12 @@ function RouteComponent() {
         (n) =>
           area === undefined ||
           n?.areas?.edges?.some((a) => a?.node?.code === area),
-      ) ?? []
+      ) ?? [];
 
-  const columns: TableProps<User>['columns'] = [
+  const columns: TableProps<User>["columns"] = [
     {
-      dataIndex: 'name',
-      title: '名称',
+      dataIndex: "name",
+      title: "名称",
       render: (value, record) => (
         <Button
           type="link"
@@ -110,56 +110,49 @@ function RouteComponent() {
       ),
     },
     {
-      title: '区域',
+      title: "区域",
       render: (_, record) =>
         record.areas.edges && record.areas.edges?.length > 0
-          ? record.areas?.edges?.map((a) => a?.node?.name).join(', ')
-          : '无',
+          ? record.areas?.edges?.map((a) => a?.node?.name).join(", ")
+          : "无",
     },
     {
-      dataIndex: 'hasMapAccess',
-      title: '大地图',
+      dataIndex: "hasMapAccess",
+      title: "大地图",
       render: (hasMapAccess, record) => (
         <UserToggle user={record} field="hasMapAccess" value={hasMapAccess} />
       ),
     },
     {
-      dataIndex: 'hasEditAccess',
-      title: (
-        <div className="flex items-baseline gap-2">
-          <div>编辑</div>
-          <Tooltip title="只对港澳和海外地区的用户生效">
-            <InfoCircleOutlined className="cursor-pointer" />
-          </Tooltip>
-        </div>
-      ),
+      dataIndex: "hasEditAccess",
+      title: "编辑",
       render: (hasEditAccess, record) => (
         <UserToggle user={record} field="hasEditAccess" value={hasEditAccess} />
       ),
     },
     {
-      dataIndex: 'isCeo',
-      title: '领导',
+      dataIndex: "isCeo",
+      title: "领导",
       render: (isCeo, record) => (
         <UserToggle user={record} field="isCeo" value={isCeo} />
       ),
     },
     {
-      dataIndex: 'isAdmin',
-      title: '管理员',
+      dataIndex: "isAdmin",
+      title: "管理员",
       render: (isAdmin, record) => (
         <UserToggle user={record} field="isAdmin" value={isAdmin} />
       ),
     },
     {
-      dataIndex: 'isSuperAdmin',
-      title: '超级管理员',
+      dataIndex: "isSuperAdmin",
+      title: "超级管理员",
       render: (isSuperAdmin, record) => (
         <UserToggle user={record} field="isSuperAdmin" value={isSuperAdmin} />
       ),
     },
     {
-      title: '操作',
+      title: "操作",
       render: (_, record) => (
         <div className="-ml-2 flex items-center gap-2">
           <Button
@@ -174,18 +167,18 @@ function RouteComponent() {
                   input: { disabled: !record.disabled },
                 },
                 onCompleted() {
-                  message.destroy()
-                  message.success(record.disabled ? '启用成功' : '停用成功')
+                  message.destroy();
+                  message.success(record.disabled ? "启用成功" : "停用成功");
                 },
                 onError(error) {
-                  console.error(error)
-                  message.destroy()
-                  message.error(record.disabled ? '启用失败' : '停用失败')
+                  console.error(error);
+                  message.destroy();
+                  message.error(record.disabled ? "启用失败" : "停用失败");
                 },
               })
             }
           >
-            {record.disabled ? '启用' : '停用'}
+            {record.disabled ? "启用" : "停用"}
           </Button>
           <Popconfirm
             title="确定删除吗？"
@@ -193,15 +186,15 @@ function RouteComponent() {
               commitDeleteUser({
                 variables: { id: record.id, connections: [data.users.__id] },
                 onCompleted() {
-                  message.destroy()
-                  message.success('删除成功')
+                  message.destroy();
+                  message.success("删除成功");
                 },
                 onError(error) {
-                  console.error(error)
-                  message.destroy()
-                  message.error(`删除失败`)
+                  console.error(error);
+                  message.destroy();
+                  message.error(`删除失败`);
                 },
-              })
+              });
             }}
           >
             <Button
@@ -217,14 +210,14 @@ function RouteComponent() {
         </div>
       ),
     },
-  ]
+  ];
 
   return (
     <>
       <ListFilter
         areas={data.areas.edges?.map((a) => ({
-          label: a?.node?.name ?? '',
-          value: a?.node?.code ?? '',
+          label: a?.node?.name ?? "",
+          value: a?.node?.code ?? "",
         }))}
       >
         <UserFormDrawer
@@ -239,21 +232,21 @@ function RouteComponent() {
         dataSource={dataSource}
         // @ts-ignore
         columns={columns}
-        rowKey={'id'}
+        rowKey={"id"}
         scroll={{ x: 1000 }}
         pagination={{
           current: searchParams.page,
           onChange(page) {
             navigate({
-              to: '.',
+              to: ".",
               search: (prev) => ({ ...prev, page }),
-            })
+            });
           },
           showTotal: (total) => `共 ${total} 条`,
         }}
       />
     </>
-  )
+  );
 }
 
 function UserFormDrawer({
@@ -262,17 +255,17 @@ function UserFormDrawer({
   selectedUser,
   setSelectedUser,
 }: {
-  avaliableAreas: AreaConnection
-  connectionID: string
-  selectedUser: User | null
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>
+  avaliableAreas: AreaConnection;
+  connectionID: string;
+  selectedUser: User | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
 }) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   const onClose = () => {
-    setOpen(false)
-    setSelectedUser(null)
-  }
+    setOpen(false);
+    setSelectedUser(null);
+  };
 
   return (
     <>
@@ -285,7 +278,7 @@ function UserFormDrawer({
         添加用户
       </Button>
       <Drawer
-        title={selectedUser ? '编辑用户' : '添加用户'}
+        title={selectedUser ? "编辑用户" : "添加用户"}
         open={open || !!selectedUser}
         onClose={onClose}
         width={480}
@@ -301,7 +294,7 @@ function UserFormDrawer({
         />
       </Drawer>
     </>
-  )
+  );
 }
 
 function UserToggle({
@@ -309,14 +302,19 @@ function UserToggle({
   field,
   value,
 }: {
-  user: User
-  field: 'isCeo' | 'isAdmin' | 'isSuperAdmin' | 'hasMapAccess' | 'hasEditAccess'
-  value: boolean
+  user: User;
+  field:
+    | "isCeo"
+    | "isAdmin"
+    | "isSuperAdmin"
+    | "hasMapAccess"
+    | "hasEditAccess";
+  value: boolean;
 }) {
-  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser()
-  const { message } = App.useApp()
+  const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
+  const { message } = App.useApp();
 
-  const title = value ? '停用' : '启用'
+  const title = value ? "停用" : "启用";
 
   return (
     <Switch
@@ -330,16 +328,16 @@ function UserToggle({
             input: { [field]: !value },
           },
           onCompleted() {
-            message.destroy()
-            message.success(`${title}成功`)
+            message.destroy();
+            message.success(`${title}成功`);
           },
           onError(error) {
-            console.error(error)
-            message.destroy()
-            message.error(`${title}失败`)
+            console.error(error);
+            message.destroy();
+            message.error(`${title}失败`);
           },
-        })
+        });
       }}
     />
-  )
+  );
 }
