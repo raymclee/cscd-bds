@@ -2527,6 +2527,41 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldMilestoneDoneMonth)
 				fieldSeen[project.FieldMilestoneDoneMonth] = struct{}{}
 			}
+		case "pmArea":
+			if _, ok := fieldSeen[project.FieldPmArea]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmArea)
+				fieldSeen[project.FieldPmArea] = struct{}{}
+			}
+		case "pmYearTarget":
+			if _, ok := fieldSeen[project.FieldPmYearTarget]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmYearTarget)
+				fieldSeen[project.FieldPmYearTarget] = struct{}{}
+			}
+		case "pmMonthTarget":
+			if _, ok := fieldSeen[project.FieldPmMonthTarget]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmMonthTarget)
+				fieldSeen[project.FieldPmMonthTarget] = struct{}{}
+			}
+		case "pmYearActual":
+			if _, ok := fieldSeen[project.FieldPmYearActual]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmYearActual)
+				fieldSeen[project.FieldPmYearActual] = struct{}{}
+			}
+		case "pmMonthActual":
+			if _, ok := fieldSeen[project.FieldPmMonthActual]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmMonthActual)
+				fieldSeen[project.FieldPmMonthActual] = struct{}{}
+			}
+		case "pmTotal":
+			if _, ok := fieldSeen[project.FieldPmTotal]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmTotal)
+				fieldSeen[project.FieldPmTotal] = struct{}{}
+			}
+		case "pmYesterday":
+			if _, ok := fieldSeen[project.FieldPmYesterday]; !ok {
+				selectedFields = append(selectedFields, project.FieldPmYesterday)
+				fieldSeen[project.FieldPmYesterday] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

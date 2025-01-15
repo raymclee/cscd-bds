@@ -1888,6 +1888,20 @@ export type Project = Node & {
   ownerApproveAmount?: Maybe<Scalars['Float']['output']>;
   /** 业主批复数量 */
   ownerApproveCount?: Maybe<Scalars['Int']['output']>;
+  /** 生产管理面积 */
+  pmArea?: Maybe<Scalars['Float']['output']>;
+  /** 生产管理當月實際生產 */
+  pmMonthActual?: Maybe<Scalars['Float']['output']>;
+  /** 生产管理當月累計生產 */
+  pmMonthTarget?: Maybe<Scalars['Float']['output']>;
+  /** 生产管理累計生產 */
+  pmTotal?: Maybe<Scalars['Float']['output']>;
+  /** 生产管理當年實際生產 */
+  pmYearActual?: Maybe<Scalars['Float']['output']>;
+  /** 生产管理當年累計生產 */
+  pmYearTarget?: Maybe<Scalars['Float']['output']>;
+  /** 生产管理昨日生產 */
+  pmYesterday?: Maybe<Scalars['Float']['output']>;
   projectStaffs: ProjectStaffConnection;
   /** 開工日期 */
   startDate?: Maybe<Scalars['Time']['output']>;
@@ -2732,6 +2746,83 @@ export type ProjectWhereInput = {
   ownerNEQ?: InputMaybe<Scalars['String']['input']>;
   ownerNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   ownerNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_area field predicates */
+  pmArea?: InputMaybe<Scalars['Float']['input']>;
+  pmAreaGT?: InputMaybe<Scalars['Float']['input']>;
+  pmAreaGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmAreaIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmAreaIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmAreaLT?: InputMaybe<Scalars['Float']['input']>;
+  pmAreaLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmAreaNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmAreaNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmAreaNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_month_actual field predicates */
+  pmMonthActual?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthActualGT?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthActualGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthActualIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmMonthActualIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmMonthActualLT?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthActualLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthActualNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthActualNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmMonthActualNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_month_target field predicates */
+  pmMonthTarget?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthTargetGT?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthTargetGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthTargetIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmMonthTargetIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmMonthTargetLT?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthTargetLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthTargetNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmMonthTargetNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmMonthTargetNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_total field predicates */
+  pmTotal?: InputMaybe<Scalars['Float']['input']>;
+  pmTotalGT?: InputMaybe<Scalars['Float']['input']>;
+  pmTotalGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmTotalIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmTotalIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmTotalLT?: InputMaybe<Scalars['Float']['input']>;
+  pmTotalLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmTotalNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmTotalNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmTotalNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_year_actual field predicates */
+  pmYearActual?: InputMaybe<Scalars['Float']['input']>;
+  pmYearActualGT?: InputMaybe<Scalars['Float']['input']>;
+  pmYearActualGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmYearActualIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmYearActualIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmYearActualLT?: InputMaybe<Scalars['Float']['input']>;
+  pmYearActualLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmYearActualNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmYearActualNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmYearActualNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_year_target field predicates */
+  pmYearTarget?: InputMaybe<Scalars['Float']['input']>;
+  pmYearTargetGT?: InputMaybe<Scalars['Float']['input']>;
+  pmYearTargetGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmYearTargetIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmYearTargetIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmYearTargetLT?: InputMaybe<Scalars['Float']['input']>;
+  pmYearTargetLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmYearTargetNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmYearTargetNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmYearTargetNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pm_yesterday field predicates */
+  pmYesterday?: InputMaybe<Scalars['Float']['input']>;
+  pmYesterdayGT?: InputMaybe<Scalars['Float']['input']>;
+  pmYesterdayGTE?: InputMaybe<Scalars['Float']['input']>;
+  pmYesterdayIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmYesterdayIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  pmYesterdayLT?: InputMaybe<Scalars['Float']['input']>;
+  pmYesterdayLTE?: InputMaybe<Scalars['Float']['input']>;
+  pmYesterdayNEQ?: InputMaybe<Scalars['Float']['input']>;
+  pmYesterdayNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  pmYesterdayNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** start_date field predicates */
   startDate?: InputMaybe<Scalars['Time']['input']>;
   startDateGT?: InputMaybe<Scalars['Time']['input']>;

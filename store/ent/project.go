@@ -116,6 +116,20 @@ type Project struct {
 	MilestoneDoneYear *int `json:"milestone_done_year,omitempty"`
 	// 里程碑完成月份
 	MilestoneDoneMonth *int `json:"milestone_done_month,omitempty"`
+	// 生产管理面积
+	PmArea *float64 `json:"pm_area,omitempty"`
+	// 生产管理當年累計生產
+	PmYearTarget *float64 `json:"pm_year_target,omitempty"`
+	// 生产管理當月累計生產
+	PmMonthTarget *float64 `json:"pm_month_target,omitempty"`
+	// 生产管理當年實際生產
+	PmYearActual *float64 `json:"pm_year_actual,omitempty"`
+	// 生产管理當月實際生產
+	PmMonthActual *float64 `json:"pm_month_actual,omitempty"`
+	// 生产管理累計生產
+	PmTotal *float64 `json:"pm_total,omitempty"`
+	// 生产管理昨日生產
+	PmYesterday *float64 `json:"pm_yesterday,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -163,7 +177,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage:
+		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday:
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth:
 			values[i] = new(sql.NullInt64)
@@ -533,6 +547,55 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.MilestoneDoneMonth = new(int)
 				*pr.MilestoneDoneMonth = int(value.Int64)
 			}
+		case project.FieldPmArea:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_area", values[i])
+			} else if value.Valid {
+				pr.PmArea = new(float64)
+				*pr.PmArea = value.Float64
+			}
+		case project.FieldPmYearTarget:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_year_target", values[i])
+			} else if value.Valid {
+				pr.PmYearTarget = new(float64)
+				*pr.PmYearTarget = value.Float64
+			}
+		case project.FieldPmMonthTarget:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_month_target", values[i])
+			} else if value.Valid {
+				pr.PmMonthTarget = new(float64)
+				*pr.PmMonthTarget = value.Float64
+			}
+		case project.FieldPmYearActual:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_year_actual", values[i])
+			} else if value.Valid {
+				pr.PmYearActual = new(float64)
+				*pr.PmYearActual = value.Float64
+			}
+		case project.FieldPmMonthActual:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_month_actual", values[i])
+			} else if value.Valid {
+				pr.PmMonthActual = new(float64)
+				*pr.PmMonthActual = value.Float64
+			}
+		case project.FieldPmTotal:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_total", values[i])
+			} else if value.Valid {
+				pr.PmTotal = new(float64)
+				*pr.PmTotal = value.Float64
+			}
+		case project.FieldPmYesterday:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field pm_yesterday", values[i])
+			} else if value.Valid {
+				pr.PmYesterday = new(float64)
+				*pr.PmYesterday = value.Float64
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -813,6 +876,41 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.MilestoneDoneMonth; v != nil {
 		builder.WriteString("milestone_done_month=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmArea; v != nil {
+		builder.WriteString("pm_area=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmYearTarget; v != nil {
+		builder.WriteString("pm_year_target=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmMonthTarget; v != nil {
+		builder.WriteString("pm_month_target=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmYearActual; v != nil {
+		builder.WriteString("pm_year_actual=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmMonthActual; v != nil {
+		builder.WriteString("pm_month_actual=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmTotal; v != nil {
+		builder.WriteString("pm_total=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PmYesterday; v != nil {
+		builder.WriteString("pm_yesterday=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

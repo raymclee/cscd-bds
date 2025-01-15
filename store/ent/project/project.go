@@ -113,6 +113,20 @@ const (
 	FieldMilestoneDoneYear = "milestone_done_year"
 	// FieldMilestoneDoneMonth holds the string denoting the milestone_done_month field in the database.
 	FieldMilestoneDoneMonth = "milestone_done_month"
+	// FieldPmArea holds the string denoting the pm_area field in the database.
+	FieldPmArea = "pm_area"
+	// FieldPmYearTarget holds the string denoting the pm_year_target field in the database.
+	FieldPmYearTarget = "pm_year_target"
+	// FieldPmMonthTarget holds the string denoting the pm_month_target field in the database.
+	FieldPmMonthTarget = "pm_month_target"
+	// FieldPmYearActual holds the string denoting the pm_year_actual field in the database.
+	FieldPmYearActual = "pm_year_actual"
+	// FieldPmMonthActual holds the string denoting the pm_month_actual field in the database.
+	FieldPmMonthActual = "pm_month_actual"
+	// FieldPmTotal holds the string denoting the pm_total field in the database.
+	FieldPmTotal = "pm_total"
+	// FieldPmYesterday holds the string denoting the pm_yesterday field in the database.
+	FieldPmYesterday = "pm_yesterday"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
@@ -187,6 +201,13 @@ var Columns = []string{
 	FieldMilestonePlanMonth,
 	FieldMilestoneDoneYear,
 	FieldMilestoneDoneMonth,
+	FieldPmArea,
+	FieldPmYearTarget,
+	FieldPmMonthTarget,
+	FieldPmYearActual,
+	FieldPmMonthActual,
+	FieldPmTotal,
+	FieldPmYesterday,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -463,6 +484,41 @@ func ByMilestoneDoneYear(opts ...sql.OrderTermOption) OrderOption {
 // ByMilestoneDoneMonth orders the results by the milestone_done_month field.
 func ByMilestoneDoneMonth(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMilestoneDoneMonth, opts...).ToFunc()
+}
+
+// ByPmArea orders the results by the pm_area field.
+func ByPmArea(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmArea, opts...).ToFunc()
+}
+
+// ByPmYearTarget orders the results by the pm_year_target field.
+func ByPmYearTarget(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmYearTarget, opts...).ToFunc()
+}
+
+// ByPmMonthTarget orders the results by the pm_month_target field.
+func ByPmMonthTarget(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmMonthTarget, opts...).ToFunc()
+}
+
+// ByPmYearActual orders the results by the pm_year_actual field.
+func ByPmYearActual(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmYearActual, opts...).ToFunc()
+}
+
+// ByPmMonthActual orders the results by the pm_month_actual field.
+func ByPmMonthActual(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmMonthActual, opts...).ToFunc()
+}
+
+// ByPmTotal orders the results by the pm_total field.
+func ByPmTotal(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmTotal, opts...).ToFunc()
+}
+
+// ByPmYesterday orders the results by the pm_yesterday field.
+func ByPmYesterday(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPmYesterday, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

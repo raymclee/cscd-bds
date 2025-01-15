@@ -8012,6 +8012,20 @@ type ProjectMutation struct {
 	addmilestone_done_year                         *int
 	milestone_done_month                           *int
 	addmilestone_done_month                        *int
+	pm_area                                        *float64
+	addpm_area                                     *float64
+	pm_year_target                                 *float64
+	addpm_year_target                              *float64
+	pm_month_target                                *float64
+	addpm_month_target                             *float64
+	pm_year_actual                                 *float64
+	addpm_year_actual                              *float64
+	pm_month_actual                                *float64
+	addpm_month_actual                             *float64
+	pm_total                                       *float64
+	addpm_total                                    *float64
+	pm_yesterday                                   *float64
+	addpm_yesterday                                *float64
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -11128,6 +11142,496 @@ func (m *ProjectMutation) ResetMilestoneDoneMonth() {
 	delete(m.clearedFields, project.FieldMilestoneDoneMonth)
 }
 
+// SetPmArea sets the "pm_area" field.
+func (m *ProjectMutation) SetPmArea(f float64) {
+	m.pm_area = &f
+	m.addpm_area = nil
+}
+
+// PmArea returns the value of the "pm_area" field in the mutation.
+func (m *ProjectMutation) PmArea() (r float64, exists bool) {
+	v := m.pm_area
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmArea returns the old "pm_area" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmArea(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmArea is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmArea requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmArea: %w", err)
+	}
+	return oldValue.PmArea, nil
+}
+
+// AddPmArea adds f to the "pm_area" field.
+func (m *ProjectMutation) AddPmArea(f float64) {
+	if m.addpm_area != nil {
+		*m.addpm_area += f
+	} else {
+		m.addpm_area = &f
+	}
+}
+
+// AddedPmArea returns the value that was added to the "pm_area" field in this mutation.
+func (m *ProjectMutation) AddedPmArea() (r float64, exists bool) {
+	v := m.addpm_area
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmArea clears the value of the "pm_area" field.
+func (m *ProjectMutation) ClearPmArea() {
+	m.pm_area = nil
+	m.addpm_area = nil
+	m.clearedFields[project.FieldPmArea] = struct{}{}
+}
+
+// PmAreaCleared returns if the "pm_area" field was cleared in this mutation.
+func (m *ProjectMutation) PmAreaCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmArea]
+	return ok
+}
+
+// ResetPmArea resets all changes to the "pm_area" field.
+func (m *ProjectMutation) ResetPmArea() {
+	m.pm_area = nil
+	m.addpm_area = nil
+	delete(m.clearedFields, project.FieldPmArea)
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (m *ProjectMutation) SetPmYearTarget(f float64) {
+	m.pm_year_target = &f
+	m.addpm_year_target = nil
+}
+
+// PmYearTarget returns the value of the "pm_year_target" field in the mutation.
+func (m *ProjectMutation) PmYearTarget() (r float64, exists bool) {
+	v := m.pm_year_target
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmYearTarget returns the old "pm_year_target" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmYearTarget(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmYearTarget is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmYearTarget requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmYearTarget: %w", err)
+	}
+	return oldValue.PmYearTarget, nil
+}
+
+// AddPmYearTarget adds f to the "pm_year_target" field.
+func (m *ProjectMutation) AddPmYearTarget(f float64) {
+	if m.addpm_year_target != nil {
+		*m.addpm_year_target += f
+	} else {
+		m.addpm_year_target = &f
+	}
+}
+
+// AddedPmYearTarget returns the value that was added to the "pm_year_target" field in this mutation.
+func (m *ProjectMutation) AddedPmYearTarget() (r float64, exists bool) {
+	v := m.addpm_year_target
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmYearTarget clears the value of the "pm_year_target" field.
+func (m *ProjectMutation) ClearPmYearTarget() {
+	m.pm_year_target = nil
+	m.addpm_year_target = nil
+	m.clearedFields[project.FieldPmYearTarget] = struct{}{}
+}
+
+// PmYearTargetCleared returns if the "pm_year_target" field was cleared in this mutation.
+func (m *ProjectMutation) PmYearTargetCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmYearTarget]
+	return ok
+}
+
+// ResetPmYearTarget resets all changes to the "pm_year_target" field.
+func (m *ProjectMutation) ResetPmYearTarget() {
+	m.pm_year_target = nil
+	m.addpm_year_target = nil
+	delete(m.clearedFields, project.FieldPmYearTarget)
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (m *ProjectMutation) SetPmMonthTarget(f float64) {
+	m.pm_month_target = &f
+	m.addpm_month_target = nil
+}
+
+// PmMonthTarget returns the value of the "pm_month_target" field in the mutation.
+func (m *ProjectMutation) PmMonthTarget() (r float64, exists bool) {
+	v := m.pm_month_target
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmMonthTarget returns the old "pm_month_target" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmMonthTarget(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmMonthTarget is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmMonthTarget requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmMonthTarget: %w", err)
+	}
+	return oldValue.PmMonthTarget, nil
+}
+
+// AddPmMonthTarget adds f to the "pm_month_target" field.
+func (m *ProjectMutation) AddPmMonthTarget(f float64) {
+	if m.addpm_month_target != nil {
+		*m.addpm_month_target += f
+	} else {
+		m.addpm_month_target = &f
+	}
+}
+
+// AddedPmMonthTarget returns the value that was added to the "pm_month_target" field in this mutation.
+func (m *ProjectMutation) AddedPmMonthTarget() (r float64, exists bool) {
+	v := m.addpm_month_target
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmMonthTarget clears the value of the "pm_month_target" field.
+func (m *ProjectMutation) ClearPmMonthTarget() {
+	m.pm_month_target = nil
+	m.addpm_month_target = nil
+	m.clearedFields[project.FieldPmMonthTarget] = struct{}{}
+}
+
+// PmMonthTargetCleared returns if the "pm_month_target" field was cleared in this mutation.
+func (m *ProjectMutation) PmMonthTargetCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmMonthTarget]
+	return ok
+}
+
+// ResetPmMonthTarget resets all changes to the "pm_month_target" field.
+func (m *ProjectMutation) ResetPmMonthTarget() {
+	m.pm_month_target = nil
+	m.addpm_month_target = nil
+	delete(m.clearedFields, project.FieldPmMonthTarget)
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (m *ProjectMutation) SetPmYearActual(f float64) {
+	m.pm_year_actual = &f
+	m.addpm_year_actual = nil
+}
+
+// PmYearActual returns the value of the "pm_year_actual" field in the mutation.
+func (m *ProjectMutation) PmYearActual() (r float64, exists bool) {
+	v := m.pm_year_actual
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmYearActual returns the old "pm_year_actual" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmYearActual(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmYearActual is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmYearActual requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmYearActual: %w", err)
+	}
+	return oldValue.PmYearActual, nil
+}
+
+// AddPmYearActual adds f to the "pm_year_actual" field.
+func (m *ProjectMutation) AddPmYearActual(f float64) {
+	if m.addpm_year_actual != nil {
+		*m.addpm_year_actual += f
+	} else {
+		m.addpm_year_actual = &f
+	}
+}
+
+// AddedPmYearActual returns the value that was added to the "pm_year_actual" field in this mutation.
+func (m *ProjectMutation) AddedPmYearActual() (r float64, exists bool) {
+	v := m.addpm_year_actual
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmYearActual clears the value of the "pm_year_actual" field.
+func (m *ProjectMutation) ClearPmYearActual() {
+	m.pm_year_actual = nil
+	m.addpm_year_actual = nil
+	m.clearedFields[project.FieldPmYearActual] = struct{}{}
+}
+
+// PmYearActualCleared returns if the "pm_year_actual" field was cleared in this mutation.
+func (m *ProjectMutation) PmYearActualCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmYearActual]
+	return ok
+}
+
+// ResetPmYearActual resets all changes to the "pm_year_actual" field.
+func (m *ProjectMutation) ResetPmYearActual() {
+	m.pm_year_actual = nil
+	m.addpm_year_actual = nil
+	delete(m.clearedFields, project.FieldPmYearActual)
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (m *ProjectMutation) SetPmMonthActual(f float64) {
+	m.pm_month_actual = &f
+	m.addpm_month_actual = nil
+}
+
+// PmMonthActual returns the value of the "pm_month_actual" field in the mutation.
+func (m *ProjectMutation) PmMonthActual() (r float64, exists bool) {
+	v := m.pm_month_actual
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmMonthActual returns the old "pm_month_actual" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmMonthActual(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmMonthActual is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmMonthActual requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmMonthActual: %w", err)
+	}
+	return oldValue.PmMonthActual, nil
+}
+
+// AddPmMonthActual adds f to the "pm_month_actual" field.
+func (m *ProjectMutation) AddPmMonthActual(f float64) {
+	if m.addpm_month_actual != nil {
+		*m.addpm_month_actual += f
+	} else {
+		m.addpm_month_actual = &f
+	}
+}
+
+// AddedPmMonthActual returns the value that was added to the "pm_month_actual" field in this mutation.
+func (m *ProjectMutation) AddedPmMonthActual() (r float64, exists bool) {
+	v := m.addpm_month_actual
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmMonthActual clears the value of the "pm_month_actual" field.
+func (m *ProjectMutation) ClearPmMonthActual() {
+	m.pm_month_actual = nil
+	m.addpm_month_actual = nil
+	m.clearedFields[project.FieldPmMonthActual] = struct{}{}
+}
+
+// PmMonthActualCleared returns if the "pm_month_actual" field was cleared in this mutation.
+func (m *ProjectMutation) PmMonthActualCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmMonthActual]
+	return ok
+}
+
+// ResetPmMonthActual resets all changes to the "pm_month_actual" field.
+func (m *ProjectMutation) ResetPmMonthActual() {
+	m.pm_month_actual = nil
+	m.addpm_month_actual = nil
+	delete(m.clearedFields, project.FieldPmMonthActual)
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (m *ProjectMutation) SetPmTotal(f float64) {
+	m.pm_total = &f
+	m.addpm_total = nil
+}
+
+// PmTotal returns the value of the "pm_total" field in the mutation.
+func (m *ProjectMutation) PmTotal() (r float64, exists bool) {
+	v := m.pm_total
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmTotal returns the old "pm_total" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmTotal(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmTotal is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmTotal requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmTotal: %w", err)
+	}
+	return oldValue.PmTotal, nil
+}
+
+// AddPmTotal adds f to the "pm_total" field.
+func (m *ProjectMutation) AddPmTotal(f float64) {
+	if m.addpm_total != nil {
+		*m.addpm_total += f
+	} else {
+		m.addpm_total = &f
+	}
+}
+
+// AddedPmTotal returns the value that was added to the "pm_total" field in this mutation.
+func (m *ProjectMutation) AddedPmTotal() (r float64, exists bool) {
+	v := m.addpm_total
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmTotal clears the value of the "pm_total" field.
+func (m *ProjectMutation) ClearPmTotal() {
+	m.pm_total = nil
+	m.addpm_total = nil
+	m.clearedFields[project.FieldPmTotal] = struct{}{}
+}
+
+// PmTotalCleared returns if the "pm_total" field was cleared in this mutation.
+func (m *ProjectMutation) PmTotalCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmTotal]
+	return ok
+}
+
+// ResetPmTotal resets all changes to the "pm_total" field.
+func (m *ProjectMutation) ResetPmTotal() {
+	m.pm_total = nil
+	m.addpm_total = nil
+	delete(m.clearedFields, project.FieldPmTotal)
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (m *ProjectMutation) SetPmYesterday(f float64) {
+	m.pm_yesterday = &f
+	m.addpm_yesterday = nil
+}
+
+// PmYesterday returns the value of the "pm_yesterday" field in the mutation.
+func (m *ProjectMutation) PmYesterday() (r float64, exists bool) {
+	v := m.pm_yesterday
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPmYesterday returns the old "pm_yesterday" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPmYesterday(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPmYesterday is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPmYesterday requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPmYesterday: %w", err)
+	}
+	return oldValue.PmYesterday, nil
+}
+
+// AddPmYesterday adds f to the "pm_yesterday" field.
+func (m *ProjectMutation) AddPmYesterday(f float64) {
+	if m.addpm_yesterday != nil {
+		*m.addpm_yesterday += f
+	} else {
+		m.addpm_yesterday = &f
+	}
+}
+
+// AddedPmYesterday returns the value that was added to the "pm_yesterday" field in this mutation.
+func (m *ProjectMutation) AddedPmYesterday() (r float64, exists bool) {
+	v := m.addpm_yesterday
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPmYesterday clears the value of the "pm_yesterday" field.
+func (m *ProjectMutation) ClearPmYesterday() {
+	m.pm_yesterday = nil
+	m.addpm_yesterday = nil
+	m.clearedFields[project.FieldPmYesterday] = struct{}{}
+}
+
+// PmYesterdayCleared returns if the "pm_yesterday" field was cleared in this mutation.
+func (m *ProjectMutation) PmYesterdayCleared() bool {
+	_, ok := m.clearedFields[project.FieldPmYesterday]
+	return ok
+}
+
+// ResetPmYesterday resets all changes to the "pm_yesterday" field.
+func (m *ProjectMutation) ResetPmYesterday() {
+	m.pm_yesterday = nil
+	m.addpm_yesterday = nil
+	delete(m.clearedFields, project.FieldPmYesterday)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -11270,7 +11774,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 49)
+	fields := make([]string, 0, 56)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -11418,6 +11922,27 @@ func (m *ProjectMutation) Fields() []string {
 	if m.milestone_done_month != nil {
 		fields = append(fields, project.FieldMilestoneDoneMonth)
 	}
+	if m.pm_area != nil {
+		fields = append(fields, project.FieldPmArea)
+	}
+	if m.pm_year_target != nil {
+		fields = append(fields, project.FieldPmYearTarget)
+	}
+	if m.pm_month_target != nil {
+		fields = append(fields, project.FieldPmMonthTarget)
+	}
+	if m.pm_year_actual != nil {
+		fields = append(fields, project.FieldPmYearActual)
+	}
+	if m.pm_month_actual != nil {
+		fields = append(fields, project.FieldPmMonthActual)
+	}
+	if m.pm_total != nil {
+		fields = append(fields, project.FieldPmTotal)
+	}
+	if m.pm_yesterday != nil {
+		fields = append(fields, project.FieldPmYesterday)
+	}
 	return fields
 }
 
@@ -11524,6 +12049,20 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.MilestoneDoneYear()
 	case project.FieldMilestoneDoneMonth:
 		return m.MilestoneDoneMonth()
+	case project.FieldPmArea:
+		return m.PmArea()
+	case project.FieldPmYearTarget:
+		return m.PmYearTarget()
+	case project.FieldPmMonthTarget:
+		return m.PmMonthTarget()
+	case project.FieldPmYearActual:
+		return m.PmYearActual()
+	case project.FieldPmMonthActual:
+		return m.PmMonthActual()
+	case project.FieldPmTotal:
+		return m.PmTotal()
+	case project.FieldPmYesterday:
+		return m.PmYesterday()
 	}
 	return nil, false
 }
@@ -11631,6 +12170,20 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldMilestoneDoneYear(ctx)
 	case project.FieldMilestoneDoneMonth:
 		return m.OldMilestoneDoneMonth(ctx)
+	case project.FieldPmArea:
+		return m.OldPmArea(ctx)
+	case project.FieldPmYearTarget:
+		return m.OldPmYearTarget(ctx)
+	case project.FieldPmMonthTarget:
+		return m.OldPmMonthTarget(ctx)
+	case project.FieldPmYearActual:
+		return m.OldPmYearActual(ctx)
+	case project.FieldPmMonthActual:
+		return m.OldPmMonthActual(ctx)
+	case project.FieldPmTotal:
+		return m.OldPmTotal(ctx)
+	case project.FieldPmYesterday:
+		return m.OldPmYesterday(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -11983,6 +12536,55 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMilestoneDoneMonth(v)
 		return nil
+	case project.FieldPmArea:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmArea(v)
+		return nil
+	case project.FieldPmYearTarget:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmYearTarget(v)
+		return nil
+	case project.FieldPmMonthTarget:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmMonthTarget(v)
+		return nil
+	case project.FieldPmYearActual:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmYearActual(v)
+		return nil
+	case project.FieldPmMonthActual:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmMonthActual(v)
+		return nil
+	case project.FieldPmTotal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmTotal(v)
+		return nil
+	case project.FieldPmYesterday:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPmYesterday(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -12084,6 +12686,27 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addmilestone_done_month != nil {
 		fields = append(fields, project.FieldMilestoneDoneMonth)
 	}
+	if m.addpm_area != nil {
+		fields = append(fields, project.FieldPmArea)
+	}
+	if m.addpm_year_target != nil {
+		fields = append(fields, project.FieldPmYearTarget)
+	}
+	if m.addpm_month_target != nil {
+		fields = append(fields, project.FieldPmMonthTarget)
+	}
+	if m.addpm_year_actual != nil {
+		fields = append(fields, project.FieldPmYearActual)
+	}
+	if m.addpm_month_actual != nil {
+		fields = append(fields, project.FieldPmMonthActual)
+	}
+	if m.addpm_total != nil {
+		fields = append(fields, project.FieldPmTotal)
+	}
+	if m.addpm_yesterday != nil {
+		fields = append(fields, project.FieldPmYesterday)
+	}
 	return fields
 }
 
@@ -12154,6 +12777,20 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedMilestoneDoneYear()
 	case project.FieldMilestoneDoneMonth:
 		return m.AddedMilestoneDoneMonth()
+	case project.FieldPmArea:
+		return m.AddedPmArea()
+	case project.FieldPmYearTarget:
+		return m.AddedPmYearTarget()
+	case project.FieldPmMonthTarget:
+		return m.AddedPmMonthTarget()
+	case project.FieldPmYearActual:
+		return m.AddedPmYearActual()
+	case project.FieldPmMonthActual:
+		return m.AddedPmMonthActual()
+	case project.FieldPmTotal:
+		return m.AddedPmTotal()
+	case project.FieldPmYesterday:
+		return m.AddedPmYesterday()
 	}
 	return nil, false
 }
@@ -12380,6 +13017,55 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddMilestoneDoneMonth(v)
 		return nil
+	case project.FieldPmArea:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmArea(v)
+		return nil
+	case project.FieldPmYearTarget:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmYearTarget(v)
+		return nil
+	case project.FieldPmMonthTarget:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmMonthTarget(v)
+		return nil
+	case project.FieldPmYearActual:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmYearActual(v)
+		return nil
+	case project.FieldPmMonthActual:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmMonthActual(v)
+		return nil
+	case project.FieldPmTotal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmTotal(v)
+		return nil
+	case project.FieldPmYesterday:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPmYesterday(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -12522,6 +13208,27 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldMilestoneDoneMonth) {
 		fields = append(fields, project.FieldMilestoneDoneMonth)
+	}
+	if m.FieldCleared(project.FieldPmArea) {
+		fields = append(fields, project.FieldPmArea)
+	}
+	if m.FieldCleared(project.FieldPmYearTarget) {
+		fields = append(fields, project.FieldPmYearTarget)
+	}
+	if m.FieldCleared(project.FieldPmMonthTarget) {
+		fields = append(fields, project.FieldPmMonthTarget)
+	}
+	if m.FieldCleared(project.FieldPmYearActual) {
+		fields = append(fields, project.FieldPmYearActual)
+	}
+	if m.FieldCleared(project.FieldPmMonthActual) {
+		fields = append(fields, project.FieldPmMonthActual)
+	}
+	if m.FieldCleared(project.FieldPmTotal) {
+		fields = append(fields, project.FieldPmTotal)
+	}
+	if m.FieldCleared(project.FieldPmYesterday) {
+		fields = append(fields, project.FieldPmYesterday)
 	}
 	return fields
 }
@@ -12671,6 +13378,27 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldMilestoneDoneMonth:
 		m.ClearMilestoneDoneMonth()
+		return nil
+	case project.FieldPmArea:
+		m.ClearPmArea()
+		return nil
+	case project.FieldPmYearTarget:
+		m.ClearPmYearTarget()
+		return nil
+	case project.FieldPmMonthTarget:
+		m.ClearPmMonthTarget()
+		return nil
+	case project.FieldPmYearActual:
+		m.ClearPmYearActual()
+		return nil
+	case project.FieldPmMonthActual:
+		m.ClearPmMonthActual()
+		return nil
+	case project.FieldPmTotal:
+		m.ClearPmTotal()
+		return nil
+	case project.FieldPmYesterday:
+		m.ClearPmYesterday()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -12826,6 +13554,27 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldMilestoneDoneMonth:
 		m.ResetMilestoneDoneMonth()
+		return nil
+	case project.FieldPmArea:
+		m.ResetPmArea()
+		return nil
+	case project.FieldPmYearTarget:
+		m.ResetPmYearTarget()
+		return nil
+	case project.FieldPmMonthTarget:
+		m.ResetPmMonthTarget()
+		return nil
+	case project.FieldPmYearActual:
+		m.ResetPmYearActual()
+		return nil
+	case project.FieldPmMonthActual:
+		m.ResetPmMonthActual()
+		return nil
+	case project.FieldPmTotal:
+		m.ResetPmTotal()
+		return nil
+	case project.FieldPmYesterday:
+		m.ResetPmYesterday()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

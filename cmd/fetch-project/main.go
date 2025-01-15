@@ -11,10 +11,14 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 
 	_ "github.com/SAP/go-hdb/driver"
 	_ "github.com/microsoft/go-mssqldb"
+	"github.com/xuri/excelize/v2"
 )
 
 const (
@@ -124,7 +128,9 @@ func main() {
 			cntrtsum
 		FROM mst_jobbasfil
 		where 1=1
-		and pk_corp='2837' and finishedflag in ('N','Y')
+		and pk_corp='2837'
+		and finishedflag in ('N','Y')
+		and jobcode <> 'FTSZZH' and jobcode <> 'FETY' and jobcode <> 'FTZHSH'
 		AND JOBTYPE='J'
 	`)
 	if err != nil {
@@ -751,13 +757,125 @@ func main() {
 			}
 		}
 
+		// 抓取生产管理
+		{
+			// 抓取生产管理面積
+			row := s4pHanaDb.QueryRow(`
+				select 
+					cast( sum( tbmj + zjmj ) as float ) as zmj
+				from ztps022
+				where usr00 = ?
+			`, jobcode)
+
+			var (
+				zmj *float64
+			)
+			err := row.Scan(&zmj)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取生产管理失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePmArea(zmj)
+			}
+
+			// 抓取生产管理當年計劃
+			row = s4pHanaDb.QueryRow(`
+				select 
+					cast( sum( zyjhsl ) as float ) as zndjh
+				from "SAPHANADB"."ZTPP021"
+				where 1=1
+				and usr00 = ?
+			`, jobcode)
+
+			var (
+				zndjh *float64
+			)
+			err = row.Scan(&zndjh)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取生产管理失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePmYearTarget(zndjh)
+			}
+
+			// 抓取生产管理當年生產
+			row = s4pHanaDb.QueryRow(`
+				select cast( sum( zmj ) as float ) as yearActual
+				from ZTPP_FR_CLBG   -- sap zps014运行结果
+				where zmj != 0 and xmbm = ?
+				and left( zrq, 4 ) = ?
+			`, jobcode, today.Format("YYYY"))
+
+			var (
+				yearActual *float64
+			)
+			err = row.Scan(&yearActual)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取生产管理失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePmYearActual(yearActual)
+			}
+
+			// 抓取生产管理當月生產
+			row = s4pHanaDb.QueryRow(`
+				select cast( sum( zmj ) as float ) as monthActual
+				from ZTPP_FR_CLBG   -- sap zps014运行结果
+				where zmj != 0 and xmbm = ?
+				and left( zrq, 6 ) = ?
+			`, jobcode, today.Format("YYYYMM"))
+			var (
+				monthActual *float64
+			)
+			err = row.Scan(&monthActual)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取生产管理失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePmMonthActual(monthActual)
+			}
+
+			// 抓取生产管理昨日生產
+			row = s4pHanaDb.QueryRow(`
+				select 
+					cast( sum( zmj ) as float ) as yesterdayActual
+				from ZTPP_FR_CLBG   -- sap zps014运行结果
+				where zmj != 0 and xmbm = ?
+				AND zrq = ?
+			`, jobcode, today.Format("YYYYMMDD"))
+
+			var (
+				yesterdayActual *float64
+			)
+			err = row.Scan(&yesterdayActual)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取生产管理失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePmYesterday(yesterdayActual)
+			}
+
+			// 抓取生产管理累計生產
+			row = s4pHanaDb.QueryRow(`
+				select 
+					cast( sum( zmj ) as float ) as total
+				from ZTPP_FR_CLBG   -- sap zps014运行结果
+				where zmj != 0 and xmbm = ?
+			`, jobcode)
+
+			var (
+				total *float64
+			)
+			err = row.Scan(&total)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取生产管理失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePmTotal(total)
+			}
+		}
+
 		if *imgFlag {
 			row := cwDb.QueryRow(`
 				SELECT 
 					img
 				FROM [dbo].[BI_XMZTB]
- 				where xmbm = @code
-			`, sql.Named("code", jobcode))
+ 				where xmbm = ?
+			`, jobcode)
 
 			var (
 				img []byte
@@ -814,6 +932,49 @@ func main() {
 					staffDesign     float64 = 0
 				)
 
+				{
+					wd, _ := os.Getwd()
+					entries, err := os.ReadDir(filepath.Join(wd, "smb"))
+					if err != nil {
+						fmt.Printf("%s 获取工作目录失败: %s\n", *jobcode, err.Error())
+						continue
+					} else {
+						var excelFile string
+						for _, entry := range entries {
+							if strings.HasSuffix(entry.Name(), ".xlsx") {
+								excelFile = entry.Name()
+								break
+							}
+						}
+						f, err := excelize.OpenFile(filepath.Join(wd, "smb", excelFile))
+						if err != nil {
+							fmt.Printf("%s 打开excel失败: %s\n", *jobcode, err.Error())
+						} else {
+							defer func() {
+								if err := f.Close(); err != nil {
+									fmt.Printf("%s 关闭excel失败: %s\n", *jobcode, err.Error())
+								}
+							}()
+
+							rows, err := f.GetRows("TSD_2024_12")
+							if err != nil {
+								fmt.Printf("%s 读取excel失败: %s\n", *jobcode, err.Error())
+							} else {
+								for _, row := range rows {
+									if len(row) > 5 {
+										site := row[4]
+										percent := row[5]
+										if strings.HasPrefix(site, *jobcode) {
+											p, _ := strconv.ParseFloat(strings.ReplaceAll(percent, "%", ""), 64)
+											staffDesign += p / 100
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
 				for rows.Next() {
 					var (
 						jobtitle *string
@@ -832,15 +993,27 @@ func main() {
 							case "助理/副/項目協調員":
 							case "助理/副/項目經理":
 								staffManagement += *whr
-							case "設計主管":
-								staffDesign += *whr
 							}
 						}
 					}
 				}
 
+				var cym string
+				var createdAt time.Time
+				bm := time.Date(today.Year(), today.Month(), 1, 0, 0, 0, 0, time.Local)
+				if bm.Sub(today).Hours() >= 21*24 {
+					cym = fmt.Sprintf("%s-%d-%d", *jobcode, bm.Year(), bm.Month())
+					createdAt = time.Now()
+				} else {
+					y := time.Date(today.Year(), today.Month()-1, today.Day(), 0, 0, 0, 0, time.Local).Format("2006")
+					m := time.Date(today.Year(), today.Month()-1, today.Day(), 0, 0, 0, 0, time.Local).Format("01")
+					cym = fmt.Sprintf("%s-%s-%s", *jobcode, y, m)
+					createdAt = time.Date(today.Year(), today.Month()-1, today.Day(), 0, 0, 0, 0, time.Local)
+				}
+
 				if err := s.ProjectStaff.Create().
-					SetCym(fmt.Sprintf("%s-%d-%d", *jobcode, today.Year(), today.Month())).
+					SetCym(cym).
+					SetCreatedAt(createdAt).
 					SetInstallation(staffInstall).
 					SetManagement(staffManagement).
 					SetDesign(staffDesign).

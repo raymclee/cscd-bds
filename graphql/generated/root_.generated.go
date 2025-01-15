@@ -337,6 +337,13 @@ type ComplexityRoot struct {
 		OwnerApplyCount                         func(childComplexity int) int
 		OwnerApproveAmount                      func(childComplexity int) int
 		OwnerApproveCount                       func(childComplexity int) int
+		PmArea                                  func(childComplexity int) int
+		PmMonthActual                           func(childComplexity int) int
+		PmMonthTarget                           func(childComplexity int) int
+		PmTotal                                 func(childComplexity int) int
+		PmYearActual                            func(childComplexity int) int
+		PmYearTarget                            func(childComplexity int) int
+		PmYesterday                             func(childComplexity int) int
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
@@ -2201,6 +2208,55 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.OwnerApproveCount(childComplexity), true
+
+	case "Project.pmArea":
+		if e.complexity.Project.PmArea == nil {
+			break
+		}
+
+		return e.complexity.Project.PmArea(childComplexity), true
+
+	case "Project.pmMonthActual":
+		if e.complexity.Project.PmMonthActual == nil {
+			break
+		}
+
+		return e.complexity.Project.PmMonthActual(childComplexity), true
+
+	case "Project.pmMonthTarget":
+		if e.complexity.Project.PmMonthTarget == nil {
+			break
+		}
+
+		return e.complexity.Project.PmMonthTarget(childComplexity), true
+
+	case "Project.pmTotal":
+		if e.complexity.Project.PmTotal == nil {
+			break
+		}
+
+		return e.complexity.Project.PmTotal(childComplexity), true
+
+	case "Project.pmYearActual":
+		if e.complexity.Project.PmYearActual == nil {
+			break
+		}
+
+		return e.complexity.Project.PmYearActual(childComplexity), true
+
+	case "Project.pmYearTarget":
+		if e.complexity.Project.PmYearTarget == nil {
+			break
+		}
+
+		return e.complexity.Project.PmYearTarget(childComplexity), true
+
+	case "Project.pmYesterday":
+		if e.complexity.Project.PmYesterday == nil {
+			break
+		}
+
+		return e.complexity.Project.PmYesterday(childComplexity), true
 
 	case "Project.projectStaffs":
 		if e.complexity.Project.ProjectStaffs == nil {
@@ -6397,6 +6453,34 @@ type Project implements Node {
   里程碑完成月份
   """
   milestoneDoneMonth: Int
+  """
+  生产管理面积
+  """
+  pmArea: Float
+  """
+  生产管理當年累計生產
+  """
+  pmYearTarget: Float
+  """
+  生产管理當月累計生產
+  """
+  pmMonthTarget: Float
+  """
+  生产管理當年實際生產
+  """
+  pmYearActual: Float
+  """
+  生产管理當月實際生產
+  """
+  pmMonthActual: Float
+  """
+  生产管理累計生產
+  """
+  pmTotal: Float
+  """
+  生产管理昨日生產
+  """
+  pmYesterday: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -7549,6 +7633,97 @@ input ProjectWhereInput {
   milestoneDoneMonthLTE: Int
   milestoneDoneMonthIsNil: Boolean
   milestoneDoneMonthNotNil: Boolean
+  """
+  pm_area field predicates
+  """
+  pmArea: Float
+  pmAreaNEQ: Float
+  pmAreaIn: [Float!]
+  pmAreaNotIn: [Float!]
+  pmAreaGT: Float
+  pmAreaGTE: Float
+  pmAreaLT: Float
+  pmAreaLTE: Float
+  pmAreaIsNil: Boolean
+  pmAreaNotNil: Boolean
+  """
+  pm_year_target field predicates
+  """
+  pmYearTarget: Float
+  pmYearTargetNEQ: Float
+  pmYearTargetIn: [Float!]
+  pmYearTargetNotIn: [Float!]
+  pmYearTargetGT: Float
+  pmYearTargetGTE: Float
+  pmYearTargetLT: Float
+  pmYearTargetLTE: Float
+  pmYearTargetIsNil: Boolean
+  pmYearTargetNotNil: Boolean
+  """
+  pm_month_target field predicates
+  """
+  pmMonthTarget: Float
+  pmMonthTargetNEQ: Float
+  pmMonthTargetIn: [Float!]
+  pmMonthTargetNotIn: [Float!]
+  pmMonthTargetGT: Float
+  pmMonthTargetGTE: Float
+  pmMonthTargetLT: Float
+  pmMonthTargetLTE: Float
+  pmMonthTargetIsNil: Boolean
+  pmMonthTargetNotNil: Boolean
+  """
+  pm_year_actual field predicates
+  """
+  pmYearActual: Float
+  pmYearActualNEQ: Float
+  pmYearActualIn: [Float!]
+  pmYearActualNotIn: [Float!]
+  pmYearActualGT: Float
+  pmYearActualGTE: Float
+  pmYearActualLT: Float
+  pmYearActualLTE: Float
+  pmYearActualIsNil: Boolean
+  pmYearActualNotNil: Boolean
+  """
+  pm_month_actual field predicates
+  """
+  pmMonthActual: Float
+  pmMonthActualNEQ: Float
+  pmMonthActualIn: [Float!]
+  pmMonthActualNotIn: [Float!]
+  pmMonthActualGT: Float
+  pmMonthActualGTE: Float
+  pmMonthActualLT: Float
+  pmMonthActualLTE: Float
+  pmMonthActualIsNil: Boolean
+  pmMonthActualNotNil: Boolean
+  """
+  pm_total field predicates
+  """
+  pmTotal: Float
+  pmTotalNEQ: Float
+  pmTotalIn: [Float!]
+  pmTotalNotIn: [Float!]
+  pmTotalGT: Float
+  pmTotalGTE: Float
+  pmTotalLT: Float
+  pmTotalLTE: Float
+  pmTotalIsNil: Boolean
+  pmTotalNotNil: Boolean
+  """
+  pm_yesterday field predicates
+  """
+  pmYesterday: Float
+  pmYesterdayNEQ: Float
+  pmYesterdayIn: [Float!]
+  pmYesterdayNotIn: [Float!]
+  pmYesterdayGT: Float
+  pmYesterdayGTE: Float
+  pmYesterdayLT: Float
+  pmYesterdayLTE: Float
+  pmYesterdayIsNil: Boolean
+  pmYesterdayNotNil: Boolean
   """
   vos edge predicates
   """

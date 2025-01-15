@@ -4481,6 +4481,90 @@ type ProjectWhereInput struct {
 	MilestoneDoneMonthIsNil  bool  `json:"milestoneDoneMonthIsNil,omitempty"`
 	MilestoneDoneMonthNotNil bool  `json:"milestoneDoneMonthNotNil,omitempty"`
 
+	// "pm_area" field predicates.
+	PmArea       *float64  `json:"pmArea,omitempty"`
+	PmAreaNEQ    *float64  `json:"pmAreaNEQ,omitempty"`
+	PmAreaIn     []float64 `json:"pmAreaIn,omitempty"`
+	PmAreaNotIn  []float64 `json:"pmAreaNotIn,omitempty"`
+	PmAreaGT     *float64  `json:"pmAreaGT,omitempty"`
+	PmAreaGTE    *float64  `json:"pmAreaGTE,omitempty"`
+	PmAreaLT     *float64  `json:"pmAreaLT,omitempty"`
+	PmAreaLTE    *float64  `json:"pmAreaLTE,omitempty"`
+	PmAreaIsNil  bool      `json:"pmAreaIsNil,omitempty"`
+	PmAreaNotNil bool      `json:"pmAreaNotNil,omitempty"`
+
+	// "pm_year_target" field predicates.
+	PmYearTarget       *float64  `json:"pmYearTarget,omitempty"`
+	PmYearTargetNEQ    *float64  `json:"pmYearTargetNEQ,omitempty"`
+	PmYearTargetIn     []float64 `json:"pmYearTargetIn,omitempty"`
+	PmYearTargetNotIn  []float64 `json:"pmYearTargetNotIn,omitempty"`
+	PmYearTargetGT     *float64  `json:"pmYearTargetGT,omitempty"`
+	PmYearTargetGTE    *float64  `json:"pmYearTargetGTE,omitempty"`
+	PmYearTargetLT     *float64  `json:"pmYearTargetLT,omitempty"`
+	PmYearTargetLTE    *float64  `json:"pmYearTargetLTE,omitempty"`
+	PmYearTargetIsNil  bool      `json:"pmYearTargetIsNil,omitempty"`
+	PmYearTargetNotNil bool      `json:"pmYearTargetNotNil,omitempty"`
+
+	// "pm_month_target" field predicates.
+	PmMonthTarget       *float64  `json:"pmMonthTarget,omitempty"`
+	PmMonthTargetNEQ    *float64  `json:"pmMonthTargetNEQ,omitempty"`
+	PmMonthTargetIn     []float64 `json:"pmMonthTargetIn,omitempty"`
+	PmMonthTargetNotIn  []float64 `json:"pmMonthTargetNotIn,omitempty"`
+	PmMonthTargetGT     *float64  `json:"pmMonthTargetGT,omitempty"`
+	PmMonthTargetGTE    *float64  `json:"pmMonthTargetGTE,omitempty"`
+	PmMonthTargetLT     *float64  `json:"pmMonthTargetLT,omitempty"`
+	PmMonthTargetLTE    *float64  `json:"pmMonthTargetLTE,omitempty"`
+	PmMonthTargetIsNil  bool      `json:"pmMonthTargetIsNil,omitempty"`
+	PmMonthTargetNotNil bool      `json:"pmMonthTargetNotNil,omitempty"`
+
+	// "pm_year_actual" field predicates.
+	PmYearActual       *float64  `json:"pmYearActual,omitempty"`
+	PmYearActualNEQ    *float64  `json:"pmYearActualNEQ,omitempty"`
+	PmYearActualIn     []float64 `json:"pmYearActualIn,omitempty"`
+	PmYearActualNotIn  []float64 `json:"pmYearActualNotIn,omitempty"`
+	PmYearActualGT     *float64  `json:"pmYearActualGT,omitempty"`
+	PmYearActualGTE    *float64  `json:"pmYearActualGTE,omitempty"`
+	PmYearActualLT     *float64  `json:"pmYearActualLT,omitempty"`
+	PmYearActualLTE    *float64  `json:"pmYearActualLTE,omitempty"`
+	PmYearActualIsNil  bool      `json:"pmYearActualIsNil,omitempty"`
+	PmYearActualNotNil bool      `json:"pmYearActualNotNil,omitempty"`
+
+	// "pm_month_actual" field predicates.
+	PmMonthActual       *float64  `json:"pmMonthActual,omitempty"`
+	PmMonthActualNEQ    *float64  `json:"pmMonthActualNEQ,omitempty"`
+	PmMonthActualIn     []float64 `json:"pmMonthActualIn,omitempty"`
+	PmMonthActualNotIn  []float64 `json:"pmMonthActualNotIn,omitempty"`
+	PmMonthActualGT     *float64  `json:"pmMonthActualGT,omitempty"`
+	PmMonthActualGTE    *float64  `json:"pmMonthActualGTE,omitempty"`
+	PmMonthActualLT     *float64  `json:"pmMonthActualLT,omitempty"`
+	PmMonthActualLTE    *float64  `json:"pmMonthActualLTE,omitempty"`
+	PmMonthActualIsNil  bool      `json:"pmMonthActualIsNil,omitempty"`
+	PmMonthActualNotNil bool      `json:"pmMonthActualNotNil,omitempty"`
+
+	// "pm_total" field predicates.
+	PmTotal       *float64  `json:"pmTotal,omitempty"`
+	PmTotalNEQ    *float64  `json:"pmTotalNEQ,omitempty"`
+	PmTotalIn     []float64 `json:"pmTotalIn,omitempty"`
+	PmTotalNotIn  []float64 `json:"pmTotalNotIn,omitempty"`
+	PmTotalGT     *float64  `json:"pmTotalGT,omitempty"`
+	PmTotalGTE    *float64  `json:"pmTotalGTE,omitempty"`
+	PmTotalLT     *float64  `json:"pmTotalLT,omitempty"`
+	PmTotalLTE    *float64  `json:"pmTotalLTE,omitempty"`
+	PmTotalIsNil  bool      `json:"pmTotalIsNil,omitempty"`
+	PmTotalNotNil bool      `json:"pmTotalNotNil,omitempty"`
+
+	// "pm_yesterday" field predicates.
+	PmYesterday       *float64  `json:"pmYesterday,omitempty"`
+	PmYesterdayNEQ    *float64  `json:"pmYesterdayNEQ,omitempty"`
+	PmYesterdayIn     []float64 `json:"pmYesterdayIn,omitempty"`
+	PmYesterdayNotIn  []float64 `json:"pmYesterdayNotIn,omitempty"`
+	PmYesterdayGT     *float64  `json:"pmYesterdayGT,omitempty"`
+	PmYesterdayGTE    *float64  `json:"pmYesterdayGTE,omitempty"`
+	PmYesterdayLT     *float64  `json:"pmYesterdayLT,omitempty"`
+	PmYesterdayLTE    *float64  `json:"pmYesterdayLTE,omitempty"`
+	PmYesterdayIsNil  bool      `json:"pmYesterdayIsNil,omitempty"`
+	PmYesterdayNotNil bool      `json:"pmYesterdayNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -6177,6 +6261,216 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.MilestoneDoneMonthNotNil {
 		predicates = append(predicates, project.MilestoneDoneMonthNotNil())
+	}
+	if i.PmArea != nil {
+		predicates = append(predicates, project.PmAreaEQ(*i.PmArea))
+	}
+	if i.PmAreaNEQ != nil {
+		predicates = append(predicates, project.PmAreaNEQ(*i.PmAreaNEQ))
+	}
+	if len(i.PmAreaIn) > 0 {
+		predicates = append(predicates, project.PmAreaIn(i.PmAreaIn...))
+	}
+	if len(i.PmAreaNotIn) > 0 {
+		predicates = append(predicates, project.PmAreaNotIn(i.PmAreaNotIn...))
+	}
+	if i.PmAreaGT != nil {
+		predicates = append(predicates, project.PmAreaGT(*i.PmAreaGT))
+	}
+	if i.PmAreaGTE != nil {
+		predicates = append(predicates, project.PmAreaGTE(*i.PmAreaGTE))
+	}
+	if i.PmAreaLT != nil {
+		predicates = append(predicates, project.PmAreaLT(*i.PmAreaLT))
+	}
+	if i.PmAreaLTE != nil {
+		predicates = append(predicates, project.PmAreaLTE(*i.PmAreaLTE))
+	}
+	if i.PmAreaIsNil {
+		predicates = append(predicates, project.PmAreaIsNil())
+	}
+	if i.PmAreaNotNil {
+		predicates = append(predicates, project.PmAreaNotNil())
+	}
+	if i.PmYearTarget != nil {
+		predicates = append(predicates, project.PmYearTargetEQ(*i.PmYearTarget))
+	}
+	if i.PmYearTargetNEQ != nil {
+		predicates = append(predicates, project.PmYearTargetNEQ(*i.PmYearTargetNEQ))
+	}
+	if len(i.PmYearTargetIn) > 0 {
+		predicates = append(predicates, project.PmYearTargetIn(i.PmYearTargetIn...))
+	}
+	if len(i.PmYearTargetNotIn) > 0 {
+		predicates = append(predicates, project.PmYearTargetNotIn(i.PmYearTargetNotIn...))
+	}
+	if i.PmYearTargetGT != nil {
+		predicates = append(predicates, project.PmYearTargetGT(*i.PmYearTargetGT))
+	}
+	if i.PmYearTargetGTE != nil {
+		predicates = append(predicates, project.PmYearTargetGTE(*i.PmYearTargetGTE))
+	}
+	if i.PmYearTargetLT != nil {
+		predicates = append(predicates, project.PmYearTargetLT(*i.PmYearTargetLT))
+	}
+	if i.PmYearTargetLTE != nil {
+		predicates = append(predicates, project.PmYearTargetLTE(*i.PmYearTargetLTE))
+	}
+	if i.PmYearTargetIsNil {
+		predicates = append(predicates, project.PmYearTargetIsNil())
+	}
+	if i.PmYearTargetNotNil {
+		predicates = append(predicates, project.PmYearTargetNotNil())
+	}
+	if i.PmMonthTarget != nil {
+		predicates = append(predicates, project.PmMonthTargetEQ(*i.PmMonthTarget))
+	}
+	if i.PmMonthTargetNEQ != nil {
+		predicates = append(predicates, project.PmMonthTargetNEQ(*i.PmMonthTargetNEQ))
+	}
+	if len(i.PmMonthTargetIn) > 0 {
+		predicates = append(predicates, project.PmMonthTargetIn(i.PmMonthTargetIn...))
+	}
+	if len(i.PmMonthTargetNotIn) > 0 {
+		predicates = append(predicates, project.PmMonthTargetNotIn(i.PmMonthTargetNotIn...))
+	}
+	if i.PmMonthTargetGT != nil {
+		predicates = append(predicates, project.PmMonthTargetGT(*i.PmMonthTargetGT))
+	}
+	if i.PmMonthTargetGTE != nil {
+		predicates = append(predicates, project.PmMonthTargetGTE(*i.PmMonthTargetGTE))
+	}
+	if i.PmMonthTargetLT != nil {
+		predicates = append(predicates, project.PmMonthTargetLT(*i.PmMonthTargetLT))
+	}
+	if i.PmMonthTargetLTE != nil {
+		predicates = append(predicates, project.PmMonthTargetLTE(*i.PmMonthTargetLTE))
+	}
+	if i.PmMonthTargetIsNil {
+		predicates = append(predicates, project.PmMonthTargetIsNil())
+	}
+	if i.PmMonthTargetNotNil {
+		predicates = append(predicates, project.PmMonthTargetNotNil())
+	}
+	if i.PmYearActual != nil {
+		predicates = append(predicates, project.PmYearActualEQ(*i.PmYearActual))
+	}
+	if i.PmYearActualNEQ != nil {
+		predicates = append(predicates, project.PmYearActualNEQ(*i.PmYearActualNEQ))
+	}
+	if len(i.PmYearActualIn) > 0 {
+		predicates = append(predicates, project.PmYearActualIn(i.PmYearActualIn...))
+	}
+	if len(i.PmYearActualNotIn) > 0 {
+		predicates = append(predicates, project.PmYearActualNotIn(i.PmYearActualNotIn...))
+	}
+	if i.PmYearActualGT != nil {
+		predicates = append(predicates, project.PmYearActualGT(*i.PmYearActualGT))
+	}
+	if i.PmYearActualGTE != nil {
+		predicates = append(predicates, project.PmYearActualGTE(*i.PmYearActualGTE))
+	}
+	if i.PmYearActualLT != nil {
+		predicates = append(predicates, project.PmYearActualLT(*i.PmYearActualLT))
+	}
+	if i.PmYearActualLTE != nil {
+		predicates = append(predicates, project.PmYearActualLTE(*i.PmYearActualLTE))
+	}
+	if i.PmYearActualIsNil {
+		predicates = append(predicates, project.PmYearActualIsNil())
+	}
+	if i.PmYearActualNotNil {
+		predicates = append(predicates, project.PmYearActualNotNil())
+	}
+	if i.PmMonthActual != nil {
+		predicates = append(predicates, project.PmMonthActualEQ(*i.PmMonthActual))
+	}
+	if i.PmMonthActualNEQ != nil {
+		predicates = append(predicates, project.PmMonthActualNEQ(*i.PmMonthActualNEQ))
+	}
+	if len(i.PmMonthActualIn) > 0 {
+		predicates = append(predicates, project.PmMonthActualIn(i.PmMonthActualIn...))
+	}
+	if len(i.PmMonthActualNotIn) > 0 {
+		predicates = append(predicates, project.PmMonthActualNotIn(i.PmMonthActualNotIn...))
+	}
+	if i.PmMonthActualGT != nil {
+		predicates = append(predicates, project.PmMonthActualGT(*i.PmMonthActualGT))
+	}
+	if i.PmMonthActualGTE != nil {
+		predicates = append(predicates, project.PmMonthActualGTE(*i.PmMonthActualGTE))
+	}
+	if i.PmMonthActualLT != nil {
+		predicates = append(predicates, project.PmMonthActualLT(*i.PmMonthActualLT))
+	}
+	if i.PmMonthActualLTE != nil {
+		predicates = append(predicates, project.PmMonthActualLTE(*i.PmMonthActualLTE))
+	}
+	if i.PmMonthActualIsNil {
+		predicates = append(predicates, project.PmMonthActualIsNil())
+	}
+	if i.PmMonthActualNotNil {
+		predicates = append(predicates, project.PmMonthActualNotNil())
+	}
+	if i.PmTotal != nil {
+		predicates = append(predicates, project.PmTotalEQ(*i.PmTotal))
+	}
+	if i.PmTotalNEQ != nil {
+		predicates = append(predicates, project.PmTotalNEQ(*i.PmTotalNEQ))
+	}
+	if len(i.PmTotalIn) > 0 {
+		predicates = append(predicates, project.PmTotalIn(i.PmTotalIn...))
+	}
+	if len(i.PmTotalNotIn) > 0 {
+		predicates = append(predicates, project.PmTotalNotIn(i.PmTotalNotIn...))
+	}
+	if i.PmTotalGT != nil {
+		predicates = append(predicates, project.PmTotalGT(*i.PmTotalGT))
+	}
+	if i.PmTotalGTE != nil {
+		predicates = append(predicates, project.PmTotalGTE(*i.PmTotalGTE))
+	}
+	if i.PmTotalLT != nil {
+		predicates = append(predicates, project.PmTotalLT(*i.PmTotalLT))
+	}
+	if i.PmTotalLTE != nil {
+		predicates = append(predicates, project.PmTotalLTE(*i.PmTotalLTE))
+	}
+	if i.PmTotalIsNil {
+		predicates = append(predicates, project.PmTotalIsNil())
+	}
+	if i.PmTotalNotNil {
+		predicates = append(predicates, project.PmTotalNotNil())
+	}
+	if i.PmYesterday != nil {
+		predicates = append(predicates, project.PmYesterdayEQ(*i.PmYesterday))
+	}
+	if i.PmYesterdayNEQ != nil {
+		predicates = append(predicates, project.PmYesterdayNEQ(*i.PmYesterdayNEQ))
+	}
+	if len(i.PmYesterdayIn) > 0 {
+		predicates = append(predicates, project.PmYesterdayIn(i.PmYesterdayIn...))
+	}
+	if len(i.PmYesterdayNotIn) > 0 {
+		predicates = append(predicates, project.PmYesterdayNotIn(i.PmYesterdayNotIn...))
+	}
+	if i.PmYesterdayGT != nil {
+		predicates = append(predicates, project.PmYesterdayGT(*i.PmYesterdayGT))
+	}
+	if i.PmYesterdayGTE != nil {
+		predicates = append(predicates, project.PmYesterdayGTE(*i.PmYesterdayGTE))
+	}
+	if i.PmYesterdayLT != nil {
+		predicates = append(predicates, project.PmYesterdayLT(*i.PmYesterdayLT))
+	}
+	if i.PmYesterdayLTE != nil {
+		predicates = append(predicates, project.PmYesterdayLTE(*i.PmYesterdayLTE))
+	}
+	if i.PmYesterdayIsNil {
+		predicates = append(predicates, project.PmYesterdayIsNil())
+	}
+	if i.PmYesterdayNotNil {
+		predicates = append(predicates, project.PmYesterdayNotNil())
 	}
 
 	if i.HasVos != nil {

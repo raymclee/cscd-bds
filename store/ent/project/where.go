@@ -301,6 +301,41 @@ func MilestoneDoneMonth(v int) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldMilestoneDoneMonth, v))
 }
 
+// PmArea applies equality check predicate on the "pm_area" field. It's identical to PmAreaEQ.
+func PmArea(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmArea, v))
+}
+
+// PmYearTarget applies equality check predicate on the "pm_year_target" field. It's identical to PmYearTargetEQ.
+func PmYearTarget(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmYearTarget, v))
+}
+
+// PmMonthTarget applies equality check predicate on the "pm_month_target" field. It's identical to PmMonthTargetEQ.
+func PmMonthTarget(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmMonthTarget, v))
+}
+
+// PmYearActual applies equality check predicate on the "pm_year_actual" field. It's identical to PmYearActualEQ.
+func PmYearActual(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmYearActual, v))
+}
+
+// PmMonthActual applies equality check predicate on the "pm_month_actual" field. It's identical to PmMonthActualEQ.
+func PmMonthActual(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmMonthActual, v))
+}
+
+// PmTotal applies equality check predicate on the "pm_total" field. It's identical to PmTotalEQ.
+func PmTotal(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmTotal, v))
+}
+
+// PmYesterday applies equality check predicate on the "pm_yesterday" field. It's identical to PmYesterdayEQ.
+func PmYesterday(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmYesterday, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -2954,6 +2989,356 @@ func MilestoneDoneMonthIsNil() predicate.Project {
 // MilestoneDoneMonthNotNil applies the NotNil predicate on the "milestone_done_month" field.
 func MilestoneDoneMonthNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldMilestoneDoneMonth))
+}
+
+// PmAreaEQ applies the EQ predicate on the "pm_area" field.
+func PmAreaEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmArea, v))
+}
+
+// PmAreaNEQ applies the NEQ predicate on the "pm_area" field.
+func PmAreaNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmArea, v))
+}
+
+// PmAreaIn applies the In predicate on the "pm_area" field.
+func PmAreaIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmArea, vs...))
+}
+
+// PmAreaNotIn applies the NotIn predicate on the "pm_area" field.
+func PmAreaNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmArea, vs...))
+}
+
+// PmAreaGT applies the GT predicate on the "pm_area" field.
+func PmAreaGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmArea, v))
+}
+
+// PmAreaGTE applies the GTE predicate on the "pm_area" field.
+func PmAreaGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmArea, v))
+}
+
+// PmAreaLT applies the LT predicate on the "pm_area" field.
+func PmAreaLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmArea, v))
+}
+
+// PmAreaLTE applies the LTE predicate on the "pm_area" field.
+func PmAreaLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmArea, v))
+}
+
+// PmAreaIsNil applies the IsNil predicate on the "pm_area" field.
+func PmAreaIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmArea))
+}
+
+// PmAreaNotNil applies the NotNil predicate on the "pm_area" field.
+func PmAreaNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmArea))
+}
+
+// PmYearTargetEQ applies the EQ predicate on the "pm_year_target" field.
+func PmYearTargetEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmYearTarget, v))
+}
+
+// PmYearTargetNEQ applies the NEQ predicate on the "pm_year_target" field.
+func PmYearTargetNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmYearTarget, v))
+}
+
+// PmYearTargetIn applies the In predicate on the "pm_year_target" field.
+func PmYearTargetIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmYearTarget, vs...))
+}
+
+// PmYearTargetNotIn applies the NotIn predicate on the "pm_year_target" field.
+func PmYearTargetNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmYearTarget, vs...))
+}
+
+// PmYearTargetGT applies the GT predicate on the "pm_year_target" field.
+func PmYearTargetGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmYearTarget, v))
+}
+
+// PmYearTargetGTE applies the GTE predicate on the "pm_year_target" field.
+func PmYearTargetGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmYearTarget, v))
+}
+
+// PmYearTargetLT applies the LT predicate on the "pm_year_target" field.
+func PmYearTargetLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmYearTarget, v))
+}
+
+// PmYearTargetLTE applies the LTE predicate on the "pm_year_target" field.
+func PmYearTargetLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmYearTarget, v))
+}
+
+// PmYearTargetIsNil applies the IsNil predicate on the "pm_year_target" field.
+func PmYearTargetIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmYearTarget))
+}
+
+// PmYearTargetNotNil applies the NotNil predicate on the "pm_year_target" field.
+func PmYearTargetNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmYearTarget))
+}
+
+// PmMonthTargetEQ applies the EQ predicate on the "pm_month_target" field.
+func PmMonthTargetEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmMonthTarget, v))
+}
+
+// PmMonthTargetNEQ applies the NEQ predicate on the "pm_month_target" field.
+func PmMonthTargetNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmMonthTarget, v))
+}
+
+// PmMonthTargetIn applies the In predicate on the "pm_month_target" field.
+func PmMonthTargetIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmMonthTarget, vs...))
+}
+
+// PmMonthTargetNotIn applies the NotIn predicate on the "pm_month_target" field.
+func PmMonthTargetNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmMonthTarget, vs...))
+}
+
+// PmMonthTargetGT applies the GT predicate on the "pm_month_target" field.
+func PmMonthTargetGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmMonthTarget, v))
+}
+
+// PmMonthTargetGTE applies the GTE predicate on the "pm_month_target" field.
+func PmMonthTargetGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmMonthTarget, v))
+}
+
+// PmMonthTargetLT applies the LT predicate on the "pm_month_target" field.
+func PmMonthTargetLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmMonthTarget, v))
+}
+
+// PmMonthTargetLTE applies the LTE predicate on the "pm_month_target" field.
+func PmMonthTargetLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmMonthTarget, v))
+}
+
+// PmMonthTargetIsNil applies the IsNil predicate on the "pm_month_target" field.
+func PmMonthTargetIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmMonthTarget))
+}
+
+// PmMonthTargetNotNil applies the NotNil predicate on the "pm_month_target" field.
+func PmMonthTargetNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmMonthTarget))
+}
+
+// PmYearActualEQ applies the EQ predicate on the "pm_year_actual" field.
+func PmYearActualEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmYearActual, v))
+}
+
+// PmYearActualNEQ applies the NEQ predicate on the "pm_year_actual" field.
+func PmYearActualNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmYearActual, v))
+}
+
+// PmYearActualIn applies the In predicate on the "pm_year_actual" field.
+func PmYearActualIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmYearActual, vs...))
+}
+
+// PmYearActualNotIn applies the NotIn predicate on the "pm_year_actual" field.
+func PmYearActualNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmYearActual, vs...))
+}
+
+// PmYearActualGT applies the GT predicate on the "pm_year_actual" field.
+func PmYearActualGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmYearActual, v))
+}
+
+// PmYearActualGTE applies the GTE predicate on the "pm_year_actual" field.
+func PmYearActualGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmYearActual, v))
+}
+
+// PmYearActualLT applies the LT predicate on the "pm_year_actual" field.
+func PmYearActualLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmYearActual, v))
+}
+
+// PmYearActualLTE applies the LTE predicate on the "pm_year_actual" field.
+func PmYearActualLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmYearActual, v))
+}
+
+// PmYearActualIsNil applies the IsNil predicate on the "pm_year_actual" field.
+func PmYearActualIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmYearActual))
+}
+
+// PmYearActualNotNil applies the NotNil predicate on the "pm_year_actual" field.
+func PmYearActualNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmYearActual))
+}
+
+// PmMonthActualEQ applies the EQ predicate on the "pm_month_actual" field.
+func PmMonthActualEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmMonthActual, v))
+}
+
+// PmMonthActualNEQ applies the NEQ predicate on the "pm_month_actual" field.
+func PmMonthActualNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmMonthActual, v))
+}
+
+// PmMonthActualIn applies the In predicate on the "pm_month_actual" field.
+func PmMonthActualIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmMonthActual, vs...))
+}
+
+// PmMonthActualNotIn applies the NotIn predicate on the "pm_month_actual" field.
+func PmMonthActualNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmMonthActual, vs...))
+}
+
+// PmMonthActualGT applies the GT predicate on the "pm_month_actual" field.
+func PmMonthActualGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmMonthActual, v))
+}
+
+// PmMonthActualGTE applies the GTE predicate on the "pm_month_actual" field.
+func PmMonthActualGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmMonthActual, v))
+}
+
+// PmMonthActualLT applies the LT predicate on the "pm_month_actual" field.
+func PmMonthActualLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmMonthActual, v))
+}
+
+// PmMonthActualLTE applies the LTE predicate on the "pm_month_actual" field.
+func PmMonthActualLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmMonthActual, v))
+}
+
+// PmMonthActualIsNil applies the IsNil predicate on the "pm_month_actual" field.
+func PmMonthActualIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmMonthActual))
+}
+
+// PmMonthActualNotNil applies the NotNil predicate on the "pm_month_actual" field.
+func PmMonthActualNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmMonthActual))
+}
+
+// PmTotalEQ applies the EQ predicate on the "pm_total" field.
+func PmTotalEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmTotal, v))
+}
+
+// PmTotalNEQ applies the NEQ predicate on the "pm_total" field.
+func PmTotalNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmTotal, v))
+}
+
+// PmTotalIn applies the In predicate on the "pm_total" field.
+func PmTotalIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmTotal, vs...))
+}
+
+// PmTotalNotIn applies the NotIn predicate on the "pm_total" field.
+func PmTotalNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmTotal, vs...))
+}
+
+// PmTotalGT applies the GT predicate on the "pm_total" field.
+func PmTotalGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmTotal, v))
+}
+
+// PmTotalGTE applies the GTE predicate on the "pm_total" field.
+func PmTotalGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmTotal, v))
+}
+
+// PmTotalLT applies the LT predicate on the "pm_total" field.
+func PmTotalLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmTotal, v))
+}
+
+// PmTotalLTE applies the LTE predicate on the "pm_total" field.
+func PmTotalLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmTotal, v))
+}
+
+// PmTotalIsNil applies the IsNil predicate on the "pm_total" field.
+func PmTotalIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmTotal))
+}
+
+// PmTotalNotNil applies the NotNil predicate on the "pm_total" field.
+func PmTotalNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmTotal))
+}
+
+// PmYesterdayEQ applies the EQ predicate on the "pm_yesterday" field.
+func PmYesterdayEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPmYesterday, v))
+}
+
+// PmYesterdayNEQ applies the NEQ predicate on the "pm_yesterday" field.
+func PmYesterdayNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPmYesterday, v))
+}
+
+// PmYesterdayIn applies the In predicate on the "pm_yesterday" field.
+func PmYesterdayIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPmYesterday, vs...))
+}
+
+// PmYesterdayNotIn applies the NotIn predicate on the "pm_yesterday" field.
+func PmYesterdayNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPmYesterday, vs...))
+}
+
+// PmYesterdayGT applies the GT predicate on the "pm_yesterday" field.
+func PmYesterdayGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPmYesterday, v))
+}
+
+// PmYesterdayGTE applies the GTE predicate on the "pm_yesterday" field.
+func PmYesterdayGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPmYesterday, v))
+}
+
+// PmYesterdayLT applies the LT predicate on the "pm_yesterday" field.
+func PmYesterdayLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPmYesterday, v))
+}
+
+// PmYesterdayLTE applies the LTE predicate on the "pm_yesterday" field.
+func PmYesterdayLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPmYesterday, v))
+}
+
+// PmYesterdayIsNil applies the IsNil predicate on the "pm_yesterday" field.
+func PmYesterdayIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPmYesterday))
+}
+
+// PmYesterdayNotNil applies the NotNil predicate on the "pm_yesterday" field.
+func PmYesterdayNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPmYesterday))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

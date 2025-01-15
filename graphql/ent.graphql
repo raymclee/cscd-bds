@@ -2351,6 +2351,34 @@ type Project implements Node {
   里程碑完成月份
   """
   milestoneDoneMonth: Int
+  """
+  生产管理面积
+  """
+  pmArea: Float
+  """
+  生产管理當年累計生產
+  """
+  pmYearTarget: Float
+  """
+  生产管理當月累計生產
+  """
+  pmMonthTarget: Float
+  """
+  生产管理當年實際生產
+  """
+  pmYearActual: Float
+  """
+  生产管理當月實際生產
+  """
+  pmMonthActual: Float
+  """
+  生产管理累計生產
+  """
+  pmTotal: Float
+  """
+  生产管理昨日生產
+  """
+  pmYesterday: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -3503,6 +3531,97 @@ input ProjectWhereInput {
   milestoneDoneMonthLTE: Int
   milestoneDoneMonthIsNil: Boolean
   milestoneDoneMonthNotNil: Boolean
+  """
+  pm_area field predicates
+  """
+  pmArea: Float
+  pmAreaNEQ: Float
+  pmAreaIn: [Float!]
+  pmAreaNotIn: [Float!]
+  pmAreaGT: Float
+  pmAreaGTE: Float
+  pmAreaLT: Float
+  pmAreaLTE: Float
+  pmAreaIsNil: Boolean
+  pmAreaNotNil: Boolean
+  """
+  pm_year_target field predicates
+  """
+  pmYearTarget: Float
+  pmYearTargetNEQ: Float
+  pmYearTargetIn: [Float!]
+  pmYearTargetNotIn: [Float!]
+  pmYearTargetGT: Float
+  pmYearTargetGTE: Float
+  pmYearTargetLT: Float
+  pmYearTargetLTE: Float
+  pmYearTargetIsNil: Boolean
+  pmYearTargetNotNil: Boolean
+  """
+  pm_month_target field predicates
+  """
+  pmMonthTarget: Float
+  pmMonthTargetNEQ: Float
+  pmMonthTargetIn: [Float!]
+  pmMonthTargetNotIn: [Float!]
+  pmMonthTargetGT: Float
+  pmMonthTargetGTE: Float
+  pmMonthTargetLT: Float
+  pmMonthTargetLTE: Float
+  pmMonthTargetIsNil: Boolean
+  pmMonthTargetNotNil: Boolean
+  """
+  pm_year_actual field predicates
+  """
+  pmYearActual: Float
+  pmYearActualNEQ: Float
+  pmYearActualIn: [Float!]
+  pmYearActualNotIn: [Float!]
+  pmYearActualGT: Float
+  pmYearActualGTE: Float
+  pmYearActualLT: Float
+  pmYearActualLTE: Float
+  pmYearActualIsNil: Boolean
+  pmYearActualNotNil: Boolean
+  """
+  pm_month_actual field predicates
+  """
+  pmMonthActual: Float
+  pmMonthActualNEQ: Float
+  pmMonthActualIn: [Float!]
+  pmMonthActualNotIn: [Float!]
+  pmMonthActualGT: Float
+  pmMonthActualGTE: Float
+  pmMonthActualLT: Float
+  pmMonthActualLTE: Float
+  pmMonthActualIsNil: Boolean
+  pmMonthActualNotNil: Boolean
+  """
+  pm_total field predicates
+  """
+  pmTotal: Float
+  pmTotalNEQ: Float
+  pmTotalIn: [Float!]
+  pmTotalNotIn: [Float!]
+  pmTotalGT: Float
+  pmTotalGTE: Float
+  pmTotalLT: Float
+  pmTotalLTE: Float
+  pmTotalIsNil: Boolean
+  pmTotalNotNil: Boolean
+  """
+  pm_yesterday field predicates
+  """
+  pmYesterday: Float
+  pmYesterdayNEQ: Float
+  pmYesterdayIn: [Float!]
+  pmYesterdayNotIn: [Float!]
+  pmYesterdayGT: Float
+  pmYesterdayGTE: Float
+  pmYesterdayLT: Float
+  pmYesterdayLTE: Float
+  pmYesterdayIsNil: Boolean
+  pmYesterdayNotNil: Boolean
   """
   vos edge predicates
   """

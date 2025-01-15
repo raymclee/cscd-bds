@@ -253,6 +253,13 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldMilestonePlanMonth:                      {Type: field.TypeInt, Column: project.FieldMilestonePlanMonth},
 			project.FieldMilestoneDoneYear:                       {Type: field.TypeInt, Column: project.FieldMilestoneDoneYear},
 			project.FieldMilestoneDoneMonth:                      {Type: field.TypeInt, Column: project.FieldMilestoneDoneMonth},
+			project.FieldPmArea:                                  {Type: field.TypeFloat64, Column: project.FieldPmArea},
+			project.FieldPmYearTarget:                            {Type: field.TypeFloat64, Column: project.FieldPmYearTarget},
+			project.FieldPmMonthTarget:                           {Type: field.TypeFloat64, Column: project.FieldPmMonthTarget},
+			project.FieldPmYearActual:                            {Type: field.TypeFloat64, Column: project.FieldPmYearActual},
+			project.FieldPmMonthActual:                           {Type: field.TypeFloat64, Column: project.FieldPmMonthActual},
+			project.FieldPmTotal:                                 {Type: field.TypeFloat64, Column: project.FieldPmTotal},
+			project.FieldPmYesterday:                             {Type: field.TypeFloat64, Column: project.FieldPmYesterday},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2186,6 +2193,41 @@ func (f *ProjectFilter) WhereMilestoneDoneYear(p entql.IntP) {
 // WhereMilestoneDoneMonth applies the entql int predicate on the milestone_done_month field.
 func (f *ProjectFilter) WhereMilestoneDoneMonth(p entql.IntP) {
 	f.Where(p.Field(project.FieldMilestoneDoneMonth))
+}
+
+// WherePmArea applies the entql float64 predicate on the pm_area field.
+func (f *ProjectFilter) WherePmArea(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmArea))
+}
+
+// WherePmYearTarget applies the entql float64 predicate on the pm_year_target field.
+func (f *ProjectFilter) WherePmYearTarget(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmYearTarget))
+}
+
+// WherePmMonthTarget applies the entql float64 predicate on the pm_month_target field.
+func (f *ProjectFilter) WherePmMonthTarget(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmMonthTarget))
+}
+
+// WherePmYearActual applies the entql float64 predicate on the pm_year_actual field.
+func (f *ProjectFilter) WherePmYearActual(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmYearActual))
+}
+
+// WherePmMonthActual applies the entql float64 predicate on the pm_month_actual field.
+func (f *ProjectFilter) WherePmMonthActual(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmMonthActual))
+}
+
+// WherePmTotal applies the entql float64 predicate on the pm_total field.
+func (f *ProjectFilter) WherePmTotal(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmTotal))
+}
+
+// WherePmYesterday applies the entql float64 predicate on the pm_yesterday field.
+func (f *ProjectFilter) WherePmYesterday(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPmYesterday))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.

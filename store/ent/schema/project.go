@@ -347,6 +347,41 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("里程碑完成月份"),
+
+		field.Float("pm_area").
+			Optional().
+			Nillable().
+			Comment("生产管理面积"),
+
+		field.Float("pm_year_target").
+			Optional().
+			Nillable().
+			Comment("生产管理當年累計生產"),
+
+		field.Float("pm_month_target").
+			Optional().
+			Nillable().
+			Comment("生产管理當月累計生產"),
+
+		field.Float("pm_year_actual").
+			Optional().
+			Nillable().
+			Comment("生产管理當年實際生產"),
+
+		field.Float("pm_month_actual").
+			Optional().
+			Nillable().
+			Comment("生产管理當月實際生產"),
+
+		field.Float("pm_total").
+			Optional().
+			Nillable().
+			Comment("生产管理累計生產"),
+
+		field.Float("pm_yesterday").
+			Optional().
+			Nillable().
+			Comment("生产管理昨日生產"),
 	}
 }
 

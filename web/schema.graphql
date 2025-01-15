@@ -1794,6 +1794,20 @@ type Project implements Node {
   ownerApproveAmount: Float
   """业主批复数量"""
   ownerApproveCount: Int
+  """生产管理面积"""
+  pmArea: Float
+  """生产管理當月實際生產"""
+  pmMonthActual: Float
+  """生产管理當月累計生產"""
+  pmMonthTarget: Float
+  """生产管理累計生產"""
+  pmTotal: Float
+  """生产管理當年實際生產"""
+  pmYearActual: Float
+  """生产管理當年累計生產"""
+  pmYearTarget: Float
+  """生产管理昨日生產"""
+  pmYesterday: Float
   projectStaffs(
     """Returns the elements in the list that come after the specified cursor."""
     after: Cursor
@@ -2637,6 +2651,83 @@ input ProjectWhereInput {
   ownerNEQ: String
   ownerNotIn: [String!]
   ownerNotNil: Boolean
+  """pm_area field predicates"""
+  pmArea: Float
+  pmAreaGT: Float
+  pmAreaGTE: Float
+  pmAreaIn: [Float!]
+  pmAreaIsNil: Boolean
+  pmAreaLT: Float
+  pmAreaLTE: Float
+  pmAreaNEQ: Float
+  pmAreaNotIn: [Float!]
+  pmAreaNotNil: Boolean
+  """pm_month_actual field predicates"""
+  pmMonthActual: Float
+  pmMonthActualGT: Float
+  pmMonthActualGTE: Float
+  pmMonthActualIn: [Float!]
+  pmMonthActualIsNil: Boolean
+  pmMonthActualLT: Float
+  pmMonthActualLTE: Float
+  pmMonthActualNEQ: Float
+  pmMonthActualNotIn: [Float!]
+  pmMonthActualNotNil: Boolean
+  """pm_month_target field predicates"""
+  pmMonthTarget: Float
+  pmMonthTargetGT: Float
+  pmMonthTargetGTE: Float
+  pmMonthTargetIn: [Float!]
+  pmMonthTargetIsNil: Boolean
+  pmMonthTargetLT: Float
+  pmMonthTargetLTE: Float
+  pmMonthTargetNEQ: Float
+  pmMonthTargetNotIn: [Float!]
+  pmMonthTargetNotNil: Boolean
+  """pm_total field predicates"""
+  pmTotal: Float
+  pmTotalGT: Float
+  pmTotalGTE: Float
+  pmTotalIn: [Float!]
+  pmTotalIsNil: Boolean
+  pmTotalLT: Float
+  pmTotalLTE: Float
+  pmTotalNEQ: Float
+  pmTotalNotIn: [Float!]
+  pmTotalNotNil: Boolean
+  """pm_year_actual field predicates"""
+  pmYearActual: Float
+  pmYearActualGT: Float
+  pmYearActualGTE: Float
+  pmYearActualIn: [Float!]
+  pmYearActualIsNil: Boolean
+  pmYearActualLT: Float
+  pmYearActualLTE: Float
+  pmYearActualNEQ: Float
+  pmYearActualNotIn: [Float!]
+  pmYearActualNotNil: Boolean
+  """pm_year_target field predicates"""
+  pmYearTarget: Float
+  pmYearTargetGT: Float
+  pmYearTargetGTE: Float
+  pmYearTargetIn: [Float!]
+  pmYearTargetIsNil: Boolean
+  pmYearTargetLT: Float
+  pmYearTargetLTE: Float
+  pmYearTargetNEQ: Float
+  pmYearTargetNotIn: [Float!]
+  pmYearTargetNotNil: Boolean
+  """pm_yesterday field predicates"""
+  pmYesterday: Float
+  pmYesterdayGT: Float
+  pmYesterdayGTE: Float
+  pmYesterdayIn: [Float!]
+  pmYesterdayIsNil: Boolean
+  pmYesterdayLT: Float
+  pmYesterdayLTE: Float
+  pmYesterdayNEQ: Float
+  pmYesterdayNotIn: [Float!]
+  pmYesterdayNotNil: Boolean
   """start_date field predicates"""
   startDate: Time
   startDateGT: Time

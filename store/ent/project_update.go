@@ -1182,6 +1182,195 @@ func (pu *ProjectUpdate) ClearMilestoneDoneMonth() *ProjectUpdate {
 	return pu
 }
 
+// SetPmArea sets the "pm_area" field.
+func (pu *ProjectUpdate) SetPmArea(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmArea()
+	pu.mutation.SetPmArea(f)
+	return pu
+}
+
+// SetNillablePmArea sets the "pm_area" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmArea(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmArea(*f)
+	}
+	return pu
+}
+
+// AddPmArea adds f to the "pm_area" field.
+func (pu *ProjectUpdate) AddPmArea(f float64) *ProjectUpdate {
+	pu.mutation.AddPmArea(f)
+	return pu
+}
+
+// ClearPmArea clears the value of the "pm_area" field.
+func (pu *ProjectUpdate) ClearPmArea() *ProjectUpdate {
+	pu.mutation.ClearPmArea()
+	return pu
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (pu *ProjectUpdate) SetPmYearTarget(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmYearTarget()
+	pu.mutation.SetPmYearTarget(f)
+	return pu
+}
+
+// SetNillablePmYearTarget sets the "pm_year_target" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmYearTarget(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmYearTarget(*f)
+	}
+	return pu
+}
+
+// AddPmYearTarget adds f to the "pm_year_target" field.
+func (pu *ProjectUpdate) AddPmYearTarget(f float64) *ProjectUpdate {
+	pu.mutation.AddPmYearTarget(f)
+	return pu
+}
+
+// ClearPmYearTarget clears the value of the "pm_year_target" field.
+func (pu *ProjectUpdate) ClearPmYearTarget() *ProjectUpdate {
+	pu.mutation.ClearPmYearTarget()
+	return pu
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (pu *ProjectUpdate) SetPmMonthTarget(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmMonthTarget()
+	pu.mutation.SetPmMonthTarget(f)
+	return pu
+}
+
+// SetNillablePmMonthTarget sets the "pm_month_target" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmMonthTarget(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmMonthTarget(*f)
+	}
+	return pu
+}
+
+// AddPmMonthTarget adds f to the "pm_month_target" field.
+func (pu *ProjectUpdate) AddPmMonthTarget(f float64) *ProjectUpdate {
+	pu.mutation.AddPmMonthTarget(f)
+	return pu
+}
+
+// ClearPmMonthTarget clears the value of the "pm_month_target" field.
+func (pu *ProjectUpdate) ClearPmMonthTarget() *ProjectUpdate {
+	pu.mutation.ClearPmMonthTarget()
+	return pu
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (pu *ProjectUpdate) SetPmYearActual(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmYearActual()
+	pu.mutation.SetPmYearActual(f)
+	return pu
+}
+
+// SetNillablePmYearActual sets the "pm_year_actual" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmYearActual(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmYearActual(*f)
+	}
+	return pu
+}
+
+// AddPmYearActual adds f to the "pm_year_actual" field.
+func (pu *ProjectUpdate) AddPmYearActual(f float64) *ProjectUpdate {
+	pu.mutation.AddPmYearActual(f)
+	return pu
+}
+
+// ClearPmYearActual clears the value of the "pm_year_actual" field.
+func (pu *ProjectUpdate) ClearPmYearActual() *ProjectUpdate {
+	pu.mutation.ClearPmYearActual()
+	return pu
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (pu *ProjectUpdate) SetPmMonthActual(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmMonthActual()
+	pu.mutation.SetPmMonthActual(f)
+	return pu
+}
+
+// SetNillablePmMonthActual sets the "pm_month_actual" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmMonthActual(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmMonthActual(*f)
+	}
+	return pu
+}
+
+// AddPmMonthActual adds f to the "pm_month_actual" field.
+func (pu *ProjectUpdate) AddPmMonthActual(f float64) *ProjectUpdate {
+	pu.mutation.AddPmMonthActual(f)
+	return pu
+}
+
+// ClearPmMonthActual clears the value of the "pm_month_actual" field.
+func (pu *ProjectUpdate) ClearPmMonthActual() *ProjectUpdate {
+	pu.mutation.ClearPmMonthActual()
+	return pu
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (pu *ProjectUpdate) SetPmTotal(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmTotal()
+	pu.mutation.SetPmTotal(f)
+	return pu
+}
+
+// SetNillablePmTotal sets the "pm_total" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmTotal(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmTotal(*f)
+	}
+	return pu
+}
+
+// AddPmTotal adds f to the "pm_total" field.
+func (pu *ProjectUpdate) AddPmTotal(f float64) *ProjectUpdate {
+	pu.mutation.AddPmTotal(f)
+	return pu
+}
+
+// ClearPmTotal clears the value of the "pm_total" field.
+func (pu *ProjectUpdate) ClearPmTotal() *ProjectUpdate {
+	pu.mutation.ClearPmTotal()
+	return pu
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (pu *ProjectUpdate) SetPmYesterday(f float64) *ProjectUpdate {
+	pu.mutation.ResetPmYesterday()
+	pu.mutation.SetPmYesterday(f)
+	return pu
+}
+
+// SetNillablePmYesterday sets the "pm_yesterday" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePmYesterday(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPmYesterday(*f)
+	}
+	return pu
+}
+
+// AddPmYesterday adds f to the "pm_yesterday" field.
+func (pu *ProjectUpdate) AddPmYesterday(f float64) *ProjectUpdate {
+	pu.mutation.AddPmYesterday(f)
+	return pu
+}
+
+// ClearPmYesterday clears the value of the "pm_yesterday" field.
+func (pu *ProjectUpdate) ClearPmYesterday() *ProjectUpdate {
+	pu.mutation.ClearPmYesterday()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -1675,6 +1864,69 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.MilestoneDoneMonthCleared() {
 		_spec.ClearField(project.FieldMilestoneDoneMonth, field.TypeInt)
+	}
+	if value, ok := pu.mutation.PmArea(); ok {
+		_spec.SetField(project.FieldPmArea, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmArea(); ok {
+		_spec.AddField(project.FieldPmArea, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmAreaCleared() {
+		_spec.ClearField(project.FieldPmArea, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PmYearTarget(); ok {
+		_spec.SetField(project.FieldPmYearTarget, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmYearTarget(); ok {
+		_spec.AddField(project.FieldPmYearTarget, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmYearTargetCleared() {
+		_spec.ClearField(project.FieldPmYearTarget, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PmMonthTarget(); ok {
+		_spec.SetField(project.FieldPmMonthTarget, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmMonthTarget(); ok {
+		_spec.AddField(project.FieldPmMonthTarget, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmMonthTargetCleared() {
+		_spec.ClearField(project.FieldPmMonthTarget, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PmYearActual(); ok {
+		_spec.SetField(project.FieldPmYearActual, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmYearActual(); ok {
+		_spec.AddField(project.FieldPmYearActual, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmYearActualCleared() {
+		_spec.ClearField(project.FieldPmYearActual, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PmMonthActual(); ok {
+		_spec.SetField(project.FieldPmMonthActual, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmMonthActual(); ok {
+		_spec.AddField(project.FieldPmMonthActual, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmMonthActualCleared() {
+		_spec.ClearField(project.FieldPmMonthActual, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PmTotal(); ok {
+		_spec.SetField(project.FieldPmTotal, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmTotal(); ok {
+		_spec.AddField(project.FieldPmTotal, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmTotalCleared() {
+		_spec.ClearField(project.FieldPmTotal, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PmYesterday(); ok {
+		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPmYesterday(); ok {
+		_spec.AddField(project.FieldPmYesterday, field.TypeFloat64, value)
+	}
+	if pu.mutation.PmYesterdayCleared() {
+		_spec.ClearField(project.FieldPmYesterday, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -2937,6 +3189,195 @@ func (puo *ProjectUpdateOne) ClearMilestoneDoneMonth() *ProjectUpdateOne {
 	return puo
 }
 
+// SetPmArea sets the "pm_area" field.
+func (puo *ProjectUpdateOne) SetPmArea(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmArea()
+	puo.mutation.SetPmArea(f)
+	return puo
+}
+
+// SetNillablePmArea sets the "pm_area" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmArea(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmArea(*f)
+	}
+	return puo
+}
+
+// AddPmArea adds f to the "pm_area" field.
+func (puo *ProjectUpdateOne) AddPmArea(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmArea(f)
+	return puo
+}
+
+// ClearPmArea clears the value of the "pm_area" field.
+func (puo *ProjectUpdateOne) ClearPmArea() *ProjectUpdateOne {
+	puo.mutation.ClearPmArea()
+	return puo
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (puo *ProjectUpdateOne) SetPmYearTarget(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmYearTarget()
+	puo.mutation.SetPmYearTarget(f)
+	return puo
+}
+
+// SetNillablePmYearTarget sets the "pm_year_target" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmYearTarget(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmYearTarget(*f)
+	}
+	return puo
+}
+
+// AddPmYearTarget adds f to the "pm_year_target" field.
+func (puo *ProjectUpdateOne) AddPmYearTarget(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmYearTarget(f)
+	return puo
+}
+
+// ClearPmYearTarget clears the value of the "pm_year_target" field.
+func (puo *ProjectUpdateOne) ClearPmYearTarget() *ProjectUpdateOne {
+	puo.mutation.ClearPmYearTarget()
+	return puo
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (puo *ProjectUpdateOne) SetPmMonthTarget(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmMonthTarget()
+	puo.mutation.SetPmMonthTarget(f)
+	return puo
+}
+
+// SetNillablePmMonthTarget sets the "pm_month_target" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmMonthTarget(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmMonthTarget(*f)
+	}
+	return puo
+}
+
+// AddPmMonthTarget adds f to the "pm_month_target" field.
+func (puo *ProjectUpdateOne) AddPmMonthTarget(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmMonthTarget(f)
+	return puo
+}
+
+// ClearPmMonthTarget clears the value of the "pm_month_target" field.
+func (puo *ProjectUpdateOne) ClearPmMonthTarget() *ProjectUpdateOne {
+	puo.mutation.ClearPmMonthTarget()
+	return puo
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (puo *ProjectUpdateOne) SetPmYearActual(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmYearActual()
+	puo.mutation.SetPmYearActual(f)
+	return puo
+}
+
+// SetNillablePmYearActual sets the "pm_year_actual" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmYearActual(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmYearActual(*f)
+	}
+	return puo
+}
+
+// AddPmYearActual adds f to the "pm_year_actual" field.
+func (puo *ProjectUpdateOne) AddPmYearActual(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmYearActual(f)
+	return puo
+}
+
+// ClearPmYearActual clears the value of the "pm_year_actual" field.
+func (puo *ProjectUpdateOne) ClearPmYearActual() *ProjectUpdateOne {
+	puo.mutation.ClearPmYearActual()
+	return puo
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (puo *ProjectUpdateOne) SetPmMonthActual(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmMonthActual()
+	puo.mutation.SetPmMonthActual(f)
+	return puo
+}
+
+// SetNillablePmMonthActual sets the "pm_month_actual" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmMonthActual(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmMonthActual(*f)
+	}
+	return puo
+}
+
+// AddPmMonthActual adds f to the "pm_month_actual" field.
+func (puo *ProjectUpdateOne) AddPmMonthActual(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmMonthActual(f)
+	return puo
+}
+
+// ClearPmMonthActual clears the value of the "pm_month_actual" field.
+func (puo *ProjectUpdateOne) ClearPmMonthActual() *ProjectUpdateOne {
+	puo.mutation.ClearPmMonthActual()
+	return puo
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (puo *ProjectUpdateOne) SetPmTotal(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmTotal()
+	puo.mutation.SetPmTotal(f)
+	return puo
+}
+
+// SetNillablePmTotal sets the "pm_total" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmTotal(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmTotal(*f)
+	}
+	return puo
+}
+
+// AddPmTotal adds f to the "pm_total" field.
+func (puo *ProjectUpdateOne) AddPmTotal(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmTotal(f)
+	return puo
+}
+
+// ClearPmTotal clears the value of the "pm_total" field.
+func (puo *ProjectUpdateOne) ClearPmTotal() *ProjectUpdateOne {
+	puo.mutation.ClearPmTotal()
+	return puo
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (puo *ProjectUpdateOne) SetPmYesterday(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPmYesterday()
+	puo.mutation.SetPmYesterday(f)
+	return puo
+}
+
+// SetNillablePmYesterday sets the "pm_yesterday" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePmYesterday(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPmYesterday(*f)
+	}
+	return puo
+}
+
+// AddPmYesterday adds f to the "pm_yesterday" field.
+func (puo *ProjectUpdateOne) AddPmYesterday(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPmYesterday(f)
+	return puo
+}
+
+// ClearPmYesterday clears the value of the "pm_yesterday" field.
+func (puo *ProjectUpdateOne) ClearPmYesterday() *ProjectUpdateOne {
+	puo.mutation.ClearPmYesterday()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -3460,6 +3901,69 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.MilestoneDoneMonthCleared() {
 		_spec.ClearField(project.FieldMilestoneDoneMonth, field.TypeInt)
+	}
+	if value, ok := puo.mutation.PmArea(); ok {
+		_spec.SetField(project.FieldPmArea, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmArea(); ok {
+		_spec.AddField(project.FieldPmArea, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmAreaCleared() {
+		_spec.ClearField(project.FieldPmArea, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PmYearTarget(); ok {
+		_spec.SetField(project.FieldPmYearTarget, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmYearTarget(); ok {
+		_spec.AddField(project.FieldPmYearTarget, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmYearTargetCleared() {
+		_spec.ClearField(project.FieldPmYearTarget, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PmMonthTarget(); ok {
+		_spec.SetField(project.FieldPmMonthTarget, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmMonthTarget(); ok {
+		_spec.AddField(project.FieldPmMonthTarget, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmMonthTargetCleared() {
+		_spec.ClearField(project.FieldPmMonthTarget, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PmYearActual(); ok {
+		_spec.SetField(project.FieldPmYearActual, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmYearActual(); ok {
+		_spec.AddField(project.FieldPmYearActual, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmYearActualCleared() {
+		_spec.ClearField(project.FieldPmYearActual, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PmMonthActual(); ok {
+		_spec.SetField(project.FieldPmMonthActual, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmMonthActual(); ok {
+		_spec.AddField(project.FieldPmMonthActual, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmMonthActualCleared() {
+		_spec.ClearField(project.FieldPmMonthActual, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PmTotal(); ok {
+		_spec.SetField(project.FieldPmTotal, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmTotal(); ok {
+		_spec.AddField(project.FieldPmTotal, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmTotalCleared() {
+		_spec.ClearField(project.FieldPmTotal, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PmYesterday(); ok {
+		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPmYesterday(); ok {
+		_spec.AddField(project.FieldPmYesterday, field.TypeFloat64, value)
+	}
+	if puo.mutation.PmYesterdayCleared() {
+		_spec.ClearField(project.FieldPmYesterday, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

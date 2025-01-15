@@ -257,6 +257,13 @@ var (
 		{Name: "milestone_plan_month", Type: field.TypeInt, Nullable: true},
 		{Name: "milestone_done_year", Type: field.TypeInt, Nullable: true},
 		{Name: "milestone_done_month", Type: field.TypeInt, Nullable: true},
+		{Name: "pm_area", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pm_year_target", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pm_month_target", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pm_year_actual", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pm_month_actual", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pm_total", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pm_yesterday", Type: field.TypeFloat64, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{

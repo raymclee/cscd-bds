@@ -133,6 +133,13 @@ function RouteComponent() {
               milestonePlanMonth
               milestoneDoneYear
               milestoneDoneMonth
+              pmArea
+              pmYearTarget
+              pmMonthTarget
+              pmYearActual
+              pmMonthActual
+              pmTotal
+              pmYesterday
               projectStaffs(
                 first: 3
                 orderBy: { field: CREATED_AT, direction: DESC }
@@ -261,6 +268,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const milestonePlanMonth = pj?.milestonePlanMonth || 0;
   const milestoneDoneYear = pj?.milestoneDoneYear || 0;
   const milestoneDoneMonth = pj?.milestoneDoneMonth || 0;
+  const pmArea = pj?.pmArea || 0;
+  const pmYearTarget = pj?.pmYearTarget || 0;
+  const pmMonthTarget = pj?.pmMonthTarget || 0;
+  const pmYearActual = pj?.pmYearActual || 0;
+  const pmMonthActual = pj?.pmMonthActual || 0;
+  const pmTotal = pj?.pmTotal || 0;
+  const pmYesterday = pj?.pmYesterday || 0;
 
   return (
     <>
@@ -887,14 +901,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           </div>
         </section>
 
-        <section className="relative my-auto py-2">
+        <section className="relative py-2">
           <img src={instantMessage} />
-          <div className="grid h-[240px] grid-cols-5 gap-x-3 pt-1">
+          <div className="mt-2 grid grid-cols-5 gap-x-3 overflow-hidden">
             {/* 成交额 */}
             <div className="relative flex justify-center">
-              <img src={b1} className="absolute inset-0" />
+              <img
+                src={b1}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
               <div className="absolute top-5 text-lg font-bold">成交额</div>
-              <div className="relative pt-[114%] text-xl font-bold text-brand-project">
+              <div className="relative h-60 pt-[110%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
                   key={pj?.code}
@@ -908,9 +925,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
             {/* 营业额 */}
             <div className="relative flex justify-center">
-              <img src={b2} className="absolute inset-0" />
+              <img
+                src={b2}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
               <div className="absolute top-5 text-lg font-bold">营业额</div>
-              <div className="relative pt-[114%] text-xl font-bold text-brand-project">
+              <div className="relative h-60 pt-[110%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
                   key={pj?.code}
@@ -924,9 +944,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
             {/* 现金流 */}
             <div className="relative flex justify-center">
-              <img src={b3} className="absolute inset-0" />
+              <img
+                src={b3}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
               <div className="absolute top-5 text-lg font-bold">现金流</div>
-              <div className="relative pt-[114%] text-xl font-bold text-brand-project">
+              <div className="relative h-60 pt-[110%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
                   key={pj?.code}
@@ -940,9 +963,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
             {/* 项目管理费 */}
             <div className="relative flex justify-center">
-              <img src={b4} className="absolute inset-0" />
+              <img
+                src={b4}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
               <div className="absolute top-5 text-lg font-bold">项目管理费</div>
-              <div className="relative w-[80%] space-y-1 pt-[110%]">
+              <div className="relative h-60 w-[80%] space-y-1 pt-[105%]">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs">預算</div>
                   <div className="text-sm font-bold text-brand-project">
@@ -989,9 +1015,12 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
             {/* 项目设计费 */}
             <div className="relative flex justify-center">
-              <img src={b5} className="absolute inset-0" />
+              <img
+                src={b5}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
               <div className="absolute top-5 text-lg font-bold">项目设计费</div>
-              <div className="relative pt-[114%] text-xl font-bold text-brand-project">
+              <div className="relative h-60 pt-[110%] text-xl font-bold text-brand-project">
                 <TextScramble
                   characterSet="0123456789"
                   key={pj?.code}
@@ -1003,6 +1032,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               </div>
             </div>
           </div>
+
           <img src={projectProgressTitle} className="mx-auto mt-3 w-[65%]" />
           {/* <img src={projectManagementTitle} className="mx-auto mt-2 w-44" /> */}
 
@@ -1213,7 +1243,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           </div>
         </section>
 
-        <section className="space-y-2.5">
+        <section className="space-y-2">
           <div>
             <SubTitle>图纸进度管理</SubTitle>
             <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
@@ -1236,29 +1266,92 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
           <div>
             <SubTitle>生产管理</SubTitle>
-            <div className="space-y-0.5 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
-              <div>
-                <img src={productionManagement1} />
+            <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+              <div className="relative h-11">
+                <img src={productionManagement1} className="absolute inset-0" />
+                <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmArea.toFixed(2)}
+                  </TextScramble>
+                </div>
+                <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmTotal.toFixed(2)}
+                  </TextScramble>
+                </div>
               </div>
-              <div>
+              <div className="relative h-11">
                 <img src={productionManagement2} />
+                <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmYearTarget.toFixed(2)}
+                  </TextScramble>
+                </div>
+                <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmYearActual.toFixed(2)}
+                  </TextScramble>
+                </div>
               </div>
-              <div>
+              <div className="relative h-11">
                 <img src={productionManagement3} />
+                <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmMonthTarget.toFixed(2)}
+                  </TextScramble>
+                </div>
+                <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmMonthActual.toFixed(2)}
+                  </TextScramble>
+                </div>
               </div>
-              <div>
+              <div className="relative h-7">
                 <img src={productionManagement4} />
+                <div className="absolute left-1/2 top-1.5 text-xxs text-yellow-500">
+                  <TextScramble
+                    characterSet="0123456789"
+                    key={pj?.code}
+                    as="span"
+                  >
+                    {pmYesterday.toFixed(2)}
+                  </TextScramble>
+                </div>
               </div>
             </div>
           </div>
 
           <div>
             <SubTitle>单元件与散料</SubTitle>
-            <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
-              <div>
+            <div className="space-y-2 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+              <div className="h-14">
                 <img src={componentTop} />
               </div>
-              <div>
+              <div className="h-14">
                 <img src={componentBottom} />
               </div>
             </div>
@@ -1370,17 +1463,17 @@ function StaffDistribution(props: { data: any }) {
   for (const node of props.data) {
     data.push({
       name: "安裝人員",
-      number: node.installation,
+      number: node.installation ? Math.round(node.installation * 100) / 100 : 0,
       month: dayjs(node.createdAt).format("YYYY年MMM"),
     });
     data.push({
       name: "管理人員",
-      number: node.management,
+      number: node.management ? Math.round(node.management * 100) / 100 : 0,
       month: dayjs(node.createdAt).format("YYYY年MMM"),
     });
     data.push({
       name: "設計人員",
-      number: node.design,
+      number: node.design ? Math.round(node.design * 100) / 100 : 0,
       month: dayjs(node.createdAt).format("YYYY年MMM"),
     });
   }

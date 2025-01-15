@@ -704,6 +704,104 @@ func (pc *ProjectCreate) SetNillableMilestoneDoneMonth(i *int) *ProjectCreate {
 	return pc
 }
 
+// SetPmArea sets the "pm_area" field.
+func (pc *ProjectCreate) SetPmArea(f float64) *ProjectCreate {
+	pc.mutation.SetPmArea(f)
+	return pc
+}
+
+// SetNillablePmArea sets the "pm_area" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmArea(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmArea(*f)
+	}
+	return pc
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (pc *ProjectCreate) SetPmYearTarget(f float64) *ProjectCreate {
+	pc.mutation.SetPmYearTarget(f)
+	return pc
+}
+
+// SetNillablePmYearTarget sets the "pm_year_target" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmYearTarget(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmYearTarget(*f)
+	}
+	return pc
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (pc *ProjectCreate) SetPmMonthTarget(f float64) *ProjectCreate {
+	pc.mutation.SetPmMonthTarget(f)
+	return pc
+}
+
+// SetNillablePmMonthTarget sets the "pm_month_target" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmMonthTarget(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmMonthTarget(*f)
+	}
+	return pc
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (pc *ProjectCreate) SetPmYearActual(f float64) *ProjectCreate {
+	pc.mutation.SetPmYearActual(f)
+	return pc
+}
+
+// SetNillablePmYearActual sets the "pm_year_actual" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmYearActual(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmYearActual(*f)
+	}
+	return pc
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (pc *ProjectCreate) SetPmMonthActual(f float64) *ProjectCreate {
+	pc.mutation.SetPmMonthActual(f)
+	return pc
+}
+
+// SetNillablePmMonthActual sets the "pm_month_actual" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmMonthActual(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmMonthActual(*f)
+	}
+	return pc
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (pc *ProjectCreate) SetPmTotal(f float64) *ProjectCreate {
+	pc.mutation.SetPmTotal(f)
+	return pc
+}
+
+// SetNillablePmTotal sets the "pm_total" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmTotal(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmTotal(*f)
+	}
+	return pc
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (pc *ProjectCreate) SetPmYesterday(f float64) *ProjectCreate {
+	pc.mutation.SetPmYesterday(f)
+	return pc
+}
+
+// SetNillablePmYesterday sets the "pm_yesterday" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePmYesterday(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPmYesterday(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -1046,6 +1144,34 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.MilestoneDoneMonth(); ok {
 		_spec.SetField(project.FieldMilestoneDoneMonth, field.TypeInt, value)
 		_node.MilestoneDoneMonth = &value
+	}
+	if value, ok := pc.mutation.PmArea(); ok {
+		_spec.SetField(project.FieldPmArea, field.TypeFloat64, value)
+		_node.PmArea = &value
+	}
+	if value, ok := pc.mutation.PmYearTarget(); ok {
+		_spec.SetField(project.FieldPmYearTarget, field.TypeFloat64, value)
+		_node.PmYearTarget = &value
+	}
+	if value, ok := pc.mutation.PmMonthTarget(); ok {
+		_spec.SetField(project.FieldPmMonthTarget, field.TypeFloat64, value)
+		_node.PmMonthTarget = &value
+	}
+	if value, ok := pc.mutation.PmYearActual(); ok {
+		_spec.SetField(project.FieldPmYearActual, field.TypeFloat64, value)
+		_node.PmYearActual = &value
+	}
+	if value, ok := pc.mutation.PmMonthActual(); ok {
+		_spec.SetField(project.FieldPmMonthActual, field.TypeFloat64, value)
+		_node.PmMonthActual = &value
+	}
+	if value, ok := pc.mutation.PmTotal(); ok {
+		_spec.SetField(project.FieldPmTotal, field.TypeFloat64, value)
+		_node.PmTotal = &value
+	}
+	if value, ok := pc.mutation.PmYesterday(); ok {
+		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
+		_node.PmYesterday = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2160,6 +2286,174 @@ func (u *ProjectUpsert) AddMilestoneDoneMonth(v int) *ProjectUpsert {
 // ClearMilestoneDoneMonth clears the value of the "milestone_done_month" field.
 func (u *ProjectUpsert) ClearMilestoneDoneMonth() *ProjectUpsert {
 	u.SetNull(project.FieldMilestoneDoneMonth)
+	return u
+}
+
+// SetPmArea sets the "pm_area" field.
+func (u *ProjectUpsert) SetPmArea(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmArea, v)
+	return u
+}
+
+// UpdatePmArea sets the "pm_area" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmArea() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmArea)
+	return u
+}
+
+// AddPmArea adds v to the "pm_area" field.
+func (u *ProjectUpsert) AddPmArea(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmArea, v)
+	return u
+}
+
+// ClearPmArea clears the value of the "pm_area" field.
+func (u *ProjectUpsert) ClearPmArea() *ProjectUpsert {
+	u.SetNull(project.FieldPmArea)
+	return u
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (u *ProjectUpsert) SetPmYearTarget(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmYearTarget, v)
+	return u
+}
+
+// UpdatePmYearTarget sets the "pm_year_target" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmYearTarget() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmYearTarget)
+	return u
+}
+
+// AddPmYearTarget adds v to the "pm_year_target" field.
+func (u *ProjectUpsert) AddPmYearTarget(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmYearTarget, v)
+	return u
+}
+
+// ClearPmYearTarget clears the value of the "pm_year_target" field.
+func (u *ProjectUpsert) ClearPmYearTarget() *ProjectUpsert {
+	u.SetNull(project.FieldPmYearTarget)
+	return u
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (u *ProjectUpsert) SetPmMonthTarget(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmMonthTarget, v)
+	return u
+}
+
+// UpdatePmMonthTarget sets the "pm_month_target" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmMonthTarget() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmMonthTarget)
+	return u
+}
+
+// AddPmMonthTarget adds v to the "pm_month_target" field.
+func (u *ProjectUpsert) AddPmMonthTarget(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmMonthTarget, v)
+	return u
+}
+
+// ClearPmMonthTarget clears the value of the "pm_month_target" field.
+func (u *ProjectUpsert) ClearPmMonthTarget() *ProjectUpsert {
+	u.SetNull(project.FieldPmMonthTarget)
+	return u
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (u *ProjectUpsert) SetPmYearActual(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmYearActual, v)
+	return u
+}
+
+// UpdatePmYearActual sets the "pm_year_actual" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmYearActual() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmYearActual)
+	return u
+}
+
+// AddPmYearActual adds v to the "pm_year_actual" field.
+func (u *ProjectUpsert) AddPmYearActual(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmYearActual, v)
+	return u
+}
+
+// ClearPmYearActual clears the value of the "pm_year_actual" field.
+func (u *ProjectUpsert) ClearPmYearActual() *ProjectUpsert {
+	u.SetNull(project.FieldPmYearActual)
+	return u
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (u *ProjectUpsert) SetPmMonthActual(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmMonthActual, v)
+	return u
+}
+
+// UpdatePmMonthActual sets the "pm_month_actual" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmMonthActual() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmMonthActual)
+	return u
+}
+
+// AddPmMonthActual adds v to the "pm_month_actual" field.
+func (u *ProjectUpsert) AddPmMonthActual(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmMonthActual, v)
+	return u
+}
+
+// ClearPmMonthActual clears the value of the "pm_month_actual" field.
+func (u *ProjectUpsert) ClearPmMonthActual() *ProjectUpsert {
+	u.SetNull(project.FieldPmMonthActual)
+	return u
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (u *ProjectUpsert) SetPmTotal(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmTotal, v)
+	return u
+}
+
+// UpdatePmTotal sets the "pm_total" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmTotal() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmTotal)
+	return u
+}
+
+// AddPmTotal adds v to the "pm_total" field.
+func (u *ProjectUpsert) AddPmTotal(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmTotal, v)
+	return u
+}
+
+// ClearPmTotal clears the value of the "pm_total" field.
+func (u *ProjectUpsert) ClearPmTotal() *ProjectUpsert {
+	u.SetNull(project.FieldPmTotal)
+	return u
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (u *ProjectUpsert) SetPmYesterday(v float64) *ProjectUpsert {
+	u.Set(project.FieldPmYesterday, v)
+	return u
+}
+
+// UpdatePmYesterday sets the "pm_yesterday" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePmYesterday() *ProjectUpsert {
+	u.SetExcluded(project.FieldPmYesterday)
+	return u
+}
+
+// AddPmYesterday adds v to the "pm_yesterday" field.
+func (u *ProjectUpsert) AddPmYesterday(v float64) *ProjectUpsert {
+	u.Add(project.FieldPmYesterday, v)
+	return u
+}
+
+// ClearPmYesterday clears the value of the "pm_yesterday" field.
+func (u *ProjectUpsert) ClearPmYesterday() *ProjectUpsert {
+	u.SetNull(project.FieldPmYesterday)
 	return u
 }
 
@@ -3415,6 +3709,202 @@ func (u *ProjectUpsertOne) UpdateMilestoneDoneMonth() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearMilestoneDoneMonth() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearMilestoneDoneMonth()
+	})
+}
+
+// SetPmArea sets the "pm_area" field.
+func (u *ProjectUpsertOne) SetPmArea(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmArea(v)
+	})
+}
+
+// AddPmArea adds v to the "pm_area" field.
+func (u *ProjectUpsertOne) AddPmArea(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmArea(v)
+	})
+}
+
+// UpdatePmArea sets the "pm_area" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmArea() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmArea()
+	})
+}
+
+// ClearPmArea clears the value of the "pm_area" field.
+func (u *ProjectUpsertOne) ClearPmArea() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmArea()
+	})
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (u *ProjectUpsertOne) SetPmYearTarget(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmYearTarget(v)
+	})
+}
+
+// AddPmYearTarget adds v to the "pm_year_target" field.
+func (u *ProjectUpsertOne) AddPmYearTarget(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmYearTarget(v)
+	})
+}
+
+// UpdatePmYearTarget sets the "pm_year_target" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmYearTarget() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmYearTarget()
+	})
+}
+
+// ClearPmYearTarget clears the value of the "pm_year_target" field.
+func (u *ProjectUpsertOne) ClearPmYearTarget() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmYearTarget()
+	})
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (u *ProjectUpsertOne) SetPmMonthTarget(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmMonthTarget(v)
+	})
+}
+
+// AddPmMonthTarget adds v to the "pm_month_target" field.
+func (u *ProjectUpsertOne) AddPmMonthTarget(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmMonthTarget(v)
+	})
+}
+
+// UpdatePmMonthTarget sets the "pm_month_target" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmMonthTarget() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmMonthTarget()
+	})
+}
+
+// ClearPmMonthTarget clears the value of the "pm_month_target" field.
+func (u *ProjectUpsertOne) ClearPmMonthTarget() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmMonthTarget()
+	})
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (u *ProjectUpsertOne) SetPmYearActual(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmYearActual(v)
+	})
+}
+
+// AddPmYearActual adds v to the "pm_year_actual" field.
+func (u *ProjectUpsertOne) AddPmYearActual(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmYearActual(v)
+	})
+}
+
+// UpdatePmYearActual sets the "pm_year_actual" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmYearActual() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmYearActual()
+	})
+}
+
+// ClearPmYearActual clears the value of the "pm_year_actual" field.
+func (u *ProjectUpsertOne) ClearPmYearActual() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmYearActual()
+	})
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (u *ProjectUpsertOne) SetPmMonthActual(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmMonthActual(v)
+	})
+}
+
+// AddPmMonthActual adds v to the "pm_month_actual" field.
+func (u *ProjectUpsertOne) AddPmMonthActual(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmMonthActual(v)
+	})
+}
+
+// UpdatePmMonthActual sets the "pm_month_actual" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmMonthActual() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmMonthActual()
+	})
+}
+
+// ClearPmMonthActual clears the value of the "pm_month_actual" field.
+func (u *ProjectUpsertOne) ClearPmMonthActual() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmMonthActual()
+	})
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (u *ProjectUpsertOne) SetPmTotal(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmTotal(v)
+	})
+}
+
+// AddPmTotal adds v to the "pm_total" field.
+func (u *ProjectUpsertOne) AddPmTotal(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmTotal(v)
+	})
+}
+
+// UpdatePmTotal sets the "pm_total" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmTotal() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmTotal()
+	})
+}
+
+// ClearPmTotal clears the value of the "pm_total" field.
+func (u *ProjectUpsertOne) ClearPmTotal() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmTotal()
+	})
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (u *ProjectUpsertOne) SetPmYesterday(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmYesterday(v)
+	})
+}
+
+// AddPmYesterday adds v to the "pm_yesterday" field.
+func (u *ProjectUpsertOne) AddPmYesterday(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmYesterday(v)
+	})
+}
+
+// UpdatePmYesterday sets the "pm_yesterday" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePmYesterday() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmYesterday()
+	})
+}
+
+// ClearPmYesterday clears the value of the "pm_yesterday" field.
+func (u *ProjectUpsertOne) ClearPmYesterday() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmYesterday()
 	})
 }
 
@@ -4837,6 +5327,202 @@ func (u *ProjectUpsertBulk) UpdateMilestoneDoneMonth() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearMilestoneDoneMonth() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearMilestoneDoneMonth()
+	})
+}
+
+// SetPmArea sets the "pm_area" field.
+func (u *ProjectUpsertBulk) SetPmArea(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmArea(v)
+	})
+}
+
+// AddPmArea adds v to the "pm_area" field.
+func (u *ProjectUpsertBulk) AddPmArea(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmArea(v)
+	})
+}
+
+// UpdatePmArea sets the "pm_area" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmArea() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmArea()
+	})
+}
+
+// ClearPmArea clears the value of the "pm_area" field.
+func (u *ProjectUpsertBulk) ClearPmArea() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmArea()
+	})
+}
+
+// SetPmYearTarget sets the "pm_year_target" field.
+func (u *ProjectUpsertBulk) SetPmYearTarget(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmYearTarget(v)
+	})
+}
+
+// AddPmYearTarget adds v to the "pm_year_target" field.
+func (u *ProjectUpsertBulk) AddPmYearTarget(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmYearTarget(v)
+	})
+}
+
+// UpdatePmYearTarget sets the "pm_year_target" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmYearTarget() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmYearTarget()
+	})
+}
+
+// ClearPmYearTarget clears the value of the "pm_year_target" field.
+func (u *ProjectUpsertBulk) ClearPmYearTarget() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmYearTarget()
+	})
+}
+
+// SetPmMonthTarget sets the "pm_month_target" field.
+func (u *ProjectUpsertBulk) SetPmMonthTarget(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmMonthTarget(v)
+	})
+}
+
+// AddPmMonthTarget adds v to the "pm_month_target" field.
+func (u *ProjectUpsertBulk) AddPmMonthTarget(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmMonthTarget(v)
+	})
+}
+
+// UpdatePmMonthTarget sets the "pm_month_target" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmMonthTarget() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmMonthTarget()
+	})
+}
+
+// ClearPmMonthTarget clears the value of the "pm_month_target" field.
+func (u *ProjectUpsertBulk) ClearPmMonthTarget() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmMonthTarget()
+	})
+}
+
+// SetPmYearActual sets the "pm_year_actual" field.
+func (u *ProjectUpsertBulk) SetPmYearActual(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmYearActual(v)
+	})
+}
+
+// AddPmYearActual adds v to the "pm_year_actual" field.
+func (u *ProjectUpsertBulk) AddPmYearActual(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmYearActual(v)
+	})
+}
+
+// UpdatePmYearActual sets the "pm_year_actual" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmYearActual() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmYearActual()
+	})
+}
+
+// ClearPmYearActual clears the value of the "pm_year_actual" field.
+func (u *ProjectUpsertBulk) ClearPmYearActual() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmYearActual()
+	})
+}
+
+// SetPmMonthActual sets the "pm_month_actual" field.
+func (u *ProjectUpsertBulk) SetPmMonthActual(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmMonthActual(v)
+	})
+}
+
+// AddPmMonthActual adds v to the "pm_month_actual" field.
+func (u *ProjectUpsertBulk) AddPmMonthActual(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmMonthActual(v)
+	})
+}
+
+// UpdatePmMonthActual sets the "pm_month_actual" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmMonthActual() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmMonthActual()
+	})
+}
+
+// ClearPmMonthActual clears the value of the "pm_month_actual" field.
+func (u *ProjectUpsertBulk) ClearPmMonthActual() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmMonthActual()
+	})
+}
+
+// SetPmTotal sets the "pm_total" field.
+func (u *ProjectUpsertBulk) SetPmTotal(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmTotal(v)
+	})
+}
+
+// AddPmTotal adds v to the "pm_total" field.
+func (u *ProjectUpsertBulk) AddPmTotal(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmTotal(v)
+	})
+}
+
+// UpdatePmTotal sets the "pm_total" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmTotal() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmTotal()
+	})
+}
+
+// ClearPmTotal clears the value of the "pm_total" field.
+func (u *ProjectUpsertBulk) ClearPmTotal() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmTotal()
+	})
+}
+
+// SetPmYesterday sets the "pm_yesterday" field.
+func (u *ProjectUpsertBulk) SetPmYesterday(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPmYesterday(v)
+	})
+}
+
+// AddPmYesterday adds v to the "pm_yesterday" field.
+func (u *ProjectUpsertBulk) AddPmYesterday(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPmYesterday(v)
+	})
+}
+
+// UpdatePmYesterday sets the "pm_yesterday" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePmYesterday() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePmYesterday()
+	})
+}
+
+// ClearPmYesterday clears the value of the "pm_yesterday" field.
+func (u *ProjectUpsertBulk) ClearPmYesterday() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPmYesterday()
 	})
 }
 
