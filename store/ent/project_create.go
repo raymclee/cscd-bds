@@ -802,6 +802,20 @@ func (pc *ProjectCreate) SetNillablePmYesterday(f *float64) *ProjectCreate {
 	return pc
 }
 
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (pc *ProjectCreate) SetUnitInventoryTotal(f float64) *ProjectCreate {
+	pc.mutation.SetUnitInventoryTotal(f)
+	return pc
+}
+
+// SetNillableUnitInventoryTotal sets the "unit_inventory_total" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableUnitInventoryTotal(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetUnitInventoryTotal(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -1172,6 +1186,10 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.PmYesterday(); ok {
 		_spec.SetField(project.FieldPmYesterday, field.TypeFloat64, value)
 		_node.PmYesterday = &value
+	}
+	if value, ok := pc.mutation.UnitInventoryTotal(); ok {
+		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
+		_node.UnitInventoryTotal = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2454,6 +2472,30 @@ func (u *ProjectUpsert) AddPmYesterday(v float64) *ProjectUpsert {
 // ClearPmYesterday clears the value of the "pm_yesterday" field.
 func (u *ProjectUpsert) ClearPmYesterday() *ProjectUpsert {
 	u.SetNull(project.FieldPmYesterday)
+	return u
+}
+
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (u *ProjectUpsert) SetUnitInventoryTotal(v float64) *ProjectUpsert {
+	u.Set(project.FieldUnitInventoryTotal, v)
+	return u
+}
+
+// UpdateUnitInventoryTotal sets the "unit_inventory_total" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateUnitInventoryTotal() *ProjectUpsert {
+	u.SetExcluded(project.FieldUnitInventoryTotal)
+	return u
+}
+
+// AddUnitInventoryTotal adds v to the "unit_inventory_total" field.
+func (u *ProjectUpsert) AddUnitInventoryTotal(v float64) *ProjectUpsert {
+	u.Add(project.FieldUnitInventoryTotal, v)
+	return u
+}
+
+// ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
+func (u *ProjectUpsert) ClearUnitInventoryTotal() *ProjectUpsert {
+	u.SetNull(project.FieldUnitInventoryTotal)
 	return u
 }
 
@@ -3905,6 +3947,34 @@ func (u *ProjectUpsertOne) UpdatePmYesterday() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearPmYesterday() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearPmYesterday()
+	})
+}
+
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (u *ProjectUpsertOne) SetUnitInventoryTotal(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitInventoryTotal(v)
+	})
+}
+
+// AddUnitInventoryTotal adds v to the "unit_inventory_total" field.
+func (u *ProjectUpsertOne) AddUnitInventoryTotal(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitInventoryTotal(v)
+	})
+}
+
+// UpdateUnitInventoryTotal sets the "unit_inventory_total" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateUnitInventoryTotal() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitInventoryTotal()
+	})
+}
+
+// ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
+func (u *ProjectUpsertOne) ClearUnitInventoryTotal() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitInventoryTotal()
 	})
 }
 
@@ -5523,6 +5593,34 @@ func (u *ProjectUpsertBulk) UpdatePmYesterday() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearPmYesterday() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearPmYesterday()
+	})
+}
+
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (u *ProjectUpsertBulk) SetUnitInventoryTotal(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitInventoryTotal(v)
+	})
+}
+
+// AddUnitInventoryTotal adds v to the "unit_inventory_total" field.
+func (u *ProjectUpsertBulk) AddUnitInventoryTotal(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitInventoryTotal(v)
+	})
+}
+
+// UpdateUnitInventoryTotal sets the "unit_inventory_total" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateUnitInventoryTotal() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitInventoryTotal()
+	})
+}
+
+// ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
+func (u *ProjectUpsertBulk) ClearUnitInventoryTotal() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitInventoryTotal()
 	})
 }
 

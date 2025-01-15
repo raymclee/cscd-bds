@@ -899,6 +899,27 @@ func main() {
 			}
 		}
 
+		// 抓取單元件
+		{
+			row := bwpHanaDb.QueryRow(`
+				SELECT 
+					sum( anzsn ) as dyjljkc -- 累计库存
+				from zscmm_dyjgckc_view
+				where 1=1
+				AND xmbm = ?
+			`, jobcode)
+
+			var (
+				dyjljkc *float64
+			)
+			err = row.Scan(&dyjljkc)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取單元件失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableUnitInventoryTotal(dyjljkc)
+			}
+		}
+
 		if err := p.
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {
@@ -962,11 +983,13 @@ func main() {
 							} else {
 								for _, row := range rows {
 									if len(row) > 5 {
-										site := row[4]
-										percent := row[5]
-										if strings.HasPrefix(site, *jobcode) {
-											p, _ := strconv.ParseFloat(strings.ReplaceAll(percent, "%", ""), 64)
-											staffDesign += p / 100
+										if row[0] != "00005222" && row[0] != "00014912" {
+											site := row[4]
+											percent := row[5]
+											if strings.HasPrefix(site, *jobcode) {
+												p, _ := strconv.ParseFloat(strings.ReplaceAll(percent, "%", ""), 64)
+												staffDesign += p / 100
+											}
 										}
 									}
 								}
@@ -1002,7 +1025,7 @@ func main() {
 				var createdAt time.Time
 				bm := time.Date(today.Year(), today.Month(), 1, 0, 0, 0, 0, time.Local)
 				if bm.Sub(today).Hours() >= 21*24 {
-					cym = fmt.Sprintf("%s-%d-%d", *jobcode, bm.Year(), bm.Month())
+					cym = fmt.Sprintf("%s-%s-%s", *jobcode, bm.Format("2006"), bm.Format("01"))
 					createdAt = time.Now()
 				} else {
 					y := time.Date(today.Year(), today.Month()-1, today.Day(), 0, 0, 0, 0, time.Local).Format("2006")

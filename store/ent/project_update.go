@@ -1371,6 +1371,33 @@ func (pu *ProjectUpdate) ClearPmYesterday() *ProjectUpdate {
 	return pu
 }
 
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (pu *ProjectUpdate) SetUnitInventoryTotal(f float64) *ProjectUpdate {
+	pu.mutation.ResetUnitInventoryTotal()
+	pu.mutation.SetUnitInventoryTotal(f)
+	return pu
+}
+
+// SetNillableUnitInventoryTotal sets the "unit_inventory_total" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableUnitInventoryTotal(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetUnitInventoryTotal(*f)
+	}
+	return pu
+}
+
+// AddUnitInventoryTotal adds f to the "unit_inventory_total" field.
+func (pu *ProjectUpdate) AddUnitInventoryTotal(f float64) *ProjectUpdate {
+	pu.mutation.AddUnitInventoryTotal(f)
+	return pu
+}
+
+// ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
+func (pu *ProjectUpdate) ClearUnitInventoryTotal() *ProjectUpdate {
+	pu.mutation.ClearUnitInventoryTotal()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -1927,6 +1954,15 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.PmYesterdayCleared() {
 		_spec.ClearField(project.FieldPmYesterday, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.UnitInventoryTotal(); ok {
+		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedUnitInventoryTotal(); ok {
+		_spec.AddField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
+	}
+	if pu.mutation.UnitInventoryTotalCleared() {
+		_spec.ClearField(project.FieldUnitInventoryTotal, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -3378,6 +3414,33 @@ func (puo *ProjectUpdateOne) ClearPmYesterday() *ProjectUpdateOne {
 	return puo
 }
 
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (puo *ProjectUpdateOne) SetUnitInventoryTotal(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetUnitInventoryTotal()
+	puo.mutation.SetUnitInventoryTotal(f)
+	return puo
+}
+
+// SetNillableUnitInventoryTotal sets the "unit_inventory_total" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableUnitInventoryTotal(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetUnitInventoryTotal(*f)
+	}
+	return puo
+}
+
+// AddUnitInventoryTotal adds f to the "unit_inventory_total" field.
+func (puo *ProjectUpdateOne) AddUnitInventoryTotal(f float64) *ProjectUpdateOne {
+	puo.mutation.AddUnitInventoryTotal(f)
+	return puo
+}
+
+// ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
+func (puo *ProjectUpdateOne) ClearUnitInventoryTotal() *ProjectUpdateOne {
+	puo.mutation.ClearUnitInventoryTotal()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -3964,6 +4027,15 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.PmYesterdayCleared() {
 		_spec.ClearField(project.FieldPmYesterday, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.UnitInventoryTotal(); ok {
+		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedUnitInventoryTotal(); ok {
+		_spec.AddField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
+	}
+	if puo.mutation.UnitInventoryTotalCleared() {
+		_spec.ClearField(project.FieldUnitInventoryTotal, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

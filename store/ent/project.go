@@ -130,6 +130,8 @@ type Project struct {
 	PmTotal *float64 `json:"pm_total,omitempty"`
 	// 生产管理昨日生產
 	PmYesterday *float64 `json:"pm_yesterday,omitempty"`
+	// 單元件庫存累計
+	UnitInventoryTotal *float64 `json:"unit_inventory_total,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -177,7 +179,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday:
+		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal:
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth:
 			values[i] = new(sql.NullInt64)
@@ -596,6 +598,13 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.PmYesterday = new(float64)
 				*pr.PmYesterday = value.Float64
 			}
+		case project.FieldUnitInventoryTotal:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field unit_inventory_total", values[i])
+			} else if value.Valid {
+				pr.UnitInventoryTotal = new(float64)
+				*pr.UnitInventoryTotal = value.Float64
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -911,6 +920,11 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.PmYesterday; v != nil {
 		builder.WriteString("pm_yesterday=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.UnitInventoryTotal; v != nil {
+		builder.WriteString("unit_inventory_total=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

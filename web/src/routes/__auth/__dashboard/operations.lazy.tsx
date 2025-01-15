@@ -140,6 +140,7 @@ function RouteComponent() {
               pmMonthActual
               pmTotal
               pmYesterday
+              unitInventoryTotal
               projectStaffs(
                 first: 3
                 orderBy: { field: CREATED_AT, direction: DESC }
@@ -275,6 +276,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const pmMonthActual = pj?.pmMonthActual || 0;
   const pmTotal = pj?.pmTotal || 0;
   const pmYesterday = pj?.pmYesterday || 0;
+  const unitInventoryTotal = pj?.unitInventoryTotal || 0;
 
   return (
     <>
@@ -845,7 +847,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     characterSet="0123456789"
                     key={pj?.code}
                   >
-                    12
+                    {currentFormatter.format(unitInventoryTotal)}
                   </TextScramble>
                   <span className="ml-1 text-xs">件</span>
                 </div>
@@ -1479,11 +1481,6 @@ function StaffDistribution(props: { data: any }) {
   }
 
   const config = {
-    // data: {
-    //   type: "fetch",
-    //   value:
-    //     "https://gw.alipayobjects.com/os/antfincdn/iPY8JFnxdb/dodge-padding.json",
-    // },
     theme: "classicDark",
     data,
     xField: "month",

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7da87fcbe2b35a82de6acc76e5f27adb>>
+ * @generated SignedSource<<118ff4ee1ebb4810aa83dc6d80f938d4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,6 +38,7 @@ export type usersPageQuery$data = {
                 readonly avatarURL: string | null | undefined;
                 readonly disabled: boolean;
                 readonly email: string;
+                readonly hasEditAccess: boolean;
                 readonly hasMapAccess: boolean;
                 readonly id: string;
                 readonly isAdmin: boolean;
@@ -218,6 +219,13 @@ v9 = [
             "args": null,
             "kind": "ScalarField",
             "name": "hasMapAccess",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "hasEditAccess",
             "storageKey": null
           },
           (v8/*: any*/)
@@ -470,7 +478,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "efbdacb442caf7b31f06f7dbbdde926d",
+    "cacheID": "27e9016b57b48cc61aa9985122fc28a6",
     "id": null,
     "metadata": {
       "connection": [
@@ -484,11 +492,11 @@ return {
     },
     "name": "usersPageQuery",
     "operationKind": "query",
-    "text": "query usersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users(first: $first, last: $last, where: {isCeo: false, isSuperAdmin: false}) {\n              edges {\n                node {\n                  id\n                  name\n                  email\n                  username\n                  openID\n                  avatarURL\n                  disabled\n                  areas {\n                    edges {\n                      node {\n                        id\n                        name\n                        code\n                      }\n                    }\n                  }\n                  isAdmin\n                  hasMapAccess\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query usersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            id\n            name\n            code\n            users(first: $first, last: $last, where: {isCeo: false, isSuperAdmin: false}) {\n              edges {\n                node {\n                  id\n                  name\n                  email\n                  username\n                  openID\n                  avatarURL\n                  disabled\n                  areas {\n                    edges {\n                      node {\n                        id\n                        name\n                        code\n                      }\n                    }\n                  }\n                  isAdmin\n                  hasMapAccess\n                  hasEditAccess\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8c438c4caf3f75dd60b37c6b83cfcdc0";
+(node as any).hash = "0f874ef42768ed69e5901c62a00a5e7a";
 
 export default node;

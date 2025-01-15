@@ -63,6 +63,7 @@ const query = graphql`
                     }
                     isAdmin
                     hasMapAccess
+                    hasEditAccess
                   }
                 }
               }

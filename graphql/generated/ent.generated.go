@@ -15007,6 +15007,47 @@ func (ec *executionContext) fieldContext_Project_pmYesterday(_ context.Context, 
 	return fc, nil
 }
 
+func (ec *executionContext) _Project_unitInventoryTotal(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_unitInventoryTotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UnitInventoryTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_unitInventoryTotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Project_vos(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Project_vos(ctx, field)
 	if err != nil {
@@ -15430,6 +15471,8 @@ func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, fie
 				return ec.fieldContext_Project_pmTotal(ctx, field)
 			case "pmYesterday":
 				return ec.fieldContext_Project_pmYesterday(ctx, field)
+			case "unitInventoryTotal":
+				return ec.fieldContext_Project_unitInventoryTotal(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
@@ -15981,6 +16024,8 @@ func (ec *executionContext) fieldContext_ProjectStaff_project(_ context.Context,
 				return ec.fieldContext_Project_pmTotal(ctx, field)
 			case "pmYesterday":
 				return ec.fieldContext_Project_pmYesterday(ctx, field)
+			case "unitInventoryTotal":
+				return ec.fieldContext_Project_unitInventoryTotal(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
@@ -16823,6 +16868,8 @@ func (ec *executionContext) fieldContext_ProjectVO_project(_ context.Context, fi
 				return ec.fieldContext_Project_pmTotal(ctx, field)
 			case "pmYesterday":
 				return ec.fieldContext_Project_pmYesterday(ctx, field)
+			case "unitInventoryTotal":
+				return ec.fieldContext_Project_unitInventoryTotal(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
@@ -33463,7 +33510,7 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "manager", "managerNEQ", "managerIn", "managerNotIn", "managerGT", "managerGTE", "managerLT", "managerLTE", "managerContains", "managerHasPrefix", "managerHasSuffix", "managerIsNil", "managerNotNil", "managerEqualFold", "managerContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "owner", "ownerNEQ", "ownerIn", "ownerNotIn", "ownerGT", "ownerGTE", "ownerLT", "ownerLTE", "ownerContains", "ownerHasPrefix", "ownerHasSuffix", "ownerIsNil", "ownerNotNil", "ownerEqualFold", "ownerContainsFold", "jzs", "jzsNEQ", "jzsIn", "jzsNotIn", "jzsGT", "jzsGTE", "jzsLT", "jzsLTE", "jzsContains", "jzsHasPrefix", "jzsHasSuffix", "jzsIsNil", "jzsNotNil", "jzsEqualFold", "jzsContainsFold", "mcn", "mcnNEQ", "mcnIn", "mcnNotIn", "mcnGT", "mcnGTE", "mcnLT", "mcnLTE", "mcnContains", "mcnHasPrefix", "mcnHasSuffix", "mcnIsNil", "mcnNotNil", "mcnEqualFold", "mcnContainsFold", "consultant", "consultantNEQ", "consultantIn", "consultantNotIn", "consultantGT", "consultantGTE", "consultantLT", "consultantLTE", "consultantContains", "consultantHasPrefix", "consultantHasSuffix", "consultantIsNil", "consultantNotNil", "consultantEqualFold", "consultantContainsFold", "areas", "areasNEQ", "areasIn", "areasNotIn", "areasGT", "areasGTE", "areasLT", "areasLTE", "areasContains", "areasHasPrefix", "areasHasSuffix", "areasIsNil", "areasNotNil", "areasEqualFold", "areasContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "startDateIsNil", "startDateNotNil", "fsDate", "fsDateNEQ", "fsDateIn", "fsDateNotIn", "fsDateGT", "fsDateGTE", "fsDateLT", "fsDateLTE", "fsDateIsNil", "fsDateNotNil", "opDate", "opDateNEQ", "opDateIn", "opDateNotIn", "opDateGT", "opDateGTE", "opDateLT", "opDateLTE", "opDateIsNil", "opDateNotNil", "endDate", "endDateNEQ", "endDateIn", "endDateNotIn", "endDateGT", "endDateGTE", "endDateLT", "endDateLTE", "endDateIsNil", "endDateNotNil", "mntyr", "mntyrNEQ", "mntyrIn", "mntyrNotIn", "mntyrGT", "mntyrGTE", "mntyrLT", "mntyrLTE", "mntyrContains", "mntyrHasPrefix", "mntyrHasSuffix", "mntyrIsNil", "mntyrNotNil", "mntyrEqualFold", "mntyrContainsFold", "conType", "conTypeNEQ", "conTypeIn", "conTypeNotIn", "conTypeGT", "conTypeGTE", "conTypeLT", "conTypeLTE", "conTypeContains", "conTypeHasPrefix", "conTypeHasSuffix", "conTypeIsNil", "conTypeNotNil", "conTypeEqualFold", "conTypeContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "aluminumPlateBudgetPercentage", "aluminumPlateBudgetPercentageNEQ", "aluminumPlateBudgetPercentageIn", "aluminumPlateBudgetPercentageNotIn", "aluminumPlateBudgetPercentageGT", "aluminumPlateBudgetPercentageGTE", "aluminumPlateBudgetPercentageLT", "aluminumPlateBudgetPercentageLTE", "aluminumPlateBudgetPercentageIsNil", "aluminumPlateBudgetPercentageNotNil", "aluminumBudgetPercentage", "aluminumBudgetPercentageNEQ", "aluminumBudgetPercentageIn", "aluminumBudgetPercentageNotIn", "aluminumBudgetPercentageGT", "aluminumBudgetPercentageGTE", "aluminumBudgetPercentageLT", "aluminumBudgetPercentageLTE", "aluminumBudgetPercentageIsNil", "aluminumBudgetPercentageNotNil", "glassBudgetPercentage", "glassBudgetPercentageNEQ", "glassBudgetPercentageIn", "glassBudgetPercentageNotIn", "glassBudgetPercentageGT", "glassBudgetPercentageGTE", "glassBudgetPercentageLT", "glassBudgetPercentageLTE", "glassBudgetPercentageIsNil", "glassBudgetPercentageNotNil", "ironBudgetPercentage", "ironBudgetPercentageNEQ", "ironBudgetPercentageIn", "ironBudgetPercentageNotIn", "ironBudgetPercentageGT", "ironBudgetPercentageGTE", "ironBudgetPercentageLT", "ironBudgetPercentageLTE", "ironBudgetPercentageIsNil", "ironBudgetPercentageNotNil", "milestonePlanYear", "milestonePlanYearNEQ", "milestonePlanYearIn", "milestonePlanYearNotIn", "milestonePlanYearGT", "milestonePlanYearGTE", "milestonePlanYearLT", "milestonePlanYearLTE", "milestonePlanYearIsNil", "milestonePlanYearNotNil", "milestonePlanMonth", "milestonePlanMonthNEQ", "milestonePlanMonthIn", "milestonePlanMonthNotIn", "milestonePlanMonthGT", "milestonePlanMonthGTE", "milestonePlanMonthLT", "milestonePlanMonthLTE", "milestonePlanMonthIsNil", "milestonePlanMonthNotNil", "milestoneDoneYear", "milestoneDoneYearNEQ", "milestoneDoneYearIn", "milestoneDoneYearNotIn", "milestoneDoneYearGT", "milestoneDoneYearGTE", "milestoneDoneYearLT", "milestoneDoneYearLTE", "milestoneDoneYearIsNil", "milestoneDoneYearNotNil", "milestoneDoneMonth", "milestoneDoneMonthNEQ", "milestoneDoneMonthIn", "milestoneDoneMonthNotIn", "milestoneDoneMonthGT", "milestoneDoneMonthGTE", "milestoneDoneMonthLT", "milestoneDoneMonthLTE", "milestoneDoneMonthIsNil", "milestoneDoneMonthNotNil", "pmArea", "pmAreaNEQ", "pmAreaIn", "pmAreaNotIn", "pmAreaGT", "pmAreaGTE", "pmAreaLT", "pmAreaLTE", "pmAreaIsNil", "pmAreaNotNil", "pmYearTarget", "pmYearTargetNEQ", "pmYearTargetIn", "pmYearTargetNotIn", "pmYearTargetGT", "pmYearTargetGTE", "pmYearTargetLT", "pmYearTargetLTE", "pmYearTargetIsNil", "pmYearTargetNotNil", "pmMonthTarget", "pmMonthTargetNEQ", "pmMonthTargetIn", "pmMonthTargetNotIn", "pmMonthTargetGT", "pmMonthTargetGTE", "pmMonthTargetLT", "pmMonthTargetLTE", "pmMonthTargetIsNil", "pmMonthTargetNotNil", "pmYearActual", "pmYearActualNEQ", "pmYearActualIn", "pmYearActualNotIn", "pmYearActualGT", "pmYearActualGTE", "pmYearActualLT", "pmYearActualLTE", "pmYearActualIsNil", "pmYearActualNotNil", "pmMonthActual", "pmMonthActualNEQ", "pmMonthActualIn", "pmMonthActualNotIn", "pmMonthActualGT", "pmMonthActualGTE", "pmMonthActualLT", "pmMonthActualLTE", "pmMonthActualIsNil", "pmMonthActualNotNil", "pmTotal", "pmTotalNEQ", "pmTotalIn", "pmTotalNotIn", "pmTotalGT", "pmTotalGTE", "pmTotalLT", "pmTotalLTE", "pmTotalIsNil", "pmTotalNotNil", "pmYesterday", "pmYesterdayNEQ", "pmYesterdayIn", "pmYesterdayNotIn", "pmYesterdayGT", "pmYesterdayGTE", "pmYesterdayLT", "pmYesterdayLTE", "pmYesterdayIsNil", "pmYesterdayNotNil", "hasVos", "hasVosWith", "hasProjectStaffs", "hasProjectStaffsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "manager", "managerNEQ", "managerIn", "managerNotIn", "managerGT", "managerGTE", "managerLT", "managerLTE", "managerContains", "managerHasPrefix", "managerHasSuffix", "managerIsNil", "managerNotNil", "managerEqualFold", "managerContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "owner", "ownerNEQ", "ownerIn", "ownerNotIn", "ownerGT", "ownerGTE", "ownerLT", "ownerLTE", "ownerContains", "ownerHasPrefix", "ownerHasSuffix", "ownerIsNil", "ownerNotNil", "ownerEqualFold", "ownerContainsFold", "jzs", "jzsNEQ", "jzsIn", "jzsNotIn", "jzsGT", "jzsGTE", "jzsLT", "jzsLTE", "jzsContains", "jzsHasPrefix", "jzsHasSuffix", "jzsIsNil", "jzsNotNil", "jzsEqualFold", "jzsContainsFold", "mcn", "mcnNEQ", "mcnIn", "mcnNotIn", "mcnGT", "mcnGTE", "mcnLT", "mcnLTE", "mcnContains", "mcnHasPrefix", "mcnHasSuffix", "mcnIsNil", "mcnNotNil", "mcnEqualFold", "mcnContainsFold", "consultant", "consultantNEQ", "consultantIn", "consultantNotIn", "consultantGT", "consultantGTE", "consultantLT", "consultantLTE", "consultantContains", "consultantHasPrefix", "consultantHasSuffix", "consultantIsNil", "consultantNotNil", "consultantEqualFold", "consultantContainsFold", "areas", "areasNEQ", "areasIn", "areasNotIn", "areasGT", "areasGTE", "areasLT", "areasLTE", "areasContains", "areasHasPrefix", "areasHasSuffix", "areasIsNil", "areasNotNil", "areasEqualFold", "areasContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "startDateIsNil", "startDateNotNil", "fsDate", "fsDateNEQ", "fsDateIn", "fsDateNotIn", "fsDateGT", "fsDateGTE", "fsDateLT", "fsDateLTE", "fsDateIsNil", "fsDateNotNil", "opDate", "opDateNEQ", "opDateIn", "opDateNotIn", "opDateGT", "opDateGTE", "opDateLT", "opDateLTE", "opDateIsNil", "opDateNotNil", "endDate", "endDateNEQ", "endDateIn", "endDateNotIn", "endDateGT", "endDateGTE", "endDateLT", "endDateLTE", "endDateIsNil", "endDateNotNil", "mntyr", "mntyrNEQ", "mntyrIn", "mntyrNotIn", "mntyrGT", "mntyrGTE", "mntyrLT", "mntyrLTE", "mntyrContains", "mntyrHasPrefix", "mntyrHasSuffix", "mntyrIsNil", "mntyrNotNil", "mntyrEqualFold", "mntyrContainsFold", "conType", "conTypeNEQ", "conTypeIn", "conTypeNotIn", "conTypeGT", "conTypeGTE", "conTypeLT", "conTypeLTE", "conTypeContains", "conTypeHasPrefix", "conTypeHasSuffix", "conTypeIsNil", "conTypeNotNil", "conTypeEqualFold", "conTypeContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "aluminumPlateBudgetPercentage", "aluminumPlateBudgetPercentageNEQ", "aluminumPlateBudgetPercentageIn", "aluminumPlateBudgetPercentageNotIn", "aluminumPlateBudgetPercentageGT", "aluminumPlateBudgetPercentageGTE", "aluminumPlateBudgetPercentageLT", "aluminumPlateBudgetPercentageLTE", "aluminumPlateBudgetPercentageIsNil", "aluminumPlateBudgetPercentageNotNil", "aluminumBudgetPercentage", "aluminumBudgetPercentageNEQ", "aluminumBudgetPercentageIn", "aluminumBudgetPercentageNotIn", "aluminumBudgetPercentageGT", "aluminumBudgetPercentageGTE", "aluminumBudgetPercentageLT", "aluminumBudgetPercentageLTE", "aluminumBudgetPercentageIsNil", "aluminumBudgetPercentageNotNil", "glassBudgetPercentage", "glassBudgetPercentageNEQ", "glassBudgetPercentageIn", "glassBudgetPercentageNotIn", "glassBudgetPercentageGT", "glassBudgetPercentageGTE", "glassBudgetPercentageLT", "glassBudgetPercentageLTE", "glassBudgetPercentageIsNil", "glassBudgetPercentageNotNil", "ironBudgetPercentage", "ironBudgetPercentageNEQ", "ironBudgetPercentageIn", "ironBudgetPercentageNotIn", "ironBudgetPercentageGT", "ironBudgetPercentageGTE", "ironBudgetPercentageLT", "ironBudgetPercentageLTE", "ironBudgetPercentageIsNil", "ironBudgetPercentageNotNil", "milestonePlanYear", "milestonePlanYearNEQ", "milestonePlanYearIn", "milestonePlanYearNotIn", "milestonePlanYearGT", "milestonePlanYearGTE", "milestonePlanYearLT", "milestonePlanYearLTE", "milestonePlanYearIsNil", "milestonePlanYearNotNil", "milestonePlanMonth", "milestonePlanMonthNEQ", "milestonePlanMonthIn", "milestonePlanMonthNotIn", "milestonePlanMonthGT", "milestonePlanMonthGTE", "milestonePlanMonthLT", "milestonePlanMonthLTE", "milestonePlanMonthIsNil", "milestonePlanMonthNotNil", "milestoneDoneYear", "milestoneDoneYearNEQ", "milestoneDoneYearIn", "milestoneDoneYearNotIn", "milestoneDoneYearGT", "milestoneDoneYearGTE", "milestoneDoneYearLT", "milestoneDoneYearLTE", "milestoneDoneYearIsNil", "milestoneDoneYearNotNil", "milestoneDoneMonth", "milestoneDoneMonthNEQ", "milestoneDoneMonthIn", "milestoneDoneMonthNotIn", "milestoneDoneMonthGT", "milestoneDoneMonthGTE", "milestoneDoneMonthLT", "milestoneDoneMonthLTE", "milestoneDoneMonthIsNil", "milestoneDoneMonthNotNil", "pmArea", "pmAreaNEQ", "pmAreaIn", "pmAreaNotIn", "pmAreaGT", "pmAreaGTE", "pmAreaLT", "pmAreaLTE", "pmAreaIsNil", "pmAreaNotNil", "pmYearTarget", "pmYearTargetNEQ", "pmYearTargetIn", "pmYearTargetNotIn", "pmYearTargetGT", "pmYearTargetGTE", "pmYearTargetLT", "pmYearTargetLTE", "pmYearTargetIsNil", "pmYearTargetNotNil", "pmMonthTarget", "pmMonthTargetNEQ", "pmMonthTargetIn", "pmMonthTargetNotIn", "pmMonthTargetGT", "pmMonthTargetGTE", "pmMonthTargetLT", "pmMonthTargetLTE", "pmMonthTargetIsNil", "pmMonthTargetNotNil", "pmYearActual", "pmYearActualNEQ", "pmYearActualIn", "pmYearActualNotIn", "pmYearActualGT", "pmYearActualGTE", "pmYearActualLT", "pmYearActualLTE", "pmYearActualIsNil", "pmYearActualNotNil", "pmMonthActual", "pmMonthActualNEQ", "pmMonthActualIn", "pmMonthActualNotIn", "pmMonthActualGT", "pmMonthActualGTE", "pmMonthActualLT", "pmMonthActualLTE", "pmMonthActualIsNil", "pmMonthActualNotNil", "pmTotal", "pmTotalNEQ", "pmTotalIn", "pmTotalNotIn", "pmTotalGT", "pmTotalGTE", "pmTotalLT", "pmTotalLTE", "pmTotalIsNil", "pmTotalNotNil", "pmYesterday", "pmYesterdayNEQ", "pmYesterdayIn", "pmYesterdayNotIn", "pmYesterdayGT", "pmYesterdayGTE", "pmYesterdayLT", "pmYesterdayLTE", "pmYesterdayIsNil", "pmYesterdayNotNil", "unitInventoryTotal", "unitInventoryTotalNEQ", "unitInventoryTotalIn", "unitInventoryTotalNotIn", "unitInventoryTotalGT", "unitInventoryTotalGTE", "unitInventoryTotalLT", "unitInventoryTotalLTE", "unitInventoryTotalIsNil", "unitInventoryTotalNotNil", "hasVos", "hasVosWith", "hasProjectStaffs", "hasProjectStaffsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -37754,6 +37801,76 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.PmYesterdayNotNil = data
+		case "unitInventoryTotal":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotal"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotal = data
+		case "unitInventoryTotalNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalNEQ"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalNEQ = data
+		case "unitInventoryTotalIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalIn = data
+		case "unitInventoryTotalNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalNotIn"))
+			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalNotIn = data
+		case "unitInventoryTotalGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalGT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalGT = data
+		case "unitInventoryTotalGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalGTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalGTE = data
+		case "unitInventoryTotalLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalLT"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalLT = data
+		case "unitInventoryTotalLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalLTE"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalLTE = data
+		case "unitInventoryTotalIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalIsNil = data
+		case "unitInventoryTotalNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotalNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotalNotNil = data
 		case "hasVos":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasVos"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -50465,6 +50582,8 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Project_pmTotal(ctx, field, obj)
 		case "pmYesterday":
 			out.Values[i] = ec._Project_pmYesterday(ctx, field, obj)
+		case "unitInventoryTotal":
+			out.Values[i] = ec._Project_unitInventoryTotal(ctx, field, obj)
 		case "vos":
 			field := field
 

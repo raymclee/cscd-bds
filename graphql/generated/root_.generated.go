@@ -347,6 +347,7 @@ type ComplexityRoot struct {
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
+		UnitInventoryTotal                      func(childComplexity int) int
 		UpdatedAt                               func(childComplexity int) int
 		VaApplyAmount                           func(childComplexity int) int
 		VaApproveAmount                         func(childComplexity int) int
@@ -2283,6 +2284,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.TotalContractAmount(childComplexity), true
+
+	case "Project.unitInventoryTotal":
+		if e.complexity.Project.UnitInventoryTotal == nil {
+			break
+		}
+
+		return e.complexity.Project.UnitInventoryTotal(childComplexity), true
 
 	case "Project.updatedAt":
 		if e.complexity.Project.UpdatedAt == nil {
@@ -6481,6 +6489,10 @@ type Project implements Node {
   生产管理昨日生產
   """
   pmYesterday: Float
+  """
+  單元件庫存累計
+  """
+  unitInventoryTotal: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -7724,6 +7736,19 @@ input ProjectWhereInput {
   pmYesterdayLTE: Float
   pmYesterdayIsNil: Boolean
   pmYesterdayNotNil: Boolean
+  """
+  unit_inventory_total field predicates
+  """
+  unitInventoryTotal: Float
+  unitInventoryTotalNEQ: Float
+  unitInventoryTotalIn: [Float!]
+  unitInventoryTotalNotIn: [Float!]
+  unitInventoryTotalGT: Float
+  unitInventoryTotalGTE: Float
+  unitInventoryTotalLT: Float
+  unitInventoryTotalLTE: Float
+  unitInventoryTotalIsNil: Boolean
+  unitInventoryTotalNotNil: Boolean
   """
   vos edge predicates
   """

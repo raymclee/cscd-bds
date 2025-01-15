@@ -336,6 +336,11 @@ func PmYesterday(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldPmYesterday, v))
 }
 
+// UnitInventoryTotal applies equality check predicate on the "unit_inventory_total" field. It's identical to UnitInventoryTotalEQ.
+func UnitInventoryTotal(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitInventoryTotal, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -3339,6 +3344,56 @@ func PmYesterdayIsNil() predicate.Project {
 // PmYesterdayNotNil applies the NotNil predicate on the "pm_yesterday" field.
 func PmYesterdayNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldPmYesterday))
+}
+
+// UnitInventoryTotalEQ applies the EQ predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitInventoryTotal, v))
+}
+
+// UnitInventoryTotalNEQ applies the NEQ predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldUnitInventoryTotal, v))
+}
+
+// UnitInventoryTotalIn applies the In predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldUnitInventoryTotal, vs...))
+}
+
+// UnitInventoryTotalNotIn applies the NotIn predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldUnitInventoryTotal, vs...))
+}
+
+// UnitInventoryTotalGT applies the GT predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldUnitInventoryTotal, v))
+}
+
+// UnitInventoryTotalGTE applies the GTE predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldUnitInventoryTotal, v))
+}
+
+// UnitInventoryTotalLT applies the LT predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldUnitInventoryTotal, v))
+}
+
+// UnitInventoryTotalLTE applies the LTE predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldUnitInventoryTotal, v))
+}
+
+// UnitInventoryTotalIsNil applies the IsNil predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldUnitInventoryTotal))
+}
+
+// UnitInventoryTotalNotNil applies the NotNil predicate on the "unit_inventory_total" field.
+func UnitInventoryTotalNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldUnitInventoryTotal))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

@@ -1828,6 +1828,8 @@ type Project implements Node {
   startDate: Time
   """合約总额"""
   totalContractAmount: Float
+  """單元件庫存累計"""
+  unitInventoryTotal: Float
   updatedAt: Time!
   """分判VA申请总额"""
   vaApplyAmount: Float
@@ -2750,6 +2752,17 @@ input ProjectWhereInput {
   totalContractAmountNEQ: Float
   totalContractAmountNotIn: [Float!]
   totalContractAmountNotNil: Boolean
+  """unit_inventory_total field predicates"""
+  unitInventoryTotal: Float
+  unitInventoryTotalGT: Float
+  unitInventoryTotalGTE: Float
+  unitInventoryTotalIn: [Float!]
+  unitInventoryTotalIsNil: Boolean
+  unitInventoryTotalLT: Float
+  unitInventoryTotalLTE: Float
+  unitInventoryTotalNEQ: Float
+  unitInventoryTotalNotIn: [Float!]
+  unitInventoryTotalNotNil: Boolean
   """updated_at field predicates"""
   updatedAt: Time
   updatedAtGT: Time

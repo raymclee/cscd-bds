@@ -382,6 +382,11 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("生产管理昨日生產"),
+
+		field.Float("unit_inventory_total").
+			Optional().
+			Nillable().
+			Comment("單元件庫存累計"),
 	}
 }
 

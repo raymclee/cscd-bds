@@ -20,6 +20,7 @@ func main() {
 		fmt.Println(err)
 	}
 	for _, entry := range entries {
+		fmt.Println(entry.Info())
 		if strings.HasSuffix(entry.Name(), ".xlsx") {
 			fmt.Println(entry.Name())
 		}

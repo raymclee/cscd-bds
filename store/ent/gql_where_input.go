@@ -4565,6 +4565,18 @@ type ProjectWhereInput struct {
 	PmYesterdayIsNil  bool      `json:"pmYesterdayIsNil,omitempty"`
 	PmYesterdayNotNil bool      `json:"pmYesterdayNotNil,omitempty"`
 
+	// "unit_inventory_total" field predicates.
+	UnitInventoryTotal       *float64  `json:"unitInventoryTotal,omitempty"`
+	UnitInventoryTotalNEQ    *float64  `json:"unitInventoryTotalNEQ,omitempty"`
+	UnitInventoryTotalIn     []float64 `json:"unitInventoryTotalIn,omitempty"`
+	UnitInventoryTotalNotIn  []float64 `json:"unitInventoryTotalNotIn,omitempty"`
+	UnitInventoryTotalGT     *float64  `json:"unitInventoryTotalGT,omitempty"`
+	UnitInventoryTotalGTE    *float64  `json:"unitInventoryTotalGTE,omitempty"`
+	UnitInventoryTotalLT     *float64  `json:"unitInventoryTotalLT,omitempty"`
+	UnitInventoryTotalLTE    *float64  `json:"unitInventoryTotalLTE,omitempty"`
+	UnitInventoryTotalIsNil  bool      `json:"unitInventoryTotalIsNil,omitempty"`
+	UnitInventoryTotalNotNil bool      `json:"unitInventoryTotalNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -6471,6 +6483,36 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.PmYesterdayNotNil {
 		predicates = append(predicates, project.PmYesterdayNotNil())
+	}
+	if i.UnitInventoryTotal != nil {
+		predicates = append(predicates, project.UnitInventoryTotalEQ(*i.UnitInventoryTotal))
+	}
+	if i.UnitInventoryTotalNEQ != nil {
+		predicates = append(predicates, project.UnitInventoryTotalNEQ(*i.UnitInventoryTotalNEQ))
+	}
+	if len(i.UnitInventoryTotalIn) > 0 {
+		predicates = append(predicates, project.UnitInventoryTotalIn(i.UnitInventoryTotalIn...))
+	}
+	if len(i.UnitInventoryTotalNotIn) > 0 {
+		predicates = append(predicates, project.UnitInventoryTotalNotIn(i.UnitInventoryTotalNotIn...))
+	}
+	if i.UnitInventoryTotalGT != nil {
+		predicates = append(predicates, project.UnitInventoryTotalGT(*i.UnitInventoryTotalGT))
+	}
+	if i.UnitInventoryTotalGTE != nil {
+		predicates = append(predicates, project.UnitInventoryTotalGTE(*i.UnitInventoryTotalGTE))
+	}
+	if i.UnitInventoryTotalLT != nil {
+		predicates = append(predicates, project.UnitInventoryTotalLT(*i.UnitInventoryTotalLT))
+	}
+	if i.UnitInventoryTotalLTE != nil {
+		predicates = append(predicates, project.UnitInventoryTotalLTE(*i.UnitInventoryTotalLTE))
+	}
+	if i.UnitInventoryTotalIsNil {
+		predicates = append(predicates, project.UnitInventoryTotalIsNil())
+	}
+	if i.UnitInventoryTotalNotNil {
+		predicates = append(predicates, project.UnitInventoryTotalNotNil())
 	}
 
 	if i.HasVos != nil {

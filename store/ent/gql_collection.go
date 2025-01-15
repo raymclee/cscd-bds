@@ -2562,6 +2562,11 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldPmYesterday)
 				fieldSeen[project.FieldPmYesterday] = struct{}{}
 			}
+		case "unitInventoryTotal":
+			if _, ok := fieldSeen[project.FieldUnitInventoryTotal]; !ok {
+				selectedFields = append(selectedFields, project.FieldUnitInventoryTotal)
+				fieldSeen[project.FieldUnitInventoryTotal] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

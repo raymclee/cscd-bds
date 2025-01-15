@@ -8026,6 +8026,8 @@ type ProjectMutation struct {
 	addpm_total                                    *float64
 	pm_yesterday                                   *float64
 	addpm_yesterday                                *float64
+	unit_inventory_total                           *float64
+	addunit_inventory_total                        *float64
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -11632,6 +11634,76 @@ func (m *ProjectMutation) ResetPmYesterday() {
 	delete(m.clearedFields, project.FieldPmYesterday)
 }
 
+// SetUnitInventoryTotal sets the "unit_inventory_total" field.
+func (m *ProjectMutation) SetUnitInventoryTotal(f float64) {
+	m.unit_inventory_total = &f
+	m.addunit_inventory_total = nil
+}
+
+// UnitInventoryTotal returns the value of the "unit_inventory_total" field in the mutation.
+func (m *ProjectMutation) UnitInventoryTotal() (r float64, exists bool) {
+	v := m.unit_inventory_total
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUnitInventoryTotal returns the old "unit_inventory_total" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldUnitInventoryTotal(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUnitInventoryTotal is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUnitInventoryTotal requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUnitInventoryTotal: %w", err)
+	}
+	return oldValue.UnitInventoryTotal, nil
+}
+
+// AddUnitInventoryTotal adds f to the "unit_inventory_total" field.
+func (m *ProjectMutation) AddUnitInventoryTotal(f float64) {
+	if m.addunit_inventory_total != nil {
+		*m.addunit_inventory_total += f
+	} else {
+		m.addunit_inventory_total = &f
+	}
+}
+
+// AddedUnitInventoryTotal returns the value that was added to the "unit_inventory_total" field in this mutation.
+func (m *ProjectMutation) AddedUnitInventoryTotal() (r float64, exists bool) {
+	v := m.addunit_inventory_total
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
+func (m *ProjectMutation) ClearUnitInventoryTotal() {
+	m.unit_inventory_total = nil
+	m.addunit_inventory_total = nil
+	m.clearedFields[project.FieldUnitInventoryTotal] = struct{}{}
+}
+
+// UnitInventoryTotalCleared returns if the "unit_inventory_total" field was cleared in this mutation.
+func (m *ProjectMutation) UnitInventoryTotalCleared() bool {
+	_, ok := m.clearedFields[project.FieldUnitInventoryTotal]
+	return ok
+}
+
+// ResetUnitInventoryTotal resets all changes to the "unit_inventory_total" field.
+func (m *ProjectMutation) ResetUnitInventoryTotal() {
+	m.unit_inventory_total = nil
+	m.addunit_inventory_total = nil
+	delete(m.clearedFields, project.FieldUnitInventoryTotal)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -11774,7 +11846,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 56)
+	fields := make([]string, 0, 57)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -11943,6 +12015,9 @@ func (m *ProjectMutation) Fields() []string {
 	if m.pm_yesterday != nil {
 		fields = append(fields, project.FieldPmYesterday)
 	}
+	if m.unit_inventory_total != nil {
+		fields = append(fields, project.FieldUnitInventoryTotal)
+	}
 	return fields
 }
 
@@ -12063,6 +12138,8 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.PmTotal()
 	case project.FieldPmYesterday:
 		return m.PmYesterday()
+	case project.FieldUnitInventoryTotal:
+		return m.UnitInventoryTotal()
 	}
 	return nil, false
 }
@@ -12184,6 +12261,8 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldPmTotal(ctx)
 	case project.FieldPmYesterday:
 		return m.OldPmYesterday(ctx)
+	case project.FieldUnitInventoryTotal:
+		return m.OldUnitInventoryTotal(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -12585,6 +12664,13 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPmYesterday(v)
 		return nil
+	case project.FieldUnitInventoryTotal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUnitInventoryTotal(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -12707,6 +12793,9 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addpm_yesterday != nil {
 		fields = append(fields, project.FieldPmYesterday)
 	}
+	if m.addunit_inventory_total != nil {
+		fields = append(fields, project.FieldUnitInventoryTotal)
+	}
 	return fields
 }
 
@@ -12791,6 +12880,8 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedPmTotal()
 	case project.FieldPmYesterday:
 		return m.AddedPmYesterday()
+	case project.FieldUnitInventoryTotal:
+		return m.AddedUnitInventoryTotal()
 	}
 	return nil, false
 }
@@ -13066,6 +13157,13 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddPmYesterday(v)
 		return nil
+	case project.FieldUnitInventoryTotal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUnitInventoryTotal(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -13229,6 +13327,9 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldPmYesterday) {
 		fields = append(fields, project.FieldPmYesterday)
+	}
+	if m.FieldCleared(project.FieldUnitInventoryTotal) {
+		fields = append(fields, project.FieldUnitInventoryTotal)
 	}
 	return fields
 }
@@ -13399,6 +13500,9 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldPmYesterday:
 		m.ClearPmYesterday()
+		return nil
+	case project.FieldUnitInventoryTotal:
+		m.ClearUnitInventoryTotal()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -13575,6 +13679,9 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldPmYesterday:
 		m.ResetPmYesterday()
+		return nil
+	case project.FieldUnitInventoryTotal:
+		m.ResetUnitInventoryTotal()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

@@ -1907,6 +1907,8 @@ export type Project = Node & {
   startDate?: Maybe<Scalars['Time']['output']>;
   /** 合約总额 */
   totalContractAmount?: Maybe<Scalars['Float']['output']>;
+  /** 單元件庫存累計 */
+  unitInventoryTotal?: Maybe<Scalars['Float']['output']>;
   updatedAt: Scalars['Time']['output'];
   /** 分判VA申请总额 */
   vaApplyAmount?: Maybe<Scalars['Float']['output']>;
@@ -2845,6 +2847,17 @@ export type ProjectWhereInput = {
   totalContractAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
   totalContractAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   totalContractAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** unit_inventory_total field predicates */
+  unitInventoryTotal?: InputMaybe<Scalars['Float']['input']>;
+  unitInventoryTotalGT?: InputMaybe<Scalars['Float']['input']>;
+  unitInventoryTotalGTE?: InputMaybe<Scalars['Float']['input']>;
+  unitInventoryTotalIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitInventoryTotalIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  unitInventoryTotalLT?: InputMaybe<Scalars['Float']['input']>;
+  unitInventoryTotalLTE?: InputMaybe<Scalars['Float']['input']>;
+  unitInventoryTotalNEQ?: InputMaybe<Scalars['Float']['input']>;
+  unitInventoryTotalNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitInventoryTotalNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** updated_at field predicates */
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   updatedAtGT?: InputMaybe<Scalars['Time']['input']>;
