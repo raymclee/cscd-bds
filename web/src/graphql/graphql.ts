@@ -1863,6 +1863,8 @@ export type Project = Node & {
   jzs?: Maybe<Scalars['String']['output']>;
   /** 地盤經理 */
   manager?: Maybe<Scalars['String']['output']>;
+  /** 物料損失金額 */
+  materialLoss?: Maybe<Scalars['Float']['output']>;
   /** 總承包商 */
   mcn?: Maybe<Scalars['String']['output']>;
   /** 里程碑完成月份 */
@@ -2583,6 +2585,17 @@ export type ProjectWhereInput = {
   managerNEQ?: InputMaybe<Scalars['String']['input']>;
   managerNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   managerNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** material_loss field predicates */
+  materialLoss?: InputMaybe<Scalars['Float']['input']>;
+  materialLossGT?: InputMaybe<Scalars['Float']['input']>;
+  materialLossGTE?: InputMaybe<Scalars['Float']['input']>;
+  materialLossIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  materialLossIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  materialLossLT?: InputMaybe<Scalars['Float']['input']>;
+  materialLossLTE?: InputMaybe<Scalars['Float']['input']>;
+  materialLossNEQ?: InputMaybe<Scalars['Float']['input']>;
+  materialLossNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  materialLossNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** mcn field predicates */
   mcn?: InputMaybe<Scalars['String']['input']>;
   mcnContains?: InputMaybe<Scalars['String']['input']>;

@@ -324,6 +324,7 @@ type ComplexityRoot struct {
 		IsFinished                              func(childComplexity int) int
 		Jzs                                     func(childComplexity int) int
 		Manager                                 func(childComplexity int) int
+		MaterialLoss                            func(childComplexity int) int
 		Mcn                                     func(childComplexity int) int
 		MilestoneDoneMonth                      func(childComplexity int) int
 		MilestoneDoneYear                       func(childComplexity int) int
@@ -2118,6 +2119,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.Manager(childComplexity), true
+
+	case "Project.materialLoss":
+		if e.complexity.Project.MaterialLoss == nil {
+			break
+		}
+
+		return e.complexity.Project.MaterialLoss(childComplexity), true
 
 	case "Project.mcn":
 		if e.complexity.Project.Mcn == nil {
@@ -6493,6 +6501,10 @@ type Project implements Node {
   單元件庫存累計
   """
   unitInventoryTotal: Float
+  """
+  物料損失金額
+  """
+  materialLoss: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -7749,6 +7761,19 @@ input ProjectWhereInput {
   unitInventoryTotalLTE: Float
   unitInventoryTotalIsNil: Boolean
   unitInventoryTotalNotNil: Boolean
+  """
+  material_loss field predicates
+  """
+  materialLoss: Float
+  materialLossNEQ: Float
+  materialLossIn: [Float!]
+  materialLossNotIn: [Float!]
+  materialLossGT: Float
+  materialLossGTE: Float
+  materialLossLT: Float
+  materialLossLTE: Float
+  materialLossIsNil: Boolean
+  materialLossNotNil: Boolean
   """
   vos edge predicates
   """

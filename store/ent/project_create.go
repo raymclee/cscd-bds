@@ -816,6 +816,20 @@ func (pc *ProjectCreate) SetNillableUnitInventoryTotal(f *float64) *ProjectCreat
 	return pc
 }
 
+// SetMaterialLoss sets the "material_loss" field.
+func (pc *ProjectCreate) SetMaterialLoss(f float64) *ProjectCreate {
+	pc.mutation.SetMaterialLoss(f)
+	return pc
+}
+
+// SetNillableMaterialLoss sets the "material_loss" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableMaterialLoss(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetMaterialLoss(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -1190,6 +1204,10 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.UnitInventoryTotal(); ok {
 		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
 		_node.UnitInventoryTotal = &value
+	}
+	if value, ok := pc.mutation.MaterialLoss(); ok {
+		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
+		_node.MaterialLoss = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2496,6 +2514,30 @@ func (u *ProjectUpsert) AddUnitInventoryTotal(v float64) *ProjectUpsert {
 // ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
 func (u *ProjectUpsert) ClearUnitInventoryTotal() *ProjectUpsert {
 	u.SetNull(project.FieldUnitInventoryTotal)
+	return u
+}
+
+// SetMaterialLoss sets the "material_loss" field.
+func (u *ProjectUpsert) SetMaterialLoss(v float64) *ProjectUpsert {
+	u.Set(project.FieldMaterialLoss, v)
+	return u
+}
+
+// UpdateMaterialLoss sets the "material_loss" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateMaterialLoss() *ProjectUpsert {
+	u.SetExcluded(project.FieldMaterialLoss)
+	return u
+}
+
+// AddMaterialLoss adds v to the "material_loss" field.
+func (u *ProjectUpsert) AddMaterialLoss(v float64) *ProjectUpsert {
+	u.Add(project.FieldMaterialLoss, v)
+	return u
+}
+
+// ClearMaterialLoss clears the value of the "material_loss" field.
+func (u *ProjectUpsert) ClearMaterialLoss() *ProjectUpsert {
+	u.SetNull(project.FieldMaterialLoss)
 	return u
 }
 
@@ -3975,6 +4017,34 @@ func (u *ProjectUpsertOne) UpdateUnitInventoryTotal() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearUnitInventoryTotal() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearUnitInventoryTotal()
+	})
+}
+
+// SetMaterialLoss sets the "material_loss" field.
+func (u *ProjectUpsertOne) SetMaterialLoss(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMaterialLoss(v)
+	})
+}
+
+// AddMaterialLoss adds v to the "material_loss" field.
+func (u *ProjectUpsertOne) AddMaterialLoss(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMaterialLoss(v)
+	})
+}
+
+// UpdateMaterialLoss sets the "material_loss" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateMaterialLoss() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMaterialLoss()
+	})
+}
+
+// ClearMaterialLoss clears the value of the "material_loss" field.
+func (u *ProjectUpsertOne) ClearMaterialLoss() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMaterialLoss()
 	})
 }
 
@@ -5621,6 +5691,34 @@ func (u *ProjectUpsertBulk) UpdateUnitInventoryTotal() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearUnitInventoryTotal() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearUnitInventoryTotal()
+	})
+}
+
+// SetMaterialLoss sets the "material_loss" field.
+func (u *ProjectUpsertBulk) SetMaterialLoss(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetMaterialLoss(v)
+	})
+}
+
+// AddMaterialLoss adds v to the "material_loss" field.
+func (u *ProjectUpsertBulk) AddMaterialLoss(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddMaterialLoss(v)
+	})
+}
+
+// UpdateMaterialLoss sets the "material_loss" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateMaterialLoss() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateMaterialLoss()
+	})
+}
+
+// ClearMaterialLoss clears the value of the "material_loss" field.
+func (u *ProjectUpsertBulk) ClearMaterialLoss() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearMaterialLoss()
 	})
 }
 

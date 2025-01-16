@@ -265,6 +265,7 @@ var (
 		{Name: "pm_total", Type: field.TypeFloat64, Nullable: true},
 		{Name: "pm_yesterday", Type: field.TypeFloat64, Nullable: true},
 		{Name: "unit_inventory_total", Type: field.TypeFloat64, Nullable: true},
+		{Name: "material_loss", Type: field.TypeFloat64, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{

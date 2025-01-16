@@ -261,6 +261,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldPmTotal:                                 {Type: field.TypeFloat64, Column: project.FieldPmTotal},
 			project.FieldPmYesterday:                             {Type: field.TypeFloat64, Column: project.FieldPmYesterday},
 			project.FieldUnitInventoryTotal:                      {Type: field.TypeFloat64, Column: project.FieldUnitInventoryTotal},
+			project.FieldMaterialLoss:                            {Type: field.TypeFloat64, Column: project.FieldMaterialLoss},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2234,6 +2235,11 @@ func (f *ProjectFilter) WherePmYesterday(p entql.Float64P) {
 // WhereUnitInventoryTotal applies the entql float64 predicate on the unit_inventory_total field.
 func (f *ProjectFilter) WhereUnitInventoryTotal(p entql.Float64P) {
 	f.Where(p.Field(project.FieldUnitInventoryTotal))
+}
+
+// WhereMaterialLoss applies the entql float64 predicate on the material_loss field.
+func (f *ProjectFilter) WhereMaterialLoss(p entql.Float64P) {
+	f.Where(p.Field(project.FieldMaterialLoss))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.

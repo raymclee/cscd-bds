@@ -341,6 +341,11 @@ func UnitInventoryTotal(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldUnitInventoryTotal, v))
 }
 
+// MaterialLoss applies equality check predicate on the "material_loss" field. It's identical to MaterialLossEQ.
+func MaterialLoss(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMaterialLoss, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -3394,6 +3399,56 @@ func UnitInventoryTotalIsNil() predicate.Project {
 // UnitInventoryTotalNotNil applies the NotNil predicate on the "unit_inventory_total" field.
 func UnitInventoryTotalNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldUnitInventoryTotal))
+}
+
+// MaterialLossEQ applies the EQ predicate on the "material_loss" field.
+func MaterialLossEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldMaterialLoss, v))
+}
+
+// MaterialLossNEQ applies the NEQ predicate on the "material_loss" field.
+func MaterialLossNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldMaterialLoss, v))
+}
+
+// MaterialLossIn applies the In predicate on the "material_loss" field.
+func MaterialLossIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldMaterialLoss, vs...))
+}
+
+// MaterialLossNotIn applies the NotIn predicate on the "material_loss" field.
+func MaterialLossNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldMaterialLoss, vs...))
+}
+
+// MaterialLossGT applies the GT predicate on the "material_loss" field.
+func MaterialLossGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldMaterialLoss, v))
+}
+
+// MaterialLossGTE applies the GTE predicate on the "material_loss" field.
+func MaterialLossGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldMaterialLoss, v))
+}
+
+// MaterialLossLT applies the LT predicate on the "material_loss" field.
+func MaterialLossLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldMaterialLoss, v))
+}
+
+// MaterialLossLTE applies the LTE predicate on the "material_loss" field.
+func MaterialLossLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldMaterialLoss, v))
+}
+
+// MaterialLossIsNil applies the IsNil predicate on the "material_loss" field.
+func MaterialLossIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldMaterialLoss))
+}
+
+// MaterialLossNotNil applies the NotNil predicate on the "material_loss" field.
+func MaterialLossNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldMaterialLoss))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

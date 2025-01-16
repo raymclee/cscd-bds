@@ -141,6 +141,7 @@ function RouteComponent() {
               pmTotal
               pmYesterday
               unitInventoryTotal
+              materialLoss
               projectStaffs(
                 first: 3
                 orderBy: { field: CREATED_AT, direction: DESC }
@@ -277,6 +278,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const pmTotal = pj?.pmTotal || 0;
   const pmYesterday = pj?.pmYesterday || 0;
   const unitInventoryTotal = pj?.unitInventoryTotal || 0;
+  const materialLoss = pj?.materialLoss || 0;
 
   return (
     <>
@@ -748,7 +750,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${aluminumPlateBudgetPercentage.toFixed(1)}`}
+                        {`${Math.round(aluminumPlateBudgetPercentage * 100) / 100}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
@@ -772,7 +774,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${aluminumBudgetPercentage.toFixed(1)}`}
+                        {`${Math.round(aluminumBudgetPercentage * 100) / 100}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
@@ -796,7 +798,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${glassBudgetPercentage.toFixed(1)}`}
+                        {`${Math.round(glassBudgetPercentage * 100) / 100}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
@@ -820,7 +822,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${ironBudgetPercentage.toFixed(1)}`}
+                        {`${Math.round(ironBudgetPercentage * 100) / 100}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xs">%</span>
                     </div>
@@ -896,7 +898,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   className="text-2xl font-bold text-brand-project"
                 >
-                  1,450,118
+                  {currentFormatter.format(
+                    Math.round(materialLoss * 100) / 100,
+                  )}
                 </TextScramble>
               </div>
             </div>
@@ -1277,7 +1281,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmArea.toFixed(2)}
+                    {`${Math.round(pmArea * 100) / 100}`}
                   </TextScramble>
                 </div>
                 <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
@@ -1286,7 +1290,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmTotal.toFixed(2)}
+                    {`${Math.round(pmTotal * 100) / 100}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1298,7 +1302,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmYearTarget.toFixed(2)}
+                    {`${Math.round(pmYearTarget * 100) / 100}`}
                   </TextScramble>
                 </div>
                 <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
@@ -1307,7 +1311,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmYearActual.toFixed(2)}
+                    {`${Math.round(pmYearActual * 100) / 100}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1319,7 +1323,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmMonthTarget.toFixed(2)}
+                    {`${Math.round(pmMonthTarget * 100) / 100}`}
                   </TextScramble>
                 </div>
                 <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
@@ -1328,7 +1332,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmMonthActual.toFixed(2)}
+                    {`${Math.round(pmMonthActual * 100) / 100}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1340,7 +1344,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {pmYesterday.toFixed(2)}
+                    {`${Math.round(pmYesterday * 100) / 100}`}
                   </TextScramble>
                 </div>
               </div>

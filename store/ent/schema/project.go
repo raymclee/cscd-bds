@@ -387,6 +387,11 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("單元件庫存累計"),
+
+		field.Float("material_loss").
+			Optional().
+			Nillable().
+			Comment("物料損失金額"),
 	}
 }
 

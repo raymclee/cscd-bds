@@ -156,7 +156,7 @@ export function UserForm({
             </Form.Item>
           </>
         )}
-        <Form.Item name="areaIDs" label="区域">
+        <Form.Item name="areaIDs" label="区域" rules={[{ required: true }]}>
           <Select
             mode="multiple"
             // options={data.areas.edges?.map((a) => ({

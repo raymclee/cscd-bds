@@ -4577,6 +4577,18 @@ type ProjectWhereInput struct {
 	UnitInventoryTotalIsNil  bool      `json:"unitInventoryTotalIsNil,omitempty"`
 	UnitInventoryTotalNotNil bool      `json:"unitInventoryTotalNotNil,omitempty"`
 
+	// "material_loss" field predicates.
+	MaterialLoss       *float64  `json:"materialLoss,omitempty"`
+	MaterialLossNEQ    *float64  `json:"materialLossNEQ,omitempty"`
+	MaterialLossIn     []float64 `json:"materialLossIn,omitempty"`
+	MaterialLossNotIn  []float64 `json:"materialLossNotIn,omitempty"`
+	MaterialLossGT     *float64  `json:"materialLossGT,omitempty"`
+	MaterialLossGTE    *float64  `json:"materialLossGTE,omitempty"`
+	MaterialLossLT     *float64  `json:"materialLossLT,omitempty"`
+	MaterialLossLTE    *float64  `json:"materialLossLTE,omitempty"`
+	MaterialLossIsNil  bool      `json:"materialLossIsNil,omitempty"`
+	MaterialLossNotNil bool      `json:"materialLossNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -6513,6 +6525,36 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.UnitInventoryTotalNotNil {
 		predicates = append(predicates, project.UnitInventoryTotalNotNil())
+	}
+	if i.MaterialLoss != nil {
+		predicates = append(predicates, project.MaterialLossEQ(*i.MaterialLoss))
+	}
+	if i.MaterialLossNEQ != nil {
+		predicates = append(predicates, project.MaterialLossNEQ(*i.MaterialLossNEQ))
+	}
+	if len(i.MaterialLossIn) > 0 {
+		predicates = append(predicates, project.MaterialLossIn(i.MaterialLossIn...))
+	}
+	if len(i.MaterialLossNotIn) > 0 {
+		predicates = append(predicates, project.MaterialLossNotIn(i.MaterialLossNotIn...))
+	}
+	if i.MaterialLossGT != nil {
+		predicates = append(predicates, project.MaterialLossGT(*i.MaterialLossGT))
+	}
+	if i.MaterialLossGTE != nil {
+		predicates = append(predicates, project.MaterialLossGTE(*i.MaterialLossGTE))
+	}
+	if i.MaterialLossLT != nil {
+		predicates = append(predicates, project.MaterialLossLT(*i.MaterialLossLT))
+	}
+	if i.MaterialLossLTE != nil {
+		predicates = append(predicates, project.MaterialLossLTE(*i.MaterialLossLTE))
+	}
+	if i.MaterialLossIsNil {
+		predicates = append(predicates, project.MaterialLossIsNil())
+	}
+	if i.MaterialLossNotNil {
+		predicates = append(predicates, project.MaterialLossNotNil())
 	}
 
 	if i.HasVos != nil {

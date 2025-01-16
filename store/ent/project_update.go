@@ -1398,6 +1398,33 @@ func (pu *ProjectUpdate) ClearUnitInventoryTotal() *ProjectUpdate {
 	return pu
 }
 
+// SetMaterialLoss sets the "material_loss" field.
+func (pu *ProjectUpdate) SetMaterialLoss(f float64) *ProjectUpdate {
+	pu.mutation.ResetMaterialLoss()
+	pu.mutation.SetMaterialLoss(f)
+	return pu
+}
+
+// SetNillableMaterialLoss sets the "material_loss" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableMaterialLoss(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetMaterialLoss(*f)
+	}
+	return pu
+}
+
+// AddMaterialLoss adds f to the "material_loss" field.
+func (pu *ProjectUpdate) AddMaterialLoss(f float64) *ProjectUpdate {
+	pu.mutation.AddMaterialLoss(f)
+	return pu
+}
+
+// ClearMaterialLoss clears the value of the "material_loss" field.
+func (pu *ProjectUpdate) ClearMaterialLoss() *ProjectUpdate {
+	pu.mutation.ClearMaterialLoss()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -1963,6 +1990,15 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.UnitInventoryTotalCleared() {
 		_spec.ClearField(project.FieldUnitInventoryTotal, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.MaterialLoss(); ok {
+		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedMaterialLoss(); ok {
+		_spec.AddField(project.FieldMaterialLoss, field.TypeFloat64, value)
+	}
+	if pu.mutation.MaterialLossCleared() {
+		_spec.ClearField(project.FieldMaterialLoss, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -3441,6 +3477,33 @@ func (puo *ProjectUpdateOne) ClearUnitInventoryTotal() *ProjectUpdateOne {
 	return puo
 }
 
+// SetMaterialLoss sets the "material_loss" field.
+func (puo *ProjectUpdateOne) SetMaterialLoss(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetMaterialLoss()
+	puo.mutation.SetMaterialLoss(f)
+	return puo
+}
+
+// SetNillableMaterialLoss sets the "material_loss" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableMaterialLoss(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetMaterialLoss(*f)
+	}
+	return puo
+}
+
+// AddMaterialLoss adds f to the "material_loss" field.
+func (puo *ProjectUpdateOne) AddMaterialLoss(f float64) *ProjectUpdateOne {
+	puo.mutation.AddMaterialLoss(f)
+	return puo
+}
+
+// ClearMaterialLoss clears the value of the "material_loss" field.
+func (puo *ProjectUpdateOne) ClearMaterialLoss() *ProjectUpdateOne {
+	puo.mutation.ClearMaterialLoss()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -4036,6 +4099,15 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.UnitInventoryTotalCleared() {
 		_spec.ClearField(project.FieldUnitInventoryTotal, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.MaterialLoss(); ok {
+		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedMaterialLoss(); ok {
+		_spec.AddField(project.FieldMaterialLoss, field.TypeFloat64, value)
+	}
+	if puo.mutation.MaterialLossCleared() {
+		_spec.ClearField(project.FieldMaterialLoss, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

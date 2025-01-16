@@ -920,6 +920,53 @@ func main() {
 			}
 		}
 
+		// 抓取項目物料損失金額
+		{
+			row := s4pHanaDb.QueryRow(`
+				SELECT cast( sum( "损失金额" ) as float ) AS total FROM (
+					select distinct 
+					case when k.zgcdh='' then left(k.zddbh,4) else k.zgcdh end as "项目代号"
+					, '工厂补料' as "损失科目", zwlnr as "物料组"
+					, k.aedat as "创建日期", k.zddbh as "830订单号", k.lifnr as "供应商编号"
+					, case when k.zzzl > 0 then k.zzzl else k.zzmj end as "损失数量"
+					, bprme as "数量单位", k.zzje as "损失金额", k.waers as "金额单位"
+					from ekko as k inner join ekpo as p on p.ebeln = k.ebeln
+					where k.zddbh like '%HBL%' and left(matnr, 9) != '000000008' and p.loekz = ''
+					and k.zgcdh = ?
+					union all
+					select distinct 
+					case when k.zgcdh='' then left(k.zddbh,4) else k.zgcdh end as "项目代号"
+					, '项目补料' as "损失科目", zwlnr as "物料组"
+					, k.aedat as "创建日期", k.zddbh as "830订单号", k.lifnr as "供应商编号"
+					, case when k.zzzl > 0 then k.zzzl else k.zzmj end as "损失数量"
+					, bprme as "数量单位", k.zzje as "损失金额", k.waers as "金额单位"
+					from ekko as k inner join ekpo as p on p.ebeln = k.ebeln
+					where k.zddbh like '%SBL%' and left(matnr, 9) != '000000008' and p.loekz = ''
+					and k.zgcdh = ?
+					union all
+					select distinct 
+					case when k.zgcdh='' then left(k.zddbh,4) else k.zgcdh end as "项目代号"
+					, '设计改版' as "损失科目", zwlnr as "物料组"
+					, k.aedat as "创建日期", k.zddbh as "830订单号", k.lifnr as "供应商编号"
+					, k.zsjxgsssl as "损失数量", bprme as "数量单位"
+					, k.zsjxgssje as "损失金额", k.waers as "金额单位"
+					from ekko as k inner join ekpo as p on p.ebeln = k.ebeln
+					where k.zsjxgsssl > 0 and left(matnr, 9) != '000000008' and p.loekz = ''
+					and k.zgcdh = ?
+				)
+			`, jobcode, jobcode, jobcode)
+
+			var (
+				total *float64
+			)
+			err = row.Scan(&total)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取項目物料損失金額失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableMaterialLoss(total)
+			}
+		}
+
 		if err := p.
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {

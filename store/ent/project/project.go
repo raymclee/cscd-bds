@@ -129,6 +129,8 @@ const (
 	FieldPmYesterday = "pm_yesterday"
 	// FieldUnitInventoryTotal holds the string denoting the unit_inventory_total field in the database.
 	FieldUnitInventoryTotal = "unit_inventory_total"
+	// FieldMaterialLoss holds the string denoting the material_loss field in the database.
+	FieldMaterialLoss = "material_loss"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
@@ -211,6 +213,7 @@ var Columns = []string{
 	FieldPmTotal,
 	FieldPmYesterday,
 	FieldUnitInventoryTotal,
+	FieldMaterialLoss,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -527,6 +530,11 @@ func ByPmYesterday(opts ...sql.OrderTermOption) OrderOption {
 // ByUnitInventoryTotal orders the results by the unit_inventory_total field.
 func ByUnitInventoryTotal(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUnitInventoryTotal, opts...).ToFunc()
+}
+
+// ByMaterialLoss orders the results by the material_loss field.
+func ByMaterialLoss(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMaterialLoss, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

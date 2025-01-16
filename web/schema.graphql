@@ -1769,6 +1769,8 @@ type Project implements Node {
   jzs: String
   """地盤經理"""
   manager: String
+  """物料損失金額"""
+  materialLoss: Float
   """總承包商"""
   mcn: String
   """里程碑完成月份"""
@@ -2488,6 +2490,17 @@ input ProjectWhereInput {
   managerNEQ: String
   managerNotIn: [String!]
   managerNotNil: Boolean
+  """material_loss field predicates"""
+  materialLoss: Float
+  materialLossGT: Float
+  materialLossGTE: Float
+  materialLossIn: [Float!]
+  materialLossIsNil: Boolean
+  materialLossLT: Float
+  materialLossLTE: Float
+  materialLossNEQ: Float
+  materialLossNotIn: [Float!]
+  materialLossNotNil: Boolean
   """mcn field predicates"""
   mcn: String
   mcnContains: String
