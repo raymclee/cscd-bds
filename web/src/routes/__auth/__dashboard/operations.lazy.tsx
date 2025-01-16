@@ -1577,7 +1577,7 @@ function ProjectOverviewTab({ pj }: { pj?: any }) {
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
         <Tabs.Content value={tabs[0]} className="relative h-full">
-          {<ProjectImage code={code} key={code} />}
+          {<ProjectImage key={code} />}
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-[280px] w-full">
@@ -1681,9 +1681,10 @@ function StaffDistribution(props: { data: any }) {
   return <Column {...config} />;
 }
 
-function ProjectImage({ code }: { code?: string }) {
+function ProjectImage() {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState(false);
+  const { code } = Route.useSearch();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1705,16 +1706,6 @@ function ProjectImage({ code }: { code?: string }) {
       toast.error("上传失败");
     }
   };
-
-  if (!code) {
-    return (
-      <div className="group relative mx-auto h-[280px] w-full">
-        <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-          没有图片
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="group relative mx-auto h-[280px] w-full">
