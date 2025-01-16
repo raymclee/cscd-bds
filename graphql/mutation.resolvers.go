@@ -6,6 +6,7 @@ package graphql
 
 import (
 	"context"
+	"cscd-bds/config"
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
@@ -15,6 +16,7 @@ import (
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
 	"cscd-bds/util"
+	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
@@ -449,6 +451,31 @@ func (r *mutationResolver) DeleteCompetitor(ctx context.Context, id xid.ID) (*en
 		return nil, fmt.Errorf("failed to delete competitor: %w", err)
 	}
 	return c, nil
+}
+
+// UpdateProject is the resolver for the updateProject field.
+func (r *mutationResolver) UpdateProject(ctx context.Context, id xid.ID, input ent.UpdateProjectInput) (*ent.Project, error) {
+	p, err := r.store.Project.UpdateOneID(id).SetInput(input).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update project: %w", err)
+	}
+	if config.IsProd {
+		go func() {
+			if _, err := r.stgDb.Exec(`
+			update mst_jobbasfil 
+			set 
+			opdate = @opdate, 
+			fsdate = @fsdate 
+			where jobcode = @jobcode`,
+				sql.Named("opdate", p.OpDate),
+				sql.Named("fsdate", p.FsDate),
+				sql.Named("jobcode", p.Code),
+			); err != nil {
+				fmt.Printf("failed to update project: %v\n", err)
+			}
+		}()
+	}
+	return p, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

@@ -38,4 +38,6 @@ type Mutation {
   createCompetitor(input: CreateCompetitorInput!): Competitor!
   updateCompetitor(id: ID!, input: UpdateCompetitorInput!): Competitor!
   deleteCompetitor(id: ID!): Competitor!
+
+  updateProject(id: ID!, input: UpdateProjectInput!): Project!
 }

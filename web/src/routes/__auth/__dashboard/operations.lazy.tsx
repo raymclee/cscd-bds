@@ -5,7 +5,7 @@ import {
   operationsPageQuery,
   operationsPageQuery$data,
 } from "__generated__/operationsPageQuery.graphql";
-import { ReactNode, useEffect, useState, useTransition } from "react";
+import { ReactNode, useEffect, useRef, useState, useTransition } from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { SubTitle } from "~/components/project/sub-title";
 import { Rhino } from "~/components/rhino";
@@ -76,7 +76,17 @@ import componentTop from "~/assets/svg/component_top.png";
 
 import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
-import { Project } from "~/graphql/graphql";
+
+import { Check, CircleX, Pencil, X } from "lucide-react";
+import { useUpdateProject } from "~/hooks/use-update-project";
+import { useOnClickOutside } from "usehooks-ts";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import { Calendar } from "~/components/ui/calendar";
+import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -89,6 +99,7 @@ function RouteComponent() {
         projects(where: { isFinishedNEQ: true }, orderBy: [{ field: CODE }]) {
           edges {
             node {
+              id
               name
               code
               manager
@@ -1231,12 +1242,25 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <BasicInfoItem title="开工日期">
                     {pj?.startDate ? dayjs(pj?.startDate).format("LL") : "-"}
                   </BasicInfoItem>
-                  <BasicInfoItem title="FS日期">
+                  {/* <BasicInfoItem title="FS日期">
                     {pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
-                  </BasicInfoItem>
-                  <BasicInfoItem title="OP日期">
+                  </BasicInfoItem> */}
+                  <EditableBasicInfoItem
+                    title="FS日期"
+                    field="fsDate"
+                    projectId={pj!.id}
+                    value={pj?.fsDate}
+                  >
+                    {pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
+                  </EditableBasicInfoItem>
+                  <EditableBasicInfoItem
+                    title="OP日期"
+                    field="opDate"
+                    projectId={pj!.id}
+                    value={pj?.opDate}
+                  >
                     {pj?.opDate ? dayjs(pj?.opDate).format("LL") : "-"}
-                  </BasicInfoItem>
+                  </EditableBasicInfoItem>
                   <BasicInfoItem title="竣工日期">
                     {pj?.endDate ? dayjs(pj?.endDate).format("LL") : "-"}
                   </BasicInfoItem>
@@ -1395,11 +1419,126 @@ function BasicInfoItem({
         src={basicInfoRowBg}
         className="absolute inset-0 mx-auto h-full w-full"
       />
-      <div className="relative left-12 flex h-full w-[19rem] items-center">
+      <div className="relative left-12 flex h-[15px] w-[19rem] items-center">
         <div className="w-20 text-xxs">{title}</div>
         <span className="line-clamp-1 flex-1 text-xxs text-brand-project">
           {children}
         </span>
+      </div>
+    </div>
+  );
+}
+
+function EditableBasicInfoItem({
+  projectId,
+  title,
+  children,
+  field,
+  value,
+}: {
+  projectId: string;
+  field: "fsDate" | "opDate";
+  title: string;
+  children: ReactNode;
+  value?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [commitMutation, commitInFlight] = useUpdateProject();
+  // const [date] = useState<Date>();
+
+  const onEditing = (editing: boolean) => {
+    setEditing(editing);
+    setOpen(editing);
+  };
+
+  const onSubmit = (date: Date | undefined) => {
+    if (commitInFlight) return;
+    commitMutation({
+      variables: {
+        id: projectId,
+        input: {
+          [field]: date,
+        },
+      },
+      onCompleted: () => {
+        onEditing(false);
+        setOpen(false);
+      },
+    });
+  };
+
+  const onClear = () => {
+    if (commitInFlight) return;
+    const input: UpdateProjectInput = {};
+    if (field == "fsDate") {
+      input.clearFsDate = true;
+    } else if (field == "opDate") {
+      input.clearOpDate = true;
+    }
+    commitMutation({
+      variables: {
+        id: projectId,
+        input,
+      },
+      onCompleted: () => {
+        onEditing(false);
+        setOpen(false);
+      },
+    });
+  };
+
+  return (
+    <div className="relative py-1">
+      <img
+        src={basicInfoRowBg}
+        className="absolute inset-0 mx-auto h-full w-full"
+      />
+      <div className="group relative left-12 flex h-[15px] w-[19rem] items-center">
+        <div className="w-20 text-xxs">{title}</div>
+        <Popover open={open} onOpenChange={onEditing}>
+          <PopoverTrigger asChild>
+            <div className="flex flex-1 cursor-pointer items-center justify-between">
+              {editing ? (
+                <>
+                  <span className="flex-1 rounded border border-brand-project bg-transparent px-1 text-xxs text-brand-project">
+                    请选择日期
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="line-clamp-1 text-xxs text-brand-project">
+                    {children}
+                  </span>
+
+                  <Pencil
+                    size={12}
+                    className="opacity-0 transition-opacity group-hover:opacity-100"
+                  />
+                </>
+              )}
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="dark w-auto p-0">
+            <Calendar
+              classNames={{
+                day_selected:
+                  "bg-brand-project text-slate-800 hover:bg-brand-project hover:text-slate-800 focus:bg-brand-project focus:text-slate-800",
+              }}
+              mode="single"
+              // selected={date}
+              onSelect={onSubmit}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+        {value && (
+          <CircleX
+            size={12}
+            className="ml-2 cursor-pointer text-red-500 opacity-0 transition-opacity group-hover:opacity-100"
+            onClick={onClear}
+          />
+        )}
       </div>
     </div>
   );

@@ -411,5 +411,8 @@ func (Project) Annotations() []schema.Annotation {
 		entgql.RelayConnection(),
 		entgql.QueryField(),
 		entgql.MultiOrder(),
+		entgql.Mutations(
+			entgql.MutationUpdate(),
+		),
 	}
 }

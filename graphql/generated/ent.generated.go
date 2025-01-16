@@ -45138,6 +45138,845 @@ func (ec *executionContext) unmarshalInputUpdatePlotInput(ctx context.Context, o
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context, obj interface{}) (ent.UpdateProjectInput, error) {
+	var it ent.UpdateProjectInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"updatedAt", "code", "manager", "clearManager", "name", "clearName", "owner", "clearOwner", "jzs", "clearJzs", "mcn", "clearMcn", "consultant", "clearConsultant", "areas", "clearAreas", "startDate", "clearStartDate", "fsDate", "clearFsDate", "opDate", "clearOpDate", "endDate", "clearEndDate", "mntyr", "clearMntyr", "conType", "clearConType", "isFinished", "cje", "clearCje", "yye", "clearYye", "xjl", "clearXjl", "xmglfYs", "clearXmglfYs", "xmglfLj", "clearXmglfLj", "xmsjf", "clearXmsjf", "xmfzr", "clearXmfzr", "ownerApplyAmount", "clearOwnerApplyAmount", "ownerApplyCount", "clearOwnerApplyCount", "ownerApproveAmount", "clearOwnerApproveAmount", "ownerApproveCount", "clearOwnerApproveCount", "contractorApplyAmount", "clearContractorApplyAmount", "contractorApplyCount", "clearContractorApplyCount", "contractorApproveAmount", "clearContractorApproveAmount", "contractorApproveCount", "clearContractorApproveCount", "installProgress", "clearInstallProgress", "effectiveContractAmount", "clearEffectiveContractAmount", "vaApplyAmount", "clearVaApplyAmount", "vaApproveAmount", "clearVaApproveAmount", "accumulatedStatutoryDeductions", "clearAccumulatedStatutoryDeductions", "accumulatedNonStatutoryDeductions", "clearAccumulatedNonStatutoryDeductions", "accumulatedStatutoryDeductionsPeriod", "clearAccumulatedStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriod", "clearAccumulatedNonStatutoryDeductionsPeriod", "totalContractAmount", "clearTotalContractAmount", "aluminumPlateBudgetPercentage", "clearAluminumPlateBudgetPercentage", "aluminumBudgetPercentage", "clearAluminumBudgetPercentage", "glassBudgetPercentage", "clearGlassBudgetPercentage", "ironBudgetPercentage", "clearIronBudgetPercentage", "milestonePlanYear", "clearMilestonePlanYear", "milestonePlanMonth", "clearMilestonePlanMonth", "milestoneDoneYear", "clearMilestoneDoneYear", "milestoneDoneMonth", "clearMilestoneDoneMonth", "pmArea", "clearPmArea", "pmYearTarget", "clearPmYearTarget", "pmMonthTarget", "clearPmMonthTarget", "pmYearActual", "clearPmYearActual", "pmMonthActual", "clearPmMonthActual", "pmTotal", "clearPmTotal", "pmYesterday", "clearPmYesterday", "unitInventoryTotal", "clearUnitInventoryTotal", "materialLoss", "clearMaterialLoss", "addVoIDs", "removeVoIDs", "clearVos", "addProjectStaffIDs", "removeProjectStaffIDs", "clearProjectStaffs"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "updatedAt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedAt"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAt = data
+		case "code":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("code"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Code = data
+		case "manager":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("manager"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Manager = data
+		case "clearManager":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearManager"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearManager = data
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "clearName":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearName"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearName = data
+		case "owner":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("owner"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Owner = data
+		case "clearOwner":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOwner"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOwner = data
+		case "jzs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("jzs"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Jzs = data
+		case "clearJzs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearJzs"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearJzs = data
+		case "mcn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mcn"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Mcn = data
+		case "clearMcn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMcn"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMcn = data
+		case "consultant":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("consultant"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Consultant = data
+		case "clearConsultant":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearConsultant"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearConsultant = data
+		case "areas":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("areas"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Areas = data
+		case "clearAreas":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAreas"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAreas = data
+		case "startDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.StartDate = data
+		case "clearStartDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearStartDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearStartDate = data
+		case "fsDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fsDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FsDate = data
+		case "clearFsDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearFsDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearFsDate = data
+		case "opDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("opDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OpDate = data
+		case "clearOpDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOpDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOpDate = data
+		case "endDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EndDate = data
+		case "clearEndDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEndDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearEndDate = data
+		case "mntyr":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mntyr"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Mntyr = data
+		case "clearMntyr":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMntyr"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMntyr = data
+		case "conType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("conType"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ConType = data
+		case "clearConType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearConType"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearConType = data
+		case "isFinished":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isFinished"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsFinished = data
+		case "cje":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cje"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Cje = data
+		case "clearCje":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCje"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCje = data
+		case "yye":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("yye"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Yye = data
+		case "clearYye":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearYye"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearYye = data
+		case "xjl":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("xjl"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Xjl = data
+		case "clearXjl":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearXjl"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearXjl = data
+		case "xmglfYs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("xmglfYs"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.XmglfYs = data
+		case "clearXmglfYs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearXmglfYs"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearXmglfYs = data
+		case "xmglfLj":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("xmglfLj"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.XmglfLj = data
+		case "clearXmglfLj":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearXmglfLj"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearXmglfLj = data
+		case "xmsjf":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("xmsjf"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Xmsjf = data
+		case "clearXmsjf":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearXmsjf"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearXmsjf = data
+		case "xmfzr":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("xmfzr"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Xmfzr = data
+		case "clearXmfzr":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearXmfzr"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearXmfzr = data
+		case "ownerApplyAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerApplyAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerApplyAmount = data
+		case "clearOwnerApplyAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOwnerApplyAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOwnerApplyAmount = data
+		case "ownerApplyCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerApplyCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerApplyCount = data
+		case "clearOwnerApplyCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOwnerApplyCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOwnerApplyCount = data
+		case "ownerApproveAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerApproveAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerApproveAmount = data
+		case "clearOwnerApproveAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOwnerApproveAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOwnerApproveAmount = data
+		case "ownerApproveCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerApproveCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OwnerApproveCount = data
+		case "clearOwnerApproveCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearOwnerApproveCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearOwnerApproveCount = data
+		case "contractorApplyAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorApplyAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorApplyAmount = data
+		case "clearContractorApplyAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearContractorApplyAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearContractorApplyAmount = data
+		case "contractorApplyCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorApplyCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorApplyCount = data
+		case "clearContractorApplyCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearContractorApplyCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearContractorApplyCount = data
+		case "contractorApproveAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorApproveAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorApproveAmount = data
+		case "clearContractorApproveAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearContractorApproveAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearContractorApproveAmount = data
+		case "contractorApproveCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contractorApproveCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ContractorApproveCount = data
+		case "clearContractorApproveCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearContractorApproveCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearContractorApproveCount = data
+		case "installProgress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("installProgress"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.InstallProgress = data
+		case "clearInstallProgress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearInstallProgress"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearInstallProgress = data
+		case "effectiveContractAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("effectiveContractAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EffectiveContractAmount = data
+		case "clearEffectiveContractAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEffectiveContractAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearEffectiveContractAmount = data
+		case "vaApplyAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vaApplyAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.VaApplyAmount = data
+		case "clearVaApplyAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearVaApplyAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearVaApplyAmount = data
+		case "vaApproveAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vaApproveAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.VaApproveAmount = data
+		case "clearVaApproveAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearVaApproveAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearVaApproveAmount = data
+		case "accumulatedStatutoryDeductions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductions"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductions = data
+		case "clearAccumulatedStatutoryDeductions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAccumulatedStatutoryDeductions"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAccumulatedStatutoryDeductions = data
+		case "accumulatedNonStatutoryDeductions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductions"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductions = data
+		case "clearAccumulatedNonStatutoryDeductions":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAccumulatedNonStatutoryDeductions"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAccumulatedNonStatutoryDeductions = data
+		case "accumulatedStatutoryDeductionsPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedStatutoryDeductionsPeriod"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedStatutoryDeductionsPeriod = data
+		case "clearAccumulatedStatutoryDeductionsPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAccumulatedStatutoryDeductionsPeriod"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAccumulatedStatutoryDeductionsPeriod = data
+		case "accumulatedNonStatutoryDeductionsPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accumulatedNonStatutoryDeductionsPeriod"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccumulatedNonStatutoryDeductionsPeriod = data
+		case "clearAccumulatedNonStatutoryDeductionsPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAccumulatedNonStatutoryDeductionsPeriod"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAccumulatedNonStatutoryDeductionsPeriod = data
+		case "totalContractAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalContractAmount"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalContractAmount = data
+		case "clearTotalContractAmount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTotalContractAmount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTotalContractAmount = data
+		case "aluminumPlateBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumPlateBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumPlateBudgetPercentage = data
+		case "clearAluminumPlateBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAluminumPlateBudgetPercentage"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAluminumPlateBudgetPercentage = data
+		case "aluminumBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("aluminumBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AluminumBudgetPercentage = data
+		case "clearAluminumBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAluminumBudgetPercentage"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAluminumBudgetPercentage = data
+		case "glassBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("glassBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.GlassBudgetPercentage = data
+		case "clearGlassBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearGlassBudgetPercentage"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearGlassBudgetPercentage = data
+		case "ironBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ironBudgetPercentage"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IronBudgetPercentage = data
+		case "clearIronBudgetPercentage":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearIronBudgetPercentage"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearIronBudgetPercentage = data
+		case "milestonePlanYear":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("milestonePlanYear"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MilestonePlanYear = data
+		case "clearMilestonePlanYear":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMilestonePlanYear"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMilestonePlanYear = data
+		case "milestonePlanMonth":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("milestonePlanMonth"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MilestonePlanMonth = data
+		case "clearMilestonePlanMonth":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMilestonePlanMonth"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMilestonePlanMonth = data
+		case "milestoneDoneYear":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("milestoneDoneYear"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MilestoneDoneYear = data
+		case "clearMilestoneDoneYear":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMilestoneDoneYear"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMilestoneDoneYear = data
+		case "milestoneDoneMonth":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("milestoneDoneMonth"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MilestoneDoneMonth = data
+		case "clearMilestoneDoneMonth":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMilestoneDoneMonth"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMilestoneDoneMonth = data
+		case "pmArea":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmArea"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmArea = data
+		case "clearPmArea":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmArea"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmArea = data
+		case "pmYearTarget":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmYearTarget"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmYearTarget = data
+		case "clearPmYearTarget":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmYearTarget"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmYearTarget = data
+		case "pmMonthTarget":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmMonthTarget"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmMonthTarget = data
+		case "clearPmMonthTarget":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmMonthTarget"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmMonthTarget = data
+		case "pmYearActual":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmYearActual"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmYearActual = data
+		case "clearPmYearActual":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmYearActual"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmYearActual = data
+		case "pmMonthActual":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmMonthActual"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmMonthActual = data
+		case "clearPmMonthActual":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmMonthActual"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmMonthActual = data
+		case "pmTotal":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmTotal"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmTotal = data
+		case "clearPmTotal":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmTotal"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmTotal = data
+		case "pmYesterday":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("pmYesterday"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PmYesterday = data
+		case "clearPmYesterday":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPmYesterday"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPmYesterday = data
+		case "unitInventoryTotal":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitInventoryTotal"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnitInventoryTotal = data
+		case "clearUnitInventoryTotal":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUnitInventoryTotal"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearUnitInventoryTotal = data
+		case "materialLoss":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("materialLoss"))
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MaterialLoss = data
+		case "clearMaterialLoss":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMaterialLoss"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMaterialLoss = data
+		case "addVoIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addVoIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddVoIDs = data
+		case "removeVoIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeVoIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveVoIDs = data
+		case "clearVos":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearVos"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearVos = data
+		case "addProjectStaffIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addProjectStaffIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddProjectStaffIDs = data
+		case "removeProjectStaffIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeProjectStaffIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveProjectStaffIDs = data
+		case "clearProjectStaffs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearProjectStaffs"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearProjectStaffs = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateProvinceInput(ctx context.Context, obj interface{}) (ent.UpdateProvinceInput, error) {
 	var it ent.UpdateProvinceInput
 	asMap := map[string]interface{}{}
@@ -53812,6 +54651,10 @@ func (ec *executionContext) unmarshalNPlotWhereInput2ᚖcscdᚑbdsᚋstoreᚋent
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNProject2cscdᚑbdsᚋstoreᚋentᚐProject(ctx context.Context, sel ast.SelectionSet, v ent.Project) graphql.Marshaler {
+	return ec._Project(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNProject2ᚖcscdᚑbdsᚋstoreᚋentᚐProject(ctx context.Context, sel ast.SelectionSet, v *ent.Project) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -54049,6 +54892,11 @@ func (ec *executionContext) unmarshalNUpdateCustomerInput2cscdᚑbdsᚋstoreᚋe
 
 func (ec *executionContext) unmarshalNUpdatePlotInput2cscdᚑbdsᚋstoreᚋentᚐUpdatePlotInput(ctx context.Context, v interface{}) (ent.UpdatePlotInput, error) {
 	res, err := ec.unmarshalInputUpdatePlotInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNUpdateProjectInput2cscdᚑbdsᚋstoreᚋentᚐUpdateProjectInput(ctx context.Context, v interface{}) (ent.UpdateProjectInput, error) {
+	res, err := ec.unmarshalInputUpdateProjectInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 

@@ -37,6 +37,7 @@ type MutationResolver interface {
 	CreateCompetitor(ctx context.Context, input ent.CreateCompetitorInput) (*ent.Competitor, error)
 	UpdateCompetitor(ctx context.Context, id xid.ID, input ent.UpdateCompetitorInput) (*ent.Competitor, error)
 	DeleteCompetitor(ctx context.Context, id xid.ID) (*ent.Competitor, error)
+	UpdateProject(ctx context.Context, id xid.ID, input ent.UpdateProjectInput) (*ent.Project, error)
 }
 
 // endregion ************************** generated!.gotpl **************************
@@ -827,6 +828,65 @@ func (ec *executionContext) field_Mutation_updatePlot_argsGeoBounds(
 	}
 
 	var zeroVal [][]float64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateProject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_updateProject_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	arg1, err := ec.field_Mutation_updateProject_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_updateProject_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateProject_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (ent.UpdateProjectInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal ent.UpdateProjectInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNUpdateProjectInput2cscdᚑbdsᚋstoreᚋentᚐUpdateProjectInput(ctx, tmp)
+	}
+
+	var zeroVal ent.UpdateProjectInput
 	return zeroVal, nil
 }
 
@@ -2930,6 +2990,185 @@ func (ec *executionContext) fieldContext_Mutation_deleteCompetitor(ctx context.C
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_updateProject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateProject(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateProject(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateProjectInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.Project)
+	fc.Result = res
+	return ec.marshalNProject2ᚖcscdᚑbdsᚋstoreᚋentᚐProject(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Project_id(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Project_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Project_updatedAt(ctx, field)
+			case "code":
+				return ec.fieldContext_Project_code(ctx, field)
+			case "manager":
+				return ec.fieldContext_Project_manager(ctx, field)
+			case "name":
+				return ec.fieldContext_Project_name(ctx, field)
+			case "owner":
+				return ec.fieldContext_Project_owner(ctx, field)
+			case "jzs":
+				return ec.fieldContext_Project_jzs(ctx, field)
+			case "mcn":
+				return ec.fieldContext_Project_mcn(ctx, field)
+			case "consultant":
+				return ec.fieldContext_Project_consultant(ctx, field)
+			case "areas":
+				return ec.fieldContext_Project_areas(ctx, field)
+			case "startDate":
+				return ec.fieldContext_Project_startDate(ctx, field)
+			case "fsDate":
+				return ec.fieldContext_Project_fsDate(ctx, field)
+			case "opDate":
+				return ec.fieldContext_Project_opDate(ctx, field)
+			case "endDate":
+				return ec.fieldContext_Project_endDate(ctx, field)
+			case "mntyr":
+				return ec.fieldContext_Project_mntyr(ctx, field)
+			case "conType":
+				return ec.fieldContext_Project_conType(ctx, field)
+			case "isFinished":
+				return ec.fieldContext_Project_isFinished(ctx, field)
+			case "cje":
+				return ec.fieldContext_Project_cje(ctx, field)
+			case "yye":
+				return ec.fieldContext_Project_yye(ctx, field)
+			case "xjl":
+				return ec.fieldContext_Project_xjl(ctx, field)
+			case "xmglfYs":
+				return ec.fieldContext_Project_xmglfYs(ctx, field)
+			case "xmglfLj":
+				return ec.fieldContext_Project_xmglfLj(ctx, field)
+			case "xmsjf":
+				return ec.fieldContext_Project_xmsjf(ctx, field)
+			case "xmfzr":
+				return ec.fieldContext_Project_xmfzr(ctx, field)
+			case "ownerApplyAmount":
+				return ec.fieldContext_Project_ownerApplyAmount(ctx, field)
+			case "ownerApplyCount":
+				return ec.fieldContext_Project_ownerApplyCount(ctx, field)
+			case "ownerApproveAmount":
+				return ec.fieldContext_Project_ownerApproveAmount(ctx, field)
+			case "ownerApproveCount":
+				return ec.fieldContext_Project_ownerApproveCount(ctx, field)
+			case "contractorApplyAmount":
+				return ec.fieldContext_Project_contractorApplyAmount(ctx, field)
+			case "contractorApplyCount":
+				return ec.fieldContext_Project_contractorApplyCount(ctx, field)
+			case "contractorApproveAmount":
+				return ec.fieldContext_Project_contractorApproveAmount(ctx, field)
+			case "contractorApproveCount":
+				return ec.fieldContext_Project_contractorApproveCount(ctx, field)
+			case "installProgress":
+				return ec.fieldContext_Project_installProgress(ctx, field)
+			case "effectiveContractAmount":
+				return ec.fieldContext_Project_effectiveContractAmount(ctx, field)
+			case "vaApplyAmount":
+				return ec.fieldContext_Project_vaApplyAmount(ctx, field)
+			case "vaApproveAmount":
+				return ec.fieldContext_Project_vaApproveAmount(ctx, field)
+			case "accumulatedStatutoryDeductions":
+				return ec.fieldContext_Project_accumulatedStatutoryDeductions(ctx, field)
+			case "accumulatedNonStatutoryDeductions":
+				return ec.fieldContext_Project_accumulatedNonStatutoryDeductions(ctx, field)
+			case "accumulatedStatutoryDeductionsPeriod":
+				return ec.fieldContext_Project_accumulatedStatutoryDeductionsPeriod(ctx, field)
+			case "accumulatedNonStatutoryDeductionsPeriod":
+				return ec.fieldContext_Project_accumulatedNonStatutoryDeductionsPeriod(ctx, field)
+			case "totalContractAmount":
+				return ec.fieldContext_Project_totalContractAmount(ctx, field)
+			case "aluminumPlateBudgetPercentage":
+				return ec.fieldContext_Project_aluminumPlateBudgetPercentage(ctx, field)
+			case "aluminumBudgetPercentage":
+				return ec.fieldContext_Project_aluminumBudgetPercentage(ctx, field)
+			case "glassBudgetPercentage":
+				return ec.fieldContext_Project_glassBudgetPercentage(ctx, field)
+			case "ironBudgetPercentage":
+				return ec.fieldContext_Project_ironBudgetPercentage(ctx, field)
+			case "milestonePlanYear":
+				return ec.fieldContext_Project_milestonePlanYear(ctx, field)
+			case "milestonePlanMonth":
+				return ec.fieldContext_Project_milestonePlanMonth(ctx, field)
+			case "milestoneDoneYear":
+				return ec.fieldContext_Project_milestoneDoneYear(ctx, field)
+			case "milestoneDoneMonth":
+				return ec.fieldContext_Project_milestoneDoneMonth(ctx, field)
+			case "pmArea":
+				return ec.fieldContext_Project_pmArea(ctx, field)
+			case "pmYearTarget":
+				return ec.fieldContext_Project_pmYearTarget(ctx, field)
+			case "pmMonthTarget":
+				return ec.fieldContext_Project_pmMonthTarget(ctx, field)
+			case "pmYearActual":
+				return ec.fieldContext_Project_pmYearActual(ctx, field)
+			case "pmMonthActual":
+				return ec.fieldContext_Project_pmMonthActual(ctx, field)
+			case "pmTotal":
+				return ec.fieldContext_Project_pmTotal(ctx, field)
+			case "pmYesterday":
+				return ec.fieldContext_Project_pmYesterday(ctx, field)
+			case "unitInventoryTotal":
+				return ec.fieldContext_Project_unitInventoryTotal(ctx, field)
+			case "materialLoss":
+				return ec.fieldContext_Project_materialLoss(ctx, field)
+			case "vos":
+				return ec.fieldContext_Project_vos(ctx, field)
+			case "projectStaffs":
+				return ec.fieldContext_Project_projectStaffs(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateProject_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 // endregion **************************** field.gotpl *****************************
 
 // region    **************************** input.gotpl *****************************
@@ -3097,6 +3336,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "deleteCompetitor":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_deleteCompetitor(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "updateProject":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateProject(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

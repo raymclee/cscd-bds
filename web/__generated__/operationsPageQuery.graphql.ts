@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2be612983703c90ebd92ba8994fae830>>
+ * @generated SignedSource<<0c3f5a02b560ef90bb27dd18ec631210>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,6 +32,7 @@ export type operationsPageQuery$data = {
         readonly endDate: any | null | undefined;
         readonly fsDate: any | null | undefined;
         readonly glassBudgetPercentage: number | null | undefined;
+        readonly id: string;
         readonly installProgress: number | null | undefined;
         readonly ironBudgetPercentage: number | null | undefined;
         readonly jzs: string | null | undefined;
@@ -109,374 +110,381 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "id",
   "storageKey": null
 },
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "code",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "manager",
+  "name": "code",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "owner",
+  "name": "manager",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "jzs",
+  "name": "owner",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "mcn",
+  "name": "jzs",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "consultant",
+  "name": "mcn",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "areas",
+  "name": "consultant",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "fsDate",
+  "name": "areas",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "opDate",
+  "name": "fsDate",
   "storageKey": null
 },
 v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "startDate",
+  "name": "opDate",
   "storageKey": null
 },
 v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "endDate",
+  "name": "startDate",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "mntyr",
+  "name": "endDate",
   "storageKey": null
 },
 v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "conType",
+  "name": "mntyr",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "cje",
+  "name": "conType",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "yye",
+  "name": "cje",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "xjl",
+  "name": "yye",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "xmglfYs",
+  "name": "xjl",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "xmglfLj",
+  "name": "xmglfYs",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "xmsjf",
+  "name": "xmglfLj",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApplyCount",
+  "name": "xmsjf",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApplyAmount",
+  "name": "ownerApplyCount",
   "storageKey": null
 },
 v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApproveCount",
+  "name": "ownerApplyAmount",
   "storageKey": null
 },
 v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ownerApproveAmount",
+  "name": "ownerApproveCount",
   "storageKey": null
 },
 v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApplyCount",
+  "name": "ownerApproveAmount",
   "storageKey": null
 },
 v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApplyAmount",
+  "name": "contractorApplyCount",
   "storageKey": null
 },
 v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApproveCount",
+  "name": "contractorApplyAmount",
   "storageKey": null
 },
 v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contractorApproveAmount",
+  "name": "contractorApproveCount",
   "storageKey": null
 },
 v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "installProgress",
+  "name": "contractorApproveAmount",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "effectiveContractAmount",
+  "name": "installProgress",
   "storageKey": null
 },
 v31 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "vaApplyAmount",
+  "name": "effectiveContractAmount",
   "storageKey": null
 },
 v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "vaApproveAmount",
+  "name": "vaApplyAmount",
   "storageKey": null
 },
 v33 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedStatutoryDeductions",
+  "name": "vaApproveAmount",
   "storageKey": null
 },
 v34 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedNonStatutoryDeductions",
+  "name": "accumulatedStatutoryDeductions",
   "storageKey": null
 },
 v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "accumulatedNonStatutoryDeductionsPeriod",
+  "name": "accumulatedNonStatutoryDeductions",
   "storageKey": null
 },
 v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "totalContractAmount",
+  "name": "accumulatedNonStatutoryDeductionsPeriod",
   "storageKey": null
 },
 v37 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "aluminumPlateBudgetPercentage",
+  "name": "totalContractAmount",
   "storageKey": null
 },
 v38 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "aluminumBudgetPercentage",
+  "name": "aluminumPlateBudgetPercentage",
   "storageKey": null
 },
 v39 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "glassBudgetPercentage",
+  "name": "aluminumBudgetPercentage",
   "storageKey": null
 },
 v40 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ironBudgetPercentage",
+  "name": "glassBudgetPercentage",
   "storageKey": null
 },
 v41 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "milestonePlanYear",
+  "name": "ironBudgetPercentage",
   "storageKey": null
 },
 v42 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "milestonePlanMonth",
+  "name": "milestonePlanYear",
   "storageKey": null
 },
 v43 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "milestoneDoneYear",
+  "name": "milestonePlanMonth",
   "storageKey": null
 },
 v44 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "milestoneDoneMonth",
+  "name": "milestoneDoneYear",
   "storageKey": null
 },
 v45 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmArea",
+  "name": "milestoneDoneMonth",
   "storageKey": null
 },
 v46 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmYearTarget",
+  "name": "pmArea",
   "storageKey": null
 },
 v47 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmMonthTarget",
+  "name": "pmYearTarget",
   "storageKey": null
 },
 v48 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmYearActual",
+  "name": "pmMonthTarget",
   "storageKey": null
 },
 v49 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmMonthActual",
+  "name": "pmYearActual",
   "storageKey": null
 },
 v50 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmTotal",
+  "name": "pmMonthActual",
   "storageKey": null
 },
 v51 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "pmYesterday",
+  "name": "pmTotal",
   "storageKey": null
 },
 v52 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "unitInventoryTotal",
+  "name": "pmYesterday",
   "storageKey": null
 },
 v53 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "unitInventoryTotal",
+  "storageKey": null
+},
+v54 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "materialLoss",
   "storageKey": null
 },
-v54 = [
+v55 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -491,39 +499,32 @@ v54 = [
     }
   }
 ],
-v55 = {
+v56 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "installation",
   "storageKey": null
 },
-v56 = {
+v57 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "management",
   "storageKey": null
 },
-v57 = {
+v58 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "design",
   "storageKey": null
 },
-v58 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
 v59 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "createdAt",
   "storageKey": null
 };
 return {
@@ -610,9 +611,10 @@ return {
                   (v51/*: any*/),
                   (v52/*: any*/),
                   (v53/*: any*/),
+                  (v54/*: any*/),
                   {
                     "alias": null,
-                    "args": (v54/*: any*/),
+                    "args": (v55/*: any*/),
                     "concreteType": "ProjectStaffConnection",
                     "kind": "LinkedField",
                     "name": "projectStaffs",
@@ -634,10 +636,10 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v55/*: any*/),
                               (v56/*: any*/),
                               (v57/*: any*/),
-                              (v58/*: any*/)
+                              (v58/*: any*/),
+                              (v59/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -743,9 +745,10 @@ return {
                   (v51/*: any*/),
                   (v52/*: any*/),
                   (v53/*: any*/),
+                  (v54/*: any*/),
                   {
                     "alias": null,
-                    "args": (v54/*: any*/),
+                    "args": (v55/*: any*/),
                     "concreteType": "ProjectStaffConnection",
                     "kind": "LinkedField",
                     "name": "projectStaffs",
@@ -767,11 +770,11 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v55/*: any*/),
                               (v56/*: any*/),
                               (v57/*: any*/),
                               (v58/*: any*/),
-                              (v59/*: any*/)
+                              (v59/*: any*/),
+                              (v1/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -780,8 +783,7 @@ return {
                       }
                     ],
                     "storageKey": "projectStaffs(first:3,orderBy:{\"direction\":\"DESC\",\"field\":\"CREATED_AT\"})"
-                  },
-                  (v59/*: any*/)
+                  }
                 ],
                 "storageKey": null
               }
@@ -794,16 +796,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0205732ed7f91b4ba21fec17a2b00e97",
+    "cacheID": "f8767de981ad7d456f256a47b073cfb6",
     "id": null,
     "metadata": {},
     "name": "operationsPageQuery",
     "operationKind": "query",
-    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        milestonePlanYear\n        milestonePlanMonth\n        milestoneDoneYear\n        milestoneDoneMonth\n        pmArea\n        pmYearTarget\n        pmMonthTarget\n        pmYearActual\n        pmMonthActual\n        pmTotal\n        pmYesterday\n        unitInventoryTotal\n        materialLoss\n        projectStaffs(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {\n          edges {\n            node {\n              installation\n              management\n              design\n              createdAt\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        id\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        milestonePlanYear\n        milestonePlanMonth\n        milestoneDoneYear\n        milestoneDoneMonth\n        pmArea\n        pmYearTarget\n        pmMonthTarget\n        pmYearActual\n        pmMonthActual\n        pmTotal\n        pmYesterday\n        unitInventoryTotal\n        materialLoss\n        projectStaffs(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {\n          edges {\n            node {\n              installation\n              management\n              design\n              createdAt\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d2066a6ca52987dfd4c348fe9fb840fa";
+(node as any).hash = "481d9b27ecf306fe44ad7838d5c2005f";
 
 export default node;

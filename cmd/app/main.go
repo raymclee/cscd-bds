@@ -10,6 +10,8 @@ import (
 	"cscd-bds/session"
 	"cscd-bds/store"
 	"cscd-bds/web"
+	"database/sql"
+	"fmt"
 	"net/http"
 
 	"entgo.io/contrib/entgql"
@@ -18,11 +20,18 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	lark "github.com/larksuite/oapi-sdk-go/v3"
+	_ "github.com/microsoft/go-mssqldb"
 )
 
 const (
 	FEISHU_APP_ID     = "cli_a7bb34cd9b65900c"
 	FEISHU_APP_SECRET = "7QgUlxBXSOKYjR7M4KsBzewHcqnPqpvn"
+
+	STG_HOST     = "10.1.8.37"
+	STG_PORT     = 1433
+	STG_USER     = "bi830"
+	STG_PASSWORD = "Csci!830"
+	STG_DATABASE = "BI_STG_830"
 )
 
 func main() {
@@ -41,8 +50,14 @@ func main() {
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
 
+	stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
+	if err != nil {
+		panic(err)
+	}
+	defer stgDb.Close()
+
 	h := handler.NewHandler(s, f, sm, sh, amap)
-	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, f, sm, sh, amap))
+	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, stgDb, f, sm, sh, amap))
 	gs.Use(entgql.Transactioner{TxOpener: s.Client})
 	// gs.AddTransport(transport.Websocket{
 	// 	KeepAlivePingInterval: 10 * time.Second,

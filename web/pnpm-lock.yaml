@@ -64,7 +64,7 @@ importers:
         version: 2.5.0(@ui5/webcomponents-react-base@2.5.0(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(react@18.3.1))(@ui5/webcomponents-react@2.5.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(@ui5/webcomponents-fiori@2.5.1)(@ui5/webcomponents-icons@2.5.1)(@ui5/webcomponents@2.5.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       antd:
         specifier: ^5.22.5
-        version: 5.22.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.22.5(date-fns@4.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -74,6 +74,9 @@ importers:
       cmdk:
         specifier: 1.0.0
         version: 1.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -89,6 +92,9 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      react-day-picker:
+        specifier: 8.10.1
+        version: 8.10.1(date-fns@4.1.0)(react@18.3.1)
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
@@ -118,7 +124,7 @@ importers:
         version: 1.0.0-beta.8(typescript@5.6.3)
       web:
         specifier: 'file:'
-        version: file:(@tanstack/router-generator@1.87.7)(@types/react-dom@18.3.1)(@types/react@18.3.12)(@types/three@0.171.0)(@ui5/webcomponents-react-base@2.5.0(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(react@18.3.1))(@ui5/webcomponents-react@2.5.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(@ui5/webcomponents-fiori@2.5.1)(@ui5/webcomponents-icons@2.5.1)(@ui5/webcomponents@2.5.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(tailwindcss@3.4.14)(typescript@5.6.3)(use-sync-external-store@1.2.2(react@18.3.1))
+        version: file:(@tanstack/router-generator@1.87.7)(@types/react-dom@18.3.1)(@types/react@18.3.12)(@types/three@0.171.0)(@ui5/webcomponents-react-base@2.5.0(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(react@18.3.1))(@ui5/webcomponents-react@2.5.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(@ui5/webcomponents-fiori@2.5.1)(@ui5/webcomponents-icons@2.5.1)(@ui5/webcomponents@2.5.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(date-fns@4.1.0)(tailwindcss@3.4.14)(typescript@5.6.3)(use-sync-external-store@1.2.2(react@18.3.1))
       zustand:
         specifier: ^5.0.1
         version: 5.0.1(@types/react@18.3.12)(react@18.3.1)(use-sync-external-store@1.2.2(react@18.3.1))
@@ -2935,6 +2941,9 @@ packages:
   dataloader@2.2.2:
     resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
 
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
@@ -4395,6 +4404,12 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16.0.0'
+
+  react-day-picker@8.10.1:
+    resolution: {integrity: sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA==}
+    peerDependencies:
+      date-fns: ^2.28.0 || ^3.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
@@ -8041,7 +8056,7 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
-  antd@5.22.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  antd@5.22.5(date-fns@4.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.1.0
       '@ant-design/cssinjs': 1.22.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -8073,7 +8088,7 @@ snapshots:
       rc-motion: 2.9.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-notification: 5.6.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-pagination: 5.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rc-picker: 4.8.3(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rc-picker: 4.8.3(date-fns@4.1.0)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-progress: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-rate: 2.13.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-resize-observer: 1.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -8612,6 +8627,8 @@ snapshots:
       is-data-view: 1.0.1
 
   dataloader@2.2.2: {}
+
+  date-fns@4.1.0: {}
 
   dayjs@1.11.13: {}
 
@@ -9963,7 +9980,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  rc-picker@4.8.3(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  rc-picker@4.8.3(date-fns@4.1.0)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.26.0
       '@rc-component/trigger': 2.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -9974,6 +9991,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
+      date-fns: 4.1.0
       dayjs: 1.11.13
 
   rc-progress@4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
@@ -10145,6 +10163,11 @@ snapshots:
 
   react-content-loader@7.0.2(react@18.3.1):
     dependencies:
+      react: 18.3.1
+
+  react-day-picker@8.10.1(date-fns@4.1.0)(react@18.3.1):
+    dependencies:
+      date-fns: 4.1.0
       react: 18.3.1
 
   react-dom@18.3.1(react@18.3.1):
@@ -11013,7 +11036,7 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
-  web@file:(@tanstack/router-generator@1.87.7)(@types/react-dom@18.3.1)(@types/react@18.3.12)(@types/three@0.171.0)(@ui5/webcomponents-react-base@2.5.0(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(react@18.3.1))(@ui5/webcomponents-react@2.5.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(@ui5/webcomponents-fiori@2.5.1)(@ui5/webcomponents-icons@2.5.1)(@ui5/webcomponents@2.5.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(tailwindcss@3.4.14)(typescript@5.6.3)(use-sync-external-store@1.2.2(react@18.3.1)):
+  web@file:(@tanstack/router-generator@1.87.7)(@types/react-dom@18.3.1)(@types/react@18.3.12)(@types/three@0.171.0)(@ui5/webcomponents-react-base@2.5.0(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(react@18.3.1))(@ui5/webcomponents-react@2.5.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(@ui5/webcomponents-fiori@2.5.1)(@ui5/webcomponents-icons@2.5.1)(@ui5/webcomponents@2.5.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(date-fns@4.1.0)(tailwindcss@3.4.14)(typescript@5.6.3)(use-sync-external-store@1.2.2(react@18.3.1)):
     dependencies:
       '@amap/amap-jsapi-loader': 1.0.1
       '@ant-design/icons': 5.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -11033,7 +11056,7 @@ snapshots:
       '@tanstack/react-router': 1.91.3(@tanstack/router-generator@1.87.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/router-devtools': 1.91.3(@tanstack/react-router@1.91.3(@tanstack/router-generator@1.87.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ui5/webcomponents-react-charts': 2.5.0(@ui5/webcomponents-react-base@2.5.0(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(react@18.3.1))(@ui5/webcomponents-react@2.5.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(@ui5/webcomponents-base@2.5.1)(@ui5/webcomponents-fiori@2.5.1)(@ui5/webcomponents-icons@2.5.1)(@ui5/webcomponents@2.5.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      antd: 5.22.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      antd: 5.22.5(date-fns@4.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       class-variance-authority: 0.7.0
       clsx: 2.1.1
       cmdk: 1.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
