@@ -89,7 +89,7 @@ func (h handler) UploadProjectImage(c echo.Context) error {
 		defer src.Close()
 
 		dir := fmt.Sprintf("%sprojects/%s", config.FilePath, code)
-		if err := os.MkdirAll(fmt.Sprintf("%s/%s", dir, code), 0755); err != nil {
+		if err := os.MkdirAll(dir, 0755); err != nil {
 			return fmt.Errorf("failed to create directory: %w", err)
 		}
 		// Destination
