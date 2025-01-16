@@ -1575,7 +1575,7 @@ function ProjectOverviewTab({ pj }: { pj?: any }) {
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
         <Tabs.Content value={tabs[0]} className="relative h-full">
-          {code && <ProjectImage code={code} key={code} />}
+          {<ProjectImage code={code} key={code} />}
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-[280px] w-full">
@@ -1679,7 +1679,7 @@ function StaffDistribution(props: { data: any }) {
   return <Column {...config} />;
 }
 
-function ProjectImage({ code }: { code: string }) {
+function ProjectImage({ code }: { code?: string }) {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState(false);
 
@@ -1695,12 +1695,24 @@ function ProjectImage({ code }: { code: string }) {
         setEditing(false);
         setError(false);
         toast.success("上传成功");
+      } else {
+        toast.error("上传失败");
       }
     } catch (e) {
       console.error(e);
       toast.error("上传失败");
     }
   };
+
+  if (!code) {
+    return (
+      <div className="group relative mx-auto h-[280px] w-full">
+        <div className="absolute inset-0 flex items-center justify-center">
+          没有图片
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="group relative mx-auto h-[280px] w-full">
@@ -1721,7 +1733,7 @@ function ProjectImage({ code }: { code: string }) {
         <div className="flex h-full items-center px-2">
           <form onSubmit={onSubmit} className="dark">
             <Label htmlFor="picture">更换图片</Label>
-            <Input type="file" name="files" placeholder="上传图片" />
+            <Input type="file" name="files" placeholder="上传图片" required />
             <Button
               type="submit"
               variant="default"
