@@ -64,3 +64,43 @@ func (h handler) UploadFile(c echo.Context) error {
 	}
 	return nil
 }
+
+func (h handler) UploadProjectImage(c echo.Context) error {
+	code := c.Param("code")
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	files := form.File["files"]
+	for _, file := range files {
+		src, err := file.Open()
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+		defer src.Close()
+
+		dir := fmt.Sprintf("%sprojects/%s", config.FilePath, code)
+		if err := os.MkdirAll(fmt.Sprintf("%s/%s", dir, code), 0755); err != nil {
+			return fmt.Errorf("failed to create directory: %w", err)
+		}
+		// Destination
+		dst, err := os.Create(dir + "/" + code + ".png")
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+		defer dst.Close()
+
+		// Copy
+		if _, err = io.Copy(dst, src); err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+	}
+	return nil
+
+}

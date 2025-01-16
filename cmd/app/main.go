@@ -81,6 +81,7 @@ func main() {
 
 	projectedApiV1 := e.Group("/api/v1", sm.Middlware(), h.AuthMiddleware())
 	projectedApiV1.POST("/file/upload", h.UploadFile)
+	projectedApiV1.POST("/projects/:code/image", h.UploadProjectImage)
 	projectedApiV1.GET("/logout", func(c echo.Context) error {
 		if err := sm.Destroy(c.Request().Context()); err != nil {
 			return err
