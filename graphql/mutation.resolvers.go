@@ -463,10 +463,15 @@ func (r *mutationResolver) UpdateProject(ctx context.Context, id xid.ID, input e
 		go func() {
 			if _, err := r.stgDb.Exec(`
 			update mst_jobbasfil 
-			set 
-			opdate = @opdate, 
-			fsdate = @fsdate 
-			where jobcode = @jobcode`,
+				set 
+					opdate = @opdate, 
+					fsdate = @fsdate 
+			where 
+				jobcode = @jobcode
+				and pk_corp = '2837'
+				and finishedflag in ('N','Y')
+				AND JOBTYPE='J'
+			`,
 				sql.Named("opdate", p.OpDate),
 				sql.Named("fsdate", p.FsDate),
 				sql.Named("jobcode", p.Code),
