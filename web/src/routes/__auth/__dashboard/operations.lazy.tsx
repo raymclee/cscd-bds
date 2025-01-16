@@ -1220,7 +1220,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <Rhino />
               </div>
               <img src={projectOverviewTab} className="mx-auto w-[80%]" /> */}
-            <ProjectOverviewTab pj={pj} />
+            <ProjectOverviewTab pj={pj} defaultCode={defaultCode} />
             {/* </div> */}
             <div className="relative flex-1">
               {/* <img src={basicInfo} className="mx-auto w-[90%]" /> */}
@@ -1558,7 +1558,13 @@ function EditableBasicInfoItem({
   );
 }
 
-function ProjectOverviewTab({ pj }: { pj?: any }) {
+function ProjectOverviewTab({
+  pj,
+  defaultCode,
+}: {
+  pj?: any;
+  defaultCode?: string;
+}) {
   const tabs = ["形象进度", "BIM模型", "地盘人员分布"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [, startTransition] = useTransition();
@@ -1577,7 +1583,7 @@ function ProjectOverviewTab({ pj }: { pj?: any }) {
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
         <Tabs.Content value={tabs[0]} className="relative h-full">
-          {<ProjectImage key={code} />}
+          {<ProjectImage key={code} code={pj ? pj.code : defaultCode} />}
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-[280px] w-full">
@@ -1681,10 +1687,9 @@ function StaffDistribution(props: { data: any }) {
   return <Column {...config} />;
 }
 
-function ProjectImage() {
+function ProjectImage({ code }: { code?: string }) {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState(false);
-  const { code } = Route.useSearch();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1714,7 +1719,7 @@ function ProjectImage() {
           没有图片
         </div>
       )}
-      {!error && !editing && (
+      {!error && !editing && code && (
         <img
           src={`/static/projects/${code}/${code}.png`}
           className="mx-auto h-[280px] w-auto object-contain"
