@@ -88,6 +88,8 @@ import { useUpdateProject } from "~/hooks/use-update-project";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Toaster } from "~/components/ui/sonner";
+import { toast } from "sonner";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -175,7 +177,14 @@ function RouteComponent() {
     Route.useLoaderData(),
   );
 
-  return <Operation data={data} />;
+  return (
+    <>
+      <Operation data={data} />
+      <div className="dark">
+        <Toaster position="top-right" />
+      </div>
+    </>
+  );
 }
 
 function Operation({ data }: { data: operationsPageQuery$data }) {
@@ -1465,6 +1474,7 @@ function EditableBasicInfoItem({
       onCompleted: () => {
         onEditing(false);
         setOpen(false);
+        toast.success("已更新");
       },
     });
   };
@@ -1485,6 +1495,7 @@ function EditableBasicInfoItem({
       onCompleted: () => {
         onEditing(false);
         setOpen(false);
+        toast.success("已清除");
       },
     });
   };
@@ -1674,14 +1685,20 @@ function ProjectImage({ code }: { code: string }) {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const res = await fetch(`/api/v1/projects/${code}/image`, {
-      method: "POST",
-      body: formData,
-    });
-    if (res.ok) {
-      setEditing(false);
-      setError(false);
+    try {
+      const formData = new FormData(e.target as HTMLFormElement);
+      const res = await fetch(`/api/v1/projects/${code}/image`, {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        setEditing(false);
+        setError(false);
+        toast.success("上传成功");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("上传失败");
     }
   };
 
@@ -1732,30 +1749,6 @@ function ProjectImage({ code }: { code: string }) {
         >
           <Pencil />
         </Button>
-      )}
-    </div>
-  );
-}
-
-function PhotoUpload({ className }: { className?: string }) {
-  const [editing, setEditing] = useState(false);
-
-  return (
-    <div className="group">
-      {editing ? (
-        <form>
-          <input type="file" placeholder="上传图片" />
-          <button onClick={() => setEditing(false)} type="button">
-            取消
-          </button>
-        </form>
-      ) : (
-        <button
-          className="absolute right-0 top-0 opacity-0 group-hover:opacity-100"
-          onClick={() => setEditing(true)}
-        >
-          <Pencil size={12} />
-        </button>
       )}
     </div>
   );
