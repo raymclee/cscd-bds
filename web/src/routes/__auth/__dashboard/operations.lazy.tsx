@@ -7,7 +7,7 @@ import {
   operationsPageQuery$data,
 } from "__generated__/operationsPageQuery.graphql";
 import dayjs from "dayjs";
-import { ReactNode, useEffect, useState, useTransition } from "react";
+import { ReactNode, useEffect, useRef, useState, useTransition } from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { ProjectSelect } from "~/components/dashboard/project-select";
 import { SubTitle } from "~/components/project/sub-title";
@@ -91,6 +91,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Toaster } from "~/components/ui/sonner";
 import { toast } from "sonner";
+import { useOnClickOutside } from "usehooks-ts";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -1690,6 +1691,8 @@ function StaffDistribution(props: { data: any }) {
 function ProjectImage({ code }: { code?: string }) {
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
+  useOnClickOutside(ref, () => setEditing(false));
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1713,7 +1716,7 @@ function ProjectImage({ code }: { code?: string }) {
   };
 
   return (
-    <div className="group relative mx-auto h-[280px] w-full">
+    <div className="group relative mx-auto h-[280px] w-full" ref={ref}>
       {error && !editing && (
         <div className="absolute inset-0 flex items-center justify-center text-gray-500">
           没有图片
