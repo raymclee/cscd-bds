@@ -857,16 +857,16 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               <div className="relative h-[4.8rem] flex-1">
                 <img src={stockRight} className="absolute inset-0 my-auto" />
                 <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
-                  <TextScramble
+                  {/* <TextScramble
                     as="span"
                     characterSet="0123456789"
                     key={pj?.code}
                   >
                     683
-                  </TextScramble>
-                  <span className="ml-1 text-xs">
+                  </TextScramble> */}
+                  {/* <span className="ml-1 text-xs">
                     m<sup>2</sup>
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>

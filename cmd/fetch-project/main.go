@@ -1056,12 +1056,9 @@ func main() {
 					} else {
 						if jobtitle != nil && whr != nil {
 							switch *jobtitle {
-							case "助理/副/安裝經理":
-							case "地盤監督/高級地盤監督":
+							case "助理/副/安裝經理", "地盤監督/高級地盤監督":
 								staffInstall += *whr
-							case "助理/副項目總監/總監":
-							case "助理/副/項目協調員":
-							case "助理/副/項目經理":
+							case "助理/副項目總監/總監", "助理/副/項目協調員", "助理/副/項目經理":
 								staffManagement += *whr
 							}
 						}
