@@ -221,7 +221,8 @@ function RouteComponent() {
               danger
               disabled={
                 session?.userId === record.id ||
-                (record.isCeo && !session.isSuperAdmin)
+                (record.isCeo && !session.isSuperAdmin) ||
+                (record.isSuperAdmin && !session.isSuperAdmin)
               }
               loading={isDeleteUserInFlight}
             >
