@@ -1731,7 +1731,13 @@ function ProjectImage({ code }: { code?: string }) {
         <div className="flex h-full items-center px-2">
           <form onSubmit={onSubmit} className="dark">
             <Label htmlFor="picture">更换图片</Label>
-            <Input type="file" name="files" placeholder="上传图片" required />
+            <Input
+              type="file"
+              name="files"
+              placeholder="上传图片"
+              required
+              accept="image/png,image/jpeg,image/jpg"
+            />
             <Button
               type="submit"
               variant="default"
