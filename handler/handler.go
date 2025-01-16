@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
@@ -74,6 +75,11 @@ func (h handler) UploadProjectImage(c echo.Context) error {
 		return err
 	}
 	files := form.File["files"]
+
+	if len(files) == 0 {
+		return c.NoContent(http.StatusBadRequest)
+	}
+
 	for _, file := range files {
 		src, err := file.Open()
 		if err != nil {
