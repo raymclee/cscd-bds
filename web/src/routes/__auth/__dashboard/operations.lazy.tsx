@@ -1707,7 +1707,7 @@ function ProjectImage({ code }: { code?: string }) {
   if (!code) {
     return (
       <div className="group relative mx-auto h-[280px] w-full">
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center text-gray-500">
           没有图片
         </div>
       </div>
@@ -1717,7 +1717,7 @@ function ProjectImage({ code }: { code?: string }) {
   return (
     <div className="group relative mx-auto h-[280px] w-full">
       {error && !editing && (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center text-gray-500">
           没有图片
         </div>
       )}
