@@ -20,6 +20,7 @@ import {
   percent,
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
+import { zhCN } from "date-fns/locale";
 
 import instantMessage from "~/assets/instant_message.png";
 import b1 from "~/assets/svg/box1.png";
@@ -1533,6 +1534,7 @@ function EditableBasicInfoItem({
           </PopoverTrigger>
           <PopoverContent className="dark w-auto p-0">
             <Calendar
+              locale={zhCN}
               classNames={{
                 day_selected:
                   "bg-brand-project text-slate-800 hover:bg-brand-project hover:text-slate-800 focus:bg-brand-project focus:text-slate-800",
