@@ -1502,7 +1502,7 @@ function EditableBasicInfoItem({
               {editing ? (
                 <>
                   <span className="flex-1 rounded border border-brand-project bg-transparent px-1 text-xxs text-brand-project">
-                    请选择日期
+                    请选择日期&#44; 点击周围或ESC取消
                   </span>
                 </>
               ) : (
@@ -1513,7 +1513,7 @@ function EditableBasicInfoItem({
 
                   <Pencil
                     size={12}
-                    className="opacity-0 transition-opacity group-hover:opacity-100"
+                    className="text-brand-project opacity-0 transition-opacity group-hover:opacity-100"
                   />
                 </>
               )}
@@ -1532,7 +1532,7 @@ function EditableBasicInfoItem({
             />
           </PopoverContent>
         </Popover>
-        {value && (
+        {value && !editing && (
           <CircleX
             size={12}
             className="ml-2 cursor-pointer text-red-500 opacity-0 transition-opacity group-hover:opacity-100"
