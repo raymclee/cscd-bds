@@ -1,35 +1,34 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { Column, ColumnConfig } from "@ant-design/plots";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import * as Tabs from "@radix-ui/react-tabs";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import {
   operationsPageQuery,
   operationsPageQuery$data,
 } from "__generated__/operationsPageQuery.graphql";
-import { ReactNode, useEffect, useRef, useState, useTransition } from "react";
+import dayjs from "dayjs";
+import { ReactNode, useEffect, useState, useTransition } from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
+import { ProjectSelect } from "~/components/dashboard/project-select";
 import { SubTitle } from "~/components/project/sub-title";
 import { Rhino } from "~/components/rhino";
 import { MaterialStatusIcon } from "~/components/ui/material-status-icon";
-import { ProjectSelect } from "~/components/dashboard/project-select";
+import { TextScramble } from "~/components/ui/text-scramble";
 import {
   formatProjectAmount,
   materialStatusIconColor,
   percent,
 } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import dayjs from "dayjs";
-import { TextScramble } from "~/components/ui/text-scramble";
-import { Column, ColumnConfig } from "@ant-design/plots";
 
+import instantMessage from "~/assets/instant_message.png";
 import b1 from "~/assets/svg/box1.png";
 import b2 from "~/assets/svg/box2.png";
 import b3 from "~/assets/svg/box3.png";
 import b4 from "~/assets/svg/box4.png";
 import b5 from "~/assets/svg/box5.png";
 import top from "~/assets/svg/top.png";
-import instantMessage from "~/assets/instant_message.png";
 
-import projectManagementTitle from "~/assets/svg/project_management_title.png";
 import projectProgressTitle from "~/assets/svg/project_progress_title.png";
 
 import leftArrow from "~/assets/svg/left_arrow.png";
@@ -77,16 +76,18 @@ import componentTop from "~/assets/svg/component_top.png";
 import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
 
-import { Check, CircleX, Pencil, X } from "lucide-react";
-import { useUpdateProject } from "~/hooks/use-update-project";
-import { useOnClickOutside } from "usehooks-ts";
+import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
+import { CircleX, Pencil } from "lucide-react";
+import { Calendar } from "~/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { Calendar } from "~/components/ui/calendar";
-import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
+import { useUpdateProject } from "~/hooks/use-update-project";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -1563,12 +1564,7 @@ function ProjectOverviewTab({ pj }: { pj?: any }) {
     >
       <div className="mx-auto w-[90%] flex-1 self-stretch overflow-hidden">
         <Tabs.Content value={tabs[0]} className="relative h-full">
-          {code && (
-            <ProjectImage
-              src={`/static/projects/${code}/${code}.png`}
-              key={code}
-            />
-          )}
+          {code && <ProjectImage code={code} key={code} />}
         </Tabs.Content>
 
         <Tabs.Content value={tabs[1]} className="relative h-[280px] w-full">
@@ -1672,21 +1668,94 @@ function StaffDistribution(props: { data: any }) {
   return <Column {...config} />;
 }
 
-function ProjectImage({ src }: { src: string }) {
+function ProjectImage({ code }: { code: string }) {
   const [error, setError] = useState(false);
+  const [editing, setEditing] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const res = await fetch(`/api/v1/projects/${code}/image`, {
+      method: "POST",
+      body: formData,
+    });
+    if (res.ok) {
+      setEditing(false);
+      setError(false);
+    }
+  };
 
   return (
-    <div className="relative mx-auto h-[280px] w-auto">
-      {error ? (
+    <div className="group relative mx-auto h-[280px] w-full">
+      {error && !editing && (
         <div className="absolute inset-0 flex items-center justify-center">
           没有图片
         </div>
-      ) : (
+      )}
+      {!error && !editing && (
         <img
-          src={src}
+          src={`/static/projects/${code}/${code}.png`}
           className="mx-auto h-[280px] w-auto object-contain"
           onError={() => setError(true)}
         />
+      )}
+
+      {editing ? (
+        <div className="flex h-full items-center px-2">
+          <form onSubmit={onSubmit} className="dark">
+            <Label htmlFor="picture">更换图片</Label>
+            <Input type="file" name="files" placeholder="上传图片" />
+            <Button
+              type="submit"
+              variant="default"
+              className="bg-sky-900 hover:bg-sky-700"
+              size={"sm"}
+            >
+              上传
+            </Button>
+            <Button
+              className="ml-2 mt-4 text-red-500 hover:bg-red-800/20"
+              onClick={() => setEditing(false)}
+              type="button"
+              variant="ghost"
+              size={"sm"}
+            >
+              取消
+            </Button>
+          </form>
+        </div>
+      ) : (
+        <Button
+          className="absolute right-0 top-0 bg-sky-900 opacity-0 hover:bg-sky-700 group-hover:opacity-100"
+          onClick={() => setEditing(true)}
+          size={"icon"}
+        >
+          <Pencil />
+        </Button>
+      )}
+    </div>
+  );
+}
+
+function PhotoUpload({ className }: { className?: string }) {
+  const [editing, setEditing] = useState(false);
+
+  return (
+    <div className="group">
+      {editing ? (
+        <form>
+          <input type="file" placeholder="上传图片" />
+          <button onClick={() => setEditing(false)} type="button">
+            取消
+          </button>
+        </form>
+      ) : (
+        <button
+          className="absolute right-0 top-0 opacity-0 group-hover:opacity-100"
+          onClick={() => setEditing(true)}
+        >
+          <Pencil size={12} />
+        </button>
       )}
     </div>
   );
