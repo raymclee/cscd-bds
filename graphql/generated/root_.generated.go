@@ -349,6 +349,9 @@ type ComplexityRoot struct {
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
+		UnitComponentInstallation               func(childComplexity int) int
+		UnitComponentProduction                 func(childComplexity int) int
+		UnitComponentTotal                      func(childComplexity int) int
 		UnitInventoryTotal                      func(childComplexity int) int
 		UpdatedAt                               func(childComplexity int) int
 		VaApplyAmount                           func(childComplexity int) int
@@ -2305,6 +2308,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.TotalContractAmount(childComplexity), true
+
+	case "Project.unitComponentInstallation":
+		if e.complexity.Project.UnitComponentInstallation == nil {
+			break
+		}
+
+		return e.complexity.Project.UnitComponentInstallation(childComplexity), true
+
+	case "Project.unitComponentProduction":
+		if e.complexity.Project.UnitComponentProduction == nil {
+			break
+		}
+
+		return e.complexity.Project.UnitComponentProduction(childComplexity), true
+
+	case "Project.unitComponentTotal":
+		if e.complexity.Project.UnitComponentTotal == nil {
+			break
+		}
+
+		return e.complexity.Project.UnitComponentTotal(childComplexity), true
 
 	case "Project.unitInventoryTotal":
 		if e.complexity.Project.UnitInventoryTotal == nil {
@@ -6516,6 +6540,18 @@ type Project implements Node {
   """
   unitInventoryTotal: Float
   """
+  單元件總數
+  """
+  unitComponentTotal: Float
+  """
+  單元件生產數量
+  """
+  unitComponentProduction: Float
+  """
+  單元件安裝數量
+  """
+  unitComponentInstallation: Float
+  """
   物料損失金額
   """
   materialLoss: Float
@@ -7775,6 +7811,45 @@ input ProjectWhereInput {
   unitInventoryTotalLTE: Float
   unitInventoryTotalIsNil: Boolean
   unitInventoryTotalNotNil: Boolean
+  """
+  unit_component_total field predicates
+  """
+  unitComponentTotal: Float
+  unitComponentTotalNEQ: Float
+  unitComponentTotalIn: [Float!]
+  unitComponentTotalNotIn: [Float!]
+  unitComponentTotalGT: Float
+  unitComponentTotalGTE: Float
+  unitComponentTotalLT: Float
+  unitComponentTotalLTE: Float
+  unitComponentTotalIsNil: Boolean
+  unitComponentTotalNotNil: Boolean
+  """
+  unit_component_production field predicates
+  """
+  unitComponentProduction: Float
+  unitComponentProductionNEQ: Float
+  unitComponentProductionIn: [Float!]
+  unitComponentProductionNotIn: [Float!]
+  unitComponentProductionGT: Float
+  unitComponentProductionGTE: Float
+  unitComponentProductionLT: Float
+  unitComponentProductionLTE: Float
+  unitComponentProductionIsNil: Boolean
+  unitComponentProductionNotNil: Boolean
+  """
+  unit_component_installation field predicates
+  """
+  unitComponentInstallation: Float
+  unitComponentInstallationNEQ: Float
+  unitComponentInstallationIn: [Float!]
+  unitComponentInstallationNotIn: [Float!]
+  unitComponentInstallationGT: Float
+  unitComponentInstallationGTE: Float
+  unitComponentInstallationLT: Float
+  unitComponentInstallationLTE: Float
+  unitComponentInstallationIsNil: Boolean
+  unitComponentInstallationNotNil: Boolean
   """
   material_loss field predicates
   """
@@ -10147,6 +10222,21 @@ input UpdateProjectInput {
   """
   unitInventoryTotal: Float
   clearUnitInventoryTotal: Boolean
+  """
+  單元件總數
+  """
+  unitComponentTotal: Float
+  clearUnitComponentTotal: Boolean
+  """
+  單元件生產數量
+  """
+  unitComponentProduction: Float
+  clearUnitComponentProduction: Boolean
+  """
+  單元件安裝數量
+  """
+  unitComponentInstallation: Float
+  clearUnitComponentInstallation: Boolean
   """
   物料損失金額
   """

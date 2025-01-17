@@ -19,6 +19,7 @@ const documents = {
     "\n    mutation useCreateUserMutation(\n      $input: CreateUserInput!\n      $connections: [ID!]!\n    ) {\n      createUser(input: $input) {\n        edges @appendEdge(connections: $connections) {\n          node {\n            id\n            name\n            email\n            username\n            openID\n            avatarURL\n            disabled\n            areas {\n              edges {\n                node {\n                  id\n                  name\n                }\n              }\n            }\n            isAdmin\n            hasMapAccess\n            hasEditAccess\n          }\n        }\n      }\n    }\n  ": types.UseCreateUserMutationDocument,
     "\n    mutation useDeleteUserMutation($id: ID!, $connections: [ID!]!) {\n      deleteUser(id: $id) {\n        id @deleteEdge(connections: $connections)\n      }\n    }\n  ": types.UseDeleteUserMutationDocument,
     "\n    mutation useUpdateCompetitorMutation(\n      $id: ID!\n      $input: UpdateCompetitorInput!\n    ) {\n      updateCompetitor(id: $id, input: $input) {\n        id\n        shortName\n        name\n      }\n    }\n  ": types.UseUpdateCompetitorMutationDocument,
+    "\n    mutation useUpdateProjectMutation($id: ID!, $input: UpdateProjectInput!) {\n      updateProject(id: $id, input: $input) {\n        fsDate\n        opDate\n      }\n    }\n  ": types.UseUpdateProjectMutationDocument,
     "\n    mutation useUpdateUserMutation($id: ID!, $input: UpdateUserInput!) {\n      updateUser(id: $id, input: $input) {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isSuperAdmin\n        isAdmin\n        isCeo\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  ": types.UseUpdateUserMutationDocument,
 };
 
@@ -38,6 +39,10 @@ export function graphql(source: "\n    mutation useDeleteUserMutation($id: ID!, 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation useUpdateCompetitorMutation(\n      $id: ID!\n      $input: UpdateCompetitorInput!\n    ) {\n      updateCompetitor(id: $id, input: $input) {\n        id\n        shortName\n        name\n      }\n    }\n  "): typeof import('./graphql').UseUpdateCompetitorMutationDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation useUpdateProjectMutation($id: ID!, $input: UpdateProjectInput!) {\n      updateProject(id: $id, input: $input) {\n        fsDate\n        opDate\n      }\n    }\n  "): typeof import('./graphql').UseUpdateProjectMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

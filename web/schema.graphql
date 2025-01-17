@@ -1831,6 +1831,12 @@ type Project implements Node {
   startDate: Time
   """合約总额"""
   totalContractAmount: Float
+  """單元件安裝數量"""
+  unitComponentInstallation: Float
+  """單元件生產數量"""
+  unitComponentProduction: Float
+  """單元件總數"""
+  unitComponentTotal: Float
   """單元件庫存累計"""
   unitInventoryTotal: Float
   updatedAt: Time!
@@ -2766,6 +2772,39 @@ input ProjectWhereInput {
   totalContractAmountNEQ: Float
   totalContractAmountNotIn: [Float!]
   totalContractAmountNotNil: Boolean
+  """unit_component_installation field predicates"""
+  unitComponentInstallation: Float
+  unitComponentInstallationGT: Float
+  unitComponentInstallationGTE: Float
+  unitComponentInstallationIn: [Float!]
+  unitComponentInstallationIsNil: Boolean
+  unitComponentInstallationLT: Float
+  unitComponentInstallationLTE: Float
+  unitComponentInstallationNEQ: Float
+  unitComponentInstallationNotIn: [Float!]
+  unitComponentInstallationNotNil: Boolean
+  """unit_component_production field predicates"""
+  unitComponentProduction: Float
+  unitComponentProductionGT: Float
+  unitComponentProductionGTE: Float
+  unitComponentProductionIn: [Float!]
+  unitComponentProductionIsNil: Boolean
+  unitComponentProductionLT: Float
+  unitComponentProductionLTE: Float
+  unitComponentProductionNEQ: Float
+  unitComponentProductionNotIn: [Float!]
+  unitComponentProductionNotNil: Boolean
+  """unit_component_total field predicates"""
+  unitComponentTotal: Float
+  unitComponentTotalGT: Float
+  unitComponentTotalGTE: Float
+  unitComponentTotalIn: [Float!]
+  unitComponentTotalIsNil: Boolean
+  unitComponentTotalLT: Float
+  unitComponentTotalLTE: Float
+  unitComponentTotalNEQ: Float
+  unitComponentTotalNotIn: [Float!]
+  unitComponentTotalNotNil: Boolean
   """unit_inventory_total field predicates"""
   unitInventoryTotal: Float
   unitInventoryTotalGT: Float
@@ -4568,6 +4607,9 @@ input UpdateProjectInput {
   clearProjectStaffs: Boolean
   clearStartDate: Boolean
   clearTotalContractAmount: Boolean
+  clearUnitComponentInstallation: Boolean
+  clearUnitComponentProduction: Boolean
+  clearUnitComponentTotal: Boolean
   clearUnitInventoryTotal: Boolean
   clearVaApplyAmount: Boolean
   clearVaApproveAmount: Boolean
@@ -4656,6 +4698,12 @@ input UpdateProjectInput {
   startDate: Time
   """合約总额"""
   totalContractAmount: Float
+  """單元件安裝數量"""
+  unitComponentInstallation: Float
+  """單元件生產數量"""
+  unitComponentProduction: Float
+  """單元件總數"""
+  unitComponentTotal: Float
   """單元件庫存累計"""
   unitInventoryTotal: Float
   updatedAt: Time

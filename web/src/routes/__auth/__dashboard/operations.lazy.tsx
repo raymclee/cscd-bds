@@ -78,7 +78,7 @@ import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
 
 import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
-import { CircleX, Pencil } from "lucide-react";
+import { CircleX, Pencil, Trash2 } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import {
   Popover,
@@ -157,6 +157,9 @@ function RouteComponent() {
               pmTotal
               pmYesterday
               unitInventoryTotal
+              unitComponentTotal
+              unitComponentProduction
+              unitComponentInstallation
               materialLoss
               projectStaffs(
                 first: 3
@@ -301,6 +304,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const pmTotal = pj?.pmTotal || 0;
   const pmYesterday = pj?.pmYesterday || 0;
   const unitInventoryTotal = pj?.unitInventoryTotal || 0;
+  const unitComponentTotal = pj?.unitComponentTotal || 0;
+  const unitComponentProduction = pj?.unitComponentProduction || 0;
+  const unitComponentInstallation = pj?.unitComponentInstallation || 0;
   const materialLoss = pj?.materialLoss || 0;
 
   return (
@@ -1390,8 +1396,43 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>单元件与散料</SubTitle>
             <div className="space-y-2 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
-              <div className="h-14">
-                <img src={componentTop} />
+              <div className="relative h-14">
+                <img
+                  src={componentTop}
+                  className="absolute inset-0 h-auto w-full object-cover"
+                />
+                <div className="relative ml-24 grid h-full w-[70%] grid-cols-3 items-center pt-1">
+                  <div className="text-center">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      className="font-bold text-brand-project-2"
+                    >
+                      {`${unitComponentTotal}`}
+                    </TextScramble>
+                    <div className="text-xxs opacity-80">总数 (件)</div>
+                  </div>
+                  <div className="text-center">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      className="font-bold text-brand-project-2"
+                    >
+                      {`${unitComponentProduction}`}
+                    </TextScramble>
+                    <div className="text-xxs opacity-80">生产数 (件)</div>
+                  </div>
+                  <div className="text-center">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      className="font-bold text-brand-project-2"
+                    >
+                      {`${unitComponentInstallation}`}
+                    </TextScramble>
+                    <div className="text-xxs opacity-80">安装数 (件)</div>
+                  </div>
+                </div>
               </div>
               <div className="h-14">
                 <img src={componentBottom} />
@@ -1548,7 +1589,7 @@ function EditableBasicInfoItem({
           </PopoverContent>
         </Popover>
         {value && !editing && (
-          <CircleX
+          <Trash2
             size={12}
             className="ml-2 cursor-pointer text-red-500 opacity-0 transition-opacity group-hover:opacity-100"
             onClick={onClear}
@@ -1724,7 +1765,7 @@ function ProjectImage({ code }: { code?: string }) {
       )}
       {!error && !editing && code && (
         <img
-          src={`/static/projects/${code}/${code}.png`}
+          src={`/static/projects/${code}/${code}.png?t=${Date.now()}`}
           className="mx-auto h-[280px] w-auto object-contain"
           onError={() => setError(true)}
         />

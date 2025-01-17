@@ -341,6 +341,21 @@ func UnitInventoryTotal(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldUnitInventoryTotal, v))
 }
 
+// UnitComponentTotal applies equality check predicate on the "unit_component_total" field. It's identical to UnitComponentTotalEQ.
+func UnitComponentTotal(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentProduction applies equality check predicate on the "unit_component_production" field. It's identical to UnitComponentProductionEQ.
+func UnitComponentProduction(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentInstallation applies equality check predicate on the "unit_component_installation" field. It's identical to UnitComponentInstallationEQ.
+func UnitComponentInstallation(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitComponentInstallation, v))
+}
+
 // MaterialLoss applies equality check predicate on the "material_loss" field. It's identical to MaterialLossEQ.
 func MaterialLoss(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldMaterialLoss, v))
@@ -3399,6 +3414,156 @@ func UnitInventoryTotalIsNil() predicate.Project {
 // UnitInventoryTotalNotNil applies the NotNil predicate on the "unit_inventory_total" field.
 func UnitInventoryTotalNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldUnitInventoryTotal))
+}
+
+// UnitComponentTotalEQ applies the EQ predicate on the "unit_component_total" field.
+func UnitComponentTotalEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentTotalNEQ applies the NEQ predicate on the "unit_component_total" field.
+func UnitComponentTotalNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentTotalIn applies the In predicate on the "unit_component_total" field.
+func UnitComponentTotalIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldUnitComponentTotal, vs...))
+}
+
+// UnitComponentTotalNotIn applies the NotIn predicate on the "unit_component_total" field.
+func UnitComponentTotalNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldUnitComponentTotal, vs...))
+}
+
+// UnitComponentTotalGT applies the GT predicate on the "unit_component_total" field.
+func UnitComponentTotalGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentTotalGTE applies the GTE predicate on the "unit_component_total" field.
+func UnitComponentTotalGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentTotalLT applies the LT predicate on the "unit_component_total" field.
+func UnitComponentTotalLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentTotalLTE applies the LTE predicate on the "unit_component_total" field.
+func UnitComponentTotalLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldUnitComponentTotal, v))
+}
+
+// UnitComponentTotalIsNil applies the IsNil predicate on the "unit_component_total" field.
+func UnitComponentTotalIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldUnitComponentTotal))
+}
+
+// UnitComponentTotalNotNil applies the NotNil predicate on the "unit_component_total" field.
+func UnitComponentTotalNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldUnitComponentTotal))
+}
+
+// UnitComponentProductionEQ applies the EQ predicate on the "unit_component_production" field.
+func UnitComponentProductionEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentProductionNEQ applies the NEQ predicate on the "unit_component_production" field.
+func UnitComponentProductionNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentProductionIn applies the In predicate on the "unit_component_production" field.
+func UnitComponentProductionIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldUnitComponentProduction, vs...))
+}
+
+// UnitComponentProductionNotIn applies the NotIn predicate on the "unit_component_production" field.
+func UnitComponentProductionNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldUnitComponentProduction, vs...))
+}
+
+// UnitComponentProductionGT applies the GT predicate on the "unit_component_production" field.
+func UnitComponentProductionGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentProductionGTE applies the GTE predicate on the "unit_component_production" field.
+func UnitComponentProductionGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentProductionLT applies the LT predicate on the "unit_component_production" field.
+func UnitComponentProductionLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentProductionLTE applies the LTE predicate on the "unit_component_production" field.
+func UnitComponentProductionLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldUnitComponentProduction, v))
+}
+
+// UnitComponentProductionIsNil applies the IsNil predicate on the "unit_component_production" field.
+func UnitComponentProductionIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldUnitComponentProduction))
+}
+
+// UnitComponentProductionNotNil applies the NotNil predicate on the "unit_component_production" field.
+func UnitComponentProductionNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldUnitComponentProduction))
+}
+
+// UnitComponentInstallationEQ applies the EQ predicate on the "unit_component_installation" field.
+func UnitComponentInstallationEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldUnitComponentInstallation, v))
+}
+
+// UnitComponentInstallationNEQ applies the NEQ predicate on the "unit_component_installation" field.
+func UnitComponentInstallationNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldUnitComponentInstallation, v))
+}
+
+// UnitComponentInstallationIn applies the In predicate on the "unit_component_installation" field.
+func UnitComponentInstallationIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldUnitComponentInstallation, vs...))
+}
+
+// UnitComponentInstallationNotIn applies the NotIn predicate on the "unit_component_installation" field.
+func UnitComponentInstallationNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldUnitComponentInstallation, vs...))
+}
+
+// UnitComponentInstallationGT applies the GT predicate on the "unit_component_installation" field.
+func UnitComponentInstallationGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldUnitComponentInstallation, v))
+}
+
+// UnitComponentInstallationGTE applies the GTE predicate on the "unit_component_installation" field.
+func UnitComponentInstallationGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldUnitComponentInstallation, v))
+}
+
+// UnitComponentInstallationLT applies the LT predicate on the "unit_component_installation" field.
+func UnitComponentInstallationLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldUnitComponentInstallation, v))
+}
+
+// UnitComponentInstallationLTE applies the LTE predicate on the "unit_component_installation" field.
+func UnitComponentInstallationLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldUnitComponentInstallation, v))
+}
+
+// UnitComponentInstallationIsNil applies the IsNil predicate on the "unit_component_installation" field.
+func UnitComponentInstallationIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldUnitComponentInstallation))
+}
+
+// UnitComponentInstallationNotNil applies the NotNil predicate on the "unit_component_installation" field.
+func UnitComponentInstallationNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldUnitComponentInstallation))
 }
 
 // MaterialLossEQ applies the EQ predicate on the "material_loss" field.

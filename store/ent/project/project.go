@@ -129,6 +129,12 @@ const (
 	FieldPmYesterday = "pm_yesterday"
 	// FieldUnitInventoryTotal holds the string denoting the unit_inventory_total field in the database.
 	FieldUnitInventoryTotal = "unit_inventory_total"
+	// FieldUnitComponentTotal holds the string denoting the unit_component_total field in the database.
+	FieldUnitComponentTotal = "unit_component_total"
+	// FieldUnitComponentProduction holds the string denoting the unit_component_production field in the database.
+	FieldUnitComponentProduction = "unit_component_production"
+	// FieldUnitComponentInstallation holds the string denoting the unit_component_installation field in the database.
+	FieldUnitComponentInstallation = "unit_component_installation"
 	// FieldMaterialLoss holds the string denoting the material_loss field in the database.
 	FieldMaterialLoss = "material_loss"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
@@ -213,6 +219,9 @@ var Columns = []string{
 	FieldPmTotal,
 	FieldPmYesterday,
 	FieldUnitInventoryTotal,
+	FieldUnitComponentTotal,
+	FieldUnitComponentProduction,
+	FieldUnitComponentInstallation,
 	FieldMaterialLoss,
 }
 
@@ -530,6 +539,21 @@ func ByPmYesterday(opts ...sql.OrderTermOption) OrderOption {
 // ByUnitInventoryTotal orders the results by the unit_inventory_total field.
 func ByUnitInventoryTotal(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUnitInventoryTotal, opts...).ToFunc()
+}
+
+// ByUnitComponentTotal orders the results by the unit_component_total field.
+func ByUnitComponentTotal(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUnitComponentTotal, opts...).ToFunc()
+}
+
+// ByUnitComponentProduction orders the results by the unit_component_production field.
+func ByUnitComponentProduction(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUnitComponentProduction, opts...).ToFunc()
+}
+
+// ByUnitComponentInstallation orders the results by the unit_component_installation field.
+func ByUnitComponentInstallation(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUnitComponentInstallation, opts...).ToFunc()
 }
 
 // ByMaterialLoss orders the results by the material_loss field.

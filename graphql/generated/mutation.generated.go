@@ -3145,6 +3145,12 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_pmYesterday(ctx, field)
 			case "unitInventoryTotal":
 				return ec.fieldContext_Project_unitInventoryTotal(ctx, field)
+			case "unitComponentTotal":
+				return ec.fieldContext_Project_unitComponentTotal(ctx, field)
+			case "unitComponentProduction":
+				return ec.fieldContext_Project_unitComponentProduction(ctx, field)
+			case "unitComponentInstallation":
+				return ec.fieldContext_Project_unitComponentInstallation(ctx, field)
 			case "materialLoss":
 				return ec.fieldContext_Project_materialLoss(ctx, field)
 			case "vos":

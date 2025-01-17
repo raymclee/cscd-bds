@@ -2567,6 +2567,21 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldUnitInventoryTotal)
 				fieldSeen[project.FieldUnitInventoryTotal] = struct{}{}
 			}
+		case "unitComponentTotal":
+			if _, ok := fieldSeen[project.FieldUnitComponentTotal]; !ok {
+				selectedFields = append(selectedFields, project.FieldUnitComponentTotal)
+				fieldSeen[project.FieldUnitComponentTotal] = struct{}{}
+			}
+		case "unitComponentProduction":
+			if _, ok := fieldSeen[project.FieldUnitComponentProduction]; !ok {
+				selectedFields = append(selectedFields, project.FieldUnitComponentProduction)
+				fieldSeen[project.FieldUnitComponentProduction] = struct{}{}
+			}
+		case "unitComponentInstallation":
+			if _, ok := fieldSeen[project.FieldUnitComponentInstallation]; !ok {
+				selectedFields = append(selectedFields, project.FieldUnitComponentInstallation)
+				fieldSeen[project.FieldUnitComponentInstallation] = struct{}{}
+			}
 		case "materialLoss":
 			if _, ok := fieldSeen[project.FieldMaterialLoss]; !ok {
 				selectedFields = append(selectedFields, project.FieldMaterialLoss)

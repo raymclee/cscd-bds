@@ -388,6 +388,21 @@ func (Project) Fields() []ent.Field {
 			Nillable().
 			Comment("單元件庫存累計"),
 
+		field.Float("unit_component_total").
+			Optional().
+			Nillable().
+			Comment("單元件總數"),
+
+		field.Float("unit_component_production").
+			Optional().
+			Nillable().
+			Comment("單元件生產數量"),
+
+		field.Float("unit_component_installation").
+			Optional().
+			Nillable().
+			Comment("單元件安裝數量"),
+
 		field.Float("material_loss").
 			Optional().
 			Nillable().

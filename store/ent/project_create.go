@@ -816,6 +816,48 @@ func (pc *ProjectCreate) SetNillableUnitInventoryTotal(f *float64) *ProjectCreat
 	return pc
 }
 
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (pc *ProjectCreate) SetUnitComponentTotal(f float64) *ProjectCreate {
+	pc.mutation.SetUnitComponentTotal(f)
+	return pc
+}
+
+// SetNillableUnitComponentTotal sets the "unit_component_total" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableUnitComponentTotal(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetUnitComponentTotal(*f)
+	}
+	return pc
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (pc *ProjectCreate) SetUnitComponentProduction(f float64) *ProjectCreate {
+	pc.mutation.SetUnitComponentProduction(f)
+	return pc
+}
+
+// SetNillableUnitComponentProduction sets the "unit_component_production" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableUnitComponentProduction(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetUnitComponentProduction(*f)
+	}
+	return pc
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (pc *ProjectCreate) SetUnitComponentInstallation(f float64) *ProjectCreate {
+	pc.mutation.SetUnitComponentInstallation(f)
+	return pc
+}
+
+// SetNillableUnitComponentInstallation sets the "unit_component_installation" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableUnitComponentInstallation(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetUnitComponentInstallation(*f)
+	}
+	return pc
+}
+
 // SetMaterialLoss sets the "material_loss" field.
 func (pc *ProjectCreate) SetMaterialLoss(f float64) *ProjectCreate {
 	pc.mutation.SetMaterialLoss(f)
@@ -1204,6 +1246,18 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.UnitInventoryTotal(); ok {
 		_spec.SetField(project.FieldUnitInventoryTotal, field.TypeFloat64, value)
 		_node.UnitInventoryTotal = &value
+	}
+	if value, ok := pc.mutation.UnitComponentTotal(); ok {
+		_spec.SetField(project.FieldUnitComponentTotal, field.TypeFloat64, value)
+		_node.UnitComponentTotal = &value
+	}
+	if value, ok := pc.mutation.UnitComponentProduction(); ok {
+		_spec.SetField(project.FieldUnitComponentProduction, field.TypeFloat64, value)
+		_node.UnitComponentProduction = &value
+	}
+	if value, ok := pc.mutation.UnitComponentInstallation(); ok {
+		_spec.SetField(project.FieldUnitComponentInstallation, field.TypeFloat64, value)
+		_node.UnitComponentInstallation = &value
 	}
 	if value, ok := pc.mutation.MaterialLoss(); ok {
 		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
@@ -2514,6 +2568,78 @@ func (u *ProjectUpsert) AddUnitInventoryTotal(v float64) *ProjectUpsert {
 // ClearUnitInventoryTotal clears the value of the "unit_inventory_total" field.
 func (u *ProjectUpsert) ClearUnitInventoryTotal() *ProjectUpsert {
 	u.SetNull(project.FieldUnitInventoryTotal)
+	return u
+}
+
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (u *ProjectUpsert) SetUnitComponentTotal(v float64) *ProjectUpsert {
+	u.Set(project.FieldUnitComponentTotal, v)
+	return u
+}
+
+// UpdateUnitComponentTotal sets the "unit_component_total" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateUnitComponentTotal() *ProjectUpsert {
+	u.SetExcluded(project.FieldUnitComponentTotal)
+	return u
+}
+
+// AddUnitComponentTotal adds v to the "unit_component_total" field.
+func (u *ProjectUpsert) AddUnitComponentTotal(v float64) *ProjectUpsert {
+	u.Add(project.FieldUnitComponentTotal, v)
+	return u
+}
+
+// ClearUnitComponentTotal clears the value of the "unit_component_total" field.
+func (u *ProjectUpsert) ClearUnitComponentTotal() *ProjectUpsert {
+	u.SetNull(project.FieldUnitComponentTotal)
+	return u
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (u *ProjectUpsert) SetUnitComponentProduction(v float64) *ProjectUpsert {
+	u.Set(project.FieldUnitComponentProduction, v)
+	return u
+}
+
+// UpdateUnitComponentProduction sets the "unit_component_production" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateUnitComponentProduction() *ProjectUpsert {
+	u.SetExcluded(project.FieldUnitComponentProduction)
+	return u
+}
+
+// AddUnitComponentProduction adds v to the "unit_component_production" field.
+func (u *ProjectUpsert) AddUnitComponentProduction(v float64) *ProjectUpsert {
+	u.Add(project.FieldUnitComponentProduction, v)
+	return u
+}
+
+// ClearUnitComponentProduction clears the value of the "unit_component_production" field.
+func (u *ProjectUpsert) ClearUnitComponentProduction() *ProjectUpsert {
+	u.SetNull(project.FieldUnitComponentProduction)
+	return u
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (u *ProjectUpsert) SetUnitComponentInstallation(v float64) *ProjectUpsert {
+	u.Set(project.FieldUnitComponentInstallation, v)
+	return u
+}
+
+// UpdateUnitComponentInstallation sets the "unit_component_installation" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateUnitComponentInstallation() *ProjectUpsert {
+	u.SetExcluded(project.FieldUnitComponentInstallation)
+	return u
+}
+
+// AddUnitComponentInstallation adds v to the "unit_component_installation" field.
+func (u *ProjectUpsert) AddUnitComponentInstallation(v float64) *ProjectUpsert {
+	u.Add(project.FieldUnitComponentInstallation, v)
+	return u
+}
+
+// ClearUnitComponentInstallation clears the value of the "unit_component_installation" field.
+func (u *ProjectUpsert) ClearUnitComponentInstallation() *ProjectUpsert {
+	u.SetNull(project.FieldUnitComponentInstallation)
 	return u
 }
 
@@ -4017,6 +4143,90 @@ func (u *ProjectUpsertOne) UpdateUnitInventoryTotal() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearUnitInventoryTotal() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearUnitInventoryTotal()
+	})
+}
+
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (u *ProjectUpsertOne) SetUnitComponentTotal(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitComponentTotal(v)
+	})
+}
+
+// AddUnitComponentTotal adds v to the "unit_component_total" field.
+func (u *ProjectUpsertOne) AddUnitComponentTotal(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitComponentTotal(v)
+	})
+}
+
+// UpdateUnitComponentTotal sets the "unit_component_total" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateUnitComponentTotal() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitComponentTotal()
+	})
+}
+
+// ClearUnitComponentTotal clears the value of the "unit_component_total" field.
+func (u *ProjectUpsertOne) ClearUnitComponentTotal() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitComponentTotal()
+	})
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (u *ProjectUpsertOne) SetUnitComponentProduction(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitComponentProduction(v)
+	})
+}
+
+// AddUnitComponentProduction adds v to the "unit_component_production" field.
+func (u *ProjectUpsertOne) AddUnitComponentProduction(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitComponentProduction(v)
+	})
+}
+
+// UpdateUnitComponentProduction sets the "unit_component_production" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateUnitComponentProduction() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitComponentProduction()
+	})
+}
+
+// ClearUnitComponentProduction clears the value of the "unit_component_production" field.
+func (u *ProjectUpsertOne) ClearUnitComponentProduction() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitComponentProduction()
+	})
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (u *ProjectUpsertOne) SetUnitComponentInstallation(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitComponentInstallation(v)
+	})
+}
+
+// AddUnitComponentInstallation adds v to the "unit_component_installation" field.
+func (u *ProjectUpsertOne) AddUnitComponentInstallation(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitComponentInstallation(v)
+	})
+}
+
+// UpdateUnitComponentInstallation sets the "unit_component_installation" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateUnitComponentInstallation() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitComponentInstallation()
+	})
+}
+
+// ClearUnitComponentInstallation clears the value of the "unit_component_installation" field.
+func (u *ProjectUpsertOne) ClearUnitComponentInstallation() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitComponentInstallation()
 	})
 }
 
@@ -5691,6 +5901,90 @@ func (u *ProjectUpsertBulk) UpdateUnitInventoryTotal() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearUnitInventoryTotal() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearUnitInventoryTotal()
+	})
+}
+
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (u *ProjectUpsertBulk) SetUnitComponentTotal(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitComponentTotal(v)
+	})
+}
+
+// AddUnitComponentTotal adds v to the "unit_component_total" field.
+func (u *ProjectUpsertBulk) AddUnitComponentTotal(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitComponentTotal(v)
+	})
+}
+
+// UpdateUnitComponentTotal sets the "unit_component_total" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateUnitComponentTotal() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitComponentTotal()
+	})
+}
+
+// ClearUnitComponentTotal clears the value of the "unit_component_total" field.
+func (u *ProjectUpsertBulk) ClearUnitComponentTotal() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitComponentTotal()
+	})
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (u *ProjectUpsertBulk) SetUnitComponentProduction(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitComponentProduction(v)
+	})
+}
+
+// AddUnitComponentProduction adds v to the "unit_component_production" field.
+func (u *ProjectUpsertBulk) AddUnitComponentProduction(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitComponentProduction(v)
+	})
+}
+
+// UpdateUnitComponentProduction sets the "unit_component_production" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateUnitComponentProduction() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitComponentProduction()
+	})
+}
+
+// ClearUnitComponentProduction clears the value of the "unit_component_production" field.
+func (u *ProjectUpsertBulk) ClearUnitComponentProduction() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitComponentProduction()
+	})
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (u *ProjectUpsertBulk) SetUnitComponentInstallation(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetUnitComponentInstallation(v)
+	})
+}
+
+// AddUnitComponentInstallation adds v to the "unit_component_installation" field.
+func (u *ProjectUpsertBulk) AddUnitComponentInstallation(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddUnitComponentInstallation(v)
+	})
+}
+
+// UpdateUnitComponentInstallation sets the "unit_component_installation" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateUnitComponentInstallation() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateUnitComponentInstallation()
+	})
+}
+
+// ClearUnitComponentInstallation clears the value of the "unit_component_installation" field.
+func (u *ProjectUpsertBulk) ClearUnitComponentInstallation() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearUnitComponentInstallation()
 	})
 }
 

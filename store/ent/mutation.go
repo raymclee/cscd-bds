@@ -8028,6 +8028,12 @@ type ProjectMutation struct {
 	addpm_yesterday                                *float64
 	unit_inventory_total                           *float64
 	addunit_inventory_total                        *float64
+	unit_component_total                           *float64
+	addunit_component_total                        *float64
+	unit_component_production                      *float64
+	addunit_component_production                   *float64
+	unit_component_installation                    *float64
+	addunit_component_installation                 *float64
 	material_loss                                  *float64
 	addmaterial_loss                               *float64
 	clearedFields                                  map[string]struct{}
@@ -11706,6 +11712,216 @@ func (m *ProjectMutation) ResetUnitInventoryTotal() {
 	delete(m.clearedFields, project.FieldUnitInventoryTotal)
 }
 
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (m *ProjectMutation) SetUnitComponentTotal(f float64) {
+	m.unit_component_total = &f
+	m.addunit_component_total = nil
+}
+
+// UnitComponentTotal returns the value of the "unit_component_total" field in the mutation.
+func (m *ProjectMutation) UnitComponentTotal() (r float64, exists bool) {
+	v := m.unit_component_total
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUnitComponentTotal returns the old "unit_component_total" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldUnitComponentTotal(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUnitComponentTotal is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUnitComponentTotal requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUnitComponentTotal: %w", err)
+	}
+	return oldValue.UnitComponentTotal, nil
+}
+
+// AddUnitComponentTotal adds f to the "unit_component_total" field.
+func (m *ProjectMutation) AddUnitComponentTotal(f float64) {
+	if m.addunit_component_total != nil {
+		*m.addunit_component_total += f
+	} else {
+		m.addunit_component_total = &f
+	}
+}
+
+// AddedUnitComponentTotal returns the value that was added to the "unit_component_total" field in this mutation.
+func (m *ProjectMutation) AddedUnitComponentTotal() (r float64, exists bool) {
+	v := m.addunit_component_total
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUnitComponentTotal clears the value of the "unit_component_total" field.
+func (m *ProjectMutation) ClearUnitComponentTotal() {
+	m.unit_component_total = nil
+	m.addunit_component_total = nil
+	m.clearedFields[project.FieldUnitComponentTotal] = struct{}{}
+}
+
+// UnitComponentTotalCleared returns if the "unit_component_total" field was cleared in this mutation.
+func (m *ProjectMutation) UnitComponentTotalCleared() bool {
+	_, ok := m.clearedFields[project.FieldUnitComponentTotal]
+	return ok
+}
+
+// ResetUnitComponentTotal resets all changes to the "unit_component_total" field.
+func (m *ProjectMutation) ResetUnitComponentTotal() {
+	m.unit_component_total = nil
+	m.addunit_component_total = nil
+	delete(m.clearedFields, project.FieldUnitComponentTotal)
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (m *ProjectMutation) SetUnitComponentProduction(f float64) {
+	m.unit_component_production = &f
+	m.addunit_component_production = nil
+}
+
+// UnitComponentProduction returns the value of the "unit_component_production" field in the mutation.
+func (m *ProjectMutation) UnitComponentProduction() (r float64, exists bool) {
+	v := m.unit_component_production
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUnitComponentProduction returns the old "unit_component_production" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldUnitComponentProduction(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUnitComponentProduction is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUnitComponentProduction requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUnitComponentProduction: %w", err)
+	}
+	return oldValue.UnitComponentProduction, nil
+}
+
+// AddUnitComponentProduction adds f to the "unit_component_production" field.
+func (m *ProjectMutation) AddUnitComponentProduction(f float64) {
+	if m.addunit_component_production != nil {
+		*m.addunit_component_production += f
+	} else {
+		m.addunit_component_production = &f
+	}
+}
+
+// AddedUnitComponentProduction returns the value that was added to the "unit_component_production" field in this mutation.
+func (m *ProjectMutation) AddedUnitComponentProduction() (r float64, exists bool) {
+	v := m.addunit_component_production
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUnitComponentProduction clears the value of the "unit_component_production" field.
+func (m *ProjectMutation) ClearUnitComponentProduction() {
+	m.unit_component_production = nil
+	m.addunit_component_production = nil
+	m.clearedFields[project.FieldUnitComponentProduction] = struct{}{}
+}
+
+// UnitComponentProductionCleared returns if the "unit_component_production" field was cleared in this mutation.
+func (m *ProjectMutation) UnitComponentProductionCleared() bool {
+	_, ok := m.clearedFields[project.FieldUnitComponentProduction]
+	return ok
+}
+
+// ResetUnitComponentProduction resets all changes to the "unit_component_production" field.
+func (m *ProjectMutation) ResetUnitComponentProduction() {
+	m.unit_component_production = nil
+	m.addunit_component_production = nil
+	delete(m.clearedFields, project.FieldUnitComponentProduction)
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (m *ProjectMutation) SetUnitComponentInstallation(f float64) {
+	m.unit_component_installation = &f
+	m.addunit_component_installation = nil
+}
+
+// UnitComponentInstallation returns the value of the "unit_component_installation" field in the mutation.
+func (m *ProjectMutation) UnitComponentInstallation() (r float64, exists bool) {
+	v := m.unit_component_installation
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUnitComponentInstallation returns the old "unit_component_installation" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldUnitComponentInstallation(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUnitComponentInstallation is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUnitComponentInstallation requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUnitComponentInstallation: %w", err)
+	}
+	return oldValue.UnitComponentInstallation, nil
+}
+
+// AddUnitComponentInstallation adds f to the "unit_component_installation" field.
+func (m *ProjectMutation) AddUnitComponentInstallation(f float64) {
+	if m.addunit_component_installation != nil {
+		*m.addunit_component_installation += f
+	} else {
+		m.addunit_component_installation = &f
+	}
+}
+
+// AddedUnitComponentInstallation returns the value that was added to the "unit_component_installation" field in this mutation.
+func (m *ProjectMutation) AddedUnitComponentInstallation() (r float64, exists bool) {
+	v := m.addunit_component_installation
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUnitComponentInstallation clears the value of the "unit_component_installation" field.
+func (m *ProjectMutation) ClearUnitComponentInstallation() {
+	m.unit_component_installation = nil
+	m.addunit_component_installation = nil
+	m.clearedFields[project.FieldUnitComponentInstallation] = struct{}{}
+}
+
+// UnitComponentInstallationCleared returns if the "unit_component_installation" field was cleared in this mutation.
+func (m *ProjectMutation) UnitComponentInstallationCleared() bool {
+	_, ok := m.clearedFields[project.FieldUnitComponentInstallation]
+	return ok
+}
+
+// ResetUnitComponentInstallation resets all changes to the "unit_component_installation" field.
+func (m *ProjectMutation) ResetUnitComponentInstallation() {
+	m.unit_component_installation = nil
+	m.addunit_component_installation = nil
+	delete(m.clearedFields, project.FieldUnitComponentInstallation)
+}
+
 // SetMaterialLoss sets the "material_loss" field.
 func (m *ProjectMutation) SetMaterialLoss(f float64) {
 	m.material_loss = &f
@@ -11918,7 +12134,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 58)
+	fields := make([]string, 0, 61)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -12090,6 +12306,15 @@ func (m *ProjectMutation) Fields() []string {
 	if m.unit_inventory_total != nil {
 		fields = append(fields, project.FieldUnitInventoryTotal)
 	}
+	if m.unit_component_total != nil {
+		fields = append(fields, project.FieldUnitComponentTotal)
+	}
+	if m.unit_component_production != nil {
+		fields = append(fields, project.FieldUnitComponentProduction)
+	}
+	if m.unit_component_installation != nil {
+		fields = append(fields, project.FieldUnitComponentInstallation)
+	}
 	if m.material_loss != nil {
 		fields = append(fields, project.FieldMaterialLoss)
 	}
@@ -12215,6 +12440,12 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.PmYesterday()
 	case project.FieldUnitInventoryTotal:
 		return m.UnitInventoryTotal()
+	case project.FieldUnitComponentTotal:
+		return m.UnitComponentTotal()
+	case project.FieldUnitComponentProduction:
+		return m.UnitComponentProduction()
+	case project.FieldUnitComponentInstallation:
+		return m.UnitComponentInstallation()
 	case project.FieldMaterialLoss:
 		return m.MaterialLoss()
 	}
@@ -12340,6 +12571,12 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldPmYesterday(ctx)
 	case project.FieldUnitInventoryTotal:
 		return m.OldUnitInventoryTotal(ctx)
+	case project.FieldUnitComponentTotal:
+		return m.OldUnitComponentTotal(ctx)
+	case project.FieldUnitComponentProduction:
+		return m.OldUnitComponentProduction(ctx)
+	case project.FieldUnitComponentInstallation:
+		return m.OldUnitComponentInstallation(ctx)
 	case project.FieldMaterialLoss:
 		return m.OldMaterialLoss(ctx)
 	}
@@ -12750,6 +12987,27 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUnitInventoryTotal(v)
 		return nil
+	case project.FieldUnitComponentTotal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUnitComponentTotal(v)
+		return nil
+	case project.FieldUnitComponentProduction:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUnitComponentProduction(v)
+		return nil
+	case project.FieldUnitComponentInstallation:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUnitComponentInstallation(v)
+		return nil
 	case project.FieldMaterialLoss:
 		v, ok := value.(float64)
 		if !ok {
@@ -12882,6 +13140,15 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addunit_inventory_total != nil {
 		fields = append(fields, project.FieldUnitInventoryTotal)
 	}
+	if m.addunit_component_total != nil {
+		fields = append(fields, project.FieldUnitComponentTotal)
+	}
+	if m.addunit_component_production != nil {
+		fields = append(fields, project.FieldUnitComponentProduction)
+	}
+	if m.addunit_component_installation != nil {
+		fields = append(fields, project.FieldUnitComponentInstallation)
+	}
 	if m.addmaterial_loss != nil {
 		fields = append(fields, project.FieldMaterialLoss)
 	}
@@ -12971,6 +13238,12 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedPmYesterday()
 	case project.FieldUnitInventoryTotal:
 		return m.AddedUnitInventoryTotal()
+	case project.FieldUnitComponentTotal:
+		return m.AddedUnitComponentTotal()
+	case project.FieldUnitComponentProduction:
+		return m.AddedUnitComponentProduction()
+	case project.FieldUnitComponentInstallation:
+		return m.AddedUnitComponentInstallation()
 	case project.FieldMaterialLoss:
 		return m.AddedMaterialLoss()
 	}
@@ -13255,6 +13528,27 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddUnitInventoryTotal(v)
 		return nil
+	case project.FieldUnitComponentTotal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUnitComponentTotal(v)
+		return nil
+	case project.FieldUnitComponentProduction:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUnitComponentProduction(v)
+		return nil
+	case project.FieldUnitComponentInstallation:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUnitComponentInstallation(v)
+		return nil
 	case project.FieldMaterialLoss:
 		v, ok := value.(float64)
 		if !ok {
@@ -13428,6 +13722,15 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldUnitInventoryTotal) {
 		fields = append(fields, project.FieldUnitInventoryTotal)
+	}
+	if m.FieldCleared(project.FieldUnitComponentTotal) {
+		fields = append(fields, project.FieldUnitComponentTotal)
+	}
+	if m.FieldCleared(project.FieldUnitComponentProduction) {
+		fields = append(fields, project.FieldUnitComponentProduction)
+	}
+	if m.FieldCleared(project.FieldUnitComponentInstallation) {
+		fields = append(fields, project.FieldUnitComponentInstallation)
 	}
 	if m.FieldCleared(project.FieldMaterialLoss) {
 		fields = append(fields, project.FieldMaterialLoss)
@@ -13604,6 +13907,15 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldUnitInventoryTotal:
 		m.ClearUnitInventoryTotal()
+		return nil
+	case project.FieldUnitComponentTotal:
+		m.ClearUnitComponentTotal()
+		return nil
+	case project.FieldUnitComponentProduction:
+		m.ClearUnitComponentProduction()
+		return nil
+	case project.FieldUnitComponentInstallation:
+		m.ClearUnitComponentInstallation()
 		return nil
 	case project.FieldMaterialLoss:
 		m.ClearMaterialLoss()
@@ -13786,6 +14098,15 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldUnitInventoryTotal:
 		m.ResetUnitInventoryTotal()
+		return nil
+	case project.FieldUnitComponentTotal:
+		m.ResetUnitComponentTotal()
+		return nil
+	case project.FieldUnitComponentProduction:
+		m.ResetUnitComponentProduction()
+		return nil
+	case project.FieldUnitComponentInstallation:
+		m.ResetUnitComponentInstallation()
 		return nil
 	case project.FieldMaterialLoss:
 		m.ResetMaterialLoss()

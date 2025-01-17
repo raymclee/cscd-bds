@@ -261,6 +261,9 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldPmTotal:                                 {Type: field.TypeFloat64, Column: project.FieldPmTotal},
 			project.FieldPmYesterday:                             {Type: field.TypeFloat64, Column: project.FieldPmYesterday},
 			project.FieldUnitInventoryTotal:                      {Type: field.TypeFloat64, Column: project.FieldUnitInventoryTotal},
+			project.FieldUnitComponentTotal:                      {Type: field.TypeFloat64, Column: project.FieldUnitComponentTotal},
+			project.FieldUnitComponentProduction:                 {Type: field.TypeFloat64, Column: project.FieldUnitComponentProduction},
+			project.FieldUnitComponentInstallation:               {Type: field.TypeFloat64, Column: project.FieldUnitComponentInstallation},
 			project.FieldMaterialLoss:                            {Type: field.TypeFloat64, Column: project.FieldMaterialLoss},
 		},
 	}
@@ -2235,6 +2238,21 @@ func (f *ProjectFilter) WherePmYesterday(p entql.Float64P) {
 // WhereUnitInventoryTotal applies the entql float64 predicate on the unit_inventory_total field.
 func (f *ProjectFilter) WhereUnitInventoryTotal(p entql.Float64P) {
 	f.Where(p.Field(project.FieldUnitInventoryTotal))
+}
+
+// WhereUnitComponentTotal applies the entql float64 predicate on the unit_component_total field.
+func (f *ProjectFilter) WhereUnitComponentTotal(p entql.Float64P) {
+	f.Where(p.Field(project.FieldUnitComponentTotal))
+}
+
+// WhereUnitComponentProduction applies the entql float64 predicate on the unit_component_production field.
+func (f *ProjectFilter) WhereUnitComponentProduction(p entql.Float64P) {
+	f.Where(p.Field(project.FieldUnitComponentProduction))
+}
+
+// WhereUnitComponentInstallation applies the entql float64 predicate on the unit_component_installation field.
+func (f *ProjectFilter) WhereUnitComponentInstallation(p entql.Float64P) {
+	f.Where(p.Field(project.FieldUnitComponentInstallation))
 }
 
 // WhereMaterialLoss applies the entql float64 predicate on the material_loss field.

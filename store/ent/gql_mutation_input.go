@@ -872,6 +872,12 @@ type UpdateProjectInput struct {
 	PmYesterday                                  *float64
 	ClearUnitInventoryTotal                      bool
 	UnitInventoryTotal                           *float64
+	ClearUnitComponentTotal                      bool
+	UnitComponentTotal                           *float64
+	ClearUnitComponentProduction                 bool
+	UnitComponentProduction                      *float64
+	ClearUnitComponentInstallation               bool
+	UnitComponentInstallation                    *float64
 	ClearMaterialLoss                            bool
 	MaterialLoss                                 *float64
 	ClearVos                                     bool
@@ -1210,6 +1216,24 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.UnitInventoryTotal; v != nil {
 		m.SetUnitInventoryTotal(*v)
+	}
+	if i.ClearUnitComponentTotal {
+		m.ClearUnitComponentTotal()
+	}
+	if v := i.UnitComponentTotal; v != nil {
+		m.SetUnitComponentTotal(*v)
+	}
+	if i.ClearUnitComponentProduction {
+		m.ClearUnitComponentProduction()
+	}
+	if v := i.UnitComponentProduction; v != nil {
+		m.SetUnitComponentProduction(*v)
+	}
+	if i.ClearUnitComponentInstallation {
+		m.ClearUnitComponentInstallation()
+	}
+	if v := i.UnitComponentInstallation; v != nil {
+		m.SetUnitComponentInstallation(*v)
 	}
 	if i.ClearMaterialLoss {
 		m.ClearMaterialLoss()

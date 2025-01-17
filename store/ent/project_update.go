@@ -1398,6 +1398,87 @@ func (pu *ProjectUpdate) ClearUnitInventoryTotal() *ProjectUpdate {
 	return pu
 }
 
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (pu *ProjectUpdate) SetUnitComponentTotal(f float64) *ProjectUpdate {
+	pu.mutation.ResetUnitComponentTotal()
+	pu.mutation.SetUnitComponentTotal(f)
+	return pu
+}
+
+// SetNillableUnitComponentTotal sets the "unit_component_total" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableUnitComponentTotal(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetUnitComponentTotal(*f)
+	}
+	return pu
+}
+
+// AddUnitComponentTotal adds f to the "unit_component_total" field.
+func (pu *ProjectUpdate) AddUnitComponentTotal(f float64) *ProjectUpdate {
+	pu.mutation.AddUnitComponentTotal(f)
+	return pu
+}
+
+// ClearUnitComponentTotal clears the value of the "unit_component_total" field.
+func (pu *ProjectUpdate) ClearUnitComponentTotal() *ProjectUpdate {
+	pu.mutation.ClearUnitComponentTotal()
+	return pu
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (pu *ProjectUpdate) SetUnitComponentProduction(f float64) *ProjectUpdate {
+	pu.mutation.ResetUnitComponentProduction()
+	pu.mutation.SetUnitComponentProduction(f)
+	return pu
+}
+
+// SetNillableUnitComponentProduction sets the "unit_component_production" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableUnitComponentProduction(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetUnitComponentProduction(*f)
+	}
+	return pu
+}
+
+// AddUnitComponentProduction adds f to the "unit_component_production" field.
+func (pu *ProjectUpdate) AddUnitComponentProduction(f float64) *ProjectUpdate {
+	pu.mutation.AddUnitComponentProduction(f)
+	return pu
+}
+
+// ClearUnitComponentProduction clears the value of the "unit_component_production" field.
+func (pu *ProjectUpdate) ClearUnitComponentProduction() *ProjectUpdate {
+	pu.mutation.ClearUnitComponentProduction()
+	return pu
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (pu *ProjectUpdate) SetUnitComponentInstallation(f float64) *ProjectUpdate {
+	pu.mutation.ResetUnitComponentInstallation()
+	pu.mutation.SetUnitComponentInstallation(f)
+	return pu
+}
+
+// SetNillableUnitComponentInstallation sets the "unit_component_installation" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableUnitComponentInstallation(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetUnitComponentInstallation(*f)
+	}
+	return pu
+}
+
+// AddUnitComponentInstallation adds f to the "unit_component_installation" field.
+func (pu *ProjectUpdate) AddUnitComponentInstallation(f float64) *ProjectUpdate {
+	pu.mutation.AddUnitComponentInstallation(f)
+	return pu
+}
+
+// ClearUnitComponentInstallation clears the value of the "unit_component_installation" field.
+func (pu *ProjectUpdate) ClearUnitComponentInstallation() *ProjectUpdate {
+	pu.mutation.ClearUnitComponentInstallation()
+	return pu
+}
+
 // SetMaterialLoss sets the "material_loss" field.
 func (pu *ProjectUpdate) SetMaterialLoss(f float64) *ProjectUpdate {
 	pu.mutation.ResetMaterialLoss()
@@ -1990,6 +2071,33 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.UnitInventoryTotalCleared() {
 		_spec.ClearField(project.FieldUnitInventoryTotal, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.UnitComponentTotal(); ok {
+		_spec.SetField(project.FieldUnitComponentTotal, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedUnitComponentTotal(); ok {
+		_spec.AddField(project.FieldUnitComponentTotal, field.TypeFloat64, value)
+	}
+	if pu.mutation.UnitComponentTotalCleared() {
+		_spec.ClearField(project.FieldUnitComponentTotal, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.UnitComponentProduction(); ok {
+		_spec.SetField(project.FieldUnitComponentProduction, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedUnitComponentProduction(); ok {
+		_spec.AddField(project.FieldUnitComponentProduction, field.TypeFloat64, value)
+	}
+	if pu.mutation.UnitComponentProductionCleared() {
+		_spec.ClearField(project.FieldUnitComponentProduction, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.UnitComponentInstallation(); ok {
+		_spec.SetField(project.FieldUnitComponentInstallation, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedUnitComponentInstallation(); ok {
+		_spec.AddField(project.FieldUnitComponentInstallation, field.TypeFloat64, value)
+	}
+	if pu.mutation.UnitComponentInstallationCleared() {
+		_spec.ClearField(project.FieldUnitComponentInstallation, field.TypeFloat64)
 	}
 	if value, ok := pu.mutation.MaterialLoss(); ok {
 		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
@@ -3477,6 +3585,87 @@ func (puo *ProjectUpdateOne) ClearUnitInventoryTotal() *ProjectUpdateOne {
 	return puo
 }
 
+// SetUnitComponentTotal sets the "unit_component_total" field.
+func (puo *ProjectUpdateOne) SetUnitComponentTotal(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetUnitComponentTotal()
+	puo.mutation.SetUnitComponentTotal(f)
+	return puo
+}
+
+// SetNillableUnitComponentTotal sets the "unit_component_total" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableUnitComponentTotal(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetUnitComponentTotal(*f)
+	}
+	return puo
+}
+
+// AddUnitComponentTotal adds f to the "unit_component_total" field.
+func (puo *ProjectUpdateOne) AddUnitComponentTotal(f float64) *ProjectUpdateOne {
+	puo.mutation.AddUnitComponentTotal(f)
+	return puo
+}
+
+// ClearUnitComponentTotal clears the value of the "unit_component_total" field.
+func (puo *ProjectUpdateOne) ClearUnitComponentTotal() *ProjectUpdateOne {
+	puo.mutation.ClearUnitComponentTotal()
+	return puo
+}
+
+// SetUnitComponentProduction sets the "unit_component_production" field.
+func (puo *ProjectUpdateOne) SetUnitComponentProduction(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetUnitComponentProduction()
+	puo.mutation.SetUnitComponentProduction(f)
+	return puo
+}
+
+// SetNillableUnitComponentProduction sets the "unit_component_production" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableUnitComponentProduction(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetUnitComponentProduction(*f)
+	}
+	return puo
+}
+
+// AddUnitComponentProduction adds f to the "unit_component_production" field.
+func (puo *ProjectUpdateOne) AddUnitComponentProduction(f float64) *ProjectUpdateOne {
+	puo.mutation.AddUnitComponentProduction(f)
+	return puo
+}
+
+// ClearUnitComponentProduction clears the value of the "unit_component_production" field.
+func (puo *ProjectUpdateOne) ClearUnitComponentProduction() *ProjectUpdateOne {
+	puo.mutation.ClearUnitComponentProduction()
+	return puo
+}
+
+// SetUnitComponentInstallation sets the "unit_component_installation" field.
+func (puo *ProjectUpdateOne) SetUnitComponentInstallation(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetUnitComponentInstallation()
+	puo.mutation.SetUnitComponentInstallation(f)
+	return puo
+}
+
+// SetNillableUnitComponentInstallation sets the "unit_component_installation" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableUnitComponentInstallation(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetUnitComponentInstallation(*f)
+	}
+	return puo
+}
+
+// AddUnitComponentInstallation adds f to the "unit_component_installation" field.
+func (puo *ProjectUpdateOne) AddUnitComponentInstallation(f float64) *ProjectUpdateOne {
+	puo.mutation.AddUnitComponentInstallation(f)
+	return puo
+}
+
+// ClearUnitComponentInstallation clears the value of the "unit_component_installation" field.
+func (puo *ProjectUpdateOne) ClearUnitComponentInstallation() *ProjectUpdateOne {
+	puo.mutation.ClearUnitComponentInstallation()
+	return puo
+}
+
 // SetMaterialLoss sets the "material_loss" field.
 func (puo *ProjectUpdateOne) SetMaterialLoss(f float64) *ProjectUpdateOne {
 	puo.mutation.ResetMaterialLoss()
@@ -4099,6 +4288,33 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.UnitInventoryTotalCleared() {
 		_spec.ClearField(project.FieldUnitInventoryTotal, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.UnitComponentTotal(); ok {
+		_spec.SetField(project.FieldUnitComponentTotal, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedUnitComponentTotal(); ok {
+		_spec.AddField(project.FieldUnitComponentTotal, field.TypeFloat64, value)
+	}
+	if puo.mutation.UnitComponentTotalCleared() {
+		_spec.ClearField(project.FieldUnitComponentTotal, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.UnitComponentProduction(); ok {
+		_spec.SetField(project.FieldUnitComponentProduction, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedUnitComponentProduction(); ok {
+		_spec.AddField(project.FieldUnitComponentProduction, field.TypeFloat64, value)
+	}
+	if puo.mutation.UnitComponentProductionCleared() {
+		_spec.ClearField(project.FieldUnitComponentProduction, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.UnitComponentInstallation(); ok {
+		_spec.SetField(project.FieldUnitComponentInstallation, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedUnitComponentInstallation(); ok {
+		_spec.AddField(project.FieldUnitComponentInstallation, field.TypeFloat64, value)
+	}
+	if puo.mutation.UnitComponentInstallationCleared() {
+		_spec.ClearField(project.FieldUnitComponentInstallation, field.TypeFloat64)
 	}
 	if value, ok := puo.mutation.MaterialLoss(); ok {
 		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)

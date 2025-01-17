@@ -132,6 +132,12 @@ type Project struct {
 	PmYesterday *float64 `json:"pm_yesterday,omitempty"`
 	// 單元件庫存累計
 	UnitInventoryTotal *float64 `json:"unit_inventory_total,omitempty"`
+	// 單元件總數
+	UnitComponentTotal *float64 `json:"unit_component_total,omitempty"`
+	// 單元件生產數量
+	UnitComponentProduction *float64 `json:"unit_component_production,omitempty"`
+	// 單元件安裝數量
+	UnitComponentInstallation *float64 `json:"unit_component_installation,omitempty"`
 	// 物料損失金額
 	MaterialLoss *float64 `json:"material_loss,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -181,7 +187,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldMaterialLoss:
+		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldMaterialLoss:
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth:
 			values[i] = new(sql.NullInt64)
@@ -607,6 +613,27 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.UnitInventoryTotal = new(float64)
 				*pr.UnitInventoryTotal = value.Float64
 			}
+		case project.FieldUnitComponentTotal:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field unit_component_total", values[i])
+			} else if value.Valid {
+				pr.UnitComponentTotal = new(float64)
+				*pr.UnitComponentTotal = value.Float64
+			}
+		case project.FieldUnitComponentProduction:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field unit_component_production", values[i])
+			} else if value.Valid {
+				pr.UnitComponentProduction = new(float64)
+				*pr.UnitComponentProduction = value.Float64
+			}
+		case project.FieldUnitComponentInstallation:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field unit_component_installation", values[i])
+			} else if value.Valid {
+				pr.UnitComponentInstallation = new(float64)
+				*pr.UnitComponentInstallation = value.Float64
+			}
 		case project.FieldMaterialLoss:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field material_loss", values[i])
@@ -934,6 +961,21 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.UnitInventoryTotal; v != nil {
 		builder.WriteString("unit_inventory_total=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.UnitComponentTotal; v != nil {
+		builder.WriteString("unit_component_total=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.UnitComponentProduction; v != nil {
+		builder.WriteString("unit_component_production=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.UnitComponentInstallation; v != nil {
+		builder.WriteString("unit_component_installation=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<507b0f14ec6a5b07dda6f8957cd3f661>>
+ * @generated SignedSource<<b70e652e4ee0861b293539445d5782cd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -66,6 +66,9 @@ export type UpdateProjectInput = {
   clearProjectStaffs?: boolean | null | undefined;
   clearStartDate?: boolean | null | undefined;
   clearTotalContractAmount?: boolean | null | undefined;
+  clearUnitComponentInstallation?: boolean | null | undefined;
+  clearUnitComponentProduction?: boolean | null | undefined;
+  clearUnitComponentTotal?: boolean | null | undefined;
   clearUnitInventoryTotal?: boolean | null | undefined;
   clearVaApplyAmount?: boolean | null | undefined;
   clearVaApproveAmount?: boolean | null | undefined;
@@ -117,6 +120,9 @@ export type UpdateProjectInput = {
   removeVoIDs?: ReadonlyArray<string> | null | undefined;
   startDate?: any | null | undefined;
   totalContractAmount?: number | null | undefined;
+  unitComponentInstallation?: number | null | undefined;
+  unitComponentProduction?: number | null | undefined;
+  unitComponentTotal?: number | null | undefined;
   unitInventoryTotal?: number | null | undefined;
   updatedAt?: any | null | undefined;
   vaApplyAmount?: number | null | undefined;

@@ -967,6 +967,41 @@ func main() {
 			}
 		}
 
+		// 抓取單元件生產數量
+		{
+			row := bwpHanaDb.QueryRow(`
+				SELECT unit_component_total, unit_component_production, unit_component_installation
+				FROM ( SELECT xmbm AS "项目编码", cast(sum(dyjsl) as float) AS unit_component_total
+						FROM s42bw.ztps004
+						WHERE xmbm = ?
+						GROUP BY xmbm ) AS jh
+				LEFT JOIN ( SELECT xmbm, cast(SUM(ZRCL) as float) AS unit_component_production 
+							FROM s42bw.ZTPP_FR_CLBG
+							GROUP BY xmbm ) AS sc ON sc.xmbm = "项目编码"
+				LEFT JOIN ( SELECT left(SINGLECODE,4) AS xmbm
+								, cast(sum(CASE WHEN LENGTH(AZWCSJ) >= 10 THEN 1 ELSE 0 END) as float) AS unit_component_installation
+							FROM s42bw.ZTPS_RFID_LOG
+							WHERE LENGTH(ZJSJ) >= 10
+								and left(SINGLECODE,4) = ?
+							GROUP BY left(SINGLECODE,4)
+							) AS az ON az.xmbm = "项目编码"
+			`, jobcode, jobcode)
+
+			var (
+				unitComponentTotal        *float64
+				unitComponentProduction   *float64
+				unitComponentInstallation *float64
+			)
+			err = row.Scan(&unitComponentTotal, &unitComponentProduction, &unitComponentInstallation)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取單元件生產數量失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableUnitComponentTotal(unitComponentTotal)
+				p.SetNillableUnitComponentProduction(unitComponentProduction)
+				p.SetNillableUnitComponentInstallation(unitComponentInstallation)
+			}
+		}
+
 		if err := p.
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {

@@ -11119,12 +11119,14 @@ snapshots:
       embla-carousel-react: 8.5.1(react@18.3.1)
       lucide-react: 0.456.0(react@18.3.1)
       motion: 11.11.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-themes: 0.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-day-picker: 8.10.1(date-fns@4.1.0)(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
       react-relay: 18.2.0(react@18.3.1)
       recharts: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       relay-runtime: 18.2.0
+      sonner: 1.7.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge: 2.5.4
       tailwindcss-animate: 1.0.7(tailwindcss@3.4.14)
       three: 0.172.0

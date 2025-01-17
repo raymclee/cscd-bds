@@ -4577,6 +4577,42 @@ type ProjectWhereInput struct {
 	UnitInventoryTotalIsNil  bool      `json:"unitInventoryTotalIsNil,omitempty"`
 	UnitInventoryTotalNotNil bool      `json:"unitInventoryTotalNotNil,omitempty"`
 
+	// "unit_component_total" field predicates.
+	UnitComponentTotal       *float64  `json:"unitComponentTotal,omitempty"`
+	UnitComponentTotalNEQ    *float64  `json:"unitComponentTotalNEQ,omitempty"`
+	UnitComponentTotalIn     []float64 `json:"unitComponentTotalIn,omitempty"`
+	UnitComponentTotalNotIn  []float64 `json:"unitComponentTotalNotIn,omitempty"`
+	UnitComponentTotalGT     *float64  `json:"unitComponentTotalGT,omitempty"`
+	UnitComponentTotalGTE    *float64  `json:"unitComponentTotalGTE,omitempty"`
+	UnitComponentTotalLT     *float64  `json:"unitComponentTotalLT,omitempty"`
+	UnitComponentTotalLTE    *float64  `json:"unitComponentTotalLTE,omitempty"`
+	UnitComponentTotalIsNil  bool      `json:"unitComponentTotalIsNil,omitempty"`
+	UnitComponentTotalNotNil bool      `json:"unitComponentTotalNotNil,omitempty"`
+
+	// "unit_component_production" field predicates.
+	UnitComponentProduction       *float64  `json:"unitComponentProduction,omitempty"`
+	UnitComponentProductionNEQ    *float64  `json:"unitComponentProductionNEQ,omitempty"`
+	UnitComponentProductionIn     []float64 `json:"unitComponentProductionIn,omitempty"`
+	UnitComponentProductionNotIn  []float64 `json:"unitComponentProductionNotIn,omitempty"`
+	UnitComponentProductionGT     *float64  `json:"unitComponentProductionGT,omitempty"`
+	UnitComponentProductionGTE    *float64  `json:"unitComponentProductionGTE,omitempty"`
+	UnitComponentProductionLT     *float64  `json:"unitComponentProductionLT,omitempty"`
+	UnitComponentProductionLTE    *float64  `json:"unitComponentProductionLTE,omitempty"`
+	UnitComponentProductionIsNil  bool      `json:"unitComponentProductionIsNil,omitempty"`
+	UnitComponentProductionNotNil bool      `json:"unitComponentProductionNotNil,omitempty"`
+
+	// "unit_component_installation" field predicates.
+	UnitComponentInstallation       *float64  `json:"unitComponentInstallation,omitempty"`
+	UnitComponentInstallationNEQ    *float64  `json:"unitComponentInstallationNEQ,omitempty"`
+	UnitComponentInstallationIn     []float64 `json:"unitComponentInstallationIn,omitempty"`
+	UnitComponentInstallationNotIn  []float64 `json:"unitComponentInstallationNotIn,omitempty"`
+	UnitComponentInstallationGT     *float64  `json:"unitComponentInstallationGT,omitempty"`
+	UnitComponentInstallationGTE    *float64  `json:"unitComponentInstallationGTE,omitempty"`
+	UnitComponentInstallationLT     *float64  `json:"unitComponentInstallationLT,omitempty"`
+	UnitComponentInstallationLTE    *float64  `json:"unitComponentInstallationLTE,omitempty"`
+	UnitComponentInstallationIsNil  bool      `json:"unitComponentInstallationIsNil,omitempty"`
+	UnitComponentInstallationNotNil bool      `json:"unitComponentInstallationNotNil,omitempty"`
+
 	// "material_loss" field predicates.
 	MaterialLoss       *float64  `json:"materialLoss,omitempty"`
 	MaterialLossNEQ    *float64  `json:"materialLossNEQ,omitempty"`
@@ -6525,6 +6561,96 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.UnitInventoryTotalNotNil {
 		predicates = append(predicates, project.UnitInventoryTotalNotNil())
+	}
+	if i.UnitComponentTotal != nil {
+		predicates = append(predicates, project.UnitComponentTotalEQ(*i.UnitComponentTotal))
+	}
+	if i.UnitComponentTotalNEQ != nil {
+		predicates = append(predicates, project.UnitComponentTotalNEQ(*i.UnitComponentTotalNEQ))
+	}
+	if len(i.UnitComponentTotalIn) > 0 {
+		predicates = append(predicates, project.UnitComponentTotalIn(i.UnitComponentTotalIn...))
+	}
+	if len(i.UnitComponentTotalNotIn) > 0 {
+		predicates = append(predicates, project.UnitComponentTotalNotIn(i.UnitComponentTotalNotIn...))
+	}
+	if i.UnitComponentTotalGT != nil {
+		predicates = append(predicates, project.UnitComponentTotalGT(*i.UnitComponentTotalGT))
+	}
+	if i.UnitComponentTotalGTE != nil {
+		predicates = append(predicates, project.UnitComponentTotalGTE(*i.UnitComponentTotalGTE))
+	}
+	if i.UnitComponentTotalLT != nil {
+		predicates = append(predicates, project.UnitComponentTotalLT(*i.UnitComponentTotalLT))
+	}
+	if i.UnitComponentTotalLTE != nil {
+		predicates = append(predicates, project.UnitComponentTotalLTE(*i.UnitComponentTotalLTE))
+	}
+	if i.UnitComponentTotalIsNil {
+		predicates = append(predicates, project.UnitComponentTotalIsNil())
+	}
+	if i.UnitComponentTotalNotNil {
+		predicates = append(predicates, project.UnitComponentTotalNotNil())
+	}
+	if i.UnitComponentProduction != nil {
+		predicates = append(predicates, project.UnitComponentProductionEQ(*i.UnitComponentProduction))
+	}
+	if i.UnitComponentProductionNEQ != nil {
+		predicates = append(predicates, project.UnitComponentProductionNEQ(*i.UnitComponentProductionNEQ))
+	}
+	if len(i.UnitComponentProductionIn) > 0 {
+		predicates = append(predicates, project.UnitComponentProductionIn(i.UnitComponentProductionIn...))
+	}
+	if len(i.UnitComponentProductionNotIn) > 0 {
+		predicates = append(predicates, project.UnitComponentProductionNotIn(i.UnitComponentProductionNotIn...))
+	}
+	if i.UnitComponentProductionGT != nil {
+		predicates = append(predicates, project.UnitComponentProductionGT(*i.UnitComponentProductionGT))
+	}
+	if i.UnitComponentProductionGTE != nil {
+		predicates = append(predicates, project.UnitComponentProductionGTE(*i.UnitComponentProductionGTE))
+	}
+	if i.UnitComponentProductionLT != nil {
+		predicates = append(predicates, project.UnitComponentProductionLT(*i.UnitComponentProductionLT))
+	}
+	if i.UnitComponentProductionLTE != nil {
+		predicates = append(predicates, project.UnitComponentProductionLTE(*i.UnitComponentProductionLTE))
+	}
+	if i.UnitComponentProductionIsNil {
+		predicates = append(predicates, project.UnitComponentProductionIsNil())
+	}
+	if i.UnitComponentProductionNotNil {
+		predicates = append(predicates, project.UnitComponentProductionNotNil())
+	}
+	if i.UnitComponentInstallation != nil {
+		predicates = append(predicates, project.UnitComponentInstallationEQ(*i.UnitComponentInstallation))
+	}
+	if i.UnitComponentInstallationNEQ != nil {
+		predicates = append(predicates, project.UnitComponentInstallationNEQ(*i.UnitComponentInstallationNEQ))
+	}
+	if len(i.UnitComponentInstallationIn) > 0 {
+		predicates = append(predicates, project.UnitComponentInstallationIn(i.UnitComponentInstallationIn...))
+	}
+	if len(i.UnitComponentInstallationNotIn) > 0 {
+		predicates = append(predicates, project.UnitComponentInstallationNotIn(i.UnitComponentInstallationNotIn...))
+	}
+	if i.UnitComponentInstallationGT != nil {
+		predicates = append(predicates, project.UnitComponentInstallationGT(*i.UnitComponentInstallationGT))
+	}
+	if i.UnitComponentInstallationGTE != nil {
+		predicates = append(predicates, project.UnitComponentInstallationGTE(*i.UnitComponentInstallationGTE))
+	}
+	if i.UnitComponentInstallationLT != nil {
+		predicates = append(predicates, project.UnitComponentInstallationLT(*i.UnitComponentInstallationLT))
+	}
+	if i.UnitComponentInstallationLTE != nil {
+		predicates = append(predicates, project.UnitComponentInstallationLTE(*i.UnitComponentInstallationLTE))
+	}
+	if i.UnitComponentInstallationIsNil {
+		predicates = append(predicates, project.UnitComponentInstallationIsNil())
+	}
+	if i.UnitComponentInstallationNotNil {
+		predicates = append(predicates, project.UnitComponentInstallationNotNil())
 	}
 	if i.MaterialLoss != nil {
 		predicates = append(predicates, project.MaterialLossEQ(*i.MaterialLoss))

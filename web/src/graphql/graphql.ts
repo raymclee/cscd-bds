@@ -1916,6 +1916,12 @@ export type Project = Node & {
   startDate?: Maybe<Scalars['Time']['output']>;
   /** 合約总额 */
   totalContractAmount?: Maybe<Scalars['Float']['output']>;
+  /** 單元件安裝數量 */
+  unitComponentInstallation?: Maybe<Scalars['Float']['output']>;
+  /** 單元件生產數量 */
+  unitComponentProduction?: Maybe<Scalars['Float']['output']>;
+  /** 單元件總數 */
+  unitComponentTotal?: Maybe<Scalars['Float']['output']>;
   /** 單元件庫存累計 */
   unitInventoryTotal?: Maybe<Scalars['Float']['output']>;
   updatedAt: Scalars['Time']['output'];
@@ -2867,6 +2873,39 @@ export type ProjectWhereInput = {
   totalContractAmountNEQ?: InputMaybe<Scalars['Float']['input']>;
   totalContractAmountNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   totalContractAmountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** unit_component_installation field predicates */
+  unitComponentInstallation?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentInstallationGT?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentInstallationGTE?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentInstallationIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitComponentInstallationIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  unitComponentInstallationLT?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentInstallationLTE?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentInstallationNEQ?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentInstallationNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitComponentInstallationNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** unit_component_production field predicates */
+  unitComponentProduction?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentProductionGT?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentProductionGTE?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentProductionIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitComponentProductionIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  unitComponentProductionLT?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentProductionLTE?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentProductionNEQ?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentProductionNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitComponentProductionNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** unit_component_total field predicates */
+  unitComponentTotal?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentTotalGT?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentTotalGTE?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentTotalIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitComponentTotalIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  unitComponentTotalLT?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentTotalLTE?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentTotalNEQ?: InputMaybe<Scalars['Float']['input']>;
+  unitComponentTotalNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  unitComponentTotalNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** unit_inventory_total field predicates */
   unitInventoryTotal?: InputMaybe<Scalars['Float']['input']>;
   unitInventoryTotalGT?: InputMaybe<Scalars['Float']['input']>;
@@ -4605,6 +4644,9 @@ export type UpdateProjectInput = {
   clearProjectStaffs?: InputMaybe<Scalars['Boolean']['input']>;
   clearStartDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearTotalContractAmount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearUnitComponentInstallation?: InputMaybe<Scalars['Boolean']['input']>;
+  clearUnitComponentProduction?: InputMaybe<Scalars['Boolean']['input']>;
+  clearUnitComponentTotal?: InputMaybe<Scalars['Boolean']['input']>;
   clearUnitInventoryTotal?: InputMaybe<Scalars['Boolean']['input']>;
   clearVaApplyAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearVaApproveAmount?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4693,6 +4735,12 @@ export type UpdateProjectInput = {
   startDate?: InputMaybe<Scalars['Time']['input']>;
   /** 合約总额 */
   totalContractAmount?: InputMaybe<Scalars['Float']['input']>;
+  /** 單元件安裝數量 */
+  unitComponentInstallation?: InputMaybe<Scalars['Float']['input']>;
+  /** 單元件生產數量 */
+  unitComponentProduction?: InputMaybe<Scalars['Float']['input']>;
+  /** 單元件總數 */
+  unitComponentTotal?: InputMaybe<Scalars['Float']['input']>;
   /** 單元件庫存累計 */
   unitInventoryTotal?: InputMaybe<Scalars['Float']['input']>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
@@ -5426,6 +5474,14 @@ export type UseUpdateCompetitorMutationMutationVariables = Exact<{
 
 export type UseUpdateCompetitorMutationMutation = { __typename?: 'Mutation', updateCompetitor: { __typename?: 'Competitor', id: string, shortName: string, name: string } };
 
+export type UseUpdateProjectMutationMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateProjectInput;
+}>;
+
+
+export type UseUpdateProjectMutationMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', fsDate?: any | null, opDate?: any | null } };
+
 export type UseUpdateUserMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   input: UpdateUserInput;
@@ -5507,6 +5563,14 @@ export const UseUpdateCompetitorMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UseUpdateCompetitorMutationMutation, UseUpdateCompetitorMutationMutationVariables>;
+export const UseUpdateProjectMutationDocument = new TypedDocumentString(`
+    mutation useUpdateProjectMutation($id: ID!, $input: UpdateProjectInput!) {
+  updateProject(id: $id, input: $input) {
+    fsDate
+    opDate
+  }
+}
+    `) as unknown as TypedDocumentString<UseUpdateProjectMutationMutation, UseUpdateProjectMutationMutationVariables>;
 export const UseUpdateUserMutationDocument = new TypedDocumentString(`
     mutation useUpdateUserMutation($id: ID!, $input: UpdateUserInput!) {
   updateUser(id: $id, input: $input) {
