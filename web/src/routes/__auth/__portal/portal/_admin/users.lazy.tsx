@@ -166,7 +166,7 @@ function RouteComponent() {
     {
       title: "操作",
       render: (_, record) => (
-        <div className="-ml-2 flex items-center gap-2">
+        <div className="flex items-center gap-2 -ml-2">
           <Button
             type="link"
             size="small"
@@ -219,7 +219,11 @@ function RouteComponent() {
               type="link"
               size="small"
               danger
-              disabled={session?.userId === record.id}
+              disabled={
+                session?.userId === record.id ||
+                (record.isCeo && !session.isSuperAdmin) ||
+                (record.isSuperAdmin && !session.isSuperAdmin)
+              }
               loading={isDeleteUserInFlight}
             >
               删除
