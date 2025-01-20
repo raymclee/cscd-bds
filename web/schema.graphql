@@ -1751,6 +1751,8 @@ type Project implements Node {
   """总包批复数量"""
   contractorApproveCount: Int
   createdAt: Time!
+  """设计定额重量"""
+  designRatedWeight: Float
   """有效合同金额"""
   effectiveContractAmount: Float
   """竣工日期"""
@@ -1766,6 +1768,8 @@ type Project implements Node {
   ironBudgetPercentage: Float
   """是否完成"""
   isFinished: Boolean!
+  """項目物料庫存重量"""
+  itemStockWeight: Float
   """建築師"""
   jzs: String
   """地盤經理"""
@@ -1811,6 +1815,8 @@ type Project implements Node {
   pmYearTarget: Float
   """生产管理昨日生產"""
   pmYesterday: Float
+  """加工图成型重量"""
+  processingWeight: Float
   projectStaffs(
     """Returns the elements in the list that come after the specified cursor."""
     after: Cursor
@@ -2381,6 +2387,17 @@ input ProjectWhereInput {
   createdAtLTE: Time
   createdAtNEQ: Time
   createdAtNotIn: [Time!]
+  """design_rated_weight field predicates"""
+  designRatedWeight: Float
+  designRatedWeightGT: Float
+  designRatedWeightGTE: Float
+  designRatedWeightIn: [Float!]
+  designRatedWeightIsNil: Boolean
+  designRatedWeightLT: Float
+  designRatedWeightLTE: Float
+  designRatedWeightNEQ: Float
+  designRatedWeightNotIn: [Float!]
+  designRatedWeightNotNil: Boolean
   """effective_contract_amount field predicates"""
   effectiveContractAmount: Float
   effectiveContractAmountGT: Float
@@ -2465,6 +2482,17 @@ input ProjectWhereInput {
   """is_finished field predicates"""
   isFinished: Boolean
   isFinishedNEQ: Boolean
+  """item_stock_weight field predicates"""
+  itemStockWeight: Float
+  itemStockWeightGT: Float
+  itemStockWeightGTE: Float
+  itemStockWeightIn: [Float!]
+  itemStockWeightIsNil: Boolean
+  itemStockWeightLT: Float
+  itemStockWeightLTE: Float
+  itemStockWeightNEQ: Float
+  itemStockWeightNotIn: [Float!]
+  itemStockWeightNotNil: Boolean
   """jzs field predicates"""
   jzs: String
   jzsContains: String
@@ -2750,6 +2778,17 @@ input ProjectWhereInput {
   pmYesterdayNEQ: Float
   pmYesterdayNotIn: [Float!]
   pmYesterdayNotNil: Boolean
+  """processing_weight field predicates"""
+  processingWeight: Float
+  processingWeightGT: Float
+  processingWeightGTE: Float
+  processingWeightIn: [Float!]
+  processingWeightIsNil: Boolean
+  processingWeightLT: Float
+  processingWeightLTE: Float
+  processingWeightNEQ: Float
+  processingWeightNotIn: [Float!]
+  processingWeightNotNil: Boolean
   """start_date field predicates"""
   startDate: Time
   startDateGT: Time
@@ -4575,12 +4614,14 @@ input UpdateProjectInput {
   clearContractorApplyCount: Boolean
   clearContractorApproveAmount: Boolean
   clearContractorApproveCount: Boolean
+  clearDesignRatedWeight: Boolean
   clearEffectiveContractAmount: Boolean
   clearEndDate: Boolean
   clearFsDate: Boolean
   clearGlassBudgetPercentage: Boolean
   clearInstallProgress: Boolean
   clearIronBudgetPercentage: Boolean
+  clearItemStockWeight: Boolean
   clearJzs: Boolean
   clearManager: Boolean
   clearMaterialLoss: Boolean
@@ -4604,6 +4645,7 @@ input UpdateProjectInput {
   clearPmYearActual: Boolean
   clearPmYearTarget: Boolean
   clearPmYesterday: Boolean
+  clearProcessingWeight: Boolean
   clearProjectStaffs: Boolean
   clearStartDate: Boolean
   clearTotalContractAmount: Boolean
@@ -4633,6 +4675,8 @@ input UpdateProjectInput {
   contractorApproveAmount: Float
   """总包批复数量"""
   contractorApproveCount: Int
+  """设计定额重量"""
+  designRatedWeight: Float
   """有效合同金额"""
   effectiveContractAmount: Float
   """竣工日期"""
@@ -4647,6 +4691,8 @@ input UpdateProjectInput {
   ironBudgetPercentage: Float
   """是否完成"""
   isFinished: Boolean
+  """項目物料庫存重量"""
+  itemStockWeight: Float
   """建築師"""
   jzs: String
   """地盤經理"""
@@ -4692,6 +4738,8 @@ input UpdateProjectInput {
   pmYearTarget: Float
   """生产管理昨日生產"""
   pmYesterday: Float
+  """加工图成型重量"""
+  processingWeight: Float
   removeProjectStaffIDs: [ID!]
   removeVoIDs: [ID!]
   """開工日期"""

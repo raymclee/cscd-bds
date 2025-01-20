@@ -137,6 +137,12 @@ const (
 	FieldUnitComponentInstallation = "unit_component_installation"
 	// FieldMaterialLoss holds the string denoting the material_loss field in the database.
 	FieldMaterialLoss = "material_loss"
+	// FieldDesignRatedWeight holds the string denoting the design_rated_weight field in the database.
+	FieldDesignRatedWeight = "design_rated_weight"
+	// FieldProcessingWeight holds the string denoting the processing_weight field in the database.
+	FieldProcessingWeight = "processing_weight"
+	// FieldItemStockWeight holds the string denoting the item_stock_weight field in the database.
+	FieldItemStockWeight = "item_stock_weight"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
@@ -223,6 +229,9 @@ var Columns = []string{
 	FieldUnitComponentProduction,
 	FieldUnitComponentInstallation,
 	FieldMaterialLoss,
+	FieldDesignRatedWeight,
+	FieldProcessingWeight,
+	FieldItemStockWeight,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -559,6 +568,21 @@ func ByUnitComponentInstallation(opts ...sql.OrderTermOption) OrderOption {
 // ByMaterialLoss orders the results by the material_loss field.
 func ByMaterialLoss(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMaterialLoss, opts...).ToFunc()
+}
+
+// ByDesignRatedWeight orders the results by the design_rated_weight field.
+func ByDesignRatedWeight(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDesignRatedWeight, opts...).ToFunc()
+}
+
+// ByProcessingWeight orders the results by the processing_weight field.
+func ByProcessingWeight(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProcessingWeight, opts...).ToFunc()
+}
+
+// ByItemStockWeight orders the results by the item_stock_weight field.
+func ByItemStockWeight(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldItemStockWeight, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

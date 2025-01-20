@@ -1851,6 +1851,8 @@ export type Project = Node & {
   /** 总包批复数量 */
   contractorApproveCount?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Time']['output'];
+  /** 设计定额重量 */
+  designRatedWeight?: Maybe<Scalars['Float']['output']>;
   /** 有效合同金额 */
   effectiveContractAmount?: Maybe<Scalars['Float']['output']>;
   /** 竣工日期 */
@@ -1866,6 +1868,8 @@ export type Project = Node & {
   ironBudgetPercentage?: Maybe<Scalars['Float']['output']>;
   /** 是否完成 */
   isFinished: Scalars['Boolean']['output'];
+  /** 項目物料庫存重量 */
+  itemStockWeight?: Maybe<Scalars['Float']['output']>;
   /** 建築師 */
   jzs?: Maybe<Scalars['String']['output']>;
   /** 地盤經理 */
@@ -1911,6 +1915,8 @@ export type Project = Node & {
   pmYearTarget?: Maybe<Scalars['Float']['output']>;
   /** 生产管理昨日生產 */
   pmYesterday?: Maybe<Scalars['Float']['output']>;
+  /** 加工图成型重量 */
+  processingWeight?: Maybe<Scalars['Float']['output']>;
   projectStaffs: ProjectStaffConnection;
   /** 開工日期 */
   startDate?: Maybe<Scalars['Time']['output']>;
@@ -2482,6 +2488,17 @@ export type ProjectWhereInput = {
   createdAtLTE?: InputMaybe<Scalars['Time']['input']>;
   createdAtNEQ?: InputMaybe<Scalars['Time']['input']>;
   createdAtNotIn?: InputMaybe<Array<Scalars['Time']['input']>>;
+  /** design_rated_weight field predicates */
+  designRatedWeight?: InputMaybe<Scalars['Float']['input']>;
+  designRatedWeightGT?: InputMaybe<Scalars['Float']['input']>;
+  designRatedWeightGTE?: InputMaybe<Scalars['Float']['input']>;
+  designRatedWeightIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  designRatedWeightIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  designRatedWeightLT?: InputMaybe<Scalars['Float']['input']>;
+  designRatedWeightLTE?: InputMaybe<Scalars['Float']['input']>;
+  designRatedWeightNEQ?: InputMaybe<Scalars['Float']['input']>;
+  designRatedWeightNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  designRatedWeightNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** effective_contract_amount field predicates */
   effectiveContractAmount?: InputMaybe<Scalars['Float']['input']>;
   effectiveContractAmountGT?: InputMaybe<Scalars['Float']['input']>;
@@ -2566,6 +2583,17 @@ export type ProjectWhereInput = {
   /** is_finished field predicates */
   isFinished?: InputMaybe<Scalars['Boolean']['input']>;
   isFinishedNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** item_stock_weight field predicates */
+  itemStockWeight?: InputMaybe<Scalars['Float']['input']>;
+  itemStockWeightGT?: InputMaybe<Scalars['Float']['input']>;
+  itemStockWeightGTE?: InputMaybe<Scalars['Float']['input']>;
+  itemStockWeightIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  itemStockWeightIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  itemStockWeightLT?: InputMaybe<Scalars['Float']['input']>;
+  itemStockWeightLTE?: InputMaybe<Scalars['Float']['input']>;
+  itemStockWeightNEQ?: InputMaybe<Scalars['Float']['input']>;
+  itemStockWeightNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  itemStockWeightNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** jzs field predicates */
   jzs?: InputMaybe<Scalars['String']['input']>;
   jzsContains?: InputMaybe<Scalars['String']['input']>;
@@ -2851,6 +2879,17 @@ export type ProjectWhereInput = {
   pmYesterdayNEQ?: InputMaybe<Scalars['Float']['input']>;
   pmYesterdayNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   pmYesterdayNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** processing_weight field predicates */
+  processingWeight?: InputMaybe<Scalars['Float']['input']>;
+  processingWeightGT?: InputMaybe<Scalars['Float']['input']>;
+  processingWeightGTE?: InputMaybe<Scalars['Float']['input']>;
+  processingWeightIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  processingWeightIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  processingWeightLT?: InputMaybe<Scalars['Float']['input']>;
+  processingWeightLTE?: InputMaybe<Scalars['Float']['input']>;
+  processingWeightNEQ?: InputMaybe<Scalars['Float']['input']>;
+  processingWeightNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  processingWeightNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** start_date field predicates */
   startDate?: InputMaybe<Scalars['Time']['input']>;
   startDateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -4612,12 +4651,14 @@ export type UpdateProjectInput = {
   clearContractorApplyCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearContractorApproveAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearContractorApproveCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDesignRatedWeight?: InputMaybe<Scalars['Boolean']['input']>;
   clearEffectiveContractAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearEndDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearFsDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearGlassBudgetPercentage?: InputMaybe<Scalars['Boolean']['input']>;
   clearInstallProgress?: InputMaybe<Scalars['Boolean']['input']>;
   clearIronBudgetPercentage?: InputMaybe<Scalars['Boolean']['input']>;
+  clearItemStockWeight?: InputMaybe<Scalars['Boolean']['input']>;
   clearJzs?: InputMaybe<Scalars['Boolean']['input']>;
   clearManager?: InputMaybe<Scalars['Boolean']['input']>;
   clearMaterialLoss?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4641,6 +4682,7 @@ export type UpdateProjectInput = {
   clearPmYearActual?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmYearTarget?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmYesterday?: InputMaybe<Scalars['Boolean']['input']>;
+  clearProcessingWeight?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectStaffs?: InputMaybe<Scalars['Boolean']['input']>;
   clearStartDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearTotalContractAmount?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4670,6 +4712,8 @@ export type UpdateProjectInput = {
   contractorApproveAmount?: InputMaybe<Scalars['Float']['input']>;
   /** 总包批复数量 */
   contractorApproveCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 设计定额重量 */
+  designRatedWeight?: InputMaybe<Scalars['Float']['input']>;
   /** 有效合同金额 */
   effectiveContractAmount?: InputMaybe<Scalars['Float']['input']>;
   /** 竣工日期 */
@@ -4684,6 +4728,8 @@ export type UpdateProjectInput = {
   ironBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
   /** 是否完成 */
   isFinished?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 項目物料庫存重量 */
+  itemStockWeight?: InputMaybe<Scalars['Float']['input']>;
   /** 建築師 */
   jzs?: InputMaybe<Scalars['String']['input']>;
   /** 地盤經理 */
@@ -4729,6 +4775,8 @@ export type UpdateProjectInput = {
   pmYearTarget?: InputMaybe<Scalars['Float']['input']>;
   /** 生产管理昨日生產 */
   pmYesterday?: InputMaybe<Scalars['Float']['input']>;
+  /** 加工图成型重量 */
+  processingWeight?: InputMaybe<Scalars['Float']['input']>;
   removeProjectStaffIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeVoIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** 開工日期 */

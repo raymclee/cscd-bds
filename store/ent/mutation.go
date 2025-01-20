@@ -8036,6 +8036,12 @@ type ProjectMutation struct {
 	addunit_component_installation                 *float64
 	material_loss                                  *float64
 	addmaterial_loss                               *float64
+	design_rated_weight                            *float64
+	adddesign_rated_weight                         *float64
+	processing_weight                              *float64
+	addprocessing_weight                           *float64
+	item_stock_weight                              *float64
+	additem_stock_weight                           *float64
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -11992,6 +11998,216 @@ func (m *ProjectMutation) ResetMaterialLoss() {
 	delete(m.clearedFields, project.FieldMaterialLoss)
 }
 
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (m *ProjectMutation) SetDesignRatedWeight(f float64) {
+	m.design_rated_weight = &f
+	m.adddesign_rated_weight = nil
+}
+
+// DesignRatedWeight returns the value of the "design_rated_weight" field in the mutation.
+func (m *ProjectMutation) DesignRatedWeight() (r float64, exists bool) {
+	v := m.design_rated_weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDesignRatedWeight returns the old "design_rated_weight" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDesignRatedWeight(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDesignRatedWeight is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDesignRatedWeight requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDesignRatedWeight: %w", err)
+	}
+	return oldValue.DesignRatedWeight, nil
+}
+
+// AddDesignRatedWeight adds f to the "design_rated_weight" field.
+func (m *ProjectMutation) AddDesignRatedWeight(f float64) {
+	if m.adddesign_rated_weight != nil {
+		*m.adddesign_rated_weight += f
+	} else {
+		m.adddesign_rated_weight = &f
+	}
+}
+
+// AddedDesignRatedWeight returns the value that was added to the "design_rated_weight" field in this mutation.
+func (m *ProjectMutation) AddedDesignRatedWeight() (r float64, exists bool) {
+	v := m.adddesign_rated_weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
+func (m *ProjectMutation) ClearDesignRatedWeight() {
+	m.design_rated_weight = nil
+	m.adddesign_rated_weight = nil
+	m.clearedFields[project.FieldDesignRatedWeight] = struct{}{}
+}
+
+// DesignRatedWeightCleared returns if the "design_rated_weight" field was cleared in this mutation.
+func (m *ProjectMutation) DesignRatedWeightCleared() bool {
+	_, ok := m.clearedFields[project.FieldDesignRatedWeight]
+	return ok
+}
+
+// ResetDesignRatedWeight resets all changes to the "design_rated_weight" field.
+func (m *ProjectMutation) ResetDesignRatedWeight() {
+	m.design_rated_weight = nil
+	m.adddesign_rated_weight = nil
+	delete(m.clearedFields, project.FieldDesignRatedWeight)
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (m *ProjectMutation) SetProcessingWeight(f float64) {
+	m.processing_weight = &f
+	m.addprocessing_weight = nil
+}
+
+// ProcessingWeight returns the value of the "processing_weight" field in the mutation.
+func (m *ProjectMutation) ProcessingWeight() (r float64, exists bool) {
+	v := m.processing_weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProcessingWeight returns the old "processing_weight" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldProcessingWeight(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProcessingWeight is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProcessingWeight requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProcessingWeight: %w", err)
+	}
+	return oldValue.ProcessingWeight, nil
+}
+
+// AddProcessingWeight adds f to the "processing_weight" field.
+func (m *ProjectMutation) AddProcessingWeight(f float64) {
+	if m.addprocessing_weight != nil {
+		*m.addprocessing_weight += f
+	} else {
+		m.addprocessing_weight = &f
+	}
+}
+
+// AddedProcessingWeight returns the value that was added to the "processing_weight" field in this mutation.
+func (m *ProjectMutation) AddedProcessingWeight() (r float64, exists bool) {
+	v := m.addprocessing_weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearProcessingWeight clears the value of the "processing_weight" field.
+func (m *ProjectMutation) ClearProcessingWeight() {
+	m.processing_weight = nil
+	m.addprocessing_weight = nil
+	m.clearedFields[project.FieldProcessingWeight] = struct{}{}
+}
+
+// ProcessingWeightCleared returns if the "processing_weight" field was cleared in this mutation.
+func (m *ProjectMutation) ProcessingWeightCleared() bool {
+	_, ok := m.clearedFields[project.FieldProcessingWeight]
+	return ok
+}
+
+// ResetProcessingWeight resets all changes to the "processing_weight" field.
+func (m *ProjectMutation) ResetProcessingWeight() {
+	m.processing_weight = nil
+	m.addprocessing_weight = nil
+	delete(m.clearedFields, project.FieldProcessingWeight)
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (m *ProjectMutation) SetItemStockWeight(f float64) {
+	m.item_stock_weight = &f
+	m.additem_stock_weight = nil
+}
+
+// ItemStockWeight returns the value of the "item_stock_weight" field in the mutation.
+func (m *ProjectMutation) ItemStockWeight() (r float64, exists bool) {
+	v := m.item_stock_weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldItemStockWeight returns the old "item_stock_weight" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldItemStockWeight(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldItemStockWeight is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldItemStockWeight requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldItemStockWeight: %w", err)
+	}
+	return oldValue.ItemStockWeight, nil
+}
+
+// AddItemStockWeight adds f to the "item_stock_weight" field.
+func (m *ProjectMutation) AddItemStockWeight(f float64) {
+	if m.additem_stock_weight != nil {
+		*m.additem_stock_weight += f
+	} else {
+		m.additem_stock_weight = &f
+	}
+}
+
+// AddedItemStockWeight returns the value that was added to the "item_stock_weight" field in this mutation.
+func (m *ProjectMutation) AddedItemStockWeight() (r float64, exists bool) {
+	v := m.additem_stock_weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearItemStockWeight clears the value of the "item_stock_weight" field.
+func (m *ProjectMutation) ClearItemStockWeight() {
+	m.item_stock_weight = nil
+	m.additem_stock_weight = nil
+	m.clearedFields[project.FieldItemStockWeight] = struct{}{}
+}
+
+// ItemStockWeightCleared returns if the "item_stock_weight" field was cleared in this mutation.
+func (m *ProjectMutation) ItemStockWeightCleared() bool {
+	_, ok := m.clearedFields[project.FieldItemStockWeight]
+	return ok
+}
+
+// ResetItemStockWeight resets all changes to the "item_stock_weight" field.
+func (m *ProjectMutation) ResetItemStockWeight() {
+	m.item_stock_weight = nil
+	m.additem_stock_weight = nil
+	delete(m.clearedFields, project.FieldItemStockWeight)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -12134,7 +12350,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 61)
+	fields := make([]string, 0, 64)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -12318,6 +12534,15 @@ func (m *ProjectMutation) Fields() []string {
 	if m.material_loss != nil {
 		fields = append(fields, project.FieldMaterialLoss)
 	}
+	if m.design_rated_weight != nil {
+		fields = append(fields, project.FieldDesignRatedWeight)
+	}
+	if m.processing_weight != nil {
+		fields = append(fields, project.FieldProcessingWeight)
+	}
+	if m.item_stock_weight != nil {
+		fields = append(fields, project.FieldItemStockWeight)
+	}
 	return fields
 }
 
@@ -12448,6 +12673,12 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.UnitComponentInstallation()
 	case project.FieldMaterialLoss:
 		return m.MaterialLoss()
+	case project.FieldDesignRatedWeight:
+		return m.DesignRatedWeight()
+	case project.FieldProcessingWeight:
+		return m.ProcessingWeight()
+	case project.FieldItemStockWeight:
+		return m.ItemStockWeight()
 	}
 	return nil, false
 }
@@ -12579,6 +12810,12 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUnitComponentInstallation(ctx)
 	case project.FieldMaterialLoss:
 		return m.OldMaterialLoss(ctx)
+	case project.FieldDesignRatedWeight:
+		return m.OldDesignRatedWeight(ctx)
+	case project.FieldProcessingWeight:
+		return m.OldProcessingWeight(ctx)
+	case project.FieldItemStockWeight:
+		return m.OldItemStockWeight(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -13015,6 +13252,27 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMaterialLoss(v)
 		return nil
+	case project.FieldDesignRatedWeight:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDesignRatedWeight(v)
+		return nil
+	case project.FieldProcessingWeight:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProcessingWeight(v)
+		return nil
+	case project.FieldItemStockWeight:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetItemStockWeight(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -13152,6 +13410,15 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addmaterial_loss != nil {
 		fields = append(fields, project.FieldMaterialLoss)
 	}
+	if m.adddesign_rated_weight != nil {
+		fields = append(fields, project.FieldDesignRatedWeight)
+	}
+	if m.addprocessing_weight != nil {
+		fields = append(fields, project.FieldProcessingWeight)
+	}
+	if m.additem_stock_weight != nil {
+		fields = append(fields, project.FieldItemStockWeight)
+	}
 	return fields
 }
 
@@ -13246,6 +13513,12 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUnitComponentInstallation()
 	case project.FieldMaterialLoss:
 		return m.AddedMaterialLoss()
+	case project.FieldDesignRatedWeight:
+		return m.AddedDesignRatedWeight()
+	case project.FieldProcessingWeight:
+		return m.AddedProcessingWeight()
+	case project.FieldItemStockWeight:
+		return m.AddedItemStockWeight()
 	}
 	return nil, false
 }
@@ -13556,6 +13829,27 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddMaterialLoss(v)
 		return nil
+	case project.FieldDesignRatedWeight:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDesignRatedWeight(v)
+		return nil
+	case project.FieldProcessingWeight:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddProcessingWeight(v)
+		return nil
+	case project.FieldItemStockWeight:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddItemStockWeight(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -13734,6 +14028,15 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldMaterialLoss) {
 		fields = append(fields, project.FieldMaterialLoss)
+	}
+	if m.FieldCleared(project.FieldDesignRatedWeight) {
+		fields = append(fields, project.FieldDesignRatedWeight)
+	}
+	if m.FieldCleared(project.FieldProcessingWeight) {
+		fields = append(fields, project.FieldProcessingWeight)
+	}
+	if m.FieldCleared(project.FieldItemStockWeight) {
+		fields = append(fields, project.FieldItemStockWeight)
 	}
 	return fields
 }
@@ -13919,6 +14222,15 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldMaterialLoss:
 		m.ClearMaterialLoss()
+		return nil
+	case project.FieldDesignRatedWeight:
+		m.ClearDesignRatedWeight()
+		return nil
+	case project.FieldProcessingWeight:
+		m.ClearProcessingWeight()
+		return nil
+	case project.FieldItemStockWeight:
+		m.ClearItemStockWeight()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -14110,6 +14422,15 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldMaterialLoss:
 		m.ResetMaterialLoss()
+		return nil
+	case project.FieldDesignRatedWeight:
+		m.ResetDesignRatedWeight()
+		return nil
+	case project.FieldProcessingWeight:
+		m.ResetProcessingWeight()
+		return nil
+	case project.FieldItemStockWeight:
+		m.ResetItemStockWeight()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

@@ -1506,6 +1506,87 @@ func (pu *ProjectUpdate) ClearMaterialLoss() *ProjectUpdate {
 	return pu
 }
 
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (pu *ProjectUpdate) SetDesignRatedWeight(f float64) *ProjectUpdate {
+	pu.mutation.ResetDesignRatedWeight()
+	pu.mutation.SetDesignRatedWeight(f)
+	return pu
+}
+
+// SetNillableDesignRatedWeight sets the "design_rated_weight" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDesignRatedWeight(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetDesignRatedWeight(*f)
+	}
+	return pu
+}
+
+// AddDesignRatedWeight adds f to the "design_rated_weight" field.
+func (pu *ProjectUpdate) AddDesignRatedWeight(f float64) *ProjectUpdate {
+	pu.mutation.AddDesignRatedWeight(f)
+	return pu
+}
+
+// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
+func (pu *ProjectUpdate) ClearDesignRatedWeight() *ProjectUpdate {
+	pu.mutation.ClearDesignRatedWeight()
+	return pu
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (pu *ProjectUpdate) SetProcessingWeight(f float64) *ProjectUpdate {
+	pu.mutation.ResetProcessingWeight()
+	pu.mutation.SetProcessingWeight(f)
+	return pu
+}
+
+// SetNillableProcessingWeight sets the "processing_weight" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableProcessingWeight(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetProcessingWeight(*f)
+	}
+	return pu
+}
+
+// AddProcessingWeight adds f to the "processing_weight" field.
+func (pu *ProjectUpdate) AddProcessingWeight(f float64) *ProjectUpdate {
+	pu.mutation.AddProcessingWeight(f)
+	return pu
+}
+
+// ClearProcessingWeight clears the value of the "processing_weight" field.
+func (pu *ProjectUpdate) ClearProcessingWeight() *ProjectUpdate {
+	pu.mutation.ClearProcessingWeight()
+	return pu
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (pu *ProjectUpdate) SetItemStockWeight(f float64) *ProjectUpdate {
+	pu.mutation.ResetItemStockWeight()
+	pu.mutation.SetItemStockWeight(f)
+	return pu
+}
+
+// SetNillableItemStockWeight sets the "item_stock_weight" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableItemStockWeight(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetItemStockWeight(*f)
+	}
+	return pu
+}
+
+// AddItemStockWeight adds f to the "item_stock_weight" field.
+func (pu *ProjectUpdate) AddItemStockWeight(f float64) *ProjectUpdate {
+	pu.mutation.AddItemStockWeight(f)
+	return pu
+}
+
+// ClearItemStockWeight clears the value of the "item_stock_weight" field.
+func (pu *ProjectUpdate) ClearItemStockWeight() *ProjectUpdate {
+	pu.mutation.ClearItemStockWeight()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -2107,6 +2188,33 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.MaterialLossCleared() {
 		_spec.ClearField(project.FieldMaterialLoss, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.DesignRatedWeight(); ok {
+		_spec.SetField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedDesignRatedWeight(); ok {
+		_spec.AddField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
+	}
+	if pu.mutation.DesignRatedWeightCleared() {
+		_spec.ClearField(project.FieldDesignRatedWeight, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.ProcessingWeight(); ok {
+		_spec.SetField(project.FieldProcessingWeight, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedProcessingWeight(); ok {
+		_spec.AddField(project.FieldProcessingWeight, field.TypeFloat64, value)
+	}
+	if pu.mutation.ProcessingWeightCleared() {
+		_spec.ClearField(project.FieldProcessingWeight, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.ItemStockWeight(); ok {
+		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedItemStockWeight(); ok {
+		_spec.AddField(project.FieldItemStockWeight, field.TypeFloat64, value)
+	}
+	if pu.mutation.ItemStockWeightCleared() {
+		_spec.ClearField(project.FieldItemStockWeight, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -3693,6 +3801,87 @@ func (puo *ProjectUpdateOne) ClearMaterialLoss() *ProjectUpdateOne {
 	return puo
 }
 
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (puo *ProjectUpdateOne) SetDesignRatedWeight(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetDesignRatedWeight()
+	puo.mutation.SetDesignRatedWeight(f)
+	return puo
+}
+
+// SetNillableDesignRatedWeight sets the "design_rated_weight" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDesignRatedWeight(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetDesignRatedWeight(*f)
+	}
+	return puo
+}
+
+// AddDesignRatedWeight adds f to the "design_rated_weight" field.
+func (puo *ProjectUpdateOne) AddDesignRatedWeight(f float64) *ProjectUpdateOne {
+	puo.mutation.AddDesignRatedWeight(f)
+	return puo
+}
+
+// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
+func (puo *ProjectUpdateOne) ClearDesignRatedWeight() *ProjectUpdateOne {
+	puo.mutation.ClearDesignRatedWeight()
+	return puo
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (puo *ProjectUpdateOne) SetProcessingWeight(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetProcessingWeight()
+	puo.mutation.SetProcessingWeight(f)
+	return puo
+}
+
+// SetNillableProcessingWeight sets the "processing_weight" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableProcessingWeight(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetProcessingWeight(*f)
+	}
+	return puo
+}
+
+// AddProcessingWeight adds f to the "processing_weight" field.
+func (puo *ProjectUpdateOne) AddProcessingWeight(f float64) *ProjectUpdateOne {
+	puo.mutation.AddProcessingWeight(f)
+	return puo
+}
+
+// ClearProcessingWeight clears the value of the "processing_weight" field.
+func (puo *ProjectUpdateOne) ClearProcessingWeight() *ProjectUpdateOne {
+	puo.mutation.ClearProcessingWeight()
+	return puo
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (puo *ProjectUpdateOne) SetItemStockWeight(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetItemStockWeight()
+	puo.mutation.SetItemStockWeight(f)
+	return puo
+}
+
+// SetNillableItemStockWeight sets the "item_stock_weight" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableItemStockWeight(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetItemStockWeight(*f)
+	}
+	return puo
+}
+
+// AddItemStockWeight adds f to the "item_stock_weight" field.
+func (puo *ProjectUpdateOne) AddItemStockWeight(f float64) *ProjectUpdateOne {
+	puo.mutation.AddItemStockWeight(f)
+	return puo
+}
+
+// ClearItemStockWeight clears the value of the "item_stock_weight" field.
+func (puo *ProjectUpdateOne) ClearItemStockWeight() *ProjectUpdateOne {
+	puo.mutation.ClearItemStockWeight()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -4324,6 +4513,33 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.MaterialLossCleared() {
 		_spec.ClearField(project.FieldMaterialLoss, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.DesignRatedWeight(); ok {
+		_spec.SetField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedDesignRatedWeight(); ok {
+		_spec.AddField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
+	}
+	if puo.mutation.DesignRatedWeightCleared() {
+		_spec.ClearField(project.FieldDesignRatedWeight, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.ProcessingWeight(); ok {
+		_spec.SetField(project.FieldProcessingWeight, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedProcessingWeight(); ok {
+		_spec.AddField(project.FieldProcessingWeight, field.TypeFloat64, value)
+	}
+	if puo.mutation.ProcessingWeightCleared() {
+		_spec.ClearField(project.FieldProcessingWeight, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.ItemStockWeight(); ok {
+		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedItemStockWeight(); ok {
+		_spec.AddField(project.FieldItemStockWeight, field.TypeFloat64, value)
+	}
+	if puo.mutation.ItemStockWeightCleared() {
+		_spec.ClearField(project.FieldItemStockWeight, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

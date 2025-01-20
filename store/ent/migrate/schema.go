@@ -269,6 +269,9 @@ var (
 		{Name: "unit_component_production", Type: field.TypeFloat64, Nullable: true},
 		{Name: "unit_component_installation", Type: field.TypeFloat64, Nullable: true},
 		{Name: "material_loss", Type: field.TypeFloat64, Nullable: true},
+		{Name: "design_rated_weight", Type: field.TypeFloat64, Nullable: true},
+		{Name: "processing_weight", Type: field.TypeFloat64, Nullable: true},
+		{Name: "item_stock_weight", Type: field.TypeFloat64, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{

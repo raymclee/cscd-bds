@@ -361,6 +361,21 @@ func MaterialLoss(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldMaterialLoss, v))
 }
 
+// DesignRatedWeight applies equality check predicate on the "design_rated_weight" field. It's identical to DesignRatedWeightEQ.
+func DesignRatedWeight(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDesignRatedWeight, v))
+}
+
+// ProcessingWeight applies equality check predicate on the "processing_weight" field. It's identical to ProcessingWeightEQ.
+func ProcessingWeight(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldProcessingWeight, v))
+}
+
+// ItemStockWeight applies equality check predicate on the "item_stock_weight" field. It's identical to ItemStockWeightEQ.
+func ItemStockWeight(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldItemStockWeight, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -3614,6 +3629,156 @@ func MaterialLossIsNil() predicate.Project {
 // MaterialLossNotNil applies the NotNil predicate on the "material_loss" field.
 func MaterialLossNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldMaterialLoss))
+}
+
+// DesignRatedWeightEQ applies the EQ predicate on the "design_rated_weight" field.
+func DesignRatedWeightEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDesignRatedWeight, v))
+}
+
+// DesignRatedWeightNEQ applies the NEQ predicate on the "design_rated_weight" field.
+func DesignRatedWeightNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDesignRatedWeight, v))
+}
+
+// DesignRatedWeightIn applies the In predicate on the "design_rated_weight" field.
+func DesignRatedWeightIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDesignRatedWeight, vs...))
+}
+
+// DesignRatedWeightNotIn applies the NotIn predicate on the "design_rated_weight" field.
+func DesignRatedWeightNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDesignRatedWeight, vs...))
+}
+
+// DesignRatedWeightGT applies the GT predicate on the "design_rated_weight" field.
+func DesignRatedWeightGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDesignRatedWeight, v))
+}
+
+// DesignRatedWeightGTE applies the GTE predicate on the "design_rated_weight" field.
+func DesignRatedWeightGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDesignRatedWeight, v))
+}
+
+// DesignRatedWeightLT applies the LT predicate on the "design_rated_weight" field.
+func DesignRatedWeightLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDesignRatedWeight, v))
+}
+
+// DesignRatedWeightLTE applies the LTE predicate on the "design_rated_weight" field.
+func DesignRatedWeightLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDesignRatedWeight, v))
+}
+
+// DesignRatedWeightIsNil applies the IsNil predicate on the "design_rated_weight" field.
+func DesignRatedWeightIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDesignRatedWeight))
+}
+
+// DesignRatedWeightNotNil applies the NotNil predicate on the "design_rated_weight" field.
+func DesignRatedWeightNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDesignRatedWeight))
+}
+
+// ProcessingWeightEQ applies the EQ predicate on the "processing_weight" field.
+func ProcessingWeightEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldProcessingWeight, v))
+}
+
+// ProcessingWeightNEQ applies the NEQ predicate on the "processing_weight" field.
+func ProcessingWeightNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldProcessingWeight, v))
+}
+
+// ProcessingWeightIn applies the In predicate on the "processing_weight" field.
+func ProcessingWeightIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldProcessingWeight, vs...))
+}
+
+// ProcessingWeightNotIn applies the NotIn predicate on the "processing_weight" field.
+func ProcessingWeightNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldProcessingWeight, vs...))
+}
+
+// ProcessingWeightGT applies the GT predicate on the "processing_weight" field.
+func ProcessingWeightGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldProcessingWeight, v))
+}
+
+// ProcessingWeightGTE applies the GTE predicate on the "processing_weight" field.
+func ProcessingWeightGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldProcessingWeight, v))
+}
+
+// ProcessingWeightLT applies the LT predicate on the "processing_weight" field.
+func ProcessingWeightLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldProcessingWeight, v))
+}
+
+// ProcessingWeightLTE applies the LTE predicate on the "processing_weight" field.
+func ProcessingWeightLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldProcessingWeight, v))
+}
+
+// ProcessingWeightIsNil applies the IsNil predicate on the "processing_weight" field.
+func ProcessingWeightIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldProcessingWeight))
+}
+
+// ProcessingWeightNotNil applies the NotNil predicate on the "processing_weight" field.
+func ProcessingWeightNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldProcessingWeight))
+}
+
+// ItemStockWeightEQ applies the EQ predicate on the "item_stock_weight" field.
+func ItemStockWeightEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldItemStockWeight, v))
+}
+
+// ItemStockWeightNEQ applies the NEQ predicate on the "item_stock_weight" field.
+func ItemStockWeightNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldItemStockWeight, v))
+}
+
+// ItemStockWeightIn applies the In predicate on the "item_stock_weight" field.
+func ItemStockWeightIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldItemStockWeight, vs...))
+}
+
+// ItemStockWeightNotIn applies the NotIn predicate on the "item_stock_weight" field.
+func ItemStockWeightNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldItemStockWeight, vs...))
+}
+
+// ItemStockWeightGT applies the GT predicate on the "item_stock_weight" field.
+func ItemStockWeightGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldItemStockWeight, v))
+}
+
+// ItemStockWeightGTE applies the GTE predicate on the "item_stock_weight" field.
+func ItemStockWeightGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldItemStockWeight, v))
+}
+
+// ItemStockWeightLT applies the LT predicate on the "item_stock_weight" field.
+func ItemStockWeightLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldItemStockWeight, v))
+}
+
+// ItemStockWeightLTE applies the LTE predicate on the "item_stock_weight" field.
+func ItemStockWeightLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldItemStockWeight, v))
+}
+
+// ItemStockWeightIsNil applies the IsNil predicate on the "item_stock_weight" field.
+func ItemStockWeightIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldItemStockWeight))
+}
+
+// ItemStockWeightNotNil applies the NotNil predicate on the "item_stock_weight" field.
+func ItemStockWeightNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldItemStockWeight))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

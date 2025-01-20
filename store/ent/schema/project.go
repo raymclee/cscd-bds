@@ -407,6 +407,21 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("物料損失金額"),
+
+		field.Float("design_rated_weight").
+			Optional().
+			Nillable().
+			Comment("设计定额重量"),
+
+		field.Float("processing_weight").
+			Optional().
+			Nillable().
+			Comment("加工图成型重量"),
+
+		field.Float("item_stock_weight").
+			Optional().
+			Nillable().
+			Comment("項目物料庫存重量"),
 	}
 }
 

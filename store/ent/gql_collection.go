@@ -2587,6 +2587,21 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldMaterialLoss)
 				fieldSeen[project.FieldMaterialLoss] = struct{}{}
 			}
+		case "designRatedWeight":
+			if _, ok := fieldSeen[project.FieldDesignRatedWeight]; !ok {
+				selectedFields = append(selectedFields, project.FieldDesignRatedWeight)
+				fieldSeen[project.FieldDesignRatedWeight] = struct{}{}
+			}
+		case "processingWeight":
+			if _, ok := fieldSeen[project.FieldProcessingWeight]; !ok {
+				selectedFields = append(selectedFields, project.FieldProcessingWeight)
+				fieldSeen[project.FieldProcessingWeight] = struct{}{}
+			}
+		case "itemStockWeight":
+			if _, ok := fieldSeen[project.FieldItemStockWeight]; !ok {
+				selectedFields = append(selectedFields, project.FieldItemStockWeight)
+				fieldSeen[project.FieldItemStockWeight] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

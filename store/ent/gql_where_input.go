@@ -4625,6 +4625,42 @@ type ProjectWhereInput struct {
 	MaterialLossIsNil  bool      `json:"materialLossIsNil,omitempty"`
 	MaterialLossNotNil bool      `json:"materialLossNotNil,omitempty"`
 
+	// "design_rated_weight" field predicates.
+	DesignRatedWeight       *float64  `json:"designRatedWeight,omitempty"`
+	DesignRatedWeightNEQ    *float64  `json:"designRatedWeightNEQ,omitempty"`
+	DesignRatedWeightIn     []float64 `json:"designRatedWeightIn,omitempty"`
+	DesignRatedWeightNotIn  []float64 `json:"designRatedWeightNotIn,omitempty"`
+	DesignRatedWeightGT     *float64  `json:"designRatedWeightGT,omitempty"`
+	DesignRatedWeightGTE    *float64  `json:"designRatedWeightGTE,omitempty"`
+	DesignRatedWeightLT     *float64  `json:"designRatedWeightLT,omitempty"`
+	DesignRatedWeightLTE    *float64  `json:"designRatedWeightLTE,omitempty"`
+	DesignRatedWeightIsNil  bool      `json:"designRatedWeightIsNil,omitempty"`
+	DesignRatedWeightNotNil bool      `json:"designRatedWeightNotNil,omitempty"`
+
+	// "processing_weight" field predicates.
+	ProcessingWeight       *float64  `json:"processingWeight,omitempty"`
+	ProcessingWeightNEQ    *float64  `json:"processingWeightNEQ,omitempty"`
+	ProcessingWeightIn     []float64 `json:"processingWeightIn,omitempty"`
+	ProcessingWeightNotIn  []float64 `json:"processingWeightNotIn,omitempty"`
+	ProcessingWeightGT     *float64  `json:"processingWeightGT,omitempty"`
+	ProcessingWeightGTE    *float64  `json:"processingWeightGTE,omitempty"`
+	ProcessingWeightLT     *float64  `json:"processingWeightLT,omitempty"`
+	ProcessingWeightLTE    *float64  `json:"processingWeightLTE,omitempty"`
+	ProcessingWeightIsNil  bool      `json:"processingWeightIsNil,omitempty"`
+	ProcessingWeightNotNil bool      `json:"processingWeightNotNil,omitempty"`
+
+	// "item_stock_weight" field predicates.
+	ItemStockWeight       *float64  `json:"itemStockWeight,omitempty"`
+	ItemStockWeightNEQ    *float64  `json:"itemStockWeightNEQ,omitempty"`
+	ItemStockWeightIn     []float64 `json:"itemStockWeightIn,omitempty"`
+	ItemStockWeightNotIn  []float64 `json:"itemStockWeightNotIn,omitempty"`
+	ItemStockWeightGT     *float64  `json:"itemStockWeightGT,omitempty"`
+	ItemStockWeightGTE    *float64  `json:"itemStockWeightGTE,omitempty"`
+	ItemStockWeightLT     *float64  `json:"itemStockWeightLT,omitempty"`
+	ItemStockWeightLTE    *float64  `json:"itemStockWeightLTE,omitempty"`
+	ItemStockWeightIsNil  bool      `json:"itemStockWeightIsNil,omitempty"`
+	ItemStockWeightNotNil bool      `json:"itemStockWeightNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -6681,6 +6717,96 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.MaterialLossNotNil {
 		predicates = append(predicates, project.MaterialLossNotNil())
+	}
+	if i.DesignRatedWeight != nil {
+		predicates = append(predicates, project.DesignRatedWeightEQ(*i.DesignRatedWeight))
+	}
+	if i.DesignRatedWeightNEQ != nil {
+		predicates = append(predicates, project.DesignRatedWeightNEQ(*i.DesignRatedWeightNEQ))
+	}
+	if len(i.DesignRatedWeightIn) > 0 {
+		predicates = append(predicates, project.DesignRatedWeightIn(i.DesignRatedWeightIn...))
+	}
+	if len(i.DesignRatedWeightNotIn) > 0 {
+		predicates = append(predicates, project.DesignRatedWeightNotIn(i.DesignRatedWeightNotIn...))
+	}
+	if i.DesignRatedWeightGT != nil {
+		predicates = append(predicates, project.DesignRatedWeightGT(*i.DesignRatedWeightGT))
+	}
+	if i.DesignRatedWeightGTE != nil {
+		predicates = append(predicates, project.DesignRatedWeightGTE(*i.DesignRatedWeightGTE))
+	}
+	if i.DesignRatedWeightLT != nil {
+		predicates = append(predicates, project.DesignRatedWeightLT(*i.DesignRatedWeightLT))
+	}
+	if i.DesignRatedWeightLTE != nil {
+		predicates = append(predicates, project.DesignRatedWeightLTE(*i.DesignRatedWeightLTE))
+	}
+	if i.DesignRatedWeightIsNil {
+		predicates = append(predicates, project.DesignRatedWeightIsNil())
+	}
+	if i.DesignRatedWeightNotNil {
+		predicates = append(predicates, project.DesignRatedWeightNotNil())
+	}
+	if i.ProcessingWeight != nil {
+		predicates = append(predicates, project.ProcessingWeightEQ(*i.ProcessingWeight))
+	}
+	if i.ProcessingWeightNEQ != nil {
+		predicates = append(predicates, project.ProcessingWeightNEQ(*i.ProcessingWeightNEQ))
+	}
+	if len(i.ProcessingWeightIn) > 0 {
+		predicates = append(predicates, project.ProcessingWeightIn(i.ProcessingWeightIn...))
+	}
+	if len(i.ProcessingWeightNotIn) > 0 {
+		predicates = append(predicates, project.ProcessingWeightNotIn(i.ProcessingWeightNotIn...))
+	}
+	if i.ProcessingWeightGT != nil {
+		predicates = append(predicates, project.ProcessingWeightGT(*i.ProcessingWeightGT))
+	}
+	if i.ProcessingWeightGTE != nil {
+		predicates = append(predicates, project.ProcessingWeightGTE(*i.ProcessingWeightGTE))
+	}
+	if i.ProcessingWeightLT != nil {
+		predicates = append(predicates, project.ProcessingWeightLT(*i.ProcessingWeightLT))
+	}
+	if i.ProcessingWeightLTE != nil {
+		predicates = append(predicates, project.ProcessingWeightLTE(*i.ProcessingWeightLTE))
+	}
+	if i.ProcessingWeightIsNil {
+		predicates = append(predicates, project.ProcessingWeightIsNil())
+	}
+	if i.ProcessingWeightNotNil {
+		predicates = append(predicates, project.ProcessingWeightNotNil())
+	}
+	if i.ItemStockWeight != nil {
+		predicates = append(predicates, project.ItemStockWeightEQ(*i.ItemStockWeight))
+	}
+	if i.ItemStockWeightNEQ != nil {
+		predicates = append(predicates, project.ItemStockWeightNEQ(*i.ItemStockWeightNEQ))
+	}
+	if len(i.ItemStockWeightIn) > 0 {
+		predicates = append(predicates, project.ItemStockWeightIn(i.ItemStockWeightIn...))
+	}
+	if len(i.ItemStockWeightNotIn) > 0 {
+		predicates = append(predicates, project.ItemStockWeightNotIn(i.ItemStockWeightNotIn...))
+	}
+	if i.ItemStockWeightGT != nil {
+		predicates = append(predicates, project.ItemStockWeightGT(*i.ItemStockWeightGT))
+	}
+	if i.ItemStockWeightGTE != nil {
+		predicates = append(predicates, project.ItemStockWeightGTE(*i.ItemStockWeightGTE))
+	}
+	if i.ItemStockWeightLT != nil {
+		predicates = append(predicates, project.ItemStockWeightLT(*i.ItemStockWeightLT))
+	}
+	if i.ItemStockWeightLTE != nil {
+		predicates = append(predicates, project.ItemStockWeightLTE(*i.ItemStockWeightLTE))
+	}
+	if i.ItemStockWeightIsNil {
+		predicates = append(predicates, project.ItemStockWeightIsNil())
+	}
+	if i.ItemStockWeightNotNil {
+		predicates = append(predicates, project.ItemStockWeightNotNil())
 	}
 
 	if i.HasVos != nil {

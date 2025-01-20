@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b70e652e4ee0861b293539445d5782cd>>
+ * @generated SignedSource<<ba09d35f591b5736cb97872f57808948>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,12 +34,14 @@ export type UpdateProjectInput = {
   clearContractorApplyCount?: boolean | null | undefined;
   clearContractorApproveAmount?: boolean | null | undefined;
   clearContractorApproveCount?: boolean | null | undefined;
+  clearDesignRatedWeight?: boolean | null | undefined;
   clearEffectiveContractAmount?: boolean | null | undefined;
   clearEndDate?: boolean | null | undefined;
   clearFsDate?: boolean | null | undefined;
   clearGlassBudgetPercentage?: boolean | null | undefined;
   clearInstallProgress?: boolean | null | undefined;
   clearIronBudgetPercentage?: boolean | null | undefined;
+  clearItemStockWeight?: boolean | null | undefined;
   clearJzs?: boolean | null | undefined;
   clearManager?: boolean | null | undefined;
   clearMaterialLoss?: boolean | null | undefined;
@@ -63,6 +65,7 @@ export type UpdateProjectInput = {
   clearPmYearActual?: boolean | null | undefined;
   clearPmYearTarget?: boolean | null | undefined;
   clearPmYesterday?: boolean | null | undefined;
+  clearProcessingWeight?: boolean | null | undefined;
   clearProjectStaffs?: boolean | null | undefined;
   clearStartDate?: boolean | null | undefined;
   clearTotalContractAmount?: boolean | null | undefined;
@@ -86,6 +89,7 @@ export type UpdateProjectInput = {
   contractorApplyCount?: number | null | undefined;
   contractorApproveAmount?: number | null | undefined;
   contractorApproveCount?: number | null | undefined;
+  designRatedWeight?: number | null | undefined;
   effectiveContractAmount?: number | null | undefined;
   endDate?: any | null | undefined;
   fsDate?: any | null | undefined;
@@ -93,6 +97,7 @@ export type UpdateProjectInput = {
   installProgress?: number | null | undefined;
   ironBudgetPercentage?: number | null | undefined;
   isFinished?: boolean | null | undefined;
+  itemStockWeight?: number | null | undefined;
   jzs?: string | null | undefined;
   manager?: string | null | undefined;
   materialLoss?: number | null | undefined;
@@ -116,6 +121,7 @@ export type UpdateProjectInput = {
   pmYearActual?: number | null | undefined;
   pmYearTarget?: number | null | undefined;
   pmYesterday?: number | null | undefined;
+  processingWeight?: number | null | undefined;
   removeProjectStaffIDs?: ReadonlyArray<string> | null | undefined;
   removeVoIDs?: ReadonlyArray<string> | null | undefined;
   startDate?: any | null | undefined;

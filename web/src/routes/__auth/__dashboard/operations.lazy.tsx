@@ -30,6 +30,9 @@ import b4 from "~/assets/svg/box4.png";
 import b5 from "~/assets/svg/box5.png";
 import top from "~/assets/svg/top.png";
 
+import consumptionBg from "~/assets/svg/consumption_bg.png";
+import consumptionBg2 from "~/assets/svg/consumption_bg2.png";
+
 import projectProgressTitle from "~/assets/svg/project_progress_title.png";
 
 import leftArrow from "~/assets/svg/left_arrow.png";
@@ -86,12 +89,13 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { useUpdateProject } from "~/hooks/use-update-project";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Toaster } from "~/components/ui/sonner";
 import { toast } from "sonner";
 import { useOnClickOutside } from "usehooks-ts";
+import { Switcher } from "~/components/switcher";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -161,6 +165,9 @@ function RouteComponent() {
               unitComponentProduction
               unitComponentInstallation
               materialLoss
+              designRatedWeight
+              processingWeight
+              itemStockWeight
               projectStaffs(
                 first: 3
                 orderBy: { field: CREATED_AT, direction: DESC }
@@ -308,9 +315,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const unitComponentProduction = pj?.unitComponentProduction || 0;
   const unitComponentInstallation = pj?.unitComponentInstallation || 0;
   const materialLoss = pj?.materialLoss || 0;
+  const designRatedWeight = pj?.designRatedWeight || 0;
+  const processingWeight = pj?.processingWeight || 0;
+  const itemStockWeight = pj?.itemStockWeight || 0;
 
   return (
     <>
+      <Switcher />
+
       <div className="absolute left-5 top-2">
         <ProjectSelect data={data} defaultCode={defaultCode} />
       </div>
@@ -759,7 +771,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   className="absolute inset-0 h-14 w-full"
                 />
 
-                <div className="relative grid h-14 grid-cols-4 justify-items-stretch">
+                <div className="relative flex h-14 grid-cols-4 justify-around">
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
@@ -770,7 +782,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <span className="text-xxs text-red-200">铝板</span>
                     <div
                       className={cn(
-                        "text-sm font-bold",
+                        "text-xs font-bold",
                         materialStatusIconColor(aluminumPlateBudgetPercentage),
                       )}
                     >
@@ -781,7 +793,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${Math.round(aluminumPlateBudgetPercentage * 100) / 100}`}
                       </TextScramble>
-                      <span className="ml-0.5 text-xs">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
@@ -794,7 +806,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <span className="text-xxs text-red-200">铝型材</span>
                     <div
                       className={cn(
-                        "text-sm font-bold",
+                        "text-xs font-bold",
                         materialStatusIconColor(aluminumBudgetPercentage),
                       )}
                     >
@@ -805,7 +817,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${Math.round(aluminumBudgetPercentage * 100) / 100}`}
                       </TextScramble>
-                      <span className="ml-0.5 text-xs">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
@@ -818,7 +830,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <span className="text-xxs text-red-200">玻璃</span>
                     <div
                       className={cn(
-                        "text-sm font-bold",
+                        "text-xs font-bold",
                         materialStatusIconColor(glassBudgetPercentage),
                       )}
                     >
@@ -829,7 +841,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${Math.round(glassBudgetPercentage * 100) / 100}`}
                       </TextScramble>
-                      <span className="ml-0.5 text-xs">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
@@ -842,7 +854,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     <span className="text-xxs text-red-200">铁型材</span>
                     <div
                       className={cn(
-                        "text-sm font-bold",
+                        "text-xs font-bold",
                         materialStatusIconColor(ironBudgetPercentage),
                       )}
                     >
@@ -853,7 +865,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       >
                         {`${Math.round(ironBudgetPercentage * 100) / 100}`}
                       </TextScramble>
-                      <span className="ml-0.5 text-xs">%</span>
+                      <span className="ml-0.5 text-xxs">%</span>
                     </div>
                   </div>
                 </div>
@@ -904,11 +916,66 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>套裁耗损展示</SubTitle>
             <div className="flex h-[4.8rem] items-center gap-x-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
-              <div className="flex-1">
-                <img src={tailoringLeft} />
+              <div className="relative flex-1 overflow-hidden">
+                <img src={consumptionBg} />
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0.5 text-xs">
+                  <div className="basis-1/3 font-bold text-[#a1cae3]">
+                    套裁损耗
+                  </div>
+                  <div className="basis-2/3 text-right font-bold text-yellow-500">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${
+                        Math.round(
+                          (designRatedWeight - processingWeight) * 100,
+                        ) / 100
+                      }`}
+                    </TextScramble>
+                  </div>
+
+                  <div className="basis-1/3 font-bold text-[#a1cae3]">
+                    套裁损耗率
+                  </div>
+                  <div className="basis-2/3 text-right font-bold text-yellow-500">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${
+                        designRatedWeight > 0
+                          ? Math.round(
+                              ((designRatedWeight - processingWeight) /
+                                designRatedWeight) *
+                                100 *
+                                100,
+                            ) / 100
+                          : 0
+                      }`}
+                    </TextScramble>
+                    %
+                  </div>
+                </div>
               </div>
-              <div className="flex-1">
-                <img src={tailoringRight} />
+              <div className="relative flex-1">
+                <img src={consumptionBg2} />
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0 text-xs">
+                  <div className="basis-1/3 font-bold text-[#a1cae3]">
+                    铝型材余料
+                  </div>
+                  <div className="basis-2/3 text-right font-bold text-yellow-500">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${Math.round(itemStockWeight * 100) / 100}`}
+                    </TextScramble>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1291,7 +1358,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           </div>
         </section>
 
-        <section className="space-y-2">
+        <section className="space-y-3">
           <div>
             <SubTitle>图纸进度管理</SubTitle>
             <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
@@ -1443,14 +1510,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>近2季度 质量内审分数</SubTitle>
             {/* <div className="relative bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={quality} className="h-[7rem] w-full object-cover" />
+            <img src={quality} className="h-[6rem] w-full object-cover" />
             {/* </div> */}
           </div>
 
           <div>
             <SubTitle>近2季度 安全内审分数</SubTitle>
             {/* <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={safty} className="h-[7rem] w-full object-cover" />
+            <img src={safty} className="h-[6rem] w-full object-cover" />
             {/* </div> */}
           </div>
         </section>
@@ -1577,9 +1644,13 @@ function EditableBasicInfoItem({
           <PopoverContent className="dark w-auto p-0">
             <Calendar
               locale={zhCN}
+              className="rounded-lg border border-sky-900 bg-sky-800/50 font-bold text-white shadow-xl"
               classNames={{
-                day_selected:
-                  "bg-brand-project text-slate-800 hover:bg-brand-project hover:text-slate-800 focus:bg-brand-project focus:text-slate-800",
+                day_today: "bg-sky-700 hover:bg-sky-600",
+                day: cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-sky-900",
+                ),
               }}
               mode="single"
               // selected={date}

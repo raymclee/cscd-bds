@@ -315,6 +315,7 @@ type ComplexityRoot struct {
 		ContractorApproveAmount                 func(childComplexity int) int
 		ContractorApproveCount                  func(childComplexity int) int
 		CreatedAt                               func(childComplexity int) int
+		DesignRatedWeight                       func(childComplexity int) int
 		EffectiveContractAmount                 func(childComplexity int) int
 		EndDate                                 func(childComplexity int) int
 		FsDate                                  func(childComplexity int) int
@@ -323,6 +324,7 @@ type ComplexityRoot struct {
 		InstallProgress                         func(childComplexity int) int
 		IronBudgetPercentage                    func(childComplexity int) int
 		IsFinished                              func(childComplexity int) int
+		ItemStockWeight                         func(childComplexity int) int
 		Jzs                                     func(childComplexity int) int
 		Manager                                 func(childComplexity int) int
 		MaterialLoss                            func(childComplexity int) int
@@ -346,6 +348,7 @@ type ComplexityRoot struct {
 		PmYearActual                            func(childComplexity int) int
 		PmYearTarget                            func(childComplexity int) int
 		PmYesterday                             func(childComplexity int) int
+		ProcessingWeight                        func(childComplexity int) int
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
@@ -2066,6 +2069,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.CreatedAt(childComplexity), true
 
+	case "Project.designRatedWeight":
+		if e.complexity.Project.DesignRatedWeight == nil {
+			break
+		}
+
+		return e.complexity.Project.DesignRatedWeight(childComplexity), true
+
 	case "Project.effectiveContractAmount":
 		if e.complexity.Project.EffectiveContractAmount == nil {
 			break
@@ -2121,6 +2131,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.IsFinished(childComplexity), true
+
+	case "Project.itemStockWeight":
+		if e.complexity.Project.ItemStockWeight == nil {
+			break
+		}
+
+		return e.complexity.Project.ItemStockWeight(childComplexity), true
 
 	case "Project.jzs":
 		if e.complexity.Project.Jzs == nil {
@@ -2282,6 +2299,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.PmYesterday(childComplexity), true
+
+	case "Project.processingWeight":
+		if e.complexity.Project.ProcessingWeight == nil {
+			break
+		}
+
+		return e.complexity.Project.ProcessingWeight(childComplexity), true
 
 	case "Project.projectStaffs":
 		if e.complexity.Project.ProjectStaffs == nil {
@@ -6555,6 +6579,18 @@ type Project implements Node {
   物料損失金額
   """
   materialLoss: Float
+  """
+  设计定额重量
+  """
+  designRatedWeight: Float
+  """
+  加工图成型重量
+  """
+  processingWeight: Float
+  """
+  項目物料庫存重量
+  """
+  itemStockWeight: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -7863,6 +7899,45 @@ input ProjectWhereInput {
   materialLossLTE: Float
   materialLossIsNil: Boolean
   materialLossNotNil: Boolean
+  """
+  design_rated_weight field predicates
+  """
+  designRatedWeight: Float
+  designRatedWeightNEQ: Float
+  designRatedWeightIn: [Float!]
+  designRatedWeightNotIn: [Float!]
+  designRatedWeightGT: Float
+  designRatedWeightGTE: Float
+  designRatedWeightLT: Float
+  designRatedWeightLTE: Float
+  designRatedWeightIsNil: Boolean
+  designRatedWeightNotNil: Boolean
+  """
+  processing_weight field predicates
+  """
+  processingWeight: Float
+  processingWeightNEQ: Float
+  processingWeightIn: [Float!]
+  processingWeightNotIn: [Float!]
+  processingWeightGT: Float
+  processingWeightGTE: Float
+  processingWeightLT: Float
+  processingWeightLTE: Float
+  processingWeightIsNil: Boolean
+  processingWeightNotNil: Boolean
+  """
+  item_stock_weight field predicates
+  """
+  itemStockWeight: Float
+  itemStockWeightNEQ: Float
+  itemStockWeightIn: [Float!]
+  itemStockWeightNotIn: [Float!]
+  itemStockWeightGT: Float
+  itemStockWeightGTE: Float
+  itemStockWeightLT: Float
+  itemStockWeightLTE: Float
+  itemStockWeightIsNil: Boolean
+  itemStockWeightNotNil: Boolean
   """
   vos edge predicates
   """
@@ -10242,6 +10317,21 @@ input UpdateProjectInput {
   """
   materialLoss: Float
   clearMaterialLoss: Boolean
+  """
+  设计定额重量
+  """
+  designRatedWeight: Float
+  clearDesignRatedWeight: Boolean
+  """
+  加工图成型重量
+  """
+  processingWeight: Float
+  clearProcessingWeight: Boolean
+  """
+  項目物料庫存重量
+  """
+  itemStockWeight: Float
+  clearItemStockWeight: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean

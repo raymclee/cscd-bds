@@ -872,6 +872,48 @@ func (pc *ProjectCreate) SetNillableMaterialLoss(f *float64) *ProjectCreate {
 	return pc
 }
 
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (pc *ProjectCreate) SetDesignRatedWeight(f float64) *ProjectCreate {
+	pc.mutation.SetDesignRatedWeight(f)
+	return pc
+}
+
+// SetNillableDesignRatedWeight sets the "design_rated_weight" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDesignRatedWeight(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetDesignRatedWeight(*f)
+	}
+	return pc
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (pc *ProjectCreate) SetProcessingWeight(f float64) *ProjectCreate {
+	pc.mutation.SetProcessingWeight(f)
+	return pc
+}
+
+// SetNillableProcessingWeight sets the "processing_weight" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableProcessingWeight(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetProcessingWeight(*f)
+	}
+	return pc
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (pc *ProjectCreate) SetItemStockWeight(f float64) *ProjectCreate {
+	pc.mutation.SetItemStockWeight(f)
+	return pc
+}
+
+// SetNillableItemStockWeight sets the "item_stock_weight" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableItemStockWeight(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetItemStockWeight(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -1262,6 +1304,18 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.MaterialLoss(); ok {
 		_spec.SetField(project.FieldMaterialLoss, field.TypeFloat64, value)
 		_node.MaterialLoss = &value
+	}
+	if value, ok := pc.mutation.DesignRatedWeight(); ok {
+		_spec.SetField(project.FieldDesignRatedWeight, field.TypeFloat64, value)
+		_node.DesignRatedWeight = &value
+	}
+	if value, ok := pc.mutation.ProcessingWeight(); ok {
+		_spec.SetField(project.FieldProcessingWeight, field.TypeFloat64, value)
+		_node.ProcessingWeight = &value
+	}
+	if value, ok := pc.mutation.ItemStockWeight(); ok {
+		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
+		_node.ItemStockWeight = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2664,6 +2718,78 @@ func (u *ProjectUpsert) AddMaterialLoss(v float64) *ProjectUpsert {
 // ClearMaterialLoss clears the value of the "material_loss" field.
 func (u *ProjectUpsert) ClearMaterialLoss() *ProjectUpsert {
 	u.SetNull(project.FieldMaterialLoss)
+	return u
+}
+
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (u *ProjectUpsert) SetDesignRatedWeight(v float64) *ProjectUpsert {
+	u.Set(project.FieldDesignRatedWeight, v)
+	return u
+}
+
+// UpdateDesignRatedWeight sets the "design_rated_weight" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDesignRatedWeight() *ProjectUpsert {
+	u.SetExcluded(project.FieldDesignRatedWeight)
+	return u
+}
+
+// AddDesignRatedWeight adds v to the "design_rated_weight" field.
+func (u *ProjectUpsert) AddDesignRatedWeight(v float64) *ProjectUpsert {
+	u.Add(project.FieldDesignRatedWeight, v)
+	return u
+}
+
+// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
+func (u *ProjectUpsert) ClearDesignRatedWeight() *ProjectUpsert {
+	u.SetNull(project.FieldDesignRatedWeight)
+	return u
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (u *ProjectUpsert) SetProcessingWeight(v float64) *ProjectUpsert {
+	u.Set(project.FieldProcessingWeight, v)
+	return u
+}
+
+// UpdateProcessingWeight sets the "processing_weight" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateProcessingWeight() *ProjectUpsert {
+	u.SetExcluded(project.FieldProcessingWeight)
+	return u
+}
+
+// AddProcessingWeight adds v to the "processing_weight" field.
+func (u *ProjectUpsert) AddProcessingWeight(v float64) *ProjectUpsert {
+	u.Add(project.FieldProcessingWeight, v)
+	return u
+}
+
+// ClearProcessingWeight clears the value of the "processing_weight" field.
+func (u *ProjectUpsert) ClearProcessingWeight() *ProjectUpsert {
+	u.SetNull(project.FieldProcessingWeight)
+	return u
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (u *ProjectUpsert) SetItemStockWeight(v float64) *ProjectUpsert {
+	u.Set(project.FieldItemStockWeight, v)
+	return u
+}
+
+// UpdateItemStockWeight sets the "item_stock_weight" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateItemStockWeight() *ProjectUpsert {
+	u.SetExcluded(project.FieldItemStockWeight)
+	return u
+}
+
+// AddItemStockWeight adds v to the "item_stock_weight" field.
+func (u *ProjectUpsert) AddItemStockWeight(v float64) *ProjectUpsert {
+	u.Add(project.FieldItemStockWeight, v)
+	return u
+}
+
+// ClearItemStockWeight clears the value of the "item_stock_weight" field.
+func (u *ProjectUpsert) ClearItemStockWeight() *ProjectUpsert {
+	u.SetNull(project.FieldItemStockWeight)
 	return u
 }
 
@@ -4255,6 +4381,90 @@ func (u *ProjectUpsertOne) UpdateMaterialLoss() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearMaterialLoss() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearMaterialLoss()
+	})
+}
+
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (u *ProjectUpsertOne) SetDesignRatedWeight(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDesignRatedWeight(v)
+	})
+}
+
+// AddDesignRatedWeight adds v to the "design_rated_weight" field.
+func (u *ProjectUpsertOne) AddDesignRatedWeight(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDesignRatedWeight(v)
+	})
+}
+
+// UpdateDesignRatedWeight sets the "design_rated_weight" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDesignRatedWeight() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDesignRatedWeight()
+	})
+}
+
+// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
+func (u *ProjectUpsertOne) ClearDesignRatedWeight() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDesignRatedWeight()
+	})
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (u *ProjectUpsertOne) SetProcessingWeight(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetProcessingWeight(v)
+	})
+}
+
+// AddProcessingWeight adds v to the "processing_weight" field.
+func (u *ProjectUpsertOne) AddProcessingWeight(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddProcessingWeight(v)
+	})
+}
+
+// UpdateProcessingWeight sets the "processing_weight" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateProcessingWeight() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateProcessingWeight()
+	})
+}
+
+// ClearProcessingWeight clears the value of the "processing_weight" field.
+func (u *ProjectUpsertOne) ClearProcessingWeight() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearProcessingWeight()
+	})
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (u *ProjectUpsertOne) SetItemStockWeight(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetItemStockWeight(v)
+	})
+}
+
+// AddItemStockWeight adds v to the "item_stock_weight" field.
+func (u *ProjectUpsertOne) AddItemStockWeight(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddItemStockWeight(v)
+	})
+}
+
+// UpdateItemStockWeight sets the "item_stock_weight" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateItemStockWeight() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateItemStockWeight()
+	})
+}
+
+// ClearItemStockWeight clears the value of the "item_stock_weight" field.
+func (u *ProjectUpsertOne) ClearItemStockWeight() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearItemStockWeight()
 	})
 }
 
@@ -6013,6 +6223,90 @@ func (u *ProjectUpsertBulk) UpdateMaterialLoss() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearMaterialLoss() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearMaterialLoss()
+	})
+}
+
+// SetDesignRatedWeight sets the "design_rated_weight" field.
+func (u *ProjectUpsertBulk) SetDesignRatedWeight(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDesignRatedWeight(v)
+	})
+}
+
+// AddDesignRatedWeight adds v to the "design_rated_weight" field.
+func (u *ProjectUpsertBulk) AddDesignRatedWeight(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDesignRatedWeight(v)
+	})
+}
+
+// UpdateDesignRatedWeight sets the "design_rated_weight" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDesignRatedWeight() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDesignRatedWeight()
+	})
+}
+
+// ClearDesignRatedWeight clears the value of the "design_rated_weight" field.
+func (u *ProjectUpsertBulk) ClearDesignRatedWeight() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDesignRatedWeight()
+	})
+}
+
+// SetProcessingWeight sets the "processing_weight" field.
+func (u *ProjectUpsertBulk) SetProcessingWeight(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetProcessingWeight(v)
+	})
+}
+
+// AddProcessingWeight adds v to the "processing_weight" field.
+func (u *ProjectUpsertBulk) AddProcessingWeight(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddProcessingWeight(v)
+	})
+}
+
+// UpdateProcessingWeight sets the "processing_weight" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateProcessingWeight() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateProcessingWeight()
+	})
+}
+
+// ClearProcessingWeight clears the value of the "processing_weight" field.
+func (u *ProjectUpsertBulk) ClearProcessingWeight() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearProcessingWeight()
+	})
+}
+
+// SetItemStockWeight sets the "item_stock_weight" field.
+func (u *ProjectUpsertBulk) SetItemStockWeight(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetItemStockWeight(v)
+	})
+}
+
+// AddItemStockWeight adds v to the "item_stock_weight" field.
+func (u *ProjectUpsertBulk) AddItemStockWeight(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddItemStockWeight(v)
+	})
+}
+
+// UpdateItemStockWeight sets the "item_stock_weight" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateItemStockWeight() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateItemStockWeight()
+	})
+}
+
+// ClearItemStockWeight clears the value of the "item_stock_weight" field.
+func (u *ProjectUpsertBulk) ClearItemStockWeight() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearItemStockWeight()
 	})
 }
 

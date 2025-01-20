@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<98f5b418a9674f5a7fd559d4f2d91c2e>>
+ * @generated SignedSource<<1f03588ddc1d22b58c610dc97d683ad1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,6 +28,7 @@ export type operationsPageQuery$data = {
         readonly contractorApplyCount: number | null | undefined;
         readonly contractorApproveAmount: number | null | undefined;
         readonly contractorApproveCount: number | null | undefined;
+        readonly designRatedWeight: number | null | undefined;
         readonly effectiveContractAmount: number | null | undefined;
         readonly endDate: any | null | undefined;
         readonly fsDate: any | null | undefined;
@@ -35,6 +36,7 @@ export type operationsPageQuery$data = {
         readonly id: string;
         readonly installProgress: number | null | undefined;
         readonly ironBudgetPercentage: number | null | undefined;
+        readonly itemStockWeight: number | null | undefined;
         readonly jzs: string | null | undefined;
         readonly manager: string | null | undefined;
         readonly materialLoss: number | null | undefined;
@@ -58,6 +60,7 @@ export type operationsPageQuery$data = {
         readonly pmYearActual: number | null | undefined;
         readonly pmYearTarget: number | null | undefined;
         readonly pmYesterday: number | null | undefined;
+        readonly processingWeight: number | null | undefined;
         readonly projectStaffs: {
           readonly edges: ReadonlyArray<{
             readonly node: {
@@ -508,7 +511,28 @@ v57 = {
   "name": "materialLoss",
   "storageKey": null
 },
-v58 = [
+v58 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "designRatedWeight",
+  "storageKey": null
+},
+v59 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "processingWeight",
+  "storageKey": null
+},
+v60 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "itemStockWeight",
+  "storageKey": null
+},
+v61 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -523,28 +547,28 @@ v58 = [
     }
   }
 ],
-v59 = {
+v62 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "installation",
   "storageKey": null
 },
-v60 = {
+v63 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "management",
   "storageKey": null
 },
-v61 = {
+v64 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "design",
   "storageKey": null
 },
-v62 = {
+v65 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -639,9 +663,12 @@ return {
                   (v55/*: any*/),
                   (v56/*: any*/),
                   (v57/*: any*/),
+                  (v58/*: any*/),
+                  (v59/*: any*/),
+                  (v60/*: any*/),
                   {
                     "alias": null,
-                    "args": (v58/*: any*/),
+                    "args": (v61/*: any*/),
                     "concreteType": "ProjectStaffConnection",
                     "kind": "LinkedField",
                     "name": "projectStaffs",
@@ -663,10 +690,10 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v59/*: any*/),
-                              (v60/*: any*/),
-                              (v61/*: any*/),
-                              (v62/*: any*/)
+                              (v62/*: any*/),
+                              (v63/*: any*/),
+                              (v64/*: any*/),
+                              (v65/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -776,9 +803,12 @@ return {
                   (v55/*: any*/),
                   (v56/*: any*/),
                   (v57/*: any*/),
+                  (v58/*: any*/),
+                  (v59/*: any*/),
+                  (v60/*: any*/),
                   {
                     "alias": null,
-                    "args": (v58/*: any*/),
+                    "args": (v61/*: any*/),
                     "concreteType": "ProjectStaffConnection",
                     "kind": "LinkedField",
                     "name": "projectStaffs",
@@ -800,10 +830,10 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v59/*: any*/),
-                              (v60/*: any*/),
-                              (v61/*: any*/),
                               (v62/*: any*/),
+                              (v63/*: any*/),
+                              (v64/*: any*/),
+                              (v65/*: any*/),
                               (v1/*: any*/)
                             ],
                             "storageKey": null
@@ -826,16 +856,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5158d617c28fa8b850c8995fcccb5a65",
+    "cacheID": "3edfee3e6f2219b54f0fcf14d716fe50",
     "id": null,
     "metadata": {},
     "name": "operationsPageQuery",
     "operationKind": "query",
-    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        id\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        milestonePlanYear\n        milestonePlanMonth\n        milestoneDoneYear\n        milestoneDoneMonth\n        pmArea\n        pmYearTarget\n        pmMonthTarget\n        pmYearActual\n        pmMonthActual\n        pmTotal\n        pmYesterday\n        unitInventoryTotal\n        unitComponentTotal\n        unitComponentProduction\n        unitComponentInstallation\n        materialLoss\n        projectStaffs(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {\n          edges {\n            node {\n              installation\n              management\n              design\n              createdAt\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        id\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        milestonePlanYear\n        milestonePlanMonth\n        milestoneDoneYear\n        milestoneDoneMonth\n        pmArea\n        pmYearTarget\n        pmMonthTarget\n        pmYearActual\n        pmMonthActual\n        pmTotal\n        pmYesterday\n        unitInventoryTotal\n        unitComponentTotal\n        unitComponentProduction\n        unitComponentInstallation\n        materialLoss\n        designRatedWeight\n        processingWeight\n        itemStockWeight\n        projectStaffs(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {\n          edges {\n            node {\n              installation\n              management\n              design\n              createdAt\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a47dde07d86da19e6a3c79081fe848d3";
+(node as any).hash = "678b7cf97d12cfb4737031bbd6b5eb9b";
 
 export default node;

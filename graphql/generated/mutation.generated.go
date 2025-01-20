@@ -3153,6 +3153,12 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_unitComponentInstallation(ctx, field)
 			case "materialLoss":
 				return ec.fieldContext_Project_materialLoss(ctx, field)
+			case "designRatedWeight":
+				return ec.fieldContext_Project_designRatedWeight(ctx, field)
+			case "processingWeight":
+				return ec.fieldContext_Project_processingWeight(ctx, field)
+			case "itemStockWeight":
+				return ec.fieldContext_Project_itemStockWeight(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":

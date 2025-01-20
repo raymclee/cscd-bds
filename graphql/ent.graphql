@@ -2399,6 +2399,18 @@ type Project implements Node {
   物料損失金額
   """
   materialLoss: Float
+  """
+  设计定额重量
+  """
+  designRatedWeight: Float
+  """
+  加工图成型重量
+  """
+  processingWeight: Float
+  """
+  項目物料庫存重量
+  """
+  itemStockWeight: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -3707,6 +3719,45 @@ input ProjectWhereInput {
   materialLossLTE: Float
   materialLossIsNil: Boolean
   materialLossNotNil: Boolean
+  """
+  design_rated_weight field predicates
+  """
+  designRatedWeight: Float
+  designRatedWeightNEQ: Float
+  designRatedWeightIn: [Float!]
+  designRatedWeightNotIn: [Float!]
+  designRatedWeightGT: Float
+  designRatedWeightGTE: Float
+  designRatedWeightLT: Float
+  designRatedWeightLTE: Float
+  designRatedWeightIsNil: Boolean
+  designRatedWeightNotNil: Boolean
+  """
+  processing_weight field predicates
+  """
+  processingWeight: Float
+  processingWeightNEQ: Float
+  processingWeightIn: [Float!]
+  processingWeightNotIn: [Float!]
+  processingWeightGT: Float
+  processingWeightGTE: Float
+  processingWeightLT: Float
+  processingWeightLTE: Float
+  processingWeightIsNil: Boolean
+  processingWeightNotNil: Boolean
+  """
+  item_stock_weight field predicates
+  """
+  itemStockWeight: Float
+  itemStockWeightNEQ: Float
+  itemStockWeightIn: [Float!]
+  itemStockWeightNotIn: [Float!]
+  itemStockWeightGT: Float
+  itemStockWeightGTE: Float
+  itemStockWeightLT: Float
+  itemStockWeightLTE: Float
+  itemStockWeightIsNil: Boolean
+  itemStockWeightNotNil: Boolean
   """
   vos edge predicates
   """
@@ -6086,6 +6137,21 @@ input UpdateProjectInput {
   """
   materialLoss: Float
   clearMaterialLoss: Boolean
+  """
+  设计定额重量
+  """
+  designRatedWeight: Float
+  clearDesignRatedWeight: Boolean
+  """
+  加工图成型重量
+  """
+  processingWeight: Float
+  clearProcessingWeight: Boolean
+  """
+  項目物料庫存重量
+  """
+  itemStockWeight: Float
+  clearItemStockWeight: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean

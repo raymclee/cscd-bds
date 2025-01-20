@@ -140,6 +140,12 @@ type Project struct {
 	UnitComponentInstallation *float64 `json:"unit_component_installation,omitempty"`
 	// 物料損失金額
 	MaterialLoss *float64 `json:"material_loss,omitempty"`
+	// 设计定额重量
+	DesignRatedWeight *float64 `json:"design_rated_weight,omitempty"`
+	// 加工图成型重量
+	ProcessingWeight *float64 `json:"processing_weight,omitempty"`
+	// 項目物料庫存重量
+	ItemStockWeight *float64 `json:"item_stock_weight,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -187,7 +193,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case project.FieldIsFinished:
 			values[i] = new(sql.NullBool)
-		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldMaterialLoss:
+		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldMaterialLoss, project.FieldDesignRatedWeight, project.FieldProcessingWeight, project.FieldItemStockWeight:
 			values[i] = new(sql.NullFloat64)
 		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth:
 			values[i] = new(sql.NullInt64)
@@ -641,6 +647,27 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.MaterialLoss = new(float64)
 				*pr.MaterialLoss = value.Float64
 			}
+		case project.FieldDesignRatedWeight:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field design_rated_weight", values[i])
+			} else if value.Valid {
+				pr.DesignRatedWeight = new(float64)
+				*pr.DesignRatedWeight = value.Float64
+			}
+		case project.FieldProcessingWeight:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field processing_weight", values[i])
+			} else if value.Valid {
+				pr.ProcessingWeight = new(float64)
+				*pr.ProcessingWeight = value.Float64
+			}
+		case project.FieldItemStockWeight:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field item_stock_weight", values[i])
+			} else if value.Valid {
+				pr.ItemStockWeight = new(float64)
+				*pr.ItemStockWeight = value.Float64
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -981,6 +1008,21 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.MaterialLoss; v != nil {
 		builder.WriteString("material_loss=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DesignRatedWeight; v != nil {
+		builder.WriteString("design_rated_weight=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.ProcessingWeight; v != nil {
+		builder.WriteString("processing_weight=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.ItemStockWeight; v != nil {
+		builder.WriteString("item_stock_weight=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

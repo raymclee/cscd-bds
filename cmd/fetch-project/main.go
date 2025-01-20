@@ -1002,6 +1002,79 @@ func main() {
 			}
 		}
 
+		// 抓取余料库存重量
+		{
+			rowG2 := bwpHanaDb.QueryRow(`
+				select
+					cast( sum( desl * zggzl ) as float ) as "designRatedWeight"
+				from s42bw.ztpp015 as de
+				inner join s42bw.mara on mara.mandt = de.mandt and mara.matnr = de.matnr
+				inner join s42bw.ztps004 as pc on pc.mandt = de.mandt and pc.pcbm = de.debh
+				WHERE 1=1
+				AND LEFT(mara.matkl,2) = '22'
+				AND de.MANDT = '800'
+				AND LEFT(de.DEBH,4) = ?
+			`, jobcode)
+
+			rowF2 := bwpHanaDb.QueryRow(`
+				select 
+					cast( sum( klsl * klcc * zggmz ) / 1000 as float ) as "processingWeight"
+				from s42bw.ztpp017 as klmx
+				inner join s42bw.mara on mara.mandt = klmx.mandt and mara.matnr = klmx.idnrk
+				WHERE 1=1
+				AND LEFT(mara.matkl,2) = '22'
+				AND klmx.MANDT = '800'
+				AND left(klmx.DEBH, 4) = ?
+			`, jobcode)
+
+			var (
+				// G2 设计定额重量
+				designRatedWeight *float64
+				// F2 加工图成型重量
+				processingWeight *float64
+			)
+			err = rowG2.Scan(&designRatedWeight)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取设计定额重量失败: %s\n", *jobcode, err.Error())
+			}
+
+			err = rowF2.Scan(&processingWeight)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取加工图成型重量失败: %s\n", *jobcode, err.Error())
+			}
+
+			p.SetNillableDesignRatedWeight(designRatedWeight)
+			p.SetNillableProcessingWeight(processingWeight)
+		}
+
+		// 抓取项目库存重量
+		{
+			row := bwpHanaDb.QueryRow(`
+				SELECT  
+					cast( sum( "stock_qty" * zggzl ) as float ) as "itemStockWeight"
+				from "S42BW"."nsdm_e_mspr_agg" as agg
+				inner join s42bw.mara on mara.mandt = agg.mandt and mara.matnr = agg."matnr"
+								and left(mara.matkl,2) = '22'
+				inner join s42bw.prps on prps.mandt = agg.mandt and prps.pspnr = agg."pspnr"
+				inner join s42bw.proj on proj.mandt = agg.mandt and proj.pspnr = prps.psphi
+				where "lbbsa" = '01' and "stock_qty" != 0 and agg.mandt = 800
+				--${if(len(项目)==0,"","  and proj.usr00 in ('"+项目+"')")}
+				--  and concat(left("gjper_max", 4), right("gjper_max", 2)) >= '${if(len(日期_s)==0,"200001",left(日期_s,6))}'
+				--  and concat(left("gjper_max", 4), right("gjper_max", 2)) <= '${if(len(日期_e)==0,format(today(),"yyyyMM"),left(日期_e,6))}'
+				AND proj.usr00 = ?
+			`, jobcode)
+
+			var (
+				itemStockWeight *float64
+			)
+			err = row.Scan(&itemStockWeight)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取項目物料庫存重量失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableItemStockWeight(itemStockWeight)
+			}
+		}
+
 		if err := p.
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {

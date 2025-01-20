@@ -880,6 +880,12 @@ type UpdateProjectInput struct {
 	UnitComponentInstallation                    *float64
 	ClearMaterialLoss                            bool
 	MaterialLoss                                 *float64
+	ClearDesignRatedWeight                       bool
+	DesignRatedWeight                            *float64
+	ClearProcessingWeight                        bool
+	ProcessingWeight                             *float64
+	ClearItemStockWeight                         bool
+	ItemStockWeight                              *float64
 	ClearVos                                     bool
 	AddVoIDs                                     []xid.ID
 	RemoveVoIDs                                  []xid.ID
@@ -1240,6 +1246,24 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.MaterialLoss; v != nil {
 		m.SetMaterialLoss(*v)
+	}
+	if i.ClearDesignRatedWeight {
+		m.ClearDesignRatedWeight()
+	}
+	if v := i.DesignRatedWeight; v != nil {
+		m.SetDesignRatedWeight(*v)
+	}
+	if i.ClearProcessingWeight {
+		m.ClearProcessingWeight()
+	}
+	if v := i.ProcessingWeight; v != nil {
+		m.SetProcessingWeight(*v)
+	}
+	if i.ClearItemStockWeight {
+		m.ClearItemStockWeight()
+	}
+	if v := i.ItemStockWeight; v != nil {
+		m.SetItemStockWeight(*v)
 	}
 	if i.ClearVos {
 		m.ClearVos()

@@ -265,6 +265,9 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldUnitComponentProduction:                 {Type: field.TypeFloat64, Column: project.FieldUnitComponentProduction},
 			project.FieldUnitComponentInstallation:               {Type: field.TypeFloat64, Column: project.FieldUnitComponentInstallation},
 			project.FieldMaterialLoss:                            {Type: field.TypeFloat64, Column: project.FieldMaterialLoss},
+			project.FieldDesignRatedWeight:                       {Type: field.TypeFloat64, Column: project.FieldDesignRatedWeight},
+			project.FieldProcessingWeight:                        {Type: field.TypeFloat64, Column: project.FieldProcessingWeight},
+			project.FieldItemStockWeight:                         {Type: field.TypeFloat64, Column: project.FieldItemStockWeight},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2258,6 +2261,21 @@ func (f *ProjectFilter) WhereUnitComponentInstallation(p entql.Float64P) {
 // WhereMaterialLoss applies the entql float64 predicate on the material_loss field.
 func (f *ProjectFilter) WhereMaterialLoss(p entql.Float64P) {
 	f.Where(p.Field(project.FieldMaterialLoss))
+}
+
+// WhereDesignRatedWeight applies the entql float64 predicate on the design_rated_weight field.
+func (f *ProjectFilter) WhereDesignRatedWeight(p entql.Float64P) {
+	f.Where(p.Field(project.FieldDesignRatedWeight))
+}
+
+// WhereProcessingWeight applies the entql float64 predicate on the processing_weight field.
+func (f *ProjectFilter) WhereProcessingWeight(p entql.Float64P) {
+	f.Where(p.Field(project.FieldProcessingWeight))
+}
+
+// WhereItemStockWeight applies the entql float64 predicate on the item_stock_weight field.
+func (f *ProjectFilter) WhereItemStockWeight(p entql.Float64P) {
+	f.Where(p.Field(project.FieldItemStockWeight))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.
