@@ -2602,6 +2602,41 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldItemStockWeight)
 				fieldSeen[project.FieldItemStockWeight] = struct{}{}
 			}
+		case "palletsInStock":
+			if _, ok := fieldSeen[project.FieldPalletsInStock]; !ok {
+				selectedFields = append(selectedFields, project.FieldPalletsInStock)
+				fieldSeen[project.FieldPalletsInStock] = struct{}{}
+			}
+		case "partsInStock":
+			if _, ok := fieldSeen[project.FieldPartsInStock]; !ok {
+				selectedFields = append(selectedFields, project.FieldPartsInStock)
+				fieldSeen[project.FieldPartsInStock] = struct{}{}
+			}
+		case "qualityScore":
+			if _, ok := fieldSeen[project.FieldQualityScore]; !ok {
+				selectedFields = append(selectedFields, project.FieldQualityScore)
+				fieldSeen[project.FieldQualityScore] = struct{}{}
+			}
+		case "qualityRanking":
+			if _, ok := fieldSeen[project.FieldQualityRanking]; !ok {
+				selectedFields = append(selectedFields, project.FieldQualityRanking)
+				fieldSeen[project.FieldQualityRanking] = struct{}{}
+			}
+		case "bulkMaterialsTotalOrderQuantity":
+			if _, ok := fieldSeen[project.FieldBulkMaterialsTotalOrderQuantity]; !ok {
+				selectedFields = append(selectedFields, project.FieldBulkMaterialsTotalOrderQuantity)
+				fieldSeen[project.FieldBulkMaterialsTotalOrderQuantity] = struct{}{}
+			}
+		case "bulkMaterialsCompletedQuantity":
+			if _, ok := fieldSeen[project.FieldBulkMaterialsCompletedQuantity]; !ok {
+				selectedFields = append(selectedFields, project.FieldBulkMaterialsCompletedQuantity)
+				fieldSeen[project.FieldBulkMaterialsCompletedQuantity] = struct{}{}
+			}
+		case "bulkMaterialsUncompletedQuantity":
+			if _, ok := fieldSeen[project.FieldBulkMaterialsUncompletedQuantity]; !ok {
+				selectedFields = append(selectedFields, project.FieldBulkMaterialsUncompletedQuantity)
+				fieldSeen[project.FieldBulkMaterialsUncompletedQuantity] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

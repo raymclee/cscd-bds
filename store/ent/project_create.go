@@ -914,6 +914,104 @@ func (pc *ProjectCreate) SetNillableItemStockWeight(f *float64) *ProjectCreate {
 	return pc
 }
 
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (pc *ProjectCreate) SetPalletsInStock(f float64) *ProjectCreate {
+	pc.mutation.SetPalletsInStock(f)
+	return pc
+}
+
+// SetNillablePalletsInStock sets the "pallets_in_stock" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePalletsInStock(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPalletsInStock(*f)
+	}
+	return pc
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (pc *ProjectCreate) SetPartsInStock(f float64) *ProjectCreate {
+	pc.mutation.SetPartsInStock(f)
+	return pc
+}
+
+// SetNillablePartsInStock sets the "parts_in_stock" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePartsInStock(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetPartsInStock(*f)
+	}
+	return pc
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (pc *ProjectCreate) SetQualityScore(f float64) *ProjectCreate {
+	pc.mutation.SetQualityScore(f)
+	return pc
+}
+
+// SetNillableQualityScore sets the "quality_score" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableQualityScore(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetQualityScore(*f)
+	}
+	return pc
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (pc *ProjectCreate) SetQualityRanking(f float64) *ProjectCreate {
+	pc.mutation.SetQualityRanking(f)
+	return pc
+}
+
+// SetNillableQualityRanking sets the "quality_ranking" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableQualityRanking(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetQualityRanking(*f)
+	}
+	return pc
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (pc *ProjectCreate) SetBulkMaterialsTotalOrderQuantity(f float64) *ProjectCreate {
+	pc.mutation.SetBulkMaterialsTotalOrderQuantity(f)
+	return pc
+}
+
+// SetNillableBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableBulkMaterialsTotalOrderQuantity(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetBulkMaterialsTotalOrderQuantity(*f)
+	}
+	return pc
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (pc *ProjectCreate) SetBulkMaterialsCompletedQuantity(f float64) *ProjectCreate {
+	pc.mutation.SetBulkMaterialsCompletedQuantity(f)
+	return pc
+}
+
+// SetNillableBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableBulkMaterialsCompletedQuantity(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetBulkMaterialsCompletedQuantity(*f)
+	}
+	return pc
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (pc *ProjectCreate) SetBulkMaterialsUncompletedQuantity(f float64) *ProjectCreate {
+	pc.mutation.SetBulkMaterialsUncompletedQuantity(f)
+	return pc
+}
+
+// SetNillableBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableBulkMaterialsUncompletedQuantity(f *float64) *ProjectCreate {
+	if f != nil {
+		pc.SetBulkMaterialsUncompletedQuantity(*f)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -1316,6 +1414,34 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.ItemStockWeight(); ok {
 		_spec.SetField(project.FieldItemStockWeight, field.TypeFloat64, value)
 		_node.ItemStockWeight = &value
+	}
+	if value, ok := pc.mutation.PalletsInStock(); ok {
+		_spec.SetField(project.FieldPalletsInStock, field.TypeFloat64, value)
+		_node.PalletsInStock = &value
+	}
+	if value, ok := pc.mutation.PartsInStock(); ok {
+		_spec.SetField(project.FieldPartsInStock, field.TypeFloat64, value)
+		_node.PartsInStock = &value
+	}
+	if value, ok := pc.mutation.QualityScore(); ok {
+		_spec.SetField(project.FieldQualityScore, field.TypeFloat64, value)
+		_node.QualityScore = &value
+	}
+	if value, ok := pc.mutation.QualityRanking(); ok {
+		_spec.SetField(project.FieldQualityRanking, field.TypeFloat64, value)
+		_node.QualityRanking = &value
+	}
+	if value, ok := pc.mutation.BulkMaterialsTotalOrderQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
+		_node.BulkMaterialsTotalOrderQuantity = &value
+	}
+	if value, ok := pc.mutation.BulkMaterialsCompletedQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64, value)
+		_node.BulkMaterialsCompletedQuantity = &value
+	}
+	if value, ok := pc.mutation.BulkMaterialsUncompletedQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
+		_node.BulkMaterialsUncompletedQuantity = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -2790,6 +2916,174 @@ func (u *ProjectUpsert) AddItemStockWeight(v float64) *ProjectUpsert {
 // ClearItemStockWeight clears the value of the "item_stock_weight" field.
 func (u *ProjectUpsert) ClearItemStockWeight() *ProjectUpsert {
 	u.SetNull(project.FieldItemStockWeight)
+	return u
+}
+
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (u *ProjectUpsert) SetPalletsInStock(v float64) *ProjectUpsert {
+	u.Set(project.FieldPalletsInStock, v)
+	return u
+}
+
+// UpdatePalletsInStock sets the "pallets_in_stock" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePalletsInStock() *ProjectUpsert {
+	u.SetExcluded(project.FieldPalletsInStock)
+	return u
+}
+
+// AddPalletsInStock adds v to the "pallets_in_stock" field.
+func (u *ProjectUpsert) AddPalletsInStock(v float64) *ProjectUpsert {
+	u.Add(project.FieldPalletsInStock, v)
+	return u
+}
+
+// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
+func (u *ProjectUpsert) ClearPalletsInStock() *ProjectUpsert {
+	u.SetNull(project.FieldPalletsInStock)
+	return u
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (u *ProjectUpsert) SetPartsInStock(v float64) *ProjectUpsert {
+	u.Set(project.FieldPartsInStock, v)
+	return u
+}
+
+// UpdatePartsInStock sets the "parts_in_stock" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePartsInStock() *ProjectUpsert {
+	u.SetExcluded(project.FieldPartsInStock)
+	return u
+}
+
+// AddPartsInStock adds v to the "parts_in_stock" field.
+func (u *ProjectUpsert) AddPartsInStock(v float64) *ProjectUpsert {
+	u.Add(project.FieldPartsInStock, v)
+	return u
+}
+
+// ClearPartsInStock clears the value of the "parts_in_stock" field.
+func (u *ProjectUpsert) ClearPartsInStock() *ProjectUpsert {
+	u.SetNull(project.FieldPartsInStock)
+	return u
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (u *ProjectUpsert) SetQualityScore(v float64) *ProjectUpsert {
+	u.Set(project.FieldQualityScore, v)
+	return u
+}
+
+// UpdateQualityScore sets the "quality_score" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateQualityScore() *ProjectUpsert {
+	u.SetExcluded(project.FieldQualityScore)
+	return u
+}
+
+// AddQualityScore adds v to the "quality_score" field.
+func (u *ProjectUpsert) AddQualityScore(v float64) *ProjectUpsert {
+	u.Add(project.FieldQualityScore, v)
+	return u
+}
+
+// ClearQualityScore clears the value of the "quality_score" field.
+func (u *ProjectUpsert) ClearQualityScore() *ProjectUpsert {
+	u.SetNull(project.FieldQualityScore)
+	return u
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (u *ProjectUpsert) SetQualityRanking(v float64) *ProjectUpsert {
+	u.Set(project.FieldQualityRanking, v)
+	return u
+}
+
+// UpdateQualityRanking sets the "quality_ranking" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateQualityRanking() *ProjectUpsert {
+	u.SetExcluded(project.FieldQualityRanking)
+	return u
+}
+
+// AddQualityRanking adds v to the "quality_ranking" field.
+func (u *ProjectUpsert) AddQualityRanking(v float64) *ProjectUpsert {
+	u.Add(project.FieldQualityRanking, v)
+	return u
+}
+
+// ClearQualityRanking clears the value of the "quality_ranking" field.
+func (u *ProjectUpsert) ClearQualityRanking() *ProjectUpsert {
+	u.SetNull(project.FieldQualityRanking)
+	return u
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsert) SetBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsert {
+	u.Set(project.FieldBulkMaterialsTotalOrderQuantity, v)
+	return u
+}
+
+// UpdateBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateBulkMaterialsTotalOrderQuantity() *ProjectUpsert {
+	u.SetExcluded(project.FieldBulkMaterialsTotalOrderQuantity)
+	return u
+}
+
+// AddBulkMaterialsTotalOrderQuantity adds v to the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsert) AddBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsert {
+	u.Add(project.FieldBulkMaterialsTotalOrderQuantity, v)
+	return u
+}
+
+// ClearBulkMaterialsTotalOrderQuantity clears the value of the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsert) ClearBulkMaterialsTotalOrderQuantity() *ProjectUpsert {
+	u.SetNull(project.FieldBulkMaterialsTotalOrderQuantity)
+	return u
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsert) SetBulkMaterialsCompletedQuantity(v float64) *ProjectUpsert {
+	u.Set(project.FieldBulkMaterialsCompletedQuantity, v)
+	return u
+}
+
+// UpdateBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateBulkMaterialsCompletedQuantity() *ProjectUpsert {
+	u.SetExcluded(project.FieldBulkMaterialsCompletedQuantity)
+	return u
+}
+
+// AddBulkMaterialsCompletedQuantity adds v to the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsert) AddBulkMaterialsCompletedQuantity(v float64) *ProjectUpsert {
+	u.Add(project.FieldBulkMaterialsCompletedQuantity, v)
+	return u
+}
+
+// ClearBulkMaterialsCompletedQuantity clears the value of the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsert) ClearBulkMaterialsCompletedQuantity() *ProjectUpsert {
+	u.SetNull(project.FieldBulkMaterialsCompletedQuantity)
+	return u
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsert) SetBulkMaterialsUncompletedQuantity(v float64) *ProjectUpsert {
+	u.Set(project.FieldBulkMaterialsUncompletedQuantity, v)
+	return u
+}
+
+// UpdateBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateBulkMaterialsUncompletedQuantity() *ProjectUpsert {
+	u.SetExcluded(project.FieldBulkMaterialsUncompletedQuantity)
+	return u
+}
+
+// AddBulkMaterialsUncompletedQuantity adds v to the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsert) AddBulkMaterialsUncompletedQuantity(v float64) *ProjectUpsert {
+	u.Add(project.FieldBulkMaterialsUncompletedQuantity, v)
+	return u
+}
+
+// ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsert) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsert {
+	u.SetNull(project.FieldBulkMaterialsUncompletedQuantity)
 	return u
 }
 
@@ -4465,6 +4759,202 @@ func (u *ProjectUpsertOne) UpdateItemStockWeight() *ProjectUpsertOne {
 func (u *ProjectUpsertOne) ClearItemStockWeight() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearItemStockWeight()
+	})
+}
+
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (u *ProjectUpsertOne) SetPalletsInStock(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPalletsInStock(v)
+	})
+}
+
+// AddPalletsInStock adds v to the "pallets_in_stock" field.
+func (u *ProjectUpsertOne) AddPalletsInStock(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPalletsInStock(v)
+	})
+}
+
+// UpdatePalletsInStock sets the "pallets_in_stock" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePalletsInStock() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePalletsInStock()
+	})
+}
+
+// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
+func (u *ProjectUpsertOne) ClearPalletsInStock() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPalletsInStock()
+	})
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (u *ProjectUpsertOne) SetPartsInStock(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPartsInStock(v)
+	})
+}
+
+// AddPartsInStock adds v to the "parts_in_stock" field.
+func (u *ProjectUpsertOne) AddPartsInStock(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPartsInStock(v)
+	})
+}
+
+// UpdatePartsInStock sets the "parts_in_stock" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePartsInStock() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePartsInStock()
+	})
+}
+
+// ClearPartsInStock clears the value of the "parts_in_stock" field.
+func (u *ProjectUpsertOne) ClearPartsInStock() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPartsInStock()
+	})
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (u *ProjectUpsertOne) SetQualityScore(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetQualityScore(v)
+	})
+}
+
+// AddQualityScore adds v to the "quality_score" field.
+func (u *ProjectUpsertOne) AddQualityScore(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddQualityScore(v)
+	})
+}
+
+// UpdateQualityScore sets the "quality_score" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateQualityScore() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateQualityScore()
+	})
+}
+
+// ClearQualityScore clears the value of the "quality_score" field.
+func (u *ProjectUpsertOne) ClearQualityScore() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearQualityScore()
+	})
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (u *ProjectUpsertOne) SetQualityRanking(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetQualityRanking(v)
+	})
+}
+
+// AddQualityRanking adds v to the "quality_ranking" field.
+func (u *ProjectUpsertOne) AddQualityRanking(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddQualityRanking(v)
+	})
+}
+
+// UpdateQualityRanking sets the "quality_ranking" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateQualityRanking() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateQualityRanking()
+	})
+}
+
+// ClearQualityRanking clears the value of the "quality_ranking" field.
+func (u *ProjectUpsertOne) ClearQualityRanking() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearQualityRanking()
+	})
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsertOne) SetBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetBulkMaterialsTotalOrderQuantity(v)
+	})
+}
+
+// AddBulkMaterialsTotalOrderQuantity adds v to the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsertOne) AddBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddBulkMaterialsTotalOrderQuantity(v)
+	})
+}
+
+// UpdateBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateBulkMaterialsTotalOrderQuantity() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateBulkMaterialsTotalOrderQuantity()
+	})
+}
+
+// ClearBulkMaterialsTotalOrderQuantity clears the value of the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsertOne) ClearBulkMaterialsTotalOrderQuantity() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearBulkMaterialsTotalOrderQuantity()
+	})
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsertOne) SetBulkMaterialsCompletedQuantity(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetBulkMaterialsCompletedQuantity(v)
+	})
+}
+
+// AddBulkMaterialsCompletedQuantity adds v to the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsertOne) AddBulkMaterialsCompletedQuantity(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddBulkMaterialsCompletedQuantity(v)
+	})
+}
+
+// UpdateBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateBulkMaterialsCompletedQuantity() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateBulkMaterialsCompletedQuantity()
+	})
+}
+
+// ClearBulkMaterialsCompletedQuantity clears the value of the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsertOne) ClearBulkMaterialsCompletedQuantity() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearBulkMaterialsCompletedQuantity()
+	})
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsertOne) SetBulkMaterialsUncompletedQuantity(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetBulkMaterialsUncompletedQuantity(v)
+	})
+}
+
+// AddBulkMaterialsUncompletedQuantity adds v to the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsertOne) AddBulkMaterialsUncompletedQuantity(v float64) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddBulkMaterialsUncompletedQuantity(v)
+	})
+}
+
+// UpdateBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateBulkMaterialsUncompletedQuantity() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateBulkMaterialsUncompletedQuantity()
+	})
+}
+
+// ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsertOne) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearBulkMaterialsUncompletedQuantity()
 	})
 }
 
@@ -6307,6 +6797,202 @@ func (u *ProjectUpsertBulk) UpdateItemStockWeight() *ProjectUpsertBulk {
 func (u *ProjectUpsertBulk) ClearItemStockWeight() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearItemStockWeight()
+	})
+}
+
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (u *ProjectUpsertBulk) SetPalletsInStock(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPalletsInStock(v)
+	})
+}
+
+// AddPalletsInStock adds v to the "pallets_in_stock" field.
+func (u *ProjectUpsertBulk) AddPalletsInStock(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPalletsInStock(v)
+	})
+}
+
+// UpdatePalletsInStock sets the "pallets_in_stock" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePalletsInStock() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePalletsInStock()
+	})
+}
+
+// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
+func (u *ProjectUpsertBulk) ClearPalletsInStock() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPalletsInStock()
+	})
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (u *ProjectUpsertBulk) SetPartsInStock(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPartsInStock(v)
+	})
+}
+
+// AddPartsInStock adds v to the "parts_in_stock" field.
+func (u *ProjectUpsertBulk) AddPartsInStock(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPartsInStock(v)
+	})
+}
+
+// UpdatePartsInStock sets the "parts_in_stock" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePartsInStock() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePartsInStock()
+	})
+}
+
+// ClearPartsInStock clears the value of the "parts_in_stock" field.
+func (u *ProjectUpsertBulk) ClearPartsInStock() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPartsInStock()
+	})
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (u *ProjectUpsertBulk) SetQualityScore(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetQualityScore(v)
+	})
+}
+
+// AddQualityScore adds v to the "quality_score" field.
+func (u *ProjectUpsertBulk) AddQualityScore(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddQualityScore(v)
+	})
+}
+
+// UpdateQualityScore sets the "quality_score" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateQualityScore() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateQualityScore()
+	})
+}
+
+// ClearQualityScore clears the value of the "quality_score" field.
+func (u *ProjectUpsertBulk) ClearQualityScore() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearQualityScore()
+	})
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (u *ProjectUpsertBulk) SetQualityRanking(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetQualityRanking(v)
+	})
+}
+
+// AddQualityRanking adds v to the "quality_ranking" field.
+func (u *ProjectUpsertBulk) AddQualityRanking(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddQualityRanking(v)
+	})
+}
+
+// UpdateQualityRanking sets the "quality_ranking" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateQualityRanking() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateQualityRanking()
+	})
+}
+
+// ClearQualityRanking clears the value of the "quality_ranking" field.
+func (u *ProjectUpsertBulk) ClearQualityRanking() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearQualityRanking()
+	})
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsertBulk) SetBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetBulkMaterialsTotalOrderQuantity(v)
+	})
+}
+
+// AddBulkMaterialsTotalOrderQuantity adds v to the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsertBulk) AddBulkMaterialsTotalOrderQuantity(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddBulkMaterialsTotalOrderQuantity(v)
+	})
+}
+
+// UpdateBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateBulkMaterialsTotalOrderQuantity() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateBulkMaterialsTotalOrderQuantity()
+	})
+}
+
+// ClearBulkMaterialsTotalOrderQuantity clears the value of the "bulk_materials_total_order_quantity" field.
+func (u *ProjectUpsertBulk) ClearBulkMaterialsTotalOrderQuantity() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearBulkMaterialsTotalOrderQuantity()
+	})
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsertBulk) SetBulkMaterialsCompletedQuantity(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetBulkMaterialsCompletedQuantity(v)
+	})
+}
+
+// AddBulkMaterialsCompletedQuantity adds v to the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsertBulk) AddBulkMaterialsCompletedQuantity(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddBulkMaterialsCompletedQuantity(v)
+	})
+}
+
+// UpdateBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateBulkMaterialsCompletedQuantity() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateBulkMaterialsCompletedQuantity()
+	})
+}
+
+// ClearBulkMaterialsCompletedQuantity clears the value of the "bulk_materials_completed_quantity" field.
+func (u *ProjectUpsertBulk) ClearBulkMaterialsCompletedQuantity() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearBulkMaterialsCompletedQuantity()
+	})
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsertBulk) SetBulkMaterialsUncompletedQuantity(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetBulkMaterialsUncompletedQuantity(v)
+	})
+}
+
+// AddBulkMaterialsUncompletedQuantity adds v to the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsertBulk) AddBulkMaterialsUncompletedQuantity(v float64) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddBulkMaterialsUncompletedQuantity(v)
+	})
+}
+
+// UpdateBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateBulkMaterialsUncompletedQuantity() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateBulkMaterialsUncompletedQuantity()
+	})
+}
+
+// ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
+func (u *ProjectUpsertBulk) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearBulkMaterialsUncompletedQuantity()
 	})
 }
 

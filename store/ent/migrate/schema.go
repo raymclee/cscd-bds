@@ -272,6 +272,13 @@ var (
 		{Name: "design_rated_weight", Type: field.TypeFloat64, Nullable: true},
 		{Name: "processing_weight", Type: field.TypeFloat64, Nullable: true},
 		{Name: "item_stock_weight", Type: field.TypeFloat64, Nullable: true},
+		{Name: "pallets_in_stock", Type: field.TypeFloat64, Nullable: true},
+		{Name: "parts_in_stock", Type: field.TypeFloat64, Nullable: true},
+		{Name: "quality_score", Type: field.TypeFloat64, Nullable: true},
+		{Name: "quality_ranking", Type: field.TypeFloat64, Nullable: true},
+		{Name: "bulk_materials_total_order_quantity", Type: field.TypeFloat64, Nullable: true},
+		{Name: "bulk_materials_completed_quantity", Type: field.TypeFloat64, Nullable: true},
+		{Name: "bulk_materials_uncompleted_quantity", Type: field.TypeFloat64, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{

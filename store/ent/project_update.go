@@ -1587,6 +1587,195 @@ func (pu *ProjectUpdate) ClearItemStockWeight() *ProjectUpdate {
 	return pu
 }
 
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (pu *ProjectUpdate) SetPalletsInStock(f float64) *ProjectUpdate {
+	pu.mutation.ResetPalletsInStock()
+	pu.mutation.SetPalletsInStock(f)
+	return pu
+}
+
+// SetNillablePalletsInStock sets the "pallets_in_stock" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePalletsInStock(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPalletsInStock(*f)
+	}
+	return pu
+}
+
+// AddPalletsInStock adds f to the "pallets_in_stock" field.
+func (pu *ProjectUpdate) AddPalletsInStock(f float64) *ProjectUpdate {
+	pu.mutation.AddPalletsInStock(f)
+	return pu
+}
+
+// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
+func (pu *ProjectUpdate) ClearPalletsInStock() *ProjectUpdate {
+	pu.mutation.ClearPalletsInStock()
+	return pu
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (pu *ProjectUpdate) SetPartsInStock(f float64) *ProjectUpdate {
+	pu.mutation.ResetPartsInStock()
+	pu.mutation.SetPartsInStock(f)
+	return pu
+}
+
+// SetNillablePartsInStock sets the "parts_in_stock" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePartsInStock(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetPartsInStock(*f)
+	}
+	return pu
+}
+
+// AddPartsInStock adds f to the "parts_in_stock" field.
+func (pu *ProjectUpdate) AddPartsInStock(f float64) *ProjectUpdate {
+	pu.mutation.AddPartsInStock(f)
+	return pu
+}
+
+// ClearPartsInStock clears the value of the "parts_in_stock" field.
+func (pu *ProjectUpdate) ClearPartsInStock() *ProjectUpdate {
+	pu.mutation.ClearPartsInStock()
+	return pu
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (pu *ProjectUpdate) SetQualityScore(f float64) *ProjectUpdate {
+	pu.mutation.ResetQualityScore()
+	pu.mutation.SetQualityScore(f)
+	return pu
+}
+
+// SetNillableQualityScore sets the "quality_score" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableQualityScore(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetQualityScore(*f)
+	}
+	return pu
+}
+
+// AddQualityScore adds f to the "quality_score" field.
+func (pu *ProjectUpdate) AddQualityScore(f float64) *ProjectUpdate {
+	pu.mutation.AddQualityScore(f)
+	return pu
+}
+
+// ClearQualityScore clears the value of the "quality_score" field.
+func (pu *ProjectUpdate) ClearQualityScore() *ProjectUpdate {
+	pu.mutation.ClearQualityScore()
+	return pu
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (pu *ProjectUpdate) SetQualityRanking(f float64) *ProjectUpdate {
+	pu.mutation.ResetQualityRanking()
+	pu.mutation.SetQualityRanking(f)
+	return pu
+}
+
+// SetNillableQualityRanking sets the "quality_ranking" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableQualityRanking(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetQualityRanking(*f)
+	}
+	return pu
+}
+
+// AddQualityRanking adds f to the "quality_ranking" field.
+func (pu *ProjectUpdate) AddQualityRanking(f float64) *ProjectUpdate {
+	pu.mutation.AddQualityRanking(f)
+	return pu
+}
+
+// ClearQualityRanking clears the value of the "quality_ranking" field.
+func (pu *ProjectUpdate) ClearQualityRanking() *ProjectUpdate {
+	pu.mutation.ClearQualityRanking()
+	return pu
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (pu *ProjectUpdate) SetBulkMaterialsTotalOrderQuantity(f float64) *ProjectUpdate {
+	pu.mutation.ResetBulkMaterialsTotalOrderQuantity()
+	pu.mutation.SetBulkMaterialsTotalOrderQuantity(f)
+	return pu
+}
+
+// SetNillableBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableBulkMaterialsTotalOrderQuantity(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetBulkMaterialsTotalOrderQuantity(*f)
+	}
+	return pu
+}
+
+// AddBulkMaterialsTotalOrderQuantity adds f to the "bulk_materials_total_order_quantity" field.
+func (pu *ProjectUpdate) AddBulkMaterialsTotalOrderQuantity(f float64) *ProjectUpdate {
+	pu.mutation.AddBulkMaterialsTotalOrderQuantity(f)
+	return pu
+}
+
+// ClearBulkMaterialsTotalOrderQuantity clears the value of the "bulk_materials_total_order_quantity" field.
+func (pu *ProjectUpdate) ClearBulkMaterialsTotalOrderQuantity() *ProjectUpdate {
+	pu.mutation.ClearBulkMaterialsTotalOrderQuantity()
+	return pu
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (pu *ProjectUpdate) SetBulkMaterialsCompletedQuantity(f float64) *ProjectUpdate {
+	pu.mutation.ResetBulkMaterialsCompletedQuantity()
+	pu.mutation.SetBulkMaterialsCompletedQuantity(f)
+	return pu
+}
+
+// SetNillableBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableBulkMaterialsCompletedQuantity(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetBulkMaterialsCompletedQuantity(*f)
+	}
+	return pu
+}
+
+// AddBulkMaterialsCompletedQuantity adds f to the "bulk_materials_completed_quantity" field.
+func (pu *ProjectUpdate) AddBulkMaterialsCompletedQuantity(f float64) *ProjectUpdate {
+	pu.mutation.AddBulkMaterialsCompletedQuantity(f)
+	return pu
+}
+
+// ClearBulkMaterialsCompletedQuantity clears the value of the "bulk_materials_completed_quantity" field.
+func (pu *ProjectUpdate) ClearBulkMaterialsCompletedQuantity() *ProjectUpdate {
+	pu.mutation.ClearBulkMaterialsCompletedQuantity()
+	return pu
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (pu *ProjectUpdate) SetBulkMaterialsUncompletedQuantity(f float64) *ProjectUpdate {
+	pu.mutation.ResetBulkMaterialsUncompletedQuantity()
+	pu.mutation.SetBulkMaterialsUncompletedQuantity(f)
+	return pu
+}
+
+// SetNillableBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableBulkMaterialsUncompletedQuantity(f *float64) *ProjectUpdate {
+	if f != nil {
+		pu.SetBulkMaterialsUncompletedQuantity(*f)
+	}
+	return pu
+}
+
+// AddBulkMaterialsUncompletedQuantity adds f to the "bulk_materials_uncompleted_quantity" field.
+func (pu *ProjectUpdate) AddBulkMaterialsUncompletedQuantity(f float64) *ProjectUpdate {
+	pu.mutation.AddBulkMaterialsUncompletedQuantity(f)
+	return pu
+}
+
+// ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
+func (pu *ProjectUpdate) ClearBulkMaterialsUncompletedQuantity() *ProjectUpdate {
+	pu.mutation.ClearBulkMaterialsUncompletedQuantity()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -2215,6 +2404,69 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.ItemStockWeightCleared() {
 		_spec.ClearField(project.FieldItemStockWeight, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PalletsInStock(); ok {
+		_spec.SetField(project.FieldPalletsInStock, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPalletsInStock(); ok {
+		_spec.AddField(project.FieldPalletsInStock, field.TypeFloat64, value)
+	}
+	if pu.mutation.PalletsInStockCleared() {
+		_spec.ClearField(project.FieldPalletsInStock, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PartsInStock(); ok {
+		_spec.SetField(project.FieldPartsInStock, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedPartsInStock(); ok {
+		_spec.AddField(project.FieldPartsInStock, field.TypeFloat64, value)
+	}
+	if pu.mutation.PartsInStockCleared() {
+		_spec.ClearField(project.FieldPartsInStock, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.QualityScore(); ok {
+		_spec.SetField(project.FieldQualityScore, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedQualityScore(); ok {
+		_spec.AddField(project.FieldQualityScore, field.TypeFloat64, value)
+	}
+	if pu.mutation.QualityScoreCleared() {
+		_spec.ClearField(project.FieldQualityScore, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.QualityRanking(); ok {
+		_spec.SetField(project.FieldQualityRanking, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedQualityRanking(); ok {
+		_spec.AddField(project.FieldQualityRanking, field.TypeFloat64, value)
+	}
+	if pu.mutation.QualityRankingCleared() {
+		_spec.ClearField(project.FieldQualityRanking, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.BulkMaterialsTotalOrderQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedBulkMaterialsTotalOrderQuantity(); ok {
+		_spec.AddField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
+	}
+	if pu.mutation.BulkMaterialsTotalOrderQuantityCleared() {
+		_spec.ClearField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.BulkMaterialsCompletedQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedBulkMaterialsCompletedQuantity(); ok {
+		_spec.AddField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64, value)
+	}
+	if pu.mutation.BulkMaterialsCompletedQuantityCleared() {
+		_spec.ClearField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.BulkMaterialsUncompletedQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedBulkMaterialsUncompletedQuantity(); ok {
+		_spec.AddField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
+	}
+	if pu.mutation.BulkMaterialsUncompletedQuantityCleared() {
+		_spec.ClearField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -3882,6 +4134,195 @@ func (puo *ProjectUpdateOne) ClearItemStockWeight() *ProjectUpdateOne {
 	return puo
 }
 
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (puo *ProjectUpdateOne) SetPalletsInStock(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPalletsInStock()
+	puo.mutation.SetPalletsInStock(f)
+	return puo
+}
+
+// SetNillablePalletsInStock sets the "pallets_in_stock" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePalletsInStock(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPalletsInStock(*f)
+	}
+	return puo
+}
+
+// AddPalletsInStock adds f to the "pallets_in_stock" field.
+func (puo *ProjectUpdateOne) AddPalletsInStock(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPalletsInStock(f)
+	return puo
+}
+
+// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
+func (puo *ProjectUpdateOne) ClearPalletsInStock() *ProjectUpdateOne {
+	puo.mutation.ClearPalletsInStock()
+	return puo
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (puo *ProjectUpdateOne) SetPartsInStock(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetPartsInStock()
+	puo.mutation.SetPartsInStock(f)
+	return puo
+}
+
+// SetNillablePartsInStock sets the "parts_in_stock" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePartsInStock(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetPartsInStock(*f)
+	}
+	return puo
+}
+
+// AddPartsInStock adds f to the "parts_in_stock" field.
+func (puo *ProjectUpdateOne) AddPartsInStock(f float64) *ProjectUpdateOne {
+	puo.mutation.AddPartsInStock(f)
+	return puo
+}
+
+// ClearPartsInStock clears the value of the "parts_in_stock" field.
+func (puo *ProjectUpdateOne) ClearPartsInStock() *ProjectUpdateOne {
+	puo.mutation.ClearPartsInStock()
+	return puo
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (puo *ProjectUpdateOne) SetQualityScore(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetQualityScore()
+	puo.mutation.SetQualityScore(f)
+	return puo
+}
+
+// SetNillableQualityScore sets the "quality_score" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableQualityScore(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetQualityScore(*f)
+	}
+	return puo
+}
+
+// AddQualityScore adds f to the "quality_score" field.
+func (puo *ProjectUpdateOne) AddQualityScore(f float64) *ProjectUpdateOne {
+	puo.mutation.AddQualityScore(f)
+	return puo
+}
+
+// ClearQualityScore clears the value of the "quality_score" field.
+func (puo *ProjectUpdateOne) ClearQualityScore() *ProjectUpdateOne {
+	puo.mutation.ClearQualityScore()
+	return puo
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (puo *ProjectUpdateOne) SetQualityRanking(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetQualityRanking()
+	puo.mutation.SetQualityRanking(f)
+	return puo
+}
+
+// SetNillableQualityRanking sets the "quality_ranking" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableQualityRanking(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetQualityRanking(*f)
+	}
+	return puo
+}
+
+// AddQualityRanking adds f to the "quality_ranking" field.
+func (puo *ProjectUpdateOne) AddQualityRanking(f float64) *ProjectUpdateOne {
+	puo.mutation.AddQualityRanking(f)
+	return puo
+}
+
+// ClearQualityRanking clears the value of the "quality_ranking" field.
+func (puo *ProjectUpdateOne) ClearQualityRanking() *ProjectUpdateOne {
+	puo.mutation.ClearQualityRanking()
+	return puo
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (puo *ProjectUpdateOne) SetBulkMaterialsTotalOrderQuantity(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetBulkMaterialsTotalOrderQuantity()
+	puo.mutation.SetBulkMaterialsTotalOrderQuantity(f)
+	return puo
+}
+
+// SetNillableBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableBulkMaterialsTotalOrderQuantity(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetBulkMaterialsTotalOrderQuantity(*f)
+	}
+	return puo
+}
+
+// AddBulkMaterialsTotalOrderQuantity adds f to the "bulk_materials_total_order_quantity" field.
+func (puo *ProjectUpdateOne) AddBulkMaterialsTotalOrderQuantity(f float64) *ProjectUpdateOne {
+	puo.mutation.AddBulkMaterialsTotalOrderQuantity(f)
+	return puo
+}
+
+// ClearBulkMaterialsTotalOrderQuantity clears the value of the "bulk_materials_total_order_quantity" field.
+func (puo *ProjectUpdateOne) ClearBulkMaterialsTotalOrderQuantity() *ProjectUpdateOne {
+	puo.mutation.ClearBulkMaterialsTotalOrderQuantity()
+	return puo
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (puo *ProjectUpdateOne) SetBulkMaterialsCompletedQuantity(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetBulkMaterialsCompletedQuantity()
+	puo.mutation.SetBulkMaterialsCompletedQuantity(f)
+	return puo
+}
+
+// SetNillableBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableBulkMaterialsCompletedQuantity(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetBulkMaterialsCompletedQuantity(*f)
+	}
+	return puo
+}
+
+// AddBulkMaterialsCompletedQuantity adds f to the "bulk_materials_completed_quantity" field.
+func (puo *ProjectUpdateOne) AddBulkMaterialsCompletedQuantity(f float64) *ProjectUpdateOne {
+	puo.mutation.AddBulkMaterialsCompletedQuantity(f)
+	return puo
+}
+
+// ClearBulkMaterialsCompletedQuantity clears the value of the "bulk_materials_completed_quantity" field.
+func (puo *ProjectUpdateOne) ClearBulkMaterialsCompletedQuantity() *ProjectUpdateOne {
+	puo.mutation.ClearBulkMaterialsCompletedQuantity()
+	return puo
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (puo *ProjectUpdateOne) SetBulkMaterialsUncompletedQuantity(f float64) *ProjectUpdateOne {
+	puo.mutation.ResetBulkMaterialsUncompletedQuantity()
+	puo.mutation.SetBulkMaterialsUncompletedQuantity(f)
+	return puo
+}
+
+// SetNillableBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableBulkMaterialsUncompletedQuantity(f *float64) *ProjectUpdateOne {
+	if f != nil {
+		puo.SetBulkMaterialsUncompletedQuantity(*f)
+	}
+	return puo
+}
+
+// AddBulkMaterialsUncompletedQuantity adds f to the "bulk_materials_uncompleted_quantity" field.
+func (puo *ProjectUpdateOne) AddBulkMaterialsUncompletedQuantity(f float64) *ProjectUpdateOne {
+	puo.mutation.AddBulkMaterialsUncompletedQuantity(f)
+	return puo
+}
+
+// ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
+func (puo *ProjectUpdateOne) ClearBulkMaterialsUncompletedQuantity() *ProjectUpdateOne {
+	puo.mutation.ClearBulkMaterialsUncompletedQuantity()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -4540,6 +4981,69 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.ItemStockWeightCleared() {
 		_spec.ClearField(project.FieldItemStockWeight, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PalletsInStock(); ok {
+		_spec.SetField(project.FieldPalletsInStock, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPalletsInStock(); ok {
+		_spec.AddField(project.FieldPalletsInStock, field.TypeFloat64, value)
+	}
+	if puo.mutation.PalletsInStockCleared() {
+		_spec.ClearField(project.FieldPalletsInStock, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PartsInStock(); ok {
+		_spec.SetField(project.FieldPartsInStock, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedPartsInStock(); ok {
+		_spec.AddField(project.FieldPartsInStock, field.TypeFloat64, value)
+	}
+	if puo.mutation.PartsInStockCleared() {
+		_spec.ClearField(project.FieldPartsInStock, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.QualityScore(); ok {
+		_spec.SetField(project.FieldQualityScore, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedQualityScore(); ok {
+		_spec.AddField(project.FieldQualityScore, field.TypeFloat64, value)
+	}
+	if puo.mutation.QualityScoreCleared() {
+		_spec.ClearField(project.FieldQualityScore, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.QualityRanking(); ok {
+		_spec.SetField(project.FieldQualityRanking, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedQualityRanking(); ok {
+		_spec.AddField(project.FieldQualityRanking, field.TypeFloat64, value)
+	}
+	if puo.mutation.QualityRankingCleared() {
+		_spec.ClearField(project.FieldQualityRanking, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.BulkMaterialsTotalOrderQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedBulkMaterialsTotalOrderQuantity(); ok {
+		_spec.AddField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64, value)
+	}
+	if puo.mutation.BulkMaterialsTotalOrderQuantityCleared() {
+		_spec.ClearField(project.FieldBulkMaterialsTotalOrderQuantity, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.BulkMaterialsCompletedQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedBulkMaterialsCompletedQuantity(); ok {
+		_spec.AddField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64, value)
+	}
+	if puo.mutation.BulkMaterialsCompletedQuantityCleared() {
+		_spec.ClearField(project.FieldBulkMaterialsCompletedQuantity, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.BulkMaterialsUncompletedQuantity(); ok {
+		_spec.SetField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedBulkMaterialsUncompletedQuantity(); ok {
+		_spec.AddField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
+	}
+	if puo.mutation.BulkMaterialsUncompletedQuantityCleared() {
+		_spec.ClearField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

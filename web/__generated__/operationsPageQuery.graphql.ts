@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1f03588ddc1d22b58c610dc97d683ad1>>
+ * @generated SignedSource<<aa2d86eab8cfe02def40687ed0404be1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,6 +20,9 @@ export type operationsPageQuery$data = {
         readonly aluminumBudgetPercentage: number | null | undefined;
         readonly aluminumPlateBudgetPercentage: number | null | undefined;
         readonly areas: string | null | undefined;
+        readonly bulkMaterialsCompletedQuantity: number | null | undefined;
+        readonly bulkMaterialsTotalOrderQuantity: number | null | undefined;
+        readonly bulkMaterialsUncompletedQuantity: number | null | undefined;
         readonly cje: number | null | undefined;
         readonly code: string;
         readonly conType: string | null | undefined;
@@ -53,6 +56,8 @@ export type operationsPageQuery$data = {
         readonly ownerApplyCount: number | null | undefined;
         readonly ownerApproveAmount: number | null | undefined;
         readonly ownerApproveCount: number | null | undefined;
+        readonly palletsInStock: number | null | undefined;
+        readonly partsInStock: number | null | undefined;
         readonly pmArea: number | null | undefined;
         readonly pmMonthActual: number | null | undefined;
         readonly pmMonthTarget: number | null | undefined;
@@ -71,6 +76,8 @@ export type operationsPageQuery$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
+        readonly qualityRanking: number | null | undefined;
+        readonly qualityScore: number | null | undefined;
         readonly startDate: any | null | undefined;
         readonly totalContractAmount: number | null | undefined;
         readonly unitComponentInstallation: number | null | undefined;
@@ -532,7 +539,56 @@ v60 = {
   "name": "itemStockWeight",
   "storageKey": null
 },
-v61 = [
+v61 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "palletsInStock",
+  "storageKey": null
+},
+v62 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "partsInStock",
+  "storageKey": null
+},
+v63 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "qualityScore",
+  "storageKey": null
+},
+v64 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "qualityRanking",
+  "storageKey": null
+},
+v65 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "bulkMaterialsTotalOrderQuantity",
+  "storageKey": null
+},
+v66 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "bulkMaterialsCompletedQuantity",
+  "storageKey": null
+},
+v67 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "bulkMaterialsUncompletedQuantity",
+  "storageKey": null
+},
+v68 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -547,28 +603,28 @@ v61 = [
     }
   }
 ],
-v62 = {
+v69 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "installation",
   "storageKey": null
 },
-v63 = {
+v70 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "management",
   "storageKey": null
 },
-v64 = {
+v71 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "design",
   "storageKey": null
 },
-v65 = {
+v72 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -666,9 +722,16 @@ return {
                   (v58/*: any*/),
                   (v59/*: any*/),
                   (v60/*: any*/),
+                  (v61/*: any*/),
+                  (v62/*: any*/),
+                  (v63/*: any*/),
+                  (v64/*: any*/),
+                  (v65/*: any*/),
+                  (v66/*: any*/),
+                  (v67/*: any*/),
                   {
                     "alias": null,
-                    "args": (v61/*: any*/),
+                    "args": (v68/*: any*/),
                     "concreteType": "ProjectStaffConnection",
                     "kind": "LinkedField",
                     "name": "projectStaffs",
@@ -690,10 +753,10 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v62/*: any*/),
-                              (v63/*: any*/),
-                              (v64/*: any*/),
-                              (v65/*: any*/)
+                              (v69/*: any*/),
+                              (v70/*: any*/),
+                              (v71/*: any*/),
+                              (v72/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -806,9 +869,16 @@ return {
                   (v58/*: any*/),
                   (v59/*: any*/),
                   (v60/*: any*/),
+                  (v61/*: any*/),
+                  (v62/*: any*/),
+                  (v63/*: any*/),
+                  (v64/*: any*/),
+                  (v65/*: any*/),
+                  (v66/*: any*/),
+                  (v67/*: any*/),
                   {
                     "alias": null,
-                    "args": (v61/*: any*/),
+                    "args": (v68/*: any*/),
                     "concreteType": "ProjectStaffConnection",
                     "kind": "LinkedField",
                     "name": "projectStaffs",
@@ -830,10 +900,10 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v62/*: any*/),
-                              (v63/*: any*/),
-                              (v64/*: any*/),
-                              (v65/*: any*/),
+                              (v69/*: any*/),
+                              (v70/*: any*/),
+                              (v71/*: any*/),
+                              (v72/*: any*/),
                               (v1/*: any*/)
                             ],
                             "storageKey": null
@@ -856,16 +926,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3edfee3e6f2219b54f0fcf14d716fe50",
+    "cacheID": "c2f382a57d9a9a57ebcc2148107800b0",
     "id": null,
     "metadata": {},
     "name": "operationsPageQuery",
     "operationKind": "query",
-    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        id\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        milestonePlanYear\n        milestonePlanMonth\n        milestoneDoneYear\n        milestoneDoneMonth\n        pmArea\n        pmYearTarget\n        pmMonthTarget\n        pmYearActual\n        pmMonthActual\n        pmTotal\n        pmYesterday\n        unitInventoryTotal\n        unitComponentTotal\n        unitComponentProduction\n        unitComponentInstallation\n        materialLoss\n        designRatedWeight\n        processingWeight\n        itemStockWeight\n        projectStaffs(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {\n          edges {\n            node {\n              installation\n              management\n              design\n              createdAt\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query operationsPageQuery {\n  projects(where: {isFinishedNEQ: true}, orderBy: [{field: CODE}]) {\n    edges {\n      node {\n        id\n        name\n        code\n        manager\n        owner\n        jzs\n        mcn\n        consultant\n        areas\n        fsDate\n        opDate\n        startDate\n        endDate\n        mntyr\n        conType\n        cje\n        yye\n        xjl\n        xmglfYs\n        xmglfLj\n        xmsjf\n        ownerApplyCount\n        ownerApplyAmount\n        ownerApproveCount\n        ownerApproveAmount\n        contractorApplyCount\n        contractorApplyAmount\n        contractorApproveCount\n        contractorApproveAmount\n        installProgress\n        effectiveContractAmount\n        vaApplyAmount\n        vaApproveAmount\n        accumulatedStatutoryDeductions\n        accumulatedNonStatutoryDeductions\n        accumulatedNonStatutoryDeductionsPeriod\n        totalContractAmount\n        aluminumPlateBudgetPercentage\n        aluminumBudgetPercentage\n        glassBudgetPercentage\n        ironBudgetPercentage\n        milestonePlanYear\n        milestonePlanMonth\n        milestoneDoneYear\n        milestoneDoneMonth\n        pmArea\n        pmYearTarget\n        pmMonthTarget\n        pmYearActual\n        pmMonthActual\n        pmTotal\n        pmYesterday\n        unitInventoryTotal\n        unitComponentTotal\n        unitComponentProduction\n        unitComponentInstallation\n        materialLoss\n        designRatedWeight\n        processingWeight\n        itemStockWeight\n        palletsInStock\n        partsInStock\n        qualityScore\n        qualityRanking\n        bulkMaterialsTotalOrderQuantity\n        bulkMaterialsCompletedQuantity\n        bulkMaterialsUncompletedQuantity\n        projectStaffs(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {\n          edges {\n            node {\n              installation\n              management\n              design\n              createdAt\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "678b7cf97d12cfb4737031bbd6b5eb9b";
+(node as any).hash = "d067ad087bde9c4e84d3d8ec27f6622c";
 
 export default node;

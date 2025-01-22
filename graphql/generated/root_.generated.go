@@ -306,6 +306,9 @@ type ComplexityRoot struct {
 		AluminumBudgetPercentage                func(childComplexity int) int
 		AluminumPlateBudgetPercentage           func(childComplexity int) int
 		Areas                                   func(childComplexity int) int
+		BulkMaterialsCompletedQuantity          func(childComplexity int) int
+		BulkMaterialsTotalOrderQuantity         func(childComplexity int) int
+		BulkMaterialsUncompletedQuantity        func(childComplexity int) int
 		Cje                                     func(childComplexity int) int
 		Code                                    func(childComplexity int) int
 		ConType                                 func(childComplexity int) int
@@ -341,6 +344,8 @@ type ComplexityRoot struct {
 		OwnerApplyCount                         func(childComplexity int) int
 		OwnerApproveAmount                      func(childComplexity int) int
 		OwnerApproveCount                       func(childComplexity int) int
+		PalletsInStock                          func(childComplexity int) int
+		PartsInStock                            func(childComplexity int) int
 		PmArea                                  func(childComplexity int) int
 		PmMonthActual                           func(childComplexity int) int
 		PmMonthTarget                           func(childComplexity int) int
@@ -350,6 +355,8 @@ type ComplexityRoot struct {
 		PmYesterday                             func(childComplexity int) int
 		ProcessingWeight                        func(childComplexity int) int
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
+		QualityRanking                          func(childComplexity int) int
+		QualityScore                            func(childComplexity int) int
 		StartDate                               func(childComplexity int) int
 		TotalContractAmount                     func(childComplexity int) int
 		UnitComponentInstallation               func(childComplexity int) int
@@ -2006,6 +2013,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.Areas(childComplexity), true
 
+	case "Project.bulkMaterialsCompletedQuantity":
+		if e.complexity.Project.BulkMaterialsCompletedQuantity == nil {
+			break
+		}
+
+		return e.complexity.Project.BulkMaterialsCompletedQuantity(childComplexity), true
+
+	case "Project.bulkMaterialsTotalOrderQuantity":
+		if e.complexity.Project.BulkMaterialsTotalOrderQuantity == nil {
+			break
+		}
+
+		return e.complexity.Project.BulkMaterialsTotalOrderQuantity(childComplexity), true
+
+	case "Project.bulkMaterialsUncompletedQuantity":
+		if e.complexity.Project.BulkMaterialsUncompletedQuantity == nil {
+			break
+		}
+
+		return e.complexity.Project.BulkMaterialsUncompletedQuantity(childComplexity), true
+
 	case "Project.cje":
 		if e.complexity.Project.Cje == nil {
 			break
@@ -2251,6 +2279,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.OwnerApproveCount(childComplexity), true
 
+	case "Project.palletsInStock":
+		if e.complexity.Project.PalletsInStock == nil {
+			break
+		}
+
+		return e.complexity.Project.PalletsInStock(childComplexity), true
+
+	case "Project.partsInStock":
+		if e.complexity.Project.PartsInStock == nil {
+			break
+		}
+
+		return e.complexity.Project.PartsInStock(childComplexity), true
+
 	case "Project.pmArea":
 		if e.complexity.Project.PmArea == nil {
 			break
@@ -2318,6 +2360,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.ProjectStaffs(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.ProjectStaffOrder), args["where"].(*ent.ProjectStaffWhereInput)), true
+
+	case "Project.qualityRanking":
+		if e.complexity.Project.QualityRanking == nil {
+			break
+		}
+
+		return e.complexity.Project.QualityRanking(childComplexity), true
+
+	case "Project.qualityScore":
+		if e.complexity.Project.QualityScore == nil {
+			break
+		}
+
+		return e.complexity.Project.QualityScore(childComplexity), true
 
 	case "Project.startDate":
 		if e.complexity.Project.StartDate == nil {
@@ -6591,6 +6647,34 @@ type Project implements Node {
   項目物料庫存重量
   """
   itemStockWeight: Float
+  """
+  卡板庫存數量
+  """
+  palletsInStock: Float
+  """
+  散件庫存數量
+  """
+  partsInStock: Float
+  """
+  質量得分
+  """
+  qualityScore: Float
+  """
+  質量排名
+  """
+  qualityRanking: Float
+  """
+  散件總訂貨數量
+  """
+  bulkMaterialsTotalOrderQuantity: Float
+  """
+  散件已完成數量
+  """
+  bulkMaterialsCompletedQuantity: Float
+  """
+  散件未完成數量
+  """
+  bulkMaterialsUncompletedQuantity: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -7938,6 +8022,97 @@ input ProjectWhereInput {
   itemStockWeightLTE: Float
   itemStockWeightIsNil: Boolean
   itemStockWeightNotNil: Boolean
+  """
+  pallets_in_stock field predicates
+  """
+  palletsInStock: Float
+  palletsInStockNEQ: Float
+  palletsInStockIn: [Float!]
+  palletsInStockNotIn: [Float!]
+  palletsInStockGT: Float
+  palletsInStockGTE: Float
+  palletsInStockLT: Float
+  palletsInStockLTE: Float
+  palletsInStockIsNil: Boolean
+  palletsInStockNotNil: Boolean
+  """
+  parts_in_stock field predicates
+  """
+  partsInStock: Float
+  partsInStockNEQ: Float
+  partsInStockIn: [Float!]
+  partsInStockNotIn: [Float!]
+  partsInStockGT: Float
+  partsInStockGTE: Float
+  partsInStockLT: Float
+  partsInStockLTE: Float
+  partsInStockIsNil: Boolean
+  partsInStockNotNil: Boolean
+  """
+  quality_score field predicates
+  """
+  qualityScore: Float
+  qualityScoreNEQ: Float
+  qualityScoreIn: [Float!]
+  qualityScoreNotIn: [Float!]
+  qualityScoreGT: Float
+  qualityScoreGTE: Float
+  qualityScoreLT: Float
+  qualityScoreLTE: Float
+  qualityScoreIsNil: Boolean
+  qualityScoreNotNil: Boolean
+  """
+  quality_ranking field predicates
+  """
+  qualityRanking: Float
+  qualityRankingNEQ: Float
+  qualityRankingIn: [Float!]
+  qualityRankingNotIn: [Float!]
+  qualityRankingGT: Float
+  qualityRankingGTE: Float
+  qualityRankingLT: Float
+  qualityRankingLTE: Float
+  qualityRankingIsNil: Boolean
+  qualityRankingNotNil: Boolean
+  """
+  bulk_materials_total_order_quantity field predicates
+  """
+  bulkMaterialsTotalOrderQuantity: Float
+  bulkMaterialsTotalOrderQuantityNEQ: Float
+  bulkMaterialsTotalOrderQuantityIn: [Float!]
+  bulkMaterialsTotalOrderQuantityNotIn: [Float!]
+  bulkMaterialsTotalOrderQuantityGT: Float
+  bulkMaterialsTotalOrderQuantityGTE: Float
+  bulkMaterialsTotalOrderQuantityLT: Float
+  bulkMaterialsTotalOrderQuantityLTE: Float
+  bulkMaterialsTotalOrderQuantityIsNil: Boolean
+  bulkMaterialsTotalOrderQuantityNotNil: Boolean
+  """
+  bulk_materials_completed_quantity field predicates
+  """
+  bulkMaterialsCompletedQuantity: Float
+  bulkMaterialsCompletedQuantityNEQ: Float
+  bulkMaterialsCompletedQuantityIn: [Float!]
+  bulkMaterialsCompletedQuantityNotIn: [Float!]
+  bulkMaterialsCompletedQuantityGT: Float
+  bulkMaterialsCompletedQuantityGTE: Float
+  bulkMaterialsCompletedQuantityLT: Float
+  bulkMaterialsCompletedQuantityLTE: Float
+  bulkMaterialsCompletedQuantityIsNil: Boolean
+  bulkMaterialsCompletedQuantityNotNil: Boolean
+  """
+  bulk_materials_uncompleted_quantity field predicates
+  """
+  bulkMaterialsUncompletedQuantity: Float
+  bulkMaterialsUncompletedQuantityNEQ: Float
+  bulkMaterialsUncompletedQuantityIn: [Float!]
+  bulkMaterialsUncompletedQuantityNotIn: [Float!]
+  bulkMaterialsUncompletedQuantityGT: Float
+  bulkMaterialsUncompletedQuantityGTE: Float
+  bulkMaterialsUncompletedQuantityLT: Float
+  bulkMaterialsUncompletedQuantityLTE: Float
+  bulkMaterialsUncompletedQuantityIsNil: Boolean
+  bulkMaterialsUncompletedQuantityNotNil: Boolean
   """
   vos edge predicates
   """
@@ -10332,6 +10507,41 @@ input UpdateProjectInput {
   """
   itemStockWeight: Float
   clearItemStockWeight: Boolean
+  """
+  卡板庫存數量
+  """
+  palletsInStock: Float
+  clearPalletsInStock: Boolean
+  """
+  散件庫存數量
+  """
+  partsInStock: Float
+  clearPartsInStock: Boolean
+  """
+  質量得分
+  """
+  qualityScore: Float
+  clearQualityScore: Boolean
+  """
+  質量排名
+  """
+  qualityRanking: Float
+  clearQualityRanking: Boolean
+  """
+  散件總訂貨數量
+  """
+  bulkMaterialsTotalOrderQuantity: Float
+  clearBulkMaterialsTotalOrderQuantity: Boolean
+  """
+  散件已完成數量
+  """
+  bulkMaterialsCompletedQuantity: Float
+  clearBulkMaterialsCompletedQuantity: Boolean
+  """
+  散件未完成數量
+  """
+  bulkMaterialsUncompletedQuantity: Float
+  clearBulkMaterialsUncompletedQuantity: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean

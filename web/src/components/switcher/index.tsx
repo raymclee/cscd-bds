@@ -82,15 +82,22 @@ export function Switcher() {
 
       <AnimatePresence mode="wait">{isActive && <Nav />}</AnimatePresence>
 
-      <motion.div
-        className="fixed right-0 top-0 z-30 h-full w-full bg-black/50 backdrop-blur-sm"
-        variants={menuSlide}
-        initial="initial"
-        animate={isActive ? "enter" : "exit"}
-        onClick={() => {
-          setIsActive((pv) => !pv);
-        }}
-      ></motion.div>
+      <AnimatePresence mode="wait">
+        {isActive && (
+          <motion.div
+            className="fixed right-0 top-0 z-30 h-full w-full bg-black/50 backdrop-blur-sm"
+            variants={menuOverlaySlide}
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            onClick={() => {
+              setIsActive((pv) => !pv);
+            }}
+          >
+            <Curve />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -129,10 +136,10 @@ const VARIANTS = {
 };
 
 const navItems = [
-  {
-    title: "市场拓展地图",
-    href: "/",
-  },
+  // {
+  //   title: "市场拓展地图",
+  //   href: "/",
+  // },
   {
     title: "项目运营管控",
     href: "/operations",
@@ -145,6 +152,15 @@ export const menuSlide = {
   exit: {
     x: "calc(100% + 100px)",
     transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
+  },
+};
+
+export const menuOverlaySlide = {
+  initial: { x: "calc(100% + 100px)" },
+  enter: { x: "0", transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } },
+  exit: {
+    x: "calc(100% + 100px)",
+    transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] },
   },
 };
 
@@ -231,7 +247,7 @@ function AnimatedLink({
       <motion.div
         variants={scale}
         animate={isActive ? "open" : "closed"}
-        className="absolute left-[-30px] h-[10px] w-[10px] rounded-full bg-white"
+        className="absolute bottom-3 left-[-30px] h-[10px] w-[10px] rounded-full bg-white"
       ></motion.div>
       <Link href={href}>{title}</Link>
     </motion.div>

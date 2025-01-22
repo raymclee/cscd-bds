@@ -268,6 +268,13 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldDesignRatedWeight:                       {Type: field.TypeFloat64, Column: project.FieldDesignRatedWeight},
 			project.FieldProcessingWeight:                        {Type: field.TypeFloat64, Column: project.FieldProcessingWeight},
 			project.FieldItemStockWeight:                         {Type: field.TypeFloat64, Column: project.FieldItemStockWeight},
+			project.FieldPalletsInStock:                          {Type: field.TypeFloat64, Column: project.FieldPalletsInStock},
+			project.FieldPartsInStock:                            {Type: field.TypeFloat64, Column: project.FieldPartsInStock},
+			project.FieldQualityScore:                            {Type: field.TypeFloat64, Column: project.FieldQualityScore},
+			project.FieldQualityRanking:                          {Type: field.TypeFloat64, Column: project.FieldQualityRanking},
+			project.FieldBulkMaterialsTotalOrderQuantity:         {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsTotalOrderQuantity},
+			project.FieldBulkMaterialsCompletedQuantity:          {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsCompletedQuantity},
+			project.FieldBulkMaterialsUncompletedQuantity:        {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsUncompletedQuantity},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2276,6 +2283,41 @@ func (f *ProjectFilter) WhereProcessingWeight(p entql.Float64P) {
 // WhereItemStockWeight applies the entql float64 predicate on the item_stock_weight field.
 func (f *ProjectFilter) WhereItemStockWeight(p entql.Float64P) {
 	f.Where(p.Field(project.FieldItemStockWeight))
+}
+
+// WherePalletsInStock applies the entql float64 predicate on the pallets_in_stock field.
+func (f *ProjectFilter) WherePalletsInStock(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPalletsInStock))
+}
+
+// WherePartsInStock applies the entql float64 predicate on the parts_in_stock field.
+func (f *ProjectFilter) WherePartsInStock(p entql.Float64P) {
+	f.Where(p.Field(project.FieldPartsInStock))
+}
+
+// WhereQualityScore applies the entql float64 predicate on the quality_score field.
+func (f *ProjectFilter) WhereQualityScore(p entql.Float64P) {
+	f.Where(p.Field(project.FieldQualityScore))
+}
+
+// WhereQualityRanking applies the entql float64 predicate on the quality_ranking field.
+func (f *ProjectFilter) WhereQualityRanking(p entql.Float64P) {
+	f.Where(p.Field(project.FieldQualityRanking))
+}
+
+// WhereBulkMaterialsTotalOrderQuantity applies the entql float64 predicate on the bulk_materials_total_order_quantity field.
+func (f *ProjectFilter) WhereBulkMaterialsTotalOrderQuantity(p entql.Float64P) {
+	f.Where(p.Field(project.FieldBulkMaterialsTotalOrderQuantity))
+}
+
+// WhereBulkMaterialsCompletedQuantity applies the entql float64 predicate on the bulk_materials_completed_quantity field.
+func (f *ProjectFilter) WhereBulkMaterialsCompletedQuantity(p entql.Float64P) {
+	f.Where(p.Field(project.FieldBulkMaterialsCompletedQuantity))
+}
+
+// WhereBulkMaterialsUncompletedQuantity applies the entql float64 predicate on the bulk_materials_uncompleted_quantity field.
+func (f *ProjectFilter) WhereBulkMaterialsUncompletedQuantity(p entql.Float64P) {
+	f.Where(p.Field(project.FieldBulkMaterialsUncompletedQuantity))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.

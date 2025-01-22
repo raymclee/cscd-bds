@@ -8042,6 +8042,20 @@ type ProjectMutation struct {
 	addprocessing_weight                           *float64
 	item_stock_weight                              *float64
 	additem_stock_weight                           *float64
+	pallets_in_stock                               *float64
+	addpallets_in_stock                            *float64
+	parts_in_stock                                 *float64
+	addparts_in_stock                              *float64
+	quality_score                                  *float64
+	addquality_score                               *float64
+	quality_ranking                                *float64
+	addquality_ranking                             *float64
+	bulk_materials_total_order_quantity            *float64
+	addbulk_materials_total_order_quantity         *float64
+	bulk_materials_completed_quantity              *float64
+	addbulk_materials_completed_quantity           *float64
+	bulk_materials_uncompleted_quantity            *float64
+	addbulk_materials_uncompleted_quantity         *float64
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -12208,6 +12222,496 @@ func (m *ProjectMutation) ResetItemStockWeight() {
 	delete(m.clearedFields, project.FieldItemStockWeight)
 }
 
+// SetPalletsInStock sets the "pallets_in_stock" field.
+func (m *ProjectMutation) SetPalletsInStock(f float64) {
+	m.pallets_in_stock = &f
+	m.addpallets_in_stock = nil
+}
+
+// PalletsInStock returns the value of the "pallets_in_stock" field in the mutation.
+func (m *ProjectMutation) PalletsInStock() (r float64, exists bool) {
+	v := m.pallets_in_stock
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPalletsInStock returns the old "pallets_in_stock" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPalletsInStock(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPalletsInStock is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPalletsInStock requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPalletsInStock: %w", err)
+	}
+	return oldValue.PalletsInStock, nil
+}
+
+// AddPalletsInStock adds f to the "pallets_in_stock" field.
+func (m *ProjectMutation) AddPalletsInStock(f float64) {
+	if m.addpallets_in_stock != nil {
+		*m.addpallets_in_stock += f
+	} else {
+		m.addpallets_in_stock = &f
+	}
+}
+
+// AddedPalletsInStock returns the value that was added to the "pallets_in_stock" field in this mutation.
+func (m *ProjectMutation) AddedPalletsInStock() (r float64, exists bool) {
+	v := m.addpallets_in_stock
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPalletsInStock clears the value of the "pallets_in_stock" field.
+func (m *ProjectMutation) ClearPalletsInStock() {
+	m.pallets_in_stock = nil
+	m.addpallets_in_stock = nil
+	m.clearedFields[project.FieldPalletsInStock] = struct{}{}
+}
+
+// PalletsInStockCleared returns if the "pallets_in_stock" field was cleared in this mutation.
+func (m *ProjectMutation) PalletsInStockCleared() bool {
+	_, ok := m.clearedFields[project.FieldPalletsInStock]
+	return ok
+}
+
+// ResetPalletsInStock resets all changes to the "pallets_in_stock" field.
+func (m *ProjectMutation) ResetPalletsInStock() {
+	m.pallets_in_stock = nil
+	m.addpallets_in_stock = nil
+	delete(m.clearedFields, project.FieldPalletsInStock)
+}
+
+// SetPartsInStock sets the "parts_in_stock" field.
+func (m *ProjectMutation) SetPartsInStock(f float64) {
+	m.parts_in_stock = &f
+	m.addparts_in_stock = nil
+}
+
+// PartsInStock returns the value of the "parts_in_stock" field in the mutation.
+func (m *ProjectMutation) PartsInStock() (r float64, exists bool) {
+	v := m.parts_in_stock
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPartsInStock returns the old "parts_in_stock" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPartsInStock(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPartsInStock is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPartsInStock requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPartsInStock: %w", err)
+	}
+	return oldValue.PartsInStock, nil
+}
+
+// AddPartsInStock adds f to the "parts_in_stock" field.
+func (m *ProjectMutation) AddPartsInStock(f float64) {
+	if m.addparts_in_stock != nil {
+		*m.addparts_in_stock += f
+	} else {
+		m.addparts_in_stock = &f
+	}
+}
+
+// AddedPartsInStock returns the value that was added to the "parts_in_stock" field in this mutation.
+func (m *ProjectMutation) AddedPartsInStock() (r float64, exists bool) {
+	v := m.addparts_in_stock
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPartsInStock clears the value of the "parts_in_stock" field.
+func (m *ProjectMutation) ClearPartsInStock() {
+	m.parts_in_stock = nil
+	m.addparts_in_stock = nil
+	m.clearedFields[project.FieldPartsInStock] = struct{}{}
+}
+
+// PartsInStockCleared returns if the "parts_in_stock" field was cleared in this mutation.
+func (m *ProjectMutation) PartsInStockCleared() bool {
+	_, ok := m.clearedFields[project.FieldPartsInStock]
+	return ok
+}
+
+// ResetPartsInStock resets all changes to the "parts_in_stock" field.
+func (m *ProjectMutation) ResetPartsInStock() {
+	m.parts_in_stock = nil
+	m.addparts_in_stock = nil
+	delete(m.clearedFields, project.FieldPartsInStock)
+}
+
+// SetQualityScore sets the "quality_score" field.
+func (m *ProjectMutation) SetQualityScore(f float64) {
+	m.quality_score = &f
+	m.addquality_score = nil
+}
+
+// QualityScore returns the value of the "quality_score" field in the mutation.
+func (m *ProjectMutation) QualityScore() (r float64, exists bool) {
+	v := m.quality_score
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldQualityScore returns the old "quality_score" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldQualityScore(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldQualityScore is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldQualityScore requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldQualityScore: %w", err)
+	}
+	return oldValue.QualityScore, nil
+}
+
+// AddQualityScore adds f to the "quality_score" field.
+func (m *ProjectMutation) AddQualityScore(f float64) {
+	if m.addquality_score != nil {
+		*m.addquality_score += f
+	} else {
+		m.addquality_score = &f
+	}
+}
+
+// AddedQualityScore returns the value that was added to the "quality_score" field in this mutation.
+func (m *ProjectMutation) AddedQualityScore() (r float64, exists bool) {
+	v := m.addquality_score
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearQualityScore clears the value of the "quality_score" field.
+func (m *ProjectMutation) ClearQualityScore() {
+	m.quality_score = nil
+	m.addquality_score = nil
+	m.clearedFields[project.FieldQualityScore] = struct{}{}
+}
+
+// QualityScoreCleared returns if the "quality_score" field was cleared in this mutation.
+func (m *ProjectMutation) QualityScoreCleared() bool {
+	_, ok := m.clearedFields[project.FieldQualityScore]
+	return ok
+}
+
+// ResetQualityScore resets all changes to the "quality_score" field.
+func (m *ProjectMutation) ResetQualityScore() {
+	m.quality_score = nil
+	m.addquality_score = nil
+	delete(m.clearedFields, project.FieldQualityScore)
+}
+
+// SetQualityRanking sets the "quality_ranking" field.
+func (m *ProjectMutation) SetQualityRanking(f float64) {
+	m.quality_ranking = &f
+	m.addquality_ranking = nil
+}
+
+// QualityRanking returns the value of the "quality_ranking" field in the mutation.
+func (m *ProjectMutation) QualityRanking() (r float64, exists bool) {
+	v := m.quality_ranking
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldQualityRanking returns the old "quality_ranking" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldQualityRanking(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldQualityRanking is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldQualityRanking requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldQualityRanking: %w", err)
+	}
+	return oldValue.QualityRanking, nil
+}
+
+// AddQualityRanking adds f to the "quality_ranking" field.
+func (m *ProjectMutation) AddQualityRanking(f float64) {
+	if m.addquality_ranking != nil {
+		*m.addquality_ranking += f
+	} else {
+		m.addquality_ranking = &f
+	}
+}
+
+// AddedQualityRanking returns the value that was added to the "quality_ranking" field in this mutation.
+func (m *ProjectMutation) AddedQualityRanking() (r float64, exists bool) {
+	v := m.addquality_ranking
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearQualityRanking clears the value of the "quality_ranking" field.
+func (m *ProjectMutation) ClearQualityRanking() {
+	m.quality_ranking = nil
+	m.addquality_ranking = nil
+	m.clearedFields[project.FieldQualityRanking] = struct{}{}
+}
+
+// QualityRankingCleared returns if the "quality_ranking" field was cleared in this mutation.
+func (m *ProjectMutation) QualityRankingCleared() bool {
+	_, ok := m.clearedFields[project.FieldQualityRanking]
+	return ok
+}
+
+// ResetQualityRanking resets all changes to the "quality_ranking" field.
+func (m *ProjectMutation) ResetQualityRanking() {
+	m.quality_ranking = nil
+	m.addquality_ranking = nil
+	delete(m.clearedFields, project.FieldQualityRanking)
+}
+
+// SetBulkMaterialsTotalOrderQuantity sets the "bulk_materials_total_order_quantity" field.
+func (m *ProjectMutation) SetBulkMaterialsTotalOrderQuantity(f float64) {
+	m.bulk_materials_total_order_quantity = &f
+	m.addbulk_materials_total_order_quantity = nil
+}
+
+// BulkMaterialsTotalOrderQuantity returns the value of the "bulk_materials_total_order_quantity" field in the mutation.
+func (m *ProjectMutation) BulkMaterialsTotalOrderQuantity() (r float64, exists bool) {
+	v := m.bulk_materials_total_order_quantity
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBulkMaterialsTotalOrderQuantity returns the old "bulk_materials_total_order_quantity" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldBulkMaterialsTotalOrderQuantity(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBulkMaterialsTotalOrderQuantity is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBulkMaterialsTotalOrderQuantity requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBulkMaterialsTotalOrderQuantity: %w", err)
+	}
+	return oldValue.BulkMaterialsTotalOrderQuantity, nil
+}
+
+// AddBulkMaterialsTotalOrderQuantity adds f to the "bulk_materials_total_order_quantity" field.
+func (m *ProjectMutation) AddBulkMaterialsTotalOrderQuantity(f float64) {
+	if m.addbulk_materials_total_order_quantity != nil {
+		*m.addbulk_materials_total_order_quantity += f
+	} else {
+		m.addbulk_materials_total_order_quantity = &f
+	}
+}
+
+// AddedBulkMaterialsTotalOrderQuantity returns the value that was added to the "bulk_materials_total_order_quantity" field in this mutation.
+func (m *ProjectMutation) AddedBulkMaterialsTotalOrderQuantity() (r float64, exists bool) {
+	v := m.addbulk_materials_total_order_quantity
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearBulkMaterialsTotalOrderQuantity clears the value of the "bulk_materials_total_order_quantity" field.
+func (m *ProjectMutation) ClearBulkMaterialsTotalOrderQuantity() {
+	m.bulk_materials_total_order_quantity = nil
+	m.addbulk_materials_total_order_quantity = nil
+	m.clearedFields[project.FieldBulkMaterialsTotalOrderQuantity] = struct{}{}
+}
+
+// BulkMaterialsTotalOrderQuantityCleared returns if the "bulk_materials_total_order_quantity" field was cleared in this mutation.
+func (m *ProjectMutation) BulkMaterialsTotalOrderQuantityCleared() bool {
+	_, ok := m.clearedFields[project.FieldBulkMaterialsTotalOrderQuantity]
+	return ok
+}
+
+// ResetBulkMaterialsTotalOrderQuantity resets all changes to the "bulk_materials_total_order_quantity" field.
+func (m *ProjectMutation) ResetBulkMaterialsTotalOrderQuantity() {
+	m.bulk_materials_total_order_quantity = nil
+	m.addbulk_materials_total_order_quantity = nil
+	delete(m.clearedFields, project.FieldBulkMaterialsTotalOrderQuantity)
+}
+
+// SetBulkMaterialsCompletedQuantity sets the "bulk_materials_completed_quantity" field.
+func (m *ProjectMutation) SetBulkMaterialsCompletedQuantity(f float64) {
+	m.bulk_materials_completed_quantity = &f
+	m.addbulk_materials_completed_quantity = nil
+}
+
+// BulkMaterialsCompletedQuantity returns the value of the "bulk_materials_completed_quantity" field in the mutation.
+func (m *ProjectMutation) BulkMaterialsCompletedQuantity() (r float64, exists bool) {
+	v := m.bulk_materials_completed_quantity
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBulkMaterialsCompletedQuantity returns the old "bulk_materials_completed_quantity" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldBulkMaterialsCompletedQuantity(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBulkMaterialsCompletedQuantity is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBulkMaterialsCompletedQuantity requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBulkMaterialsCompletedQuantity: %w", err)
+	}
+	return oldValue.BulkMaterialsCompletedQuantity, nil
+}
+
+// AddBulkMaterialsCompletedQuantity adds f to the "bulk_materials_completed_quantity" field.
+func (m *ProjectMutation) AddBulkMaterialsCompletedQuantity(f float64) {
+	if m.addbulk_materials_completed_quantity != nil {
+		*m.addbulk_materials_completed_quantity += f
+	} else {
+		m.addbulk_materials_completed_quantity = &f
+	}
+}
+
+// AddedBulkMaterialsCompletedQuantity returns the value that was added to the "bulk_materials_completed_quantity" field in this mutation.
+func (m *ProjectMutation) AddedBulkMaterialsCompletedQuantity() (r float64, exists bool) {
+	v := m.addbulk_materials_completed_quantity
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearBulkMaterialsCompletedQuantity clears the value of the "bulk_materials_completed_quantity" field.
+func (m *ProjectMutation) ClearBulkMaterialsCompletedQuantity() {
+	m.bulk_materials_completed_quantity = nil
+	m.addbulk_materials_completed_quantity = nil
+	m.clearedFields[project.FieldBulkMaterialsCompletedQuantity] = struct{}{}
+}
+
+// BulkMaterialsCompletedQuantityCleared returns if the "bulk_materials_completed_quantity" field was cleared in this mutation.
+func (m *ProjectMutation) BulkMaterialsCompletedQuantityCleared() bool {
+	_, ok := m.clearedFields[project.FieldBulkMaterialsCompletedQuantity]
+	return ok
+}
+
+// ResetBulkMaterialsCompletedQuantity resets all changes to the "bulk_materials_completed_quantity" field.
+func (m *ProjectMutation) ResetBulkMaterialsCompletedQuantity() {
+	m.bulk_materials_completed_quantity = nil
+	m.addbulk_materials_completed_quantity = nil
+	delete(m.clearedFields, project.FieldBulkMaterialsCompletedQuantity)
+}
+
+// SetBulkMaterialsUncompletedQuantity sets the "bulk_materials_uncompleted_quantity" field.
+func (m *ProjectMutation) SetBulkMaterialsUncompletedQuantity(f float64) {
+	m.bulk_materials_uncompleted_quantity = &f
+	m.addbulk_materials_uncompleted_quantity = nil
+}
+
+// BulkMaterialsUncompletedQuantity returns the value of the "bulk_materials_uncompleted_quantity" field in the mutation.
+func (m *ProjectMutation) BulkMaterialsUncompletedQuantity() (r float64, exists bool) {
+	v := m.bulk_materials_uncompleted_quantity
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBulkMaterialsUncompletedQuantity returns the old "bulk_materials_uncompleted_quantity" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldBulkMaterialsUncompletedQuantity(ctx context.Context) (v *float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBulkMaterialsUncompletedQuantity is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBulkMaterialsUncompletedQuantity requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBulkMaterialsUncompletedQuantity: %w", err)
+	}
+	return oldValue.BulkMaterialsUncompletedQuantity, nil
+}
+
+// AddBulkMaterialsUncompletedQuantity adds f to the "bulk_materials_uncompleted_quantity" field.
+func (m *ProjectMutation) AddBulkMaterialsUncompletedQuantity(f float64) {
+	if m.addbulk_materials_uncompleted_quantity != nil {
+		*m.addbulk_materials_uncompleted_quantity += f
+	} else {
+		m.addbulk_materials_uncompleted_quantity = &f
+	}
+}
+
+// AddedBulkMaterialsUncompletedQuantity returns the value that was added to the "bulk_materials_uncompleted_quantity" field in this mutation.
+func (m *ProjectMutation) AddedBulkMaterialsUncompletedQuantity() (r float64, exists bool) {
+	v := m.addbulk_materials_uncompleted_quantity
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
+func (m *ProjectMutation) ClearBulkMaterialsUncompletedQuantity() {
+	m.bulk_materials_uncompleted_quantity = nil
+	m.addbulk_materials_uncompleted_quantity = nil
+	m.clearedFields[project.FieldBulkMaterialsUncompletedQuantity] = struct{}{}
+}
+
+// BulkMaterialsUncompletedQuantityCleared returns if the "bulk_materials_uncompleted_quantity" field was cleared in this mutation.
+func (m *ProjectMutation) BulkMaterialsUncompletedQuantityCleared() bool {
+	_, ok := m.clearedFields[project.FieldBulkMaterialsUncompletedQuantity]
+	return ok
+}
+
+// ResetBulkMaterialsUncompletedQuantity resets all changes to the "bulk_materials_uncompleted_quantity" field.
+func (m *ProjectMutation) ResetBulkMaterialsUncompletedQuantity() {
+	m.bulk_materials_uncompleted_quantity = nil
+	m.addbulk_materials_uncompleted_quantity = nil
+	delete(m.clearedFields, project.FieldBulkMaterialsUncompletedQuantity)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -12350,7 +12854,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 64)
+	fields := make([]string, 0, 71)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -12543,6 +13047,27 @@ func (m *ProjectMutation) Fields() []string {
 	if m.item_stock_weight != nil {
 		fields = append(fields, project.FieldItemStockWeight)
 	}
+	if m.pallets_in_stock != nil {
+		fields = append(fields, project.FieldPalletsInStock)
+	}
+	if m.parts_in_stock != nil {
+		fields = append(fields, project.FieldPartsInStock)
+	}
+	if m.quality_score != nil {
+		fields = append(fields, project.FieldQualityScore)
+	}
+	if m.quality_ranking != nil {
+		fields = append(fields, project.FieldQualityRanking)
+	}
+	if m.bulk_materials_total_order_quantity != nil {
+		fields = append(fields, project.FieldBulkMaterialsTotalOrderQuantity)
+	}
+	if m.bulk_materials_completed_quantity != nil {
+		fields = append(fields, project.FieldBulkMaterialsCompletedQuantity)
+	}
+	if m.bulk_materials_uncompleted_quantity != nil {
+		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
+	}
 	return fields
 }
 
@@ -12679,6 +13204,20 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.ProcessingWeight()
 	case project.FieldItemStockWeight:
 		return m.ItemStockWeight()
+	case project.FieldPalletsInStock:
+		return m.PalletsInStock()
+	case project.FieldPartsInStock:
+		return m.PartsInStock()
+	case project.FieldQualityScore:
+		return m.QualityScore()
+	case project.FieldQualityRanking:
+		return m.QualityRanking()
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		return m.BulkMaterialsTotalOrderQuantity()
+	case project.FieldBulkMaterialsCompletedQuantity:
+		return m.BulkMaterialsCompletedQuantity()
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		return m.BulkMaterialsUncompletedQuantity()
 	}
 	return nil, false
 }
@@ -12816,6 +13355,20 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldProcessingWeight(ctx)
 	case project.FieldItemStockWeight:
 		return m.OldItemStockWeight(ctx)
+	case project.FieldPalletsInStock:
+		return m.OldPalletsInStock(ctx)
+	case project.FieldPartsInStock:
+		return m.OldPartsInStock(ctx)
+	case project.FieldQualityScore:
+		return m.OldQualityScore(ctx)
+	case project.FieldQualityRanking:
+		return m.OldQualityRanking(ctx)
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		return m.OldBulkMaterialsTotalOrderQuantity(ctx)
+	case project.FieldBulkMaterialsCompletedQuantity:
+		return m.OldBulkMaterialsCompletedQuantity(ctx)
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		return m.OldBulkMaterialsUncompletedQuantity(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -13273,6 +13826,55 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetItemStockWeight(v)
 		return nil
+	case project.FieldPalletsInStock:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPalletsInStock(v)
+		return nil
+	case project.FieldPartsInStock:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPartsInStock(v)
+		return nil
+	case project.FieldQualityScore:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetQualityScore(v)
+		return nil
+	case project.FieldQualityRanking:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetQualityRanking(v)
+		return nil
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBulkMaterialsTotalOrderQuantity(v)
+		return nil
+	case project.FieldBulkMaterialsCompletedQuantity:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBulkMaterialsCompletedQuantity(v)
+		return nil
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBulkMaterialsUncompletedQuantity(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -13419,6 +14021,27 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.additem_stock_weight != nil {
 		fields = append(fields, project.FieldItemStockWeight)
 	}
+	if m.addpallets_in_stock != nil {
+		fields = append(fields, project.FieldPalletsInStock)
+	}
+	if m.addparts_in_stock != nil {
+		fields = append(fields, project.FieldPartsInStock)
+	}
+	if m.addquality_score != nil {
+		fields = append(fields, project.FieldQualityScore)
+	}
+	if m.addquality_ranking != nil {
+		fields = append(fields, project.FieldQualityRanking)
+	}
+	if m.addbulk_materials_total_order_quantity != nil {
+		fields = append(fields, project.FieldBulkMaterialsTotalOrderQuantity)
+	}
+	if m.addbulk_materials_completed_quantity != nil {
+		fields = append(fields, project.FieldBulkMaterialsCompletedQuantity)
+	}
+	if m.addbulk_materials_uncompleted_quantity != nil {
+		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
+	}
 	return fields
 }
 
@@ -13519,6 +14142,20 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedProcessingWeight()
 	case project.FieldItemStockWeight:
 		return m.AddedItemStockWeight()
+	case project.FieldPalletsInStock:
+		return m.AddedPalletsInStock()
+	case project.FieldPartsInStock:
+		return m.AddedPartsInStock()
+	case project.FieldQualityScore:
+		return m.AddedQualityScore()
+	case project.FieldQualityRanking:
+		return m.AddedQualityRanking()
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		return m.AddedBulkMaterialsTotalOrderQuantity()
+	case project.FieldBulkMaterialsCompletedQuantity:
+		return m.AddedBulkMaterialsCompletedQuantity()
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		return m.AddedBulkMaterialsUncompletedQuantity()
 	}
 	return nil, false
 }
@@ -13850,6 +14487,55 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddItemStockWeight(v)
 		return nil
+	case project.FieldPalletsInStock:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPalletsInStock(v)
+		return nil
+	case project.FieldPartsInStock:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPartsInStock(v)
+		return nil
+	case project.FieldQualityScore:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddQualityScore(v)
+		return nil
+	case project.FieldQualityRanking:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddQualityRanking(v)
+		return nil
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBulkMaterialsTotalOrderQuantity(v)
+		return nil
+	case project.FieldBulkMaterialsCompletedQuantity:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBulkMaterialsCompletedQuantity(v)
+		return nil
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBulkMaterialsUncompletedQuantity(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -14037,6 +14723,27 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldItemStockWeight) {
 		fields = append(fields, project.FieldItemStockWeight)
+	}
+	if m.FieldCleared(project.FieldPalletsInStock) {
+		fields = append(fields, project.FieldPalletsInStock)
+	}
+	if m.FieldCleared(project.FieldPartsInStock) {
+		fields = append(fields, project.FieldPartsInStock)
+	}
+	if m.FieldCleared(project.FieldQualityScore) {
+		fields = append(fields, project.FieldQualityScore)
+	}
+	if m.FieldCleared(project.FieldQualityRanking) {
+		fields = append(fields, project.FieldQualityRanking)
+	}
+	if m.FieldCleared(project.FieldBulkMaterialsTotalOrderQuantity) {
+		fields = append(fields, project.FieldBulkMaterialsTotalOrderQuantity)
+	}
+	if m.FieldCleared(project.FieldBulkMaterialsCompletedQuantity) {
+		fields = append(fields, project.FieldBulkMaterialsCompletedQuantity)
+	}
+	if m.FieldCleared(project.FieldBulkMaterialsUncompletedQuantity) {
+		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
 	}
 	return fields
 }
@@ -14231,6 +14938,27 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldItemStockWeight:
 		m.ClearItemStockWeight()
+		return nil
+	case project.FieldPalletsInStock:
+		m.ClearPalletsInStock()
+		return nil
+	case project.FieldPartsInStock:
+		m.ClearPartsInStock()
+		return nil
+	case project.FieldQualityScore:
+		m.ClearQualityScore()
+		return nil
+	case project.FieldQualityRanking:
+		m.ClearQualityRanking()
+		return nil
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		m.ClearBulkMaterialsTotalOrderQuantity()
+		return nil
+	case project.FieldBulkMaterialsCompletedQuantity:
+		m.ClearBulkMaterialsCompletedQuantity()
+		return nil
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		m.ClearBulkMaterialsUncompletedQuantity()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -14431,6 +15159,27 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldItemStockWeight:
 		m.ResetItemStockWeight()
+		return nil
+	case project.FieldPalletsInStock:
+		m.ResetPalletsInStock()
+		return nil
+	case project.FieldPartsInStock:
+		m.ResetPartsInStock()
+		return nil
+	case project.FieldQualityScore:
+		m.ResetQualityScore()
+		return nil
+	case project.FieldQualityRanking:
+		m.ResetQualityRanking()
+		return nil
+	case project.FieldBulkMaterialsTotalOrderQuantity:
+		m.ResetBulkMaterialsTotalOrderQuantity()
+		return nil
+	case project.FieldBulkMaterialsCompletedQuantity:
+		m.ResetBulkMaterialsCompletedQuantity()
+		return nil
+	case project.FieldBulkMaterialsUncompletedQuantity:
+		m.ResetBulkMaterialsUncompletedQuantity()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

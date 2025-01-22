@@ -4661,6 +4661,90 @@ type ProjectWhereInput struct {
 	ItemStockWeightIsNil  bool      `json:"itemStockWeightIsNil,omitempty"`
 	ItemStockWeightNotNil bool      `json:"itemStockWeightNotNil,omitempty"`
 
+	// "pallets_in_stock" field predicates.
+	PalletsInStock       *float64  `json:"palletsInStock,omitempty"`
+	PalletsInStockNEQ    *float64  `json:"palletsInStockNEQ,omitempty"`
+	PalletsInStockIn     []float64 `json:"palletsInStockIn,omitempty"`
+	PalletsInStockNotIn  []float64 `json:"palletsInStockNotIn,omitempty"`
+	PalletsInStockGT     *float64  `json:"palletsInStockGT,omitempty"`
+	PalletsInStockGTE    *float64  `json:"palletsInStockGTE,omitempty"`
+	PalletsInStockLT     *float64  `json:"palletsInStockLT,omitempty"`
+	PalletsInStockLTE    *float64  `json:"palletsInStockLTE,omitempty"`
+	PalletsInStockIsNil  bool      `json:"palletsInStockIsNil,omitempty"`
+	PalletsInStockNotNil bool      `json:"palletsInStockNotNil,omitempty"`
+
+	// "parts_in_stock" field predicates.
+	PartsInStock       *float64  `json:"partsInStock,omitempty"`
+	PartsInStockNEQ    *float64  `json:"partsInStockNEQ,omitempty"`
+	PartsInStockIn     []float64 `json:"partsInStockIn,omitempty"`
+	PartsInStockNotIn  []float64 `json:"partsInStockNotIn,omitempty"`
+	PartsInStockGT     *float64  `json:"partsInStockGT,omitempty"`
+	PartsInStockGTE    *float64  `json:"partsInStockGTE,omitempty"`
+	PartsInStockLT     *float64  `json:"partsInStockLT,omitempty"`
+	PartsInStockLTE    *float64  `json:"partsInStockLTE,omitempty"`
+	PartsInStockIsNil  bool      `json:"partsInStockIsNil,omitempty"`
+	PartsInStockNotNil bool      `json:"partsInStockNotNil,omitempty"`
+
+	// "quality_score" field predicates.
+	QualityScore       *float64  `json:"qualityScore,omitempty"`
+	QualityScoreNEQ    *float64  `json:"qualityScoreNEQ,omitempty"`
+	QualityScoreIn     []float64 `json:"qualityScoreIn,omitempty"`
+	QualityScoreNotIn  []float64 `json:"qualityScoreNotIn,omitempty"`
+	QualityScoreGT     *float64  `json:"qualityScoreGT,omitempty"`
+	QualityScoreGTE    *float64  `json:"qualityScoreGTE,omitempty"`
+	QualityScoreLT     *float64  `json:"qualityScoreLT,omitempty"`
+	QualityScoreLTE    *float64  `json:"qualityScoreLTE,omitempty"`
+	QualityScoreIsNil  bool      `json:"qualityScoreIsNil,omitempty"`
+	QualityScoreNotNil bool      `json:"qualityScoreNotNil,omitempty"`
+
+	// "quality_ranking" field predicates.
+	QualityRanking       *float64  `json:"qualityRanking,omitempty"`
+	QualityRankingNEQ    *float64  `json:"qualityRankingNEQ,omitempty"`
+	QualityRankingIn     []float64 `json:"qualityRankingIn,omitempty"`
+	QualityRankingNotIn  []float64 `json:"qualityRankingNotIn,omitempty"`
+	QualityRankingGT     *float64  `json:"qualityRankingGT,omitempty"`
+	QualityRankingGTE    *float64  `json:"qualityRankingGTE,omitempty"`
+	QualityRankingLT     *float64  `json:"qualityRankingLT,omitempty"`
+	QualityRankingLTE    *float64  `json:"qualityRankingLTE,omitempty"`
+	QualityRankingIsNil  bool      `json:"qualityRankingIsNil,omitempty"`
+	QualityRankingNotNil bool      `json:"qualityRankingNotNil,omitempty"`
+
+	// "bulk_materials_total_order_quantity" field predicates.
+	BulkMaterialsTotalOrderQuantity       *float64  `json:"bulkMaterialsTotalOrderQuantity,omitempty"`
+	BulkMaterialsTotalOrderQuantityNEQ    *float64  `json:"bulkMaterialsTotalOrderQuantityNEQ,omitempty"`
+	BulkMaterialsTotalOrderQuantityIn     []float64 `json:"bulkMaterialsTotalOrderQuantityIn,omitempty"`
+	BulkMaterialsTotalOrderQuantityNotIn  []float64 `json:"bulkMaterialsTotalOrderQuantityNotIn,omitempty"`
+	BulkMaterialsTotalOrderQuantityGT     *float64  `json:"bulkMaterialsTotalOrderQuantityGT,omitempty"`
+	BulkMaterialsTotalOrderQuantityGTE    *float64  `json:"bulkMaterialsTotalOrderQuantityGTE,omitempty"`
+	BulkMaterialsTotalOrderQuantityLT     *float64  `json:"bulkMaterialsTotalOrderQuantityLT,omitempty"`
+	BulkMaterialsTotalOrderQuantityLTE    *float64  `json:"bulkMaterialsTotalOrderQuantityLTE,omitempty"`
+	BulkMaterialsTotalOrderQuantityIsNil  bool      `json:"bulkMaterialsTotalOrderQuantityIsNil,omitempty"`
+	BulkMaterialsTotalOrderQuantityNotNil bool      `json:"bulkMaterialsTotalOrderQuantityNotNil,omitempty"`
+
+	// "bulk_materials_completed_quantity" field predicates.
+	BulkMaterialsCompletedQuantity       *float64  `json:"bulkMaterialsCompletedQuantity,omitempty"`
+	BulkMaterialsCompletedQuantityNEQ    *float64  `json:"bulkMaterialsCompletedQuantityNEQ,omitempty"`
+	BulkMaterialsCompletedQuantityIn     []float64 `json:"bulkMaterialsCompletedQuantityIn,omitempty"`
+	BulkMaterialsCompletedQuantityNotIn  []float64 `json:"bulkMaterialsCompletedQuantityNotIn,omitempty"`
+	BulkMaterialsCompletedQuantityGT     *float64  `json:"bulkMaterialsCompletedQuantityGT,omitempty"`
+	BulkMaterialsCompletedQuantityGTE    *float64  `json:"bulkMaterialsCompletedQuantityGTE,omitempty"`
+	BulkMaterialsCompletedQuantityLT     *float64  `json:"bulkMaterialsCompletedQuantityLT,omitempty"`
+	BulkMaterialsCompletedQuantityLTE    *float64  `json:"bulkMaterialsCompletedQuantityLTE,omitempty"`
+	BulkMaterialsCompletedQuantityIsNil  bool      `json:"bulkMaterialsCompletedQuantityIsNil,omitempty"`
+	BulkMaterialsCompletedQuantityNotNil bool      `json:"bulkMaterialsCompletedQuantityNotNil,omitempty"`
+
+	// "bulk_materials_uncompleted_quantity" field predicates.
+	BulkMaterialsUncompletedQuantity       *float64  `json:"bulkMaterialsUncompletedQuantity,omitempty"`
+	BulkMaterialsUncompletedQuantityNEQ    *float64  `json:"bulkMaterialsUncompletedQuantityNEQ,omitempty"`
+	BulkMaterialsUncompletedQuantityIn     []float64 `json:"bulkMaterialsUncompletedQuantityIn,omitempty"`
+	BulkMaterialsUncompletedQuantityNotIn  []float64 `json:"bulkMaterialsUncompletedQuantityNotIn,omitempty"`
+	BulkMaterialsUncompletedQuantityGT     *float64  `json:"bulkMaterialsUncompletedQuantityGT,omitempty"`
+	BulkMaterialsUncompletedQuantityGTE    *float64  `json:"bulkMaterialsUncompletedQuantityGTE,omitempty"`
+	BulkMaterialsUncompletedQuantityLT     *float64  `json:"bulkMaterialsUncompletedQuantityLT,omitempty"`
+	BulkMaterialsUncompletedQuantityLTE    *float64  `json:"bulkMaterialsUncompletedQuantityLTE,omitempty"`
+	BulkMaterialsUncompletedQuantityIsNil  bool      `json:"bulkMaterialsUncompletedQuantityIsNil,omitempty"`
+	BulkMaterialsUncompletedQuantityNotNil bool      `json:"bulkMaterialsUncompletedQuantityNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -6807,6 +6891,216 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.ItemStockWeightNotNil {
 		predicates = append(predicates, project.ItemStockWeightNotNil())
+	}
+	if i.PalletsInStock != nil {
+		predicates = append(predicates, project.PalletsInStockEQ(*i.PalletsInStock))
+	}
+	if i.PalletsInStockNEQ != nil {
+		predicates = append(predicates, project.PalletsInStockNEQ(*i.PalletsInStockNEQ))
+	}
+	if len(i.PalletsInStockIn) > 0 {
+		predicates = append(predicates, project.PalletsInStockIn(i.PalletsInStockIn...))
+	}
+	if len(i.PalletsInStockNotIn) > 0 {
+		predicates = append(predicates, project.PalletsInStockNotIn(i.PalletsInStockNotIn...))
+	}
+	if i.PalletsInStockGT != nil {
+		predicates = append(predicates, project.PalletsInStockGT(*i.PalletsInStockGT))
+	}
+	if i.PalletsInStockGTE != nil {
+		predicates = append(predicates, project.PalletsInStockGTE(*i.PalletsInStockGTE))
+	}
+	if i.PalletsInStockLT != nil {
+		predicates = append(predicates, project.PalletsInStockLT(*i.PalletsInStockLT))
+	}
+	if i.PalletsInStockLTE != nil {
+		predicates = append(predicates, project.PalletsInStockLTE(*i.PalletsInStockLTE))
+	}
+	if i.PalletsInStockIsNil {
+		predicates = append(predicates, project.PalletsInStockIsNil())
+	}
+	if i.PalletsInStockNotNil {
+		predicates = append(predicates, project.PalletsInStockNotNil())
+	}
+	if i.PartsInStock != nil {
+		predicates = append(predicates, project.PartsInStockEQ(*i.PartsInStock))
+	}
+	if i.PartsInStockNEQ != nil {
+		predicates = append(predicates, project.PartsInStockNEQ(*i.PartsInStockNEQ))
+	}
+	if len(i.PartsInStockIn) > 0 {
+		predicates = append(predicates, project.PartsInStockIn(i.PartsInStockIn...))
+	}
+	if len(i.PartsInStockNotIn) > 0 {
+		predicates = append(predicates, project.PartsInStockNotIn(i.PartsInStockNotIn...))
+	}
+	if i.PartsInStockGT != nil {
+		predicates = append(predicates, project.PartsInStockGT(*i.PartsInStockGT))
+	}
+	if i.PartsInStockGTE != nil {
+		predicates = append(predicates, project.PartsInStockGTE(*i.PartsInStockGTE))
+	}
+	if i.PartsInStockLT != nil {
+		predicates = append(predicates, project.PartsInStockLT(*i.PartsInStockLT))
+	}
+	if i.PartsInStockLTE != nil {
+		predicates = append(predicates, project.PartsInStockLTE(*i.PartsInStockLTE))
+	}
+	if i.PartsInStockIsNil {
+		predicates = append(predicates, project.PartsInStockIsNil())
+	}
+	if i.PartsInStockNotNil {
+		predicates = append(predicates, project.PartsInStockNotNil())
+	}
+	if i.QualityScore != nil {
+		predicates = append(predicates, project.QualityScoreEQ(*i.QualityScore))
+	}
+	if i.QualityScoreNEQ != nil {
+		predicates = append(predicates, project.QualityScoreNEQ(*i.QualityScoreNEQ))
+	}
+	if len(i.QualityScoreIn) > 0 {
+		predicates = append(predicates, project.QualityScoreIn(i.QualityScoreIn...))
+	}
+	if len(i.QualityScoreNotIn) > 0 {
+		predicates = append(predicates, project.QualityScoreNotIn(i.QualityScoreNotIn...))
+	}
+	if i.QualityScoreGT != nil {
+		predicates = append(predicates, project.QualityScoreGT(*i.QualityScoreGT))
+	}
+	if i.QualityScoreGTE != nil {
+		predicates = append(predicates, project.QualityScoreGTE(*i.QualityScoreGTE))
+	}
+	if i.QualityScoreLT != nil {
+		predicates = append(predicates, project.QualityScoreLT(*i.QualityScoreLT))
+	}
+	if i.QualityScoreLTE != nil {
+		predicates = append(predicates, project.QualityScoreLTE(*i.QualityScoreLTE))
+	}
+	if i.QualityScoreIsNil {
+		predicates = append(predicates, project.QualityScoreIsNil())
+	}
+	if i.QualityScoreNotNil {
+		predicates = append(predicates, project.QualityScoreNotNil())
+	}
+	if i.QualityRanking != nil {
+		predicates = append(predicates, project.QualityRankingEQ(*i.QualityRanking))
+	}
+	if i.QualityRankingNEQ != nil {
+		predicates = append(predicates, project.QualityRankingNEQ(*i.QualityRankingNEQ))
+	}
+	if len(i.QualityRankingIn) > 0 {
+		predicates = append(predicates, project.QualityRankingIn(i.QualityRankingIn...))
+	}
+	if len(i.QualityRankingNotIn) > 0 {
+		predicates = append(predicates, project.QualityRankingNotIn(i.QualityRankingNotIn...))
+	}
+	if i.QualityRankingGT != nil {
+		predicates = append(predicates, project.QualityRankingGT(*i.QualityRankingGT))
+	}
+	if i.QualityRankingGTE != nil {
+		predicates = append(predicates, project.QualityRankingGTE(*i.QualityRankingGTE))
+	}
+	if i.QualityRankingLT != nil {
+		predicates = append(predicates, project.QualityRankingLT(*i.QualityRankingLT))
+	}
+	if i.QualityRankingLTE != nil {
+		predicates = append(predicates, project.QualityRankingLTE(*i.QualityRankingLTE))
+	}
+	if i.QualityRankingIsNil {
+		predicates = append(predicates, project.QualityRankingIsNil())
+	}
+	if i.QualityRankingNotNil {
+		predicates = append(predicates, project.QualityRankingNotNil())
+	}
+	if i.BulkMaterialsTotalOrderQuantity != nil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityEQ(*i.BulkMaterialsTotalOrderQuantity))
+	}
+	if i.BulkMaterialsTotalOrderQuantityNEQ != nil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityNEQ(*i.BulkMaterialsTotalOrderQuantityNEQ))
+	}
+	if len(i.BulkMaterialsTotalOrderQuantityIn) > 0 {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityIn(i.BulkMaterialsTotalOrderQuantityIn...))
+	}
+	if len(i.BulkMaterialsTotalOrderQuantityNotIn) > 0 {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityNotIn(i.BulkMaterialsTotalOrderQuantityNotIn...))
+	}
+	if i.BulkMaterialsTotalOrderQuantityGT != nil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityGT(*i.BulkMaterialsTotalOrderQuantityGT))
+	}
+	if i.BulkMaterialsTotalOrderQuantityGTE != nil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityGTE(*i.BulkMaterialsTotalOrderQuantityGTE))
+	}
+	if i.BulkMaterialsTotalOrderQuantityLT != nil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityLT(*i.BulkMaterialsTotalOrderQuantityLT))
+	}
+	if i.BulkMaterialsTotalOrderQuantityLTE != nil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityLTE(*i.BulkMaterialsTotalOrderQuantityLTE))
+	}
+	if i.BulkMaterialsTotalOrderQuantityIsNil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityIsNil())
+	}
+	if i.BulkMaterialsTotalOrderQuantityNotNil {
+		predicates = append(predicates, project.BulkMaterialsTotalOrderQuantityNotNil())
+	}
+	if i.BulkMaterialsCompletedQuantity != nil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityEQ(*i.BulkMaterialsCompletedQuantity))
+	}
+	if i.BulkMaterialsCompletedQuantityNEQ != nil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityNEQ(*i.BulkMaterialsCompletedQuantityNEQ))
+	}
+	if len(i.BulkMaterialsCompletedQuantityIn) > 0 {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityIn(i.BulkMaterialsCompletedQuantityIn...))
+	}
+	if len(i.BulkMaterialsCompletedQuantityNotIn) > 0 {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityNotIn(i.BulkMaterialsCompletedQuantityNotIn...))
+	}
+	if i.BulkMaterialsCompletedQuantityGT != nil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityGT(*i.BulkMaterialsCompletedQuantityGT))
+	}
+	if i.BulkMaterialsCompletedQuantityGTE != nil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityGTE(*i.BulkMaterialsCompletedQuantityGTE))
+	}
+	if i.BulkMaterialsCompletedQuantityLT != nil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityLT(*i.BulkMaterialsCompletedQuantityLT))
+	}
+	if i.BulkMaterialsCompletedQuantityLTE != nil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityLTE(*i.BulkMaterialsCompletedQuantityLTE))
+	}
+	if i.BulkMaterialsCompletedQuantityIsNil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityIsNil())
+	}
+	if i.BulkMaterialsCompletedQuantityNotNil {
+		predicates = append(predicates, project.BulkMaterialsCompletedQuantityNotNil())
+	}
+	if i.BulkMaterialsUncompletedQuantity != nil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityEQ(*i.BulkMaterialsUncompletedQuantity))
+	}
+	if i.BulkMaterialsUncompletedQuantityNEQ != nil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityNEQ(*i.BulkMaterialsUncompletedQuantityNEQ))
+	}
+	if len(i.BulkMaterialsUncompletedQuantityIn) > 0 {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityIn(i.BulkMaterialsUncompletedQuantityIn...))
+	}
+	if len(i.BulkMaterialsUncompletedQuantityNotIn) > 0 {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityNotIn(i.BulkMaterialsUncompletedQuantityNotIn...))
+	}
+	if i.BulkMaterialsUncompletedQuantityGT != nil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityGT(*i.BulkMaterialsUncompletedQuantityGT))
+	}
+	if i.BulkMaterialsUncompletedQuantityGTE != nil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityGTE(*i.BulkMaterialsUncompletedQuantityGTE))
+	}
+	if i.BulkMaterialsUncompletedQuantityLT != nil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityLT(*i.BulkMaterialsUncompletedQuantityLT))
+	}
+	if i.BulkMaterialsUncompletedQuantityLTE != nil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityLTE(*i.BulkMaterialsUncompletedQuantityLTE))
+	}
+	if i.BulkMaterialsUncompletedQuantityIsNil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityIsNil())
+	}
+	if i.BulkMaterialsUncompletedQuantityNotNil {
+		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityNotNil())
 	}
 
 	if i.HasVos != nil {

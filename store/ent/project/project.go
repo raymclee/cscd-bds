@@ -143,6 +143,20 @@ const (
 	FieldProcessingWeight = "processing_weight"
 	// FieldItemStockWeight holds the string denoting the item_stock_weight field in the database.
 	FieldItemStockWeight = "item_stock_weight"
+	// FieldPalletsInStock holds the string denoting the pallets_in_stock field in the database.
+	FieldPalletsInStock = "pallets_in_stock"
+	// FieldPartsInStock holds the string denoting the parts_in_stock field in the database.
+	FieldPartsInStock = "parts_in_stock"
+	// FieldQualityScore holds the string denoting the quality_score field in the database.
+	FieldQualityScore = "quality_score"
+	// FieldQualityRanking holds the string denoting the quality_ranking field in the database.
+	FieldQualityRanking = "quality_ranking"
+	// FieldBulkMaterialsTotalOrderQuantity holds the string denoting the bulk_materials_total_order_quantity field in the database.
+	FieldBulkMaterialsTotalOrderQuantity = "bulk_materials_total_order_quantity"
+	// FieldBulkMaterialsCompletedQuantity holds the string denoting the bulk_materials_completed_quantity field in the database.
+	FieldBulkMaterialsCompletedQuantity = "bulk_materials_completed_quantity"
+	// FieldBulkMaterialsUncompletedQuantity holds the string denoting the bulk_materials_uncompleted_quantity field in the database.
+	FieldBulkMaterialsUncompletedQuantity = "bulk_materials_uncompleted_quantity"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
@@ -232,6 +246,13 @@ var Columns = []string{
 	FieldDesignRatedWeight,
 	FieldProcessingWeight,
 	FieldItemStockWeight,
+	FieldPalletsInStock,
+	FieldPartsInStock,
+	FieldQualityScore,
+	FieldQualityRanking,
+	FieldBulkMaterialsTotalOrderQuantity,
+	FieldBulkMaterialsCompletedQuantity,
+	FieldBulkMaterialsUncompletedQuantity,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -583,6 +604,41 @@ func ByProcessingWeight(opts ...sql.OrderTermOption) OrderOption {
 // ByItemStockWeight orders the results by the item_stock_weight field.
 func ByItemStockWeight(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldItemStockWeight, opts...).ToFunc()
+}
+
+// ByPalletsInStock orders the results by the pallets_in_stock field.
+func ByPalletsInStock(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPalletsInStock, opts...).ToFunc()
+}
+
+// ByPartsInStock orders the results by the parts_in_stock field.
+func ByPartsInStock(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPartsInStock, opts...).ToFunc()
+}
+
+// ByQualityScore orders the results by the quality_score field.
+func ByQualityScore(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldQualityScore, opts...).ToFunc()
+}
+
+// ByQualityRanking orders the results by the quality_ranking field.
+func ByQualityRanking(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldQualityRanking, opts...).ToFunc()
+}
+
+// ByBulkMaterialsTotalOrderQuantity orders the results by the bulk_materials_total_order_quantity field.
+func ByBulkMaterialsTotalOrderQuantity(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBulkMaterialsTotalOrderQuantity, opts...).ToFunc()
+}
+
+// ByBulkMaterialsCompletedQuantity orders the results by the bulk_materials_completed_quantity field.
+func ByBulkMaterialsCompletedQuantity(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBulkMaterialsCompletedQuantity, opts...).ToFunc()
+}
+
+// ByBulkMaterialsUncompletedQuantity orders the results by the bulk_materials_uncompleted_quantity field.
+func ByBulkMaterialsUncompletedQuantity(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBulkMaterialsUncompletedQuantity, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

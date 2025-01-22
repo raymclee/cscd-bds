@@ -1735,6 +1735,12 @@ type Project implements Node {
   aluminumPlateBudgetPercentage: Float
   """工程規模"""
   areas: String
+  """散件已完成數量"""
+  bulkMaterialsCompletedQuantity: Float
+  """散件總訂貨數量"""
+  bulkMaterialsTotalOrderQuantity: Float
+  """散件未完成數量"""
+  bulkMaterialsUncompletedQuantity: Float
   """成交额"""
   cje: Float
   code: String!
@@ -1801,6 +1807,10 @@ type Project implements Node {
   ownerApproveAmount: Float
   """业主批复数量"""
   ownerApproveCount: Int
+  """卡板庫存數量"""
+  palletsInStock: Float
+  """散件庫存數量"""
+  partsInStock: Float
   """生产管理面积"""
   pmArea: Float
   """生产管理當月實際生產"""
@@ -1833,6 +1843,10 @@ type Project implements Node {
     """Filtering options for ProjectStaffs returned from the connection."""
     where: ProjectStaffWhereInput
   ): ProjectStaffConnection!
+  """質量排名"""
+  qualityRanking: Float
+  """質量得分"""
+  qualityScore: Float
   """開工日期"""
   startDate: Time
   """合約总额"""
@@ -2277,6 +2291,39 @@ input ProjectWhereInput {
   areasNEQ: String
   areasNotIn: [String!]
   areasNotNil: Boolean
+  """bulk_materials_completed_quantity field predicates"""
+  bulkMaterialsCompletedQuantity: Float
+  bulkMaterialsCompletedQuantityGT: Float
+  bulkMaterialsCompletedQuantityGTE: Float
+  bulkMaterialsCompletedQuantityIn: [Float!]
+  bulkMaterialsCompletedQuantityIsNil: Boolean
+  bulkMaterialsCompletedQuantityLT: Float
+  bulkMaterialsCompletedQuantityLTE: Float
+  bulkMaterialsCompletedQuantityNEQ: Float
+  bulkMaterialsCompletedQuantityNotIn: [Float!]
+  bulkMaterialsCompletedQuantityNotNil: Boolean
+  """bulk_materials_total_order_quantity field predicates"""
+  bulkMaterialsTotalOrderQuantity: Float
+  bulkMaterialsTotalOrderQuantityGT: Float
+  bulkMaterialsTotalOrderQuantityGTE: Float
+  bulkMaterialsTotalOrderQuantityIn: [Float!]
+  bulkMaterialsTotalOrderQuantityIsNil: Boolean
+  bulkMaterialsTotalOrderQuantityLT: Float
+  bulkMaterialsTotalOrderQuantityLTE: Float
+  bulkMaterialsTotalOrderQuantityNEQ: Float
+  bulkMaterialsTotalOrderQuantityNotIn: [Float!]
+  bulkMaterialsTotalOrderQuantityNotNil: Boolean
+  """bulk_materials_uncompleted_quantity field predicates"""
+  bulkMaterialsUncompletedQuantity: Float
+  bulkMaterialsUncompletedQuantityGT: Float
+  bulkMaterialsUncompletedQuantityGTE: Float
+  bulkMaterialsUncompletedQuantityIn: [Float!]
+  bulkMaterialsUncompletedQuantityIsNil: Boolean
+  bulkMaterialsUncompletedQuantityLT: Float
+  bulkMaterialsUncompletedQuantityLTE: Float
+  bulkMaterialsUncompletedQuantityNEQ: Float
+  bulkMaterialsUncompletedQuantityNotIn: [Float!]
+  bulkMaterialsUncompletedQuantityNotNil: Boolean
   """cje field predicates"""
   cje: Float
   cjeGT: Float
@@ -2701,6 +2748,28 @@ input ProjectWhereInput {
   ownerNEQ: String
   ownerNotIn: [String!]
   ownerNotNil: Boolean
+  """pallets_in_stock field predicates"""
+  palletsInStock: Float
+  palletsInStockGT: Float
+  palletsInStockGTE: Float
+  palletsInStockIn: [Float!]
+  palletsInStockIsNil: Boolean
+  palletsInStockLT: Float
+  palletsInStockLTE: Float
+  palletsInStockNEQ: Float
+  palletsInStockNotIn: [Float!]
+  palletsInStockNotNil: Boolean
+  """parts_in_stock field predicates"""
+  partsInStock: Float
+  partsInStockGT: Float
+  partsInStockGTE: Float
+  partsInStockIn: [Float!]
+  partsInStockIsNil: Boolean
+  partsInStockLT: Float
+  partsInStockLTE: Float
+  partsInStockNEQ: Float
+  partsInStockNotIn: [Float!]
+  partsInStockNotNil: Boolean
   """pm_area field predicates"""
   pmArea: Float
   pmAreaGT: Float
@@ -2789,6 +2858,28 @@ input ProjectWhereInput {
   processingWeightNEQ: Float
   processingWeightNotIn: [Float!]
   processingWeightNotNil: Boolean
+  """quality_ranking field predicates"""
+  qualityRanking: Float
+  qualityRankingGT: Float
+  qualityRankingGTE: Float
+  qualityRankingIn: [Float!]
+  qualityRankingIsNil: Boolean
+  qualityRankingLT: Float
+  qualityRankingLTE: Float
+  qualityRankingNEQ: Float
+  qualityRankingNotIn: [Float!]
+  qualityRankingNotNil: Boolean
+  """quality_score field predicates"""
+  qualityScore: Float
+  qualityScoreGT: Float
+  qualityScoreGTE: Float
+  qualityScoreIn: [Float!]
+  qualityScoreIsNil: Boolean
+  qualityScoreLT: Float
+  qualityScoreLTE: Float
+  qualityScoreNEQ: Float
+  qualityScoreNotIn: [Float!]
+  qualityScoreNotNil: Boolean
   """start_date field predicates"""
   startDate: Time
   startDateGT: Time
@@ -4598,6 +4689,12 @@ input UpdateProjectInput {
   aluminumPlateBudgetPercentage: Float
   """工程規模"""
   areas: String
+  """散件已完成數量"""
+  bulkMaterialsCompletedQuantity: Float
+  """散件總訂貨數量"""
+  bulkMaterialsTotalOrderQuantity: Float
+  """散件未完成數量"""
+  bulkMaterialsUncompletedQuantity: Float
   """成交额"""
   cje: Float
   clearAccumulatedNonStatutoryDeductions: Boolean
@@ -4607,6 +4704,9 @@ input UpdateProjectInput {
   clearAluminumBudgetPercentage: Boolean
   clearAluminumPlateBudgetPercentage: Boolean
   clearAreas: Boolean
+  clearBulkMaterialsCompletedQuantity: Boolean
+  clearBulkMaterialsTotalOrderQuantity: Boolean
+  clearBulkMaterialsUncompletedQuantity: Boolean
   clearCje: Boolean
   clearConType: Boolean
   clearConsultant: Boolean
@@ -4638,6 +4738,8 @@ input UpdateProjectInput {
   clearOwnerApplyCount: Boolean
   clearOwnerApproveAmount: Boolean
   clearOwnerApproveCount: Boolean
+  clearPalletsInStock: Boolean
+  clearPartsInStock: Boolean
   clearPmArea: Boolean
   clearPmMonthActual: Boolean
   clearPmMonthTarget: Boolean
@@ -4647,6 +4749,8 @@ input UpdateProjectInput {
   clearPmYesterday: Boolean
   clearProcessingWeight: Boolean
   clearProjectStaffs: Boolean
+  clearQualityRanking: Boolean
+  clearQualityScore: Boolean
   clearStartDate: Boolean
   clearTotalContractAmount: Boolean
   clearUnitComponentInstallation: Boolean
@@ -4724,6 +4828,10 @@ input UpdateProjectInput {
   ownerApproveAmount: Float
   """业主批复数量"""
   ownerApproveCount: Int
+  """卡板庫存數量"""
+  palletsInStock: Float
+  """散件庫存數量"""
+  partsInStock: Float
   """生产管理面积"""
   pmArea: Float
   """生产管理當月實際生產"""
@@ -4740,6 +4848,10 @@ input UpdateProjectInput {
   pmYesterday: Float
   """加工图成型重量"""
   processingWeight: Float
+  """質量排名"""
+  qualityRanking: Float
+  """質量得分"""
+  qualityScore: Float
   removeProjectStaffIDs: [ID!]
   removeVoIDs: [ID!]
   """開工日期"""

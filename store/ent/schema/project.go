@@ -422,6 +422,41 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("項目物料庫存重量"),
+
+		field.Float("pallets_in_stock").
+			Optional().
+			Nillable().
+			Comment("卡板庫存數量"),
+
+		field.Float("parts_in_stock").
+			Optional().
+			Nillable().
+			Comment("散件庫存數量"),
+
+		field.Float("quality_score").
+			Optional().
+			Nillable().
+			Comment("質量得分"),
+
+		field.Float("quality_ranking").
+			Optional().
+			Nillable().
+			Comment("質量排名"),
+
+		field.Float("bulk_materials_total_order_quantity").
+			Optional().
+			Nillable().
+			Comment("散件總訂貨數量"),
+
+		field.Float("bulk_materials_completed_quantity").
+			Optional().
+			Nillable().
+			Comment("散件已完成數量"),
+
+		field.Float("bulk_materials_uncompleted_quantity").
+			Optional().
+			Nillable().
+			Comment("散件未完成數量"),
 	}
 }
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ba09d35f591b5736cb97872f57808948>>
+ * @generated SignedSource<<dede072897b990ccdfec57baddd219b9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,6 +19,9 @@ export type UpdateProjectInput = {
   aluminumBudgetPercentage?: number | null | undefined;
   aluminumPlateBudgetPercentage?: number | null | undefined;
   areas?: string | null | undefined;
+  bulkMaterialsCompletedQuantity?: number | null | undefined;
+  bulkMaterialsTotalOrderQuantity?: number | null | undefined;
+  bulkMaterialsUncompletedQuantity?: number | null | undefined;
   cje?: number | null | undefined;
   clearAccumulatedNonStatutoryDeductions?: boolean | null | undefined;
   clearAccumulatedNonStatutoryDeductionsPeriod?: boolean | null | undefined;
@@ -27,6 +30,9 @@ export type UpdateProjectInput = {
   clearAluminumBudgetPercentage?: boolean | null | undefined;
   clearAluminumPlateBudgetPercentage?: boolean | null | undefined;
   clearAreas?: boolean | null | undefined;
+  clearBulkMaterialsCompletedQuantity?: boolean | null | undefined;
+  clearBulkMaterialsTotalOrderQuantity?: boolean | null | undefined;
+  clearBulkMaterialsUncompletedQuantity?: boolean | null | undefined;
   clearCje?: boolean | null | undefined;
   clearConType?: boolean | null | undefined;
   clearConsultant?: boolean | null | undefined;
@@ -58,6 +64,8 @@ export type UpdateProjectInput = {
   clearOwnerApplyCount?: boolean | null | undefined;
   clearOwnerApproveAmount?: boolean | null | undefined;
   clearOwnerApproveCount?: boolean | null | undefined;
+  clearPalletsInStock?: boolean | null | undefined;
+  clearPartsInStock?: boolean | null | undefined;
   clearPmArea?: boolean | null | undefined;
   clearPmMonthActual?: boolean | null | undefined;
   clearPmMonthTarget?: boolean | null | undefined;
@@ -67,6 +75,8 @@ export type UpdateProjectInput = {
   clearPmYesterday?: boolean | null | undefined;
   clearProcessingWeight?: boolean | null | undefined;
   clearProjectStaffs?: boolean | null | undefined;
+  clearQualityRanking?: boolean | null | undefined;
+  clearQualityScore?: boolean | null | undefined;
   clearStartDate?: boolean | null | undefined;
   clearTotalContractAmount?: boolean | null | undefined;
   clearUnitComponentInstallation?: boolean | null | undefined;
@@ -114,6 +124,8 @@ export type UpdateProjectInput = {
   ownerApplyCount?: number | null | undefined;
   ownerApproveAmount?: number | null | undefined;
   ownerApproveCount?: number | null | undefined;
+  palletsInStock?: number | null | undefined;
+  partsInStock?: number | null | undefined;
   pmArea?: number | null | undefined;
   pmMonthActual?: number | null | undefined;
   pmMonthTarget?: number | null | undefined;
@@ -122,6 +134,8 @@ export type UpdateProjectInput = {
   pmYearTarget?: number | null | undefined;
   pmYesterday?: number | null | undefined;
   processingWeight?: number | null | undefined;
+  qualityRanking?: number | null | undefined;
+  qualityScore?: number | null | undefined;
   removeProjectStaffIDs?: ReadonlyArray<string> | null | undefined;
   removeVoIDs?: ReadonlyArray<string> | null | undefined;
   startDate?: any | null | undefined;

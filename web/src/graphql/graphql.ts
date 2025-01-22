@@ -1835,6 +1835,12 @@ export type Project = Node & {
   aluminumPlateBudgetPercentage?: Maybe<Scalars['Float']['output']>;
   /** 工程規模 */
   areas?: Maybe<Scalars['String']['output']>;
+  /** 散件已完成數量 */
+  bulkMaterialsCompletedQuantity?: Maybe<Scalars['Float']['output']>;
+  /** 散件總訂貨數量 */
+  bulkMaterialsTotalOrderQuantity?: Maybe<Scalars['Float']['output']>;
+  /** 散件未完成數量 */
+  bulkMaterialsUncompletedQuantity?: Maybe<Scalars['Float']['output']>;
   /** 成交额 */
   cje?: Maybe<Scalars['Float']['output']>;
   code: Scalars['String']['output'];
@@ -1901,6 +1907,10 @@ export type Project = Node & {
   ownerApproveAmount?: Maybe<Scalars['Float']['output']>;
   /** 业主批复数量 */
   ownerApproveCount?: Maybe<Scalars['Int']['output']>;
+  /** 卡板庫存數量 */
+  palletsInStock?: Maybe<Scalars['Float']['output']>;
+  /** 散件庫存數量 */
+  partsInStock?: Maybe<Scalars['Float']['output']>;
   /** 生产管理面积 */
   pmArea?: Maybe<Scalars['Float']['output']>;
   /** 生产管理當月實際生產 */
@@ -1918,6 +1928,10 @@ export type Project = Node & {
   /** 加工图成型重量 */
   processingWeight?: Maybe<Scalars['Float']['output']>;
   projectStaffs: ProjectStaffConnection;
+  /** 質量排名 */
+  qualityRanking?: Maybe<Scalars['Float']['output']>;
+  /** 質量得分 */
+  qualityScore?: Maybe<Scalars['Float']['output']>;
   /** 開工日期 */
   startDate?: Maybe<Scalars['Time']['output']>;
   /** 合約总额 */
@@ -2378,6 +2392,39 @@ export type ProjectWhereInput = {
   areasNEQ?: InputMaybe<Scalars['String']['input']>;
   areasNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   areasNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** bulk_materials_completed_quantity field predicates */
+  bulkMaterialsCompletedQuantity?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsCompletedQuantityGT?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsCompletedQuantityGTE?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsCompletedQuantityIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  bulkMaterialsCompletedQuantityIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  bulkMaterialsCompletedQuantityLT?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsCompletedQuantityLTE?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsCompletedQuantityNEQ?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsCompletedQuantityNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  bulkMaterialsCompletedQuantityNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** bulk_materials_total_order_quantity field predicates */
+  bulkMaterialsTotalOrderQuantity?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsTotalOrderQuantityGT?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsTotalOrderQuantityGTE?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsTotalOrderQuantityIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  bulkMaterialsTotalOrderQuantityIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  bulkMaterialsTotalOrderQuantityLT?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsTotalOrderQuantityLTE?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsTotalOrderQuantityNEQ?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsTotalOrderQuantityNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  bulkMaterialsTotalOrderQuantityNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** bulk_materials_uncompleted_quantity field predicates */
+  bulkMaterialsUncompletedQuantity?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsUncompletedQuantityGT?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsUncompletedQuantityGTE?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsUncompletedQuantityIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  bulkMaterialsUncompletedQuantityIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  bulkMaterialsUncompletedQuantityLT?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsUncompletedQuantityLTE?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsUncompletedQuantityNEQ?: InputMaybe<Scalars['Float']['input']>;
+  bulkMaterialsUncompletedQuantityNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  bulkMaterialsUncompletedQuantityNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** cje field predicates */
   cje?: InputMaybe<Scalars['Float']['input']>;
   cjeGT?: InputMaybe<Scalars['Float']['input']>;
@@ -2802,6 +2849,28 @@ export type ProjectWhereInput = {
   ownerNEQ?: InputMaybe<Scalars['String']['input']>;
   ownerNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   ownerNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** pallets_in_stock field predicates */
+  palletsInStock?: InputMaybe<Scalars['Float']['input']>;
+  palletsInStockGT?: InputMaybe<Scalars['Float']['input']>;
+  palletsInStockGTE?: InputMaybe<Scalars['Float']['input']>;
+  palletsInStockIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  palletsInStockIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  palletsInStockLT?: InputMaybe<Scalars['Float']['input']>;
+  palletsInStockLTE?: InputMaybe<Scalars['Float']['input']>;
+  palletsInStockNEQ?: InputMaybe<Scalars['Float']['input']>;
+  palletsInStockNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  palletsInStockNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** parts_in_stock field predicates */
+  partsInStock?: InputMaybe<Scalars['Float']['input']>;
+  partsInStockGT?: InputMaybe<Scalars['Float']['input']>;
+  partsInStockGTE?: InputMaybe<Scalars['Float']['input']>;
+  partsInStockIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  partsInStockIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  partsInStockLT?: InputMaybe<Scalars['Float']['input']>;
+  partsInStockLTE?: InputMaybe<Scalars['Float']['input']>;
+  partsInStockNEQ?: InputMaybe<Scalars['Float']['input']>;
+  partsInStockNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  partsInStockNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** pm_area field predicates */
   pmArea?: InputMaybe<Scalars['Float']['input']>;
   pmAreaGT?: InputMaybe<Scalars['Float']['input']>;
@@ -2890,6 +2959,28 @@ export type ProjectWhereInput = {
   processingWeightNEQ?: InputMaybe<Scalars['Float']['input']>;
   processingWeightNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   processingWeightNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** quality_ranking field predicates */
+  qualityRanking?: InputMaybe<Scalars['Float']['input']>;
+  qualityRankingGT?: InputMaybe<Scalars['Float']['input']>;
+  qualityRankingGTE?: InputMaybe<Scalars['Float']['input']>;
+  qualityRankingIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  qualityRankingIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  qualityRankingLT?: InputMaybe<Scalars['Float']['input']>;
+  qualityRankingLTE?: InputMaybe<Scalars['Float']['input']>;
+  qualityRankingNEQ?: InputMaybe<Scalars['Float']['input']>;
+  qualityRankingNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  qualityRankingNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** quality_score field predicates */
+  qualityScore?: InputMaybe<Scalars['Float']['input']>;
+  qualityScoreGT?: InputMaybe<Scalars['Float']['input']>;
+  qualityScoreGTE?: InputMaybe<Scalars['Float']['input']>;
+  qualityScoreIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  qualityScoreIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  qualityScoreLT?: InputMaybe<Scalars['Float']['input']>;
+  qualityScoreLTE?: InputMaybe<Scalars['Float']['input']>;
+  qualityScoreNEQ?: InputMaybe<Scalars['Float']['input']>;
+  qualityScoreNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+  qualityScoreNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** start_date field predicates */
   startDate?: InputMaybe<Scalars['Time']['input']>;
   startDateGT?: InputMaybe<Scalars['Time']['input']>;
@@ -4635,6 +4726,12 @@ export type UpdateProjectInput = {
   aluminumPlateBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
   /** 工程規模 */
   areas?: InputMaybe<Scalars['String']['input']>;
+  /** 散件已完成數量 */
+  bulkMaterialsCompletedQuantity?: InputMaybe<Scalars['Float']['input']>;
+  /** 散件總訂貨數量 */
+  bulkMaterialsTotalOrderQuantity?: InputMaybe<Scalars['Float']['input']>;
+  /** 散件未完成數量 */
+  bulkMaterialsUncompletedQuantity?: InputMaybe<Scalars['Float']['input']>;
   /** 成交额 */
   cje?: InputMaybe<Scalars['Float']['input']>;
   clearAccumulatedNonStatutoryDeductions?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4644,6 +4741,9 @@ export type UpdateProjectInput = {
   clearAluminumBudgetPercentage?: InputMaybe<Scalars['Boolean']['input']>;
   clearAluminumPlateBudgetPercentage?: InputMaybe<Scalars['Boolean']['input']>;
   clearAreas?: InputMaybe<Scalars['Boolean']['input']>;
+  clearBulkMaterialsCompletedQuantity?: InputMaybe<Scalars['Boolean']['input']>;
+  clearBulkMaterialsTotalOrderQuantity?: InputMaybe<Scalars['Boolean']['input']>;
+  clearBulkMaterialsUncompletedQuantity?: InputMaybe<Scalars['Boolean']['input']>;
   clearCje?: InputMaybe<Scalars['Boolean']['input']>;
   clearConType?: InputMaybe<Scalars['Boolean']['input']>;
   clearConsultant?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4675,6 +4775,8 @@ export type UpdateProjectInput = {
   clearOwnerApplyCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerApproveAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearOwnerApproveCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearPalletsInStock?: InputMaybe<Scalars['Boolean']['input']>;
+  clearPartsInStock?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmArea?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmMonthActual?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmMonthTarget?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4684,6 +4786,8 @@ export type UpdateProjectInput = {
   clearPmYesterday?: InputMaybe<Scalars['Boolean']['input']>;
   clearProcessingWeight?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectStaffs?: InputMaybe<Scalars['Boolean']['input']>;
+  clearQualityRanking?: InputMaybe<Scalars['Boolean']['input']>;
+  clearQualityScore?: InputMaybe<Scalars['Boolean']['input']>;
   clearStartDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearTotalContractAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearUnitComponentInstallation?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4761,6 +4865,10 @@ export type UpdateProjectInput = {
   ownerApproveAmount?: InputMaybe<Scalars['Float']['input']>;
   /** 业主批复数量 */
   ownerApproveCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 卡板庫存數量 */
+  palletsInStock?: InputMaybe<Scalars['Float']['input']>;
+  /** 散件庫存數量 */
+  partsInStock?: InputMaybe<Scalars['Float']['input']>;
   /** 生产管理面积 */
   pmArea?: InputMaybe<Scalars['Float']['input']>;
   /** 生产管理當月實際生產 */
@@ -4777,6 +4885,10 @@ export type UpdateProjectInput = {
   pmYesterday?: InputMaybe<Scalars['Float']['input']>;
   /** 加工图成型重量 */
   processingWeight?: InputMaybe<Scalars['Float']['input']>;
+  /** 質量排名 */
+  qualityRanking?: InputMaybe<Scalars['Float']['input']>;
+  /** 質量得分 */
+  qualityScore?: InputMaybe<Scalars['Float']['input']>;
   removeProjectStaffIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeVoIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** 開工日期 */

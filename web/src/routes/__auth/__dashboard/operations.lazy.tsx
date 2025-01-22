@@ -56,12 +56,6 @@ import costIncome from "~/assets/svg/cost_income.png";
 
 import materialsAlertBg from "~/assets/svg/materials_alert_bg.png";
 
-import stockLeft from "~/assets/svg/stock_left.png";
-import stockRight from "~/assets/svg/stock_right.png";
-
-import tailoringLeft from "~/assets/svg/tailoring_left.png";
-import tailoringRight from "~/assets/svg/tailoring_right.png";
-
 import materialsLostIcon from "~/assets/svg/materials_lost_icon.png";
 
 import drawingBottom from "~/assets/svg/drawing_bottom.png";
@@ -79,9 +73,10 @@ import componentTop from "~/assets/svg/component_top.png";
 
 import quality from "~/assets/svg/quality.png";
 import safty from "~/assets/svg/safty.png";
+import markCircle from "~/assets/svg/mark_circle.png";
 
 import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
-import { CircleX, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import {
   Popover,
@@ -96,10 +91,20 @@ import { Toaster } from "~/components/ui/sonner";
 import { toast } from "sonner";
 import { useOnClickOutside } from "usehooks-ts";
 import { Switcher } from "~/components/switcher";
+import { motion } from "motion/react";
+import { GlowEffect } from "~/components/ui/glow-effect";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
 });
+
+// 轉成千分位
+function formatAmountWithCommas(amount: number) {
+  return amount.toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+}
 
 function RouteComponent() {
   const data = usePreloadedQuery<operationsPageQuery>(
@@ -168,6 +173,13 @@ function RouteComponent() {
               designRatedWeight
               processingWeight
               itemStockWeight
+              palletsInStock
+              partsInStock
+              qualityScore
+              qualityRanking
+              bulkMaterialsTotalOrderQuantity
+              bulkMaterialsCompletedQuantity
+              bulkMaterialsUncompletedQuantity
               projectStaffs(
                 first: 3
                 orderBy: { field: CREATED_AT, direction: DESC }
@@ -231,6 +243,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           : defaultProjectIdx,
       )?.node;
 
+  const totalRanked = data.projects.edges?.filter(
+    (e) => !!e?.node?.qualityScore,
+  ).length;
+
   useEffect(() => {
     const handleLeftKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -266,8 +282,6 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
       document.removeEventListener("keydown", handleRightKeyDown);
     };
   }, [nextProject]);
-
-  const currentFormatter = Intl.NumberFormat("en-US");
 
   const ownerApplyCount = pj?.ownerApplyCount ?? 0;
   const ownerApproveCount = pj?.ownerApproveCount ?? 0;
@@ -318,6 +332,16 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const designRatedWeight = pj?.designRatedWeight || 0;
   const processingWeight = pj?.processingWeight || 0;
   const itemStockWeight = pj?.itemStockWeight || 0;
+  const palletsInStock = pj?.palletsInStock || 0;
+  const partsInStock = pj?.partsInStock || 0;
+  const qualityScore = pj?.qualityScore || 0;
+  const qualityRanking = pj?.qualityRanking || 0;
+  const bulkMaterialsTotalOrderQuantity =
+    pj?.bulkMaterialsTotalOrderQuantity || 0;
+  const bulkMaterialsCompletedQuantity =
+    pj?.bulkMaterialsCompletedQuantity || 0;
+  const bulkMaterialsUncompletedQuantity =
+    pj?.bulkMaterialsUncompletedQuantity || 0;
 
   return (
     <>
@@ -349,7 +373,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                           业主VO
                         </div>
                         <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {currentFormatter.format(
+                          {formatAmountWithCommas(
                             formatProjectAmount(ownerApplyAmount),
                           )}
                           万
@@ -360,7 +384,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                           总包VO
                         </div>
                         <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {currentFormatter.format(
+                          {formatAmountWithCommas(
                             formatProjectAmount(contractorApplyAmount),
                           )}
                           万
@@ -383,7 +407,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         </div>
                         <div className="col-span-2">有效合约总额(A)</div>
                         <div className="text-brand-project">
-                          {currentFormatter.format(
+                          {formatAmountWithCommas(
                             formatProjectAmount(effectiveContractAmount),
                           )}
                           万
@@ -441,8 +465,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="mt-1 flex items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
                     <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                      {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                      {`${currentFormatter.format(
+                      {/* {formatAmountWithCommas(op?.xmsjf ?? 0)} */}
+                      {`${formatAmountWithCommas(
                         formatProjectAmount(vaApproveAmount),
                       )}万`}
                     </div>
@@ -475,8 +499,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                           业主VO
                         </div>
                         <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                          {currentFormatter.format(
+                          {/* {formatAmountWithCommas(op?.xmsjf ?? 0)} */}
+                          {formatAmountWithCommas(
                             formatProjectAmount(ownerApproveAmount),
                           )}
                           万
@@ -487,7 +511,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                           总包VO
                         </div>
                         <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                          {currentFormatter.format(
+                          {formatAmountWithCommas(
                             formatProjectAmount(contractorApproveAmount),
                           )}
                           万
@@ -510,7 +534,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         </div>
                         <div className="col-span-2">有效合约总额(A)</div>
                         <div className="text-brand-project">
-                          {currentFormatter.format(
+                          {formatAmountWithCommas(
                             formatProjectAmount(effectiveContractAmount),
                           )}
                           万
@@ -568,8 +592,8 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="mt-1 flex w-full items-center justify-between gap-4 px-2">
                     <div className="text-xs text-brand-project-3">分判VA</div>
                     <div className="line-clamp-1 flex-1 text-right text-xs font-bold text-brand-project-2">
-                      {/* {currentFormatter.format(op?.xmsjf ?? 0)} */}
-                      {currentFormatter.format(
+                      {/* {formatAmountWithCommas(op?.xmsjf ?? 0)} */}
+                      {formatAmountWithCommas(
                         formatProjectAmount(vaApproveAmount),
                       )}
                       万
@@ -666,7 +690,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       as="span"
                     >
-                      {currentFormatter.format(
+                      {formatAmountWithCommas(
                         formatProjectAmount(
                           accumulatedNonStatutoryDeductionsPeriod,
                         ),
@@ -686,7 +710,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       as="span"
                     >
-                      {currentFormatter.format(
+                      {formatAmountWithCommas(
                         formatProjectAmount(accumulatedNonStatutoryDeductions),
                       )}
                     </TextScramble>
@@ -734,7 +758,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <div className="absolute right-14 top-1/2 -translate-y-1/2">
                   <div className="flex items-baseline text-lg font-bold text-brand-project">
                     <TextScramble characterSet="0123456789" key={pj?.code}>
-                      {currentFormatter.format(
+                      {formatAmountWithCommas(
                         formatProjectAmount(contractBudgetRevenue),
                       )}
                     </TextScramble>
@@ -791,7 +815,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(aluminumPlateBudgetPercentage * 100) / 100}`}
+                        {`${formatAmountWithCommas(aluminumPlateBudgetPercentage)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xxs">%</span>
                     </div>
@@ -815,7 +839,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(aluminumBudgetPercentage * 100) / 100}`}
+                        {`${formatAmountWithCommas(aluminumBudgetPercentage)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xxs">%</span>
                     </div>
@@ -839,7 +863,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(glassBudgetPercentage * 100) / 100}`}
+                        {`${formatAmountWithCommas(glassBudgetPercentage)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xxs">%</span>
                     </div>
@@ -863,7 +887,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         key={pj?.code}
                         as="span"
                       >
-                        {`${Math.round(ironBudgetPercentage * 100) / 100}`}
+                        {`${formatAmountWithCommas(ironBudgetPercentage)}`}
                       </TextScramble>
                       <span className="ml-0.5 text-xxs">%</span>
                     </div>
@@ -883,31 +907,50 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             <SubTitle>库存情况</SubTitle>
             <div className="flex gap-6 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
               <div className="relative h-[4.8rem] flex-1">
-                <img src={stockLeft} className="absolute inset-0 my-auto" />
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
-                  <TextScramble
-                    as="span"
-                    characterSet="0123456789"
-                    key={pj?.code}
-                  >
-                    {currentFormatter.format(unitInventoryTotal)}
-                  </TextScramble>
-                  <span className="ml-1 text-xs">件</span>
+                <img src={consumptionBg} className="absolute inset-0 my-auto" />
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0 text-xs">
+                  <div className="basis-1/3 font-bold text-[#a1cae3]">
+                    单元件
+                  </div>
+                  <div className="basis-2/3 text-right font-bold text-yellow-500">
+                    <TextScramble
+                      as="span"
+                      characterSet="0123456789"
+                      key={pj?.code}
+                    >
+                      {formatAmountWithCommas(unitInventoryTotal)}
+                    </TextScramble>
+                    <span className="ml-1 text-xs">件</span>
+                  </div>
                 </div>
               </div>
               <div className="relative h-[4.8rem] flex-1">
-                <img src={stockRight} className="absolute inset-0 my-auto" />
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-yellow-500">
-                  {/* <TextScramble
-                    as="span"
-                    characterSet="0123456789"
-                    key={pj?.code}
-                  >
-                    683
-                  </TextScramble> */}
-                  {/* <span className="ml-1 text-xs">
-                    m<sup>2</sup>
-                  </span> */}
+                <img
+                  src={consumptionBg2}
+                  className="absolute inset-0 my-auto"
+                />
+                <div className="absolute left-1/4 right-0 top-1/2 grid w-36 -translate-y-1/2 grid-cols-2 items-center gap-y-0.5 text-xs">
+                  <div className="basis-1/3 font-bold text-[#a1cae3]">卡板</div>
+                  <div className="basis-2/3 text-right font-bold text-yellow-500">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${formatAmountWithCommas(palletsInStock)}`}
+                    </TextScramble>
+                  </div>
+
+                  <div className="basis-1/3 font-bold text-[#a1cae3]">散件</div>
+                  <div className="basis-2/3 text-right font-bold text-yellow-500">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${formatAmountWithCommas(partsInStock)}`}
+                    </TextScramble>
+                  </div>
                 </div>
               </div>
             </div>
@@ -928,11 +971,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       as="span"
                     >
-                      {`${
-                        Math.round(
-                          (designRatedWeight - processingWeight) * 100,
-                        ) / 100
-                      }`}
+                      {`${formatAmountWithCommas(
+                        designRatedWeight - processingWeight,
+                      )}`}
                     </TextScramble>
                   </div>
 
@@ -947,12 +988,11 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     >
                       {`${
                         designRatedWeight > 0
-                          ? Math.round(
+                          ? formatAmountWithCommas(
                               ((designRatedWeight - processingWeight) /
                                 designRatedWeight) *
-                                100 *
                                 100,
-                            ) / 100
+                            )
                           : 0
                       }`}
                     </TextScramble>
@@ -972,7 +1012,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       as="span"
                     >
-                      {`${Math.round(itemStockWeight * 100) / 100}`}
+                      {`${formatAmountWithCommas(itemStockWeight)}`}
                     </TextScramble>
                   </div>
                 </div>
@@ -994,9 +1034,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   className="text-2xl font-bold text-brand-project"
                 >
-                  {currentFormatter.format(
-                    Math.round(materialLoss * 100) / 100,
-                  )}
+                  {formatAmountWithCommas(materialLoss)}
                 </TextScramble>
               </div>
             </div>
@@ -1019,7 +1057,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   as="span"
                 >
-                  {currentFormatter.format(formatProjectAmount(pj?.cje))}
+                  {formatAmountWithCommas(formatProjectAmount(pj?.cje))}
                 </TextScramble>
                 <span className="ml-1 text-sm">万</span>
               </div>
@@ -1038,7 +1076,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   as="span"
                 >
-                  {currentFormatter.format(formatProjectAmount(pj?.yye))}
+                  {formatAmountWithCommas(formatProjectAmount(pj?.yye))}
                 </TextScramble>
                 <span className="ml-1 text-sm">万</span>
               </div>
@@ -1057,7 +1095,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   as="span"
                 >
-                  {currentFormatter.format(formatProjectAmount(pj?.xjl))}
+                  {formatAmountWithCommas(formatProjectAmount(pj?.xjl))}
                 </TextScramble>
                 <span className="ml-1 text-sm">万</span>
               </div>
@@ -1079,9 +1117,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       as="span"
                     >
-                      {currentFormatter.format(
-                        formatProjectAmount(pj?.xmglfYs),
-                      )}
+                      {formatAmountWithCommas(formatProjectAmount(pj?.xmglfYs))}
                     </TextScramble>
                     <span className="ml-0.5 text-xs">万</span>
                   </div>
@@ -1095,9 +1131,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       as="span"
                     >
-                      {currentFormatter.format(
-                        formatProjectAmount(pj?.xmglfLj),
-                      )}
+                      {formatAmountWithCommas(formatProjectAmount(pj?.xmglfLj))}
                     </TextScramble>
                     <span className="ml-0.5 text-xs">万</span>
                   </div>
@@ -1109,7 +1143,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   as="span"
                 >
-                  {currentFormatter.format(520)}
+                  {formatAmountWithCommas(520)}
                 </TextScramble>
                 <span className="ml-1 text-sm">万</span>
               </div> */}
@@ -1128,7 +1162,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   key={pj?.code}
                   as="span"
                 >
-                  {currentFormatter.format(formatProjectAmount(pj?.xmsjf))}
+                  {formatAmountWithCommas(formatProjectAmount(pj?.xmsjf))}
                 </TextScramble>
                 <span className="ml-1 text-sm">万</span>
               </div>
@@ -1390,7 +1424,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmArea * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmArea)}`}
                   </TextScramble>
                 </div>
                 <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
@@ -1399,7 +1433,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmTotal * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmTotal)}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1411,7 +1445,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmYearTarget * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmYearTarget)}`}
                   </TextScramble>
                 </div>
                 <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
@@ -1420,7 +1454,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmYearActual * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmYearActual)}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1432,7 +1466,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmMonthTarget * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmMonthTarget)}`}
                   </TextScramble>
                 </div>
                 <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
@@ -1441,7 +1475,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmMonthActual * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmMonthActual)}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1453,7 +1487,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     key={pj?.code}
                     as="span"
                   >
-                    {`${Math.round(pmYesterday * 100) / 100}`}
+                    {`${formatAmountWithCommas(pmYesterday)}`}
                   </TextScramble>
                 </div>
               </div>
@@ -1475,7 +1509,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       className="font-bold text-brand-project-2"
                     >
-                      {`${unitComponentTotal}`}
+                      {`${formatAmountWithCommas(unitComponentTotal)}`}
                     </TextScramble>
                     <div className="text-xxs opacity-80">总数 (件)</div>
                   </div>
@@ -1485,7 +1519,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       className="font-bold text-brand-project-2"
                     >
-                      {`${unitComponentProduction}`}
+                      {`${formatAmountWithCommas(unitComponentProduction)}`}
                     </TextScramble>
                     <div className="text-xxs opacity-80">生产数 (件)</div>
                   </div>
@@ -1495,14 +1529,50 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       key={pj?.code}
                       className="font-bold text-brand-project-2"
                     >
-                      {`${unitComponentInstallation}`}
+                      {`${formatAmountWithCommas(unitComponentInstallation)}`}
                     </TextScramble>
                     <div className="text-xxs opacity-80">安装数 (件)</div>
                   </div>
                 </div>
               </div>
-              <div className="h-14">
-                <img src={componentBottom} />
+
+              <div className="relative h-14">
+                <img
+                  src={componentBottom}
+                  className="absolute inset-0 h-auto w-full object-cover"
+                />
+                <div className="relative ml-24 grid h-full w-[70%] grid-cols-3 items-center pt-1">
+                  <div className="text-center">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      className="font-bold text-brand-project-2"
+                    >
+                      {`${formatAmountWithCommas(bulkMaterialsTotalOrderQuantity)}`}
+                    </TextScramble>
+                    <div className="text-xxs opacity-80">订单总数量</div>
+                  </div>
+                  <div className="text-center">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      className="font-bold text-brand-project-2"
+                    >
+                      {`${formatAmountWithCommas(bulkMaterialsCompletedQuantity)}`}
+                    </TextScramble>
+                    <div className="text-xxs opacity-80">完成数量</div>
+                  </div>
+                  <div className="text-center">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      className="font-bold text-brand-project-2"
+                    >
+                      {`${formatAmountWithCommas(bulkMaterialsUncompletedQuantity)}`}
+                    </TextScramble>
+                    <div className="text-xxs opacity-80">未完成数量</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1517,14 +1587,166 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           <div>
             <SubTitle>近2季度 安全内审分数</SubTitle>
             {/* <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
-            <img src={safty} className="h-[6rem] w-full object-cover" />
+            {/* <img src={safty} className="h-[6rem] w-full object-cover" /> */}
             {/* </div> */}
+            <div className="h-24 space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+              <div className="flex h-24 gap-1">
+                <div className="relative flex h-24 basis-1/4 items-center justify-center">
+                  <div className="relative h-[64px] w-[64px] rounded-full">
+                    <GlowEffect
+                      colors={["#0894FF", "#C959DD", "#FF2E54", "#FF9004"]}
+                      mode="colorShift"
+                      blur="medium"
+                      duration={4}
+                    />
+                    {/* <img
+                      src={markCircle}
+                      className="absolute inset-0 h-full w-full object-contain"
+                    /> */}
+                    <div className="relative flex h-full flex-col items-center justify-center rounded-full border-zinc-300/40 bg-sky-950 px-4 py-3 font-bold text-brand-project-2 dark:border-zinc-700/40 dark:bg-zinc-900">
+                      {qualityScore}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex basis-3/4 flex-col justify-center space-y-1 text-xs text-white">
+                  {/* <img src={safty} className="h-full w-full object-cover" /> */}
+                  <div>项目主要安全问题</div>
+                  <div>项目近2季度工伤情况</div>
+                  <div>项目千人工伤意外率 </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
     </>
   );
 }
+
+function GlowEffectCardMode() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleLoad = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+
+    setIsVisible(true);
+  };
+
+  return (
+    <div className="relative h-full w-auto">
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        animate={{
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{
+          duration: 0.2,
+          ease: "easeOut",
+        }}
+      >
+        <GlowEffect
+          colors={["#0894FF", "#C959DD", "#FF2E54", "#FF9004"]}
+          mode="colorShift"
+          blur="medium"
+          duration={4}
+        />
+      </motion.div>
+      <div className="relative flex h-full flex-col items-end justify-end rounded-md border border-zinc-300/40 bg-zinc-100 px-4 py-3 dark:border-zinc-700/40 dark:bg-zinc-900">
+        <button
+          className="relative ml-1 flex h-8 scale-100 select-none appearance-none items-center justify-center overflow-hidden rounded-lg border border-zinc-950/10 bg-white px-2 text-sm text-zinc-950 focus-visible:ring-2 active:scale-[0.96] dark:border-zinc-50/10"
+          type="button"
+          aria-label="Load"
+          onClick={handleLoad}
+        >
+          {/* <TextMorph>{isVisible ? "Submitting..." : "Submit"}</TextMorph> */}
+          1
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const FlippingCard = () => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsFlipped((prev) => !prev);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <motion.div
+      className="card-container"
+      style={{
+        // width: "36px",
+        // height: "36px",
+        perspective: "1000px", // Adds depth for 3D animation
+        padding: "2rem",
+      }}
+    >
+      <img
+        src={markCircle}
+        className="absolute inset-0 h-full w-auto object-contain"
+      />
+      <motion.div
+        className="card"
+        animate={{ rotateY: isFlipped ? 180 : 0 }} // Animates the flip
+        transition={{ duration: 1 }} // Controls the flip speed
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          transformStyle: "preserve-3d", // Enables 3D effect
+        }}
+      >
+        {/* Front of the card */}
+        <motion.div
+          className="border border-red-500"
+          style={{
+            position: "absolute",
+            backfaceVisibility: "hidden",
+            width: "100%",
+            height: "100%",
+            // backgroundColor: "blue",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            // borderRadius: 10,
+            // border: "1px solid red",
+          }}
+        >
+          Front
+        </motion.div>
+
+        {/* Back of the card */}
+        <motion.div
+          className="border border-green-500"
+          style={{
+            position: "absolute",
+            backfaceVisibility: "hidden",
+            width: "100%",
+            height: "100%",
+            // backgroundColor: "red",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            rotateY: 180,
+            // borderRadius: 10,
+            // border: "1px solid green",
+          }}
+        >
+          Back
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 function BasicInfoItem({
   title,
@@ -1736,17 +1958,19 @@ function StaffDistribution(props: { data: any }) {
   for (const node of props.data) {
     data.push({
       name: "安裝人員",
-      number: node.installation ? Math.round(node.installation * 100) / 100 : 0,
+      number: node.installation
+        ? formatAmountWithCommas(node.installation)
+        : "0",
       month: dayjs(node.createdAt).format("YYYY年MMM"),
     });
     data.push({
       name: "管理人員",
-      number: node.management ? Math.round(node.management * 100) / 100 : 0,
+      number: node.management ? formatAmountWithCommas(node.management) : "0",
       month: dayjs(node.createdAt).format("YYYY年MMM"),
     });
     data.push({
       name: "設計人員",
-      number: node.design ? Math.round(node.design * 100) / 100 : 0,
+      number: node.design ? formatAmountWithCommas(node.design) : "0",
       month: dayjs(node.createdAt).format("YYYY年MMM"),
     });
   }

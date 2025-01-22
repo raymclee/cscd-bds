@@ -3159,6 +3159,20 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_processingWeight(ctx, field)
 			case "itemStockWeight":
 				return ec.fieldContext_Project_itemStockWeight(ctx, field)
+			case "palletsInStock":
+				return ec.fieldContext_Project_palletsInStock(ctx, field)
+			case "partsInStock":
+				return ec.fieldContext_Project_partsInStock(ctx, field)
+			case "qualityScore":
+				return ec.fieldContext_Project_qualityScore(ctx, field)
+			case "qualityRanking":
+				return ec.fieldContext_Project_qualityRanking(ctx, field)
+			case "bulkMaterialsTotalOrderQuantity":
+				return ec.fieldContext_Project_bulkMaterialsTotalOrderQuantity(ctx, field)
+			case "bulkMaterialsCompletedQuantity":
+				return ec.fieldContext_Project_bulkMaterialsCompletedQuantity(ctx, field)
+			case "bulkMaterialsUncompletedQuantity":
+				return ec.fieldContext_Project_bulkMaterialsUncompletedQuantity(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":

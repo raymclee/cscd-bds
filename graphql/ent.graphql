@@ -2411,6 +2411,34 @@ type Project implements Node {
   項目物料庫存重量
   """
   itemStockWeight: Float
+  """
+  卡板庫存數量
+  """
+  palletsInStock: Float
+  """
+  散件庫存數量
+  """
+  partsInStock: Float
+  """
+  質量得分
+  """
+  qualityScore: Float
+  """
+  質量排名
+  """
+  qualityRanking: Float
+  """
+  散件總訂貨數量
+  """
+  bulkMaterialsTotalOrderQuantity: Float
+  """
+  散件已完成數量
+  """
+  bulkMaterialsCompletedQuantity: Float
+  """
+  散件未完成數量
+  """
+  bulkMaterialsUncompletedQuantity: Float
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -3758,6 +3786,97 @@ input ProjectWhereInput {
   itemStockWeightLTE: Float
   itemStockWeightIsNil: Boolean
   itemStockWeightNotNil: Boolean
+  """
+  pallets_in_stock field predicates
+  """
+  palletsInStock: Float
+  palletsInStockNEQ: Float
+  palletsInStockIn: [Float!]
+  palletsInStockNotIn: [Float!]
+  palletsInStockGT: Float
+  palletsInStockGTE: Float
+  palletsInStockLT: Float
+  palletsInStockLTE: Float
+  palletsInStockIsNil: Boolean
+  palletsInStockNotNil: Boolean
+  """
+  parts_in_stock field predicates
+  """
+  partsInStock: Float
+  partsInStockNEQ: Float
+  partsInStockIn: [Float!]
+  partsInStockNotIn: [Float!]
+  partsInStockGT: Float
+  partsInStockGTE: Float
+  partsInStockLT: Float
+  partsInStockLTE: Float
+  partsInStockIsNil: Boolean
+  partsInStockNotNil: Boolean
+  """
+  quality_score field predicates
+  """
+  qualityScore: Float
+  qualityScoreNEQ: Float
+  qualityScoreIn: [Float!]
+  qualityScoreNotIn: [Float!]
+  qualityScoreGT: Float
+  qualityScoreGTE: Float
+  qualityScoreLT: Float
+  qualityScoreLTE: Float
+  qualityScoreIsNil: Boolean
+  qualityScoreNotNil: Boolean
+  """
+  quality_ranking field predicates
+  """
+  qualityRanking: Float
+  qualityRankingNEQ: Float
+  qualityRankingIn: [Float!]
+  qualityRankingNotIn: [Float!]
+  qualityRankingGT: Float
+  qualityRankingGTE: Float
+  qualityRankingLT: Float
+  qualityRankingLTE: Float
+  qualityRankingIsNil: Boolean
+  qualityRankingNotNil: Boolean
+  """
+  bulk_materials_total_order_quantity field predicates
+  """
+  bulkMaterialsTotalOrderQuantity: Float
+  bulkMaterialsTotalOrderQuantityNEQ: Float
+  bulkMaterialsTotalOrderQuantityIn: [Float!]
+  bulkMaterialsTotalOrderQuantityNotIn: [Float!]
+  bulkMaterialsTotalOrderQuantityGT: Float
+  bulkMaterialsTotalOrderQuantityGTE: Float
+  bulkMaterialsTotalOrderQuantityLT: Float
+  bulkMaterialsTotalOrderQuantityLTE: Float
+  bulkMaterialsTotalOrderQuantityIsNil: Boolean
+  bulkMaterialsTotalOrderQuantityNotNil: Boolean
+  """
+  bulk_materials_completed_quantity field predicates
+  """
+  bulkMaterialsCompletedQuantity: Float
+  bulkMaterialsCompletedQuantityNEQ: Float
+  bulkMaterialsCompletedQuantityIn: [Float!]
+  bulkMaterialsCompletedQuantityNotIn: [Float!]
+  bulkMaterialsCompletedQuantityGT: Float
+  bulkMaterialsCompletedQuantityGTE: Float
+  bulkMaterialsCompletedQuantityLT: Float
+  bulkMaterialsCompletedQuantityLTE: Float
+  bulkMaterialsCompletedQuantityIsNil: Boolean
+  bulkMaterialsCompletedQuantityNotNil: Boolean
+  """
+  bulk_materials_uncompleted_quantity field predicates
+  """
+  bulkMaterialsUncompletedQuantity: Float
+  bulkMaterialsUncompletedQuantityNEQ: Float
+  bulkMaterialsUncompletedQuantityIn: [Float!]
+  bulkMaterialsUncompletedQuantityNotIn: [Float!]
+  bulkMaterialsUncompletedQuantityGT: Float
+  bulkMaterialsUncompletedQuantityGTE: Float
+  bulkMaterialsUncompletedQuantityLT: Float
+  bulkMaterialsUncompletedQuantityLTE: Float
+  bulkMaterialsUncompletedQuantityIsNil: Boolean
+  bulkMaterialsUncompletedQuantityNotNil: Boolean
   """
   vos edge predicates
   """
@@ -6152,6 +6271,41 @@ input UpdateProjectInput {
   """
   itemStockWeight: Float
   clearItemStockWeight: Boolean
+  """
+  卡板庫存數量
+  """
+  palletsInStock: Float
+  clearPalletsInStock: Boolean
+  """
+  散件庫存數量
+  """
+  partsInStock: Float
+  clearPartsInStock: Boolean
+  """
+  質量得分
+  """
+  qualityScore: Float
+  clearQualityScore: Boolean
+  """
+  質量排名
+  """
+  qualityRanking: Float
+  clearQualityRanking: Boolean
+  """
+  散件總訂貨數量
+  """
+  bulkMaterialsTotalOrderQuantity: Float
+  clearBulkMaterialsTotalOrderQuantity: Boolean
+  """
+  散件已完成數量
+  """
+  bulkMaterialsCompletedQuantity: Float
+  clearBulkMaterialsCompletedQuantity: Boolean
+  """
+  散件未完成數量
+  """
+  bulkMaterialsUncompletedQuantity: Float
+  clearBulkMaterialsUncompletedQuantity: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean

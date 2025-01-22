@@ -886,6 +886,20 @@ type UpdateProjectInput struct {
 	ProcessingWeight                             *float64
 	ClearItemStockWeight                         bool
 	ItemStockWeight                              *float64
+	ClearPalletsInStock                          bool
+	PalletsInStock                               *float64
+	ClearPartsInStock                            bool
+	PartsInStock                                 *float64
+	ClearQualityScore                            bool
+	QualityScore                                 *float64
+	ClearQualityRanking                          bool
+	QualityRanking                               *float64
+	ClearBulkMaterialsTotalOrderQuantity         bool
+	BulkMaterialsTotalOrderQuantity              *float64
+	ClearBulkMaterialsCompletedQuantity          bool
+	BulkMaterialsCompletedQuantity               *float64
+	ClearBulkMaterialsUncompletedQuantity        bool
+	BulkMaterialsUncompletedQuantity             *float64
 	ClearVos                                     bool
 	AddVoIDs                                     []xid.ID
 	RemoveVoIDs                                  []xid.ID
@@ -1264,6 +1278,48 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.ItemStockWeight; v != nil {
 		m.SetItemStockWeight(*v)
+	}
+	if i.ClearPalletsInStock {
+		m.ClearPalletsInStock()
+	}
+	if v := i.PalletsInStock; v != nil {
+		m.SetPalletsInStock(*v)
+	}
+	if i.ClearPartsInStock {
+		m.ClearPartsInStock()
+	}
+	if v := i.PartsInStock; v != nil {
+		m.SetPartsInStock(*v)
+	}
+	if i.ClearQualityScore {
+		m.ClearQualityScore()
+	}
+	if v := i.QualityScore; v != nil {
+		m.SetQualityScore(*v)
+	}
+	if i.ClearQualityRanking {
+		m.ClearQualityRanking()
+	}
+	if v := i.QualityRanking; v != nil {
+		m.SetQualityRanking(*v)
+	}
+	if i.ClearBulkMaterialsTotalOrderQuantity {
+		m.ClearBulkMaterialsTotalOrderQuantity()
+	}
+	if v := i.BulkMaterialsTotalOrderQuantity; v != nil {
+		m.SetBulkMaterialsTotalOrderQuantity(*v)
+	}
+	if i.ClearBulkMaterialsCompletedQuantity {
+		m.ClearBulkMaterialsCompletedQuantity()
+	}
+	if v := i.BulkMaterialsCompletedQuantity; v != nil {
+		m.SetBulkMaterialsCompletedQuantity(*v)
+	}
+	if i.ClearBulkMaterialsUncompletedQuantity {
+		m.ClearBulkMaterialsUncompletedQuantity()
+	}
+	if v := i.BulkMaterialsUncompletedQuantity; v != nil {
+		m.SetBulkMaterialsUncompletedQuantity(*v)
 	}
 	if i.ClearVos {
 		m.ClearVos()

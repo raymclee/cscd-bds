@@ -1075,6 +1075,104 @@ func main() {
 			}
 		}
 
+		// 抓取卡板散件庫存
+		{
+			row := s4pHanaDb.QueryRow(`
+				SELECT  
+					cast( sum(CASE WHEN LENGTH(zkaban) < 17 THEN 0 ELSE 1 END) as float ) as palletsInStock  --卡板数量
+					, cast( sum(menge) as float ) as partsInStock   --散件数量
+				from(
+				SELECT left(zsgpc,4) AS gcdh,zkaban, sum(menge) AS menge
+				FROM ztpp_packing WHERE left(zsgpc,4) = ?
+				GROUP BY left(zsgpc,4), zkaban ) a 
+			`, jobcode)
+
+			var (
+				palletsInStock *float64
+				partsInStock   *float64
+			)
+			err = row.Scan(&palletsInStock, &partsInStock)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取卡板散件庫存失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillablePalletsInStock(palletsInStock)
+				p.SetNillablePartsInStock(partsInStock)
+			}
+		}
+
+		// 抓取散料
+		{
+			row := bwpHanaDb.QueryRow(`
+				select 
+					cast( sum( p.psmng ) as float ) as bulkMaterialsTotalOrderQuantity       --订单总数量
+					, cast( sum( p.wemng ) as float ) as bulkMaterialsCompletedQuantity       --完成数量
+					, cast( sum( p.psmng - p.wemng ) as float ) as bulkMaterialsUncompletedQuantity       --未完成数量
+				from s42bw.ztps004 as z
+				inner join s42bw.afpo as p on p.ablad = z.pcbm
+				inner join s42bw.afko as ko on ko.aufnr = p.aufnr
+				inner join s42bw.aufk as k on k.aufnr = p.aufnr
+				inner join s42bw.mara as m on m.matnr = p.matnr 
+				where not k.loekz = 'X' and left(m.matkl,4) in ('9003','9004')
+					and not exists ( select jest.stat from s42bw.jest
+									where objnr = k.objnr and stat = 'I0076' and inact = '' )
+					AND z.xmbm = ?
+				group by z.xmbm
+			`, jobcode)
+
+			var (
+				bulkMaterialsTotalOrderQuantity  *float64
+				bulkMaterialsCompletedQuantity   *float64
+				bulkMaterialsUncompletedQuantity *float64
+			)
+			err = row.Scan(&bulkMaterialsTotalOrderQuantity, &bulkMaterialsCompletedQuantity, &bulkMaterialsUncompletedQuantity)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取散料失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableBulkMaterialsTotalOrderQuantity(bulkMaterialsTotalOrderQuantity)
+				p.SetNillableBulkMaterialsCompletedQuantity(bulkMaterialsCompletedQuantity)
+				p.SetNillableBulkMaterialsUncompletedQuantity(bulkMaterialsUncompletedQuantity)
+			}
+		}
+
+		// 抓取质量分数
+		{
+			row := stgDb.QueryRow(`
+				select TOP 1 task_group_id from transtrack_ranking
+				where 1=1
+				and project_id<>'169057'
+				and task_status<>1 order by task_group_id desc
+			`)
+
+			var (
+				taskGroupId *int
+			)
+			err = row.Scan(&taskGroupId)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取质量分数失败: %s\n", *jobcode, err.Error())
+			} else {
+				row := stgDb.QueryRow(`
+				select 
+					score 
+				from transtrack_ranking
+					where 1=1
+					and score!=0
+					AND TASK_STATUS = 2
+					and task_group_id = @id
+					and left(project_name, 4) = @code
+				`, sql.Named("id", taskGroupId), sql.Named("code", jobcode))
+
+				var (
+					score *float64
+				)
+				err = row.Scan(&score)
+				if err != nil && err != sql.ErrNoRows {
+					fmt.Printf("%s 抓取质量分数失败: %s\n", *jobcode, err.Error())
+				} else {
+					p.SetNillableQualityScore(score)
+				}
+			}
+		}
+
 		if err := p.
 			OnConflictColumns(project.FieldCode).
 			UpdateNewValues().Exec(ctx); err != nil {

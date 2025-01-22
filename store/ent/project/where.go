@@ -376,6 +376,41 @@ func ItemStockWeight(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldItemStockWeight, v))
 }
 
+// PalletsInStock applies equality check predicate on the "pallets_in_stock" field. It's identical to PalletsInStockEQ.
+func PalletsInStock(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPalletsInStock, v))
+}
+
+// PartsInStock applies equality check predicate on the "parts_in_stock" field. It's identical to PartsInStockEQ.
+func PartsInStock(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPartsInStock, v))
+}
+
+// QualityScore applies equality check predicate on the "quality_score" field. It's identical to QualityScoreEQ.
+func QualityScore(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldQualityScore, v))
+}
+
+// QualityRanking applies equality check predicate on the "quality_ranking" field. It's identical to QualityRankingEQ.
+func QualityRanking(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldQualityRanking, v))
+}
+
+// BulkMaterialsTotalOrderQuantity applies equality check predicate on the "bulk_materials_total_order_quantity" field. It's identical to BulkMaterialsTotalOrderQuantityEQ.
+func BulkMaterialsTotalOrderQuantity(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantity applies equality check predicate on the "bulk_materials_completed_quantity" field. It's identical to BulkMaterialsCompletedQuantityEQ.
+func BulkMaterialsCompletedQuantity(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantity applies equality check predicate on the "bulk_materials_uncompleted_quantity" field. It's identical to BulkMaterialsUncompletedQuantityEQ.
+func BulkMaterialsUncompletedQuantity(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -3779,6 +3814,356 @@ func ItemStockWeightIsNil() predicate.Project {
 // ItemStockWeightNotNil applies the NotNil predicate on the "item_stock_weight" field.
 func ItemStockWeightNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldItemStockWeight))
+}
+
+// PalletsInStockEQ applies the EQ predicate on the "pallets_in_stock" field.
+func PalletsInStockEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPalletsInStock, v))
+}
+
+// PalletsInStockNEQ applies the NEQ predicate on the "pallets_in_stock" field.
+func PalletsInStockNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPalletsInStock, v))
+}
+
+// PalletsInStockIn applies the In predicate on the "pallets_in_stock" field.
+func PalletsInStockIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPalletsInStock, vs...))
+}
+
+// PalletsInStockNotIn applies the NotIn predicate on the "pallets_in_stock" field.
+func PalletsInStockNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPalletsInStock, vs...))
+}
+
+// PalletsInStockGT applies the GT predicate on the "pallets_in_stock" field.
+func PalletsInStockGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPalletsInStock, v))
+}
+
+// PalletsInStockGTE applies the GTE predicate on the "pallets_in_stock" field.
+func PalletsInStockGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPalletsInStock, v))
+}
+
+// PalletsInStockLT applies the LT predicate on the "pallets_in_stock" field.
+func PalletsInStockLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPalletsInStock, v))
+}
+
+// PalletsInStockLTE applies the LTE predicate on the "pallets_in_stock" field.
+func PalletsInStockLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPalletsInStock, v))
+}
+
+// PalletsInStockIsNil applies the IsNil predicate on the "pallets_in_stock" field.
+func PalletsInStockIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPalletsInStock))
+}
+
+// PalletsInStockNotNil applies the NotNil predicate on the "pallets_in_stock" field.
+func PalletsInStockNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPalletsInStock))
+}
+
+// PartsInStockEQ applies the EQ predicate on the "parts_in_stock" field.
+func PartsInStockEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPartsInStock, v))
+}
+
+// PartsInStockNEQ applies the NEQ predicate on the "parts_in_stock" field.
+func PartsInStockNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPartsInStock, v))
+}
+
+// PartsInStockIn applies the In predicate on the "parts_in_stock" field.
+func PartsInStockIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPartsInStock, vs...))
+}
+
+// PartsInStockNotIn applies the NotIn predicate on the "parts_in_stock" field.
+func PartsInStockNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPartsInStock, vs...))
+}
+
+// PartsInStockGT applies the GT predicate on the "parts_in_stock" field.
+func PartsInStockGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPartsInStock, v))
+}
+
+// PartsInStockGTE applies the GTE predicate on the "parts_in_stock" field.
+func PartsInStockGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPartsInStock, v))
+}
+
+// PartsInStockLT applies the LT predicate on the "parts_in_stock" field.
+func PartsInStockLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPartsInStock, v))
+}
+
+// PartsInStockLTE applies the LTE predicate on the "parts_in_stock" field.
+func PartsInStockLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPartsInStock, v))
+}
+
+// PartsInStockIsNil applies the IsNil predicate on the "parts_in_stock" field.
+func PartsInStockIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPartsInStock))
+}
+
+// PartsInStockNotNil applies the NotNil predicate on the "parts_in_stock" field.
+func PartsInStockNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPartsInStock))
+}
+
+// QualityScoreEQ applies the EQ predicate on the "quality_score" field.
+func QualityScoreEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldQualityScore, v))
+}
+
+// QualityScoreNEQ applies the NEQ predicate on the "quality_score" field.
+func QualityScoreNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldQualityScore, v))
+}
+
+// QualityScoreIn applies the In predicate on the "quality_score" field.
+func QualityScoreIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldQualityScore, vs...))
+}
+
+// QualityScoreNotIn applies the NotIn predicate on the "quality_score" field.
+func QualityScoreNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldQualityScore, vs...))
+}
+
+// QualityScoreGT applies the GT predicate on the "quality_score" field.
+func QualityScoreGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldQualityScore, v))
+}
+
+// QualityScoreGTE applies the GTE predicate on the "quality_score" field.
+func QualityScoreGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldQualityScore, v))
+}
+
+// QualityScoreLT applies the LT predicate on the "quality_score" field.
+func QualityScoreLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldQualityScore, v))
+}
+
+// QualityScoreLTE applies the LTE predicate on the "quality_score" field.
+func QualityScoreLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldQualityScore, v))
+}
+
+// QualityScoreIsNil applies the IsNil predicate on the "quality_score" field.
+func QualityScoreIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldQualityScore))
+}
+
+// QualityScoreNotNil applies the NotNil predicate on the "quality_score" field.
+func QualityScoreNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldQualityScore))
+}
+
+// QualityRankingEQ applies the EQ predicate on the "quality_ranking" field.
+func QualityRankingEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldQualityRanking, v))
+}
+
+// QualityRankingNEQ applies the NEQ predicate on the "quality_ranking" field.
+func QualityRankingNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldQualityRanking, v))
+}
+
+// QualityRankingIn applies the In predicate on the "quality_ranking" field.
+func QualityRankingIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldQualityRanking, vs...))
+}
+
+// QualityRankingNotIn applies the NotIn predicate on the "quality_ranking" field.
+func QualityRankingNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldQualityRanking, vs...))
+}
+
+// QualityRankingGT applies the GT predicate on the "quality_ranking" field.
+func QualityRankingGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldQualityRanking, v))
+}
+
+// QualityRankingGTE applies the GTE predicate on the "quality_ranking" field.
+func QualityRankingGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldQualityRanking, v))
+}
+
+// QualityRankingLT applies the LT predicate on the "quality_ranking" field.
+func QualityRankingLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldQualityRanking, v))
+}
+
+// QualityRankingLTE applies the LTE predicate on the "quality_ranking" field.
+func QualityRankingLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldQualityRanking, v))
+}
+
+// QualityRankingIsNil applies the IsNil predicate on the "quality_ranking" field.
+func QualityRankingIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldQualityRanking))
+}
+
+// QualityRankingNotNil applies the NotNil predicate on the "quality_ranking" field.
+func QualityRankingNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldQualityRanking))
+}
+
+// BulkMaterialsTotalOrderQuantityEQ applies the EQ predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsTotalOrderQuantityNEQ applies the NEQ predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsTotalOrderQuantityIn applies the In predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldBulkMaterialsTotalOrderQuantity, vs...))
+}
+
+// BulkMaterialsTotalOrderQuantityNotIn applies the NotIn predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldBulkMaterialsTotalOrderQuantity, vs...))
+}
+
+// BulkMaterialsTotalOrderQuantityGT applies the GT predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsTotalOrderQuantityGTE applies the GTE predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsTotalOrderQuantityLT applies the LT predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsTotalOrderQuantityLTE applies the LTE predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldBulkMaterialsTotalOrderQuantity, v))
+}
+
+// BulkMaterialsTotalOrderQuantityIsNil applies the IsNil predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldBulkMaterialsTotalOrderQuantity))
+}
+
+// BulkMaterialsTotalOrderQuantityNotNil applies the NotNil predicate on the "bulk_materials_total_order_quantity" field.
+func BulkMaterialsTotalOrderQuantityNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldBulkMaterialsTotalOrderQuantity))
+}
+
+// BulkMaterialsCompletedQuantityEQ applies the EQ predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantityNEQ applies the NEQ predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantityIn applies the In predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldBulkMaterialsCompletedQuantity, vs...))
+}
+
+// BulkMaterialsCompletedQuantityNotIn applies the NotIn predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldBulkMaterialsCompletedQuantity, vs...))
+}
+
+// BulkMaterialsCompletedQuantityGT applies the GT predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantityGTE applies the GTE predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantityLT applies the LT predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantityLTE applies the LTE predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldBulkMaterialsCompletedQuantity, v))
+}
+
+// BulkMaterialsCompletedQuantityIsNil applies the IsNil predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldBulkMaterialsCompletedQuantity))
+}
+
+// BulkMaterialsCompletedQuantityNotNil applies the NotNil predicate on the "bulk_materials_completed_quantity" field.
+func BulkMaterialsCompletedQuantityNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldBulkMaterialsCompletedQuantity))
+}
+
+// BulkMaterialsUncompletedQuantityEQ applies the EQ predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantityNEQ applies the NEQ predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityNEQ(v float64) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantityIn applies the In predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldBulkMaterialsUncompletedQuantity, vs...))
+}
+
+// BulkMaterialsUncompletedQuantityNotIn applies the NotIn predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityNotIn(vs ...float64) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldBulkMaterialsUncompletedQuantity, vs...))
+}
+
+// BulkMaterialsUncompletedQuantityGT applies the GT predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityGT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantityGTE applies the GTE predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityGTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantityLT applies the LT predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityLT(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantityLTE applies the LTE predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityLTE(v float64) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldBulkMaterialsUncompletedQuantity, v))
+}
+
+// BulkMaterialsUncompletedQuantityIsNil applies the IsNil predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldBulkMaterialsUncompletedQuantity))
+}
+
+// BulkMaterialsUncompletedQuantityNotNil applies the NotNil predicate on the "bulk_materials_uncompleted_quantity" field.
+func BulkMaterialsUncompletedQuantityNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldBulkMaterialsUncompletedQuantity))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.
