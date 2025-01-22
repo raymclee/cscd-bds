@@ -72,7 +72,6 @@ import componentBottom from "~/assets/svg/component_bottom.png";
 import componentTop from "~/assets/svg/component_top.png";
 
 import quality from "~/assets/svg/quality.png";
-import safty from "~/assets/svg/safty.png";
 import markCircle from "~/assets/svg/mark_circle.png";
 
 import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
@@ -93,6 +92,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { Switcher } from "~/components/switcher";
 import { motion } from "motion/react";
 import { GlowEffect } from "~/components/ui/glow-effect";
+import { Progress } from "~/components/ui/progress";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
   component: RouteComponent,
@@ -243,9 +243,16 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           : defaultProjectIdx,
       )?.node;
 
-  const totalRanked = data.projects.edges?.filter(
-    (e) => !!e?.node?.qualityScore,
-  ).length;
+  const projectWithRank = data.projects.edges
+    ?.filter((e) => !!e?.node?.qualityScore)
+    .sort(
+      (a, b) => (b?.node?.qualityScore ?? 0) - (a?.node?.qualityScore ?? 0),
+    );
+  const totalRanked = projectWithRank?.length ?? 0;
+  const projectRank =
+    projectWithRank?.indexOf(
+      projectWithRank?.find((e) => e?.node?.code === pj?.code),
+    ) || 0;
 
   useEffect(() => {
     const handleLeftKeyDown = (e: KeyboardEvent) => {
@@ -1590,29 +1597,69 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* <img src={safty} className="h-[6rem] w-full object-cover" /> */}
             {/* </div> */}
             <div className="h-24 space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
-              <div className="flex h-24 gap-1">
+              <div className="flex h-24 gap-3">
                 <div className="relative flex h-24 basis-1/4 items-center justify-center">
                   <div className="relative h-[64px] w-[64px] rounded-full">
                     <GlowEffect
                       colors={["#0894FF", "#C959DD", "#FF2E54", "#FF9004"]}
+                      // colors={[
+                      //   "#082f49",
+                      //   "#0a3b5c",
+                      //   "#0c476f",
+                      //   "#0e5382",
+                      //   "#0f5f95",
+                      //   "#116ba8",
+                      // ]}
+                      // colors={["#082f49"]}
                       mode="colorShift"
                       blur="medium"
                       duration={4}
                     />
                     {/* <img
                       src={markCircle}
-                      className="absolute inset-0 h-full w-full object-contain"
+                      className="absolute inset-0 object-contain w-full h-full"
                     /> */}
-                    <div className="relative flex h-full flex-col items-center justify-center rounded-full border-zinc-300/40 bg-sky-950 px-4 py-3 font-bold text-brand-project-2 dark:border-zinc-700/40 dark:bg-zinc-900">
-                      {qualityScore}
+                    <div className="relative flex h-full flex-col items-center justify-center rounded-full border-zinc-300/40 px-4 py-3 text-sm font-bold text-brand-project-2">
+                      <FlippingCard
+                        key={pj?.code}
+                        front={qualityScore}
+                        back={
+                          <span>
+                            <span
+                              className={cn(
+                                totalRanked - projectRank <= 3 &&
+                                  "text-red-500",
+                              )}
+                            >
+                              {projectRank}
+                            </span>
+                            <span>/</span>
+                            <span>{totalRanked}</span>
+                          </span>
+                        }
+                        animated={projectRank > 0}
+                      />
+                      {/* {qualityScore} */}
                     </div>
                   </div>
                 </div>
-                <div className="flex basis-3/4 flex-col justify-center space-y-1 text-xs text-white">
-                  {/* <img src={safty} className="h-full w-full object-cover" /> */}
-                  <div>项目主要安全问题</div>
-                  <div>项目近2季度工伤情况</div>
-                  <div>项目千人工伤意外率 </div>
+                <div className="basis-3/4 gap-y-2 space-y-1 pr-2 pt-1 text-xxs text-white/80">
+                  {/* <img src={safty} className="object-cover w-full h-full" /> */}
+                  <div className="flex items-center justify-between">
+                    <div>项目主要安全问题</div>
+                    <div className="mr-2 text-[9px] text-brand/80">48%</div>
+                  </div>
+                  <Progress value={48} className="h-1 w-full bg-sky-950" />
+                  <div className="flex items-center justify-between">
+                    <div>项目近2季度工伤情况</div>
+                    <div className="mr-2 text-[9px] text-brand/80">11%</div>
+                  </div>
+                  <Progress value={11} className="h-1 w-full bg-sky-950" />
+                  <div className="flex items-center justify-between">
+                    <div>项目千人工伤意外率 </div>
+                    <div className="mr-2 text-[9px] text-brand/80">4%</div>
+                  </div>
+                  <Progress value={4} className="h-1 w-full bg-sky-950" />
                 </div>
               </div>
             </div>
@@ -1623,71 +1670,34 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   );
 }
 
-function GlowEffectCardMode() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const handleLoad = () => {
-    if (isVisible) {
-      setIsVisible(false);
-      return;
-    }
-
-    setIsVisible(true);
-  };
-
-  return (
-    <div className="relative h-full w-auto">
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        animate={{
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          duration: 0.2,
-          ease: "easeOut",
-        }}
-      >
-        <GlowEffect
-          colors={["#0894FF", "#C959DD", "#FF2E54", "#FF9004"]}
-          mode="colorShift"
-          blur="medium"
-          duration={4}
-        />
-      </motion.div>
-      <div className="relative flex h-full flex-col items-end justify-end rounded-md border border-zinc-300/40 bg-zinc-100 px-4 py-3 dark:border-zinc-700/40 dark:bg-zinc-900">
-        <button
-          className="relative ml-1 flex h-8 scale-100 select-none appearance-none items-center justify-center overflow-hidden rounded-lg border border-zinc-950/10 bg-white px-2 text-sm text-zinc-950 focus-visible:ring-2 active:scale-[0.96] dark:border-zinc-50/10"
-          type="button"
-          aria-label="Load"
-          onClick={handleLoad}
-        >
-          {/* <TextMorph>{isVisible ? "Submitting..." : "Submit"}</TextMorph> */}
-          1
-        </button>
-      </div>
-    </div>
-  );
-}
-
-const FlippingCard = () => {
+const FlippingCard = ({
+  front,
+  back,
+  animated,
+}: {
+  front: string | number;
+  back: ReactNode;
+  animated: boolean;
+}) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
+    if (!animated) return;
     const interval = setInterval(() => {
       setIsFlipped((prev) => !prev);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [animated]);
 
   return (
     <motion.div
-      className="card-container"
+      className="card-container rounded-full bg-sky-950"
       style={{
         // width: "36px",
         // height: "36px",
         perspective: "1000px", // Adds depth for 3D animation
-        padding: "2rem",
+        padding: "2.2rem",
       }}
     >
       <img
@@ -1707,7 +1717,6 @@ const FlippingCard = () => {
       >
         {/* Front of the card */}
         <motion.div
-          className="border border-red-500"
           style={{
             position: "absolute",
             backfaceVisibility: "hidden",
@@ -1721,12 +1730,11 @@ const FlippingCard = () => {
             // border: "1px solid red",
           }}
         >
-          Front
+          {front}
         </motion.div>
 
         {/* Back of the card */}
         <motion.div
-          className="border border-green-500"
           style={{
             position: "absolute",
             backfaceVisibility: "hidden",
@@ -1741,7 +1749,7 @@ const FlippingCard = () => {
             // border: "1px solid green",
           }}
         >
-          Back
+          {back}
         </motion.div>
       </motion.div>
     </motion.div>

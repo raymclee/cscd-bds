@@ -4,7 +4,6 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useLocalStorage } from "usehooks-ts";
 
 export function Switcher() {
-  const [pos, setPos] = useLocalStorage("switcher-pos", { x: 0, y: 0 });
   const [isActive, setIsActive] = useState(false);
   const { pathname } = useLocation();
 
@@ -25,14 +24,15 @@ export function Switcher() {
   return (
     <>
       <div
-        className="fixed z-50 flex items-center justify-center rounded-full bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 shadow-2xl hover:cursor-move"
+        className="fixed z-50 flex items-center justify-center rounded-full border border-sky-800 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 shadow-2xl hover:cursor-move"
         // onDragStart={(e) => {
         //   setPos({ x: e.clientX, y: e.clientY });
         // }}
-        draggable
-        onDrag={(e) => {
-          setPos({ x: e.clientX - 12, y: e.clientY - 12 });
-        }}
+        // draggable
+        // onDrag={(e) => {
+        //   console.log(e);
+        //   setPos({ x: e.clientX - 12, y: e.clientY - 12 });
+        // }}
         // onDragStart={(e) => {
         //   setPos({ x: e.clientX, y: e.clientY });
         // }}
@@ -40,8 +40,10 @@ export function Switcher() {
           e.preventDefault();
         }}
         style={{
-          top: pos.y === 0 ? "74%" : `${pos.y}px`,
-          left: pos.x === 0 ? "94%" : `${pos.x}px`,
+          // top: pos.y === 0 ? "74%" : `${pos.y}px`,
+          // left: pos.x === 0 ? "94%" : `${pos.x}px`,
+          top: "1.5%",
+          left: "96%",
         }}
       >
         <MotionConfig
@@ -311,7 +313,7 @@ function Curve() {
 
 //   return (
 //     <>
-//       <div className="fixed right-5 top-2 z-50">
+//       <div className="fixed z-50 right-5 top-2">
 //         <motion.div
 //           className="relative h-[650px] w-[480px] rounded-lg bg-gradient-to-br from-sky-800 to-sky-900/50 to-80% drop-shadow-2xl backdrop-blur-sm"
 //           variants={menu}
@@ -332,7 +334,7 @@ function Curve() {
 //         onClick={() => {
 //           setIsActive((a) => !a);
 //         }}
-//         className="fixed right-0 top-0 z-40 h-full w-full bg-black/50 backdrop-blur-sm"
+//         className="fixed top-0 right-0 z-40 w-full h-full bg-black/50 backdrop-blur-sm"
 //         variants={{
 //           open: {
 //             height: "100%",
@@ -394,7 +396,7 @@ function Curve() {
 //   return (
 //     <div className="absolute right-0 top-0 h-[40px] w-[100px] cursor-pointer overflow-hidden rounded-lg">
 //       <motion.div
-//         className="relative h-full w-full"
+//         className="relative w-full h-full"
 //         animate={{ top: isActive ? "-100%" : "0%" }}
 //         transition={{ duration: 0.5, type: "tween", ease: [0.76, 0, 0.24, 1] }}
 //       >
@@ -405,7 +407,7 @@ function Curve() {
 //           }}
 //         >
 //           <div
-//             className="flex h-full w-full flex-col items-center justify-center"
+//             className="flex flex-col items-center justify-center w-full h-full"
 //             style={{
 //               transformStyle: "preserve-3d",
 //               transition: "transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)",
@@ -414,7 +416,7 @@ function Curve() {
 //             <p className="pointer-events-none uppercase opacity-0 [&:nth-child(2)]:absolute [&:nth-child(2)]:origin-[bottom_center] [&:nth-child(2)]:translate-y-[9px] [&:nth-child(2)]:-rotate-90">
 //               菜单
 //             </p>
-//             <p className="pointer-events-none uppercase">菜单</p>
+//             <p className="uppercase pointer-events-none">菜单</p>
 //           </div>
 //         </div>
 //         <div
@@ -424,7 +426,7 @@ function Curve() {
 //           }}
 //         >
 //           <div
-//             className="flex h-full w-full flex-col items-center justify-center"
+//             className="flex flex-col items-center justify-center w-full h-full"
 //             style={{
 //               transformStyle: "preserve-3d",
 //               transition: "transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)",
@@ -433,7 +435,7 @@ function Curve() {
 //             <p className="pointer-events-none uppercase opacity-0 [&:nth-child(2)]:absolute [&:nth-child(2)]:origin-[bottom_center] [&:nth-child(2)]:translate-y-[9px] [&:nth-child(2)]:-rotate-90">
 //               关闭
 //             </p>
-//             <p className="pointer-events-none uppercase">关闭</p>
+//             <p className="uppercase pointer-events-none">关闭</p>
 //           </div>
 //         </div>
 //       </motion.div>
@@ -444,7 +446,7 @@ function Curve() {
 // function PerspectiveText({ label }: { label: string }) {
 //   return (
 //     <div
-//       className="flex h-full w-full flex-col items-center justify-center"
+//       className="flex flex-col items-center justify-center w-full h-full"
 //       style={{
 //         transformStyle: "preserve-3d",
 //         transition: "transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)",
@@ -453,7 +455,7 @@ function Curve() {
 //       <p className="pointer-events-none uppercase opacity-0 [&:nth-child(2)]:absolute [&:nth-child(2)]:origin-[bottom_center] [&:nth-child(2)]:translate-y-[9px] [&:nth-child(2)]:-rotate-90">
 //         {label}
 //       </p>
-//       <p className="pointer-events-none uppercase">{label}</p>
+//       <p className="uppercase pointer-events-none">{label}</p>
 //     </div>
 //   );
 // }

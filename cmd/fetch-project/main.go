@@ -138,6 +138,27 @@ func main() {
 	}
 	defer rows.Close()
 
+	var f *excelize.File
+	wd, _ := os.Getwd()
+	entries, err := os.ReadDir(filepath.Join(wd, "smb"))
+	if err != nil {
+		fmt.Printf("读取excel目录失败: %s\n", err.Error())
+	} else {
+		var excelFile string
+		for _, entry := range entries {
+			if strings.HasSuffix(entry.Name(), ".xlsx") {
+				excelFile = entry.Name()
+				break
+			}
+		}
+		f, _ = excelize.OpenFile(filepath.Join(wd, "smb", excelFile))
+		defer func() {
+			if err := f.Close(); err != nil {
+				fmt.Printf("关闭excel失败: %s\n", err.Error())
+			}
+		}()
+	}
+
 	for rows.Next() {
 		// wg.Go(func() error {
 
@@ -1181,6 +1202,9 @@ func main() {
 
 		// 地盤人員
 		{
+			if f == nil {
+				continue
+			}
 
 			pj, err := s.Project.Query().Where(project.Code(*jobcode)).Only(ctx)
 			if err != nil {
@@ -1207,48 +1231,25 @@ func main() {
 				)
 
 				{
-					wd, _ := os.Getwd()
-					entries, err := os.ReadDir(filepath.Join(wd, "smb"))
-					if err != nil {
-						fmt.Printf("%s 获取工作目录失败: %s\n", *jobcode, err.Error())
-						continue
-					} else {
-						var excelFile string
-						for _, entry := range entries {
-							if strings.HasSuffix(entry.Name(), ".xlsx") {
-								excelFile = entry.Name()
-								break
-							}
-						}
-						f, err := excelize.OpenFile(filepath.Join(wd, "smb", excelFile))
-						if err != nil {
-							fmt.Printf("%s 打开excel失败: %s\n", *jobcode, err.Error())
-						} else {
-							defer func() {
-								if err := f.Close(); err != nil {
-									fmt.Printf("%s 关闭excel失败: %s\n", *jobcode, err.Error())
-								}
-							}()
 
-							rows, err := f.GetRows("TSD_2024_12")
-							if err != nil {
-								fmt.Printf("%s 读取excel失败: %s\n", *jobcode, err.Error())
-							} else {
-								for _, row := range rows {
-									if len(row) > 5 {
-										if row[0] != "00005222" && row[0] != "00014912" {
-											site := row[4]
-											percent := row[5]
-											if strings.HasPrefix(site, *jobcode) {
-												p, _ := strconv.ParseFloat(strings.ReplaceAll(percent, "%", ""), 64)
-												staffDesign += p / 100
-											}
-										}
+					rows, err := f.GetRows("TSD_2024_12")
+					if err != nil {
+						fmt.Printf("%s 读取excel失败: %s\n", *jobcode, err.Error())
+					} else {
+						for _, row := range rows {
+							if len(row) > 5 {
+								if row[0] != "00005222" && row[0] != "00014912" {
+									site := row[4]
+									percent := row[5]
+									if strings.HasPrefix(site, *jobcode) {
+										p, _ := strconv.ParseFloat(strings.ReplaceAll(percent, "%", ""), 64)
+										staffDesign += p / 100
 									}
 								}
 							}
 						}
 					}
+
 				}
 
 				for rows.Next() {
