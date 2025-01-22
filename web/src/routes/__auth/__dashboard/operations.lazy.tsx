@@ -243,16 +243,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
           : defaultProjectIdx,
       )?.node;
 
-  const projectWithRank = data.projects.edges
+  const projectsWithRank = data.projects.edges
     ?.filter((e) => !!e?.node?.qualityScore)
     .sort(
       (a, b) => (b?.node?.qualityScore ?? 0) - (a?.node?.qualityScore ?? 0),
     );
-  const totalRanked = projectWithRank?.length ?? 0;
-  const projectRank =
-    projectWithRank?.indexOf(
-      projectWithRank?.find((e) => e?.node?.code === pj?.code),
-    ) || 0;
+  const totalRanked = projectsWithRank?.length ?? 0;
+  const projectRankIdx =
+    projectsWithRank?.indexOf(
+      projectsWithRank?.find((e) => e?.node?.code === pj?.code),
+    ) ?? 0;
+  const projectRank = projectRankIdx + 1;
 
   useEffect(() => {
     const handleLeftKeyDown = (e: KeyboardEvent) => {
@@ -1637,7 +1638,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                             <span>{totalRanked}</span>
                           </span>
                         }
-                        animated={projectRank > 0}
+                        animated={projectRankIdx > 0}
                       />
                       {/* {qualityScore} */}
                     </div>
