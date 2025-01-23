@@ -24,7 +24,7 @@ export function Switcher() {
   return (
     <>
       <div
-        className="fixed z-50 flex items-center justify-center rounded-full border border-sky-800 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 shadow-2xl hover:cursor-move"
+        className="fixed z-50 flex items-center justify-center border rounded-full shadow-2xl border-sky-800 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 hover:cursor-move"
         // onDragStart={(e) => {
         //   setPos({ x: e.clientX, y: e.clientY });
         // }}
@@ -56,7 +56,7 @@ export function Switcher() {
             initial={false}
             animate={isActive ? "open" : "closed"}
             onClick={() => setIsActive((pv) => !pv)}
-            className="relative h-12 w-12 rounded-full bg-white/0 transition-colors hover:bg-white/20"
+            className="relative w-12 h-12 transition-colors rounded-full bg-white/0 hover:bg-white/20"
           >
             <motion.span
               variants={VARIANTS.top}
@@ -87,7 +87,7 @@ export function Switcher() {
       <AnimatePresence mode="wait">
         {isActive && (
           <motion.div
-            className="fixed right-0 top-0 z-30 h-full w-full bg-black/50 backdrop-blur-sm"
+            className="fixed top-0 right-0 z-30 w-full h-full bg-black/50 backdrop-blur-sm"
             variants={menuOverlaySlide}
             initial="initial"
             animate="enter"
@@ -138,13 +138,17 @@ const VARIANTS = {
 };
 
 const navItems = [
-  // {
-  //   title: "市场拓展地图",
-  //   href: "/",
-  // },
+  {
+    title: "市场拓展地图",
+    href: "/",
+  },
   {
     title: "项目运营管控",
     href: "/operations",
+  },
+  {
+    title: "业务数据监控",
+    href: "/bi",
   },
 ];
 
