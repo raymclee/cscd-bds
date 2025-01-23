@@ -3316,6 +3316,7 @@ type Query {
     """Filtering options for Areas returned from the connection."""
     where: AreaWhereInput
   ): AreaConnection!
+  biToken: String!
   cities(
     """Returns the elements in the list that come after the specified cursor."""
     after: Cursor

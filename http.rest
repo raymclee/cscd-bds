@@ -38,3 +38,15 @@ GET https://restapi.amap.com/v3/geocode/regeo?location=12709254.638037492,254429
 
 ###
 GET https://restapi.amap.com/v5/place/text?key={{key}}&keywords=通州副中心&types=010000|020000|030000|040000|050000|060000|070000|080000|090000|100000|110000|120000|130000|140000|150000|160000|170000|180000|190000|200000|220000|970000|990000
+
+
+###
+GET https://bi.fefacade.com/webroot/decision/login/cross/domain?fine_username=ray.mclee&fine_password=ray.mclee830&validity=-1&callback=data
+Content-Type: application/json
+
+###
+GET https://bi.fefacade.com/webroot/decision#?activeTab=eaa5d867-374d-4de6-9503-27372d8b6e48
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYXkubWNsZWUiLCJ0ZW5hbnRJZCI6ImRlZmF1bHQiLCJpc3MiOiJmYW5ydWFuIiwiZGVzY3JpcHRpb24iOiJbNjc0ZV1bNjU4N11bNzEyZl0ocmF5Lm1jbGVlKSIsImV4cCI6MTczODgzOTkxMCwiaWF0IjoxNzM3NjMzOTEwLCJqdGkiOiJqLzRRZHpBWFpBMmdtM0xmRk12OTVRTURTR0YxM2tYQnZkZi9WbGRkUWtDbUQ0OEQifQ.wmmUhfW_ggCoUuHB33cJSVBMskP6dXR5q-DjlODp6Lc
+
+###
+GET https://bi.fefacade.com/webroot/decision#?activeTab=eaa5d867-374d-4de6-9503-27372d8b6e48?fine_auth_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYXkubWNsZWUiLCJ0ZW5hbnRJZCI6ImRlZmF1bHQiLCJpc3MiOiJmYW5ydWFuIiwiZGVzY3JpcHRpb24iOiJbNjc0ZV1bNjU4N11bNzEyZl0ocmF5Lm1jbGVlKSIsImV4cCI6MTczODg0MTAzMCwiaWF0IjoxNzM3NjM1MDMwLCJqdGkiOiJSTEJqS2VuL0xnTm50d0hjYjlTeHpCcnJOditwbnFrdVh3NEpLcEI1bE9HTDBubjIifQ.RaKC3k_K1Z9xDIy_ZTnZh5znJGWVr3NxlVnCShtar-I

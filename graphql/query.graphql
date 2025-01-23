@@ -4,6 +4,8 @@ extend type Query {
   searchLocation(keyword: String!): [Location!]!
 
   topCompetitors(first: Int = 10): [TopCompetitor!]!
+
+  biToken: String!
 }
 
 type FeishuUser {

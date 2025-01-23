@@ -456,6 +456,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Areas            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
+		BiToken          func(childComplexity int) int
 		Cities           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
 		Competitors      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CompetitorOrder, where *ent.CompetitorWhereInput) int
 		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
@@ -2881,6 +2882,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Areas(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.AreaOrder), args["where"].(*ent.AreaWhereInput)), true
+
+	case "Query.biToken":
+		if e.complexity.Query.BiToken == nil {
+			break
+		}
+
+		return e.complexity.Query.BiToken(childComplexity), true
 
 	case "Query.cities":
 		if e.complexity.Query.Cities == nil {
@@ -11639,6 +11647,8 @@ type GeoJson {
   searchLocation(keyword: String!): [Location!]!
 
   topCompetitors(first: Int = 10): [TopCompetitor!]!
+
+  biToken: String!
 }
 
 type FeishuUser {

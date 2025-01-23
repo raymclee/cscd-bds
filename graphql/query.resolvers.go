@@ -11,6 +11,8 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/schema/xid"
 	"fmt"
+	"io"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -110,4 +112,19 @@ func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*mode
 		})
 	}
 	return out, nil
+}
+
+// BiToken is the resolver for the biToken field.
+func (r *queryResolver) BiToken(ctx context.Context) (string, error) {
+
+	resp, err := http.Get("https://bi.fefacade.com/webroot/decision/login/cross/domain?fine_username=ray.mclee&fine_password=ray.mclee830&validity=-1")
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return string(body), nil
 }

@@ -3391,6 +3391,7 @@ export type ProvinceWhereInput = {
 export type Query = {
   __typename?: 'Query';
   areas: AreaConnection;
+  biToken: Scalars['String']['output'];
   cities: CityConnection;
   competitors: CompetitorConnection;
   countries: CountryConnection;

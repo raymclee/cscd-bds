@@ -8,6 +8,7 @@ require (
 	github.com/99designs/gqlgen v0.17.56
 	github.com/alexedwards/scs/v2 v2.8.0
 	github.com/canidam/echo-scs-session v1.0.0
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gomodule/redigo v1.8.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/rs/xid v1.6.0
@@ -17,7 +18,6 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
-	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
