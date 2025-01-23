@@ -4745,6 +4745,54 @@ type ProjectWhereInput struct {
 	BulkMaterialsUncompletedQuantityIsNil  bool      `json:"bulkMaterialsUncompletedQuantityIsNil,omitempty"`
 	BulkMaterialsUncompletedQuantityNotNil bool      `json:"bulkMaterialsUncompletedQuantityNotNil,omitempty"`
 
+	// "plan_total_count" field predicates.
+	PlanTotalCount       *int  `json:"planTotalCount,omitempty"`
+	PlanTotalCountNEQ    *int  `json:"planTotalCountNEQ,omitempty"`
+	PlanTotalCountIn     []int `json:"planTotalCountIn,omitempty"`
+	PlanTotalCountNotIn  []int `json:"planTotalCountNotIn,omitempty"`
+	PlanTotalCountGT     *int  `json:"planTotalCountGT,omitempty"`
+	PlanTotalCountGTE    *int  `json:"planTotalCountGTE,omitempty"`
+	PlanTotalCountLT     *int  `json:"planTotalCountLT,omitempty"`
+	PlanTotalCountLTE    *int  `json:"planTotalCountLTE,omitempty"`
+	PlanTotalCountIsNil  bool  `json:"planTotalCountIsNil,omitempty"`
+	PlanTotalCountNotNil bool  `json:"planTotalCountNotNil,omitempty"`
+
+	// "plan_overdue_count" field predicates.
+	PlanOverdueCount       *int  `json:"planOverdueCount,omitempty"`
+	PlanOverdueCountNEQ    *int  `json:"planOverdueCountNEQ,omitempty"`
+	PlanOverdueCountIn     []int `json:"planOverdueCountIn,omitempty"`
+	PlanOverdueCountNotIn  []int `json:"planOverdueCountNotIn,omitempty"`
+	PlanOverdueCountGT     *int  `json:"planOverdueCountGT,omitempty"`
+	PlanOverdueCountGTE    *int  `json:"planOverdueCountGTE,omitempty"`
+	PlanOverdueCountLT     *int  `json:"planOverdueCountLT,omitempty"`
+	PlanOverdueCountLTE    *int  `json:"planOverdueCountLTE,omitempty"`
+	PlanOverdueCountIsNil  bool  `json:"planOverdueCountIsNil,omitempty"`
+	PlanOverdueCountNotNil bool  `json:"planOverdueCountNotNil,omitempty"`
+
+	// "plan_overdue_month_count" field predicates.
+	PlanOverdueMonthCount       *int  `json:"planOverdueMonthCount,omitempty"`
+	PlanOverdueMonthCountNEQ    *int  `json:"planOverdueMonthCountNEQ,omitempty"`
+	PlanOverdueMonthCountIn     []int `json:"planOverdueMonthCountIn,omitempty"`
+	PlanOverdueMonthCountNotIn  []int `json:"planOverdueMonthCountNotIn,omitempty"`
+	PlanOverdueMonthCountGT     *int  `json:"planOverdueMonthCountGT,omitempty"`
+	PlanOverdueMonthCountGTE    *int  `json:"planOverdueMonthCountGTE,omitempty"`
+	PlanOverdueMonthCountLT     *int  `json:"planOverdueMonthCountLT,omitempty"`
+	PlanOverdueMonthCountLTE    *int  `json:"planOverdueMonthCountLTE,omitempty"`
+	PlanOverdueMonthCountIsNil  bool  `json:"planOverdueMonthCountIsNil,omitempty"`
+	PlanOverdueMonthCountNotNil bool  `json:"planOverdueMonthCountNotNil,omitempty"`
+
+	// "processing_diagram_finish_count" field predicates.
+	ProcessingDiagramFinishCount       *int  `json:"processingDiagramFinishCount,omitempty"`
+	ProcessingDiagramFinishCountNEQ    *int  `json:"processingDiagramFinishCountNEQ,omitempty"`
+	ProcessingDiagramFinishCountIn     []int `json:"processingDiagramFinishCountIn,omitempty"`
+	ProcessingDiagramFinishCountNotIn  []int `json:"processingDiagramFinishCountNotIn,omitempty"`
+	ProcessingDiagramFinishCountGT     *int  `json:"processingDiagramFinishCountGT,omitempty"`
+	ProcessingDiagramFinishCountGTE    *int  `json:"processingDiagramFinishCountGTE,omitempty"`
+	ProcessingDiagramFinishCountLT     *int  `json:"processingDiagramFinishCountLT,omitempty"`
+	ProcessingDiagramFinishCountLTE    *int  `json:"processingDiagramFinishCountLTE,omitempty"`
+	ProcessingDiagramFinishCountIsNil  bool  `json:"processingDiagramFinishCountIsNil,omitempty"`
+	ProcessingDiagramFinishCountNotNil bool  `json:"processingDiagramFinishCountNotNil,omitempty"`
+
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
 	HasVosWith []*ProjectVOWhereInput `json:"hasVosWith,omitempty"`
@@ -7101,6 +7149,126 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	}
 	if i.BulkMaterialsUncompletedQuantityNotNil {
 		predicates = append(predicates, project.BulkMaterialsUncompletedQuantityNotNil())
+	}
+	if i.PlanTotalCount != nil {
+		predicates = append(predicates, project.PlanTotalCountEQ(*i.PlanTotalCount))
+	}
+	if i.PlanTotalCountNEQ != nil {
+		predicates = append(predicates, project.PlanTotalCountNEQ(*i.PlanTotalCountNEQ))
+	}
+	if len(i.PlanTotalCountIn) > 0 {
+		predicates = append(predicates, project.PlanTotalCountIn(i.PlanTotalCountIn...))
+	}
+	if len(i.PlanTotalCountNotIn) > 0 {
+		predicates = append(predicates, project.PlanTotalCountNotIn(i.PlanTotalCountNotIn...))
+	}
+	if i.PlanTotalCountGT != nil {
+		predicates = append(predicates, project.PlanTotalCountGT(*i.PlanTotalCountGT))
+	}
+	if i.PlanTotalCountGTE != nil {
+		predicates = append(predicates, project.PlanTotalCountGTE(*i.PlanTotalCountGTE))
+	}
+	if i.PlanTotalCountLT != nil {
+		predicates = append(predicates, project.PlanTotalCountLT(*i.PlanTotalCountLT))
+	}
+	if i.PlanTotalCountLTE != nil {
+		predicates = append(predicates, project.PlanTotalCountLTE(*i.PlanTotalCountLTE))
+	}
+	if i.PlanTotalCountIsNil {
+		predicates = append(predicates, project.PlanTotalCountIsNil())
+	}
+	if i.PlanTotalCountNotNil {
+		predicates = append(predicates, project.PlanTotalCountNotNil())
+	}
+	if i.PlanOverdueCount != nil {
+		predicates = append(predicates, project.PlanOverdueCountEQ(*i.PlanOverdueCount))
+	}
+	if i.PlanOverdueCountNEQ != nil {
+		predicates = append(predicates, project.PlanOverdueCountNEQ(*i.PlanOverdueCountNEQ))
+	}
+	if len(i.PlanOverdueCountIn) > 0 {
+		predicates = append(predicates, project.PlanOverdueCountIn(i.PlanOverdueCountIn...))
+	}
+	if len(i.PlanOverdueCountNotIn) > 0 {
+		predicates = append(predicates, project.PlanOverdueCountNotIn(i.PlanOverdueCountNotIn...))
+	}
+	if i.PlanOverdueCountGT != nil {
+		predicates = append(predicates, project.PlanOverdueCountGT(*i.PlanOverdueCountGT))
+	}
+	if i.PlanOverdueCountGTE != nil {
+		predicates = append(predicates, project.PlanOverdueCountGTE(*i.PlanOverdueCountGTE))
+	}
+	if i.PlanOverdueCountLT != nil {
+		predicates = append(predicates, project.PlanOverdueCountLT(*i.PlanOverdueCountLT))
+	}
+	if i.PlanOverdueCountLTE != nil {
+		predicates = append(predicates, project.PlanOverdueCountLTE(*i.PlanOverdueCountLTE))
+	}
+	if i.PlanOverdueCountIsNil {
+		predicates = append(predicates, project.PlanOverdueCountIsNil())
+	}
+	if i.PlanOverdueCountNotNil {
+		predicates = append(predicates, project.PlanOverdueCountNotNil())
+	}
+	if i.PlanOverdueMonthCount != nil {
+		predicates = append(predicates, project.PlanOverdueMonthCountEQ(*i.PlanOverdueMonthCount))
+	}
+	if i.PlanOverdueMonthCountNEQ != nil {
+		predicates = append(predicates, project.PlanOverdueMonthCountNEQ(*i.PlanOverdueMonthCountNEQ))
+	}
+	if len(i.PlanOverdueMonthCountIn) > 0 {
+		predicates = append(predicates, project.PlanOverdueMonthCountIn(i.PlanOverdueMonthCountIn...))
+	}
+	if len(i.PlanOverdueMonthCountNotIn) > 0 {
+		predicates = append(predicates, project.PlanOverdueMonthCountNotIn(i.PlanOverdueMonthCountNotIn...))
+	}
+	if i.PlanOverdueMonthCountGT != nil {
+		predicates = append(predicates, project.PlanOverdueMonthCountGT(*i.PlanOverdueMonthCountGT))
+	}
+	if i.PlanOverdueMonthCountGTE != nil {
+		predicates = append(predicates, project.PlanOverdueMonthCountGTE(*i.PlanOverdueMonthCountGTE))
+	}
+	if i.PlanOverdueMonthCountLT != nil {
+		predicates = append(predicates, project.PlanOverdueMonthCountLT(*i.PlanOverdueMonthCountLT))
+	}
+	if i.PlanOverdueMonthCountLTE != nil {
+		predicates = append(predicates, project.PlanOverdueMonthCountLTE(*i.PlanOverdueMonthCountLTE))
+	}
+	if i.PlanOverdueMonthCountIsNil {
+		predicates = append(predicates, project.PlanOverdueMonthCountIsNil())
+	}
+	if i.PlanOverdueMonthCountNotNil {
+		predicates = append(predicates, project.PlanOverdueMonthCountNotNil())
+	}
+	if i.ProcessingDiagramFinishCount != nil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountEQ(*i.ProcessingDiagramFinishCount))
+	}
+	if i.ProcessingDiagramFinishCountNEQ != nil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountNEQ(*i.ProcessingDiagramFinishCountNEQ))
+	}
+	if len(i.ProcessingDiagramFinishCountIn) > 0 {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountIn(i.ProcessingDiagramFinishCountIn...))
+	}
+	if len(i.ProcessingDiagramFinishCountNotIn) > 0 {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountNotIn(i.ProcessingDiagramFinishCountNotIn...))
+	}
+	if i.ProcessingDiagramFinishCountGT != nil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountGT(*i.ProcessingDiagramFinishCountGT))
+	}
+	if i.ProcessingDiagramFinishCountGTE != nil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountGTE(*i.ProcessingDiagramFinishCountGTE))
+	}
+	if i.ProcessingDiagramFinishCountLT != nil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountLT(*i.ProcessingDiagramFinishCountLT))
+	}
+	if i.ProcessingDiagramFinishCountLTE != nil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountLTE(*i.ProcessingDiagramFinishCountLTE))
+	}
+	if i.ProcessingDiagramFinishCountIsNil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountIsNil())
+	}
+	if i.ProcessingDiagramFinishCountNotNil {
+		predicates = append(predicates, project.ProcessingDiagramFinishCountNotNil())
 	}
 
 	if i.HasVos != nil {

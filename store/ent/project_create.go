@@ -1012,6 +1012,62 @@ func (pc *ProjectCreate) SetNillableBulkMaterialsUncompletedQuantity(f *float64)
 	return pc
 }
 
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (pc *ProjectCreate) SetPlanTotalCount(i int) *ProjectCreate {
+	pc.mutation.SetPlanTotalCount(i)
+	return pc
+}
+
+// SetNillablePlanTotalCount sets the "plan_total_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePlanTotalCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetPlanTotalCount(*i)
+	}
+	return pc
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (pc *ProjectCreate) SetPlanOverdueCount(i int) *ProjectCreate {
+	pc.mutation.SetPlanOverdueCount(i)
+	return pc
+}
+
+// SetNillablePlanOverdueCount sets the "plan_overdue_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePlanOverdueCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetPlanOverdueCount(*i)
+	}
+	return pc
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (pc *ProjectCreate) SetPlanOverdueMonthCount(i int) *ProjectCreate {
+	pc.mutation.SetPlanOverdueMonthCount(i)
+	return pc
+}
+
+// SetNillablePlanOverdueMonthCount sets the "plan_overdue_month_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillablePlanOverdueMonthCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetPlanOverdueMonthCount(*i)
+	}
+	return pc
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (pc *ProjectCreate) SetProcessingDiagramFinishCount(i int) *ProjectCreate {
+	pc.mutation.SetProcessingDiagramFinishCount(i)
+	return pc
+}
+
+// SetNillableProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableProcessingDiagramFinishCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetProcessingDiagramFinishCount(*i)
+	}
+	return pc
+}
+
 // SetID sets the "id" field.
 func (pc *ProjectCreate) SetID(x xid.ID) *ProjectCreate {
 	pc.mutation.SetID(x)
@@ -1442,6 +1498,22 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.BulkMaterialsUncompletedQuantity(); ok {
 		_spec.SetField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64, value)
 		_node.BulkMaterialsUncompletedQuantity = &value
+	}
+	if value, ok := pc.mutation.PlanTotalCount(); ok {
+		_spec.SetField(project.FieldPlanTotalCount, field.TypeInt, value)
+		_node.PlanTotalCount = &value
+	}
+	if value, ok := pc.mutation.PlanOverdueCount(); ok {
+		_spec.SetField(project.FieldPlanOverdueCount, field.TypeInt, value)
+		_node.PlanOverdueCount = &value
+	}
+	if value, ok := pc.mutation.PlanOverdueMonthCount(); ok {
+		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
+		_node.PlanOverdueMonthCount = &value
+	}
+	if value, ok := pc.mutation.ProcessingDiagramFinishCount(); ok {
+		_spec.SetField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+		_node.ProcessingDiagramFinishCount = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -3084,6 +3156,102 @@ func (u *ProjectUpsert) AddBulkMaterialsUncompletedQuantity(v float64) *ProjectU
 // ClearBulkMaterialsUncompletedQuantity clears the value of the "bulk_materials_uncompleted_quantity" field.
 func (u *ProjectUpsert) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsert {
 	u.SetNull(project.FieldBulkMaterialsUncompletedQuantity)
+	return u
+}
+
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (u *ProjectUpsert) SetPlanTotalCount(v int) *ProjectUpsert {
+	u.Set(project.FieldPlanTotalCount, v)
+	return u
+}
+
+// UpdatePlanTotalCount sets the "plan_total_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePlanTotalCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldPlanTotalCount)
+	return u
+}
+
+// AddPlanTotalCount adds v to the "plan_total_count" field.
+func (u *ProjectUpsert) AddPlanTotalCount(v int) *ProjectUpsert {
+	u.Add(project.FieldPlanTotalCount, v)
+	return u
+}
+
+// ClearPlanTotalCount clears the value of the "plan_total_count" field.
+func (u *ProjectUpsert) ClearPlanTotalCount() *ProjectUpsert {
+	u.SetNull(project.FieldPlanTotalCount)
+	return u
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (u *ProjectUpsert) SetPlanOverdueCount(v int) *ProjectUpsert {
+	u.Set(project.FieldPlanOverdueCount, v)
+	return u
+}
+
+// UpdatePlanOverdueCount sets the "plan_overdue_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePlanOverdueCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldPlanOverdueCount)
+	return u
+}
+
+// AddPlanOverdueCount adds v to the "plan_overdue_count" field.
+func (u *ProjectUpsert) AddPlanOverdueCount(v int) *ProjectUpsert {
+	u.Add(project.FieldPlanOverdueCount, v)
+	return u
+}
+
+// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
+func (u *ProjectUpsert) ClearPlanOverdueCount() *ProjectUpsert {
+	u.SetNull(project.FieldPlanOverdueCount)
+	return u
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (u *ProjectUpsert) SetPlanOverdueMonthCount(v int) *ProjectUpsert {
+	u.Set(project.FieldPlanOverdueMonthCount, v)
+	return u
+}
+
+// UpdatePlanOverdueMonthCount sets the "plan_overdue_month_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdatePlanOverdueMonthCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldPlanOverdueMonthCount)
+	return u
+}
+
+// AddPlanOverdueMonthCount adds v to the "plan_overdue_month_count" field.
+func (u *ProjectUpsert) AddPlanOverdueMonthCount(v int) *ProjectUpsert {
+	u.Add(project.FieldPlanOverdueMonthCount, v)
+	return u
+}
+
+// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
+func (u *ProjectUpsert) ClearPlanOverdueMonthCount() *ProjectUpsert {
+	u.SetNull(project.FieldPlanOverdueMonthCount)
+	return u
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (u *ProjectUpsert) SetProcessingDiagramFinishCount(v int) *ProjectUpsert {
+	u.Set(project.FieldProcessingDiagramFinishCount, v)
+	return u
+}
+
+// UpdateProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateProcessingDiagramFinishCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldProcessingDiagramFinishCount)
+	return u
+}
+
+// AddProcessingDiagramFinishCount adds v to the "processing_diagram_finish_count" field.
+func (u *ProjectUpsert) AddProcessingDiagramFinishCount(v int) *ProjectUpsert {
+	u.Add(project.FieldProcessingDiagramFinishCount, v)
+	return u
+}
+
+// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
+func (u *ProjectUpsert) ClearProcessingDiagramFinishCount() *ProjectUpsert {
+	u.SetNull(project.FieldProcessingDiagramFinishCount)
 	return u
 }
 
@@ -4955,6 +5123,118 @@ func (u *ProjectUpsertOne) UpdateBulkMaterialsUncompletedQuantity() *ProjectUpse
 func (u *ProjectUpsertOne) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearBulkMaterialsUncompletedQuantity()
+	})
+}
+
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (u *ProjectUpsertOne) SetPlanTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPlanTotalCount(v)
+	})
+}
+
+// AddPlanTotalCount adds v to the "plan_total_count" field.
+func (u *ProjectUpsertOne) AddPlanTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPlanTotalCount(v)
+	})
+}
+
+// UpdatePlanTotalCount sets the "plan_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePlanTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePlanTotalCount()
+	})
+}
+
+// ClearPlanTotalCount clears the value of the "plan_total_count" field.
+func (u *ProjectUpsertOne) ClearPlanTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPlanTotalCount()
+	})
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (u *ProjectUpsertOne) SetPlanOverdueCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPlanOverdueCount(v)
+	})
+}
+
+// AddPlanOverdueCount adds v to the "plan_overdue_count" field.
+func (u *ProjectUpsertOne) AddPlanOverdueCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPlanOverdueCount(v)
+	})
+}
+
+// UpdatePlanOverdueCount sets the "plan_overdue_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePlanOverdueCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePlanOverdueCount()
+	})
+}
+
+// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
+func (u *ProjectUpsertOne) ClearPlanOverdueCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPlanOverdueCount()
+	})
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (u *ProjectUpsertOne) SetPlanOverdueMonthCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPlanOverdueMonthCount(v)
+	})
+}
+
+// AddPlanOverdueMonthCount adds v to the "plan_overdue_month_count" field.
+func (u *ProjectUpsertOne) AddPlanOverdueMonthCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPlanOverdueMonthCount(v)
+	})
+}
+
+// UpdatePlanOverdueMonthCount sets the "plan_overdue_month_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdatePlanOverdueMonthCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePlanOverdueMonthCount()
+	})
+}
+
+// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
+func (u *ProjectUpsertOne) ClearPlanOverdueMonthCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPlanOverdueMonthCount()
+	})
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (u *ProjectUpsertOne) SetProcessingDiagramFinishCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetProcessingDiagramFinishCount(v)
+	})
+}
+
+// AddProcessingDiagramFinishCount adds v to the "processing_diagram_finish_count" field.
+func (u *ProjectUpsertOne) AddProcessingDiagramFinishCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddProcessingDiagramFinishCount(v)
+	})
+}
+
+// UpdateProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateProcessingDiagramFinishCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateProcessingDiagramFinishCount()
+	})
+}
+
+// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
+func (u *ProjectUpsertOne) ClearProcessingDiagramFinishCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearProcessingDiagramFinishCount()
 	})
 }
 
@@ -6993,6 +7273,118 @@ func (u *ProjectUpsertBulk) UpdateBulkMaterialsUncompletedQuantity() *ProjectUps
 func (u *ProjectUpsertBulk) ClearBulkMaterialsUncompletedQuantity() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
 		s.ClearBulkMaterialsUncompletedQuantity()
+	})
+}
+
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (u *ProjectUpsertBulk) SetPlanTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPlanTotalCount(v)
+	})
+}
+
+// AddPlanTotalCount adds v to the "plan_total_count" field.
+func (u *ProjectUpsertBulk) AddPlanTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPlanTotalCount(v)
+	})
+}
+
+// UpdatePlanTotalCount sets the "plan_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePlanTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePlanTotalCount()
+	})
+}
+
+// ClearPlanTotalCount clears the value of the "plan_total_count" field.
+func (u *ProjectUpsertBulk) ClearPlanTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPlanTotalCount()
+	})
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (u *ProjectUpsertBulk) SetPlanOverdueCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPlanOverdueCount(v)
+	})
+}
+
+// AddPlanOverdueCount adds v to the "plan_overdue_count" field.
+func (u *ProjectUpsertBulk) AddPlanOverdueCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPlanOverdueCount(v)
+	})
+}
+
+// UpdatePlanOverdueCount sets the "plan_overdue_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePlanOverdueCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePlanOverdueCount()
+	})
+}
+
+// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
+func (u *ProjectUpsertBulk) ClearPlanOverdueCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPlanOverdueCount()
+	})
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (u *ProjectUpsertBulk) SetPlanOverdueMonthCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetPlanOverdueMonthCount(v)
+	})
+}
+
+// AddPlanOverdueMonthCount adds v to the "plan_overdue_month_count" field.
+func (u *ProjectUpsertBulk) AddPlanOverdueMonthCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddPlanOverdueMonthCount(v)
+	})
+}
+
+// UpdatePlanOverdueMonthCount sets the "plan_overdue_month_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdatePlanOverdueMonthCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdatePlanOverdueMonthCount()
+	})
+}
+
+// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
+func (u *ProjectUpsertBulk) ClearPlanOverdueMonthCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearPlanOverdueMonthCount()
+	})
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (u *ProjectUpsertBulk) SetProcessingDiagramFinishCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetProcessingDiagramFinishCount(v)
+	})
+}
+
+// AddProcessingDiagramFinishCount adds v to the "processing_diagram_finish_count" field.
+func (u *ProjectUpsertBulk) AddProcessingDiagramFinishCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddProcessingDiagramFinishCount(v)
+	})
+}
+
+// UpdateProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateProcessingDiagramFinishCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateProcessingDiagramFinishCount()
+	})
+}
+
+// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
+func (u *ProjectUpsertBulk) ClearProcessingDiagramFinishCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearProcessingDiagramFinishCount()
 	})
 }
 

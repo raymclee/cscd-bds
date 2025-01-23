@@ -2,27 +2,13 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
+	"time"
 )
 
 func main() {
 
-	wd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(wd)
+	be := time.Date(2024, 4, 20, 23, 59, 59, 0, time.UTC)
 
-	entries, err := os.ReadDir(filepath.Join(wd, "smb"))
-	if err != nil {
-		fmt.Println(err)
-	}
-	for _, entry := range entries {
-		fmt.Println(entry.Info())
-		if strings.HasSuffix(entry.Name(), ".xlsx") {
-			fmt.Println(entry.Name())
-		}
-	}
+	fmt.Println(be.Before(time.Now()))
+
 }

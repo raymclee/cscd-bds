@@ -346,6 +346,9 @@ type ComplexityRoot struct {
 		OwnerApproveCount                       func(childComplexity int) int
 		PalletsInStock                          func(childComplexity int) int
 		PartsInStock                            func(childComplexity int) int
+		PlanOverdueCount                        func(childComplexity int) int
+		PlanOverdueMonthCount                   func(childComplexity int) int
+		PlanTotalCount                          func(childComplexity int) int
 		PmArea                                  func(childComplexity int) int
 		PmMonthActual                           func(childComplexity int) int
 		PmMonthTarget                           func(childComplexity int) int
@@ -353,6 +356,7 @@ type ComplexityRoot struct {
 		PmYearActual                            func(childComplexity int) int
 		PmYearTarget                            func(childComplexity int) int
 		PmYesterday                             func(childComplexity int) int
+		ProcessingDiagramFinishCount            func(childComplexity int) int
 		ProcessingWeight                        func(childComplexity int) int
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		QualityRanking                          func(childComplexity int) int
@@ -2293,6 +2297,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.PartsInStock(childComplexity), true
 
+	case "Project.planOverdueCount":
+		if e.complexity.Project.PlanOverdueCount == nil {
+			break
+		}
+
+		return e.complexity.Project.PlanOverdueCount(childComplexity), true
+
+	case "Project.planOverdueMonthCount":
+		if e.complexity.Project.PlanOverdueMonthCount == nil {
+			break
+		}
+
+		return e.complexity.Project.PlanOverdueMonthCount(childComplexity), true
+
+	case "Project.planTotalCount":
+		if e.complexity.Project.PlanTotalCount == nil {
+			break
+		}
+
+		return e.complexity.Project.PlanTotalCount(childComplexity), true
+
 	case "Project.pmArea":
 		if e.complexity.Project.PmArea == nil {
 			break
@@ -2341,6 +2366,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.PmYesterday(childComplexity), true
+
+	case "Project.processingDiagramFinishCount":
+		if e.complexity.Project.ProcessingDiagramFinishCount == nil {
+			break
+		}
+
+		return e.complexity.Project.ProcessingDiagramFinishCount(childComplexity), true
 
 	case "Project.processingWeight":
 		if e.complexity.Project.ProcessingWeight == nil {
@@ -6675,6 +6707,22 @@ type Project implements Node {
   散件未完成數量
   """
   bulkMaterialsUncompletedQuantity: Float
+  """
+  計劃總數
+  """
+  planTotalCount: Int
+  """
+  計劃超期數量
+  """
+  planOverdueCount: Int
+  """
+  當月計劃超期數量
+  """
+  planOverdueMonthCount: Int
+  """
+  加工圖完成數量
+  """
+  processingDiagramFinishCount: Int
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -8113,6 +8161,58 @@ input ProjectWhereInput {
   bulkMaterialsUncompletedQuantityLTE: Float
   bulkMaterialsUncompletedQuantityIsNil: Boolean
   bulkMaterialsUncompletedQuantityNotNil: Boolean
+  """
+  plan_total_count field predicates
+  """
+  planTotalCount: Int
+  planTotalCountNEQ: Int
+  planTotalCountIn: [Int!]
+  planTotalCountNotIn: [Int!]
+  planTotalCountGT: Int
+  planTotalCountGTE: Int
+  planTotalCountLT: Int
+  planTotalCountLTE: Int
+  planTotalCountIsNil: Boolean
+  planTotalCountNotNil: Boolean
+  """
+  plan_overdue_count field predicates
+  """
+  planOverdueCount: Int
+  planOverdueCountNEQ: Int
+  planOverdueCountIn: [Int!]
+  planOverdueCountNotIn: [Int!]
+  planOverdueCountGT: Int
+  planOverdueCountGTE: Int
+  planOverdueCountLT: Int
+  planOverdueCountLTE: Int
+  planOverdueCountIsNil: Boolean
+  planOverdueCountNotNil: Boolean
+  """
+  plan_overdue_month_count field predicates
+  """
+  planOverdueMonthCount: Int
+  planOverdueMonthCountNEQ: Int
+  planOverdueMonthCountIn: [Int!]
+  planOverdueMonthCountNotIn: [Int!]
+  planOverdueMonthCountGT: Int
+  planOverdueMonthCountGTE: Int
+  planOverdueMonthCountLT: Int
+  planOverdueMonthCountLTE: Int
+  planOverdueMonthCountIsNil: Boolean
+  planOverdueMonthCountNotNil: Boolean
+  """
+  processing_diagram_finish_count field predicates
+  """
+  processingDiagramFinishCount: Int
+  processingDiagramFinishCountNEQ: Int
+  processingDiagramFinishCountIn: [Int!]
+  processingDiagramFinishCountNotIn: [Int!]
+  processingDiagramFinishCountGT: Int
+  processingDiagramFinishCountGTE: Int
+  processingDiagramFinishCountLT: Int
+  processingDiagramFinishCountLTE: Int
+  processingDiagramFinishCountIsNil: Boolean
+  processingDiagramFinishCountNotNil: Boolean
   """
   vos edge predicates
   """
@@ -10542,6 +10642,26 @@ input UpdateProjectInput {
   """
   bulkMaterialsUncompletedQuantity: Float
   clearBulkMaterialsUncompletedQuantity: Boolean
+  """
+  計劃總數
+  """
+  planTotalCount: Int
+  clearPlanTotalCount: Boolean
+  """
+  計劃超期數量
+  """
+  planOverdueCount: Int
+  clearPlanOverdueCount: Boolean
+  """
+  當月計劃超期數量
+  """
+  planOverdueMonthCount: Int
+  clearPlanOverdueMonthCount: Boolean
+  """
+  加工圖完成數量
+  """
+  processingDiagramFinishCount: Int
+  clearProcessingDiagramFinishCount: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean

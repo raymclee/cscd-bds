@@ -275,6 +275,10 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldBulkMaterialsTotalOrderQuantity:         {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsTotalOrderQuantity},
 			project.FieldBulkMaterialsCompletedQuantity:          {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsCompletedQuantity},
 			project.FieldBulkMaterialsUncompletedQuantity:        {Type: field.TypeFloat64, Column: project.FieldBulkMaterialsUncompletedQuantity},
+			project.FieldPlanTotalCount:                          {Type: field.TypeInt, Column: project.FieldPlanTotalCount},
+			project.FieldPlanOverdueCount:                        {Type: field.TypeInt, Column: project.FieldPlanOverdueCount},
+			project.FieldPlanOverdueMonthCount:                   {Type: field.TypeInt, Column: project.FieldPlanOverdueMonthCount},
+			project.FieldProcessingDiagramFinishCount:            {Type: field.TypeInt, Column: project.FieldProcessingDiagramFinishCount},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2318,6 +2322,26 @@ func (f *ProjectFilter) WhereBulkMaterialsCompletedQuantity(p entql.Float64P) {
 // WhereBulkMaterialsUncompletedQuantity applies the entql float64 predicate on the bulk_materials_uncompleted_quantity field.
 func (f *ProjectFilter) WhereBulkMaterialsUncompletedQuantity(p entql.Float64P) {
 	f.Where(p.Field(project.FieldBulkMaterialsUncompletedQuantity))
+}
+
+// WherePlanTotalCount applies the entql int predicate on the plan_total_count field.
+func (f *ProjectFilter) WherePlanTotalCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldPlanTotalCount))
+}
+
+// WherePlanOverdueCount applies the entql int predicate on the plan_overdue_count field.
+func (f *ProjectFilter) WherePlanOverdueCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldPlanOverdueCount))
+}
+
+// WherePlanOverdueMonthCount applies the entql int predicate on the plan_overdue_month_count field.
+func (f *ProjectFilter) WherePlanOverdueMonthCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldPlanOverdueMonthCount))
+}
+
+// WhereProcessingDiagramFinishCount applies the entql int predicate on the processing_diagram_finish_count field.
+func (f *ProjectFilter) WhereProcessingDiagramFinishCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldProcessingDiagramFinishCount))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.

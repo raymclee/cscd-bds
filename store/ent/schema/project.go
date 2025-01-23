@@ -457,6 +457,26 @@ func (Project) Fields() []ent.Field {
 			Optional().
 			Nillable().
 			Comment("散件未完成數量"),
+
+		field.Int("plan_total_count").
+			Optional().
+			Nillable().
+			Comment("計劃總數"),
+
+		field.Int("plan_overdue_count").
+			Optional().
+			Nillable().
+			Comment("計劃超期數量"),
+
+		field.Int("plan_overdue_month_count").
+			Optional().
+			Nillable().
+			Comment("當月計劃超期數量"),
+
+		field.Int("processing_diagram_finish_count").
+			Optional().
+			Nillable().
+			Comment("加工圖完成數量"),
 	}
 }
 

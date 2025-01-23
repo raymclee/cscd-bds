@@ -411,6 +411,26 @@ func BulkMaterialsUncompletedQuantity(v float64) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldBulkMaterialsUncompletedQuantity, v))
 }
 
+// PlanTotalCount applies equality check predicate on the "plan_total_count" field. It's identical to PlanTotalCountEQ.
+func PlanTotalCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPlanTotalCount, v))
+}
+
+// PlanOverdueCount applies equality check predicate on the "plan_overdue_count" field. It's identical to PlanOverdueCountEQ.
+func PlanOverdueCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueMonthCount applies equality check predicate on the "plan_overdue_month_count" field. It's identical to PlanOverdueMonthCountEQ.
+func PlanOverdueMonthCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPlanOverdueMonthCount, v))
+}
+
+// ProcessingDiagramFinishCount applies equality check predicate on the "processing_diagram_finish_count" field. It's identical to ProcessingDiagramFinishCountEQ.
+func ProcessingDiagramFinishCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldProcessingDiagramFinishCount, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldCreatedAt, v))
@@ -4164,6 +4184,206 @@ func BulkMaterialsUncompletedQuantityIsNil() predicate.Project {
 // BulkMaterialsUncompletedQuantityNotNil applies the NotNil predicate on the "bulk_materials_uncompleted_quantity" field.
 func BulkMaterialsUncompletedQuantityNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldBulkMaterialsUncompletedQuantity))
+}
+
+// PlanTotalCountEQ applies the EQ predicate on the "plan_total_count" field.
+func PlanTotalCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPlanTotalCount, v))
+}
+
+// PlanTotalCountNEQ applies the NEQ predicate on the "plan_total_count" field.
+func PlanTotalCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPlanTotalCount, v))
+}
+
+// PlanTotalCountIn applies the In predicate on the "plan_total_count" field.
+func PlanTotalCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPlanTotalCount, vs...))
+}
+
+// PlanTotalCountNotIn applies the NotIn predicate on the "plan_total_count" field.
+func PlanTotalCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPlanTotalCount, vs...))
+}
+
+// PlanTotalCountGT applies the GT predicate on the "plan_total_count" field.
+func PlanTotalCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPlanTotalCount, v))
+}
+
+// PlanTotalCountGTE applies the GTE predicate on the "plan_total_count" field.
+func PlanTotalCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPlanTotalCount, v))
+}
+
+// PlanTotalCountLT applies the LT predicate on the "plan_total_count" field.
+func PlanTotalCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPlanTotalCount, v))
+}
+
+// PlanTotalCountLTE applies the LTE predicate on the "plan_total_count" field.
+func PlanTotalCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPlanTotalCount, v))
+}
+
+// PlanTotalCountIsNil applies the IsNil predicate on the "plan_total_count" field.
+func PlanTotalCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPlanTotalCount))
+}
+
+// PlanTotalCountNotNil applies the NotNil predicate on the "plan_total_count" field.
+func PlanTotalCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPlanTotalCount))
+}
+
+// PlanOverdueCountEQ applies the EQ predicate on the "plan_overdue_count" field.
+func PlanOverdueCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueCountNEQ applies the NEQ predicate on the "plan_overdue_count" field.
+func PlanOverdueCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueCountIn applies the In predicate on the "plan_overdue_count" field.
+func PlanOverdueCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPlanOverdueCount, vs...))
+}
+
+// PlanOverdueCountNotIn applies the NotIn predicate on the "plan_overdue_count" field.
+func PlanOverdueCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPlanOverdueCount, vs...))
+}
+
+// PlanOverdueCountGT applies the GT predicate on the "plan_overdue_count" field.
+func PlanOverdueCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueCountGTE applies the GTE predicate on the "plan_overdue_count" field.
+func PlanOverdueCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueCountLT applies the LT predicate on the "plan_overdue_count" field.
+func PlanOverdueCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueCountLTE applies the LTE predicate on the "plan_overdue_count" field.
+func PlanOverdueCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPlanOverdueCount, v))
+}
+
+// PlanOverdueCountIsNil applies the IsNil predicate on the "plan_overdue_count" field.
+func PlanOverdueCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPlanOverdueCount))
+}
+
+// PlanOverdueCountNotNil applies the NotNil predicate on the "plan_overdue_count" field.
+func PlanOverdueCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPlanOverdueCount))
+}
+
+// PlanOverdueMonthCountEQ applies the EQ predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldPlanOverdueMonthCount, v))
+}
+
+// PlanOverdueMonthCountNEQ applies the NEQ predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldPlanOverdueMonthCount, v))
+}
+
+// PlanOverdueMonthCountIn applies the In predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldPlanOverdueMonthCount, vs...))
+}
+
+// PlanOverdueMonthCountNotIn applies the NotIn predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldPlanOverdueMonthCount, vs...))
+}
+
+// PlanOverdueMonthCountGT applies the GT predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldPlanOverdueMonthCount, v))
+}
+
+// PlanOverdueMonthCountGTE applies the GTE predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldPlanOverdueMonthCount, v))
+}
+
+// PlanOverdueMonthCountLT applies the LT predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldPlanOverdueMonthCount, v))
+}
+
+// PlanOverdueMonthCountLTE applies the LTE predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldPlanOverdueMonthCount, v))
+}
+
+// PlanOverdueMonthCountIsNil applies the IsNil predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldPlanOverdueMonthCount))
+}
+
+// PlanOverdueMonthCountNotNil applies the NotNil predicate on the "plan_overdue_month_count" field.
+func PlanOverdueMonthCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldPlanOverdueMonthCount))
+}
+
+// ProcessingDiagramFinishCountEQ applies the EQ predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldProcessingDiagramFinishCount, v))
+}
+
+// ProcessingDiagramFinishCountNEQ applies the NEQ predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldProcessingDiagramFinishCount, v))
+}
+
+// ProcessingDiagramFinishCountIn applies the In predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldProcessingDiagramFinishCount, vs...))
+}
+
+// ProcessingDiagramFinishCountNotIn applies the NotIn predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldProcessingDiagramFinishCount, vs...))
+}
+
+// ProcessingDiagramFinishCountGT applies the GT predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldProcessingDiagramFinishCount, v))
+}
+
+// ProcessingDiagramFinishCountGTE applies the GTE predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldProcessingDiagramFinishCount, v))
+}
+
+// ProcessingDiagramFinishCountLT applies the LT predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldProcessingDiagramFinishCount, v))
+}
+
+// ProcessingDiagramFinishCountLTE applies the LTE predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldProcessingDiagramFinishCount, v))
+}
+
+// ProcessingDiagramFinishCountIsNil applies the IsNil predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldProcessingDiagramFinishCount))
+}
+
+// ProcessingDiagramFinishCountNotNil applies the NotNil predicate on the "processing_diagram_finish_count" field.
+func ProcessingDiagramFinishCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldProcessingDiagramFinishCount))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.

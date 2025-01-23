@@ -18,6 +18,7 @@ type State = {
   visitRecordFormVisitRecord: visitRecordItemFragment$data | null;
   competitorFormOpen: boolean;
   competitorFormCompetitor: Competitor | null;
+  tenderFormMapOpen: boolean;
 };
 
 type Action = {};
@@ -31,4 +32,5 @@ export const usePortalStore = create<State & Action>()((set) => ({
   visitRecordFormVisitRecord: null,
   competitorFormOpen: false,
   competitorFormCompetitor: null,
+  tenderFormMapOpen: false,
 }));

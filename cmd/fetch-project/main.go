@@ -17,6 +17,7 @@ import (
 	"time"
 
 	_ "github.com/SAP/go-hdb/driver"
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/microsoft/go-mssqldb"
 	"github.com/xuri/excelize/v2"
 )
@@ -45,6 +46,12 @@ const (
 	S4P_HANA_USER     = "SAPHANADB"
 	S4P_HANA_PASSWORD = "Sap2cool"
 	S4P_HANA_DATABASE = "SAPHANADB"
+
+	BI_HOST     = "10.148.7.9"
+	BI_PORT     = 3306
+	BI_USER     = "root"
+	BI_PASSWORD = "itl@admin"
+	BI_DATABASE = "finedb"
 )
 
 var (
@@ -104,6 +111,12 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Connected to S4P HANA DB")
+
+	biDb, err := sql.Open("mysql", fmt.Sprintf("root:%s@tcp(%s:%d)/%s", BI_PASSWORD, BI_HOST, BI_PORT, BI_DATABASE))
+	if err != nil {
+		panic(err)
+	}
+	defer biDb.Close()
 
 	s := store.New(false)
 
@@ -1191,6 +1204,75 @@ func main() {
 				} else {
 					p.SetNillableQualityScore(score)
 				}
+			}
+		}
+
+		// 抓取計劃
+		{
+			rows, err := stgDb.Query(`
+				select 
+					plan_end_time, 
+					actual_end_time 
+				from Transtrack_wbs_1
+				where left(project_name, 4) = @code
+			`, sql.Named("code", jobcode))
+			if err != nil {
+				fmt.Printf("%s 抓取計劃失败: %s\n", *jobcode, err.Error())
+			} else {
+				defer rows.Close()
+
+				var (
+					planTotalCount        int = 0
+					planOverdueCount      int = 0
+					planOverdueMonthCount int = 0
+					t                         = time.Now().UTC()
+				)
+
+				for rows.Next() {
+					var (
+						planEndTime   time.Time
+						actualEndTime time.Time
+					)
+					err := rows.Scan(&planEndTime, &actualEndTime)
+					if err != nil {
+						fmt.Printf("%s 抓取計劃失败: %s\n", *jobcode, err.Error())
+					} else {
+						planTotalCount++
+
+						if planEndTime.Before(t) {
+							if actualEndTime.Year() == 1970 {
+								planOverdueCount++
+								if planEndTime.Month() == t.Month() {
+									planOverdueMonthCount++
+								}
+							}
+						}
+					}
+				}
+
+				p.SetPlanTotalCount(planTotalCount)
+				p.SetPlanOverdueCount(planOverdueCount)
+				p.SetPlanOverdueMonthCount(planOverdueMonthCount)
+			}
+		}
+
+		// 抓取加工圖完成數量
+		{
+			row := biDb.QueryRow(`
+				select 
+					count(1) as approvedQuantity
+				from plm_bi_bom_info
+				where project_code = ?
+			`, jobcode)
+
+			var (
+				processingDiagramFinishCount *int
+			)
+			err = row.Scan(&processingDiagramFinishCount)
+			if err != nil && err != sql.ErrNoRows {
+				fmt.Printf("%s 抓取加工圖完成數量失败: %s\n", *jobcode, err.Error())
+			} else {
+				p.SetNillableProcessingDiagramFinishCount(processingDiagramFinishCount)
 			}
 		}
 

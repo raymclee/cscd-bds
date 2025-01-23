@@ -3173,6 +3173,14 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_bulkMaterialsCompletedQuantity(ctx, field)
 			case "bulkMaterialsUncompletedQuantity":
 				return ec.fieldContext_Project_bulkMaterialsUncompletedQuantity(ctx, field)
+			case "planTotalCount":
+				return ec.fieldContext_Project_planTotalCount(ctx, field)
+			case "planOverdueCount":
+				return ec.fieldContext_Project_planOverdueCount(ctx, field)
+			case "planOverdueMonthCount":
+				return ec.fieldContext_Project_planOverdueMonthCount(ctx, field)
+			case "processingDiagramFinishCount":
+				return ec.fieldContext_Project_processingDiagramFinishCount(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":

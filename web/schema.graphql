@@ -1811,6 +1811,12 @@ type Project implements Node {
   palletsInStock: Float
   """散件庫存數量"""
   partsInStock: Float
+  """計劃超期數量"""
+  planOverdueCount: Int
+  """當月計劃超期數量"""
+  planOverdueMonthCount: Int
+  """計劃總數"""
+  planTotalCount: Int
   """生产管理面积"""
   pmArea: Float
   """生产管理當月實際生產"""
@@ -1825,6 +1831,8 @@ type Project implements Node {
   pmYearTarget: Float
   """生产管理昨日生產"""
   pmYesterday: Float
+  """加工圖完成數量"""
+  processingDiagramFinishCount: Int
   """加工图成型重量"""
   processingWeight: Float
   projectStaffs(
@@ -2770,6 +2778,39 @@ input ProjectWhereInput {
   partsInStockNEQ: Float
   partsInStockNotIn: [Float!]
   partsInStockNotNil: Boolean
+  """plan_overdue_count field predicates"""
+  planOverdueCount: Int
+  planOverdueCountGT: Int
+  planOverdueCountGTE: Int
+  planOverdueCountIn: [Int!]
+  planOverdueCountIsNil: Boolean
+  planOverdueCountLT: Int
+  planOverdueCountLTE: Int
+  planOverdueCountNEQ: Int
+  planOverdueCountNotIn: [Int!]
+  planOverdueCountNotNil: Boolean
+  """plan_overdue_month_count field predicates"""
+  planOverdueMonthCount: Int
+  planOverdueMonthCountGT: Int
+  planOverdueMonthCountGTE: Int
+  planOverdueMonthCountIn: [Int!]
+  planOverdueMonthCountIsNil: Boolean
+  planOverdueMonthCountLT: Int
+  planOverdueMonthCountLTE: Int
+  planOverdueMonthCountNEQ: Int
+  planOverdueMonthCountNotIn: [Int!]
+  planOverdueMonthCountNotNil: Boolean
+  """plan_total_count field predicates"""
+  planTotalCount: Int
+  planTotalCountGT: Int
+  planTotalCountGTE: Int
+  planTotalCountIn: [Int!]
+  planTotalCountIsNil: Boolean
+  planTotalCountLT: Int
+  planTotalCountLTE: Int
+  planTotalCountNEQ: Int
+  planTotalCountNotIn: [Int!]
+  planTotalCountNotNil: Boolean
   """pm_area field predicates"""
   pmArea: Float
   pmAreaGT: Float
@@ -2847,6 +2888,17 @@ input ProjectWhereInput {
   pmYesterdayNEQ: Float
   pmYesterdayNotIn: [Float!]
   pmYesterdayNotNil: Boolean
+  """processing_diagram_finish_count field predicates"""
+  processingDiagramFinishCount: Int
+  processingDiagramFinishCountGT: Int
+  processingDiagramFinishCountGTE: Int
+  processingDiagramFinishCountIn: [Int!]
+  processingDiagramFinishCountIsNil: Boolean
+  processingDiagramFinishCountLT: Int
+  processingDiagramFinishCountLTE: Int
+  processingDiagramFinishCountNEQ: Int
+  processingDiagramFinishCountNotIn: [Int!]
+  processingDiagramFinishCountNotNil: Boolean
   """processing_weight field predicates"""
   processingWeight: Float
   processingWeightGT: Float
@@ -4740,6 +4792,9 @@ input UpdateProjectInput {
   clearOwnerApproveCount: Boolean
   clearPalletsInStock: Boolean
   clearPartsInStock: Boolean
+  clearPlanOverdueCount: Boolean
+  clearPlanOverdueMonthCount: Boolean
+  clearPlanTotalCount: Boolean
   clearPmArea: Boolean
   clearPmMonthActual: Boolean
   clearPmMonthTarget: Boolean
@@ -4747,6 +4802,7 @@ input UpdateProjectInput {
   clearPmYearActual: Boolean
   clearPmYearTarget: Boolean
   clearPmYesterday: Boolean
+  clearProcessingDiagramFinishCount: Boolean
   clearProcessingWeight: Boolean
   clearProjectStaffs: Boolean
   clearQualityRanking: Boolean
@@ -4832,6 +4888,12 @@ input UpdateProjectInput {
   palletsInStock: Float
   """散件庫存數量"""
   partsInStock: Float
+  """計劃超期數量"""
+  planOverdueCount: Int
+  """當月計劃超期數量"""
+  planOverdueMonthCount: Int
+  """計劃總數"""
+  planTotalCount: Int
   """生产管理面积"""
   pmArea: Float
   """生产管理當月實際生產"""
@@ -4846,6 +4908,8 @@ input UpdateProjectInput {
   pmYearTarget: Float
   """生产管理昨日生產"""
   pmYesterday: Float
+  """加工圖完成數量"""
+  processingDiagramFinishCount: Int
   """加工图成型重量"""
   processingWeight: Float
   """質量排名"""

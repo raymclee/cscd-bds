@@ -1911,6 +1911,12 @@ export type Project = Node & {
   palletsInStock?: Maybe<Scalars['Float']['output']>;
   /** 散件庫存數量 */
   partsInStock?: Maybe<Scalars['Float']['output']>;
+  /** 計劃超期數量 */
+  planOverdueCount?: Maybe<Scalars['Int']['output']>;
+  /** 當月計劃超期數量 */
+  planOverdueMonthCount?: Maybe<Scalars['Int']['output']>;
+  /** 計劃總數 */
+  planTotalCount?: Maybe<Scalars['Int']['output']>;
   /** 生产管理面积 */
   pmArea?: Maybe<Scalars['Float']['output']>;
   /** 生产管理當月實際生產 */
@@ -1925,6 +1931,8 @@ export type Project = Node & {
   pmYearTarget?: Maybe<Scalars['Float']['output']>;
   /** 生产管理昨日生產 */
   pmYesterday?: Maybe<Scalars['Float']['output']>;
+  /** 加工圖完成數量 */
+  processingDiagramFinishCount?: Maybe<Scalars['Int']['output']>;
   /** 加工图成型重量 */
   processingWeight?: Maybe<Scalars['Float']['output']>;
   projectStaffs: ProjectStaffConnection;
@@ -2871,6 +2879,39 @@ export type ProjectWhereInput = {
   partsInStockNEQ?: InputMaybe<Scalars['Float']['input']>;
   partsInStockNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   partsInStockNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** plan_overdue_count field predicates */
+  planOverdueCount?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueCountGT?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  planOverdueCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  planOverdueCountLT?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  planOverdueCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** plan_overdue_month_count field predicates */
+  planOverdueMonthCount?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueMonthCountGT?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueMonthCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueMonthCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  planOverdueMonthCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  planOverdueMonthCountLT?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueMonthCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueMonthCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  planOverdueMonthCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  planOverdueMonthCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** plan_total_count field predicates */
+  planTotalCount?: InputMaybe<Scalars['Int']['input']>;
+  planTotalCountGT?: InputMaybe<Scalars['Int']['input']>;
+  planTotalCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  planTotalCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  planTotalCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  planTotalCountLT?: InputMaybe<Scalars['Int']['input']>;
+  planTotalCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  planTotalCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  planTotalCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  planTotalCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** pm_area field predicates */
   pmArea?: InputMaybe<Scalars['Float']['input']>;
   pmAreaGT?: InputMaybe<Scalars['Float']['input']>;
@@ -2948,6 +2989,17 @@ export type ProjectWhereInput = {
   pmYesterdayNEQ?: InputMaybe<Scalars['Float']['input']>;
   pmYesterdayNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   pmYesterdayNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** processing_diagram_finish_count field predicates */
+  processingDiagramFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  processingDiagramFinishCountGT?: InputMaybe<Scalars['Int']['input']>;
+  processingDiagramFinishCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  processingDiagramFinishCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  processingDiagramFinishCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  processingDiagramFinishCountLT?: InputMaybe<Scalars['Int']['input']>;
+  processingDiagramFinishCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  processingDiagramFinishCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  processingDiagramFinishCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  processingDiagramFinishCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** processing_weight field predicates */
   processingWeight?: InputMaybe<Scalars['Float']['input']>;
   processingWeightGT?: InputMaybe<Scalars['Float']['input']>;
@@ -4777,6 +4829,9 @@ export type UpdateProjectInput = {
   clearOwnerApproveCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearPalletsInStock?: InputMaybe<Scalars['Boolean']['input']>;
   clearPartsInStock?: InputMaybe<Scalars['Boolean']['input']>;
+  clearPlanOverdueCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearPlanOverdueMonthCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearPlanTotalCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmArea?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmMonthActual?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmMonthTarget?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4784,6 +4839,7 @@ export type UpdateProjectInput = {
   clearPmYearActual?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmYearTarget?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmYesterday?: InputMaybe<Scalars['Boolean']['input']>;
+  clearProcessingDiagramFinishCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearProcessingWeight?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectStaffs?: InputMaybe<Scalars['Boolean']['input']>;
   clearQualityRanking?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4869,6 +4925,12 @@ export type UpdateProjectInput = {
   palletsInStock?: InputMaybe<Scalars['Float']['input']>;
   /** 散件庫存數量 */
   partsInStock?: InputMaybe<Scalars['Float']['input']>;
+  /** 計劃超期數量 */
+  planOverdueCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 當月計劃超期數量 */
+  planOverdueMonthCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 計劃總數 */
+  planTotalCount?: InputMaybe<Scalars['Int']['input']>;
   /** 生产管理面积 */
   pmArea?: InputMaybe<Scalars['Float']['input']>;
   /** 生产管理當月實際生產 */
@@ -4883,6 +4945,8 @@ export type UpdateProjectInput = {
   pmYearTarget?: InputMaybe<Scalars['Float']['input']>;
   /** 生产管理昨日生產 */
   pmYesterday?: InputMaybe<Scalars['Float']['input']>;
+  /** 加工圖完成數量 */
+  processingDiagramFinishCount?: InputMaybe<Scalars['Int']['input']>;
   /** 加工图成型重量 */
   processingWeight?: InputMaybe<Scalars['Float']['input']>;
   /** 質量排名 */

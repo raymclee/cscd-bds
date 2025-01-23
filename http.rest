@@ -8,20 +8,33 @@ Content-Type: application/json
 
 
 ###
-GET https://restapi.amap.com/v3/geocode/geo?address=%E5%85%AB%E5%8F%B7%E5%95%86%E4%B8%9A%E5%B9%BF%E5%9C%BA&key=28982eb1a6a3cd956e0e0614c2fb131b
-
-###
-GET https://restapi.amap.com/v3/geocode/regeo?address=The Henderson Art Garden&key=28982eb1a6a3cd956e0e0614c2fb131b
-
-
-###
 GET https://open.larkoffice.com/open-apis/search/v1/user?query=maria
 Authorization: Bearer u-cZvv42rER3kXDnJpqg6EI3lh4X0454l3hU0011A00AZk
 Content-Type: application/json
-
 
 ###
 GET https://open.feishu.cn/open-apis/search/v1/user?query=liwan
 Authorization: Bearer u-fXultMCyda6UqjkQk6xZwWg1jG6R5kT1Wa0041082bBA
 Content-Type: application/json
 
+
+@key=28982eb1a6a3cd956e0e0614c2fb131b
+
+###
+GET https://restapi.amap.com/v3/geocode/geo?address=通州副中心&key={{key}}
+
+###
+GET https://restapi.amap.com/v3/geocode/regeo?address=通州副中心&key={{key}}
+
+
+
+###
+GET https://restapi.amap.com/v3/place/around?location=114.226216,22.281427&key={{key}}&radius=50&city=810000&010000|020000|030000|040000|050000|060000|070000|080000|090000|100000|110000|120000|130000|140000|150000|160000|170000|180000|190000|200000|220000|970000|990000
+
+
+###
+GET https://restapi.amap.com/v3/geocode/regeo?location=12709254.638037492,2544298.2518904665&key={{key}}&extensions=base
+
+
+###
+GET https://restapi.amap.com/v5/place/text?key={{key}}&keywords=通州副中心&types=010000|020000|030000|040000|050000|060000|070000|080000|090000|100000|110000|120000|130000|140000|150000|160000|170000|180000|190000|200000|220000|970000|990000

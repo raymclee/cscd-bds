@@ -900,6 +900,14 @@ type UpdateProjectInput struct {
 	BulkMaterialsCompletedQuantity               *float64
 	ClearBulkMaterialsUncompletedQuantity        bool
 	BulkMaterialsUncompletedQuantity             *float64
+	ClearPlanTotalCount                          bool
+	PlanTotalCount                               *int
+	ClearPlanOverdueCount                        bool
+	PlanOverdueCount                             *int
+	ClearPlanOverdueMonthCount                   bool
+	PlanOverdueMonthCount                        *int
+	ClearProcessingDiagramFinishCount            bool
+	ProcessingDiagramFinishCount                 *int
 	ClearVos                                     bool
 	AddVoIDs                                     []xid.ID
 	RemoveVoIDs                                  []xid.ID
@@ -1320,6 +1328,30 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.BulkMaterialsUncompletedQuantity; v != nil {
 		m.SetBulkMaterialsUncompletedQuantity(*v)
+	}
+	if i.ClearPlanTotalCount {
+		m.ClearPlanTotalCount()
+	}
+	if v := i.PlanTotalCount; v != nil {
+		m.SetPlanTotalCount(*v)
+	}
+	if i.ClearPlanOverdueCount {
+		m.ClearPlanOverdueCount()
+	}
+	if v := i.PlanOverdueCount; v != nil {
+		m.SetPlanOverdueCount(*v)
+	}
+	if i.ClearPlanOverdueMonthCount {
+		m.ClearPlanOverdueMonthCount()
+	}
+	if v := i.PlanOverdueMonthCount; v != nil {
+		m.SetPlanOverdueMonthCount(*v)
+	}
+	if i.ClearProcessingDiagramFinishCount {
+		m.ClearProcessingDiagramFinishCount()
+	}
+	if v := i.ProcessingDiagramFinishCount; v != nil {
+		m.SetProcessingDiagramFinishCount(*v)
 	}
 	if i.ClearVos {
 		m.ClearVos()

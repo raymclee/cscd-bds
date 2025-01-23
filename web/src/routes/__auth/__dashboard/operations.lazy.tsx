@@ -180,6 +180,10 @@ function RouteComponent() {
               bulkMaterialsTotalOrderQuantity
               bulkMaterialsCompletedQuantity
               bulkMaterialsUncompletedQuantity
+              planTotalCount
+              planOverdueCount
+              planOverdueMonthCount
+              processingDiagramFinishCount
               projectStaffs(
                 first: 3
                 orderBy: { field: CREATED_AT, direction: DESC }
@@ -350,6 +354,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
     pj?.bulkMaterialsCompletedQuantity || 0;
   const bulkMaterialsUncompletedQuantity =
     pj?.bulkMaterialsUncompletedQuantity || 0;
+  const planTotalCount = pj?.planTotalCount || 0;
+  const planOverdueCount = pj?.planOverdueCount || 0;
+  const planOverdueMonthCount = pj?.planOverdueMonthCount || 0;
+  const processingDiagramFinishCount = pj?.processingDiagramFinishCount || 0;
 
   return (
     <>
@@ -1285,11 +1293,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="absolute left-20 top-1/2 -translate-y-1/2 text-sm font-bold">
                     四位一体计划
                   </div>
-                  <div className="absolute right-10 top-1/2 -translate-y-1/2 text-xxs text-white/50">
+                  <div className="absolute right-14 top-1/2 -translate-y-1/2 text-xxs text-white/50">
                     计划总数
                   </div>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
-                    99
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${planTotalCount}`}
+                    </TextScramble>
                   </div>
                 </div>
                 <div className="relative flex w-[85%] items-center justify-evenly gap-6 self-end px-2 py-2.5 shadow-lg">
@@ -1298,7 +1312,29 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       累计超期
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      22
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${planOverdueCount}`}
+                      </TextScramble>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xxs text-brand-project/50">
+                      累计占比
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${percent(planOverdueCount / planTotalCount)}`}
+                      </TextScramble>
+                      <span className="ml-1 text-xs">%</span>
                     </div>
                   </div>
 
@@ -1307,7 +1343,29 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                       当月超期
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      4
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${planOverdueMonthCount}`}
+                      </TextScramble>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-xxs text-brand-project/50">
+                      当月占比
+                    </div>
+                    <div className="text-sm font-bold text-brand-project">
+                      <TextScramble
+                        characterSet="0123456789"
+                        key={pj?.code}
+                        as="span"
+                      >
+                        {`${percent(planOverdueMonthCount / planTotalCount)}`}
+                      </TextScramble>
+                      <span className="ml-1 text-xs">%</span>
                     </div>
                   </div>
                 </div>
@@ -1399,8 +1457,17 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <div>
                   <img src={drawingCenter} />
                 </div>
-                <div>
+                <div className="relative">
                   <img src={drawingRight} />
+                  <div className="absolute left-1/2 top-[37.5px] text-xxs text-yellow-500">
+                    <TextScramble
+                      characterSet="0123456789"
+                      key={pj?.code}
+                      as="span"
+                    >
+                      {`${formatAmountWithCommas(processingDiagramFinishCount)}`}
+                    </TextScramble>
+                  </div>
                 </div>
               </div>
               <div className="mt-0.5">

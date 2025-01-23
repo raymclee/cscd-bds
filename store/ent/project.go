@@ -160,6 +160,14 @@ type Project struct {
 	BulkMaterialsCompletedQuantity *float64 `json:"bulk_materials_completed_quantity,omitempty"`
 	// 散件未完成數量
 	BulkMaterialsUncompletedQuantity *float64 `json:"bulk_materials_uncompleted_quantity,omitempty"`
+	// 計劃總數
+	PlanTotalCount *int `json:"plan_total_count,omitempty"`
+	// 計劃超期數量
+	PlanOverdueCount *int `json:"plan_overdue_count,omitempty"`
+	// 當月計劃超期數量
+	PlanOverdueMonthCount *int `json:"plan_overdue_month_count,omitempty"`
+	// 加工圖完成數量
+	ProcessingDiagramFinishCount *int `json:"processing_diagram_finish_count,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -209,7 +217,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldMaterialLoss, project.FieldDesignRatedWeight, project.FieldProcessingWeight, project.FieldItemStockWeight, project.FieldPalletsInStock, project.FieldPartsInStock, project.FieldQualityScore, project.FieldQualityRanking, project.FieldBulkMaterialsTotalOrderQuantity, project.FieldBulkMaterialsCompletedQuantity, project.FieldBulkMaterialsUncompletedQuantity:
 			values[i] = new(sql.NullFloat64)
-		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth:
+		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth, project.FieldPlanTotalCount, project.FieldPlanOverdueCount, project.FieldPlanOverdueMonthCount, project.FieldProcessingDiagramFinishCount:
 			values[i] = new(sql.NullInt64)
 		case project.FieldCode, project.FieldManager, project.FieldName, project.FieldOwner, project.FieldJzs, project.FieldMcn, project.FieldConsultant, project.FieldAreas, project.FieldMntyr, project.FieldConType, project.FieldXmfzr:
 			values[i] = new(sql.NullString)
@@ -731,6 +739,34 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.BulkMaterialsUncompletedQuantity = new(float64)
 				*pr.BulkMaterialsUncompletedQuantity = value.Float64
 			}
+		case project.FieldPlanTotalCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field plan_total_count", values[i])
+			} else if value.Valid {
+				pr.PlanTotalCount = new(int)
+				*pr.PlanTotalCount = int(value.Int64)
+			}
+		case project.FieldPlanOverdueCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field plan_overdue_count", values[i])
+			} else if value.Valid {
+				pr.PlanOverdueCount = new(int)
+				*pr.PlanOverdueCount = int(value.Int64)
+			}
+		case project.FieldPlanOverdueMonthCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field plan_overdue_month_count", values[i])
+			} else if value.Valid {
+				pr.PlanOverdueMonthCount = new(int)
+				*pr.PlanOverdueMonthCount = int(value.Int64)
+			}
+		case project.FieldProcessingDiagramFinishCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field processing_diagram_finish_count", values[i])
+			} else if value.Valid {
+				pr.ProcessingDiagramFinishCount = new(int)
+				*pr.ProcessingDiagramFinishCount = int(value.Int64)
+			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -1121,6 +1157,26 @@ func (pr *Project) String() string {
 	builder.WriteString(", ")
 	if v := pr.BulkMaterialsUncompletedQuantity; v != nil {
 		builder.WriteString("bulk_materials_uncompleted_quantity=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PlanTotalCount; v != nil {
+		builder.WriteString("plan_total_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PlanOverdueCount; v != nil {
+		builder.WriteString("plan_overdue_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.PlanOverdueMonthCount; v != nil {
+		builder.WriteString("plan_overdue_month_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.ProcessingDiagramFinishCount; v != nil {
+		builder.WriteString("processing_diagram_finish_count=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dede072897b990ccdfec57baddd219b9>>
+ * @generated SignedSource<<f90a58b9f1fcea23ed4d3f9eea2376df>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -66,6 +66,9 @@ export type UpdateProjectInput = {
   clearOwnerApproveCount?: boolean | null | undefined;
   clearPalletsInStock?: boolean | null | undefined;
   clearPartsInStock?: boolean | null | undefined;
+  clearPlanOverdueCount?: boolean | null | undefined;
+  clearPlanOverdueMonthCount?: boolean | null | undefined;
+  clearPlanTotalCount?: boolean | null | undefined;
   clearPmArea?: boolean | null | undefined;
   clearPmMonthActual?: boolean | null | undefined;
   clearPmMonthTarget?: boolean | null | undefined;
@@ -73,6 +76,7 @@ export type UpdateProjectInput = {
   clearPmYearActual?: boolean | null | undefined;
   clearPmYearTarget?: boolean | null | undefined;
   clearPmYesterday?: boolean | null | undefined;
+  clearProcessingDiagramFinishCount?: boolean | null | undefined;
   clearProcessingWeight?: boolean | null | undefined;
   clearProjectStaffs?: boolean | null | undefined;
   clearQualityRanking?: boolean | null | undefined;
@@ -126,6 +130,9 @@ export type UpdateProjectInput = {
   ownerApproveCount?: number | null | undefined;
   palletsInStock?: number | null | undefined;
   partsInStock?: number | null | undefined;
+  planOverdueCount?: number | null | undefined;
+  planOverdueMonthCount?: number | null | undefined;
+  planTotalCount?: number | null | undefined;
   pmArea?: number | null | undefined;
   pmMonthActual?: number | null | undefined;
   pmMonthTarget?: number | null | undefined;
@@ -133,6 +140,7 @@ export type UpdateProjectInput = {
   pmYearActual?: number | null | undefined;
   pmYearTarget?: number | null | undefined;
   pmYesterday?: number | null | undefined;
+  processingDiagramFinishCount?: number | null | undefined;
   processingWeight?: number | null | undefined;
   qualityRanking?: number | null | undefined;
   qualityScore?: number | null | undefined;

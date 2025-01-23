@@ -157,6 +157,14 @@ const (
 	FieldBulkMaterialsCompletedQuantity = "bulk_materials_completed_quantity"
 	// FieldBulkMaterialsUncompletedQuantity holds the string denoting the bulk_materials_uncompleted_quantity field in the database.
 	FieldBulkMaterialsUncompletedQuantity = "bulk_materials_uncompleted_quantity"
+	// FieldPlanTotalCount holds the string denoting the plan_total_count field in the database.
+	FieldPlanTotalCount = "plan_total_count"
+	// FieldPlanOverdueCount holds the string denoting the plan_overdue_count field in the database.
+	FieldPlanOverdueCount = "plan_overdue_count"
+	// FieldPlanOverdueMonthCount holds the string denoting the plan_overdue_month_count field in the database.
+	FieldPlanOverdueMonthCount = "plan_overdue_month_count"
+	// FieldProcessingDiagramFinishCount holds the string denoting the processing_diagram_finish_count field in the database.
+	FieldProcessingDiagramFinishCount = "processing_diagram_finish_count"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
@@ -253,6 +261,10 @@ var Columns = []string{
 	FieldBulkMaterialsTotalOrderQuantity,
 	FieldBulkMaterialsCompletedQuantity,
 	FieldBulkMaterialsUncompletedQuantity,
+	FieldPlanTotalCount,
+	FieldPlanOverdueCount,
+	FieldPlanOverdueMonthCount,
+	FieldProcessingDiagramFinishCount,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -639,6 +651,26 @@ func ByBulkMaterialsCompletedQuantity(opts ...sql.OrderTermOption) OrderOption {
 // ByBulkMaterialsUncompletedQuantity orders the results by the bulk_materials_uncompleted_quantity field.
 func ByBulkMaterialsUncompletedQuantity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBulkMaterialsUncompletedQuantity, opts...).ToFunc()
+}
+
+// ByPlanTotalCount orders the results by the plan_total_count field.
+func ByPlanTotalCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPlanTotalCount, opts...).ToFunc()
+}
+
+// ByPlanOverdueCount orders the results by the plan_overdue_count field.
+func ByPlanOverdueCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPlanOverdueCount, opts...).ToFunc()
+}
+
+// ByPlanOverdueMonthCount orders the results by the plan_overdue_month_count field.
+func ByPlanOverdueMonthCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPlanOverdueMonthCount, opts...).ToFunc()
+}
+
+// ByProcessingDiagramFinishCount orders the results by the processing_diagram_finish_count field.
+func ByProcessingDiagramFinishCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProcessingDiagramFinishCount, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.

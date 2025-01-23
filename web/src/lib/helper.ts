@@ -14,7 +14,7 @@ export function percent(
   if (!numerator || !denominator) {
     return 0;
   }
-  return Math.floor((numerator / denominator) * 100);
+  return Math.round((numerator / denominator) * 100 * 100) / 100;
 }
 
 export function projectTypeText(typ: Maybe<string> | undefined): string {

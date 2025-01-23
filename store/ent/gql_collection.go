@@ -2637,6 +2637,26 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldBulkMaterialsUncompletedQuantity)
 				fieldSeen[project.FieldBulkMaterialsUncompletedQuantity] = struct{}{}
 			}
+		case "planTotalCount":
+			if _, ok := fieldSeen[project.FieldPlanTotalCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldPlanTotalCount)
+				fieldSeen[project.FieldPlanTotalCount] = struct{}{}
+			}
+		case "planOverdueCount":
+			if _, ok := fieldSeen[project.FieldPlanOverdueCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldPlanOverdueCount)
+				fieldSeen[project.FieldPlanOverdueCount] = struct{}{}
+			}
+		case "planOverdueMonthCount":
+			if _, ok := fieldSeen[project.FieldPlanOverdueMonthCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldPlanOverdueMonthCount)
+				fieldSeen[project.FieldPlanOverdueMonthCount] = struct{}{}
+			}
+		case "processingDiagramFinishCount":
+			if _, ok := fieldSeen[project.FieldProcessingDiagramFinishCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldProcessingDiagramFinishCount)
+				fieldSeen[project.FieldProcessingDiagramFinishCount] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

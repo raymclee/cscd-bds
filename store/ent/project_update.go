@@ -1776,6 +1776,114 @@ func (pu *ProjectUpdate) ClearBulkMaterialsUncompletedQuantity() *ProjectUpdate 
 	return pu
 }
 
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (pu *ProjectUpdate) SetPlanTotalCount(i int) *ProjectUpdate {
+	pu.mutation.ResetPlanTotalCount()
+	pu.mutation.SetPlanTotalCount(i)
+	return pu
+}
+
+// SetNillablePlanTotalCount sets the "plan_total_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePlanTotalCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetPlanTotalCount(*i)
+	}
+	return pu
+}
+
+// AddPlanTotalCount adds i to the "plan_total_count" field.
+func (pu *ProjectUpdate) AddPlanTotalCount(i int) *ProjectUpdate {
+	pu.mutation.AddPlanTotalCount(i)
+	return pu
+}
+
+// ClearPlanTotalCount clears the value of the "plan_total_count" field.
+func (pu *ProjectUpdate) ClearPlanTotalCount() *ProjectUpdate {
+	pu.mutation.ClearPlanTotalCount()
+	return pu
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (pu *ProjectUpdate) SetPlanOverdueCount(i int) *ProjectUpdate {
+	pu.mutation.ResetPlanOverdueCount()
+	pu.mutation.SetPlanOverdueCount(i)
+	return pu
+}
+
+// SetNillablePlanOverdueCount sets the "plan_overdue_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePlanOverdueCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetPlanOverdueCount(*i)
+	}
+	return pu
+}
+
+// AddPlanOverdueCount adds i to the "plan_overdue_count" field.
+func (pu *ProjectUpdate) AddPlanOverdueCount(i int) *ProjectUpdate {
+	pu.mutation.AddPlanOverdueCount(i)
+	return pu
+}
+
+// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
+func (pu *ProjectUpdate) ClearPlanOverdueCount() *ProjectUpdate {
+	pu.mutation.ClearPlanOverdueCount()
+	return pu
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (pu *ProjectUpdate) SetPlanOverdueMonthCount(i int) *ProjectUpdate {
+	pu.mutation.ResetPlanOverdueMonthCount()
+	pu.mutation.SetPlanOverdueMonthCount(i)
+	return pu
+}
+
+// SetNillablePlanOverdueMonthCount sets the "plan_overdue_month_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillablePlanOverdueMonthCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetPlanOverdueMonthCount(*i)
+	}
+	return pu
+}
+
+// AddPlanOverdueMonthCount adds i to the "plan_overdue_month_count" field.
+func (pu *ProjectUpdate) AddPlanOverdueMonthCount(i int) *ProjectUpdate {
+	pu.mutation.AddPlanOverdueMonthCount(i)
+	return pu
+}
+
+// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
+func (pu *ProjectUpdate) ClearPlanOverdueMonthCount() *ProjectUpdate {
+	pu.mutation.ClearPlanOverdueMonthCount()
+	return pu
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (pu *ProjectUpdate) SetProcessingDiagramFinishCount(i int) *ProjectUpdate {
+	pu.mutation.ResetProcessingDiagramFinishCount()
+	pu.mutation.SetProcessingDiagramFinishCount(i)
+	return pu
+}
+
+// SetNillableProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableProcessingDiagramFinishCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetProcessingDiagramFinishCount(*i)
+	}
+	return pu
+}
+
+// AddProcessingDiagramFinishCount adds i to the "processing_diagram_finish_count" field.
+func (pu *ProjectUpdate) AddProcessingDiagramFinishCount(i int) *ProjectUpdate {
+	pu.mutation.AddProcessingDiagramFinishCount(i)
+	return pu
+}
+
+// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
+func (pu *ProjectUpdate) ClearProcessingDiagramFinishCount() *ProjectUpdate {
+	pu.mutation.ClearProcessingDiagramFinishCount()
+	return pu
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (pu *ProjectUpdate) AddVoIDs(ids ...xid.ID) *ProjectUpdate {
 	pu.mutation.AddVoIDs(ids...)
@@ -2467,6 +2575,42 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.BulkMaterialsUncompletedQuantityCleared() {
 		_spec.ClearField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64)
+	}
+	if value, ok := pu.mutation.PlanTotalCount(); ok {
+		_spec.SetField(project.FieldPlanTotalCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedPlanTotalCount(); ok {
+		_spec.AddField(project.FieldPlanTotalCount, field.TypeInt, value)
+	}
+	if pu.mutation.PlanTotalCountCleared() {
+		_spec.ClearField(project.FieldPlanTotalCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.PlanOverdueCount(); ok {
+		_spec.SetField(project.FieldPlanOverdueCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedPlanOverdueCount(); ok {
+		_spec.AddField(project.FieldPlanOverdueCount, field.TypeInt, value)
+	}
+	if pu.mutation.PlanOverdueCountCleared() {
+		_spec.ClearField(project.FieldPlanOverdueCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.PlanOverdueMonthCount(); ok {
+		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedPlanOverdueMonthCount(); ok {
+		_spec.AddField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
+	}
+	if pu.mutation.PlanOverdueMonthCountCleared() {
+		_spec.ClearField(project.FieldPlanOverdueMonthCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.ProcessingDiagramFinishCount(); ok {
+		_spec.SetField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedProcessingDiagramFinishCount(); ok {
+		_spec.AddField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	}
+	if pu.mutation.ProcessingDiagramFinishCountCleared() {
+		_spec.ClearField(project.FieldProcessingDiagramFinishCount, field.TypeInt)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -4323,6 +4467,114 @@ func (puo *ProjectUpdateOne) ClearBulkMaterialsUncompletedQuantity() *ProjectUpd
 	return puo
 }
 
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (puo *ProjectUpdateOne) SetPlanTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetPlanTotalCount()
+	puo.mutation.SetPlanTotalCount(i)
+	return puo
+}
+
+// SetNillablePlanTotalCount sets the "plan_total_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePlanTotalCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetPlanTotalCount(*i)
+	}
+	return puo
+}
+
+// AddPlanTotalCount adds i to the "plan_total_count" field.
+func (puo *ProjectUpdateOne) AddPlanTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddPlanTotalCount(i)
+	return puo
+}
+
+// ClearPlanTotalCount clears the value of the "plan_total_count" field.
+func (puo *ProjectUpdateOne) ClearPlanTotalCount() *ProjectUpdateOne {
+	puo.mutation.ClearPlanTotalCount()
+	return puo
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (puo *ProjectUpdateOne) SetPlanOverdueCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetPlanOverdueCount()
+	puo.mutation.SetPlanOverdueCount(i)
+	return puo
+}
+
+// SetNillablePlanOverdueCount sets the "plan_overdue_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePlanOverdueCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetPlanOverdueCount(*i)
+	}
+	return puo
+}
+
+// AddPlanOverdueCount adds i to the "plan_overdue_count" field.
+func (puo *ProjectUpdateOne) AddPlanOverdueCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddPlanOverdueCount(i)
+	return puo
+}
+
+// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
+func (puo *ProjectUpdateOne) ClearPlanOverdueCount() *ProjectUpdateOne {
+	puo.mutation.ClearPlanOverdueCount()
+	return puo
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (puo *ProjectUpdateOne) SetPlanOverdueMonthCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetPlanOverdueMonthCount()
+	puo.mutation.SetPlanOverdueMonthCount(i)
+	return puo
+}
+
+// SetNillablePlanOverdueMonthCount sets the "plan_overdue_month_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillablePlanOverdueMonthCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetPlanOverdueMonthCount(*i)
+	}
+	return puo
+}
+
+// AddPlanOverdueMonthCount adds i to the "plan_overdue_month_count" field.
+func (puo *ProjectUpdateOne) AddPlanOverdueMonthCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddPlanOverdueMonthCount(i)
+	return puo
+}
+
+// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
+func (puo *ProjectUpdateOne) ClearPlanOverdueMonthCount() *ProjectUpdateOne {
+	puo.mutation.ClearPlanOverdueMonthCount()
+	return puo
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (puo *ProjectUpdateOne) SetProcessingDiagramFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetProcessingDiagramFinishCount()
+	puo.mutation.SetProcessingDiagramFinishCount(i)
+	return puo
+}
+
+// SetNillableProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableProcessingDiagramFinishCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetProcessingDiagramFinishCount(*i)
+	}
+	return puo
+}
+
+// AddProcessingDiagramFinishCount adds i to the "processing_diagram_finish_count" field.
+func (puo *ProjectUpdateOne) AddProcessingDiagramFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddProcessingDiagramFinishCount(i)
+	return puo
+}
+
+// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
+func (puo *ProjectUpdateOne) ClearProcessingDiagramFinishCount() *ProjectUpdateOne {
+	puo.mutation.ClearProcessingDiagramFinishCount()
+	return puo
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by IDs.
 func (puo *ProjectUpdateOne) AddVoIDs(ids ...xid.ID) *ProjectUpdateOne {
 	puo.mutation.AddVoIDs(ids...)
@@ -5044,6 +5296,42 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	}
 	if puo.mutation.BulkMaterialsUncompletedQuantityCleared() {
 		_spec.ClearField(project.FieldBulkMaterialsUncompletedQuantity, field.TypeFloat64)
+	}
+	if value, ok := puo.mutation.PlanTotalCount(); ok {
+		_spec.SetField(project.FieldPlanTotalCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedPlanTotalCount(); ok {
+		_spec.AddField(project.FieldPlanTotalCount, field.TypeInt, value)
+	}
+	if puo.mutation.PlanTotalCountCleared() {
+		_spec.ClearField(project.FieldPlanTotalCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.PlanOverdueCount(); ok {
+		_spec.SetField(project.FieldPlanOverdueCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedPlanOverdueCount(); ok {
+		_spec.AddField(project.FieldPlanOverdueCount, field.TypeInt, value)
+	}
+	if puo.mutation.PlanOverdueCountCleared() {
+		_spec.ClearField(project.FieldPlanOverdueCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.PlanOverdueMonthCount(); ok {
+		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedPlanOverdueMonthCount(); ok {
+		_spec.AddField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
+	}
+	if puo.mutation.PlanOverdueMonthCountCleared() {
+		_spec.ClearField(project.FieldPlanOverdueMonthCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.ProcessingDiagramFinishCount(); ok {
+		_spec.SetField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedProcessingDiagramFinishCount(); ok {
+		_spec.AddField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	}
+	if puo.mutation.ProcessingDiagramFinishCountCleared() {
+		_spec.ClearField(project.FieldProcessingDiagramFinishCount, field.TypeInt)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{

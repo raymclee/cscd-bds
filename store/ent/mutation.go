@@ -8056,6 +8056,14 @@ type ProjectMutation struct {
 	addbulk_materials_completed_quantity           *float64
 	bulk_materials_uncompleted_quantity            *float64
 	addbulk_materials_uncompleted_quantity         *float64
+	plan_total_count                               *int
+	addplan_total_count                            *int
+	plan_overdue_count                             *int
+	addplan_overdue_count                          *int
+	plan_overdue_month_count                       *int
+	addplan_overdue_month_count                    *int
+	processing_diagram_finish_count                *int
+	addprocessing_diagram_finish_count             *int
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -12712,6 +12720,286 @@ func (m *ProjectMutation) ResetBulkMaterialsUncompletedQuantity() {
 	delete(m.clearedFields, project.FieldBulkMaterialsUncompletedQuantity)
 }
 
+// SetPlanTotalCount sets the "plan_total_count" field.
+func (m *ProjectMutation) SetPlanTotalCount(i int) {
+	m.plan_total_count = &i
+	m.addplan_total_count = nil
+}
+
+// PlanTotalCount returns the value of the "plan_total_count" field in the mutation.
+func (m *ProjectMutation) PlanTotalCount() (r int, exists bool) {
+	v := m.plan_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPlanTotalCount returns the old "plan_total_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPlanTotalCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPlanTotalCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPlanTotalCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPlanTotalCount: %w", err)
+	}
+	return oldValue.PlanTotalCount, nil
+}
+
+// AddPlanTotalCount adds i to the "plan_total_count" field.
+func (m *ProjectMutation) AddPlanTotalCount(i int) {
+	if m.addplan_total_count != nil {
+		*m.addplan_total_count += i
+	} else {
+		m.addplan_total_count = &i
+	}
+}
+
+// AddedPlanTotalCount returns the value that was added to the "plan_total_count" field in this mutation.
+func (m *ProjectMutation) AddedPlanTotalCount() (r int, exists bool) {
+	v := m.addplan_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPlanTotalCount clears the value of the "plan_total_count" field.
+func (m *ProjectMutation) ClearPlanTotalCount() {
+	m.plan_total_count = nil
+	m.addplan_total_count = nil
+	m.clearedFields[project.FieldPlanTotalCount] = struct{}{}
+}
+
+// PlanTotalCountCleared returns if the "plan_total_count" field was cleared in this mutation.
+func (m *ProjectMutation) PlanTotalCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldPlanTotalCount]
+	return ok
+}
+
+// ResetPlanTotalCount resets all changes to the "plan_total_count" field.
+func (m *ProjectMutation) ResetPlanTotalCount() {
+	m.plan_total_count = nil
+	m.addplan_total_count = nil
+	delete(m.clearedFields, project.FieldPlanTotalCount)
+}
+
+// SetPlanOverdueCount sets the "plan_overdue_count" field.
+func (m *ProjectMutation) SetPlanOverdueCount(i int) {
+	m.plan_overdue_count = &i
+	m.addplan_overdue_count = nil
+}
+
+// PlanOverdueCount returns the value of the "plan_overdue_count" field in the mutation.
+func (m *ProjectMutation) PlanOverdueCount() (r int, exists bool) {
+	v := m.plan_overdue_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPlanOverdueCount returns the old "plan_overdue_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPlanOverdueCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPlanOverdueCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPlanOverdueCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPlanOverdueCount: %w", err)
+	}
+	return oldValue.PlanOverdueCount, nil
+}
+
+// AddPlanOverdueCount adds i to the "plan_overdue_count" field.
+func (m *ProjectMutation) AddPlanOverdueCount(i int) {
+	if m.addplan_overdue_count != nil {
+		*m.addplan_overdue_count += i
+	} else {
+		m.addplan_overdue_count = &i
+	}
+}
+
+// AddedPlanOverdueCount returns the value that was added to the "plan_overdue_count" field in this mutation.
+func (m *ProjectMutation) AddedPlanOverdueCount() (r int, exists bool) {
+	v := m.addplan_overdue_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPlanOverdueCount clears the value of the "plan_overdue_count" field.
+func (m *ProjectMutation) ClearPlanOverdueCount() {
+	m.plan_overdue_count = nil
+	m.addplan_overdue_count = nil
+	m.clearedFields[project.FieldPlanOverdueCount] = struct{}{}
+}
+
+// PlanOverdueCountCleared returns if the "plan_overdue_count" field was cleared in this mutation.
+func (m *ProjectMutation) PlanOverdueCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldPlanOverdueCount]
+	return ok
+}
+
+// ResetPlanOverdueCount resets all changes to the "plan_overdue_count" field.
+func (m *ProjectMutation) ResetPlanOverdueCount() {
+	m.plan_overdue_count = nil
+	m.addplan_overdue_count = nil
+	delete(m.clearedFields, project.FieldPlanOverdueCount)
+}
+
+// SetPlanOverdueMonthCount sets the "plan_overdue_month_count" field.
+func (m *ProjectMutation) SetPlanOverdueMonthCount(i int) {
+	m.plan_overdue_month_count = &i
+	m.addplan_overdue_month_count = nil
+}
+
+// PlanOverdueMonthCount returns the value of the "plan_overdue_month_count" field in the mutation.
+func (m *ProjectMutation) PlanOverdueMonthCount() (r int, exists bool) {
+	v := m.plan_overdue_month_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPlanOverdueMonthCount returns the old "plan_overdue_month_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPlanOverdueMonthCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPlanOverdueMonthCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPlanOverdueMonthCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPlanOverdueMonthCount: %w", err)
+	}
+	return oldValue.PlanOverdueMonthCount, nil
+}
+
+// AddPlanOverdueMonthCount adds i to the "plan_overdue_month_count" field.
+func (m *ProjectMutation) AddPlanOverdueMonthCount(i int) {
+	if m.addplan_overdue_month_count != nil {
+		*m.addplan_overdue_month_count += i
+	} else {
+		m.addplan_overdue_month_count = &i
+	}
+}
+
+// AddedPlanOverdueMonthCount returns the value that was added to the "plan_overdue_month_count" field in this mutation.
+func (m *ProjectMutation) AddedPlanOverdueMonthCount() (r int, exists bool) {
+	v := m.addplan_overdue_month_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPlanOverdueMonthCount clears the value of the "plan_overdue_month_count" field.
+func (m *ProjectMutation) ClearPlanOverdueMonthCount() {
+	m.plan_overdue_month_count = nil
+	m.addplan_overdue_month_count = nil
+	m.clearedFields[project.FieldPlanOverdueMonthCount] = struct{}{}
+}
+
+// PlanOverdueMonthCountCleared returns if the "plan_overdue_month_count" field was cleared in this mutation.
+func (m *ProjectMutation) PlanOverdueMonthCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldPlanOverdueMonthCount]
+	return ok
+}
+
+// ResetPlanOverdueMonthCount resets all changes to the "plan_overdue_month_count" field.
+func (m *ProjectMutation) ResetPlanOverdueMonthCount() {
+	m.plan_overdue_month_count = nil
+	m.addplan_overdue_month_count = nil
+	delete(m.clearedFields, project.FieldPlanOverdueMonthCount)
+}
+
+// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
+func (m *ProjectMutation) SetProcessingDiagramFinishCount(i int) {
+	m.processing_diagram_finish_count = &i
+	m.addprocessing_diagram_finish_count = nil
+}
+
+// ProcessingDiagramFinishCount returns the value of the "processing_diagram_finish_count" field in the mutation.
+func (m *ProjectMutation) ProcessingDiagramFinishCount() (r int, exists bool) {
+	v := m.processing_diagram_finish_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProcessingDiagramFinishCount returns the old "processing_diagram_finish_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldProcessingDiagramFinishCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProcessingDiagramFinishCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProcessingDiagramFinishCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProcessingDiagramFinishCount: %w", err)
+	}
+	return oldValue.ProcessingDiagramFinishCount, nil
+}
+
+// AddProcessingDiagramFinishCount adds i to the "processing_diagram_finish_count" field.
+func (m *ProjectMutation) AddProcessingDiagramFinishCount(i int) {
+	if m.addprocessing_diagram_finish_count != nil {
+		*m.addprocessing_diagram_finish_count += i
+	} else {
+		m.addprocessing_diagram_finish_count = &i
+	}
+}
+
+// AddedProcessingDiagramFinishCount returns the value that was added to the "processing_diagram_finish_count" field in this mutation.
+func (m *ProjectMutation) AddedProcessingDiagramFinishCount() (r int, exists bool) {
+	v := m.addprocessing_diagram_finish_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
+func (m *ProjectMutation) ClearProcessingDiagramFinishCount() {
+	m.processing_diagram_finish_count = nil
+	m.addprocessing_diagram_finish_count = nil
+	m.clearedFields[project.FieldProcessingDiagramFinishCount] = struct{}{}
+}
+
+// ProcessingDiagramFinishCountCleared returns if the "processing_diagram_finish_count" field was cleared in this mutation.
+func (m *ProjectMutation) ProcessingDiagramFinishCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldProcessingDiagramFinishCount]
+	return ok
+}
+
+// ResetProcessingDiagramFinishCount resets all changes to the "processing_diagram_finish_count" field.
+func (m *ProjectMutation) ResetProcessingDiagramFinishCount() {
+	m.processing_diagram_finish_count = nil
+	m.addprocessing_diagram_finish_count = nil
+	delete(m.clearedFields, project.FieldProcessingDiagramFinishCount)
+}
+
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
 func (m *ProjectMutation) AddVoIDs(ids ...xid.ID) {
 	if m.vos == nil {
@@ -12854,7 +13142,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 71)
+	fields := make([]string, 0, 75)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -13068,6 +13356,18 @@ func (m *ProjectMutation) Fields() []string {
 	if m.bulk_materials_uncompleted_quantity != nil {
 		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
 	}
+	if m.plan_total_count != nil {
+		fields = append(fields, project.FieldPlanTotalCount)
+	}
+	if m.plan_overdue_count != nil {
+		fields = append(fields, project.FieldPlanOverdueCount)
+	}
+	if m.plan_overdue_month_count != nil {
+		fields = append(fields, project.FieldPlanOverdueMonthCount)
+	}
+	if m.processing_diagram_finish_count != nil {
+		fields = append(fields, project.FieldProcessingDiagramFinishCount)
+	}
 	return fields
 }
 
@@ -13218,6 +13518,14 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.BulkMaterialsCompletedQuantity()
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		return m.BulkMaterialsUncompletedQuantity()
+	case project.FieldPlanTotalCount:
+		return m.PlanTotalCount()
+	case project.FieldPlanOverdueCount:
+		return m.PlanOverdueCount()
+	case project.FieldPlanOverdueMonthCount:
+		return m.PlanOverdueMonthCount()
+	case project.FieldProcessingDiagramFinishCount:
+		return m.ProcessingDiagramFinishCount()
 	}
 	return nil, false
 }
@@ -13369,6 +13677,14 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldBulkMaterialsCompletedQuantity(ctx)
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		return m.OldBulkMaterialsUncompletedQuantity(ctx)
+	case project.FieldPlanTotalCount:
+		return m.OldPlanTotalCount(ctx)
+	case project.FieldPlanOverdueCount:
+		return m.OldPlanOverdueCount(ctx)
+	case project.FieldPlanOverdueMonthCount:
+		return m.OldPlanOverdueMonthCount(ctx)
+	case project.FieldProcessingDiagramFinishCount:
+		return m.OldProcessingDiagramFinishCount(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -13875,6 +14191,34 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBulkMaterialsUncompletedQuantity(v)
 		return nil
+	case project.FieldPlanTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPlanTotalCount(v)
+		return nil
+	case project.FieldPlanOverdueCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPlanOverdueCount(v)
+		return nil
+	case project.FieldPlanOverdueMonthCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPlanOverdueMonthCount(v)
+		return nil
+	case project.FieldProcessingDiagramFinishCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProcessingDiagramFinishCount(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
 }
@@ -14042,6 +14386,18 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addbulk_materials_uncompleted_quantity != nil {
 		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
 	}
+	if m.addplan_total_count != nil {
+		fields = append(fields, project.FieldPlanTotalCount)
+	}
+	if m.addplan_overdue_count != nil {
+		fields = append(fields, project.FieldPlanOverdueCount)
+	}
+	if m.addplan_overdue_month_count != nil {
+		fields = append(fields, project.FieldPlanOverdueMonthCount)
+	}
+	if m.addprocessing_diagram_finish_count != nil {
+		fields = append(fields, project.FieldProcessingDiagramFinishCount)
+	}
 	return fields
 }
 
@@ -14156,6 +14512,14 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedBulkMaterialsCompletedQuantity()
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		return m.AddedBulkMaterialsUncompletedQuantity()
+	case project.FieldPlanTotalCount:
+		return m.AddedPlanTotalCount()
+	case project.FieldPlanOverdueCount:
+		return m.AddedPlanOverdueCount()
+	case project.FieldPlanOverdueMonthCount:
+		return m.AddedPlanOverdueMonthCount()
+	case project.FieldProcessingDiagramFinishCount:
+		return m.AddedProcessingDiagramFinishCount()
 	}
 	return nil, false
 }
@@ -14536,6 +14900,34 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddBulkMaterialsUncompletedQuantity(v)
 		return nil
+	case project.FieldPlanTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPlanTotalCount(v)
+		return nil
+	case project.FieldPlanOverdueCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPlanOverdueCount(v)
+		return nil
+	case project.FieldPlanOverdueMonthCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPlanOverdueMonthCount(v)
+		return nil
+	case project.FieldProcessingDiagramFinishCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddProcessingDiagramFinishCount(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
 }
@@ -14744,6 +15136,18 @@ func (m *ProjectMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(project.FieldBulkMaterialsUncompletedQuantity) {
 		fields = append(fields, project.FieldBulkMaterialsUncompletedQuantity)
+	}
+	if m.FieldCleared(project.FieldPlanTotalCount) {
+		fields = append(fields, project.FieldPlanTotalCount)
+	}
+	if m.FieldCleared(project.FieldPlanOverdueCount) {
+		fields = append(fields, project.FieldPlanOverdueCount)
+	}
+	if m.FieldCleared(project.FieldPlanOverdueMonthCount) {
+		fields = append(fields, project.FieldPlanOverdueMonthCount)
+	}
+	if m.FieldCleared(project.FieldProcessingDiagramFinishCount) {
+		fields = append(fields, project.FieldProcessingDiagramFinishCount)
 	}
 	return fields
 }
@@ -14959,6 +15363,18 @@ func (m *ProjectMutation) ClearField(name string) error {
 		return nil
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		m.ClearBulkMaterialsUncompletedQuantity()
+		return nil
+	case project.FieldPlanTotalCount:
+		m.ClearPlanTotalCount()
+		return nil
+	case project.FieldPlanOverdueCount:
+		m.ClearPlanOverdueCount()
+		return nil
+	case project.FieldPlanOverdueMonthCount:
+		m.ClearPlanOverdueMonthCount()
+		return nil
+	case project.FieldProcessingDiagramFinishCount:
+		m.ClearProcessingDiagramFinishCount()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -15180,6 +15596,18 @@ func (m *ProjectMutation) ResetField(name string) error {
 		return nil
 	case project.FieldBulkMaterialsUncompletedQuantity:
 		m.ResetBulkMaterialsUncompletedQuantity()
+		return nil
+	case project.FieldPlanTotalCount:
+		m.ResetPlanTotalCount()
+		return nil
+	case project.FieldPlanOverdueCount:
+		m.ResetPlanOverdueCount()
+		return nil
+	case project.FieldPlanOverdueMonthCount:
+		m.ResetPlanOverdueMonthCount()
+		return nil
+	case project.FieldProcessingDiagramFinishCount:
+		m.ResetProcessingDiagramFinishCount()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)

@@ -42,6 +42,7 @@ import {
 import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
 import { SearchLocationSelect } from "./search-location-select";
+import { TenderFormMap } from "./tender-form-map";
 
 const { Dragger } = Upload;
 
@@ -440,7 +441,7 @@ export function TenderForm({
                 rules={[{ required: true }]}
                 className="md:col-span-2"
               >
-                {isGA ? <SearchLocationSelect /> : <Input />}
+                <Input />
               </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
@@ -572,15 +573,7 @@ export function TenderForm({
                 rules={[{ required: true }]}
                 className="md:col-span-3"
               >
-                <SearchLocationSelect
-                // onAddressSelected={(a) => {
-                //   if (a) {
-                //     form.setFieldValue("provinceID", a.province.id);
-                //     if (a.city) form.setFieldValue("cityID", a.city.id);
-                //     form.setFieldValue("districtID", a.district.id);
-                //   }
-                // }}
-                />
+                <TenderFormMap />
               </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">

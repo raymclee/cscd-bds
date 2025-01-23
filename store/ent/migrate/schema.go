@@ -279,6 +279,10 @@ var (
 		{Name: "bulk_materials_total_order_quantity", Type: field.TypeFloat64, Nullable: true},
 		{Name: "bulk_materials_completed_quantity", Type: field.TypeFloat64, Nullable: true},
 		{Name: "bulk_materials_uncompleted_quantity", Type: field.TypeFloat64, Nullable: true},
+		{Name: "plan_total_count", Type: field.TypeInt, Nullable: true},
+		{Name: "plan_overdue_count", Type: field.TypeInt, Nullable: true},
+		{Name: "plan_overdue_month_count", Type: field.TypeInt, Nullable: true},
+		{Name: "processing_diagram_finish_count", Type: field.TypeInt, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{
