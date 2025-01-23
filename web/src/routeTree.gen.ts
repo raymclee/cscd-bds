@@ -17,6 +17,7 @@ import { Route as authImport } from './routes/__auth'
 import { Route as authportalImport } from './routes/__auth/__portal'
 import { Route as authdashboardImport } from './routes/__auth/__dashboard'
 import { Route as authdashboardOperationsImport } from './routes/__auth/__dashboard/operations'
+import { Route as authdashboardBi2Import } from './routes/__auth/__dashboard/bi2'
 import { Route as authdashboardBiImport } from './routes/__auth/__dashboard/bi'
 import { Route as authdashboardmapImport } from './routes/__auth/__dashboard/__map'
 import { Route as authportalPortalIndexImport } from './routes/__auth/__portal/portal/index'
@@ -109,6 +110,12 @@ const authdashboardOperationsRoute = authdashboardOperationsImport
   .lazy(() =>
     import('./routes/__auth/__dashboard/operations.lazy').then((d) => d.Route),
   )
+
+const authdashboardBi2Route = authdashboardBi2Import.update({
+  id: '/bi2',
+  path: '/bi2',
+  getParentRoute: () => authdashboardRoute,
+} as any)
 
 const authdashboardBiRoute = authdashboardBiImport.update({
   id: '/bi',
@@ -375,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authdashboardBiImport
       parentRoute: typeof authdashboardImport
     }
+    '/__auth/__dashboard/bi2': {
+      id: '/__auth/__dashboard/bi2'
+      path: '/bi2'
+      fullPath: '/bi2'
+      preLoaderRoute: typeof authdashboardBi2Import
+      parentRoute: typeof authdashboardImport
+    }
     '/__auth/__dashboard/operations': {
       id: '/__auth/__dashboard/operations'
       path: '/operations'
@@ -529,12 +543,14 @@ const authdashboardmapRouteWithChildren =
 interface authdashboardRouteChildren {
   authdashboardmapRoute: typeof authdashboardmapRouteWithChildren
   authdashboardBiRoute: typeof authdashboardBiRoute
+  authdashboardBi2Route: typeof authdashboardBi2Route
   authdashboardOperationsRoute: typeof authdashboardOperationsRoute
 }
 
 const authdashboardRouteChildren: authdashboardRouteChildren = {
   authdashboardmapRoute: authdashboardmapRouteWithChildren,
   authdashboardBiRoute: authdashboardBiRoute,
+  authdashboardBi2Route: authdashboardBi2Route,
   authdashboardOperationsRoute: authdashboardOperationsRoute,
 }
 
@@ -637,6 +653,7 @@ export interface FileRoutesByFullPath {
   '/logout': typeof LogoutLazyRoute
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
+  '/bi2': typeof authdashboardBi2Route
   '/operations': typeof authdashboardOperationsRoute
   '/portal': typeof authportalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof authportalPortalCustomersRoute
@@ -663,6 +680,7 @@ export interface FileRoutesByTo {
   '/logout': typeof LogoutLazyRoute
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
+  '/bi2': typeof authdashboardBi2Route
   '/operations': typeof authdashboardOperationsRoute
   '/portal': typeof authportalPortalIndexRoute
   '/portal/customers': typeof authportalPortalCustomersRoute
@@ -692,6 +710,7 @@ export interface FileRoutesById {
   '/__auth/__portal': typeof authportalRouteWithChildren
   '/__auth/__dashboard/__map': typeof authdashboardmapRouteWithChildren
   '/__auth/__dashboard/bi': typeof authdashboardBiRoute
+  '/__auth/__dashboard/bi2': typeof authdashboardBi2Route
   '/__auth/__dashboard/operations': typeof authdashboardOperationsRoute
   '/__auth/__portal/portal': typeof authportalPortalRouteWithChildren
   '/__auth/__portal/portal/_admin': typeof authportalPortalAdminRouteWithChildren
@@ -722,6 +741,7 @@ export interface FileRouteTypes {
     | '/logout'
     | '/r'
     | '/bi'
+    | '/bi2'
     | '/operations'
     | '/portal'
     | '/portal/customers'
@@ -747,6 +767,7 @@ export interface FileRouteTypes {
     | '/logout'
     | '/r'
     | '/bi'
+    | '/bi2'
     | '/operations'
     | '/portal'
     | '/portal/customers'
@@ -774,6 +795,7 @@ export interface FileRouteTypes {
     | '/__auth/__portal'
     | '/__auth/__dashboard/__map'
     | '/__auth/__dashboard/bi'
+    | '/__auth/__dashboard/bi2'
     | '/__auth/__dashboard/operations'
     | '/__auth/__portal/portal'
     | '/__auth/__portal/portal/_admin'
@@ -854,6 +876,7 @@ export const routeTree = rootRoute
       "children": [
         "/__auth/__dashboard/__map",
         "/__auth/__dashboard/bi",
+        "/__auth/__dashboard/bi2",
         "/__auth/__dashboard/operations"
       ]
     },
@@ -874,6 +897,10 @@ export const routeTree = rootRoute
     },
     "/__auth/__dashboard/bi": {
       "filePath": "__auth/__dashboard/bi.tsx",
+      "parent": "/__auth/__dashboard"
+    },
+    "/__auth/__dashboard/bi2": {
+      "filePath": "__auth/__dashboard/bi2.tsx",
       "parent": "/__auth/__dashboard"
     },
     "/__auth/__dashboard/operations": {
