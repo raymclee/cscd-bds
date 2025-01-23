@@ -126,5 +126,7 @@ func (r *queryResolver) BiToken(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(body), nil
+	ss := string(body)[25:348]
+
+	return ss, nil
 }

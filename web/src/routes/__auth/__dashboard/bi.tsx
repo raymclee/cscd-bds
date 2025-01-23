@@ -1,15 +1,34 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Loader } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { createFileRoute } from "@tanstack/react-router";
+import node, { biPageQuery } from "__generated__/biPageQuery.graphql";
+import { Loader } from "lucide-react";
+import { useRef, useState } from "react";
+import { graphql, loadQuery, usePreloadedQuery } from "react-relay";
 
-export const Route = createFileRoute('/__auth/__dashboard/bi')({
+export const Route = createFileRoute("/__auth/__dashboard/bi")({
   component: RouteComponent,
-})
+  loader: async ({ context: { RelayEnvironment } }) => {
+    // const res = await fetch(
+    //   "https://bi.fefacade.com/webroot/decision/login/cross/domain?fine_username=ray.mclee&fine_password=ray.mclee830&validity=-1",
+    //   { headers: { "Content-Type": "application/json" } },
+    // );
+    // const data = await res.json();
+    // console.log(data);
+    return loadQuery<biPageQuery>(RelayEnvironment, node, {});
+  },
+});
 
 function RouteComponent() {
-  const [loading, setLoading] = useState(true)
-  const url = Route.useLoaderData()
-  const ref = useRef<HTMLIFrameElement>(null)
+  const [loading, setLoading] = useState(true);
+  const preload = Route.useLoaderData();
+  const query = usePreloadedQuery<biPageQuery>(
+    graphql`
+      query biPageQuery {
+        biToken
+      }
+    `,
+    preload,
+  );
+
   return (
     <div className="relative min-h-full">
       {loading && (
@@ -18,15 +37,12 @@ function RouteComponent() {
         </div>
       )}
       <iframe
-        height="100%"
-        width="100%"
-        src={
-          'https://bi.fefacade.com/webroot/decision/v10/entry/access/04441373-1ba3-4f91-bb35-bffbe03cdbd7?fine_auth_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYXkubWNsZWUiLCJ0ZW5hbnRJZCI6ImRlZmF1bHQiLCJpc3MiOiJmYW5ydWFuIiwiZGVzY3JpcHRpb24iOiJbNjc0ZV1bNjU4N11bNzEyZl0ocmF5Lm1jbGVlKSIsImV4cCI6MTczODg0MTAzMCwiaWF0IjoxNzM3NjM1MDMwLCJqdGkiOiJSTEJqS2VuL0xnTm50d0hjYjlTeHpCcnJOditwbnFrdVh3NEpLcEI1bE9HTDBubjIifQ.RaKC3k_K1Z9xDIy_ZTnZh5znJGWVr3NxlVnCShtar-I'
-        }
+        className="w-full min-h-screen"
+        src={`https://bi.fefacade.com/webroot/decision/v10/entry/access/04441373-1ba3-4f91-bb35-bffbe03cdbd7?fine_auth_token=${query.biToken}`}
         onLoad={() => setLoading(false)}
       />
     </div>
-  )
+  );
 
   // useEffect(() => {
   //   if (ref.current?.contentWindow) {
