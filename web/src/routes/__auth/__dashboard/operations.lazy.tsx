@@ -39,7 +39,7 @@ import leftArrow from "~/assets/svg/left_arrow.png";
 import rightArrow from "~/assets/svg/right_arrow.png";
 
 import projectManagementLeft from "~/assets/svg/project_management_left.png";
-import projectManagementRight from "~/assets/svg/project_management_right.png";
+import projectDelay from "~/assets/svg/project_delay.png";
 
 import basicInfoBg from "~/assets/svg/basic_info_bg.png";
 import basicInfoRowBg from "~/assets/svg/basic_info_row_bg.png";
@@ -1208,11 +1208,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     src={projectManagementLeft}
                     className="absolute inset-0"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
-                    100
+                  <div className="absolute left-20 top-1/2 -translate-y-1/2 text-sm font-bold">
+                    年度里程碑指标
                   </div>
+                  {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
+                    6%
+                  </div> */}
                 </div>
-                <div className="flex w-[85%] items-center justify-around gap-6 self-end bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2.5 shadow-lg">
+                <div className="relative flex w-[85%] items-center justify-around gap-6 self-end px-2 py-2.5 shadow-lg">
                   <div className="flex flex-col items-center gap-1">
                     <div className="text-xxs text-brand-project/50">
                       累计完成
@@ -1278,48 +1281,33 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               </div>
               <div className="flex w-full flex-col">
                 <div className="relative h-9">
-                  <img
-                    src={projectManagementRight}
-                    className="absolute inset-0"
-                  />
+                  <img src={projectDelay} className="absolute inset-0" />
+                  <div className="absolute left-20 top-1/2 -translate-y-1/2 text-sm font-bold">
+                    四位一体计划
+                  </div>
+                  <div className="absolute right-10 top-1/2 -translate-y-1/2 text-xxs text-white/50">
+                    计划总数
+                  </div>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-yellow-500">
-                    6%
+                    99
                   </div>
                 </div>
-                <div className="flex w-[85%] items-center justify-around gap-6 self-end bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-2.5 shadow-lg">
+                <div className="relative flex w-[85%] items-center justify-evenly gap-6 self-end px-2 py-2.5 shadow-lg">
                   <div className="flex flex-col items-center gap-1">
                     <div className="text-xxs text-brand-project/50">
-                      累计完成
+                      累计超期
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      199
+                      22
                     </div>
                   </div>
 
                   <div className="flex flex-col items-center gap-1">
                     <div className="text-xxs text-brand-project/50">
-                      累计占比
+                      当月超期
                     </div>
                     <div className="text-sm font-bold text-brand-project">
-                      87%
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="text-xxs text-brand-project/50">
-                      当月完成
-                    </div>
-                    <div className="text-sm font-bold text-brand-project">
-                      56
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="text-xxs text-brand-project/50">
-                      当月占比
-                    </div>
-                    <div className="text-sm font-bold text-brand-project">
-                      65%
+                      4
                     </div>
                   </div>
                 </div>
@@ -1597,7 +1585,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
             {/* <div className="bg-gradient-to-tr from-[#0a3256] to-transparent shadow-lg"> */}
             {/* <img src={safty} className="h-[6rem] w-full object-cover" /> */}
             {/* </div> */}
-            <div className="h-24 space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+            <div className="h-24 space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 shadow-lg">
               <div className="flex h-24 gap-3">
                 <div className="relative flex h-24 basis-1/4 items-center justify-center">
                   <div className="relative h-[64px] w-[64px] rounded-full">
@@ -1644,7 +1632,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     </div>
                   </div>
                 </div>
-                <div className="basis-3/4 gap-y-2 space-y-1 pr-2 pt-1 text-xxs text-white/80">
+                <div className="basis-3/4 gap-y-2 space-y-1 py-2 pr-2 text-xxs text-white/70">
                   {/* <img src={safty} className="object-cover w-full h-full" /> */}
                   <div className="flex items-center justify-between">
                     <div>项目主要安全问题</div>
