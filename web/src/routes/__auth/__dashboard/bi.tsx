@@ -1,57 +1,31 @@
-import { createFileRoute } from "@tanstack/react-router";
-import node, { biPageQuery } from "__generated__/biPageQuery.graphql";
-import { Loader } from "lucide-react";
-import { useRef, useState } from "react";
-import { graphql, loadQuery, usePreloadedQuery } from "react-relay";
+import { createFileRoute, useLoaderData } from '@tanstack/react-router'
+import { Loader } from 'lucide-react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-export const Route = createFileRoute("/__auth/__dashboard/bi")({
+export const Route = createFileRoute('/__auth/__dashboard/bi')({
   component: RouteComponent,
-  loader: async ({ context: { RelayEnvironment } }) => {
-    // const res = await fetch(
-    //   "https://bi.fefacade.com/webroot/decision/login/cross/domain?fine_username=ray.mclee&fine_password=ray.mclee830&validity=-1",
-    //   { headers: { "Content-Type": "application/json" } },
-    // );
-    // const data = await res.json();
-    // console.log(data);
-    return loadQuery<biPageQuery>(RelayEnvironment, node, {});
-  },
-});
+})
+
+// const url = "http://localhost:3000/830bi";
 
 function RouteComponent() {
-  const [loading, setLoading] = useState(true);
-  const preload = Route.useLoaderData();
-  const query = usePreloadedQuery<biPageQuery>(
-    graphql`
-      query biPageQuery {
-        biToken
-      }
-    `,
-    preload,
-  );
+  const [loading, setLoading] = useState(true)
 
   return (
     <div className="relative min-h-full">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center min-h-full">
+        <div className="flex min-h-full items-center justify-center pt-[20vh]">
           <Loader className="animate-spin" />
         </div>
       )}
       <iframe
-        className="w-full min-h-screen"
-        src={`https://bi.fefacade.com/webroot/decision/v10/entry/access/04441373-1ba3-4f91-bb35-bffbe03cdbd7?fine_auth_token=${query.biToken}`}
+        className="min-h-screen w-full"
+        src={`/webroot/decision/data/portal/f12fb24d-7dcb-4c1b-adc2-0edc4c7372f8/common/view?ssoToken=${encodeURIComponent(
+          'USG61d9ijEXoQnmkuZiH0Rw8Dsoelgxs68GsELkRyalKQGtjgto/5SYfE+aKlU8LqYT9XIlx7mx9L9AYt4q0Vx0cEVU+caczz+cDyTdZspjzKQNR3BdjLZlbqzjAXBIiQpX42w+W91hNZHMQ6hnBFOIoXZzqXI3mOJrgqpY+cMS/Aj9P95B/Kzdoq5Sppu8pYk3m0/6VUf/TrIVWxdbukPjc4futytsqtYAxvICqDbgTbJveCDer5AyC9jnX0j/XqmZ7SHAc9BDsAHfvMY1/HsvvjPui4qk+PjrQkewGyIym434fhN/vhXUyQ9Gj4TTNwissdbznCXTjeeA/f34mSw==',
+        )}`}
         onLoad={() => setLoading(false)}
       />
+      {/* <DangrousElement markup={markup} /> */}
     </div>
-  );
-
-  // useEffect(() => {
-  //   if (ref.current?.contentWindow) {
-  //     // ref.current.src = url;
-  //     ref.current.contentWindow.document.write(
-  //       `<script>window.location.href = "${url}"</script>`,
-  //     );
-  //   }
-  // }, [url]);
-
-  // return <iframe ref={ref}></iframe>;
+  )
 }

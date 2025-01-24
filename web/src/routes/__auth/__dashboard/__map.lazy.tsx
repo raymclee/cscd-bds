@@ -63,7 +63,7 @@ function RouteComponent() {
             </Tooltip>
           )}
 
-          {(session.isAdmin || session.isSuperAdmin || session.isCeo) && (
+          {/* {(session.isAdmin || session.isSuperAdmin || session.isCeo) && (
             <Tooltip title="运营大屏">
               <Link to="/operations">
                 <Button
@@ -74,7 +74,7 @@ function RouteComponent() {
                 ></Button>
               </Link>
             </Tooltip>
-          )}
+          )} */}
         </div>
 
         <div className="select-none text-ellipsis whitespace-nowrap text-3xl font-bold">

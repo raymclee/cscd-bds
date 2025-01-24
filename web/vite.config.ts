@@ -27,6 +27,10 @@ export default defineConfig(({ mode }) => ({
               target: "http://localhost:3000",
               changeOrigin: true,
             },
+            "/webroot": {
+              target: "http://localhost:3000",
+              changeOrigin: true,
+            },
           },
         }
       : {},

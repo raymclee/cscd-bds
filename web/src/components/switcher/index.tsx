@@ -2,6 +2,30 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useLocalStorage } from "usehooks-ts";
+import { biTitleMap } from "~/lib/bi-title";
+
+const navItems = [
+  {
+    title: "市场拓展地图",
+    href: "/",
+  },
+  {
+    title: "项目运营管控",
+    href: "/operations",
+  },
+  {
+    title: "BI数字远东报表",
+    href: "/bi",
+  },
+  {
+    title: "数字远东彩虹图(测试中)",
+    href: "/rainbow",
+  },
+  // {
+  //   title: "业务数据监控",
+  //   href: "/bi/04441373-1ba3-4f91-bb35-bffbe03cdbd7",
+  // },
+];
 
 export function Switcher() {
   const [isActive, setIsActive] = useState(false);
@@ -24,7 +48,7 @@ export function Switcher() {
   return (
     <>
       <div
-        className="fixed z-50 flex items-center justify-center border rounded-full shadow-2xl border-sky-800 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 hover:cursor-move"
+        className="fixed z-50 flex items-center justify-center rounded-full border border-sky-800 bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 shadow-2xl hover:cursor-move"
         // onDragStart={(e) => {
         //   setPos({ x: e.clientX, y: e.clientY });
         // }}
@@ -43,7 +67,7 @@ export function Switcher() {
           // top: pos.y === 0 ? "74%" : `${pos.y}px`,
           // left: pos.x === 0 ? "94%" : `${pos.x}px`,
           top: "1.5%",
-          left: "96%",
+          left: "1%",
         }}
       >
         <MotionConfig
@@ -56,7 +80,7 @@ export function Switcher() {
             initial={false}
             animate={isActive ? "open" : "closed"}
             onClick={() => setIsActive((pv) => !pv)}
-            className="relative w-12 h-12 transition-colors rounded-full bg-white/0 hover:bg-white/20"
+            className="relative h-12 w-12 rounded-full bg-white/0 transition-colors hover:bg-white/20"
           >
             <motion.span
               variants={VARIANTS.top}
@@ -87,7 +111,7 @@ export function Switcher() {
       <AnimatePresence mode="wait">
         {isActive && (
           <motion.div
-            className="fixed top-0 right-0 z-30 w-full h-full bg-black/50 backdrop-blur-sm"
+            className="fixed left-0 top-0 z-30 h-full w-full bg-black/50 backdrop-blur-sm"
             variants={menuOverlaySlide}
             initial="initial"
             animate="enter"
@@ -96,7 +120,7 @@ export function Switcher() {
               setIsActive((pv) => !pv);
             }}
           >
-            <Curve />
+            {/* <Curve /> */}
           </motion.div>
         )}
       </AnimatePresence>
@@ -137,47 +161,38 @@ const VARIANTS = {
   },
 };
 
-const navItems = [
-  {
-    title: "市场拓展地图",
-    href: "/",
-  },
-  {
-    title: "项目运营管控",
-    href: "/operations",
-  },
-  {
-    title: "业务数据监控",
-    href: "/bi",
-  },
-];
-
 export const menuSlide = {
-  initial: { x: "calc(100% + 100px)" },
+  initial: { x: "calc(-100% - 100px)" },
   enter: { x: "0", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } },
   exit: {
-    x: "calc(100% + 100px)",
+    x: "calc(-100% - 100px)",
     transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
   },
 };
 
 export const menuOverlaySlide = {
-  initial: { x: "calc(100% + 100px)" },
-  enter: { x: "0", transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } },
-  exit: {
-    x: "calc(100% + 100px)",
+  // initial: { x: "calc(-100% - 100px)" },
+  // enter: { x: "0", transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } },
+  // exit: {
+  //   x: "calc(-100% - 100px)",
+  //   transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] },
+  // },
+  initial: { opacity: 0 },
+  enter: {
+    opacity: 1,
     transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] },
   },
+  exit: { opacity: 0, transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } },
 };
 
 export const slide = {
-  initial: { x: 80 },
+  initial: { x: -80 },
   enter: (i: number) => ({
     x: 0,
     transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.05 * i },
   }),
   exit: (i: number) => ({
-    x: 80,
+    x: -80,
     transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.05 * i },
   }),
 };
@@ -197,7 +212,7 @@ function Nav() {
       initial="initial"
       animate="enter"
       exit="exit"
-      className="fixed right-0 top-0 z-40 h-screen bg-[rgb(41,41,41)] text-white"
+      className="fixed left-0 top-0 z-40 h-screen bg-[rgb(41,41,41)] text-white"
     >
       <div className="flex h-full flex-col justify-between p-[100px]">
         <div
@@ -261,8 +276,11 @@ function AnimatedLink({
 }
 
 function Curve() {
-  const initialPath = `M100 0 L200 0 L200 ${window.innerHeight} L100 ${window.innerHeight} Q-100 ${window.innerHeight / 2} 100 0`;
-  const targetPath = `M100 0 L200 0 L200 ${window.innerHeight} L100 ${window.innerHeight} Q100 ${window.innerHeight / 2} 100 0`;
+  // const initialPath = `M100 0 L0 0 L0 ${window.innerHeight} L100 ${window.innerHeight} Q300 ${window.innerHeight / 2} 100 0`;
+  // const targetPath = `M100 0 L0 0 L0 ${window.innerHeight} L100 ${window.innerHeight} Q100 ${window.innerHeight / 2} 100 0`;
+
+  const initialPath = `M100 0 L0 0 L0 ${window.innerHeight} L100 ${window.innerHeight} Q300 ${window.innerHeight / 2} 100 0`;
+  const targetPath = `M100 0 L0 0 L0 ${window.innerHeight} L100 ${window.innerHeight} Q100 ${window.innerHeight / 2} 100 0`;
 
   const curve = {
     initial: {
@@ -288,6 +306,31 @@ function Curve() {
       ></motion.path>
     </svg>
   );
+
+  // const curve = {
+  //   initial: {
+  //     d: initialPath,
+  //   },
+  //   enter: {
+  //     d: targetPath,
+  //     transition: { duration: 1, ease: [0.76, 0, 0.24, 1] },
+  //   },
+  //   exit: {
+  //     d: initialPath,
+  //     transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
+  //   },
+  // };
+
+  // return (
+  //   <svg className="absolute right-[-99px] top-0 h-full w-[100px] fill-[rgb(41,41,41)] stroke-none">
+  //     <motion.path
+  //       variants={curve}
+  //       initial="initial"
+  //       animate="enter"
+  //       exit="exit"
+  //     ></motion.path>
+  //   </svg>
+  // );
 }
 
 // const menu = {

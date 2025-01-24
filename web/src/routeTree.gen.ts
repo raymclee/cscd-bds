@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as authImport } from './routes/__auth'
 import { Route as authportalImport } from './routes/__auth/__portal'
 import { Route as authdashboardImport } from './routes/__auth/__dashboard'
+import { Route as authdashboardRainbowImport } from './routes/__auth/__dashboard/rainbow'
 import { Route as authdashboardOperationsImport } from './routes/__auth/__dashboard/operations'
 import { Route as authdashboardBiImport } from './routes/__auth/__dashboard/bi'
 import { Route as authdashboardmapImport } from './routes/__auth/__dashboard/__map'
@@ -98,6 +99,12 @@ const authportalPortalRoute = authportalPortalImport.update({
   id: '/portal',
   path: '/portal',
   getParentRoute: () => authportalRoute,
+} as any)
+
+const authdashboardRainbowRoute = authdashboardRainbowImport.update({
+  id: '/rainbow',
+  path: '/rainbow',
+  getParentRoute: () => authdashboardRoute,
 } as any)
 
 const authdashboardOperationsRoute = authdashboardOperationsImport
@@ -382,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authdashboardOperationsImport
       parentRoute: typeof authdashboardImport
     }
+    '/__auth/__dashboard/rainbow': {
+      id: '/__auth/__dashboard/rainbow'
+      path: '/rainbow'
+      fullPath: '/rainbow'
+      preLoaderRoute: typeof authdashboardRainbowImport
+      parentRoute: typeof authdashboardImport
+    }
     '/__auth/__portal/portal': {
       id: '/__auth/__portal/portal'
       path: '/portal'
@@ -530,12 +544,14 @@ interface authdashboardRouteChildren {
   authdashboardmapRoute: typeof authdashboardmapRouteWithChildren
   authdashboardBiRoute: typeof authdashboardBiRoute
   authdashboardOperationsRoute: typeof authdashboardOperationsRoute
+  authdashboardRainbowRoute: typeof authdashboardRainbowRoute
 }
 
 const authdashboardRouteChildren: authdashboardRouteChildren = {
   authdashboardmapRoute: authdashboardmapRouteWithChildren,
   authdashboardBiRoute: authdashboardBiRoute,
   authdashboardOperationsRoute: authdashboardOperationsRoute,
+  authdashboardRainbowRoute: authdashboardRainbowRoute,
 }
 
 const authdashboardRouteWithChildren = authdashboardRoute._addFileChildren(
@@ -638,6 +654,7 @@ export interface FileRoutesByFullPath {
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
   '/operations': typeof authdashboardOperationsRoute
+  '/rainbow': typeof authdashboardRainbowRoute
   '/portal': typeof authportalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
@@ -664,6 +681,7 @@ export interface FileRoutesByTo {
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
   '/operations': typeof authdashboardOperationsRoute
+  '/rainbow': typeof authdashboardRainbowRoute
   '/portal': typeof authportalPortalIndexRoute
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
@@ -693,6 +711,7 @@ export interface FileRoutesById {
   '/__auth/__dashboard/__map': typeof authdashboardmapRouteWithChildren
   '/__auth/__dashboard/bi': typeof authdashboardBiRoute
   '/__auth/__dashboard/operations': typeof authdashboardOperationsRoute
+  '/__auth/__dashboard/rainbow': typeof authdashboardRainbowRoute
   '/__auth/__portal/portal': typeof authportalPortalRouteWithChildren
   '/__auth/__portal/portal/_admin': typeof authportalPortalAdminRouteWithChildren
   '/__auth/__portal/portal/_super-admin': typeof authportalPortalSuperAdminRouteWithChildren
@@ -723,6 +742,7 @@ export interface FileRouteTypes {
     | '/r'
     | '/bi'
     | '/operations'
+    | '/rainbow'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
@@ -748,6 +768,7 @@ export interface FileRouteTypes {
     | '/r'
     | '/bi'
     | '/operations'
+    | '/rainbow'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
@@ -775,6 +796,7 @@ export interface FileRouteTypes {
     | '/__auth/__dashboard/__map'
     | '/__auth/__dashboard/bi'
     | '/__auth/__dashboard/operations'
+    | '/__auth/__dashboard/rainbow'
     | '/__auth/__portal/portal'
     | '/__auth/__portal/portal/_admin'
     | '/__auth/__portal/portal/_super-admin'
@@ -854,7 +876,8 @@ export const routeTree = rootRoute
       "children": [
         "/__auth/__dashboard/__map",
         "/__auth/__dashboard/bi",
-        "/__auth/__dashboard/operations"
+        "/__auth/__dashboard/operations",
+        "/__auth/__dashboard/rainbow"
       ]
     },
     "/__auth/__portal": {
@@ -878,6 +901,10 @@ export const routeTree = rootRoute
     },
     "/__auth/__dashboard/operations": {
       "filePath": "__auth/__dashboard/operations.tsx",
+      "parent": "/__auth/__dashboard"
+    },
+    "/__auth/__dashboard/rainbow": {
+      "filePath": "__auth/__dashboard/rainbow.tsx",
       "parent": "/__auth/__dashboard"
     },
     "/__auth/__portal/portal": {

@@ -2,6 +2,7 @@ import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
 import { domAnimation, LazyMotion } from "motion/react";
 import { useLayoutEffect, useRef } from "react";
 import { useWindowSize } from "usehooks-ts";
+import { Switcher } from "~/components/switcher";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard")({
   component: RouteComponent,
@@ -10,6 +11,7 @@ export const Route = createLazyFileRoute("/__auth/__dashboard")({
 function RouteComponent() {
   const windowSize = useWindowSize();
   const ref = useRef<HTMLDivElement>(null);
+  const { session } = Route.useRouteContext();
 
   useLayoutEffect(() => {
     const { width, height } = window.screen;
@@ -33,6 +35,7 @@ function RouteComponent() {
         ref={ref}
         className="fixed inset-0 min-h-screen origin-top-left overflow-hidden bg-slate-900"
       >
+        {(session.isSuperAdmin || session.isCeo) && <Switcher />}
         {/* <div className="relative max-h-screen min-h-screen overflow-hidden max-w-screen bg-slate-900"> */}
         <Outlet />
       </div>

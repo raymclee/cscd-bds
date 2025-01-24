@@ -361,9 +361,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
 
   return (
     <>
-      <Switcher />
-
-      <div className="absolute left-5 top-2">
+      <div className="absolute left-[335px] top-2">
         <ProjectSelect data={data} defaultCode={defaultCode} />
       </div>
 
