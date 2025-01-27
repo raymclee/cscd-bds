@@ -1380,6 +1380,7 @@ export type MutationCreatePlotArgs = {
 export type MutationCreateTenderArgs = {
   attachmentFileNames: Array<Scalars['String']['input']>;
   geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
+  geoCoordinate?: InputMaybe<Array<Scalars['Float']['input']>>;
   imageFileNames: Array<Scalars['String']['input']>;
   input: CreateTenderInput;
 };
@@ -1459,6 +1460,7 @@ export type MutationUpdateProjectArgs = {
 export type MutationUpdateTenderArgs = {
   attachmentFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
   geoBounds?: InputMaybe<Array<Array<Scalars['Float']['input']>>>;
+  geoCoordinate?: InputMaybe<Array<Scalars['Float']['input']>>;
   id: Scalars['ID']['input'];
   imageFileNames?: InputMaybe<Array<Scalars['String']['input']>>;
   input: UpdateTenderInput;

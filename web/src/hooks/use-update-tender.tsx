@@ -10,6 +10,7 @@ export function useUpdateTender() {
       $attachmentFileNames: [String!]!
       $removeImageFileNames: [String!]
       $removeAttachmentFileNames: [String!]
+      $geoCoordinate: [Float!]
     ) {
       updateTender(
         id: $id
@@ -18,6 +19,7 @@ export function useUpdateTender() {
         attachmentFileNames: $attachmentFileNames
         removeImageFileNames: $removeImageFileNames
         removeAttachmentFileNames: $removeAttachmentFileNames
+        geoCoordinate: $geoCoordinate
       ) {
         ...tenderDetailFragment
         customer {

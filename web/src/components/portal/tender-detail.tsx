@@ -75,6 +75,9 @@ export const TenderDetailFragment = graphql`
     constructionArea
     remark
     images
+    geoCoordinate {
+      coordinates
+    }
     createdBy {
       id
     }

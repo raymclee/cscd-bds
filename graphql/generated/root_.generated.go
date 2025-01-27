@@ -225,7 +225,7 @@ type ComplexityRoot struct {
 		CreateCompetitor  func(childComplexity int, input ent.CreateCompetitorInput) int
 		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
 		CreatePlot        func(childComplexity int, input ent.CreatePlotInput, geoBounds [][]float64) int
-		CreateTender      func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) int
+		CreateTender      func(childComplexity int, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) int
 		CreateUser        func(childComplexity int, input ent.CreateUserInput) int
 		CreateVisitRecord func(childComplexity int, input ent.CreateVisitRecordInput) int
 		DeleteCompetitor  func(childComplexity int, id xid.ID) int
@@ -239,7 +239,7 @@ type ComplexityRoot struct {
 		UpdateCustomer    func(childComplexity int, id xid.ID, input ent.UpdateCustomerInput) int
 		UpdatePlot        func(childComplexity int, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) int
 		UpdateProject     func(childComplexity int, id xid.ID, input ent.UpdateProjectInput) int
-		UpdateTender      func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) int
+		UpdateTender      func(childComplexity int, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) int
 		UpdateUser        func(childComplexity int, id xid.ID, input ent.UpdateUserInput) int
 		UpdateVisitRecord func(childComplexity int, id xid.ID, input ent.UpdateVisitRecordInput) int
 	}
@@ -1544,7 +1544,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string)), true
+		return e.complexity.Mutation.CreateTender(childComplexity, args["input"].(ent.CreateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["attachmentFileNames"].([]string), args["geoCoordinate"].([]float64)), true
 
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
@@ -1712,7 +1712,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["removeImageFileNames"].([]string), args["attachmentFileNames"].([]string), args["removeAttachmentFileNames"].([]string)), true
+		return e.complexity.Mutation.UpdateTender(childComplexity, args["id"].(xid.ID), args["input"].(ent.UpdateTenderInput), args["geoBounds"].([][]float64), args["imageFileNames"].([]string), args["removeImageFileNames"].([]string), args["attachmentFileNames"].([]string), args["removeAttachmentFileNames"].([]string), args["geoCoordinate"].([]float64)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -11610,6 +11610,7 @@ type GeoJson {
     geoBounds: [[Float!]!]
     imageFileNames: [String!]!
     attachmentFileNames: [String!]!
+    geoCoordinate: [Float!]
   ): TenderConnection!
   updateTender(
     id: ID!
@@ -11619,6 +11620,7 @@ type GeoJson {
     removeImageFileNames: [String!]
     attachmentFileNames: [String!]
     removeAttachmentFileNames: [String!]
+    geoCoordinate: [Float!]
   ): Tender!
   deleteTender(id: ID!): Tender!
 

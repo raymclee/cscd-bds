@@ -10,7 +10,6 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/area"
-	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/schema/geo"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
@@ -123,7 +122,7 @@ func (r *mutationResolver) DeleteCustomer(ctx context.Context, id xid.ID) (*ent.
 }
 
 // CreateTender is the resolver for the createTender field.
-func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.TenderConnection, error) {
+func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) (*ent.TenderConnection, error) {
 	q := r.store.Tender.Create().SetInput(input)
 	if len(geoBounds) > 0 {
 		q.SetGeoBounds(geoBounds)
@@ -159,31 +158,41 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 	code := fmt.Sprintf("%s%s%03d", a.Code, date.Format("20060102"), n)
 	q.SetCode(code)
 
-	if a.Code != "HW" && input.Address != nil {
+	// if a.Code != "HW" && input.Address != nil {
 
-		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get geo code: %w", err)
-		}
-		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get district: %w", err)
-		}
-		if d.Edges.City != nil {
-			q.SetCity(d.Edges.City)
-		}
-		if d.Edges.Province != nil {
-			q.SetProvince(d.Edges.Province)
-		}
-		q.SetDistrict(d)
-		q.SetFullAddress(address)
+	// 	adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to get geo code: %w", err)
+	// 	}
+	// 	d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to get district: %w", err)
+	// 	}
+	// 	if d.Edges.City != nil {
+	// 		q.SetCity(d.Edges.City)
+	// 	}
+	// 	if d.Edges.Province != nil {
+	// 		q.SetProvince(d.Edges.Province)
+	// 	}
+	// 	q.SetDistrict(d)
+	// 	q.SetFullAddress(address)
+	// 	center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
+	// 	}
+	// 	coordinate := &geo.GeoJson{Geometry: center}
+	// 	q.SetGeoCoordinate(coordinate).SetDistrict(d)
+
+	// }
+
+	if len(geoCoordinate) > 1 {
+		lng, lat := geoCoordinate[1], geoCoordinate[0]
 		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
 		if err != nil {
 			return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
 		}
 		coordinate := &geo.GeoJson{Geometry: center}
-		q.SetGeoCoordinate(coordinate).SetDistrict(d)
-
+		q.SetGeoCoordinate(coordinate)
 	}
 
 	var images []string
@@ -231,7 +240,7 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 }
 
 // UpdateTender is the resolver for the updateTender field.
-func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) (*ent.Tender, error) {
+func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) (*ent.Tender, error) {
 	sess, err := r.session.GetSession(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
@@ -314,31 +323,41 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		q.SetAttachements(removedAttachments)
 	}
 
-	if input.Address != nil && t.Address != nil && *input.Address != *t.Address {
+	// if input.Address != nil && t.Address != nil && *input.Address != *t.Address {
 
-		adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get geo code: %w", err)
-		}
-		d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get district: %w", err)
-		}
-		if d.Edges.City != nil {
-			q.SetCity(d.Edges.City)
-		}
-		if d.Edges.Province != nil {
-			q.SetProvince(d.Edges.Province)
-		}
-		q.SetDistrict(d)
-		q.SetFullAddress(address)
+	// 	adcode, lng, lat, address, err := r.amap.GeoCode(*input.Address)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to get geo code: %w", err)
+	// 	}
+	// 	d, err := r.store.District.Query().Where(district.Adcode(adcode)).WithCity().WithProvince().Only(ctx)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to get district: %w", err)
+	// 	}
+	// 	if d.Edges.City != nil {
+	// 		q.SetCity(d.Edges.City)
+	// 	}
+	// 	if d.Edges.Province != nil {
+	// 		q.SetProvince(d.Edges.Province)
+	// 	}
+	// 	q.SetDistrict(d)
+	// 	q.SetFullAddress(address)
+	// 	center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
+	// 	}
+	// 	coordinate := &geo.GeoJson{Geometry: center}
+	// 	q.SetGeoCoordinate(coordinate).SetDistrict(d)
+
+	// }
+
+	if len(geoCoordinate) > 1 {
+		lng, lat := geoCoordinate[1], geoCoordinate[0]
 		center, err := geojson.Encode(geom.NewPoint(geom.XY).MustSetCoords(geom.Coord{lng, lat}).SetSRID(4326))
 		if err != nil {
 			return nil, fmt.Errorf("failed to encode geo coordinate: %w", err)
 		}
 		coordinate := &geo.GeoJson{Geometry: center}
-		q.SetGeoCoordinate(coordinate).SetDistrict(d)
-
+		q.SetGeoCoordinate(coordinate)
 	}
 
 	t, err = q.Save(ctx)

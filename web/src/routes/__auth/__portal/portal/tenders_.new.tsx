@@ -7,6 +7,12 @@ import node, {
 import { canEdit } from "~/lib/permission";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
+// @ts-expect-error
+window._AMapSecurityConfig = {
+  securityJsCode: "462956f38d2d32df99c7b863dc9c1bb6",
+  // serviceHost: "/_AMapService",
+};
+
 export const Route = createFileRoute("/__auth/__portal/portal/tenders_/new")({
   async loader({ context: { RelayEnvironment, session } }) {
     if (!canEdit(session)) {
@@ -16,7 +22,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/tenders_/new")({
     await AMapLoader.load({
       key: "2fe0b3e2e45dce4b4180ec0f5683cc24",
       version: "2.0",
-      plugins: ["AMap.Geolocation"],
+      plugins: ["AMap.Geolocation", "AMap.Geocoder"],
       // plugins: ["ui/geo/DistrictCluster"],
       // plugins: ["AMap.PolygonEditor", "AMap.ToolBar", "AMap.Scale"],
     });

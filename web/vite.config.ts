@@ -31,6 +31,11 @@ export default defineConfig(({ mode }) => ({
               target: "http://localhost:3000",
               changeOrigin: true,
             },
+            "/_AMapService": {
+              target: "http://localhost:3000",
+              changeOrigin: true,
+              secure: true,
+            },
           },
         }
       : {},

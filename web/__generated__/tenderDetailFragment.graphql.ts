@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0aefda34ce6c079e09121fbefc32a5e5>>
+ * @generated SignedSource<<337188173e0e3df8144cdfe486505646>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -68,6 +68,9 @@ export type tenderDetailFragment$data = {
     readonly name: string;
   }> | null | undefined;
   readonly fullAddress: string | null | undefined;
+  readonly geoCoordinate: {
+    readonly coordinates: ReadonlyArray<number>;
+  } | null | undefined;
   readonly id: string;
   readonly images: ReadonlyArray<string> | null | undefined;
   readonly keyProject: boolean;
@@ -504,6 +507,24 @@ return {
     {
       "alias": null,
       "args": null,
+      "concreteType": "GeoJson",
+      "kind": "LinkedField",
+      "name": "geoCoordinate",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "coordinates",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "User",
       "kind": "LinkedField",
       "name": "createdBy",
@@ -604,6 +625,6 @@ return {
 };
 })();
 
-(node as any).hash = "0dbb9f8e180eb6b939d44cad34ca56e6";
+(node as any).hash = "e10751d24e01de7617f02edbead64647";
 
 export default node;

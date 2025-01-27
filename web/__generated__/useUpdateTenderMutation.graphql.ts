@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<54397f5622de54c29ea3c78b9cfad416>>
+ * @generated SignedSource<<9b4cb7069c4fed4855f0ebe4b9c8350e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -138,6 +138,7 @@ export type UpdateTenderInput = {
 };
 export type useUpdateTenderMutation$variables = {
   attachmentFileNames: ReadonlyArray<string>;
+  geoCoordinate?: ReadonlyArray<number> | null | undefined;
   id: string;
   imageFileNames: ReadonlyArray<string>;
   input: UpdateTenderInput;
@@ -167,33 +168,43 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "id"
+  "name": "geoCoordinate"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "imageFileNames"
+  "name": "id"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "input"
+  "name": "imageFileNames"
 },
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "removeAttachmentFileNames"
+  "name": "input"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "removeAttachmentFileNames"
+},
+v6 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "removeImageFileNames"
 },
-v6 = [
+v7 = [
   {
     "kind": "Variable",
     "name": "attachmentFileNames",
     "variableName": "attachmentFileNames"
+  },
+  {
+    "kind": "Variable",
+    "name": "geoCoordinate",
+    "variableName": "geoCoordinate"
   },
   {
     "kind": "Variable",
@@ -221,36 +232,36 @@ v6 = [
     "variableName": "removeImageFileNames"
   }
 ],
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v9 = [
-  (v7/*: any*/),
-  (v8/*: any*/)
+v10 = [
+  (v8/*: any*/),
+  (v9/*: any*/)
 ],
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "code",
   "storageKey": null
 },
-v11 = [
-  (v7/*: any*/)
-],
 v12 = [
-  (v7/*: any*/),
+  (v8/*: any*/)
+],
+v13 = [
+  (v8/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -258,7 +269,7 @@ v12 = [
     "name": "adcode",
     "storageKey": null
   },
-  (v8/*: any*/)
+  (v9/*: any*/)
 ];
 return {
   "fragment": {
@@ -268,7 +279,8 @@ return {
       (v2/*: any*/),
       (v3/*: any*/),
       (v4/*: any*/),
-      (v5/*: any*/)
+      (v5/*: any*/),
+      (v6/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -276,7 +288,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v6/*: any*/),
+        "args": (v7/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
@@ -294,7 +306,7 @@ return {
             "kind": "LinkedField",
             "name": "customer",
             "plural": false,
-            "selections": (v9/*: any*/),
+            "selections": (v10/*: any*/),
             "storageKey": null
           }
         ],
@@ -307,27 +319,28 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v1/*: any*/),
-      (v3/*: any*/),
       (v2/*: any*/),
+      (v4/*: any*/),
+      (v3/*: any*/),
       (v0/*: any*/),
+      (v6/*: any*/),
       (v5/*: any*/),
-      (v4/*: any*/)
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "useUpdateTenderMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v6/*: any*/),
+        "args": (v7/*: any*/),
         "concreteType": "Tender",
         "kind": "LinkedField",
         "name": "updateTender",
         "plural": false,
         "selections": [
-          (v7/*: any*/),
-          (v10/*: any*/),
           (v8/*: any*/),
+          (v11/*: any*/),
+          (v9/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -681,11 +694,29 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "GeoJson",
+            "kind": "LinkedField",
+            "name": "geoCoordinate",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "coordinates",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "User",
             "kind": "LinkedField",
             "name": "createdBy",
             "plural": false,
-            "selections": (v11/*: any*/),
+            "selections": (v12/*: any*/),
             "storageKey": null
           },
           {
@@ -695,7 +726,7 @@ return {
             "kind": "LinkedField",
             "name": "finder",
             "plural": false,
-            "selections": (v11/*: any*/),
+            "selections": (v12/*: any*/),
             "storageKey": null
           },
           {
@@ -706,9 +737,9 @@ return {
             "name": "area",
             "plural": false,
             "selections": [
-              (v7/*: any*/),
-              (v10/*: any*/),
-              (v8/*: any*/)
+              (v8/*: any*/),
+              (v11/*: any*/),
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -719,7 +750,7 @@ return {
             "kind": "LinkedField",
             "name": "followingSales",
             "plural": true,
-            "selections": (v9/*: any*/),
+            "selections": (v10/*: any*/),
             "storageKey": null
           },
           {
@@ -730,7 +761,7 @@ return {
             "name": "customer",
             "plural": false,
             "selections": [
-              (v7/*: any*/),
+              (v8/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -738,7 +769,7 @@ return {
                 "name": "ownerType",
                 "storageKey": null
               },
-              (v8/*: any*/)
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -749,7 +780,7 @@ return {
             "kind": "LinkedField",
             "name": "province",
             "plural": false,
-            "selections": (v12/*: any*/),
+            "selections": (v13/*: any*/),
             "storageKey": null
           },
           {
@@ -759,7 +790,7 @@ return {
             "kind": "LinkedField",
             "name": "city",
             "plural": false,
-            "selections": (v12/*: any*/),
+            "selections": (v13/*: any*/),
             "storageKey": null
           },
           {
@@ -769,7 +800,7 @@ return {
             "kind": "LinkedField",
             "name": "district",
             "plural": false,
-            "selections": (v12/*: any*/),
+            "selections": (v13/*: any*/),
             "storageKey": null
           }
         ],
@@ -778,16 +809,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8e7e0c05e9649a3b400ab8256e453084",
+    "cacheID": "9dd08a588804627af0739c96e6ae7ed5",
     "id": null,
     "metadata": {},
     "name": "useUpdateTenderMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames) {\n    ...tenderDetailFragment\n    customer {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  address\n  fullAddress\n  contractor\n  prepareToBid\n  projectCode\n  projectType\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  levelInvolved\n  costEngineer\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  currentProgress\n  tenderWinCompany\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  attachements\n  tenderCode\n  developer\n  architect\n  tenderClosingDate\n  constructionArea\n  remark\n  images\n  createdBy {\n    id\n  }\n  finder {\n    id\n  }\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
+    "text": "mutation useUpdateTenderMutation(\n  $id: ID!\n  $input: UpdateTenderInput!\n  $imageFileNames: [String!]!\n  $attachmentFileNames: [String!]!\n  $removeImageFileNames: [String!]\n  $removeAttachmentFileNames: [String!]\n  $geoCoordinate: [Float!]\n) {\n  updateTender(id: $id, input: $input, imageFileNames: $imageFileNames, attachmentFileNames: $attachmentFileNames, removeImageFileNames: $removeImageFileNames, removeAttachmentFileNames: $removeAttachmentFileNames, geoCoordinate: $geoCoordinate) {\n    ...tenderDetailFragment\n    customer {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  address\n  fullAddress\n  contractor\n  prepareToBid\n  projectCode\n  projectType\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  levelInvolved\n  costEngineer\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  currentProgress\n  tenderWinCompany\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  attachements\n  tenderCode\n  developer\n  architect\n  tenderClosingDate\n  constructionArea\n  remark\n  images\n  geoCoordinate {\n    coordinates\n  }\n  createdBy {\n    id\n  }\n  finder {\n    id\n  }\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "82af06d30e0372cb7b33117453db1414";
+(node as any).hash = "662d3eb00679de87bbf6ec7c66e5df40";
 
 export default node;

@@ -116,7 +116,6 @@ func (r *queryResolver) TopCompetitors(ctx context.Context, first *int) ([]*mode
 
 // BiToken is the resolver for the biToken field.
 func (r *queryResolver) BiToken(ctx context.Context) (string, error) {
-
 	resp, err := http.Get("https://bi.fefacade.com/webroot/decision/login/cross/domain?fine_username=ray.mclee&fine_password=ray.mclee830&validity=-1")
 	if err != nil {
 		return "", err

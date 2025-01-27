@@ -93,7 +93,7 @@ func main() {
 
 	bi := e.Group("/webroot/decision", sm.Middlware(), h.AuthMiddleware())
 	bi.Use(middleware.ProxyWithConfig(middleware.ProxyConfig{
-		Balancer: middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
+		Balancer: middleware.NewRandomBalancer([]*middleware.ProxyTarget{
 			{
 				URL: &url.URL{
 					Scheme: "http",
@@ -101,6 +101,24 @@ func main() {
 				},
 			},
 		}),
+	}))
+
+	e.Group("/_AMapService", middleware.ProxyWithConfig(middleware.ProxyConfig{
+		Balancer: middleware.NewRandomBalancer([]*middleware.ProxyTarget{
+			{
+				URL: &url.URL{
+					Scheme:     "https",
+					Host:       "restapi.amap.com",
+					ForceQuery: true,
+				},
+			},
+		}),
+		// RegexRewrite: map[*regexp.Regexp]string{
+		// 	regexp.MustCompile(`(.*)(&callback=[\w&.\-]+$)`): "/$1jscode=462956f38d2d32df99c7b863dc9c1bb6",
+		// },
+		Rewrite: map[string]string{
+			"*": "/$1&jscode=462956f38d2d32df99c7b863dc9c1bb6",
+		},
 	}))
 
 	e.Static("/3dm", "3dm")

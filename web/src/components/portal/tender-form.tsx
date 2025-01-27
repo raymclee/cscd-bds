@@ -43,6 +43,7 @@ import { FixedToolbar } from "./fixed-toolbar";
 import { TenderDetailFragment } from "./tender-detail";
 import { SearchLocationSelect } from "./search-location-select";
 import { TenderFormMap } from "./tender-form-map";
+import { usePortalStore } from "~/store/portal";
 
 const { Dragger } = Upload;
 
@@ -90,7 +91,9 @@ export function TenderForm({
   competitorRef,
 }: TenderFormProps) {
   const { message } = App.useApp();
-  const [form] = Form.useForm<CreateTenderInput>();
+  const [form] = Form.useForm<
+    CreateTenderInput & { geoCoordinate: number[] }
+  >();
   const data = useFragment(fragment, queryRef);
   const tender = useFragment(TenderDetailFragment, tenderRef);
   const { session } = useRouteContext({ from: "/__auth" });
@@ -118,6 +121,7 @@ export function TenderForm({
 
   const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
+  const address = Form.useWatch("address", form);
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
@@ -229,7 +233,7 @@ export function TenderForm({
   }, [tender]);
 
   return (
-    <Form<CreateTenderInput>
+    <Form<CreateTenderInput & { geoCoordinate: number[] }>
       form={form}
       className="relative pb-24"
       // requiredMark="optional"
@@ -248,6 +252,7 @@ export function TenderForm({
             attachements,
             followingSaleIDs,
             estimatedAmount,
+            geoCoordinate,
             ...input
           } = values;
           commitUpdateMutation({
@@ -263,6 +268,7 @@ export function TenderForm({
               attachmentFileNames,
               removeImageFileNames,
               removeAttachmentFileNames,
+              geoCoordinate,
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });
@@ -276,7 +282,13 @@ export function TenderForm({
             },
           });
         } else {
-          const { images, attachements, estimatedAmount, ...input } = values;
+          const {
+            images,
+            attachements,
+            estimatedAmount,
+            geoCoordinate,
+            ...input
+          } = values;
 
           const connections = [
             ConnectionHandler.getConnectionID(
@@ -308,6 +320,7 @@ export function TenderForm({
               connections,
               imageFileNames,
               attachmentFileNames,
+              geoCoordinate,
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });
@@ -568,13 +581,33 @@ export function TenderForm({
               <ProvinceCityDistrictSelectorLoader areaID={areaID} />
 
               <Form.Item
-                name="address"
-                label="详细地址"
+                name="fullAddress"
+                label="地理位置"
                 rules={[{ required: true }]}
                 className="md:col-span-3"
               >
-                <TenderFormMap />
+                <Input
+                  disabled
+                  onClick={() => {
+                    usePortalStore.setState({ tenderFormMapOpen: true });
+                  }}
+                  suffix={
+                    <TenderFormMap
+                      onComplete={({ address, lnglat }) => {
+                        form.setFieldValue("fullAddress", address);
+                        form.setFieldValue("geoCoordinate", lnglat.toArray());
+                      }}
+                      defaultLnglat={tender?.geoCoordinate?.coordinates}
+                    />
+                  }
+                />
               </Form.Item>
+
+              <Form.Item
+                name="geoCoordinate"
+                label="geoCoordinate"
+                hidden
+              ></Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
                 <Select

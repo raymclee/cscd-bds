@@ -25,8 +25,8 @@ type MutationResolver interface {
 	CreateCustomer(ctx context.Context, input ent.CreateCustomerInput) (*ent.CustomerConnection, error)
 	UpdateCustomer(ctx context.Context, id xid.ID, input ent.UpdateCustomerInput) (*ent.Customer, error)
 	DeleteCustomer(ctx context.Context, id xid.ID) (*ent.Customer, error)
-	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string) (*ent.TenderConnection, error)
-	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string) (*ent.Tender, error)
+	CreateTender(ctx context.Context, input ent.CreateTenderInput, geoBounds [][]float64, imageFileNames []string, attachmentFileNames []string, geoCoordinate []float64) (*ent.TenderConnection, error)
+	UpdateTender(ctx context.Context, id xid.ID, input ent.UpdateTenderInput, geoBounds [][]float64, imageFileNames []string, removeImageFileNames []string, attachmentFileNames []string, removeAttachmentFileNames []string, geoCoordinate []float64) (*ent.Tender, error)
 	DeleteTender(ctx context.Context, id xid.ID) (*ent.Tender, error)
 	CreatePlot(ctx context.Context, input ent.CreatePlotInput, geoBounds [][]float64) (*ent.PlotConnection, error)
 	UpdatePlot(ctx context.Context, id xid.ID, input ent.UpdatePlotInput, geoBounds [][]float64) (*ent.Plot, error)
@@ -222,6 +222,11 @@ func (ec *executionContext) field_Mutation_createTender_args(ctx context.Context
 		return nil, err
 	}
 	args["attachmentFileNames"] = arg3
+	arg4, err := ec.field_Mutation_createTender_argsGeoCoordinate(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["geoCoordinate"] = arg4
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_createTender_argsInput(
@@ -309,6 +314,28 @@ func (ec *executionContext) field_Mutation_createTender_argsAttachmentFileNames(
 	}
 
 	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createTender_argsGeoCoordinate(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]float64, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["geoCoordinate"]
+	if !ok {
+		var zeroVal []float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoCoordinate"))
+	if tmp, ok := rawArgs["geoCoordinate"]; ok {
+		return ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, tmp)
+	}
+
+	var zeroVal []float64
 	return zeroVal, nil
 }
 
@@ -928,6 +955,11 @@ func (ec *executionContext) field_Mutation_updateTender_args(ctx context.Context
 		return nil, err
 	}
 	args["removeAttachmentFileNames"] = arg6
+	arg7, err := ec.field_Mutation_updateTender_argsGeoCoordinate(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["geoCoordinate"] = arg7
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateTender_argsID(
@@ -1081,6 +1113,28 @@ func (ec *executionContext) field_Mutation_updateTender_argsRemoveAttachmentFile
 	}
 
 	var zeroVal []string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTender_argsGeoCoordinate(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]float64, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["geoCoordinate"]
+	if !ok {
+		var zeroVal []float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("geoCoordinate"))
+	if tmp, ok := rawArgs["geoCoordinate"]; ok {
+		return ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, tmp)
+	}
+
+	var zeroVal []float64
 	return zeroVal, nil
 }
 
@@ -1878,7 +1932,7 @@ func (ec *executionContext) _Mutation_createTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string))
+		return ec.resolvers.Mutation().CreateTender(rctx, fc.Args["input"].(ent.CreateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string), fc.Args["geoCoordinate"].([]float64))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1941,7 +1995,7 @@ func (ec *executionContext) _Mutation_updateTender(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["removeImageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string), fc.Args["removeAttachmentFileNames"].([]string))
+		return ec.resolvers.Mutation().UpdateTender(rctx, fc.Args["id"].(xid.ID), fc.Args["input"].(ent.UpdateTenderInput), fc.Args["geoBounds"].([][]float64), fc.Args["imageFileNames"].([]string), fc.Args["removeImageFileNames"].([]string), fc.Args["attachmentFileNames"].([]string), fc.Args["removeAttachmentFileNames"].([]string), fc.Args["geoCoordinate"].([]float64))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

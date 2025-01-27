@@ -15,6 +15,7 @@ type Mutation {
     geoBounds: [[Float!]!]
     imageFileNames: [String!]!
     attachmentFileNames: [String!]!
+    geoCoordinate: [Float!]
   ): TenderConnection!
   updateTender(
     id: ID!
@@ -24,6 +25,7 @@ type Mutation {
     removeImageFileNames: [String!]
     attachmentFileNames: [String!]
     removeAttachmentFileNames: [String!]
+    geoCoordinate: [Float!]
   ): Tender!
   deleteTender(id: ID!): Tender!
 

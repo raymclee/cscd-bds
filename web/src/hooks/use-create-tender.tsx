@@ -8,11 +8,13 @@ const mutation = graphql`
     $connections: [ID!]!
     $imageFileNames: [String!]!
     $attachmentFileNames: [String!]!
+    $geoCoordinate: [Float!]
   ) {
     createTender(
       input: $input
       imageFileNames: $imageFileNames
       attachmentFileNames: $attachmentFileNames
+      geoCoordinate: $geoCoordinate
     ) {
       edges @prependEdge(connections: $connections) {
         node {
