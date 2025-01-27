@@ -41,7 +41,7 @@ func main() {
 		middleware.Recover(),
 		middleware.RequestID(),
 		middleware.Logger(),
-		// middleware.CORS(),
+		middleware.CORS(),
 	)
 
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
@@ -91,7 +91,7 @@ func main() {
 		return c.Redirect(http.StatusFound, "/logout")
 	})
 
-	bi := e.Group("/webroot")
+	bi := e.Group("/webroot/decision", sm.Middlware(), h.AuthMiddleware())
 	bi.Use(middleware.ProxyWithConfig(middleware.ProxyConfig{
 		Balancer: middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
 			{
