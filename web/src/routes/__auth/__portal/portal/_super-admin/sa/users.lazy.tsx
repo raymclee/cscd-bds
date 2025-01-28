@@ -77,6 +77,7 @@ const query = graphql`
               node {
                 id
                 code
+                isFinished
               }
             }
           }
@@ -143,20 +144,19 @@ function RouteComponent() {
     {
       dataIndex: "projects",
       title: "项目",
-      render: (_, record) =>
-        record.projects.edges && record.projects.edges?.length > 0 ? (
-          <Tooltip
-            placement="rightTop"
-            title={`${record.projects.edges
-              ?.map((p) => p?.node?.code)
-              .join(", ")
-              .substring(0, 500)}...`}
-          >
-            {record.projects.edges?.map((p) => p?.node?.code).join(", ")}
+      render: (_, record) => {
+        if (!record.projects.edges?.length) return "无";
+        const text =
+          data.projects.edges?.length ===
+          record.projects.edges?.filter((p) => !p?.node?.isFinished).length
+            ? "全部"
+            : record.projects.edges?.map((p) => p?.node?.code).join(", ");
+        return (
+          <Tooltip placement="rightTop" title={text}>
+            {text}
           </Tooltip>
-        ) : (
-          "无"
-        ),
+        );
+      },
       width: 260,
       ellipsis: true,
     },

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ec9c93b539f78be7d06663a66e1baf66>>
+ * @generated SignedSource<<dc4f433c2578229d126659cf0f3e7c60>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -60,6 +60,7 @@ export type usersSuperAdminUsersPageQuery$data = {
             readonly node: {
               readonly code: string;
               readonly id: string;
+              readonly isFinished: boolean;
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
@@ -143,33 +144,7 @@ v4 = {
   ],
   "storageKey": null
 },
-v5 = [
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "ProjectEdge",
-    "kind": "LinkedField",
-    "name": "edges",
-    "plural": true,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Project",
-        "kind": "LinkedField",
-        "name": "node",
-        "plural": false,
-        "selections": [
-          (v1/*: any*/),
-          (v3/*: any*/)
-        ],
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
-  }
-],
-v6 = {
+v5 = {
   "alias": null,
   "args": [
     {
@@ -184,10 +159,35 @@ v6 = {
   "kind": "LinkedField",
   "name": "projects",
   "plural": false,
-  "selections": (v5/*: any*/),
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ProjectEdge",
+      "kind": "LinkedField",
+      "name": "edges",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Project",
+          "kind": "LinkedField",
+          "name": "node",
+          "plural": false,
+          "selections": [
+            (v1/*: any*/),
+            (v3/*: any*/)
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
   "storageKey": "projects(where:{\"isFinishedNEQ\":true})"
 },
-v7 = [
+v6 = [
   {
     "alias": null,
     "args": null,
@@ -284,7 +284,39 @@ v7 = [
             "kind": "LinkedField",
             "name": "projects",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ProjectEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Project",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      (v1/*: any*/),
+                      (v3/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "isFinished",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -359,7 +391,7 @@ v7 = [
     ]
   }
 ],
-v8 = [
+v7 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -379,7 +411,7 @@ return {
     "name": "usersSuperAdminUsersPageQuery",
     "selections": [
       (v4/*: any*/),
-      (v6/*: any*/),
+      (v5/*: any*/),
       {
         "alias": "users",
         "args": null,
@@ -387,7 +419,7 @@ return {
         "kind": "LinkedField",
         "name": "__usersSuperAdminUsersPageQuery_users_connection",
         "plural": false,
-        "selections": (v7/*: any*/),
+        "selections": (v6/*: any*/),
         "storageKey": null
       }
     ],
@@ -401,20 +433,20 @@ return {
     "name": "usersSuperAdminUsersPageQuery",
     "selections": [
       (v4/*: any*/),
-      (v6/*: any*/),
+      (v5/*: any*/),
       {
         "alias": null,
-        "args": (v8/*: any*/),
+        "args": (v7/*: any*/),
         "concreteType": "UserConnection",
         "kind": "LinkedField",
         "name": "users",
         "plural": false,
-        "selections": (v7/*: any*/),
+        "selections": (v6/*: any*/),
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v8/*: any*/),
+        "args": (v7/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "usersSuperAdminUsersPageQuery_users",
@@ -424,7 +456,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "81dfeec2754b4256ce5f25c64daf7a44",
+    "cacheID": "dbd6d30b03b4500052e982da02ef5990",
     "id": null,
     "metadata": {
       "connection": [
@@ -440,11 +472,11 @@ return {
     },
     "name": "usersSuperAdminUsersPageQuery",
     "operationKind": "query",
-    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        id\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        projects {\n          edges {\n            node {\n              id\n              code\n            }\n          }\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        id\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        projects {\n          edges {\n            node {\n              id\n              code\n              isFinished\n            }\n          }\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7ff8bddbe169a797b4512f618b626e17";
+(node as any).hash = "524a824264f7374e478061f442c7fee5";
 
 export default node;

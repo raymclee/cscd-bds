@@ -218,12 +218,16 @@ export function UserForm({
             onDeselect={(value) => {
               setRemovedAreaIDs((prev) => [...prev, value]);
             }}
+            showSearch
+            optionFilterProp="label"
           />
         </Form.Item>
         {isSuperAdmin && (
           <Form.Item name="projectIDs" label="项目">
             <Select
               allowClear
+              showSearch
+              optionFilterProp="label"
               mode="multiple"
               options={
                 avaliableProjects?.edges && avaliableProjects?.edges?.length > 0
@@ -244,6 +248,9 @@ export function UserForm({
               }}
               onDeselect={(value) => {
                 setRemovedProjectIDs((prev) => [...prev, value]);
+              }}
+              onClear={() => {
+                setRemovedProjectIDs(["all"]);
               }}
             />
           </Form.Item>
