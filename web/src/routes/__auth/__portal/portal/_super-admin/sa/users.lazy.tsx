@@ -72,7 +72,7 @@ const query = graphql`
           isSuperAdmin
           hasMapAccess
           hasEditAccess
-          projects {
+          projects(where: { isFinishedNEQ: true }, orderBy: { field: CODE }) {
             edges {
               node {
                 id
@@ -147,12 +147,11 @@ function RouteComponent() {
       render: (_, record) => {
         if (!record.projects.edges?.length) return "无";
         const text =
-          data.projects.edges?.length ===
-          record.projects.edges?.filter((p) => !p?.node?.isFinished).length
+          data.projects.edges?.length === record.projects.edges?.length
             ? "全部"
             : record.projects.edges
                 ?.map((p) => p?.node?.code)
-                .sort((a, b) => (a ?? "").localeCompare(b ?? ""))
+                // .sort((a, b) => (a ?? "").localeCompare(b ?? ""))
                 .join(", ");
         return (
           <Tooltip placement="rightTop" title={text}>

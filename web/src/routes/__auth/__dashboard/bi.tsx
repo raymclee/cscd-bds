@@ -16,9 +16,9 @@ function RouteComponent() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="relative min-h-full">
+    <div className="relative">
       {loading && (
-        <div className="flex min-h-full items-center justify-center pt-[20vh]">
+        <div className="flex items-center justify-center pt-[20vh]">
           <Loader className="animate-spin" />
         </div>
       )}

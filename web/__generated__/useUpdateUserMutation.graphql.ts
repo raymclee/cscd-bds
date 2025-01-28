@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6156da727aaf8154dacb726d3181ea88>>
+ * @generated SignedSource<<80a24c51e391988fef9cf784eb440310>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -207,7 +207,22 @@ v3 = [
       },
       {
         "alias": null,
-        "args": null,
+        "args": [
+          {
+            "kind": "Literal",
+            "name": "orderBy",
+            "value": {
+              "field": "CODE"
+            }
+          },
+          {
+            "kind": "Literal",
+            "name": "where",
+            "value": {
+              "isFinishedNEQ": true
+            }
+          }
+        ],
         "concreteType": "ProjectConnection",
         "kind": "LinkedField",
         "name": "projects",
@@ -244,7 +259,7 @@ v3 = [
             "storageKey": null
           }
         ],
-        "storageKey": null
+        "storageKey": "projects(orderBy:{\"field\":\"CODE\"},where:{\"isFinishedNEQ\":true})"
       },
       {
         "alias": null,
@@ -303,16 +318,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "53aa8228726a3908eae76961a78bef8e",
+    "cacheID": "91e6ee8fefc340b6121b669a96324268",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    projects {\n      edges {\n        node {\n          id\n          code\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n      edges {\n        node {\n          id\n          code\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "0ec7123958815ca6c25e9ce6d16598e1";
+(node as any).hash = "f0d641293cf2b82e4bb7783e4af79426";
 
 export default node;

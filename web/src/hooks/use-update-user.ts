@@ -20,7 +20,7 @@ export function useUpdateUser() {
             }
           }
         }
-        projects {
+        projects(where: { isFinishedNEQ: true }, orderBy: { field: CODE }) {
           edges {
             node {
               id
