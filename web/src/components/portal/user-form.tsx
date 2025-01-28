@@ -5,7 +5,7 @@ import {
 import { useUpdateUserMutation$variables } from "__generated__/useUpdateUserMutation.graphql";
 import { App, Button, Form, Input, Select, Space, Switch } from "antd";
 import React, { useEffect } from "react";
-import { AreaConnection, User } from "~/graphql/graphql";
+import { AreaConnection, ProjectConnection, User } from "~/graphql/graphql";
 import { useCreateUser } from "~/hooks/use-create-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 import { SearchUserSelect } from "./search-user-select";
@@ -17,6 +17,7 @@ export type UserFormProps = {
   connectionIDs: string[];
   isSuperAdmin?: boolean;
   avaliableAreas: AreaConnection;
+  avaliableProjects?: ProjectConnection;
 };
 
 export function UserForm({
@@ -25,6 +26,7 @@ export function UserForm({
   selectedUser,
   isSuperAdmin = false,
   avaliableAreas,
+  avaliableProjects,
 }: UserFormProps) {
   const [form] = Form.useForm<
     (
@@ -36,6 +38,9 @@ export function UserForm({
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const [removedAreaIDs, setRemovedAreaIDs] = React.useState<string[]>([]);
+  const [removedProjectIDs, setRemovedProjectIDs] = React.useState<string[]>(
+    [],
+  );
   const { session } = useRouteContext({ from: "/__auth" });
 
   useEffect(() => {
@@ -57,6 +62,17 @@ export function UserForm({
         hasMapAccess: selectedUser.hasMapAccess,
         hasEditAccess: selectedUser.hasEditAccess,
         isCeo: selectedUser.isCeo,
+        projectIDs:
+          selectedUser.projects.edges?.length ===
+          avaliableProjects?.edges?.length
+            ? ["all"]
+            : selectedUser.projects.edges
+                ?.filter((e) =>
+                  avaliableProjects?.edges?.some(
+                    (p) => p?.node?.id === e?.node?.id,
+                  ),
+                )
+                .map((e) => e?.node?.id),
       });
     }
   }, [selectedUser]);
@@ -72,7 +88,13 @@ export function UserForm({
         // requiredMark="optional"
         onFinish={(values) => {
           if (selectedUser) {
-            const { areaIDs, ...rest } = values as CreateUserInput;
+            const { areaIDs, projectIDs, ...rest } = values as CreateUserInput;
+
+            const _projectIDs = projectIDs?.includes("all")
+              ? avaliableProjects?.edges
+                  ?.map((p) => p?.node?.id)
+                  .filter((i): i is string => !!i)
+              : projectIDs?.filter((v) => v !== "all");
 
             commitUpdateUser({
               variables: {
@@ -88,6 +110,18 @@ export function UserForm({
                         (i): i is string => !!i && !removedAreaIDs?.includes(i),
                       ) ?? []),
                   ],
+                  clearProjects: true,
+                  addProjectIDs: [
+                    ...(_projectIDs ?? []),
+                    ...(!removedProjectIDs.includes("all")
+                      ? (selectedUser.projects.edges
+                          ?.map((p) => p?.node?.id)
+                          .filter(
+                            (i): i is string =>
+                              !!i && !removedProjectIDs?.includes(i),
+                          ) ?? [])
+                      : []),
+                  ],
                 },
               },
               onCompleted(response, errors) {
@@ -101,7 +135,16 @@ export function UserForm({
               },
             });
           } else {
-            const { zhtUser, ...input } = values;
+            const { zhtUser, projectIDs, ...input } =
+              values as CreateUserInput & {
+                zhtUser: { label: string; value: string };
+              };
+
+            const _projectIDs = projectIDs?.includes("all")
+              ? avaliableProjects?.edges
+                  ?.map((p) => p?.node?.id)
+                  .filter((i): i is string => !!i)
+              : projectIDs?.filter((v) => v !== "all");
 
             commitCreateUser({
               variables: {
@@ -111,6 +154,7 @@ export function UserForm({
                   username: "",
                   name: zhtUser.label,
                   openID: zhtUser.value,
+                  projectIDs: _projectIDs,
                 },
                 connections: connectionIDs,
               },
@@ -156,7 +200,11 @@ export function UserForm({
             </Form.Item>
           </>
         )}
-        <Form.Item name="areaIDs" label="区域" rules={[{ required: true }]}>
+        <Form.Item
+          name="areaIDs"
+          label="区域"
+          rules={[{ required: !isSuperAdmin }]}
+        >
           <Select
             mode="multiple"
             // options={data.areas.edges?.map((a) => ({
@@ -172,6 +220,34 @@ export function UserForm({
             }}
           />
         </Form.Item>
+        {isSuperAdmin && (
+          <Form.Item name="projectIDs" label="项目">
+            <Select
+              allowClear
+              mode="multiple"
+              options={
+                avaliableProjects?.edges && avaliableProjects?.edges?.length > 0
+                  ? [
+                      {
+                        label: "全部",
+                        value: "all",
+                      },
+                      ...avaliableProjects?.edges?.map((p) => ({
+                        label: p?.node?.code,
+                        value: p?.node?.id,
+                      })),
+                    ]
+                  : []
+              }
+              onSelect={(value) => {
+                setRemovedProjectIDs((prev) => prev.filter((v) => v !== value));
+              }}
+              onDeselect={(value) => {
+                setRemovedProjectIDs((prev) => [...prev, value]);
+              }}
+            />
+          </Form.Item>
+        )}
         {isSuperAdmin && (
           <Form.Item name="hasEditAccess" label="可编辑">
             <Switch />

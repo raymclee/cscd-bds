@@ -818,6 +818,7 @@ input CreateUserInput {
   leaderID: ID
   name: String!
   openID: String
+  projectIDs: [ID!]
   teamMemberIDs: [ID!]
   tenderIDs: [ID!]
   updatedAt: Time
@@ -1759,6 +1760,22 @@ type Project implements Node {
   createdAt: Time!
   """设计定额重量"""
   designRatedWeight: Float
+  """BD圖紙完成數量"""
+  diagramBdFinishCount: Int
+  """BD圖紙總數"""
+  diagramBdTotalCount: Int
+  """C版批圖率分母"""
+  diagramCApprovalRatioDenominator: Int
+  """C版批圖率分子"""
+  diagramCApprovalRatioNumerator: Int
+  """施工圖紙完成數量"""
+  diagramConstructionFinishCount: Int
+  """施工圖紙總數"""
+  diagramConstructionTotalCount: Int
+  """加工圖完成數量"""
+  diagramProcessingFinishCount: Int
+  """加工圖總數"""
+  diagramProcessingTotalCount: Int
   """有效合同金额"""
   effectiveContractAmount: Float
   """竣工日期"""
@@ -1831,8 +1848,6 @@ type Project implements Node {
   pmYearTarget: Float
   """生产管理昨日生產"""
   pmYesterday: Float
-  """加工圖完成數量"""
-  processingDiagramFinishCount: Int
   """加工图成型重量"""
   processingWeight: Float
   projectStaffs(
@@ -1868,6 +1883,22 @@ type Project implements Node {
   """單元件庫存累計"""
   unitInventoryTotal: Float
   updatedAt: Time!
+  users(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: Cursor
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+    """Returns the first _n_ elements from the list."""
+    first: Int
+    """Returns the last _n_ elements from the list."""
+    last: Int
+    """Ordering options for Users returned from the connection."""
+    orderBy: UserOrder
+    """Filtering options for Users returned from the connection."""
+    where: UserWhereInput
+  ): UserConnection!
   """分判VA申请总额"""
   vaApplyAmount: Float
   """分判VA批复总额"""
@@ -2453,6 +2484,94 @@ input ProjectWhereInput {
   designRatedWeightNEQ: Float
   designRatedWeightNotIn: [Float!]
   designRatedWeightNotNil: Boolean
+  """diagram_bd_finish_count field predicates"""
+  diagramBdFinishCount: Int
+  diagramBdFinishCountGT: Int
+  diagramBdFinishCountGTE: Int
+  diagramBdFinishCountIn: [Int!]
+  diagramBdFinishCountIsNil: Boolean
+  diagramBdFinishCountLT: Int
+  diagramBdFinishCountLTE: Int
+  diagramBdFinishCountNEQ: Int
+  diagramBdFinishCountNotIn: [Int!]
+  diagramBdFinishCountNotNil: Boolean
+  """diagram_bd_total_count field predicates"""
+  diagramBdTotalCount: Int
+  diagramBdTotalCountGT: Int
+  diagramBdTotalCountGTE: Int
+  diagramBdTotalCountIn: [Int!]
+  diagramBdTotalCountIsNil: Boolean
+  diagramBdTotalCountLT: Int
+  diagramBdTotalCountLTE: Int
+  diagramBdTotalCountNEQ: Int
+  diagramBdTotalCountNotIn: [Int!]
+  diagramBdTotalCountNotNil: Boolean
+  """diagram_c_approval_ratio_denominator field predicates"""
+  diagramCApprovalRatioDenominator: Int
+  diagramCApprovalRatioDenominatorGT: Int
+  diagramCApprovalRatioDenominatorGTE: Int
+  diagramCApprovalRatioDenominatorIn: [Int!]
+  diagramCApprovalRatioDenominatorIsNil: Boolean
+  diagramCApprovalRatioDenominatorLT: Int
+  diagramCApprovalRatioDenominatorLTE: Int
+  diagramCApprovalRatioDenominatorNEQ: Int
+  diagramCApprovalRatioDenominatorNotIn: [Int!]
+  diagramCApprovalRatioDenominatorNotNil: Boolean
+  """diagram_c_approval_ratio_numerator field predicates"""
+  diagramCApprovalRatioNumerator: Int
+  diagramCApprovalRatioNumeratorGT: Int
+  diagramCApprovalRatioNumeratorGTE: Int
+  diagramCApprovalRatioNumeratorIn: [Int!]
+  diagramCApprovalRatioNumeratorIsNil: Boolean
+  diagramCApprovalRatioNumeratorLT: Int
+  diagramCApprovalRatioNumeratorLTE: Int
+  diagramCApprovalRatioNumeratorNEQ: Int
+  diagramCApprovalRatioNumeratorNotIn: [Int!]
+  diagramCApprovalRatioNumeratorNotNil: Boolean
+  """diagram_construction_finish_count field predicates"""
+  diagramConstructionFinishCount: Int
+  diagramConstructionFinishCountGT: Int
+  diagramConstructionFinishCountGTE: Int
+  diagramConstructionFinishCountIn: [Int!]
+  diagramConstructionFinishCountIsNil: Boolean
+  diagramConstructionFinishCountLT: Int
+  diagramConstructionFinishCountLTE: Int
+  diagramConstructionFinishCountNEQ: Int
+  diagramConstructionFinishCountNotIn: [Int!]
+  diagramConstructionFinishCountNotNil: Boolean
+  """diagram_construction_total_count field predicates"""
+  diagramConstructionTotalCount: Int
+  diagramConstructionTotalCountGT: Int
+  diagramConstructionTotalCountGTE: Int
+  diagramConstructionTotalCountIn: [Int!]
+  diagramConstructionTotalCountIsNil: Boolean
+  diagramConstructionTotalCountLT: Int
+  diagramConstructionTotalCountLTE: Int
+  diagramConstructionTotalCountNEQ: Int
+  diagramConstructionTotalCountNotIn: [Int!]
+  diagramConstructionTotalCountNotNil: Boolean
+  """diagram_processing_finish_count field predicates"""
+  diagramProcessingFinishCount: Int
+  diagramProcessingFinishCountGT: Int
+  diagramProcessingFinishCountGTE: Int
+  diagramProcessingFinishCountIn: [Int!]
+  diagramProcessingFinishCountIsNil: Boolean
+  diagramProcessingFinishCountLT: Int
+  diagramProcessingFinishCountLTE: Int
+  diagramProcessingFinishCountNEQ: Int
+  diagramProcessingFinishCountNotIn: [Int!]
+  diagramProcessingFinishCountNotNil: Boolean
+  """diagram_processing_total_count field predicates"""
+  diagramProcessingTotalCount: Int
+  diagramProcessingTotalCountGT: Int
+  diagramProcessingTotalCountGTE: Int
+  diagramProcessingTotalCountIn: [Int!]
+  diagramProcessingTotalCountIsNil: Boolean
+  diagramProcessingTotalCountLT: Int
+  diagramProcessingTotalCountLTE: Int
+  diagramProcessingTotalCountNEQ: Int
+  diagramProcessingTotalCountNotIn: [Int!]
+  diagramProcessingTotalCountNotNil: Boolean
   """effective_contract_amount field predicates"""
   effectiveContractAmount: Float
   effectiveContractAmountGT: Float
@@ -2500,6 +2619,9 @@ input ProjectWhereInput {
   """project_staffs edge predicates"""
   hasProjectStaffs: Boolean
   hasProjectStaffsWith: [ProjectStaffWhereInput!]
+  """users edge predicates"""
+  hasUsers: Boolean
+  hasUsersWith: [UserWhereInput!]
   """vos edge predicates"""
   hasVos: Boolean
   hasVosWith: [ProjectVOWhereInput!]
@@ -2888,17 +3010,6 @@ input ProjectWhereInput {
   pmYesterdayNEQ: Float
   pmYesterdayNotIn: [Float!]
   pmYesterdayNotNil: Boolean
-  """processing_diagram_finish_count field predicates"""
-  processingDiagramFinishCount: Int
-  processingDiagramFinishCountGT: Int
-  processingDiagramFinishCountGTE: Int
-  processingDiagramFinishCountIn: [Int!]
-  processingDiagramFinishCountIsNil: Boolean
-  processingDiagramFinishCountLT: Int
-  processingDiagramFinishCountLTE: Int
-  processingDiagramFinishCountNEQ: Int
-  processingDiagramFinishCountNotIn: [Int!]
-  processingDiagramFinishCountNotNil: Boolean
   """processing_weight field predicates"""
   processingWeight: Float
   processingWeightGT: Float
@@ -4735,6 +4846,7 @@ input UpdateProjectInput {
   """本期法定扣款"""
   accumulatedStatutoryDeductionsPeriod: Float
   addProjectStaffIDs: [ID!]
+  addUserIDs: [ID!]
   addVoIDs: [ID!]
   """鋁型材預算百分比"""
   aluminumBudgetPercentage: Float
@@ -4768,6 +4880,14 @@ input UpdateProjectInput {
   clearContractorApproveAmount: Boolean
   clearContractorApproveCount: Boolean
   clearDesignRatedWeight: Boolean
+  clearDiagramBdFinishCount: Boolean
+  clearDiagramBdTotalCount: Boolean
+  clearDiagramCApprovalRatioDenominator: Boolean
+  clearDiagramCApprovalRatioNumerator: Boolean
+  clearDiagramConstructionFinishCount: Boolean
+  clearDiagramConstructionTotalCount: Boolean
+  clearDiagramProcessingFinishCount: Boolean
+  clearDiagramProcessingTotalCount: Boolean
   clearEffectiveContractAmount: Boolean
   clearEndDate: Boolean
   clearFsDate: Boolean
@@ -4803,7 +4923,6 @@ input UpdateProjectInput {
   clearPmYearActual: Boolean
   clearPmYearTarget: Boolean
   clearPmYesterday: Boolean
-  clearProcessingDiagramFinishCount: Boolean
   clearProcessingWeight: Boolean
   clearProjectStaffs: Boolean
   clearQualityRanking: Boolean
@@ -4814,6 +4933,7 @@ input UpdateProjectInput {
   clearUnitComponentProduction: Boolean
   clearUnitComponentTotal: Boolean
   clearUnitInventoryTotal: Boolean
+  clearUsers: Boolean
   clearVaApplyAmount: Boolean
   clearVaApproveAmount: Boolean
   clearVos: Boolean
@@ -4838,6 +4958,22 @@ input UpdateProjectInput {
   contractorApproveCount: Int
   """设计定额重量"""
   designRatedWeight: Float
+  """BD圖紙完成數量"""
+  diagramBdFinishCount: Int
+  """BD圖紙總數"""
+  diagramBdTotalCount: Int
+  """C版批圖率分母"""
+  diagramCApprovalRatioDenominator: Int
+  """C版批圖率分子"""
+  diagramCApprovalRatioNumerator: Int
+  """施工圖紙完成數量"""
+  diagramConstructionFinishCount: Int
+  """施工圖紙總數"""
+  diagramConstructionTotalCount: Int
+  """加工圖完成數量"""
+  diagramProcessingFinishCount: Int
+  """加工圖總數"""
+  diagramProcessingTotalCount: Int
   """有效合同金额"""
   effectiveContractAmount: Float
   """竣工日期"""
@@ -4909,8 +5045,6 @@ input UpdateProjectInput {
   pmYearTarget: Float
   """生产管理昨日生產"""
   pmYesterday: Float
-  """加工圖完成數量"""
-  processingDiagramFinishCount: Int
   """加工图成型重量"""
   processingWeight: Float
   """質量排名"""
@@ -4918,6 +5052,7 @@ input UpdateProjectInput {
   """質量得分"""
   qualityScore: Float
   removeProjectStaffIDs: [ID!]
+  removeUserIDs: [ID!]
   removeVoIDs: [ID!]
   """開工日期"""
   startDate: Time
@@ -5118,6 +5253,7 @@ Input was generated by ent.
 input UpdateUserInput {
   addAreaIDs: [ID!]
   addCustomerIDs: [ID!]
+  addProjectIDs: [ID!]
   addTeamMemberIDs: [ID!]
   addTenderIDs: [ID!]
   addVisitRecordIDs: [ID!]
@@ -5127,6 +5263,7 @@ input UpdateUserInput {
   clearCustomers: Boolean
   clearLeader: Boolean
   clearOpenID: Boolean
+  clearProjects: Boolean
   clearTeamMembers: Boolean
   clearTenders: Boolean
   clearVisitRecords: Boolean
@@ -5142,6 +5279,7 @@ input UpdateUserInput {
   openID: String
   removeAreaIDs: [ID!]
   removeCustomerIDs: [ID!]
+  removeProjectIDs: [ID!]
   removeTeamMemberIDs: [ID!]
   removeTenderIDs: [ID!]
   removeVisitRecordIDs: [ID!]
@@ -5216,6 +5354,22 @@ type User implements Node {
   leaderID: ID
   name: String!
   openID: String
+  projects(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: Cursor
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+    """Returns the first _n_ elements from the list."""
+    first: Int
+    """Returns the last _n_ elements from the list."""
+    last: Int
+    """Ordering options for Projects returned from the connection."""
+    orderBy: [ProjectOrder!]
+    """Filtering options for Projects returned from the connection."""
+    where: ProjectWhereInput
+  ): ProjectConnection!
   teamMembers: [User!]
   tenders(
     """Returns the elements in the list that come after the specified cursor."""
@@ -5347,6 +5501,9 @@ input UserWhereInput {
   """has_map_access field predicates"""
   hasMapAccess: Boolean
   hasMapAccessNEQ: Boolean
+  """projects edge predicates"""
+  hasProjects: Boolean
+  hasProjectsWith: [ProjectWhereInput!]
   """team_members edge predicates"""
   hasTeamMembers: Boolean
   hasTeamMembersWith: [UserWhereInput!]

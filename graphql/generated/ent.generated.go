@@ -2239,6 +2239,173 @@ func (ec *executionContext) field_Project_projectStaffs_argsWhere(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Project_users_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Project_users_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Project_users_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Project_users_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Project_users_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Project_users_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Project_users_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Project_users_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Project_users_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Project_users_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Project_users_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Project_users_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal *ent.UserOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOUserOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐUserOrder(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Project_users_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.UserWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.UserWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOUserWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.UserWhereInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Province_cities_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5768,6 +5935,173 @@ func (ec *executionContext) field_User_customers_argsWhere(
 	}
 
 	var zeroVal *ent.CustomerWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_projects_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_projects_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_projects_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_projects_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_projects_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_projects_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_projects_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_projects_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_projects_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_projects_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_projects_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_projects_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*ent.ProjectOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal []*ent.ProjectOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOProjectOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProjectOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*ent.ProjectOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_projects_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.ProjectWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.ProjectWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOProjectWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.ProjectWhereInput
 	return zeroVal, nil
 }
 
@@ -9757,6 +10091,8 @@ func (ec *executionContext) fieldContext_Customer_sales(_ context.Context, field
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -9842,6 +10178,8 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -15746,8 +16084,8 @@ func (ec *executionContext) fieldContext_Project_planOverdueMonthCount(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _Project_processingDiagramFinishCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Project_processingDiagramFinishCount(ctx, field)
+func (ec *executionContext) _Project_diagramBdFinishCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramBdFinishCount(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -15760,7 +16098,7 @@ func (ec *executionContext) _Project_processingDiagramFinishCount(ctx context.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ProcessingDiagramFinishCount, nil
+		return obj.DiagramBdFinishCount, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15774,7 +16112,294 @@ func (ec *executionContext) _Project_processingDiagramFinishCount(ctx context.Co
 	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Project_processingDiagramFinishCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Project_diagramBdFinishCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramBdTotalCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramBdTotalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramBdTotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramBdTotalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramConstructionFinishCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramConstructionFinishCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramConstructionFinishCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramConstructionFinishCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramConstructionTotalCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramConstructionTotalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramConstructionTotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramConstructionTotalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramProcessingFinishCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramProcessingFinishCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramProcessingFinishCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramProcessingFinishCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramProcessingTotalCount(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramProcessingTotalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramProcessingTotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramProcessingTotalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramCApprovalRatioNumerator(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramCApprovalRatioNumerator(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramCApprovalRatioNumerator, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramCApprovalRatioNumerator(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_diagramCApprovalRatioDenominator(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_diagramCApprovalRatioDenominator(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiagramCApprovalRatioDenominator, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_diagramCApprovalRatioDenominator(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Project",
 		Field:      field,
@@ -15909,6 +16534,69 @@ func (ec *executionContext) fieldContext_Project_projectStaffs(ctx context.Conte
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Project_projectStaffs_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Project_users(ctx context.Context, field graphql.CollectedField, obj *ent.Project) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Project_users(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Users(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.UserOrder), fc.Args["where"].(*ent.UserWhereInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.UserConnection)
+	fc.Result = res
+	return ec.marshalNUserConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐUserConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Project_users(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Project",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_UserConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_UserConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_UserConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type UserConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Project_users_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -16246,12 +16934,28 @@ func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, fie
 				return ec.fieldContext_Project_planOverdueCount(ctx, field)
 			case "planOverdueMonthCount":
 				return ec.fieldContext_Project_planOverdueMonthCount(ctx, field)
-			case "processingDiagramFinishCount":
-				return ec.fieldContext_Project_processingDiagramFinishCount(ctx, field)
+			case "diagramBdFinishCount":
+				return ec.fieldContext_Project_diagramBdFinishCount(ctx, field)
+			case "diagramBdTotalCount":
+				return ec.fieldContext_Project_diagramBdTotalCount(ctx, field)
+			case "diagramConstructionFinishCount":
+				return ec.fieldContext_Project_diagramConstructionFinishCount(ctx, field)
+			case "diagramConstructionTotalCount":
+				return ec.fieldContext_Project_diagramConstructionTotalCount(ctx, field)
+			case "diagramProcessingFinishCount":
+				return ec.fieldContext_Project_diagramProcessingFinishCount(ctx, field)
+			case "diagramProcessingTotalCount":
+				return ec.fieldContext_Project_diagramProcessingTotalCount(ctx, field)
+			case "diagramCApprovalRatioNumerator":
+				return ec.fieldContext_Project_diagramCApprovalRatioNumerator(ctx, field)
+			case "diagramCApprovalRatioDenominator":
+				return ec.fieldContext_Project_diagramCApprovalRatioDenominator(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
 				return ec.fieldContext_Project_projectStaffs(ctx, field)
+			case "users":
+				return ec.fieldContext_Project_users(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
 		},
@@ -16835,12 +17539,28 @@ func (ec *executionContext) fieldContext_ProjectStaff_project(_ context.Context,
 				return ec.fieldContext_Project_planOverdueCount(ctx, field)
 			case "planOverdueMonthCount":
 				return ec.fieldContext_Project_planOverdueMonthCount(ctx, field)
-			case "processingDiagramFinishCount":
-				return ec.fieldContext_Project_processingDiagramFinishCount(ctx, field)
+			case "diagramBdFinishCount":
+				return ec.fieldContext_Project_diagramBdFinishCount(ctx, field)
+			case "diagramBdTotalCount":
+				return ec.fieldContext_Project_diagramBdTotalCount(ctx, field)
+			case "diagramConstructionFinishCount":
+				return ec.fieldContext_Project_diagramConstructionFinishCount(ctx, field)
+			case "diagramConstructionTotalCount":
+				return ec.fieldContext_Project_diagramConstructionTotalCount(ctx, field)
+			case "diagramProcessingFinishCount":
+				return ec.fieldContext_Project_diagramProcessingFinishCount(ctx, field)
+			case "diagramProcessingTotalCount":
+				return ec.fieldContext_Project_diagramProcessingTotalCount(ctx, field)
+			case "diagramCApprovalRatioNumerator":
+				return ec.fieldContext_Project_diagramCApprovalRatioNumerator(ctx, field)
+			case "diagramCApprovalRatioDenominator":
+				return ec.fieldContext_Project_diagramCApprovalRatioDenominator(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
 				return ec.fieldContext_Project_projectStaffs(ctx, field)
+			case "users":
+				return ec.fieldContext_Project_users(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
 		},
@@ -17715,12 +18435,28 @@ func (ec *executionContext) fieldContext_ProjectVO_project(_ context.Context, fi
 				return ec.fieldContext_Project_planOverdueCount(ctx, field)
 			case "planOverdueMonthCount":
 				return ec.fieldContext_Project_planOverdueMonthCount(ctx, field)
-			case "processingDiagramFinishCount":
-				return ec.fieldContext_Project_processingDiagramFinishCount(ctx, field)
+			case "diagramBdFinishCount":
+				return ec.fieldContext_Project_diagramBdFinishCount(ctx, field)
+			case "diagramBdTotalCount":
+				return ec.fieldContext_Project_diagramBdTotalCount(ctx, field)
+			case "diagramConstructionFinishCount":
+				return ec.fieldContext_Project_diagramConstructionFinishCount(ctx, field)
+			case "diagramConstructionTotalCount":
+				return ec.fieldContext_Project_diagramConstructionTotalCount(ctx, field)
+			case "diagramProcessingFinishCount":
+				return ec.fieldContext_Project_diagramProcessingFinishCount(ctx, field)
+			case "diagramProcessingTotalCount":
+				return ec.fieldContext_Project_diagramProcessingTotalCount(ctx, field)
+			case "diagramCApprovalRatioNumerator":
+				return ec.fieldContext_Project_diagramCApprovalRatioNumerator(ctx, field)
+			case "diagramCApprovalRatioDenominator":
+				return ec.fieldContext_Project_diagramCApprovalRatioDenominator(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
 				return ec.fieldContext_Project_projectStaffs(ctx, field)
+			case "users":
+				return ec.fieldContext_Project_users(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
 		},
@@ -22954,6 +23690,8 @@ func (ec *executionContext) fieldContext_Tender_finder(_ context.Context, field 
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -23039,6 +23777,8 @@ func (ec *executionContext) fieldContext_Tender_createdBy(_ context.Context, fie
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -23124,6 +23864,8 @@ func (ec *executionContext) fieldContext_Tender_followingSales(_ context.Context
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24781,6 +25523,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24866,6 +25610,8 @@ func (ec *executionContext) fieldContext_User_teamMembers(_ context.Context, fie
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24993,6 +25739,69 @@ func (ec *executionContext) fieldContext_User_visitRecords(ctx context.Context, 
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_User_visitRecords_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_projects(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_projects(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Projects(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.ProjectOrder), fc.Args["where"].(*ent.ProjectWhereInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.ProjectConnection)
+	fc.Result = res
+	return ec.marshalNProjectConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐProjectConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_projects(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_ProjectConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_ProjectConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_ProjectConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProjectConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_projects_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -25222,6 +26031,8 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -29327,7 +30138,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "isAdmin", "isCeo", "isSuperAdmin", "hasMapAccess", "hasEditAccess", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs", "visitRecordIDs"}
+	fieldsInOrder := [...]string{"createdAt", "updatedAt", "name", "email", "username", "openID", "avatarURL", "disabled", "isAdmin", "isCeo", "isSuperAdmin", "hasMapAccess", "hasEditAccess", "areaIDs", "customerIDs", "leaderID", "teamMemberIDs", "tenderIDs", "visitRecordIDs", "projectIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -29467,6 +30278,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.VisitRecordIDs = data
+		case "projectIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projectIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProjectIDs = data
 		}
 	}
 
@@ -34401,7 +35219,7 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "manager", "managerNEQ", "managerIn", "managerNotIn", "managerGT", "managerGTE", "managerLT", "managerLTE", "managerContains", "managerHasPrefix", "managerHasSuffix", "managerIsNil", "managerNotNil", "managerEqualFold", "managerContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "owner", "ownerNEQ", "ownerIn", "ownerNotIn", "ownerGT", "ownerGTE", "ownerLT", "ownerLTE", "ownerContains", "ownerHasPrefix", "ownerHasSuffix", "ownerIsNil", "ownerNotNil", "ownerEqualFold", "ownerContainsFold", "jzs", "jzsNEQ", "jzsIn", "jzsNotIn", "jzsGT", "jzsGTE", "jzsLT", "jzsLTE", "jzsContains", "jzsHasPrefix", "jzsHasSuffix", "jzsIsNil", "jzsNotNil", "jzsEqualFold", "jzsContainsFold", "mcn", "mcnNEQ", "mcnIn", "mcnNotIn", "mcnGT", "mcnGTE", "mcnLT", "mcnLTE", "mcnContains", "mcnHasPrefix", "mcnHasSuffix", "mcnIsNil", "mcnNotNil", "mcnEqualFold", "mcnContainsFold", "consultant", "consultantNEQ", "consultantIn", "consultantNotIn", "consultantGT", "consultantGTE", "consultantLT", "consultantLTE", "consultantContains", "consultantHasPrefix", "consultantHasSuffix", "consultantIsNil", "consultantNotNil", "consultantEqualFold", "consultantContainsFold", "areas", "areasNEQ", "areasIn", "areasNotIn", "areasGT", "areasGTE", "areasLT", "areasLTE", "areasContains", "areasHasPrefix", "areasHasSuffix", "areasIsNil", "areasNotNil", "areasEqualFold", "areasContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "startDateIsNil", "startDateNotNil", "fsDate", "fsDateNEQ", "fsDateIn", "fsDateNotIn", "fsDateGT", "fsDateGTE", "fsDateLT", "fsDateLTE", "fsDateIsNil", "fsDateNotNil", "opDate", "opDateNEQ", "opDateIn", "opDateNotIn", "opDateGT", "opDateGTE", "opDateLT", "opDateLTE", "opDateIsNil", "opDateNotNil", "endDate", "endDateNEQ", "endDateIn", "endDateNotIn", "endDateGT", "endDateGTE", "endDateLT", "endDateLTE", "endDateIsNil", "endDateNotNil", "mntyr", "mntyrNEQ", "mntyrIn", "mntyrNotIn", "mntyrGT", "mntyrGTE", "mntyrLT", "mntyrLTE", "mntyrContains", "mntyrHasPrefix", "mntyrHasSuffix", "mntyrIsNil", "mntyrNotNil", "mntyrEqualFold", "mntyrContainsFold", "conType", "conTypeNEQ", "conTypeIn", "conTypeNotIn", "conTypeGT", "conTypeGTE", "conTypeLT", "conTypeLTE", "conTypeContains", "conTypeHasPrefix", "conTypeHasSuffix", "conTypeIsNil", "conTypeNotNil", "conTypeEqualFold", "conTypeContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "aluminumPlateBudgetPercentage", "aluminumPlateBudgetPercentageNEQ", "aluminumPlateBudgetPercentageIn", "aluminumPlateBudgetPercentageNotIn", "aluminumPlateBudgetPercentageGT", "aluminumPlateBudgetPercentageGTE", "aluminumPlateBudgetPercentageLT", "aluminumPlateBudgetPercentageLTE", "aluminumPlateBudgetPercentageIsNil", "aluminumPlateBudgetPercentageNotNil", "aluminumBudgetPercentage", "aluminumBudgetPercentageNEQ", "aluminumBudgetPercentageIn", "aluminumBudgetPercentageNotIn", "aluminumBudgetPercentageGT", "aluminumBudgetPercentageGTE", "aluminumBudgetPercentageLT", "aluminumBudgetPercentageLTE", "aluminumBudgetPercentageIsNil", "aluminumBudgetPercentageNotNil", "glassBudgetPercentage", "glassBudgetPercentageNEQ", "glassBudgetPercentageIn", "glassBudgetPercentageNotIn", "glassBudgetPercentageGT", "glassBudgetPercentageGTE", "glassBudgetPercentageLT", "glassBudgetPercentageLTE", "glassBudgetPercentageIsNil", "glassBudgetPercentageNotNil", "ironBudgetPercentage", "ironBudgetPercentageNEQ", "ironBudgetPercentageIn", "ironBudgetPercentageNotIn", "ironBudgetPercentageGT", "ironBudgetPercentageGTE", "ironBudgetPercentageLT", "ironBudgetPercentageLTE", "ironBudgetPercentageIsNil", "ironBudgetPercentageNotNil", "milestonePlanYear", "milestonePlanYearNEQ", "milestonePlanYearIn", "milestonePlanYearNotIn", "milestonePlanYearGT", "milestonePlanYearGTE", "milestonePlanYearLT", "milestonePlanYearLTE", "milestonePlanYearIsNil", "milestonePlanYearNotNil", "milestonePlanMonth", "milestonePlanMonthNEQ", "milestonePlanMonthIn", "milestonePlanMonthNotIn", "milestonePlanMonthGT", "milestonePlanMonthGTE", "milestonePlanMonthLT", "milestonePlanMonthLTE", "milestonePlanMonthIsNil", "milestonePlanMonthNotNil", "milestoneDoneYear", "milestoneDoneYearNEQ", "milestoneDoneYearIn", "milestoneDoneYearNotIn", "milestoneDoneYearGT", "milestoneDoneYearGTE", "milestoneDoneYearLT", "milestoneDoneYearLTE", "milestoneDoneYearIsNil", "milestoneDoneYearNotNil", "milestoneDoneMonth", "milestoneDoneMonthNEQ", "milestoneDoneMonthIn", "milestoneDoneMonthNotIn", "milestoneDoneMonthGT", "milestoneDoneMonthGTE", "milestoneDoneMonthLT", "milestoneDoneMonthLTE", "milestoneDoneMonthIsNil", "milestoneDoneMonthNotNil", "pmArea", "pmAreaNEQ", "pmAreaIn", "pmAreaNotIn", "pmAreaGT", "pmAreaGTE", "pmAreaLT", "pmAreaLTE", "pmAreaIsNil", "pmAreaNotNil", "pmYearTarget", "pmYearTargetNEQ", "pmYearTargetIn", "pmYearTargetNotIn", "pmYearTargetGT", "pmYearTargetGTE", "pmYearTargetLT", "pmYearTargetLTE", "pmYearTargetIsNil", "pmYearTargetNotNil", "pmMonthTarget", "pmMonthTargetNEQ", "pmMonthTargetIn", "pmMonthTargetNotIn", "pmMonthTargetGT", "pmMonthTargetGTE", "pmMonthTargetLT", "pmMonthTargetLTE", "pmMonthTargetIsNil", "pmMonthTargetNotNil", "pmYearActual", "pmYearActualNEQ", "pmYearActualIn", "pmYearActualNotIn", "pmYearActualGT", "pmYearActualGTE", "pmYearActualLT", "pmYearActualLTE", "pmYearActualIsNil", "pmYearActualNotNil", "pmMonthActual", "pmMonthActualNEQ", "pmMonthActualIn", "pmMonthActualNotIn", "pmMonthActualGT", "pmMonthActualGTE", "pmMonthActualLT", "pmMonthActualLTE", "pmMonthActualIsNil", "pmMonthActualNotNil", "pmTotal", "pmTotalNEQ", "pmTotalIn", "pmTotalNotIn", "pmTotalGT", "pmTotalGTE", "pmTotalLT", "pmTotalLTE", "pmTotalIsNil", "pmTotalNotNil", "pmYesterday", "pmYesterdayNEQ", "pmYesterdayIn", "pmYesterdayNotIn", "pmYesterdayGT", "pmYesterdayGTE", "pmYesterdayLT", "pmYesterdayLTE", "pmYesterdayIsNil", "pmYesterdayNotNil", "unitInventoryTotal", "unitInventoryTotalNEQ", "unitInventoryTotalIn", "unitInventoryTotalNotIn", "unitInventoryTotalGT", "unitInventoryTotalGTE", "unitInventoryTotalLT", "unitInventoryTotalLTE", "unitInventoryTotalIsNil", "unitInventoryTotalNotNil", "unitComponentTotal", "unitComponentTotalNEQ", "unitComponentTotalIn", "unitComponentTotalNotIn", "unitComponentTotalGT", "unitComponentTotalGTE", "unitComponentTotalLT", "unitComponentTotalLTE", "unitComponentTotalIsNil", "unitComponentTotalNotNil", "unitComponentProduction", "unitComponentProductionNEQ", "unitComponentProductionIn", "unitComponentProductionNotIn", "unitComponentProductionGT", "unitComponentProductionGTE", "unitComponentProductionLT", "unitComponentProductionLTE", "unitComponentProductionIsNil", "unitComponentProductionNotNil", "unitComponentInstallation", "unitComponentInstallationNEQ", "unitComponentInstallationIn", "unitComponentInstallationNotIn", "unitComponentInstallationGT", "unitComponentInstallationGTE", "unitComponentInstallationLT", "unitComponentInstallationLTE", "unitComponentInstallationIsNil", "unitComponentInstallationNotNil", "materialLoss", "materialLossNEQ", "materialLossIn", "materialLossNotIn", "materialLossGT", "materialLossGTE", "materialLossLT", "materialLossLTE", "materialLossIsNil", "materialLossNotNil", "designRatedWeight", "designRatedWeightNEQ", "designRatedWeightIn", "designRatedWeightNotIn", "designRatedWeightGT", "designRatedWeightGTE", "designRatedWeightLT", "designRatedWeightLTE", "designRatedWeightIsNil", "designRatedWeightNotNil", "processingWeight", "processingWeightNEQ", "processingWeightIn", "processingWeightNotIn", "processingWeightGT", "processingWeightGTE", "processingWeightLT", "processingWeightLTE", "processingWeightIsNil", "processingWeightNotNil", "itemStockWeight", "itemStockWeightNEQ", "itemStockWeightIn", "itemStockWeightNotIn", "itemStockWeightGT", "itemStockWeightGTE", "itemStockWeightLT", "itemStockWeightLTE", "itemStockWeightIsNil", "itemStockWeightNotNil", "palletsInStock", "palletsInStockNEQ", "palletsInStockIn", "palletsInStockNotIn", "palletsInStockGT", "palletsInStockGTE", "palletsInStockLT", "palletsInStockLTE", "palletsInStockIsNil", "palletsInStockNotNil", "partsInStock", "partsInStockNEQ", "partsInStockIn", "partsInStockNotIn", "partsInStockGT", "partsInStockGTE", "partsInStockLT", "partsInStockLTE", "partsInStockIsNil", "partsInStockNotNil", "qualityScore", "qualityScoreNEQ", "qualityScoreIn", "qualityScoreNotIn", "qualityScoreGT", "qualityScoreGTE", "qualityScoreLT", "qualityScoreLTE", "qualityScoreIsNil", "qualityScoreNotNil", "qualityRanking", "qualityRankingNEQ", "qualityRankingIn", "qualityRankingNotIn", "qualityRankingGT", "qualityRankingGTE", "qualityRankingLT", "qualityRankingLTE", "qualityRankingIsNil", "qualityRankingNotNil", "bulkMaterialsTotalOrderQuantity", "bulkMaterialsTotalOrderQuantityNEQ", "bulkMaterialsTotalOrderQuantityIn", "bulkMaterialsTotalOrderQuantityNotIn", "bulkMaterialsTotalOrderQuantityGT", "bulkMaterialsTotalOrderQuantityGTE", "bulkMaterialsTotalOrderQuantityLT", "bulkMaterialsTotalOrderQuantityLTE", "bulkMaterialsTotalOrderQuantityIsNil", "bulkMaterialsTotalOrderQuantityNotNil", "bulkMaterialsCompletedQuantity", "bulkMaterialsCompletedQuantityNEQ", "bulkMaterialsCompletedQuantityIn", "bulkMaterialsCompletedQuantityNotIn", "bulkMaterialsCompletedQuantityGT", "bulkMaterialsCompletedQuantityGTE", "bulkMaterialsCompletedQuantityLT", "bulkMaterialsCompletedQuantityLTE", "bulkMaterialsCompletedQuantityIsNil", "bulkMaterialsCompletedQuantityNotNil", "bulkMaterialsUncompletedQuantity", "bulkMaterialsUncompletedQuantityNEQ", "bulkMaterialsUncompletedQuantityIn", "bulkMaterialsUncompletedQuantityNotIn", "bulkMaterialsUncompletedQuantityGT", "bulkMaterialsUncompletedQuantityGTE", "bulkMaterialsUncompletedQuantityLT", "bulkMaterialsUncompletedQuantityLTE", "bulkMaterialsUncompletedQuantityIsNil", "bulkMaterialsUncompletedQuantityNotNil", "planTotalCount", "planTotalCountNEQ", "planTotalCountIn", "planTotalCountNotIn", "planTotalCountGT", "planTotalCountGTE", "planTotalCountLT", "planTotalCountLTE", "planTotalCountIsNil", "planTotalCountNotNil", "planOverdueCount", "planOverdueCountNEQ", "planOverdueCountIn", "planOverdueCountNotIn", "planOverdueCountGT", "planOverdueCountGTE", "planOverdueCountLT", "planOverdueCountLTE", "planOverdueCountIsNil", "planOverdueCountNotNil", "planOverdueMonthCount", "planOverdueMonthCountNEQ", "planOverdueMonthCountIn", "planOverdueMonthCountNotIn", "planOverdueMonthCountGT", "planOverdueMonthCountGTE", "planOverdueMonthCountLT", "planOverdueMonthCountLTE", "planOverdueMonthCountIsNil", "planOverdueMonthCountNotNil", "processingDiagramFinishCount", "processingDiagramFinishCountNEQ", "processingDiagramFinishCountIn", "processingDiagramFinishCountNotIn", "processingDiagramFinishCountGT", "processingDiagramFinishCountGTE", "processingDiagramFinishCountLT", "processingDiagramFinishCountLTE", "processingDiagramFinishCountIsNil", "processingDiagramFinishCountNotNil", "hasVos", "hasVosWith", "hasProjectStaffs", "hasProjectStaffsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "code", "codeNEQ", "codeIn", "codeNotIn", "codeGT", "codeGTE", "codeLT", "codeLTE", "codeContains", "codeHasPrefix", "codeHasSuffix", "codeEqualFold", "codeContainsFold", "manager", "managerNEQ", "managerIn", "managerNotIn", "managerGT", "managerGTE", "managerLT", "managerLTE", "managerContains", "managerHasPrefix", "managerHasSuffix", "managerIsNil", "managerNotNil", "managerEqualFold", "managerContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameIsNil", "nameNotNil", "nameEqualFold", "nameContainsFold", "owner", "ownerNEQ", "ownerIn", "ownerNotIn", "ownerGT", "ownerGTE", "ownerLT", "ownerLTE", "ownerContains", "ownerHasPrefix", "ownerHasSuffix", "ownerIsNil", "ownerNotNil", "ownerEqualFold", "ownerContainsFold", "jzs", "jzsNEQ", "jzsIn", "jzsNotIn", "jzsGT", "jzsGTE", "jzsLT", "jzsLTE", "jzsContains", "jzsHasPrefix", "jzsHasSuffix", "jzsIsNil", "jzsNotNil", "jzsEqualFold", "jzsContainsFold", "mcn", "mcnNEQ", "mcnIn", "mcnNotIn", "mcnGT", "mcnGTE", "mcnLT", "mcnLTE", "mcnContains", "mcnHasPrefix", "mcnHasSuffix", "mcnIsNil", "mcnNotNil", "mcnEqualFold", "mcnContainsFold", "consultant", "consultantNEQ", "consultantIn", "consultantNotIn", "consultantGT", "consultantGTE", "consultantLT", "consultantLTE", "consultantContains", "consultantHasPrefix", "consultantHasSuffix", "consultantIsNil", "consultantNotNil", "consultantEqualFold", "consultantContainsFold", "areas", "areasNEQ", "areasIn", "areasNotIn", "areasGT", "areasGTE", "areasLT", "areasLTE", "areasContains", "areasHasPrefix", "areasHasSuffix", "areasIsNil", "areasNotNil", "areasEqualFold", "areasContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "startDateIsNil", "startDateNotNil", "fsDate", "fsDateNEQ", "fsDateIn", "fsDateNotIn", "fsDateGT", "fsDateGTE", "fsDateLT", "fsDateLTE", "fsDateIsNil", "fsDateNotNil", "opDate", "opDateNEQ", "opDateIn", "opDateNotIn", "opDateGT", "opDateGTE", "opDateLT", "opDateLTE", "opDateIsNil", "opDateNotNil", "endDate", "endDateNEQ", "endDateIn", "endDateNotIn", "endDateGT", "endDateGTE", "endDateLT", "endDateLTE", "endDateIsNil", "endDateNotNil", "mntyr", "mntyrNEQ", "mntyrIn", "mntyrNotIn", "mntyrGT", "mntyrGTE", "mntyrLT", "mntyrLTE", "mntyrContains", "mntyrHasPrefix", "mntyrHasSuffix", "mntyrIsNil", "mntyrNotNil", "mntyrEqualFold", "mntyrContainsFold", "conType", "conTypeNEQ", "conTypeIn", "conTypeNotIn", "conTypeGT", "conTypeGTE", "conTypeLT", "conTypeLTE", "conTypeContains", "conTypeHasPrefix", "conTypeHasSuffix", "conTypeIsNil", "conTypeNotNil", "conTypeEqualFold", "conTypeContainsFold", "isFinished", "isFinishedNEQ", "cje", "cjeNEQ", "cjeIn", "cjeNotIn", "cjeGT", "cjeGTE", "cjeLT", "cjeLTE", "cjeIsNil", "cjeNotNil", "yye", "yyeNEQ", "yyeIn", "yyeNotIn", "yyeGT", "yyeGTE", "yyeLT", "yyeLTE", "yyeIsNil", "yyeNotNil", "xjl", "xjlNEQ", "xjlIn", "xjlNotIn", "xjlGT", "xjlGTE", "xjlLT", "xjlLTE", "xjlIsNil", "xjlNotNil", "xmglfYs", "xmglfYsNEQ", "xmglfYsIn", "xmglfYsNotIn", "xmglfYsGT", "xmglfYsGTE", "xmglfYsLT", "xmglfYsLTE", "xmglfYsIsNil", "xmglfYsNotNil", "xmglfLj", "xmglfLjNEQ", "xmglfLjIn", "xmglfLjNotIn", "xmglfLjGT", "xmglfLjGTE", "xmglfLjLT", "xmglfLjLTE", "xmglfLjIsNil", "xmglfLjNotNil", "xmsjf", "xmsjfNEQ", "xmsjfIn", "xmsjfNotIn", "xmsjfGT", "xmsjfGTE", "xmsjfLT", "xmsjfLTE", "xmsjfIsNil", "xmsjfNotNil", "xmfzr", "xmfzrNEQ", "xmfzrIn", "xmfzrNotIn", "xmfzrGT", "xmfzrGTE", "xmfzrLT", "xmfzrLTE", "xmfzrContains", "xmfzrHasPrefix", "xmfzrHasSuffix", "xmfzrIsNil", "xmfzrNotNil", "xmfzrEqualFold", "xmfzrContainsFold", "ownerApplyAmount", "ownerApplyAmountNEQ", "ownerApplyAmountIn", "ownerApplyAmountNotIn", "ownerApplyAmountGT", "ownerApplyAmountGTE", "ownerApplyAmountLT", "ownerApplyAmountLTE", "ownerApplyAmountIsNil", "ownerApplyAmountNotNil", "ownerApplyCount", "ownerApplyCountNEQ", "ownerApplyCountIn", "ownerApplyCountNotIn", "ownerApplyCountGT", "ownerApplyCountGTE", "ownerApplyCountLT", "ownerApplyCountLTE", "ownerApplyCountIsNil", "ownerApplyCountNotNil", "ownerApproveAmount", "ownerApproveAmountNEQ", "ownerApproveAmountIn", "ownerApproveAmountNotIn", "ownerApproveAmountGT", "ownerApproveAmountGTE", "ownerApproveAmountLT", "ownerApproveAmountLTE", "ownerApproveAmountIsNil", "ownerApproveAmountNotNil", "ownerApproveCount", "ownerApproveCountNEQ", "ownerApproveCountIn", "ownerApproveCountNotIn", "ownerApproveCountGT", "ownerApproveCountGTE", "ownerApproveCountLT", "ownerApproveCountLTE", "ownerApproveCountIsNil", "ownerApproveCountNotNil", "contractorApplyAmount", "contractorApplyAmountNEQ", "contractorApplyAmountIn", "contractorApplyAmountNotIn", "contractorApplyAmountGT", "contractorApplyAmountGTE", "contractorApplyAmountLT", "contractorApplyAmountLTE", "contractorApplyAmountIsNil", "contractorApplyAmountNotNil", "contractorApplyCount", "contractorApplyCountNEQ", "contractorApplyCountIn", "contractorApplyCountNotIn", "contractorApplyCountGT", "contractorApplyCountGTE", "contractorApplyCountLT", "contractorApplyCountLTE", "contractorApplyCountIsNil", "contractorApplyCountNotNil", "contractorApproveAmount", "contractorApproveAmountNEQ", "contractorApproveAmountIn", "contractorApproveAmountNotIn", "contractorApproveAmountGT", "contractorApproveAmountGTE", "contractorApproveAmountLT", "contractorApproveAmountLTE", "contractorApproveAmountIsNil", "contractorApproveAmountNotNil", "contractorApproveCount", "contractorApproveCountNEQ", "contractorApproveCountIn", "contractorApproveCountNotIn", "contractorApproveCountGT", "contractorApproveCountGTE", "contractorApproveCountLT", "contractorApproveCountLTE", "contractorApproveCountIsNil", "contractorApproveCountNotNil", "installProgress", "installProgressNEQ", "installProgressIn", "installProgressNotIn", "installProgressGT", "installProgressGTE", "installProgressLT", "installProgressLTE", "installProgressIsNil", "installProgressNotNil", "effectiveContractAmount", "effectiveContractAmountNEQ", "effectiveContractAmountIn", "effectiveContractAmountNotIn", "effectiveContractAmountGT", "effectiveContractAmountGTE", "effectiveContractAmountLT", "effectiveContractAmountLTE", "effectiveContractAmountIsNil", "effectiveContractAmountNotNil", "vaApplyAmount", "vaApplyAmountNEQ", "vaApplyAmountIn", "vaApplyAmountNotIn", "vaApplyAmountGT", "vaApplyAmountGTE", "vaApplyAmountLT", "vaApplyAmountLTE", "vaApplyAmountIsNil", "vaApplyAmountNotNil", "vaApproveAmount", "vaApproveAmountNEQ", "vaApproveAmountIn", "vaApproveAmountNotIn", "vaApproveAmountGT", "vaApproveAmountGTE", "vaApproveAmountLT", "vaApproveAmountLTE", "vaApproveAmountIsNil", "vaApproveAmountNotNil", "accumulatedStatutoryDeductions", "accumulatedStatutoryDeductionsNEQ", "accumulatedStatutoryDeductionsIn", "accumulatedStatutoryDeductionsNotIn", "accumulatedStatutoryDeductionsGT", "accumulatedStatutoryDeductionsGTE", "accumulatedStatutoryDeductionsLT", "accumulatedStatutoryDeductionsLTE", "accumulatedStatutoryDeductionsIsNil", "accumulatedStatutoryDeductionsNotNil", "accumulatedNonStatutoryDeductions", "accumulatedNonStatutoryDeductionsNEQ", "accumulatedNonStatutoryDeductionsIn", "accumulatedNonStatutoryDeductionsNotIn", "accumulatedNonStatutoryDeductionsGT", "accumulatedNonStatutoryDeductionsGTE", "accumulatedNonStatutoryDeductionsLT", "accumulatedNonStatutoryDeductionsLTE", "accumulatedNonStatutoryDeductionsIsNil", "accumulatedNonStatutoryDeductionsNotNil", "accumulatedStatutoryDeductionsPeriod", "accumulatedStatutoryDeductionsPeriodNEQ", "accumulatedStatutoryDeductionsPeriodIn", "accumulatedStatutoryDeductionsPeriodNotIn", "accumulatedStatutoryDeductionsPeriodGT", "accumulatedStatutoryDeductionsPeriodGTE", "accumulatedStatutoryDeductionsPeriodLT", "accumulatedStatutoryDeductionsPeriodLTE", "accumulatedStatutoryDeductionsPeriodIsNil", "accumulatedStatutoryDeductionsPeriodNotNil", "accumulatedNonStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriodNEQ", "accumulatedNonStatutoryDeductionsPeriodIn", "accumulatedNonStatutoryDeductionsPeriodNotIn", "accumulatedNonStatutoryDeductionsPeriodGT", "accumulatedNonStatutoryDeductionsPeriodGTE", "accumulatedNonStatutoryDeductionsPeriodLT", "accumulatedNonStatutoryDeductionsPeriodLTE", "accumulatedNonStatutoryDeductionsPeriodIsNil", "accumulatedNonStatutoryDeductionsPeriodNotNil", "totalContractAmount", "totalContractAmountNEQ", "totalContractAmountIn", "totalContractAmountNotIn", "totalContractAmountGT", "totalContractAmountGTE", "totalContractAmountLT", "totalContractAmountLTE", "totalContractAmountIsNil", "totalContractAmountNotNil", "aluminumPlateBudgetPercentage", "aluminumPlateBudgetPercentageNEQ", "aluminumPlateBudgetPercentageIn", "aluminumPlateBudgetPercentageNotIn", "aluminumPlateBudgetPercentageGT", "aluminumPlateBudgetPercentageGTE", "aluminumPlateBudgetPercentageLT", "aluminumPlateBudgetPercentageLTE", "aluminumPlateBudgetPercentageIsNil", "aluminumPlateBudgetPercentageNotNil", "aluminumBudgetPercentage", "aluminumBudgetPercentageNEQ", "aluminumBudgetPercentageIn", "aluminumBudgetPercentageNotIn", "aluminumBudgetPercentageGT", "aluminumBudgetPercentageGTE", "aluminumBudgetPercentageLT", "aluminumBudgetPercentageLTE", "aluminumBudgetPercentageIsNil", "aluminumBudgetPercentageNotNil", "glassBudgetPercentage", "glassBudgetPercentageNEQ", "glassBudgetPercentageIn", "glassBudgetPercentageNotIn", "glassBudgetPercentageGT", "glassBudgetPercentageGTE", "glassBudgetPercentageLT", "glassBudgetPercentageLTE", "glassBudgetPercentageIsNil", "glassBudgetPercentageNotNil", "ironBudgetPercentage", "ironBudgetPercentageNEQ", "ironBudgetPercentageIn", "ironBudgetPercentageNotIn", "ironBudgetPercentageGT", "ironBudgetPercentageGTE", "ironBudgetPercentageLT", "ironBudgetPercentageLTE", "ironBudgetPercentageIsNil", "ironBudgetPercentageNotNil", "milestonePlanYear", "milestonePlanYearNEQ", "milestonePlanYearIn", "milestonePlanYearNotIn", "milestonePlanYearGT", "milestonePlanYearGTE", "milestonePlanYearLT", "milestonePlanYearLTE", "milestonePlanYearIsNil", "milestonePlanYearNotNil", "milestonePlanMonth", "milestonePlanMonthNEQ", "milestonePlanMonthIn", "milestonePlanMonthNotIn", "milestonePlanMonthGT", "milestonePlanMonthGTE", "milestonePlanMonthLT", "milestonePlanMonthLTE", "milestonePlanMonthIsNil", "milestonePlanMonthNotNil", "milestoneDoneYear", "milestoneDoneYearNEQ", "milestoneDoneYearIn", "milestoneDoneYearNotIn", "milestoneDoneYearGT", "milestoneDoneYearGTE", "milestoneDoneYearLT", "milestoneDoneYearLTE", "milestoneDoneYearIsNil", "milestoneDoneYearNotNil", "milestoneDoneMonth", "milestoneDoneMonthNEQ", "milestoneDoneMonthIn", "milestoneDoneMonthNotIn", "milestoneDoneMonthGT", "milestoneDoneMonthGTE", "milestoneDoneMonthLT", "milestoneDoneMonthLTE", "milestoneDoneMonthIsNil", "milestoneDoneMonthNotNil", "pmArea", "pmAreaNEQ", "pmAreaIn", "pmAreaNotIn", "pmAreaGT", "pmAreaGTE", "pmAreaLT", "pmAreaLTE", "pmAreaIsNil", "pmAreaNotNil", "pmYearTarget", "pmYearTargetNEQ", "pmYearTargetIn", "pmYearTargetNotIn", "pmYearTargetGT", "pmYearTargetGTE", "pmYearTargetLT", "pmYearTargetLTE", "pmYearTargetIsNil", "pmYearTargetNotNil", "pmMonthTarget", "pmMonthTargetNEQ", "pmMonthTargetIn", "pmMonthTargetNotIn", "pmMonthTargetGT", "pmMonthTargetGTE", "pmMonthTargetLT", "pmMonthTargetLTE", "pmMonthTargetIsNil", "pmMonthTargetNotNil", "pmYearActual", "pmYearActualNEQ", "pmYearActualIn", "pmYearActualNotIn", "pmYearActualGT", "pmYearActualGTE", "pmYearActualLT", "pmYearActualLTE", "pmYearActualIsNil", "pmYearActualNotNil", "pmMonthActual", "pmMonthActualNEQ", "pmMonthActualIn", "pmMonthActualNotIn", "pmMonthActualGT", "pmMonthActualGTE", "pmMonthActualLT", "pmMonthActualLTE", "pmMonthActualIsNil", "pmMonthActualNotNil", "pmTotal", "pmTotalNEQ", "pmTotalIn", "pmTotalNotIn", "pmTotalGT", "pmTotalGTE", "pmTotalLT", "pmTotalLTE", "pmTotalIsNil", "pmTotalNotNil", "pmYesterday", "pmYesterdayNEQ", "pmYesterdayIn", "pmYesterdayNotIn", "pmYesterdayGT", "pmYesterdayGTE", "pmYesterdayLT", "pmYesterdayLTE", "pmYesterdayIsNil", "pmYesterdayNotNil", "unitInventoryTotal", "unitInventoryTotalNEQ", "unitInventoryTotalIn", "unitInventoryTotalNotIn", "unitInventoryTotalGT", "unitInventoryTotalGTE", "unitInventoryTotalLT", "unitInventoryTotalLTE", "unitInventoryTotalIsNil", "unitInventoryTotalNotNil", "unitComponentTotal", "unitComponentTotalNEQ", "unitComponentTotalIn", "unitComponentTotalNotIn", "unitComponentTotalGT", "unitComponentTotalGTE", "unitComponentTotalLT", "unitComponentTotalLTE", "unitComponentTotalIsNil", "unitComponentTotalNotNil", "unitComponentProduction", "unitComponentProductionNEQ", "unitComponentProductionIn", "unitComponentProductionNotIn", "unitComponentProductionGT", "unitComponentProductionGTE", "unitComponentProductionLT", "unitComponentProductionLTE", "unitComponentProductionIsNil", "unitComponentProductionNotNil", "unitComponentInstallation", "unitComponentInstallationNEQ", "unitComponentInstallationIn", "unitComponentInstallationNotIn", "unitComponentInstallationGT", "unitComponentInstallationGTE", "unitComponentInstallationLT", "unitComponentInstallationLTE", "unitComponentInstallationIsNil", "unitComponentInstallationNotNil", "materialLoss", "materialLossNEQ", "materialLossIn", "materialLossNotIn", "materialLossGT", "materialLossGTE", "materialLossLT", "materialLossLTE", "materialLossIsNil", "materialLossNotNil", "designRatedWeight", "designRatedWeightNEQ", "designRatedWeightIn", "designRatedWeightNotIn", "designRatedWeightGT", "designRatedWeightGTE", "designRatedWeightLT", "designRatedWeightLTE", "designRatedWeightIsNil", "designRatedWeightNotNil", "processingWeight", "processingWeightNEQ", "processingWeightIn", "processingWeightNotIn", "processingWeightGT", "processingWeightGTE", "processingWeightLT", "processingWeightLTE", "processingWeightIsNil", "processingWeightNotNil", "itemStockWeight", "itemStockWeightNEQ", "itemStockWeightIn", "itemStockWeightNotIn", "itemStockWeightGT", "itemStockWeightGTE", "itemStockWeightLT", "itemStockWeightLTE", "itemStockWeightIsNil", "itemStockWeightNotNil", "palletsInStock", "palletsInStockNEQ", "palletsInStockIn", "palletsInStockNotIn", "palletsInStockGT", "palletsInStockGTE", "palletsInStockLT", "palletsInStockLTE", "palletsInStockIsNil", "palletsInStockNotNil", "partsInStock", "partsInStockNEQ", "partsInStockIn", "partsInStockNotIn", "partsInStockGT", "partsInStockGTE", "partsInStockLT", "partsInStockLTE", "partsInStockIsNil", "partsInStockNotNil", "qualityScore", "qualityScoreNEQ", "qualityScoreIn", "qualityScoreNotIn", "qualityScoreGT", "qualityScoreGTE", "qualityScoreLT", "qualityScoreLTE", "qualityScoreIsNil", "qualityScoreNotNil", "qualityRanking", "qualityRankingNEQ", "qualityRankingIn", "qualityRankingNotIn", "qualityRankingGT", "qualityRankingGTE", "qualityRankingLT", "qualityRankingLTE", "qualityRankingIsNil", "qualityRankingNotNil", "bulkMaterialsTotalOrderQuantity", "bulkMaterialsTotalOrderQuantityNEQ", "bulkMaterialsTotalOrderQuantityIn", "bulkMaterialsTotalOrderQuantityNotIn", "bulkMaterialsTotalOrderQuantityGT", "bulkMaterialsTotalOrderQuantityGTE", "bulkMaterialsTotalOrderQuantityLT", "bulkMaterialsTotalOrderQuantityLTE", "bulkMaterialsTotalOrderQuantityIsNil", "bulkMaterialsTotalOrderQuantityNotNil", "bulkMaterialsCompletedQuantity", "bulkMaterialsCompletedQuantityNEQ", "bulkMaterialsCompletedQuantityIn", "bulkMaterialsCompletedQuantityNotIn", "bulkMaterialsCompletedQuantityGT", "bulkMaterialsCompletedQuantityGTE", "bulkMaterialsCompletedQuantityLT", "bulkMaterialsCompletedQuantityLTE", "bulkMaterialsCompletedQuantityIsNil", "bulkMaterialsCompletedQuantityNotNil", "bulkMaterialsUncompletedQuantity", "bulkMaterialsUncompletedQuantityNEQ", "bulkMaterialsUncompletedQuantityIn", "bulkMaterialsUncompletedQuantityNotIn", "bulkMaterialsUncompletedQuantityGT", "bulkMaterialsUncompletedQuantityGTE", "bulkMaterialsUncompletedQuantityLT", "bulkMaterialsUncompletedQuantityLTE", "bulkMaterialsUncompletedQuantityIsNil", "bulkMaterialsUncompletedQuantityNotNil", "planTotalCount", "planTotalCountNEQ", "planTotalCountIn", "planTotalCountNotIn", "planTotalCountGT", "planTotalCountGTE", "planTotalCountLT", "planTotalCountLTE", "planTotalCountIsNil", "planTotalCountNotNil", "planOverdueCount", "planOverdueCountNEQ", "planOverdueCountIn", "planOverdueCountNotIn", "planOverdueCountGT", "planOverdueCountGTE", "planOverdueCountLT", "planOverdueCountLTE", "planOverdueCountIsNil", "planOverdueCountNotNil", "planOverdueMonthCount", "planOverdueMonthCountNEQ", "planOverdueMonthCountIn", "planOverdueMonthCountNotIn", "planOverdueMonthCountGT", "planOverdueMonthCountGTE", "planOverdueMonthCountLT", "planOverdueMonthCountLTE", "planOverdueMonthCountIsNil", "planOverdueMonthCountNotNil", "diagramBdFinishCount", "diagramBdFinishCountNEQ", "diagramBdFinishCountIn", "diagramBdFinishCountNotIn", "diagramBdFinishCountGT", "diagramBdFinishCountGTE", "diagramBdFinishCountLT", "diagramBdFinishCountLTE", "diagramBdFinishCountIsNil", "diagramBdFinishCountNotNil", "diagramBdTotalCount", "diagramBdTotalCountNEQ", "diagramBdTotalCountIn", "diagramBdTotalCountNotIn", "diagramBdTotalCountGT", "diagramBdTotalCountGTE", "diagramBdTotalCountLT", "diagramBdTotalCountLTE", "diagramBdTotalCountIsNil", "diagramBdTotalCountNotNil", "diagramConstructionFinishCount", "diagramConstructionFinishCountNEQ", "diagramConstructionFinishCountIn", "diagramConstructionFinishCountNotIn", "diagramConstructionFinishCountGT", "diagramConstructionFinishCountGTE", "diagramConstructionFinishCountLT", "diagramConstructionFinishCountLTE", "diagramConstructionFinishCountIsNil", "diagramConstructionFinishCountNotNil", "diagramConstructionTotalCount", "diagramConstructionTotalCountNEQ", "diagramConstructionTotalCountIn", "diagramConstructionTotalCountNotIn", "diagramConstructionTotalCountGT", "diagramConstructionTotalCountGTE", "diagramConstructionTotalCountLT", "diagramConstructionTotalCountLTE", "diagramConstructionTotalCountIsNil", "diagramConstructionTotalCountNotNil", "diagramProcessingFinishCount", "diagramProcessingFinishCountNEQ", "diagramProcessingFinishCountIn", "diagramProcessingFinishCountNotIn", "diagramProcessingFinishCountGT", "diagramProcessingFinishCountGTE", "diagramProcessingFinishCountLT", "diagramProcessingFinishCountLTE", "diagramProcessingFinishCountIsNil", "diagramProcessingFinishCountNotNil", "diagramProcessingTotalCount", "diagramProcessingTotalCountNEQ", "diagramProcessingTotalCountIn", "diagramProcessingTotalCountNotIn", "diagramProcessingTotalCountGT", "diagramProcessingTotalCountGTE", "diagramProcessingTotalCountLT", "diagramProcessingTotalCountLTE", "diagramProcessingTotalCountIsNil", "diagramProcessingTotalCountNotNil", "diagramCApprovalRatioNumerator", "diagramCApprovalRatioNumeratorNEQ", "diagramCApprovalRatioNumeratorIn", "diagramCApprovalRatioNumeratorNotIn", "diagramCApprovalRatioNumeratorGT", "diagramCApprovalRatioNumeratorGTE", "diagramCApprovalRatioNumeratorLT", "diagramCApprovalRatioNumeratorLTE", "diagramCApprovalRatioNumeratorIsNil", "diagramCApprovalRatioNumeratorNotNil", "diagramCApprovalRatioDenominator", "diagramCApprovalRatioDenominatorNEQ", "diagramCApprovalRatioDenominatorIn", "diagramCApprovalRatioDenominatorNotIn", "diagramCApprovalRatioDenominatorGT", "diagramCApprovalRatioDenominatorGTE", "diagramCApprovalRatioDenominatorLT", "diagramCApprovalRatioDenominatorLTE", "diagramCApprovalRatioDenominatorIsNil", "diagramCApprovalRatioDenominatorNotNil", "hasVos", "hasVosWith", "hasProjectStaffs", "hasProjectStaffsWith", "hasUsers", "hasUsersWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -39952,76 +40770,566 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.PlanOverdueMonthCountNotNil = data
-		case "processingDiagramFinishCount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCount"))
+		case "diagramBdFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCount"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCount = data
-		case "processingDiagramFinishCountNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountNEQ"))
+			it.DiagramBdFinishCount = data
+		case "diagramBdFinishCountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountNEQ"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountNEQ = data
-		case "processingDiagramFinishCountIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountIn"))
+			it.DiagramBdFinishCountNEQ = data
+		case "diagramBdFinishCountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountIn"))
 			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountIn = data
-		case "processingDiagramFinishCountNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountNotIn"))
+			it.DiagramBdFinishCountIn = data
+		case "diagramBdFinishCountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountNotIn"))
 			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountNotIn = data
-		case "processingDiagramFinishCountGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountGT"))
+			it.DiagramBdFinishCountNotIn = data
+		case "diagramBdFinishCountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountGT"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountGT = data
-		case "processingDiagramFinishCountGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountGTE"))
+			it.DiagramBdFinishCountGT = data
+		case "diagramBdFinishCountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountGTE"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountGTE = data
-		case "processingDiagramFinishCountLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountLT"))
+			it.DiagramBdFinishCountGTE = data
+		case "diagramBdFinishCountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountLT"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountLT = data
-		case "processingDiagramFinishCountLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountLTE"))
+			it.DiagramBdFinishCountLT = data
+		case "diagramBdFinishCountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountLTE"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountLTE = data
-		case "processingDiagramFinishCountIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountIsNil"))
+			it.DiagramBdFinishCountLTE = data
+		case "diagramBdFinishCountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountIsNil = data
-		case "processingDiagramFinishCountNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCountNotNil"))
+			it.DiagramBdFinishCountIsNil = data
+		case "diagramBdFinishCountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCountNotNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCountNotNil = data
+			it.DiagramBdFinishCountNotNil = data
+		case "diagramBdTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCount = data
+		case "diagramBdTotalCountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountNEQ = data
+		case "diagramBdTotalCountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountIn = data
+		case "diagramBdTotalCountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountNotIn = data
+		case "diagramBdTotalCountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountGT = data
+		case "diagramBdTotalCountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountGTE = data
+		case "diagramBdTotalCountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountLT = data
+		case "diagramBdTotalCountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountLTE = data
+		case "diagramBdTotalCountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountIsNil = data
+		case "diagramBdTotalCountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCountNotNil = data
+		case "diagramConstructionFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCount = data
+		case "diagramConstructionFinishCountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountNEQ = data
+		case "diagramConstructionFinishCountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountIn = data
+		case "diagramConstructionFinishCountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountNotIn = data
+		case "diagramConstructionFinishCountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountGT = data
+		case "diagramConstructionFinishCountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountGTE = data
+		case "diagramConstructionFinishCountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountLT = data
+		case "diagramConstructionFinishCountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountLTE = data
+		case "diagramConstructionFinishCountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountIsNil = data
+		case "diagramConstructionFinishCountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCountNotNil = data
+		case "diagramConstructionTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCount = data
+		case "diagramConstructionTotalCountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountNEQ = data
+		case "diagramConstructionTotalCountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountIn = data
+		case "diagramConstructionTotalCountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountNotIn = data
+		case "diagramConstructionTotalCountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountGT = data
+		case "diagramConstructionTotalCountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountGTE = data
+		case "diagramConstructionTotalCountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountLT = data
+		case "diagramConstructionTotalCountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountLTE = data
+		case "diagramConstructionTotalCountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountIsNil = data
+		case "diagramConstructionTotalCountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCountNotNil = data
+		case "diagramProcessingFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCount = data
+		case "diagramProcessingFinishCountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountNEQ = data
+		case "diagramProcessingFinishCountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountIn = data
+		case "diagramProcessingFinishCountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountNotIn = data
+		case "diagramProcessingFinishCountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountGT = data
+		case "diagramProcessingFinishCountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountGTE = data
+		case "diagramProcessingFinishCountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountLT = data
+		case "diagramProcessingFinishCountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountLTE = data
+		case "diagramProcessingFinishCountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountIsNil = data
+		case "diagramProcessingFinishCountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCountNotNil = data
+		case "diagramProcessingTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCount = data
+		case "diagramProcessingTotalCountNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountNEQ = data
+		case "diagramProcessingTotalCountIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountIn = data
+		case "diagramProcessingTotalCountNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountNotIn = data
+		case "diagramProcessingTotalCountGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountGT = data
+		case "diagramProcessingTotalCountGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountGTE = data
+		case "diagramProcessingTotalCountLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountLT = data
+		case "diagramProcessingTotalCountLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountLTE = data
+		case "diagramProcessingTotalCountIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountIsNil = data
+		case "diagramProcessingTotalCountNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCountNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCountNotNil = data
+		case "diagramCApprovalRatioNumerator":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumerator"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumerator = data
+		case "diagramCApprovalRatioNumeratorNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorNEQ = data
+		case "diagramCApprovalRatioNumeratorIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorIn = data
+		case "diagramCApprovalRatioNumeratorNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorNotIn = data
+		case "diagramCApprovalRatioNumeratorGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorGT = data
+		case "diagramCApprovalRatioNumeratorGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorGTE = data
+		case "diagramCApprovalRatioNumeratorLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorLT = data
+		case "diagramCApprovalRatioNumeratorLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorLTE = data
+		case "diagramCApprovalRatioNumeratorIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorIsNil = data
+		case "diagramCApprovalRatioNumeratorNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumeratorNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumeratorNotNil = data
+		case "diagramCApprovalRatioDenominator":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominator"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominator = data
+		case "diagramCApprovalRatioDenominatorNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorNEQ = data
+		case "diagramCApprovalRatioDenominatorIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorIn = data
+		case "diagramCApprovalRatioDenominatorNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorNotIn = data
+		case "diagramCApprovalRatioDenominatorGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorGT = data
+		case "diagramCApprovalRatioDenominatorGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorGTE = data
+		case "diagramCApprovalRatioDenominatorLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorLT = data
+		case "diagramCApprovalRatioDenominatorLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorLTE = data
+		case "diagramCApprovalRatioDenominatorIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorIsNil = data
+		case "diagramCApprovalRatioDenominatorNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominatorNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominatorNotNil = data
 		case "hasVos":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasVos"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -40050,6 +41358,20 @@ func (ec *executionContext) unmarshalInputProjectWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.HasProjectStaffsWith = data
+		case "hasUsers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUsers"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasUsers = data
+		case "hasUsersWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUsersWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasUsersWith = data
 		}
 	}
 
@@ -47179,7 +48501,7 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "code", "manager", "clearManager", "name", "clearName", "owner", "clearOwner", "jzs", "clearJzs", "mcn", "clearMcn", "consultant", "clearConsultant", "areas", "clearAreas", "startDate", "clearStartDate", "fsDate", "clearFsDate", "opDate", "clearOpDate", "endDate", "clearEndDate", "mntyr", "clearMntyr", "conType", "clearConType", "isFinished", "cje", "clearCje", "yye", "clearYye", "xjl", "clearXjl", "xmglfYs", "clearXmglfYs", "xmglfLj", "clearXmglfLj", "xmsjf", "clearXmsjf", "xmfzr", "clearXmfzr", "ownerApplyAmount", "clearOwnerApplyAmount", "ownerApplyCount", "clearOwnerApplyCount", "ownerApproveAmount", "clearOwnerApproveAmount", "ownerApproveCount", "clearOwnerApproveCount", "contractorApplyAmount", "clearContractorApplyAmount", "contractorApplyCount", "clearContractorApplyCount", "contractorApproveAmount", "clearContractorApproveAmount", "contractorApproveCount", "clearContractorApproveCount", "installProgress", "clearInstallProgress", "effectiveContractAmount", "clearEffectiveContractAmount", "vaApplyAmount", "clearVaApplyAmount", "vaApproveAmount", "clearVaApproveAmount", "accumulatedStatutoryDeductions", "clearAccumulatedStatutoryDeductions", "accumulatedNonStatutoryDeductions", "clearAccumulatedNonStatutoryDeductions", "accumulatedStatutoryDeductionsPeriod", "clearAccumulatedStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriod", "clearAccumulatedNonStatutoryDeductionsPeriod", "totalContractAmount", "clearTotalContractAmount", "aluminumPlateBudgetPercentage", "clearAluminumPlateBudgetPercentage", "aluminumBudgetPercentage", "clearAluminumBudgetPercentage", "glassBudgetPercentage", "clearGlassBudgetPercentage", "ironBudgetPercentage", "clearIronBudgetPercentage", "milestonePlanYear", "clearMilestonePlanYear", "milestonePlanMonth", "clearMilestonePlanMonth", "milestoneDoneYear", "clearMilestoneDoneYear", "milestoneDoneMonth", "clearMilestoneDoneMonth", "pmArea", "clearPmArea", "pmYearTarget", "clearPmYearTarget", "pmMonthTarget", "clearPmMonthTarget", "pmYearActual", "clearPmYearActual", "pmMonthActual", "clearPmMonthActual", "pmTotal", "clearPmTotal", "pmYesterday", "clearPmYesterday", "unitInventoryTotal", "clearUnitInventoryTotal", "unitComponentTotal", "clearUnitComponentTotal", "unitComponentProduction", "clearUnitComponentProduction", "unitComponentInstallation", "clearUnitComponentInstallation", "materialLoss", "clearMaterialLoss", "designRatedWeight", "clearDesignRatedWeight", "processingWeight", "clearProcessingWeight", "itemStockWeight", "clearItemStockWeight", "palletsInStock", "clearPalletsInStock", "partsInStock", "clearPartsInStock", "qualityScore", "clearQualityScore", "qualityRanking", "clearQualityRanking", "bulkMaterialsTotalOrderQuantity", "clearBulkMaterialsTotalOrderQuantity", "bulkMaterialsCompletedQuantity", "clearBulkMaterialsCompletedQuantity", "bulkMaterialsUncompletedQuantity", "clearBulkMaterialsUncompletedQuantity", "planTotalCount", "clearPlanTotalCount", "planOverdueCount", "clearPlanOverdueCount", "planOverdueMonthCount", "clearPlanOverdueMonthCount", "processingDiagramFinishCount", "clearProcessingDiagramFinishCount", "addVoIDs", "removeVoIDs", "clearVos", "addProjectStaffIDs", "removeProjectStaffIDs", "clearProjectStaffs"}
+	fieldsInOrder := [...]string{"updatedAt", "code", "manager", "clearManager", "name", "clearName", "owner", "clearOwner", "jzs", "clearJzs", "mcn", "clearMcn", "consultant", "clearConsultant", "areas", "clearAreas", "startDate", "clearStartDate", "fsDate", "clearFsDate", "opDate", "clearOpDate", "endDate", "clearEndDate", "mntyr", "clearMntyr", "conType", "clearConType", "isFinished", "cje", "clearCje", "yye", "clearYye", "xjl", "clearXjl", "xmglfYs", "clearXmglfYs", "xmglfLj", "clearXmglfLj", "xmsjf", "clearXmsjf", "xmfzr", "clearXmfzr", "ownerApplyAmount", "clearOwnerApplyAmount", "ownerApplyCount", "clearOwnerApplyCount", "ownerApproveAmount", "clearOwnerApproveAmount", "ownerApproveCount", "clearOwnerApproveCount", "contractorApplyAmount", "clearContractorApplyAmount", "contractorApplyCount", "clearContractorApplyCount", "contractorApproveAmount", "clearContractorApproveAmount", "contractorApproveCount", "clearContractorApproveCount", "installProgress", "clearInstallProgress", "effectiveContractAmount", "clearEffectiveContractAmount", "vaApplyAmount", "clearVaApplyAmount", "vaApproveAmount", "clearVaApproveAmount", "accumulatedStatutoryDeductions", "clearAccumulatedStatutoryDeductions", "accumulatedNonStatutoryDeductions", "clearAccumulatedNonStatutoryDeductions", "accumulatedStatutoryDeductionsPeriod", "clearAccumulatedStatutoryDeductionsPeriod", "accumulatedNonStatutoryDeductionsPeriod", "clearAccumulatedNonStatutoryDeductionsPeriod", "totalContractAmount", "clearTotalContractAmount", "aluminumPlateBudgetPercentage", "clearAluminumPlateBudgetPercentage", "aluminumBudgetPercentage", "clearAluminumBudgetPercentage", "glassBudgetPercentage", "clearGlassBudgetPercentage", "ironBudgetPercentage", "clearIronBudgetPercentage", "milestonePlanYear", "clearMilestonePlanYear", "milestonePlanMonth", "clearMilestonePlanMonth", "milestoneDoneYear", "clearMilestoneDoneYear", "milestoneDoneMonth", "clearMilestoneDoneMonth", "pmArea", "clearPmArea", "pmYearTarget", "clearPmYearTarget", "pmMonthTarget", "clearPmMonthTarget", "pmYearActual", "clearPmYearActual", "pmMonthActual", "clearPmMonthActual", "pmTotal", "clearPmTotal", "pmYesterday", "clearPmYesterday", "unitInventoryTotal", "clearUnitInventoryTotal", "unitComponentTotal", "clearUnitComponentTotal", "unitComponentProduction", "clearUnitComponentProduction", "unitComponentInstallation", "clearUnitComponentInstallation", "materialLoss", "clearMaterialLoss", "designRatedWeight", "clearDesignRatedWeight", "processingWeight", "clearProcessingWeight", "itemStockWeight", "clearItemStockWeight", "palletsInStock", "clearPalletsInStock", "partsInStock", "clearPartsInStock", "qualityScore", "clearQualityScore", "qualityRanking", "clearQualityRanking", "bulkMaterialsTotalOrderQuantity", "clearBulkMaterialsTotalOrderQuantity", "bulkMaterialsCompletedQuantity", "clearBulkMaterialsCompletedQuantity", "bulkMaterialsUncompletedQuantity", "clearBulkMaterialsUncompletedQuantity", "planTotalCount", "clearPlanTotalCount", "planOverdueCount", "clearPlanOverdueCount", "planOverdueMonthCount", "clearPlanOverdueMonthCount", "diagramBdFinishCount", "clearDiagramBdFinishCount", "diagramBdTotalCount", "clearDiagramBdTotalCount", "diagramConstructionFinishCount", "clearDiagramConstructionFinishCount", "diagramConstructionTotalCount", "clearDiagramConstructionTotalCount", "diagramProcessingFinishCount", "clearDiagramProcessingFinishCount", "diagramProcessingTotalCount", "clearDiagramProcessingTotalCount", "diagramCApprovalRatioNumerator", "clearDiagramCApprovalRatioNumerator", "diagramCApprovalRatioDenominator", "clearDiagramCApprovalRatioDenominator", "addVoIDs", "removeVoIDs", "clearVos", "addProjectStaffIDs", "removeProjectStaffIDs", "clearProjectStaffs", "addUserIDs", "removeUserIDs", "clearUsers"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -48187,20 +49509,118 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 				return it, err
 			}
 			it.ClearPlanOverdueMonthCount = data
-		case "processingDiagramFinishCount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("processingDiagramFinishCount"))
+		case "diagramBdFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdFinishCount"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProcessingDiagramFinishCount = data
-		case "clearProcessingDiagramFinishCount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearProcessingDiagramFinishCount"))
+			it.DiagramBdFinishCount = data
+		case "clearDiagramBdFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramBdFinishCount"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearProcessingDiagramFinishCount = data
+			it.ClearDiagramBdFinishCount = data
+		case "diagramBdTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramBdTotalCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramBdTotalCount = data
+		case "clearDiagramBdTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramBdTotalCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramBdTotalCount = data
+		case "diagramConstructionFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionFinishCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionFinishCount = data
+		case "clearDiagramConstructionFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramConstructionFinishCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramConstructionFinishCount = data
+		case "diagramConstructionTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramConstructionTotalCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramConstructionTotalCount = data
+		case "clearDiagramConstructionTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramConstructionTotalCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramConstructionTotalCount = data
+		case "diagramProcessingFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingFinishCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingFinishCount = data
+		case "clearDiagramProcessingFinishCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramProcessingFinishCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramProcessingFinishCount = data
+		case "diagramProcessingTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramProcessingTotalCount"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramProcessingTotalCount = data
+		case "clearDiagramProcessingTotalCount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramProcessingTotalCount"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramProcessingTotalCount = data
+		case "diagramCApprovalRatioNumerator":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioNumerator"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioNumerator = data
+		case "clearDiagramCApprovalRatioNumerator":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramCApprovalRatioNumerator"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramCApprovalRatioNumerator = data
+		case "diagramCApprovalRatioDenominator":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("diagramCApprovalRatioDenominator"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DiagramCApprovalRatioDenominator = data
+		case "clearDiagramCApprovalRatioDenominator":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDiagramCApprovalRatioDenominator"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDiagramCApprovalRatioDenominator = data
 		case "addVoIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addVoIDs"))
 			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
@@ -48243,6 +49663,27 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 				return it, err
 			}
 			it.ClearProjectStaffs = data
+		case "addUserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addUserIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddUserIDs = data
+		case "removeUserIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeUserIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveUserIDs = data
+		case "clearUsers":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUsers"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearUsers = data
 		}
 	}
 
@@ -49269,7 +50710,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "clearOpenID", "avatarURL", "clearAvatarURL", "disabled", "isAdmin", "isCeo", "isSuperAdmin", "hasMapAccess", "hasEditAccess", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords"}
+	fieldsInOrder := [...]string{"updatedAt", "name", "email", "username", "openID", "clearOpenID", "avatarURL", "clearAvatarURL", "disabled", "isAdmin", "isCeo", "isSuperAdmin", "hasMapAccess", "hasEditAccess", "addAreaIDs", "removeAreaIDs", "clearAreas", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "leaderID", "clearLeader", "addTeamMemberIDs", "removeTeamMemberIDs", "clearTeamMembers", "addTenderIDs", "removeTenderIDs", "clearTenders", "addVisitRecordIDs", "removeVisitRecordIDs", "clearVisitRecords", "addProjectIDs", "removeProjectIDs", "clearProjects"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -49493,6 +50934,27 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearVisitRecords = data
+		case "addProjectIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addProjectIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddProjectIDs = data
+		case "removeProjectIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeProjectIDs"))
+			data, err := ec.unmarshalOID2ᚕcscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐIDᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveProjectIDs = data
+		case "clearProjects":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearProjects"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearProjects = data
 		}
 	}
 
@@ -49655,7 +51117,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDIsNil", "openIDNotNil", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLIsNil", "avatarURLNotNil", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "isAdmin", "isAdminNEQ", "isCeo", "isCeoNEQ", "isSuperAdmin", "isSuperAdminNEQ", "hasMapAccess", "hasMapAccessNEQ", "hasEditAccess", "hasEditAccessNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith", "hasVisitRecords", "hasVisitRecordsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "openID", "openIDNEQ", "openIDIn", "openIDNotIn", "openIDGT", "openIDGTE", "openIDLT", "openIDLTE", "openIDContains", "openIDHasPrefix", "openIDHasSuffix", "openIDIsNil", "openIDNotNil", "openIDEqualFold", "openIDContainsFold", "avatarURL", "avatarURLNEQ", "avatarURLIn", "avatarURLNotIn", "avatarURLGT", "avatarURLGTE", "avatarURLLT", "avatarURLLTE", "avatarURLContains", "avatarURLHasPrefix", "avatarURLHasSuffix", "avatarURLIsNil", "avatarURLNotNil", "avatarURLEqualFold", "avatarURLContainsFold", "disabled", "disabledNEQ", "isAdmin", "isAdminNEQ", "isCeo", "isCeoNEQ", "isSuperAdmin", "isSuperAdminNEQ", "hasMapAccess", "hasMapAccessNEQ", "hasEditAccess", "hasEditAccessNEQ", "leaderID", "leaderIDNEQ", "leaderIDIn", "leaderIDNotIn", "leaderIDGT", "leaderIDGTE", "leaderIDLT", "leaderIDLTE", "leaderIDContains", "leaderIDHasPrefix", "leaderIDHasSuffix", "leaderIDIsNil", "leaderIDNotNil", "leaderIDEqualFold", "leaderIDContainsFold", "hasAreas", "hasAreasWith", "hasCustomers", "hasCustomersWith", "hasLeader", "hasLeaderWith", "hasTeamMembers", "hasTeamMembersWith", "hasTenders", "hasTendersWith", "hasVisitRecords", "hasVisitRecordsWith", "hasProjects", "hasProjectsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -50607,6 +52069,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasVisitRecordsWith = data
+		case "hasProjects":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProjects"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasProjects = data
+		case "hasProjectsWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProjectsWith"))
+			data, err := ec.unmarshalOProjectWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐProjectWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasProjectsWith = data
 		}
 	}
 
@@ -53846,8 +55322,22 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Project_planOverdueCount(ctx, field, obj)
 		case "planOverdueMonthCount":
 			out.Values[i] = ec._Project_planOverdueMonthCount(ctx, field, obj)
-		case "processingDiagramFinishCount":
-			out.Values[i] = ec._Project_processingDiagramFinishCount(ctx, field, obj)
+		case "diagramBdFinishCount":
+			out.Values[i] = ec._Project_diagramBdFinishCount(ctx, field, obj)
+		case "diagramBdTotalCount":
+			out.Values[i] = ec._Project_diagramBdTotalCount(ctx, field, obj)
+		case "diagramConstructionFinishCount":
+			out.Values[i] = ec._Project_diagramConstructionFinishCount(ctx, field, obj)
+		case "diagramConstructionTotalCount":
+			out.Values[i] = ec._Project_diagramConstructionTotalCount(ctx, field, obj)
+		case "diagramProcessingFinishCount":
+			out.Values[i] = ec._Project_diagramProcessingFinishCount(ctx, field, obj)
+		case "diagramProcessingTotalCount":
+			out.Values[i] = ec._Project_diagramProcessingTotalCount(ctx, field, obj)
+		case "diagramCApprovalRatioNumerator":
+			out.Values[i] = ec._Project_diagramCApprovalRatioNumerator(ctx, field, obj)
+		case "diagramCApprovalRatioDenominator":
+			out.Values[i] = ec._Project_diagramCApprovalRatioDenominator(ctx, field, obj)
 		case "vos":
 			field := field
 
@@ -53891,6 +55381,42 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 					}
 				}()
 				res = ec._Project_projectStaffs(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "users":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Project_users(ctx, field, obj)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -56106,6 +57632,42 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_visitRecords(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "projects":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_projects(ctx, field, obj)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}

@@ -473,10 +473,45 @@ func (Project) Fields() []ent.Field {
 			Nillable().
 			Comment("當月計劃超期數量"),
 
-		field.Int("processing_diagram_finish_count").
+		field.Int("diagram_bd_finish_count").
+			Optional().
+			Nillable().
+			Comment("BD圖紙完成數量"),
+
+		field.Int("diagram_bd_total_count").
+			Optional().
+			Nillable().
+			Comment("BD圖紙總數"),
+
+		field.Int("diagram_construction_finish_count").
+			Optional().
+			Nillable().
+			Comment("施工圖紙完成數量"),
+
+		field.Int("diagram_construction_total_count").
+			Optional().
+			Nillable().
+			Comment("施工圖紙總數"),
+
+		field.Int("diagram_processing_finish_count").
 			Optional().
 			Nillable().
 			Comment("加工圖完成數量"),
+
+		field.Int("diagram_processing_total_count").
+			Optional().
+			Nillable().
+			Comment("加工圖總數"),
+
+		field.Int("diagram_c_approval_ratio_numerator").
+			Optional().
+			Nillable().
+			Comment("C版批圖率分子"),
+
+		field.Int("diagram_c_approval_ratio_denominator").
+			Optional().
+			Nillable().
+			Comment("C版批圖率分母"),
 	}
 }
 
@@ -485,6 +520,10 @@ func (Project) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("vos", ProjectVO.Type),
 		edge.To("project_staffs", ProjectStaff.Type).
+			Annotations(
+				entgql.RelayConnection(),
+			),
+		edge.To("users", User.Type).
 			Annotations(
 				entgql.RelayConnection(),
 			),

@@ -17,7 +17,7 @@ import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
-import { AreaConnection, User } from "~/graphql/graphql";
+import { AreaConnection, ProjectConnection, User } from "~/graphql/graphql";
 import { useDeleteUser } from "~/hooks/use-delete-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
@@ -34,6 +34,14 @@ const query = graphql`
         node {
           id
           name
+          code
+        }
+      }
+    }
+    projects(where: { isFinishedNEQ: true }) {
+      edges {
+        node {
+          id
           code
         }
       }
@@ -64,6 +72,14 @@ const query = graphql`
           isSuperAdmin
           hasMapAccess
           hasEditAccess
+          projects {
+            edges {
+              node {
+                id
+                code
+              }
+            }
+          }
         }
       }
     }
@@ -112,9 +128,37 @@ function RouteComponent() {
     {
       title: "区域",
       render: (_, record) =>
-        record.areas.edges && record.areas.edges?.length > 0
-          ? record.areas?.edges?.map((a) => a?.node?.name).join(", ")
-          : "无",
+        record.areas.edges && record.areas.edges?.length > 0 ? (
+          <Tooltip
+            title={record.areas.edges?.map((a) => a?.node?.name).join(", ")}
+          >
+            {record.areas.edges?.map((a) => a?.node?.name).join(", ")}
+          </Tooltip>
+        ) : (
+          "无"
+        ),
+      width: 260,
+      ellipsis: true,
+    },
+    {
+      dataIndex: "projects",
+      title: "项目",
+      render: (_, record) =>
+        record.projects.edges && record.projects.edges?.length > 0 ? (
+          <Tooltip
+            placement="rightTop"
+            title={`${record.projects.edges
+              ?.map((p) => p?.node?.code)
+              .join(", ")
+              .substring(0, 500)}...`}
+          >
+            {record.projects.edges?.map((p) => p?.node?.code).join(", ")}
+          </Tooltip>
+        ) : (
+          "无"
+        ),
+      width: 260,
+      ellipsis: true,
     },
     {
       dataIndex: "hasMapAccess",
@@ -225,6 +269,7 @@ function RouteComponent() {
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
           avaliableAreas={data.areas as AreaConnection}
+          avaliableProjects={data.projects as ProjectConnection}
         />
       </ListFilter>
 
@@ -254,8 +299,10 @@ function UserFormDrawer({
   connectionID,
   selectedUser,
   setSelectedUser,
+  avaliableProjects,
 }: {
   avaliableAreas: AreaConnection;
+  avaliableProjects: ProjectConnection;
   connectionID: string;
   selectedUser: User | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -291,6 +338,7 @@ function UserFormDrawer({
           selectedUser={selectedUser}
           isSuperAdmin
           avaliableAreas={avaliableAreas}
+          avaliableProjects={avaliableProjects}
         />
       </Drawer>
     </>

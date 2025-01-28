@@ -69,6 +69,11 @@ func (User) Edges() []ent.Edge {
 			Annotations(
 				entgql.RelayConnection(),
 			),
+		edge.From("projects", Project.Type).
+			Ref("users").
+			Annotations(
+				entgql.RelayConnection(),
+			),
 	}
 }
 

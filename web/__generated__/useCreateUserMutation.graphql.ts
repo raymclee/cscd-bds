@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<759c0247388136bcf65f063a21772772>>
+ * @generated SignedSource<<94c49403e42e5ce0142cf3f7922ecf67>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -24,6 +24,7 @@ export type CreateUserInput = {
   leaderID?: string | null | undefined;
   name: string;
   openID?: string | null | undefined;
+  projectIDs?: ReadonlyArray<string> | null | undefined;
   teamMemberIDs?: ReadonlyArray<string> | null | undefined;
   tenderIDs?: ReadonlyArray<string> | null | undefined;
   updatedAt?: any | null | undefined;
@@ -55,6 +56,14 @@ export type useCreateUserMutation$data = {
         readonly isAdmin: boolean;
         readonly name: string;
         readonly openID: string | null | undefined;
+        readonly projects: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly code: string;
+              readonly id: string;
+            } | null | undefined;
+          } | null | undefined> | null | undefined;
+        };
         readonly username: string;
       } | null | undefined;
     } | null | undefined> | null | undefined;
@@ -188,6 +197,47 @@ v5 = {
         {
           "alias": null,
           "args": null,
+          "concreteType": "ProjectConnection",
+          "kind": "LinkedField",
+          "name": "projects",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "ProjectEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Project",
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    (v3/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "code",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
           "kind": "ScalarField",
           "name": "isAdmin",
           "storageKey": null
@@ -278,16 +328,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "fcaeac5c658295228732ad0145198853",
+    "cacheID": "f9eb6447b30b3780c2b5da0d35b35b78",
     "id": null,
     "metadata": {},
     "name": "useCreateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n        projects {\n          edges {\n            node {\n              id\n              code\n            }\n          }\n        }\n        isAdmin\n        hasMapAccess\n        hasEditAccess\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "91b806137ff5c9698e47203d7cb983a8";
+(node as any).hash = "81c1b08e610d05d9d263fffc562c65c1";
 
 export default node;

@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/user"
 	"database/sql/driver"
 	"fmt"
 	"math"
@@ -28,10 +29,12 @@ type ProjectQuery struct {
 	predicates             []predicate.Project
 	withVos                *ProjectVOQuery
 	withProjectStaffs      *ProjectStaffQuery
+	withUsers              *UserQuery
 	modifiers              []func(*sql.Selector)
 	loadTotal              []func(context.Context, []*Project) error
 	withNamedVos           map[string]*ProjectVOQuery
 	withNamedProjectStaffs map[string]*ProjectStaffQuery
+	withNamedUsers         map[string]*UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -105,6 +108,28 @@ func (pq *ProjectQuery) QueryProjectStaffs() *ProjectStaffQuery {
 			sqlgraph.From(project.Table, project.FieldID, selector),
 			sqlgraph.To(projectstaff.Table, projectstaff.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, project.ProjectStaffsTable, project.ProjectStaffsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryUsers chains the current query on the "users" edge.
+func (pq *ProjectQuery) QueryUsers() *UserQuery {
+	query := (&UserClient{config: pq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(project.Table, project.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, project.UsersTable, project.UsersPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -306,6 +331,7 @@ func (pq *ProjectQuery) Clone() *ProjectQuery {
 		predicates:        append([]predicate.Project{}, pq.predicates...),
 		withVos:           pq.withVos.Clone(),
 		withProjectStaffs: pq.withProjectStaffs.Clone(),
+		withUsers:         pq.withUsers.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -331,6 +357,17 @@ func (pq *ProjectQuery) WithProjectStaffs(opts ...func(*ProjectStaffQuery)) *Pro
 		opt(query)
 	}
 	pq.withProjectStaffs = query
+	return pq
+}
+
+// WithUsers tells the query-builder to eager-load the nodes that are connected to
+// the "users" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProjectQuery) WithUsers(opts ...func(*UserQuery)) *ProjectQuery {
+	query := (&UserClient{config: pq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withUsers = query
 	return pq
 }
 
@@ -412,9 +449,10 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 	var (
 		nodes       = []*Project{}
 		_spec       = pq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			pq.withVos != nil,
 			pq.withProjectStaffs != nil,
+			pq.withUsers != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -452,6 +490,13 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 			return nil, err
 		}
 	}
+	if query := pq.withUsers; query != nil {
+		if err := pq.loadUsers(ctx, query, nodes,
+			func(n *Project) { n.Edges.Users = []*User{} },
+			func(n *Project, e *User) { n.Edges.Users = append(n.Edges.Users, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range pq.withNamedVos {
 		if err := pq.loadVos(ctx, query, nodes,
 			func(n *Project) { n.appendNamedVos(name) },
@@ -463,6 +508,13 @@ func (pq *ProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Proj
 		if err := pq.loadProjectStaffs(ctx, query, nodes,
 			func(n *Project) { n.appendNamedProjectStaffs(name) },
 			func(n *Project, e *ProjectStaff) { n.appendNamedProjectStaffs(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range pq.withNamedUsers {
+		if err := pq.loadUsers(ctx, query, nodes,
+			func(n *Project) { n.appendNamedUsers(name) },
+			func(n *Project, e *User) { n.appendNamedUsers(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -531,6 +583,67 @@ func (pq *ProjectQuery) loadProjectStaffs(ctx context.Context, query *ProjectSta
 			return fmt.Errorf(`unexpected referenced foreign-key "project_id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
+	}
+	return nil
+}
+func (pq *ProjectQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*Project, init func(*Project), assign func(*Project, *User)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[xid.ID]*Project)
+	nids := make(map[xid.ID]map[*Project]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(project.UsersTable)
+		s.Join(joinT).On(s.C(user.FieldID), joinT.C(project.UsersPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(project.UsersPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(project.UsersPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(xid.ID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*xid.ID)
+				inValue := *values[1].(*xid.ID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*Project]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*User](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "users" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
 	}
 	return nil
 }
@@ -644,6 +757,20 @@ func (pq *ProjectQuery) WithNamedProjectStaffs(name string, opts ...func(*Projec
 		pq.withNamedProjectStaffs = make(map[string]*ProjectStaffQuery)
 	}
 	pq.withNamedProjectStaffs[name] = query
+	return pq
+}
+
+// WithNamedUsers tells the query-builder to eager-load the nodes that are connected to the "users"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProjectQuery) WithNamedUsers(name string, opts ...func(*UserQuery)) *ProjectQuery {
+	query := (&UserClient{config: pq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if pq.withNamedUsers == nil {
+		pq.withNamedUsers = make(map[string]*UserQuery)
+	}
+	pq.withNamedUsers[name] = query
 	return pq
 }
 

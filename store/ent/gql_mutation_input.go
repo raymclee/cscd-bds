@@ -906,14 +906,31 @@ type UpdateProjectInput struct {
 	PlanOverdueCount                             *int
 	ClearPlanOverdueMonthCount                   bool
 	PlanOverdueMonthCount                        *int
-	ClearProcessingDiagramFinishCount            bool
-	ProcessingDiagramFinishCount                 *int
+	ClearDiagramBdFinishCount                    bool
+	DiagramBdFinishCount                         *int
+	ClearDiagramBdTotalCount                     bool
+	DiagramBdTotalCount                          *int
+	ClearDiagramConstructionFinishCount          bool
+	DiagramConstructionFinishCount               *int
+	ClearDiagramConstructionTotalCount           bool
+	DiagramConstructionTotalCount                *int
+	ClearDiagramProcessingFinishCount            bool
+	DiagramProcessingFinishCount                 *int
+	ClearDiagramProcessingTotalCount             bool
+	DiagramProcessingTotalCount                  *int
+	ClearDiagramCApprovalRatioNumerator          bool
+	DiagramCApprovalRatioNumerator               *int
+	ClearDiagramCApprovalRatioDenominator        bool
+	DiagramCApprovalRatioDenominator             *int
 	ClearVos                                     bool
 	AddVoIDs                                     []xid.ID
 	RemoveVoIDs                                  []xid.ID
 	ClearProjectStaffs                           bool
 	AddProjectStaffIDs                           []xid.ID
 	RemoveProjectStaffIDs                        []xid.ID
+	ClearUsers                                   bool
+	AddUserIDs                                   []xid.ID
+	RemoveUserIDs                                []xid.ID
 }
 
 // Mutate applies the UpdateProjectInput on the ProjectMutation builder.
@@ -1347,11 +1364,53 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	if v := i.PlanOverdueMonthCount; v != nil {
 		m.SetPlanOverdueMonthCount(*v)
 	}
-	if i.ClearProcessingDiagramFinishCount {
-		m.ClearProcessingDiagramFinishCount()
+	if i.ClearDiagramBdFinishCount {
+		m.ClearDiagramBdFinishCount()
 	}
-	if v := i.ProcessingDiagramFinishCount; v != nil {
-		m.SetProcessingDiagramFinishCount(*v)
+	if v := i.DiagramBdFinishCount; v != nil {
+		m.SetDiagramBdFinishCount(*v)
+	}
+	if i.ClearDiagramBdTotalCount {
+		m.ClearDiagramBdTotalCount()
+	}
+	if v := i.DiagramBdTotalCount; v != nil {
+		m.SetDiagramBdTotalCount(*v)
+	}
+	if i.ClearDiagramConstructionFinishCount {
+		m.ClearDiagramConstructionFinishCount()
+	}
+	if v := i.DiagramConstructionFinishCount; v != nil {
+		m.SetDiagramConstructionFinishCount(*v)
+	}
+	if i.ClearDiagramConstructionTotalCount {
+		m.ClearDiagramConstructionTotalCount()
+	}
+	if v := i.DiagramConstructionTotalCount; v != nil {
+		m.SetDiagramConstructionTotalCount(*v)
+	}
+	if i.ClearDiagramProcessingFinishCount {
+		m.ClearDiagramProcessingFinishCount()
+	}
+	if v := i.DiagramProcessingFinishCount; v != nil {
+		m.SetDiagramProcessingFinishCount(*v)
+	}
+	if i.ClearDiagramProcessingTotalCount {
+		m.ClearDiagramProcessingTotalCount()
+	}
+	if v := i.DiagramProcessingTotalCount; v != nil {
+		m.SetDiagramProcessingTotalCount(*v)
+	}
+	if i.ClearDiagramCApprovalRatioNumerator {
+		m.ClearDiagramCApprovalRatioNumerator()
+	}
+	if v := i.DiagramCApprovalRatioNumerator; v != nil {
+		m.SetDiagramCApprovalRatioNumerator(*v)
+	}
+	if i.ClearDiagramCApprovalRatioDenominator {
+		m.ClearDiagramCApprovalRatioDenominator()
+	}
+	if v := i.DiagramCApprovalRatioDenominator; v != nil {
+		m.SetDiagramCApprovalRatioDenominator(*v)
 	}
 	if i.ClearVos {
 		m.ClearVos()
@@ -1370,6 +1429,15 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	}
 	if v := i.RemoveProjectStaffIDs; len(v) > 0 {
 		m.RemoveProjectStaffIDs(v...)
+	}
+	if i.ClearUsers {
+		m.ClearUsers()
+	}
+	if v := i.AddUserIDs; len(v) > 0 {
+		m.AddUserIDs(v...)
+	}
+	if v := i.RemoveUserIDs; len(v) > 0 {
+		m.RemoveUserIDs(v...)
 	}
 }
 
@@ -2312,6 +2380,7 @@ type CreateUserInput struct {
 	TeamMemberIDs  []xid.ID
 	TenderIDs      []xid.ID
 	VisitRecordIDs []xid.ID
+	ProjectIDs     []xid.ID
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
@@ -2367,6 +2436,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
+	if v := i.ProjectIDs; len(v) > 0 {
+		m.AddProjectIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateUserInput on the UserCreate builder.
@@ -2408,6 +2480,9 @@ type UpdateUserInput struct {
 	ClearVisitRecords    bool
 	AddVisitRecordIDs    []xid.ID
 	RemoveVisitRecordIDs []xid.ID
+	ClearProjects        bool
+	AddProjectIDs        []xid.ID
+	RemoveProjectIDs     []xid.ID
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
@@ -2504,6 +2579,15 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.RemoveVisitRecordIDs; len(v) > 0 {
 		m.RemoveVisitRecordIDs(v...)
+	}
+	if i.ClearProjects {
+		m.ClearProjects()
+	}
+	if v := i.AddProjectIDs; len(v) > 0 {
+		m.AddProjectIDs(v...)
+	}
+	if v := i.RemoveProjectIDs; len(v) > 0 {
+		m.RemoveProjectIDs(v...)
 	}
 }
 

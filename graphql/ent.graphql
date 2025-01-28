@@ -1066,6 +1066,7 @@ input CreateUserInput {
   teamMemberIDs: [ID!]
   tenderIDs: [ID!]
   visitRecordIDs: [ID!]
+  projectIDs: [ID!]
 }
 """
 CreateVisitRecordInput is used for create VisitRecord object.
@@ -2452,9 +2453,37 @@ type Project implements Node {
   """
   planOverdueMonthCount: Int
   """
+  BD圖紙完成數量
+  """
+  diagramBdFinishCount: Int
+  """
+  BD圖紙總數
+  """
+  diagramBdTotalCount: Int
+  """
+  施工圖紙完成數量
+  """
+  diagramConstructionFinishCount: Int
+  """
+  施工圖紙總數
+  """
+  diagramConstructionTotalCount: Int
+  """
   加工圖完成數量
   """
-  processingDiagramFinishCount: Int
+  diagramProcessingFinishCount: Int
+  """
+  加工圖總數
+  """
+  diagramProcessingTotalCount: Int
+  """
+  C版批圖率分子
+  """
+  diagramCApprovalRatioNumerator: Int
+  """
+  C版批圖率分母
+  """
+  diagramCApprovalRatioDenominator: Int
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -2487,6 +2516,37 @@ type Project implements Node {
     """
     where: ProjectStaffWhereInput
   ): ProjectStaffConnection!
+  users(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
+    Filtering options for Users returned from the connection.
+    """
+    where: UserWhereInput
+  ): UserConnection!
 }
 """
 A connection to a list of items.
@@ -3933,18 +3993,109 @@ input ProjectWhereInput {
   planOverdueMonthCountIsNil: Boolean
   planOverdueMonthCountNotNil: Boolean
   """
-  processing_diagram_finish_count field predicates
+  diagram_bd_finish_count field predicates
   """
-  processingDiagramFinishCount: Int
-  processingDiagramFinishCountNEQ: Int
-  processingDiagramFinishCountIn: [Int!]
-  processingDiagramFinishCountNotIn: [Int!]
-  processingDiagramFinishCountGT: Int
-  processingDiagramFinishCountGTE: Int
-  processingDiagramFinishCountLT: Int
-  processingDiagramFinishCountLTE: Int
-  processingDiagramFinishCountIsNil: Boolean
-  processingDiagramFinishCountNotNil: Boolean
+  diagramBdFinishCount: Int
+  diagramBdFinishCountNEQ: Int
+  diagramBdFinishCountIn: [Int!]
+  diagramBdFinishCountNotIn: [Int!]
+  diagramBdFinishCountGT: Int
+  diagramBdFinishCountGTE: Int
+  diagramBdFinishCountLT: Int
+  diagramBdFinishCountLTE: Int
+  diagramBdFinishCountIsNil: Boolean
+  diagramBdFinishCountNotNil: Boolean
+  """
+  diagram_bd_total_count field predicates
+  """
+  diagramBdTotalCount: Int
+  diagramBdTotalCountNEQ: Int
+  diagramBdTotalCountIn: [Int!]
+  diagramBdTotalCountNotIn: [Int!]
+  diagramBdTotalCountGT: Int
+  diagramBdTotalCountGTE: Int
+  diagramBdTotalCountLT: Int
+  diagramBdTotalCountLTE: Int
+  diagramBdTotalCountIsNil: Boolean
+  diagramBdTotalCountNotNil: Boolean
+  """
+  diagram_construction_finish_count field predicates
+  """
+  diagramConstructionFinishCount: Int
+  diagramConstructionFinishCountNEQ: Int
+  diagramConstructionFinishCountIn: [Int!]
+  diagramConstructionFinishCountNotIn: [Int!]
+  diagramConstructionFinishCountGT: Int
+  diagramConstructionFinishCountGTE: Int
+  diagramConstructionFinishCountLT: Int
+  diagramConstructionFinishCountLTE: Int
+  diagramConstructionFinishCountIsNil: Boolean
+  diagramConstructionFinishCountNotNil: Boolean
+  """
+  diagram_construction_total_count field predicates
+  """
+  diagramConstructionTotalCount: Int
+  diagramConstructionTotalCountNEQ: Int
+  diagramConstructionTotalCountIn: [Int!]
+  diagramConstructionTotalCountNotIn: [Int!]
+  diagramConstructionTotalCountGT: Int
+  diagramConstructionTotalCountGTE: Int
+  diagramConstructionTotalCountLT: Int
+  diagramConstructionTotalCountLTE: Int
+  diagramConstructionTotalCountIsNil: Boolean
+  diagramConstructionTotalCountNotNil: Boolean
+  """
+  diagram_processing_finish_count field predicates
+  """
+  diagramProcessingFinishCount: Int
+  diagramProcessingFinishCountNEQ: Int
+  diagramProcessingFinishCountIn: [Int!]
+  diagramProcessingFinishCountNotIn: [Int!]
+  diagramProcessingFinishCountGT: Int
+  diagramProcessingFinishCountGTE: Int
+  diagramProcessingFinishCountLT: Int
+  diagramProcessingFinishCountLTE: Int
+  diagramProcessingFinishCountIsNil: Boolean
+  diagramProcessingFinishCountNotNil: Boolean
+  """
+  diagram_processing_total_count field predicates
+  """
+  diagramProcessingTotalCount: Int
+  diagramProcessingTotalCountNEQ: Int
+  diagramProcessingTotalCountIn: [Int!]
+  diagramProcessingTotalCountNotIn: [Int!]
+  diagramProcessingTotalCountGT: Int
+  diagramProcessingTotalCountGTE: Int
+  diagramProcessingTotalCountLT: Int
+  diagramProcessingTotalCountLTE: Int
+  diagramProcessingTotalCountIsNil: Boolean
+  diagramProcessingTotalCountNotNil: Boolean
+  """
+  diagram_c_approval_ratio_numerator field predicates
+  """
+  diagramCApprovalRatioNumerator: Int
+  diagramCApprovalRatioNumeratorNEQ: Int
+  diagramCApprovalRatioNumeratorIn: [Int!]
+  diagramCApprovalRatioNumeratorNotIn: [Int!]
+  diagramCApprovalRatioNumeratorGT: Int
+  diagramCApprovalRatioNumeratorGTE: Int
+  diagramCApprovalRatioNumeratorLT: Int
+  diagramCApprovalRatioNumeratorLTE: Int
+  diagramCApprovalRatioNumeratorIsNil: Boolean
+  diagramCApprovalRatioNumeratorNotNil: Boolean
+  """
+  diagram_c_approval_ratio_denominator field predicates
+  """
+  diagramCApprovalRatioDenominator: Int
+  diagramCApprovalRatioDenominatorNEQ: Int
+  diagramCApprovalRatioDenominatorIn: [Int!]
+  diagramCApprovalRatioDenominatorNotIn: [Int!]
+  diagramCApprovalRatioDenominatorGT: Int
+  diagramCApprovalRatioDenominatorGTE: Int
+  diagramCApprovalRatioDenominatorLT: Int
+  diagramCApprovalRatioDenominatorLTE: Int
+  diagramCApprovalRatioDenominatorIsNil: Boolean
+  diagramCApprovalRatioDenominatorNotNil: Boolean
   """
   vos edge predicates
   """
@@ -3955,6 +4106,11 @@ input ProjectWhereInput {
   """
   hasProjectStaffs: Boolean
   hasProjectStaffsWith: [ProjectStaffWhereInput!]
+  """
+  users edge predicates
+  """
+  hasUsers: Boolean
+  hasUsersWith: [UserWhereInput!]
 }
 type Province implements Node {
   id: ID!
@@ -6390,16 +6546,54 @@ input UpdateProjectInput {
   planOverdueMonthCount: Int
   clearPlanOverdueMonthCount: Boolean
   """
+  BD圖紙完成數量
+  """
+  diagramBdFinishCount: Int
+  clearDiagramBdFinishCount: Boolean
+  """
+  BD圖紙總數
+  """
+  diagramBdTotalCount: Int
+  clearDiagramBdTotalCount: Boolean
+  """
+  施工圖紙完成數量
+  """
+  diagramConstructionFinishCount: Int
+  clearDiagramConstructionFinishCount: Boolean
+  """
+  施工圖紙總數
+  """
+  diagramConstructionTotalCount: Int
+  clearDiagramConstructionTotalCount: Boolean
+  """
   加工圖完成數量
   """
-  processingDiagramFinishCount: Int
-  clearProcessingDiagramFinishCount: Boolean
+  diagramProcessingFinishCount: Int
+  clearDiagramProcessingFinishCount: Boolean
+  """
+  加工圖總數
+  """
+  diagramProcessingTotalCount: Int
+  clearDiagramProcessingTotalCount: Boolean
+  """
+  C版批圖率分子
+  """
+  diagramCApprovalRatioNumerator: Int
+  clearDiagramCApprovalRatioNumerator: Boolean
+  """
+  C版批圖率分母
+  """
+  diagramCApprovalRatioDenominator: Int
+  clearDiagramCApprovalRatioDenominator: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean
   addProjectStaffIDs: [ID!]
   removeProjectStaffIDs: [ID!]
   clearProjectStaffs: Boolean
+  addUserIDs: [ID!]
+  removeUserIDs: [ID!]
+  clearUsers: Boolean
 }
 """
 UpdateProvinceInput is used for update Province object.
@@ -6612,6 +6806,9 @@ input UpdateUserInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
+  addProjectIDs: [ID!]
+  removeProjectIDs: [ID!]
+  clearProjects: Boolean
 }
 """
 UpdateVisitRecordInput is used for update VisitRecord object.
@@ -6774,6 +6971,37 @@ type User implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
+  projects(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Projects returned from the connection.
+    """
+    orderBy: [ProjectOrder!]
+
+    """
+    Filtering options for Projects returned from the connection.
+    """
+    where: ProjectWhereInput
+  ): ProjectConnection!
 }
 """
 A connection to a list of items.
@@ -7027,6 +7255,11 @@ input UserWhereInput {
   """
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
+  """
+  projects edge predicates
+  """
+  hasProjects: Boolean
+  hasProjectsWith: [ProjectWhereInput!]
 }
 type VisitRecord implements Node {
   id: ID!

@@ -8062,8 +8062,22 @@ type ProjectMutation struct {
 	addplan_overdue_count                          *int
 	plan_overdue_month_count                       *int
 	addplan_overdue_month_count                    *int
-	processing_diagram_finish_count                *int
-	addprocessing_diagram_finish_count             *int
+	diagram_bd_finish_count                        *int
+	adddiagram_bd_finish_count                     *int
+	diagram_bd_total_count                         *int
+	adddiagram_bd_total_count                      *int
+	diagram_construction_finish_count              *int
+	adddiagram_construction_finish_count           *int
+	diagram_construction_total_count               *int
+	adddiagram_construction_total_count            *int
+	diagram_processing_finish_count                *int
+	adddiagram_processing_finish_count             *int
+	diagram_processing_total_count                 *int
+	adddiagram_processing_total_count              *int
+	diagram_c_approval_ratio_numerator             *int
+	adddiagram_c_approval_ratio_numerator          *int
+	diagram_c_approval_ratio_denominator           *int
+	adddiagram_c_approval_ratio_denominator        *int
 	clearedFields                                  map[string]struct{}
 	vos                                            map[xid.ID]struct{}
 	removedvos                                     map[xid.ID]struct{}
@@ -8071,6 +8085,9 @@ type ProjectMutation struct {
 	project_staffs                                 map[xid.ID]struct{}
 	removedproject_staffs                          map[xid.ID]struct{}
 	clearedproject_staffs                          bool
+	users                                          map[xid.ID]struct{}
+	removedusers                                   map[xid.ID]struct{}
+	clearedusers                                   bool
 	done                                           bool
 	oldValue                                       func(context.Context) (*Project, error)
 	predicates                                     []predicate.Project
@@ -12930,74 +12947,564 @@ func (m *ProjectMutation) ResetPlanOverdueMonthCount() {
 	delete(m.clearedFields, project.FieldPlanOverdueMonthCount)
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (m *ProjectMutation) SetProcessingDiagramFinishCount(i int) {
-	m.processing_diagram_finish_count = &i
-	m.addprocessing_diagram_finish_count = nil
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (m *ProjectMutation) SetDiagramBdFinishCount(i int) {
+	m.diagram_bd_finish_count = &i
+	m.adddiagram_bd_finish_count = nil
 }
 
-// ProcessingDiagramFinishCount returns the value of the "processing_diagram_finish_count" field in the mutation.
-func (m *ProjectMutation) ProcessingDiagramFinishCount() (r int, exists bool) {
-	v := m.processing_diagram_finish_count
+// DiagramBdFinishCount returns the value of the "diagram_bd_finish_count" field in the mutation.
+func (m *ProjectMutation) DiagramBdFinishCount() (r int, exists bool) {
+	v := m.diagram_bd_finish_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldProcessingDiagramFinishCount returns the old "processing_diagram_finish_count" field's value of the Project entity.
+// OldDiagramBdFinishCount returns the old "diagram_bd_finish_count" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldProcessingDiagramFinishCount(ctx context.Context) (v *int, err error) {
+func (m *ProjectMutation) OldDiagramBdFinishCount(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldProcessingDiagramFinishCount is only allowed on UpdateOne operations")
+		return v, errors.New("OldDiagramBdFinishCount is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldProcessingDiagramFinishCount requires an ID field in the mutation")
+		return v, errors.New("OldDiagramBdFinishCount requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldProcessingDiagramFinishCount: %w", err)
+		return v, fmt.Errorf("querying old value for OldDiagramBdFinishCount: %w", err)
 	}
-	return oldValue.ProcessingDiagramFinishCount, nil
+	return oldValue.DiagramBdFinishCount, nil
 }
 
-// AddProcessingDiagramFinishCount adds i to the "processing_diagram_finish_count" field.
-func (m *ProjectMutation) AddProcessingDiagramFinishCount(i int) {
-	if m.addprocessing_diagram_finish_count != nil {
-		*m.addprocessing_diagram_finish_count += i
+// AddDiagramBdFinishCount adds i to the "diagram_bd_finish_count" field.
+func (m *ProjectMutation) AddDiagramBdFinishCount(i int) {
+	if m.adddiagram_bd_finish_count != nil {
+		*m.adddiagram_bd_finish_count += i
 	} else {
-		m.addprocessing_diagram_finish_count = &i
+		m.adddiagram_bd_finish_count = &i
 	}
 }
 
-// AddedProcessingDiagramFinishCount returns the value that was added to the "processing_diagram_finish_count" field in this mutation.
-func (m *ProjectMutation) AddedProcessingDiagramFinishCount() (r int, exists bool) {
-	v := m.addprocessing_diagram_finish_count
+// AddedDiagramBdFinishCount returns the value that was added to the "diagram_bd_finish_count" field in this mutation.
+func (m *ProjectMutation) AddedDiagramBdFinishCount() (r int, exists bool) {
+	v := m.adddiagram_bd_finish_count
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
-func (m *ProjectMutation) ClearProcessingDiagramFinishCount() {
-	m.processing_diagram_finish_count = nil
-	m.addprocessing_diagram_finish_count = nil
-	m.clearedFields[project.FieldProcessingDiagramFinishCount] = struct{}{}
+// ClearDiagramBdFinishCount clears the value of the "diagram_bd_finish_count" field.
+func (m *ProjectMutation) ClearDiagramBdFinishCount() {
+	m.diagram_bd_finish_count = nil
+	m.adddiagram_bd_finish_count = nil
+	m.clearedFields[project.FieldDiagramBdFinishCount] = struct{}{}
 }
 
-// ProcessingDiagramFinishCountCleared returns if the "processing_diagram_finish_count" field was cleared in this mutation.
-func (m *ProjectMutation) ProcessingDiagramFinishCountCleared() bool {
-	_, ok := m.clearedFields[project.FieldProcessingDiagramFinishCount]
+// DiagramBdFinishCountCleared returns if the "diagram_bd_finish_count" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramBdFinishCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramBdFinishCount]
 	return ok
 }
 
-// ResetProcessingDiagramFinishCount resets all changes to the "processing_diagram_finish_count" field.
-func (m *ProjectMutation) ResetProcessingDiagramFinishCount() {
-	m.processing_diagram_finish_count = nil
-	m.addprocessing_diagram_finish_count = nil
-	delete(m.clearedFields, project.FieldProcessingDiagramFinishCount)
+// ResetDiagramBdFinishCount resets all changes to the "diagram_bd_finish_count" field.
+func (m *ProjectMutation) ResetDiagramBdFinishCount() {
+	m.diagram_bd_finish_count = nil
+	m.adddiagram_bd_finish_count = nil
+	delete(m.clearedFields, project.FieldDiagramBdFinishCount)
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (m *ProjectMutation) SetDiagramBdTotalCount(i int) {
+	m.diagram_bd_total_count = &i
+	m.adddiagram_bd_total_count = nil
+}
+
+// DiagramBdTotalCount returns the value of the "diagram_bd_total_count" field in the mutation.
+func (m *ProjectMutation) DiagramBdTotalCount() (r int, exists bool) {
+	v := m.diagram_bd_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramBdTotalCount returns the old "diagram_bd_total_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramBdTotalCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramBdTotalCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramBdTotalCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramBdTotalCount: %w", err)
+	}
+	return oldValue.DiagramBdTotalCount, nil
+}
+
+// AddDiagramBdTotalCount adds i to the "diagram_bd_total_count" field.
+func (m *ProjectMutation) AddDiagramBdTotalCount(i int) {
+	if m.adddiagram_bd_total_count != nil {
+		*m.adddiagram_bd_total_count += i
+	} else {
+		m.adddiagram_bd_total_count = &i
+	}
+}
+
+// AddedDiagramBdTotalCount returns the value that was added to the "diagram_bd_total_count" field in this mutation.
+func (m *ProjectMutation) AddedDiagramBdTotalCount() (r int, exists bool) {
+	v := m.adddiagram_bd_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramBdTotalCount clears the value of the "diagram_bd_total_count" field.
+func (m *ProjectMutation) ClearDiagramBdTotalCount() {
+	m.diagram_bd_total_count = nil
+	m.adddiagram_bd_total_count = nil
+	m.clearedFields[project.FieldDiagramBdTotalCount] = struct{}{}
+}
+
+// DiagramBdTotalCountCleared returns if the "diagram_bd_total_count" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramBdTotalCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramBdTotalCount]
+	return ok
+}
+
+// ResetDiagramBdTotalCount resets all changes to the "diagram_bd_total_count" field.
+func (m *ProjectMutation) ResetDiagramBdTotalCount() {
+	m.diagram_bd_total_count = nil
+	m.adddiagram_bd_total_count = nil
+	delete(m.clearedFields, project.FieldDiagramBdTotalCount)
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (m *ProjectMutation) SetDiagramConstructionFinishCount(i int) {
+	m.diagram_construction_finish_count = &i
+	m.adddiagram_construction_finish_count = nil
+}
+
+// DiagramConstructionFinishCount returns the value of the "diagram_construction_finish_count" field in the mutation.
+func (m *ProjectMutation) DiagramConstructionFinishCount() (r int, exists bool) {
+	v := m.diagram_construction_finish_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramConstructionFinishCount returns the old "diagram_construction_finish_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramConstructionFinishCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramConstructionFinishCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramConstructionFinishCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramConstructionFinishCount: %w", err)
+	}
+	return oldValue.DiagramConstructionFinishCount, nil
+}
+
+// AddDiagramConstructionFinishCount adds i to the "diagram_construction_finish_count" field.
+func (m *ProjectMutation) AddDiagramConstructionFinishCount(i int) {
+	if m.adddiagram_construction_finish_count != nil {
+		*m.adddiagram_construction_finish_count += i
+	} else {
+		m.adddiagram_construction_finish_count = &i
+	}
+}
+
+// AddedDiagramConstructionFinishCount returns the value that was added to the "diagram_construction_finish_count" field in this mutation.
+func (m *ProjectMutation) AddedDiagramConstructionFinishCount() (r int, exists bool) {
+	v := m.adddiagram_construction_finish_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramConstructionFinishCount clears the value of the "diagram_construction_finish_count" field.
+func (m *ProjectMutation) ClearDiagramConstructionFinishCount() {
+	m.diagram_construction_finish_count = nil
+	m.adddiagram_construction_finish_count = nil
+	m.clearedFields[project.FieldDiagramConstructionFinishCount] = struct{}{}
+}
+
+// DiagramConstructionFinishCountCleared returns if the "diagram_construction_finish_count" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramConstructionFinishCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramConstructionFinishCount]
+	return ok
+}
+
+// ResetDiagramConstructionFinishCount resets all changes to the "diagram_construction_finish_count" field.
+func (m *ProjectMutation) ResetDiagramConstructionFinishCount() {
+	m.diagram_construction_finish_count = nil
+	m.adddiagram_construction_finish_count = nil
+	delete(m.clearedFields, project.FieldDiagramConstructionFinishCount)
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (m *ProjectMutation) SetDiagramConstructionTotalCount(i int) {
+	m.diagram_construction_total_count = &i
+	m.adddiagram_construction_total_count = nil
+}
+
+// DiagramConstructionTotalCount returns the value of the "diagram_construction_total_count" field in the mutation.
+func (m *ProjectMutation) DiagramConstructionTotalCount() (r int, exists bool) {
+	v := m.diagram_construction_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramConstructionTotalCount returns the old "diagram_construction_total_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramConstructionTotalCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramConstructionTotalCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramConstructionTotalCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramConstructionTotalCount: %w", err)
+	}
+	return oldValue.DiagramConstructionTotalCount, nil
+}
+
+// AddDiagramConstructionTotalCount adds i to the "diagram_construction_total_count" field.
+func (m *ProjectMutation) AddDiagramConstructionTotalCount(i int) {
+	if m.adddiagram_construction_total_count != nil {
+		*m.adddiagram_construction_total_count += i
+	} else {
+		m.adddiagram_construction_total_count = &i
+	}
+}
+
+// AddedDiagramConstructionTotalCount returns the value that was added to the "diagram_construction_total_count" field in this mutation.
+func (m *ProjectMutation) AddedDiagramConstructionTotalCount() (r int, exists bool) {
+	v := m.adddiagram_construction_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramConstructionTotalCount clears the value of the "diagram_construction_total_count" field.
+func (m *ProjectMutation) ClearDiagramConstructionTotalCount() {
+	m.diagram_construction_total_count = nil
+	m.adddiagram_construction_total_count = nil
+	m.clearedFields[project.FieldDiagramConstructionTotalCount] = struct{}{}
+}
+
+// DiagramConstructionTotalCountCleared returns if the "diagram_construction_total_count" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramConstructionTotalCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramConstructionTotalCount]
+	return ok
+}
+
+// ResetDiagramConstructionTotalCount resets all changes to the "diagram_construction_total_count" field.
+func (m *ProjectMutation) ResetDiagramConstructionTotalCount() {
+	m.diagram_construction_total_count = nil
+	m.adddiagram_construction_total_count = nil
+	delete(m.clearedFields, project.FieldDiagramConstructionTotalCount)
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (m *ProjectMutation) SetDiagramProcessingFinishCount(i int) {
+	m.diagram_processing_finish_count = &i
+	m.adddiagram_processing_finish_count = nil
+}
+
+// DiagramProcessingFinishCount returns the value of the "diagram_processing_finish_count" field in the mutation.
+func (m *ProjectMutation) DiagramProcessingFinishCount() (r int, exists bool) {
+	v := m.diagram_processing_finish_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramProcessingFinishCount returns the old "diagram_processing_finish_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramProcessingFinishCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramProcessingFinishCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramProcessingFinishCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramProcessingFinishCount: %w", err)
+	}
+	return oldValue.DiagramProcessingFinishCount, nil
+}
+
+// AddDiagramProcessingFinishCount adds i to the "diagram_processing_finish_count" field.
+func (m *ProjectMutation) AddDiagramProcessingFinishCount(i int) {
+	if m.adddiagram_processing_finish_count != nil {
+		*m.adddiagram_processing_finish_count += i
+	} else {
+		m.adddiagram_processing_finish_count = &i
+	}
+}
+
+// AddedDiagramProcessingFinishCount returns the value that was added to the "diagram_processing_finish_count" field in this mutation.
+func (m *ProjectMutation) AddedDiagramProcessingFinishCount() (r int, exists bool) {
+	v := m.adddiagram_processing_finish_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramProcessingFinishCount clears the value of the "diagram_processing_finish_count" field.
+func (m *ProjectMutation) ClearDiagramProcessingFinishCount() {
+	m.diagram_processing_finish_count = nil
+	m.adddiagram_processing_finish_count = nil
+	m.clearedFields[project.FieldDiagramProcessingFinishCount] = struct{}{}
+}
+
+// DiagramProcessingFinishCountCleared returns if the "diagram_processing_finish_count" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramProcessingFinishCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramProcessingFinishCount]
+	return ok
+}
+
+// ResetDiagramProcessingFinishCount resets all changes to the "diagram_processing_finish_count" field.
+func (m *ProjectMutation) ResetDiagramProcessingFinishCount() {
+	m.diagram_processing_finish_count = nil
+	m.adddiagram_processing_finish_count = nil
+	delete(m.clearedFields, project.FieldDiagramProcessingFinishCount)
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (m *ProjectMutation) SetDiagramProcessingTotalCount(i int) {
+	m.diagram_processing_total_count = &i
+	m.adddiagram_processing_total_count = nil
+}
+
+// DiagramProcessingTotalCount returns the value of the "diagram_processing_total_count" field in the mutation.
+func (m *ProjectMutation) DiagramProcessingTotalCount() (r int, exists bool) {
+	v := m.diagram_processing_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramProcessingTotalCount returns the old "diagram_processing_total_count" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramProcessingTotalCount(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramProcessingTotalCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramProcessingTotalCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramProcessingTotalCount: %w", err)
+	}
+	return oldValue.DiagramProcessingTotalCount, nil
+}
+
+// AddDiagramProcessingTotalCount adds i to the "diagram_processing_total_count" field.
+func (m *ProjectMutation) AddDiagramProcessingTotalCount(i int) {
+	if m.adddiagram_processing_total_count != nil {
+		*m.adddiagram_processing_total_count += i
+	} else {
+		m.adddiagram_processing_total_count = &i
+	}
+}
+
+// AddedDiagramProcessingTotalCount returns the value that was added to the "diagram_processing_total_count" field in this mutation.
+func (m *ProjectMutation) AddedDiagramProcessingTotalCount() (r int, exists bool) {
+	v := m.adddiagram_processing_total_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramProcessingTotalCount clears the value of the "diagram_processing_total_count" field.
+func (m *ProjectMutation) ClearDiagramProcessingTotalCount() {
+	m.diagram_processing_total_count = nil
+	m.adddiagram_processing_total_count = nil
+	m.clearedFields[project.FieldDiagramProcessingTotalCount] = struct{}{}
+}
+
+// DiagramProcessingTotalCountCleared returns if the "diagram_processing_total_count" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramProcessingTotalCountCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramProcessingTotalCount]
+	return ok
+}
+
+// ResetDiagramProcessingTotalCount resets all changes to the "diagram_processing_total_count" field.
+func (m *ProjectMutation) ResetDiagramProcessingTotalCount() {
+	m.diagram_processing_total_count = nil
+	m.adddiagram_processing_total_count = nil
+	delete(m.clearedFields, project.FieldDiagramProcessingTotalCount)
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (m *ProjectMutation) SetDiagramCApprovalRatioNumerator(i int) {
+	m.diagram_c_approval_ratio_numerator = &i
+	m.adddiagram_c_approval_ratio_numerator = nil
+}
+
+// DiagramCApprovalRatioNumerator returns the value of the "diagram_c_approval_ratio_numerator" field in the mutation.
+func (m *ProjectMutation) DiagramCApprovalRatioNumerator() (r int, exists bool) {
+	v := m.diagram_c_approval_ratio_numerator
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramCApprovalRatioNumerator returns the old "diagram_c_approval_ratio_numerator" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramCApprovalRatioNumerator(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramCApprovalRatioNumerator is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramCApprovalRatioNumerator requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramCApprovalRatioNumerator: %w", err)
+	}
+	return oldValue.DiagramCApprovalRatioNumerator, nil
+}
+
+// AddDiagramCApprovalRatioNumerator adds i to the "diagram_c_approval_ratio_numerator" field.
+func (m *ProjectMutation) AddDiagramCApprovalRatioNumerator(i int) {
+	if m.adddiagram_c_approval_ratio_numerator != nil {
+		*m.adddiagram_c_approval_ratio_numerator += i
+	} else {
+		m.adddiagram_c_approval_ratio_numerator = &i
+	}
+}
+
+// AddedDiagramCApprovalRatioNumerator returns the value that was added to the "diagram_c_approval_ratio_numerator" field in this mutation.
+func (m *ProjectMutation) AddedDiagramCApprovalRatioNumerator() (r int, exists bool) {
+	v := m.adddiagram_c_approval_ratio_numerator
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramCApprovalRatioNumerator clears the value of the "diagram_c_approval_ratio_numerator" field.
+func (m *ProjectMutation) ClearDiagramCApprovalRatioNumerator() {
+	m.diagram_c_approval_ratio_numerator = nil
+	m.adddiagram_c_approval_ratio_numerator = nil
+	m.clearedFields[project.FieldDiagramCApprovalRatioNumerator] = struct{}{}
+}
+
+// DiagramCApprovalRatioNumeratorCleared returns if the "diagram_c_approval_ratio_numerator" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramCApprovalRatioNumeratorCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramCApprovalRatioNumerator]
+	return ok
+}
+
+// ResetDiagramCApprovalRatioNumerator resets all changes to the "diagram_c_approval_ratio_numerator" field.
+func (m *ProjectMutation) ResetDiagramCApprovalRatioNumerator() {
+	m.diagram_c_approval_ratio_numerator = nil
+	m.adddiagram_c_approval_ratio_numerator = nil
+	delete(m.clearedFields, project.FieldDiagramCApprovalRatioNumerator)
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (m *ProjectMutation) SetDiagramCApprovalRatioDenominator(i int) {
+	m.diagram_c_approval_ratio_denominator = &i
+	m.adddiagram_c_approval_ratio_denominator = nil
+}
+
+// DiagramCApprovalRatioDenominator returns the value of the "diagram_c_approval_ratio_denominator" field in the mutation.
+func (m *ProjectMutation) DiagramCApprovalRatioDenominator() (r int, exists bool) {
+	v := m.diagram_c_approval_ratio_denominator
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiagramCApprovalRatioDenominator returns the old "diagram_c_approval_ratio_denominator" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldDiagramCApprovalRatioDenominator(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiagramCApprovalRatioDenominator is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiagramCApprovalRatioDenominator requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiagramCApprovalRatioDenominator: %w", err)
+	}
+	return oldValue.DiagramCApprovalRatioDenominator, nil
+}
+
+// AddDiagramCApprovalRatioDenominator adds i to the "diagram_c_approval_ratio_denominator" field.
+func (m *ProjectMutation) AddDiagramCApprovalRatioDenominator(i int) {
+	if m.adddiagram_c_approval_ratio_denominator != nil {
+		*m.adddiagram_c_approval_ratio_denominator += i
+	} else {
+		m.adddiagram_c_approval_ratio_denominator = &i
+	}
+}
+
+// AddedDiagramCApprovalRatioDenominator returns the value that was added to the "diagram_c_approval_ratio_denominator" field in this mutation.
+func (m *ProjectMutation) AddedDiagramCApprovalRatioDenominator() (r int, exists bool) {
+	v := m.adddiagram_c_approval_ratio_denominator
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDiagramCApprovalRatioDenominator clears the value of the "diagram_c_approval_ratio_denominator" field.
+func (m *ProjectMutation) ClearDiagramCApprovalRatioDenominator() {
+	m.diagram_c_approval_ratio_denominator = nil
+	m.adddiagram_c_approval_ratio_denominator = nil
+	m.clearedFields[project.FieldDiagramCApprovalRatioDenominator] = struct{}{}
+}
+
+// DiagramCApprovalRatioDenominatorCleared returns if the "diagram_c_approval_ratio_denominator" field was cleared in this mutation.
+func (m *ProjectMutation) DiagramCApprovalRatioDenominatorCleared() bool {
+	_, ok := m.clearedFields[project.FieldDiagramCApprovalRatioDenominator]
+	return ok
+}
+
+// ResetDiagramCApprovalRatioDenominator resets all changes to the "diagram_c_approval_ratio_denominator" field.
+func (m *ProjectMutation) ResetDiagramCApprovalRatioDenominator() {
+	m.diagram_c_approval_ratio_denominator = nil
+	m.adddiagram_c_approval_ratio_denominator = nil
+	delete(m.clearedFields, project.FieldDiagramCApprovalRatioDenominator)
 }
 
 // AddVoIDs adds the "vos" edge to the ProjectVO entity by ids.
@@ -13108,6 +13615,60 @@ func (m *ProjectMutation) ResetProjectStaffs() {
 	m.removedproject_staffs = nil
 }
 
+// AddUserIDs adds the "users" edge to the User entity by ids.
+func (m *ProjectMutation) AddUserIDs(ids ...xid.ID) {
+	if m.users == nil {
+		m.users = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.users[ids[i]] = struct{}{}
+	}
+}
+
+// ClearUsers clears the "users" edge to the User entity.
+func (m *ProjectMutation) ClearUsers() {
+	m.clearedusers = true
+}
+
+// UsersCleared reports if the "users" edge to the User entity was cleared.
+func (m *ProjectMutation) UsersCleared() bool {
+	return m.clearedusers
+}
+
+// RemoveUserIDs removes the "users" edge to the User entity by IDs.
+func (m *ProjectMutation) RemoveUserIDs(ids ...xid.ID) {
+	if m.removedusers == nil {
+		m.removedusers = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.users, ids[i])
+		m.removedusers[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedUsers returns the removed IDs of the "users" edge to the User entity.
+func (m *ProjectMutation) RemovedUsersIDs() (ids []xid.ID) {
+	for id := range m.removedusers {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// UsersIDs returns the "users" edge IDs in the mutation.
+func (m *ProjectMutation) UsersIDs() (ids []xid.ID) {
+	for id := range m.users {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetUsers resets all changes to the "users" edge.
+func (m *ProjectMutation) ResetUsers() {
+	m.users = nil
+	m.clearedusers = false
+	m.removedusers = nil
+}
+
 // Where appends a list predicates to the ProjectMutation builder.
 func (m *ProjectMutation) Where(ps ...predicate.Project) {
 	m.predicates = append(m.predicates, ps...)
@@ -13142,7 +13703,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 75)
+	fields := make([]string, 0, 82)
 	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -13365,8 +13926,29 @@ func (m *ProjectMutation) Fields() []string {
 	if m.plan_overdue_month_count != nil {
 		fields = append(fields, project.FieldPlanOverdueMonthCount)
 	}
-	if m.processing_diagram_finish_count != nil {
-		fields = append(fields, project.FieldProcessingDiagramFinishCount)
+	if m.diagram_bd_finish_count != nil {
+		fields = append(fields, project.FieldDiagramBdFinishCount)
+	}
+	if m.diagram_bd_total_count != nil {
+		fields = append(fields, project.FieldDiagramBdTotalCount)
+	}
+	if m.diagram_construction_finish_count != nil {
+		fields = append(fields, project.FieldDiagramConstructionFinishCount)
+	}
+	if m.diagram_construction_total_count != nil {
+		fields = append(fields, project.FieldDiagramConstructionTotalCount)
+	}
+	if m.diagram_processing_finish_count != nil {
+		fields = append(fields, project.FieldDiagramProcessingFinishCount)
+	}
+	if m.diagram_processing_total_count != nil {
+		fields = append(fields, project.FieldDiagramProcessingTotalCount)
+	}
+	if m.diagram_c_approval_ratio_numerator != nil {
+		fields = append(fields, project.FieldDiagramCApprovalRatioNumerator)
+	}
+	if m.diagram_c_approval_ratio_denominator != nil {
+		fields = append(fields, project.FieldDiagramCApprovalRatioDenominator)
 	}
 	return fields
 }
@@ -13524,8 +14106,22 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.PlanOverdueCount()
 	case project.FieldPlanOverdueMonthCount:
 		return m.PlanOverdueMonthCount()
-	case project.FieldProcessingDiagramFinishCount:
-		return m.ProcessingDiagramFinishCount()
+	case project.FieldDiagramBdFinishCount:
+		return m.DiagramBdFinishCount()
+	case project.FieldDiagramBdTotalCount:
+		return m.DiagramBdTotalCount()
+	case project.FieldDiagramConstructionFinishCount:
+		return m.DiagramConstructionFinishCount()
+	case project.FieldDiagramConstructionTotalCount:
+		return m.DiagramConstructionTotalCount()
+	case project.FieldDiagramProcessingFinishCount:
+		return m.DiagramProcessingFinishCount()
+	case project.FieldDiagramProcessingTotalCount:
+		return m.DiagramProcessingTotalCount()
+	case project.FieldDiagramCApprovalRatioNumerator:
+		return m.DiagramCApprovalRatioNumerator()
+	case project.FieldDiagramCApprovalRatioDenominator:
+		return m.DiagramCApprovalRatioDenominator()
 	}
 	return nil, false
 }
@@ -13683,8 +14279,22 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldPlanOverdueCount(ctx)
 	case project.FieldPlanOverdueMonthCount:
 		return m.OldPlanOverdueMonthCount(ctx)
-	case project.FieldProcessingDiagramFinishCount:
-		return m.OldProcessingDiagramFinishCount(ctx)
+	case project.FieldDiagramBdFinishCount:
+		return m.OldDiagramBdFinishCount(ctx)
+	case project.FieldDiagramBdTotalCount:
+		return m.OldDiagramBdTotalCount(ctx)
+	case project.FieldDiagramConstructionFinishCount:
+		return m.OldDiagramConstructionFinishCount(ctx)
+	case project.FieldDiagramConstructionTotalCount:
+		return m.OldDiagramConstructionTotalCount(ctx)
+	case project.FieldDiagramProcessingFinishCount:
+		return m.OldDiagramProcessingFinishCount(ctx)
+	case project.FieldDiagramProcessingTotalCount:
+		return m.OldDiagramProcessingTotalCount(ctx)
+	case project.FieldDiagramCApprovalRatioNumerator:
+		return m.OldDiagramCApprovalRatioNumerator(ctx)
+	case project.FieldDiagramCApprovalRatioDenominator:
+		return m.OldDiagramCApprovalRatioDenominator(ctx)
 	}
 	return nil, fmt.Errorf("unknown Project field %s", name)
 }
@@ -14212,12 +14822,61 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPlanOverdueMonthCount(v)
 		return nil
-	case project.FieldProcessingDiagramFinishCount:
+	case project.FieldDiagramBdFinishCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetProcessingDiagramFinishCount(v)
+		m.SetDiagramBdFinishCount(v)
+		return nil
+	case project.FieldDiagramBdTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramBdTotalCount(v)
+		return nil
+	case project.FieldDiagramConstructionFinishCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramConstructionFinishCount(v)
+		return nil
+	case project.FieldDiagramConstructionTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramConstructionTotalCount(v)
+		return nil
+	case project.FieldDiagramProcessingFinishCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramProcessingFinishCount(v)
+		return nil
+	case project.FieldDiagramProcessingTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramProcessingTotalCount(v)
+		return nil
+	case project.FieldDiagramCApprovalRatioNumerator:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramCApprovalRatioNumerator(v)
+		return nil
+	case project.FieldDiagramCApprovalRatioDenominator:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiagramCApprovalRatioDenominator(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
@@ -14395,8 +15054,29 @@ func (m *ProjectMutation) AddedFields() []string {
 	if m.addplan_overdue_month_count != nil {
 		fields = append(fields, project.FieldPlanOverdueMonthCount)
 	}
-	if m.addprocessing_diagram_finish_count != nil {
-		fields = append(fields, project.FieldProcessingDiagramFinishCount)
+	if m.adddiagram_bd_finish_count != nil {
+		fields = append(fields, project.FieldDiagramBdFinishCount)
+	}
+	if m.adddiagram_bd_total_count != nil {
+		fields = append(fields, project.FieldDiagramBdTotalCount)
+	}
+	if m.adddiagram_construction_finish_count != nil {
+		fields = append(fields, project.FieldDiagramConstructionFinishCount)
+	}
+	if m.adddiagram_construction_total_count != nil {
+		fields = append(fields, project.FieldDiagramConstructionTotalCount)
+	}
+	if m.adddiagram_processing_finish_count != nil {
+		fields = append(fields, project.FieldDiagramProcessingFinishCount)
+	}
+	if m.adddiagram_processing_total_count != nil {
+		fields = append(fields, project.FieldDiagramProcessingTotalCount)
+	}
+	if m.adddiagram_c_approval_ratio_numerator != nil {
+		fields = append(fields, project.FieldDiagramCApprovalRatioNumerator)
+	}
+	if m.adddiagram_c_approval_ratio_denominator != nil {
+		fields = append(fields, project.FieldDiagramCApprovalRatioDenominator)
 	}
 	return fields
 }
@@ -14518,8 +15198,22 @@ func (m *ProjectMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedPlanOverdueCount()
 	case project.FieldPlanOverdueMonthCount:
 		return m.AddedPlanOverdueMonthCount()
-	case project.FieldProcessingDiagramFinishCount:
-		return m.AddedProcessingDiagramFinishCount()
+	case project.FieldDiagramBdFinishCount:
+		return m.AddedDiagramBdFinishCount()
+	case project.FieldDiagramBdTotalCount:
+		return m.AddedDiagramBdTotalCount()
+	case project.FieldDiagramConstructionFinishCount:
+		return m.AddedDiagramConstructionFinishCount()
+	case project.FieldDiagramConstructionTotalCount:
+		return m.AddedDiagramConstructionTotalCount()
+	case project.FieldDiagramProcessingFinishCount:
+		return m.AddedDiagramProcessingFinishCount()
+	case project.FieldDiagramProcessingTotalCount:
+		return m.AddedDiagramProcessingTotalCount()
+	case project.FieldDiagramCApprovalRatioNumerator:
+		return m.AddedDiagramCApprovalRatioNumerator()
+	case project.FieldDiagramCApprovalRatioDenominator:
+		return m.AddedDiagramCApprovalRatioDenominator()
 	}
 	return nil, false
 }
@@ -14921,12 +15615,61 @@ func (m *ProjectMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddPlanOverdueMonthCount(v)
 		return nil
-	case project.FieldProcessingDiagramFinishCount:
+	case project.FieldDiagramBdFinishCount:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddProcessingDiagramFinishCount(v)
+		m.AddDiagramBdFinishCount(v)
+		return nil
+	case project.FieldDiagramBdTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramBdTotalCount(v)
+		return nil
+	case project.FieldDiagramConstructionFinishCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramConstructionFinishCount(v)
+		return nil
+	case project.FieldDiagramConstructionTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramConstructionTotalCount(v)
+		return nil
+	case project.FieldDiagramProcessingFinishCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramProcessingFinishCount(v)
+		return nil
+	case project.FieldDiagramProcessingTotalCount:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramProcessingTotalCount(v)
+		return nil
+	case project.FieldDiagramCApprovalRatioNumerator:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramCApprovalRatioNumerator(v)
+		return nil
+	case project.FieldDiagramCApprovalRatioDenominator:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiagramCApprovalRatioDenominator(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Project numeric field %s", name)
@@ -15146,8 +15889,29 @@ func (m *ProjectMutation) ClearedFields() []string {
 	if m.FieldCleared(project.FieldPlanOverdueMonthCount) {
 		fields = append(fields, project.FieldPlanOverdueMonthCount)
 	}
-	if m.FieldCleared(project.FieldProcessingDiagramFinishCount) {
-		fields = append(fields, project.FieldProcessingDiagramFinishCount)
+	if m.FieldCleared(project.FieldDiagramBdFinishCount) {
+		fields = append(fields, project.FieldDiagramBdFinishCount)
+	}
+	if m.FieldCleared(project.FieldDiagramBdTotalCount) {
+		fields = append(fields, project.FieldDiagramBdTotalCount)
+	}
+	if m.FieldCleared(project.FieldDiagramConstructionFinishCount) {
+		fields = append(fields, project.FieldDiagramConstructionFinishCount)
+	}
+	if m.FieldCleared(project.FieldDiagramConstructionTotalCount) {
+		fields = append(fields, project.FieldDiagramConstructionTotalCount)
+	}
+	if m.FieldCleared(project.FieldDiagramProcessingFinishCount) {
+		fields = append(fields, project.FieldDiagramProcessingFinishCount)
+	}
+	if m.FieldCleared(project.FieldDiagramProcessingTotalCount) {
+		fields = append(fields, project.FieldDiagramProcessingTotalCount)
+	}
+	if m.FieldCleared(project.FieldDiagramCApprovalRatioNumerator) {
+		fields = append(fields, project.FieldDiagramCApprovalRatioNumerator)
+	}
+	if m.FieldCleared(project.FieldDiagramCApprovalRatioDenominator) {
+		fields = append(fields, project.FieldDiagramCApprovalRatioDenominator)
 	}
 	return fields
 }
@@ -15373,8 +16137,29 @@ func (m *ProjectMutation) ClearField(name string) error {
 	case project.FieldPlanOverdueMonthCount:
 		m.ClearPlanOverdueMonthCount()
 		return nil
-	case project.FieldProcessingDiagramFinishCount:
-		m.ClearProcessingDiagramFinishCount()
+	case project.FieldDiagramBdFinishCount:
+		m.ClearDiagramBdFinishCount()
+		return nil
+	case project.FieldDiagramBdTotalCount:
+		m.ClearDiagramBdTotalCount()
+		return nil
+	case project.FieldDiagramConstructionFinishCount:
+		m.ClearDiagramConstructionFinishCount()
+		return nil
+	case project.FieldDiagramConstructionTotalCount:
+		m.ClearDiagramConstructionTotalCount()
+		return nil
+	case project.FieldDiagramProcessingFinishCount:
+		m.ClearDiagramProcessingFinishCount()
+		return nil
+	case project.FieldDiagramProcessingTotalCount:
+		m.ClearDiagramProcessingTotalCount()
+		return nil
+	case project.FieldDiagramCApprovalRatioNumerator:
+		m.ClearDiagramCApprovalRatioNumerator()
+		return nil
+	case project.FieldDiagramCApprovalRatioDenominator:
+		m.ClearDiagramCApprovalRatioDenominator()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -15606,8 +16391,29 @@ func (m *ProjectMutation) ResetField(name string) error {
 	case project.FieldPlanOverdueMonthCount:
 		m.ResetPlanOverdueMonthCount()
 		return nil
-	case project.FieldProcessingDiagramFinishCount:
-		m.ResetProcessingDiagramFinishCount()
+	case project.FieldDiagramBdFinishCount:
+		m.ResetDiagramBdFinishCount()
+		return nil
+	case project.FieldDiagramBdTotalCount:
+		m.ResetDiagramBdTotalCount()
+		return nil
+	case project.FieldDiagramConstructionFinishCount:
+		m.ResetDiagramConstructionFinishCount()
+		return nil
+	case project.FieldDiagramConstructionTotalCount:
+		m.ResetDiagramConstructionTotalCount()
+		return nil
+	case project.FieldDiagramProcessingFinishCount:
+		m.ResetDiagramProcessingFinishCount()
+		return nil
+	case project.FieldDiagramProcessingTotalCount:
+		m.ResetDiagramProcessingTotalCount()
+		return nil
+	case project.FieldDiagramCApprovalRatioNumerator:
+		m.ResetDiagramCApprovalRatioNumerator()
+		return nil
+	case project.FieldDiagramCApprovalRatioDenominator:
+		m.ResetDiagramCApprovalRatioDenominator()
 		return nil
 	}
 	return fmt.Errorf("unknown Project field %s", name)
@@ -15615,12 +16421,15 @@ func (m *ProjectMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProjectMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.vos != nil {
 		edges = append(edges, project.EdgeVos)
 	}
 	if m.project_staffs != nil {
 		edges = append(edges, project.EdgeProjectStaffs)
+	}
+	if m.users != nil {
+		edges = append(edges, project.EdgeUsers)
 	}
 	return edges
 }
@@ -15641,18 +16450,27 @@ func (m *ProjectMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case project.EdgeUsers:
+		ids := make([]ent.Value, 0, len(m.users))
+		for id := range m.users {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProjectMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedvos != nil {
 		edges = append(edges, project.EdgeVos)
 	}
 	if m.removedproject_staffs != nil {
 		edges = append(edges, project.EdgeProjectStaffs)
+	}
+	if m.removedusers != nil {
+		edges = append(edges, project.EdgeUsers)
 	}
 	return edges
 }
@@ -15673,18 +16491,27 @@ func (m *ProjectMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case project.EdgeUsers:
+		ids := make([]ent.Value, 0, len(m.removedusers))
+		for id := range m.removedusers {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProjectMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedvos {
 		edges = append(edges, project.EdgeVos)
 	}
 	if m.clearedproject_staffs {
 		edges = append(edges, project.EdgeProjectStaffs)
+	}
+	if m.clearedusers {
+		edges = append(edges, project.EdgeUsers)
 	}
 	return edges
 }
@@ -15697,6 +16524,8 @@ func (m *ProjectMutation) EdgeCleared(name string) bool {
 		return m.clearedvos
 	case project.EdgeProjectStaffs:
 		return m.clearedproject_staffs
+	case project.EdgeUsers:
+		return m.clearedusers
 	}
 	return false
 }
@@ -15718,6 +16547,9 @@ func (m *ProjectMutation) ResetEdge(name string) error {
 		return nil
 	case project.EdgeProjectStaffs:
 		m.ResetProjectStaffs()
+		return nil
+	case project.EdgeUsers:
+		m.ResetUsers()
 		return nil
 	}
 	return fmt.Errorf("unknown Project edge %s", name)
@@ -24561,6 +25393,9 @@ type UserMutation struct {
 	visit_records        map[xid.ID]struct{}
 	removedvisit_records map[xid.ID]struct{}
 	clearedvisit_records bool
+	projects             map[xid.ID]struct{}
+	removedprojects      map[xid.ID]struct{}
+	clearedprojects      bool
 	done                 bool
 	oldValue             func(context.Context) (*User, error)
 	predicates           []predicate.User
@@ -25510,6 +26345,60 @@ func (m *UserMutation) ResetVisitRecords() {
 	m.removedvisit_records = nil
 }
 
+// AddProjectIDs adds the "projects" edge to the Project entity by ids.
+func (m *UserMutation) AddProjectIDs(ids ...xid.ID) {
+	if m.projects == nil {
+		m.projects = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		m.projects[ids[i]] = struct{}{}
+	}
+}
+
+// ClearProjects clears the "projects" edge to the Project entity.
+func (m *UserMutation) ClearProjects() {
+	m.clearedprojects = true
+}
+
+// ProjectsCleared reports if the "projects" edge to the Project entity was cleared.
+func (m *UserMutation) ProjectsCleared() bool {
+	return m.clearedprojects
+}
+
+// RemoveProjectIDs removes the "projects" edge to the Project entity by IDs.
+func (m *UserMutation) RemoveProjectIDs(ids ...xid.ID) {
+	if m.removedprojects == nil {
+		m.removedprojects = make(map[xid.ID]struct{})
+	}
+	for i := range ids {
+		delete(m.projects, ids[i])
+		m.removedprojects[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProjects returns the removed IDs of the "projects" edge to the Project entity.
+func (m *UserMutation) RemovedProjectsIDs() (ids []xid.ID) {
+	for id := range m.removedprojects {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ProjectsIDs returns the "projects" edge IDs in the mutation.
+func (m *UserMutation) ProjectsIDs() (ids []xid.ID) {
+	for id := range m.projects {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetProjects resets all changes to the "projects" edge.
+func (m *UserMutation) ResetProjects() {
+	m.projects = nil
+	m.clearedprojects = false
+	m.removedprojects = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -25885,7 +26774,7 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 6)
+	edges := make([]string, 0, 7)
 	if m.areas != nil {
 		edges = append(edges, user.EdgeAreas)
 	}
@@ -25903,6 +26792,9 @@ func (m *UserMutation) AddedEdges() []string {
 	}
 	if m.visit_records != nil {
 		edges = append(edges, user.EdgeVisitRecords)
+	}
+	if m.projects != nil {
+		edges = append(edges, user.EdgeProjects)
 	}
 	return edges
 }
@@ -25945,13 +26837,19 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeProjects:
+		ids := make([]ent.Value, 0, len(m.projects))
+		for id := range m.projects {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 6)
+	edges := make([]string, 0, 7)
 	if m.removedareas != nil {
 		edges = append(edges, user.EdgeAreas)
 	}
@@ -25966,6 +26864,9 @@ func (m *UserMutation) RemovedEdges() []string {
 	}
 	if m.removedvisit_records != nil {
 		edges = append(edges, user.EdgeVisitRecords)
+	}
+	if m.removedprojects != nil {
+		edges = append(edges, user.EdgeProjects)
 	}
 	return edges
 }
@@ -26004,13 +26905,19 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeProjects:
+		ids := make([]ent.Value, 0, len(m.removedprojects))
+		for id := range m.removedprojects {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 6)
+	edges := make([]string, 0, 7)
 	if m.clearedareas {
 		edges = append(edges, user.EdgeAreas)
 	}
@@ -26028,6 +26935,9 @@ func (m *UserMutation) ClearedEdges() []string {
 	}
 	if m.clearedvisit_records {
 		edges = append(edges, user.EdgeVisitRecords)
+	}
+	if m.clearedprojects {
+		edges = append(edges, user.EdgeProjects)
 	}
 	return edges
 }
@@ -26048,6 +26958,8 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedtenders
 	case user.EdgeVisitRecords:
 		return m.clearedvisit_records
+	case user.EdgeProjects:
+		return m.clearedprojects
 	}
 	return false
 }
@@ -26084,6 +26996,9 @@ func (m *UserMutation) ResetEdge(name string) error {
 		return nil
 	case user.EdgeVisitRecords:
 		m.ResetVisitRecords()
+		return nil
+	case user.EdgeProjects:
+		m.ResetProjects()
 		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)

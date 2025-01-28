@@ -7,6 +7,7 @@ import (
 	"cscd-bds/store/ent/area"
 	"cscd-bds/store/ent/customer"
 	"cscd-bds/store/ent/predicate"
+	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
@@ -34,6 +35,7 @@ type UserQuery struct {
 	withTeamMembers       *UserQuery
 	withTenders           *TenderQuery
 	withVisitRecords      *VisitRecordQuery
+	withProjects          *ProjectQuery
 	modifiers             []func(*sql.Selector)
 	loadTotal             []func(context.Context, []*User) error
 	withNamedAreas        map[string]*AreaQuery
@@ -41,6 +43,7 @@ type UserQuery struct {
 	withNamedTeamMembers  map[string]*UserQuery
 	withNamedTenders      map[string]*TenderQuery
 	withNamedVisitRecords map[string]*VisitRecordQuery
+	withNamedProjects     map[string]*ProjectQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -202,6 +205,28 @@ func (uq *UserQuery) QueryVisitRecords() *VisitRecordQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(visitrecord.Table, visitrecord.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, user.VisitRecordsTable, user.VisitRecordsPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProjects chains the current query on the "projects" edge.
+func (uq *UserQuery) QueryProjects() *ProjectQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(project.Table, project.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, user.ProjectsTable, user.ProjectsPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -407,6 +432,7 @@ func (uq *UserQuery) Clone() *UserQuery {
 		withTeamMembers:  uq.withTeamMembers.Clone(),
 		withTenders:      uq.withTenders.Clone(),
 		withVisitRecords: uq.withVisitRecords.Clone(),
+		withProjects:     uq.withProjects.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
@@ -476,6 +502,17 @@ func (uq *UserQuery) WithVisitRecords(opts ...func(*VisitRecordQuery)) *UserQuer
 		opt(query)
 	}
 	uq.withVisitRecords = query
+	return uq
+}
+
+// WithProjects tells the query-builder to eager-load the nodes that are connected to
+// the "projects" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithProjects(opts ...func(*ProjectQuery)) *UserQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withProjects = query
 	return uq
 }
 
@@ -557,13 +594,14 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [7]bool{
 			uq.withAreas != nil,
 			uq.withCustomers != nil,
 			uq.withLeader != nil,
 			uq.withTeamMembers != nil,
 			uq.withTenders != nil,
 			uq.withVisitRecords != nil,
+			uq.withProjects != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -628,6 +666,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	if query := uq.withProjects; query != nil {
+		if err := uq.loadProjects(ctx, query, nodes,
+			func(n *User) { n.Edges.Projects = []*Project{} },
+			func(n *User, e *Project) { n.Edges.Projects = append(n.Edges.Projects, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range uq.withNamedAreas {
 		if err := uq.loadAreas(ctx, query, nodes,
 			func(n *User) { n.appendNamedAreas(name) },
@@ -660,6 +705,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadVisitRecords(ctx, query, nodes,
 			func(n *User) { n.appendNamedVisitRecords(name) },
 			func(n *User, e *VisitRecord) { n.appendNamedVisitRecords(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedProjects {
+		if err := uq.loadProjects(ctx, query, nodes,
+			func(n *User) { n.appendNamedProjects(name) },
+			func(n *User, e *Project) { n.appendNamedProjects(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -952,6 +1004,67 @@ func (uq *UserQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQue
 	}
 	return nil
 }
+func (uq *UserQuery) loadProjects(ctx context.Context, query *ProjectQuery, nodes []*User, init func(*User), assign func(*User, *Project)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[xid.ID]*User)
+	nids := make(map[xid.ID]map[*User]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(user.ProjectsTable)
+		s.Join(joinT).On(s.C(project.FieldID), joinT.C(user.ProjectsPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(user.ProjectsPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(user.ProjectsPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(xid.ID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*xid.ID)
+				inValue := *values[1].(*xid.ID)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*User]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*Project](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "projects" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
 
 func (uq *UserQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := uq.querySpec()
@@ -1107,6 +1220,20 @@ func (uq *UserQuery) WithNamedVisitRecords(name string, opts ...func(*VisitRecor
 		uq.withNamedVisitRecords = make(map[string]*VisitRecordQuery)
 	}
 	uq.withNamedVisitRecords[name] = query
+	return uq
+}
+
+// WithNamedProjects tells the query-builder to eager-load the nodes that are connected to the "projects"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedProjects(name string, opts ...func(*ProjectQuery)) *UserQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedProjects == nil {
+		uq.withNamedProjects = make(map[string]*ProjectQuery)
+	}
+	uq.withNamedProjects[name] = query
 	return uq
 }
 

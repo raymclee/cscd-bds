@@ -8,6 +8,7 @@ import (
 	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -1054,16 +1055,114 @@ func (pc *ProjectCreate) SetNillablePlanOverdueMonthCount(i *int) *ProjectCreate
 	return pc
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (pc *ProjectCreate) SetProcessingDiagramFinishCount(i int) *ProjectCreate {
-	pc.mutation.SetProcessingDiagramFinishCount(i)
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (pc *ProjectCreate) SetDiagramBdFinishCount(i int) *ProjectCreate {
+	pc.mutation.SetDiagramBdFinishCount(i)
 	return pc
 }
 
-// SetNillableProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field if the given value is not nil.
-func (pc *ProjectCreate) SetNillableProcessingDiagramFinishCount(i *int) *ProjectCreate {
+// SetNillableDiagramBdFinishCount sets the "diagram_bd_finish_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramBdFinishCount(i *int) *ProjectCreate {
 	if i != nil {
-		pc.SetProcessingDiagramFinishCount(*i)
+		pc.SetDiagramBdFinishCount(*i)
+	}
+	return pc
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (pc *ProjectCreate) SetDiagramBdTotalCount(i int) *ProjectCreate {
+	pc.mutation.SetDiagramBdTotalCount(i)
+	return pc
+}
+
+// SetNillableDiagramBdTotalCount sets the "diagram_bd_total_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramBdTotalCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramBdTotalCount(*i)
+	}
+	return pc
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (pc *ProjectCreate) SetDiagramConstructionFinishCount(i int) *ProjectCreate {
+	pc.mutation.SetDiagramConstructionFinishCount(i)
+	return pc
+}
+
+// SetNillableDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramConstructionFinishCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramConstructionFinishCount(*i)
+	}
+	return pc
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (pc *ProjectCreate) SetDiagramConstructionTotalCount(i int) *ProjectCreate {
+	pc.mutation.SetDiagramConstructionTotalCount(i)
+	return pc
+}
+
+// SetNillableDiagramConstructionTotalCount sets the "diagram_construction_total_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramConstructionTotalCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramConstructionTotalCount(*i)
+	}
+	return pc
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (pc *ProjectCreate) SetDiagramProcessingFinishCount(i int) *ProjectCreate {
+	pc.mutation.SetDiagramProcessingFinishCount(i)
+	return pc
+}
+
+// SetNillableDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramProcessingFinishCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramProcessingFinishCount(*i)
+	}
+	return pc
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (pc *ProjectCreate) SetDiagramProcessingTotalCount(i int) *ProjectCreate {
+	pc.mutation.SetDiagramProcessingTotalCount(i)
+	return pc
+}
+
+// SetNillableDiagramProcessingTotalCount sets the "diagram_processing_total_count" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramProcessingTotalCount(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramProcessingTotalCount(*i)
+	}
+	return pc
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (pc *ProjectCreate) SetDiagramCApprovalRatioNumerator(i int) *ProjectCreate {
+	pc.mutation.SetDiagramCApprovalRatioNumerator(i)
+	return pc
+}
+
+// SetNillableDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramCApprovalRatioNumerator(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramCApprovalRatioNumerator(*i)
+	}
+	return pc
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (pc *ProjectCreate) SetDiagramCApprovalRatioDenominator(i int) *ProjectCreate {
+	pc.mutation.SetDiagramCApprovalRatioDenominator(i)
+	return pc
+}
+
+// SetNillableDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableDiagramCApprovalRatioDenominator(i *int) *ProjectCreate {
+	if i != nil {
+		pc.SetDiagramCApprovalRatioDenominator(*i)
 	}
 	return pc
 }
@@ -1110,6 +1209,21 @@ func (pc *ProjectCreate) AddProjectStaffs(p ...*ProjectStaff) *ProjectCreate {
 		ids[i] = p[i].ID
 	}
 	return pc.AddProjectStaffIDs(ids...)
+}
+
+// AddUserIDs adds the "users" edge to the User entity by IDs.
+func (pc *ProjectCreate) AddUserIDs(ids ...xid.ID) *ProjectCreate {
+	pc.mutation.AddUserIDs(ids...)
+	return pc
+}
+
+// AddUsers adds the "users" edges to the User entity.
+func (pc *ProjectCreate) AddUsers(u ...*User) *ProjectCreate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pc.AddUserIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -1511,9 +1625,37 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec.SetField(project.FieldPlanOverdueMonthCount, field.TypeInt, value)
 		_node.PlanOverdueMonthCount = &value
 	}
-	if value, ok := pc.mutation.ProcessingDiagramFinishCount(); ok {
-		_spec.SetField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
-		_node.ProcessingDiagramFinishCount = &value
+	if value, ok := pc.mutation.DiagramBdFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
+		_node.DiagramBdFinishCount = &value
+	}
+	if value, ok := pc.mutation.DiagramBdTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramBdTotalCount, field.TypeInt, value)
+		_node.DiagramBdTotalCount = &value
+	}
+	if value, ok := pc.mutation.DiagramConstructionFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramConstructionFinishCount, field.TypeInt, value)
+		_node.DiagramConstructionFinishCount = &value
+	}
+	if value, ok := pc.mutation.DiagramConstructionTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramConstructionTotalCount, field.TypeInt, value)
+		_node.DiagramConstructionTotalCount = &value
+	}
+	if value, ok := pc.mutation.DiagramProcessingFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramProcessingFinishCount, field.TypeInt, value)
+		_node.DiagramProcessingFinishCount = &value
+	}
+	if value, ok := pc.mutation.DiagramProcessingTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramProcessingTotalCount, field.TypeInt, value)
+		_node.DiagramProcessingTotalCount = &value
+	}
+	if value, ok := pc.mutation.DiagramCApprovalRatioNumerator(); ok {
+		_spec.SetField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt, value)
+		_node.DiagramCApprovalRatioNumerator = &value
+	}
+	if value, ok := pc.mutation.DiagramCApprovalRatioDenominator(); ok {
+		_spec.SetField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt, value)
+		_node.DiagramCApprovalRatioDenominator = &value
 	}
 	if nodes := pc.mutation.VosIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -1540,6 +1682,22 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.UsersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -3231,27 +3389,195 @@ func (u *ProjectUpsert) ClearPlanOverdueMonthCount() *ProjectUpsert {
 	return u
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (u *ProjectUpsert) SetProcessingDiagramFinishCount(v int) *ProjectUpsert {
-	u.Set(project.FieldProcessingDiagramFinishCount, v)
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (u *ProjectUpsert) SetDiagramBdFinishCount(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramBdFinishCount, v)
 	return u
 }
 
-// UpdateProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field to the value that was provided on create.
-func (u *ProjectUpsert) UpdateProcessingDiagramFinishCount() *ProjectUpsert {
-	u.SetExcluded(project.FieldProcessingDiagramFinishCount)
+// UpdateDiagramBdFinishCount sets the "diagram_bd_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramBdFinishCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramBdFinishCount)
 	return u
 }
 
-// AddProcessingDiagramFinishCount adds v to the "processing_diagram_finish_count" field.
-func (u *ProjectUpsert) AddProcessingDiagramFinishCount(v int) *ProjectUpsert {
-	u.Add(project.FieldProcessingDiagramFinishCount, v)
+// AddDiagramBdFinishCount adds v to the "diagram_bd_finish_count" field.
+func (u *ProjectUpsert) AddDiagramBdFinishCount(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramBdFinishCount, v)
 	return u
 }
 
-// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
-func (u *ProjectUpsert) ClearProcessingDiagramFinishCount() *ProjectUpsert {
-	u.SetNull(project.FieldProcessingDiagramFinishCount)
+// ClearDiagramBdFinishCount clears the value of the "diagram_bd_finish_count" field.
+func (u *ProjectUpsert) ClearDiagramBdFinishCount() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramBdFinishCount)
+	return u
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (u *ProjectUpsert) SetDiagramBdTotalCount(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramBdTotalCount, v)
+	return u
+}
+
+// UpdateDiagramBdTotalCount sets the "diagram_bd_total_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramBdTotalCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramBdTotalCount)
+	return u
+}
+
+// AddDiagramBdTotalCount adds v to the "diagram_bd_total_count" field.
+func (u *ProjectUpsert) AddDiagramBdTotalCount(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramBdTotalCount, v)
+	return u
+}
+
+// ClearDiagramBdTotalCount clears the value of the "diagram_bd_total_count" field.
+func (u *ProjectUpsert) ClearDiagramBdTotalCount() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramBdTotalCount)
+	return u
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (u *ProjectUpsert) SetDiagramConstructionFinishCount(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramConstructionFinishCount, v)
+	return u
+}
+
+// UpdateDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramConstructionFinishCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramConstructionFinishCount)
+	return u
+}
+
+// AddDiagramConstructionFinishCount adds v to the "diagram_construction_finish_count" field.
+func (u *ProjectUpsert) AddDiagramConstructionFinishCount(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramConstructionFinishCount, v)
+	return u
+}
+
+// ClearDiagramConstructionFinishCount clears the value of the "diagram_construction_finish_count" field.
+func (u *ProjectUpsert) ClearDiagramConstructionFinishCount() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramConstructionFinishCount)
+	return u
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (u *ProjectUpsert) SetDiagramConstructionTotalCount(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramConstructionTotalCount, v)
+	return u
+}
+
+// UpdateDiagramConstructionTotalCount sets the "diagram_construction_total_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramConstructionTotalCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramConstructionTotalCount)
+	return u
+}
+
+// AddDiagramConstructionTotalCount adds v to the "diagram_construction_total_count" field.
+func (u *ProjectUpsert) AddDiagramConstructionTotalCount(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramConstructionTotalCount, v)
+	return u
+}
+
+// ClearDiagramConstructionTotalCount clears the value of the "diagram_construction_total_count" field.
+func (u *ProjectUpsert) ClearDiagramConstructionTotalCount() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramConstructionTotalCount)
+	return u
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (u *ProjectUpsert) SetDiagramProcessingFinishCount(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramProcessingFinishCount, v)
+	return u
+}
+
+// UpdateDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramProcessingFinishCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramProcessingFinishCount)
+	return u
+}
+
+// AddDiagramProcessingFinishCount adds v to the "diagram_processing_finish_count" field.
+func (u *ProjectUpsert) AddDiagramProcessingFinishCount(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramProcessingFinishCount, v)
+	return u
+}
+
+// ClearDiagramProcessingFinishCount clears the value of the "diagram_processing_finish_count" field.
+func (u *ProjectUpsert) ClearDiagramProcessingFinishCount() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramProcessingFinishCount)
+	return u
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (u *ProjectUpsert) SetDiagramProcessingTotalCount(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramProcessingTotalCount, v)
+	return u
+}
+
+// UpdateDiagramProcessingTotalCount sets the "diagram_processing_total_count" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramProcessingTotalCount() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramProcessingTotalCount)
+	return u
+}
+
+// AddDiagramProcessingTotalCount adds v to the "diagram_processing_total_count" field.
+func (u *ProjectUpsert) AddDiagramProcessingTotalCount(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramProcessingTotalCount, v)
+	return u
+}
+
+// ClearDiagramProcessingTotalCount clears the value of the "diagram_processing_total_count" field.
+func (u *ProjectUpsert) ClearDiagramProcessingTotalCount() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramProcessingTotalCount)
+	return u
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsert) SetDiagramCApprovalRatioNumerator(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramCApprovalRatioNumerator, v)
+	return u
+}
+
+// UpdateDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramCApprovalRatioNumerator() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramCApprovalRatioNumerator)
+	return u
+}
+
+// AddDiagramCApprovalRatioNumerator adds v to the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsert) AddDiagramCApprovalRatioNumerator(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramCApprovalRatioNumerator, v)
+	return u
+}
+
+// ClearDiagramCApprovalRatioNumerator clears the value of the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsert) ClearDiagramCApprovalRatioNumerator() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramCApprovalRatioNumerator)
+	return u
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsert) SetDiagramCApprovalRatioDenominator(v int) *ProjectUpsert {
+	u.Set(project.FieldDiagramCApprovalRatioDenominator, v)
+	return u
+}
+
+// UpdateDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field to the value that was provided on create.
+func (u *ProjectUpsert) UpdateDiagramCApprovalRatioDenominator() *ProjectUpsert {
+	u.SetExcluded(project.FieldDiagramCApprovalRatioDenominator)
+	return u
+}
+
+// AddDiagramCApprovalRatioDenominator adds v to the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsert) AddDiagramCApprovalRatioDenominator(v int) *ProjectUpsert {
+	u.Add(project.FieldDiagramCApprovalRatioDenominator, v)
+	return u
+}
+
+// ClearDiagramCApprovalRatioDenominator clears the value of the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsert) ClearDiagramCApprovalRatioDenominator() *ProjectUpsert {
+	u.SetNull(project.FieldDiagramCApprovalRatioDenominator)
 	return u
 }
 
@@ -5210,31 +5536,227 @@ func (u *ProjectUpsertOne) ClearPlanOverdueMonthCount() *ProjectUpsertOne {
 	})
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (u *ProjectUpsertOne) SetProcessingDiagramFinishCount(v int) *ProjectUpsertOne {
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (u *ProjectUpsertOne) SetDiagramBdFinishCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetProcessingDiagramFinishCount(v)
+		s.SetDiagramBdFinishCount(v)
 	})
 }
 
-// AddProcessingDiagramFinishCount adds v to the "processing_diagram_finish_count" field.
-func (u *ProjectUpsertOne) AddProcessingDiagramFinishCount(v int) *ProjectUpsertOne {
+// AddDiagramBdFinishCount adds v to the "diagram_bd_finish_count" field.
+func (u *ProjectUpsertOne) AddDiagramBdFinishCount(v int) *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddProcessingDiagramFinishCount(v)
+		s.AddDiagramBdFinishCount(v)
 	})
 }
 
-// UpdateProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field to the value that was provided on create.
-func (u *ProjectUpsertOne) UpdateProcessingDiagramFinishCount() *ProjectUpsertOne {
+// UpdateDiagramBdFinishCount sets the "diagram_bd_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramBdFinishCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateProcessingDiagramFinishCount()
+		s.UpdateDiagramBdFinishCount()
 	})
 }
 
-// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
-func (u *ProjectUpsertOne) ClearProcessingDiagramFinishCount() *ProjectUpsertOne {
+// ClearDiagramBdFinishCount clears the value of the "diagram_bd_finish_count" field.
+func (u *ProjectUpsertOne) ClearDiagramBdFinishCount() *ProjectUpsertOne {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearProcessingDiagramFinishCount()
+		s.ClearDiagramBdFinishCount()
+	})
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (u *ProjectUpsertOne) SetDiagramBdTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramBdTotalCount(v)
+	})
+}
+
+// AddDiagramBdTotalCount adds v to the "diagram_bd_total_count" field.
+func (u *ProjectUpsertOne) AddDiagramBdTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramBdTotalCount(v)
+	})
+}
+
+// UpdateDiagramBdTotalCount sets the "diagram_bd_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramBdTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramBdTotalCount()
+	})
+}
+
+// ClearDiagramBdTotalCount clears the value of the "diagram_bd_total_count" field.
+func (u *ProjectUpsertOne) ClearDiagramBdTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramBdTotalCount()
+	})
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (u *ProjectUpsertOne) SetDiagramConstructionFinishCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramConstructionFinishCount(v)
+	})
+}
+
+// AddDiagramConstructionFinishCount adds v to the "diagram_construction_finish_count" field.
+func (u *ProjectUpsertOne) AddDiagramConstructionFinishCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramConstructionFinishCount(v)
+	})
+}
+
+// UpdateDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramConstructionFinishCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramConstructionFinishCount()
+	})
+}
+
+// ClearDiagramConstructionFinishCount clears the value of the "diagram_construction_finish_count" field.
+func (u *ProjectUpsertOne) ClearDiagramConstructionFinishCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramConstructionFinishCount()
+	})
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (u *ProjectUpsertOne) SetDiagramConstructionTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramConstructionTotalCount(v)
+	})
+}
+
+// AddDiagramConstructionTotalCount adds v to the "diagram_construction_total_count" field.
+func (u *ProjectUpsertOne) AddDiagramConstructionTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramConstructionTotalCount(v)
+	})
+}
+
+// UpdateDiagramConstructionTotalCount sets the "diagram_construction_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramConstructionTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramConstructionTotalCount()
+	})
+}
+
+// ClearDiagramConstructionTotalCount clears the value of the "diagram_construction_total_count" field.
+func (u *ProjectUpsertOne) ClearDiagramConstructionTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramConstructionTotalCount()
+	})
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (u *ProjectUpsertOne) SetDiagramProcessingFinishCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramProcessingFinishCount(v)
+	})
+}
+
+// AddDiagramProcessingFinishCount adds v to the "diagram_processing_finish_count" field.
+func (u *ProjectUpsertOne) AddDiagramProcessingFinishCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramProcessingFinishCount(v)
+	})
+}
+
+// UpdateDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramProcessingFinishCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramProcessingFinishCount()
+	})
+}
+
+// ClearDiagramProcessingFinishCount clears the value of the "diagram_processing_finish_count" field.
+func (u *ProjectUpsertOne) ClearDiagramProcessingFinishCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramProcessingFinishCount()
+	})
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (u *ProjectUpsertOne) SetDiagramProcessingTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramProcessingTotalCount(v)
+	})
+}
+
+// AddDiagramProcessingTotalCount adds v to the "diagram_processing_total_count" field.
+func (u *ProjectUpsertOne) AddDiagramProcessingTotalCount(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramProcessingTotalCount(v)
+	})
+}
+
+// UpdateDiagramProcessingTotalCount sets the "diagram_processing_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramProcessingTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramProcessingTotalCount()
+	})
+}
+
+// ClearDiagramProcessingTotalCount clears the value of the "diagram_processing_total_count" field.
+func (u *ProjectUpsertOne) ClearDiagramProcessingTotalCount() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramProcessingTotalCount()
+	})
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsertOne) SetDiagramCApprovalRatioNumerator(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramCApprovalRatioNumerator(v)
+	})
+}
+
+// AddDiagramCApprovalRatioNumerator adds v to the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsertOne) AddDiagramCApprovalRatioNumerator(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramCApprovalRatioNumerator(v)
+	})
+}
+
+// UpdateDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramCApprovalRatioNumerator() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramCApprovalRatioNumerator()
+	})
+}
+
+// ClearDiagramCApprovalRatioNumerator clears the value of the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsertOne) ClearDiagramCApprovalRatioNumerator() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramCApprovalRatioNumerator()
+	})
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsertOne) SetDiagramCApprovalRatioDenominator(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramCApprovalRatioDenominator(v)
+	})
+}
+
+// AddDiagramCApprovalRatioDenominator adds v to the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsertOne) AddDiagramCApprovalRatioDenominator(v int) *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramCApprovalRatioDenominator(v)
+	})
+}
+
+// UpdateDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field to the value that was provided on create.
+func (u *ProjectUpsertOne) UpdateDiagramCApprovalRatioDenominator() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramCApprovalRatioDenominator()
+	})
+}
+
+// ClearDiagramCApprovalRatioDenominator clears the value of the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsertOne) ClearDiagramCApprovalRatioDenominator() *ProjectUpsertOne {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramCApprovalRatioDenominator()
 	})
 }
 
@@ -7360,31 +7882,227 @@ func (u *ProjectUpsertBulk) ClearPlanOverdueMonthCount() *ProjectUpsertBulk {
 	})
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (u *ProjectUpsertBulk) SetProcessingDiagramFinishCount(v int) *ProjectUpsertBulk {
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (u *ProjectUpsertBulk) SetDiagramBdFinishCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.SetProcessingDiagramFinishCount(v)
+		s.SetDiagramBdFinishCount(v)
 	})
 }
 
-// AddProcessingDiagramFinishCount adds v to the "processing_diagram_finish_count" field.
-func (u *ProjectUpsertBulk) AddProcessingDiagramFinishCount(v int) *ProjectUpsertBulk {
+// AddDiagramBdFinishCount adds v to the "diagram_bd_finish_count" field.
+func (u *ProjectUpsertBulk) AddDiagramBdFinishCount(v int) *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.AddProcessingDiagramFinishCount(v)
+		s.AddDiagramBdFinishCount(v)
 	})
 }
 
-// UpdateProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field to the value that was provided on create.
-func (u *ProjectUpsertBulk) UpdateProcessingDiagramFinishCount() *ProjectUpsertBulk {
+// UpdateDiagramBdFinishCount sets the "diagram_bd_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramBdFinishCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.UpdateProcessingDiagramFinishCount()
+		s.UpdateDiagramBdFinishCount()
 	})
 }
 
-// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
-func (u *ProjectUpsertBulk) ClearProcessingDiagramFinishCount() *ProjectUpsertBulk {
+// ClearDiagramBdFinishCount clears the value of the "diagram_bd_finish_count" field.
+func (u *ProjectUpsertBulk) ClearDiagramBdFinishCount() *ProjectUpsertBulk {
 	return u.Update(func(s *ProjectUpsert) {
-		s.ClearProcessingDiagramFinishCount()
+		s.ClearDiagramBdFinishCount()
+	})
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (u *ProjectUpsertBulk) SetDiagramBdTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramBdTotalCount(v)
+	})
+}
+
+// AddDiagramBdTotalCount adds v to the "diagram_bd_total_count" field.
+func (u *ProjectUpsertBulk) AddDiagramBdTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramBdTotalCount(v)
+	})
+}
+
+// UpdateDiagramBdTotalCount sets the "diagram_bd_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramBdTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramBdTotalCount()
+	})
+}
+
+// ClearDiagramBdTotalCount clears the value of the "diagram_bd_total_count" field.
+func (u *ProjectUpsertBulk) ClearDiagramBdTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramBdTotalCount()
+	})
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (u *ProjectUpsertBulk) SetDiagramConstructionFinishCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramConstructionFinishCount(v)
+	})
+}
+
+// AddDiagramConstructionFinishCount adds v to the "diagram_construction_finish_count" field.
+func (u *ProjectUpsertBulk) AddDiagramConstructionFinishCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramConstructionFinishCount(v)
+	})
+}
+
+// UpdateDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramConstructionFinishCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramConstructionFinishCount()
+	})
+}
+
+// ClearDiagramConstructionFinishCount clears the value of the "diagram_construction_finish_count" field.
+func (u *ProjectUpsertBulk) ClearDiagramConstructionFinishCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramConstructionFinishCount()
+	})
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (u *ProjectUpsertBulk) SetDiagramConstructionTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramConstructionTotalCount(v)
+	})
+}
+
+// AddDiagramConstructionTotalCount adds v to the "diagram_construction_total_count" field.
+func (u *ProjectUpsertBulk) AddDiagramConstructionTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramConstructionTotalCount(v)
+	})
+}
+
+// UpdateDiagramConstructionTotalCount sets the "diagram_construction_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramConstructionTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramConstructionTotalCount()
+	})
+}
+
+// ClearDiagramConstructionTotalCount clears the value of the "diagram_construction_total_count" field.
+func (u *ProjectUpsertBulk) ClearDiagramConstructionTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramConstructionTotalCount()
+	})
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (u *ProjectUpsertBulk) SetDiagramProcessingFinishCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramProcessingFinishCount(v)
+	})
+}
+
+// AddDiagramProcessingFinishCount adds v to the "diagram_processing_finish_count" field.
+func (u *ProjectUpsertBulk) AddDiagramProcessingFinishCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramProcessingFinishCount(v)
+	})
+}
+
+// UpdateDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramProcessingFinishCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramProcessingFinishCount()
+	})
+}
+
+// ClearDiagramProcessingFinishCount clears the value of the "diagram_processing_finish_count" field.
+func (u *ProjectUpsertBulk) ClearDiagramProcessingFinishCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramProcessingFinishCount()
+	})
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (u *ProjectUpsertBulk) SetDiagramProcessingTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramProcessingTotalCount(v)
+	})
+}
+
+// AddDiagramProcessingTotalCount adds v to the "diagram_processing_total_count" field.
+func (u *ProjectUpsertBulk) AddDiagramProcessingTotalCount(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramProcessingTotalCount(v)
+	})
+}
+
+// UpdateDiagramProcessingTotalCount sets the "diagram_processing_total_count" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramProcessingTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramProcessingTotalCount()
+	})
+}
+
+// ClearDiagramProcessingTotalCount clears the value of the "diagram_processing_total_count" field.
+func (u *ProjectUpsertBulk) ClearDiagramProcessingTotalCount() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramProcessingTotalCount()
+	})
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsertBulk) SetDiagramCApprovalRatioNumerator(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramCApprovalRatioNumerator(v)
+	})
+}
+
+// AddDiagramCApprovalRatioNumerator adds v to the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsertBulk) AddDiagramCApprovalRatioNumerator(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramCApprovalRatioNumerator(v)
+	})
+}
+
+// UpdateDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramCApprovalRatioNumerator() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramCApprovalRatioNumerator()
+	})
+}
+
+// ClearDiagramCApprovalRatioNumerator clears the value of the "diagram_c_approval_ratio_numerator" field.
+func (u *ProjectUpsertBulk) ClearDiagramCApprovalRatioNumerator() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramCApprovalRatioNumerator()
+	})
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsertBulk) SetDiagramCApprovalRatioDenominator(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.SetDiagramCApprovalRatioDenominator(v)
+	})
+}
+
+// AddDiagramCApprovalRatioDenominator adds v to the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsertBulk) AddDiagramCApprovalRatioDenominator(v int) *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.AddDiagramCApprovalRatioDenominator(v)
+	})
+}
+
+// UpdateDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field to the value that was provided on create.
+func (u *ProjectUpsertBulk) UpdateDiagramCApprovalRatioDenominator() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.UpdateDiagramCApprovalRatioDenominator()
+	})
+}
+
+// ClearDiagramCApprovalRatioDenominator clears the value of the "diagram_c_approval_ratio_denominator" field.
+func (u *ProjectUpsertBulk) ClearDiagramCApprovalRatioDenominator() *ProjectUpsertBulk {
+	return u.Update(func(s *ProjectUpsert) {
+		s.ClearDiagramCApprovalRatioDenominator()
 	})
 }
 

@@ -163,12 +163,28 @@ const (
 	FieldPlanOverdueCount = "plan_overdue_count"
 	// FieldPlanOverdueMonthCount holds the string denoting the plan_overdue_month_count field in the database.
 	FieldPlanOverdueMonthCount = "plan_overdue_month_count"
-	// FieldProcessingDiagramFinishCount holds the string denoting the processing_diagram_finish_count field in the database.
-	FieldProcessingDiagramFinishCount = "processing_diagram_finish_count"
+	// FieldDiagramBdFinishCount holds the string denoting the diagram_bd_finish_count field in the database.
+	FieldDiagramBdFinishCount = "diagram_bd_finish_count"
+	// FieldDiagramBdTotalCount holds the string denoting the diagram_bd_total_count field in the database.
+	FieldDiagramBdTotalCount = "diagram_bd_total_count"
+	// FieldDiagramConstructionFinishCount holds the string denoting the diagram_construction_finish_count field in the database.
+	FieldDiagramConstructionFinishCount = "diagram_construction_finish_count"
+	// FieldDiagramConstructionTotalCount holds the string denoting the diagram_construction_total_count field in the database.
+	FieldDiagramConstructionTotalCount = "diagram_construction_total_count"
+	// FieldDiagramProcessingFinishCount holds the string denoting the diagram_processing_finish_count field in the database.
+	FieldDiagramProcessingFinishCount = "diagram_processing_finish_count"
+	// FieldDiagramProcessingTotalCount holds the string denoting the diagram_processing_total_count field in the database.
+	FieldDiagramProcessingTotalCount = "diagram_processing_total_count"
+	// FieldDiagramCApprovalRatioNumerator holds the string denoting the diagram_c_approval_ratio_numerator field in the database.
+	FieldDiagramCApprovalRatioNumerator = "diagram_c_approval_ratio_numerator"
+	// FieldDiagramCApprovalRatioDenominator holds the string denoting the diagram_c_approval_ratio_denominator field in the database.
+	FieldDiagramCApprovalRatioDenominator = "diagram_c_approval_ratio_denominator"
 	// EdgeVos holds the string denoting the vos edge name in mutations.
 	EdgeVos = "vos"
 	// EdgeProjectStaffs holds the string denoting the project_staffs edge name in mutations.
 	EdgeProjectStaffs = "project_staffs"
+	// EdgeUsers holds the string denoting the users edge name in mutations.
+	EdgeUsers = "users"
 	// Table holds the table name of the project in the database.
 	Table = "projects"
 	// VosTable is the table that holds the vos relation/edge.
@@ -185,6 +201,11 @@ const (
 	ProjectStaffsInverseTable = "project_staffs"
 	// ProjectStaffsColumn is the table column denoting the project_staffs relation/edge.
 	ProjectStaffsColumn = "project_id"
+	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
+	UsersTable = "project_users"
+	// UsersInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	UsersInverseTable = "users"
 )
 
 // Columns holds all SQL columns for project fields.
@@ -264,8 +285,21 @@ var Columns = []string{
 	FieldPlanTotalCount,
 	FieldPlanOverdueCount,
 	FieldPlanOverdueMonthCount,
-	FieldProcessingDiagramFinishCount,
+	FieldDiagramBdFinishCount,
+	FieldDiagramBdTotalCount,
+	FieldDiagramConstructionFinishCount,
+	FieldDiagramConstructionTotalCount,
+	FieldDiagramProcessingFinishCount,
+	FieldDiagramProcessingTotalCount,
+	FieldDiagramCApprovalRatioNumerator,
+	FieldDiagramCApprovalRatioDenominator,
 }
+
+var (
+	// UsersPrimaryKey and UsersColumn2 are the table columns denoting the
+	// primary key for the users relation (M2M).
+	UsersPrimaryKey = []string{"project_id", "user_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -668,9 +702,44 @@ func ByPlanOverdueMonthCount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPlanOverdueMonthCount, opts...).ToFunc()
 }
 
-// ByProcessingDiagramFinishCount orders the results by the processing_diagram_finish_count field.
-func ByProcessingDiagramFinishCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldProcessingDiagramFinishCount, opts...).ToFunc()
+// ByDiagramBdFinishCount orders the results by the diagram_bd_finish_count field.
+func ByDiagramBdFinishCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramBdFinishCount, opts...).ToFunc()
+}
+
+// ByDiagramBdTotalCount orders the results by the diagram_bd_total_count field.
+func ByDiagramBdTotalCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramBdTotalCount, opts...).ToFunc()
+}
+
+// ByDiagramConstructionFinishCount orders the results by the diagram_construction_finish_count field.
+func ByDiagramConstructionFinishCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramConstructionFinishCount, opts...).ToFunc()
+}
+
+// ByDiagramConstructionTotalCount orders the results by the diagram_construction_total_count field.
+func ByDiagramConstructionTotalCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramConstructionTotalCount, opts...).ToFunc()
+}
+
+// ByDiagramProcessingFinishCount orders the results by the diagram_processing_finish_count field.
+func ByDiagramProcessingFinishCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramProcessingFinishCount, opts...).ToFunc()
+}
+
+// ByDiagramProcessingTotalCount orders the results by the diagram_processing_total_count field.
+func ByDiagramProcessingTotalCount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramProcessingTotalCount, opts...).ToFunc()
+}
+
+// ByDiagramCApprovalRatioNumerator orders the results by the diagram_c_approval_ratio_numerator field.
+func ByDiagramCApprovalRatioNumerator(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramCApprovalRatioNumerator, opts...).ToFunc()
+}
+
+// ByDiagramCApprovalRatioDenominator orders the results by the diagram_c_approval_ratio_denominator field.
+func ByDiagramCApprovalRatioDenominator(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDiagramCApprovalRatioDenominator, opts...).ToFunc()
 }
 
 // ByVosCount orders the results by vos count.
@@ -700,6 +769,20 @@ func ByProjectStaffs(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newProjectStaffsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByUsersCount orders the results by users count.
+func ByUsersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newUsersStep(), opts...)
+	}
+}
+
+// ByUsers orders the results by users terms.
+func ByUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newVosStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -712,5 +795,12 @@ func newProjectStaffsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ProjectStaffsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ProjectStaffsTable, ProjectStaffsColumn),
+	)
+}
+func newUsersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(UsersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, UsersTable, UsersPrimaryKey...),
 	)
 }

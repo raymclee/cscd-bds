@@ -426,9 +426,44 @@ func PlanOverdueMonthCount(v int) predicate.Project {
 	return predicate.Project(sql.FieldEQ(FieldPlanOverdueMonthCount, v))
 }
 
-// ProcessingDiagramFinishCount applies equality check predicate on the "processing_diagram_finish_count" field. It's identical to ProcessingDiagramFinishCountEQ.
-func ProcessingDiagramFinishCount(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCount applies equality check predicate on the "diagram_bd_finish_count" field. It's identical to DiagramBdFinishCountEQ.
+func DiagramBdFinishCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramBdFinishCount, v))
+}
+
+// DiagramBdTotalCount applies equality check predicate on the "diagram_bd_total_count" field. It's identical to DiagramBdTotalCountEQ.
+func DiagramBdTotalCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramConstructionFinishCount applies equality check predicate on the "diagram_construction_finish_count" field. It's identical to DiagramConstructionFinishCountEQ.
+func DiagramConstructionFinishCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionTotalCount applies equality check predicate on the "diagram_construction_total_count" field. It's identical to DiagramConstructionTotalCountEQ.
+func DiagramConstructionTotalCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramProcessingFinishCount applies equality check predicate on the "diagram_processing_finish_count" field. It's identical to DiagramProcessingFinishCountEQ.
+func DiagramProcessingFinishCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingTotalCount applies equality check predicate on the "diagram_processing_total_count" field. It's identical to DiagramProcessingTotalCountEQ.
+func DiagramProcessingTotalCount(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramCApprovalRatioNumerator applies equality check predicate on the "diagram_c_approval_ratio_numerator" field. It's identical to DiagramCApprovalRatioNumeratorEQ.
+func DiagramCApprovalRatioNumerator(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioDenominator applies equality check predicate on the "diagram_c_approval_ratio_denominator" field. It's identical to DiagramCApprovalRatioDenominatorEQ.
+func DiagramCApprovalRatioDenominator(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramCApprovalRatioDenominator, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -4336,54 +4371,404 @@ func PlanOverdueMonthCountNotNil() predicate.Project {
 	return predicate.Project(sql.FieldNotNull(FieldPlanOverdueMonthCount))
 }
 
-// ProcessingDiagramFinishCountEQ applies the EQ predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldEQ(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCountEQ applies the EQ predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramBdFinishCount, v))
 }
 
-// ProcessingDiagramFinishCountNEQ applies the NEQ predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountNEQ(v int) predicate.Project {
-	return predicate.Project(sql.FieldNEQ(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCountNEQ applies the NEQ predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramBdFinishCount, v))
 }
 
-// ProcessingDiagramFinishCountIn applies the In predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldIn(FieldProcessingDiagramFinishCount, vs...))
+// DiagramBdFinishCountIn applies the In predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramBdFinishCount, vs...))
 }
 
-// ProcessingDiagramFinishCountNotIn applies the NotIn predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountNotIn(vs ...int) predicate.Project {
-	return predicate.Project(sql.FieldNotIn(FieldProcessingDiagramFinishCount, vs...))
+// DiagramBdFinishCountNotIn applies the NotIn predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramBdFinishCount, vs...))
 }
 
-// ProcessingDiagramFinishCountGT applies the GT predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountGT(v int) predicate.Project {
-	return predicate.Project(sql.FieldGT(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCountGT applies the GT predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramBdFinishCount, v))
 }
 
-// ProcessingDiagramFinishCountGTE applies the GTE predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountGTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldGTE(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCountGTE applies the GTE predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramBdFinishCount, v))
 }
 
-// ProcessingDiagramFinishCountLT applies the LT predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountLT(v int) predicate.Project {
-	return predicate.Project(sql.FieldLT(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCountLT applies the LT predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramBdFinishCount, v))
 }
 
-// ProcessingDiagramFinishCountLTE applies the LTE predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountLTE(v int) predicate.Project {
-	return predicate.Project(sql.FieldLTE(FieldProcessingDiagramFinishCount, v))
+// DiagramBdFinishCountLTE applies the LTE predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramBdFinishCount, v))
 }
 
-// ProcessingDiagramFinishCountIsNil applies the IsNil predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountIsNil() predicate.Project {
-	return predicate.Project(sql.FieldIsNull(FieldProcessingDiagramFinishCount))
+// DiagramBdFinishCountIsNil applies the IsNil predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramBdFinishCount))
 }
 
-// ProcessingDiagramFinishCountNotNil applies the NotNil predicate on the "processing_diagram_finish_count" field.
-func ProcessingDiagramFinishCountNotNil() predicate.Project {
-	return predicate.Project(sql.FieldNotNull(FieldProcessingDiagramFinishCount))
+// DiagramBdFinishCountNotNil applies the NotNil predicate on the "diagram_bd_finish_count" field.
+func DiagramBdFinishCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramBdFinishCount))
+}
+
+// DiagramBdTotalCountEQ applies the EQ predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramBdTotalCountNEQ applies the NEQ predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramBdTotalCountIn applies the In predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramBdTotalCount, vs...))
+}
+
+// DiagramBdTotalCountNotIn applies the NotIn predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramBdTotalCount, vs...))
+}
+
+// DiagramBdTotalCountGT applies the GT predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramBdTotalCountGTE applies the GTE predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramBdTotalCountLT applies the LT predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramBdTotalCountLTE applies the LTE predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramBdTotalCount, v))
+}
+
+// DiagramBdTotalCountIsNil applies the IsNil predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramBdTotalCount))
+}
+
+// DiagramBdTotalCountNotNil applies the NotNil predicate on the "diagram_bd_total_count" field.
+func DiagramBdTotalCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramBdTotalCount))
+}
+
+// DiagramConstructionFinishCountEQ applies the EQ predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionFinishCountNEQ applies the NEQ predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionFinishCountIn applies the In predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramConstructionFinishCount, vs...))
+}
+
+// DiagramConstructionFinishCountNotIn applies the NotIn predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramConstructionFinishCount, vs...))
+}
+
+// DiagramConstructionFinishCountGT applies the GT predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionFinishCountGTE applies the GTE predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionFinishCountLT applies the LT predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionFinishCountLTE applies the LTE predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramConstructionFinishCount, v))
+}
+
+// DiagramConstructionFinishCountIsNil applies the IsNil predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramConstructionFinishCount))
+}
+
+// DiagramConstructionFinishCountNotNil applies the NotNil predicate on the "diagram_construction_finish_count" field.
+func DiagramConstructionFinishCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramConstructionFinishCount))
+}
+
+// DiagramConstructionTotalCountEQ applies the EQ predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramConstructionTotalCountNEQ applies the NEQ predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramConstructionTotalCountIn applies the In predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramConstructionTotalCount, vs...))
+}
+
+// DiagramConstructionTotalCountNotIn applies the NotIn predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramConstructionTotalCount, vs...))
+}
+
+// DiagramConstructionTotalCountGT applies the GT predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramConstructionTotalCountGTE applies the GTE predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramConstructionTotalCountLT applies the LT predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramConstructionTotalCountLTE applies the LTE predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramConstructionTotalCount, v))
+}
+
+// DiagramConstructionTotalCountIsNil applies the IsNil predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramConstructionTotalCount))
+}
+
+// DiagramConstructionTotalCountNotNil applies the NotNil predicate on the "diagram_construction_total_count" field.
+func DiagramConstructionTotalCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramConstructionTotalCount))
+}
+
+// DiagramProcessingFinishCountEQ applies the EQ predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingFinishCountNEQ applies the NEQ predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingFinishCountIn applies the In predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramProcessingFinishCount, vs...))
+}
+
+// DiagramProcessingFinishCountNotIn applies the NotIn predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramProcessingFinishCount, vs...))
+}
+
+// DiagramProcessingFinishCountGT applies the GT predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingFinishCountGTE applies the GTE predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingFinishCountLT applies the LT predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingFinishCountLTE applies the LTE predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramProcessingFinishCount, v))
+}
+
+// DiagramProcessingFinishCountIsNil applies the IsNil predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramProcessingFinishCount))
+}
+
+// DiagramProcessingFinishCountNotNil applies the NotNil predicate on the "diagram_processing_finish_count" field.
+func DiagramProcessingFinishCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramProcessingFinishCount))
+}
+
+// DiagramProcessingTotalCountEQ applies the EQ predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramProcessingTotalCountNEQ applies the NEQ predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramProcessingTotalCountIn applies the In predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramProcessingTotalCount, vs...))
+}
+
+// DiagramProcessingTotalCountNotIn applies the NotIn predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramProcessingTotalCount, vs...))
+}
+
+// DiagramProcessingTotalCountGT applies the GT predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramProcessingTotalCountGTE applies the GTE predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramProcessingTotalCountLT applies the LT predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramProcessingTotalCountLTE applies the LTE predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramProcessingTotalCount, v))
+}
+
+// DiagramProcessingTotalCountIsNil applies the IsNil predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramProcessingTotalCount))
+}
+
+// DiagramProcessingTotalCountNotNil applies the NotNil predicate on the "diagram_processing_total_count" field.
+func DiagramProcessingTotalCountNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramProcessingTotalCount))
+}
+
+// DiagramCApprovalRatioNumeratorEQ applies the EQ predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioNumeratorNEQ applies the NEQ predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioNumeratorIn applies the In predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramCApprovalRatioNumerator, vs...))
+}
+
+// DiagramCApprovalRatioNumeratorNotIn applies the NotIn predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramCApprovalRatioNumerator, vs...))
+}
+
+// DiagramCApprovalRatioNumeratorGT applies the GT predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioNumeratorGTE applies the GTE predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioNumeratorLT applies the LT predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioNumeratorLTE applies the LTE predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramCApprovalRatioNumerator, v))
+}
+
+// DiagramCApprovalRatioNumeratorIsNil applies the IsNil predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramCApprovalRatioNumerator))
+}
+
+// DiagramCApprovalRatioNumeratorNotNil applies the NotNil predicate on the "diagram_c_approval_ratio_numerator" field.
+func DiagramCApprovalRatioNumeratorNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramCApprovalRatioNumerator))
+}
+
+// DiagramCApprovalRatioDenominatorEQ applies the EQ predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldEQ(FieldDiagramCApprovalRatioDenominator, v))
+}
+
+// DiagramCApprovalRatioDenominatorNEQ applies the NEQ predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorNEQ(v int) predicate.Project {
+	return predicate.Project(sql.FieldNEQ(FieldDiagramCApprovalRatioDenominator, v))
+}
+
+// DiagramCApprovalRatioDenominatorIn applies the In predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldIn(FieldDiagramCApprovalRatioDenominator, vs...))
+}
+
+// DiagramCApprovalRatioDenominatorNotIn applies the NotIn predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorNotIn(vs ...int) predicate.Project {
+	return predicate.Project(sql.FieldNotIn(FieldDiagramCApprovalRatioDenominator, vs...))
+}
+
+// DiagramCApprovalRatioDenominatorGT applies the GT predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorGT(v int) predicate.Project {
+	return predicate.Project(sql.FieldGT(FieldDiagramCApprovalRatioDenominator, v))
+}
+
+// DiagramCApprovalRatioDenominatorGTE applies the GTE predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorGTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldGTE(FieldDiagramCApprovalRatioDenominator, v))
+}
+
+// DiagramCApprovalRatioDenominatorLT applies the LT predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorLT(v int) predicate.Project {
+	return predicate.Project(sql.FieldLT(FieldDiagramCApprovalRatioDenominator, v))
+}
+
+// DiagramCApprovalRatioDenominatorLTE applies the LTE predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorLTE(v int) predicate.Project {
+	return predicate.Project(sql.FieldLTE(FieldDiagramCApprovalRatioDenominator, v))
+}
+
+// DiagramCApprovalRatioDenominatorIsNil applies the IsNil predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorIsNil() predicate.Project {
+	return predicate.Project(sql.FieldIsNull(FieldDiagramCApprovalRatioDenominator))
+}
+
+// DiagramCApprovalRatioDenominatorNotNil applies the NotNil predicate on the "diagram_c_approval_ratio_denominator" field.
+func DiagramCApprovalRatioDenominatorNotNil() predicate.Project {
+	return predicate.Project(sql.FieldNotNull(FieldDiagramCApprovalRatioDenominator))
 }
 
 // HasVos applies the HasEdge predicate on the "vos" edge.
@@ -4424,6 +4809,29 @@ func HasProjectStaffs() predicate.Project {
 func HasProjectStaffsWith(preds ...predicate.ProjectStaff) predicate.Project {
 	return predicate.Project(func(s *sql.Selector) {
 		step := newProjectStaffsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasUsers applies the HasEdge predicate on the "users" edge.
+func HasUsers() predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, UsersTable, UsersPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasUsersWith applies the HasEdge predicate on the "users" edge with a given conditions (other predicates).
+func HasUsersWith(preds ...predicate.User) predicate.Project {
+	return predicate.Project(func(s *sql.Selector) {
+		step := newUsersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

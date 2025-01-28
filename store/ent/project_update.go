@@ -9,6 +9,7 @@ import (
 	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/user"
 	"errors"
 	"fmt"
 	"time"
@@ -1857,30 +1858,219 @@ func (pu *ProjectUpdate) ClearPlanOverdueMonthCount() *ProjectUpdate {
 	return pu
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (pu *ProjectUpdate) SetProcessingDiagramFinishCount(i int) *ProjectUpdate {
-	pu.mutation.ResetProcessingDiagramFinishCount()
-	pu.mutation.SetProcessingDiagramFinishCount(i)
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (pu *ProjectUpdate) SetDiagramBdFinishCount(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramBdFinishCount()
+	pu.mutation.SetDiagramBdFinishCount(i)
 	return pu
 }
 
-// SetNillableProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field if the given value is not nil.
-func (pu *ProjectUpdate) SetNillableProcessingDiagramFinishCount(i *int) *ProjectUpdate {
+// SetNillableDiagramBdFinishCount sets the "diagram_bd_finish_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramBdFinishCount(i *int) *ProjectUpdate {
 	if i != nil {
-		pu.SetProcessingDiagramFinishCount(*i)
+		pu.SetDiagramBdFinishCount(*i)
 	}
 	return pu
 }
 
-// AddProcessingDiagramFinishCount adds i to the "processing_diagram_finish_count" field.
-func (pu *ProjectUpdate) AddProcessingDiagramFinishCount(i int) *ProjectUpdate {
-	pu.mutation.AddProcessingDiagramFinishCount(i)
+// AddDiagramBdFinishCount adds i to the "diagram_bd_finish_count" field.
+func (pu *ProjectUpdate) AddDiagramBdFinishCount(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramBdFinishCount(i)
 	return pu
 }
 
-// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
-func (pu *ProjectUpdate) ClearProcessingDiagramFinishCount() *ProjectUpdate {
-	pu.mutation.ClearProcessingDiagramFinishCount()
+// ClearDiagramBdFinishCount clears the value of the "diagram_bd_finish_count" field.
+func (pu *ProjectUpdate) ClearDiagramBdFinishCount() *ProjectUpdate {
+	pu.mutation.ClearDiagramBdFinishCount()
+	return pu
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (pu *ProjectUpdate) SetDiagramBdTotalCount(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramBdTotalCount()
+	pu.mutation.SetDiagramBdTotalCount(i)
+	return pu
+}
+
+// SetNillableDiagramBdTotalCount sets the "diagram_bd_total_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramBdTotalCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramBdTotalCount(*i)
+	}
+	return pu
+}
+
+// AddDiagramBdTotalCount adds i to the "diagram_bd_total_count" field.
+func (pu *ProjectUpdate) AddDiagramBdTotalCount(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramBdTotalCount(i)
+	return pu
+}
+
+// ClearDiagramBdTotalCount clears the value of the "diagram_bd_total_count" field.
+func (pu *ProjectUpdate) ClearDiagramBdTotalCount() *ProjectUpdate {
+	pu.mutation.ClearDiagramBdTotalCount()
+	return pu
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (pu *ProjectUpdate) SetDiagramConstructionFinishCount(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramConstructionFinishCount()
+	pu.mutation.SetDiagramConstructionFinishCount(i)
+	return pu
+}
+
+// SetNillableDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramConstructionFinishCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramConstructionFinishCount(*i)
+	}
+	return pu
+}
+
+// AddDiagramConstructionFinishCount adds i to the "diagram_construction_finish_count" field.
+func (pu *ProjectUpdate) AddDiagramConstructionFinishCount(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramConstructionFinishCount(i)
+	return pu
+}
+
+// ClearDiagramConstructionFinishCount clears the value of the "diagram_construction_finish_count" field.
+func (pu *ProjectUpdate) ClearDiagramConstructionFinishCount() *ProjectUpdate {
+	pu.mutation.ClearDiagramConstructionFinishCount()
+	return pu
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (pu *ProjectUpdate) SetDiagramConstructionTotalCount(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramConstructionTotalCount()
+	pu.mutation.SetDiagramConstructionTotalCount(i)
+	return pu
+}
+
+// SetNillableDiagramConstructionTotalCount sets the "diagram_construction_total_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramConstructionTotalCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramConstructionTotalCount(*i)
+	}
+	return pu
+}
+
+// AddDiagramConstructionTotalCount adds i to the "diagram_construction_total_count" field.
+func (pu *ProjectUpdate) AddDiagramConstructionTotalCount(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramConstructionTotalCount(i)
+	return pu
+}
+
+// ClearDiagramConstructionTotalCount clears the value of the "diagram_construction_total_count" field.
+func (pu *ProjectUpdate) ClearDiagramConstructionTotalCount() *ProjectUpdate {
+	pu.mutation.ClearDiagramConstructionTotalCount()
+	return pu
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (pu *ProjectUpdate) SetDiagramProcessingFinishCount(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramProcessingFinishCount()
+	pu.mutation.SetDiagramProcessingFinishCount(i)
+	return pu
+}
+
+// SetNillableDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramProcessingFinishCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramProcessingFinishCount(*i)
+	}
+	return pu
+}
+
+// AddDiagramProcessingFinishCount adds i to the "diagram_processing_finish_count" field.
+func (pu *ProjectUpdate) AddDiagramProcessingFinishCount(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramProcessingFinishCount(i)
+	return pu
+}
+
+// ClearDiagramProcessingFinishCount clears the value of the "diagram_processing_finish_count" field.
+func (pu *ProjectUpdate) ClearDiagramProcessingFinishCount() *ProjectUpdate {
+	pu.mutation.ClearDiagramProcessingFinishCount()
+	return pu
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (pu *ProjectUpdate) SetDiagramProcessingTotalCount(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramProcessingTotalCount()
+	pu.mutation.SetDiagramProcessingTotalCount(i)
+	return pu
+}
+
+// SetNillableDiagramProcessingTotalCount sets the "diagram_processing_total_count" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramProcessingTotalCount(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramProcessingTotalCount(*i)
+	}
+	return pu
+}
+
+// AddDiagramProcessingTotalCount adds i to the "diagram_processing_total_count" field.
+func (pu *ProjectUpdate) AddDiagramProcessingTotalCount(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramProcessingTotalCount(i)
+	return pu
+}
+
+// ClearDiagramProcessingTotalCount clears the value of the "diagram_processing_total_count" field.
+func (pu *ProjectUpdate) ClearDiagramProcessingTotalCount() *ProjectUpdate {
+	pu.mutation.ClearDiagramProcessingTotalCount()
+	return pu
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (pu *ProjectUpdate) SetDiagramCApprovalRatioNumerator(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramCApprovalRatioNumerator()
+	pu.mutation.SetDiagramCApprovalRatioNumerator(i)
+	return pu
+}
+
+// SetNillableDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramCApprovalRatioNumerator(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramCApprovalRatioNumerator(*i)
+	}
+	return pu
+}
+
+// AddDiagramCApprovalRatioNumerator adds i to the "diagram_c_approval_ratio_numerator" field.
+func (pu *ProjectUpdate) AddDiagramCApprovalRatioNumerator(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramCApprovalRatioNumerator(i)
+	return pu
+}
+
+// ClearDiagramCApprovalRatioNumerator clears the value of the "diagram_c_approval_ratio_numerator" field.
+func (pu *ProjectUpdate) ClearDiagramCApprovalRatioNumerator() *ProjectUpdate {
+	pu.mutation.ClearDiagramCApprovalRatioNumerator()
+	return pu
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (pu *ProjectUpdate) SetDiagramCApprovalRatioDenominator(i int) *ProjectUpdate {
+	pu.mutation.ResetDiagramCApprovalRatioDenominator()
+	pu.mutation.SetDiagramCApprovalRatioDenominator(i)
+	return pu
+}
+
+// SetNillableDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field if the given value is not nil.
+func (pu *ProjectUpdate) SetNillableDiagramCApprovalRatioDenominator(i *int) *ProjectUpdate {
+	if i != nil {
+		pu.SetDiagramCApprovalRatioDenominator(*i)
+	}
+	return pu
+}
+
+// AddDiagramCApprovalRatioDenominator adds i to the "diagram_c_approval_ratio_denominator" field.
+func (pu *ProjectUpdate) AddDiagramCApprovalRatioDenominator(i int) *ProjectUpdate {
+	pu.mutation.AddDiagramCApprovalRatioDenominator(i)
+	return pu
+}
+
+// ClearDiagramCApprovalRatioDenominator clears the value of the "diagram_c_approval_ratio_denominator" field.
+func (pu *ProjectUpdate) ClearDiagramCApprovalRatioDenominator() *ProjectUpdate {
+	pu.mutation.ClearDiagramCApprovalRatioDenominator()
 	return pu
 }
 
@@ -1912,6 +2102,21 @@ func (pu *ProjectUpdate) AddProjectStaffs(p ...*ProjectStaff) *ProjectUpdate {
 		ids[i] = p[i].ID
 	}
 	return pu.AddProjectStaffIDs(ids...)
+}
+
+// AddUserIDs adds the "users" edge to the User entity by IDs.
+func (pu *ProjectUpdate) AddUserIDs(ids ...xid.ID) *ProjectUpdate {
+	pu.mutation.AddUserIDs(ids...)
+	return pu
+}
+
+// AddUsers adds the "users" edges to the User entity.
+func (pu *ProjectUpdate) AddUsers(u ...*User) *ProjectUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pu.AddUserIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -1959,6 +2164,27 @@ func (pu *ProjectUpdate) RemoveProjectStaffs(p ...*ProjectStaff) *ProjectUpdate 
 		ids[i] = p[i].ID
 	}
 	return pu.RemoveProjectStaffIDs(ids...)
+}
+
+// ClearUsers clears all "users" edges to the User entity.
+func (pu *ProjectUpdate) ClearUsers() *ProjectUpdate {
+	pu.mutation.ClearUsers()
+	return pu
+}
+
+// RemoveUserIDs removes the "users" edge to User entities by IDs.
+func (pu *ProjectUpdate) RemoveUserIDs(ids ...xid.ID) *ProjectUpdate {
+	pu.mutation.RemoveUserIDs(ids...)
+	return pu
+}
+
+// RemoveUsers removes "users" edges to User entities.
+func (pu *ProjectUpdate) RemoveUsers(u ...*User) *ProjectUpdate {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return pu.RemoveUserIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -2603,14 +2829,77 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if pu.mutation.PlanOverdueMonthCountCleared() {
 		_spec.ClearField(project.FieldPlanOverdueMonthCount, field.TypeInt)
 	}
-	if value, ok := pu.mutation.ProcessingDiagramFinishCount(); ok {
-		_spec.SetField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	if value, ok := pu.mutation.DiagramBdFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.AddedProcessingDiagramFinishCount(); ok {
-		_spec.AddField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	if value, ok := pu.mutation.AddedDiagramBdFinishCount(); ok {
+		_spec.AddField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
 	}
-	if pu.mutation.ProcessingDiagramFinishCountCleared() {
-		_spec.ClearField(project.FieldProcessingDiagramFinishCount, field.TypeInt)
+	if pu.mutation.DiagramBdFinishCountCleared() {
+		_spec.ClearField(project.FieldDiagramBdFinishCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramBdTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramBdTotalCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramBdTotalCount(); ok {
+		_spec.AddField(project.FieldDiagramBdTotalCount, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramBdTotalCountCleared() {
+		_spec.ClearField(project.FieldDiagramBdTotalCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramConstructionFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramConstructionFinishCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramConstructionFinishCount(); ok {
+		_spec.AddField(project.FieldDiagramConstructionFinishCount, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramConstructionFinishCountCleared() {
+		_spec.ClearField(project.FieldDiagramConstructionFinishCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramConstructionTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramConstructionTotalCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramConstructionTotalCount(); ok {
+		_spec.AddField(project.FieldDiagramConstructionTotalCount, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramConstructionTotalCountCleared() {
+		_spec.ClearField(project.FieldDiagramConstructionTotalCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramProcessingFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramProcessingFinishCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramProcessingFinishCount(); ok {
+		_spec.AddField(project.FieldDiagramProcessingFinishCount, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramProcessingFinishCountCleared() {
+		_spec.ClearField(project.FieldDiagramProcessingFinishCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramProcessingTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramProcessingTotalCount, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramProcessingTotalCount(); ok {
+		_spec.AddField(project.FieldDiagramProcessingTotalCount, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramProcessingTotalCountCleared() {
+		_spec.ClearField(project.FieldDiagramProcessingTotalCount, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramCApprovalRatioNumerator(); ok {
+		_spec.SetField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramCApprovalRatioNumerator(); ok {
+		_spec.AddField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramCApprovalRatioNumeratorCleared() {
+		_spec.ClearField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt)
+	}
+	if value, ok := pu.mutation.DiagramCApprovalRatioDenominator(); ok {
+		_spec.SetField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.AddedDiagramCApprovalRatioDenominator(); ok {
+		_spec.AddField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt, value)
+	}
+	if pu.mutation.DiagramCApprovalRatioDenominatorCleared() {
+		_spec.ClearField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt)
 	}
 	if pu.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -2695,6 +2984,51 @@ func (pu *ProjectUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pu.mutation.UsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedUsersIDs(); len(nodes) > 0 && !pu.mutation.UsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.UsersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -4548,30 +4882,219 @@ func (puo *ProjectUpdateOne) ClearPlanOverdueMonthCount() *ProjectUpdateOne {
 	return puo
 }
 
-// SetProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field.
-func (puo *ProjectUpdateOne) SetProcessingDiagramFinishCount(i int) *ProjectUpdateOne {
-	puo.mutation.ResetProcessingDiagramFinishCount()
-	puo.mutation.SetProcessingDiagramFinishCount(i)
+// SetDiagramBdFinishCount sets the "diagram_bd_finish_count" field.
+func (puo *ProjectUpdateOne) SetDiagramBdFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramBdFinishCount()
+	puo.mutation.SetDiagramBdFinishCount(i)
 	return puo
 }
 
-// SetNillableProcessingDiagramFinishCount sets the "processing_diagram_finish_count" field if the given value is not nil.
-func (puo *ProjectUpdateOne) SetNillableProcessingDiagramFinishCount(i *int) *ProjectUpdateOne {
+// SetNillableDiagramBdFinishCount sets the "diagram_bd_finish_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramBdFinishCount(i *int) *ProjectUpdateOne {
 	if i != nil {
-		puo.SetProcessingDiagramFinishCount(*i)
+		puo.SetDiagramBdFinishCount(*i)
 	}
 	return puo
 }
 
-// AddProcessingDiagramFinishCount adds i to the "processing_diagram_finish_count" field.
-func (puo *ProjectUpdateOne) AddProcessingDiagramFinishCount(i int) *ProjectUpdateOne {
-	puo.mutation.AddProcessingDiagramFinishCount(i)
+// AddDiagramBdFinishCount adds i to the "diagram_bd_finish_count" field.
+func (puo *ProjectUpdateOne) AddDiagramBdFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramBdFinishCount(i)
 	return puo
 }
 
-// ClearProcessingDiagramFinishCount clears the value of the "processing_diagram_finish_count" field.
-func (puo *ProjectUpdateOne) ClearProcessingDiagramFinishCount() *ProjectUpdateOne {
-	puo.mutation.ClearProcessingDiagramFinishCount()
+// ClearDiagramBdFinishCount clears the value of the "diagram_bd_finish_count" field.
+func (puo *ProjectUpdateOne) ClearDiagramBdFinishCount() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramBdFinishCount()
+	return puo
+}
+
+// SetDiagramBdTotalCount sets the "diagram_bd_total_count" field.
+func (puo *ProjectUpdateOne) SetDiagramBdTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramBdTotalCount()
+	puo.mutation.SetDiagramBdTotalCount(i)
+	return puo
+}
+
+// SetNillableDiagramBdTotalCount sets the "diagram_bd_total_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramBdTotalCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramBdTotalCount(*i)
+	}
+	return puo
+}
+
+// AddDiagramBdTotalCount adds i to the "diagram_bd_total_count" field.
+func (puo *ProjectUpdateOne) AddDiagramBdTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramBdTotalCount(i)
+	return puo
+}
+
+// ClearDiagramBdTotalCount clears the value of the "diagram_bd_total_count" field.
+func (puo *ProjectUpdateOne) ClearDiagramBdTotalCount() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramBdTotalCount()
+	return puo
+}
+
+// SetDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field.
+func (puo *ProjectUpdateOne) SetDiagramConstructionFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramConstructionFinishCount()
+	puo.mutation.SetDiagramConstructionFinishCount(i)
+	return puo
+}
+
+// SetNillableDiagramConstructionFinishCount sets the "diagram_construction_finish_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramConstructionFinishCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramConstructionFinishCount(*i)
+	}
+	return puo
+}
+
+// AddDiagramConstructionFinishCount adds i to the "diagram_construction_finish_count" field.
+func (puo *ProjectUpdateOne) AddDiagramConstructionFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramConstructionFinishCount(i)
+	return puo
+}
+
+// ClearDiagramConstructionFinishCount clears the value of the "diagram_construction_finish_count" field.
+func (puo *ProjectUpdateOne) ClearDiagramConstructionFinishCount() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramConstructionFinishCount()
+	return puo
+}
+
+// SetDiagramConstructionTotalCount sets the "diagram_construction_total_count" field.
+func (puo *ProjectUpdateOne) SetDiagramConstructionTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramConstructionTotalCount()
+	puo.mutation.SetDiagramConstructionTotalCount(i)
+	return puo
+}
+
+// SetNillableDiagramConstructionTotalCount sets the "diagram_construction_total_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramConstructionTotalCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramConstructionTotalCount(*i)
+	}
+	return puo
+}
+
+// AddDiagramConstructionTotalCount adds i to the "diagram_construction_total_count" field.
+func (puo *ProjectUpdateOne) AddDiagramConstructionTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramConstructionTotalCount(i)
+	return puo
+}
+
+// ClearDiagramConstructionTotalCount clears the value of the "diagram_construction_total_count" field.
+func (puo *ProjectUpdateOne) ClearDiagramConstructionTotalCount() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramConstructionTotalCount()
+	return puo
+}
+
+// SetDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field.
+func (puo *ProjectUpdateOne) SetDiagramProcessingFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramProcessingFinishCount()
+	puo.mutation.SetDiagramProcessingFinishCount(i)
+	return puo
+}
+
+// SetNillableDiagramProcessingFinishCount sets the "diagram_processing_finish_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramProcessingFinishCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramProcessingFinishCount(*i)
+	}
+	return puo
+}
+
+// AddDiagramProcessingFinishCount adds i to the "diagram_processing_finish_count" field.
+func (puo *ProjectUpdateOne) AddDiagramProcessingFinishCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramProcessingFinishCount(i)
+	return puo
+}
+
+// ClearDiagramProcessingFinishCount clears the value of the "diagram_processing_finish_count" field.
+func (puo *ProjectUpdateOne) ClearDiagramProcessingFinishCount() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramProcessingFinishCount()
+	return puo
+}
+
+// SetDiagramProcessingTotalCount sets the "diagram_processing_total_count" field.
+func (puo *ProjectUpdateOne) SetDiagramProcessingTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramProcessingTotalCount()
+	puo.mutation.SetDiagramProcessingTotalCount(i)
+	return puo
+}
+
+// SetNillableDiagramProcessingTotalCount sets the "diagram_processing_total_count" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramProcessingTotalCount(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramProcessingTotalCount(*i)
+	}
+	return puo
+}
+
+// AddDiagramProcessingTotalCount adds i to the "diagram_processing_total_count" field.
+func (puo *ProjectUpdateOne) AddDiagramProcessingTotalCount(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramProcessingTotalCount(i)
+	return puo
+}
+
+// ClearDiagramProcessingTotalCount clears the value of the "diagram_processing_total_count" field.
+func (puo *ProjectUpdateOne) ClearDiagramProcessingTotalCount() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramProcessingTotalCount()
+	return puo
+}
+
+// SetDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field.
+func (puo *ProjectUpdateOne) SetDiagramCApprovalRatioNumerator(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramCApprovalRatioNumerator()
+	puo.mutation.SetDiagramCApprovalRatioNumerator(i)
+	return puo
+}
+
+// SetNillableDiagramCApprovalRatioNumerator sets the "diagram_c_approval_ratio_numerator" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramCApprovalRatioNumerator(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramCApprovalRatioNumerator(*i)
+	}
+	return puo
+}
+
+// AddDiagramCApprovalRatioNumerator adds i to the "diagram_c_approval_ratio_numerator" field.
+func (puo *ProjectUpdateOne) AddDiagramCApprovalRatioNumerator(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramCApprovalRatioNumerator(i)
+	return puo
+}
+
+// ClearDiagramCApprovalRatioNumerator clears the value of the "diagram_c_approval_ratio_numerator" field.
+func (puo *ProjectUpdateOne) ClearDiagramCApprovalRatioNumerator() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramCApprovalRatioNumerator()
+	return puo
+}
+
+// SetDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field.
+func (puo *ProjectUpdateOne) SetDiagramCApprovalRatioDenominator(i int) *ProjectUpdateOne {
+	puo.mutation.ResetDiagramCApprovalRatioDenominator()
+	puo.mutation.SetDiagramCApprovalRatioDenominator(i)
+	return puo
+}
+
+// SetNillableDiagramCApprovalRatioDenominator sets the "diagram_c_approval_ratio_denominator" field if the given value is not nil.
+func (puo *ProjectUpdateOne) SetNillableDiagramCApprovalRatioDenominator(i *int) *ProjectUpdateOne {
+	if i != nil {
+		puo.SetDiagramCApprovalRatioDenominator(*i)
+	}
+	return puo
+}
+
+// AddDiagramCApprovalRatioDenominator adds i to the "diagram_c_approval_ratio_denominator" field.
+func (puo *ProjectUpdateOne) AddDiagramCApprovalRatioDenominator(i int) *ProjectUpdateOne {
+	puo.mutation.AddDiagramCApprovalRatioDenominator(i)
+	return puo
+}
+
+// ClearDiagramCApprovalRatioDenominator clears the value of the "diagram_c_approval_ratio_denominator" field.
+func (puo *ProjectUpdateOne) ClearDiagramCApprovalRatioDenominator() *ProjectUpdateOne {
+	puo.mutation.ClearDiagramCApprovalRatioDenominator()
 	return puo
 }
 
@@ -4603,6 +5126,21 @@ func (puo *ProjectUpdateOne) AddProjectStaffs(p ...*ProjectStaff) *ProjectUpdate
 		ids[i] = p[i].ID
 	}
 	return puo.AddProjectStaffIDs(ids...)
+}
+
+// AddUserIDs adds the "users" edge to the User entity by IDs.
+func (puo *ProjectUpdateOne) AddUserIDs(ids ...xid.ID) *ProjectUpdateOne {
+	puo.mutation.AddUserIDs(ids...)
+	return puo
+}
+
+// AddUsers adds the "users" edges to the User entity.
+func (puo *ProjectUpdateOne) AddUsers(u ...*User) *ProjectUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return puo.AddUserIDs(ids...)
 }
 
 // Mutation returns the ProjectMutation object of the builder.
@@ -4650,6 +5188,27 @@ func (puo *ProjectUpdateOne) RemoveProjectStaffs(p ...*ProjectStaff) *ProjectUpd
 		ids[i] = p[i].ID
 	}
 	return puo.RemoveProjectStaffIDs(ids...)
+}
+
+// ClearUsers clears all "users" edges to the User entity.
+func (puo *ProjectUpdateOne) ClearUsers() *ProjectUpdateOne {
+	puo.mutation.ClearUsers()
+	return puo
+}
+
+// RemoveUserIDs removes the "users" edge to User entities by IDs.
+func (puo *ProjectUpdateOne) RemoveUserIDs(ids ...xid.ID) *ProjectUpdateOne {
+	puo.mutation.RemoveUserIDs(ids...)
+	return puo
+}
+
+// RemoveUsers removes "users" edges to User entities.
+func (puo *ProjectUpdateOne) RemoveUsers(u ...*User) *ProjectUpdateOne {
+	ids := make([]xid.ID, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return puo.RemoveUserIDs(ids...)
 }
 
 // Where appends a list predicates to the ProjectUpdate builder.
@@ -5324,14 +5883,77 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 	if puo.mutation.PlanOverdueMonthCountCleared() {
 		_spec.ClearField(project.FieldPlanOverdueMonthCount, field.TypeInt)
 	}
-	if value, ok := puo.mutation.ProcessingDiagramFinishCount(); ok {
-		_spec.SetField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	if value, ok := puo.mutation.DiagramBdFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.AddedProcessingDiagramFinishCount(); ok {
-		_spec.AddField(project.FieldProcessingDiagramFinishCount, field.TypeInt, value)
+	if value, ok := puo.mutation.AddedDiagramBdFinishCount(); ok {
+		_spec.AddField(project.FieldDiagramBdFinishCount, field.TypeInt, value)
 	}
-	if puo.mutation.ProcessingDiagramFinishCountCleared() {
-		_spec.ClearField(project.FieldProcessingDiagramFinishCount, field.TypeInt)
+	if puo.mutation.DiagramBdFinishCountCleared() {
+		_spec.ClearField(project.FieldDiagramBdFinishCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramBdTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramBdTotalCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramBdTotalCount(); ok {
+		_spec.AddField(project.FieldDiagramBdTotalCount, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramBdTotalCountCleared() {
+		_spec.ClearField(project.FieldDiagramBdTotalCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramConstructionFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramConstructionFinishCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramConstructionFinishCount(); ok {
+		_spec.AddField(project.FieldDiagramConstructionFinishCount, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramConstructionFinishCountCleared() {
+		_spec.ClearField(project.FieldDiagramConstructionFinishCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramConstructionTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramConstructionTotalCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramConstructionTotalCount(); ok {
+		_spec.AddField(project.FieldDiagramConstructionTotalCount, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramConstructionTotalCountCleared() {
+		_spec.ClearField(project.FieldDiagramConstructionTotalCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramProcessingFinishCount(); ok {
+		_spec.SetField(project.FieldDiagramProcessingFinishCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramProcessingFinishCount(); ok {
+		_spec.AddField(project.FieldDiagramProcessingFinishCount, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramProcessingFinishCountCleared() {
+		_spec.ClearField(project.FieldDiagramProcessingFinishCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramProcessingTotalCount(); ok {
+		_spec.SetField(project.FieldDiagramProcessingTotalCount, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramProcessingTotalCount(); ok {
+		_spec.AddField(project.FieldDiagramProcessingTotalCount, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramProcessingTotalCountCleared() {
+		_spec.ClearField(project.FieldDiagramProcessingTotalCount, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramCApprovalRatioNumerator(); ok {
+		_spec.SetField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramCApprovalRatioNumerator(); ok {
+		_spec.AddField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramCApprovalRatioNumeratorCleared() {
+		_spec.ClearField(project.FieldDiagramCApprovalRatioNumerator, field.TypeInt)
+	}
+	if value, ok := puo.mutation.DiagramCApprovalRatioDenominator(); ok {
+		_spec.SetField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.AddedDiagramCApprovalRatioDenominator(); ok {
+		_spec.AddField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt, value)
+	}
+	if puo.mutation.DiagramCApprovalRatioDenominatorCleared() {
+		_spec.ClearField(project.FieldDiagramCApprovalRatioDenominator, field.TypeInt)
 	}
 	if puo.mutation.VosCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -5416,6 +6038,51 @@ func (puo *ProjectUpdateOne) sqlSave(ctx context.Context) (_node *Project, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(projectstaff.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.UsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedUsersIDs(); len(nodes) > 0 && !puo.mutation.UsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.UsersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f119aaa2c03faede89f5fa673626f4dd>>
+ * @generated SignedSource<<6156da727aaf8154dacb726d3181ea88>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ConcreteRequest } from 'relay-runtime';
 export type UpdateUserInput = {
   addAreaIDs?: ReadonlyArray<string> | null | undefined;
   addCustomerIDs?: ReadonlyArray<string> | null | undefined;
+  addProjectIDs?: ReadonlyArray<string> | null | undefined;
   addTeamMemberIDs?: ReadonlyArray<string> | null | undefined;
   addTenderIDs?: ReadonlyArray<string> | null | undefined;
   addVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
@@ -21,6 +22,7 @@ export type UpdateUserInput = {
   clearCustomers?: boolean | null | undefined;
   clearLeader?: boolean | null | undefined;
   clearOpenID?: boolean | null | undefined;
+  clearProjects?: boolean | null | undefined;
   clearTeamMembers?: boolean | null | undefined;
   clearTenders?: boolean | null | undefined;
   clearVisitRecords?: boolean | null | undefined;
@@ -36,6 +38,7 @@ export type UpdateUserInput = {
   openID?: string | null | undefined;
   removeAreaIDs?: ReadonlyArray<string> | null | undefined;
   removeCustomerIDs?: ReadonlyArray<string> | null | undefined;
+  removeProjectIDs?: ReadonlyArray<string> | null | undefined;
   removeTeamMemberIDs?: ReadonlyArray<string> | null | undefined;
   removeTenderIDs?: ReadonlyArray<string> | null | undefined;
   removeVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
@@ -67,6 +70,14 @@ export type useUpdateUserMutation$data = {
     readonly isSuperAdmin: boolean;
     readonly name: string;
     readonly openID: string | null | undefined;
+    readonly projects: {
+      readonly edges: ReadonlyArray<{
+        readonly node: {
+          readonly code: string;
+          readonly id: string;
+        } | null | undefined;
+      } | null | undefined> | null | undefined;
+    };
     readonly username: string;
   };
 };
@@ -197,6 +208,47 @@ v3 = [
       {
         "alias": null,
         "args": null,
+        "concreteType": "ProjectConnection",
+        "kind": "LinkedField",
+        "name": "projects",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ProjectEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Project",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v1/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "code",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
         "kind": "ScalarField",
         "name": "isSuperAdmin",
         "storageKey": null
@@ -251,16 +303,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "a911edc9696d495153895dadc65db451",
+    "cacheID": "53aa8228726a3908eae76961a78bef8e",
     "id": null,
     "metadata": {},
     "name": "useUpdateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
+    "text": "mutation useUpdateUserMutation(\n  $id: ID!\n  $input: UpdateUserInput!\n) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    email\n    username\n    openID\n    avatarURL\n    disabled\n    areas {\n      edges {\n        node {\n          id\n          name\n        }\n      }\n    }\n    projects {\n      edges {\n        node {\n          id\n          code\n        }\n      }\n    }\n    isSuperAdmin\n    isAdmin\n    isCeo\n    hasMapAccess\n    hasEditAccess\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7fc5ebade2d8b03750ebdfe0e2ec1158";
+(node as any).hash = "0ec7123958815ca6c25e9ce6d16598e1";
 
 export default node;

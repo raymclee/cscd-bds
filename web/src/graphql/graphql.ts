@@ -805,6 +805,7 @@ export type CreateUserInput = {
   leaderID?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
   openID?: InputMaybe<Scalars['String']['input']>;
+  projectIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   teamMemberIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   tenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
@@ -1861,6 +1862,22 @@ export type Project = Node & {
   createdAt: Scalars['Time']['output'];
   /** 设计定额重量 */
   designRatedWeight?: Maybe<Scalars['Float']['output']>;
+  /** BD圖紙完成數量 */
+  diagramBdFinishCount?: Maybe<Scalars['Int']['output']>;
+  /** BD圖紙總數 */
+  diagramBdTotalCount?: Maybe<Scalars['Int']['output']>;
+  /** C版批圖率分母 */
+  diagramCApprovalRatioDenominator?: Maybe<Scalars['Int']['output']>;
+  /** C版批圖率分子 */
+  diagramCApprovalRatioNumerator?: Maybe<Scalars['Int']['output']>;
+  /** 施工圖紙完成數量 */
+  diagramConstructionFinishCount?: Maybe<Scalars['Int']['output']>;
+  /** 施工圖紙總數 */
+  diagramConstructionTotalCount?: Maybe<Scalars['Int']['output']>;
+  /** 加工圖完成數量 */
+  diagramProcessingFinishCount?: Maybe<Scalars['Int']['output']>;
+  /** 加工圖總數 */
+  diagramProcessingTotalCount?: Maybe<Scalars['Int']['output']>;
   /** 有效合同金额 */
   effectiveContractAmount?: Maybe<Scalars['Float']['output']>;
   /** 竣工日期 */
@@ -1933,8 +1950,6 @@ export type Project = Node & {
   pmYearTarget?: Maybe<Scalars['Float']['output']>;
   /** 生产管理昨日生產 */
   pmYesterday?: Maybe<Scalars['Float']['output']>;
-  /** 加工圖完成數量 */
-  processingDiagramFinishCount?: Maybe<Scalars['Int']['output']>;
   /** 加工图成型重量 */
   processingWeight?: Maybe<Scalars['Float']['output']>;
   projectStaffs: ProjectStaffConnection;
@@ -1955,6 +1970,7 @@ export type Project = Node & {
   /** 單元件庫存累計 */
   unitInventoryTotal?: Maybe<Scalars['Float']['output']>;
   updatedAt: Scalars['Time']['output'];
+  users: UserConnection;
   /** 分判VA申请总额 */
   vaApplyAmount?: Maybe<Scalars['Float']['output']>;
   /** 分判VA批复总额 */
@@ -1982,6 +1998,16 @@ export type ProjectProjectStaffsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ProjectStaffOrder>>;
   where?: InputMaybe<ProjectStaffWhereInput>;
+};
+
+
+export type ProjectUsersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserOrder>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -2556,6 +2582,94 @@ export type ProjectWhereInput = {
   designRatedWeightNEQ?: InputMaybe<Scalars['Float']['input']>;
   designRatedWeightNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   designRatedWeightNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_bd_finish_count field predicates */
+  diagramBdFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdFinishCountGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdFinishCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdFinishCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramBdFinishCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramBdFinishCountLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdFinishCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdFinishCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdFinishCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramBdFinishCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_bd_total_count field predicates */
+  diagramBdTotalCount?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdTotalCountGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdTotalCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdTotalCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramBdTotalCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramBdTotalCountLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdTotalCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdTotalCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramBdTotalCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramBdTotalCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_c_approval_ratio_denominator field predicates */
+  diagramCApprovalRatioDenominator?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioDenominatorGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioDenominatorGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioDenominatorIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramCApprovalRatioDenominatorIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramCApprovalRatioDenominatorLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioDenominatorLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioDenominatorNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioDenominatorNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramCApprovalRatioDenominatorNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_c_approval_ratio_numerator field predicates */
+  diagramCApprovalRatioNumerator?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioNumeratorGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioNumeratorGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioNumeratorIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramCApprovalRatioNumeratorIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramCApprovalRatioNumeratorLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioNumeratorLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioNumeratorNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramCApprovalRatioNumeratorNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramCApprovalRatioNumeratorNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_construction_finish_count field predicates */
+  diagramConstructionFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionFinishCountGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionFinishCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionFinishCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramConstructionFinishCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramConstructionFinishCountLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionFinishCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionFinishCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionFinishCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramConstructionFinishCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_construction_total_count field predicates */
+  diagramConstructionTotalCount?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionTotalCountGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionTotalCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionTotalCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramConstructionTotalCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramConstructionTotalCountLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionTotalCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionTotalCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramConstructionTotalCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramConstructionTotalCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_processing_finish_count field predicates */
+  diagramProcessingFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingFinishCountGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingFinishCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingFinishCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramProcessingFinishCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramProcessingFinishCountLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingFinishCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingFinishCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingFinishCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramProcessingFinishCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** diagram_processing_total_count field predicates */
+  diagramProcessingTotalCount?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingTotalCountGT?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingTotalCountGTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingTotalCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramProcessingTotalCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  diagramProcessingTotalCountLT?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingTotalCountLTE?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingTotalCountNEQ?: InputMaybe<Scalars['Int']['input']>;
+  diagramProcessingTotalCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
+  diagramProcessingTotalCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** effective_contract_amount field predicates */
   effectiveContractAmount?: InputMaybe<Scalars['Float']['input']>;
   effectiveContractAmountGT?: InputMaybe<Scalars['Float']['input']>;
@@ -2603,6 +2717,9 @@ export type ProjectWhereInput = {
   /** project_staffs edge predicates */
   hasProjectStaffs?: InputMaybe<Scalars['Boolean']['input']>;
   hasProjectStaffsWith?: InputMaybe<Array<ProjectStaffWhereInput>>;
+  /** users edge predicates */
+  hasUsers?: InputMaybe<Scalars['Boolean']['input']>;
+  hasUsersWith?: InputMaybe<Array<UserWhereInput>>;
   /** vos edge predicates */
   hasVos?: InputMaybe<Scalars['Boolean']['input']>;
   hasVosWith?: InputMaybe<Array<ProjectVoWhereInput>>;
@@ -2991,17 +3108,6 @@ export type ProjectWhereInput = {
   pmYesterdayNEQ?: InputMaybe<Scalars['Float']['input']>;
   pmYesterdayNotIn?: InputMaybe<Array<Scalars['Float']['input']>>;
   pmYesterdayNotNil?: InputMaybe<Scalars['Boolean']['input']>;
-  /** processing_diagram_finish_count field predicates */
-  processingDiagramFinishCount?: InputMaybe<Scalars['Int']['input']>;
-  processingDiagramFinishCountGT?: InputMaybe<Scalars['Int']['input']>;
-  processingDiagramFinishCountGTE?: InputMaybe<Scalars['Int']['input']>;
-  processingDiagramFinishCountIn?: InputMaybe<Array<Scalars['Int']['input']>>;
-  processingDiagramFinishCountIsNil?: InputMaybe<Scalars['Boolean']['input']>;
-  processingDiagramFinishCountLT?: InputMaybe<Scalars['Int']['input']>;
-  processingDiagramFinishCountLTE?: InputMaybe<Scalars['Int']['input']>;
-  processingDiagramFinishCountNEQ?: InputMaybe<Scalars['Int']['input']>;
-  processingDiagramFinishCountNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
-  processingDiagramFinishCountNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** processing_weight field predicates */
   processingWeight?: InputMaybe<Scalars['Float']['input']>;
   processingWeightGT?: InputMaybe<Scalars['Float']['input']>;
@@ -4774,6 +4880,7 @@ export type UpdateProjectInput = {
   /** 本期法定扣款 */
   accumulatedStatutoryDeductionsPeriod?: InputMaybe<Scalars['Float']['input']>;
   addProjectStaffIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  addUserIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addVoIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** 鋁型材預算百分比 */
   aluminumBudgetPercentage?: InputMaybe<Scalars['Float']['input']>;
@@ -4807,6 +4914,14 @@ export type UpdateProjectInput = {
   clearContractorApproveAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearContractorApproveCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearDesignRatedWeight?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramBdFinishCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramBdTotalCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramCApprovalRatioDenominator?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramCApprovalRatioNumerator?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramConstructionFinishCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramConstructionTotalCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramProcessingFinishCount?: InputMaybe<Scalars['Boolean']['input']>;
+  clearDiagramProcessingTotalCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearEffectiveContractAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearEndDate?: InputMaybe<Scalars['Boolean']['input']>;
   clearFsDate?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4842,7 +4957,6 @@ export type UpdateProjectInput = {
   clearPmYearActual?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmYearTarget?: InputMaybe<Scalars['Boolean']['input']>;
   clearPmYesterday?: InputMaybe<Scalars['Boolean']['input']>;
-  clearProcessingDiagramFinishCount?: InputMaybe<Scalars['Boolean']['input']>;
   clearProcessingWeight?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjectStaffs?: InputMaybe<Scalars['Boolean']['input']>;
   clearQualityRanking?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4853,6 +4967,7 @@ export type UpdateProjectInput = {
   clearUnitComponentProduction?: InputMaybe<Scalars['Boolean']['input']>;
   clearUnitComponentTotal?: InputMaybe<Scalars['Boolean']['input']>;
   clearUnitInventoryTotal?: InputMaybe<Scalars['Boolean']['input']>;
+  clearUsers?: InputMaybe<Scalars['Boolean']['input']>;
   clearVaApplyAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearVaApproveAmount?: InputMaybe<Scalars['Boolean']['input']>;
   clearVos?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4877,6 +4992,22 @@ export type UpdateProjectInput = {
   contractorApproveCount?: InputMaybe<Scalars['Int']['input']>;
   /** 设计定额重量 */
   designRatedWeight?: InputMaybe<Scalars['Float']['input']>;
+  /** BD圖紙完成數量 */
+  diagramBdFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  /** BD圖紙總數 */
+  diagramBdTotalCount?: InputMaybe<Scalars['Int']['input']>;
+  /** C版批圖率分母 */
+  diagramCApprovalRatioDenominator?: InputMaybe<Scalars['Int']['input']>;
+  /** C版批圖率分子 */
+  diagramCApprovalRatioNumerator?: InputMaybe<Scalars['Int']['input']>;
+  /** 施工圖紙完成數量 */
+  diagramConstructionFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 施工圖紙總數 */
+  diagramConstructionTotalCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 加工圖完成數量 */
+  diagramProcessingFinishCount?: InputMaybe<Scalars['Int']['input']>;
+  /** 加工圖總數 */
+  diagramProcessingTotalCount?: InputMaybe<Scalars['Int']['input']>;
   /** 有效合同金额 */
   effectiveContractAmount?: InputMaybe<Scalars['Float']['input']>;
   /** 竣工日期 */
@@ -4948,8 +5079,6 @@ export type UpdateProjectInput = {
   pmYearTarget?: InputMaybe<Scalars['Float']['input']>;
   /** 生产管理昨日生產 */
   pmYesterday?: InputMaybe<Scalars['Float']['input']>;
-  /** 加工圖完成數量 */
-  processingDiagramFinishCount?: InputMaybe<Scalars['Int']['input']>;
   /** 加工图成型重量 */
   processingWeight?: InputMaybe<Scalars['Float']['input']>;
   /** 質量排名 */
@@ -4957,6 +5086,7 @@ export type UpdateProjectInput = {
   /** 質量得分 */
   qualityScore?: InputMaybe<Scalars['Float']['input']>;
   removeProjectStaffIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  removeUserIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeVoIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** 開工日期 */
   startDate?: InputMaybe<Scalars['Time']['input']>;
@@ -5157,6 +5287,7 @@ export type UpdateTenderInput = {
 export type UpdateUserInput = {
   addAreaIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addCustomerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  addProjectIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addTeamMemberIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addVisitRecordIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -5166,6 +5297,7 @@ export type UpdateUserInput = {
   clearCustomers?: InputMaybe<Scalars['Boolean']['input']>;
   clearLeader?: InputMaybe<Scalars['Boolean']['input']>;
   clearOpenID?: InputMaybe<Scalars['Boolean']['input']>;
+  clearProjects?: InputMaybe<Scalars['Boolean']['input']>;
   clearTeamMembers?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenders?: InputMaybe<Scalars['Boolean']['input']>;
   clearVisitRecords?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5181,6 +5313,7 @@ export type UpdateUserInput = {
   openID?: InputMaybe<Scalars['String']['input']>;
   removeAreaIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeCustomerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  removeProjectIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeTeamMemberIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeVisitRecordIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -5226,6 +5359,7 @@ export type User = Node & {
   leaderID?: Maybe<Scalars['ID']['output']>;
   name: Scalars['String']['output'];
   openID?: Maybe<Scalars['String']['output']>;
+  projects: ProjectConnection;
   teamMembers?: Maybe<Array<User>>;
   tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
@@ -5251,6 +5385,16 @@ export type UserCustomersArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<CustomerOrder>>;
   where?: InputMaybe<CustomerWhereInput>;
+};
+
+
+export type UserProjectsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjectOrder>>;
+  where?: InputMaybe<ProjectWhereInput>;
 };
 
 
@@ -5369,6 +5513,9 @@ export type UserWhereInput = {
   /** has_map_access field predicates */
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccessNEQ?: InputMaybe<Scalars['Boolean']['input']>;
+  /** projects edge predicates */
+  hasProjects?: InputMaybe<Scalars['Boolean']['input']>;
+  hasProjectsWith?: InputMaybe<Array<ProjectWhereInput>>;
   /** team_members edge predicates */
   hasTeamMembers?: InputMaybe<Scalars['Boolean']['input']>;
   hasTeamMembersWith?: InputMaybe<Array<UserWhereInput>>;
@@ -5683,7 +5830,7 @@ export type UseCreateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } | null } | null> | null } };
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
 
 export type UseDeleteUserMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -5715,7 +5862,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -5766,6 +5913,14 @@ export const UseCreateUserMutationDocument = new TypedDocumentString(`
             }
           }
         }
+        projects {
+          edges {
+            node {
+              id
+              code
+            }
+          }
+        }
         isAdmin
         hasMapAccess
         hasEditAccess
@@ -5813,6 +5968,14 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
         node {
           id
           name
+        }
+      }
+    }
+    projects {
+      edges {
+        node {
+          id
+          code
         }
       }
     }

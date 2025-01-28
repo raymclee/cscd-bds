@@ -20,6 +20,14 @@ export function useUpdateUser() {
             }
           }
         }
+        projects {
+          edges {
+            node {
+              id
+              code
+            }
+          }
+        }
         isSuperAdmin
         isAdmin
         isCeo

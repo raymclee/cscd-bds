@@ -2282,6 +2282,99 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 			pr.WithNamedProjectStaffs(alias, func(wq *ProjectStaffQuery) {
 				*wq = *query
 			})
+
+		case "users":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: pr.config}).Query()
+			)
+			args := newUserPaginateArgs(fieldArgs(ctx, new(UserWhereInput), path...))
+			if err := validateFirstLast(args.first, args.last); err != nil {
+				return fmt.Errorf("validate first and last in path %q: %w", path, err)
+			}
+			pager, err := newUserPager(args.opts, args.last != nil)
+			if err != nil {
+				return fmt.Errorf("create new pager in path %q: %w", path, err)
+			}
+			if query, err = pager.applyFilter(query); err != nil {
+				return err
+			}
+			ignoredEdges := !hasCollectedField(ctx, append(path, edgesField)...)
+			if hasCollectedField(ctx, append(path, totalCountField)...) || hasCollectedField(ctx, append(path, pageInfoField)...) {
+				hasPagination := args.after != nil || args.first != nil || args.before != nil || args.last != nil
+				if hasPagination || ignoredEdges {
+					query := query.Clone()
+					pr.loadTotal = append(pr.loadTotal, func(ctx context.Context, nodes []*Project) error {
+						ids := make([]driver.Value, len(nodes))
+						for i := range nodes {
+							ids[i] = nodes[i].ID
+						}
+						var v []struct {
+							NodeID xid.ID `sql:"project_id"`
+							Count  int    `sql:"count"`
+						}
+						query.Where(func(s *sql.Selector) {
+							joinT := sql.Table(project.UsersTable)
+							s.Join(joinT).On(s.C(user.FieldID), joinT.C(project.UsersPrimaryKey[1]))
+							s.Where(sql.InValues(joinT.C(project.UsersPrimaryKey[0]), ids...))
+							s.Select(joinT.C(project.UsersPrimaryKey[0]), sql.Count("*"))
+							s.GroupBy(joinT.C(project.UsersPrimaryKey[0]))
+						})
+						if err := query.Select().Scan(ctx, &v); err != nil {
+							return err
+						}
+						m := make(map[xid.ID]int, len(v))
+						for i := range v {
+							m[v[i].NodeID] = v[i].Count
+						}
+						for i := range nodes {
+							n := m[nodes[i].ID]
+							if nodes[i].Edges.totalCount[2] == nil {
+								nodes[i].Edges.totalCount[2] = make(map[string]int)
+							}
+							nodes[i].Edges.totalCount[2][alias] = n
+						}
+						return nil
+					})
+				} else {
+					pr.loadTotal = append(pr.loadTotal, func(_ context.Context, nodes []*Project) error {
+						for i := range nodes {
+							n := len(nodes[i].Edges.Users)
+							if nodes[i].Edges.totalCount[2] == nil {
+								nodes[i].Edges.totalCount[2] = make(map[string]int)
+							}
+							nodes[i].Edges.totalCount[2][alias] = n
+						}
+						return nil
+					})
+				}
+			}
+			if ignoredEdges || (args.first != nil && *args.first == 0) || (args.last != nil && *args.last == 0) {
+				continue
+			}
+			if query, err = pager.applyCursors(query, args.after, args.before); err != nil {
+				return err
+			}
+			path = append(path, edgesField, nodeField)
+			if field := collectedField(ctx, path...); field != nil {
+				if err := query.collectField(ctx, false, opCtx, *field, path, mayAddCondition(satisfies, userImplementors)...); err != nil {
+					return err
+				}
+			}
+			if limit := paginateLimit(args.first, args.last); limit > 0 {
+				if oneNode {
+					pager.applyOrder(query.Limit(limit))
+				} else {
+					modify := entgql.LimitPerRow(project.UsersPrimaryKey[0], limit, pager.orderExpr(query))
+					query.modifiers = append(query.modifiers, modify)
+				}
+			} else {
+				query = pager.applyOrder(query)
+			}
+			pr.WithNamedUsers(alias, func(wq *UserQuery) {
+				*wq = *query
+			})
 		case "createdAt":
 			if _, ok := fieldSeen[project.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, project.FieldCreatedAt)
@@ -2652,10 +2745,45 @@ func (pr *ProjectQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, project.FieldPlanOverdueMonthCount)
 				fieldSeen[project.FieldPlanOverdueMonthCount] = struct{}{}
 			}
-		case "processingDiagramFinishCount":
-			if _, ok := fieldSeen[project.FieldProcessingDiagramFinishCount]; !ok {
-				selectedFields = append(selectedFields, project.FieldProcessingDiagramFinishCount)
-				fieldSeen[project.FieldProcessingDiagramFinishCount] = struct{}{}
+		case "diagramBdFinishCount":
+			if _, ok := fieldSeen[project.FieldDiagramBdFinishCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramBdFinishCount)
+				fieldSeen[project.FieldDiagramBdFinishCount] = struct{}{}
+			}
+		case "diagramBdTotalCount":
+			if _, ok := fieldSeen[project.FieldDiagramBdTotalCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramBdTotalCount)
+				fieldSeen[project.FieldDiagramBdTotalCount] = struct{}{}
+			}
+		case "diagramConstructionFinishCount":
+			if _, ok := fieldSeen[project.FieldDiagramConstructionFinishCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramConstructionFinishCount)
+				fieldSeen[project.FieldDiagramConstructionFinishCount] = struct{}{}
+			}
+		case "diagramConstructionTotalCount":
+			if _, ok := fieldSeen[project.FieldDiagramConstructionTotalCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramConstructionTotalCount)
+				fieldSeen[project.FieldDiagramConstructionTotalCount] = struct{}{}
+			}
+		case "diagramProcessingFinishCount":
+			if _, ok := fieldSeen[project.FieldDiagramProcessingFinishCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramProcessingFinishCount)
+				fieldSeen[project.FieldDiagramProcessingFinishCount] = struct{}{}
+			}
+		case "diagramProcessingTotalCount":
+			if _, ok := fieldSeen[project.FieldDiagramProcessingTotalCount]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramProcessingTotalCount)
+				fieldSeen[project.FieldDiagramProcessingTotalCount] = struct{}{}
+			}
+		case "diagramCApprovalRatioNumerator":
+			if _, ok := fieldSeen[project.FieldDiagramCApprovalRatioNumerator]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramCApprovalRatioNumerator)
+				fieldSeen[project.FieldDiagramCApprovalRatioNumerator] = struct{}{}
+			}
+		case "diagramCApprovalRatioDenominator":
+			if _, ok := fieldSeen[project.FieldDiagramCApprovalRatioDenominator]; !ok {
+				selectedFields = append(selectedFields, project.FieldDiagramCApprovalRatioDenominator)
+				fieldSeen[project.FieldDiagramCApprovalRatioDenominator] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -4463,6 +4591,99 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				query = pager.applyOrder(query)
 			}
 			u.WithNamedVisitRecords(alias, func(wq *VisitRecordQuery) {
+				*wq = *query
+			})
+
+		case "projects":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectClient{config: u.config}).Query()
+			)
+			args := newProjectPaginateArgs(fieldArgs(ctx, new(ProjectWhereInput), path...))
+			if err := validateFirstLast(args.first, args.last); err != nil {
+				return fmt.Errorf("validate first and last in path %q: %w", path, err)
+			}
+			pager, err := newProjectPager(args.opts, args.last != nil)
+			if err != nil {
+				return fmt.Errorf("create new pager in path %q: %w", path, err)
+			}
+			if query, err = pager.applyFilter(query); err != nil {
+				return err
+			}
+			ignoredEdges := !hasCollectedField(ctx, append(path, edgesField)...)
+			if hasCollectedField(ctx, append(path, totalCountField)...) || hasCollectedField(ctx, append(path, pageInfoField)...) {
+				hasPagination := args.after != nil || args.first != nil || args.before != nil || args.last != nil
+				if hasPagination || ignoredEdges {
+					query := query.Clone()
+					u.loadTotal = append(u.loadTotal, func(ctx context.Context, nodes []*User) error {
+						ids := make([]driver.Value, len(nodes))
+						for i := range nodes {
+							ids[i] = nodes[i].ID
+						}
+						var v []struct {
+							NodeID xid.ID `sql:"user_id"`
+							Count  int    `sql:"count"`
+						}
+						query.Where(func(s *sql.Selector) {
+							joinT := sql.Table(user.ProjectsTable)
+							s.Join(joinT).On(s.C(project.FieldID), joinT.C(user.ProjectsPrimaryKey[0]))
+							s.Where(sql.InValues(joinT.C(user.ProjectsPrimaryKey[1]), ids...))
+							s.Select(joinT.C(user.ProjectsPrimaryKey[1]), sql.Count("*"))
+							s.GroupBy(joinT.C(user.ProjectsPrimaryKey[1]))
+						})
+						if err := query.Select().Scan(ctx, &v); err != nil {
+							return err
+						}
+						m := make(map[xid.ID]int, len(v))
+						for i := range v {
+							m[v[i].NodeID] = v[i].Count
+						}
+						for i := range nodes {
+							n := m[nodes[i].ID]
+							if nodes[i].Edges.totalCount[6] == nil {
+								nodes[i].Edges.totalCount[6] = make(map[string]int)
+							}
+							nodes[i].Edges.totalCount[6][alias] = n
+						}
+						return nil
+					})
+				} else {
+					u.loadTotal = append(u.loadTotal, func(_ context.Context, nodes []*User) error {
+						for i := range nodes {
+							n := len(nodes[i].Edges.Projects)
+							if nodes[i].Edges.totalCount[6] == nil {
+								nodes[i].Edges.totalCount[6] = make(map[string]int)
+							}
+							nodes[i].Edges.totalCount[6][alias] = n
+						}
+						return nil
+					})
+				}
+			}
+			if ignoredEdges || (args.first != nil && *args.first == 0) || (args.last != nil && *args.last == 0) {
+				continue
+			}
+			if query, err = pager.applyCursors(query, args.after, args.before); err != nil {
+				return err
+			}
+			path = append(path, edgesField, nodeField)
+			if field := collectedField(ctx, path...); field != nil {
+				if err := query.collectField(ctx, false, opCtx, *field, path, mayAddCondition(satisfies, projectImplementors)...); err != nil {
+					return err
+				}
+			}
+			if limit := paginateLimit(args.first, args.last); limit > 0 {
+				if oneNode {
+					pager.applyOrder(query.Limit(limit))
+				} else {
+					modify := entgql.LimitPerRow(user.ProjectsPrimaryKey[1], limit, pager.orderExpr(query))
+					query.modifiers = append(query.modifiers, modify)
+				}
+			} else {
+				query = pager.applyOrder(query)
+			}
+			u.WithNamedProjects(alias, func(wq *ProjectQuery) {
 				*wq = *query
 			})
 		case "createdAt":

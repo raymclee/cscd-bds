@@ -25,6 +25,14 @@ export function useCreateUser() {
                 }
               }
             }
+            projects {
+              edges {
+                node {
+                  id
+                  code
+                }
+              }
+            }
             isAdmin
             hasMapAccess
             hasEditAccess

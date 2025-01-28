@@ -109,91 +109,105 @@ function formatAmountWithCommas(amount: number) {
 function RouteComponent() {
   const data = usePreloadedQuery<operationsPageQuery>(
     graphql`
-      query operationsPageQuery {
-        projects(where: { isFinishedNEQ: true }, orderBy: [{ field: CODE }]) {
-          edges {
-            node {
-              id
-              name
-              code
-              manager
-              owner
-              jzs
-              mcn
-              consultant
-              areas
-              fsDate
-              opDate
-              startDate
-              endDate
-              mntyr
-              conType
-              cje
-              yye
-              xjl
-              xmglfYs
-              xmglfLj
-              xmsjf
-              ownerApplyCount
-              ownerApplyAmount
-              ownerApproveCount
-              ownerApproveAmount
-              contractorApplyCount
-              contractorApplyAmount
-              contractorApproveCount
-              contractorApproveAmount
-              installProgress
-              effectiveContractAmount
-              vaApplyAmount
-              vaApproveAmount
-              accumulatedStatutoryDeductions
-              accumulatedNonStatutoryDeductions
-              accumulatedNonStatutoryDeductionsPeriod
-              totalContractAmount
-              aluminumPlateBudgetPercentage
-              aluminumBudgetPercentage
-              glassBudgetPercentage
-              ironBudgetPercentage
-              milestonePlanYear
-              milestonePlanMonth
-              milestoneDoneYear
-              milestoneDoneMonth
-              pmArea
-              pmYearTarget
-              pmMonthTarget
-              pmYearActual
-              pmMonthActual
-              pmTotal
-              pmYesterday
-              unitInventoryTotal
-              unitComponentTotal
-              unitComponentProduction
-              unitComponentInstallation
-              materialLoss
-              designRatedWeight
-              processingWeight
-              itemStockWeight
-              palletsInStock
-              partsInStock
-              qualityScore
-              qualityRanking
-              bulkMaterialsTotalOrderQuantity
-              bulkMaterialsCompletedQuantity
-              bulkMaterialsUncompletedQuantity
-              planTotalCount
-              planOverdueCount
-              planOverdueMonthCount
-              processingDiagramFinishCount
-              projectStaffs(
-                first: 3
-                orderBy: { field: CREATED_AT, direction: DESC }
-              ) {
-                edges {
-                  node {
-                    installation
-                    management
-                    design
-                    createdAt
+      query operationsPageQuery($userId: ID!) {
+        node(id: $userId) {
+          ... on User {
+            projects(
+              where: { isFinishedNEQ: true }
+              orderBy: [{ field: CODE }]
+            ) {
+              edges {
+                node {
+                  id
+                  name
+                  code
+                  manager
+                  owner
+                  jzs
+                  mcn
+                  consultant
+                  areas
+                  fsDate
+                  opDate
+                  startDate
+                  endDate
+                  mntyr
+                  conType
+                  cje
+                  yye
+                  xjl
+                  xmglfYs
+                  xmglfLj
+                  xmsjf
+                  ownerApplyCount
+                  ownerApplyAmount
+                  ownerApproveCount
+                  ownerApproveAmount
+                  contractorApplyCount
+                  contractorApplyAmount
+                  contractorApproveCount
+                  contractorApproveAmount
+                  installProgress
+                  effectiveContractAmount
+                  vaApplyAmount
+                  vaApproveAmount
+                  accumulatedStatutoryDeductions
+                  accumulatedNonStatutoryDeductions
+                  accumulatedNonStatutoryDeductionsPeriod
+                  totalContractAmount
+                  aluminumPlateBudgetPercentage
+                  aluminumBudgetPercentage
+                  glassBudgetPercentage
+                  ironBudgetPercentage
+                  milestonePlanYear
+                  milestonePlanMonth
+                  milestoneDoneYear
+                  milestoneDoneMonth
+                  pmArea
+                  pmYearTarget
+                  pmMonthTarget
+                  pmYearActual
+                  pmMonthActual
+                  pmTotal
+                  pmYesterday
+                  unitInventoryTotal
+                  unitComponentTotal
+                  unitComponentProduction
+                  unitComponentInstallation
+                  materialLoss
+                  designRatedWeight
+                  processingWeight
+                  itemStockWeight
+                  palletsInStock
+                  partsInStock
+                  qualityScore
+                  qualityRanking
+                  bulkMaterialsTotalOrderQuantity
+                  bulkMaterialsCompletedQuantity
+                  bulkMaterialsUncompletedQuantity
+                  planTotalCount
+                  planOverdueCount
+                  planOverdueMonthCount
+                  diagramBdTotalCount
+                  diagramBdFinishCount
+                  diagramConstructionTotalCount
+                  diagramConstructionFinishCount
+                  diagramProcessingFinishCount
+                  diagramProcessingTotalCount
+                  diagramCApprovalRatioNumerator
+                  diagramCApprovalRatioDenominator
+                  projectStaffs(
+                    first: 3
+                    orderBy: { field: CREATED_AT, direction: DESC }
+                  ) {
+                    edges {
+                      node {
+                        installation
+                        management
+                        design
+                        createdAt
+                      }
+                    }
                   }
                 }
               }
@@ -217,37 +231,38 @@ function RouteComponent() {
 
 function Operation({ data }: { data: operationsPageQuery$data }) {
   const navigate = Route.useNavigate();
+
   const defaultCode =
-    Route.useSearch().code ?? data.projects?.edges?.at(0)?.node?.code;
+    Route.useSearch().code ?? data.node?.projects?.edges?.at(0)?.node?.code;
 
   const defaultProjectIdx = 0;
   const pj =
-    data.projects?.edges?.find((item) => item?.node?.code === defaultCode)
-      ?.node ?? data.projects?.edges?.at(defaultProjectIdx)?.node;
+    data.node?.projects?.edges?.find((item) => item?.node?.code === defaultCode)
+      ?.node ?? data.node?.projects?.edges?.at(defaultProjectIdx)?.node;
 
   const prevProject = pj
-    ? data.projects.edges?.at(
-        data.projects.edges?.findIndex(
+    ? data.node?.projects?.edges?.at(
+        data.node?.projects?.edges?.findIndex(
           (item) => item?.node?.code === pj?.code,
         ) - 1,
       )?.node
-    : data.projects.edges?.at(
+    : data.node?.projects?.edges?.at(
         defaultProjectIdx > 0 ? defaultProjectIdx - 1 : defaultProjectIdx,
       )?.node;
 
   const nextProject = pj
-    ? data.projects.edges?.at(
-        data.projects.edges?.findIndex(
+    ? data.node?.projects?.edges?.at(
+        data.node?.projects?.edges?.findIndex(
           (item) => item?.node?.code === pj?.code,
         ) + 1,
       )?.node
-    : data.projects.edges?.at(
-        defaultProjectIdx < data.projects.edges?.length - 1
+    : data.node?.projects?.edges?.at(
+        defaultProjectIdx < data.node?.projects?.edges?.length - 1
           ? defaultProjectIdx + 1
           : defaultProjectIdx,
       )?.node;
 
-  const projectsWithRank = data.projects.edges
+  const projectsWithRank = data.node?.projects?.edges
     ?.filter((e) => !!e?.node?.qualityScore)
     .sort(
       (a, b) => (b?.node?.qualityScore ?? 0) - (a?.node?.qualityScore ?? 0),
@@ -329,13 +344,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const milestonePlanMonth = pj?.milestonePlanMonth || 0;
   const milestoneDoneYear = pj?.milestoneDoneYear || 0;
   const milestoneDoneMonth = pj?.milestoneDoneMonth || 0;
-  const pmArea = pj?.pmArea || 0;
-  const pmYearTarget = pj?.pmYearTarget || 0;
-  const pmMonthTarget = pj?.pmMonthTarget || 0;
-  const pmYearActual = pj?.pmYearActual || 0;
-  const pmMonthActual = pj?.pmMonthActual || 0;
-  const pmTotal = pj?.pmTotal || 0;
-  const pmYesterday = pj?.pmYesterday || 0;
+
   const unitInventoryTotal = pj?.unitInventoryTotal || 0;
   const unitComponentTotal = pj?.unitComponentTotal || 0;
   const unitComponentProduction = pj?.unitComponentProduction || 0;
@@ -357,11 +366,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   const planTotalCount = pj?.planTotalCount || 0;
   const planOverdueCount = pj?.planOverdueCount || 0;
   const planOverdueMonthCount = pj?.planOverdueMonthCount || 0;
-  const processingDiagramFinishCount = pj?.processingDiagramFinishCount || 0;
 
   return (
     <>
-      <div className="absolute left-[335px] top-2">
+      <div className="absolute left-[14em] top-[0.4em]">
         <ProjectSelect data={data} defaultCode={defaultCode} />
       </div>
 
@@ -1419,7 +1427,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <EditableBasicInfoItem
                     title="FS日期"
                     field="fsDate"
-                    projectId={pj!.id}
+                    projectId={pj?.id}
                     value={pj?.fsDate}
                   >
                     {pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
@@ -1427,7 +1435,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <EditableBasicInfoItem
                     title="OP日期"
                     field="opDate"
-                    projectId={pj!.id}
+                    projectId={pj?.id}
                     value={pj?.opDate}
                   >
                     {pj?.opDate ? dayjs(pj?.opDate).format("LL") : "-"}
@@ -1445,115 +1453,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
         </section>
 
         <section className="space-y-3">
-          <div>
-            <SubTitle>图纸进度管理</SubTitle>
-            <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
-              <div className="flex gap-1">
-                <div>
-                  <img src={drawingLeft} />
-                </div>
-                <div>
-                  <img src={drawingCenter} />
-                </div>
-                <div className="relative">
-                  <img src={drawingRight} />
-                  <div className="absolute left-1/2 top-[37.5px] text-xxs text-yellow-500">
-                    <TextScramble
-                      characterSet="0123456789"
-                      key={pj?.code}
-                      as="span"
-                    >
-                      {`${formatAmountWithCommas(processingDiagramFinishCount)}`}
-                    </TextScramble>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-0.5">
-                <img src={drawingBottom} />
-              </div>
-            </div>
-          </div>
+          <DrawingProgress pj={pj} />
 
-          <div>
-            <SubTitle>生产管理</SubTitle>
-            <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
-              <div className="relative h-11">
-                <img src={productionManagement1} className="absolute inset-0" />
-                <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmArea)}`}
-                  </TextScramble>
-                </div>
-                <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmTotal)}`}
-                  </TextScramble>
-                </div>
-              </div>
-              <div className="relative h-11">
-                <img src={productionManagement2} />
-                <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmYearTarget)}`}
-                  </TextScramble>
-                </div>
-                <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmYearActual)}`}
-                  </TextScramble>
-                </div>
-              </div>
-              <div className="relative h-11">
-                <img src={productionManagement3} />
-                <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmMonthTarget)}`}
-                  </TextScramble>
-                </div>
-                <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmMonthActual)}`}
-                  </TextScramble>
-                </div>
-              </div>
-              <div className="relative h-7">
-                <img src={productionManagement4} />
-                <div className="absolute left-1/2 top-1.5 text-xxs text-yellow-500">
-                  <TextScramble
-                    characterSet="0123456789"
-                    key={pj?.code}
-                    as="span"
-                  >
-                    {`${formatAmountWithCommas(pmYesterday)}`}
-                  </TextScramble>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ProductionManagement pj={pj} />
 
           <div>
             <SubTitle>单元件与散料</SubTitle>
@@ -1724,6 +1626,163 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
   );
 }
 
+type Project = NonNullable<
+  NonNullable<
+    NonNullable<
+      NonNullable<
+        NonNullable<operationsPageQuery$data["node"]>["projects"]
+      >["edges"]
+    >
+  >[0]
+>["node"];
+
+function DrawingProgress({ pj }: { pj: Project }) {
+  const diagramProcessingFinishCount = pj?.diagramProcessingFinishCount || 0;
+  const diagramProcessingTotalCount = pj?.diagramProcessingTotalCount || 0;
+  const diagramCApprovalRatioNumerator =
+    pj?.diagramCApprovalRatioNumerator || 0;
+  const diagramCApprovalRatioDenominator =
+    pj?.diagramCApprovalRatioDenominator || 0;
+  const diagramBdTotalCount = pj?.diagramBdTotalCount || 0;
+  const diagramBdFinishCount = pj?.diagramBdFinishCount || 0;
+  const diagramConstructionTotalCount = pj?.diagramConstructionTotalCount || 0;
+  const diagramConstructionFinishCount =
+    pj?.diagramConstructionFinishCount || 0;
+
+  return (
+    <div>
+      <SubTitle>图纸进度管理</SubTitle>
+      <div className="bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+        <div className="flex gap-1">
+          <div className="relative">
+            <img src={drawingLeft} />
+            <div className="absolute left-1/2 top-[3.75em] text-xxs text-yellow-500">
+              <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+                {`${formatAmountWithCommas(diagramBdFinishCount)}`}
+              </TextScramble>
+            </div>
+
+            <div className="absolute left-1/2 top-[5.75em] text-xxs text-yellow-500">
+              <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+                {`${formatAmountWithCommas(diagramBdTotalCount)}`}
+              </TextScramble>
+            </div>
+          </div>
+
+          <div className="relative">
+            <img src={drawingCenter} />
+            <div className="absolute left-1/2 top-[3.75em] text-xxs text-yellow-500">
+              <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+                {`${formatAmountWithCommas(diagramConstructionFinishCount)}`}
+              </TextScramble>
+            </div>
+
+            <div className="absolute left-1/2 top-[5.75em] text-xxs text-yellow-500">
+              <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+                {`${formatAmountWithCommas(diagramConstructionTotalCount)}`}
+              </TextScramble>
+            </div>
+          </div>
+
+          <div className="relative">
+            <img src={drawingRight} />
+            <div className="absolute left-1/2 top-[3.75em] text-xxs text-yellow-500">
+              <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+                {`${formatAmountWithCommas(diagramProcessingFinishCount)}`}
+              </TextScramble>
+            </div>
+
+            <div className="absolute left-1/2 top-[5.75em] text-xxs text-yellow-500">
+              <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+                {`${formatAmountWithCommas(diagramProcessingTotalCount)}`}
+              </TextScramble>
+            </div>
+          </div>
+        </div>
+        <div className="relative mt-0.5">
+          <img src={drawingBottom} />
+          <div className="absolute right-[7em] top-[1em] text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(diagramCApprovalRatioNumerator)}`}
+            </TextScramble>
+          </div>
+
+          <div className="absolute right-[7em] top-[3em] text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(diagramCApprovalRatioDenominator)}`}
+            </TextScramble>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductionManagement({ pj }: { pj: Project }) {
+  const pmArea = pj?.pmArea || 0;
+  const pmYearTarget = pj?.pmYearTarget || 0;
+  const pmMonthTarget = pj?.pmMonthTarget || 0;
+  const pmYearActual = pj?.pmYearActual || 0;
+  const pmMonthActual = pj?.pmMonthActual || 0;
+  const pmTotal = pj?.pmTotal || 0;
+  const pmYesterday = pj?.pmYesterday || 0;
+
+  return (
+    <div>
+      <SubTitle>生产管理</SubTitle>
+      <div className="space-y-1 bg-gradient-to-tr from-[#0a3256] to-transparent px-2 py-1.5 shadow-lg">
+        <div className="relative h-11">
+          <img src={productionManagement1} className="absolute inset-0" />
+          <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmArea)}`}
+            </TextScramble>
+          </div>
+          <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmTotal)}`}
+            </TextScramble>
+          </div>
+        </div>
+        <div className="relative h-11">
+          <img src={productionManagement2} />
+          <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmYearTarget)}`}
+            </TextScramble>
+          </div>
+          <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmYearActual)}`}
+            </TextScramble>
+          </div>
+        </div>
+        <div className="relative h-11">
+          <img src={productionManagement3} />
+          <div className="absolute left-1/2 top-[0.35rem] text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmMonthTarget)}`}
+            </TextScramble>
+          </div>
+          <div className="absolute bottom-1.5 left-1/2 text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmMonthActual)}`}
+            </TextScramble>
+          </div>
+        </div>
+        <div className="relative h-7">
+          <img src={productionManagement4} />
+          <div className="absolute left-1/2 top-1.5 text-xxs text-yellow-500">
+            <TextScramble characterSet="0123456789" key={pj?.code} as="span">
+              {`${formatAmountWithCommas(pmYesterday)}`}
+            </TextScramble>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const FlippingCard = ({
   front,
   back,
@@ -1840,7 +1899,7 @@ function EditableBasicInfoItem({
   field,
   value,
 }: {
-  projectId: string;
+  projectId?: string;
   field: "fsDate" | "opDate";
   title: string;
   children: ReactNode;
@@ -1857,7 +1916,7 @@ function EditableBasicInfoItem({
   };
 
   const onSubmit = (date: Date | undefined) => {
-    if (commitInFlight) return;
+    if (commitInFlight || !projectId) return;
     commitMutation({
       variables: {
         id: projectId,
@@ -1874,7 +1933,7 @@ function EditableBasicInfoItem({
   };
 
   const onClear = () => {
-    if (commitInFlight) return;
+    if (commitInFlight || !projectId) return;
     const input: UpdateProjectInput = {};
     if (field == "fsDate") {
       input.clearFsDate = true;
@@ -1989,7 +2048,7 @@ function ProjectOverviewTab({
 
         <Tabs.Content value={tabs[2]} className="h-[280px] w-full">
           <StaffDistribution
-            data={pj.projectStaffs?.edges?.map((edge: any) => edge.node)}
+            data={pj?.projectStaffs?.edges?.map((edge: any) => edge.node)}
           />
         </Tabs.Content>
       </div>

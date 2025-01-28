@@ -66,17 +66,20 @@ type UserEdges struct {
 	Tenders []*Tender `json:"tenders,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
+	// Projects holds the value of the projects edge.
+	Projects []*Project `json:"projects,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [6]bool
+	loadedTypes [7]bool
 	// totalCount holds the count of the edges above.
-	totalCount [6]map[string]int
+	totalCount [7]map[string]int
 
 	namedAreas        map[string][]*Area
 	namedCustomers    map[string][]*Customer
 	namedTeamMembers  map[string][]*User
 	namedTenders      map[string][]*Tender
 	namedVisitRecords map[string][]*VisitRecord
+	namedProjects     map[string][]*Project
 }
 
 // AreasOrErr returns the Areas value or an error if the edge
@@ -133,6 +136,15 @@ func (e UserEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
 		return e.VisitRecords, nil
 	}
 	return nil, &NotLoadedError{edge: "visit_records"}
+}
+
+// ProjectsOrErr returns the Projects value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) ProjectsOrErr() ([]*Project, error) {
+	if e.loadedTypes[6] {
+		return e.Projects, nil
+	}
+	return nil, &NotLoadedError{edge: "projects"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -299,6 +311,11 @@ func (u *User) QueryTenders() *TenderQuery {
 // QueryVisitRecords queries the "visit_records" edge of the User entity.
 func (u *User) QueryVisitRecords() *VisitRecordQuery {
 	return NewUserClient(u.config).QueryVisitRecords(u)
+}
+
+// QueryProjects queries the "projects" edge of the User entity.
+func (u *User) QueryProjects() *ProjectQuery {
+	return NewUserClient(u.config).QueryProjects(u)
 }
 
 // Update returns a builder for updating this User.
@@ -492,6 +509,30 @@ func (u *User) appendNamedVisitRecords(name string, edges ...*VisitRecord) {
 		u.Edges.namedVisitRecords[name] = []*VisitRecord{}
 	} else {
 		u.Edges.namedVisitRecords[name] = append(u.Edges.namedVisitRecords[name], edges...)
+	}
+}
+
+// NamedProjects returns the Projects named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedProjects(name string) ([]*Project, error) {
+	if u.Edges.namedProjects == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedProjects[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedProjects(name string, edges ...*Project) {
+	if u.Edges.namedProjects == nil {
+		u.Edges.namedProjects = make(map[string][]*Project)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedProjects[name] = []*Project{}
+	} else {
+		u.Edges.namedProjects[name] = append(u.Edges.namedProjects[name], edges...)
 	}
 }
 

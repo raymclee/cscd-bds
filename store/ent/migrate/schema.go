@@ -282,7 +282,14 @@ var (
 		{Name: "plan_total_count", Type: field.TypeInt, Nullable: true},
 		{Name: "plan_overdue_count", Type: field.TypeInt, Nullable: true},
 		{Name: "plan_overdue_month_count", Type: field.TypeInt, Nullable: true},
-		{Name: "processing_diagram_finish_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_bd_finish_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_bd_total_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_construction_finish_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_construction_total_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_processing_finish_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_processing_total_count", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_c_approval_ratio_numerator", Type: field.TypeInt, Nullable: true},
+		{Name: "diagram_c_approval_ratio_denominator", Type: field.TypeInt, Nullable: true},
 	}
 	// ProjectsTable holds the schema information for the "projects" table.
 	ProjectsTable = &schema.Table{
@@ -588,6 +595,31 @@ var (
 			},
 		},
 	}
+	// ProjectUsersColumns holds the columns for the "project_users" table.
+	ProjectUsersColumns = []*schema.Column{
+		{Name: "project_id", Type: field.TypeString},
+		{Name: "user_id", Type: field.TypeString},
+	}
+	// ProjectUsersTable holds the schema information for the "project_users" table.
+	ProjectUsersTable = &schema.Table{
+		Name:       "project_users",
+		Columns:    ProjectUsersColumns,
+		PrimaryKey: []*schema.Column{ProjectUsersColumns[0], ProjectUsersColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "project_users_project_id",
+				Columns:    []*schema.Column{ProjectUsersColumns[0]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "project_users_user_id",
+				Columns:    []*schema.Column{ProjectUsersColumns[1]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// TenderFollowingSalesColumns holds the columns for the "tender_following_sales" table.
 	TenderFollowingSalesColumns = []*schema.Column{
 		{Name: "tender_id", Type: field.TypeString},
@@ -656,6 +688,7 @@ var (
 		UsersTable,
 		VisitRecordsTable,
 		AreaUsersTable,
+		ProjectUsersTable,
 		TenderFollowingSalesTable,
 		UserVisitRecordsTable,
 	}
@@ -686,6 +719,8 @@ func init() {
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable
 	AreaUsersTable.ForeignKeys[0].RefTable = AreasTable
 	AreaUsersTable.ForeignKeys[1].RefTable = UsersTable
+	ProjectUsersTable.ForeignKeys[0].RefTable = ProjectsTable
+	ProjectUsersTable.ForeignKeys[1].RefTable = UsersTable
 	TenderFollowingSalesTable.ForeignKeys[0].RefTable = TendersTable
 	TenderFollowingSalesTable.ForeignKeys[1].RefTable = UsersTable
 	UserVisitRecordsTable.ForeignKeys[0].RefTable = UsersTable

@@ -166,8 +166,22 @@ type Project struct {
 	PlanOverdueCount *int `json:"plan_overdue_count,omitempty"`
 	// 當月計劃超期數量
 	PlanOverdueMonthCount *int `json:"plan_overdue_month_count,omitempty"`
+	// BD圖紙完成數量
+	DiagramBdFinishCount *int `json:"diagram_bd_finish_count,omitempty"`
+	// BD圖紙總數
+	DiagramBdTotalCount *int `json:"diagram_bd_total_count,omitempty"`
+	// 施工圖紙完成數量
+	DiagramConstructionFinishCount *int `json:"diagram_construction_finish_count,omitempty"`
+	// 施工圖紙總數
+	DiagramConstructionTotalCount *int `json:"diagram_construction_total_count,omitempty"`
 	// 加工圖完成數量
-	ProcessingDiagramFinishCount *int `json:"processing_diagram_finish_count,omitempty"`
+	DiagramProcessingFinishCount *int `json:"diagram_processing_finish_count,omitempty"`
+	// 加工圖總數
+	DiagramProcessingTotalCount *int `json:"diagram_processing_total_count,omitempty"`
+	// C版批圖率分子
+	DiagramCApprovalRatioNumerator *int `json:"diagram_c_approval_ratio_numerator,omitempty"`
+	// C版批圖率分母
+	DiagramCApprovalRatioDenominator *int `json:"diagram_c_approval_ratio_denominator,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectQuery when eager-loading is set.
 	Edges        ProjectEdges `json:"edges"`
@@ -180,14 +194,17 @@ type ProjectEdges struct {
 	Vos []*ProjectVO `json:"vos,omitempty"`
 	// ProjectStaffs holds the value of the project_staffs edge.
 	ProjectStaffs []*ProjectStaff `json:"project_staffs,omitempty"`
+	// Users holds the value of the users edge.
+	Users []*User `json:"users,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
 
 	namedVos           map[string][]*ProjectVO
 	namedProjectStaffs map[string][]*ProjectStaff
+	namedUsers         map[string][]*User
 }
 
 // VosOrErr returns the Vos value or an error if the edge
@@ -208,6 +225,15 @@ func (e ProjectEdges) ProjectStaffsOrErr() ([]*ProjectStaff, error) {
 	return nil, &NotLoadedError{edge: "project_staffs"}
 }
 
+// UsersOrErr returns the Users value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectEdges) UsersOrErr() ([]*User, error) {
+	if e.loadedTypes[2] {
+		return e.Users, nil
+	}
+	return nil, &NotLoadedError{edge: "users"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Project) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -217,7 +243,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case project.FieldCje, project.FieldYye, project.FieldXjl, project.FieldXmglfYs, project.FieldXmglfLj, project.FieldXmsjf, project.FieldOwnerApplyAmount, project.FieldOwnerApproveAmount, project.FieldContractorApplyAmount, project.FieldContractorApproveAmount, project.FieldInstallProgress, project.FieldEffectiveContractAmount, project.FieldVaApplyAmount, project.FieldVaApproveAmount, project.FieldAccumulatedStatutoryDeductions, project.FieldAccumulatedNonStatutoryDeductions, project.FieldAccumulatedStatutoryDeductionsPeriod, project.FieldAccumulatedNonStatutoryDeductionsPeriod, project.FieldTotalContractAmount, project.FieldAluminumPlateBudgetPercentage, project.FieldAluminumBudgetPercentage, project.FieldGlassBudgetPercentage, project.FieldIronBudgetPercentage, project.FieldPmArea, project.FieldPmYearTarget, project.FieldPmMonthTarget, project.FieldPmYearActual, project.FieldPmMonthActual, project.FieldPmTotal, project.FieldPmYesterday, project.FieldUnitInventoryTotal, project.FieldUnitComponentTotal, project.FieldUnitComponentProduction, project.FieldUnitComponentInstallation, project.FieldMaterialLoss, project.FieldDesignRatedWeight, project.FieldProcessingWeight, project.FieldItemStockWeight, project.FieldPalletsInStock, project.FieldPartsInStock, project.FieldQualityScore, project.FieldQualityRanking, project.FieldBulkMaterialsTotalOrderQuantity, project.FieldBulkMaterialsCompletedQuantity, project.FieldBulkMaterialsUncompletedQuantity:
 			values[i] = new(sql.NullFloat64)
-		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth, project.FieldPlanTotalCount, project.FieldPlanOverdueCount, project.FieldPlanOverdueMonthCount, project.FieldProcessingDiagramFinishCount:
+		case project.FieldOwnerApplyCount, project.FieldOwnerApproveCount, project.FieldContractorApplyCount, project.FieldContractorApproveCount, project.FieldMilestonePlanYear, project.FieldMilestonePlanMonth, project.FieldMilestoneDoneYear, project.FieldMilestoneDoneMonth, project.FieldPlanTotalCount, project.FieldPlanOverdueCount, project.FieldPlanOverdueMonthCount, project.FieldDiagramBdFinishCount, project.FieldDiagramBdTotalCount, project.FieldDiagramConstructionFinishCount, project.FieldDiagramConstructionTotalCount, project.FieldDiagramProcessingFinishCount, project.FieldDiagramProcessingTotalCount, project.FieldDiagramCApprovalRatioNumerator, project.FieldDiagramCApprovalRatioDenominator:
 			values[i] = new(sql.NullInt64)
 		case project.FieldCode, project.FieldManager, project.FieldName, project.FieldOwner, project.FieldJzs, project.FieldMcn, project.FieldConsultant, project.FieldAreas, project.FieldMntyr, project.FieldConType, project.FieldXmfzr:
 			values[i] = new(sql.NullString)
@@ -760,12 +786,61 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 				pr.PlanOverdueMonthCount = new(int)
 				*pr.PlanOverdueMonthCount = int(value.Int64)
 			}
-		case project.FieldProcessingDiagramFinishCount:
+		case project.FieldDiagramBdFinishCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field processing_diagram_finish_count", values[i])
+				return fmt.Errorf("unexpected type %T for field diagram_bd_finish_count", values[i])
 			} else if value.Valid {
-				pr.ProcessingDiagramFinishCount = new(int)
-				*pr.ProcessingDiagramFinishCount = int(value.Int64)
+				pr.DiagramBdFinishCount = new(int)
+				*pr.DiagramBdFinishCount = int(value.Int64)
+			}
+		case project.FieldDiagramBdTotalCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_bd_total_count", values[i])
+			} else if value.Valid {
+				pr.DiagramBdTotalCount = new(int)
+				*pr.DiagramBdTotalCount = int(value.Int64)
+			}
+		case project.FieldDiagramConstructionFinishCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_construction_finish_count", values[i])
+			} else if value.Valid {
+				pr.DiagramConstructionFinishCount = new(int)
+				*pr.DiagramConstructionFinishCount = int(value.Int64)
+			}
+		case project.FieldDiagramConstructionTotalCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_construction_total_count", values[i])
+			} else if value.Valid {
+				pr.DiagramConstructionTotalCount = new(int)
+				*pr.DiagramConstructionTotalCount = int(value.Int64)
+			}
+		case project.FieldDiagramProcessingFinishCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_processing_finish_count", values[i])
+			} else if value.Valid {
+				pr.DiagramProcessingFinishCount = new(int)
+				*pr.DiagramProcessingFinishCount = int(value.Int64)
+			}
+		case project.FieldDiagramProcessingTotalCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_processing_total_count", values[i])
+			} else if value.Valid {
+				pr.DiagramProcessingTotalCount = new(int)
+				*pr.DiagramProcessingTotalCount = int(value.Int64)
+			}
+		case project.FieldDiagramCApprovalRatioNumerator:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_c_approval_ratio_numerator", values[i])
+			} else if value.Valid {
+				pr.DiagramCApprovalRatioNumerator = new(int)
+				*pr.DiagramCApprovalRatioNumerator = int(value.Int64)
+			}
+		case project.FieldDiagramCApprovalRatioDenominator:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field diagram_c_approval_ratio_denominator", values[i])
+			} else if value.Valid {
+				pr.DiagramCApprovalRatioDenominator = new(int)
+				*pr.DiagramCApprovalRatioDenominator = int(value.Int64)
 			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
@@ -788,6 +863,11 @@ func (pr *Project) QueryVos() *ProjectVOQuery {
 // QueryProjectStaffs queries the "project_staffs" edge of the Project entity.
 func (pr *Project) QueryProjectStaffs() *ProjectStaffQuery {
 	return NewProjectClient(pr.config).QueryProjectStaffs(pr)
+}
+
+// QueryUsers queries the "users" edge of the Project entity.
+func (pr *Project) QueryUsers() *UserQuery {
+	return NewProjectClient(pr.config).QueryUsers(pr)
 }
 
 // Update returns a builder for updating this Project.
@@ -1175,8 +1255,43 @@ func (pr *Project) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.ProcessingDiagramFinishCount; v != nil {
-		builder.WriteString("processing_diagram_finish_count=")
+	if v := pr.DiagramBdFinishCount; v != nil {
+		builder.WriteString("diagram_bd_finish_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramBdTotalCount; v != nil {
+		builder.WriteString("diagram_bd_total_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramConstructionFinishCount; v != nil {
+		builder.WriteString("diagram_construction_finish_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramConstructionTotalCount; v != nil {
+		builder.WriteString("diagram_construction_total_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramProcessingFinishCount; v != nil {
+		builder.WriteString("diagram_processing_finish_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramProcessingTotalCount; v != nil {
+		builder.WriteString("diagram_processing_total_count=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramCApprovalRatioNumerator; v != nil {
+		builder.WriteString("diagram_c_approval_ratio_numerator=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pr.DiagramCApprovalRatioDenominator; v != nil {
+		builder.WriteString("diagram_c_approval_ratio_denominator=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')
@@ -1228,6 +1343,30 @@ func (pr *Project) appendNamedProjectStaffs(name string, edges ...*ProjectStaff)
 		pr.Edges.namedProjectStaffs[name] = []*ProjectStaff{}
 	} else {
 		pr.Edges.namedProjectStaffs[name] = append(pr.Edges.namedProjectStaffs[name], edges...)
+	}
+}
+
+// NamedUsers returns the Users named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (pr *Project) NamedUsers(name string) ([]*User, error) {
+	if pr.Edges.namedUsers == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := pr.Edges.namedUsers[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (pr *Project) appendNamedUsers(name string, edges ...*User) {
+	if pr.Edges.namedUsers == nil {
+		pr.Edges.namedUsers = make(map[string][]*User)
+	}
+	if len(edges) == 0 {
+		pr.Edges.namedUsers[name] = []*User{}
+	} else {
+		pr.Edges.namedUsers[name] = append(pr.Edges.namedUsers[name], edges...)
 	}
 }
 

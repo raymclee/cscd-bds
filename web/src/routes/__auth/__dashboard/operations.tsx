@@ -11,7 +11,9 @@ const operationSearchSchema = v.object({
 
 export const Route = createFileRoute("/__auth/__dashboard/operations")({
   validateSearch: operationSearchSchema,
-  loader({ context: { RelayEnvironment } }) {
-    return loadQuery<operationsPageQuery>(RelayEnvironment, node, {});
+  loader({ context: { RelayEnvironment, session } }) {
+    return loadQuery<operationsPageQuery>(RelayEnvironment, node, {
+      userId: session.userId,
+    });
   },
 });

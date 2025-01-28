@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f90a58b9f1fcea23ed4d3f9eea2376df>>
+ * @generated SignedSource<<42e31bc236d3a6deb3bef75753ecdeb2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type UpdateProjectInput = {
   accumulatedStatutoryDeductions?: number | null | undefined;
   accumulatedStatutoryDeductionsPeriod?: number | null | undefined;
   addProjectStaffIDs?: ReadonlyArray<string> | null | undefined;
+  addUserIDs?: ReadonlyArray<string> | null | undefined;
   addVoIDs?: ReadonlyArray<string> | null | undefined;
   aluminumBudgetPercentage?: number | null | undefined;
   aluminumPlateBudgetPercentage?: number | null | undefined;
@@ -41,6 +42,14 @@ export type UpdateProjectInput = {
   clearContractorApproveAmount?: boolean | null | undefined;
   clearContractorApproveCount?: boolean | null | undefined;
   clearDesignRatedWeight?: boolean | null | undefined;
+  clearDiagramBdFinishCount?: boolean | null | undefined;
+  clearDiagramBdTotalCount?: boolean | null | undefined;
+  clearDiagramCApprovalRatioDenominator?: boolean | null | undefined;
+  clearDiagramCApprovalRatioNumerator?: boolean | null | undefined;
+  clearDiagramConstructionFinishCount?: boolean | null | undefined;
+  clearDiagramConstructionTotalCount?: boolean | null | undefined;
+  clearDiagramProcessingFinishCount?: boolean | null | undefined;
+  clearDiagramProcessingTotalCount?: boolean | null | undefined;
   clearEffectiveContractAmount?: boolean | null | undefined;
   clearEndDate?: boolean | null | undefined;
   clearFsDate?: boolean | null | undefined;
@@ -76,7 +85,6 @@ export type UpdateProjectInput = {
   clearPmYearActual?: boolean | null | undefined;
   clearPmYearTarget?: boolean | null | undefined;
   clearPmYesterday?: boolean | null | undefined;
-  clearProcessingDiagramFinishCount?: boolean | null | undefined;
   clearProcessingWeight?: boolean | null | undefined;
   clearProjectStaffs?: boolean | null | undefined;
   clearQualityRanking?: boolean | null | undefined;
@@ -87,6 +95,7 @@ export type UpdateProjectInput = {
   clearUnitComponentProduction?: boolean | null | undefined;
   clearUnitComponentTotal?: boolean | null | undefined;
   clearUnitInventoryTotal?: boolean | null | undefined;
+  clearUsers?: boolean | null | undefined;
   clearVaApplyAmount?: boolean | null | undefined;
   clearVaApproveAmount?: boolean | null | undefined;
   clearVos?: boolean | null | undefined;
@@ -104,6 +113,14 @@ export type UpdateProjectInput = {
   contractorApproveAmount?: number | null | undefined;
   contractorApproveCount?: number | null | undefined;
   designRatedWeight?: number | null | undefined;
+  diagramBdFinishCount?: number | null | undefined;
+  diagramBdTotalCount?: number | null | undefined;
+  diagramCApprovalRatioDenominator?: number | null | undefined;
+  diagramCApprovalRatioNumerator?: number | null | undefined;
+  diagramConstructionFinishCount?: number | null | undefined;
+  diagramConstructionTotalCount?: number | null | undefined;
+  diagramProcessingFinishCount?: number | null | undefined;
+  diagramProcessingTotalCount?: number | null | undefined;
   effectiveContractAmount?: number | null | undefined;
   endDate?: any | null | undefined;
   fsDate?: any | null | undefined;
@@ -140,11 +157,11 @@ export type UpdateProjectInput = {
   pmYearActual?: number | null | undefined;
   pmYearTarget?: number | null | undefined;
   pmYesterday?: number | null | undefined;
-  processingDiagramFinishCount?: number | null | undefined;
   processingWeight?: number | null | undefined;
   qualityRanking?: number | null | undefined;
   qualityScore?: number | null | undefined;
   removeProjectStaffIDs?: ReadonlyArray<string> | null | undefined;
+  removeUserIDs?: ReadonlyArray<string> | null | undefined;
   removeVoIDs?: ReadonlyArray<string> | null | undefined;
   startDate?: any | null | undefined;
   totalContractAmount?: number | null | undefined;

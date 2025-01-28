@@ -319,6 +319,14 @@ type ComplexityRoot struct {
 		ContractorApproveCount                  func(childComplexity int) int
 		CreatedAt                               func(childComplexity int) int
 		DesignRatedWeight                       func(childComplexity int) int
+		DiagramBdFinishCount                    func(childComplexity int) int
+		DiagramBdTotalCount                     func(childComplexity int) int
+		DiagramCApprovalRatioDenominator        func(childComplexity int) int
+		DiagramCApprovalRatioNumerator          func(childComplexity int) int
+		DiagramConstructionFinishCount          func(childComplexity int) int
+		DiagramConstructionTotalCount           func(childComplexity int) int
+		DiagramProcessingFinishCount            func(childComplexity int) int
+		DiagramProcessingTotalCount             func(childComplexity int) int
 		EffectiveContractAmount                 func(childComplexity int) int
 		EndDate                                 func(childComplexity int) int
 		FsDate                                  func(childComplexity int) int
@@ -356,7 +364,6 @@ type ComplexityRoot struct {
 		PmYearActual                            func(childComplexity int) int
 		PmYearTarget                            func(childComplexity int) int
 		PmYesterday                             func(childComplexity int) int
-		ProcessingDiagramFinishCount            func(childComplexity int) int
 		ProcessingWeight                        func(childComplexity int) int
 		ProjectStaffs                           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		QualityRanking                          func(childComplexity int) int
@@ -368,6 +375,7 @@ type ComplexityRoot struct {
 		UnitComponentTotal                      func(childComplexity int) int
 		UnitInventoryTotal                      func(childComplexity int) int
 		UpdatedAt                               func(childComplexity int) int
+		Users                                   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 		VaApplyAmount                           func(childComplexity int) int
 		VaApproveAmount                         func(childComplexity int) int
 		Vos                                     func(childComplexity int) int
@@ -605,6 +613,7 @@ type ComplexityRoot struct {
 		LeaderID      func(childComplexity int) int
 		Name          func(childComplexity int) int
 		OpenID        func(childComplexity int) int
+		Projects      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
 		TeamMembers   func(childComplexity int) int
 		Tenders       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		UpdatedAt     func(childComplexity int) int
@@ -2109,6 +2118,62 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.DesignRatedWeight(childComplexity), true
 
+	case "Project.diagramBdFinishCount":
+		if e.complexity.Project.DiagramBdFinishCount == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramBdFinishCount(childComplexity), true
+
+	case "Project.diagramBdTotalCount":
+		if e.complexity.Project.DiagramBdTotalCount == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramBdTotalCount(childComplexity), true
+
+	case "Project.diagramCApprovalRatioDenominator":
+		if e.complexity.Project.DiagramCApprovalRatioDenominator == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramCApprovalRatioDenominator(childComplexity), true
+
+	case "Project.diagramCApprovalRatioNumerator":
+		if e.complexity.Project.DiagramCApprovalRatioNumerator == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramCApprovalRatioNumerator(childComplexity), true
+
+	case "Project.diagramConstructionFinishCount":
+		if e.complexity.Project.DiagramConstructionFinishCount == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramConstructionFinishCount(childComplexity), true
+
+	case "Project.diagramConstructionTotalCount":
+		if e.complexity.Project.DiagramConstructionTotalCount == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramConstructionTotalCount(childComplexity), true
+
+	case "Project.diagramProcessingFinishCount":
+		if e.complexity.Project.DiagramProcessingFinishCount == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramProcessingFinishCount(childComplexity), true
+
+	case "Project.diagramProcessingTotalCount":
+		if e.complexity.Project.DiagramProcessingTotalCount == nil {
+			break
+		}
+
+		return e.complexity.Project.DiagramProcessingTotalCount(childComplexity), true
+
 	case "Project.effectiveContractAmount":
 		if e.complexity.Project.EffectiveContractAmount == nil {
 			break
@@ -2368,13 +2433,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.PmYesterday(childComplexity), true
 
-	case "Project.processingDiagramFinishCount":
-		if e.complexity.Project.ProcessingDiagramFinishCount == nil {
-			break
-		}
-
-		return e.complexity.Project.ProcessingDiagramFinishCount(childComplexity), true
-
 	case "Project.processingWeight":
 		if e.complexity.Project.ProcessingWeight == nil {
 			break
@@ -2456,6 +2514,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Project.UpdatedAt(childComplexity), true
+
+	case "Project.users":
+		if e.complexity.Project.Users == nil {
+			break
+		}
+
+		args, err := ec.field_Project_users_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Project.Users(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.UserOrder), args["where"].(*ent.UserWhereInput)), true
 
 	case "Project.vaApplyAmount":
 		if e.complexity.Project.VaApplyAmount == nil {
@@ -3905,6 +3975,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.OpenID(childComplexity), true
 
+	case "User.projects":
+		if e.complexity.User.Projects == nil {
+			break
+		}
+
+		args, err := ec.field_User_projects_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Projects(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.ProjectOrder), args["where"].(*ent.ProjectWhereInput)), true
+
 	case "User.teamMembers":
 		if e.complexity.User.TeamMembers == nil {
 			break
@@ -5342,6 +5424,7 @@ input CreateUserInput {
   teamMemberIDs: [ID!]
   tenderIDs: [ID!]
   visitRecordIDs: [ID!]
+  projectIDs: [ID!]
 }
 """
 CreateVisitRecordInput is used for create VisitRecord object.
@@ -6728,9 +6811,37 @@ type Project implements Node {
   """
   planOverdueMonthCount: Int
   """
+  BD圖紙完成數量
+  """
+  diagramBdFinishCount: Int
+  """
+  BD圖紙總數
+  """
+  diagramBdTotalCount: Int
+  """
+  施工圖紙完成數量
+  """
+  diagramConstructionFinishCount: Int
+  """
+  施工圖紙總數
+  """
+  diagramConstructionTotalCount: Int
+  """
   加工圖完成數量
   """
-  processingDiagramFinishCount: Int
+  diagramProcessingFinishCount: Int
+  """
+  加工圖總數
+  """
+  diagramProcessingTotalCount: Int
+  """
+  C版批圖率分子
+  """
+  diagramCApprovalRatioNumerator: Int
+  """
+  C版批圖率分母
+  """
+  diagramCApprovalRatioDenominator: Int
   vos: [ProjectVO!]
   projectStaffs(
     """
@@ -6763,6 +6874,37 @@ type Project implements Node {
     """
     where: ProjectStaffWhereInput
   ): ProjectStaffConnection!
+  users(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Users returned from the connection.
+    """
+    orderBy: UserOrder
+
+    """
+    Filtering options for Users returned from the connection.
+    """
+    where: UserWhereInput
+  ): UserConnection!
 }
 """
 A connection to a list of items.
@@ -8209,18 +8351,109 @@ input ProjectWhereInput {
   planOverdueMonthCountIsNil: Boolean
   planOverdueMonthCountNotNil: Boolean
   """
-  processing_diagram_finish_count field predicates
+  diagram_bd_finish_count field predicates
   """
-  processingDiagramFinishCount: Int
-  processingDiagramFinishCountNEQ: Int
-  processingDiagramFinishCountIn: [Int!]
-  processingDiagramFinishCountNotIn: [Int!]
-  processingDiagramFinishCountGT: Int
-  processingDiagramFinishCountGTE: Int
-  processingDiagramFinishCountLT: Int
-  processingDiagramFinishCountLTE: Int
-  processingDiagramFinishCountIsNil: Boolean
-  processingDiagramFinishCountNotNil: Boolean
+  diagramBdFinishCount: Int
+  diagramBdFinishCountNEQ: Int
+  diagramBdFinishCountIn: [Int!]
+  diagramBdFinishCountNotIn: [Int!]
+  diagramBdFinishCountGT: Int
+  diagramBdFinishCountGTE: Int
+  diagramBdFinishCountLT: Int
+  diagramBdFinishCountLTE: Int
+  diagramBdFinishCountIsNil: Boolean
+  diagramBdFinishCountNotNil: Boolean
+  """
+  diagram_bd_total_count field predicates
+  """
+  diagramBdTotalCount: Int
+  diagramBdTotalCountNEQ: Int
+  diagramBdTotalCountIn: [Int!]
+  diagramBdTotalCountNotIn: [Int!]
+  diagramBdTotalCountGT: Int
+  diagramBdTotalCountGTE: Int
+  diagramBdTotalCountLT: Int
+  diagramBdTotalCountLTE: Int
+  diagramBdTotalCountIsNil: Boolean
+  diagramBdTotalCountNotNil: Boolean
+  """
+  diagram_construction_finish_count field predicates
+  """
+  diagramConstructionFinishCount: Int
+  diagramConstructionFinishCountNEQ: Int
+  diagramConstructionFinishCountIn: [Int!]
+  diagramConstructionFinishCountNotIn: [Int!]
+  diagramConstructionFinishCountGT: Int
+  diagramConstructionFinishCountGTE: Int
+  diagramConstructionFinishCountLT: Int
+  diagramConstructionFinishCountLTE: Int
+  diagramConstructionFinishCountIsNil: Boolean
+  diagramConstructionFinishCountNotNil: Boolean
+  """
+  diagram_construction_total_count field predicates
+  """
+  diagramConstructionTotalCount: Int
+  diagramConstructionTotalCountNEQ: Int
+  diagramConstructionTotalCountIn: [Int!]
+  diagramConstructionTotalCountNotIn: [Int!]
+  diagramConstructionTotalCountGT: Int
+  diagramConstructionTotalCountGTE: Int
+  diagramConstructionTotalCountLT: Int
+  diagramConstructionTotalCountLTE: Int
+  diagramConstructionTotalCountIsNil: Boolean
+  diagramConstructionTotalCountNotNil: Boolean
+  """
+  diagram_processing_finish_count field predicates
+  """
+  diagramProcessingFinishCount: Int
+  diagramProcessingFinishCountNEQ: Int
+  diagramProcessingFinishCountIn: [Int!]
+  diagramProcessingFinishCountNotIn: [Int!]
+  diagramProcessingFinishCountGT: Int
+  diagramProcessingFinishCountGTE: Int
+  diagramProcessingFinishCountLT: Int
+  diagramProcessingFinishCountLTE: Int
+  diagramProcessingFinishCountIsNil: Boolean
+  diagramProcessingFinishCountNotNil: Boolean
+  """
+  diagram_processing_total_count field predicates
+  """
+  diagramProcessingTotalCount: Int
+  diagramProcessingTotalCountNEQ: Int
+  diagramProcessingTotalCountIn: [Int!]
+  diagramProcessingTotalCountNotIn: [Int!]
+  diagramProcessingTotalCountGT: Int
+  diagramProcessingTotalCountGTE: Int
+  diagramProcessingTotalCountLT: Int
+  diagramProcessingTotalCountLTE: Int
+  diagramProcessingTotalCountIsNil: Boolean
+  diagramProcessingTotalCountNotNil: Boolean
+  """
+  diagram_c_approval_ratio_numerator field predicates
+  """
+  diagramCApprovalRatioNumerator: Int
+  diagramCApprovalRatioNumeratorNEQ: Int
+  diagramCApprovalRatioNumeratorIn: [Int!]
+  diagramCApprovalRatioNumeratorNotIn: [Int!]
+  diagramCApprovalRatioNumeratorGT: Int
+  diagramCApprovalRatioNumeratorGTE: Int
+  diagramCApprovalRatioNumeratorLT: Int
+  diagramCApprovalRatioNumeratorLTE: Int
+  diagramCApprovalRatioNumeratorIsNil: Boolean
+  diagramCApprovalRatioNumeratorNotNil: Boolean
+  """
+  diagram_c_approval_ratio_denominator field predicates
+  """
+  diagramCApprovalRatioDenominator: Int
+  diagramCApprovalRatioDenominatorNEQ: Int
+  diagramCApprovalRatioDenominatorIn: [Int!]
+  diagramCApprovalRatioDenominatorNotIn: [Int!]
+  diagramCApprovalRatioDenominatorGT: Int
+  diagramCApprovalRatioDenominatorGTE: Int
+  diagramCApprovalRatioDenominatorLT: Int
+  diagramCApprovalRatioDenominatorLTE: Int
+  diagramCApprovalRatioDenominatorIsNil: Boolean
+  diagramCApprovalRatioDenominatorNotNil: Boolean
   """
   vos edge predicates
   """
@@ -8231,6 +8464,11 @@ input ProjectWhereInput {
   """
   hasProjectStaffs: Boolean
   hasProjectStaffsWith: [ProjectStaffWhereInput!]
+  """
+  users edge predicates
+  """
+  hasUsers: Boolean
+  hasUsersWith: [UserWhereInput!]
 }
 type Province implements Node {
   id: ID!
@@ -10666,16 +10904,54 @@ input UpdateProjectInput {
   planOverdueMonthCount: Int
   clearPlanOverdueMonthCount: Boolean
   """
+  BD圖紙完成數量
+  """
+  diagramBdFinishCount: Int
+  clearDiagramBdFinishCount: Boolean
+  """
+  BD圖紙總數
+  """
+  diagramBdTotalCount: Int
+  clearDiagramBdTotalCount: Boolean
+  """
+  施工圖紙完成數量
+  """
+  diagramConstructionFinishCount: Int
+  clearDiagramConstructionFinishCount: Boolean
+  """
+  施工圖紙總數
+  """
+  diagramConstructionTotalCount: Int
+  clearDiagramConstructionTotalCount: Boolean
+  """
   加工圖完成數量
   """
-  processingDiagramFinishCount: Int
-  clearProcessingDiagramFinishCount: Boolean
+  diagramProcessingFinishCount: Int
+  clearDiagramProcessingFinishCount: Boolean
+  """
+  加工圖總數
+  """
+  diagramProcessingTotalCount: Int
+  clearDiagramProcessingTotalCount: Boolean
+  """
+  C版批圖率分子
+  """
+  diagramCApprovalRatioNumerator: Int
+  clearDiagramCApprovalRatioNumerator: Boolean
+  """
+  C版批圖率分母
+  """
+  diagramCApprovalRatioDenominator: Int
+  clearDiagramCApprovalRatioDenominator: Boolean
   addVoIDs: [ID!]
   removeVoIDs: [ID!]
   clearVos: Boolean
   addProjectStaffIDs: [ID!]
   removeProjectStaffIDs: [ID!]
   clearProjectStaffs: Boolean
+  addUserIDs: [ID!]
+  removeUserIDs: [ID!]
+  clearUsers: Boolean
 }
 """
 UpdateProvinceInput is used for update Province object.
@@ -10888,6 +11164,9 @@ input UpdateUserInput {
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
+  addProjectIDs: [ID!]
+  removeProjectIDs: [ID!]
+  clearProjects: Boolean
 }
 """
 UpdateVisitRecordInput is used for update VisitRecord object.
@@ -11050,6 +11329,37 @@ type User implements Node {
     """
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
+  projects(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for Projects returned from the connection.
+    """
+    orderBy: [ProjectOrder!]
+
+    """
+    Filtering options for Projects returned from the connection.
+    """
+    where: ProjectWhereInput
+  ): ProjectConnection!
 }
 """
 A connection to a list of items.
@@ -11303,6 +11613,11 @@ input UserWhereInput {
   """
   hasVisitRecords: Boolean
   hasVisitRecordsWith: [VisitRecordWhereInput!]
+  """
+  projects edge predicates
+  """
+  hasProjects: Boolean
+  hasProjectsWith: [ProjectWhereInput!]
 }
 type VisitRecord implements Node {
   id: ID!

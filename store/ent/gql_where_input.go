@@ -4781,17 +4781,101 @@ type ProjectWhereInput struct {
 	PlanOverdueMonthCountIsNil  bool  `json:"planOverdueMonthCountIsNil,omitempty"`
 	PlanOverdueMonthCountNotNil bool  `json:"planOverdueMonthCountNotNil,omitempty"`
 
-	// "processing_diagram_finish_count" field predicates.
-	ProcessingDiagramFinishCount       *int  `json:"processingDiagramFinishCount,omitempty"`
-	ProcessingDiagramFinishCountNEQ    *int  `json:"processingDiagramFinishCountNEQ,omitempty"`
-	ProcessingDiagramFinishCountIn     []int `json:"processingDiagramFinishCountIn,omitempty"`
-	ProcessingDiagramFinishCountNotIn  []int `json:"processingDiagramFinishCountNotIn,omitempty"`
-	ProcessingDiagramFinishCountGT     *int  `json:"processingDiagramFinishCountGT,omitempty"`
-	ProcessingDiagramFinishCountGTE    *int  `json:"processingDiagramFinishCountGTE,omitempty"`
-	ProcessingDiagramFinishCountLT     *int  `json:"processingDiagramFinishCountLT,omitempty"`
-	ProcessingDiagramFinishCountLTE    *int  `json:"processingDiagramFinishCountLTE,omitempty"`
-	ProcessingDiagramFinishCountIsNil  bool  `json:"processingDiagramFinishCountIsNil,omitempty"`
-	ProcessingDiagramFinishCountNotNil bool  `json:"processingDiagramFinishCountNotNil,omitempty"`
+	// "diagram_bd_finish_count" field predicates.
+	DiagramBdFinishCount       *int  `json:"diagramBdFinishCount,omitempty"`
+	DiagramBdFinishCountNEQ    *int  `json:"diagramBdFinishCountNEQ,omitempty"`
+	DiagramBdFinishCountIn     []int `json:"diagramBdFinishCountIn,omitempty"`
+	DiagramBdFinishCountNotIn  []int `json:"diagramBdFinishCountNotIn,omitempty"`
+	DiagramBdFinishCountGT     *int  `json:"diagramBdFinishCountGT,omitempty"`
+	DiagramBdFinishCountGTE    *int  `json:"diagramBdFinishCountGTE,omitempty"`
+	DiagramBdFinishCountLT     *int  `json:"diagramBdFinishCountLT,omitempty"`
+	DiagramBdFinishCountLTE    *int  `json:"diagramBdFinishCountLTE,omitempty"`
+	DiagramBdFinishCountIsNil  bool  `json:"diagramBdFinishCountIsNil,omitempty"`
+	DiagramBdFinishCountNotNil bool  `json:"diagramBdFinishCountNotNil,omitempty"`
+
+	// "diagram_bd_total_count" field predicates.
+	DiagramBdTotalCount       *int  `json:"diagramBdTotalCount,omitempty"`
+	DiagramBdTotalCountNEQ    *int  `json:"diagramBdTotalCountNEQ,omitempty"`
+	DiagramBdTotalCountIn     []int `json:"diagramBdTotalCountIn,omitempty"`
+	DiagramBdTotalCountNotIn  []int `json:"diagramBdTotalCountNotIn,omitempty"`
+	DiagramBdTotalCountGT     *int  `json:"diagramBdTotalCountGT,omitempty"`
+	DiagramBdTotalCountGTE    *int  `json:"diagramBdTotalCountGTE,omitempty"`
+	DiagramBdTotalCountLT     *int  `json:"diagramBdTotalCountLT,omitempty"`
+	DiagramBdTotalCountLTE    *int  `json:"diagramBdTotalCountLTE,omitempty"`
+	DiagramBdTotalCountIsNil  bool  `json:"diagramBdTotalCountIsNil,omitempty"`
+	DiagramBdTotalCountNotNil bool  `json:"diagramBdTotalCountNotNil,omitempty"`
+
+	// "diagram_construction_finish_count" field predicates.
+	DiagramConstructionFinishCount       *int  `json:"diagramConstructionFinishCount,omitempty"`
+	DiagramConstructionFinishCountNEQ    *int  `json:"diagramConstructionFinishCountNEQ,omitempty"`
+	DiagramConstructionFinishCountIn     []int `json:"diagramConstructionFinishCountIn,omitempty"`
+	DiagramConstructionFinishCountNotIn  []int `json:"diagramConstructionFinishCountNotIn,omitempty"`
+	DiagramConstructionFinishCountGT     *int  `json:"diagramConstructionFinishCountGT,omitempty"`
+	DiagramConstructionFinishCountGTE    *int  `json:"diagramConstructionFinishCountGTE,omitempty"`
+	DiagramConstructionFinishCountLT     *int  `json:"diagramConstructionFinishCountLT,omitempty"`
+	DiagramConstructionFinishCountLTE    *int  `json:"diagramConstructionFinishCountLTE,omitempty"`
+	DiagramConstructionFinishCountIsNil  bool  `json:"diagramConstructionFinishCountIsNil,omitempty"`
+	DiagramConstructionFinishCountNotNil bool  `json:"diagramConstructionFinishCountNotNil,omitempty"`
+
+	// "diagram_construction_total_count" field predicates.
+	DiagramConstructionTotalCount       *int  `json:"diagramConstructionTotalCount,omitempty"`
+	DiagramConstructionTotalCountNEQ    *int  `json:"diagramConstructionTotalCountNEQ,omitempty"`
+	DiagramConstructionTotalCountIn     []int `json:"diagramConstructionTotalCountIn,omitempty"`
+	DiagramConstructionTotalCountNotIn  []int `json:"diagramConstructionTotalCountNotIn,omitempty"`
+	DiagramConstructionTotalCountGT     *int  `json:"diagramConstructionTotalCountGT,omitempty"`
+	DiagramConstructionTotalCountGTE    *int  `json:"diagramConstructionTotalCountGTE,omitempty"`
+	DiagramConstructionTotalCountLT     *int  `json:"diagramConstructionTotalCountLT,omitempty"`
+	DiagramConstructionTotalCountLTE    *int  `json:"diagramConstructionTotalCountLTE,omitempty"`
+	DiagramConstructionTotalCountIsNil  bool  `json:"diagramConstructionTotalCountIsNil,omitempty"`
+	DiagramConstructionTotalCountNotNil bool  `json:"diagramConstructionTotalCountNotNil,omitempty"`
+
+	// "diagram_processing_finish_count" field predicates.
+	DiagramProcessingFinishCount       *int  `json:"diagramProcessingFinishCount,omitempty"`
+	DiagramProcessingFinishCountNEQ    *int  `json:"diagramProcessingFinishCountNEQ,omitempty"`
+	DiagramProcessingFinishCountIn     []int `json:"diagramProcessingFinishCountIn,omitempty"`
+	DiagramProcessingFinishCountNotIn  []int `json:"diagramProcessingFinishCountNotIn,omitempty"`
+	DiagramProcessingFinishCountGT     *int  `json:"diagramProcessingFinishCountGT,omitempty"`
+	DiagramProcessingFinishCountGTE    *int  `json:"diagramProcessingFinishCountGTE,omitempty"`
+	DiagramProcessingFinishCountLT     *int  `json:"diagramProcessingFinishCountLT,omitempty"`
+	DiagramProcessingFinishCountLTE    *int  `json:"diagramProcessingFinishCountLTE,omitempty"`
+	DiagramProcessingFinishCountIsNil  bool  `json:"diagramProcessingFinishCountIsNil,omitempty"`
+	DiagramProcessingFinishCountNotNil bool  `json:"diagramProcessingFinishCountNotNil,omitempty"`
+
+	// "diagram_processing_total_count" field predicates.
+	DiagramProcessingTotalCount       *int  `json:"diagramProcessingTotalCount,omitempty"`
+	DiagramProcessingTotalCountNEQ    *int  `json:"diagramProcessingTotalCountNEQ,omitempty"`
+	DiagramProcessingTotalCountIn     []int `json:"diagramProcessingTotalCountIn,omitempty"`
+	DiagramProcessingTotalCountNotIn  []int `json:"diagramProcessingTotalCountNotIn,omitempty"`
+	DiagramProcessingTotalCountGT     *int  `json:"diagramProcessingTotalCountGT,omitempty"`
+	DiagramProcessingTotalCountGTE    *int  `json:"diagramProcessingTotalCountGTE,omitempty"`
+	DiagramProcessingTotalCountLT     *int  `json:"diagramProcessingTotalCountLT,omitempty"`
+	DiagramProcessingTotalCountLTE    *int  `json:"diagramProcessingTotalCountLTE,omitempty"`
+	DiagramProcessingTotalCountIsNil  bool  `json:"diagramProcessingTotalCountIsNil,omitempty"`
+	DiagramProcessingTotalCountNotNil bool  `json:"diagramProcessingTotalCountNotNil,omitempty"`
+
+	// "diagram_c_approval_ratio_numerator" field predicates.
+	DiagramCApprovalRatioNumerator       *int  `json:"diagramCApprovalRatioNumerator,omitempty"`
+	DiagramCApprovalRatioNumeratorNEQ    *int  `json:"diagramCApprovalRatioNumeratorNEQ,omitempty"`
+	DiagramCApprovalRatioNumeratorIn     []int `json:"diagramCApprovalRatioNumeratorIn,omitempty"`
+	DiagramCApprovalRatioNumeratorNotIn  []int `json:"diagramCApprovalRatioNumeratorNotIn,omitempty"`
+	DiagramCApprovalRatioNumeratorGT     *int  `json:"diagramCApprovalRatioNumeratorGT,omitempty"`
+	DiagramCApprovalRatioNumeratorGTE    *int  `json:"diagramCApprovalRatioNumeratorGTE,omitempty"`
+	DiagramCApprovalRatioNumeratorLT     *int  `json:"diagramCApprovalRatioNumeratorLT,omitempty"`
+	DiagramCApprovalRatioNumeratorLTE    *int  `json:"diagramCApprovalRatioNumeratorLTE,omitempty"`
+	DiagramCApprovalRatioNumeratorIsNil  bool  `json:"diagramCApprovalRatioNumeratorIsNil,omitempty"`
+	DiagramCApprovalRatioNumeratorNotNil bool  `json:"diagramCApprovalRatioNumeratorNotNil,omitempty"`
+
+	// "diagram_c_approval_ratio_denominator" field predicates.
+	DiagramCApprovalRatioDenominator       *int  `json:"diagramCApprovalRatioDenominator,omitempty"`
+	DiagramCApprovalRatioDenominatorNEQ    *int  `json:"diagramCApprovalRatioDenominatorNEQ,omitempty"`
+	DiagramCApprovalRatioDenominatorIn     []int `json:"diagramCApprovalRatioDenominatorIn,omitempty"`
+	DiagramCApprovalRatioDenominatorNotIn  []int `json:"diagramCApprovalRatioDenominatorNotIn,omitempty"`
+	DiagramCApprovalRatioDenominatorGT     *int  `json:"diagramCApprovalRatioDenominatorGT,omitempty"`
+	DiagramCApprovalRatioDenominatorGTE    *int  `json:"diagramCApprovalRatioDenominatorGTE,omitempty"`
+	DiagramCApprovalRatioDenominatorLT     *int  `json:"diagramCApprovalRatioDenominatorLT,omitempty"`
+	DiagramCApprovalRatioDenominatorLTE    *int  `json:"diagramCApprovalRatioDenominatorLTE,omitempty"`
+	DiagramCApprovalRatioDenominatorIsNil  bool  `json:"diagramCApprovalRatioDenominatorIsNil,omitempty"`
+	DiagramCApprovalRatioDenominatorNotNil bool  `json:"diagramCApprovalRatioDenominatorNotNil,omitempty"`
 
 	// "vos" edge predicates.
 	HasVos     *bool                  `json:"hasVos,omitempty"`
@@ -4800,6 +4884,10 @@ type ProjectWhereInput struct {
 	// "project_staffs" edge predicates.
 	HasProjectStaffs     *bool                     `json:"hasProjectStaffs,omitempty"`
 	HasProjectStaffsWith []*ProjectStaffWhereInput `json:"hasProjectStaffsWith,omitempty"`
+
+	// "users" edge predicates.
+	HasUsers     *bool             `json:"hasUsers,omitempty"`
+	HasUsersWith []*UserWhereInput `json:"hasUsersWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -7240,35 +7328,245 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 	if i.PlanOverdueMonthCountNotNil {
 		predicates = append(predicates, project.PlanOverdueMonthCountNotNil())
 	}
-	if i.ProcessingDiagramFinishCount != nil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountEQ(*i.ProcessingDiagramFinishCount))
+	if i.DiagramBdFinishCount != nil {
+		predicates = append(predicates, project.DiagramBdFinishCountEQ(*i.DiagramBdFinishCount))
 	}
-	if i.ProcessingDiagramFinishCountNEQ != nil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountNEQ(*i.ProcessingDiagramFinishCountNEQ))
+	if i.DiagramBdFinishCountNEQ != nil {
+		predicates = append(predicates, project.DiagramBdFinishCountNEQ(*i.DiagramBdFinishCountNEQ))
 	}
-	if len(i.ProcessingDiagramFinishCountIn) > 0 {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountIn(i.ProcessingDiagramFinishCountIn...))
+	if len(i.DiagramBdFinishCountIn) > 0 {
+		predicates = append(predicates, project.DiagramBdFinishCountIn(i.DiagramBdFinishCountIn...))
 	}
-	if len(i.ProcessingDiagramFinishCountNotIn) > 0 {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountNotIn(i.ProcessingDiagramFinishCountNotIn...))
+	if len(i.DiagramBdFinishCountNotIn) > 0 {
+		predicates = append(predicates, project.DiagramBdFinishCountNotIn(i.DiagramBdFinishCountNotIn...))
 	}
-	if i.ProcessingDiagramFinishCountGT != nil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountGT(*i.ProcessingDiagramFinishCountGT))
+	if i.DiagramBdFinishCountGT != nil {
+		predicates = append(predicates, project.DiagramBdFinishCountGT(*i.DiagramBdFinishCountGT))
 	}
-	if i.ProcessingDiagramFinishCountGTE != nil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountGTE(*i.ProcessingDiagramFinishCountGTE))
+	if i.DiagramBdFinishCountGTE != nil {
+		predicates = append(predicates, project.DiagramBdFinishCountGTE(*i.DiagramBdFinishCountGTE))
 	}
-	if i.ProcessingDiagramFinishCountLT != nil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountLT(*i.ProcessingDiagramFinishCountLT))
+	if i.DiagramBdFinishCountLT != nil {
+		predicates = append(predicates, project.DiagramBdFinishCountLT(*i.DiagramBdFinishCountLT))
 	}
-	if i.ProcessingDiagramFinishCountLTE != nil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountLTE(*i.ProcessingDiagramFinishCountLTE))
+	if i.DiagramBdFinishCountLTE != nil {
+		predicates = append(predicates, project.DiagramBdFinishCountLTE(*i.DiagramBdFinishCountLTE))
 	}
-	if i.ProcessingDiagramFinishCountIsNil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountIsNil())
+	if i.DiagramBdFinishCountIsNil {
+		predicates = append(predicates, project.DiagramBdFinishCountIsNil())
 	}
-	if i.ProcessingDiagramFinishCountNotNil {
-		predicates = append(predicates, project.ProcessingDiagramFinishCountNotNil())
+	if i.DiagramBdFinishCountNotNil {
+		predicates = append(predicates, project.DiagramBdFinishCountNotNil())
+	}
+	if i.DiagramBdTotalCount != nil {
+		predicates = append(predicates, project.DiagramBdTotalCountEQ(*i.DiagramBdTotalCount))
+	}
+	if i.DiagramBdTotalCountNEQ != nil {
+		predicates = append(predicates, project.DiagramBdTotalCountNEQ(*i.DiagramBdTotalCountNEQ))
+	}
+	if len(i.DiagramBdTotalCountIn) > 0 {
+		predicates = append(predicates, project.DiagramBdTotalCountIn(i.DiagramBdTotalCountIn...))
+	}
+	if len(i.DiagramBdTotalCountNotIn) > 0 {
+		predicates = append(predicates, project.DiagramBdTotalCountNotIn(i.DiagramBdTotalCountNotIn...))
+	}
+	if i.DiagramBdTotalCountGT != nil {
+		predicates = append(predicates, project.DiagramBdTotalCountGT(*i.DiagramBdTotalCountGT))
+	}
+	if i.DiagramBdTotalCountGTE != nil {
+		predicates = append(predicates, project.DiagramBdTotalCountGTE(*i.DiagramBdTotalCountGTE))
+	}
+	if i.DiagramBdTotalCountLT != nil {
+		predicates = append(predicates, project.DiagramBdTotalCountLT(*i.DiagramBdTotalCountLT))
+	}
+	if i.DiagramBdTotalCountLTE != nil {
+		predicates = append(predicates, project.DiagramBdTotalCountLTE(*i.DiagramBdTotalCountLTE))
+	}
+	if i.DiagramBdTotalCountIsNil {
+		predicates = append(predicates, project.DiagramBdTotalCountIsNil())
+	}
+	if i.DiagramBdTotalCountNotNil {
+		predicates = append(predicates, project.DiagramBdTotalCountNotNil())
+	}
+	if i.DiagramConstructionFinishCount != nil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountEQ(*i.DiagramConstructionFinishCount))
+	}
+	if i.DiagramConstructionFinishCountNEQ != nil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountNEQ(*i.DiagramConstructionFinishCountNEQ))
+	}
+	if len(i.DiagramConstructionFinishCountIn) > 0 {
+		predicates = append(predicates, project.DiagramConstructionFinishCountIn(i.DiagramConstructionFinishCountIn...))
+	}
+	if len(i.DiagramConstructionFinishCountNotIn) > 0 {
+		predicates = append(predicates, project.DiagramConstructionFinishCountNotIn(i.DiagramConstructionFinishCountNotIn...))
+	}
+	if i.DiagramConstructionFinishCountGT != nil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountGT(*i.DiagramConstructionFinishCountGT))
+	}
+	if i.DiagramConstructionFinishCountGTE != nil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountGTE(*i.DiagramConstructionFinishCountGTE))
+	}
+	if i.DiagramConstructionFinishCountLT != nil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountLT(*i.DiagramConstructionFinishCountLT))
+	}
+	if i.DiagramConstructionFinishCountLTE != nil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountLTE(*i.DiagramConstructionFinishCountLTE))
+	}
+	if i.DiagramConstructionFinishCountIsNil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountIsNil())
+	}
+	if i.DiagramConstructionFinishCountNotNil {
+		predicates = append(predicates, project.DiagramConstructionFinishCountNotNil())
+	}
+	if i.DiagramConstructionTotalCount != nil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountEQ(*i.DiagramConstructionTotalCount))
+	}
+	if i.DiagramConstructionTotalCountNEQ != nil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountNEQ(*i.DiagramConstructionTotalCountNEQ))
+	}
+	if len(i.DiagramConstructionTotalCountIn) > 0 {
+		predicates = append(predicates, project.DiagramConstructionTotalCountIn(i.DiagramConstructionTotalCountIn...))
+	}
+	if len(i.DiagramConstructionTotalCountNotIn) > 0 {
+		predicates = append(predicates, project.DiagramConstructionTotalCountNotIn(i.DiagramConstructionTotalCountNotIn...))
+	}
+	if i.DiagramConstructionTotalCountGT != nil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountGT(*i.DiagramConstructionTotalCountGT))
+	}
+	if i.DiagramConstructionTotalCountGTE != nil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountGTE(*i.DiagramConstructionTotalCountGTE))
+	}
+	if i.DiagramConstructionTotalCountLT != nil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountLT(*i.DiagramConstructionTotalCountLT))
+	}
+	if i.DiagramConstructionTotalCountLTE != nil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountLTE(*i.DiagramConstructionTotalCountLTE))
+	}
+	if i.DiagramConstructionTotalCountIsNil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountIsNil())
+	}
+	if i.DiagramConstructionTotalCountNotNil {
+		predicates = append(predicates, project.DiagramConstructionTotalCountNotNil())
+	}
+	if i.DiagramProcessingFinishCount != nil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountEQ(*i.DiagramProcessingFinishCount))
+	}
+	if i.DiagramProcessingFinishCountNEQ != nil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountNEQ(*i.DiagramProcessingFinishCountNEQ))
+	}
+	if len(i.DiagramProcessingFinishCountIn) > 0 {
+		predicates = append(predicates, project.DiagramProcessingFinishCountIn(i.DiagramProcessingFinishCountIn...))
+	}
+	if len(i.DiagramProcessingFinishCountNotIn) > 0 {
+		predicates = append(predicates, project.DiagramProcessingFinishCountNotIn(i.DiagramProcessingFinishCountNotIn...))
+	}
+	if i.DiagramProcessingFinishCountGT != nil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountGT(*i.DiagramProcessingFinishCountGT))
+	}
+	if i.DiagramProcessingFinishCountGTE != nil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountGTE(*i.DiagramProcessingFinishCountGTE))
+	}
+	if i.DiagramProcessingFinishCountLT != nil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountLT(*i.DiagramProcessingFinishCountLT))
+	}
+	if i.DiagramProcessingFinishCountLTE != nil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountLTE(*i.DiagramProcessingFinishCountLTE))
+	}
+	if i.DiagramProcessingFinishCountIsNil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountIsNil())
+	}
+	if i.DiagramProcessingFinishCountNotNil {
+		predicates = append(predicates, project.DiagramProcessingFinishCountNotNil())
+	}
+	if i.DiagramProcessingTotalCount != nil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountEQ(*i.DiagramProcessingTotalCount))
+	}
+	if i.DiagramProcessingTotalCountNEQ != nil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountNEQ(*i.DiagramProcessingTotalCountNEQ))
+	}
+	if len(i.DiagramProcessingTotalCountIn) > 0 {
+		predicates = append(predicates, project.DiagramProcessingTotalCountIn(i.DiagramProcessingTotalCountIn...))
+	}
+	if len(i.DiagramProcessingTotalCountNotIn) > 0 {
+		predicates = append(predicates, project.DiagramProcessingTotalCountNotIn(i.DiagramProcessingTotalCountNotIn...))
+	}
+	if i.DiagramProcessingTotalCountGT != nil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountGT(*i.DiagramProcessingTotalCountGT))
+	}
+	if i.DiagramProcessingTotalCountGTE != nil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountGTE(*i.DiagramProcessingTotalCountGTE))
+	}
+	if i.DiagramProcessingTotalCountLT != nil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountLT(*i.DiagramProcessingTotalCountLT))
+	}
+	if i.DiagramProcessingTotalCountLTE != nil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountLTE(*i.DiagramProcessingTotalCountLTE))
+	}
+	if i.DiagramProcessingTotalCountIsNil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountIsNil())
+	}
+	if i.DiagramProcessingTotalCountNotNil {
+		predicates = append(predicates, project.DiagramProcessingTotalCountNotNil())
+	}
+	if i.DiagramCApprovalRatioNumerator != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorEQ(*i.DiagramCApprovalRatioNumerator))
+	}
+	if i.DiagramCApprovalRatioNumeratorNEQ != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorNEQ(*i.DiagramCApprovalRatioNumeratorNEQ))
+	}
+	if len(i.DiagramCApprovalRatioNumeratorIn) > 0 {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorIn(i.DiagramCApprovalRatioNumeratorIn...))
+	}
+	if len(i.DiagramCApprovalRatioNumeratorNotIn) > 0 {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorNotIn(i.DiagramCApprovalRatioNumeratorNotIn...))
+	}
+	if i.DiagramCApprovalRatioNumeratorGT != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorGT(*i.DiagramCApprovalRatioNumeratorGT))
+	}
+	if i.DiagramCApprovalRatioNumeratorGTE != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorGTE(*i.DiagramCApprovalRatioNumeratorGTE))
+	}
+	if i.DiagramCApprovalRatioNumeratorLT != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorLT(*i.DiagramCApprovalRatioNumeratorLT))
+	}
+	if i.DiagramCApprovalRatioNumeratorLTE != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorLTE(*i.DiagramCApprovalRatioNumeratorLTE))
+	}
+	if i.DiagramCApprovalRatioNumeratorIsNil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorIsNil())
+	}
+	if i.DiagramCApprovalRatioNumeratorNotNil {
+		predicates = append(predicates, project.DiagramCApprovalRatioNumeratorNotNil())
+	}
+	if i.DiagramCApprovalRatioDenominator != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorEQ(*i.DiagramCApprovalRatioDenominator))
+	}
+	if i.DiagramCApprovalRatioDenominatorNEQ != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorNEQ(*i.DiagramCApprovalRatioDenominatorNEQ))
+	}
+	if len(i.DiagramCApprovalRatioDenominatorIn) > 0 {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorIn(i.DiagramCApprovalRatioDenominatorIn...))
+	}
+	if len(i.DiagramCApprovalRatioDenominatorNotIn) > 0 {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorNotIn(i.DiagramCApprovalRatioDenominatorNotIn...))
+	}
+	if i.DiagramCApprovalRatioDenominatorGT != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorGT(*i.DiagramCApprovalRatioDenominatorGT))
+	}
+	if i.DiagramCApprovalRatioDenominatorGTE != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorGTE(*i.DiagramCApprovalRatioDenominatorGTE))
+	}
+	if i.DiagramCApprovalRatioDenominatorLT != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorLT(*i.DiagramCApprovalRatioDenominatorLT))
+	}
+	if i.DiagramCApprovalRatioDenominatorLTE != nil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorLTE(*i.DiagramCApprovalRatioDenominatorLTE))
+	}
+	if i.DiagramCApprovalRatioDenominatorIsNil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorIsNil())
+	}
+	if i.DiagramCApprovalRatioDenominatorNotNil {
+		predicates = append(predicates, project.DiagramCApprovalRatioDenominatorNotNil())
 	}
 
 	if i.HasVos != nil {
@@ -7306,6 +7604,24 @@ func (i *ProjectWhereInput) P() (predicate.Project, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, project.HasProjectStaffsWith(with...))
+	}
+	if i.HasUsers != nil {
+		p := project.HasUsers()
+		if !*i.HasUsers {
+			p = project.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasUsersWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasUsersWith))
+		for _, w := range i.HasUsersWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasUsersWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, project.HasUsersWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -12517,6 +12833,10 @@ type UserWhereInput struct {
 	// "visit_records" edge predicates.
 	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
 	HasVisitRecordsWith []*VisitRecordWhereInput `json:"hasVisitRecordsWith,omitempty"`
+
+	// "projects" edge predicates.
+	HasProjects     *bool                `json:"hasProjects,omitempty"`
+	HasProjectsWith []*ProjectWhereInput `json:"hasProjectsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -13058,6 +13378,24 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, user.HasVisitRecordsWith(with...))
+	}
+	if i.HasProjects != nil {
+		p := user.HasProjects()
+		if !*i.HasProjects {
+			p = user.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasProjectsWith) > 0 {
+		with := make([]predicate.Project, 0, len(i.HasProjectsWith))
+		for _, w := range i.HasProjectsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasProjectsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, user.HasProjectsWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

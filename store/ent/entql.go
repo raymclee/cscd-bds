@@ -278,7 +278,14 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldPlanTotalCount:                          {Type: field.TypeInt, Column: project.FieldPlanTotalCount},
 			project.FieldPlanOverdueCount:                        {Type: field.TypeInt, Column: project.FieldPlanOverdueCount},
 			project.FieldPlanOverdueMonthCount:                   {Type: field.TypeInt, Column: project.FieldPlanOverdueMonthCount},
-			project.FieldProcessingDiagramFinishCount:            {Type: field.TypeInt, Column: project.FieldProcessingDiagramFinishCount},
+			project.FieldDiagramBdFinishCount:                    {Type: field.TypeInt, Column: project.FieldDiagramBdFinishCount},
+			project.FieldDiagramBdTotalCount:                     {Type: field.TypeInt, Column: project.FieldDiagramBdTotalCount},
+			project.FieldDiagramConstructionFinishCount:          {Type: field.TypeInt, Column: project.FieldDiagramConstructionFinishCount},
+			project.FieldDiagramConstructionTotalCount:           {Type: field.TypeInt, Column: project.FieldDiagramConstructionTotalCount},
+			project.FieldDiagramProcessingFinishCount:            {Type: field.TypeInt, Column: project.FieldDiagramProcessingFinishCount},
+			project.FieldDiagramProcessingTotalCount:             {Type: field.TypeInt, Column: project.FieldDiagramProcessingTotalCount},
+			project.FieldDiagramCApprovalRatioNumerator:          {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioNumerator},
+			project.FieldDiagramCApprovalRatioDenominator:        {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioDenominator},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -723,6 +730,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		"ProjectStaff",
 	)
 	graph.MustAddE(
+		"users",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   project.UsersTable,
+			Columns: project.UsersPrimaryKey,
+			Bidi:    false,
+		},
+		"Project",
+		"User",
+	)
+	graph.MustAddE(
 		"project",
 		&sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -997,6 +1016,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"User",
 		"VisitRecord",
+	)
+	graph.MustAddE(
+		"projects",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   user.ProjectsTable,
+			Columns: user.ProjectsPrimaryKey,
+			Bidi:    false,
+		},
+		"User",
+		"Project",
 	)
 	graph.MustAddE(
 		"tender",
@@ -2339,9 +2370,44 @@ func (f *ProjectFilter) WherePlanOverdueMonthCount(p entql.IntP) {
 	f.Where(p.Field(project.FieldPlanOverdueMonthCount))
 }
 
-// WhereProcessingDiagramFinishCount applies the entql int predicate on the processing_diagram_finish_count field.
-func (f *ProjectFilter) WhereProcessingDiagramFinishCount(p entql.IntP) {
-	f.Where(p.Field(project.FieldProcessingDiagramFinishCount))
+// WhereDiagramBdFinishCount applies the entql int predicate on the diagram_bd_finish_count field.
+func (f *ProjectFilter) WhereDiagramBdFinishCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramBdFinishCount))
+}
+
+// WhereDiagramBdTotalCount applies the entql int predicate on the diagram_bd_total_count field.
+func (f *ProjectFilter) WhereDiagramBdTotalCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramBdTotalCount))
+}
+
+// WhereDiagramConstructionFinishCount applies the entql int predicate on the diagram_construction_finish_count field.
+func (f *ProjectFilter) WhereDiagramConstructionFinishCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramConstructionFinishCount))
+}
+
+// WhereDiagramConstructionTotalCount applies the entql int predicate on the diagram_construction_total_count field.
+func (f *ProjectFilter) WhereDiagramConstructionTotalCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramConstructionTotalCount))
+}
+
+// WhereDiagramProcessingFinishCount applies the entql int predicate on the diagram_processing_finish_count field.
+func (f *ProjectFilter) WhereDiagramProcessingFinishCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramProcessingFinishCount))
+}
+
+// WhereDiagramProcessingTotalCount applies the entql int predicate on the diagram_processing_total_count field.
+func (f *ProjectFilter) WhereDiagramProcessingTotalCount(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramProcessingTotalCount))
+}
+
+// WhereDiagramCApprovalRatioNumerator applies the entql int predicate on the diagram_c_approval_ratio_numerator field.
+func (f *ProjectFilter) WhereDiagramCApprovalRatioNumerator(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramCApprovalRatioNumerator))
+}
+
+// WhereDiagramCApprovalRatioDenominator applies the entql int predicate on the diagram_c_approval_ratio_denominator field.
+func (f *ProjectFilter) WhereDiagramCApprovalRatioDenominator(p entql.IntP) {
+	f.Where(p.Field(project.FieldDiagramCApprovalRatioDenominator))
 }
 
 // WhereHasVos applies a predicate to check if query has an edge vos.
@@ -2366,6 +2432,20 @@ func (f *ProjectFilter) WhereHasProjectStaffs() {
 // WhereHasProjectStaffsWith applies a predicate to check if query has an edge project_staffs with a given conditions (other predicates).
 func (f *ProjectFilter) WhereHasProjectStaffsWith(preds ...predicate.ProjectStaff) {
 	f.Where(entql.HasEdgeWith("project_staffs", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasUsers applies a predicate to check if query has an edge users.
+func (f *ProjectFilter) WhereHasUsers() {
+	f.Where(entql.HasEdge("users"))
+}
+
+// WhereHasUsersWith applies a predicate to check if query has an edge users with a given conditions (other predicates).
+func (f *ProjectFilter) WhereHasUsersWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("users", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -3398,6 +3478,20 @@ func (f *UserFilter) WhereHasVisitRecords() {
 // WhereHasVisitRecordsWith applies a predicate to check if query has an edge visit_records with a given conditions (other predicates).
 func (f *UserFilter) WhereHasVisitRecordsWith(preds ...predicate.VisitRecord) {
 	f.Where(entql.HasEdgeWith("visit_records", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasProjects applies a predicate to check if query has an edge projects.
+func (f *UserFilter) WhereHasProjects() {
+	f.Where(entql.HasEdge("projects"))
+}
+
+// WhereHasProjectsWith applies a predicate to check if query has an edge projects with a given conditions (other predicates).
+func (f *UserFilter) WhereHasProjectsWith(preds ...predicate.Project) {
+	f.Where(entql.HasEdgeWith("projects", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

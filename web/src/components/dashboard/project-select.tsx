@@ -40,7 +40,7 @@ export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
 
   const code = search.code ?? defaultCode;
 
-  const projectsArray = data?.projects?.edges
+  const projectsArray = data?.node?.projects?.edges
     ?.map((item) => item?.node)
     .filter((item) => item?.code);
 

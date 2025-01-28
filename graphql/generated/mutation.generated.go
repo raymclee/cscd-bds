@@ -1548,6 +1548,8 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -1647,6 +1649,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteUser(ctx context.Context
 				return ec.fieldContext_User_tenders(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_User_visitRecords(ctx, field)
+			case "projects":
+				return ec.fieldContext_User_projects(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -3233,12 +3237,28 @@ func (ec *executionContext) fieldContext_Mutation_updateProject(ctx context.Cont
 				return ec.fieldContext_Project_planOverdueCount(ctx, field)
 			case "planOverdueMonthCount":
 				return ec.fieldContext_Project_planOverdueMonthCount(ctx, field)
-			case "processingDiagramFinishCount":
-				return ec.fieldContext_Project_processingDiagramFinishCount(ctx, field)
+			case "diagramBdFinishCount":
+				return ec.fieldContext_Project_diagramBdFinishCount(ctx, field)
+			case "diagramBdTotalCount":
+				return ec.fieldContext_Project_diagramBdTotalCount(ctx, field)
+			case "diagramConstructionFinishCount":
+				return ec.fieldContext_Project_diagramConstructionFinishCount(ctx, field)
+			case "diagramConstructionTotalCount":
+				return ec.fieldContext_Project_diagramConstructionTotalCount(ctx, field)
+			case "diagramProcessingFinishCount":
+				return ec.fieldContext_Project_diagramProcessingFinishCount(ctx, field)
+			case "diagramProcessingTotalCount":
+				return ec.fieldContext_Project_diagramProcessingTotalCount(ctx, field)
+			case "diagramCApprovalRatioNumerator":
+				return ec.fieldContext_Project_diagramCApprovalRatioNumerator(ctx, field)
+			case "diagramCApprovalRatioDenominator":
+				return ec.fieldContext_Project_diagramCApprovalRatioDenominator(ctx, field)
 			case "vos":
 				return ec.fieldContext_Project_vos(ctx, field)
 			case "projectStaffs":
 				return ec.fieldContext_Project_projectStaffs(ctx, field)
+			case "users":
+				return ec.fieldContext_Project_users(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
 		},
