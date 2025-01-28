@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dc4f433c2578229d126659cf0f3e7c60>>
+ * @generated SignedSource<<b704c968c5a8e1bf87bfe2f1887f9733>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -149,6 +149,13 @@ v5 = {
   "args": [
     {
       "kind": "Literal",
+      "name": "orderBy",
+      "value": {
+        "field": "CODE"
+      }
+    },
+    {
+      "kind": "Literal",
       "name": "where",
       "value": {
         "isFinishedNEQ": true
@@ -185,7 +192,7 @@ v5 = {
       "storageKey": null
     }
   ],
-  "storageKey": "projects(where:{\"isFinishedNEQ\":true})"
+  "storageKey": "projects(orderBy:{\"field\":\"CODE\"},where:{\"isFinishedNEQ\":true})"
 },
 v6 = [
   {
@@ -456,7 +463,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "dbd6d30b03b4500052e982da02ef5990",
+    "cacheID": "2c8b9a5928d500115cb32c61a318b60e",
     "id": null,
     "metadata": {
       "connection": [
@@ -472,11 +479,11 @@ return {
     },
     "name": "usersSuperAdminUsersPageQuery",
     "operationKind": "query",
-    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  projects(where: {isFinishedNEQ: true}) {\n    edges {\n      node {\n        id\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        projects {\n          edges {\n            node {\n              id\n              code\n              isFinished\n            }\n          }\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query usersSuperAdminUsersPageQuery(\n  $first: Int\n  $last: Int\n) {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n      }\n    }\n  }\n  projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {\n    edges {\n      node {\n        id\n        code\n      }\n    }\n  }\n  users(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        name\n        email\n        username\n        openID\n        avatarURL\n        disabled\n        areas {\n          edges {\n            node {\n              id\n              name\n              code\n            }\n          }\n        }\n        isCeo\n        isAdmin\n        isSuperAdmin\n        hasMapAccess\n        hasEditAccess\n        projects {\n          edges {\n            node {\n              id\n              code\n              isFinished\n            }\n          }\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "524a824264f7374e478061f442c7fee5";
+(node as any).hash = "8d456cfcf0a96fa24474752816608814";
 
 export default node;
