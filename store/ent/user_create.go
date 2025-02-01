@@ -57,9 +57,23 @@ func (uc *UserCreate) SetNillableUpdatedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
+// SetOpenID sets the "open_id" field.
+func (uc *UserCreate) SetOpenID(s string) *UserCreate {
+	uc.mutation.SetOpenID(s)
+	return uc
+}
+
 // SetName sets the "name" field.
 func (uc *UserCreate) SetName(s string) *UserCreate {
 	uc.mutation.SetName(s)
+	return uc
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetName(*s)
+	}
 	return uc
 }
 
@@ -69,22 +83,24 @@ func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uc *UserCreate) SetNillableEmail(s *string) *UserCreate {
+	if s != nil {
+		uc.SetEmail(*s)
+	}
+	return uc
+}
+
 // SetUsername sets the "username" field.
 func (uc *UserCreate) SetUsername(s string) *UserCreate {
 	uc.mutation.SetUsername(s)
 	return uc
 }
 
-// SetOpenID sets the "open_id" field.
-func (uc *UserCreate) SetOpenID(s string) *UserCreate {
-	uc.mutation.SetOpenID(s)
-	return uc
-}
-
-// SetNillableOpenID sets the "open_id" field if the given value is not nil.
-func (uc *UserCreate) SetNillableOpenID(s *string) *UserCreate {
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uc *UserCreate) SetNillableUsername(s *string) *UserCreate {
 	if s != nil {
-		uc.SetOpenID(*s)
+		uc.SetUsername(*s)
 	}
 	return uc
 }
@@ -391,14 +407,13 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "User.updated_at"`)}
 	}
-	if _, ok := uc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "User.name"`)}
+	if _, ok := uc.mutation.OpenID(); !ok {
+		return &ValidationError{Name: "open_id", err: errors.New(`ent: missing required field "User.open_id"`)}
 	}
-	if _, ok := uc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
-	}
-	if _, ok := uc.mutation.Username(); !ok {
-		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
+	if v, ok := uc.mutation.OpenID(); ok {
+		if err := user.OpenIDValidator(v); err != nil {
+			return &ValidationError{Name: "open_id", err: fmt.Errorf(`ent: validator failed for field "User.open_id": %w`, err)}
+		}
 	}
 	if _, ok := uc.mutation.Disabled(); !ok {
 		return &ValidationError{Name: "disabled", err: errors.New(`ent: missing required field "User.disabled"`)}
@@ -462,21 +477,21 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
+	if value, ok := uc.mutation.OpenID(); ok {
+		_spec.SetField(user.FieldOpenID, field.TypeString, value)
+		_node.OpenID = value
+	}
 	if value, ok := uc.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
-		_node.Name = value
+		_node.Name = &value
 	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
-		_node.Email = value
+		_node.Email = &value
 	}
 	if value, ok := uc.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
-		_node.Username = value
-	}
-	if value, ok := uc.mutation.OpenID(); ok {
-		_spec.SetField(user.FieldOpenID, field.TypeString, value)
-		_node.OpenID = &value
+		_node.Username = &value
 	}
 	if value, ok := uc.mutation.AvatarURL(); ok {
 		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
@@ -683,6 +698,18 @@ func (u *UserUpsert) UpdateUpdatedAt() *UserUpsert {
 	return u
 }
 
+// SetOpenID sets the "open_id" field.
+func (u *UserUpsert) SetOpenID(v string) *UserUpsert {
+	u.Set(user.FieldOpenID, v)
+	return u
+}
+
+// UpdateOpenID sets the "open_id" field to the value that was provided on create.
+func (u *UserUpsert) UpdateOpenID() *UserUpsert {
+	u.SetExcluded(user.FieldOpenID)
+	return u
+}
+
 // SetName sets the "name" field.
 func (u *UserUpsert) SetName(v string) *UserUpsert {
 	u.Set(user.FieldName, v)
@@ -692,6 +719,12 @@ func (u *UserUpsert) SetName(v string) *UserUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *UserUpsert) UpdateName() *UserUpsert {
 	u.SetExcluded(user.FieldName)
+	return u
+}
+
+// ClearName clears the value of the "name" field.
+func (u *UserUpsert) ClearName() *UserUpsert {
+	u.SetNull(user.FieldName)
 	return u
 }
 
@@ -707,6 +740,12 @@ func (u *UserUpsert) UpdateEmail() *UserUpsert {
 	return u
 }
 
+// ClearEmail clears the value of the "email" field.
+func (u *UserUpsert) ClearEmail() *UserUpsert {
+	u.SetNull(user.FieldEmail)
+	return u
+}
+
 // SetUsername sets the "username" field.
 func (u *UserUpsert) SetUsername(v string) *UserUpsert {
 	u.Set(user.FieldUsername, v)
@@ -719,21 +758,9 @@ func (u *UserUpsert) UpdateUsername() *UserUpsert {
 	return u
 }
 
-// SetOpenID sets the "open_id" field.
-func (u *UserUpsert) SetOpenID(v string) *UserUpsert {
-	u.Set(user.FieldOpenID, v)
-	return u
-}
-
-// UpdateOpenID sets the "open_id" field to the value that was provided on create.
-func (u *UserUpsert) UpdateOpenID() *UserUpsert {
-	u.SetExcluded(user.FieldOpenID)
-	return u
-}
-
-// ClearOpenID clears the value of the "open_id" field.
-func (u *UserUpsert) ClearOpenID() *UserUpsert {
-	u.SetNull(user.FieldOpenID)
+// ClearUsername clears the value of the "username" field.
+func (u *UserUpsert) ClearUsername() *UserUpsert {
+	u.SetNull(user.FieldUsername)
 	return u
 }
 
@@ -910,6 +937,20 @@ func (u *UserUpsertOne) UpdateUpdatedAt() *UserUpsertOne {
 	})
 }
 
+// SetOpenID sets the "open_id" field.
+func (u *UserUpsertOne) SetOpenID(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetOpenID(v)
+	})
+}
+
+// UpdateOpenID sets the "open_id" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateOpenID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateOpenID()
+	})
+}
+
 // SetName sets the "name" field.
 func (u *UserUpsertOne) SetName(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
@@ -921,6 +962,13 @@ func (u *UserUpsertOne) SetName(v string) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateName() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateName()
+	})
+}
+
+// ClearName clears the value of the "name" field.
+func (u *UserUpsertOne) ClearName() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearName()
 	})
 }
 
@@ -938,6 +986,13 @@ func (u *UserUpsertOne) UpdateEmail() *UserUpsertOne {
 	})
 }
 
+// ClearEmail clears the value of the "email" field.
+func (u *UserUpsertOne) ClearEmail() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearEmail()
+	})
+}
+
 // SetUsername sets the "username" field.
 func (u *UserUpsertOne) SetUsername(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
@@ -952,24 +1007,10 @@ func (u *UserUpsertOne) UpdateUsername() *UserUpsertOne {
 	})
 }
 
-// SetOpenID sets the "open_id" field.
-func (u *UserUpsertOne) SetOpenID(v string) *UserUpsertOne {
+// ClearUsername clears the value of the "username" field.
+func (u *UserUpsertOne) ClearUsername() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetOpenID(v)
-	})
-}
-
-// UpdateOpenID sets the "open_id" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateOpenID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateOpenID()
-	})
-}
-
-// ClearOpenID clears the value of the "open_id" field.
-func (u *UserUpsertOne) ClearOpenID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.ClearOpenID()
+		s.ClearUsername()
 	})
 }
 
@@ -1331,6 +1372,20 @@ func (u *UserUpsertBulk) UpdateUpdatedAt() *UserUpsertBulk {
 	})
 }
 
+// SetOpenID sets the "open_id" field.
+func (u *UserUpsertBulk) SetOpenID(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetOpenID(v)
+	})
+}
+
+// UpdateOpenID sets the "open_id" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateOpenID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateOpenID()
+	})
+}
+
 // SetName sets the "name" field.
 func (u *UserUpsertBulk) SetName(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
@@ -1342,6 +1397,13 @@ func (u *UserUpsertBulk) SetName(v string) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateName() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateName()
+	})
+}
+
+// ClearName clears the value of the "name" field.
+func (u *UserUpsertBulk) ClearName() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearName()
 	})
 }
 
@@ -1359,6 +1421,13 @@ func (u *UserUpsertBulk) UpdateEmail() *UserUpsertBulk {
 	})
 }
 
+// ClearEmail clears the value of the "email" field.
+func (u *UserUpsertBulk) ClearEmail() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearEmail()
+	})
+}
+
 // SetUsername sets the "username" field.
 func (u *UserUpsertBulk) SetUsername(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
@@ -1373,24 +1442,10 @@ func (u *UserUpsertBulk) UpdateUsername() *UserUpsertBulk {
 	})
 }
 
-// SetOpenID sets the "open_id" field.
-func (u *UserUpsertBulk) SetOpenID(v string) *UserUpsertBulk {
+// ClearUsername clears the value of the "username" field.
+func (u *UserUpsertBulk) ClearUsername() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetOpenID(v)
-	})
-}
-
-// UpdateOpenID sets the "open_id" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateOpenID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateOpenID()
-	})
-}
-
-// ClearOpenID clears the value of the "open_id" field.
-func (u *UserUpsertBulk) ClearOpenID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.ClearOpenID()
+		s.ClearUsername()
 	})
 }
 

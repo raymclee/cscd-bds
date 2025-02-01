@@ -92,7 +92,7 @@ func (h handler) AuthFeishuCallback(c echo.Context) error {
 		AvatarBig:    *userInfo.Data.AvatarBig,
 		OpenId:       *userInfo.Data.OpenId,
 		UnionId:      *userInfo.Data.UnionId,
-		Email:        us.Email,
+		Email:        *us.Email,
 		UserId:       string(us.ID),
 	}
 	h.session.Put(c.Request().Context(), "user", u)

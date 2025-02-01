@@ -40,6 +40,20 @@ func (uu *UserUpdate) SetUpdatedAt(t time.Time) *UserUpdate {
 	return uu
 }
 
+// SetOpenID sets the "open_id" field.
+func (uu *UserUpdate) SetOpenID(s string) *UserUpdate {
+	uu.mutation.SetOpenID(s)
+	return uu
+}
+
+// SetNillableOpenID sets the "open_id" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableOpenID(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetOpenID(*s)
+	}
+	return uu
+}
+
 // SetName sets the "name" field.
 func (uu *UserUpdate) SetName(s string) *UserUpdate {
 	uu.mutation.SetName(s)
@@ -51,6 +65,12 @@ func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetName(*s)
 	}
+	return uu
+}
+
+// ClearName clears the value of the "name" field.
+func (uu *UserUpdate) ClearName() *UserUpdate {
+	uu.mutation.ClearName()
 	return uu
 }
 
@@ -68,6 +88,12 @@ func (uu *UserUpdate) SetNillableEmail(s *string) *UserUpdate {
 	return uu
 }
 
+// ClearEmail clears the value of the "email" field.
+func (uu *UserUpdate) ClearEmail() *UserUpdate {
+	uu.mutation.ClearEmail()
+	return uu
+}
+
 // SetUsername sets the "username" field.
 func (uu *UserUpdate) SetUsername(s string) *UserUpdate {
 	uu.mutation.SetUsername(s)
@@ -82,23 +108,9 @@ func (uu *UserUpdate) SetNillableUsername(s *string) *UserUpdate {
 	return uu
 }
 
-// SetOpenID sets the "open_id" field.
-func (uu *UserUpdate) SetOpenID(s string) *UserUpdate {
-	uu.mutation.SetOpenID(s)
-	return uu
-}
-
-// SetNillableOpenID sets the "open_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableOpenID(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetOpenID(*s)
-	}
-	return uu
-}
-
-// ClearOpenID clears the value of the "open_id" field.
-func (uu *UserUpdate) ClearOpenID() *UserUpdate {
-	uu.mutation.ClearOpenID()
+// ClearUsername clears the value of the "username" field.
+func (uu *UserUpdate) ClearUsername() *UserUpdate {
+	uu.mutation.ClearUsername()
 	return uu
 }
 
@@ -494,7 +506,20 @@ func (uu *UserUpdate) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (uu *UserUpdate) check() error {
+	if v, ok := uu.mutation.OpenID(); ok {
+		if err := user.OpenIDValidator(v); err != nil {
+			return &ValidationError{Name: "open_id", err: fmt.Errorf(`ent: validator failed for field "User.open_id": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
+	if err := uu.check(); err != nil {
+		return n, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeString))
 	if ps := uu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -506,20 +531,26 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.UpdatedAt(); ok {
 		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
 	}
+	if value, ok := uu.mutation.OpenID(); ok {
+		_spec.SetField(user.FieldOpenID, field.TypeString, value)
+	}
 	if value, ok := uu.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
+	}
+	if uu.mutation.NameCleared() {
+		_spec.ClearField(user.FieldName, field.TypeString)
 	}
 	if value, ok := uu.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 	}
+	if uu.mutation.EmailCleared() {
+		_spec.ClearField(user.FieldEmail, field.TypeString)
+	}
 	if value, ok := uu.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.OpenID(); ok {
-		_spec.SetField(user.FieldOpenID, field.TypeString, value)
-	}
-	if uu.mutation.OpenIDCleared() {
-		_spec.ClearField(user.FieldOpenID, field.TypeString)
+	if uu.mutation.UsernameCleared() {
+		_spec.ClearField(user.FieldUsername, field.TypeString)
 	}
 	if value, ok := uu.mutation.AvatarURL(); ok {
 		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)
@@ -870,6 +901,20 @@ func (uuo *UserUpdateOne) SetUpdatedAt(t time.Time) *UserUpdateOne {
 	return uuo
 }
 
+// SetOpenID sets the "open_id" field.
+func (uuo *UserUpdateOne) SetOpenID(s string) *UserUpdateOne {
+	uuo.mutation.SetOpenID(s)
+	return uuo
+}
+
+// SetNillableOpenID sets the "open_id" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableOpenID(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetOpenID(*s)
+	}
+	return uuo
+}
+
 // SetName sets the "name" field.
 func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
 	uuo.mutation.SetName(s)
@@ -881,6 +926,12 @@ func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetName(*s)
 	}
+	return uuo
+}
+
+// ClearName clears the value of the "name" field.
+func (uuo *UserUpdateOne) ClearName() *UserUpdateOne {
+	uuo.mutation.ClearName()
 	return uuo
 }
 
@@ -898,6 +949,12 @@ func (uuo *UserUpdateOne) SetNillableEmail(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// ClearEmail clears the value of the "email" field.
+func (uuo *UserUpdateOne) ClearEmail() *UserUpdateOne {
+	uuo.mutation.ClearEmail()
+	return uuo
+}
+
 // SetUsername sets the "username" field.
 func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
 	uuo.mutation.SetUsername(s)
@@ -912,23 +969,9 @@ func (uuo *UserUpdateOne) SetNillableUsername(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetOpenID sets the "open_id" field.
-func (uuo *UserUpdateOne) SetOpenID(s string) *UserUpdateOne {
-	uuo.mutation.SetOpenID(s)
-	return uuo
-}
-
-// SetNillableOpenID sets the "open_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableOpenID(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetOpenID(*s)
-	}
-	return uuo
-}
-
-// ClearOpenID clears the value of the "open_id" field.
-func (uuo *UserUpdateOne) ClearOpenID() *UserUpdateOne {
-	uuo.mutation.ClearOpenID()
+// ClearUsername clears the value of the "username" field.
+func (uuo *UserUpdateOne) ClearUsername() *UserUpdateOne {
+	uuo.mutation.ClearUsername()
 	return uuo
 }
 
@@ -1337,7 +1380,20 @@ func (uuo *UserUpdateOne) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (uuo *UserUpdateOne) check() error {
+	if v, ok := uuo.mutation.OpenID(); ok {
+		if err := user.OpenIDValidator(v); err != nil {
+			return &ValidationError{Name: "open_id", err: fmt.Errorf(`ent: validator failed for field "User.open_id": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
+	if err := uuo.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeString))
 	id, ok := uuo.mutation.ID()
 	if !ok {
@@ -1366,20 +1422,26 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.UpdatedAt(); ok {
 		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
 	}
+	if value, ok := uuo.mutation.OpenID(); ok {
+		_spec.SetField(user.FieldOpenID, field.TypeString, value)
+	}
 	if value, ok := uuo.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
+	}
+	if uuo.mutation.NameCleared() {
+		_spec.ClearField(user.FieldName, field.TypeString)
 	}
 	if value, ok := uuo.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 	}
+	if uuo.mutation.EmailCleared() {
+		_spec.ClearField(user.FieldEmail, field.TypeString)
+	}
 	if value, ok := uuo.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.OpenID(); ok {
-		_spec.SetField(user.FieldOpenID, field.TypeString, value)
-	}
-	if uuo.mutation.OpenIDCleared() {
-		_spec.ClearField(user.FieldOpenID, field.TypeString)
+	if uuo.mutation.UsernameCleared() {
+		_spec.ClearField(user.FieldUsername, field.TypeString)
 	}
 	if value, ok := uuo.mutation.AvatarURL(); ok {
 		_spec.SetField(user.FieldAvatarURL, field.TypeString, value)

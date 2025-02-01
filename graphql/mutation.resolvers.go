@@ -47,25 +47,44 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input ent.CreateUserI
 		return nil, fmt.Errorf("failed to get access token: %w", err)
 	}
 
-	fu, err := r.feishu.GetFeishuUser(ctx, *input.OpenID, accessToken)
+	fu, err := r.feishu.GetFeishuUser(ctx, input.OpenID, accessToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get feishu user: %w", err)
 	}
-
-	var u *ent.User
-
-	u, err = r.store.User.Query().Where(user.Username(*fu.EnName)).Only(ctx)
-	if ent.IsNotFound(err) {
-		u, err = r.store.User.Create().SetInput(input).SetName(*fu.Name).SetAvatarURL(*fu.Avatar.AvatarOrigin).SetUsername(*fu.EnName).SetEmail(*fu.Email).Save(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create user: %w", err)
-		}
-	} else {
-		u, err = u.Update().AddAreaIDs(input.AreaIDs...).Save(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to update user: %w", err)
-		}
+	if fu.EnName == nil {
+		return nil, fmt.Errorf("failed to get feishu user: %w", errors.New("feishu user en name is nil"))
 	}
+
+	err = r.store.User.Create().
+		SetInput(input).
+		SetOpenID(input.OpenID).
+		SetNillableAvatarURL(fu.Avatar.AvatarOrigin).
+		SetNillableEmail(fu.Email).
+		SetNillableName(fu.Name).
+		SetNillableUsername(fu.EnName).
+		OnConflictColumns(user.FieldOpenID).
+		UpdateNewValues().
+		Exec(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create user: %w", err)
+	}
+
+	u, err := r.store.User.Query().Where(user.Username(*fu.EnName)).Only(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user: %w", err)
+	}
+	// u, err = r.store.User.Query().Where(user.Username(*fu.EnName)).Only(ctx)
+	// if ent.IsNotFound(err) {
+	// 	u, err = r.store.User.Create().SetInput(input).SetName(*fu.Name).SetAvatarURL(*fu.Avatar.AvatarOrigin).SetUsername(*fu.EnName).SetEmail(*fu.Email).Save(ctx)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to create user: %w", err)
+	// 	}
+	// } else {
+	// 	u, err = u.Update().AddAreaIDs(input.AreaIDs...).Save(ctx)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to update user: %w", err)
+	// 	}
+	// }
 
 	return &ent.UserConnection{Edges: []*ent.UserEdge{{Node: u}}}, nil
 }

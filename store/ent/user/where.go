@@ -66,6 +66,11 @@ func UpdatedAt(v time.Time) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
+// OpenID applies equality check predicate on the "open_id" field. It's identical to OpenIDEQ.
+func OpenID(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldOpenID, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldName, v))
@@ -79,11 +84,6 @@ func Email(v string) predicate.User {
 // Username applies equality check predicate on the "username" field. It's identical to UsernameEQ.
 func Username(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldUsername, v))
-}
-
-// OpenID applies equality check predicate on the "open_id" field. It's identical to OpenIDEQ.
-func OpenID(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldOpenID, v))
 }
 
 // AvatarURL applies equality check predicate on the "avatar_url" field. It's identical to AvatarURLEQ.
@@ -206,6 +206,71 @@ func UpdatedAtLTE(v time.Time) predicate.User {
 	return predicate.User(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
+// OpenIDEQ applies the EQ predicate on the "open_id" field.
+func OpenIDEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldOpenID, v))
+}
+
+// OpenIDNEQ applies the NEQ predicate on the "open_id" field.
+func OpenIDNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldOpenID, v))
+}
+
+// OpenIDIn applies the In predicate on the "open_id" field.
+func OpenIDIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldOpenID, vs...))
+}
+
+// OpenIDNotIn applies the NotIn predicate on the "open_id" field.
+func OpenIDNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldOpenID, vs...))
+}
+
+// OpenIDGT applies the GT predicate on the "open_id" field.
+func OpenIDGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldOpenID, v))
+}
+
+// OpenIDGTE applies the GTE predicate on the "open_id" field.
+func OpenIDGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldOpenID, v))
+}
+
+// OpenIDLT applies the LT predicate on the "open_id" field.
+func OpenIDLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldOpenID, v))
+}
+
+// OpenIDLTE applies the LTE predicate on the "open_id" field.
+func OpenIDLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldOpenID, v))
+}
+
+// OpenIDContains applies the Contains predicate on the "open_id" field.
+func OpenIDContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldOpenID, v))
+}
+
+// OpenIDHasPrefix applies the HasPrefix predicate on the "open_id" field.
+func OpenIDHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldOpenID, v))
+}
+
+// OpenIDHasSuffix applies the HasSuffix predicate on the "open_id" field.
+func OpenIDHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldOpenID, v))
+}
+
+// OpenIDEqualFold applies the EqualFold predicate on the "open_id" field.
+func OpenIDEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldOpenID, v))
+}
+
+// OpenIDContainsFold applies the ContainsFold predicate on the "open_id" field.
+func OpenIDContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldOpenID, v))
+}
+
 // NameEQ applies the EQ predicate on the "name" field.
 func NameEQ(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldName, v))
@@ -259,6 +324,16 @@ func NameHasPrefix(v string) predicate.User {
 // NameHasSuffix applies the HasSuffix predicate on the "name" field.
 func NameHasSuffix(v string) predicate.User {
 	return predicate.User(sql.FieldHasSuffix(FieldName, v))
+}
+
+// NameIsNil applies the IsNil predicate on the "name" field.
+func NameIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldName))
+}
+
+// NameNotNil applies the NotNil predicate on the "name" field.
+func NameNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldName))
 }
 
 // NameEqualFold applies the EqualFold predicate on the "name" field.
@@ -326,6 +401,16 @@ func EmailHasSuffix(v string) predicate.User {
 	return predicate.User(sql.FieldHasSuffix(FieldEmail, v))
 }
 
+// EmailIsNil applies the IsNil predicate on the "email" field.
+func EmailIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldEmail))
+}
+
+// EmailNotNil applies the NotNil predicate on the "email" field.
+func EmailNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldEmail))
+}
+
 // EmailEqualFold applies the EqualFold predicate on the "email" field.
 func EmailEqualFold(v string) predicate.User {
 	return predicate.User(sql.FieldEqualFold(FieldEmail, v))
@@ -391,6 +476,16 @@ func UsernameHasSuffix(v string) predicate.User {
 	return predicate.User(sql.FieldHasSuffix(FieldUsername, v))
 }
 
+// UsernameIsNil applies the IsNil predicate on the "username" field.
+func UsernameIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldUsername))
+}
+
+// UsernameNotNil applies the NotNil predicate on the "username" field.
+func UsernameNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldUsername))
+}
+
 // UsernameEqualFold applies the EqualFold predicate on the "username" field.
 func UsernameEqualFold(v string) predicate.User {
 	return predicate.User(sql.FieldEqualFold(FieldUsername, v))
@@ -399,81 +494,6 @@ func UsernameEqualFold(v string) predicate.User {
 // UsernameContainsFold applies the ContainsFold predicate on the "username" field.
 func UsernameContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldUsername, v))
-}
-
-// OpenIDEQ applies the EQ predicate on the "open_id" field.
-func OpenIDEQ(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldOpenID, v))
-}
-
-// OpenIDNEQ applies the NEQ predicate on the "open_id" field.
-func OpenIDNEQ(v string) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldOpenID, v))
-}
-
-// OpenIDIn applies the In predicate on the "open_id" field.
-func OpenIDIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldIn(FieldOpenID, vs...))
-}
-
-// OpenIDNotIn applies the NotIn predicate on the "open_id" field.
-func OpenIDNotIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldOpenID, vs...))
-}
-
-// OpenIDGT applies the GT predicate on the "open_id" field.
-func OpenIDGT(v string) predicate.User {
-	return predicate.User(sql.FieldGT(FieldOpenID, v))
-}
-
-// OpenIDGTE applies the GTE predicate on the "open_id" field.
-func OpenIDGTE(v string) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldOpenID, v))
-}
-
-// OpenIDLT applies the LT predicate on the "open_id" field.
-func OpenIDLT(v string) predicate.User {
-	return predicate.User(sql.FieldLT(FieldOpenID, v))
-}
-
-// OpenIDLTE applies the LTE predicate on the "open_id" field.
-func OpenIDLTE(v string) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldOpenID, v))
-}
-
-// OpenIDContains applies the Contains predicate on the "open_id" field.
-func OpenIDContains(v string) predicate.User {
-	return predicate.User(sql.FieldContains(FieldOpenID, v))
-}
-
-// OpenIDHasPrefix applies the HasPrefix predicate on the "open_id" field.
-func OpenIDHasPrefix(v string) predicate.User {
-	return predicate.User(sql.FieldHasPrefix(FieldOpenID, v))
-}
-
-// OpenIDHasSuffix applies the HasSuffix predicate on the "open_id" field.
-func OpenIDHasSuffix(v string) predicate.User {
-	return predicate.User(sql.FieldHasSuffix(FieldOpenID, v))
-}
-
-// OpenIDIsNil applies the IsNil predicate on the "open_id" field.
-func OpenIDIsNil() predicate.User {
-	return predicate.User(sql.FieldIsNull(FieldOpenID))
-}
-
-// OpenIDNotNil applies the NotNil predicate on the "open_id" field.
-func OpenIDNotNil() predicate.User {
-	return predicate.User(sql.FieldNotNull(FieldOpenID))
-}
-
-// OpenIDEqualFold applies the EqualFold predicate on the "open_id" field.
-func OpenIDEqualFold(v string) predicate.User {
-	return predicate.User(sql.FieldEqualFold(FieldOpenID, v))
-}
-
-// OpenIDContainsFold applies the ContainsFold predicate on the "open_id" field.
-func OpenIDContainsFold(v string) predicate.User {
-	return predicate.User(sql.FieldContainsFold(FieldOpenID, v))
 }
 
 // AvatarURLEQ applies the EQ predicate on the "avatar_url" field.

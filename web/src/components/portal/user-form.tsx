@@ -63,10 +63,10 @@ export function UserForm({
         hasEditAccess: selectedUser.hasEditAccess,
         isCeo: selectedUser.isCeo,
         projectIDs:
-          selectedUser.projects.edges?.length ===
+          selectedUser.projects?.edges?.length ===
           avaliableProjects?.edges?.length
             ? ["all"]
-            : selectedUser.projects.edges
+            : selectedUser.projects?.edges
                 ?.filter((e) =>
                   avaliableProjects?.edges?.some(
                     (p) => p?.node?.id === e?.node?.id,
@@ -280,7 +280,7 @@ export function UserForm({
           <Switch />
         </Form.Item>
       </Form>
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

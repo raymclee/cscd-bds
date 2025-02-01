@@ -1272,7 +1272,7 @@ func main() {
 			if err != nil && err != sql.ErrNoRows {
 				fmt.Printf("%s 抓取加工圖完成數量失败: %s\n", *jobcode, err.Error())
 			} else {
-				p.SetNillableProcessingDiagramFinishCount(processingDiagramFinishCount)
+				p.SetNillableDiagramProcessingFinishCount(processingDiagramFinishCount)
 			}
 		}
 

@@ -91,7 +91,9 @@ func (s *Sap) InsertTender(st *store.Store, t *ent.Tender) {
 		projectType = *t.ProjectType
 	}
 	for _, s := range t.Edges.FollowingSales {
-		followingSalesNames = append(followingSalesNames, s.Name)
+		if s.Name != nil {
+			followingSalesNames = append(followingSalesNames, *s.Name)
+		}
 	}
 	followingSalesNamesStr = strings.Join(followingSalesNames, ",")
 	esAmount = strconv.FormatFloat(t.EstimatedAmount, 'f', -1, 64)

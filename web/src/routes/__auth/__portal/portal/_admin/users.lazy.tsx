@@ -1,4 +1,3 @@
-import { InfoCircleOutlined } from "@ant-design/icons";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { usersPageQuery } from "__generated__/usersPageQuery.graphql";
 import {
@@ -9,7 +8,6 @@ import {
   Switch,
   Table,
   TableProps,
-  Tooltip,
 } from "antd";
 import { Plus } from "lucide-react";
 import * as React from "react";
@@ -18,7 +16,6 @@ import { graphql } from "relay-runtime";
 import { ListFilter } from "~/components/portal/list-filter";
 import { UserForm } from "~/components/portal/user-form";
 import { AreaConnection, User } from "~/graphql/graphql";
-import { useDeleteUser } from "~/hooks/use-delete-user";
 import { useUpdateUser } from "~/hooks/use-update-user";
 
 export const Route = createLazyFileRoute(
@@ -80,7 +77,6 @@ function RouteComponent() {
   const searchParams = Route.useSearch();
   const navigate = Route.useNavigate();
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
-  const [commitDeleteUser, isDeleteUserInFlight] = useDeleteUser();
   const [commitUpdateUser, isUpdateUserInFlight] = useUpdateUser();
   const { message } = App.useApp();
   const { session } = Route.useRouteContext();
@@ -102,6 +98,7 @@ function RouteComponent() {
 
   const dataSource =
     users
+      .filter((n) => n?.areas?.edges?.length && n?.areas?.edges?.length > 0)
       .filter((n) => n?.name?.toLowerCase().includes(searchText.toLowerCase()))
       .filter(
         (n) =>
@@ -195,8 +192,22 @@ function RouteComponent() {
           <Popconfirm
             title="确定删除吗？"
             onConfirm={() => {
-              commitDeleteUser({
-                variables: { id: record.id, connections: connectionIDs },
+              commitUpdateUser({
+                variables: {
+                  id: record.id,
+                  input: {
+                    clearAreas: true,
+                    addAreaIDs: record.areas.edges
+                      ?.filter(
+                        (t) =>
+                          !data.node?.areas?.edges
+                            ?.map((e) => e?.node?.id)
+                            .includes(t?.node?.id),
+                      )
+                      .map((e) => e?.node?.id ?? "")
+                      .filter((e) => e !== ""),
+                  },
+                },
                 onCompleted() {
                   message.success("删除成功");
                 },
@@ -224,7 +235,7 @@ function RouteComponent() {
                 (record.isCeo && !session.isSuperAdmin) ||
                 (record.isSuperAdmin && !session.isSuperAdmin)
               }
-              loading={isDeleteUserInFlight}
+              loading={isUpdateUserInFlight}
             >
               删除
             </Button>

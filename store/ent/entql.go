@@ -441,10 +441,10 @@ var schemaGraph = func() *sqlgraph.Schema {
 		Fields: map[string]*sqlgraph.FieldSpec{
 			user.FieldCreatedAt:     {Type: field.TypeTime, Column: user.FieldCreatedAt},
 			user.FieldUpdatedAt:     {Type: field.TypeTime, Column: user.FieldUpdatedAt},
+			user.FieldOpenID:        {Type: field.TypeString, Column: user.FieldOpenID},
 			user.FieldName:          {Type: field.TypeString, Column: user.FieldName},
 			user.FieldEmail:         {Type: field.TypeString, Column: user.FieldEmail},
 			user.FieldUsername:      {Type: field.TypeString, Column: user.FieldUsername},
-			user.FieldOpenID:        {Type: field.TypeString, Column: user.FieldOpenID},
 			user.FieldAvatarURL:     {Type: field.TypeString, Column: user.FieldAvatarURL},
 			user.FieldDisabled:      {Type: field.TypeBool, Column: user.FieldDisabled},
 			user.FieldIsAdmin:       {Type: field.TypeBool, Column: user.FieldIsAdmin},
@@ -3340,6 +3340,11 @@ func (f *UserFilter) WhereUpdatedAt(p entql.TimeP) {
 	f.Where(p.Field(user.FieldUpdatedAt))
 }
 
+// WhereOpenID applies the entql string predicate on the open_id field.
+func (f *UserFilter) WhereOpenID(p entql.StringP) {
+	f.Where(p.Field(user.FieldOpenID))
+}
+
 // WhereName applies the entql string predicate on the name field.
 func (f *UserFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(user.FieldName))
@@ -3353,11 +3358,6 @@ func (f *UserFilter) WhereEmail(p entql.StringP) {
 // WhereUsername applies the entql string predicate on the username field.
 func (f *UserFilter) WhereUsername(p entql.StringP) {
 	f.Where(p.Field(user.FieldUsername))
-}
-
-// WhereOpenID applies the entql string predicate on the open_id field.
-func (f *UserFilter) WhereOpenID(p entql.StringP) {
-	f.Where(p.Field(user.FieldOpenID))
 }
 
 // WhereAvatarURL applies the entql string predicate on the avatar_url field.

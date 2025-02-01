@@ -4696,6 +4696,11 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				selectedFields = append(selectedFields, user.FieldUpdatedAt)
 				fieldSeen[user.FieldUpdatedAt] = struct{}{}
 			}
+		case "openID":
+			if _, ok := fieldSeen[user.FieldOpenID]; !ok {
+				selectedFields = append(selectedFields, user.FieldOpenID)
+				fieldSeen[user.FieldOpenID] = struct{}{}
+			}
 		case "name":
 			if _, ok := fieldSeen[user.FieldName]; !ok {
 				selectedFields = append(selectedFields, user.FieldName)
@@ -4710,11 +4715,6 @@ func (u *UserQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 			if _, ok := fieldSeen[user.FieldUsername]; !ok {
 				selectedFields = append(selectedFields, user.FieldUsername)
 				fieldSeen[user.FieldUsername] = struct{}{}
-			}
-		case "openID":
-			if _, ok := fieldSeen[user.FieldOpenID]; !ok {
-				selectedFields = append(selectedFields, user.FieldOpenID)
-				fieldSeen[user.FieldOpenID] = struct{}{}
 			}
 		case "avatarURL":
 			if _, ok := fieldSeen[user.FieldAvatarURL]; !ok {

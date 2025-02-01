@@ -1512,14 +1512,14 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_createdAt(ctx, field)
 			case "updatedAt":
 				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "username":
 				return ec.fieldContext_User_username(ctx, field)
-			case "openID":
-				return ec.fieldContext_User_openID(ctx, field)
 			case "avatarURL":
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":
@@ -1613,14 +1613,14 @@ func (ec *executionContext) fieldContext_Mutation_deleteUser(ctx context.Context
 				return ec.fieldContext_User_createdAt(ctx, field)
 			case "updatedAt":
 				return ec.fieldContext_User_updatedAt(ctx, field)
+			case "openID":
+				return ec.fieldContext_User_openID(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "username":
 				return ec.fieldContext_User_username(ctx, field)
-			case "openID":
-				return ec.fieldContext_User_openID(ctx, field)
 			case "avatarURL":
 				return ec.fieldContext_User_avatarURL(ctx, field)
 			case "disabled":

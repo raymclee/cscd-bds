@@ -19,14 +19,14 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
+	// FieldOpenID holds the string denoting the open_id field in the database.
+	FieldOpenID = "open_id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
 	// FieldUsername holds the string denoting the username field in the database.
 	FieldUsername = "username"
-	// FieldOpenID holds the string denoting the open_id field in the database.
-	FieldOpenID = "open_id"
 	// FieldAvatarURL holds the string denoting the avatar_url field in the database.
 	FieldAvatarURL = "avatar_url"
 	// FieldDisabled holds the string denoting the disabled field in the database.
@@ -101,10 +101,10 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldUpdatedAt,
+	FieldOpenID,
 	FieldName,
 	FieldEmail,
 	FieldUsername,
-	FieldOpenID,
 	FieldAvatarURL,
 	FieldDisabled,
 	FieldIsAdmin,
@@ -147,6 +147,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// OpenIDValidator is a validator for the "open_id" field. It is called by the builders before save.
+	OpenIDValidator func(string) error
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled bool
 	// DefaultIsAdmin holds the default value on creation for the "is_admin" field.
@@ -181,6 +183,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
+// ByOpenID orders the results by the open_id field.
+func ByOpenID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOpenID, opts...).ToFunc()
+}
+
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
@@ -194,11 +201,6 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 // ByUsername orders the results by the username field.
 func ByUsername(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUsername, opts...).ToFunc()
-}
-
-// ByOpenID orders the results by the open_id field.
-func ByOpenID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOpenID, opts...).ToFunc()
 }
 
 // ByAvatarURL orders the results by the avatar_url field.

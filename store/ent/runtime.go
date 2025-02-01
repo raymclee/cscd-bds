@@ -457,6 +457,10 @@ func init() {
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
 	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// userDescOpenID is the schema descriptor for open_id field.
+	userDescOpenID := userFields[0].Descriptor()
+	// user.OpenIDValidator is a validator for the "open_id" field. It is called by the builders before save.
+	user.OpenIDValidator = userDescOpenID.Validators[0].(func(string) error)
 	// userDescDisabled is the schema descriptor for disabled field.
 	userDescDisabled := userFields[5].Descriptor()
 	// user.DefaultDisabled holds the default value on creation for the disabled field.

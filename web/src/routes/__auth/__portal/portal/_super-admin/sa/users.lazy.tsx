@@ -145,7 +145,7 @@ function RouteComponent() {
       dataIndex: "projects",
       title: "项目",
       render: (_, record) => {
-        if (!record.projects.edges?.length) return "无";
+        if (!record?.projects?.edges?.length) return "无";
         const text =
           data.projects.edges?.length === record.projects.edges?.length
             ? "全部"
@@ -200,7 +200,7 @@ function RouteComponent() {
     {
       title: "操作",
       render: (_, record) => (
-        <div className="-ml-2 flex items-center gap-2">
+        <div className="flex items-center gap-2 -ml-2">
           <Button
             type="link"
             size="small"

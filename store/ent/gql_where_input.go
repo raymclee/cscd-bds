@@ -12690,6 +12690,21 @@ type UserWhereInput struct {
 	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
 	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
+	// "open_id" field predicates.
+	OpenID             *string  `json:"openID,omitempty"`
+	OpenIDNEQ          *string  `json:"openIDNEQ,omitempty"`
+	OpenIDIn           []string `json:"openIDIn,omitempty"`
+	OpenIDNotIn        []string `json:"openIDNotIn,omitempty"`
+	OpenIDGT           *string  `json:"openIDGT,omitempty"`
+	OpenIDGTE          *string  `json:"openIDGTE,omitempty"`
+	OpenIDLT           *string  `json:"openIDLT,omitempty"`
+	OpenIDLTE          *string  `json:"openIDLTE,omitempty"`
+	OpenIDContains     *string  `json:"openIDContains,omitempty"`
+	OpenIDHasPrefix    *string  `json:"openIDHasPrefix,omitempty"`
+	OpenIDHasSuffix    *string  `json:"openIDHasSuffix,omitempty"`
+	OpenIDEqualFold    *string  `json:"openIDEqualFold,omitempty"`
+	OpenIDContainsFold *string  `json:"openIDContainsFold,omitempty"`
+
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
 	NameNEQ          *string  `json:"nameNEQ,omitempty"`
@@ -12702,6 +12717,8 @@ type UserWhereInput struct {
 	NameContains     *string  `json:"nameContains,omitempty"`
 	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
 	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameIsNil        bool     `json:"nameIsNil,omitempty"`
+	NameNotNil       bool     `json:"nameNotNil,omitempty"`
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
@@ -12717,6 +12734,8 @@ type UserWhereInput struct {
 	EmailContains     *string  `json:"emailContains,omitempty"`
 	EmailHasPrefix    *string  `json:"emailHasPrefix,omitempty"`
 	EmailHasSuffix    *string  `json:"emailHasSuffix,omitempty"`
+	EmailIsNil        bool     `json:"emailIsNil,omitempty"`
+	EmailNotNil       bool     `json:"emailNotNil,omitempty"`
 	EmailEqualFold    *string  `json:"emailEqualFold,omitempty"`
 	EmailContainsFold *string  `json:"emailContainsFold,omitempty"`
 
@@ -12732,25 +12751,10 @@ type UserWhereInput struct {
 	UsernameContains     *string  `json:"usernameContains,omitempty"`
 	UsernameHasPrefix    *string  `json:"usernameHasPrefix,omitempty"`
 	UsernameHasSuffix    *string  `json:"usernameHasSuffix,omitempty"`
+	UsernameIsNil        bool     `json:"usernameIsNil,omitempty"`
+	UsernameNotNil       bool     `json:"usernameNotNil,omitempty"`
 	UsernameEqualFold    *string  `json:"usernameEqualFold,omitempty"`
 	UsernameContainsFold *string  `json:"usernameContainsFold,omitempty"`
-
-	// "open_id" field predicates.
-	OpenID             *string  `json:"openID,omitempty"`
-	OpenIDNEQ          *string  `json:"openIDNEQ,omitempty"`
-	OpenIDIn           []string `json:"openIDIn,omitempty"`
-	OpenIDNotIn        []string `json:"openIDNotIn,omitempty"`
-	OpenIDGT           *string  `json:"openIDGT,omitempty"`
-	OpenIDGTE          *string  `json:"openIDGTE,omitempty"`
-	OpenIDLT           *string  `json:"openIDLT,omitempty"`
-	OpenIDLTE          *string  `json:"openIDLTE,omitempty"`
-	OpenIDContains     *string  `json:"openIDContains,omitempty"`
-	OpenIDHasPrefix    *string  `json:"openIDHasPrefix,omitempty"`
-	OpenIDHasSuffix    *string  `json:"openIDHasSuffix,omitempty"`
-	OpenIDIsNil        bool     `json:"openIDIsNil,omitempty"`
-	OpenIDNotNil       bool     `json:"openIDNotNil,omitempty"`
-	OpenIDEqualFold    *string  `json:"openIDEqualFold,omitempty"`
-	OpenIDContainsFold *string  `json:"openIDContainsFold,omitempty"`
 
 	// "avatar_url" field predicates.
 	AvatarURL             *string  `json:"avatarURL,omitempty"`
@@ -12982,6 +12986,45 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.UpdatedAtLTE != nil {
 		predicates = append(predicates, user.UpdatedAtLTE(*i.UpdatedAtLTE))
 	}
+	if i.OpenID != nil {
+		predicates = append(predicates, user.OpenIDEQ(*i.OpenID))
+	}
+	if i.OpenIDNEQ != nil {
+		predicates = append(predicates, user.OpenIDNEQ(*i.OpenIDNEQ))
+	}
+	if len(i.OpenIDIn) > 0 {
+		predicates = append(predicates, user.OpenIDIn(i.OpenIDIn...))
+	}
+	if len(i.OpenIDNotIn) > 0 {
+		predicates = append(predicates, user.OpenIDNotIn(i.OpenIDNotIn...))
+	}
+	if i.OpenIDGT != nil {
+		predicates = append(predicates, user.OpenIDGT(*i.OpenIDGT))
+	}
+	if i.OpenIDGTE != nil {
+		predicates = append(predicates, user.OpenIDGTE(*i.OpenIDGTE))
+	}
+	if i.OpenIDLT != nil {
+		predicates = append(predicates, user.OpenIDLT(*i.OpenIDLT))
+	}
+	if i.OpenIDLTE != nil {
+		predicates = append(predicates, user.OpenIDLTE(*i.OpenIDLTE))
+	}
+	if i.OpenIDContains != nil {
+		predicates = append(predicates, user.OpenIDContains(*i.OpenIDContains))
+	}
+	if i.OpenIDHasPrefix != nil {
+		predicates = append(predicates, user.OpenIDHasPrefix(*i.OpenIDHasPrefix))
+	}
+	if i.OpenIDHasSuffix != nil {
+		predicates = append(predicates, user.OpenIDHasSuffix(*i.OpenIDHasSuffix))
+	}
+	if i.OpenIDEqualFold != nil {
+		predicates = append(predicates, user.OpenIDEqualFold(*i.OpenIDEqualFold))
+	}
+	if i.OpenIDContainsFold != nil {
+		predicates = append(predicates, user.OpenIDContainsFold(*i.OpenIDContainsFold))
+	}
 	if i.Name != nil {
 		predicates = append(predicates, user.NameEQ(*i.Name))
 	}
@@ -13014,6 +13057,12 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	}
 	if i.NameHasSuffix != nil {
 		predicates = append(predicates, user.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameIsNil {
+		predicates = append(predicates, user.NameIsNil())
+	}
+	if i.NameNotNil {
+		predicates = append(predicates, user.NameNotNil())
 	}
 	if i.NameEqualFold != nil {
 		predicates = append(predicates, user.NameEqualFold(*i.NameEqualFold))
@@ -13054,6 +13103,12 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.EmailHasSuffix != nil {
 		predicates = append(predicates, user.EmailHasSuffix(*i.EmailHasSuffix))
 	}
+	if i.EmailIsNil {
+		predicates = append(predicates, user.EmailIsNil())
+	}
+	if i.EmailNotNil {
+		predicates = append(predicates, user.EmailNotNil())
+	}
 	if i.EmailEqualFold != nil {
 		predicates = append(predicates, user.EmailEqualFold(*i.EmailEqualFold))
 	}
@@ -13093,56 +13148,17 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.UsernameHasSuffix != nil {
 		predicates = append(predicates, user.UsernameHasSuffix(*i.UsernameHasSuffix))
 	}
+	if i.UsernameIsNil {
+		predicates = append(predicates, user.UsernameIsNil())
+	}
+	if i.UsernameNotNil {
+		predicates = append(predicates, user.UsernameNotNil())
+	}
 	if i.UsernameEqualFold != nil {
 		predicates = append(predicates, user.UsernameEqualFold(*i.UsernameEqualFold))
 	}
 	if i.UsernameContainsFold != nil {
 		predicates = append(predicates, user.UsernameContainsFold(*i.UsernameContainsFold))
-	}
-	if i.OpenID != nil {
-		predicates = append(predicates, user.OpenIDEQ(*i.OpenID))
-	}
-	if i.OpenIDNEQ != nil {
-		predicates = append(predicates, user.OpenIDNEQ(*i.OpenIDNEQ))
-	}
-	if len(i.OpenIDIn) > 0 {
-		predicates = append(predicates, user.OpenIDIn(i.OpenIDIn...))
-	}
-	if len(i.OpenIDNotIn) > 0 {
-		predicates = append(predicates, user.OpenIDNotIn(i.OpenIDNotIn...))
-	}
-	if i.OpenIDGT != nil {
-		predicates = append(predicates, user.OpenIDGT(*i.OpenIDGT))
-	}
-	if i.OpenIDGTE != nil {
-		predicates = append(predicates, user.OpenIDGTE(*i.OpenIDGTE))
-	}
-	if i.OpenIDLT != nil {
-		predicates = append(predicates, user.OpenIDLT(*i.OpenIDLT))
-	}
-	if i.OpenIDLTE != nil {
-		predicates = append(predicates, user.OpenIDLTE(*i.OpenIDLTE))
-	}
-	if i.OpenIDContains != nil {
-		predicates = append(predicates, user.OpenIDContains(*i.OpenIDContains))
-	}
-	if i.OpenIDHasPrefix != nil {
-		predicates = append(predicates, user.OpenIDHasPrefix(*i.OpenIDHasPrefix))
-	}
-	if i.OpenIDHasSuffix != nil {
-		predicates = append(predicates, user.OpenIDHasSuffix(*i.OpenIDHasSuffix))
-	}
-	if i.OpenIDIsNil {
-		predicates = append(predicates, user.OpenIDIsNil())
-	}
-	if i.OpenIDNotNil {
-		predicates = append(predicates, user.OpenIDNotNil())
-	}
-	if i.OpenIDEqualFold != nil {
-		predicates = append(predicates, user.OpenIDEqualFold(*i.OpenIDEqualFold))
-	}
-	if i.OpenIDContainsFold != nil {
-		predicates = append(predicates, user.OpenIDContainsFold(*i.OpenIDContainsFold))
 	}
 	if i.AvatarURL != nil {
 		predicates = append(predicates, user.AvatarURLEQ(*i.AvatarURL))

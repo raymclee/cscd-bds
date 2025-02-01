@@ -2363,10 +2363,10 @@ func (c *TenderUpdateOne) SetInput(i UpdateTenderInput) *TenderUpdateOne {
 type CreateUserInput struct {
 	CreatedAt      *time.Time
 	UpdatedAt      *time.Time
-	Name           string
-	Email          string
-	Username       string
-	OpenID         *string
+	OpenID         string
+	Name           *string
+	Email          *string
+	Username       *string
 	AvatarURL      *string
 	Disabled       *bool
 	IsAdmin        *bool
@@ -2391,11 +2391,15 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
 	}
-	m.SetName(i.Name)
-	m.SetEmail(i.Email)
-	m.SetUsername(i.Username)
-	if v := i.OpenID; v != nil {
-		m.SetOpenID(*v)
+	m.SetOpenID(i.OpenID)
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.Email; v != nil {
+		m.SetEmail(*v)
+	}
+	if v := i.Username; v != nil {
+		m.SetUsername(*v)
 	}
 	if v := i.AvatarURL; v != nil {
 		m.SetAvatarURL(*v)
@@ -2450,11 +2454,13 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
 	UpdatedAt            *time.Time
-	Name                 *string
-	Email                *string
-	Username             *string
-	ClearOpenID          bool
 	OpenID               *string
+	ClearName            bool
+	Name                 *string
+	ClearEmail           bool
+	Email                *string
+	ClearUsername        bool
+	Username             *string
 	ClearAvatarURL       bool
 	AvatarURL            *string
 	Disabled             *bool
@@ -2490,20 +2496,26 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
 	}
+	if v := i.OpenID; v != nil {
+		m.SetOpenID(*v)
+	}
+	if i.ClearName {
+		m.ClearName()
+	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if i.ClearEmail {
+		m.ClearEmail()
 	}
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
 	}
+	if i.ClearUsername {
+		m.ClearUsername()
+	}
 	if v := i.Username; v != nil {
 		m.SetUsername(*v)
-	}
-	if i.ClearOpenID {
-		m.ClearOpenID()
-	}
-	if v := i.OpenID; v != nil {
-		m.SetOpenID(*v)
 	}
 	if i.ClearAvatarURL {
 		m.ClearAvatarURL()

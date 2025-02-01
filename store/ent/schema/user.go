@@ -25,10 +25,10 @@ func (User) Mixin() []ent.Mixin {
 // Fields of the User.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name"),
-		field.String("email").Unique(),
-		field.String("username").Unique(),
-		field.String("open_id").Optional().Nillable(),
+		field.String("open_id").Unique().NotEmpty(),
+		field.String("name").Optional().Nillable(),
+		field.String("email").Optional().Nillable(),
+		field.String("username").Optional().Nillable(),
 		field.String("avatar_url").Optional().Nillable(),
 		field.Bool("disabled").Default(false),
 		field.Bool("is_admin").Default(false),

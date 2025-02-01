@@ -22,14 +22,14 @@ type User struct {
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// Name holds the value of the "name" field.
-	Name string `json:"name,omitempty"`
-	// Email holds the value of the "email" field.
-	Email string `json:"email,omitempty"`
-	// Username holds the value of the "username" field.
-	Username string `json:"username,omitempty"`
 	// OpenID holds the value of the "open_id" field.
-	OpenID *string `json:"open_id,omitempty"`
+	OpenID string `json:"open_id,omitempty"`
+	// Name holds the value of the "name" field.
+	Name *string `json:"name,omitempty"`
+	// Email holds the value of the "email" field.
+	Email *string `json:"email,omitempty"`
+	// Username holds the value of the "username" field.
+	Username *string `json:"username,omitempty"`
 	// AvatarURL holds the value of the "avatar_url" field.
 	AvatarURL *string `json:"avatar_url,omitempty"`
 	// Disabled holds the value of the "disabled" field.
@@ -156,7 +156,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case user.FieldDisabled, user.FieldIsAdmin, user.FieldIsCeo, user.FieldIsSuperAdmin, user.FieldHasMapAccess, user.FieldHasEditAccess:
 			values[i] = new(sql.NullBool)
-		case user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldOpenID, user.FieldAvatarURL:
+		case user.FieldOpenID, user.FieldName, user.FieldEmail, user.FieldUsername, user.FieldAvatarURL:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -195,30 +195,32 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.UpdatedAt = value.Time
 			}
+		case user.FieldOpenID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field open_id", values[i])
+			} else if value.Valid {
+				u.OpenID = value.String
+			}
 		case user.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				u.Name = value.String
+				u.Name = new(string)
+				*u.Name = value.String
 			}
 		case user.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
-				u.Email = value.String
+				u.Email = new(string)
+				*u.Email = value.String
 			}
 		case user.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field username", values[i])
 			} else if value.Valid {
-				u.Username = value.String
-			}
-		case user.FieldOpenID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field open_id", values[i])
-			} else if value.Valid {
-				u.OpenID = new(string)
-				*u.OpenID = value.String
+				u.Username = new(string)
+				*u.Username = value.String
 			}
 		case user.FieldAvatarURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -347,17 +349,21 @@ func (u *User) String() string {
 	builder.WriteString("updated_at=")
 	builder.WriteString(u.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(u.Name)
+	builder.WriteString("open_id=")
+	builder.WriteString(u.OpenID)
 	builder.WriteString(", ")
-	builder.WriteString("email=")
-	builder.WriteString(u.Email)
+	if v := u.Name; v != nil {
+		builder.WriteString("name=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("username=")
-	builder.WriteString(u.Username)
+	if v := u.Email; v != nil {
+		builder.WriteString("email=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	if v := u.OpenID; v != nil {
-		builder.WriteString("open_id=")
+	if v := u.Username; v != nil {
+		builder.WriteString("username=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
