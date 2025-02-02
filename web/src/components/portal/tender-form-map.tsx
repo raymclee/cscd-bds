@@ -20,7 +20,7 @@ export function TenderFormMap({
   return (
     <>
       <MapPin
-        className="h-4 w-4 cursor-pointer text-slate-600"
+        className="w-4 h-4 cursor-pointer text-slate-600"
         onClick={() => usePortalStore.setState({ tenderFormMapOpen: true })}
       />
       {/* <Button
@@ -28,7 +28,7 @@ export function TenderFormMap({
         size="small"
         onClick={() => usePortalStore.setState({ tenderFormMapOpen: true })}
         className="p-0"
-        icon={<MapPin className="h-4 w-4" />}
+        icon={<MapPin className="w-4 h-4" />}
       ></Button> */}
       <Modal
         width={820}
@@ -36,7 +36,7 @@ export function TenderFormMap({
         centered
         destroyOnClose
         closeIcon={
-          <div className="w-full rounded border bg-white shadow-lg">
+          <div className="w-full bg-white border rounded shadow-lg">
             <CloseOutlined />
           </div>
         }
@@ -123,15 +123,15 @@ function Map({
     geolocationRef.current = new AMap.Geolocation({
       enableHighAccuracy: true, //是否使用高精度定位，默认:true
       timeout: 10000, //超过10秒后停止定位，默认：无穷大
-      maximumAge: 0, //定位结果缓存0毫秒，默认：0
-      convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+      // maximumAge: 0, //定位结果缓存0毫秒，默认：0
+      // convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
       showButton: true, //显示定位按钮，默认：true
       buttonPosition: "LB", //定位按钮停靠位置，默认：'LB'，左下角
       buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
       showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
       showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
       panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-      zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      // zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
     });
     mapRef.current?.addControl(geolocationRef.current);
 
@@ -201,7 +201,7 @@ function Map({
           return (
             <button
               key={position.id}
-              className="flex w-full items-center justify-between gap-x-2 rounded px-2 py-2 transition-colors hover:bg-gray-100"
+              className="flex items-center justify-between w-full px-2 py-2 transition-colors rounded gap-x-2 hover:bg-gray-100"
               onClick={() => {
                 if (markerRef.current) {
                   mapRef.current?.remove(markerRef.current);
@@ -220,7 +220,7 @@ function Map({
             >
               <div className="flex-1 text-left">
                 <div>{position.name}</div>
-                <div className="line-clamp-1 text-xs text-gray-500">
+                <div className="text-xs text-gray-500 line-clamp-1">
                   {address}
                 </div>
               </div>
@@ -232,7 +232,7 @@ function Map({
           );
         })}
       </div>
-      <div className="rounded-br-lg rounded-tr-lg" ref={ref}></div>
+      <div className="rounded-tr-lg rounded-br-lg" ref={ref}></div>
     </div>
   );
 }
