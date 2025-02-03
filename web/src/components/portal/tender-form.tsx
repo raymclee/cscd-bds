@@ -121,7 +121,6 @@ export function TenderForm({
 
   const status = Form.useWatch("status", form);
   const prepareToBid = Form.useWatch("prepareToBid", form);
-  const address = Form.useWatch("address", form);
 
   const [imageFileNames, setImageFileNames] = useState<string[]>([]);
   const [attachmentFileNames, setAttachmentFileNames] = useState<string[]>([]);
@@ -140,7 +139,7 @@ export function TenderForm({
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
     [data, areaID],
   );
-  const isGA = area?.some((a) => a?.node?.code === "GA") || false;
+  const isCreateOrUpdateHW = area?.some((a) => a?.node?.code === "HW");
 
   const customerOptions = useMemo(
     () =>
@@ -469,23 +468,27 @@ export function TenderForm({
                 rules={[{ required: true }]}
                 className="md:col-span-2"
               >
-                <Input
-                  disabled
-                  // disabled
-                  // className="!cursor-auto"
-                  onClick={() => {
-                    usePortalStore.setState({ tenderFormMapOpen: true });
-                  }}
-                  suffix={
-                    <TenderFormMap
-                      onComplete={({ address, lnglat }) => {
-                        form.setFieldValue("fullAddress", address);
-                        form.setFieldValue("geoCoordinate", lnglat.toArray());
-                      }}
-                      defaultLnglat={tender?.geoCoordinate?.coordinates}
-                    />
-                  }
-                />
+                {isCreateOrUpdateHW ? (
+                  <Input />
+                ) : (
+                  <Input
+                    disabled
+                    // disabled
+                    // className="!cursor-auto"
+                    onClick={() => {
+                      usePortalStore.setState({ tenderFormMapOpen: true });
+                    }}
+                    suffix={
+                      <TenderFormMap
+                        onComplete={({ address, lnglat }) => {
+                          form.setFieldValue("fullAddress", address);
+                          form.setFieldValue("geoCoordinate", lnglat.toArray());
+                        }}
+                        defaultLnglat={tender?.geoCoordinate?.coordinates}
+                      />
+                    }
+                  />
+                )}
               </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
