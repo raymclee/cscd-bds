@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"cscd-bds/config"
 	"cscd-bds/store"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
@@ -152,7 +153,12 @@ func main() {
 	defer rows.Close()
 
 	var f *excelize.File
-	wd, _ := os.Getwd()
+	var wd string
+	if config.IsProd {
+		wd = "/home/itadmin"
+	} else {
+		wd, _ = os.Getwd()
+	}
 	entries, err := os.ReadDir(filepath.Join(wd, "smb"))
 	if err != nil {
 		fmt.Printf("读取excel目录失败: %s\n", err.Error())

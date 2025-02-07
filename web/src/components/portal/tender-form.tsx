@@ -139,7 +139,7 @@ export function TenderForm({
     () => data.areas.edges?.filter((e) => e?.node?.id === areaID),
     [data, areaID],
   );
-  const isCreateOrUpdateHW = area?.some((a) => a?.node?.code === "HW");
+  // const isCreateOrUpdateHW = area?.some((a) => a?.node?.code === "HW");
 
   const customerOptions = useMemo(
     () =>
@@ -453,16 +453,16 @@ export function TenderForm({
 
               <ProvinceCityDistrictSelectorLoader areaID={areaID} />
 
-              {/* <Form.Item
+              <Form.Item
                 name="address"
                 label="详细地址"
                 rules={[{ required: true }]}
                 className="md:col-span-2"
               >
                 <Input />
-              </Form.Item> */}
+              </Form.Item>
 
-              <Form.Item
+              {/* <Form.Item
                 name="fullAddress"
                 label="地理位置"
                 rules={[{ required: true }]}
@@ -489,7 +489,7 @@ export function TenderForm({
                     }
                   />
                 )}
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
                 <Select

@@ -319,3 +319,10 @@ export function materialStatusIconColor(percentage?: number | null): string {
     return "text-green-400";
   }
 }
+
+export function formatAmountWithCommas(amount: number) {
+  return amount.toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+}
