@@ -24,7 +24,7 @@ type ProjectSelectProps = {
 
 export function ProjectSelect({ defaultCode, data }: ProjectSelectProps) {
   const [open, setOpen] = useState(false);
-  const search = useSearch({ from: "/__auth/__dashboard/operations" });
+  const search = useSearch({ from: "/__auth/__dashboard/__scaled/operations" });
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -17,16 +17,16 @@ import { Route as authImport } from './routes/__auth'
 import { Route as authportalImport } from './routes/__auth/__portal'
 import { Route as authdashboardImport } from './routes/__auth/__dashboard'
 import { Route as authdashboardRainbowImport } from './routes/__auth/__dashboard/rainbow'
-import { Route as authdashboardOperationsImport } from './routes/__auth/__dashboard/operations'
 import { Route as authdashboardBiImport } from './routes/__auth/__dashboard/bi'
-import { Route as authdashboardmapImport } from './routes/__auth/__dashboard/__map'
 import { Route as authportalPortalIndexImport } from './routes/__auth/__portal/portal/index'
-import { Route as authdashboardmapIndexImport } from './routes/__auth/__dashboard/__map/index'
 import { Route as authportalPortalTendersImport } from './routes/__auth/__portal/portal/tenders'
 import { Route as authportalPortalPlotsImport } from './routes/__auth/__portal/portal/plots'
 import { Route as authportalPortalCustomersImport } from './routes/__auth/__portal/portal/customers'
 import { Route as authportalPortalSuperAdminImport } from './routes/__auth/__portal/portal/_super-admin'
 import { Route as authportalPortalAdminImport } from './routes/__auth/__portal/portal/_admin'
+import { Route as authdashboardscaledOperationsImport } from './routes/__auth/__dashboard/__scaled/operations'
+import { Route as authdashboardscaledmapImport } from './routes/__auth/__dashboard/__scaled/__map'
+import { Route as authdashboardscaledmapIndexImport } from './routes/__auth/__dashboard/__scaled/__map/index'
 import { Route as authportalPortalTendersNewImport } from './routes/__auth/__portal/portal/tenders_.new'
 import { Route as authportalPortalTendersIdImport } from './routes/__auth/__portal/portal/tenders_.$id'
 import { Route as authportalPortalCustomersIdImport } from './routes/__auth/__portal/portal/customers_.$id'
@@ -44,8 +44,11 @@ const LogoutLazyImport = createFileRoute('/logout')()
 const LoginLazyImport = createFileRoute('/login')()
 const AccessDeniedLazyImport = createFileRoute('/access-denied')()
 const authportalPortalImport = createFileRoute('/__auth/__portal/portal')()
-const authdashboardmapTendersLazyImport = createFileRoute(
-  '/__auth/__dashboard/__map/tenders',
+const authdashboardscaledLazyImport = createFileRoute(
+  '/__auth/__dashboard/__scaled',
+)()
+const authdashboardscaledmapTendersLazyImport = createFileRoute(
+  '/__auth/__dashboard/__scaled/__map/tenders',
 )()
 
 // Create/Update Routes
@@ -101,21 +104,20 @@ const authportalPortalRoute = authportalPortalImport.update({
   getParentRoute: () => authportalRoute,
 } as any)
 
+const authdashboardscaledLazyRoute = authdashboardscaledLazyImport
+  .update({
+    id: '/__scaled',
+    getParentRoute: () => authdashboardRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/__scaled.lazy').then((d) => d.Route),
+  )
+
 const authdashboardRainbowRoute = authdashboardRainbowImport.update({
   id: '/rainbow',
   path: '/rainbow',
   getParentRoute: () => authdashboardRoute,
 } as any)
-
-const authdashboardOperationsRoute = authdashboardOperationsImport
-  .update({
-    id: '/operations',
-    path: '/operations',
-    getParentRoute: () => authdashboardRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/operations.lazy').then((d) => d.Route),
-  )
 
 const authdashboardBiRoute = authdashboardBiImport.update({
   id: '/bi',
@@ -123,42 +125,11 @@ const authdashboardBiRoute = authdashboardBiImport.update({
   getParentRoute: () => authdashboardRoute,
 } as any)
 
-const authdashboardmapRoute = authdashboardmapImport
-  .update({
-    id: '/__map',
-    getParentRoute: () => authdashboardRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/__map.lazy').then((d) => d.Route),
-  )
-
 const authportalPortalIndexRoute = authportalPortalIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => authportalPortalRoute,
 } as any)
-
-const authdashboardmapIndexRoute = authdashboardmapIndexImport
-  .update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => authdashboardmapRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/__map/index.lazy').then((d) => d.Route),
-  )
-
-const authdashboardmapTendersLazyRoute = authdashboardmapTendersLazyImport
-  .update({
-    id: '/tenders',
-    path: '/tenders',
-    getParentRoute: () => authdashboardmapRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/__auth/__dashboard/__map/tenders.lazy').then(
-      (d) => d.Route,
-    ),
-  )
 
 const authportalPortalTendersRoute = authportalPortalTendersImport
   .update({
@@ -203,6 +174,54 @@ const authportalPortalAdminRoute = authportalPortalAdminImport.update({
   id: '/_admin',
   getParentRoute: () => authportalPortalRoute,
 } as any)
+
+const authdashboardscaledOperationsRoute = authdashboardscaledOperationsImport
+  .update({
+    id: '/operations',
+    path: '/operations',
+    getParentRoute: () => authdashboardscaledLazyRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/__scaled/operations.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const authdashboardscaledmapRoute = authdashboardscaledmapImport
+  .update({
+    id: '/__map',
+    getParentRoute: () => authdashboardscaledLazyRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/__scaled/__map.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const authdashboardscaledmapIndexRoute = authdashboardscaledmapIndexImport
+  .update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => authdashboardscaledmapRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/__auth/__dashboard/__scaled/__map/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const authdashboardscaledmapTendersLazyRoute =
+  authdashboardscaledmapTendersLazyImport
+    .update({
+      id: '/tenders',
+      path: '/tenders',
+      getParentRoute: () => authdashboardscaledmapRoute,
+    } as any)
+    .lazy(() =>
+      import('./routes/__auth/__dashboard/__scaled/__map/tenders.lazy').then(
+        (d) => d.Route,
+      ),
+    )
 
 const authportalPortalTendersNewRoute = authportalPortalTendersNewImport
   .update({
@@ -368,25 +387,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalImport
       parentRoute: typeof authImport
     }
-    '/__auth/__dashboard/__map': {
-      id: '/__auth/__dashboard/__map'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof authdashboardmapImport
-      parentRoute: typeof authdashboardImport
-    }
     '/__auth/__dashboard/bi': {
       id: '/__auth/__dashboard/bi'
       path: '/bi'
       fullPath: '/bi'
       preLoaderRoute: typeof authdashboardBiImport
-      parentRoute: typeof authdashboardImport
-    }
-    '/__auth/__dashboard/operations': {
-      id: '/__auth/__dashboard/operations'
-      path: '/operations'
-      fullPath: '/operations'
-      preLoaderRoute: typeof authdashboardOperationsImport
       parentRoute: typeof authdashboardImport
     }
     '/__auth/__dashboard/rainbow': {
@@ -395,6 +400,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/rainbow'
       preLoaderRoute: typeof authdashboardRainbowImport
       parentRoute: typeof authdashboardImport
+    }
+    '/__auth/__dashboard/__scaled': {
+      id: '/__auth/__dashboard/__scaled'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authdashboardscaledLazyImport
+      parentRoute: typeof authdashboardImport
+    }
+    '/__auth/__dashboard/__scaled/__map': {
+      id: '/__auth/__dashboard/__scaled/__map'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authdashboardscaledmapImport
+      parentRoute: typeof authdashboardscaledLazyImport
+    }
+    '/__auth/__dashboard/__scaled/operations': {
+      id: '/__auth/__dashboard/__scaled/operations'
+      path: '/operations'
+      fullPath: '/operations'
+      preLoaderRoute: typeof authdashboardscaledOperationsImport
+      parentRoute: typeof authdashboardscaledLazyImport
     }
     '/__auth/__portal/portal': {
       id: '/__auth/__portal/portal'
@@ -438,20 +464,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalPortalTendersImport
       parentRoute: typeof authportalPortalImport
     }
-    '/__auth/__dashboard/__map/tenders': {
-      id: '/__auth/__dashboard/__map/tenders'
-      path: '/tenders'
-      fullPath: '/tenders'
-      preLoaderRoute: typeof authdashboardmapTendersLazyImport
-      parentRoute: typeof authdashboardmapImport
-    }
-    '/__auth/__dashboard/__map/': {
-      id: '/__auth/__dashboard/__map/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof authdashboardmapIndexImport
-      parentRoute: typeof authdashboardmapImport
-    }
     '/__auth/__portal/portal/': {
       id: '/__auth/__portal/portal/'
       path: '/'
@@ -494,6 +506,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalPortalTendersNewImport
       parentRoute: typeof authportalPortalImport
     }
+    '/__auth/__dashboard/__scaled/__map/tenders': {
+      id: '/__auth/__dashboard/__scaled/__map/tenders'
+      path: '/tenders'
+      fullPath: '/tenders'
+      preLoaderRoute: typeof authdashboardscaledmapTendersLazyImport
+      parentRoute: typeof authdashboardscaledmapImport
+    }
+    '/__auth/__dashboard/__scaled/__map/': {
+      id: '/__auth/__dashboard/__scaled/__map/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof authdashboardscaledmapIndexImport
+      parentRoute: typeof authdashboardscaledmapImport
+    }
     '/__auth/__portal/portal/_super-admin/sa/areas': {
       id: '/__auth/__portal/portal/_super-admin/sa/areas'
       path: '/sa/areas'
@@ -527,31 +553,49 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface authdashboardmapRouteChildren {
-  authdashboardmapTendersLazyRoute: typeof authdashboardmapTendersLazyRoute
-  authdashboardmapIndexRoute: typeof authdashboardmapIndexRoute
+interface authdashboardscaledmapRouteChildren {
+  authdashboardscaledmapTendersLazyRoute: typeof authdashboardscaledmapTendersLazyRoute
+  authdashboardscaledmapIndexRoute: typeof authdashboardscaledmapIndexRoute
 }
 
-const authdashboardmapRouteChildren: authdashboardmapRouteChildren = {
-  authdashboardmapTendersLazyRoute: authdashboardmapTendersLazyRoute,
-  authdashboardmapIndexRoute: authdashboardmapIndexRoute,
+const authdashboardscaledmapRouteChildren: authdashboardscaledmapRouteChildren =
+  {
+    authdashboardscaledmapTendersLazyRoute:
+      authdashboardscaledmapTendersLazyRoute,
+    authdashboardscaledmapIndexRoute: authdashboardscaledmapIndexRoute,
+  }
+
+const authdashboardscaledmapRouteWithChildren =
+  authdashboardscaledmapRoute._addFileChildren(
+    authdashboardscaledmapRouteChildren,
+  )
+
+interface authdashboardscaledLazyRouteChildren {
+  authdashboardscaledmapRoute: typeof authdashboardscaledmapRouteWithChildren
+  authdashboardscaledOperationsRoute: typeof authdashboardscaledOperationsRoute
 }
 
-const authdashboardmapRouteWithChildren =
-  authdashboardmapRoute._addFileChildren(authdashboardmapRouteChildren)
+const authdashboardscaledLazyRouteChildren: authdashboardscaledLazyRouteChildren =
+  {
+    authdashboardscaledmapRoute: authdashboardscaledmapRouteWithChildren,
+    authdashboardscaledOperationsRoute: authdashboardscaledOperationsRoute,
+  }
+
+const authdashboardscaledLazyRouteWithChildren =
+  authdashboardscaledLazyRoute._addFileChildren(
+    authdashboardscaledLazyRouteChildren,
+  )
 
 interface authdashboardRouteChildren {
-  authdashboardmapRoute: typeof authdashboardmapRouteWithChildren
   authdashboardBiRoute: typeof authdashboardBiRoute
-  authdashboardOperationsRoute: typeof authdashboardOperationsRoute
   authdashboardRainbowRoute: typeof authdashboardRainbowRoute
+  authdashboardscaledLazyRoute: typeof authdashboardscaledLazyRouteWithChildren
 }
 
 const authdashboardRouteChildren: authdashboardRouteChildren = {
-  authdashboardmapRoute: authdashboardmapRouteWithChildren,
   authdashboardBiRoute: authdashboardBiRoute,
-  authdashboardOperationsRoute: authdashboardOperationsRoute,
   authdashboardRainbowRoute: authdashboardRainbowRoute,
+  authdashboardscaledLazyRoute: authdashboardscaledLazyRouteWithChildren,
 }
 
 const authdashboardRouteWithChildren = authdashboardRoute._addFileChildren(
@@ -647,26 +691,26 @@ const authRouteChildren: authRouteChildren = {
 const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '': typeof authdashboardmapRouteWithChildren
+  '': typeof authdashboardscaledmapRouteWithChildren
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
-  '/operations': typeof authdashboardOperationsRoute
   '/rainbow': typeof authdashboardRainbowRoute
+  '/operations': typeof authdashboardscaledOperationsRoute
   '/portal': typeof authportalPortalSuperAdminRouteWithChildren
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
-  '/tenders': typeof authdashboardmapTendersLazyRoute
-  '/': typeof authdashboardmapIndexRoute
   '/portal/': typeof authportalPortalIndexRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
   '/portal/customers/$id': typeof authportalPortalCustomersIdRoute
   '/portal/tenders/$id': typeof authportalPortalTendersIdRoute
   '/portal/tenders/new': typeof authportalPortalTendersNewRoute
+  '/tenders': typeof authdashboardscaledmapTendersLazyRoute
+  '/': typeof authdashboardscaledmapIndexRoute
   '/portal/sa/areas': typeof authportalPortalSuperAdminSaAreasRoute
   '/portal/sa/users': typeof authportalPortalSuperAdminSaUsersRoute
   '/portal/tenders/$id/edit': typeof authportalPortalTendersIdEditRoute
@@ -674,25 +718,25 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '': typeof authportalRouteWithChildren
+  '': typeof authdashboardscaledLazyRouteWithChildren
   '/access-denied': typeof AccessDeniedLazyRoute
   '/login': typeof LoginLazyRoute
   '/logout': typeof LogoutLazyRoute
   '/r': typeof RLazyRoute
   '/bi': typeof authdashboardBiRoute
-  '/operations': typeof authdashboardOperationsRoute
   '/rainbow': typeof authdashboardRainbowRoute
+  '/operations': typeof authdashboardscaledOperationsRoute
   '/portal': typeof authportalPortalIndexRoute
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
-  '/tenders': typeof authdashboardmapTendersLazyRoute
-  '/': typeof authdashboardmapIndexRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
   '/portal/customers/$id': typeof authportalPortalCustomersIdRoute
   '/portal/tenders/$id': typeof authportalPortalTendersIdRoute
   '/portal/tenders/new': typeof authportalPortalTendersNewRoute
+  '/tenders': typeof authdashboardscaledmapTendersLazyRoute
+  '/': typeof authdashboardscaledmapIndexRoute
   '/portal/sa/areas': typeof authportalPortalSuperAdminSaAreasRoute
   '/portal/sa/users': typeof authportalPortalSuperAdminSaUsersRoute
   '/portal/tenders/$id/edit': typeof authportalPortalTendersIdEditRoute
@@ -708,24 +752,25 @@ export interface FileRoutesById {
   '/r': typeof RLazyRoute
   '/__auth/__dashboard': typeof authdashboardRouteWithChildren
   '/__auth/__portal': typeof authportalRouteWithChildren
-  '/__auth/__dashboard/__map': typeof authdashboardmapRouteWithChildren
   '/__auth/__dashboard/bi': typeof authdashboardBiRoute
-  '/__auth/__dashboard/operations': typeof authdashboardOperationsRoute
   '/__auth/__dashboard/rainbow': typeof authdashboardRainbowRoute
+  '/__auth/__dashboard/__scaled': typeof authdashboardscaledLazyRouteWithChildren
+  '/__auth/__dashboard/__scaled/__map': typeof authdashboardscaledmapRouteWithChildren
+  '/__auth/__dashboard/__scaled/operations': typeof authdashboardscaledOperationsRoute
   '/__auth/__portal/portal': typeof authportalPortalRouteWithChildren
   '/__auth/__portal/portal/_admin': typeof authportalPortalAdminRouteWithChildren
   '/__auth/__portal/portal/_super-admin': typeof authportalPortalSuperAdminRouteWithChildren
   '/__auth/__portal/portal/customers': typeof authportalPortalCustomersRoute
   '/__auth/__portal/portal/plots': typeof authportalPortalPlotsRoute
   '/__auth/__portal/portal/tenders': typeof authportalPortalTendersRoute
-  '/__auth/__dashboard/__map/tenders': typeof authdashboardmapTendersLazyRoute
-  '/__auth/__dashboard/__map/': typeof authdashboardmapIndexRoute
   '/__auth/__portal/portal/': typeof authportalPortalIndexRoute
   '/__auth/__portal/portal/_admin/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/__auth/__portal/portal/_admin/users': typeof authportalPortalAdminUsersRoute
   '/__auth/__portal/portal/customers_/$id': typeof authportalPortalCustomersIdRoute
   '/__auth/__portal/portal/tenders_/$id': typeof authportalPortalTendersIdRoute
   '/__auth/__portal/portal/tenders_/new': typeof authportalPortalTendersNewRoute
+  '/__auth/__dashboard/__scaled/__map/tenders': typeof authdashboardscaledmapTendersLazyRoute
+  '/__auth/__dashboard/__scaled/__map/': typeof authdashboardscaledmapIndexRoute
   '/__auth/__portal/portal/_super-admin/sa/areas': typeof authportalPortalSuperAdminSaAreasRoute
   '/__auth/__portal/portal/_super-admin/sa/users': typeof authportalPortalSuperAdminSaUsersRoute
   '/__auth/__portal/portal/tenders_/$id_/edit': typeof authportalPortalTendersIdEditRoute
@@ -741,20 +786,20 @@ export interface FileRouteTypes {
     | '/logout'
     | '/r'
     | '/bi'
-    | '/operations'
     | '/rainbow'
+    | '/operations'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
     | '/portal/tenders'
-    | '/tenders'
-    | '/'
     | '/portal/'
     | '/portal/competitors'
     | '/portal/users'
     | '/portal/customers/$id'
     | '/portal/tenders/$id'
     | '/portal/tenders/new'
+    | '/tenders'
+    | '/'
     | '/portal/sa/areas'
     | '/portal/sa/users'
     | '/portal/tenders/$id/edit'
@@ -767,19 +812,19 @@ export interface FileRouteTypes {
     | '/logout'
     | '/r'
     | '/bi'
-    | '/operations'
     | '/rainbow'
+    | '/operations'
     | '/portal'
     | '/portal/customers'
     | '/portal/plots'
     | '/portal/tenders'
-    | '/tenders'
-    | '/'
     | '/portal/competitors'
     | '/portal/users'
     | '/portal/customers/$id'
     | '/portal/tenders/$id'
     | '/portal/tenders/new'
+    | '/tenders'
+    | '/'
     | '/portal/sa/areas'
     | '/portal/sa/users'
     | '/portal/tenders/$id/edit'
@@ -793,24 +838,25 @@ export interface FileRouteTypes {
     | '/r'
     | '/__auth/__dashboard'
     | '/__auth/__portal'
-    | '/__auth/__dashboard/__map'
     | '/__auth/__dashboard/bi'
-    | '/__auth/__dashboard/operations'
     | '/__auth/__dashboard/rainbow'
+    | '/__auth/__dashboard/__scaled'
+    | '/__auth/__dashboard/__scaled/__map'
+    | '/__auth/__dashboard/__scaled/operations'
     | '/__auth/__portal/portal'
     | '/__auth/__portal/portal/_admin'
     | '/__auth/__portal/portal/_super-admin'
     | '/__auth/__portal/portal/customers'
     | '/__auth/__portal/portal/plots'
     | '/__auth/__portal/portal/tenders'
-    | '/__auth/__dashboard/__map/tenders'
-    | '/__auth/__dashboard/__map/'
     | '/__auth/__portal/portal/'
     | '/__auth/__portal/portal/_admin/competitors'
     | '/__auth/__portal/portal/_admin/users'
     | '/__auth/__portal/portal/customers_/$id'
     | '/__auth/__portal/portal/tenders_/$id'
     | '/__auth/__portal/portal/tenders_/new'
+    | '/__auth/__dashboard/__scaled/__map/tenders'
+    | '/__auth/__dashboard/__scaled/__map/'
     | '/__auth/__portal/portal/_super-admin/sa/areas'
     | '/__auth/__portal/portal/_super-admin/sa/users'
     | '/__auth/__portal/portal/tenders_/$id_/edit'
@@ -874,10 +920,9 @@ export const routeTree = rootRoute
       "filePath": "__auth/__dashboard.tsx",
       "parent": "/__auth",
       "children": [
-        "/__auth/__dashboard/__map",
         "/__auth/__dashboard/bi",
-        "/__auth/__dashboard/operations",
-        "/__auth/__dashboard/rainbow"
+        "/__auth/__dashboard/rainbow",
+        "/__auth/__dashboard/__scaled"
       ]
     },
     "/__auth/__portal": {
@@ -887,25 +932,33 @@ export const routeTree = rootRoute
         "/__auth/__portal/portal"
       ]
     },
-    "/__auth/__dashboard/__map": {
-      "filePath": "__auth/__dashboard/__map.tsx",
-      "parent": "/__auth/__dashboard",
-      "children": [
-        "/__auth/__dashboard/__map/tenders",
-        "/__auth/__dashboard/__map/"
-      ]
-    },
     "/__auth/__dashboard/bi": {
       "filePath": "__auth/__dashboard/bi.tsx",
-      "parent": "/__auth/__dashboard"
-    },
-    "/__auth/__dashboard/operations": {
-      "filePath": "__auth/__dashboard/operations.tsx",
       "parent": "/__auth/__dashboard"
     },
     "/__auth/__dashboard/rainbow": {
       "filePath": "__auth/__dashboard/rainbow.tsx",
       "parent": "/__auth/__dashboard"
+    },
+    "/__auth/__dashboard/__scaled": {
+      "filePath": "__auth/__dashboard/__scaled.lazy.tsx",
+      "parent": "/__auth/__dashboard",
+      "children": [
+        "/__auth/__dashboard/__scaled/__map",
+        "/__auth/__dashboard/__scaled/operations"
+      ]
+    },
+    "/__auth/__dashboard/__scaled/__map": {
+      "filePath": "__auth/__dashboard/__scaled/__map.tsx",
+      "parent": "/__auth/__dashboard/__scaled",
+      "children": [
+        "/__auth/__dashboard/__scaled/__map/tenders",
+        "/__auth/__dashboard/__scaled/__map/"
+      ]
+    },
+    "/__auth/__dashboard/__scaled/operations": {
+      "filePath": "__auth/__dashboard/__scaled/operations.tsx",
+      "parent": "/__auth/__dashboard/__scaled"
     },
     "/__auth/__portal/portal": {
       "filePath": "__auth/__portal/portal",
@@ -952,14 +1005,6 @@ export const routeTree = rootRoute
       "filePath": "__auth/__portal/portal/tenders.tsx",
       "parent": "/__auth/__portal/portal"
     },
-    "/__auth/__dashboard/__map/tenders": {
-      "filePath": "__auth/__dashboard/__map/tenders.lazy.tsx",
-      "parent": "/__auth/__dashboard/__map"
-    },
-    "/__auth/__dashboard/__map/": {
-      "filePath": "__auth/__dashboard/__map/index.tsx",
-      "parent": "/__auth/__dashboard/__map"
-    },
     "/__auth/__portal/portal/": {
       "filePath": "__auth/__portal/portal/index.tsx",
       "parent": "/__auth/__portal/portal"
@@ -983,6 +1028,14 @@ export const routeTree = rootRoute
     "/__auth/__portal/portal/tenders_/new": {
       "filePath": "__auth/__portal/portal/tenders_.new.tsx",
       "parent": "/__auth/__portal/portal"
+    },
+    "/__auth/__dashboard/__scaled/__map/tenders": {
+      "filePath": "__auth/__dashboard/__scaled/__map/tenders.lazy.tsx",
+      "parent": "/__auth/__dashboard/__scaled/__map"
+    },
+    "/__auth/__dashboard/__scaled/__map/": {
+      "filePath": "__auth/__dashboard/__scaled/__map/index.tsx",
+      "parent": "/__auth/__dashboard/__scaled/__map"
     },
     "/__auth/__portal/portal/_super-admin/sa/areas": {
       "filePath": "__auth/__portal/portal/_super-admin/sa/areas.tsx",

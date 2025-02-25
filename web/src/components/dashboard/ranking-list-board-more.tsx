@@ -64,44 +64,45 @@ export function RankingListBoardMore({ tenderCount }: { tenderCount: number }) {
           <MotionCardContent className="gap-4">
             <TopCompetitors className="mx-auto w-[90%] py-8" />
 
-            {/* <ScrollArea className="-mx-4 h-[29rem]"> */}
-            <div className="space-y-4 px-6">
-              {data.topCompetitors.toSpliced(0, 3).map((competitor, i) => (
-                <div
-                  key={competitor.id}
-                  className="grid grid-cols-[1fr_1fr_4fr_1fr] items-center gap-2 text-center"
-                >
-                  <div className="relative">
-                    <img
-                      src={rankingIcon}
-                      className="h-auto w-full object-cover"
-                    />
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-brand-project-3">
-                      {i + 4}
+            <ScrollArea className="h-[50vh]">
+              <div className="space-y-4 px-6">
+                {data.topCompetitors.toSpliced(0, 3).map((competitor, i) => (
+                  <div
+                    key={competitor.id}
+                    className="grid grid-cols-[1fr_1fr_4fr_1fr] items-center gap-2 text-center"
+                  >
+                    <div className="relative">
+                      <img
+                        src={rankingIcon}
+                        className="h-auto w-full object-cover"
+                      />
+                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-brand-project-3">
+                        {i + 4}
+                      </div>
                     </div>
-                  </div>
-                  <div>{competitor.shortName}</div>
-                  <div className="my-auto flex items-center justify-center">
-                    <Progress
-                      value={(competitor.wonTendersCount / tenderCount) * 100}
-                      className="h-2 w-full text-brand"
-                    />
-                    {/* <progress
+                    <div className="line-clamp-1">{competitor.shortName}</div>
+                    <div className="my-auto flex items-center justify-center">
+                      <Progress
+                        value={(competitor.wonTendersCount / tenderCount) * 100}
+                        className="h-2 w-full text-brand"
+                      />
+                      {/* <progress
                         className="[&::-moz-progress-bar]:bg-project-brand h-2.5 w-full [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-value]:bg-brand-project"
                         value={(competitor.wonTendersCount / tenderCount) * 100}
                         max={100}
                       /> */}
+                    </div>
+                    <div>
+                      {(
+                        (competitor.wonTendersCount / tenderCount) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </div>
                   </div>
-                  <div>
-                    {((competitor.wonTendersCount / tenderCount) * 100).toFixed(
-                      2,
-                    )}
-                    %
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* </ScrollArea> */}
+                ))}
+              </div>
+            </ScrollArea>
           </MotionCardContent>
         </MotionCard>
       </div>

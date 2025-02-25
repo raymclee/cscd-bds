@@ -1,21 +1,14 @@
-import { graphql, useFragment } from "react-relay";
-import no1 from "~/assets/svg/ranking_no_1.png";
-import no2 from "~/assets/svg/ranking_no_2.png";
-import no3 from "~/assets/svg/ranking_no_3.png";
-import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { motion } from "motion/react";
 import { Ellipsis } from "lucide-react";
+import { motion } from "motion/react";
+import { cn } from "~/lib/utils";
 import { useMapStore } from "~/store/map";
-import { useTopCompetitions } from "~/hooks/use-top-competitions";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import { TopCompetitors } from "./top-competitors";
 
 const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
 
 export function RankingListBoard() {
-  const data = useTopCompetitions();
-
   return (
     <MotionCard
       layoutId="ranking-list-board"

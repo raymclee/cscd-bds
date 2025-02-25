@@ -2,7 +2,7 @@ import { MapIndexPageDistrictQuery } from "__generated__/MapIndexPageDistrictQue
 import { fetchQuery, useRelayEnvironment } from "react-relay";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
-import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { districtsQuery } from "~/routes/__auth/__dashboard/__scaled/__map/index.lazy";
 import { useMapStore } from "~/store/map";
 import {
   Table,

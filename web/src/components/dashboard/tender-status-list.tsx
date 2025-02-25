@@ -5,7 +5,7 @@ import { fetchQuery } from "relay-runtime";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
 import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
-import { districtsQuery } from "~/routes/__auth/__dashboard/__map/index.lazy";
+import { districtsQuery } from "~/routes/__auth/__dashboard/__scaled/__map/index.lazy";
 import { useMapStore } from "~/store/map";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
@@ -46,7 +46,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-center bottom-32">
+      <div className="fixed bottom-32 left-0 right-0 top-0 flex items-center justify-center">
         <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -71,7 +71,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
               : "w-[clamp(400px,60vw,800px)]",
           )}
         >
-          <CardHeader className="flex flex-row items-center justify-between overflow-hidden font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
+          <CardHeader className="flex flex-row items-center justify-between overflow-hidden bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
             <m.div
               layoutId={`tender-status-${selectedTenderStatus?.value}-status`}
             >
@@ -85,7 +85,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
           </CardHeader>
           <CardContent className="h-full px-0 pb-16">
             <ScrollArea className="h-full px-4">
-              <Table className="h-full my-4">
+              <Table className="my-4 h-full">
                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                 <TableHeader className="sticky top-0 bg-gray-900">
                   <TableRow className="items-center">
@@ -239,7 +239,7 @@ export function TenderStatusList({ gaOnly }: TenderStatusListProps) {
                 </TableBody>
               </Table>
               {(!gaView || (gaView && selectedTenderStatus?.value == 3)) && (
-                <div className="flex justify-end w-full pr-4 text-sm gap-x-4">
+                <div className="flex w-full justify-end gap-x-4 pr-4 text-sm">
                   <div>合计: </div>
                   <div>{total}亿元</div>
                 </div>

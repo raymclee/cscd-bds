@@ -86,7 +86,7 @@ export function NewTenderBoard() {
     },
   } satisfies ColumnConfig;
 
-  const amountPercent = thisMonthAmount / lastMonthAmount;
+  const amountPercent = lastMonthAmount / thisMonthAmount;
   const amountConfig = {
     percent: isFinite(amountPercent) ? amountPercent || 1 : 1,
     width: 80,

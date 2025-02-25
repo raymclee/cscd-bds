@@ -275,9 +275,15 @@ export function TenderForm({
               message.success("更新成功");
             },
             onError(error) {
+              let text = "更新失败";
+              if (error.message.includes("no geo code")) {
+                text = "请输入正确和完整的地址";
+              } else if (error.message.includes("failed to get district")) {
+                text = "请输入正确和完整的地址";
+              }
               console.error({ error });
               message.destroy();
-              message.error("更新失败");
+              message.error(text);
             },
           });
         } else {
@@ -328,6 +334,8 @@ export function TenderForm({
             onError(error) {
               let text = "创建失败";
               if (error.message.includes("no geo code")) {
+                text = "请输入正确和完整的地址";
+              } else if (error.message.includes("failed to get district")) {
                 text = "请输入正确和完整的地址";
               }
               console.error({ error });

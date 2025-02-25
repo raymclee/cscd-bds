@@ -1,101 +1,103 @@
-import { Column, ColumnConfig } from "@ant-design/plots";
-import * as HoverCard from "@radix-ui/react-hover-card";
-import * as Tabs from "@radix-ui/react-tabs";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { Column, ColumnConfig } from '@ant-design/plots'
+import * as HoverCard from '@radix-ui/react-hover-card'
+import * as Tabs from '@radix-ui/react-tabs'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import {
   operationsPageQuery,
   operationsPageQuery$data,
-} from "__generated__/operationsPageQuery.graphql";
-import dayjs from "dayjs";
-import { ReactNode, useEffect, useRef, useState, useTransition } from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
-import { ProjectSelect } from "~/components/dashboard/project-select";
-import { SubTitle } from "~/components/project/sub-title";
-import { Rhino } from "~/components/rhino";
-import { MaterialStatusIcon } from "~/components/ui/material-status-icon";
-import { TextScramble } from "~/components/ui/text-scramble";
+} from '__generated__/operationsPageQuery.graphql'
+import dayjs from 'dayjs'
+import { ReactNode, useEffect, useRef, useState, useTransition } from 'react'
+import { graphql, usePreloadedQuery } from 'react-relay'
+import { ProjectSelect } from '~/components/dashboard/project-select'
+import { SubTitle } from '~/components/project/sub-title'
+import { Rhino } from '~/components/rhino'
+import { MaterialStatusIcon } from '~/components/ui/material-status-icon'
+import { TextScramble } from '~/components/ui/text-scramble'
 import {
   formatProjectAmount,
   materialStatusIconColor,
   percent,
-} from "~/lib/helper";
-import { cn } from "~/lib/utils";
-import { zhCN } from "date-fns/locale";
+} from '~/lib/helper'
+import { cn } from '~/lib/utils'
+import { zhCN } from 'date-fns/locale'
 
-import instantMessage from "~/assets/instant_message.png";
-import b1 from "~/assets/svg/box1.png";
-import b2 from "~/assets/svg/box2.png";
-import b3 from "~/assets/svg/box3.png";
-import b4 from "~/assets/svg/box4.png";
-import b5 from "~/assets/svg/box5.png";
-import top from "~/assets/svg/top.png";
+import instantMessage from '~/assets/instant_message.png'
+import b1 from '~/assets/svg/box1.png'
+import b2 from '~/assets/svg/box2.png'
+import b3 from '~/assets/svg/box3.png'
+import b4 from '~/assets/svg/box4.png'
+import b5 from '~/assets/svg/box5.png'
+import top from '~/assets/svg/top.png'
 
-import consumptionBg from "~/assets/svg/consumption_bg.png";
-import consumptionBg2 from "~/assets/svg/consumption_bg2.png";
+import consumptionBg from '~/assets/svg/consumption_bg.png'
+import consumptionBg2 from '~/assets/svg/consumption_bg2.png'
 
-import projectProgressTitle from "~/assets/svg/project_progress_title.png";
+import projectProgressTitle from '~/assets/svg/project_progress_title.png'
 
-import leftArrow from "~/assets/svg/left_arrow.png";
-import rightArrow from "~/assets/svg/right_arrow.png";
+import leftArrow from '~/assets/svg/left_arrow.png'
+import rightArrow from '~/assets/svg/right_arrow.png'
 
-import projectManagementLeft from "~/assets/svg/project_management_left.png";
-import projectDelay from "~/assets/svg/project_delay.png";
+import projectManagementLeft from '~/assets/svg/project_management_left.png'
+import projectDelay from '~/assets/svg/project_delay.png'
 
-import basicInfoBg from "~/assets/svg/basic_info_bg.png";
-import basicInfoRowBg from "~/assets/svg/basic_info_row_bg.png";
-import projectOverviewTab from "~/assets/svg/project_overview_tab.png";
-import projectOverviewTabSelected from "~/assets/svg/project_overview_tab_selected.png";
-import projectOverviewTitle from "~/assets/svg/project_overview_title.png";
+import basicInfoBg from '~/assets/svg/basic_info_bg.png'
+import basicInfoRowBg from '~/assets/svg/basic_info_row_bg.png'
+import projectOverviewTab from '~/assets/svg/project_overview_tab.png'
+import projectOverviewTabSelected from '~/assets/svg/project_overview_tab_selected.png'
+import projectOverviewTitle from '~/assets/svg/project_overview_title.png'
 
-import costDivider from "~/assets/svg/cost_divider.png";
-import costIncome from "~/assets/svg/cost_income.png";
+import costDivider from '~/assets/svg/cost_divider.png'
+import costIncome from '~/assets/svg/cost_income.png'
 
-import materialsAlertBg from "~/assets/svg/materials_alert_bg.png";
+import materialsAlertBg from '~/assets/svg/materials_alert_bg.png'
 
-import materialsLostIcon from "~/assets/svg/materials_lost_icon.png";
+import materialsLostIcon from '~/assets/svg/materials_lost_icon.png'
 
-import drawingBottom from "~/assets/svg/drawing_bottom.png";
-import drawingCenter from "~/assets/svg/drawing_center.png";
-import drawingLeft from "~/assets/svg/drawing_left.png";
-import drawingRight from "~/assets/svg/drawing_right.png";
+import drawingBottom from '~/assets/svg/drawing_bottom.png'
+import drawingCenter from '~/assets/svg/drawing_center.png'
+import drawingLeft from '~/assets/svg/drawing_left.png'
+import drawingRight from '~/assets/svg/drawing_right.png'
 
-import productionManagement1 from "~/assets/svg/production_management_1.png";
-import productionManagement2 from "~/assets/svg/production_management_2.png";
-import productionManagement3 from "~/assets/svg/production_management_3.png";
-import productionManagement4 from "~/assets/svg/production_management_4.png";
+import productionManagement1 from '~/assets/svg/production_management_1.png'
+import productionManagement2 from '~/assets/svg/production_management_2.png'
+import productionManagement3 from '~/assets/svg/production_management_3.png'
+import productionManagement4 from '~/assets/svg/production_management_4.png'
 
-import componentBottom from "~/assets/svg/component_bottom.png";
-import componentTop from "~/assets/svg/component_top.png";
+import componentBottom from '~/assets/svg/component_bottom.png'
+import componentTop from '~/assets/svg/component_top.png'
 
-import quality from "~/assets/svg/quality.png";
-import markCircle from "~/assets/svg/mark_circle.png";
+import quality from '~/assets/svg/quality.png'
+import markCircle from '~/assets/svg/mark_circle.png'
 
-import { UpdateProjectInput } from "__generated__/useUpdateProjectMutation.graphql";
-import { Pencil, Trash2 } from "lucide-react";
-import { Calendar } from "~/components/ui/calendar";
+import { UpdateProjectInput } from '__generated__/useUpdateProjectMutation.graphql'
+import { Pencil, Trash2 } from 'lucide-react'
+import { Calendar } from '~/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/ui/popover";
-import { useUpdateProject } from "~/hooks/use-update-project";
-import { Button, buttonVariants } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Toaster } from "~/components/ui/sonner";
-import { toast } from "sonner";
-import { useOnClickOutside } from "usehooks-ts";
-import { Switcher } from "~/components/switcher";
-import { motion } from "motion/react";
-import { GlowEffect } from "~/components/ui/glow-effect";
-import { Progress } from "~/components/ui/progress";
-import { ProcessManagement } from "~/components/operation/process-management";
-import { formatAmountWithCommas } from "~/lib/helper";
-import { Project } from "~/lib/project";
+} from '~/components/ui/popover'
+import { useUpdateProject } from '~/hooks/use-update-project'
+import { Button, buttonVariants } from '~/components/ui/button'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { Toaster } from '~/components/ui/sonner'
+import { toast } from 'sonner'
+import { useOnClickOutside } from 'usehooks-ts'
+import { Switcher } from '~/components/switcher'
+import { motion } from 'motion/react'
+import { GlowEffect } from '~/components/ui/glow-effect'
+import { Progress } from '~/components/ui/progress'
+import { ProcessManagement } from '~/components/operation/process-management'
+import { formatAmountWithCommas } from '~/lib/helper'
+import { Project } from '~/lib/project'
 
-export const Route = createLazyFileRoute("/__auth/__dashboard/operations")({
+export const Route = createLazyFileRoute(
+  '/__auth/__dashboard/__scaled/operations',
+)({
   component: RouteComponent,
-});
+})
 
 // 轉成千分位
 
@@ -210,7 +212,7 @@ function RouteComponent() {
       }
     `,
     Route.useLoaderData(),
-  );
+  )
 
   return (
     <>
@@ -219,19 +221,19 @@ function RouteComponent() {
         <Toaster position="top-right" />
       </div>
     </>
-  );
+  )
 }
 
 function Operation({ data }: { data: operationsPageQuery$data }) {
-  const navigate = Route.useNavigate();
+  const navigate = Route.useNavigate()
 
   const defaultCode =
-    Route.useSearch().code ?? data.node?.projects?.edges?.at(0)?.node?.code;
+    Route.useSearch().code ?? data.node?.projects?.edges?.at(0)?.node?.code
 
-  const defaultProjectIdx = 0;
+  const defaultProjectIdx = 0
   const pj =
     data.node?.projects?.edges?.find((item) => item?.node?.code === defaultCode)
-      ?.node ?? data.node?.projects?.edges?.at(defaultProjectIdx)?.node;
+      ?.node ?? data.node?.projects?.edges?.at(defaultProjectIdx)?.node
 
   const prevProject = pj
     ? data.node?.projects?.edges?.at(
@@ -241,7 +243,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
       )?.node
     : data.node?.projects?.edges?.at(
         defaultProjectIdx > 0 ? defaultProjectIdx - 1 : defaultProjectIdx,
-      )?.node;
+      )?.node
 
   const nextProject = pj
     ? data.node?.projects?.edges?.at(
@@ -253,112 +255,108 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
         defaultProjectIdx < data.node?.projects?.edges?.length - 1
           ? defaultProjectIdx + 1
           : defaultProjectIdx,
-      )?.node;
+      )?.node
 
   const projectsWithRank = data.node?.projects?.edges
     ?.filter((e) => !!e?.node?.qualityScore)
-    .sort(
-      (a, b) => (b?.node?.qualityScore ?? 0) - (a?.node?.qualityScore ?? 0),
-    );
-  const totalRanked = projectsWithRank?.length ?? 0;
+    .sort((a, b) => (b?.node?.qualityScore ?? 0) - (a?.node?.qualityScore ?? 0))
+  const totalRanked = projectsWithRank?.length ?? 0
   const projectRankIdx =
     projectsWithRank?.indexOf(
       projectsWithRank?.find((e) => e?.node?.code === pj?.code),
-    ) ?? 0;
-  const projectRank = projectRankIdx + 1;
+    ) ?? 0
+  const projectRank = projectRankIdx + 1
 
   useEffect(() => {
     const handleLeftKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
+      if (e.key === 'ArrowLeft') {
         navigate({
-          to: "/operations",
+          to: '/operations',
           search: { code: prevProject?.code },
           replace: true,
-        });
+        })
       }
-    };
+    }
 
-    document.addEventListener("keydown", handleLeftKeyDown);
+    document.addEventListener('keydown', handleLeftKeyDown)
 
     return () => {
-      document.removeEventListener("keydown", handleLeftKeyDown);
-    };
-  }, [prevProject]);
+      document.removeEventListener('keydown', handleLeftKeyDown)
+    }
+  }, [prevProject])
 
   useEffect(() => {
     const handleRightKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
+      if (e.key === 'ArrowRight') {
         navigate({
-          to: "/operations",
+          to: '/operations',
           search: { code: nextProject?.code },
           replace: true,
-        });
+        })
       }
-    };
+    }
 
-    document.addEventListener("keydown", handleRightKeyDown);
+    document.addEventListener('keydown', handleRightKeyDown)
 
     return () => {
-      document.removeEventListener("keydown", handleRightKeyDown);
-    };
-  }, [nextProject]);
+      document.removeEventListener('keydown', handleRightKeyDown)
+    }
+  }, [nextProject])
 
-  const ownerApplyCount = pj?.ownerApplyCount ?? 0;
-  const ownerApproveCount = pj?.ownerApproveCount ?? 0;
-  const contractorApplyCount = pj?.contractorApplyCount ?? 0;
-  const contractorApproveCount = pj?.contractorApproveCount ?? 0;
-  const ownerApplyAmount = pj?.ownerApplyAmount ?? 0;
-  const ownerApproveAmount = pj?.ownerApproveAmount ?? 0;
-  const contractorApplyAmount = pj?.contractorApplyAmount ?? 0;
-  const contractorApproveAmount = pj?.contractorApproveAmount ?? 0;
-  const installProgress = pj?.installProgress ?? 0;
-  const effectiveContractAmount = pj?.effectiveContractAmount ?? 0;
-  const vaApplyAmount = pj?.vaApplyAmount ?? 0;
-  const vaApproveAmount = pj?.vaApproveAmount ?? 0;
-  const accumulatedStatutoryDeductions =
-    pj?.accumulatedStatutoryDeductions ?? 0;
+  const ownerApplyCount = pj?.ownerApplyCount ?? 0
+  const ownerApproveCount = pj?.ownerApproveCount ?? 0
+  const contractorApplyCount = pj?.contractorApplyCount ?? 0
+  const contractorApproveCount = pj?.contractorApproveCount ?? 0
+  const ownerApplyAmount = pj?.ownerApplyAmount ?? 0
+  const ownerApproveAmount = pj?.ownerApproveAmount ?? 0
+  const contractorApplyAmount = pj?.contractorApplyAmount ?? 0
+  const contractorApproveAmount = pj?.contractorApproveAmount ?? 0
+  const installProgress = pj?.installProgress ?? 0
+  const effectiveContractAmount = pj?.effectiveContractAmount ?? 0
+  const vaApplyAmount = pj?.vaApplyAmount ?? 0
+  const vaApproveAmount = pj?.vaApproveAmount ?? 0
+  const accumulatedStatutoryDeductions = pj?.accumulatedStatutoryDeductions ?? 0
   const accumulatedNonStatutoryDeductions =
-    pj?.accumulatedNonStatutoryDeductions ?? 0;
+    pj?.accumulatedNonStatutoryDeductions ?? 0
   const accumulatedNonStatutoryDeductionsPeriod =
-    pj?.accumulatedNonStatutoryDeductionsPeriod ?? 0;
+    pj?.accumulatedNonStatutoryDeductionsPeriod ?? 0
   const contractBudgetRevenue =
     ownerApproveAmount +
     contractorApproveAmount +
     ownerApplyAmount +
     contractorApplyAmount -
     (vaApplyAmount + vaApproveAmount) -
-    (accumulatedStatutoryDeductions + accumulatedNonStatutoryDeductions);
-  const totalContractAmount = pj?.totalContractAmount ?? 0;
-  const aluminumPlateBudgetPercentage = pj?.aluminumPlateBudgetPercentage ?? 0;
-  const aluminumBudgetPercentage = pj?.aluminumBudgetPercentage ?? 0;
-  const glassBudgetPercentage = pj?.glassBudgetPercentage ?? 0;
-  const ironBudgetPercentage = pj?.ironBudgetPercentage ?? 0;
-  const milestonePlanYear = pj?.milestonePlanYear || 0;
-  const milestonePlanMonth = pj?.milestonePlanMonth || 0;
-  const milestoneDoneYear = pj?.milestoneDoneYear || 0;
-  const milestoneDoneMonth = pj?.milestoneDoneMonth || 0;
+    (accumulatedStatutoryDeductions + accumulatedNonStatutoryDeductions)
+  const totalContractAmount = pj?.totalContractAmount ?? 0
+  const aluminumPlateBudgetPercentage = pj?.aluminumPlateBudgetPercentage ?? 0
+  const aluminumBudgetPercentage = pj?.aluminumBudgetPercentage ?? 0
+  const glassBudgetPercentage = pj?.glassBudgetPercentage ?? 0
+  const ironBudgetPercentage = pj?.ironBudgetPercentage ?? 0
+  const milestonePlanYear = pj?.milestonePlanYear || 0
+  const milestonePlanMonth = pj?.milestonePlanMonth || 0
+  const milestoneDoneYear = pj?.milestoneDoneYear || 0
+  const milestoneDoneMonth = pj?.milestoneDoneMonth || 0
 
-  const unitInventoryTotal = pj?.unitInventoryTotal || 0;
-  const unitComponentTotal = pj?.unitComponentTotal || 0;
-  const unitComponentProduction = pj?.unitComponentProduction || 0;
-  const unitComponentInstallation = pj?.unitComponentInstallation || 0;
-  const materialLoss = pj?.materialLoss || 0;
-  const designRatedWeight = pj?.designRatedWeight || 0;
-  const processingWeight = pj?.processingWeight || 0;
-  const itemStockWeight = pj?.itemStockWeight || 0;
-  const palletsInStock = pj?.palletsInStock || 0;
-  const partsInStock = pj?.partsInStock || 0;
-  const qualityScore = pj?.qualityScore || 0;
-  const qualityRanking = pj?.qualityRanking || 0;
+  const unitInventoryTotal = pj?.unitInventoryTotal || 0
+  const unitComponentTotal = pj?.unitComponentTotal || 0
+  const unitComponentProduction = pj?.unitComponentProduction || 0
+  const unitComponentInstallation = pj?.unitComponentInstallation || 0
+  const materialLoss = pj?.materialLoss || 0
+  const designRatedWeight = pj?.designRatedWeight || 0
+  const processingWeight = pj?.processingWeight || 0
+  const itemStockWeight = pj?.itemStockWeight || 0
+  const palletsInStock = pj?.palletsInStock || 0
+  const partsInStock = pj?.partsInStock || 0
+  const qualityScore = pj?.qualityScore || 0
+  const qualityRanking = pj?.qualityRanking || 0
   const bulkMaterialsTotalOrderQuantity =
-    pj?.bulkMaterialsTotalOrderQuantity || 0;
-  const bulkMaterialsCompletedQuantity =
-    pj?.bulkMaterialsCompletedQuantity || 0;
+    pj?.bulkMaterialsTotalOrderQuantity || 0
+  const bulkMaterialsCompletedQuantity = pj?.bulkMaterialsCompletedQuantity || 0
   const bulkMaterialsUncompletedQuantity =
-    pj?.bulkMaterialsUncompletedQuantity || 0;
-  const planTotalCount = pj?.planTotalCount || 0;
-  const planOverdueCount = pj?.planOverdueCount || 0;
-  const planOverdueMonthCount = pj?.planOverdueMonthCount || 0;
+    pj?.bulkMaterialsUncompletedQuantity || 0
+  const planTotalCount = pj?.planTotalCount || 0
+  const planOverdueCount = pj?.planOverdueCount || 0
+  const planOverdueMonthCount = pj?.planOverdueMonthCount || 0
 
   return (
     <>
@@ -380,10 +378,10 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <div className="flex flex-1 flex-col items-center justify-center">
                   <div
                     className={cn(
-                      "font-bold",
+                      'font-bold',
                       accumulatedNonStatutoryDeductionsPeriod > 50_0000
-                        ? "text-red-600"
-                        : "text-brand-project",
+                        ? 'text-red-600'
+                        : 'text-brand-project',
                     )}
                   >
                     <TextScramble
@@ -405,7 +403,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 </div>
                 <img src={costDivider} className="h-16 opacity-60" />
                 <div className="flex flex-1 flex-col items-center justify-center">
-                  <div className={"font-bold text-brand-project"}>
+                  <div className={'font-bold text-brand-project'}>
                     <TextScramble
                       characterSet="0123456789"
                       key={pj?.code}
@@ -425,13 +423,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <div className="flex flex-1 flex-col items-center justify-center">
                   <div
                     className={cn(
-                      "font-bold",
+                      'font-bold',
                       percent(
                         accumulatedNonStatutoryDeductions,
                         totalContractAmount,
                       ) > 2
-                        ? "text-red-600"
-                        : "text-brand-project",
+                        ? 'text-red-600'
+                        : 'text-brand-project',
                     )}
                   >
                     <TextScramble
@@ -500,14 +498,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        'h-3 w-3',
                         materialStatusIconColor(aluminumPlateBudgetPercentage),
                       )}
                     />
                     <span className="text-xxs text-red-200">铝板</span>
                     <div
                       className={cn(
-                        "text-xs font-bold",
+                        'text-xs font-bold',
                         materialStatusIconColor(aluminumPlateBudgetPercentage),
                       )}
                     >
@@ -524,14 +522,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        'h-3 w-3',
                         materialStatusIconColor(aluminumBudgetPercentage),
                       )}
                     />
                     <span className="text-xxs text-red-200">铝型材</span>
                     <div
                       className={cn(
-                        "text-xs font-bold",
+                        'text-xs font-bold',
                         materialStatusIconColor(aluminumBudgetPercentage),
                       )}
                     >
@@ -548,14 +546,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        'h-3 w-3',
                         materialStatusIconColor(glassBudgetPercentage),
                       )}
                     />
                     <span className="text-xxs text-red-200">玻璃</span>
                     <div
                       className={cn(
-                        "text-xs font-bold",
+                        'text-xs font-bold',
                         materialStatusIconColor(glassBudgetPercentage),
                       )}
                     >
@@ -572,14 +570,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                   <div className="mx-auto flex items-center gap-1 text-ellipsis text-nowrap pb-1">
                     <MaterialStatusIcon
                       className={cn(
-                        "h-3 w-3",
+                        'h-3 w-3',
                         materialStatusIconColor(ironBudgetPercentage),
                       )}
                     />
                     <span className="text-xxs text-red-200">铁型材</span>
                     <div
                       className={cn(
-                        "text-xs font-bold",
+                        'text-xs font-bold',
                         materialStatusIconColor(ironBudgetPercentage),
                       )}
                     >
@@ -879,9 +877,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               className="absolute -left-[4rem] top-1/2 h-12 w-auto -translate-y-1/2 cursor-pointer"
               onClick={() => {
                 navigate({
-                  to: ".",
+                  to: '.',
                   search: { code: prevProject?.code },
-                });
+                })
               }}
             />
             <img
@@ -889,9 +887,9 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
               className="absolute -right-[4rem] top-1/2 h-12 w-auto -translate-y-1/2 cursor-pointer"
               onClick={() => {
                 navigate({
-                  to: ".",
+                  to: '.',
                   search: { code: nextProject?.code },
-                });
+                })
               }}
             />
             <div className="mt-2 flex gap-12">
@@ -1075,15 +1073,15 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <img src={basicInfoBg} className="absolute h-[340px] w-full" />
                 <div className="relative mx-auto flex h-full w-[94%] flex-1 flex-col justify-center gap-1 pt-2.5">
                   <BasicInfoItem title="项目名称">
-                    {pj?.name || "-"}
+                    {pj?.name || '-'}
                   </BasicInfoItem>
-                  <BasicInfoItem title="客户">{pj?.owner || "-"}</BasicInfoItem>
-                  <BasicInfoItem title="建筑师">{pj?.jzs || "-"}</BasicInfoItem>
+                  <BasicInfoItem title="客户">{pj?.owner || '-'}</BasicInfoItem>
+                  <BasicInfoItem title="建筑师">{pj?.jzs || '-'}</BasicInfoItem>
                   <BasicInfoItem title="总承包商">
-                    {pj?.mcn || "-"}
+                    {pj?.mcn || '-'}
                   </BasicInfoItem>
                   <BasicInfoItem title="幕墙顾问">
-                    {pj?.consultant || "-"}
+                    {pj?.consultant || '-'}
                   </BasicInfoItem>
                   <BasicInfoItem title="工程规模">
                     {pj?.areas ? (
@@ -1091,14 +1089,14 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                         {pj?.areas}m<sup>2</sup>
                       </span>
                     ) : (
-                      "-"
+                      '-'
                     )}
                   </BasicInfoItem>
                   <BasicInfoItem title="中标形式">
-                    {pj?.conType || "-"}
+                    {pj?.conType || '-'}
                   </BasicInfoItem>
                   <BasicInfoItem title="开工日期">
-                    {pj?.startDate ? dayjs(pj?.startDate).format("LL") : "-"}
+                    {pj?.startDate ? dayjs(pj?.startDate).format('LL') : '-'}
                   </BasicInfoItem>
                   {/* <BasicInfoItem title="FS日期">
                     {pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
@@ -1109,7 +1107,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     projectId={pj?.id}
                     value={pj?.fsDate}
                   >
-                    {pj?.fsDate ? dayjs(pj?.fsDate).format("LL") : "-"}
+                    {pj?.fsDate ? dayjs(pj?.fsDate).format('LL') : '-'}
                   </EditableBasicInfoItem>
                   <EditableBasicInfoItem
                     title="OP日期"
@@ -1117,13 +1115,13 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                     projectId={pj?.id}
                     value={pj?.opDate}
                   >
-                    {pj?.opDate ? dayjs(pj?.opDate).format("LL") : "-"}
+                    {pj?.opDate ? dayjs(pj?.opDate).format('LL') : '-'}
                   </EditableBasicInfoItem>
                   <BasicInfoItem title="竣工日期">
-                    {pj?.endDate ? dayjs(pj?.endDate).format("LL") : "-"}
+                    {pj?.endDate ? dayjs(pj?.endDate).format('LL') : '-'}
                   </BasicInfoItem>
                   <BasicInfoItem title="维修保养期">
-                    {pj?.mntyr || "-"}
+                    {pj?.mntyr || '-'}
                   </BasicInfoItem>
                 </div>
               </div>
@@ -1236,7 +1234,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                 <div className="relative flex h-24 basis-1/4 items-center justify-center">
                   <div className="relative h-[64px] w-[64px] rounded-full">
                     <GlowEffect
-                      colors={["#0894FF", "#C959DD", "#FF2E54", "#FF9004"]}
+                      colors={['#0894FF', '#C959DD', '#FF2E54', '#FF9004']}
                       // colors={[
                       //   "#082f49",
                       //   "#0a3b5c",
@@ -1263,7 +1261,7 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
                             <span
                               className={cn(
                                 totalRanked - projectRank <= 3 &&
-                                  "text-red-500",
+                                  'text-red-500',
                               )}
                             >
                               {projectRank}
@@ -1302,21 +1300,19 @@ function Operation({ data }: { data: operationsPageQuery$data }) {
         </section>
       </div>
     </>
-  );
+  )
 }
 
 function DrawingProgress({ pj }: { pj: Project }) {
-  const diagramProcessingFinishCount = pj?.diagramProcessingFinishCount || 0;
-  const diagramProcessingTotalCount = pj?.diagramProcessingTotalCount || 0;
-  const diagramCApprovalRatioNumerator =
-    pj?.diagramCApprovalRatioNumerator || 0;
+  const diagramProcessingFinishCount = pj?.diagramProcessingFinishCount || 0
+  const diagramProcessingTotalCount = pj?.diagramProcessingTotalCount || 0
+  const diagramCApprovalRatioNumerator = pj?.diagramCApprovalRatioNumerator || 0
   const diagramCApprovalRatioDenominator =
-    pj?.diagramCApprovalRatioDenominator || 0;
-  const diagramBdTotalCount = pj?.diagramBdTotalCount || 0;
-  const diagramBdFinishCount = pj?.diagramBdFinishCount || 0;
-  const diagramConstructionTotalCount = pj?.diagramConstructionTotalCount || 0;
-  const diagramConstructionFinishCount =
-    pj?.diagramConstructionFinishCount || 0;
+    pj?.diagramCApprovalRatioDenominator || 0
+  const diagramBdTotalCount = pj?.diagramBdTotalCount || 0
+  const diagramBdFinishCount = pj?.diagramBdFinishCount || 0
+  const diagramConstructionTotalCount = pj?.diagramConstructionTotalCount || 0
+  const diagramConstructionFinishCount = pj?.diagramConstructionFinishCount || 0
 
   return (
     <div>
@@ -1376,17 +1372,17 @@ function DrawingProgress({ pj }: { pj: Project }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function ProductionManagement({ pj }: { pj: Project }) {
-  const pmArea = pj?.pmArea || 0;
-  const pmYearTarget = pj?.pmYearTarget || 0;
-  const pmMonthTarget = pj?.pmMonthTarget || 0;
-  const pmYearActual = pj?.pmYearActual || 0;
-  const pmMonthActual = pj?.pmMonthActual || 0;
-  const pmTotal = pj?.pmTotal || 0;
-  const pmYesterday = pj?.pmYesterday || 0;
+  const pmArea = pj?.pmArea || 0
+  const pmYearTarget = pj?.pmYearTarget || 0
+  const pmMonthTarget = pj?.pmMonthTarget || 0
+  const pmYearActual = pj?.pmYearActual || 0
+  const pmMonthActual = pj?.pmMonthActual || 0
+  const pmTotal = pj?.pmTotal || 0
+  const pmYesterday = pj?.pmYesterday || 0
 
   return (
     <div>
@@ -1441,7 +1437,7 @@ function ProductionManagement({ pj }: { pj: Project }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const FlippingCard = ({
@@ -1449,20 +1445,20 @@ const FlippingCard = ({
   back,
   animated,
 }: {
-  front: string | number;
-  back: ReactNode;
-  animated: boolean;
+  front: string | number
+  back: ReactNode
+  animated: boolean
 }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false)
 
   useEffect(() => {
-    if (!animated) return;
+    if (!animated) return
     const interval = setInterval(() => {
-      setIsFlipped((prev) => !prev);
-    }, 3000);
+      setIsFlipped((prev) => !prev)
+    }, 3000)
 
-    return () => clearInterval(interval);
-  }, [animated]);
+    return () => clearInterval(interval)
+  }, [animated])
 
   return (
     <motion.div
@@ -1470,8 +1466,8 @@ const FlippingCard = ({
       style={{
         // width: "36px",
         // height: "36px",
-        perspective: "1000px", // Adds depth for 3D animation
-        padding: "2.2rem",
+        perspective: '1000px', // Adds depth for 3D animation
+        padding: '2.2rem',
       }}
     >
       <img
@@ -1483,23 +1479,23 @@ const FlippingCard = ({
         animate={{ rotateY: isFlipped ? 180 : 0 }} // Animates the flip
         transition={{ duration: 1 }} // Controls the flip speed
         style={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
-          transformStyle: "preserve-3d", // Enables 3D effect
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          transformStyle: 'preserve-3d', // Enables 3D effect
         }}
       >
         {/* Front of the card */}
         <motion.div
           style={{
-            position: "absolute",
-            backfaceVisibility: "hidden",
-            width: "100%",
-            height: "100%",
+            position: 'absolute',
+            backfaceVisibility: 'hidden',
+            width: '100%',
+            height: '100%',
             // backgroundColor: "blue",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             // borderRadius: 10,
             // border: "1px solid red",
           }}
@@ -1510,14 +1506,14 @@ const FlippingCard = ({
         {/* Back of the card */}
         <motion.div
           style={{
-            position: "absolute",
-            backfaceVisibility: "hidden",
-            width: "100%",
-            height: "100%",
+            position: 'absolute',
+            backfaceVisibility: 'hidden',
+            width: '100%',
+            height: '100%',
             // backgroundColor: "red",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             rotateY: 180,
             // borderRadius: 10,
             // border: "1px solid green",
@@ -1527,15 +1523,15 @@ const FlippingCard = ({
         </motion.div>
       </motion.div>
     </motion.div>
-  );
-};
+  )
+}
 
 function BasicInfoItem({
   title,
   children,
 }: {
-  title: string;
-  children: ReactNode;
+  title: string
+  children: ReactNode
 }) {
   return (
     <div className="relative py-1">
@@ -1550,7 +1546,7 @@ function BasicInfoItem({
         </span>
       </div>
     </div>
-  );
+  )
 }
 
 function EditableBasicInfoItem({
@@ -1560,24 +1556,24 @@ function EditableBasicInfoItem({
   field,
   value,
 }: {
-  projectId?: string;
-  field: "fsDate" | "opDate";
-  title: string;
-  children: ReactNode;
-  value?: string;
+  projectId?: string
+  field: 'fsDate' | 'opDate'
+  title: string
+  children: ReactNode
+  value?: string
 }) {
-  const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [commitMutation, commitInFlight] = useUpdateProject();
+  const [open, setOpen] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [commitMutation, commitInFlight] = useUpdateProject()
   // const [date] = useState<Date>();
 
   const onEditing = (editing: boolean) => {
-    setEditing(editing);
-    setOpen(editing);
-  };
+    setEditing(editing)
+    setOpen(editing)
+  }
 
   const onSubmit = (date: Date | undefined) => {
-    if (commitInFlight || !projectId) return;
+    if (commitInFlight || !projectId) return
     commitMutation({
       variables: {
         id: projectId,
@@ -1586,20 +1582,20 @@ function EditableBasicInfoItem({
         },
       },
       onCompleted: () => {
-        onEditing(false);
-        setOpen(false);
-        toast.success("已更新");
+        onEditing(false)
+        setOpen(false)
+        toast.success('已更新')
       },
-    });
-  };
+    })
+  }
 
   const onClear = () => {
-    if (commitInFlight || !projectId) return;
-    const input: UpdateProjectInput = {};
-    if (field == "fsDate") {
-      input.clearFsDate = true;
-    } else if (field == "opDate") {
-      input.clearOpDate = true;
+    if (commitInFlight || !projectId) return
+    const input: UpdateProjectInput = {}
+    if (field == 'fsDate') {
+      input.clearFsDate = true
+    } else if (field == 'opDate') {
+      input.clearOpDate = true
     }
     commitMutation({
       variables: {
@@ -1607,12 +1603,12 @@ function EditableBasicInfoItem({
         input,
       },
       onCompleted: () => {
-        onEditing(false);
-        setOpen(false);
-        toast.success("已清除");
+        onEditing(false)
+        setOpen(false)
+        toast.success('已清除')
       },
-    });
-  };
+    })
+  }
 
   return (
     <div className="relative py-1">
@@ -1650,10 +1646,10 @@ function EditableBasicInfoItem({
               locale={zhCN}
               className="rounded-lg border border-sky-900 bg-sky-800/50 font-bold text-white shadow-xl"
               classNames={{
-                day_today: "bg-sky-700 hover:bg-sky-600",
+                day_today: 'bg-sky-700 hover:bg-sky-600',
                 day: cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-sky-900",
+                  buttonVariants({ variant: 'ghost' }),
+                  'h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-sky-900',
                 ),
               }}
               mode="single"
@@ -1672,26 +1668,26 @@ function EditableBasicInfoItem({
         )}
       </div>
     </div>
-  );
+  )
 }
 
 function ProjectOverviewTab({
   pj,
   defaultCode,
 }: {
-  pj?: any;
-  defaultCode?: string;
+  pj?: any
+  defaultCode?: string
 }) {
-  const tabs = ["形象进度", "BIM模型", "地盘人员分布"];
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  const [, startTransition] = useTransition();
-  const { code } = Route.useSearch();
+  const tabs = ['形象进度', 'BIM模型', '地盘人员分布']
+  const [selectedTab, setSelectedTab] = useState(tabs[0])
+  const [, startTransition] = useTransition()
+  const { code } = Route.useSearch()
 
   const onChange = (tab: string) => {
     startTransition(() => {
-      setSelectedTab(tab);
-    });
-  };
+      setSelectedTab(tab)
+    })
+  }
 
   return (
     <Tabs.Root
@@ -1731,38 +1727,38 @@ function ProjectOverviewTab({
         ))}
       </Tabs.List>
     </Tabs.Root>
-  );
+  )
 }
 
 function StaffDistribution(props: { data: any }) {
-  const data = [];
+  const data = []
 
   for (const node of props.data) {
     data.push({
-      name: "安裝人員",
+      name: '安裝人員',
       number: node.installation
         ? formatAmountWithCommas(node.installation)
-        : "0",
-      month: dayjs(node.createdAt).format("YYYY年MMM"),
-    });
+        : '0',
+      month: dayjs(node.createdAt).format('YYYY年MMM'),
+    })
     data.push({
-      name: "管理人員",
-      number: node.management ? formatAmountWithCommas(node.management) : "0",
-      month: dayjs(node.createdAt).format("YYYY年MMM"),
-    });
+      name: '管理人員',
+      number: node.management ? formatAmountWithCommas(node.management) : '0',
+      month: dayjs(node.createdAt).format('YYYY年MMM'),
+    })
     data.push({
-      name: "設計人員",
-      number: node.design ? formatAmountWithCommas(node.design) : "0",
-      month: dayjs(node.createdAt).format("YYYY年MMM"),
-    });
+      name: '設計人員',
+      number: node.design ? formatAmountWithCommas(node.design) : '0',
+      month: dayjs(node.createdAt).format('YYYY年MMM'),
+    })
   }
 
   const config = {
-    theme: "classicDark",
+    theme: 'classicDark',
     data,
-    xField: "month",
-    yField: "number",
-    colorField: "name",
+    xField: 'month',
+    yField: 'number',
+    colorField: 'name',
     group: true,
     // style: {
     //   inset: 5,
@@ -1778,9 +1774,9 @@ function StaffDistribution(props: { data: any }) {
     legend: {
       color: {
         layout: {
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
         },
       },
     },
@@ -1790,48 +1786,48 @@ function StaffDistribution(props: { data: any }) {
     // },
     onReady: ({ chart }) => {
       try {
-        chart.on("afterrender", () => {
-          chart.emit("legend:filter", {
+        chart.on('afterrender', () => {
+          chart.emit('legend:filter', {
             data: {
-              channel: "color",
-              values: ["安裝人員", "管理人員", "設計人員"],
+              channel: 'color',
+              values: ['安裝人員', '管理人員', '設計人員'],
             },
-          });
-        });
+          })
+        })
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     },
-  } satisfies ColumnConfig;
-  return <Column {...config} />;
+  } satisfies ColumnConfig
+  return <Column {...config} />
 }
 
 function ProjectImage({ code }: { code?: string }) {
-  const [error, setError] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const ref = useRef<HTMLImageElement>(null);
-  useOnClickOutside(ref, () => setEditing(false));
+  const [error, setError] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const ref = useRef<HTMLImageElement>(null)
+  useOnClickOutside(ref, () => setEditing(false))
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const formData = new FormData(e.target as HTMLFormElement);
+      const formData = new FormData(e.target as HTMLFormElement)
       const res = await fetch(`/api/v1/projects/${code}/image`, {
-        method: "POST",
+        method: 'POST',
         body: formData,
-      });
+      })
       if (res.ok) {
-        setEditing(false);
-        setError(false);
-        toast.success("上传成功");
+        setEditing(false)
+        setError(false)
+        toast.success('上传成功')
       } else {
-        toast.error("上传失败");
+        toast.error('上传失败')
       }
     } catch (e) {
-      console.error(e);
-      toast.error("上传失败");
+      console.error(e)
+      toast.error('上传失败')
     }
-  };
+  }
 
   return (
     <div className="group relative mx-auto h-[280px] w-full" ref={ref}>
@@ -1863,7 +1859,7 @@ function ProjectImage({ code }: { code?: string }) {
               type="submit"
               variant="default"
               className="bg-sky-900 hover:bg-sky-700"
-              size={"sm"}
+              size={'sm'}
             >
               上传
             </Button>
@@ -1872,7 +1868,7 @@ function ProjectImage({ code }: { code?: string }) {
               onClick={() => setEditing(false)}
               type="button"
               variant="ghost"
-              size={"sm"}
+              size={'sm'}
             >
               取消
             </Button>
@@ -1882,11 +1878,11 @@ function ProjectImage({ code }: { code?: string }) {
         <Button
           className="absolute right-0 top-0 bg-sky-900 opacity-0 hover:bg-sky-700 group-hover:opacity-100"
           onClick={() => setEditing(true)}
-          size={"icon"}
+          size={'icon'}
         >
           <Pencil />
         </Button>
       )}
     </div>
-  );
+  )
 }

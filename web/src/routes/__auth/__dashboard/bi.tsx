@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Loader } from "lucide-react";
 import { useState } from "react";
+import reportPng from "~/assets/report.png";
 
 export const Route = createFileRoute("/__auth/__dashboard/bi")({
   component: RouteComponent,
@@ -12,6 +13,9 @@ const ssoToken = encodeURIComponent(
 
 const biUrl = `/webroot/decision/data/portal/f12fb24d-7dcb-4c1b-adc2-0edc4c7372f8/common/view?ssoToken=${ssoToken}`;
 
+const ssoUrl =
+  "https://830bi.3311csci.com/webroot/decision?js_api_path=L2NvbS9mci9wbHVnaW4vZmVpc2h1L2Rpc3QvanMvZmVpc2h1LmN1c3RvbS5hcGkubWluLmpz&sb=5135413324D7C6BB04E563D22D855DA5#?activeTab=dec-tabs-homepage";
+
 function RouteComponent() {
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +26,15 @@ function RouteComponent() {
           <Loader className="animate-spin" />
         </div>
       )}
+
+      <div className="absolute bottom-6 right-8">
+        <div className="flex items-center justify-between">
+          <a href={ssoUrl} target="_blank">
+            <img src={reportPng} className="h-auto w-12 rounded-md" />
+          </a>
+        </div>
+      </div>
+
       <iframe
         className="min-h-screen w-full"
         src={biUrl}

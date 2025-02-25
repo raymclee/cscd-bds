@@ -1,27 +1,27 @@
-import * as React from "react";
-import { createLazyFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { useMapStore } from "~/store/map";
-import { Blocks, HardHat, Monitor } from "lucide-react";
-import { Button, Tooltip } from "antd";
+import * as React from 'react'
+import { createLazyFileRoute, Link, Outlet } from '@tanstack/react-router'
+import { useMapStore } from '~/store/map'
+import { Blocks, HardHat, Monitor } from 'lucide-react'
+import { Button, Tooltip } from 'antd'
 
-export const Route = createLazyFileRoute("/__auth/__dashboard/__map")({
+export const Route = createLazyFileRoute('/__auth/__dashboard/__scaled/__map')({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const map = useMapStore((s) => s.map);
-  const initMap = useMapStore((s) => s.initMap);
-  const { session } = Route.useRouteContext();
+  const map = useMapStore((s) => s.map)
+  const initMap = useMapStore((s) => s.initMap)
+  const { session } = Route.useRouteContext()
 
   React.useEffect(() => {
-    initMap("map", {
+    initMap('map', {
       zoom: 3,
       // mapStyle: "amap://styles/grey",
-      mapStyle: "amap://styles/darkblue",
+      mapStyle: 'amap://styles/darkblue',
       // viewMode: "3D",
       // pitch: 30,
-    });
-  }, []);
+    })
+  }, [])
 
   React.useEffect(() => {
     return () => {
@@ -37,10 +37,10 @@ function RouteComponent() {
         moreNewTenderBoardVisible: false,
         moreRankingListBoardVisible: false,
         moreTenderTypeBoardVisible: false,
-      });
-      map?.destroy();
-    };
-  }, [map]);
+      })
+      map?.destroy()
+    }
+  }, [map])
 
   return (
     <>
@@ -105,5 +105,5 @@ function RouteComponent() {
 
       <Outlet />
     </>
-  );
+  )
 }

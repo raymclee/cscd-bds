@@ -1,10 +1,10 @@
-import * as React from 'react'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { graphql, usePreloadedQuery } from 'react-relay'
+import * as React from "react";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { graphql, usePreloadedQuery } from "react-relay";
 import {
   competitorsQuery,
   competitorsQuery$data,
-} from '__generated__/competitorsQuery.graphql'
+} from "__generated__/competitorsQuery.graphql";
 import {
   Input,
   Form,
@@ -17,22 +17,22 @@ import {
   Space,
   TableProps,
   Popconfirm,
-} from 'antd'
-import { useState } from 'react'
-import { Competitor, CreateCityInput } from '~/graphql/graphql'
-import { CreateCompetitorInput } from '__generated__/useCreateCompetitorMutation.graphql'
-import { useCreateCompetitor } from '~/hooks/use-create-competitor'
-import { ListFilter } from '~/components/portal/list-filter'
-import { Plus } from 'lucide-react'
-import { usePortalStore } from '~/store/portal'
-import { useUpdateCompetitor } from '~/hooks/use-update-competitor'
-import { useDeleteCompetitor } from '~/hooks/use-delete-competitor'
+} from "antd";
+import { useState } from "react";
+import { Competitor, CreateCityInput } from "~/graphql/graphql";
+import { CreateCompetitorInput } from "__generated__/useCreateCompetitorMutation.graphql";
+import { useCreateCompetitor } from "~/hooks/use-create-competitor";
+import { ListFilter } from "~/components/portal/list-filter";
+import { Plus } from "lucide-react";
+import { usePortalStore } from "~/store/portal";
+import { useUpdateCompetitor } from "~/hooks/use-update-competitor";
+import { useDeleteCompetitor } from "~/hooks/use-delete-competitor";
 
 export const Route = createLazyFileRoute(
-  '/__auth/__portal/portal/_admin/competitors',
+  "/__auth/__portal/portal/_admin/competitors",
 )({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const data = usePreloadedQuery<competitorsQuery>(
@@ -51,26 +51,31 @@ function RouteComponent() {
       }
     `,
     Route.useLoaderData(),
-  )
-  const navigate = Route.useNavigate()
-  const searchParams = Route.useSearch()
+  );
+  const navigate = Route.useNavigate();
+  const searchParams = Route.useSearch();
 
-  const columns: TableProps<Competitor>['columns'] = [
+  const columns: TableProps<Competitor>["columns"] = [
     {
-      title: '简称',
-      dataIndex: 'shortName',
-      key: 'shortName',
+      title: "序号",
+      width: 60,
+      render: (_, __, index) => index + 1,
+    },
+    {
+      title: "简称",
+      dataIndex: "shortName",
+      key: "shortName",
       sorter: (a, b) => a.shortName.localeCompare(b.shortName),
     },
     {
-      title: '名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: "名称",
+      dataIndex: "name",
+      key: "name",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: '操作',
-      key: 'action',
+      title: "操作",
+      key: "action",
       render: (_, record) => (
         <Space className="-ml-2">
           <Button
@@ -80,7 +85,7 @@ function RouteComponent() {
               usePortalStore.setState({
                 competitorFormOpen: true,
                 competitorFormCompetitor: record,
-              })
+              });
             }}
           >
             编辑
@@ -92,7 +97,7 @@ function RouteComponent() {
         </Space>
       ),
     },
-  ]
+  ];
 
   const tableData =
     data.competitors?.edges
@@ -107,7 +112,7 @@ function RouteComponent() {
           searchParams.q === undefined ||
           e.name?.toLowerCase().includes(searchParams.q.toLowerCase()) ||
           e.shortName?.toLowerCase().includes(searchParams.q.toLowerCase()),
-      ) || []
+      ) || [];
 
   return (
     <>
@@ -115,6 +120,7 @@ function RouteComponent() {
         <CompetitorModal connectionID={data.competitors.__id} />
       </ListFilter>
       <Table
+        sticky
         // @ts-ignore
         columns={columns}
         dataSource={tableData}
@@ -122,44 +128,46 @@ function RouteComponent() {
           current: searchParams.page,
           onChange(page) {
             navigate({
-              to: '.',
+              to: ".",
               search: (prev) => ({ ...prev, page }),
-            })
+            });
           },
           showTotal: (total) => `共 ${total} 条`,
         }}
       />
     </>
-  )
+  );
 }
 
 type CompetitorModalProps = {
-  connectionID: string
-}
+  connectionID: string;
+};
 
 function CompetitorModal({ connectionID }: CompetitorModalProps) {
-  const open = usePortalStore((state) => state.competitorFormOpen)
+  const open = usePortalStore((state) => state.competitorFormOpen);
   const competitorFormCompetitor = usePortalStore(
     (state) => state.competitorFormCompetitor,
-  )
-  const [form] = Form.useForm()
-  const [commitCreateMutation, isCreateMutationInFlight] = useCreateCompetitor()
-  const [commitUpdateMutation, isUpdateMutationInFlight] = useUpdateCompetitor()
-  const { message } = App.useApp()
+  );
+  const [form] = Form.useForm();
+  const [commitCreateMutation, isCreateMutationInFlight] =
+    useCreateCompetitor();
+  const [commitUpdateMutation, isUpdateMutationInFlight] =
+    useUpdateCompetitor();
+  const { message } = App.useApp();
 
   const onClose = () => {
     usePortalStore.setState({
       competitorFormOpen: false,
       competitorFormCompetitor: null,
-    })
-  }
+    });
+  };
 
   React.useEffect(() => {
     form.setFieldsValue({
       shortName: competitorFormCompetitor?.shortName,
       name: competitorFormCompetitor?.name,
-    })
-  }, [competitorFormCompetitor])
+    });
+  }, [competitorFormCompetitor]);
 
   return (
     <>
@@ -170,7 +178,7 @@ function CompetitorModal({ connectionID }: CompetitorModalProps) {
         onClick={() => {
           usePortalStore.setState({
             competitorFormOpen: true,
-          })
+          });
         }}
       >
         添加竞争对手
@@ -179,9 +187,9 @@ function CompetitorModal({ connectionID }: CompetitorModalProps) {
         open={open || !!competitorFormCompetitor}
         title="请输入竞争对手名称"
         okText="提交"
-        okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
+        okButtonProps={{ autoFocus: true, htmlType: "submit" }}
         onCancel={() => {
-          onClose()
+          onClose();
         }}
         maskClosable={!!competitorFormCompetitor}
         destroyOnClose
@@ -199,16 +207,16 @@ function CompetitorModal({ connectionID }: CompetitorModalProps) {
                     input: values,
                   },
                   onCompleted: () => {
-                    onClose()
-                    form.resetFields()
-                    message.destroy()
-                    message.success('修改成功')
+                    onClose();
+                    form.resetFields();
+                    message.destroy();
+                    message.success("修改成功");
                   },
                   onError: (error) => {
-                    message.destroy()
-                    message.error(error.message)
+                    message.destroy();
+                    message.error(error.message);
                   },
-                })
+                });
               } else {
                 commitCreateMutation({
                   variables: {
@@ -216,16 +224,16 @@ function CompetitorModal({ connectionID }: CompetitorModalProps) {
                     connections: [connectionID],
                   },
                   onCompleted: () => {
-                    onClose()
-                    form.resetFields()
-                    message.destroy()
-                    message.success('添加成功')
+                    onClose();
+                    form.resetFields();
+                    message.destroy();
+                    message.success("添加成功");
                   },
                   onError: (error) => {
-                    message.destroy()
-                    message.error(error.message)
+                    message.destroy();
+                    message.error(error.message);
                   },
-                })
+                });
               }
             }}
           >
@@ -251,18 +259,19 @@ function CompetitorModal({ connectionID }: CompetitorModalProps) {
         </Form.Item>
       </Modal>
     </>
-  )
+  );
 }
 
 function DeleteCompetitorButton({
   competitor,
   connectionID,
 }: {
-  competitor: Competitor
-  connectionID: string
+  competitor: Competitor;
+  connectionID: string;
 }) {
-  const [commitDeleteMutation, isDeleteMutationInFlight] = useDeleteCompetitor()
-  const { message } = App.useApp()
+  const [commitDeleteMutation, isDeleteMutationInFlight] =
+    useDeleteCompetitor();
+  const { message } = App.useApp();
 
   return (
     <Popconfirm
@@ -273,12 +282,12 @@ function DeleteCompetitorButton({
             id: competitor.id,
             connections: [connectionID],
           },
-        })
+        });
       }}
     >
       <Button type="link" size="small" danger>
         删除
       </Button>
     </Popconfirm>
-  )
+  );
 }

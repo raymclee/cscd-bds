@@ -1,19 +1,19 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
-import { customersPageQuery } from '__generated__/customersPageQuery.graphql'
-import { Button, Table, TableProps, Typography } from 'antd'
-import dayjs from 'dayjs'
-import { Plus } from 'lucide-react'
-import { usePreloadedQuery } from 'react-relay'
-import { graphql } from 'relay-runtime'
-import { ListFilter } from '~/components/portal/list-filter'
-import { Customer } from '~/graphql/graphql'
-import { customerSizeText, industryText, ownerTypeText } from '~/lib/helper'
-import { canEdit } from '~/lib/permission'
-import { usePortalStore } from '~/store/portal'
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
+import { Button, Table, TableProps, Typography } from "antd";
+import dayjs from "dayjs";
+import { Plus } from "lucide-react";
+import { usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { ListFilter } from "~/components/portal/list-filter";
+import { Customer } from "~/graphql/graphql";
+import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
+import { canEdit } from "~/lib/permission";
+import { usePortalStore } from "~/store/portal";
 
-export const Route = createLazyFileRoute('/__auth/__portal/portal/customers')({
+export const Route = createLazyFileRoute("/__auth/__portal/portal/customers")({
   component: RouteComponent,
-})
+});
 
 const query = graphql`
   query customersPageQuery($userId: ID!, $first: Int, $last: Int) {
@@ -62,23 +62,23 @@ const query = graphql`
       }
     }
   }
-`
+`;
 
 function RouteComponent() {
   const data = usePreloadedQuery<customersPageQuery>(
     query,
     Route.useLoaderData(),
-  )
-  const searchParams = Route.useSearch()
-  const searchText = searchParams.q || ''
-  const navigate = Route.useNavigate()
-  const { session } = Route.useRouteContext()
-  const area = searchParams.area
+  );
+  const searchParams = Route.useSearch();
+  const searchText = searchParams.q || "";
+  const navigate = Route.useNavigate();
+  const { session } = Route.useRouteContext();
+  const area = searchParams.area;
 
   const areas = data?.node?.areas?.edges?.map((a) => ({
-    label: a?.node?.name ?? '',
-    value: a?.node?.code ?? '',
-  }))
+    label: a?.node?.name ?? "",
+    value: a?.node?.code ?? "",
+  }));
 
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>
@@ -88,12 +88,17 @@ function RouteComponent() {
           n?.name?.toLowerCase().includes(searchText?.toLowerCase()),
         )
         .filter((n) => area === undefined || n?.area?.code === area),
-    ) ?? []
+    ) ?? [];
 
-  const columns: TableProps<Customer>['columns'] = [
+  const columns: TableProps<Customer>["columns"] = [
     {
-      dataIndex: 'name',
-      title: '名称',
+      title: "序号",
+      width: 60,
+      render: (_, __, index) => index + 1,
+    },
+    {
+      dataIndex: "name",
+      title: "名称",
       render: (_, record) =>
         record.id ? (
           <Link to={`/portal/customers/$id`} params={{ id: record.id }}>
@@ -105,40 +110,40 @@ function RouteComponent() {
           record?.name
         ),
     },
-    { dataIndex: ['area', 'name'], title: '区域' },
+    { dataIndex: ["area", "name"], title: "区域" },
     {
-      dataIndex: 'ownerType',
-      title: '业主类型',
+      dataIndex: "ownerType",
+      title: "业主类型",
       render: (value) => ownerTypeText(value),
     },
     {
-      dataIndex: 'industry',
-      title: '行业',
+      dataIndex: "industry",
+      title: "行业",
       render: (value) => industryText(value),
     },
     {
-      dataIndex: 'size',
-      title: '规模',
+      dataIndex: "size",
+      title: "规模",
       render: (value) => customerSizeText(value),
     },
     {
-      dataIndex: 'tenders',
-      title: '商机数',
+      dataIndex: "tenders",
+      title: "商机数",
       render: (value, record) => record.tenders?.edges?.length,
     },
     {
-      dataIndex: 'visitRecords',
-      title: '拜访数',
+      dataIndex: "visitRecords",
+      title: "拜访数",
       render: (value, record) => record.visitRecords?.edges?.length,
     },
     {
-      dataIndex: 'updatedAt',
-      title: '更新时间',
+      dataIndex: "updatedAt",
+      title: "更新时间",
       render: (value) => (
-        <Typography.Text>{dayjs(value).format('LLL')}</Typography.Text>
+        <Typography.Text>{dayjs(value).format("LLL")}</Typography.Text>
       ),
     },
-  ]
+  ];
 
   // if (canEdit(session)) {
   //   columns.push({
@@ -170,32 +175,33 @@ function RouteComponent() {
             type="primary"
             icon={<Plus size={16} />}
             onClick={() => {
-              usePortalStore.setState({ customerFormOpen: true })
+              usePortalStore.setState({ customerFormOpen: true });
             }}
             className="w-full md:w-auto"
           >
-            {'添加客户'}
+            {"添加客户"}
           </Button>
         )}
       </ListFilter>
       <Table
+        sticky
         className="rounded-lg"
         pagination={{
           current: searchParams.page,
           onChange(page, pageSize) {
             navigate({
-              to: '.',
+              to: ".",
               search: (prev) => ({ ...prev, page }),
-            })
+            });
           },
           showTotal: (total) => `共 ${total} 条`,
         }}
         dataSource={dataSource}
         // @ts-ignore
         columns={columns}
-        rowKey={'id'}
+        rowKey={"id"}
         scroll={{ x: 1000 }}
       />
     </>
-  )
+  );
 }
