@@ -127,11 +127,13 @@ function RouteComponent() {
       render: (value) => customerSizeText(value),
     },
     {
+      width: 100,
       dataIndex: "tenders",
       title: "商机数",
       render: (value, record) => record.tenders?.edges?.length,
     },
     {
+      width: 100,
       dataIndex: "visitRecords",
       title: "拜访数",
       render: (value, record) => record.visitRecords?.edges?.length,
