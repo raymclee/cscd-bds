@@ -72,7 +72,7 @@ export function TenderTypeBoardMore() {
           transition={{ duration: 0.2, delay: 0.1 }}
           layoutId="tender-type-board"
           className={cn(
-            "mx-4 block h-[90vh] w-[520px] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+            "mx-4 block h-[90vh] w-[800px] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
           )}
         >
           <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -97,12 +97,12 @@ export function TenderTypeBoardMore() {
                     <TableHead className="w-[60px] text-center text-[0.7rem] text-gray-300">
                       区域
                     </TableHead>
-                    <TableHead className="w-[100px] text-center text-[0.7rem] text-gray-300">
+                    <TableHead className="w-[150px] text-center text-[0.7rem] text-gray-300">
                       类型
                     </TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody className="text-xs text-white">
+                <TableBody className="text-white">
                   {customers?.map((customer, i) => (
                     <TableRow
                       className="cursor-pointer"
@@ -110,12 +110,14 @@ export function TenderTypeBoardMore() {
                     >
                       <TableCell className="text-center">{i + 1}</TableCell>
                       <TableCell>{customer?.name}</TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">
                         {customer?.area
                           ?.replace("地区", "")
                           .replace("区域", "")}
                       </TableCell>
-                      <TableCell>{ownerTypeText(customer?.type)}</TableCell>
+                      <TableCell className="text-center">
+                        {ownerTypeText(customer?.type)}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

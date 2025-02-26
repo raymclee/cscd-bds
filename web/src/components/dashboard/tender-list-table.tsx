@@ -12,8 +12,13 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { cn } from "~/lib/utils";
 
-export function TenderListTable() {
+export function TenderListTable({
+  size = "small",
+}: {
+  size?: "small" | "large";
+}) {
   const navigateToTender = useMapStore((state) => state.navigateToTender);
   const environment = useRelayEnvironment();
   const tenders = useAreaTenders();
@@ -38,7 +43,7 @@ export function TenderListTable() {
           </TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody className="text-xs text-white">
+      <TableBody className={cn(size === "small" && "text-xs")}>
         {tenders?.map((tender, i) => (
           <TableRow
             className="cursor-pointer"

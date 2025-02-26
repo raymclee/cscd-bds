@@ -62,7 +62,7 @@ export function DashboardTenderListBoardMore() {
           </MotionCardHeader>
           <MotionCardContent className="h-[calc(100%-16px)]">
             <ScrollArea className="-mx-4 h-full px-4">
-              <TenderListTable />
+              <TenderListTable size="large" />
             </ScrollArea>
           </MotionCardContent>
         </MotionCard>
