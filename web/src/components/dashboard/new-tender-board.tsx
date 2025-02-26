@@ -9,47 +9,11 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { NewTenderAmountChart } from "./new-tender-amount-chart";
 import { NewTenderTotalChart } from "./new-tender-total-chart";
 import { NewTenderBarChart } from "./new-tender-board/new-tender-bar-chart";
-import dayjs, { Dayjs } from "dayjs";
 
 const MotionCard = motion.create(Card);
 const MotionEllipsis = motion.create(Ellipsis);
 
 export function NewTenderBoard() {
-  const tenders = useAreaTenders();
-
-  const lastMontDateFormat = `${new Date().getFullYear()}-${new Date().getMonth()}`;
-  const lastMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(lastMontDateFormat),
-  );
-  const lastMonthAmount = fixAmount(
-    lastMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
-  );
-  const lastMonthCount = lastMonth?.length ?? 0;
-
-  const thisMonthDateFormat = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
-  const thisMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(thisMonthDateFormat),
-  );
-  const thisMonthAmount = fixAmount(
-    thisMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
-  );
-  const thisMonthCount = thisMonth?.length ?? 0;
-
-  const now = dayjs();
-
-  const thisMonthAmountPeriods = [now, now.subtract(1, "month")] as [
-    Dayjs,
-    Dayjs,
-  ];
-
-  console.log({
-    thisMonth,
-    lastMonth,
-    thisMonthAmountPeriods: thisMonthAmountPeriods.map((d) =>
-      d.format("YYYY-MM"),
-    ),
-  });
-
   return (
     <MotionCard
       layoutId="new-tender-board"

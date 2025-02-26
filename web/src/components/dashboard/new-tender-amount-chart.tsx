@@ -46,8 +46,10 @@ export function NewTenderAmountChart({
     thisMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
   );
 
-  const amountPercent = isFinite(thisMonthAmount / (lastMonthAmount || 1))
-    ? (thisMonthAmount / (lastMonthAmount || 1)) * 100
+  const amountPercent = isFinite(
+    (thisMonthAmount || 1) / (lastMonthAmount || 1),
+  )
+    ? ((thisMonthAmount || 1) / (lastMonthAmount || 1)) * 100
     : 0;
 
   const chartData = [{ amountPercent, fill: "var(--color-amountPercent)" }];

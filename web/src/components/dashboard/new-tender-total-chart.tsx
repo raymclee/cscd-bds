@@ -39,11 +39,11 @@ export function NewTenderTotalChart({
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
-  const countPercent = isFinite(lastMonthCount / (thisMonthCount || 1))
-    ? (lastMonthCount / (thisMonthCount || 1)) * 100
-    : 0;
-
-  console.log(1 - (lastMonthCount / thisMonthCount) * 100);
+  const countPercent =
+    isFinite((lastMonthCount || 1) / (thisMonthCount || 1)) &&
+    lastMonthCount / thisMonthCount > 1
+      ? ((lastMonthCount || 1) / (thisMonthCount || 1)) * 100
+      : 0;
 
   const chartData = [{ countPercent, fill: "var(--color-countPercent)" }];
 
