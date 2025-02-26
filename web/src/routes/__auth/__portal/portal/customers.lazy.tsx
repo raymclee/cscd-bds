@@ -99,6 +99,8 @@ function RouteComponent() {
     {
       dataIndex: "name",
       title: "名称",
+      ellipsis: true,
+      width: 400,
       render: (_, record) =>
         record.id ? (
           <Link to={`/portal/customers/$id`} params={{ id: record.id }}>
@@ -141,6 +143,7 @@ function RouteComponent() {
     {
       dataIndex: "updatedAt",
       title: "更新时间",
+      width: 300,
       render: (value) => (
         <Typography.Text>{dayjs(value).format("LLL")}</Typography.Text>
       ),

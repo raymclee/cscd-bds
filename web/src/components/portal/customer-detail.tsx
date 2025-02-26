@@ -164,7 +164,7 @@ export function CustomerDetail(props: {
             key: "createdBy",
             label: "创建人",
             children: (
-              <span className="font-normal">{customer.createdBy.name}</span>
+              <span className="font-normal">{customer.createdBy?.name}</span>
             ),
           },
           {

@@ -1007,7 +1007,11 @@ export function TenderForm({
         >
           取消
         </Button>
-        <Button type="primary" htmlType="submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isCreateInFlight || isUpdateInFlight}
+        >
           提交
         </Button>
       </FixedToolbar>

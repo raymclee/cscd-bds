@@ -309,6 +309,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
           <Button
             htmlType="submit"
             type="primary"
+            loading={isCreateCustomerInFlight || isUpdateCustomerInFlight}
             // loading={isCreateUserInFlight || isUpdateUserInFlight}
             onClick={() => form.submit()}
           >
