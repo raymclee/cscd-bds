@@ -42,102 +42,13 @@ export function NewTenderBoard() {
     Dayjs,
   ];
 
-  const barConfig = {
-    data: [
-      {
-        name: "金额(亿)",
-        月份: "上月",
-        数量: lastMonthAmount,
-      },
-      {
-        name: "金额(亿)",
-        月份: "本月",
-        数量: thisMonthAmount,
-      },
-      {
-        name: "数量(个)",
-        月份: "上月",
-        数量: lastMonthCount,
-      },
-      {
-        name: "数量(个)",
-        月份: "本月",
-        数量: thisMonthCount,
-      },
-    ],
-    xField: "月份",
-    yField: "数量",
-    theme: "classicDark",
-    colorField: "name",
-    group: true,
-    style: {
-      inset: 5,
-      width: 20,
-      // color: "white",
-    },
-    legend: {
-      color: {
-        layout: {
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        },
-      },
-    },
-  } satisfies ColumnConfig;
-
-  const amountPercent = lastMonthAmount / thisMonthAmount;
-  const amountConfig = {
-    percent: isFinite(amountPercent) ? amountPercent || 1 : 1,
-    width: 80,
-    height: 80,
-    innerRadius: 0.65,
-    color:
-      !isFinite(amountPercent) || amountPercent <= 0
-        ? ["#374151"]
-        : ["#374151", "#dc2626"],
-    annotations: [
-      {
-        type: "text",
-        style: {
-          text: isFinite(amountPercent)
-            ? `${Math.round(amountPercent * 100)}%`
-            : "0%",
-          x: "50%",
-          y: "50%",
-          textAlign: "center",
-          fontSize: 16,
-          fontStyle: "bold",
-          fill: "white",
-        },
-      },
-    ],
-  };
-
-  const totalPercent = lastMonthCount / thisMonthCount;
-  const totalConfig = {
-    percent: isFinite(totalPercent) ? totalPercent || 1 : 1,
-    width: 80,
-    height: 80,
-    innerRadius: 0.65,
-    color: ["#374151", "#109618"],
-    annotations: [
-      {
-        type: "text",
-        style: {
-          text: isFinite(totalPercent)
-            ? `${Math.round(totalPercent * 100)}%`
-            : "0%",
-          x: "50%",
-          y: "50%",
-          textAlign: "center",
-          fontSize: 16,
-          fontStyle: "bold",
-          fill: "white",
-        },
-      },
-    ],
-  };
+  console.log({
+    thisMonth,
+    lastMonth,
+    thisMonthAmountPeriods: thisMonthAmountPeriods.map((d) =>
+      d.format("YYYY-MM"),
+    ),
+  });
 
   return (
     <MotionCard
@@ -211,11 +122,10 @@ export function NewTenderBoard() {
                 className="m-auto"
                 // className="h-[80px] w-[80px]"
                 // className="w-full h-full scale-50"
-                periods={thisMonthAmountPeriods}
               />
             </div>
             <div className="absolute -left-6 bottom-1 right-0 text-center">
-              <span className="text-xs text-gray-400">金额占比变化</span>
+              <span className="text-xs text-gray-400">金额占比上升</span>
             </div>
           </div>
 
@@ -226,11 +136,10 @@ export function NewTenderBoard() {
                 width={80}
                 short
                 className="m-auto"
-                periods={thisMonthAmountPeriods}
               />
             </div>
             <div className="absolute -left-6 bottom-1 right-0 text-center">
-              <span className="text-xs text-gray-400">数量占比变化</span>
+              <span className="text-xs text-gray-400">数量占比下降</span>
             </div>
           </div>
         </div>
@@ -238,20 +147,7 @@ export function NewTenderBoard() {
         {/* <Column {...barConfig} /> */}
         <div className="relative h-[calc(100%-12px)] flex-1">
           <div className="absolute -left-10 bottom-0 right-0 top-4">
-            <NewTenderBarChart
-              data={[
-                {
-                  month: "上月",
-                  amount: lastMonthAmount,
-                  total: lastMonthCount,
-                },
-                {
-                  month: "本月",
-                  amount: thisMonthAmount,
-                  total: thisMonthCount,
-                },
-              ]}
-            />
+            <NewTenderBarChart />
           </div>
         </div>
 

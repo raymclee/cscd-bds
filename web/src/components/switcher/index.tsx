@@ -18,7 +18,7 @@ const navItems = [
     href: "/bi",
   },
   {
-    title: "数字远东彩虹图(测试中)",
+    title: "数字远东彩虹图",
     href: "/rainbow",
   },
   // {

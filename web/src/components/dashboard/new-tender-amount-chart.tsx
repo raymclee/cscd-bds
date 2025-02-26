@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import {
   Label,
   PolarGrid,
@@ -12,45 +12,49 @@ import { fixAmount } from "~/lib/helper";
 import { cn } from "~/lib/utils";
 
 export function NewTenderAmountChart({
-  periods,
   className,
   height,
   width,
   short = false,
+  monthOffset = 0,
 }: {
-  periods: [Dayjs, Dayjs];
   className?: string;
   height?: number;
   width?: number;
   short?: boolean;
+  monthOffset?: number;
 }) {
   const tenders = useAreaTenders();
 
-  const lastMontDateFormat = periods[0];
+  const now = dayjs();
+  const lastMonthText = now
+    .subtract(1 + monthOffset, "month")
+    .format("YYYY-MM");
+  const thisMonthText = now.subtract(monthOffset, "month").format("YYYY-MM");
+
   const lastMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(lastMontDateFormat.format("YYYY-MM")),
+    e?.createdAt.includes(lastMonthText),
   );
   const lastMonthAmount = fixAmount(
     lastMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
   );
 
-  const thisMonthDateFormat = periods[1];
   const thisMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(thisMonthDateFormat.format("YYYY-MM")),
+    e?.createdAt.includes(thisMonthText),
   );
   const thisMonthAmount = fixAmount(
     thisMonth?.reduce((acc, cur) => acc + (cur?.estimatedAmount ?? 0), 0),
   );
 
-  const amountPercent = isFinite(lastMonthAmount / thisMonthAmount)
-    ? (lastMonthAmount / thisMonthAmount) * 100
+  const amountPercent = isFinite(thisMonthAmount / (lastMonthAmount || 1))
+    ? (thisMonthAmount / (lastMonthAmount || 1)) * 100
     : 0;
 
   const chartData = [{ amountPercent, fill: "var(--color-amountPercent)" }];
 
   const chartConfig = {
     amountPercent: {
-      color: "hsl(var(--chart-red-1))",
+      color: "hsl(var(--bar-chart-1))",
     },
   } satisfies ChartConfig;
 

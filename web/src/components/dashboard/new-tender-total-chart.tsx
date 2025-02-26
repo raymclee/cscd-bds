@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import {
   Label,
   PolarGrid,
@@ -8,44 +8,48 @@ import {
 } from "recharts";
 import { ChartConfig, ChartContainer } from "~/components/ui/chart";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
-import { cn } from "~/lib/utils";
 
 export function NewTenderTotalChart({
-  periods,
   height,
   width,
   className,
   short = false,
+  monthOffset = 0,
 }: {
-  periods: [Dayjs, Dayjs];
+  monthOffset?: number;
   height?: number;
   width?: number;
   className?: string;
   short?: boolean;
 }) {
   const tenders = useAreaTenders();
+  const now = dayjs();
+  const lastMonthText = now
+    .subtract(1 + monthOffset, "month")
+    .format("YYYY-MM");
+  const thisMonthText = now.subtract(monthOffset, "month").format("YYYY-MM");
 
-  const lastMontDateFormat = periods[0];
   const lastMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(lastMontDateFormat.format("YYYY-MM")),
+    e?.createdAt.includes(lastMonthText),
   );
   const lastMonthCount = lastMonth?.length ?? 0;
 
-  const thisMonthDateFormat = periods[1];
   const thisMonth = tenders?.filter((e) =>
-    e?.createdAt.includes(thisMonthDateFormat.format("YYYY-MM")),
+    e?.createdAt.includes(thisMonthText),
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
-  const countPercent = isFinite(lastMonthCount / thisMonthCount)
-    ? (lastMonthCount / thisMonthCount) * 100
+  const countPercent = isFinite(lastMonthCount / (thisMonthCount || 1))
+    ? (lastMonthCount / (thisMonthCount || 1)) * 100
     : 0;
+
+  console.log(1 - (lastMonthCount / thisMonthCount) * 100);
 
   const chartData = [{ countPercent, fill: "var(--color-countPercent)" }];
 
   const chartConfig = {
     countPercent: {
-      color: "hsl(var(--bar-chart-1))",
+      color: "hsl(var(--chart-red-1))",
     },
   } satisfies ChartConfig;
 
@@ -87,7 +91,7 @@ export function NewTenderTotalChart({
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-white text-3xl font-bold"
+                      className="fill-white text-2xl font-bold"
                     >
                       {`${Number(chartData[0].countPercent).toFixed(short ? 0 : 2)}%`}
                     </tspan>

@@ -38,6 +38,7 @@ func Open(databaseUrl string) *ent.Client {
 func New(shouldMigrate bool) *Store {
 	// client := Open("postgresql://postgres:postgres@localhost:5432/cscd_mkm?sslmode=disable")
 	client := Open(config.DatabaseUrl)
+	// client := Open("postgresql://postgres:~!Wbvxwet=JdgcKB@10.106.189.11:5432/cscd_mkm?sslmode=disable")
 	if shouldMigrate {
 		if err := client.Schema.Create(
 			context.Background(),
