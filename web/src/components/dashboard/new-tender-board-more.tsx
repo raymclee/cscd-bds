@@ -8,6 +8,8 @@ import {
   ChartContainer,
   ChartTooltipContent,
   ChartTooltip,
+  ChartLegend,
+  ChartLegendContent,
 } from "~/components/ui/chart";
 import {
   Label,
@@ -258,6 +260,7 @@ function MonthlyAmountChart() {
         />
         <Bar dataKey="amount" fill="var(--color-amount)" radius={4} />
         <Bar dataKey="total" fill="var(--color-total)" radius={4} />
+        <ChartLegend content={<ChartLegendContent />} />
       </BarChart>
     </ChartContainer>
   );
@@ -337,6 +340,7 @@ function DailyTotalChart() {
           stroke="var(--color-total)"
           stackId="a"
         />
+        <ChartLegend content={<ChartLegendContent />} />
       </AreaChart>
     </ChartContainer>
   );
