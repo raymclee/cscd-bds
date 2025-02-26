@@ -17,12 +17,14 @@ export function NewTenderAmountChart({
   width,
   short = false,
   monthOffset = 0,
+  percentageSize = "large",
 }: {
   className?: string;
   height?: number;
   width?: number;
   short?: boolean;
   monthOffset?: number;
+  percentageSize?: "small" | "large";
 }) {
   const tenders = useAreaTenders();
 
@@ -103,7 +105,10 @@ export function NewTenderAmountChart({
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-white text-3xl font-bold"
+                      className={cn(
+                        "fill-white font-bold",
+                        percentageSize === "large" ? "text-3xl" : "text-2xl",
+                      )}
                     >
                       {`${Number(chartData[0].amountPercent).toFixed(short ? 0 : 2)}%`}
                     </tspan>

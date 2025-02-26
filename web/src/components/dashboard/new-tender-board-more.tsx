@@ -111,7 +111,7 @@ export function NewTenderBoardMore() {
                   </div>
 
                   <div className="text-center">
-                    <NewTenderAmountChart />
+                    <NewTenderAmountChart percentageSize="small" />
                     <span className="text-gray-400">金额占比上升</span>
                   </div>
                 </div>
@@ -128,7 +128,10 @@ export function NewTenderBoardMore() {
                   </div>
 
                   <div className="text-center">
-                    <NewTenderAmountChart monthOffset={1} />
+                    <NewTenderAmountChart
+                      monthOffset={1}
+                      percentageSize="small"
+                    />
                     <span className="text-gray-400">金额占比上升</span>
                   </div>
                 </div>
@@ -147,7 +150,7 @@ export function NewTenderBoardMore() {
                   </div>
 
                   <div className="text-center">
-                    <NewTenderTotalChart />
+                    <NewTenderTotalChart percentageSize="small" />
                     <span className="text-gray-400">数量占比下降</span>
                   </div>
                 </div>
@@ -164,7 +167,10 @@ export function NewTenderBoardMore() {
                   </div>
 
                   <div className="text-center">
-                    <NewTenderTotalChart monthOffset={1} />
+                    <NewTenderTotalChart
+                      monthOffset={1}
+                      percentageSize="small"
+                    />
                     <span className="text-gray-400">数量占比下降</span>
                   </div>
                 </div>

@@ -8,6 +8,7 @@ import {
 } from "recharts";
 import { ChartConfig, ChartContainer } from "~/components/ui/chart";
 import { useAreaTenders } from "~/hooks/use-area-tenders";
+import { cn } from "~/lib/utils";
 
 export function NewTenderTotalChart({
   height,
@@ -15,12 +16,14 @@ export function NewTenderTotalChart({
   className,
   short = false,
   monthOffset = 0,
+  percentageSize = "large",
 }: {
   monthOffset?: number;
   height?: number;
   width?: number;
   className?: string;
   short?: boolean;
+  percentageSize?: "small" | "large";
 }) {
   const tenders = useAreaTenders();
   const now = dayjs();
@@ -91,7 +94,10 @@ export function NewTenderTotalChart({
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-white text-2xl font-bold"
+                      className={cn(
+                        "fill-white font-bold",
+                        percentageSize === "large" ? "text-3xl" : "text-2xl",
+                      )}
                     >
                       {`${Number(chartData[0].countPercent).toFixed(short ? 0 : 2)}%`}
                     </tspan>
