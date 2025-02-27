@@ -42,11 +42,14 @@ export function NewTenderTotalChart({
   );
   const thisMonthCount = thisMonth?.length ?? 0;
 
+  // const countPercent =
+  //   isFinite((lastMonthCount || 1) / (thisMonthCount || 1)) &&
+  //   lastMonthCount / thisMonthCount > 1
+  //     ? ((lastMonthCount || 1) / (thisMonthCount || 1)) * 100
+  //     : 0;
+
   const countPercent =
-    isFinite((lastMonthCount || 1) / (thisMonthCount || 1)) &&
-    lastMonthCount / thisMonthCount > 1
-      ? ((lastMonthCount || 1) / (thisMonthCount || 1)) * 100
-      : 0;
+    ((lastMonthCount - thisMonthCount) / (lastMonthCount || 1)) * 100;
 
   const chartData = [{ countPercent, fill: "var(--color-countPercent)" }];
 
