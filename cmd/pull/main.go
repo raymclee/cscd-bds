@@ -52,7 +52,7 @@ func main() {
 	// fetchSales()
 	fetchCustomer()
 	fetchTender()
-	fetchVisitRecord()
+	// fetchVisitRecord()
 	// fetchCompetitor()
 
 }
