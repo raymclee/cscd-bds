@@ -36,6 +36,10 @@ export default defineConfig(({ mode }) => ({
               changeOrigin: true,
               secure: true,
             },
+            "/api/copilotkit": {
+              target: "http://localhost:8308",
+              changeOrigin: true,
+            },
           },
         }
       : {},

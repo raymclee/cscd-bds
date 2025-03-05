@@ -44,6 +44,8 @@ body,
     --bar-chart-1: 173 58% 39%;
     --bar-chart-2: 12 76% 61%;
     --chart-red-1: 347 77% 50%;
+
+    --copilot-kit-primary-color: hsl(211 65% 20%);
   }
 
   .dark {

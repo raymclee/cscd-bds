@@ -2,6 +2,7 @@ package session
 
 import (
 	"context"
+	"cscd-bds/config"
 	"cscd-bds/store"
 	"cscd-bds/store/ent/schema/xid"
 	"encoding/gob"
@@ -35,6 +36,9 @@ func NewSession(feishu *lark.Client, store *store.Store) *Session {
 			return redis.Dial("tcp", ":6379")
 		},
 	})
+	if config.IsProd {
+		sessionManager.Cookie.Domain = "*.fefacade.com"
+	}
 	sessionManager.Lifetime = 24 * time.Hour * 7 // 7 days
 	return &Session{
 		sessionManager,
