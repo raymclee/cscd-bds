@@ -139,7 +139,6 @@ function RouteComponent() {
 
   return (
     <>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <ConfigProvider
         locale={zhCN}
         input={{ variant: "filled" }}
@@ -153,7 +152,7 @@ function RouteComponent() {
         <App>
           <Layout hasSider className="relative">
             <Sider
-              className="fixed bottom-8 start-0 top-0"
+              className="fixed start-0 top-0 bottom-8"
               breakpoint="lg"
               collapsedWidth={70}
               collapsible
@@ -179,10 +178,10 @@ function RouteComponent() {
             <Layout
               className={cn(
                 "transition-all",
-                sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
+                // sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
               )}
             >
-              <Header className="flex items-center justify-between bg-white px-4">
+              <Header className="flex items-center justify-between !bg-white !px-4">
                 <Typography.Title className="!mb-0" level={3}>
                   {pageTitle(pathname)}
                 </Typography.Title>
@@ -217,7 +216,7 @@ function RouteComponent() {
                   <Avatar src={session.avatarUrl} />
                 </div>
               </Header>
-              <Content className="relative m-4 min-h-[calc(100vh-96px)]">
+              <Content className="relative m-4 !min-h-[calc(100vh-96px)]">
                 {/* <Breadcrumb className="my-4" items={[]} /> */}
                 {/* <div className="p-6 my-4 bg-white rounded-lg min-h-80"> */}
                 <ScrollRestoration />

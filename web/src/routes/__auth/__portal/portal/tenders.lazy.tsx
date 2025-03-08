@@ -1,18 +1,18 @@
-import { createLazyFileRoute, Link, Outlet } from '@tanstack/react-router'
-import { tendersPageQuery } from '__generated__/tendersPageQuery.graphql'
-import { tendersTenderListFragment$key } from '__generated__/tendersTenderListFragment.graphql'
-import { Button, List } from 'antd'
-import dayjs from 'dayjs'
-import { Plus } from 'lucide-react'
-import { useFragment, usePreloadedQuery } from 'react-relay'
-import { graphql } from 'relay-runtime'
-import { ListFilter } from '~/components/portal/list-filter'
-import { TenderListItem } from '~/components/portal/tender-list-item'
-import { canEdit } from '~/lib/permission'
+import { createLazyFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { tendersPageQuery } from "__generated__/tendersPageQuery.graphql";
+import { tendersTenderListFragment$key } from "__generated__/tendersTenderListFragment.graphql";
+import { Button, List } from "antd";
+import dayjs from "dayjs";
+import { Plus } from "lucide-react";
+import { useFragment, usePreloadedQuery } from "react-relay";
+import { graphql } from "relay-runtime";
+import { ListFilter } from "~/components/portal/list-filter";
+import { TenderListItem } from "~/components/portal/tender-list-item";
+import { canEdit } from "~/lib/permission";
 
-export const Route = createLazyFileRoute('/__auth/__portal/portal/tenders')({
+export const Route = createLazyFileRoute("/__auth/__portal/portal/tenders")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const data = usePreloadedQuery<tendersPageQuery>(
@@ -32,23 +32,23 @@ function RouteComponent() {
       }
     `,
     Route.useLoaderData(),
-  )
+  );
 
   if (!data.node?.areaTenders) {
-    return <List />
+    return <List />;
   }
 
   return (
     <>
       <TenderList queryRef={data.node.areaTenders} />
     </>
-  )
+  );
 }
 
 function TenderList({
   queryRef,
 }: {
-  queryRef?: tendersTenderListFragment$key
+  queryRef?: tendersTenderListFragment$key;
 }) {
   const data = useFragment(
     graphql`
@@ -87,15 +87,15 @@ function TenderList({
       }
     `,
     queryRef,
-  )
+  );
 
-  const { session } = Route.useRouteContext()
-  const navigate = Route.useNavigate()
-  const searchParams = Route.useSearch()
-  const searchText = searchParams.q || ''
-  const statusFilter = searchParams.status
-  const areaFilter = searchParams.area
-  const closingDateFilter = searchParams.closing_date
+  const { session } = Route.useRouteContext();
+  const navigate = Route.useNavigate();
+  const searchParams = Route.useSearch();
+  const searchText = searchParams.q || "";
+  const statusFilter = searchParams.status;
+  const areaFilter = searchParams.area;
+  const closingDateFilter = searchParams.closing_date;
 
   const dataSource = data?.areas.edges
     ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
@@ -106,25 +106,25 @@ function TenderList({
     .filter((t) => areaFilter === undefined || t?.area?.code === areaFilter)
     .sort((a, b) => {
       if (a?.tenderClosingDate === null && b?.tenderClosingDate === null) {
-        return 0
+        return 0;
       }
       if (a?.tenderClosingDate === null) {
-        return 1
+        return 1;
       }
       if (b?.tenderClosingDate === null) {
-        return -1
+        return -1;
       }
-      if (closingDateFilter === 'asc') {
-        return dayjs(a?.tenderClosingDate).diff(dayjs(b?.tenderClosingDate))
-      } else if (closingDateFilter === 'desc') {
-        return dayjs(b?.tenderClosingDate).diff(dayjs(a?.tenderClosingDate))
+      if (closingDateFilter === "asc") {
+        return dayjs(a?.tenderClosingDate).diff(dayjs(b?.tenderClosingDate));
+      } else if (closingDateFilter === "desc") {
+        return dayjs(b?.tenderClosingDate).diff(dayjs(a?.tenderClosingDate));
       }
-      return 0
-    })
+      return 0;
+    });
 
   const isGAOrHW = data?.areas.edges?.some(
-    (a) => a?.node?.code === 'GA' || a?.node?.code === 'HW',
-  )
+    (a) => a?.node?.code === "GA" || a?.node?.code === "HW",
+  );
 
   return (
     <>
@@ -132,8 +132,8 @@ function TenderList({
         showStatus
         showTenderClosingDate={isGAOrHW}
         areas={data?.areas.edges?.map((a) => ({
-          label: a?.node?.name ?? '',
-          value: a?.node?.code ?? '',
+          label: a?.node?.name ?? "",
+          value: a?.node?.code ?? "",
         }))}
       >
         {canEdit(session) && (
@@ -151,26 +151,26 @@ function TenderList({
 
       <List
         pagination={{
-          position: 'both',
+          position: "both",
           showSizeChanger: true,
           current: searchParams.page,
           onChange(page) {
             navigate({
-              to: '.',
+              to: ".",
               search: (prev) => ({ ...prev, page }),
-            })
+            });
           },
           responsive: true,
           showTotal: (total) => `共 ${total} 条`,
         }}
         dataSource={dataSource}
         itemLayout="vertical"
-        className="rounded-lg bg-white px-4 pb-6 pt-px"
+        className="rounded-lg bg-white !px-4 !pt-px !pb-6"
         renderItem={(node) =>
           node && <TenderListItem key={node?.id} tender={node} />
         }
       />
       <Outlet />
     </>
-  )
+  );
 }

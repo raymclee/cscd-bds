@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<118ff4ee1ebb4810aa83dc6d80f938d4>>
+ * @generated SignedSource<<3d9d21057085510cc639c12c46a1d982>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,14 +37,14 @@ export type usersPageQuery$data = {
                 };
                 readonly avatarURL: string | null | undefined;
                 readonly disabled: boolean;
-                readonly email: string;
+                readonly email: string | null | undefined;
                 readonly hasEditAccess: boolean;
                 readonly hasMapAccess: boolean;
                 readonly id: string;
                 readonly isAdmin: boolean;
-                readonly name: string;
-                readonly openID: string | null | undefined;
-                readonly username: string;
+                readonly name: string | null | undefined;
+                readonly openID: string;
+                readonly username: string | null | undefined;
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };

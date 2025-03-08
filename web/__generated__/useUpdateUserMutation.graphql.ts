@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<80a24c51e391988fef9cf784eb440310>>
+ * @generated SignedSource<<6b11d8a4358f3ea94d82eef59c50d5d9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,11 +20,13 @@ export type UpdateUserInput = {
   clearAreas?: boolean | null | undefined;
   clearAvatarURL?: boolean | null | undefined;
   clearCustomers?: boolean | null | undefined;
+  clearEmail?: boolean | null | undefined;
   clearLeader?: boolean | null | undefined;
-  clearOpenID?: boolean | null | undefined;
+  clearName?: boolean | null | undefined;
   clearProjects?: boolean | null | undefined;
   clearTeamMembers?: boolean | null | undefined;
   clearTenders?: boolean | null | undefined;
+  clearUsername?: boolean | null | undefined;
   clearVisitRecords?: boolean | null | undefined;
   disabled?: boolean | null | undefined;
   email?: string | null | undefined;
@@ -61,15 +63,15 @@ export type useUpdateUserMutation$data = {
     };
     readonly avatarURL: string | null | undefined;
     readonly disabled: boolean;
-    readonly email: string;
+    readonly email: string | null | undefined;
     readonly hasEditAccess: boolean;
     readonly hasMapAccess: boolean;
     readonly id: string;
     readonly isAdmin: boolean;
     readonly isCeo: boolean;
     readonly isSuperAdmin: boolean;
-    readonly name: string;
-    readonly openID: string | null | undefined;
+    readonly name: string | null | undefined;
+    readonly openID: string;
     readonly projects: {
       readonly edges: ReadonlyArray<{
         readonly node: {
@@ -78,7 +80,7 @@ export type useUpdateUserMutation$data = {
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };
-    readonly username: string;
+    readonly username: string | null | undefined;
   };
 };
 export type useUpdateUserMutation = {

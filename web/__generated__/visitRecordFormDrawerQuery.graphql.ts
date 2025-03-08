@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f1f753871374da03ce428699f5ca61e0>>
+ * @generated SignedSource<<b32bf58de0fe0045d2d078a459df0d46>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,7 +26,7 @@ export type visitRecordFormDrawerQuery$data = {
       readonly edges: ReadonlyArray<{
         readonly node: {
           readonly id: string;
-          readonly name: string;
+          readonly name: string | null | undefined;
         } | null | undefined;
       } | null | undefined> | null | undefined;
     };

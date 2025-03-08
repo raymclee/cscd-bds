@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<cedf224033936248c9ffb6d060bfbe7c>>
+ * @generated SignedSource<<a4246667702025e54e05639922135818>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -46,15 +46,15 @@ export type usersSuperAdminUsersPageQuery$data = {
         };
         readonly avatarURL: string | null | undefined;
         readonly disabled: boolean;
-        readonly email: string;
+        readonly email: string | null | undefined;
         readonly hasEditAccess: boolean;
         readonly hasMapAccess: boolean;
         readonly id: string;
         readonly isAdmin: boolean;
         readonly isCeo: boolean;
         readonly isSuperAdmin: boolean;
-        readonly name: string;
-        readonly openID: string | null | undefined;
+        readonly name: string | null | undefined;
+        readonly openID: string;
         readonly projects: {
           readonly edges: ReadonlyArray<{
             readonly node: {
@@ -64,7 +64,7 @@ export type usersSuperAdminUsersPageQuery$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
-        readonly username: string;
+        readonly username: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };

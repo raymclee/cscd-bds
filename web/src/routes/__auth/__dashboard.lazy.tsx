@@ -16,13 +16,13 @@ function RouteComponent() {
     <LazyMotion features={domAnimation}>
       {(session.isSuperAdmin || session.isCeo) && <Switcher />}
       {/* <div className="relative max-h-screen min-h-screen overflow-hidden max-w-screen bg-slate-900"> */}
-      <CopilotKit
+      {/* <CopilotKit
         runtimeUrl="/api/copilotkit"
         showDevConsole={false}
         credentials="include"
-      >
-        <Outlet />
-        <CopilotPopup
+      > */}
+      <Outlet />
+      {/* <CopilotPopup
           showResponseButton={false}
           clickOutsideToClose={false}
           hitEscapeToClose={false}
@@ -57,8 +57,8 @@ function RouteComponent() {
               (additionalInstructions ? `\n\n${additionalInstructions}` : "")
             );
           }}
-        />
-      </CopilotKit>
+        /> */}
+      {/* </CopilotKit> */}
     </LazyMotion>
   );
 }

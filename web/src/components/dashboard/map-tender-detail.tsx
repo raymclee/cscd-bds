@@ -20,13 +20,13 @@ export function MapTenderDetail() {
       className={cn(
         // "left-4 top-[7vh] h-full space-y-2 transition xl:absolute xl:w-[440px]",
         // selectedTender && "mt-[60vh] xl:mt-0",
-        "absolute bottom-0 left-4 top-[2.8rem] w-[440px] space-y-2 transition",
+        "absolute top-[2.8rem] bottom-0 left-4 w-[440px] space-y-2 transition",
         !selectedTender && "-translate-x-[110%]",
       )}
     >
       <Card
         className={cn(
-          "h-[92vh] overflow-hidden rounded border border-brand bg-black/60 pb-4 text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur-xl",
+          "border-brand shadow-dashboard-card h-[92vh] overflow-hidden rounded border bg-black/60 pb-4 text-white drop-shadow-2xl backdrop-blur-xl",
         )}
       >
         <CardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
@@ -34,6 +34,7 @@ export function MapTenderDetail() {
             <div className="line-clamp-1">{selectedTender?.name}</div>
             {!tenderViewTender && (
               <button
+                className="cursor-pointer"
                 onClick={() => {
                   useMapStore.setState({
                     selectedTender: null,

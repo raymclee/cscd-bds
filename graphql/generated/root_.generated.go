@@ -213,11 +213,14 @@ type ComplexityRoot struct {
 	}
 
 	Location struct {
-		City        func(childComplexity int) int
-		District    func(childComplexity int) int
-		FullAddress func(childComplexity int) int
-		ID          func(childComplexity int) int
-		Province    func(childComplexity int) int
+		Address  func(childComplexity int) int
+		City     func(childComplexity int) int
+		District func(childComplexity int) int
+		ID       func(childComplexity int) int
+		Lat      func(childComplexity int) int
+		Lng      func(childComplexity int) int
+		Name     func(childComplexity int) int
+		Province func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -267,6 +270,13 @@ type ComplexityRoot struct {
 	OperationEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
+	}
+
+	POI struct {
+		Address  func(childComplexity int) int
+		ID       func(childComplexity int) int
+		Location func(childComplexity int) int
+		Name     func(childComplexity int) int
 	}
 
 	PageInfo struct {
@@ -463,6 +473,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		AmapRegeo        func(childComplexity int, lng float64, lat float64) int
 		Areas            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.AreaOrder, where *ent.AreaWhereInput) int
 		BiToken          func(childComplexity int) int
 		Cities           func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CityOrder, where *ent.CityWhereInput) int
@@ -470,6 +481,7 @@ type ComplexityRoot struct {
 		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
 		Customers        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
+		Inputtips        func(childComplexity int, keyword string) int
 		Node             func(childComplexity int, id xid.ID) int
 		Nodes            func(childComplexity int, ids []xid.ID) int
 		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
@@ -1460,6 +1472,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GeoJson.Type(childComplexity), true
 
+	case "Location.address":
+		if e.complexity.Location.Address == nil {
+			break
+		}
+
+		return e.complexity.Location.Address(childComplexity), true
+
 	case "Location.city":
 		if e.complexity.Location.City == nil {
 			break
@@ -1474,19 +1493,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Location.District(childComplexity), true
 
-	case "Location.fullAddress":
-		if e.complexity.Location.FullAddress == nil {
-			break
-		}
-
-		return e.complexity.Location.FullAddress(childComplexity), true
-
 	case "Location.id":
 		if e.complexity.Location.ID == nil {
 			break
 		}
 
 		return e.complexity.Location.ID(childComplexity), true
+
+	case "Location.lat":
+		if e.complexity.Location.Lat == nil {
+			break
+		}
+
+		return e.complexity.Location.Lat(childComplexity), true
+
+	case "Location.lng":
+		if e.complexity.Location.Lng == nil {
+			break
+		}
+
+		return e.complexity.Location.Lng(childComplexity), true
+
+	case "Location.name":
+		if e.complexity.Location.Name == nil {
+			break
+		}
+
+		return e.complexity.Location.Name(childComplexity), true
 
 	case "Location.province":
 		if e.complexity.Location.Province == nil {
@@ -1858,6 +1891,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.OperationEdge.Node(childComplexity), true
+
+	case "POI.address":
+		if e.complexity.POI.Address == nil {
+			break
+		}
+
+		return e.complexity.POI.Address(childComplexity), true
+
+	case "POI.id":
+		if e.complexity.POI.ID == nil {
+			break
+		}
+
+		return e.complexity.POI.ID(childComplexity), true
+
+	case "POI.location":
+		if e.complexity.POI.Location == nil {
+			break
+		}
+
+		return e.complexity.POI.Location(childComplexity), true
+
+	case "POI.name":
+		if e.complexity.POI.Name == nil {
+			break
+		}
+
+		return e.complexity.POI.Name(childComplexity), true
 
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
@@ -2941,6 +3002,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ProvinceEdge.Node(childComplexity), true
 
+	case "Query.amapRegeo":
+		if e.complexity.Query.AmapRegeo == nil {
+			break
+		}
+
+		args, err := ec.field_Query_amapRegeo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AmapRegeo(childComplexity, args["lng"].(float64), args["lat"].(float64)), true
+
 	case "Query.areas":
 		if e.complexity.Query.Areas == nil {
 			break
@@ -3019,6 +3092,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Districts(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.DistrictOrder), args["where"].(*ent.DistrictWhereInput)), true
+
+	case "Query.inputtips":
+		if e.complexity.Query.Inputtips == nil {
+			break
+		}
+
+		args, err := ec.field_Query_inputtips_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Inputtips(childComplexity, args["keyword"].(string)), true
 
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
@@ -11969,6 +12054,9 @@ type GeoJson {
 
   searchLocation(keyword: String!): [Location!]!
 
+  inputtips(keyword: String!): [Location!]!
+  amapRegeo(lng: Float!, lat: Float!): [Location!]!
+
   topCompetitors(first: Int = 10): [TopCompetitor!]!
 
   biToken: String!
@@ -11983,10 +12071,13 @@ type FeishuUser {
 
 type Location {
   id: ID!
-  fullAddress: String!
+  name: String!
+  address: String!
   province: Province!
   city: City
   district: District!
+  lng: Float!
+  lat: Float!
 }
 
 type TopCompetitor {
@@ -11994,6 +12085,13 @@ type TopCompetitor {
   name: String!
   shortName: String!
   wonTendersCount: Int!
+}
+
+type POI {
+  id: ID!
+  name: String!
+  address: String!
+  location: Location!
 }
 `, BuiltIn: false},
 	{Name: "../scaler.graphql", Input: `scalar Time

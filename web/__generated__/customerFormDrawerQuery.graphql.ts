@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8771bea9c92d9f8dab3fc6f614b80a03>>
+ * @generated SignedSource<<f778cf04d29fe50e1b77d9bcbf876ab4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,7 +23,7 @@ export type customerFormDrawerQuery$data = {
             readonly edges: ReadonlyArray<{
               readonly node: {
                 readonly id: string;
-                readonly name: string;
+                readonly name: string | null | undefined;
               } | null | undefined;
             } | null | undefined> | null | undefined;
           };

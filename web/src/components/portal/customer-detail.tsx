@@ -207,7 +207,7 @@ export function CustomerDetail(props: {
       )} */}
 
       <Descriptions
-        className="mt-4"
+        className="!mt-4"
         items={[
           {
             key: "contactPerson",

@@ -27,7 +27,7 @@ export function ListFilter({
       <div className="flex flex-1 flex-wrap items-center gap-4">
         <Form.Item
           label="搜索"
-          className="mb-0 w-full md:w-auto"
+          className="!mb-0 w-full md:w-auto"
           layout="horizontal"
         >
           <Input.Search
@@ -53,7 +53,7 @@ export function ListFilter({
           />
         </Form.Item>
         {showStatus && (
-          <Form.Item label="状态" className="mb-0 w-full md:w-36">
+          <Form.Item label="状态" className="!mb-0 !w-full md:!w-36">
             <Select
               placeholder="状态"
               value={statusFilter}
@@ -78,7 +78,7 @@ export function ListFilter({
           </Form.Item>
         )}
         {areas && areas?.length > 0 && (
-          <Form.Item label="区域" className="mb-0 w-full md:w-36">
+          <Form.Item label="区域" className="!mb-0 w-full md:w-36">
             <Select
               placeholder="区域"
               value={areaFilter}
@@ -102,7 +102,7 @@ export function ListFilter({
           </Form.Item>
         )}
         {showTenderClosingDate && (
-          <Form.Item label="交标日期" className="mb-0">
+          <Form.Item label="交标日期" className="!mb-0">
             <Select
               placeholder="交标日期"
               value={closingDateFilter}

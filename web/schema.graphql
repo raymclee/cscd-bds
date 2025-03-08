@@ -809,20 +809,20 @@ input CreateUserInput {
   createdAt: Time
   customerIDs: [ID!]
   disabled: Boolean
-  email: String!
+  email: String
   hasEditAccess: Boolean
   hasMapAccess: Boolean
   isAdmin: Boolean
   isCeo: Boolean
   isSuperAdmin: Boolean
   leaderID: ID
-  name: String!
-  openID: String
+  name: String
+  openID: String!
   projectIDs: [ID!]
   teamMemberIDs: [ID!]
   tenderIDs: [ID!]
   updatedAt: Time
-  username: String!
+  username: String
   visitRecordIDs: [ID!]
 }
 
@@ -1354,10 +1354,13 @@ type GeoJson {
 }
 
 type Location {
+  address: String!
   city: City
   district: District!
-  fullAddress: String!
   id: ID!
+  lat: Float!
+  lng: Float!
+  name: String!
   province: Province!
 }
 
@@ -1580,6 +1583,13 @@ enum OrderDirection {
   ASC
   """Specifies a descending order for a given `orderBy` argument."""
   DESC
+}
+
+type POI {
+  address: String!
+  id: ID!
+  location: Location!
+  name: String!
 }
 
 """
@@ -3411,6 +3421,7 @@ input ProvinceWhereInput {
 }
 
 type Query {
+  amapRegeo(lat: Float!, lng: Float!): [Location!]!
   areas(
     """Returns the elements in the list that come after the specified cursor."""
     after: Cursor
@@ -3508,6 +3519,7 @@ type Query {
     """Filtering options for Districts returned from the connection."""
     where: DistrictWhereInput
   ): DistrictConnection!
+  inputtips(keyword: String!): [Location!]!
   """Fetches an object given its ID."""
   node(
     """ID of the object."""
@@ -5261,11 +5273,13 @@ input UpdateUserInput {
   clearAreas: Boolean
   clearAvatarURL: Boolean
   clearCustomers: Boolean
+  clearEmail: Boolean
   clearLeader: Boolean
-  clearOpenID: Boolean
+  clearName: Boolean
   clearProjects: Boolean
   clearTeamMembers: Boolean
   clearTenders: Boolean
+  clearUsername: Boolean
   clearVisitRecords: Boolean
   disabled: Boolean
   email: String
@@ -5343,7 +5357,7 @@ type User implements Node {
     where: CustomerWhereInput
   ): CustomerConnection!
   disabled: Boolean!
-  email: String!
+  email: String
   hasEditAccess: Boolean!
   hasMapAccess: Boolean!
   id: ID!
@@ -5352,8 +5366,8 @@ type User implements Node {
   isSuperAdmin: Boolean!
   leader: User
   leaderID: ID
-  name: String!
-  openID: String
+  name: String
+  openID: String!
   projects(
     """Returns the elements in the list that come after the specified cursor."""
     after: Cursor
@@ -5388,7 +5402,7 @@ type User implements Node {
     where: TenderWhereInput
   ): TenderConnection!
   updatedAt: Time!
-  username: String!
+  username: String
   visitRecords(
     """Returns the elements in the list that come after the specified cursor."""
     after: Cursor
@@ -5482,10 +5496,12 @@ input UserWhereInput {
   emailHasPrefix: String
   emailHasSuffix: String
   emailIn: [String!]
+  emailIsNil: Boolean
   emailLT: String
   emailLTE: String
   emailNEQ: String
   emailNotIn: [String!]
+  emailNotNil: Boolean
   """areas edge predicates"""
   hasAreas: Boolean
   hasAreasWith: [AreaWhereInput!]
@@ -5557,10 +5573,12 @@ input UserWhereInput {
   nameHasPrefix: String
   nameHasSuffix: String
   nameIn: [String!]
+  nameIsNil: Boolean
   nameLT: String
   nameLTE: String
   nameNEQ: String
   nameNotIn: [String!]
+  nameNotNil: Boolean
   not: UserWhereInput
   """open_id field predicates"""
   openID: String
@@ -5572,12 +5590,10 @@ input UserWhereInput {
   openIDHasPrefix: String
   openIDHasSuffix: String
   openIDIn: [String!]
-  openIDIsNil: Boolean
   openIDLT: String
   openIDLTE: String
   openIDNEQ: String
   openIDNotIn: [String!]
-  openIDNotNil: Boolean
   or: [UserWhereInput!]
   """updated_at field predicates"""
   updatedAt: Time
@@ -5598,10 +5614,12 @@ input UserWhereInput {
   usernameHasPrefix: String
   usernameHasSuffix: String
   usernameIn: [String!]
+  usernameIsNil: Boolean
   usernameLT: String
   usernameLTE: String
   usernameNEQ: String
   usernameNotIn: [String!]
+  usernameNotNil: Boolean
 }
 
 type VisitRecord implements Node {

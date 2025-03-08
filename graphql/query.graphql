@@ -3,6 +3,9 @@ extend type Query {
 
   searchLocation(keyword: String!): [Location!]!
 
+  inputtips(keyword: String!): [Location!]!
+  amapRegeo(lng: Float!, lat: Float!): [Location!]!
+
   topCompetitors(first: Int = 10): [TopCompetitor!]!
 
   biToken: String!
@@ -17,10 +20,13 @@ type FeishuUser {
 
 type Location {
   id: ID!
-  fullAddress: String!
+  name: String!
+  address: String!
   province: Province!
   city: City
   district: District!
+  lng: Float!
+  lat: Float!
 }
 
 type TopCompetitor {
@@ -28,4 +34,11 @@ type TopCompetitor {
   name: String!
   shortName: String!
   wonTendersCount: Int!
+}
+
+type POI {
+  id: ID!
+  name: String!
+  address: String!
+  location: Location!
 }

@@ -106,11 +106,15 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   const selectedCustomer = usePortalStore(
     (state) => state.customerFormCustomer,
   );
+  const selectedAreaID = usePortalStore(
+    (state) => state.customerFormSelectedAreaID,
+  );
 
   const onClose = () => {
     usePortalStore.setState({
       customerFormOpen: false,
       customerFormCustomer: null,
+      customerFormSelectedAreaID: null,
     });
   };
 
@@ -134,9 +138,12 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
   return (
     <div className="h-full">
       <Form
-        className="relative pb-16"
+        className="!relative !pb-16"
         form={form}
         layout="vertical"
+        initialValues={{
+          areaID: selectedAreaID,
+        }}
         // requiredMark="optional"
         disabled={isCreateCustomerInFlight || isUpdateCustomerInFlight}
         onFinish={(values) => {
@@ -303,7 +310,7 @@ function CustomerForm({ queryRef }: CustomerFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute right-0 bottom-0 left-0 flex justify-end gap-3 border-t border-neutral-200 bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

@@ -56,6 +56,8 @@ type QueryResolver interface {
 	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	SearchFeishuUser(ctx context.Context, keyword string) ([]*model.FeishuUser, error)
 	SearchLocation(ctx context.Context, keyword string) ([]*model.Location, error)
+	Inputtips(ctx context.Context, keyword string) ([]*model.Location, error)
+	AmapRegeo(ctx context.Context, lng float64, lat float64) ([]*model.Location, error)
 	TopCompetitors(ctx context.Context, first *int) ([]*model.TopCompetitor, error)
 	BiToken(ctx context.Context) (string, error)
 	Session(ctx context.Context) (*model.Session, error)
@@ -2939,6 +2941,65 @@ func (ec *executionContext) field_Query___type_argsName(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_amapRegeo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_amapRegeo_argsLng(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["lng"] = arg0
+	arg1, err := ec.field_Query_amapRegeo_argsLat(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["lat"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Query_amapRegeo_argsLng(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (float64, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["lng"]
+	if !ok {
+		var zeroVal float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("lng"))
+	if tmp, ok := rawArgs["lng"]; ok {
+		return ec.unmarshalNFloat2float64(ctx, tmp)
+	}
+
+	var zeroVal float64
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_amapRegeo_argsLat(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (float64, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["lat"]
+	if !ok {
+		var zeroVal float64
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("lat"))
+	if tmp, ok := rawArgs["lat"]; ok {
+		return ec.unmarshalNFloat2float64(ctx, tmp)
+	}
+
+	var zeroVal float64
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_areas_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -3938,6 +3999,38 @@ func (ec *executionContext) field_Query_districts_argsWhere(
 	}
 
 	var zeroVal *ent.DistrictWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_inputtips_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_inputtips_argsKeyword(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["keyword"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_inputtips_argsKeyword(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["keyword"]
+	if !ok {
+		var zeroVal string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("keyword"))
+	if tmp, ok := rawArgs["keyword"]; ok {
+		return ec.unmarshalNString2string(ctx, tmp)
+	}
+
+	var zeroVal string
 	return zeroVal, nil
 }
 
@@ -20481,14 +20574,20 @@ func (ec *executionContext) fieldContext_Query_searchLocation(ctx context.Contex
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_Location_id(ctx, field)
-			case "fullAddress":
-				return ec.fieldContext_Location_fullAddress(ctx, field)
+			case "name":
+				return ec.fieldContext_Location_name(ctx, field)
+			case "address":
+				return ec.fieldContext_Location_address(ctx, field)
 			case "province":
 				return ec.fieldContext_Location_province(ctx, field)
 			case "city":
 				return ec.fieldContext_Location_city(ctx, field)
 			case "district":
 				return ec.fieldContext_Location_district(ctx, field)
+			case "lng":
+				return ec.fieldContext_Location_lng(ctx, field)
+			case "lat":
+				return ec.fieldContext_Location_lat(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Location", field.Name)
 		},
@@ -20501,6 +20600,152 @@ func (ec *executionContext) fieldContext_Query_searchLocation(ctx context.Contex
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_searchLocation_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_inputtips(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_inputtips(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Inputtips(rctx, fc.Args["keyword"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Location)
+	fc.Result = res
+	return ec.marshalNLocation2ᚕᚖcscdᚑbdsᚋgraphqlᚋmodelᚐLocationᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_inputtips(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Location_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Location_name(ctx, field)
+			case "address":
+				return ec.fieldContext_Location_address(ctx, field)
+			case "province":
+				return ec.fieldContext_Location_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Location_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Location_district(ctx, field)
+			case "lng":
+				return ec.fieldContext_Location_lng(ctx, field)
+			case "lat":
+				return ec.fieldContext_Location_lat(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Location", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_inputtips_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_amapRegeo(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_amapRegeo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AmapRegeo(rctx, fc.Args["lng"].(float64), fc.Args["lat"].(float64))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Location)
+	fc.Result = res
+	return ec.marshalNLocation2ᚕᚖcscdᚑbdsᚋgraphqlᚋmodelᚐLocationᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_amapRegeo(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Location_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Location_name(ctx, field)
+			case "address":
+				return ec.fieldContext_Location_address(ctx, field)
+			case "province":
+				return ec.fieldContext_Location_province(ctx, field)
+			case "city":
+				return ec.fieldContext_Location_city(ctx, field)
+			case "district":
+				return ec.fieldContext_Location_district(ctx, field)
+			case "lng":
+				return ec.fieldContext_Location_lng(ctx, field)
+			case "lat":
+				return ec.fieldContext_Location_lat(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Location", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_amapRegeo_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -56648,6 +56893,50 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_searchLocation(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "inputtips":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_inputtips(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "amapRegeo":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_amapRegeo(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}

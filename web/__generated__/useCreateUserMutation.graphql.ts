@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<94c49403e42e5ce0142cf3f7922ecf67>>
+ * @generated SignedSource<<340fbdc42b110209861f4c1b6558bd2b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,20 +15,20 @@ export type CreateUserInput = {
   createdAt?: any | null | undefined;
   customerIDs?: ReadonlyArray<string> | null | undefined;
   disabled?: boolean | null | undefined;
-  email: string;
+  email?: string | null | undefined;
   hasEditAccess?: boolean | null | undefined;
   hasMapAccess?: boolean | null | undefined;
   isAdmin?: boolean | null | undefined;
   isCeo?: boolean | null | undefined;
   isSuperAdmin?: boolean | null | undefined;
   leaderID?: string | null | undefined;
-  name: string;
-  openID?: string | null | undefined;
+  name?: string | null | undefined;
+  openID: string;
   projectIDs?: ReadonlyArray<string> | null | undefined;
   teamMemberIDs?: ReadonlyArray<string> | null | undefined;
   tenderIDs?: ReadonlyArray<string> | null | undefined;
   updatedAt?: any | null | undefined;
-  username: string;
+  username?: string | null | undefined;
   visitRecordIDs?: ReadonlyArray<string> | null | undefined;
 };
 export type useCreateUserMutation$variables = {
@@ -49,13 +49,13 @@ export type useCreateUserMutation$data = {
         };
         readonly avatarURL: string | null | undefined;
         readonly disabled: boolean;
-        readonly email: string;
+        readonly email: string | null | undefined;
         readonly hasEditAccess: boolean;
         readonly hasMapAccess: boolean;
         readonly id: string;
         readonly isAdmin: boolean;
-        readonly name: string;
-        readonly openID: string | null | undefined;
+        readonly name: string | null | undefined;
+        readonly openID: string;
         readonly projects: {
           readonly edges: ReadonlyArray<{
             readonly node: {
@@ -64,7 +64,7 @@ export type useCreateUserMutation$data = {
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };
-        readonly username: string;
+        readonly username: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };

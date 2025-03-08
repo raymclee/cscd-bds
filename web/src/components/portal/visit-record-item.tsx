@@ -76,7 +76,7 @@ export function VisitRecordItem(props: VisitRecordItemProps) {
       // layout="vertical"
       // labelStyle={{ width: 120 }}
       bordered
-      className="py-4"
+      className="!py-4"
       items={[
         // {
         //   key: "date",

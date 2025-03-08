@@ -32,8 +32,7 @@ GET https://restapi.amap.com/v3/geocode/regeo?address=通州副中心&key={{key}
 GET https://restapi.amap.com/v3/place/around?location=114.226216,22.281427&key={{key}}&radius=50&city=810000&010000|020000|030000|040000|050000|060000|070000|080000|090000|100000|110000|120000|130000|140000|150000|160000|170000|180000|190000|200000|220000|970000|990000
 
 
-###
-GET https://restapi.amap.com/v3/geocode/regeo?location=12709254.638037492,2544298.2518904665&key={{key}}&extensions=base
+
 
 
 ###
@@ -50,3 +49,20 @@ authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYXkubWNsZWUiLCJ0ZW5hbnRJZ
 
 ###
 GET https://830bi.3311csci.com/webroot/decision#?activeTab=eaa5d867-374d-4de6-9503-27372d8b6e48?fine_auth_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYXkubWNsZWUiLCJ0ZW5hbnRJZCI6ImRlZmF1bHQiLCJpc3MiOiJmYW5ydWFuIiwiZGVzY3JpcHRpb24iOiJbNjc0ZV1bNjU4N11bNzEyZl0ocmF5Lm1jbGVlKSIsImV4cCI6MTczODg0MTAzMCwiaWF0IjoxNzM3NjM1MDMwLCJqdGkiOiJSTEJqS2VuL0xnTm50d0hjYjlTeHpCcnJOditwbnFrdVh3NEpLcEI1bE9HTDBubjIifQ.RaKC3k_K1Z9xDIy_ZTnZh5znJGWVr3NxlVnCShtar-I
+
+
+
+###
+GET https://restapi.amap.com/v3/geocode/geo?key={{key}}&address=香港特别行政区东区新艺工业大厦
+
+
+###
+GET https://restapi.amap.com/v3/place/text?key={{key}}&keywords=香港特别行政区东区新艺工业大厦&page_num=1&page_size=99
+
+
+###
+GET https://restapi.amap.com/v3/assistant/inputtips?key={{key}}&keywords=新艺工业大厦&city=310000/320000/330000/340000/410000&citylimit=true
+
+
+###
+GET https://restapi.amap.com/v3/geocode/regeo?location=114.250984,22.263318&key={{key}}&extensions=base

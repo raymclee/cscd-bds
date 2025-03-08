@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<597a1332579534ad2473b90ee9456d51>>
+ * @generated SignedSource<<594da71bf802ab5b50893b2a2b35f0fc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -103,7 +103,7 @@ export type MapIndexPageQuery$data = {
                 readonly facadeConsultant: string | null | undefined;
                 readonly followingSales: ReadonlyArray<{
                   readonly id: string;
-                  readonly name: string;
+                  readonly name: string | null | undefined;
                 }> | null | undefined;
                 readonly fullAddress: string | null | undefined;
                 readonly geoBounds: ReadonlyArray<ReadonlyArray<number | null | undefined> | null | undefined> | null | undefined;
@@ -165,7 +165,7 @@ export type MapIndexPageQuery$data = {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
-        readonly name: string;
+        readonly name: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };

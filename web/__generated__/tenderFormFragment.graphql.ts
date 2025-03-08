@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b6c7b2d5b0018cccf596f7c6c8526aec>>
+ * @generated SignedSource<<8451a67c7a94f8aa27a74f3befc2b5f0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,7 +29,7 @@ export type tenderFormFragment$data = {
           readonly edges: ReadonlyArray<{
             readonly node: {
               readonly id: string;
-              readonly name: string;
+              readonly name: string | null | undefined;
             } | null | undefined;
           } | null | undefined> | null | undefined;
         };

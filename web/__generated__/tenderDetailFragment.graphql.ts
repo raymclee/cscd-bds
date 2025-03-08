@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<337188173e0e3df8144cdfe486505646>>
+ * @generated SignedSource<<58e632abe962ad239fe530d976fc1509>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -65,7 +65,7 @@ export type tenderDetailFragment$data = {
   } | null | undefined;
   readonly followingSales: ReadonlyArray<{
     readonly id: string;
-    readonly name: string;
+    readonly name: string | null | undefined;
   }> | null | undefined;
   readonly fullAddress: string | null | undefined;
   readonly geoCoordinate: {

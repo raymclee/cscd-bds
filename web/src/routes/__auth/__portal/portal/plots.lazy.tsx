@@ -154,8 +154,8 @@ function RouteComponent() {
   }, [map]);
 
   return (
-    <div className="relative -m-4 min-h-[calc(100dvh-64px)]">
-      <div id="map" className="absolute inset-0"></div>
+    <div className="!relative -m-4 min-h-[calc(100dvh-64px)]">
+      <div id="map" className="!absolute inset-0"></div>
       {isReady ? (
         <EditorContainer />
       ) : (
@@ -243,7 +243,7 @@ function EditorContainer() {
         value={selectedDistrict ?? undefined}
         variant="outlined"
         treeDefaultExpandAll
-        className="absolute left-4 top-4 w-52"
+        className="!absolute !top-4 !left-4 w-52"
         treeData={treeData}
         showSearch
         filterTreeNode={(inputValue, node) => {
@@ -431,7 +431,7 @@ function Editor() {
         </Form.Item>
       </Modal>
 
-      <div className="absolute right-4 top-4 flex gap-2">
+      <div className="absolute top-4 right-4 flex gap-2">
         {isAdding && (
           <>
             <Button

@@ -1,4 +1,4 @@
-import { InboxOutlined } from "@ant-design/icons";
+import { InboxOutlined, PlusCircleFilled } from "@ant-design/icons";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
@@ -44,6 +44,7 @@ import { TenderDetailFragment } from "./tender-detail";
 import { SearchLocationSelect } from "./search-location-select";
 import { TenderFormMap } from "./tender-form-map";
 import { usePortalStore } from "~/store/portal";
+import { Plus } from "lucide-react";
 
 const { Dragger } = Upload;
 
@@ -234,7 +235,7 @@ export function TenderForm({
   return (
     <Form<CreateTenderInput & { geoCoordinate: number[] }>
       form={form}
-      className="relative pb-24"
+      className="relative !pb-24"
       // requiredMark="optional"
       disabled={isCreateInFlight || isUpdateInFlight}
       scrollToFirstError={{
@@ -346,7 +347,24 @@ export function TenderForm({
         }
       }}
     >
-      <Card title="信息">
+      <Card
+        title="信息"
+        extra={[
+          <Button
+            // type="link"
+            type="primary"
+            icon={<Plus size={16} />}
+            onClick={() => {
+              usePortalStore.setState({
+                customerFormOpen: true,
+                customerFormSelectedAreaID: areaID,
+              });
+            }}
+          >
+            添加客户
+          </Button>,
+        ]}
+      >
         <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
           <Form.Item
             name="areaID"
@@ -628,7 +646,7 @@ export function TenderForm({
                 rules={[{ required: true }]}
                 className="md:col-span-3"
               >
-                <Input
+                {/* <Input
                   disabled
                   onClick={() => {
                     usePortalStore.setState({ tenderFormMapOpen: true });
@@ -642,6 +660,14 @@ export function TenderForm({
                       defaultLnglat={tender?.geoCoordinate?.coordinates}
                     />
                   }
+                /> */}
+                <SearchLocationSelect
+                  onAddressSelected={(data) => {
+                    form.setFieldValue("provinceID", data.province?.id);
+                    form.setFieldValue("cityID", data.city?.id);
+                    form.setFieldValue("districtID", data.district?.id);
+                    form.setFieldValue("geoCoordinate", [data.lng, data.lat]);
+                  }}
                 />
               </Form.Item>
 
@@ -888,7 +914,7 @@ export function TenderForm({
 
       {(areaID || tender) && showSHFields && (
         <>
-          <Card className="mt-4" title="情况">
+          <Card className="!mt-4" title="情况">
             <Row>
               <Col sm={24}>
                 <Form.Item name="tenderSituations" label="项目主要情况">
@@ -912,7 +938,7 @@ export function TenderForm({
             </Row>
           </Card>
 
-          <Card title="评分" className="mt-4">
+          <Card title="评分" className="!mt-4">
             <Form.Item
               name="sizeAndValueRating"
               label="规模及价值-评分（5分制）"
@@ -1095,6 +1121,8 @@ function ProvinceCityDistrictSelector({
     ProvinceCityDistrictSelectorQuery,
     queryRef,
   );
+
+  console.log(data);
 
   const provinceID = Form.useWatch("provinceID");
   const cityID = Form.useWatch("cityID");

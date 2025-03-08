@@ -892,32 +892,32 @@ function RouteComponent() {
   //   ),
   // });
 
-  useCopilotReadable({
-    description: "這是遠東幕牆市場拓展地圖系統裡的商機列表",
-    value: data.node?.areas?.edges?.flatMap((e) =>
-      e?.node?.tenders?.edges
-        ?.map((t) => ({
-          id: t?.node?.id,
-          name: t?.node?.name,
-          estimatedAmount: t?.node?.estimatedAmount,
-          status: tenderStatusText(t?.node?.status),
-          tenderDate: t?.node?.tenderDate,
-        }))
-        .filter(Boolean),
-    ),
-  });
+  // useCopilotReadable({
+  //   description: "這是遠東幕牆市場拓展地圖系統裡的商機列表",
+  //   value: data.node?.areas?.edges?.flatMap((e) =>
+  //     e?.node?.tenders?.edges
+  //       ?.map((t) => ({
+  //         id: t?.node?.id,
+  //         name: t?.node?.name,
+  //         estimatedAmount: t?.node?.estimatedAmount,
+  //         status: tenderStatusText(t?.node?.status),
+  //         tenderDate: t?.node?.tenderDate,
+  //       }))
+  //       .filter(Boolean),
+  //   ),
+  // });
 
-  useCreateVisitRecordAction({
-    users: (data.users.edges?.map((e) => e?.node).filter(Boolean) || []) as {
-      readonly id: string;
-      readonly name: string;
-    }[],
-    customers: data.customers.edges?.map((c) => c?.node).filter(Boolean) as {
-      readonly id: string;
-      readonly name: string;
-      readonly ownerType: number;
-    }[],
-  });
+  // useCreateVisitRecordAction({
+  //   users: (data.users.edges?.map((e) => e?.node).filter(Boolean) || []) as {
+  //     readonly id: string;
+  //     readonly name: string;
+  //   }[],
+  //   customers: data.customers.edges?.map((c) => c?.node).filter(Boolean) as {
+  //     readonly id: string;
+  //     readonly name: string;
+  //     readonly ownerType: number;
+  //   }[],
+  // });
 
   return (
     <>
@@ -1104,7 +1104,7 @@ function RouteComponent() {
       {/* <div className="grid place-content-between gap-2 px-4 pb-4 md:grid-cols-2 lg:grid-cols-3 xl:mt-0 xl:pt-[12vh] 2xl:pt-[8vh]"> */}
       <div
         className={cn(
-          "fixed bottom-0 left-2 top-[3.2rem] h-full w-[420px] space-y-2 transition",
+          "fixed top-[3.2rem] bottom-0 left-2 h-full w-[420px] space-y-2 transition",
           !dashboardVisible && "-translate-x-[110%]",
         )}
       >
@@ -1115,7 +1115,7 @@ function RouteComponent() {
 
       <div
         className={cn(
-          "absolute bottom-0 right-2 top-[3.2rem] w-[420px] space-y-2 transition",
+          "absolute top-[3.2rem] right-2 bottom-0 w-[420px] space-y-2 transition",
           !dashboardVisible && "translate-x-[110%]",
         )}
       >

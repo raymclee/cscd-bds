@@ -3,9 +3,15 @@ import {
   CloseOutlined,
   HeatMapOutlined,
 } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import {
+  searchLocationSelectQuery,
+  searchLocationSelectQuery$data,
+} from "__generated__/searchLocationSelectQuery.graphql";
+import { Button, Input, Modal } from "antd";
 import { MapPin, Check } from "lucide-react";
+import { fetchQuery, useRelayEnvironment, graphql } from "react-relay";
 import { useEffect, useRef, useState } from "react";
+import { useDebounceCallback } from "usehooks-ts";
 import { usePortalStore } from "~/store/portal";
 
 export function TenderFormMap({
@@ -20,7 +26,7 @@ export function TenderFormMap({
   return (
     <>
       <MapPin
-        className="w-4 h-4 cursor-pointer text-slate-600"
+        className="h-4 w-4 cursor-pointer text-slate-600"
         onClick={() => usePortalStore.setState({ tenderFormMapOpen: true })}
       />
       {/* <Button
@@ -36,7 +42,7 @@ export function TenderFormMap({
         centered
         destroyOnClose
         closeIcon={
-          <div className="w-full bg-white border rounded shadow-lg">
+          <div className="w-full rounded border bg-white shadow-lg">
             <CloseOutlined />
           </div>
         }
@@ -122,7 +128,7 @@ function Map({
     // @ts-expect-error no types
     geolocationRef.current = new AMap.Geolocation({
       enableHighAccuracy: true, //是否使用高精度定位，默认:true
-      timeout: 10000, //超过10秒后停止定位，默认：无穷大
+      timeout: 1000, //超过10秒后停止定位，默认：无穷大
       // maximumAge: 0, //定位结果缓存0毫秒，默认：0
       // convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
       showButton: true, //显示定位按钮，默认：true
@@ -196,12 +202,13 @@ function Map({
   return (
     <div className="-mx-6 -my-5 mb-4 grid h-[480px] grid-cols-[1fr_2.2fr] overflow-hidden border-b">
       <div className="space-y-0.5 overflow-y-auto px-2 py-4" ref={listRef}>
+        <Input.Search className="mb-2 px-1" placeholder="搜索地址" />
         {result?.pois.map((position) => {
           const address = `${result.province}${position.address}`;
           return (
             <button
               key={position.id}
-              className="flex items-center justify-between w-full px-2 py-2 transition-colors rounded gap-x-2 hover:bg-gray-100"
+              className="flex w-full items-center justify-between gap-x-2 rounded px-2 py-1 transition-colors hover:bg-gray-100"
               onClick={() => {
                 if (markerRef.current) {
                   mapRef.current?.remove(markerRef.current);
@@ -220,7 +227,7 @@ function Map({
             >
               <div className="flex-1 text-left">
                 <div>{position.name}</div>
-                <div className="text-xs text-gray-500 line-clamp-1">
+                <div className="line-clamp-1 text-xs text-gray-500">
                   {address}
                 </div>
               </div>

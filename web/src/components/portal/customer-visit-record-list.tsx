@@ -30,8 +30,9 @@ export function CustomerVisitRecordList(props: {
   );
 
   return (
-    <div className="space-y-6">
+    <>
       <List
+        grid={{ column: 1, gutter: 8 }}
         dataSource={data.visitRecords.edges?.map((e) => e?.node)}
         rowKey={(node) => node?.id || ""}
         renderItem={(node) =>
@@ -44,6 +45,6 @@ export function CustomerVisitRecordList(props: {
           )
         }
       />
-    </div>
+    </>
   );
 }

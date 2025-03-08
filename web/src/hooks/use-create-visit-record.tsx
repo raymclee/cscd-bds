@@ -53,7 +53,6 @@ export function useCreateVisitRecordAction({
   users?: { readonly id: string; readonly name: string }[];
   customers?: { readonly id: string; readonly name: string }[];
 }) {
-  console.log(customers);
   const [commitCreateVisitRecord, isCreateVisitRecordInFlight] =
     useCreateVisitRecord();
 
@@ -120,7 +119,6 @@ export function useCreateVisitRecordAction({
       },
     ],
     renderAndWaitForResponse: ({ args, status, respond }) => {
-      console.log(args);
       if (status === "complete") return <></>;
 
       const customer = customers?.find((c) => c.id === args.customerID);

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dd7148d3b097d6275b6ccd711e71ef2b>>
+ * @generated SignedSource<<d7404d4295423af82381f8d657cb6960>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,7 +21,7 @@ export type customerDetailFragment$data = {
   readonly contactPersonPosition: string | null | undefined;
   readonly createdAt: any;
   readonly createdBy: {
-    readonly name: string;
+    readonly name: string | null | undefined;
   } | null | undefined;
   readonly id: string;
   readonly industry: number | null | undefined;
@@ -36,7 +36,7 @@ export type customerDetailFragment$data = {
   readonly ownerType: number | null | undefined;
   readonly sales: {
     readonly id: string;
-    readonly name: string;
+    readonly name: string | null | undefined;
   } | null | undefined;
   readonly size: number | null | undefined;
   readonly updatedAt: any;

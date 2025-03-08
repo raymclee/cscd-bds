@@ -20,11 +20,21 @@ type GeoJSON struct {
 }
 
 type Location struct {
-	ID          xid.ID        `json:"id"`
-	FullAddress string        `json:"fullAddress"`
-	Province    *ent.Province `json:"province"`
-	City        *ent.City     `json:"city,omitempty"`
-	District    *ent.District `json:"district"`
+	ID       xid.ID        `json:"id"`
+	Name     string        `json:"name"`
+	Address  string        `json:"address"`
+	Province *ent.Province `json:"province"`
+	City     *ent.City     `json:"city,omitempty"`
+	District *ent.District `json:"district"`
+	Lng      float64       `json:"lng"`
+	Lat      float64       `json:"lat"`
+}
+
+type Poi struct {
+	ID       xid.ID    `json:"id"`
+	Name     string    `json:"name"`
+	Address  string    `json:"address"`
+	Location *Location `json:"location"`
 }
 
 type Session struct {

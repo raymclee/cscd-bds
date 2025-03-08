@@ -796,20 +796,20 @@ export type CreateUserInput = {
   createdAt?: InputMaybe<Scalars['Time']['input']>;
   customerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
-  email: Scalars['String']['input'];
+  email?: InputMaybe<Scalars['String']['input']>;
   hasEditAccess?: InputMaybe<Scalars['Boolean']['input']>;
   hasMapAccess?: InputMaybe<Scalars['Boolean']['input']>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   isCeo?: InputMaybe<Scalars['Boolean']['input']>;
   isSuperAdmin?: InputMaybe<Scalars['Boolean']['input']>;
   leaderID?: InputMaybe<Scalars['ID']['input']>;
-  name: Scalars['String']['input'];
-  openID?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  openID: Scalars['String']['input'];
   projectIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   teamMemberIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   tenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
-  username: Scalars['String']['input'];
+  username?: InputMaybe<Scalars['String']['input']>;
   visitRecordIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
@@ -1324,10 +1324,13 @@ export type GeoJson = {
 
 export type Location = {
   __typename?: 'Location';
+  address: Scalars['String']['output'];
   city?: Maybe<City>;
   district: District;
-  fullAddress: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  lat: Scalars['Float']['output'];
+  lng: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
   province: Province;
 };
 
@@ -1678,6 +1681,14 @@ export enum OrderDirection {
   /** Specifies a descending order for a given `orderBy` argument. */
   Desc = 'DESC'
 }
+
+export type Poi = {
+  __typename?: 'POI';
+  address: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  location: Location;
+  name: Scalars['String']['output'];
+};
 
 /**
  * Information about pagination in a connection.
@@ -3498,6 +3509,7 @@ export type ProvinceWhereInput = {
 
 export type Query = {
   __typename?: 'Query';
+  amapRegeo: Array<Location>;
   areas: AreaConnection;
   biToken: Scalars['String']['output'];
   cities: CityConnection;
@@ -3505,6 +3517,7 @@ export type Query = {
   countries: CountryConnection;
   customers: CustomerConnection;
   districts: DistrictConnection;
+  inputtips: Array<Location>;
   /** Fetches an object given its ID. */
   node?: Maybe<Node>;
   /** Lookup nodes by a list of IDs. */
@@ -3521,6 +3534,12 @@ export type Query = {
   topCompetitors: Array<TopCompetitor>;
   users: UserConnection;
   visitRecords: VisitRecordConnection;
+};
+
+
+export type QueryAmapRegeoArgs = {
+  lat: Scalars['Float']['input'];
+  lng: Scalars['Float']['input'];
 };
 
 
@@ -3581,6 +3600,11 @@ export type QueryDistrictsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<DistrictOrder>;
   where?: InputMaybe<DistrictWhereInput>;
+};
+
+
+export type QueryInputtipsArgs = {
+  keyword: Scalars['String']['input'];
 };
 
 
@@ -5295,11 +5319,13 @@ export type UpdateUserInput = {
   clearAreas?: InputMaybe<Scalars['Boolean']['input']>;
   clearAvatarURL?: InputMaybe<Scalars['Boolean']['input']>;
   clearCustomers?: InputMaybe<Scalars['Boolean']['input']>;
+  clearEmail?: InputMaybe<Scalars['Boolean']['input']>;
   clearLeader?: InputMaybe<Scalars['Boolean']['input']>;
-  clearOpenID?: InputMaybe<Scalars['Boolean']['input']>;
+  clearName?: InputMaybe<Scalars['Boolean']['input']>;
   clearProjects?: InputMaybe<Scalars['Boolean']['input']>;
   clearTeamMembers?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenders?: InputMaybe<Scalars['Boolean']['input']>;
+  clearUsername?: InputMaybe<Scalars['Boolean']['input']>;
   clearVisitRecords?: InputMaybe<Scalars['Boolean']['input']>;
   disabled?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -5348,7 +5374,7 @@ export type User = Node & {
   createdAt: Scalars['Time']['output'];
   customers: CustomerConnection;
   disabled: Scalars['Boolean']['output'];
-  email: Scalars['String']['output'];
+  email?: Maybe<Scalars['String']['output']>;
   hasEditAccess: Scalars['Boolean']['output'];
   hasMapAccess: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
@@ -5357,13 +5383,13 @@ export type User = Node & {
   isSuperAdmin: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
-  name: Scalars['String']['output'];
-  openID?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  openID: Scalars['String']['output'];
   projects: ProjectConnection;
   teamMembers?: Maybe<Array<User>>;
   tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
-  username: Scalars['String']['output'];
+  username?: Maybe<Scalars['String']['output']>;
   visitRecords: VisitRecordConnection;
 };
 
@@ -5494,10 +5520,12 @@ export type UserWhereInput = {
   emailHasPrefix?: InputMaybe<Scalars['String']['input']>;
   emailHasSuffix?: InputMaybe<Scalars['String']['input']>;
   emailIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  emailIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   emailLT?: InputMaybe<Scalars['String']['input']>;
   emailLTE?: InputMaybe<Scalars['String']['input']>;
   emailNEQ?: InputMaybe<Scalars['String']['input']>;
   emailNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  emailNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** areas edge predicates */
   hasAreas?: InputMaybe<Scalars['Boolean']['input']>;
   hasAreasWith?: InputMaybe<Array<AreaWhereInput>>;
@@ -5569,10 +5597,12 @@ export type UserWhereInput = {
   nameHasPrefix?: InputMaybe<Scalars['String']['input']>;
   nameHasSuffix?: InputMaybe<Scalars['String']['input']>;
   nameIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  nameIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   nameLT?: InputMaybe<Scalars['String']['input']>;
   nameLTE?: InputMaybe<Scalars['String']['input']>;
   nameNEQ?: InputMaybe<Scalars['String']['input']>;
   nameNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  nameNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   not?: InputMaybe<UserWhereInput>;
   /** open_id field predicates */
   openID?: InputMaybe<Scalars['String']['input']>;
@@ -5584,12 +5614,10 @@ export type UserWhereInput = {
   openIDHasPrefix?: InputMaybe<Scalars['String']['input']>;
   openIDHasSuffix?: InputMaybe<Scalars['String']['input']>;
   openIDIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  openIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   openIDLT?: InputMaybe<Scalars['String']['input']>;
   openIDLTE?: InputMaybe<Scalars['String']['input']>;
   openIDNEQ?: InputMaybe<Scalars['String']['input']>;
   openIDNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  openIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   or?: InputMaybe<Array<UserWhereInput>>;
   /** updated_at field predicates */
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
@@ -5610,10 +5638,12 @@ export type UserWhereInput = {
   usernameHasPrefix?: InputMaybe<Scalars['String']['input']>;
   usernameHasSuffix?: InputMaybe<Scalars['String']['input']>;
   usernameIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  usernameIsNil?: InputMaybe<Scalars['Boolean']['input']>;
   usernameLT?: InputMaybe<Scalars['String']['input']>;
   usernameLTE?: InputMaybe<Scalars['String']['input']>;
   usernameNEQ?: InputMaybe<Scalars['String']['input']>;
   usernameNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  usernameNotNil?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type VisitRecord = Node & {
@@ -5830,7 +5860,7 @@ export type UseCreateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
+export type UseCreateUserMutationMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserConnection', edges?: Array<{ __typename?: 'UserEdge', node?: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isAdmin: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } | null } | null> | null } };
 
 export type UseDeleteUserMutationMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -5862,7 +5892,7 @@ export type UseUpdateUserMutationMutationVariables = Exact<{
 }>;
 
 
-export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, username: string, openID?: string | null, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
+export type UseUpdateUserMutationMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name?: string | null, email?: string | null, username?: string | null, openID: string, avatarURL?: string | null, disabled: boolean, isSuperAdmin: boolean, isAdmin: boolean, isCeo: boolean, hasMapAccess: boolean, hasEditAccess: boolean, areas: { __typename?: 'AreaConnection', edges?: Array<{ __typename?: 'AreaEdge', node?: { __typename?: 'Area', id: string, name: string } | null } | null> | null }, projects: { __typename?: 'ProjectConnection', edges?: Array<{ __typename?: 'ProjectEdge', node?: { __typename?: 'Project', id: string, code: string } | null } | null> | null } } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -5971,7 +6001,7 @@ export const UseUpdateUserMutationDocument = new TypedDocumentString(`
         }
       }
     }
-    projects {
+    projects(where: {isFinishedNEQ: true}, orderBy: {field: CODE}) {
       edges {
         node {
           id
