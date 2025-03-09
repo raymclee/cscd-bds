@@ -43,6 +43,7 @@ type ResolverRoot interface {
 	Province() ProvinceResolver
 	Query() QueryResolver
 	Tender() TenderResolver
+	User() UserResolver
 }
 
 type DirectiveRoot struct {
@@ -623,6 +624,7 @@ type ComplexityRoot struct {
 		IsSuperAdmin  func(childComplexity int) int
 		Leader        func(childComplexity int) int
 		LeaderID      func(childComplexity int) int
+		MyTenders     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
 		Name          func(childComplexity int) int
 		OpenID        func(childComplexity int) int
 		Projects      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
@@ -4045,6 +4047,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.LeaderID(childComplexity), true
+
+	case "User.myTenders":
+		if e.complexity.User.MyTenders == nil {
+			break
+		}
+
+		args, err := ec.field_User_myTenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.MyTenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.TenderOrder), args["where"].(*ent.TenderWhereInput)), true
 
 	case "User.name":
 		if e.complexity.User.Name == nil {
@@ -12060,6 +12074,17 @@ type GeoJson {
   topCompetitors(first: Int = 10): [TopCompetitor!]!
 
   biToken: String!
+}
+
+extend type User {
+  myTenders(
+    after: Cursor
+    first: Int
+    before: Cursor
+    last: Int
+    orderBy: [TenderOrder!]
+    where: TenderWhereInput
+  ): TenderConnection!
 }
 
 type FeishuUser {

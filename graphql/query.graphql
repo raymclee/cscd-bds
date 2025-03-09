@@ -11,6 +11,17 @@ extend type Query {
   biToken: String!
 }
 
+extend type User {
+  myTenders(
+    after: Cursor
+    first: Int
+    before: Cursor
+    last: Int
+    orderBy: [TenderOrder!]
+    where: TenderWhereInput
+  ): TenderConnection!
+}
+
 type FeishuUser {
   openId: String!
   name: String!

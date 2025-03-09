@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e09f4919a0d6d50d93c152e5c4015dee>>
+ * @generated SignedSource<<beb1e1dcf7305cdf1da3c062dc11ee03>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -83,13 +83,10 @@ v6 = {
   "storageKey": null
 },
 v7 = [
-  (v4/*: any*/)
-],
-v8 = [
   (v4/*: any*/),
   (v6/*: any*/)
 ],
-v9 = [
+v8 = [
   (v4/*: any*/),
   {
     "alias": null,
@@ -539,7 +536,9 @@ return {
                 "kind": "LinkedField",
                 "name": "createdBy",
                 "plural": false,
-                "selections": (v7/*: any*/),
+                "selections": [
+                  (v4/*: any*/)
+                ],
                 "storageKey": null
               },
               {
@@ -573,7 +572,7 @@ return {
                 "kind": "LinkedField",
                 "name": "followingSales",
                 "plural": true,
-                "selections": (v8/*: any*/),
+                "selections": (v7/*: any*/),
                 "storageKey": null
               },
               {
@@ -603,7 +602,7 @@ return {
                 "kind": "LinkedField",
                 "name": "province",
                 "plural": false,
-                "selections": (v9/*: any*/),
+                "selections": (v8/*: any*/),
                 "storageKey": null
               },
               {
@@ -613,7 +612,7 @@ return {
                 "kind": "LinkedField",
                 "name": "city",
                 "plural": false,
-                "selections": (v9/*: any*/),
+                "selections": (v8/*: any*/),
                 "storageKey": null
               },
               {
@@ -623,7 +622,7 @@ return {
                 "kind": "LinkedField",
                 "name": "district",
                 "plural": false,
-                "selections": (v9/*: any*/),
+                "selections": (v8/*: any*/),
                 "storageKey": null
               }
             ],
@@ -786,7 +785,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v8/*: any*/),
+                                    "selections": (v7/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -815,12 +814,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d02c94ec2c7940d1c96057a4a919ed7e",
+    "cacheID": "a3459cfc80148c2e87073c6689c63c97",
     "id": null,
     "metadata": {},
     "name": "tendersDetailPageQuery",
     "operationKind": "query",
-    "text": "query tendersDetailPageQuery(\n  $id: ID!\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...tenderDetailFragment\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  address\n  fullAddress\n  contractor\n  prepareToBid\n  projectCode\n  projectType\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  levelInvolved\n  costEngineer\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  currentProgress\n  tenderWinCompany\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  attachements\n  tenderCode\n  developer\n  architect\n  tenderClosingDate\n  constructionArea\n  remark\n  images\n  geoCoordinate {\n    coordinates\n  }\n  createdBy {\n    id\n  }\n  finder {\n    id\n  }\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query tendersDetailPageQuery(\n  $id: ID!\n  $userId: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...tenderDetailFragment\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n}\n\nfragment tenderDetailFragment on Tender {\n  id\n  code\n  name\n  status\n  estimatedAmount\n  tenderDate\n  discoveryDate\n  address\n  fullAddress\n  contractor\n  prepareToBid\n  projectCode\n  projectType\n  estimatedProjectStartDate\n  estimatedProjectEndDate\n  levelInvolved\n  costEngineer\n  sizeAndValueRating\n  sizeAndValueRatingOverview\n  creditAndPaymentRating\n  creditAndPaymentRatingOverview\n  timeLimitRating\n  timeLimitRatingOverview\n  customerRelationshipRating\n  customerRelationshipRatingOverview\n  competitivePartnershipRating\n  competitivePartnershipRatingOverview\n  tenderSituations\n  ownerSituations\n  biddingInstructions\n  competitorSituations\n  tenderForm\n  contractForm\n  managementCompany\n  tenderingAgency\n  biddingDate\n  facadeConsultant\n  designUnit\n  consultingFirm\n  keyProject\n  currentProgress\n  tenderWinCompany\n  tenderWinDate\n  tenderWinAmount\n  lastTenderAmount\n  attachements\n  tenderCode\n  developer\n  architect\n  tenderClosingDate\n  constructionArea\n  remark\n  images\n  geoCoordinate {\n    coordinates\n  }\n  createdBy {\n    id\n  }\n  finder {\n    id\n    name\n  }\n  area {\n    id\n    code\n    name\n  }\n  followingSales {\n    id\n    name\n  }\n  customer {\n    id\n    ownerType\n    name\n  }\n  province {\n    id\n    adcode\n    name\n  }\n  city {\n    id\n    adcode\n    name\n  }\n  district {\n    id\n    adcode\n    name\n  }\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

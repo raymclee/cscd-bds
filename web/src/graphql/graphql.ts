@@ -5384,6 +5384,7 @@ export type User = Node & {
   isSuperAdmin: Scalars['Boolean']['output'];
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
+  myTenders: TenderConnection;
   name?: Maybe<Scalars['String']['output']>;
   openID: Scalars['String']['output'];
   projects: ProjectConnection;
@@ -5412,6 +5413,16 @@ export type UserCustomersArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<CustomerOrder>>;
   where?: InputMaybe<CustomerWhereInput>;
+};
+
+
+export type UserMyTendersArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TenderOrder>>;
+  where?: InputMaybe<TenderWhereInput>;
 };
 
 

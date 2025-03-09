@@ -115,6 +115,9 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 // Tender returns generated.TenderResolver implementation.
 func (r *Resolver) Tender() generated.TenderResolver { return &tenderResolver{r} }
 
+// User returns generated.UserResolver implementation.
+func (r *Resolver) User() generated.UserResolver { return &userResolver{r} }
+
 type areaResolver struct{ *Resolver }
 type cityResolver struct{ *Resolver }
 type countryResolver struct{ *Resolver }
@@ -122,3 +125,4 @@ type districtResolver struct{ *Resolver }
 type provinceResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type tenderResolver struct{ *Resolver }
+type userResolver struct{ *Resolver }

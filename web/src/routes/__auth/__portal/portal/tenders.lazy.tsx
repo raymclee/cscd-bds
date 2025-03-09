@@ -64,23 +64,23 @@ function TenderList({
               id
               code
               name
-              tenders(orderBy: $orderBy, first: $first, last: $last)
-                @connection(key: "tendersTenderListFragment_tenders") {
-                __id
-                edges {
-                  node {
-                    id
-                    name
-                    status
-                    tenderClosingDate
-                    area {
-                      id
-                      code
-                    }
-                    ...tenderListItemFragment
-                  }
-                }
+            }
+          }
+        }
+        tenders: myTenders(orderBy: $orderBy, first: $first, last: $last)
+          @connection(key: "tendersTenderListFragment_tenders") {
+          __id
+          edges {
+            node {
+              id
+              name
+              status
+              tenderClosingDate
+              area {
+                id
+                code
               }
+              ...tenderListItemFragment
             }
           }
         }
@@ -97,8 +97,8 @@ function TenderList({
   const areaFilter = searchParams.area;
   const closingDateFilter = searchParams.closing_date;
 
-  const dataSource = data?.areas.edges
-    ?.flatMap((area) => area?.node?.tenders.edges?.map((t) => t?.node))
+  const dataSource = data?.tenders.edges
+    ?.map((t) => t?.node)
     .filter((t) =>
       t?.name.toLocaleLowerCase().includes(searchText?.toLocaleLowerCase()),
     )

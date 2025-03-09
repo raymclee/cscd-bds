@@ -5366,6 +5366,7 @@ type User implements Node {
   isSuperAdmin: Boolean!
   leader: User
   leaderID: ID
+  myTenders(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: [TenderOrder!], where: TenderWhereInput): TenderConnection!
   name: String
   openID: String!
   projects(

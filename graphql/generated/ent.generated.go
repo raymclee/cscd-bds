@@ -65,6 +65,9 @@ type QueryResolver interface {
 type TenderResolver interface {
 	GeoCoordinate(ctx context.Context, obj *ent.Tender) (*model.GeoJSON, error)
 }
+type UserResolver interface {
+	MyTenders(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
+}
 
 // endregion ************************** generated!.gotpl **************************
 
@@ -6058,6 +6061,173 @@ func (ec *executionContext) field_User_customers_argsWhere(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_User_myTenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_myTenders_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_myTenders_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_myTenders_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_myTenders_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_myTenders_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_myTenders_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_myTenders_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myTenders_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myTenders_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myTenders_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myTenders_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*ent.TenderOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal []*ent.TenderOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOTenderOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐTenderOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*ent.TenderOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myTenders_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.TenderWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.TenderWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOTenderWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.TenderWhereInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_User_projects_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -10213,6 +10383,8 @@ func (ec *executionContext) fieldContext_Customer_sales(_ context.Context, field
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -10300,6 +10472,8 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -23964,6 +24138,8 @@ func (ec *executionContext) fieldContext_Tender_finder(_ context.Context, field 
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24051,6 +24227,8 @@ func (ec *executionContext) fieldContext_Tender_createdBy(_ context.Context, fie
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24138,6 +24316,8 @@ func (ec *executionContext) fieldContext_Tender_followingSales(_ context.Context
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -25791,6 +25971,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -25878,6 +26060,8 @@ func (ec *executionContext) fieldContext_User_teamMembers(_ context.Context, fie
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -26068,6 +26252,69 @@ func (ec *executionContext) fieldContext_User_projects(ctx context.Context, fiel
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_User_projects_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_myTenders(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_myTenders(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.User().MyTenders(rctx, obj, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.TenderOrder), fc.Args["where"].(*ent.TenderWhereInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.TenderConnection)
+	fc.Result = res
+	return ec.marshalNTenderConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐTenderConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_myTenders(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_TenderConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TenderConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_TenderConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TenderConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_myTenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -26299,6 +26546,8 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -58014,6 +58263,42 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_projects(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "myTenders":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_myTenders(ctx, field, obj)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}

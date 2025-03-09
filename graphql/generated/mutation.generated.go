@@ -1550,6 +1550,8 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -1651,6 +1653,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteUser(ctx context.Context
 				return ec.fieldContext_User_visitRecords(ctx, field)
 			case "projects":
 				return ec.fieldContext_User_projects(ctx, field)
+			case "myTenders":
+				return ec.fieldContext_User_myTenders(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},

@@ -83,6 +83,7 @@ export const TenderDetailFragment = graphql`
     }
     finder {
       id
+      name
     }
     area {
       id
@@ -169,6 +170,8 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
     competitivePartnershipRating,
     competitivePartnershipRatingOverview,
     attachements,
+    finder,
+    followingSales,
   } = tender;
 
   return (
@@ -201,6 +204,16 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                 {customer?.name}
               </Link>
             ),
+          },
+          {
+            key: "finder",
+            label: "发现人",
+            children: finder?.name || "-",
+          },
+          {
+            key: "followingSales",
+            label: "当前跟踪人",
+            children: followingSales?.map(({ name }) => name).join(", ") || "-",
           },
           {
             key: "estimatedAmount",
@@ -255,6 +268,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
             key: "costEngineer",
             label: "造价师",
             children: costEngineer || "-",
+            span: 2,
           },
           {
             key: "fullAddress",

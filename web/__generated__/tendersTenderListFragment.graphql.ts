@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f1d5f358718b16b66ed53588a1a869c9>>
+ * @generated SignedSource<<051d2006cff81e6cda14ebc1b0c5f917>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,22 +17,22 @@ export type tendersTenderListFragment$data = {
         readonly code: string;
         readonly id: string;
         readonly name: string;
-        readonly tenders: {
-          readonly __id: string;
-          readonly edges: ReadonlyArray<{
-            readonly node: {
-              readonly area: {
-                readonly code: string;
-                readonly id: string;
-              };
-              readonly id: string;
-              readonly name: string;
-              readonly status: number;
-              readonly tenderClosingDate: any | null | undefined;
-              readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
-            } | null | undefined;
-          } | null | undefined> | null | undefined;
+      } | null | undefined;
+    } | null | undefined> | null | undefined;
+  };
+  readonly tenders: {
+    readonly __id: string;
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly area: {
+          readonly code: string;
+          readonly id: string;
         };
+        readonly id: string;
+        readonly name: string;
+        readonly status: number;
+        readonly tenderClosingDate: any | null | undefined;
+        readonly " $fragmentSpreads": FragmentRefs<"tenderListItemFragment">;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   };
@@ -90,7 +90,9 @@ return {
         "count": null,
         "cursor": null,
         "direction": "bidirectional",
-        "path": null
+        "path": [
+          "tenders"
+        ]
       }
     ]
   },
@@ -122,150 +124,150 @@ return {
               "selections": [
                 (v0/*: any*/),
                 (v1/*: any*/),
-                (v2/*: any*/),
-                {
-                  "alias": "tenders",
-                  "args": [
-                    {
-                      "kind": "Variable",
-                      "name": "orderBy",
-                      "variableName": "orderBy"
-                    }
-                  ],
-                  "concreteType": "TenderConnection",
-                  "kind": "LinkedField",
-                  "name": "__tendersTenderListFragment_tenders_connection",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "TenderEdge",
-                      "kind": "LinkedField",
-                      "name": "edges",
-                      "plural": true,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "concreteType": "Tender",
-                          "kind": "LinkedField",
-                          "name": "node",
-                          "plural": false,
-                          "selections": [
-                            (v0/*: any*/),
-                            (v2/*: any*/),
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "status",
-                              "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "tenderClosingDate",
-                              "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "concreteType": "Area",
-                              "kind": "LinkedField",
-                              "name": "area",
-                              "plural": false,
-                              "selections": [
-                                (v0/*: any*/),
-                                (v1/*: any*/)
-                              ],
-                              "storageKey": null
-                            },
-                            {
-                              "args": null,
-                              "kind": "FragmentSpread",
-                              "name": "tenderListItemFragment"
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "__typename",
-                              "storageKey": null
-                            }
-                          ],
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "cursor",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "PageInfo",
-                      "kind": "LinkedField",
-                      "name": "pageInfo",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "endCursor",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "hasNextPage",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "hasPreviousPage",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "startCursor",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ClientExtension",
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "__id",
-                          "storageKey": null
-                        }
-                      ]
-                    }
-                  ],
-                  "storageKey": null
-                }
+                (v2/*: any*/)
               ],
               "storageKey": null
             }
           ],
           "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": "tenders",
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "orderBy",
+          "variableName": "orderBy"
+        }
+      ],
+      "concreteType": "TenderConnection",
+      "kind": "LinkedField",
+      "name": "__tendersTenderListFragment_tenders_connection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "TenderEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Tender",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                (v2/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "status",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "tenderClosingDate",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Area",
+                  "kind": "LinkedField",
+                  "name": "area",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/),
+                    (v1/*: any*/)
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "tenderListItemFragment"
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasPreviousPage",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "startCursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "kind": "ClientExtension",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__id",
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": null
@@ -276,6 +278,6 @@ return {
 };
 })();
 
-(node as any).hash = "5894de072f2a60f5bf4ab743bed4de10";
+(node as any).hash = "ae34a9b6dc3ad3479a793c9a17716b6a";
 
 export default node;

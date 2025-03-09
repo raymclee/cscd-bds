@@ -7,16 +7,20 @@ package graphql
 import (
 	"context"
 	"cscd-bds/graphql/model"
+	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
+	"cscd-bds/store/ent/tender"
+	"cscd-bds/store/ent/user"
 	"fmt"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
 
+	"entgo.io/contrib/entgql"
 	"entgo.io/ent/dialect/sql"
 	"golang.org/x/sync/errgroup"
 )
@@ -244,4 +248,27 @@ func (r *queryResolver) BiToken(ctx context.Context) (string, error) {
 	ss := string(body)[25:348]
 
 	return ss, nil
+}
+
+// MyTenders is the resolver for the myTenders field.
+func (r *userResolver) MyTenders(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
+	var q *ent.TenderQuery
+	if obj.IsAdmin || obj.IsCeo || obj.IsSuperAdmin {
+		fmt.Println("admin")
+		q = r.store.Tender.Query()
+	} else {
+		fmt.Println("user")
+		q = r.store.Tender.Query().
+			Where(tender.Or(
+				tender.HasFollowingSalesWith(user.ID(obj.ID)),
+				tender.HasCreatedByWith(user.ID(obj.ID)),
+				tender.HasFinderWith(user.ID(obj.ID)),
+			))
+	}
+	conn, err := q.
+		Paginate(ctx, after, first, before, last, ent.WithTenderOrder(orderBy), ent.WithTenderFilter(where.Filter))
+	if err != nil {
+		return nil, err
+	}
+	return conn, nil
 }

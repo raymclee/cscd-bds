@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<58e632abe962ad239fe530d976fc1509>>
+ * @generated SignedSource<<164b0c2d1bc31e7ebf43b23adeba5ac4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -62,6 +62,7 @@ export type tenderDetailFragment$data = {
   readonly facadeConsultant: string | null | undefined;
   readonly finder: {
     readonly id: string;
+    readonly name: string | null | undefined;
   } | null | undefined;
   readonly followingSales: ReadonlyArray<{
     readonly id: string;
@@ -132,7 +133,8 @@ v2 = {
   "storageKey": null
 },
 v3 = [
-  (v0/*: any*/)
+  (v0/*: any*/),
+  (v2/*: any*/)
 ],
 v4 = [
   (v0/*: any*/),
@@ -529,7 +531,9 @@ return {
       "kind": "LinkedField",
       "name": "createdBy",
       "plural": false,
-      "selections": (v3/*: any*/),
+      "selections": [
+        (v0/*: any*/)
+      ],
       "storageKey": null
     },
     {
@@ -563,10 +567,7 @@ return {
       "kind": "LinkedField",
       "name": "followingSales",
       "plural": true,
-      "selections": [
-        (v0/*: any*/),
-        (v2/*: any*/)
-      ],
+      "selections": (v3/*: any*/),
       "storageKey": null
     },
     {
@@ -625,6 +626,6 @@ return {
 };
 })();
 
-(node as any).hash = "e10751d24e01de7617f02edbead64647";
+(node as any).hash = "f4579545e475fc6dd786ad2d67c10688";
 
 export default node;
