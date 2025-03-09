@@ -481,7 +481,7 @@ type ComplexityRoot struct {
 		Countries        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.CountryOrder, where *ent.CountryWhereInput) int
 		Customers        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
 		Districts        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.DistrictOrder, where *ent.DistrictWhereInput) int
-		Inputtips        func(childComplexity int, keyword string) int
+		Inputtips        func(childComplexity int, areaID xid.ID, keyword string) int
 		Node             func(childComplexity int, id xid.ID) int
 		Nodes            func(childComplexity int, ids []xid.ID) int
 		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
@@ -3103,7 +3103,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Inputtips(childComplexity, args["keyword"].(string)), true
+		return e.complexity.Query.Inputtips(childComplexity, args["areaId"].(xid.ID), args["keyword"].(string)), true
 
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
@@ -12054,7 +12054,7 @@ type GeoJson {
 
   searchLocation(keyword: String!): [Location!]!
 
-  inputtips(keyword: String!): [Location!]!
+  inputtips(areaId: ID!, keyword: String!): [Location!]!
   amapRegeo(lng: Float!, lat: Float!): [Location!]!
 
   topCompetitors(first: Int = 10): [TopCompetitor!]!

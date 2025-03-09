@@ -3604,6 +3604,7 @@ export type QueryDistrictsArgs = {
 
 
 export type QueryInputtipsArgs = {
+  areaId: Scalars['ID']['input'];
   keyword: Scalars['String']['input'];
 };
 

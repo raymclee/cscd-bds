@@ -172,9 +172,9 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
   } = tender;
 
   return (
-    <div className="space-y-4">
+    <div className="!space-y-4">
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="rounded-lg bg-white !p-6"
         title={name}
         extra={
           canEdit(session, { tender }) && (
@@ -318,7 +318,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
       />
 
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="rounded-lg bg-white !p-6"
         title="项目情况"
         items={[
           {
@@ -343,7 +343,7 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
       />
 
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="rounded-lg bg-white !p-6"
         title="评分"
         items={[
           {
@@ -472,9 +472,9 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     followingSales,
   } = tender;
   return (
-    <div className="space-y-4">
+    <div className="!space-y-4">
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="rounded-lg bg-white !p-6"
         extra={
           canEdit(session, { tender }) && (
             <Space>
@@ -539,7 +539,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
       />
 
       <Descriptions
-        className="rounded-lg bg-white p-6"
+        className="rounded-lg bg-white !p-6"
         title="得標資料"
         items={[
           {

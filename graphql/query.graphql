@@ -3,7 +3,7 @@ extend type Query {
 
   searchLocation(keyword: String!): [Location!]!
 
-  inputtips(keyword: String!): [Location!]!
+  inputtips(areaId: ID!, keyword: String!): [Location!]!
   amapRegeo(lng: Float!, lat: Float!): [Location!]!
 
   topCompetitors(first: Int = 10): [TopCompetitor!]!

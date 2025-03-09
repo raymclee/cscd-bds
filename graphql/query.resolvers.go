@@ -9,6 +9,7 @@ import (
 	"cscd-bds/graphql/model"
 	"cscd-bds/store/ent/competitor"
 	"cscd-bds/store/ent/district"
+	"cscd-bds/store/ent/province"
 	"cscd-bds/store/ent/schema/xid"
 	"fmt"
 	"io"
@@ -93,7 +94,7 @@ func (r *queryResolver) SearchLocation(ctx context.Context, keyword string) ([]*
 }
 
 // Inputtips is the resolver for the inputtips field.
-func (r *queryResolver) Inputtips(ctx context.Context, keyword string) ([]*model.Location, error) {
+func (r *queryResolver) Inputtips(ctx context.Context, areaID xid.ID, keyword string) ([]*model.Location, error) {
 	// https://restapi.amap.com/v3/assistant/inputtips?key={{key}}&keywords=福建省漳州市漳浦县
 
 	geoResp, err := r.amap.LocationTips(keyword)
@@ -130,6 +131,7 @@ func (r *queryResolver) Inputtips(ctx context.Context, keyword string) ([]*model
 			}
 			d, err := r.store.District.Query().
 				Where(district.Adcode(ac)).
+				Where(district.HasProvinceWith(province.AreaID(areaID))).
 				WithCity().
 				WithProvince().
 				Only(ctx)
@@ -157,7 +159,6 @@ func (r *queryResolver) AmapRegeo(ctx context.Context, lng float64, lat float64)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(geoResp)
 
 	placeResp, err := r.amap.Place(geoResp.ReGeocode.FormattedAddress)
 	if err != nil {
@@ -244,69 +245,3 @@ func (r *queryResolver) BiToken(ctx context.Context) (string, error) {
 
 	return ss, nil
 }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	func (r *queryResolver) LocationTips(ctx context.Context, keyword string) ([]*model.Location, error) {
-	// https://restapi.amap.com/v3/assistant/inputtips?key={{key}}&keywords=福建省漳州市漳浦县
-
-	geoResp, err := r.amap.LocationTips(keyword)
-	if err != nil {
-		return nil, err
-	}
-
-	var wg errgroup.Group
-	var out []*model.Location
-	for _, tip := range geoResp.Tips {
-		wg.Go(func() error {
-			o := &model.Location{
-				ID:   xid.MustNew("AL"),
-				Name: tip.Name,
-			}
-			if a, ok := tip.Address.(string); ok {
-				o.Address = a
-			}
-			loc := strings.Split(tip.Location, ",")
-			if len(loc) != 2 {
-				return fmt.Errorf("invalid location: %s", tip.Location)
-			}
-			o.Lat, err = strconv.ParseFloat(loc[1], 64)
-			if err != nil {
-				return fmt.Errorf("failed to convert latitude: %w", err)
-			}
-			o.Lng, err = strconv.ParseFloat(loc[0], 64)
-			if err != nil {
-				return fmt.Errorf("failed to convert longitude: %w", err)
-			}
-			ac, err := strconv.Atoi(tip.Adcode)
-			if err != nil {
-				return fmt.Errorf("failed to convert adcode: %w", err)
-			}
-			d, err := r.store.District.Query().
-				Where(district.Adcode(ac)).
-				WithCity().
-				WithProvince().
-				Only(ctx)
-			if err != nil {
-				return nil
-			}
-			if d != nil {
-				o.City = d.Edges.City
-				o.Province = d.Edges.Province
-				o.District = d
-			}
-			out = append(out, o)
-			return nil
-		})
-	}
-	if err := wg.Wait(); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-*/

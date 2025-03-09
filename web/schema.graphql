@@ -3519,7 +3519,7 @@ type Query {
     """Filtering options for Districts returned from the connection."""
     where: DistrictWhereInput
   ): DistrictConnection!
-  inputtips(keyword: String!): [Location!]!
+  inputtips(areaId: ID!, keyword: String!): [Location!]!
   """Fetches an object given its ID."""
   node(
     """ID of the object."""

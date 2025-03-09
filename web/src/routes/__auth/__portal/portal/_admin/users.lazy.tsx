@@ -271,7 +271,7 @@ function RouteComponent() {
         dataSource={dataSource}
         columns={columns}
         rowKey={"id"}
-        scroll={{ x: 1000 }}
+        scroll={{ x: "max-content" }}
         pagination={{
           current: searchParams.page,
           onChange(page) {

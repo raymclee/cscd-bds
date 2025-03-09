@@ -34,6 +34,8 @@ import { useCreateTender } from "~/hooks/use-create-tender";
 import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
   fixAmount,
+  isGA,
+  isGAorHWOnly,
   levelInvolvedOptions,
   projectTypeOptions,
   tenderStatusOptions,
@@ -45,6 +47,7 @@ import { SearchLocationSelect } from "./search-location-select";
 import { TenderFormMap } from "./tender-form-map";
 import { usePortalStore } from "~/store/portal";
 import { Plus } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 const { Dragger } = Upload;
 
@@ -142,13 +145,9 @@ export function TenderForm({
   );
   // const isCreateOrUpdateHW = area?.some((a) => a?.node?.code === "HW");
 
-  const customerOptions = useMemo(
-    () =>
-      area
-        ?.flatMap((e) => e?.node?.customers.edges)
-        .map((c) => ({ label: c?.node?.name, value: c?.node?.id })),
-    [data, areaID],
-  );
+  const customerOptions = area
+    ?.flatMap((e) => e?.node?.customers.edges)
+    .map((c) => ({ label: c?.node?.name, value: c?.node?.id }));
 
   const salesOptions = useMemo(
     () =>
@@ -392,6 +391,7 @@ export function TenderForm({
                   "tenderClosingDate",
                   "tenderDate",
                   "address",
+                  "fullAddress",
                 ]);
               }}
             />
@@ -477,16 +477,16 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <ProvinceCityDistrictSelectorLoader areaID={areaID} />
+              <ProvinceCityDistrictSelectorLoader />
 
-              <Form.Item
+              {/* <Form.Item
                 name="address"
                 label="详细地址"
                 rules={[{ required: true }]}
                 className="md:col-span-2"
               >
                 <Input />
-              </Form.Item>
+              </Form.Item> */}
 
               {/* <Form.Item
                 name="fullAddress"
@@ -638,38 +638,7 @@ export function TenderForm({
                 <DatePicker className="w-full" />
               </Form.Item>
 
-              <ProvinceCityDistrictSelectorLoader areaID={areaID} />
-
-              <Form.Item
-                name="fullAddress"
-                label="地理位置"
-                rules={[{ required: true }]}
-                className="md:col-span-3"
-              >
-                {/* <Input
-                  disabled
-                  onClick={() => {
-                    usePortalStore.setState({ tenderFormMapOpen: true });
-                  }}
-                  suffix={
-                    <TenderFormMap
-                      onComplete={({ address, lnglat }) => {
-                        form.setFieldValue("fullAddress", address);
-                        form.setFieldValue("geoCoordinate", lnglat.toArray());
-                      }}
-                      defaultLnglat={tender?.geoCoordinate?.coordinates}
-                    />
-                  }
-                /> */}
-                <SearchLocationSelect
-                  onAddressSelected={(data) => {
-                    form.setFieldValue("provinceID", data.province?.id);
-                    form.setFieldValue("cityID", data.city?.id);
-                    form.setFieldValue("districtID", data.district?.id);
-                    form.setFieldValue("geoCoordinate", [data.lng, data.lat]);
-                  }}
-                />
-              </Form.Item>
+              <ProvinceCityDistrictSelectorLoader showSHFields />
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
                 <Select
@@ -1086,7 +1055,11 @@ const ProvinceCityDistrictSelectorQuery = graphql`
   }
 `;
 
-function ProvinceCityDistrictSelectorLoader({}: { areaID: string }) {
+function ProvinceCityDistrictSelectorLoader({
+  showSHFields = false,
+}: {
+  showSHFields?: boolean;
+}) {
   const form = Form.useFormInstance();
   const areaID = Form.useWatch("areaID", form);
   const [queryRef, loadQuery] =
@@ -1100,14 +1073,49 @@ function ProvinceCityDistrictSelectorLoader({}: { areaID: string }) {
     }
   }, [areaID]);
 
-  return queryRef ? (
-    <ProvinceCityDistrictSelector queryRef={queryRef} />
-  ) : (
-    ["省", "市", "区"].map((label, i) => (
-      <Form.Item key={i} label={label}>
-        <Select />
+  return (
+    <>
+      <Form.Item
+        name="fullAddress"
+        label="详细地址"
+        rules={[{ required: true }]}
+        className={cn(showSHFields ? "md:col-span-2" : "md:col-span-3")}
+      >
+        {/* <Input
+                  disabled
+                  onClick={() => {
+                    usePortalStore.setState({ tenderFormMapOpen: true });
+                  }}
+                  suffix={
+                    <TenderFormMap
+                      onComplete={({ address, lnglat }) => {
+                        form.setFieldValue("fullAddress", address);
+                        form.setFieldValue("geoCoordinate", lnglat.toArray());
+                      }}
+                      defaultLnglat={tender?.geoCoordinate?.coordinates}
+                    />
+                  }
+                /> */}
+        <SearchLocationSelect
+          areaId={areaID}
+          onAddressSelected={({ data }) => {
+            form.setFieldValue("provinceID", data.province?.id);
+            form.setFieldValue("cityID", data.city?.id);
+            form.setFieldValue("districtID", data.district?.id);
+            form.setFieldValue("geoCoordinate", [data.lng, data.lat]);
+          }}
+        />
       </Form.Item>
-    ))
+      {queryRef ? (
+        <ProvinceCityDistrictSelector queryRef={queryRef} />
+      ) : (
+        ["省", "市", "区"].map((label, i) => (
+          <Form.Item key={i} label={label}>
+            <Select />
+          </Form.Item>
+        ))
+      )}
+    </>
   );
 }
 
@@ -1121,8 +1129,6 @@ function ProvinceCityDistrictSelector({
     ProvinceCityDistrictSelectorQuery,
     queryRef,
   );
-
-  console.log(data);
 
   const provinceID = Form.useWatch("provinceID");
   const cityID = Form.useWatch("cityID");

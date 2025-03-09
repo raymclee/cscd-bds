@@ -1,6 +1,6 @@
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { Select, SelectProps, Spin } from "antd";
 import { useState } from "react";
@@ -9,14 +9,18 @@ import {
   searchLocationSelectQuery,
   searchLocationSelectQuery$data,
 } from "__generated__/searchLocationSelectQuery.graphql";
+import { DefaultOptionType } from "antd/es/select";
 
 type SearchLocationSelectProps = {
+  areaId?: string;
   onAddressSelected?: (
-    address: searchLocationSelectQuery$data["inputtips"][number],
+    data: searchLocationSelectQuery$data["inputtips"][number] &
+      DefaultOptionType,
   ) => void;
 } & SelectProps;
 
 export function SearchLocationSelect({
+  areaId,
   onAddressSelected,
   ...props
 }: SearchLocationSelectProps) {
@@ -24,28 +28,28 @@ export function SearchLocationSelect({
   const [fetching, setFetching] = useState(false);
   const refFetchId = useRef<string | null>(null);
   const [options, setOptions] = useState<SelectProps["options"]>([]);
-
-  useEffect(() => {
-    if (props.value) {
-      setOptions([{ label: props.value, value: props.value }]);
-    }
-  }, [props.value]);
+  const [notFoundText, setNotFoundText] = useState<string | null>("请输入地址");
 
   const onSearch = useDebounceCallback((keyword) => {
-    if (keyword.length < 2) return;
+    if (!areaId || keyword.length < 2) return;
 
     refFetchId.current = Date.now().toString();
     const fetchId = refFetchId.current;
     setFetching(true);
+    props.onChange?.(null);
     setOptions([]);
     fetchQuery<searchLocationSelectQuery>(
       environment,
       graphql`
-        query searchLocationSelectQuery($keyword: String!) {
-          inputtips(keyword: $keyword) {
+        query searchLocationSelectQuery($areaId: ID!, $keyword: String!) {
+          inputtips(areaId: $areaId, keyword: $keyword) {
+            id
             name
             address
             province {
+              area {
+                id
+              }
               id
               name
             }
@@ -62,19 +66,23 @@ export function SearchLocationSelect({
           }
         }
       `,
-      { keyword },
+      { areaId, keyword },
     )
       .toPromise()
       .then((result) => {
         if (refFetchId.current === fetchId) {
           setOptions(
             result?.inputtips.map((u) => ({
+              id: u.id,
               label: u.name,
               value: u.name,
               data: u,
-              address: `${u.province?.name}${u.city?.name}${u.district?.name}${u.address}`,
+              address: `${u.province?.name}${u.city?.name ?? ""}${u.district?.name}${u.address}`,
             })),
           );
+        }
+        if (result?.inputtips.length === 0) {
+          setNotFoundText("没有找到相关地址");
         }
       })
       .catch(console.error)
@@ -91,8 +99,13 @@ export function SearchLocationSelect({
       options={options}
       onSearch={onSearch}
       onSelect={(value, option) => {
-        onAddressSelected?.(option?.data);
+        props.onChange?.(value);
+        onAddressSelected?.(
+          option as searchLocationSelectQuery$data["inputtips"][number] &
+            DefaultOptionType,
+        );
       }}
+      // value={value}
       filterOption={false}
       // labelInValue
       notFoundContent={
@@ -100,14 +113,18 @@ export function SearchLocationSelect({
           <div className="flex items-center justify-center">
             <Spin size="small" />
           </div>
-        ) : null
+        ) : (
+          <div className="flex items-center justify-center">
+            <span className="text-xs text-gray-500">{notFoundText}</span>
+          </div>
+        )
       }
       optionRender={(option) => {
-        const address = `${option?.data?.data?.province?.name}${option?.data?.data?.city?.name}${option?.data?.data?.district?.name}${option?.data?.data?.address}`;
+        const address = `${option?.data?.data?.province?.name}${option?.data?.data?.city?.name ?? ""}${option?.data?.data?.district?.name ?? ""}${option?.data?.data?.address}`;
         return (
           <div
             className="flex flex-col items-baseline gap-1"
-            key={option?.value}
+            key={option?.data?.id}
           >
             <div>{option?.label}</div>
             <div className="flex items-center gap-1 text-xs text-gray-500">

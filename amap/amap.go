@@ -108,7 +108,6 @@ func (a *AMap) Place(keyword string) (PlaceResponse, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
 		return PlaceResponse{}, err
 	}
-	fmt.Println(out)
 	count = out.Count
 
 	for {
@@ -181,7 +180,6 @@ func (a *AMap) LocationTips(keyword string) (LocationTipsResponse, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&geoResp); err != nil {
 		return LocationTipsResponse{}, err
 	}
-	fmt.Println(geoResp)
 	return geoResp, nil
 }
 

@@ -56,7 +56,7 @@ type QueryResolver interface {
 	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	SearchFeishuUser(ctx context.Context, keyword string) ([]*model.FeishuUser, error)
 	SearchLocation(ctx context.Context, keyword string) ([]*model.Location, error)
-	Inputtips(ctx context.Context, keyword string) ([]*model.Location, error)
+	Inputtips(ctx context.Context, areaID xid.ID, keyword string) ([]*model.Location, error)
 	AmapRegeo(ctx context.Context, lng float64, lat float64) ([]*model.Location, error)
 	TopCompetitors(ctx context.Context, first *int) ([]*model.TopCompetitor, error)
 	BiToken(ctx context.Context) (string, error)
@@ -4005,13 +4005,40 @@ func (ec *executionContext) field_Query_districts_argsWhere(
 func (ec *executionContext) field_Query_inputtips_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_inputtips_argsKeyword(ctx, rawArgs)
+	arg0, err := ec.field_Query_inputtips_argsAreaID(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["keyword"] = arg0
+	args["areaId"] = arg0
+	arg1, err := ec.field_Query_inputtips_argsKeyword(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["keyword"] = arg1
 	return args, nil
 }
+func (ec *executionContext) field_Query_inputtips_argsAreaID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (xid.ID, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["areaId"]
+	if !ok {
+		var zeroVal xid.ID
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("areaId"))
+	if tmp, ok := rawArgs["areaId"]; ok {
+		return ec.unmarshalNID2cscdᚑbdsᚋstoreᚋentᚋschemaᚋxidᚐID(ctx, tmp)
+	}
+
+	var zeroVal xid.ID
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_inputtips_argsKeyword(
 	ctx context.Context,
 	rawArgs map[string]interface{},
@@ -20620,7 +20647,7 @@ func (ec *executionContext) _Query_inputtips(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Inputtips(rctx, fc.Args["keyword"].(string))
+		return ec.resolvers.Query().Inputtips(rctx, fc.Args["areaId"].(xid.ID), fc.Args["keyword"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
