@@ -230,7 +230,7 @@ func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
 }
 
 func (c *Customer) VisitRecords(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
 	opts := []VisitRecordPaginateOption{
 		WithVisitRecordOrder(orderBy),
@@ -534,7 +534,7 @@ func (t *Tender) District(ctx context.Context) (*District, error) {
 }
 
 func (t *Tender) VisitRecords(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
 	opts := []VisitRecordPaginateOption{
 		WithVisitRecordOrder(orderBy),
@@ -646,7 +646,7 @@ func (u *User) Tenders(
 }
 
 func (u *User) VisitRecords(
-	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy *VisitRecordOrder, where *VisitRecordWhereInput,
+	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
 	opts := []VisitRecordPaginateOption{
 		WithVisitRecordOrder(orderBy),

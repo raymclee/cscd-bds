@@ -72,6 +72,7 @@ func (VisitRecord) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),
 		entgql.QueryField(),
+		entgql.MultiOrder(),
 		entgql.Mutations(
 			entgql.MutationCreate(),
 			entgql.MutationUpdate(),

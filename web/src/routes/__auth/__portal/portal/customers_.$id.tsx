@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { loadQuery } from 'react-relay'
+import { createFileRoute } from "@tanstack/react-router";
+import { loadQuery } from "react-relay";
 import node, {
   customersDetailPageQuery,
-} from '__generated__/customersDetailPageQuery.graphql'
-import * as v from 'valibot'
+} from "__generated__/customersDetailPageQuery.graphql";
+import * as v from "valibot";
 
 const customerDetailSearchSchema = v.object({
   tab: v.optional(
@@ -13,14 +13,15 @@ const customerDetailSearchSchema = v.object({
     ),
     1,
   ),
-})
+});
 
-export const Route = createFileRoute('/__auth/__portal/portal/customers_/$id')({
-  loader({ context: { RelayEnvironment }, params: { id } }) {
+export const Route = createFileRoute("/__auth/__portal/portal/customers_/$id")({
+  loader({ context: { RelayEnvironment, session }, params: { id } }) {
     return loadQuery<customersDetailPageQuery>(RelayEnvironment, node, {
       id,
-      orderBy: { field: 'DATE', direction: 'DESC' },
-    })
+      orderBy: [{ field: "DATE", direction: "DESC" }],
+      userId: session.userId,
+    });
   },
   validateSearch: customerDetailSearchSchema,
-})
+});

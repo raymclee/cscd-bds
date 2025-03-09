@@ -53,7 +53,7 @@ type QueryResolver interface {
 	Provinces(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) (*ent.ProvinceConnection, error)
 	Tenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
 	Users(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) (*ent.UserConnection, error)
-	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
+	VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 	SearchFeishuUser(ctx context.Context, keyword string) ([]*model.FeishuUser, error)
 	SearchLocation(ctx context.Context, keyword string) ([]*model.Location, error)
 	Inputtips(ctx context.Context, areaID xid.ID, keyword string) ([]*model.Location, error)
@@ -67,6 +67,7 @@ type TenderResolver interface {
 }
 type UserResolver interface {
 	MyTenders(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error)
+	MyVisitRecords(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error)
 }
 
 // endregion ************************** generated!.gotpl **************************
@@ -1702,22 +1703,22 @@ func (ec *executionContext) field_Customer_visitRecords_argsLast(
 func (ec *executionContext) field_Customer_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -5519,22 +5520,22 @@ func (ec *executionContext) field_Query_visitRecords_argsLast(
 func (ec *executionContext) field_Query_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -5686,22 +5687,22 @@ func (ec *executionContext) field_Tender_visitRecords_argsLast(
 func (ec *executionContext) field_Tender_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -6228,6 +6229,173 @@ func (ec *executionContext) field_User_myTenders_argsWhere(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_User_myVisitRecords_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_User_myVisitRecords_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_User_myVisitRecords_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_User_myVisitRecords_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_User_myVisitRecords_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_User_myVisitRecords_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_User_myVisitRecords_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_User_myVisitRecords_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myVisitRecords_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myVisitRecords_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[xid.ID], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[xid.ID]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[xid.ID]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myVisitRecords_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myVisitRecords_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*ent.VisitRecordOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal []*ent.VisitRecordOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*ent.VisitRecordOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_User_myVisitRecords_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.VisitRecordWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.VisitRecordWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOVisitRecordWhereInput2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.VisitRecordWhereInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_User_projects_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -6688,22 +6856,22 @@ func (ec *executionContext) field_User_visitRecords_argsLast(
 func (ec *executionContext) field_User_visitRecords_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.VisitRecordOrder, error) {
+) ([]*ent.VisitRecordOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.VisitRecordOrder
+		var zeroVal []*ent.VisitRecordOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, tmp)
+		return ec.unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx, tmp)
 	}
 
-	var zeroVal *ent.VisitRecordOrder
+	var zeroVal []*ent.VisitRecordOrder
 	return zeroVal, nil
 }
 
@@ -10385,6 +10553,8 @@ func (ec *executionContext) fieldContext_Customer_sales(_ context.Context, field
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -10474,6 +10644,8 @@ func (ec *executionContext) fieldContext_Customer_createdBy(_ context.Context, f
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -10495,7 +10667,7 @@ func (ec *executionContext) _Customer_visitRecords(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -20620,7 +20792,7 @@ func (ec *executionContext) _Query_visitRecords(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().VisitRecords(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return ec.resolvers.Query().VisitRecords(rctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -24140,6 +24312,8 @@ func (ec *executionContext) fieldContext_Tender_finder(_ context.Context, field 
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24229,6 +24403,8 @@ func (ec *executionContext) fieldContext_Tender_createdBy(_ context.Context, fie
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24318,6 +24494,8 @@ func (ec *executionContext) fieldContext_Tender_followingSales(_ context.Context
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -24544,7 +24722,7 @@ func (ec *executionContext) _Tender_visitRecords(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -25973,6 +26151,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -26062,6 +26242,8 @@ func (ec *executionContext) fieldContext_User_teamMembers(_ context.Context, fie
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -26146,7 +26328,7 @@ func (ec *executionContext) _User_visitRecords(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+		return obj.VisitRecords(ctx, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -26315,6 +26497,69 @@ func (ec *executionContext) fieldContext_User_myTenders(ctx context.Context, fie
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_User_myTenders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_myVisitRecords(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_myVisitRecords(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.User().MyVisitRecords(rctx, obj, fc.Args["after"].(*entgql.Cursor[xid.ID]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[xid.ID]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*ent.VisitRecordOrder), fc.Args["where"].(*ent.VisitRecordWhereInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ent.VisitRecordConnection)
+	fc.Result = res
+	return ec.marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_myVisitRecords(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_VisitRecordConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_VisitRecordConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_VisitRecordConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type VisitRecordConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_User_myVisitRecords_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -26548,6 +26793,8 @@ func (ec *executionContext) fieldContext_UserEdge_node(_ context.Context, field 
 				return ec.fieldContext_User_projects(ctx, field)
 			case "myTenders":
 				return ec.fieldContext_User_myTenders(ctx, field)
+			case "myVisitRecords":
+				return ec.fieldContext_User_myVisitRecords(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -58325,6 +58572,42 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "myVisitRecords":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_myVisitRecords(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -59511,6 +59794,11 @@ func (ec *executionContext) marshalNVisitRecordConnection2ᚖcscdᚑbdsᚋstore�
 		return graphql.Null
 	}
 	return ec._VisitRecordConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx context.Context, v interface{}) (*ent.VisitRecordOrder, error) {
+	res, err := ec.unmarshalInputVisitRecordOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNVisitRecordOrderField2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderField(ctx context.Context, v interface{}) (*ent.VisitRecordOrderField, error) {
@@ -60977,12 +61265,24 @@ func (ec *executionContext) marshalOVisitRecordEdge2ᚖcscdᚑbdsᚋstoreᚋent�
 	return ec._VisitRecordEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx context.Context, v interface{}) (*ent.VisitRecordOrder, error) {
+func (ec *executionContext) unmarshalOVisitRecordOrder2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrderᚄ(ctx context.Context, v interface{}) ([]*ent.VisitRecordOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalInputVisitRecordOrder(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*ent.VisitRecordOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNVisitRecordOrder2ᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOVisitRecordWhereInput2ᚕᚖcscdᚑbdsᚋstoreᚋentᚐVisitRecordWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.VisitRecordWhereInput, error) {

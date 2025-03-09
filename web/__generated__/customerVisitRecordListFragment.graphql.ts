@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<18ebd7bda10381ac408549561a6cfa04>>
+ * @generated SignedSource<<97123b352f7d0394a1c22ede17334f95>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -177,10 +177,10 @@ const node: ReaderFragment = {
       "storageKey": null
     }
   ],
-  "type": "Customer",
+  "type": "User",
   "abstractKey": null
 };
 
-(node as any).hash = "74a95a8da3189f14cdd27bbc235944bb";
+(node as any).hash = "a3b03a2d242e31277c4d71df8cec0482";
 
 export default node;

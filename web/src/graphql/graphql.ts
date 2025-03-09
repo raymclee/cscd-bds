@@ -869,7 +869,7 @@ export type CustomerVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -3709,7 +3709,7 @@ export type QueryVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -3821,7 +3821,7 @@ export type TenderVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 
@@ -5385,6 +5385,7 @@ export type User = Node & {
   leader?: Maybe<User>;
   leaderID?: Maybe<Scalars['ID']['output']>;
   myTenders: TenderConnection;
+  myVisitRecords: VisitRecordConnection;
   name?: Maybe<Scalars['String']['output']>;
   openID: Scalars['String']['output'];
   projects: ProjectConnection;
@@ -5426,6 +5427,16 @@ export type UserMyTendersArgs = {
 };
 
 
+export type UserMyVisitRecordsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
+  where?: InputMaybe<VisitRecordWhereInput>;
+};
+
+
 export type UserProjectsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5451,7 +5462,7 @@ export type UserVisitRecordsArgs = {
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<VisitRecordOrder>;
+  orderBy?: InputMaybe<Array<VisitRecordOrder>>;
   where?: InputMaybe<VisitRecordWhereInput>;
 };
 

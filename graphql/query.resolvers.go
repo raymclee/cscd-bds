@@ -14,6 +14,7 @@ import (
 	"cscd-bds/store/ent/schema/xid"
 	"cscd-bds/store/ent/tender"
 	"cscd-bds/store/ent/user"
+	"cscd-bds/store/ent/visitrecord"
 	"fmt"
 	"io"
 	"net/http"
@@ -267,6 +268,26 @@ func (r *userResolver) MyTenders(ctx context.Context, obj *ent.User, after *entg
 	}
 	conn, err := q.
 		Paginate(ctx, after, first, before, last, ent.WithTenderOrder(orderBy), ent.WithTenderFilter(where.Filter))
+	if err != nil {
+		return nil, err
+	}
+	return conn, nil
+}
+
+// MyVisitRecords is the resolver for the myVisitRecords field.
+func (r *userResolver) MyVisitRecords(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
+	var q *ent.VisitRecordQuery
+	if obj.IsAdmin || obj.IsCeo || obj.IsSuperAdmin {
+		q = r.store.VisitRecord.Query()
+	} else {
+		q = r.store.VisitRecord.Query().Where(
+			visitrecord.And(
+				visitrecord.HasFollowUpBysWith(user.ID(obj.ID)),
+			),
+		)
+	}
+	conn, err := q.
+		Paginate(ctx, after, first, before, last, ent.WithVisitRecordOrder(orderBy), ent.WithVisitRecordFilter(where.Filter))
 	if err != nil {
 		return nil, err
 	}

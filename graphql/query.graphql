@@ -20,6 +20,14 @@ extend type User {
     orderBy: [TenderOrder!]
     where: TenderWhereInput
   ): TenderConnection!
+  myVisitRecords(
+    after: Cursor
+    first: Int
+    before: Cursor
+    last: Int
+    orderBy: [VisitRecordOrder!]
+    where: VisitRecordWhereInput
+  ): VisitRecordConnection!
 }
 
 type FeishuUser {

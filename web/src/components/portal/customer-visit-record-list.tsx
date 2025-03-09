@@ -4,18 +4,21 @@ import { graphql, useFragment } from "react-relay";
 import { VisitRecordItem } from "./visit-record-item";
 
 export function CustomerVisitRecordList(props: {
-  customer: customerVisitRecordListFragment$key;
+  user: customerVisitRecordListFragment$key;
 }) {
   const data = useFragment(
     graphql`
-      fragment customerVisitRecordListFragment on Customer
+      fragment customerVisitRecordListFragment on User
       @argumentDefinitions(
         first: { type: Int }
         last: { type: Int }
-        orderBy: { type: "VisitRecordOrder" }
+        orderBy: { type: "[VisitRecordOrder!]!" }
       ) {
-        visitRecords(first: $first, last: $last, orderBy: $orderBy)
-          @connection(key: "customerVisitRecordListFragment_visitRecords") {
+        visitRecords: myVisitRecords(
+          first: $first
+          last: $last
+          orderBy: $orderBy
+        ) @connection(key: "customerVisitRecordListFragment_visitRecords") {
           __id
           edges {
             node {
@@ -26,7 +29,7 @@ export function CustomerVisitRecordList(props: {
         }
       }
     `,
-    props.customer,
+    props.user,
   );
 
   return (

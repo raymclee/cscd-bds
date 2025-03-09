@@ -90,7 +90,7 @@ func (r *queryResolver) Users(ctx context.Context, after *entgql.Cursor[xid.ID],
 }
 
 // VisitRecords is the resolver for the visitRecords field.
-func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
+func (r *queryResolver) VisitRecords(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
 	return r.store.VisitRecord.Query().Paginate(ctx, after, first, before, last, ent.WithVisitRecordFilter(where.Filter), ent.WithVisitRecordOrder(orderBy))
 }
 

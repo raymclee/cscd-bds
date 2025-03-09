@@ -54,7 +54,7 @@ export const mapIndexPageQuery = graphql`
     $orderBy: [TenderOrder!]
     $first: Int
     $last: Int
-    $visitOrderBy: VisitRecordOrder
+    $visitOrderBy: [VisitRecordOrder!]
   ) {
     node(id: $userId) {
       ... on User {
@@ -934,7 +934,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
+          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -988,7 +988,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
+          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"

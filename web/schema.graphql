@@ -895,7 +895,7 @@ type Customer implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
@@ -3658,7 +3658,7 @@ type Query {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
@@ -3773,7 +3773,7 @@ type Tender implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
@@ -5367,6 +5367,7 @@ type User implements Node {
   leader: User
   leaderID: ID
   myTenders(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: [TenderOrder!], where: TenderWhereInput): TenderConnection!
+  myVisitRecords(after: Cursor, before: Cursor, first: Int, last: Int, orderBy: [VisitRecordOrder!], where: VisitRecordWhereInput): VisitRecordConnection!
   name: String
   openID: String!
   projects(
@@ -5416,7 +5417,7 @@ type User implements Node {
     """Returns the last _n_ elements from the list."""
     last: Int
     """Ordering options for VisitRecords returned from the connection."""
-    orderBy: VisitRecordOrder
+    orderBy: [VisitRecordOrder!]
     """Filtering options for VisitRecords returned from the connection."""
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
