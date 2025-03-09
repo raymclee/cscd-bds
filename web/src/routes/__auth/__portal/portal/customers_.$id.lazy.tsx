@@ -1,7 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { customersDetailPageQuery } from "__generated__/customersDetailPageQuery.graphql";
 import { Card, Result } from "antd";
-import * as React from "react";
 import { usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 import { CustomerDetail } from "~/components/portal/customer-detail";
@@ -23,6 +22,7 @@ function RouteComponent() {
         $first: Int
         $last: Int
         $userId: ID!
+        $where: VisitRecordWhereInput
       ) {
         node(id: $id) {
           ... on Customer {
@@ -30,25 +30,28 @@ function RouteComponent() {
             sales {
               id
             }
-            tenders(first: $first, last: $last)
-              @connection(key: "customerTenderListFragment_tenders") {
-              edges {
-                __id
-              }
-            }
-
             ...customerDetailFragment
-
             ...customerTenderListFragment @arguments(first: $first, last: $last)
           }
         }
 
         user: node(id: $userId) {
           ... on User {
+            tenders: myTenders(
+              first: $first
+              last: $last
+              where: { hasCustomerWith: { id: $id } }
+            ) @connection(key: "customerTenderListFragment_tenders") {
+              edges {
+                __id
+              }
+            }
+
             visitRecords: myVisitRecords(
               first: $first
               last: $last
               orderBy: $orderBy
+              where: $where
             ) @connection(key: "customerVisitRecordListFragment_visitRecords") {
               edges {
                 __id
@@ -56,7 +59,12 @@ function RouteComponent() {
             }
 
             ...customerVisitRecordListFragment
-              @arguments(first: $first, last: $last, orderBy: $orderBy)
+              @arguments(
+                first: $first
+                last: $last
+                orderBy: $orderBy
+                where: $where
+              )
           }
         }
       }
@@ -99,7 +107,7 @@ function RouteComponent() {
         tabList={[
           {
             key: "1",
-            tab: `项目列表 (${customer.tenders?.edges?.length || 0})`,
+            tab: `项目列表 (${data.user?.tenders?.edges?.length || 0})`,
           },
           {
             key: "2",

@@ -1,3 +1,4 @@
+import { useRouteContext } from "@tanstack/react-router";
 import { visitRecordFormDrawerQuery } from "__generated__/visitRecordFormDrawerQuery.graphql";
 import {
   App,
@@ -110,6 +111,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
   const visitRecord = usePortalStore(
     (state) => state.visitRecordFormVisitRecord,
   );
+  const { session } = useRouteContext({ from: "/__auth" });
 
   const onClose = () => {
     usePortalStore.setState({
@@ -158,6 +160,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
                 onClose();
               },
               onError: (error) => {
+                console.error(error);
                 message.destroy();
                 message.error(error.message);
               },
@@ -168,12 +171,17 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
                 input: { ...values, customerID: customerId },
                 connections: [
                   ConnectionHandler.getConnectionID(
-                    customerId,
+                    session.userId,
                     "customerVisitRecordListFragment_visitRecords",
                     {
-                      orderBy: {
-                        direction: "DESC",
-                        field: "DATE",
+                      orderBy: [
+                        {
+                          direction: "DESC",
+                          field: "DATE",
+                        },
+                      ],
+                      where: {
+                        customerID: customerId,
                       },
                     },
                   ),
@@ -189,6 +197,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
                 onClose();
               },
               onError: (error) => {
+                console.error(error);
                 message.destroy();
                 message.error(error.message);
               },
@@ -255,7 +264,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
+      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

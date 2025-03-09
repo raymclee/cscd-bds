@@ -13,11 +13,13 @@ export function CustomerVisitRecordList(props: {
         first: { type: Int }
         last: { type: Int }
         orderBy: { type: "[VisitRecordOrder!]!" }
+        where: { type: "VisitRecordWhereInput" }
       ) {
         visitRecords: myVisitRecords(
           first: $first
           last: $last
           orderBy: $orderBy
+          where: $where
         ) @connection(key: "customerVisitRecordListFragment_visitRecords") {
           __id
           edges {

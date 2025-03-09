@@ -128,33 +128,34 @@ function RouteComponent() {
       title: "规模",
       render: (value) => customerSizeText(value),
     },
-    {
-      width: 100,
-      dataIndex: "tenders",
-      title: "商机数",
-      render: (value, record) => record.tenders?.edges?.length,
-    },
-    {
-      width: 100,
-      dataIndex: "visitRecords",
-      title: "拜访数",
-      render: (value, record) => record.visitRecords?.edges?.length,
-    },
-    {
-      dataIndex: "updatedAt",
-      title: "更新时间",
-      width: 300,
-      render: (value) => (
-        <Typography.Text>{dayjs(value).format("LLL")}</Typography.Text>
-      ),
-    },
   ];
 
-  // if (canEdit(session)) {
-  //   columns.push({
-  //     dataIndex: "actions",
-  //     title: "操作",
-  //     render: (_, record) => (
+  if (session.isAdmin || session.isSuperAdmin) {
+    columns.push(
+      {
+        width: 100,
+        dataIndex: "tenders",
+        title: "商机数",
+        render: (value, record) => record.tenders?.edges?.length,
+      },
+      {
+        width: 100,
+        dataIndex: "visitRecords",
+        title: "拜访数",
+        render: (value, record) => record.visitRecords?.edges?.length,
+      },
+    );
+  }
+
+  columns.push({
+    dataIndex: "updatedAt",
+    title: "更新时间",
+    width: 300,
+    render: (value) => (
+      <Typography.Text>{dayjs(value).format("LLL")}</Typography.Text>
+    ),
+  });
+
   //       <Button
   //         className="-ml-2"
   //         type="link"

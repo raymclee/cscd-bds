@@ -21,6 +21,7 @@ export const Route = createFileRoute("/__auth/__portal/portal/customers_/$id")({
       id,
       orderBy: [{ field: "DATE", direction: "DESC" }],
       userId: session.userId,
+      where: { customerID: id },
     });
   },
   validateSearch: customerDetailSearchSchema,
