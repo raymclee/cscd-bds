@@ -64,6 +64,11 @@ func (r *queryResolver) Plots(ctx context.Context, after *entgql.Cursor[xid.ID],
 	return r.store.Plot.Query().Paginate(ctx, after, first, before, last, ent.WithPlotFilter(where.Filter), ent.WithPlotOrder(orderBy))
 }
 
+// PotentialTenders is the resolver for the potentialTenders field.
+func (r *queryResolver) PotentialTenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.PotentialTenderOrder, where *ent.PotentialTenderWhereInput) (*ent.PotentialTenderConnection, error) {
+	panic(fmt.Errorf("not implemented: PotentialTenders - potentialTenders"))
+}
+
 // Projects is the resolver for the projects field.
 func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) (*ent.ProjectConnection, error) {
 	return r.store.Project.Query().Paginate(ctx, after, first, before, last, ent.WithProjectFilter(where.Filter), ent.WithProjectOrder(orderBy))

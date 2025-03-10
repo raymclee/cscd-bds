@@ -21,6 +21,7 @@ import {
 import zhCN from "antd/lib/locale/zh_CN";
 import {
   Angry,
+  Bot,
   Building2,
   ContactRound,
   LogOut,
@@ -83,6 +84,11 @@ function RouteComponent() {
         <Link to="/portal/customers">客户</Link>,
         "/portal/customers",
         <ContactRound size={16} />,
+      ),
+      getItem(
+        <Link to="/portal/potential-tenders">潜在商机</Link>,
+        "/portal/potential-tenders",
+        <Bot size={16} />,
       ),
     ],
     [],

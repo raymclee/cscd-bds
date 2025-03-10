@@ -249,6 +249,29 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 		go r.sap.InsertTender(r.store, t)
 	}
 
+	go func() {
+		tender, err := r.store.Tender.Query().
+			Where(tender.ID(t.ID)).
+			WithCreatedBy().
+			WithArea().
+			WithCustomer().
+			WithFollowingSales().
+			WithFinder().
+			Only(context.Background())
+		if err != nil {
+			fmt.Printf("failed to get tender: %v\n", err)
+			return
+		}
+		userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
+		for i, u := range tender.Edges.FollowingSales {
+			userIDs[i] = u.OpenID
+		}
+		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
+		if err := r.feishu.SendMessage(context.Background(), userIDs, tender); err != nil {
+			fmt.Printf("failed to send message: %v\n", err)
+		}
+	}()
+
 	return &ent.TenderConnection{
 		Edges: []*ent.TenderEdge{
 			{Node: t},
@@ -383,6 +406,29 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	if t.Status == 3 {
 		go r.sap.InsertTender(r.store, t)
 	}
+
+	go func() {
+		tender, err := r.store.Tender.Query().
+			Where(tender.ID(t.ID)).
+			WithCreatedBy().
+			WithArea().
+			WithCustomer().
+			WithFollowingSales().
+			WithFinder().
+			Only(context.Background())
+		if err != nil {
+			fmt.Printf("failed to get tender: %v\n", err)
+			return
+		}
+		userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
+		for i, u := range tender.Edges.FollowingSales {
+			userIDs[i] = u.OpenID
+		}
+		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
+		if err := r.feishu.SendMessage(context.Background(), userIDs, tender); err != nil {
+			fmt.Printf("failed to send message: %v\n", err)
+		}
+	}()
 
 	return t, nil
 }

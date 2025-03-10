@@ -303,6 +303,30 @@ func (f PlotMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) 
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlotMutation", m)
 }
 
+// The PotentialTenderQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type PotentialTenderQueryRuleFunc func(context.Context, *ent.PotentialTenderQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f PotentialTenderQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PotentialTenderQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PotentialTenderQuery", q)
+}
+
+// The PotentialTenderMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type PotentialTenderMutationRuleFunc func(context.Context, *ent.PotentialTenderMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f PotentialTenderMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PotentialTenderMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PotentialTenderMutation", m)
+}
+
 // The ProjectQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type ProjectQueryRuleFunc func(context.Context, *ent.ProjectQuery) error
@@ -522,6 +546,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.PlotQuery:
 		return q.Filter(), nil
+	case *ent.PotentialTenderQuery:
+		return q.Filter(), nil
 	case *ent.ProjectQuery:
 		return q.Filter(), nil
 	case *ent.ProjectStaffQuery:
@@ -558,6 +584,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.OperationMutation:
 		return m.Filter(), nil
 	case *ent.PlotMutation:
+		return m.Filter(), nil
+	case *ent.PotentialTenderMutation:
 		return m.Filter(), nil
 	case *ent.ProjectMutation:
 		return m.Filter(), nil

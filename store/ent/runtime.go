@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
@@ -195,6 +196,27 @@ func init() {
 	plotDescID := plotMixinFields0[0].Descriptor()
 	// plot.DefaultID holds the default value on creation for the id field.
 	plot.DefaultID = plotDescID.Default.(func() xid.ID)
+	potentialtenderMixin := schema.PotentialTender{}.Mixin()
+	potentialtenderMixinFields0 := potentialtenderMixin[0].Fields()
+	_ = potentialtenderMixinFields0
+	potentialtenderMixinFields1 := potentialtenderMixin[1].Fields()
+	_ = potentialtenderMixinFields1
+	potentialtenderFields := schema.PotentialTender{}.Fields()
+	_ = potentialtenderFields
+	// potentialtenderDescCreatedAt is the schema descriptor for created_at field.
+	potentialtenderDescCreatedAt := potentialtenderMixinFields1[0].Descriptor()
+	// potentialtender.DefaultCreatedAt holds the default value on creation for the created_at field.
+	potentialtender.DefaultCreatedAt = potentialtenderDescCreatedAt.Default.(func() time.Time)
+	// potentialtenderDescUpdatedAt is the schema descriptor for updated_at field.
+	potentialtenderDescUpdatedAt := potentialtenderMixinFields1[1].Descriptor()
+	// potentialtender.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	potentialtender.DefaultUpdatedAt = potentialtenderDescUpdatedAt.Default.(func() time.Time)
+	// potentialtender.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	potentialtender.UpdateDefaultUpdatedAt = potentialtenderDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// potentialtenderDescID is the schema descriptor for id field.
+	potentialtenderDescID := potentialtenderMixinFields0[0].Descriptor()
+	// potentialtender.DefaultID holds the default value on creation for the id field.
+	potentialtender.DefaultID = potentialtenderDescID.Default.(func() xid.ID)
 	projectMixin := schema.Project{}.Mixin()
 	projectMixinFields0 := projectMixin[0].Fields()
 	_ = projectMixinFields0
@@ -312,8 +334,14 @@ func init() {
 	tenderDescStatus := tenderFields[1].Descriptor()
 	// tender.DefaultStatus holds the default value on creation for the status field.
 	tender.DefaultStatus = tenderDescStatus.Default.(int)
+	// tenderDescClassify is the schema descriptor for classify field.
+	tenderDescClassify := tenderFields[5].Descriptor()
+	// tender.DefaultClassify holds the default value on creation for the classify field.
+	tender.DefaultClassify = tenderDescClassify.Default.(int)
+	// tender.ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.
+	tender.ClassifyValidator = tenderDescClassify.Validators[0].(func(int) error)
 	// tenderDescLevelInvolved is the schema descriptor for level_involved field.
-	tenderDescLevelInvolved := tenderFields[9].Descriptor()
+	tenderDescLevelInvolved := tenderFields[10].Descriptor()
 	// tender.LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
 	tender.LevelInvolvedValidator = func() func(int) error {
 		validators := tenderDescLevelInvolved.Validators
@@ -331,7 +359,7 @@ func init() {
 		}
 	}()
 	// tenderDescSizeAndValueRating is the schema descriptor for size_and_value_rating field.
-	tenderDescSizeAndValueRating := tenderFields[10].Descriptor()
+	tenderDescSizeAndValueRating := tenderFields[11].Descriptor()
 	// tender.SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
 	tender.SizeAndValueRatingValidator = func() func(int) error {
 		validators := tenderDescSizeAndValueRating.Validators
@@ -349,7 +377,7 @@ func init() {
 		}
 	}()
 	// tenderDescCreditAndPaymentRating is the schema descriptor for credit_and_payment_rating field.
-	tenderDescCreditAndPaymentRating := tenderFields[12].Descriptor()
+	tenderDescCreditAndPaymentRating := tenderFields[13].Descriptor()
 	// tender.CreditAndPaymentRatingValidator is a validator for the "credit_and_payment_rating" field. It is called by the builders before save.
 	tender.CreditAndPaymentRatingValidator = func() func(int) error {
 		validators := tenderDescCreditAndPaymentRating.Validators
@@ -367,7 +395,7 @@ func init() {
 		}
 	}()
 	// tenderDescTimeLimitRating is the schema descriptor for time_limit_rating field.
-	tenderDescTimeLimitRating := tenderFields[14].Descriptor()
+	tenderDescTimeLimitRating := tenderFields[15].Descriptor()
 	// tender.TimeLimitRatingValidator is a validator for the "time_limit_rating" field. It is called by the builders before save.
 	tender.TimeLimitRatingValidator = func() func(int) error {
 		validators := tenderDescTimeLimitRating.Validators
@@ -385,7 +413,7 @@ func init() {
 		}
 	}()
 	// tenderDescCustomerRelationshipRating is the schema descriptor for customer_relationship_rating field.
-	tenderDescCustomerRelationshipRating := tenderFields[16].Descriptor()
+	tenderDescCustomerRelationshipRating := tenderFields[17].Descriptor()
 	// tender.CustomerRelationshipRatingValidator is a validator for the "customer_relationship_rating" field. It is called by the builders before save.
 	tender.CustomerRelationshipRatingValidator = func() func(int) error {
 		validators := tenderDescCustomerRelationshipRating.Validators
@@ -403,7 +431,7 @@ func init() {
 		}
 	}()
 	// tenderDescCompetitivePartnershipRating is the schema descriptor for competitive_partnership_rating field.
-	tenderDescCompetitivePartnershipRating := tenderFields[18].Descriptor()
+	tenderDescCompetitivePartnershipRating := tenderFields[19].Descriptor()
 	// tender.CompetitivePartnershipRatingValidator is a validator for the "competitive_partnership_rating" field. It is called by the builders before save.
 	tender.CompetitivePartnershipRatingValidator = func() func(int) error {
 		validators := tenderDescCompetitivePartnershipRating.Validators
@@ -421,19 +449,19 @@ func init() {
 		}
 	}()
 	// tenderDescPrepareToBid is the schema descriptor for prepare_to_bid field.
-	tenderDescPrepareToBid := tenderFields[20].Descriptor()
+	tenderDescPrepareToBid := tenderFields[21].Descriptor()
 	// tender.DefaultPrepareToBid holds the default value on creation for the prepare_to_bid field.
 	tender.DefaultPrepareToBid = tenderDescPrepareToBid.Default.(bool)
 	// tenderDescProjectType is the schema descriptor for project_type field.
-	tenderDescProjectType := tenderFields[22].Descriptor()
+	tenderDescProjectType := tenderFields[23].Descriptor()
 	// tender.ProjectTypeValidator is a validator for the "project_type" field. It is called by the builders before save.
 	tender.ProjectTypeValidator = tenderDescProjectType.Validators[0].(func(string) error)
 	// tenderDescProjectDefinition is the schema descriptor for project_definition field.
-	tenderDescProjectDefinition := tenderFields[23].Descriptor()
+	tenderDescProjectDefinition := tenderFields[24].Descriptor()
 	// tender.ProjectDefinitionValidator is a validator for the "project_definition" field. It is called by the builders before save.
 	tender.ProjectDefinitionValidator = tenderDescProjectDefinition.Validators[0].(func(string) error)
 	// tenderDescKeyProject is the schema descriptor for key_project field.
-	tenderDescKeyProject := tenderFields[44].Descriptor()
+	tenderDescKeyProject := tenderFields[45].Descriptor()
 	// tender.DefaultKeyProject holds the default value on creation for the key_project field.
 	tender.DefaultKeyProject = tenderDescKeyProject.Default.(bool)
 	// tenderDescID is the schema descriptor for id field.

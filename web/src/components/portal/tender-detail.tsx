@@ -484,6 +484,7 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
     tenderWinCompany,
     lastTenderAmount,
     followingSales,
+    finder,
   } = tender;
   return (
     <div className="!space-y-4">
@@ -519,6 +520,16 @@ function GAAndHWTender({ tender }: { tender: tenderDetailFragment$data }) {
             key: "developer",
             label: "業主",
             children: developer ? developer : "-",
+          },
+          {
+            key: "finder",
+            label: "发现人",
+            children: finder?.name || "-",
+          },
+          {
+            key: "followingSales",
+            label: "当前跟踪人",
+            children: followingSales?.map(({ name }) => name).join(", ") || "-",
           },
           {
             key: "architect",

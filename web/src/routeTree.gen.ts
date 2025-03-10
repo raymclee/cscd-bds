@@ -48,6 +48,9 @@ const authdashboardMapLazyImport = createFileRoute('/__auth/__dashboard/map')()
 const authdashboardscaledLazyImport = createFileRoute(
   '/__auth/__dashboard/__scaled',
 )()
+const authportalPortalPotentialTendersLazyImport = createFileRoute(
+  '/__auth/__portal/portal/potential-tenders',
+)()
 const authdashboardscaledmapTendersLazyImport = createFileRoute(
   '/__auth/__dashboard/__scaled/__map/tenders',
 )()
@@ -141,6 +144,19 @@ const authportalPortalIndexRoute = authportalPortalIndexImport.update({
   path: '/',
   getParentRoute: () => authportalPortalRoute,
 } as any)
+
+const authportalPortalPotentialTendersLazyRoute =
+  authportalPortalPotentialTendersLazyImport
+    .update({
+      id: '/potential-tenders',
+      path: '/potential-tenders',
+      getParentRoute: () => authportalPortalRoute,
+    } as any)
+    .lazy(() =>
+      import('./routes/__auth/__portal/portal/potential-tenders.lazy').then(
+        (d) => d.Route,
+      ),
+    )
 
 const authportalPortalTendersRoute = authportalPortalTendersImport
   .update({
@@ -482,6 +498,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authportalPortalTendersImport
       parentRoute: typeof authportalPortalImport
     }
+    '/__auth/__portal/portal/potential-tenders': {
+      id: '/__auth/__portal/portal/potential-tenders'
+      path: '/potential-tenders'
+      fullPath: '/portal/potential-tenders'
+      preLoaderRoute: typeof authportalPortalPotentialTendersLazyImport
+      parentRoute: typeof authportalPortalImport
+    }
     '/__auth/__portal/portal/': {
       id: '/__auth/__portal/portal/'
       path: '/'
@@ -661,6 +684,7 @@ interface authportalPortalRouteChildren {
   authportalPortalCustomersRoute: typeof authportalPortalCustomersRoute
   authportalPortalPlotsRoute: typeof authportalPortalPlotsRoute
   authportalPortalTendersRoute: typeof authportalPortalTendersRoute
+  authportalPortalPotentialTendersLazyRoute: typeof authportalPortalPotentialTendersLazyRoute
   authportalPortalIndexRoute: typeof authportalPortalIndexRoute
   authportalPortalCustomersIdRoute: typeof authportalPortalCustomersIdRoute
   authportalPortalTendersIdRoute: typeof authportalPortalTendersIdRoute
@@ -675,6 +699,8 @@ const authportalPortalRouteChildren: authportalPortalRouteChildren = {
   authportalPortalCustomersRoute: authportalPortalCustomersRoute,
   authportalPortalPlotsRoute: authportalPortalPlotsRoute,
   authportalPortalTendersRoute: authportalPortalTendersRoute,
+  authportalPortalPotentialTendersLazyRoute:
+    authportalPortalPotentialTendersLazyRoute,
   authportalPortalIndexRoute: authportalPortalIndexRoute,
   authportalPortalCustomersIdRoute: authportalPortalCustomersIdRoute,
   authportalPortalTendersIdRoute: authportalPortalTendersIdRoute,
@@ -724,6 +750,7 @@ export interface FileRoutesByFullPath {
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
+  '/portal/potential-tenders': typeof authportalPortalPotentialTendersLazyRoute
   '/portal/': typeof authportalPortalIndexRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
@@ -752,6 +779,7 @@ export interface FileRoutesByTo {
   '/portal/customers': typeof authportalPortalCustomersRoute
   '/portal/plots': typeof authportalPortalPlotsRoute
   '/portal/tenders': typeof authportalPortalTendersRoute
+  '/portal/potential-tenders': typeof authportalPortalPotentialTendersLazyRoute
   '/portal/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/portal/users': typeof authportalPortalAdminUsersRoute
   '/portal/customers/$id': typeof authportalPortalCustomersIdRoute
@@ -786,6 +814,7 @@ export interface FileRoutesById {
   '/__auth/__portal/portal/customers': typeof authportalPortalCustomersRoute
   '/__auth/__portal/portal/plots': typeof authportalPortalPlotsRoute
   '/__auth/__portal/portal/tenders': typeof authportalPortalTendersRoute
+  '/__auth/__portal/portal/potential-tenders': typeof authportalPortalPotentialTendersLazyRoute
   '/__auth/__portal/portal/': typeof authportalPortalIndexRoute
   '/__auth/__portal/portal/_admin/competitors': typeof authportalPortalAdminCompetitorsRoute
   '/__auth/__portal/portal/_admin/users': typeof authportalPortalAdminUsersRoute
@@ -816,6 +845,7 @@ export interface FileRouteTypes {
     | '/portal/customers'
     | '/portal/plots'
     | '/portal/tenders'
+    | '/portal/potential-tenders'
     | '/portal/'
     | '/portal/competitors'
     | '/portal/users'
@@ -843,6 +873,7 @@ export interface FileRouteTypes {
     | '/portal/customers'
     | '/portal/plots'
     | '/portal/tenders'
+    | '/portal/potential-tenders'
     | '/portal/competitors'
     | '/portal/users'
     | '/portal/customers/$id'
@@ -875,6 +906,7 @@ export interface FileRouteTypes {
     | '/__auth/__portal/portal/customers'
     | '/__auth/__portal/portal/plots'
     | '/__auth/__portal/portal/tenders'
+    | '/__auth/__portal/portal/potential-tenders'
     | '/__auth/__portal/portal/'
     | '/__auth/__portal/portal/_admin/competitors'
     | '/__auth/__portal/portal/_admin/users'
@@ -1000,6 +1032,7 @@ export const routeTree = rootRoute
         "/__auth/__portal/portal/customers",
         "/__auth/__portal/portal/plots",
         "/__auth/__portal/portal/tenders",
+        "/__auth/__portal/portal/potential-tenders",
         "/__auth/__portal/portal/",
         "/__auth/__portal/portal/customers_/$id",
         "/__auth/__portal/portal/tenders_/$id",
@@ -1034,6 +1067,10 @@ export const routeTree = rootRoute
     },
     "/__auth/__portal/portal/tenders": {
       "filePath": "__auth/__portal/portal/tenders.tsx",
+      "parent": "/__auth/__portal/portal"
+    },
+    "/__auth/__portal/portal/potential-tenders": {
+      "filePath": "__auth/__portal/portal/potential-tenders.lazy.tsx",
       "parent": "/__auth/__portal/portal"
     },
     "/__auth/__portal/portal/": {

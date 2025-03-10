@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
@@ -71,6 +72,11 @@ var plotImplementors = []string{"Plot", "Node"}
 
 // IsNode implements the Node interface check for GQLGen.
 func (*Plot) IsNode() {}
+
+var potentialtenderImplementors = []string{"PotentialTender", "Node"}
+
+// IsNode implements the Node interface check for GQLGen.
+func (*PotentialTender) IsNode() {}
 
 var projectImplementors = []string{"Project", "Node"}
 
@@ -265,6 +271,19 @@ func (c *Client) noder(ctx context.Context, table string, id xid.ID) (Noder, err
 			Where(plot.ID(uid))
 		if fc := graphql.GetFieldContext(ctx); fc != nil {
 			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, plotImplementors...); err != nil {
+				return nil, err
+			}
+		}
+		return query.Only(ctx)
+	case potentialtender.Table:
+		var uid xid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.PotentialTender.Query().
+			Where(potentialtender.ID(uid))
+		if fc := graphql.GetFieldContext(ctx); fc != nil {
+			if err := query.collectField(ctx, true, graphql.GetOperationContext(ctx), fc.Field, nil, potentialtenderImplementors...); err != nil {
 				return nil, err
 			}
 		}
@@ -549,6 +568,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []xid.ID) ([]Node
 		query := c.Plot.Query().
 			Where(plot.IDIn(ids...))
 		query, err := query.CollectFields(ctx, plotImplementors...)
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case potentialtender.Table:
+		query := c.PotentialTender.Query().
+			Where(potentialtender.IDIn(ids...))
+		query, err := query.CollectFields(ctx, potentialtenderImplementors...)
 		if err != nil {
 			return nil, err
 		}

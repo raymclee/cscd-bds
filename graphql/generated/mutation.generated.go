@@ -2048,6 +2048,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
 			case "tenderDate":
 				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "classify":
+				return ec.fieldContext_Tender_classify(ctx, field)
 			case "discoveryDate":
 				return ec.fieldContext_Tender_discoveryDate(ctx, field)
 			case "address":
@@ -2257,6 +2259,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_estimatedAmount(ctx, field)
 			case "tenderDate":
 				return ec.fieldContext_Tender_tenderDate(ctx, field)
+			case "classify":
+				return ec.fieldContext_Tender_classify(ctx, field)
 			case "discoveryDate":
 				return ec.fieldContext_Tender_discoveryDate(ctx, field)
 			case "address":

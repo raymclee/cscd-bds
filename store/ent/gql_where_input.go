@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
@@ -3832,6 +3833,198 @@ func (i *PlotWhereInput) P() (predicate.Plot, error) {
 		return predicates[0], nil
 	default:
 		return plot.And(predicates...), nil
+	}
+}
+
+// PotentialTenderWhereInput represents a where input for filtering PotentialTender queries.
+type PotentialTenderWhereInput struct {
+	Predicates []predicate.PotentialTender  `json:"-"`
+	Not        *PotentialTenderWhereInput   `json:"not,omitempty"`
+	Or         []*PotentialTenderWhereInput `json:"or,omitempty"`
+	And        []*PotentialTenderWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *xid.ID  `json:"id,omitempty"`
+	IDNEQ   *xid.ID  `json:"idNEQ,omitempty"`
+	IDIn    []xid.ID `json:"idIn,omitempty"`
+	IDNotIn []xid.ID `json:"idNotIn,omitempty"`
+	IDGT    *xid.ID  `json:"idGT,omitempty"`
+	IDGTE   *xid.ID  `json:"idGTE,omitempty"`
+	IDLT    *xid.ID  `json:"idLT,omitempty"`
+	IDLTE   *xid.ID  `json:"idLTE,omitempty"`
+
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *PotentialTenderWhereInput) AddPredicates(predicates ...predicate.PotentialTender) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the PotentialTenderWhereInput filter on the PotentialTenderQuery builder.
+func (i *PotentialTenderWhereInput) Filter(q *PotentialTenderQuery) (*PotentialTenderQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyPotentialTenderWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyPotentialTenderWhereInput is returned in case the PotentialTenderWhereInput is empty.
+var ErrEmptyPotentialTenderWhereInput = errors.New("ent: empty predicate PotentialTenderWhereInput")
+
+// P returns a predicate for filtering potentialtenders.
+// An error is returned if the input is empty or invalid.
+func (i *PotentialTenderWhereInput) P() (predicate.PotentialTender, error) {
+	var predicates []predicate.PotentialTender
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, potentialtender.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.PotentialTender, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, potentialtender.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.PotentialTender, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, potentialtender.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, potentialtender.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, potentialtender.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, potentialtender.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, potentialtender.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, potentialtender.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, potentialtender.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, potentialtender.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, potentialtender.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, potentialtender.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, potentialtender.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, potentialtender.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, potentialtender.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, potentialtender.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, potentialtender.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, potentialtender.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, potentialtender.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, potentialtender.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, potentialtender.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, potentialtender.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, potentialtender.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, potentialtender.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, potentialtender.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, potentialtender.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, potentialtender.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyPotentialTenderWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return potentialtender.And(predicates...), nil
 	}
 }
 
@@ -9168,6 +9361,18 @@ type TenderWhereInput struct {
 	TenderDateIsNil  bool        `json:"tenderDateIsNil,omitempty"`
 	TenderDateNotNil bool        `json:"tenderDateNotNil,omitempty"`
 
+	// "classify" field predicates.
+	Classify       *int  `json:"classify,omitempty"`
+	ClassifyNEQ    *int  `json:"classifyNEQ,omitempty"`
+	ClassifyIn     []int `json:"classifyIn,omitempty"`
+	ClassifyNotIn  []int `json:"classifyNotIn,omitempty"`
+	ClassifyGT     *int  `json:"classifyGT,omitempty"`
+	ClassifyGTE    *int  `json:"classifyGTE,omitempty"`
+	ClassifyLT     *int  `json:"classifyLT,omitempty"`
+	ClassifyLTE    *int  `json:"classifyLTE,omitempty"`
+	ClassifyIsNil  bool  `json:"classifyIsNil,omitempty"`
+	ClassifyNotNil bool  `json:"classifyNotNil,omitempty"`
+
 	// "discovery_date" field predicates.
 	DiscoveryDate      *time.Time  `json:"discoveryDate,omitempty"`
 	DiscoveryDateNEQ   *time.Time  `json:"discoveryDateNEQ,omitempty"`
@@ -10331,6 +10536,36 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.TenderDateNotNil {
 		predicates = append(predicates, tender.TenderDateNotNil())
+	}
+	if i.Classify != nil {
+		predicates = append(predicates, tender.ClassifyEQ(*i.Classify))
+	}
+	if i.ClassifyNEQ != nil {
+		predicates = append(predicates, tender.ClassifyNEQ(*i.ClassifyNEQ))
+	}
+	if len(i.ClassifyIn) > 0 {
+		predicates = append(predicates, tender.ClassifyIn(i.ClassifyIn...))
+	}
+	if len(i.ClassifyNotIn) > 0 {
+		predicates = append(predicates, tender.ClassifyNotIn(i.ClassifyNotIn...))
+	}
+	if i.ClassifyGT != nil {
+		predicates = append(predicates, tender.ClassifyGT(*i.ClassifyGT))
+	}
+	if i.ClassifyGTE != nil {
+		predicates = append(predicates, tender.ClassifyGTE(*i.ClassifyGTE))
+	}
+	if i.ClassifyLT != nil {
+		predicates = append(predicates, tender.ClassifyLT(*i.ClassifyLT))
+	}
+	if i.ClassifyLTE != nil {
+		predicates = append(predicates, tender.ClassifyLTE(*i.ClassifyLTE))
+	}
+	if i.ClassifyIsNil {
+		predicates = append(predicates, tender.ClassifyIsNil())
+	}
+	if i.ClassifyNotNil {
+		predicates = append(predicates, tender.ClassifyNotNil())
 	}
 	if i.DiscoveryDate != nil {
 		predicates = append(predicates, tender.DiscoveryDateEQ(*i.DiscoveryDate))

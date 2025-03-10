@@ -29,6 +29,8 @@ const (
 	FieldEstimatedAmount = "estimated_amount"
 	// FieldTenderDate holds the string denoting the tender_date field in the database.
 	FieldTenderDate = "tender_date"
+	// FieldClassify holds the string denoting the classify field in the database.
+	FieldClassify = "classify"
 	// FieldDiscoveryDate holds the string denoting the discovery_date field in the database.
 	FieldDiscoveryDate = "discovery_date"
 	// FieldAddress holds the string denoting the address field in the database.
@@ -247,6 +249,7 @@ var Columns = []string{
 	FieldName,
 	FieldEstimatedAmount,
 	FieldTenderDate,
+	FieldClassify,
 	FieldDiscoveryDate,
 	FieldAddress,
 	FieldFullAddress,
@@ -332,6 +335,10 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
+	// DefaultClassify holds the default value on creation for the "classify" field.
+	DefaultClassify int
+	// ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.
+	ClassifyValidator func(int) error
 	// LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
 	LevelInvolvedValidator func(int) error
 	// SizeAndValueRatingValidator is a validator for the "size_and_value_rating" field. It is called by the builders before save.
@@ -397,6 +404,11 @@ func ByEstimatedAmount(opts ...sql.OrderTermOption) OrderOption {
 // ByTenderDate orders the results by the tender_date field.
 func ByTenderDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTenderDate, opts...).ToFunc()
+}
+
+// ByClassify orders the results by the classify field.
+func ByClassify(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldClassify, opts...).ToFunc()
 }
 
 // ByDiscoveryDate orders the results by the discovery_date field.

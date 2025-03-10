@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7e4f26247e1aa3f53c698df447d0c47a>>
+ * @generated SignedSource<<7e6e76564d292de09095c2956c35dce3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,12 +21,14 @@ export type UpdateTenderInput = {
   biddingDate?: any | null | undefined;
   biddingInstructions?: string | null | undefined;
   cityID?: string | null | undefined;
+  classify?: number | null | undefined;
   clearAddress?: boolean | null | undefined;
   clearArchitect?: boolean | null | undefined;
   clearAttachements?: boolean | null | undefined;
   clearBiddingDate?: boolean | null | undefined;
   clearBiddingInstructions?: boolean | null | undefined;
   clearCity?: boolean | null | undefined;
+  clearClassify?: boolean | null | undefined;
   clearCompetitivePartnershipRating?: boolean | null | undefined;
   clearCompetitivePartnershipRatingOverview?: boolean | null | undefined;
   clearCompetitor?: boolean | null | undefined;

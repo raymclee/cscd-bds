@@ -30,6 +30,9 @@ type Operation func(*sql.Selector)
 // Plot is the predicate function for plot builders.
 type Plot func(*sql.Selector)
 
+// PotentialTender is the predicate function for potentialtender builders.
+type PotentialTender func(*sql.Selector)
+
 // Project is the predicate function for project builders.
 type Project func(*sql.Selector)
 

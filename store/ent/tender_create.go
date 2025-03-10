@@ -115,6 +115,20 @@ func (tc *TenderCreate) SetNillableTenderDate(t *time.Time) *TenderCreate {
 	return tc
 }
 
+// SetClassify sets the "classify" field.
+func (tc *TenderCreate) SetClassify(i int) *TenderCreate {
+	tc.mutation.SetClassify(i)
+	return tc
+}
+
+// SetNillableClassify sets the "classify" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableClassify(i *int) *TenderCreate {
+	if i != nil {
+		tc.SetClassify(*i)
+	}
+	return tc
+}
+
 // SetDiscoveryDate sets the "discovery_date" field.
 func (tc *TenderCreate) SetDiscoveryDate(t time.Time) *TenderCreate {
 	tc.mutation.SetDiscoveryDate(t)
@@ -1010,6 +1024,10 @@ func (tc *TenderCreate) defaults() {
 		v := tender.DefaultStatus
 		tc.mutation.SetStatus(v)
 	}
+	if _, ok := tc.mutation.Classify(); !ok {
+		v := tender.DefaultClassify
+		tc.mutation.SetClassify(v)
+	}
 	if _, ok := tc.mutation.PrepareToBid(); !ok {
 		v := tender.DefaultPrepareToBid
 		tc.mutation.SetPrepareToBid(v)
@@ -1040,6 +1058,11 @@ func (tc *TenderCreate) check() error {
 	}
 	if _, ok := tc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Tender.name"`)}
+	}
+	if v, ok := tc.mutation.Classify(); ok {
+		if err := tender.ClassifyValidator(v); err != nil {
+			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "Tender.classify": %w`, err)}
+		}
 	}
 	if _, ok := tc.mutation.DiscoveryDate(); !ok {
 		return &ValidationError{Name: "discovery_date", err: errors.New(`ent: missing required field "Tender.discovery_date"`)}
@@ -1159,6 +1182,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.TenderDate(); ok {
 		_spec.SetField(tender.FieldTenderDate, field.TypeTime, value)
 		_node.TenderDate = value
+	}
+	if value, ok := tc.mutation.Classify(); ok {
+		_spec.SetField(tender.FieldClassify, field.TypeInt, value)
+		_node.Classify = value
 	}
 	if value, ok := tc.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)
@@ -1673,6 +1700,30 @@ func (u *TenderUpsert) UpdateTenderDate() *TenderUpsert {
 // ClearTenderDate clears the value of the "tender_date" field.
 func (u *TenderUpsert) ClearTenderDate() *TenderUpsert {
 	u.SetNull(tender.FieldTenderDate)
+	return u
+}
+
+// SetClassify sets the "classify" field.
+func (u *TenderUpsert) SetClassify(v int) *TenderUpsert {
+	u.Set(tender.FieldClassify, v)
+	return u
+}
+
+// UpdateClassify sets the "classify" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateClassify() *TenderUpsert {
+	u.SetExcluded(tender.FieldClassify)
+	return u
+}
+
+// AddClassify adds v to the "classify" field.
+func (u *TenderUpsert) AddClassify(v int) *TenderUpsert {
+	u.Add(tender.FieldClassify, v)
+	return u
+}
+
+// ClearClassify clears the value of the "classify" field.
+func (u *TenderUpsert) ClearClassify() *TenderUpsert {
+	u.SetNull(tender.FieldClassify)
 	return u
 }
 
@@ -2904,6 +2955,34 @@ func (u *TenderUpsertOne) UpdateTenderDate() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearTenderDate() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearTenderDate()
+	})
+}
+
+// SetClassify sets the "classify" field.
+func (u *TenderUpsertOne) SetClassify(v int) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetClassify(v)
+	})
+}
+
+// AddClassify adds v to the "classify" field.
+func (u *TenderUpsertOne) AddClassify(v int) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddClassify(v)
+	})
+}
+
+// UpdateClassify sets the "classify" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateClassify() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateClassify()
+	})
+}
+
+// ClearClassify clears the value of the "classify" field.
+func (u *TenderUpsertOne) ClearClassify() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearClassify()
 	})
 }
 
@@ -4480,6 +4559,34 @@ func (u *TenderUpsertBulk) UpdateTenderDate() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearTenderDate() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearTenderDate()
+	})
+}
+
+// SetClassify sets the "classify" field.
+func (u *TenderUpsertBulk) SetClassify(v int) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetClassify(v)
+	})
+}
+
+// AddClassify adds v to the "classify" field.
+func (u *TenderUpsertBulk) AddClassify(v int) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.AddClassify(v)
+	})
+}
+
+// UpdateClassify sets the "classify" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateClassify() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateClassify()
+	})
+}
+
+// ClearClassify clears the value of the "classify" field.
+func (u *TenderUpsertBulk) ClearClassify() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearClassify()
 	})
 }
 

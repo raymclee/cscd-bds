@@ -7,6 +7,7 @@ import {
   Drawer,
   Form,
   Input,
+  Radio,
   Select,
   Space,
 } from "antd";
@@ -112,6 +113,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
     (state) => state.visitRecordFormVisitRecord,
   );
   const { session } = useRouteContext({ from: "/__auth" });
+  const commContent = Form.useWatch("commContent", form);
 
   const onClose = () => {
     usePortalStore.setState({
@@ -143,7 +145,12 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
         disabled={isCreateVisitRecordInFlight || isUpdateVisitRecordInFlight}
         onFinish={(values) => {
           if (visitRecord) {
-            const { followupbyIDs, ...input } = values;
+            const { followupbyIDs, commPeople, commContent, ...input } = values;
+            if (commContent === "其他") {
+              message.destroy();
+              message.error("请输入沟通内容");
+              return;
+            }
             commitUpdateVisitRecord({
               variables: {
                 id: visitRecord.id,
@@ -152,6 +159,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
                   customerID: customerId,
                   clearFollowUpBys: true,
                   addFollowUpByIDs: followupbyIDs,
+                  commPeople: commPeople[0],
                 },
               },
               onCompleted: () => {
@@ -166,9 +174,20 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
               },
             });
           } else {
+            const { commPeople, commContent, ...input } = values;
+            if (commContent === "其他") {
+              message.destroy();
+              message.error("请输入沟通内容");
+              return;
+            }
             commitCreateVisitRecord({
               variables: {
-                input: { ...values, customerID: customerId },
+                input: {
+                  ...input,
+                  commPeople: commPeople[0],
+                  commContent,
+                  customerID: customerId,
+                },
                 connections: [
                   ConnectionHandler.getConnectionID(
                     session.userId,
@@ -237,7 +256,27 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
           name="commPeople"
           rules={[{ required: true }]}
         >
-          <Input />
+          {/* <Input /> */}
+          <Select
+            mode="tags"
+            onChange={(value) => {
+              if (value?.length == 0) {
+                form.setFieldValue("commPeople", null);
+              } else if (value.at(1)) {
+                form.setFieldValue("commPeople", value.at(1));
+              }
+            }}
+            onDeselect={() => {
+              form.setFieldValue("commPeople", null);
+            }}
+            options={[
+              { label: "甲方商务负责人", value: "甲方商务负责人" },
+              { label: "甲方设计负责人", value: "甲方设计负责人" },
+              { label: "甲方招采负责人", value: "甲方招采负责人" },
+              { label: "甲方技术顾问", value: "甲方技术顾问" },
+              { label: "甲方项目负责人", value: "甲方项目负责人" },
+            ]}
+          />
         </Form.Item>
 
         <Form.Item
@@ -245,7 +284,52 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
           name="commContent"
           rules={[{ required: true }]}
         >
-          <Input.TextArea />
+          {/* <Input.TextArea /> */}
+          <Radio.Group
+            className="!flex flex-col gap-2"
+            // onChange={onChange}
+            // value={value}
+            options={[
+              {
+                value: "沟通拓展项目现场进度情况以及工程重难点。",
+                label: "沟通拓展项目现场进度情况以及工程重难点。",
+              },
+              {
+                value: "沟通拓展项目资金情况，以及主要商务条件。",
+                label: "沟通拓展项目资金情况，以及主要商务条件。",
+              },
+              {
+                value:
+                  "沟通了解甲方项目设计进度计划、技术重难点和所需技术配合工作。",
+                label:
+                  "沟通了解甲方项目设计进度计划、技术重难点和所需技术配合工作。",
+              },
+              {
+                value: "沟通了解项目招标时间，招标方式，参与单位等。",
+                label: "沟通了解项目招标时间，招标方式，参与单位等。",
+              },
+              {
+                value: "沟通了解项目竞和关系，以及项目招投标动态。",
+                label: "沟通了解项目竞和关系，以及项目招投标动态。",
+              },
+              {
+                value: "其他",
+                label: (
+                  <>
+                    其他
+                    {commContent === "其他" && (
+                      <Input
+                        required
+                        placeholder="请输入"
+                        // style={{ width: 120, marginInlineStart: 12 }}
+                        className="!ms-[24px] !w-[240px]"
+                      />
+                    )}
+                  </>
+                ),
+              },
+            ]}
+          />
         </Form.Item>
 
         <Form.Item label="下一步计划" name="nextStep">
@@ -264,7 +348,7 @@ function VisitRecordForm({ customerId, queryRef }: VisitRecordFormProps) {
         </Form.Item>
       </Form>
 
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-3 px-6 py-3 bg-white border-t">
+      <div className="absolute right-0 bottom-0 left-0 flex justify-end gap-3 border-t bg-white px-6 py-3">
         <Space>
           <Button onClick={onClose}>取消</Button>
           <Button

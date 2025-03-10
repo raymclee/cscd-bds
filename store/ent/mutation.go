@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
@@ -41,21 +42,22 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeArea         = "Area"
-	TypeCity         = "City"
-	TypeCompetitor   = "Competitor"
-	TypeCountry      = "Country"
-	TypeCustomer     = "Customer"
-	TypeDistrict     = "District"
-	TypeOperation    = "Operation"
-	TypePlot         = "Plot"
-	TypeProject      = "Project"
-	TypeProjectStaff = "ProjectStaff"
-	TypeProjectVO    = "ProjectVO"
-	TypeProvince     = "Province"
-	TypeTender       = "Tender"
-	TypeUser         = "User"
-	TypeVisitRecord  = "VisitRecord"
+	TypeArea            = "Area"
+	TypeCity            = "City"
+	TypeCompetitor      = "Competitor"
+	TypeCountry         = "Country"
+	TypeCustomer        = "Customer"
+	TypeDistrict        = "District"
+	TypeOperation       = "Operation"
+	TypePlot            = "Plot"
+	TypePotentialTender = "PotentialTender"
+	TypeProject         = "Project"
+	TypeProjectStaff    = "ProjectStaff"
+	TypeProjectVO       = "ProjectVO"
+	TypeProvince        = "Province"
+	TypeTender          = "Tender"
+	TypeUser            = "User"
+	TypeVisitRecord     = "VisitRecord"
 )
 
 // AreaMutation represents an operation that mutates the Area nodes in the graph.
@@ -7924,6 +7926,446 @@ func (m *PlotMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Plot edge %s", name)
+}
+
+// PotentialTenderMutation represents an operation that mutates the PotentialTender nodes in the graph.
+type PotentialTenderMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *xid.ID
+	created_at    *time.Time
+	updated_at    *time.Time
+	meta          *map[string]interface{}
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*PotentialTender, error)
+	predicates    []predicate.PotentialTender
+}
+
+var _ ent.Mutation = (*PotentialTenderMutation)(nil)
+
+// potentialtenderOption allows management of the mutation configuration using functional options.
+type potentialtenderOption func(*PotentialTenderMutation)
+
+// newPotentialTenderMutation creates new mutation for the PotentialTender entity.
+func newPotentialTenderMutation(c config, op Op, opts ...potentialtenderOption) *PotentialTenderMutation {
+	m := &PotentialTenderMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePotentialTender,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPotentialTenderID sets the ID field of the mutation.
+func withPotentialTenderID(id xid.ID) potentialtenderOption {
+	return func(m *PotentialTenderMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *PotentialTender
+		)
+		m.oldValue = func(ctx context.Context) (*PotentialTender, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().PotentialTender.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPotentialTender sets the old PotentialTender of the mutation.
+func withPotentialTender(node *PotentialTender) potentialtenderOption {
+	return func(m *PotentialTenderMutation) {
+		m.oldValue = func(context.Context) (*PotentialTender, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PotentialTenderMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PotentialTenderMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of PotentialTender entities.
+func (m *PotentialTenderMutation) SetID(id xid.ID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *PotentialTenderMutation) ID() (id xid.ID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *PotentialTenderMutation) IDs(ctx context.Context) ([]xid.ID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []xid.ID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().PotentialTender.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *PotentialTenderMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *PotentialTenderMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *PotentialTenderMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *PotentialTenderMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *PotentialTenderMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *PotentialTenderMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetMeta sets the "meta" field.
+func (m *PotentialTenderMutation) SetMeta(value map[string]interface{}) {
+	m.meta = &value
+}
+
+// Meta returns the value of the "meta" field in the mutation.
+func (m *PotentialTenderMutation) Meta() (r map[string]interface{}, exists bool) {
+	v := m.meta
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMeta returns the old "meta" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldMeta(ctx context.Context) (v map[string]interface{}, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMeta is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMeta requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMeta: %w", err)
+	}
+	return oldValue.Meta, nil
+}
+
+// ResetMeta resets all changes to the "meta" field.
+func (m *PotentialTenderMutation) ResetMeta() {
+	m.meta = nil
+}
+
+// Where appends a list predicates to the PotentialTenderMutation builder.
+func (m *PotentialTenderMutation) Where(ps ...predicate.PotentialTender) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the PotentialTenderMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *PotentialTenderMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.PotentialTender, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *PotentialTenderMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *PotentialTenderMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (PotentialTender).
+func (m *PotentialTenderMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *PotentialTenderMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.created_at != nil {
+		fields = append(fields, potentialtender.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, potentialtender.FieldUpdatedAt)
+	}
+	if m.meta != nil {
+		fields = append(fields, potentialtender.FieldMeta)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *PotentialTenderMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case potentialtender.FieldCreatedAt:
+		return m.CreatedAt()
+	case potentialtender.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case potentialtender.FieldMeta:
+		return m.Meta()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *PotentialTenderMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case potentialtender.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case potentialtender.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case potentialtender.FieldMeta:
+		return m.OldMeta(ctx)
+	}
+	return nil, fmt.Errorf("unknown PotentialTender field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PotentialTenderMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case potentialtender.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case potentialtender.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case potentialtender.FieldMeta:
+		v, ok := value.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMeta(v)
+		return nil
+	}
+	return fmt.Errorf("unknown PotentialTender field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *PotentialTenderMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *PotentialTenderMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PotentialTenderMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown PotentialTender numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *PotentialTenderMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *PotentialTenderMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PotentialTenderMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown PotentialTender nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *PotentialTenderMutation) ResetField(name string) error {
+	switch name {
+	case potentialtender.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case potentialtender.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case potentialtender.FieldMeta:
+		m.ResetMeta()
+		return nil
+	}
+	return fmt.Errorf("unknown PotentialTender field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *PotentialTenderMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *PotentialTenderMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *PotentialTenderMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *PotentialTenderMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *PotentialTenderMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *PotentialTenderMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *PotentialTenderMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown PotentialTender unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *PotentialTenderMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown PotentialTender edge %s", name)
 }
 
 // ProjectMutation represents an operation that mutates the Project nodes in the graph.
@@ -19579,6 +20021,8 @@ type TenderMutation struct {
 	estimated_amount                        *float64
 	addestimated_amount                     *float64
 	tender_date                             *time.Time
+	classify                                *int
+	addclassify                             *int
 	discovery_date                          *time.Time
 	address                                 *string
 	full_address                            *string
@@ -20089,6 +20533,76 @@ func (m *TenderMutation) TenderDateCleared() bool {
 func (m *TenderMutation) ResetTenderDate() {
 	m.tender_date = nil
 	delete(m.clearedFields, tender.FieldTenderDate)
+}
+
+// SetClassify sets the "classify" field.
+func (m *TenderMutation) SetClassify(i int) {
+	m.classify = &i
+	m.addclassify = nil
+}
+
+// Classify returns the value of the "classify" field in the mutation.
+func (m *TenderMutation) Classify() (r int, exists bool) {
+	v := m.classify
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldClassify returns the old "classify" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldClassify(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldClassify is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldClassify requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldClassify: %w", err)
+	}
+	return oldValue.Classify, nil
+}
+
+// AddClassify adds i to the "classify" field.
+func (m *TenderMutation) AddClassify(i int) {
+	if m.addclassify != nil {
+		*m.addclassify += i
+	} else {
+		m.addclassify = &i
+	}
+}
+
+// AddedClassify returns the value that was added to the "classify" field in this mutation.
+func (m *TenderMutation) AddedClassify() (r int, exists bool) {
+	v := m.addclassify
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearClassify clears the value of the "classify" field.
+func (m *TenderMutation) ClearClassify() {
+	m.classify = nil
+	m.addclassify = nil
+	m.clearedFields[tender.FieldClassify] = struct{}{}
+}
+
+// ClassifyCleared returns if the "classify" field was cleared in this mutation.
+func (m *TenderMutation) ClassifyCleared() bool {
+	_, ok := m.clearedFields[tender.FieldClassify]
+	return ok
+}
+
+// ResetClassify resets all changes to the "classify" field.
+func (m *TenderMutation) ResetClassify() {
+	m.classify = nil
+	m.addclassify = nil
+	delete(m.clearedFields, tender.FieldClassify)
 }
 
 // SetDiscoveryDate sets the "discovery_date" field.
@@ -23455,7 +23969,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 65)
+	fields := make([]string, 0, 66)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -23476,6 +23990,9 @@ func (m *TenderMutation) Fields() []string {
 	}
 	if m.tender_date != nil {
 		fields = append(fields, tender.FieldTenderDate)
+	}
+	if m.classify != nil {
+		fields = append(fields, tender.FieldClassify)
 	}
 	if m.discovery_date != nil {
 		fields = append(fields, tender.FieldDiscoveryDate)
@@ -23673,6 +24190,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.EstimatedAmount()
 	case tender.FieldTenderDate:
 		return m.TenderDate()
+	case tender.FieldClassify:
+		return m.Classify()
 	case tender.FieldDiscoveryDate:
 		return m.DiscoveryDate()
 	case tender.FieldAddress:
@@ -23812,6 +24331,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldEstimatedAmount(ctx)
 	case tender.FieldTenderDate:
 		return m.OldTenderDate(ctx)
+	case tender.FieldClassify:
+		return m.OldClassify(ctx)
 	case tender.FieldDiscoveryDate:
 		return m.OldDiscoveryDate(ctx)
 	case tender.FieldAddress:
@@ -23985,6 +24506,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetTenderDate(v)
+		return nil
+	case tender.FieldClassify:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetClassify(v)
 		return nil
 	case tender.FieldDiscoveryDate:
 		v, ok := value.(time.Time)
@@ -24406,6 +24934,9 @@ func (m *TenderMutation) AddedFields() []string {
 	if m.addestimated_amount != nil {
 		fields = append(fields, tender.FieldEstimatedAmount)
 	}
+	if m.addclassify != nil {
+		fields = append(fields, tender.FieldClassify)
+	}
 	if m.addlevel_involved != nil {
 		fields = append(fields, tender.FieldLevelInvolved)
 	}
@@ -24442,6 +24973,8 @@ func (m *TenderMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedStatus()
 	case tender.FieldEstimatedAmount:
 		return m.AddedEstimatedAmount()
+	case tender.FieldClassify:
+		return m.AddedClassify()
 	case tender.FieldLevelInvolved:
 		return m.AddedLevelInvolved()
 	case tender.FieldSizeAndValueRating:
@@ -24480,6 +25013,13 @@ func (m *TenderMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddEstimatedAmount(v)
+		return nil
+	case tender.FieldClassify:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddClassify(v)
 		return nil
 	case tender.FieldLevelInvolved:
 		v, ok := value.(int)
@@ -24550,6 +25090,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(tender.FieldTenderDate) {
 		fields = append(fields, tender.FieldTenderDate)
+	}
+	if m.FieldCleared(tender.FieldClassify) {
+		fields = append(fields, tender.FieldClassify)
 	}
 	if m.FieldCleared(tender.FieldAddress) {
 		fields = append(fields, tender.FieldAddress)
@@ -24732,6 +25275,9 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldTenderDate:
 		m.ClearTenderDate()
+		return nil
+	case tender.FieldClassify:
+		m.ClearClassify()
 		return nil
 	case tender.FieldAddress:
 		m.ClearAddress()
@@ -24923,6 +25469,9 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldTenderDate:
 		m.ResetTenderDate()
+		return nil
+	case tender.FieldClassify:
+		m.ResetClassify()
 		return nil
 	case tender.FieldDiscoveryDate:
 		m.ResetDiscoveryDate()

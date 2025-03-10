@@ -205,6 +205,19 @@ var (
 			},
 		},
 	}
+	// PotentialTendersColumns holds the columns for the "potential_tenders" table.
+	PotentialTendersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "meta", Type: field.TypeJSON},
+	}
+	// PotentialTendersTable holds the schema information for the "potential_tenders" table.
+	PotentialTendersTable = &schema.Table{
+		Name:       "potential_tenders",
+		Columns:    PotentialTendersColumns,
+		PrimaryKey: []*schema.Column{PotentialTendersColumns[0]},
+	}
 	// ProjectsColumns holds the columns for the "projects" table.
 	ProjectsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true},
@@ -390,6 +403,7 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
+		{Name: "classify", Type: field.TypeInt, Nullable: true, Default: 1},
 		{Name: "discovery_date", Type: field.TypeTime},
 		{Name: "address", Type: field.TypeString, Nullable: true},
 		{Name: "full_address", Type: field.TypeString, Nullable: true},
@@ -457,49 +471,49 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tenders_areas_tenders",
-				Columns:    []*schema.Column{TendersColumns[58]},
+				Columns:    []*schema.Column{TendersColumns[59]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_cities_tenders",
-				Columns:    []*schema.Column{TendersColumns[59]},
+				Columns:    []*schema.Column{TendersColumns[60]},
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_competitors_won_tenders",
-				Columns:    []*schema.Column{TendersColumns[60]},
+				Columns:    []*schema.Column{TendersColumns[61]},
 				RefColumns: []*schema.Column{CompetitorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_customers_tenders",
-				Columns:    []*schema.Column{TendersColumns[61]},
+				Columns:    []*schema.Column{TendersColumns[62]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
-				Columns:    []*schema.Column{TendersColumns[62]},
+				Columns:    []*schema.Column{TendersColumns[63]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
-				Columns:    []*schema.Column{TendersColumns[63]},
+				Columns:    []*schema.Column{TendersColumns[64]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_finder",
-				Columns:    []*schema.Column{TendersColumns[64]},
+				Columns:    []*schema.Column{TendersColumns[65]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
-				Columns:    []*schema.Column{TendersColumns[65]},
+				Columns:    []*schema.Column{TendersColumns[66]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -680,6 +694,7 @@ var (
 		DistrictsTable,
 		OperationsTable,
 		PlotsTable,
+		PotentialTendersTable,
 		ProjectsTable,
 		ProjectStaffsTable,
 		ProjectVosTable,

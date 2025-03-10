@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<721f31a8c2011182d612e4a98ddce8d8>>
+ * @generated SignedSource<<a30349d475530f3fb1700d246bc95a74>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -806,6 +806,16 @@ export type TenderWhereInput = {
   cityIDNEQ?: string | null | undefined;
   cityIDNotIn?: ReadonlyArray<string> | null | undefined;
   cityIDNotNil?: boolean | null | undefined;
+  classify?: number | null | undefined;
+  classifyGT?: number | null | undefined;
+  classifyGTE?: number | null | undefined;
+  classifyIn?: ReadonlyArray<number> | null | undefined;
+  classifyIsNil?: boolean | null | undefined;
+  classifyLT?: number | null | undefined;
+  classifyLTE?: number | null | undefined;
+  classifyNEQ?: number | null | undefined;
+  classifyNotIn?: ReadonlyArray<number> | null | undefined;
+  classifyNotNil?: boolean | null | undefined;
   code?: string | null | undefined;
   codeContains?: string | null | undefined;
   codeContainsFold?: string | null | undefined;

@@ -309,6 +309,24 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	PotentialTender struct {
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Meta      func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	PotentialTenderConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	PotentialTenderEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Project struct {
 		AccumulatedNonStatutoryDeductions       func(childComplexity int) int
 		AccumulatedNonStatutoryDeductionsPeriod func(childComplexity int) int
@@ -487,6 +505,7 @@ type ComplexityRoot struct {
 		Nodes            func(childComplexity int, ids []xid.ID) int
 		Operations       func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.OperationOrder, where *ent.OperationWhereInput) int
 		Plots            func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.PlotOrder, where *ent.PlotWhereInput) int
+		PotentialTenders func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.PotentialTenderOrder, where *ent.PotentialTenderWhereInput) int
 		ProjectStaffs    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) int
 		Projects         func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectOrder, where *ent.ProjectWhereInput) int
 		Provinces        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
@@ -522,6 +541,7 @@ type ComplexityRoot struct {
 		BiddingInstructions                  func(childComplexity int) int
 		City                                 func(childComplexity int) int
 		CityID                               func(childComplexity int) int
+		Classify                             func(childComplexity int) int
 		Code                                 func(childComplexity int) int
 		CompetitivePartnershipRating         func(childComplexity int) int
 		CompetitivePartnershipRatingOverview func(childComplexity int) int
@@ -2042,6 +2062,69 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PlotEdge.Node(childComplexity), true
 
+	case "PotentialTender.createdAt":
+		if e.complexity.PotentialTender.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.PotentialTender.CreatedAt(childComplexity), true
+
+	case "PotentialTender.id":
+		if e.complexity.PotentialTender.ID == nil {
+			break
+		}
+
+		return e.complexity.PotentialTender.ID(childComplexity), true
+
+	case "PotentialTender.meta":
+		if e.complexity.PotentialTender.Meta == nil {
+			break
+		}
+
+		return e.complexity.PotentialTender.Meta(childComplexity), true
+
+	case "PotentialTender.updatedAt":
+		if e.complexity.PotentialTender.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.PotentialTender.UpdatedAt(childComplexity), true
+
+	case "PotentialTenderConnection.edges":
+		if e.complexity.PotentialTenderConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.PotentialTenderConnection.Edges(childComplexity), true
+
+	case "PotentialTenderConnection.pageInfo":
+		if e.complexity.PotentialTenderConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.PotentialTenderConnection.PageInfo(childComplexity), true
+
+	case "PotentialTenderConnection.totalCount":
+		if e.complexity.PotentialTenderConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.PotentialTenderConnection.TotalCount(childComplexity), true
+
+	case "PotentialTenderEdge.cursor":
+		if e.complexity.PotentialTenderEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.PotentialTenderEdge.Cursor(childComplexity), true
+
+	case "PotentialTenderEdge.node":
+		if e.complexity.PotentialTenderEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.PotentialTenderEdge.Node(childComplexity), true
+
 	case "Project.accumulatedNonStatutoryDeductions":
 		if e.complexity.Project.AccumulatedNonStatutoryDeductions == nil {
 			break
@@ -3156,6 +3239,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Plots(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.PlotOrder), args["where"].(*ent.PlotWhereInput)), true
 
+	case "Query.potentialTenders":
+		if e.complexity.Query.PotentialTenders == nil {
+			break
+		}
+
+		args, err := ec.field_Query_potentialTenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.PotentialTenders(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].([]*ent.PotentialTenderOrder), args["where"].(*ent.PotentialTenderWhereInput)), true
+
 	case "Query.projectStaffs":
 		if e.complexity.Query.ProjectStaffs == nil {
 			break
@@ -3403,6 +3498,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tender.CityID(childComplexity), true
+
+	case "Tender.classify":
+		if e.complexity.Tender.Classify == nil {
+			break
+		}
+
+		return e.complexity.Tender.Classify(childComplexity), true
 
 	case "Tender.code":
 		if e.complexity.Tender.Code == nil {
@@ -4333,6 +4435,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateCustomerInput,
 		ec.unmarshalInputCreateDistrictInput,
 		ec.unmarshalInputCreatePlotInput,
+		ec.unmarshalInputCreatePotentialTenderInput,
 		ec.unmarshalInputCreateProvinceInput,
 		ec.unmarshalInputCreateTenderInput,
 		ec.unmarshalInputCreateUserInput,
@@ -4345,6 +4448,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputOperationWhereInput,
 		ec.unmarshalInputPlotOrder,
 		ec.unmarshalInputPlotWhereInput,
+		ec.unmarshalInputPotentialTenderOrder,
+		ec.unmarshalInputPotentialTenderWhereInput,
 		ec.unmarshalInputProjectOrder,
 		ec.unmarshalInputProjectStaffOrder,
 		ec.unmarshalInputProjectStaffWhereInput,
@@ -4362,6 +4467,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateDistrictInput,
 		ec.unmarshalInputUpdatePlotInput,
+		ec.unmarshalInputUpdatePotentialTenderInput,
 		ec.unmarshalInputUpdateProjectInput,
 		ec.unmarshalInputUpdateProvinceInput,
 		ec.unmarshalInputUpdateTenderInput,
@@ -5403,6 +5509,15 @@ input CreatePlotInput {
   districtID: ID!
 }
 """
+CreatePotentialTenderInput is used for create PotentialTender object.
+Input was generated by ent.
+"""
+input CreatePotentialTenderInput {
+  createdAt: Time
+  updatedAt: Time
+  meta: Map!
+}
+"""
 CreateProvinceInput is used for create Province object.
 Input was generated by ent.
 """
@@ -5429,6 +5544,7 @@ input CreateTenderInput {
   name: String!
   estimatedAmount: Float
   tenderDate: Time
+  classify: Int
   discoveryDate: Time!
   address: String
   fullAddress: String
@@ -5494,7 +5610,7 @@ input CreateTenderInput {
   """
   tenderWinDate: Time
   """
-  得標金額，只限港澳
+  得標金額
   """
   tenderWinAmount: Float
   """
@@ -6207,6 +6323,10 @@ input DistrictWhereInput {
   hasPlotsWith: [PlotWhereInput!]
 }
 """
+The builtin Map type
+"""
+scalar Map
+"""
 An object with an ID.
 Follows the [Relay Global Object Identification Specification](https://relay.dev/graphql/objectidentification.htm)
 """
@@ -6635,6 +6755,103 @@ input PlotWhereInput {
   """
   hasDistrict: Boolean
   hasDistrictWith: [DistrictWhereInput!]
+}
+type PotentialTender implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  meta: Map!
+}
+"""
+A connection to a list of items.
+"""
+type PotentialTenderConnection {
+  """
+  A list of edges.
+  """
+  edges: [PotentialTenderEdge]
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  """
+  Identifies the total count of items in the connection.
+  """
+  totalCount: Int!
+}
+"""
+An edge in a connection.
+"""
+type PotentialTenderEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: PotentialTender
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor!
+}
+"""
+Ordering options for PotentialTender connections
+"""
+input PotentialTenderOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order PotentialTenders.
+  """
+  field: PotentialTenderOrderField!
+}
+"""
+Properties by which PotentialTender connections can be ordered.
+"""
+enum PotentialTenderOrderField {
+  CREATED_AT
+}
+"""
+PotentialTenderWhereInput is used for filtering PotentialTender objects.
+Input was generated by ent.
+"""
+input PotentialTenderWhereInput {
+  not: PotentialTenderWhereInput
+  and: [PotentialTenderWhereInput!]
+  or: [PotentialTenderWhereInput!]
+  """
+  id field predicates
+  """
+  id: ID
+  idNEQ: ID
+  idIn: [ID!]
+  idNotIn: [ID!]
+  idGT: ID
+  idGTE: ID
+  idLT: ID
+  idLTE: ID
+  """
+  created_at field predicates
+  """
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+  """
+  updated_at field predicates
+  """
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
 }
 type Project implements Node {
   id: ID!
@@ -9130,6 +9347,37 @@ type Query {
     """
     where: PlotWhereInput
   ): PlotConnection!
+  potentialTenders(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: Cursor
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: Cursor
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Ordering options for PotentialTenders returned from the connection.
+    """
+    orderBy: [PotentialTenderOrder!]
+
+    """
+    Filtering options for PotentialTenders returned from the connection.
+    """
+    where: PotentialTenderWhereInput
+  ): PotentialTenderConnection!
   projects(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -9326,6 +9574,7 @@ type Tender implements Node {
   name: String!
   estimatedAmount: Float
   tenderDate: Time
+  classify: Int
   discoveryDate: Time!
   address: String
   fullAddress: String
@@ -9391,7 +9640,7 @@ type Tender implements Node {
   """
   tenderWinDate: Time
   """
-  得標金額，只限港澳
+  得標金額
   """
   tenderWinAmount: Float
   """
@@ -9609,6 +9858,19 @@ input TenderWhereInput {
   tenderDateLTE: Time
   tenderDateIsNil: Boolean
   tenderDateNotNil: Boolean
+  """
+  classify field predicates
+  """
+  classify: Int
+  classifyNEQ: Int
+  classifyIn: [Int!]
+  classifyNotIn: [Int!]
+  classifyGT: Int
+  classifyGTE: Int
+  classifyLT: Int
+  classifyLTE: Int
+  classifyIsNil: Boolean
+  classifyNotNil: Boolean
   """
   discovery_date field predicates
   """
@@ -10658,6 +10920,14 @@ input UpdatePlotInput {
   districtID: ID
 }
 """
+UpdatePotentialTenderInput is used for update PotentialTender object.
+Input was generated by ent.
+"""
+input UpdatePotentialTenderInput {
+  updatedAt: Time
+  meta: Map
+}
+"""
 UpdateProjectInput is used for update Project object.
 Input was generated by ent.
 """
@@ -11099,6 +11369,8 @@ input UpdateTenderInput {
   clearEstimatedAmount: Boolean
   tenderDate: Time
   clearTenderDate: Boolean
+  classify: Int
+  clearClassify: Boolean
   discoveryDate: Time
   address: String
   clearAddress: Boolean
@@ -11209,7 +11481,7 @@ input UpdateTenderInput {
   tenderWinDate: Time
   clearTenderWinDate: Boolean
   """
-  得標金額，只限港澳
+  得標金額
   """
   tenderWinAmount: Float
   clearTenderWinAmount: Boolean

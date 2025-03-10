@@ -761,6 +761,60 @@ func (c *PlotUpdateOne) SetInput(i UpdatePlotInput) *PlotUpdateOne {
 	return c
 }
 
+// CreatePotentialTenderInput represents a mutation input for creating potentialtenders.
+type CreatePotentialTenderInput struct {
+	CreatedAt *time.Time
+	UpdatedAt *time.Time
+	Meta      map[string]interface{}
+}
+
+// Mutate applies the CreatePotentialTenderInput on the PotentialTenderMutation builder.
+func (i *CreatePotentialTenderInput) Mutate(m *PotentialTenderMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Meta; v != nil {
+		m.SetMeta(v)
+	}
+}
+
+// SetInput applies the change-set in the CreatePotentialTenderInput on the PotentialTenderCreate builder.
+func (c *PotentialTenderCreate) SetInput(i CreatePotentialTenderInput) *PotentialTenderCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdatePotentialTenderInput represents a mutation input for updating potentialtenders.
+type UpdatePotentialTenderInput struct {
+	UpdatedAt *time.Time
+	Meta      map[string]interface{}
+}
+
+// Mutate applies the UpdatePotentialTenderInput on the PotentialTenderMutation builder.
+func (i *UpdatePotentialTenderInput) Mutate(m *PotentialTenderMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.Meta; v != nil {
+		m.SetMeta(v)
+	}
+}
+
+// SetInput applies the change-set in the UpdatePotentialTenderInput on the PotentialTenderUpdate builder.
+func (c *PotentialTenderUpdate) SetInput(i UpdatePotentialTenderInput) *PotentialTenderUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdatePotentialTenderInput on the PotentialTenderUpdateOne builder.
+func (c *PotentialTenderUpdateOne) SetInput(i UpdatePotentialTenderInput) *PotentialTenderUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // UpdateProjectInput represents a mutation input for updating projects.
 type UpdateProjectInput struct {
 	UpdatedAt                                    *time.Time
@@ -1586,6 +1640,7 @@ type CreateTenderInput struct {
 	Name                                 string
 	EstimatedAmount                      *float64
 	TenderDate                           *time.Time
+	Classify                             *int
 	DiscoveryDate                        time.Time
 	Address                              *string
 	FullAddress                          *string
@@ -1664,6 +1719,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.TenderDate; v != nil {
 		m.SetTenderDate(*v)
+	}
+	if v := i.Classify; v != nil {
+		m.SetClassify(*v)
 	}
 	m.SetDiscoveryDate(i.DiscoveryDate)
 	if v := i.Address; v != nil {
@@ -1853,6 +1911,8 @@ type UpdateTenderInput struct {
 	EstimatedAmount                           *float64
 	ClearTenderDate                           bool
 	TenderDate                                *time.Time
+	ClearClassify                             bool
+	Classify                                  *int
 	DiscoveryDate                             *time.Time
 	ClearAddress                              bool
 	Address                                   *string
@@ -1996,6 +2056,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.TenderDate; v != nil {
 		m.SetTenderDate(*v)
+	}
+	if i.ClearClassify {
+		m.ClearClassify()
+	}
+	if v := i.Classify; v != nil {
+		m.SetClassify(*v)
 	}
 	if v := i.DiscoveryDate; v != nil {
 		m.SetDiscoveryDate(*v)

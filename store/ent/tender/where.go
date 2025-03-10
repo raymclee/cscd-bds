@@ -92,6 +92,11 @@ func TenderDate(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldTenderDate, v))
 }
 
+// Classify applies equality check predicate on the "classify" field. It's identical to ClassifyEQ.
+func Classify(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldClassify, v))
+}
+
 // DiscoveryDate applies equality check predicate on the "discovery_date" field. It's identical to DiscoveryDateEQ.
 func DiscoveryDate(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldDiscoveryDate, v))
@@ -715,6 +720,56 @@ func TenderDateIsNil() predicate.Tender {
 // TenderDateNotNil applies the NotNil predicate on the "tender_date" field.
 func TenderDateNotNil() predicate.Tender {
 	return predicate.Tender(sql.FieldNotNull(FieldTenderDate))
+}
+
+// ClassifyEQ applies the EQ predicate on the "classify" field.
+func ClassifyEQ(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldClassify, v))
+}
+
+// ClassifyNEQ applies the NEQ predicate on the "classify" field.
+func ClassifyNEQ(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldClassify, v))
+}
+
+// ClassifyIn applies the In predicate on the "classify" field.
+func ClassifyIn(vs ...int) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldClassify, vs...))
+}
+
+// ClassifyNotIn applies the NotIn predicate on the "classify" field.
+func ClassifyNotIn(vs ...int) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldClassify, vs...))
+}
+
+// ClassifyGT applies the GT predicate on the "classify" field.
+func ClassifyGT(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldClassify, v))
+}
+
+// ClassifyGTE applies the GTE predicate on the "classify" field.
+func ClassifyGTE(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldClassify, v))
+}
+
+// ClassifyLT applies the LT predicate on the "classify" field.
+func ClassifyLT(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldClassify, v))
+}
+
+// ClassifyLTE applies the LTE predicate on the "classify" field.
+func ClassifyLTE(v int) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldClassify, v))
+}
+
+// ClassifyIsNil applies the IsNil predicate on the "classify" field.
+func ClassifyIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldClassify))
+}
+
+// ClassifyNotNil applies the NotNil predicate on the "classify" field.
+func ClassifyNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldClassify))
 }
 
 // DiscoveryDateEQ applies the EQ predicate on the "discovery_date" field.

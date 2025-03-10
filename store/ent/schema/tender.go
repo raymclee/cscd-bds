@@ -41,6 +41,7 @@ func (Tender) Fields() []ent.Field {
 		field.Time("tender_date").Optional().Annotations(
 			entgql.OrderField("TENDER_DATE"),
 		),
+		field.Int("classify").Optional().Default(1).Min(1),
 		field.Time("discovery_date"),
 		field.String("address").Optional().Nillable(),
 		field.String("full_address").Optional().Nillable(),
@@ -107,7 +108,7 @@ func (Tender) Fields() []ent.Field {
 		),
 		field.String("construction_area").Optional().Comment("施工面積，只限港澳"),
 		field.Time("tender_win_date").Optional().Comment("得標日期，只限港澳"),
-		field.Float("tender_win_amount").Optional().Comment("得標金額，只限港澳"),
+		field.Float("tender_win_amount").Optional().Comment("得標金額"),
 		field.Float("last_tender_amount").Optional().Comment("最後一次投標金額，只限港澳").
 			SchemaType(map[string]string{
 				dialect.Postgres: "numeric",

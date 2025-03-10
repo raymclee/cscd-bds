@@ -141,6 +141,33 @@ func (tu *TenderUpdate) ClearTenderDate() *TenderUpdate {
 	return tu
 }
 
+// SetClassify sets the "classify" field.
+func (tu *TenderUpdate) SetClassify(i int) *TenderUpdate {
+	tu.mutation.ResetClassify()
+	tu.mutation.SetClassify(i)
+	return tu
+}
+
+// SetNillableClassify sets the "classify" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableClassify(i *int) *TenderUpdate {
+	if i != nil {
+		tu.SetClassify(*i)
+	}
+	return tu
+}
+
+// AddClassify adds i to the "classify" field.
+func (tu *TenderUpdate) AddClassify(i int) *TenderUpdate {
+	tu.mutation.AddClassify(i)
+	return tu
+}
+
+// ClearClassify clears the value of the "classify" field.
+func (tu *TenderUpdate) ClearClassify() *TenderUpdate {
+	tu.mutation.ClearClassify()
+	return tu
+}
+
 // SetDiscoveryDate sets the "discovery_date" field.
 func (tu *TenderUpdate) SetDiscoveryDate(t time.Time) *TenderUpdate {
 	tu.mutation.SetDiscoveryDate(t)
@@ -1522,6 +1549,11 @@ func (tu *TenderUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tu *TenderUpdate) check() error {
+	if v, ok := tu.mutation.Classify(); ok {
+		if err := tender.ClassifyValidator(v); err != nil {
+			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "Tender.classify": %w`, err)}
+		}
+	}
 	if v, ok := tu.mutation.LevelInvolved(); ok {
 		if err := tender.LevelInvolvedValidator(v); err != nil {
 			return &ValidationError{Name: "level_involved", err: fmt.Errorf(`ent: validator failed for field "Tender.level_involved": %w`, err)}
@@ -1609,6 +1641,15 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.TenderDateCleared() {
 		_spec.ClearField(tender.FieldTenderDate, field.TypeTime)
+	}
+	if value, ok := tu.mutation.Classify(); ok {
+		_spec.SetField(tender.FieldClassify, field.TypeInt, value)
+	}
+	if value, ok := tu.mutation.AddedClassify(); ok {
+		_spec.AddField(tender.FieldClassify, field.TypeInt, value)
+	}
+	if tu.mutation.ClassifyCleared() {
+		_spec.ClearField(tender.FieldClassify, field.TypeInt)
 	}
 	if value, ok := tu.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)
@@ -2381,6 +2422,33 @@ func (tuo *TenderUpdateOne) SetNillableTenderDate(t *time.Time) *TenderUpdateOne
 // ClearTenderDate clears the value of the "tender_date" field.
 func (tuo *TenderUpdateOne) ClearTenderDate() *TenderUpdateOne {
 	tuo.mutation.ClearTenderDate()
+	return tuo
+}
+
+// SetClassify sets the "classify" field.
+func (tuo *TenderUpdateOne) SetClassify(i int) *TenderUpdateOne {
+	tuo.mutation.ResetClassify()
+	tuo.mutation.SetClassify(i)
+	return tuo
+}
+
+// SetNillableClassify sets the "classify" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableClassify(i *int) *TenderUpdateOne {
+	if i != nil {
+		tuo.SetClassify(*i)
+	}
+	return tuo
+}
+
+// AddClassify adds i to the "classify" field.
+func (tuo *TenderUpdateOne) AddClassify(i int) *TenderUpdateOne {
+	tuo.mutation.AddClassify(i)
+	return tuo
+}
+
+// ClearClassify clears the value of the "classify" field.
+func (tuo *TenderUpdateOne) ClearClassify() *TenderUpdateOne {
+	tuo.mutation.ClearClassify()
 	return tuo
 }
 
@@ -3778,6 +3846,11 @@ func (tuo *TenderUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (tuo *TenderUpdateOne) check() error {
+	if v, ok := tuo.mutation.Classify(); ok {
+		if err := tender.ClassifyValidator(v); err != nil {
+			return &ValidationError{Name: "classify", err: fmt.Errorf(`ent: validator failed for field "Tender.classify": %w`, err)}
+		}
+	}
 	if v, ok := tuo.mutation.LevelInvolved(); ok {
 		if err := tender.LevelInvolvedValidator(v); err != nil {
 			return &ValidationError{Name: "level_involved", err: fmt.Errorf(`ent: validator failed for field "Tender.level_involved": %w`, err)}
@@ -3882,6 +3955,15 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if tuo.mutation.TenderDateCleared() {
 		_spec.ClearField(tender.FieldTenderDate, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.Classify(); ok {
+		_spec.SetField(tender.FieldClassify, field.TypeInt, value)
+	}
+	if value, ok := tuo.mutation.AddedClassify(); ok {
+		_spec.AddField(tender.FieldClassify, field.TypeInt, value)
+	}
+	if tuo.mutation.ClassifyCleared() {
+		_spec.ClearField(tender.FieldClassify, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)

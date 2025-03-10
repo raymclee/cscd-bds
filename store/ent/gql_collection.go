@@ -12,6 +12,7 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
 	"cscd-bds/store/ent/projectvo"
@@ -2160,6 +2161,111 @@ func newPlotPaginateArgs(rv map[string]any) *plotPaginateArgs {
 }
 
 // CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (pt *PotentialTenderQuery) CollectFields(ctx context.Context, satisfies ...string) (*PotentialTenderQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return pt, nil
+	}
+	if err := pt.collectField(ctx, false, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return pt, nil
+}
+
+func (pt *PotentialTenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(potentialtender.Columns))
+		selectedFields = []string{potentialtender.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "createdAt":
+			if _, ok := fieldSeen[potentialtender.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldCreatedAt)
+				fieldSeen[potentialtender.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedAt":
+			if _, ok := fieldSeen[potentialtender.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldUpdatedAt)
+				fieldSeen[potentialtender.FieldUpdatedAt] = struct{}{}
+			}
+		case "meta":
+			if _, ok := fieldSeen[potentialtender.FieldMeta]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldMeta)
+				fieldSeen[potentialtender.FieldMeta] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		pt.Select(selectedFields...)
+	}
+	return nil
+}
+
+type potentialtenderPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []PotentialTenderPaginateOption
+}
+
+func newPotentialTenderPaginateArgs(rv map[string]any) *potentialtenderPaginateArgs {
+	args := &potentialtenderPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*PotentialTenderOrder:
+			args.opts = append(args.opts, WithPotentialTenderOrder(v))
+		case []any:
+			var orders []*PotentialTenderOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &PotentialTenderOrder{Field: &PotentialTenderOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithPotentialTenderOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*PotentialTenderWhereInput); ok {
+		args.opts = append(args.opts, WithPotentialTenderFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
 func (pr *ProjectQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProjectQuery, error) {
 	fc := graphql.GetFieldContext(ctx)
 	if fc == nil {
@@ -3826,6 +3932,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 			if _, ok := fieldSeen[tender.FieldTenderDate]; !ok {
 				selectedFields = append(selectedFields, tender.FieldTenderDate)
 				fieldSeen[tender.FieldTenderDate] = struct{}{}
+			}
+		case "classify":
+			if _, ok := fieldSeen[tender.FieldClassify]; !ok {
+				selectedFields = append(selectedFields, tender.FieldClassify)
+				fieldSeen[tender.FieldClassify] = struct{}{}
 			}
 		case "discoveryDate":
 			if _, ok := fieldSeen[tender.FieldDiscoveryDate]; !ok {

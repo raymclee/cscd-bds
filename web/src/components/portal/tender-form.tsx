@@ -252,6 +252,7 @@ export function TenderForm({
             followingSaleIDs,
             estimatedAmount,
             geoCoordinate,
+            tenderWinAmount,
             ...input
           } = values;
           commitUpdateMutation({
@@ -262,6 +263,9 @@ export function TenderForm({
                 clearFollowingSales: true,
                 addFollowingSaleIDs: followingSaleIDs,
                 estimatedAmount: toActualAmount(estimatedAmount),
+                tenderWinAmount: tenderWinAmount
+                  ? toActualAmount(tenderWinAmount)
+                  : undefined,
               },
               imageFileNames,
               attachmentFileNames,
@@ -292,6 +296,7 @@ export function TenderForm({
             attachements,
             estimatedAmount,
             geoCoordinate,
+            tenderWinAmount,
             ...input
           } = values;
 
@@ -321,6 +326,9 @@ export function TenderForm({
                 code: "",
                 estimatedAmount: toActualAmount(estimatedAmount),
                 createdByID: session.userId,
+                tenderWinAmount: tenderWinAmount
+                  ? toActualAmount(tenderWinAmount)
+                  : undefined,
               },
               connections,
               imageFileNames,
@@ -592,6 +600,15 @@ export function TenderForm({
                   >
                     <Input />
                   </Form.Item>
+
+                  <Form.Item
+                    name="tenderWinAmount"
+                    label="中标金额"
+                    className="md:col-span-2"
+                    rules={[{ required: true }]}
+                  >
+                    <Input prefix="￥" suffix="亿元" />
+                  </Form.Item>
                 </>
               )}
 
@@ -614,6 +631,15 @@ export function TenderForm({
                         })) ?? []
                       }
                     />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="tenderWinAmount"
+                    label="中标金额"
+                    className="md:col-span-2"
+                    rules={[{ required: true }]}
+                  >
+                    <Input prefix="￥" suffix="亿元" />
                   </Form.Item>
                 </>
               )}

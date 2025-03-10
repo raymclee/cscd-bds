@@ -11,6 +11,7 @@ import (
 	"cscd-bds/store/ent/district"
 	"cscd-bds/store/ent/operation"
 	"cscd-bds/store/ent/plot"
+	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/predicate"
 	"cscd-bds/store/ent/project"
 	"cscd-bds/store/ent/projectstaff"
@@ -28,7 +29,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 15)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 16)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   area.Table,
@@ -195,6 +196,22 @@ var schemaGraph = func() *sqlgraph.Schema {
 	}
 	graph.Nodes[8] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
+			Table:   potentialtender.Table,
+			Columns: potentialtender.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeString,
+				Column: potentialtender.FieldID,
+			},
+		},
+		Type: "PotentialTender",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			potentialtender.FieldCreatedAt: {Type: field.TypeTime, Column: potentialtender.FieldCreatedAt},
+			potentialtender.FieldUpdatedAt: {Type: field.TypeTime, Column: potentialtender.FieldUpdatedAt},
+			potentialtender.FieldMeta:      {Type: field.TypeJSON, Column: potentialtender.FieldMeta},
+		},
+	}
+	graph.Nodes[9] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
 			Table:   project.Table,
 			Columns: project.Columns,
 			ID: &sqlgraph.FieldSpec{
@@ -288,7 +305,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			project.FieldDiagramCApprovalRatioDenominator:        {Type: field.TypeInt, Column: project.FieldDiagramCApprovalRatioDenominator},
 		},
 	}
-	graph.Nodes[9] = &sqlgraph.Node{
+	graph.Nodes[10] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   projectstaff.Table,
 			Columns: projectstaff.Columns,
@@ -308,7 +325,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			projectstaff.FieldProjectID:    {Type: field.TypeString, Column: projectstaff.FieldProjectID},
 		},
 	}
-	graph.Nodes[10] = &sqlgraph.Node{
+	graph.Nodes[11] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   projectvo.Table,
 			Columns: projectvo.Columns,
@@ -330,7 +347,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			projectvo.FieldApproveAmount: {Type: field.TypeFloat64, Column: projectvo.FieldApproveAmount},
 		},
 	}
-	graph.Nodes[11] = &sqlgraph.Node{
+	graph.Nodes[12] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   province.Table,
 			Columns: province.Columns,
@@ -350,7 +367,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			province.FieldAreaID:    {Type: field.TypeString, Column: province.FieldAreaID},
 		},
 	}
-	graph.Nodes[12] = &sqlgraph.Node{
+	graph.Nodes[13] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   tender.Table,
 			Columns: tender.Columns,
@@ -368,6 +385,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldName:                                 {Type: field.TypeString, Column: tender.FieldName},
 			tender.FieldEstimatedAmount:                      {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
 			tender.FieldTenderDate:                           {Type: field.TypeTime, Column: tender.FieldTenderDate},
+			tender.FieldClassify:                             {Type: field.TypeInt, Column: tender.FieldClassify},
 			tender.FieldDiscoveryDate:                        {Type: field.TypeTime, Column: tender.FieldDiscoveryDate},
 			tender.FieldAddress:                              {Type: field.TypeString, Column: tender.FieldAddress},
 			tender.FieldFullAddress:                          {Type: field.TypeString, Column: tender.FieldFullAddress},
@@ -428,7 +446,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldCompetitorID:                         {Type: field.TypeString, Column: tender.FieldCompetitorID},
 		},
 	}
-	graph.Nodes[13] = &sqlgraph.Node{
+	graph.Nodes[14] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   user.Table,
 			Columns: user.Columns,
@@ -455,7 +473,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			user.FieldLeaderID:      {Type: field.TypeString, Column: user.FieldLeaderID},
 		},
 	}
-	graph.Nodes[14] = &sqlgraph.Node{
+	graph.Nodes[15] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   visitrecord.Table,
 			Columns: visitrecord.Columns,
@@ -1961,6 +1979,61 @@ func (f *PlotFilter) WhereHasDistrictWith(preds ...predicate.District) {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (ptq *PotentialTenderQuery) addPredicate(pred func(s *sql.Selector)) {
+	ptq.predicates = append(ptq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the PotentialTenderQuery builder.
+func (ptq *PotentialTenderQuery) Filter() *PotentialTenderFilter {
+	return &PotentialTenderFilter{config: ptq.config, predicateAdder: ptq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *PotentialTenderMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the PotentialTenderMutation builder.
+func (m *PotentialTenderMutation) Filter() *PotentialTenderFilter {
+	return &PotentialTenderFilter{config: m.config, predicateAdder: m}
+}
+
+// PotentialTenderFilter provides a generic filtering capability at runtime for PotentialTenderQuery.
+type PotentialTenderFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *PotentialTenderFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql string predicate on the id field.
+func (f *PotentialTenderFilter) WhereID(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldID))
+}
+
+// WhereCreatedAt applies the entql time.Time predicate on the created_at field.
+func (f *PotentialTenderFilter) WhereCreatedAt(p entql.TimeP) {
+	f.Where(p.Field(potentialtender.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
+func (f *PotentialTenderFilter) WhereUpdatedAt(p entql.TimeP) {
+	f.Where(p.Field(potentialtender.FieldUpdatedAt))
+}
+
+// WhereMeta applies the entql json.RawMessage predicate on the meta field.
+func (f *PotentialTenderFilter) WhereMeta(p entql.BytesP) {
+	f.Where(p.Field(potentialtender.FieldMeta))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (pq *ProjectQuery) addPredicate(pred func(s *sql.Selector)) {
 	pq.predicates = append(pq.predicates, pred)
 }
@@ -1989,7 +2062,7 @@ type ProjectFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2481,7 +2554,7 @@ type ProjectStaffFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectStaffFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2570,7 +2643,7 @@ type ProjectVOFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProjectVOFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2669,7 +2742,7 @@ type ProvinceFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ProvinceFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[11].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2814,7 +2887,7 @@ type TenderFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TenderFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[12].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -2858,6 +2931,11 @@ func (f *TenderFilter) WhereEstimatedAmount(p entql.Float64P) {
 // WhereTenderDate applies the entql time.Time predicate on the tender_date field.
 func (f *TenderFilter) WhereTenderDate(p entql.TimeP) {
 	f.Where(p.Field(tender.FieldTenderDate))
+}
+
+// WhereClassify applies the entql int predicate on the classify field.
+func (f *TenderFilter) WhereClassify(p entql.IntP) {
+	f.Where(p.Field(tender.FieldClassify))
 }
 
 // WhereDiscoveryDate applies the entql time.Time predicate on the discovery_date field.
@@ -3319,7 +3397,7 @@ type UserFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *UserFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[13].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -3527,7 +3605,7 @@ type VisitRecordFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *VisitRecordFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[14].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[15].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
