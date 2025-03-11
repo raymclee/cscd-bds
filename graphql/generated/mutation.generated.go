@@ -1813,6 +1813,8 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomer(ctx context.Con
 				return ec.fieldContext_Customer_salesID(ctx, field)
 			case "createdByID":
 				return ec.fieldContext_Customer_createdByID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_Customer_approverID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -1821,6 +1823,8 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomer(ctx context.Con
 				return ec.fieldContext_Customer_sales(ctx, field)
 			case "createdBy":
 				return ec.fieldContext_Customer_createdBy(ctx, field)
+			case "approver":
+				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
 			}
@@ -1910,6 +1914,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteCustomer(ctx context.Con
 				return ec.fieldContext_Customer_salesID(ctx, field)
 			case "createdByID":
 				return ec.fieldContext_Customer_createdByID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_Customer_approverID(ctx, field)
 			case "area":
 				return ec.fieldContext_Customer_area(ctx, field)
 			case "tenders":
@@ -1918,6 +1924,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteCustomer(ctx context.Con
 				return ec.fieldContext_Customer_sales(ctx, field)
 			case "createdBy":
 				return ec.fieldContext_Customer_createdBy(ctx, field)
+			case "approver":
+				return ec.fieldContext_Customer_approver(ctx, field)
 			case "visitRecords":
 				return ec.fieldContext_Customer_visitRecords(ctx, field)
 			}
@@ -2172,6 +2180,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "competitorID":
 				return ec.fieldContext_Tender_competitorID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_Tender_approverID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
@@ -2192,6 +2202,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "competitor":
 				return ec.fieldContext_Tender_competitor(ctx, field)
+			case "approver":
+				return ec.fieldContext_Tender_approver(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":
@@ -2385,6 +2397,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_createdByID(ctx, field)
 			case "competitorID":
 				return ec.fieldContext_Tender_competitorID(ctx, field)
+			case "approverID":
+				return ec.fieldContext_Tender_approverID(ctx, field)
 			case "area":
 				return ec.fieldContext_Tender_area(ctx, field)
 			case "customer":
@@ -2405,6 +2419,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_visitRecords(ctx, field)
 			case "competitor":
 				return ec.fieldContext_Tender_competitor(ctx, field)
+			case "approver":
+				return ec.fieldContext_Tender_approver(ctx, field)
 			case "geoCoordinate":
 				return ec.fieldContext_Tender_geoCoordinate(ctx, field)
 			case "geoBounds":

@@ -295,6 +295,26 @@ func (cu *CustomerUpdate) ClearCreatedByID() *CustomerUpdate {
 	return cu
 }
 
+// SetApproverID sets the "approver_id" field.
+func (cu *CustomerUpdate) SetApproverID(x xid.ID) *CustomerUpdate {
+	cu.mutation.SetApproverID(x)
+	return cu
+}
+
+// SetNillableApproverID sets the "approver_id" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableApproverID(x *xid.ID) *CustomerUpdate {
+	if x != nil {
+		cu.SetApproverID(*x)
+	}
+	return cu
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (cu *CustomerUpdate) ClearApproverID() *CustomerUpdate {
+	cu.mutation.ClearApproverID()
+	return cu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (cu *CustomerUpdate) SetArea(a *Area) *CustomerUpdate {
 	return cu.SetAreaID(a.ID)
@@ -323,6 +343,11 @@ func (cu *CustomerUpdate) SetSales(u *User) *CustomerUpdate {
 // SetCreatedBy sets the "created_by" edge to the User entity.
 func (cu *CustomerUpdate) SetCreatedBy(u *User) *CustomerUpdate {
 	return cu.SetCreatedByID(u.ID)
+}
+
+// SetApprover sets the "approver" edge to the User entity.
+func (cu *CustomerUpdate) SetApprover(u *User) *CustomerUpdate {
+	return cu.SetApproverID(u.ID)
 }
 
 // AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
@@ -381,6 +406,12 @@ func (cu *CustomerUpdate) ClearSales() *CustomerUpdate {
 // ClearCreatedBy clears the "created_by" edge to the User entity.
 func (cu *CustomerUpdate) ClearCreatedBy() *CustomerUpdate {
 	cu.mutation.ClearCreatedBy()
+	return cu
+}
+
+// ClearApprover clears the "approver" edge to the User entity.
+func (cu *CustomerUpdate) ClearApprover() *CustomerUpdate {
+	cu.mutation.ClearApprover()
 	return cu
 }
 
@@ -649,6 +680,35 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Inverse: false,
 			Table:   customer.CreatedByTable,
 			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.ApproverCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ApproverTable,
+			Columns: []string{customer.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.ApproverIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ApproverTable,
+			Columns: []string{customer.ApproverColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
@@ -985,6 +1045,26 @@ func (cuo *CustomerUpdateOne) ClearCreatedByID() *CustomerUpdateOne {
 	return cuo
 }
 
+// SetApproverID sets the "approver_id" field.
+func (cuo *CustomerUpdateOne) SetApproverID(x xid.ID) *CustomerUpdateOne {
+	cuo.mutation.SetApproverID(x)
+	return cuo
+}
+
+// SetNillableApproverID sets the "approver_id" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableApproverID(x *xid.ID) *CustomerUpdateOne {
+	if x != nil {
+		cuo.SetApproverID(*x)
+	}
+	return cuo
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (cuo *CustomerUpdateOne) ClearApproverID() *CustomerUpdateOne {
+	cuo.mutation.ClearApproverID()
+	return cuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (cuo *CustomerUpdateOne) SetArea(a *Area) *CustomerUpdateOne {
 	return cuo.SetAreaID(a.ID)
@@ -1013,6 +1093,11 @@ func (cuo *CustomerUpdateOne) SetSales(u *User) *CustomerUpdateOne {
 // SetCreatedBy sets the "created_by" edge to the User entity.
 func (cuo *CustomerUpdateOne) SetCreatedBy(u *User) *CustomerUpdateOne {
 	return cuo.SetCreatedByID(u.ID)
+}
+
+// SetApprover sets the "approver" edge to the User entity.
+func (cuo *CustomerUpdateOne) SetApprover(u *User) *CustomerUpdateOne {
+	return cuo.SetApproverID(u.ID)
 }
 
 // AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
@@ -1071,6 +1156,12 @@ func (cuo *CustomerUpdateOne) ClearSales() *CustomerUpdateOne {
 // ClearCreatedBy clears the "created_by" edge to the User entity.
 func (cuo *CustomerUpdateOne) ClearCreatedBy() *CustomerUpdateOne {
 	cuo.mutation.ClearCreatedBy()
+	return cuo
+}
+
+// ClearApprover clears the "approver" edge to the User entity.
+func (cuo *CustomerUpdateOne) ClearApprover() *CustomerUpdateOne {
+	cuo.mutation.ClearApprover()
 	return cuo
 }
 
@@ -1369,6 +1460,35 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 			Inverse: false,
 			Table:   customer.CreatedByTable,
 			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.ApproverCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ApproverTable,
+			Columns: []string{customer.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.ApproverIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ApproverTable,
+			Columns: []string{customer.ApproverColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),

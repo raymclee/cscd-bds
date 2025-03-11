@@ -96,6 +96,7 @@ var (
 		{Name: "feishu_group", Type: field.TypeJSON, Nullable: true},
 		{Name: "area_id", Type: field.TypeString},
 		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
+		{Name: "approver_id", Type: field.TypeString, Nullable: true},
 		{Name: "sales_id", Type: field.TypeString, Nullable: true},
 	}
 	// CustomersTable holds the schema information for the "customers" table.
@@ -117,8 +118,14 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "customers_users_customers",
+				Symbol:     "customers_users_approver",
 				Columns:    []*schema.Column{CustomersColumns[15]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "customers_users_customers",
+				Columns:    []*schema.Column{CustomersColumns[16]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -465,6 +472,7 @@ var (
 		{Name: "province_id", Type: field.TypeString, Nullable: true},
 		{Name: "finder_id", Type: field.TypeString, Nullable: true},
 		{Name: "created_by_id", Type: field.TypeString, Nullable: true},
+		{Name: "approver_id", Type: field.TypeString, Nullable: true},
 	}
 	// TendersTable holds the schema information for the "tenders" table.
 	TendersTable = &schema.Table{
@@ -517,6 +525,12 @@ var (
 			{
 				Symbol:     "tenders_users_created_by",
 				Columns:    []*schema.Column{TendersColumns[67]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "tenders_users_approver",
+				Columns:    []*schema.Column{TendersColumns[68]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -717,6 +731,7 @@ func init() {
 	CustomersTable.ForeignKeys[0].RefTable = AreasTable
 	CustomersTable.ForeignKeys[1].RefTable = UsersTable
 	CustomersTable.ForeignKeys[2].RefTable = UsersTable
+	CustomersTable.ForeignKeys[3].RefTable = UsersTable
 	DistrictsTable.ForeignKeys[0].RefTable = CitiesTable
 	DistrictsTable.ForeignKeys[1].RefTable = ProvincesTable
 	PlotsTable.ForeignKeys[0].RefTable = DistrictsTable
@@ -732,6 +747,7 @@ func init() {
 	TendersTable.ForeignKeys[5].RefTable = ProvincesTable
 	TendersTable.ForeignKeys[6].RefTable = UsersTable
 	TendersTable.ForeignKeys[7].RefTable = UsersTable
+	TendersTable.ForeignKeys[8].RefTable = UsersTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	VisitRecordsTable.ForeignKeys[0].RefTable = CustomersTable
 	VisitRecordsTable.ForeignKeys[1].RefTable = TendersTable

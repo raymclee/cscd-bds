@@ -254,11 +254,16 @@ func (r *queryResolver) BiToken(ctx context.Context) (string, error) {
 // MyTenders is the resolver for the myTenders field.
 func (r *userResolver) MyTenders(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) (*ent.TenderConnection, error) {
 	var q *ent.TenderQuery
-	if obj.IsAdmin || obj.IsCeo || obj.IsSuperAdmin {
-		fmt.Println("admin")
+	switch {
+	case obj.IsAdmin:
+		areaIds, err := obj.QueryAreas().IDs(ctx)
+		if err != nil {
+			return nil, err
+		}
+		q = r.store.Tender.Query().Where(tender.AreaIDIn(areaIds...))
+	case obj.IsCeo || obj.IsSuperAdmin:
 		q = r.store.Tender.Query()
-	} else {
-		fmt.Println("user")
+	default:
 		q = r.store.Tender.Query().
 			Where(tender.Or(
 				tender.HasFollowingSalesWith(user.ID(obj.ID)),
@@ -277,9 +282,10 @@ func (r *userResolver) MyTenders(ctx context.Context, obj *ent.User, after *entg
 // MyVisitRecords is the resolver for the myVisitRecords field.
 func (r *userResolver) MyVisitRecords(ctx context.Context, obj *ent.User, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.VisitRecordOrder, where *ent.VisitRecordWhereInput) (*ent.VisitRecordConnection, error) {
 	var q *ent.VisitRecordQuery
-	if obj.IsAdmin || obj.IsCeo || obj.IsSuperAdmin {
+	switch {
+	case obj.IsAdmin || obj.IsCeo || obj.IsSuperAdmin:
 		q = r.store.VisitRecord.Query()
-	} else {
+	default:
 		q = r.store.VisitRecord.Query().Where(
 			visitrecord.And(
 				visitrecord.HasFollowUpBysWith(user.ID(obj.ID)),

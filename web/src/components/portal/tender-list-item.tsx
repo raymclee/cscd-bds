@@ -27,6 +27,7 @@ export function TenderListItem({
     graphql`
       fragment tenderListItemFragment on Tender {
         id
+        isApproved
         name
         status
         createdAt
@@ -136,7 +137,7 @@ export function TenderListItem({
             </Carousel>
           ) : (
             <div className="flex aspect-[16/9] h-full w-[60vw] flex-col items-center justify-center rounded-lg bg-gray-100 sm:w-[30vw] lg:w-[280px]">
-              <ImageOff className="mb-2 h-12 w-12" />
+              <ImageOff className="w-12 h-12 mb-2" />
               暂没图片
             </div>
           )}
@@ -157,6 +158,11 @@ export function TenderListItem({
           <Tag color={tenderStatusTagColor(item.status)}>
             {tenderStatusText(item?.status)}
           </Tag>
+          {!isGAOrHW && (
+            <Tag color={item.isApproved ? "success" : "default"}>
+              {item.isApproved ? "已审批" : "未审批"}
+            </Tag>
+          )}
         </div>
 
         <div>

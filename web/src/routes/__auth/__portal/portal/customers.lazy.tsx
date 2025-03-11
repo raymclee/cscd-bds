@@ -1,6 +1,6 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { customersPageQuery } from "__generated__/customersPageQuery.graphql";
-import { Button, Table, TableProps, Typography } from "antd";
+import { Button, Space, Table, TableProps, Typography } from "antd";
 import dayjs from "dayjs";
 import { Plus } from "lucide-react";
 import { usePreloadedQuery } from "react-relay";
@@ -81,6 +81,10 @@ function RouteComponent() {
     value: a?.node?.code ?? "",
   }));
 
+  const isGAOrHW = data?.node?.areas?.edges?.every(
+    (a) => a?.node?.code === "GA" || a?.node?.code === "HW",
+  );
+
   const dataSource =
     data.node?.areas?.edges?.flatMap((a) =>
       a?.node?.customers?.edges
@@ -130,6 +134,15 @@ function RouteComponent() {
       render: (value) => customerSizeText(value),
     },
   ];
+
+  if (!isGAOrHW) {
+    columns.push({
+      width: 100,
+      dataIndex: "isApproved",
+      title: "审批状态",
+      render: (value, record) => (value ? "已审批" : "未审批"),
+    });
+  }
 
   if (session.isAdmin || session.isSuperAdmin) {
     columns.push(

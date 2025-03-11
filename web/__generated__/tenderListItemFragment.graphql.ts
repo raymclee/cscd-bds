@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<97d05670bf937d505a22b55e9aaeec49>>
+ * @generated SignedSource<<7c9847c527fa871c045d86eead4f3381>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,6 +32,7 @@ export type tenderListItemFragment$data = {
   readonly fullAddress: string | null | undefined;
   readonly id: string;
   readonly images: ReadonlyArray<string> | null | undefined;
+  readonly isApproved: boolean;
   readonly name: string;
   readonly status: number;
   readonly tenderClosingDate: any | null | undefined;
@@ -68,6 +69,13 @@ return {
   "name": "tenderListItemFragment",
   "selections": [
     (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isApproved",
+      "storageKey": null
+    },
     (v1/*: any*/),
     {
       "alias": null,
@@ -184,6 +192,6 @@ return {
 };
 })();
 
-(node as any).hash = "def6a473828be6494d6bb27651262ea8";
+(node as any).hash = "818b0355c84dd89b5b289a2138550d2e";
 
 export default node;

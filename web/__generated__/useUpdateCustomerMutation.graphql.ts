@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<97c498db4eba5e8fdbeaaeb6427915e0>>
+ * @generated SignedSource<<a9affffe9271c47fdf2934e58c455f64>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,7 +13,9 @@ import { FragmentRefs } from "relay-runtime";
 export type UpdateCustomerInput = {
   addTenderIDs?: ReadonlyArray<string> | null | undefined;
   addVisitRecordIDs?: ReadonlyArray<string> | null | undefined;
+  approverID?: string | null | undefined;
   areaID?: string | null | undefined;
+  clearApprover?: boolean | null | undefined;
   clearContactPerson?: boolean | null | undefined;
   clearContactPersonEmail?: boolean | null | undefined;
   clearContactPersonPhone?: boolean | null | undefined;
@@ -219,6 +221,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "isApproved",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "contactPerson",
             "storageKey": null
           },
@@ -338,12 +347,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "668e2451b9e3cca2d2a77959934a1c23",
+    "cacheID": "9edf1761c08453b962f73aae8dd02282",
     "id": null,
     "metadata": {},
     "name": "useUpdateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "mutation useUpdateCustomerMutation(\n  $id: ID!\n  $input: UpdateCustomerInput!\n) {\n  updateCustomer(id: $id, input: $input) {\n    ...customerDetailFragment\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  isApproved\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

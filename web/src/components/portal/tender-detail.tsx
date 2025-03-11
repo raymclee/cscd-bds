@@ -1,13 +1,24 @@
-import { EditOutlined } from "@ant-design/icons";
+import { CheckOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import {
   tenderDetailFragment$data,
   tenderDetailFragment$key,
 } from "__generated__/tenderDetailFragment.graphql";
-import { Button, Card, Descriptions, Empty, Image, List, Space } from "antd";
+import {
+  App,
+  Button,
+  Card,
+  Descriptions,
+  Empty,
+  Image,
+  List,
+  Space,
+} from "antd";
 import dayjs from "dayjs";
 import { graphql, useFragment } from "react-relay";
+import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
+  classifyText,
   fixAmount,
   levelInvolvedText,
   projectTypeText,
@@ -22,6 +33,7 @@ type TenderDetailProps = {
 export const TenderDetailFragment = graphql`
   fragment tenderDetailFragment on Tender {
     id
+    isApproved
     code
     name
     status
@@ -114,6 +126,7 @@ export const TenderDetailFragment = graphql`
       adcode
       name
     }
+    classify
   }
 `;
 
@@ -172,7 +185,11 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
     attachements,
     finder,
     followingSales,
+    isApproved,
+    classify,
   } = tender;
+  const { message, modal } = App.useApp();
+  const [updateTender, inFlight] = useUpdateTender();
 
   return (
     <div className="!space-y-4">
@@ -187,6 +204,45 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
                   编辑
                 </Button>
               </Link>
+              {(session.isAdmin || session.isSuperAdmin) && (
+                <Button
+                  type="primary"
+                  disabled={isApproved}
+                  icon={<CheckOutlined />}
+                  onClick={async () => {
+                    const confirmed = await modal.confirm({
+                      title: "批核",
+                      content: "确定批核该商机吗？",
+                      okText: "同意",
+                      cancelText: "拒绝",
+                      cancelButtonProps: {
+                        danger: true,
+                      },
+                    });
+                    if (confirmed) {
+                      updateTender({
+                        variables: {
+                          id,
+                          input: { isApproved: true },
+                          attachmentFileNames: [],
+                          imageFileNames: [],
+                        },
+                        onCompleted() {
+                          message.destroy();
+                          message.success("批核成功");
+                        },
+                        onError(error) {
+                          console.error(error);
+                          message.destroy();
+                          message.error("批核失败");
+                        },
+                      });
+                    }
+                  }}
+                >
+                  批核
+                </Button>
+              )}
             </Space>
           )
         }
@@ -206,6 +262,11 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
             ),
           },
           {
+            key: "isApproved",
+            label: "审批状态",
+            children: isApproved ? "已审批" : "未审批",
+          },
+          {
             key: "finder",
             label: "发现人",
             children: finder?.name || "-",
@@ -214,6 +275,11 @@ function SHTender({ tender }: { tender: tenderDetailFragment$data }) {
             key: "followingSales",
             label: "当前跟踪人",
             children: followingSales?.map(({ name }) => name).join(", ") || "-",
+          },
+          {
+            key: "classify",
+            label: "分类",
+            children: classify ? classifyText(classify) : "-",
           },
           {
             key: "estimatedAmount",

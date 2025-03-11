@@ -126,11 +126,20 @@ function TenderList({
     (a) => a?.node?.code === "GA" || a?.node?.code === "HW",
   );
 
+  const showClassify = data?.areas.edges?.some(
+    (a) =>
+      a?.node?.code === "HD" ||
+      a?.node?.code === "HN" ||
+      a?.node?.code === "XB" ||
+      a?.node?.code === "HB",
+  );
+
   return (
     <>
       <ListFilter
         showStatus
         showTenderClosingDate={isGAOrHW}
+        showClassify={showClassify}
         areas={data?.areas.edges?.map((a) => ({
           label: a?.node?.name ?? "",
           value: a?.node?.code ?? "",

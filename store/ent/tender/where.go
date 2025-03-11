@@ -377,6 +377,11 @@ func CompetitorID(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCompetitorID, v))
 }
 
+// ApproverID applies equality check predicate on the "approver_id" field. It's identical to ApproverIDEQ.
+func ApproverID(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldApproverID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldCreatedAt, v))
@@ -4457,6 +4462,86 @@ func CompetitorIDContainsFold(v xid.ID) predicate.Tender {
 	return predicate.Tender(sql.FieldContainsFold(FieldCompetitorID, vc))
 }
 
+// ApproverIDEQ applies the EQ predicate on the "approver_id" field.
+func ApproverIDEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldApproverID, v))
+}
+
+// ApproverIDNEQ applies the NEQ predicate on the "approver_id" field.
+func ApproverIDNEQ(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldApproverID, v))
+}
+
+// ApproverIDIn applies the In predicate on the "approver_id" field.
+func ApproverIDIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldIn(FieldApproverID, vs...))
+}
+
+// ApproverIDNotIn applies the NotIn predicate on the "approver_id" field.
+func ApproverIDNotIn(vs ...xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldNotIn(FieldApproverID, vs...))
+}
+
+// ApproverIDGT applies the GT predicate on the "approver_id" field.
+func ApproverIDGT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGT(FieldApproverID, v))
+}
+
+// ApproverIDGTE applies the GTE predicate on the "approver_id" field.
+func ApproverIDGTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldGTE(FieldApproverID, v))
+}
+
+// ApproverIDLT applies the LT predicate on the "approver_id" field.
+func ApproverIDLT(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLT(FieldApproverID, v))
+}
+
+// ApproverIDLTE applies the LTE predicate on the "approver_id" field.
+func ApproverIDLTE(v xid.ID) predicate.Tender {
+	return predicate.Tender(sql.FieldLTE(FieldApproverID, v))
+}
+
+// ApproverIDContains applies the Contains predicate on the "approver_id" field.
+func ApproverIDContains(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContains(FieldApproverID, vc))
+}
+
+// ApproverIDHasPrefix applies the HasPrefix predicate on the "approver_id" field.
+func ApproverIDHasPrefix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasPrefix(FieldApproverID, vc))
+}
+
+// ApproverIDHasSuffix applies the HasSuffix predicate on the "approver_id" field.
+func ApproverIDHasSuffix(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldHasSuffix(FieldApproverID, vc))
+}
+
+// ApproverIDIsNil applies the IsNil predicate on the "approver_id" field.
+func ApproverIDIsNil() predicate.Tender {
+	return predicate.Tender(sql.FieldIsNull(FieldApproverID))
+}
+
+// ApproverIDNotNil applies the NotNil predicate on the "approver_id" field.
+func ApproverIDNotNil() predicate.Tender {
+	return predicate.Tender(sql.FieldNotNull(FieldApproverID))
+}
+
+// ApproverIDEqualFold applies the EqualFold predicate on the "approver_id" field.
+func ApproverIDEqualFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldEqualFold(FieldApproverID, vc))
+}
+
+// ApproverIDContainsFold applies the ContainsFold predicate on the "approver_id" field.
+func ApproverIDContainsFold(v xid.ID) predicate.Tender {
+	vc := string(v)
+	return predicate.Tender(sql.FieldContainsFold(FieldApproverID, vc))
+}
+
 // HasArea applies the HasEdge predicate on the "area" edge.
 func HasArea() predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
@@ -4679,6 +4764,29 @@ func HasCompetitor() predicate.Tender {
 func HasCompetitorWith(preds ...predicate.Competitor) predicate.Tender {
 	return predicate.Tender(func(s *sql.Selector) {
 		step := newCompetitorStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasApprover applies the HasEdge predicate on the "approver" edge.
+func HasApprover() predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ApproverTable, ApproverColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasApproverWith applies the HasEdge predicate on the "approver" edge with a given conditions (other predicates).
+func HasApproverWith(preds ...predicate.User) predicate.Tender {
+	return predicate.Tender(func(s *sql.Selector) {
+		step := newApproverStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

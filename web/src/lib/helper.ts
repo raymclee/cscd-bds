@@ -57,6 +57,19 @@ export function ownerTypeText(typ: Maybe<number> | undefined): string {
   }
 }
 
+export const classifyOptions = [
+  { label: "A类", value: 1 },
+  { label: "B类", value: 2 },
+  { label: "C类", value: 3 },
+];
+
+export function classifyText(classify: Maybe<number> | undefined): string {
+  if (!classify) {
+    return "";
+  }
+  return classifyOptions.find((c) => c.value === classify)?.label || "";
+}
+
 export const ownerTypeOptions = [
   { label: "政府平台", value: 1 },
   { label: "央企国企", value: 2 },

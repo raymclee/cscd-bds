@@ -229,6 +229,14 @@ func (c *Customer) CreatedBy(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
+func (c *Customer) Approver(ctx context.Context) (*User, error) {
+	result, err := c.Edges.ApproverOrErr()
+	if IsNotLoaded(err) {
+		result, err = c.QueryApprover().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
 func (c *Customer) VisitRecords(
 	ctx context.Context, after *Cursor, first *int, before *Cursor, last *int, orderBy []*VisitRecordOrder, where *VisitRecordWhereInput,
 ) (*VisitRecordConnection, error) {
@@ -237,7 +245,7 @@ func (c *Customer) VisitRecords(
 		WithVisitRecordFilter(where.Filter),
 	}
 	alias := graphql.GetFieldContext(ctx).Field.Alias
-	totalCount, hasTotalCount := c.Edges.totalCount[4][alias]
+	totalCount, hasTotalCount := c.Edges.totalCount[5][alias]
 	if nodes, err := c.NamedVisitRecords(alias); err == nil || hasTotalCount {
 		pager, err := newVisitRecordPager(opts, last != nil)
 		if err != nil {
@@ -558,6 +566,14 @@ func (t *Tender) Competitor(ctx context.Context) (*Competitor, error) {
 	result, err := t.Edges.CompetitorOrErr()
 	if IsNotLoaded(err) {
 		result, err = t.QueryCompetitor().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (t *Tender) Approver(ctx context.Context) (*User, error) {
+	result, err := t.Edges.ApproverOrErr()
+	if IsNotLoaded(err) {
+		result, err = t.QueryApprover().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }

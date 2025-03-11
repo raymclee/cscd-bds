@@ -32,6 +32,7 @@ type CustomerQuery struct {
 	withTenders           *TenderQuery
 	withSales             *UserQuery
 	withCreatedBy         *UserQuery
+	withApprover          *UserQuery
 	withVisitRecords      *VisitRecordQuery
 	modifiers             []func(*sql.Selector)
 	loadTotal             []func(context.Context, []*Customer) error
@@ -154,6 +155,28 @@ func (cq *CustomerQuery) QueryCreatedBy() *UserQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, false, customer.CreatedByTable, customer.CreatedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryApprover chains the current query on the "approver" edge.
+func (cq *CustomerQuery) QueryApprover() *UserQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.ApproverTable, customer.ApproverColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -379,6 +402,7 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		withTenders:      cq.withTenders.Clone(),
 		withSales:        cq.withSales.Clone(),
 		withCreatedBy:    cq.withCreatedBy.Clone(),
+		withApprover:     cq.withApprover.Clone(),
 		withVisitRecords: cq.withVisitRecords.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
@@ -427,6 +451,17 @@ func (cq *CustomerQuery) WithCreatedBy(opts ...func(*UserQuery)) *CustomerQuery 
 		opt(query)
 	}
 	cq.withCreatedBy = query
+	return cq
+}
+
+// WithApprover tells the query-builder to eager-load the nodes that are connected to
+// the "approver" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithApprover(opts ...func(*UserQuery)) *CustomerQuery {
+	query := (&UserClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withApprover = query
 	return cq
 }
 
@@ -519,11 +554,12 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	var (
 		nodes       = []*Customer{}
 		_spec       = cq.querySpec()
-		loadedTypes = [5]bool{
+		loadedTypes = [6]bool{
 			cq.withArea != nil,
 			cq.withTenders != nil,
 			cq.withSales != nil,
 			cq.withCreatedBy != nil,
+			cq.withApprover != nil,
 			cq.withVisitRecords != nil,
 		}
 	)
@@ -570,6 +606,12 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 	if query := cq.withCreatedBy; query != nil {
 		if err := cq.loadCreatedBy(ctx, query, nodes, nil,
 			func(n *Customer, e *User) { n.Edges.CreatedBy = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withApprover; query != nil {
+		if err := cq.loadApprover(ctx, query, nodes, nil,
+			func(n *Customer, e *User) { n.Edges.Approver = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -728,6 +770,38 @@ func (cq *CustomerQuery) loadCreatedBy(ctx context.Context, query *UserQuery, no
 	}
 	return nil
 }
+func (cq *CustomerQuery) loadApprover(ctx context.Context, query *UserQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *User)) error {
+	ids := make([]xid.ID, 0, len(nodes))
+	nodeids := make(map[xid.ID][]*Customer)
+	for i := range nodes {
+		if nodes[i].ApproverID == nil {
+			continue
+		}
+		fk := *nodes[i].ApproverID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "approver_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 func (cq *CustomerQuery) loadVisitRecords(ctx context.Context, query *VisitRecordQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *VisitRecord)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[xid.ID]*Customer)
@@ -795,6 +869,9 @@ func (cq *CustomerQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if cq.withCreatedBy != nil {
 			_spec.Node.AddColumnOnce(customer.FieldCreatedByID)
+		}
+		if cq.withApprover != nil {
+			_spec.Node.AddColumnOnce(customer.FieldApproverID)
 		}
 	}
 	if ps := cq.predicates; len(ps) > 0 {

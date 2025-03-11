@@ -907,6 +907,20 @@ func (tc *TenderCreate) SetNillableCompetitorID(x *xid.ID) *TenderCreate {
 	return tc
 }
 
+// SetApproverID sets the "approver_id" field.
+func (tc *TenderCreate) SetApproverID(x xid.ID) *TenderCreate {
+	tc.mutation.SetApproverID(x)
+	return tc
+}
+
+// SetNillableApproverID sets the "approver_id" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableApproverID(x *xid.ID) *TenderCreate {
+	if x != nil {
+		tc.SetApproverID(*x)
+	}
+	return tc
+}
+
 // SetID sets the "id" field.
 func (tc *TenderCreate) SetID(x xid.ID) *TenderCreate {
 	tc.mutation.SetID(x)
@@ -989,6 +1003,11 @@ func (tc *TenderCreate) AddVisitRecords(v ...*VisitRecord) *TenderCreate {
 // SetCompetitor sets the "competitor" edge to the Competitor entity.
 func (tc *TenderCreate) SetCompetitor(c *Competitor) *TenderCreate {
 	return tc.SetCompetitorID(c.ID)
+}
+
+// SetApprover sets the "approver" edge to the User entity.
+func (tc *TenderCreate) SetApprover(u *User) *TenderCreate {
+	return tc.SetApproverID(u.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1574,6 +1593,23 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CompetitorID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.ApproverIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.ApproverTable,
+			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ApproverID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -2825,6 +2861,24 @@ func (u *TenderUpsert) UpdateCompetitorID() *TenderUpsert {
 // ClearCompetitorID clears the value of the "competitor_id" field.
 func (u *TenderUpsert) ClearCompetitorID() *TenderUpsert {
 	u.SetNull(tender.FieldCompetitorID)
+	return u
+}
+
+// SetApproverID sets the "approver_id" field.
+func (u *TenderUpsert) SetApproverID(v xid.ID) *TenderUpsert {
+	u.Set(tender.FieldApproverID, v)
+	return u
+}
+
+// UpdateApproverID sets the "approver_id" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateApproverID() *TenderUpsert {
+	u.SetExcluded(tender.FieldApproverID)
+	return u
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (u *TenderUpsert) ClearApproverID() *TenderUpsert {
+	u.SetNull(tender.FieldApproverID)
 	return u
 }
 
@@ -4276,6 +4330,27 @@ func (u *TenderUpsertOne) UpdateCompetitorID() *TenderUpsertOne {
 func (u *TenderUpsertOne) ClearCompetitorID() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearCompetitorID()
+	})
+}
+
+// SetApproverID sets the "approver_id" field.
+func (u *TenderUpsertOne) SetApproverID(v xid.ID) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetApproverID(v)
+	})
+}
+
+// UpdateApproverID sets the "approver_id" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateApproverID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateApproverID()
+	})
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (u *TenderUpsertOne) ClearApproverID() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearApproverID()
 	})
 }
 
@@ -5894,6 +5969,27 @@ func (u *TenderUpsertBulk) UpdateCompetitorID() *TenderUpsertBulk {
 func (u *TenderUpsertBulk) ClearCompetitorID() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.ClearCompetitorID()
+	})
+}
+
+// SetApproverID sets the "approver_id" field.
+func (u *TenderUpsertBulk) SetApproverID(v xid.ID) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetApproverID(v)
+	})
+}
+
+// UpdateApproverID sets the "approver_id" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateApproverID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateApproverID()
+	})
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (u *TenderUpsertBulk) ClearApproverID() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.ClearApproverID()
 	})
 }
 

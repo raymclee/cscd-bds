@@ -1179,6 +1179,22 @@ func (c *CustomerClient) QueryCreatedBy(cu *Customer) *UserQuery {
 	return query
 }
 
+// QueryApprover queries the approver edge of a Customer.
+func (c *CustomerClient) QueryApprover(cu *Customer) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, customer.ApproverTable, customer.ApproverColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryVisitRecords queries the visit_records edge of a Customer.
 func (c *CustomerClient) QueryVisitRecords(cu *Customer) *VisitRecordQuery {
 	query := (&VisitRecordClient{config: c.config}).Query()
@@ -2785,6 +2801,22 @@ func (c *TenderClient) QueryCompetitor(t *Tender) *CompetitorQuery {
 			sqlgraph.From(tender.Table, tender.FieldID, id),
 			sqlgraph.To(competitor.Table, competitor.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, tender.CompetitorTable, tender.CompetitorColumn),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryApprover queries the approver edge of a Tender.
+func (c *TenderClient) QueryApprover(t *Tender) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(tender.Table, tender.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, tender.ApproverTable, tender.ApproverColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

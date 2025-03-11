@@ -3360,6 +3360,8 @@ type CustomerMutation struct {
 	clearedsales            bool
 	created_by              *xid.ID
 	clearedcreated_by       bool
+	approver                *xid.ID
+	clearedapprover         bool
 	visit_records           map[xid.ID]struct{}
 	removedvisit_records    map[xid.ID]struct{}
 	clearedvisit_records    bool
@@ -4205,6 +4207,55 @@ func (m *CustomerMutation) ResetCreatedByID() {
 	delete(m.clearedFields, customer.FieldCreatedByID)
 }
 
+// SetApproverID sets the "approver_id" field.
+func (m *CustomerMutation) SetApproverID(x xid.ID) {
+	m.approver = &x
+}
+
+// ApproverID returns the value of the "approver_id" field in the mutation.
+func (m *CustomerMutation) ApproverID() (r xid.ID, exists bool) {
+	v := m.approver
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldApproverID returns the old "approver_id" field's value of the Customer entity.
+// If the Customer object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerMutation) OldApproverID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldApproverID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldApproverID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldApproverID: %w", err)
+	}
+	return oldValue.ApproverID, nil
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (m *CustomerMutation) ClearApproverID() {
+	m.approver = nil
+	m.clearedFields[customer.FieldApproverID] = struct{}{}
+}
+
+// ApproverIDCleared returns if the "approver_id" field was cleared in this mutation.
+func (m *CustomerMutation) ApproverIDCleared() bool {
+	_, ok := m.clearedFields[customer.FieldApproverID]
+	return ok
+}
+
+// ResetApproverID resets all changes to the "approver_id" field.
+func (m *CustomerMutation) ResetApproverID() {
+	m.approver = nil
+	delete(m.clearedFields, customer.FieldApproverID)
+}
+
 // ClearArea clears the "area" edge to the Area entity.
 func (m *CustomerMutation) ClearArea() {
 	m.clearedarea = true
@@ -4340,6 +4391,33 @@ func (m *CustomerMutation) ResetCreatedBy() {
 	m.clearedcreated_by = false
 }
 
+// ClearApprover clears the "approver" edge to the User entity.
+func (m *CustomerMutation) ClearApprover() {
+	m.clearedapprover = true
+	m.clearedFields[customer.FieldApproverID] = struct{}{}
+}
+
+// ApproverCleared reports if the "approver" edge to the User entity was cleared.
+func (m *CustomerMutation) ApproverCleared() bool {
+	return m.ApproverIDCleared() || m.clearedapprover
+}
+
+// ApproverIDs returns the "approver" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ApproverID instead. It exists only for internal usage by the builders.
+func (m *CustomerMutation) ApproverIDs() (ids []xid.ID) {
+	if id := m.approver; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetApprover resets all changes to the "approver" edge.
+func (m *CustomerMutation) ResetApprover() {
+	m.approver = nil
+	m.clearedapprover = false
+}
+
 // AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by ids.
 func (m *CustomerMutation) AddVisitRecordIDs(ids ...xid.ID) {
 	if m.visit_records == nil {
@@ -4428,7 +4506,7 @@ func (m *CustomerMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CustomerMutation) Fields() []string {
-	fields := make([]string, 0, 15)
+	fields := make([]string, 0, 16)
 	if m.created_at != nil {
 		fields = append(fields, customer.FieldCreatedAt)
 	}
@@ -4474,6 +4552,9 @@ func (m *CustomerMutation) Fields() []string {
 	if m.created_by != nil {
 		fields = append(fields, customer.FieldCreatedByID)
 	}
+	if m.approver != nil {
+		fields = append(fields, customer.FieldApproverID)
+	}
 	return fields
 }
 
@@ -4512,6 +4593,8 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.SalesID()
 	case customer.FieldCreatedByID:
 		return m.CreatedByID()
+	case customer.FieldApproverID:
+		return m.ApproverID()
 	}
 	return nil, false
 }
@@ -4551,6 +4634,8 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldSalesID(ctx)
 	case customer.FieldCreatedByID:
 		return m.OldCreatedByID(ctx)
+	case customer.FieldApproverID:
+		return m.OldApproverID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Customer field %s", name)
 }
@@ -4665,6 +4750,13 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCreatedByID(v)
 		return nil
+	case customer.FieldApproverID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetApproverID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Customer field %s", name)
 }
@@ -4764,6 +4856,9 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldCreatedByID) {
 		fields = append(fields, customer.FieldCreatedByID)
 	}
+	if m.FieldCleared(customer.FieldApproverID) {
+		fields = append(fields, customer.FieldApproverID)
+	}
 	return fields
 }
 
@@ -4807,6 +4902,9 @@ func (m *CustomerMutation) ClearField(name string) error {
 		return nil
 	case customer.FieldCreatedByID:
 		m.ClearCreatedByID()
+		return nil
+	case customer.FieldApproverID:
+		m.ClearApproverID()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer nullable field %s", name)
@@ -4861,13 +4959,16 @@ func (m *CustomerMutation) ResetField(name string) error {
 	case customer.FieldCreatedByID:
 		m.ResetCreatedByID()
 		return nil
+	case customer.FieldApproverID:
+		m.ResetApproverID()
+		return nil
 	}
 	return fmt.Errorf("unknown Customer field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CustomerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.area != nil {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -4879,6 +4980,9 @@ func (m *CustomerMutation) AddedEdges() []string {
 	}
 	if m.created_by != nil {
 		edges = append(edges, customer.EdgeCreatedBy)
+	}
+	if m.approver != nil {
+		edges = append(edges, customer.EdgeApprover)
 	}
 	if m.visit_records != nil {
 		edges = append(edges, customer.EdgeVisitRecords)
@@ -4908,6 +5012,10 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.created_by; id != nil {
 			return []ent.Value{*id}
 		}
+	case customer.EdgeApprover:
+		if id := m.approver; id != nil {
+			return []ent.Value{*id}
+		}
 	case customer.EdgeVisitRecords:
 		ids := make([]ent.Value, 0, len(m.visit_records))
 		for id := range m.visit_records {
@@ -4920,7 +5028,7 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CustomerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedtenders != nil {
 		edges = append(edges, customer.EdgeTenders)
 	}
@@ -4952,7 +5060,7 @@ func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CustomerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.clearedarea {
 		edges = append(edges, customer.EdgeArea)
 	}
@@ -4964,6 +5072,9 @@ func (m *CustomerMutation) ClearedEdges() []string {
 	}
 	if m.clearedcreated_by {
 		edges = append(edges, customer.EdgeCreatedBy)
+	}
+	if m.clearedapprover {
+		edges = append(edges, customer.EdgeApprover)
 	}
 	if m.clearedvisit_records {
 		edges = append(edges, customer.EdgeVisitRecords)
@@ -4983,6 +5094,8 @@ func (m *CustomerMutation) EdgeCleared(name string) bool {
 		return m.clearedsales
 	case customer.EdgeCreatedBy:
 		return m.clearedcreated_by
+	case customer.EdgeApprover:
+		return m.clearedapprover
 	case customer.EdgeVisitRecords:
 		return m.clearedvisit_records
 	}
@@ -5001,6 +5114,9 @@ func (m *CustomerMutation) ClearEdge(name string) error {
 		return nil
 	case customer.EdgeCreatedBy:
 		m.ClearCreatedBy()
+		return nil
+	case customer.EdgeApprover:
+		m.ClearApprover()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer unique edge %s", name)
@@ -5021,6 +5137,9 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 		return nil
 	case customer.EdgeCreatedBy:
 		m.ResetCreatedBy()
+		return nil
+	case customer.EdgeApprover:
+		m.ResetApprover()
 		return nil
 	case customer.EdgeVisitRecords:
 		m.ResetVisitRecords()
@@ -20254,6 +20373,8 @@ type TenderMutation struct {
 	clearedvisit_records                    bool
 	competitor                              *xid.ID
 	clearedcompetitor                       bool
+	approver                                *xid.ID
+	clearedapprover                         bool
 	done                                    bool
 	oldValue                                func(context.Context) (*Tender, error)
 	predicates                              []predicate.Tender
@@ -23794,6 +23915,55 @@ func (m *TenderMutation) ResetCompetitorID() {
 	delete(m.clearedFields, tender.FieldCompetitorID)
 }
 
+// SetApproverID sets the "approver_id" field.
+func (m *TenderMutation) SetApproverID(x xid.ID) {
+	m.approver = &x
+}
+
+// ApproverID returns the value of the "approver_id" field in the mutation.
+func (m *TenderMutation) ApproverID() (r xid.ID, exists bool) {
+	v := m.approver
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldApproverID returns the old "approver_id" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldApproverID(ctx context.Context) (v *xid.ID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldApproverID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldApproverID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldApproverID: %w", err)
+	}
+	return oldValue.ApproverID, nil
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (m *TenderMutation) ClearApproverID() {
+	m.approver = nil
+	m.clearedFields[tender.FieldApproverID] = struct{}{}
+}
+
+// ApproverIDCleared returns if the "approver_id" field was cleared in this mutation.
+func (m *TenderMutation) ApproverIDCleared() bool {
+	_, ok := m.clearedFields[tender.FieldApproverID]
+	return ok
+}
+
+// ResetApproverID resets all changes to the "approver_id" field.
+func (m *TenderMutation) ResetApproverID() {
+	m.approver = nil
+	delete(m.clearedFields, tender.FieldApproverID)
+}
+
 // ClearArea clears the "area" edge to the Area entity.
 func (m *TenderMutation) ClearArea() {
 	m.clearedarea = true
@@ -24118,6 +24288,33 @@ func (m *TenderMutation) ResetCompetitor() {
 	m.clearedcompetitor = false
 }
 
+// ClearApprover clears the "approver" edge to the User entity.
+func (m *TenderMutation) ClearApprover() {
+	m.clearedapprover = true
+	m.clearedFields[tender.FieldApproverID] = struct{}{}
+}
+
+// ApproverCleared reports if the "approver" edge to the User entity was cleared.
+func (m *TenderMutation) ApproverCleared() bool {
+	return m.ApproverIDCleared() || m.clearedapprover
+}
+
+// ApproverIDs returns the "approver" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ApproverID instead. It exists only for internal usage by the builders.
+func (m *TenderMutation) ApproverIDs() (ids []xid.ID) {
+	if id := m.approver; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetApprover resets all changes to the "approver" edge.
+func (m *TenderMutation) ResetApprover() {
+	m.approver = nil
+	m.clearedapprover = false
+}
+
 // Where appends a list predicates to the TenderMutation builder.
 func (m *TenderMutation) Where(ps ...predicate.Tender) {
 	m.predicates = append(m.predicates, ps...)
@@ -24152,7 +24349,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 67)
+	fields := make([]string, 0, 68)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -24354,6 +24551,9 @@ func (m *TenderMutation) Fields() []string {
 	if m.competitor != nil {
 		fields = append(fields, tender.FieldCompetitorID)
 	}
+	if m.approver != nil {
+		fields = append(fields, tender.FieldApproverID)
+	}
 	return fields
 }
 
@@ -24496,6 +24696,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedByID()
 	case tender.FieldCompetitorID:
 		return m.CompetitorID()
+	case tender.FieldApproverID:
+		return m.ApproverID()
 	}
 	return nil, false
 }
@@ -24639,6 +24841,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldCreatedByID(ctx)
 	case tender.FieldCompetitorID:
 		return m.OldCompetitorID(ctx)
+	case tender.FieldApproverID:
+		return m.OldApproverID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Tender field %s", name)
 }
@@ -25117,6 +25321,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCompetitorID(v)
 		return nil
+	case tender.FieldApproverID:
+		v, ok := value.(xid.ID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetApproverID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Tender field %s", name)
 }
@@ -25453,6 +25664,9 @@ func (m *TenderMutation) ClearedFields() []string {
 	if m.FieldCleared(tender.FieldCompetitorID) {
 		fields = append(fields, tender.FieldCompetitorID)
 	}
+	if m.FieldCleared(tender.FieldApproverID) {
+		fields = append(fields, tender.FieldApproverID)
+	}
 	return fields
 }
 
@@ -25637,6 +25851,9 @@ func (m *TenderMutation) ClearField(name string) error {
 		return nil
 	case tender.FieldCompetitorID:
 		m.ClearCompetitorID()
+		return nil
+	case tender.FieldApproverID:
+		m.ClearApproverID()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender nullable field %s", name)
@@ -25847,13 +26064,16 @@ func (m *TenderMutation) ResetField(name string) error {
 	case tender.FieldCompetitorID:
 		m.ResetCompetitorID()
 		return nil
+	case tender.FieldApproverID:
+		m.ResetApproverID()
+		return nil
 	}
 	return fmt.Errorf("unknown Tender field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TenderMutation) AddedEdges() []string {
-	edges := make([]string, 0, 10)
+	edges := make([]string, 0, 11)
 	if m.area != nil {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -25883,6 +26103,9 @@ func (m *TenderMutation) AddedEdges() []string {
 	}
 	if m.competitor != nil {
 		edges = append(edges, tender.EdgeCompetitor)
+	}
+	if m.approver != nil {
+		edges = append(edges, tender.EdgeApprover)
 	}
 	return edges
 }
@@ -25935,13 +26158,17 @@ func (m *TenderMutation) AddedIDs(name string) []ent.Value {
 		if id := m.competitor; id != nil {
 			return []ent.Value{*id}
 		}
+	case tender.EdgeApprover:
+		if id := m.approver; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TenderMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 10)
+	edges := make([]string, 0, 11)
 	if m.removedfollowing_sales != nil {
 		edges = append(edges, tender.EdgeFollowingSales)
 	}
@@ -25973,7 +26200,7 @@ func (m *TenderMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TenderMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 10)
+	edges := make([]string, 0, 11)
 	if m.clearedarea {
 		edges = append(edges, tender.EdgeArea)
 	}
@@ -26004,6 +26231,9 @@ func (m *TenderMutation) ClearedEdges() []string {
 	if m.clearedcompetitor {
 		edges = append(edges, tender.EdgeCompetitor)
 	}
+	if m.clearedapprover {
+		edges = append(edges, tender.EdgeApprover)
+	}
 	return edges
 }
 
@@ -26031,6 +26261,8 @@ func (m *TenderMutation) EdgeCleared(name string) bool {
 		return m.clearedvisit_records
 	case tender.EdgeCompetitor:
 		return m.clearedcompetitor
+	case tender.EdgeApprover:
+		return m.clearedapprover
 	}
 	return false
 }
@@ -26062,6 +26294,9 @@ func (m *TenderMutation) ClearEdge(name string) error {
 		return nil
 	case tender.EdgeCompetitor:
 		m.ClearCompetitor()
+		return nil
+	case tender.EdgeApprover:
+		m.ClearApprover()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender unique edge %s", name)
@@ -26100,6 +26335,9 @@ func (m *TenderMutation) ResetEdge(name string) error {
 		return nil
 	case tender.EdgeCompetitor:
 		m.ResetCompetitor()
+		return nil
+	case tender.EdgeApprover:
+		m.ResetApprover()
 		return nil
 	}
 	return fmt.Errorf("unknown Tender edge %s", name)

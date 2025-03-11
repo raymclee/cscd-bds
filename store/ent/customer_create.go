@@ -215,6 +215,20 @@ func (cc *CustomerCreate) SetNillableCreatedByID(x *xid.ID) *CustomerCreate {
 	return cc
 }
 
+// SetApproverID sets the "approver_id" field.
+func (cc *CustomerCreate) SetApproverID(x xid.ID) *CustomerCreate {
+	cc.mutation.SetApproverID(x)
+	return cc
+}
+
+// SetNillableApproverID sets the "approver_id" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableApproverID(x *xid.ID) *CustomerCreate {
+	if x != nil {
+		cc.SetApproverID(*x)
+	}
+	return cc
+}
+
 // SetID sets the "id" field.
 func (cc *CustomerCreate) SetID(x xid.ID) *CustomerCreate {
 	cc.mutation.SetID(x)
@@ -257,6 +271,11 @@ func (cc *CustomerCreate) SetSales(u *User) *CustomerCreate {
 // SetCreatedBy sets the "created_by" edge to the User entity.
 func (cc *CustomerCreate) SetCreatedBy(u *User) *CustomerCreate {
 	return cc.SetCreatedByID(u.ID)
+}
+
+// SetApprover sets the "approver" edge to the User entity.
+func (cc *CustomerCreate) SetApprover(u *User) *CustomerCreate {
+	return cc.SetApproverID(u.ID)
 }
 
 // AddVisitRecordIDs adds the "visit_records" edge to the VisitRecord entity by IDs.
@@ -496,6 +515,23 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CreatedByID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ApproverIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ApproverTable,
+			Columns: []string{customer.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ApproverID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := cc.mutation.VisitRecordsIDs(); len(nodes) > 0 {
@@ -809,6 +845,24 @@ func (u *CustomerUpsert) UpdateCreatedByID() *CustomerUpsert {
 // ClearCreatedByID clears the value of the "created_by_id" field.
 func (u *CustomerUpsert) ClearCreatedByID() *CustomerUpsert {
 	u.SetNull(customer.FieldCreatedByID)
+	return u
+}
+
+// SetApproverID sets the "approver_id" field.
+func (u *CustomerUpsert) SetApproverID(v xid.ID) *CustomerUpsert {
+	u.Set(customer.FieldApproverID, v)
+	return u
+}
+
+// UpdateApproverID sets the "approver_id" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateApproverID() *CustomerUpsert {
+	u.SetExcluded(customer.FieldApproverID)
+	return u
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (u *CustomerUpsert) ClearApproverID() *CustomerUpsert {
+	u.SetNull(customer.FieldApproverID)
 	return u
 }
 
@@ -1147,6 +1201,27 @@ func (u *CustomerUpsertOne) UpdateCreatedByID() *CustomerUpsertOne {
 func (u *CustomerUpsertOne) ClearCreatedByID() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.ClearCreatedByID()
+	})
+}
+
+// SetApproverID sets the "approver_id" field.
+func (u *CustomerUpsertOne) SetApproverID(v xid.ID) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetApproverID(v)
+	})
+}
+
+// UpdateApproverID sets the "approver_id" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateApproverID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateApproverID()
+	})
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (u *CustomerUpsertOne) ClearApproverID() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearApproverID()
 	})
 }
 
@@ -1652,6 +1727,27 @@ func (u *CustomerUpsertBulk) UpdateCreatedByID() *CustomerUpsertBulk {
 func (u *CustomerUpsertBulk) ClearCreatedByID() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.ClearCreatedByID()
+	})
+}
+
+// SetApproverID sets the "approver_id" field.
+func (u *CustomerUpsertBulk) SetApproverID(v xid.ID) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetApproverID(v)
+	})
+}
+
+// UpdateApproverID sets the "approver_id" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateApproverID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateApproverID()
+	})
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (u *CustomerUpsertBulk) ClearApproverID() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.ClearApproverID()
 	})
 }
 

@@ -145,6 +145,10 @@ func (Tender) Fields() []ent.Field {
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
+		field.String("approver_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -186,6 +190,9 @@ func (Tender) Edges() []ent.Edge {
 		edge.From("competitor", Competitor.Type).
 			Ref("won_tenders").
 			Field("competitor_id").
+			Unique(),
+		edge.To("approver", User.Type).
+			Field("approver_id").
 			Unique(),
 	}
 }

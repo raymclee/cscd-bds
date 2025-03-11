@@ -1805,6 +1805,23 @@ type CustomerWhereInput struct {
 	CreatedByIDEqualFold    *xid.ID  `json:"createdByIDEqualFold,omitempty"`
 	CreatedByIDContainsFold *xid.ID  `json:"createdByIDContainsFold,omitempty"`
 
+	// "approver_id" field predicates.
+	ApproverID             *xid.ID  `json:"approverID,omitempty"`
+	ApproverIDNEQ          *xid.ID  `json:"approverIDNEQ,omitempty"`
+	ApproverIDIn           []xid.ID `json:"approverIDIn,omitempty"`
+	ApproverIDNotIn        []xid.ID `json:"approverIDNotIn,omitempty"`
+	ApproverIDGT           *xid.ID  `json:"approverIDGT,omitempty"`
+	ApproverIDGTE          *xid.ID  `json:"approverIDGTE,omitempty"`
+	ApproverIDLT           *xid.ID  `json:"approverIDLT,omitempty"`
+	ApproverIDLTE          *xid.ID  `json:"approverIDLTE,omitempty"`
+	ApproverIDContains     *xid.ID  `json:"approverIDContains,omitempty"`
+	ApproverIDHasPrefix    *xid.ID  `json:"approverIDHasPrefix,omitempty"`
+	ApproverIDHasSuffix    *xid.ID  `json:"approverIDHasSuffix,omitempty"`
+	ApproverIDIsNil        bool     `json:"approverIDIsNil,omitempty"`
+	ApproverIDNotNil       bool     `json:"approverIDNotNil,omitempty"`
+	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
+	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
+
 	// "area" edge predicates.
 	HasArea     *bool             `json:"hasArea,omitempty"`
 	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
@@ -1820,6 +1837,10 @@ type CustomerWhereInput struct {
 	// "created_by" edge predicates.
 	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
 	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
+
+	// "approver" edge predicates.
+	HasApprover     *bool             `json:"hasApprover,omitempty"`
+	HasApproverWith []*UserWhereInput `json:"hasApproverWith,omitempty"`
 
 	// "visit_records" edge predicates.
 	HasVisitRecords     *bool                    `json:"hasVisitRecords,omitempty"`
@@ -2413,6 +2434,51 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.CreatedByIDContainsFold != nil {
 		predicates = append(predicates, customer.CreatedByIDContainsFold(*i.CreatedByIDContainsFold))
 	}
+	if i.ApproverID != nil {
+		predicates = append(predicates, customer.ApproverIDEQ(*i.ApproverID))
+	}
+	if i.ApproverIDNEQ != nil {
+		predicates = append(predicates, customer.ApproverIDNEQ(*i.ApproverIDNEQ))
+	}
+	if len(i.ApproverIDIn) > 0 {
+		predicates = append(predicates, customer.ApproverIDIn(i.ApproverIDIn...))
+	}
+	if len(i.ApproverIDNotIn) > 0 {
+		predicates = append(predicates, customer.ApproverIDNotIn(i.ApproverIDNotIn...))
+	}
+	if i.ApproverIDGT != nil {
+		predicates = append(predicates, customer.ApproverIDGT(*i.ApproverIDGT))
+	}
+	if i.ApproverIDGTE != nil {
+		predicates = append(predicates, customer.ApproverIDGTE(*i.ApproverIDGTE))
+	}
+	if i.ApproverIDLT != nil {
+		predicates = append(predicates, customer.ApproverIDLT(*i.ApproverIDLT))
+	}
+	if i.ApproverIDLTE != nil {
+		predicates = append(predicates, customer.ApproverIDLTE(*i.ApproverIDLTE))
+	}
+	if i.ApproverIDContains != nil {
+		predicates = append(predicates, customer.ApproverIDContains(*i.ApproverIDContains))
+	}
+	if i.ApproverIDHasPrefix != nil {
+		predicates = append(predicates, customer.ApproverIDHasPrefix(*i.ApproverIDHasPrefix))
+	}
+	if i.ApproverIDHasSuffix != nil {
+		predicates = append(predicates, customer.ApproverIDHasSuffix(*i.ApproverIDHasSuffix))
+	}
+	if i.ApproverIDIsNil {
+		predicates = append(predicates, customer.ApproverIDIsNil())
+	}
+	if i.ApproverIDNotNil {
+		predicates = append(predicates, customer.ApproverIDNotNil())
+	}
+	if i.ApproverIDEqualFold != nil {
+		predicates = append(predicates, customer.ApproverIDEqualFold(*i.ApproverIDEqualFold))
+	}
+	if i.ApproverIDContainsFold != nil {
+		predicates = append(predicates, customer.ApproverIDContainsFold(*i.ApproverIDContainsFold))
+	}
 
 	if i.HasArea != nil {
 		p := customer.HasArea()
@@ -2485,6 +2551,24 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, customer.HasCreatedByWith(with...))
+	}
+	if i.HasApprover != nil {
+		p := customer.HasApprover()
+		if !*i.HasApprover {
+			p = customer.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasApproverWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasApproverWith))
+		for _, w := range i.HasApproverWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasApproverWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, customer.HasApproverWith(with...))
 	}
 	if i.HasVisitRecords != nil {
 		p := customer.HasVisitRecords()
@@ -10329,6 +10413,23 @@ type TenderWhereInput struct {
 	CompetitorIDEqualFold    *xid.ID  `json:"competitorIDEqualFold,omitempty"`
 	CompetitorIDContainsFold *xid.ID  `json:"competitorIDContainsFold,omitempty"`
 
+	// "approver_id" field predicates.
+	ApproverID             *xid.ID  `json:"approverID,omitempty"`
+	ApproverIDNEQ          *xid.ID  `json:"approverIDNEQ,omitempty"`
+	ApproverIDIn           []xid.ID `json:"approverIDIn,omitempty"`
+	ApproverIDNotIn        []xid.ID `json:"approverIDNotIn,omitempty"`
+	ApproverIDGT           *xid.ID  `json:"approverIDGT,omitempty"`
+	ApproverIDGTE          *xid.ID  `json:"approverIDGTE,omitempty"`
+	ApproverIDLT           *xid.ID  `json:"approverIDLT,omitempty"`
+	ApproverIDLTE          *xid.ID  `json:"approverIDLTE,omitempty"`
+	ApproverIDContains     *xid.ID  `json:"approverIDContains,omitempty"`
+	ApproverIDHasPrefix    *xid.ID  `json:"approverIDHasPrefix,omitempty"`
+	ApproverIDHasSuffix    *xid.ID  `json:"approverIDHasSuffix,omitempty"`
+	ApproverIDIsNil        bool     `json:"approverIDIsNil,omitempty"`
+	ApproverIDNotNil       bool     `json:"approverIDNotNil,omitempty"`
+	ApproverIDEqualFold    *xid.ID  `json:"approverIDEqualFold,omitempty"`
+	ApproverIDContainsFold *xid.ID  `json:"approverIDContainsFold,omitempty"`
+
 	// "area" edge predicates.
 	HasArea     *bool             `json:"hasArea,omitempty"`
 	HasAreaWith []*AreaWhereInput `json:"hasAreaWith,omitempty"`
@@ -10368,6 +10469,10 @@ type TenderWhereInput struct {
 	// "competitor" edge predicates.
 	HasCompetitor     *bool                   `json:"hasCompetitor,omitempty"`
 	HasCompetitorWith []*CompetitorWhereInput `json:"hasCompetitorWith,omitempty"`
+
+	// "approver" edge predicates.
+	HasApprover     *bool             `json:"hasApprover,omitempty"`
+	HasApproverWith []*UserWhereInput `json:"hasApproverWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -12841,6 +12946,51 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	if i.CompetitorIDContainsFold != nil {
 		predicates = append(predicates, tender.CompetitorIDContainsFold(*i.CompetitorIDContainsFold))
 	}
+	if i.ApproverID != nil {
+		predicates = append(predicates, tender.ApproverIDEQ(*i.ApproverID))
+	}
+	if i.ApproverIDNEQ != nil {
+		predicates = append(predicates, tender.ApproverIDNEQ(*i.ApproverIDNEQ))
+	}
+	if len(i.ApproverIDIn) > 0 {
+		predicates = append(predicates, tender.ApproverIDIn(i.ApproverIDIn...))
+	}
+	if len(i.ApproverIDNotIn) > 0 {
+		predicates = append(predicates, tender.ApproverIDNotIn(i.ApproverIDNotIn...))
+	}
+	if i.ApproverIDGT != nil {
+		predicates = append(predicates, tender.ApproverIDGT(*i.ApproverIDGT))
+	}
+	if i.ApproverIDGTE != nil {
+		predicates = append(predicates, tender.ApproverIDGTE(*i.ApproverIDGTE))
+	}
+	if i.ApproverIDLT != nil {
+		predicates = append(predicates, tender.ApproverIDLT(*i.ApproverIDLT))
+	}
+	if i.ApproverIDLTE != nil {
+		predicates = append(predicates, tender.ApproverIDLTE(*i.ApproverIDLTE))
+	}
+	if i.ApproverIDContains != nil {
+		predicates = append(predicates, tender.ApproverIDContains(*i.ApproverIDContains))
+	}
+	if i.ApproverIDHasPrefix != nil {
+		predicates = append(predicates, tender.ApproverIDHasPrefix(*i.ApproverIDHasPrefix))
+	}
+	if i.ApproverIDHasSuffix != nil {
+		predicates = append(predicates, tender.ApproverIDHasSuffix(*i.ApproverIDHasSuffix))
+	}
+	if i.ApproverIDIsNil {
+		predicates = append(predicates, tender.ApproverIDIsNil())
+	}
+	if i.ApproverIDNotNil {
+		predicates = append(predicates, tender.ApproverIDNotNil())
+	}
+	if i.ApproverIDEqualFold != nil {
+		predicates = append(predicates, tender.ApproverIDEqualFold(*i.ApproverIDEqualFold))
+	}
+	if i.ApproverIDContainsFold != nil {
+		predicates = append(predicates, tender.ApproverIDContainsFold(*i.ApproverIDContainsFold))
+	}
 
 	if i.HasArea != nil {
 		p := tender.HasArea()
@@ -13021,6 +13171,24 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, tender.HasCompetitorWith(with...))
+	}
+	if i.HasApprover != nil {
+		p := tender.HasApprover()
+		if !*i.HasApprover {
+			p = tender.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasApproverWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasApproverWith))
+		for _, w := range i.HasApproverWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasApproverWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, tender.HasApproverWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

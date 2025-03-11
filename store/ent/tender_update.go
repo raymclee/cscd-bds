@@ -1360,6 +1360,26 @@ func (tu *TenderUpdate) ClearCompetitorID() *TenderUpdate {
 	return tu
 }
 
+// SetApproverID sets the "approver_id" field.
+func (tu *TenderUpdate) SetApproverID(x xid.ID) *TenderUpdate {
+	tu.mutation.SetApproverID(x)
+	return tu
+}
+
+// SetNillableApproverID sets the "approver_id" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableApproverID(x *xid.ID) *TenderUpdate {
+	if x != nil {
+		tu.SetApproverID(*x)
+	}
+	return tu
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (tu *TenderUpdate) ClearApproverID() *TenderUpdate {
+	tu.mutation.ClearApproverID()
+	return tu
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tu *TenderUpdate) SetArea(a *Area) *TenderUpdate {
 	return tu.SetAreaID(a.ID)
@@ -1428,6 +1448,11 @@ func (tu *TenderUpdate) AddVisitRecords(v ...*VisitRecord) *TenderUpdate {
 // SetCompetitor sets the "competitor" edge to the Competitor entity.
 func (tu *TenderUpdate) SetCompetitor(c *Competitor) *TenderUpdate {
 	return tu.SetCompetitorID(c.ID)
+}
+
+// SetApprover sets the "approver" edge to the User entity.
+func (tu *TenderUpdate) SetApprover(u *User) *TenderUpdate {
+	return tu.SetApproverID(u.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -1522,6 +1547,12 @@ func (tu *TenderUpdate) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdate {
 // ClearCompetitor clears the "competitor" edge to the Competitor entity.
 func (tu *TenderUpdate) ClearCompetitor() *TenderUpdate {
 	tu.mutation.ClearCompetitor()
+	return tu
+}
+
+// ClearApprover clears the "approver" edge to the User entity.
+func (tu *TenderUpdate) ClearApprover() *TenderUpdate {
+	tu.mutation.ClearApprover()
 	return tu
 }
 
@@ -2313,6 +2344,35 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tu.mutation.ApproverCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.ApproverTable,
+			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.ApproverIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.ApproverTable,
+			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -3661,6 +3721,26 @@ func (tuo *TenderUpdateOne) ClearCompetitorID() *TenderUpdateOne {
 	return tuo
 }
 
+// SetApproverID sets the "approver_id" field.
+func (tuo *TenderUpdateOne) SetApproverID(x xid.ID) *TenderUpdateOne {
+	tuo.mutation.SetApproverID(x)
+	return tuo
+}
+
+// SetNillableApproverID sets the "approver_id" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableApproverID(x *xid.ID) *TenderUpdateOne {
+	if x != nil {
+		tuo.SetApproverID(*x)
+	}
+	return tuo
+}
+
+// ClearApproverID clears the value of the "approver_id" field.
+func (tuo *TenderUpdateOne) ClearApproverID() *TenderUpdateOne {
+	tuo.mutation.ClearApproverID()
+	return tuo
+}
+
 // SetArea sets the "area" edge to the Area entity.
 func (tuo *TenderUpdateOne) SetArea(a *Area) *TenderUpdateOne {
 	return tuo.SetAreaID(a.ID)
@@ -3729,6 +3809,11 @@ func (tuo *TenderUpdateOne) AddVisitRecords(v ...*VisitRecord) *TenderUpdateOne 
 // SetCompetitor sets the "competitor" edge to the Competitor entity.
 func (tuo *TenderUpdateOne) SetCompetitor(c *Competitor) *TenderUpdateOne {
 	return tuo.SetCompetitorID(c.ID)
+}
+
+// SetApprover sets the "approver" edge to the User entity.
+func (tuo *TenderUpdateOne) SetApprover(u *User) *TenderUpdateOne {
+	return tuo.SetApproverID(u.ID)
 }
 
 // Mutation returns the TenderMutation object of the builder.
@@ -3823,6 +3908,12 @@ func (tuo *TenderUpdateOne) RemoveVisitRecords(v ...*VisitRecord) *TenderUpdateO
 // ClearCompetitor clears the "competitor" edge to the Competitor entity.
 func (tuo *TenderUpdateOne) ClearCompetitor() *TenderUpdateOne {
 	tuo.mutation.ClearCompetitor()
+	return tuo
+}
+
+// ClearApprover clears the "approver" edge to the User entity.
+func (tuo *TenderUpdateOne) ClearApprover() *TenderUpdateOne {
+	tuo.mutation.ClearApprover()
 	return tuo
 }
 
@@ -4644,6 +4735,35 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(competitor.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if tuo.mutation.ApproverCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.ApproverTable,
+			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.ApproverIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.ApproverTable,
+			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

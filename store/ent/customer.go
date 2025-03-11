@@ -52,6 +52,8 @@ type Customer struct {
 	SalesID *xid.ID `json:"sales_id,omitempty"`
 	// CreatedByID holds the value of the "created_by_id" field.
 	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
+	// ApproverID holds the value of the "approver_id" field.
+	ApproverID *xid.ID `json:"approver_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CustomerQuery when eager-loading is set.
 	Edges        CustomerEdges `json:"edges"`
@@ -68,13 +70,15 @@ type CustomerEdges struct {
 	Sales *User `json:"sales,omitempty"`
 	// CreatedBy holds the value of the created_by edge.
 	CreatedBy *User `json:"created_by,omitempty"`
+	// Approver holds the value of the approver edge.
+	Approver *User `json:"approver,omitempty"`
 	// VisitRecords holds the value of the visit_records edge.
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
+	loadedTypes [6]bool
 	// totalCount holds the count of the edges above.
-	totalCount [5]map[string]int
+	totalCount [6]map[string]int
 
 	namedTenders      map[string][]*Tender
 	namedVisitRecords map[string][]*VisitRecord
@@ -122,10 +126,21 @@ func (e CustomerEdges) CreatedByOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "created_by"}
 }
 
+// ApproverOrErr returns the Approver value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CustomerEdges) ApproverOrErr() (*User, error) {
+	if e.Approver != nil {
+		return e.Approver, nil
+	} else if e.loadedTypes[4] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "approver"}
+}
+
 // VisitRecordsOrErr returns the VisitRecords value or an error if the edge
 // was not loaded in eager-loading.
 func (e CustomerEdges) VisitRecordsOrErr() ([]*VisitRecord, error) {
-	if e.loadedTypes[4] {
+	if e.loadedTypes[5] {
 		return e.VisitRecords, nil
 	}
 	return nil, &NotLoadedError{edge: "visit_records"}
@@ -136,7 +151,7 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case customer.FieldSalesID, customer.FieldCreatedByID:
+		case customer.FieldSalesID, customer.FieldCreatedByID, customer.FieldApproverID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case customer.FieldFeishuGroup:
 			values[i] = new([]byte)
@@ -272,6 +287,13 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				c.CreatedByID = new(xid.ID)
 				*c.CreatedByID = *value.S.(*xid.ID)
 			}
+		case customer.FieldApproverID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field approver_id", values[i])
+			} else if value.Valid {
+				c.ApproverID = new(xid.ID)
+				*c.ApproverID = *value.S.(*xid.ID)
+			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
 		}
@@ -303,6 +325,11 @@ func (c *Customer) QuerySales() *UserQuery {
 // QueryCreatedBy queries the "created_by" edge of the Customer entity.
 func (c *Customer) QueryCreatedBy() *UserQuery {
 	return NewCustomerClient(c.config).QueryCreatedBy(c)
+}
+
+// QueryApprover queries the "approver" edge of the Customer entity.
+func (c *Customer) QueryApprover() *UserQuery {
+	return NewCustomerClient(c.config).QueryApprover(c)
 }
 
 // QueryVisitRecords queries the "visit_records" edge of the Customer entity.
@@ -393,6 +420,11 @@ func (c *Customer) String() string {
 	builder.WriteString(", ")
 	if v := c.CreatedByID; v != nil {
 		builder.WriteString("created_by_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := c.ApproverID; v != nil {
+		builder.WriteString("approver_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

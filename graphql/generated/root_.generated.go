@@ -143,6 +143,8 @@ type ComplexityRoot struct {
 	}
 
 	Customer struct {
+		Approver              func(childComplexity int) int
+		ApproverID            func(childComplexity int) int
 		Area                  func(childComplexity int) int
 		AreaID                func(childComplexity int) int
 		ContactPerson         func(childComplexity int) int
@@ -535,6 +537,8 @@ type ComplexityRoot struct {
 
 	Tender struct {
 		Address                              func(childComplexity int) int
+		Approver                             func(childComplexity int) int
+		ApproverID                           func(childComplexity int) int
 		Architect                            func(childComplexity int) int
 		Area                                 func(childComplexity int) int
 		AreaID                               func(childComplexity int) int
@@ -1148,6 +1152,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CountryEdge.Node(childComplexity), true
+
+	case "Customer.approver":
+		if e.complexity.Customer.Approver == nil {
+			break
+		}
+
+		return e.complexity.Customer.Approver(childComplexity), true
+
+	case "Customer.approverID":
+		if e.complexity.Customer.ApproverID == nil {
+			break
+		}
+
+		return e.complexity.Customer.ApproverID(childComplexity), true
 
 	case "Customer.area":
 		if e.complexity.Customer.Area == nil {
@@ -3460,6 +3478,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Address(childComplexity), true
 
+	case "Tender.approver":
+		if e.complexity.Tender.Approver == nil {
+			break
+		}
+
+		return e.complexity.Tender.Approver(childComplexity), true
+
+	case "Tender.approverID":
+		if e.complexity.Tender.ApproverID == nil {
+			break
+		}
+
+		return e.complexity.Tender.ApproverID(childComplexity), true
+
 	case "Tender.architect":
 		if e.complexity.Tender.Architect == nil {
 			break
@@ -5544,6 +5576,7 @@ input CreateCustomerInput {
   tenderIDs: [ID!]
   salesID: ID
   createdByID: ID
+  approverID: ID
   visitRecordIDs: [ID!]
 }
 """
@@ -5692,6 +5725,7 @@ input CreateTenderInput {
   districtID: ID
   visitRecordIDs: [ID!]
   competitorID: ID
+  approverID: ID
 }
 """
 CreateUserInput is used for create User object.
@@ -5756,6 +5790,7 @@ type Customer implements Node {
   areaID: ID!
   salesID: ID
   createdByID: ID
+  approverID: ID
   area: Area!
   tenders(
     """
@@ -5790,6 +5825,7 @@ type Customer implements Node {
   ): TenderConnection!
   sales: User
   createdBy: User
+  approver: User
   visitRecords(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -6099,6 +6135,24 @@ input CustomerWhereInput {
   createdByIDEqualFold: ID
   createdByIDContainsFold: ID
   """
+  approver_id field predicates
+  """
+  approverID: ID
+  approverIDNEQ: ID
+  approverIDIn: [ID!]
+  approverIDNotIn: [ID!]
+  approverIDGT: ID
+  approverIDGTE: ID
+  approverIDLT: ID
+  approverIDLTE: ID
+  approverIDContains: ID
+  approverIDHasPrefix: ID
+  approverIDHasSuffix: ID
+  approverIDIsNil: Boolean
+  approverIDNotNil: Boolean
+  approverIDEqualFold: ID
+  approverIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -6118,6 +6172,11 @@ input CustomerWhereInput {
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
+  """
+  approver edge predicates
+  """
+  hasApprover: Boolean
+  hasApproverWith: [UserWhereInput!]
   """
   visit_records edge predicates
   """
@@ -9722,6 +9781,7 @@ type Tender implements Node {
   finderID: ID
   createdByID: ID
   competitorID: ID
+  approverID: ID
   area: Area!
   customer: Customer
   finder: User
@@ -9762,6 +9822,7 @@ type Tender implements Node {
     where: VisitRecordWhereInput
   ): VisitRecordConnection!
   competitor: Competitor
+  approver: User
 }
 """
 A connection to a list of items.
@@ -10816,6 +10877,24 @@ input TenderWhereInput {
   competitorIDEqualFold: ID
   competitorIDContainsFold: ID
   """
+  approver_id field predicates
+  """
+  approverID: ID
+  approverIDNEQ: ID
+  approverIDIn: [ID!]
+  approverIDNotIn: [ID!]
+  approverIDGT: ID
+  approverIDGTE: ID
+  approverIDLT: ID
+  approverIDLTE: ID
+  approverIDContains: ID
+  approverIDHasPrefix: ID
+  approverIDHasSuffix: ID
+  approverIDIsNil: Boolean
+  approverIDNotNil: Boolean
+  approverIDEqualFold: ID
+  approverIDContainsFold: ID
+  """
   area edge predicates
   """
   hasArea: Boolean
@@ -10865,6 +10944,11 @@ input TenderWhereInput {
   """
   hasCompetitor: Boolean
   hasCompetitorWith: [CompetitorWhereInput!]
+  """
+  approver edge predicates
+  """
+  hasApprover: Boolean
+  hasApproverWith: [UserWhereInput!]
 }
 """
 UpdateAreaInput is used for update Area object.
@@ -10962,6 +11046,8 @@ input UpdateCustomerInput {
   clearSales: Boolean
   createdByID: ID
   clearCreatedBy: Boolean
+  approverID: ID
+  clearApprover: Boolean
   addVisitRecordIDs: [ID!]
   removeVisitRecordIDs: [ID!]
   clearVisitRecords: Boolean
@@ -11588,6 +11674,8 @@ input UpdateTenderInput {
   clearVisitRecords: Boolean
   competitorID: ID
   clearCompetitor: Boolean
+  approverID: ID
+  clearApprover: Boolean
 }
 """
 UpdateUserInput is used for update User object.

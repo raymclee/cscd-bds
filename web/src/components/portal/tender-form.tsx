@@ -1,5 +1,10 @@
 import { InboxOutlined, PlusCircleFilled } from "@ant-design/icons";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import {
+  useLocation,
+  useNavigate,
+  useRouteContext,
+  useRouter,
+} from "@tanstack/react-router";
 import { tenderDetailFragment$key } from "__generated__/tenderDetailFragment.graphql";
 import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql";
 import { tenderFormFragment_competitors$key } from "__generated__/tenderFormFragment_competitors.graphql";
@@ -34,6 +39,7 @@ import { CreateTenderInput } from "~/graphql/graphql";
 import { useCreateTender } from "~/hooks/use-create-tender";
 import { useUpdateTender } from "~/hooks/use-update-tender";
 import {
+  classifyOptions,
   fixAmount,
   isGA,
   isGAorHWOnly,
@@ -50,6 +56,7 @@ import { usePortalStore } from "~/store/portal";
 import { Plus, Space } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { useFormLocalStorage } from "~/hooks/use-form-localstorage";
+import { useBlocker } from "@tanstack/react-router";
 
 const { Dragger } = Upload;
 
@@ -122,12 +129,19 @@ export function TenderForm({
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const { state, clear } = useFormLocalStorage({
+  const { state, update, clear } = useFormLocalStorage({
     form,
     id: "tender-form",
-    enabled: !tender,
+    enabled: !tender && form.isFieldsTouched(),
   });
+
+  useEffect(() => {
+    if (!tender && form.isFieldsTouched()) {
+      update("tender-form", form.getFieldsValue());
+    }
+  }, [tender, pathname]);
 
   const areaID = Form.useWatch("areaID", form);
 
@@ -275,7 +289,7 @@ export function TenderForm({
         block: "start",
         skipOverflowHiddenElements: true,
       }}
-      initialValues={{ discoveryDate: dayjs() }}
+      // initialValues={{ discoveryDate: dayjs() }}
       layout="vertical"
       onFinish={async (values) => {
         if (tender?.id) {
@@ -335,7 +349,7 @@ export function TenderForm({
 
           const connections = [
             ConnectionHandler.getConnectionID(
-              values.areaID,
+              session.userId,
               "tendersTenderListFragment_tenders",
               {
                 orderBy: [{ field: "CREATED_AT", direction: "DESC" }],
@@ -369,7 +383,7 @@ export function TenderForm({
               geoCoordinate,
             },
             onCompleted() {
-              navigate({ to: "/portal/tenders" });
+              navigate({ to: "/portal/tenders", search: (prev) => prev });
               clear();
               message.success("创建成功");
             },
@@ -720,6 +734,14 @@ export function TenderForm({
               </Form.Item>
 
               <ProvinceCityDistrictSelectorLoader showSHFields />
+
+              <Form.Item
+                name="classify"
+                label="分类"
+                rules={[{ required: true }]}
+              >
+                <Select options={classifyOptions} />
+              </Form.Item>
 
               <Form.Item name="followingSaleIDs" label="当前跟踪人">
                 <Select

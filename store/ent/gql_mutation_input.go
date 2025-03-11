@@ -420,6 +420,7 @@ type CreateCustomerInput struct {
 	TenderIDs             []xid.ID
 	SalesID               *xid.ID
 	CreatedByID           *xid.ID
+	ApproverID            *xid.ID
 	VisitRecordIDs        []xid.ID
 }
 
@@ -466,6 +467,9 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)
 	}
+	if v := i.ApproverID; v != nil {
+		m.SetApproverID(*v)
+	}
 	if v := i.VisitRecordIDs; len(v) > 0 {
 		m.AddVisitRecordIDs(v...)
 	}
@@ -504,6 +508,8 @@ type UpdateCustomerInput struct {
 	SalesID                    *xid.ID
 	ClearCreatedBy             bool
 	CreatedByID                *xid.ID
+	ClearApprover              bool
+	ApproverID                 *xid.ID
 	ClearVisitRecords          bool
 	AddVisitRecordIDs          []xid.ID
 	RemoveVisitRecordIDs       []xid.ID
@@ -585,6 +591,12 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.CreatedByID; v != nil {
 		m.SetCreatedByID(*v)
+	}
+	if i.ClearApprover {
+		m.ClearApprover()
+	}
+	if v := i.ApproverID; v != nil {
+		m.SetApproverID(*v)
 	}
 	if i.ClearVisitRecords {
 		m.ClearVisitRecords()
@@ -1724,6 +1736,7 @@ type CreateTenderInput struct {
 	DistrictID                           *xid.ID
 	VisitRecordIDs                       []xid.ID
 	CompetitorID                         *xid.ID
+	ApproverID                           *xid.ID
 }
 
 // Mutate applies the CreateTenderInput on the TenderMutation builder.
@@ -1921,6 +1934,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	if v := i.CompetitorID; v != nil {
 		m.SetCompetitorID(*v)
 	}
+	if v := i.ApproverID; v != nil {
+		m.SetApproverID(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateTenderInput on the TenderCreate builder.
@@ -2058,6 +2074,8 @@ type UpdateTenderInput struct {
 	RemoveVisitRecordIDs                      []xid.ID
 	ClearCompetitor                           bool
 	CompetitorID                              *xid.ID
+	ClearApprover                             bool
+	ApproverID                                *xid.ID
 }
 
 // Mutate applies the UpdateTenderInput on the TenderMutation builder.
@@ -2442,6 +2460,12 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.CompetitorID; v != nil {
 		m.SetCompetitorID(*v)
+	}
+	if i.ClearApprover {
+		m.ClearApprover()
+	}
+	if v := i.ApproverID; v != nil {
+		m.SetApproverID(*v)
 	}
 }
 

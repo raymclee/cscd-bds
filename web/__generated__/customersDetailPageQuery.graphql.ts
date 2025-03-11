@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d88015cd3d250dff67adae456fdc0e26>>
+ * @generated SignedSource<<0887a53e44be92384ea8261c7c2e2871>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -138,6 +138,21 @@ export type VisitRecordWhereInput = {
 };
 export type CustomerWhereInput = {
   and?: ReadonlyArray<CustomerWhereInput> | null | undefined;
+  approverID?: string | null | undefined;
+  approverIDContains?: string | null | undefined;
+  approverIDContainsFold?: string | null | undefined;
+  approverIDEqualFold?: string | null | undefined;
+  approverIDGT?: string | null | undefined;
+  approverIDGTE?: string | null | undefined;
+  approverIDHasPrefix?: string | null | undefined;
+  approverIDHasSuffix?: string | null | undefined;
+  approverIDIn?: ReadonlyArray<string> | null | undefined;
+  approverIDIsNil?: boolean | null | undefined;
+  approverIDLT?: string | null | undefined;
+  approverIDLTE?: string | null | undefined;
+  approverIDNEQ?: string | null | undefined;
+  approverIDNotIn?: ReadonlyArray<string> | null | undefined;
+  approverIDNotNil?: boolean | null | undefined;
   areaID?: string | null | undefined;
   areaIDContains?: string | null | undefined;
   areaIDContainsFold?: string | null | undefined;
@@ -234,6 +249,8 @@ export type CustomerWhereInput = {
   createdByIDNEQ?: string | null | undefined;
   createdByIDNotIn?: ReadonlyArray<string> | null | undefined;
   createdByIDNotNil?: boolean | null | undefined;
+  hasApprover?: boolean | null | undefined;
+  hasApproverWith?: ReadonlyArray<UserWhereInput> | null | undefined;
   hasArea?: boolean | null | undefined;
   hasAreaWith?: ReadonlyArray<AreaWhereInput> | null | undefined;
   hasCreatedBy?: boolean | null | undefined;
@@ -322,6 +339,149 @@ export type CustomerWhereInput = {
   updatedAtLTE?: any | null | undefined;
   updatedAtNEQ?: any | null | undefined;
   updatedAtNotIn?: ReadonlyArray<any> | null | undefined;
+};
+export type UserWhereInput = {
+  and?: ReadonlyArray<UserWhereInput> | null | undefined;
+  avatarURL?: string | null | undefined;
+  avatarURLContains?: string | null | undefined;
+  avatarURLContainsFold?: string | null | undefined;
+  avatarURLEqualFold?: string | null | undefined;
+  avatarURLGT?: string | null | undefined;
+  avatarURLGTE?: string | null | undefined;
+  avatarURLHasPrefix?: string | null | undefined;
+  avatarURLHasSuffix?: string | null | undefined;
+  avatarURLIn?: ReadonlyArray<string> | null | undefined;
+  avatarURLIsNil?: boolean | null | undefined;
+  avatarURLLT?: string | null | undefined;
+  avatarURLLTE?: string | null | undefined;
+  avatarURLNEQ?: string | null | undefined;
+  avatarURLNotIn?: ReadonlyArray<string> | null | undefined;
+  avatarURLNotNil?: boolean | null | undefined;
+  createdAt?: any | null | undefined;
+  createdAtGT?: any | null | undefined;
+  createdAtGTE?: any | null | undefined;
+  createdAtIn?: ReadonlyArray<any> | null | undefined;
+  createdAtLT?: any | null | undefined;
+  createdAtLTE?: any | null | undefined;
+  createdAtNEQ?: any | null | undefined;
+  createdAtNotIn?: ReadonlyArray<any> | null | undefined;
+  disabled?: boolean | null | undefined;
+  disabledNEQ?: boolean | null | undefined;
+  email?: string | null | undefined;
+  emailContains?: string | null | undefined;
+  emailContainsFold?: string | null | undefined;
+  emailEqualFold?: string | null | undefined;
+  emailGT?: string | null | undefined;
+  emailGTE?: string | null | undefined;
+  emailHasPrefix?: string | null | undefined;
+  emailHasSuffix?: string | null | undefined;
+  emailIn?: ReadonlyArray<string> | null | undefined;
+  emailIsNil?: boolean | null | undefined;
+  emailLT?: string | null | undefined;
+  emailLTE?: string | null | undefined;
+  emailNEQ?: string | null | undefined;
+  emailNotIn?: ReadonlyArray<string> | null | undefined;
+  emailNotNil?: boolean | null | undefined;
+  hasAreas?: boolean | null | undefined;
+  hasAreasWith?: ReadonlyArray<AreaWhereInput> | null | undefined;
+  hasCustomers?: boolean | null | undefined;
+  hasCustomersWith?: ReadonlyArray<CustomerWhereInput> | null | undefined;
+  hasEditAccess?: boolean | null | undefined;
+  hasEditAccessNEQ?: boolean | null | undefined;
+  hasLeader?: boolean | null | undefined;
+  hasLeaderWith?: ReadonlyArray<UserWhereInput> | null | undefined;
+  hasMapAccess?: boolean | null | undefined;
+  hasMapAccessNEQ?: boolean | null | undefined;
+  hasProjects?: boolean | null | undefined;
+  hasProjectsWith?: ReadonlyArray<ProjectWhereInput> | null | undefined;
+  hasTeamMembers?: boolean | null | undefined;
+  hasTeamMembersWith?: ReadonlyArray<UserWhereInput> | null | undefined;
+  hasTenders?: boolean | null | undefined;
+  hasTendersWith?: ReadonlyArray<TenderWhereInput> | null | undefined;
+  hasVisitRecords?: boolean | null | undefined;
+  hasVisitRecordsWith?: ReadonlyArray<VisitRecordWhereInput> | null | undefined;
+  id?: string | null | undefined;
+  idGT?: string | null | undefined;
+  idGTE?: string | null | undefined;
+  idIn?: ReadonlyArray<string> | null | undefined;
+  idLT?: string | null | undefined;
+  idLTE?: string | null | undefined;
+  idNEQ?: string | null | undefined;
+  idNotIn?: ReadonlyArray<string> | null | undefined;
+  isAdmin?: boolean | null | undefined;
+  isAdminNEQ?: boolean | null | undefined;
+  isCeo?: boolean | null | undefined;
+  isCeoNEQ?: boolean | null | undefined;
+  isSuperAdmin?: boolean | null | undefined;
+  isSuperAdminNEQ?: boolean | null | undefined;
+  leaderID?: string | null | undefined;
+  leaderIDContains?: string | null | undefined;
+  leaderIDContainsFold?: string | null | undefined;
+  leaderIDEqualFold?: string | null | undefined;
+  leaderIDGT?: string | null | undefined;
+  leaderIDGTE?: string | null | undefined;
+  leaderIDHasPrefix?: string | null | undefined;
+  leaderIDHasSuffix?: string | null | undefined;
+  leaderIDIn?: ReadonlyArray<string> | null | undefined;
+  leaderIDIsNil?: boolean | null | undefined;
+  leaderIDLT?: string | null | undefined;
+  leaderIDLTE?: string | null | undefined;
+  leaderIDNEQ?: string | null | undefined;
+  leaderIDNotIn?: ReadonlyArray<string> | null | undefined;
+  leaderIDNotNil?: boolean | null | undefined;
+  name?: string | null | undefined;
+  nameContains?: string | null | undefined;
+  nameContainsFold?: string | null | undefined;
+  nameEqualFold?: string | null | undefined;
+  nameGT?: string | null | undefined;
+  nameGTE?: string | null | undefined;
+  nameHasPrefix?: string | null | undefined;
+  nameHasSuffix?: string | null | undefined;
+  nameIn?: ReadonlyArray<string> | null | undefined;
+  nameIsNil?: boolean | null | undefined;
+  nameLT?: string | null | undefined;
+  nameLTE?: string | null | undefined;
+  nameNEQ?: string | null | undefined;
+  nameNotIn?: ReadonlyArray<string> | null | undefined;
+  nameNotNil?: boolean | null | undefined;
+  not?: UserWhereInput | null | undefined;
+  openID?: string | null | undefined;
+  openIDContains?: string | null | undefined;
+  openIDContainsFold?: string | null | undefined;
+  openIDEqualFold?: string | null | undefined;
+  openIDGT?: string | null | undefined;
+  openIDGTE?: string | null | undefined;
+  openIDHasPrefix?: string | null | undefined;
+  openIDHasSuffix?: string | null | undefined;
+  openIDIn?: ReadonlyArray<string> | null | undefined;
+  openIDLT?: string | null | undefined;
+  openIDLTE?: string | null | undefined;
+  openIDNEQ?: string | null | undefined;
+  openIDNotIn?: ReadonlyArray<string> | null | undefined;
+  or?: ReadonlyArray<UserWhereInput> | null | undefined;
+  updatedAt?: any | null | undefined;
+  updatedAtGT?: any | null | undefined;
+  updatedAtGTE?: any | null | undefined;
+  updatedAtIn?: ReadonlyArray<any> | null | undefined;
+  updatedAtLT?: any | null | undefined;
+  updatedAtLTE?: any | null | undefined;
+  updatedAtNEQ?: any | null | undefined;
+  updatedAtNotIn?: ReadonlyArray<any> | null | undefined;
+  username?: string | null | undefined;
+  usernameContains?: string | null | undefined;
+  usernameContainsFold?: string | null | undefined;
+  usernameEqualFold?: string | null | undefined;
+  usernameGT?: string | null | undefined;
+  usernameGTE?: string | null | undefined;
+  usernameHasPrefix?: string | null | undefined;
+  usernameHasSuffix?: string | null | undefined;
+  usernameIn?: ReadonlyArray<string> | null | undefined;
+  usernameIsNil?: boolean | null | undefined;
+  usernameLT?: string | null | undefined;
+  usernameLTE?: string | null | undefined;
+  usernameNEQ?: string | null | undefined;
+  usernameNotIn?: ReadonlyArray<string> | null | undefined;
+  usernameNotNil?: boolean | null | undefined;
 };
 export type AreaWhereInput = {
   and?: ReadonlyArray<AreaWhereInput> | null | undefined;
@@ -770,6 +930,21 @@ export type TenderWhereInput = {
   addressNotIn?: ReadonlyArray<string> | null | undefined;
   addressNotNil?: boolean | null | undefined;
   and?: ReadonlyArray<TenderWhereInput> | null | undefined;
+  approverID?: string | null | undefined;
+  approverIDContains?: string | null | undefined;
+  approverIDContainsFold?: string | null | undefined;
+  approverIDEqualFold?: string | null | undefined;
+  approverIDGT?: string | null | undefined;
+  approverIDGTE?: string | null | undefined;
+  approverIDHasPrefix?: string | null | undefined;
+  approverIDHasSuffix?: string | null | undefined;
+  approverIDIn?: ReadonlyArray<string> | null | undefined;
+  approverIDIsNil?: boolean | null | undefined;
+  approverIDLT?: string | null | undefined;
+  approverIDLTE?: string | null | undefined;
+  approverIDNEQ?: string | null | undefined;
+  approverIDNotIn?: ReadonlyArray<string> | null | undefined;
+  approverIDNotNil?: boolean | null | undefined;
   architect?: string | null | undefined;
   architectContains?: string | null | undefined;
   architectContainsFold?: string | null | undefined;
@@ -1222,6 +1397,8 @@ export type TenderWhereInput = {
   fullAddressNEQ?: string | null | undefined;
   fullAddressNotIn?: ReadonlyArray<string> | null | undefined;
   fullAddressNotNil?: boolean | null | undefined;
+  hasApprover?: boolean | null | undefined;
+  hasApproverWith?: ReadonlyArray<UserWhereInput> | null | undefined;
   hasArea?: boolean | null | undefined;
   hasAreaWith?: ReadonlyArray<AreaWhereInput> | null | undefined;
   hasCity?: boolean | null | undefined;
@@ -1635,23 +1812,16 @@ export type CompetitorWhereInput = {
   updatedAtNEQ?: any | null | undefined;
   updatedAtNotIn?: ReadonlyArray<any> | null | undefined;
 };
-export type UserWhereInput = {
-  and?: ReadonlyArray<UserWhereInput> | null | undefined;
-  avatarURL?: string | null | undefined;
-  avatarURLContains?: string | null | undefined;
-  avatarURLContainsFold?: string | null | undefined;
-  avatarURLEqualFold?: string | null | undefined;
-  avatarURLGT?: string | null | undefined;
-  avatarURLGTE?: string | null | undefined;
-  avatarURLHasPrefix?: string | null | undefined;
-  avatarURLHasSuffix?: string | null | undefined;
-  avatarURLIn?: ReadonlyArray<string> | null | undefined;
-  avatarURLIsNil?: boolean | null | undefined;
-  avatarURLLT?: string | null | undefined;
-  avatarURLLTE?: string | null | undefined;
-  avatarURLNEQ?: string | null | undefined;
-  avatarURLNotIn?: ReadonlyArray<string> | null | undefined;
-  avatarURLNotNil?: boolean | null | undefined;
+export type CountryWhereInput = {
+  adcode?: number | null | undefined;
+  adcodeGT?: number | null | undefined;
+  adcodeGTE?: number | null | undefined;
+  adcodeIn?: ReadonlyArray<number> | null | undefined;
+  adcodeLT?: number | null | undefined;
+  adcodeLTE?: number | null | undefined;
+  adcodeNEQ?: number | null | undefined;
+  adcodeNotIn?: ReadonlyArray<number> | null | undefined;
+  and?: ReadonlyArray<CountryWhereInput> | null | undefined;
   createdAt?: any | null | undefined;
   createdAtGT?: any | null | undefined;
   createdAtGTE?: any | null | undefined;
@@ -1660,41 +1830,8 @@ export type UserWhereInput = {
   createdAtLTE?: any | null | undefined;
   createdAtNEQ?: any | null | undefined;
   createdAtNotIn?: ReadonlyArray<any> | null | undefined;
-  disabled?: boolean | null | undefined;
-  disabledNEQ?: boolean | null | undefined;
-  email?: string | null | undefined;
-  emailContains?: string | null | undefined;
-  emailContainsFold?: string | null | undefined;
-  emailEqualFold?: string | null | undefined;
-  emailGT?: string | null | undefined;
-  emailGTE?: string | null | undefined;
-  emailHasPrefix?: string | null | undefined;
-  emailHasSuffix?: string | null | undefined;
-  emailIn?: ReadonlyArray<string> | null | undefined;
-  emailIsNil?: boolean | null | undefined;
-  emailLT?: string | null | undefined;
-  emailLTE?: string | null | undefined;
-  emailNEQ?: string | null | undefined;
-  emailNotIn?: ReadonlyArray<string> | null | undefined;
-  emailNotNil?: boolean | null | undefined;
-  hasAreas?: boolean | null | undefined;
-  hasAreasWith?: ReadonlyArray<AreaWhereInput> | null | undefined;
-  hasCustomers?: boolean | null | undefined;
-  hasCustomersWith?: ReadonlyArray<CustomerWhereInput> | null | undefined;
-  hasEditAccess?: boolean | null | undefined;
-  hasEditAccessNEQ?: boolean | null | undefined;
-  hasLeader?: boolean | null | undefined;
-  hasLeaderWith?: ReadonlyArray<UserWhereInput> | null | undefined;
-  hasMapAccess?: boolean | null | undefined;
-  hasMapAccessNEQ?: boolean | null | undefined;
-  hasProjects?: boolean | null | undefined;
-  hasProjectsWith?: ReadonlyArray<ProjectWhereInput> | null | undefined;
-  hasTeamMembers?: boolean | null | undefined;
-  hasTeamMembersWith?: ReadonlyArray<UserWhereInput> | null | undefined;
-  hasTenders?: boolean | null | undefined;
-  hasTendersWith?: ReadonlyArray<TenderWhereInput> | null | undefined;
-  hasVisitRecords?: boolean | null | undefined;
-  hasVisitRecordsWith?: ReadonlyArray<VisitRecordWhereInput> | null | undefined;
+  hasProvinces?: boolean | null | undefined;
+  hasProvincesWith?: ReadonlyArray<ProvinceWhereInput> | null | undefined;
   id?: string | null | undefined;
   idGT?: string | null | undefined;
   idGTE?: string | null | undefined;
@@ -1703,27 +1840,6 @@ export type UserWhereInput = {
   idLTE?: string | null | undefined;
   idNEQ?: string | null | undefined;
   idNotIn?: ReadonlyArray<string> | null | undefined;
-  isAdmin?: boolean | null | undefined;
-  isAdminNEQ?: boolean | null | undefined;
-  isCeo?: boolean | null | undefined;
-  isCeoNEQ?: boolean | null | undefined;
-  isSuperAdmin?: boolean | null | undefined;
-  isSuperAdminNEQ?: boolean | null | undefined;
-  leaderID?: string | null | undefined;
-  leaderIDContains?: string | null | undefined;
-  leaderIDContainsFold?: string | null | undefined;
-  leaderIDEqualFold?: string | null | undefined;
-  leaderIDGT?: string | null | undefined;
-  leaderIDGTE?: string | null | undefined;
-  leaderIDHasPrefix?: string | null | undefined;
-  leaderIDHasSuffix?: string | null | undefined;
-  leaderIDIn?: ReadonlyArray<string> | null | undefined;
-  leaderIDIsNil?: boolean | null | undefined;
-  leaderIDLT?: string | null | undefined;
-  leaderIDLTE?: string | null | undefined;
-  leaderIDNEQ?: string | null | undefined;
-  leaderIDNotIn?: ReadonlyArray<string> | null | undefined;
-  leaderIDNotNil?: boolean | null | undefined;
   name?: string | null | undefined;
   nameContains?: string | null | undefined;
   nameContainsFold?: string | null | undefined;
@@ -1733,27 +1849,12 @@ export type UserWhereInput = {
   nameHasPrefix?: string | null | undefined;
   nameHasSuffix?: string | null | undefined;
   nameIn?: ReadonlyArray<string> | null | undefined;
-  nameIsNil?: boolean | null | undefined;
   nameLT?: string | null | undefined;
   nameLTE?: string | null | undefined;
   nameNEQ?: string | null | undefined;
   nameNotIn?: ReadonlyArray<string> | null | undefined;
-  nameNotNil?: boolean | null | undefined;
-  not?: UserWhereInput | null | undefined;
-  openID?: string | null | undefined;
-  openIDContains?: string | null | undefined;
-  openIDContainsFold?: string | null | undefined;
-  openIDEqualFold?: string | null | undefined;
-  openIDGT?: string | null | undefined;
-  openIDGTE?: string | null | undefined;
-  openIDHasPrefix?: string | null | undefined;
-  openIDHasSuffix?: string | null | undefined;
-  openIDIn?: ReadonlyArray<string> | null | undefined;
-  openIDLT?: string | null | undefined;
-  openIDLTE?: string | null | undefined;
-  openIDNEQ?: string | null | undefined;
-  openIDNotIn?: ReadonlyArray<string> | null | undefined;
-  or?: ReadonlyArray<UserWhereInput> | null | undefined;
+  not?: CountryWhereInput | null | undefined;
+  or?: ReadonlyArray<CountryWhereInput> | null | undefined;
   updatedAt?: any | null | undefined;
   updatedAtGT?: any | null | undefined;
   updatedAtGTE?: any | null | undefined;
@@ -1762,21 +1863,6 @@ export type UserWhereInput = {
   updatedAtLTE?: any | null | undefined;
   updatedAtNEQ?: any | null | undefined;
   updatedAtNotIn?: ReadonlyArray<any> | null | undefined;
-  username?: string | null | undefined;
-  usernameContains?: string | null | undefined;
-  usernameContainsFold?: string | null | undefined;
-  usernameEqualFold?: string | null | undefined;
-  usernameGT?: string | null | undefined;
-  usernameGTE?: string | null | undefined;
-  usernameHasPrefix?: string | null | undefined;
-  usernameHasSuffix?: string | null | undefined;
-  usernameIn?: ReadonlyArray<string> | null | undefined;
-  usernameIsNil?: boolean | null | undefined;
-  usernameLT?: string | null | undefined;
-  usernameLTE?: string | null | undefined;
-  usernameNEQ?: string | null | undefined;
-  usernameNotIn?: ReadonlyArray<string> | null | undefined;
-  usernameNotNil?: boolean | null | undefined;
 };
 export type ProjectWhereInput = {
   accumulatedNonStatutoryDeductions?: number | null | undefined;
@@ -2839,58 +2925,6 @@ export type ProjectVOWhereInput = {
   yxhyzeNotIn?: ReadonlyArray<number> | null | undefined;
   yxhyzeNotNil?: boolean | null | undefined;
 };
-export type CountryWhereInput = {
-  adcode?: number | null | undefined;
-  adcodeGT?: number | null | undefined;
-  adcodeGTE?: number | null | undefined;
-  adcodeIn?: ReadonlyArray<number> | null | undefined;
-  adcodeLT?: number | null | undefined;
-  adcodeLTE?: number | null | undefined;
-  adcodeNEQ?: number | null | undefined;
-  adcodeNotIn?: ReadonlyArray<number> | null | undefined;
-  and?: ReadonlyArray<CountryWhereInput> | null | undefined;
-  createdAt?: any | null | undefined;
-  createdAtGT?: any | null | undefined;
-  createdAtGTE?: any | null | undefined;
-  createdAtIn?: ReadonlyArray<any> | null | undefined;
-  createdAtLT?: any | null | undefined;
-  createdAtLTE?: any | null | undefined;
-  createdAtNEQ?: any | null | undefined;
-  createdAtNotIn?: ReadonlyArray<any> | null | undefined;
-  hasProvinces?: boolean | null | undefined;
-  hasProvincesWith?: ReadonlyArray<ProvinceWhereInput> | null | undefined;
-  id?: string | null | undefined;
-  idGT?: string | null | undefined;
-  idGTE?: string | null | undefined;
-  idIn?: ReadonlyArray<string> | null | undefined;
-  idLT?: string | null | undefined;
-  idLTE?: string | null | undefined;
-  idNEQ?: string | null | undefined;
-  idNotIn?: ReadonlyArray<string> | null | undefined;
-  name?: string | null | undefined;
-  nameContains?: string | null | undefined;
-  nameContainsFold?: string | null | undefined;
-  nameEqualFold?: string | null | undefined;
-  nameGT?: string | null | undefined;
-  nameGTE?: string | null | undefined;
-  nameHasPrefix?: string | null | undefined;
-  nameHasSuffix?: string | null | undefined;
-  nameIn?: ReadonlyArray<string> | null | undefined;
-  nameLT?: string | null | undefined;
-  nameLTE?: string | null | undefined;
-  nameNEQ?: string | null | undefined;
-  nameNotIn?: ReadonlyArray<string> | null | undefined;
-  not?: CountryWhereInput | null | undefined;
-  or?: ReadonlyArray<CountryWhereInput> | null | undefined;
-  updatedAt?: any | null | undefined;
-  updatedAtGT?: any | null | undefined;
-  updatedAtGTE?: any | null | undefined;
-  updatedAtIn?: ReadonlyArray<any> | null | undefined;
-  updatedAtLT?: any | null | undefined;
-  updatedAtLTE?: any | null | undefined;
-  updatedAtNEQ?: any | null | undefined;
-  updatedAtNotIn?: ReadonlyArray<any> | null | undefined;
-};
 export type customersDetailPageQuery$variables = {
   first?: number | null | undefined;
   id: string;
@@ -3110,21 +3144,28 @@ v26 = {
   "name": "createdAt",
   "storageKey": null
 },
-v27 = [
+v27 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "isApproved",
+  "storageKey": null
+},
+v28 = [
   {
     "kind": "Literal",
     "name": "last",
     "value": 1
   }
 ],
-v28 = {
+v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "date",
   "storageKey": null
 },
-v29 = [
+v30 = [
   (v9/*: any*/),
   (v10/*: any*/),
   (v13/*: any*/)
@@ -3373,6 +3414,7 @@ return {
                 "selections": (v25/*: any*/),
                 "storageKey": null
               },
+              (v27/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -3403,7 +3445,7 @@ return {
               },
               {
                 "alias": "lastVisitRecord",
-                "args": (v27/*: any*/),
+                "args": (v28/*: any*/),
                 "concreteType": "VisitRecordConnection",
                 "kind": "LinkedField",
                 "name": "visitRecords",
@@ -3425,7 +3467,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v28/*: any*/),
+                          (v29/*: any*/),
                           (v7/*: any*/),
                           (v15/*: any*/)
                         ],
@@ -3453,7 +3495,7 @@ return {
               },
               {
                 "alias": "lastVisitRecord",
-                "args": (v27/*: any*/),
+                "args": (v28/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "customerDetailFragment_lastVisitRecord",
@@ -3485,6 +3527,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v7/*: any*/),
+                          (v27/*: any*/),
                           (v24/*: any*/),
                           {
                             "alias": null,
@@ -3628,7 +3671,7 @@ return {
             "selections": [
               {
                 "alias": "tenders",
-                "args": (v29/*: any*/),
+                "args": (v30/*: any*/),
                 "concreteType": "TenderConnection",
                 "kind": "LinkedField",
                 "name": "myTenders",
@@ -3666,7 +3709,7 @@ return {
               },
               {
                 "alias": "tenders",
-                "args": (v29/*: any*/),
+                "args": (v30/*: any*/),
                 "filters": [
                   "where"
                 ],
@@ -3702,7 +3745,7 @@ return {
                         "selections": [
                           (v15/*: any*/),
                           (v7/*: any*/),
-                          (v28/*: any*/),
+                          (v29/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -3815,7 +3858,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "58920220438ed5c722cd7de264a93619",
+    "cacheID": "38e0405c6695a5c00642686995d25420",
     "id": null,
     "metadata": {
       "connection": [
@@ -3841,7 +3884,7 @@ return {
     },
     "name": "customersDetailPageQuery",
     "operationKind": "query",
-    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $orderBy: [VisitRecordOrder!]!\n  $first: Int\n  $last: Int\n  $userId: ID!\n  $where: VisitRecordWhereInput\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      ...customerDetailFragment\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ... on User {\n      tenders: myTenders(first: $first, last: $last, where: {hasCustomerWith: {id: $id}}) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      visitRecords: myVisitRecords(first: $first, last: $last, orderBy: $orderBy, where: $where) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      ...customerVisitRecordListFragment_2IyplR\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerVisitRecordListFragment_2IyplR on User {\n  visitRecords: myVisitRecords(first: $first, last: $last, orderBy: $orderBy, where: $where) {\n    edges {\n      node {\n        id\n        ...visitRecordItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n    name\n  }\n}\n"
+    "text": "query customersDetailPageQuery(\n  $id: ID!\n  $orderBy: [VisitRecordOrder!]!\n  $first: Int\n  $last: Int\n  $userId: ID!\n  $where: VisitRecordWhereInput\n) {\n  node(id: $id) {\n    __typename\n    ... on Customer {\n      id\n      sales {\n        id\n      }\n      ...customerDetailFragment\n      ...customerTenderListFragment_2pIUTM\n    }\n    id\n  }\n  user: node(id: $userId) {\n    __typename\n    ... on User {\n      tenders: myTenders(first: $first, last: $last, where: {hasCustomerWith: {id: $id}}) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      visitRecords: myVisitRecords(first: $first, last: $last, orderBy: $orderBy, where: $where) {\n        edges {\n          cursor\n          node {\n            __typename\n            id\n          }\n        }\n        pageInfo {\n          endCursor\n          hasNextPage\n          hasPreviousPage\n          startCursor\n        }\n      }\n      ...customerVisitRecordListFragment_2IyplR\n    }\n    id\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  isApproved\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerTenderListFragment_2pIUTM on Customer {\n  tenders(first: $first, last: $last) {\n    edges {\n      node {\n        id\n        ...tenderListItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment customerVisitRecordListFragment_2IyplR on User {\n  visitRecords: myVisitRecords(first: $first, last: $last, orderBy: $orderBy, where: $where) {\n    edges {\n      node {\n        id\n        ...visitRecordItemFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n\nfragment tenderListItemFragment on Tender {\n  id\n  isApproved\n  name\n  status\n  createdAt\n  estimatedAmount\n  customer {\n    id\n    name\n  }\n  images\n  fullAddress\n  tenderDate\n  discoveryDate\n  tenderClosingDate\n  area {\n    id\n    name\n    code\n  }\n  followingSales {\n    id\n  }\n  createdBy {\n    id\n  }\n}\n\nfragment visitRecordItemFragment on VisitRecord {\n  id\n  date\n  visitType\n  commPeople\n  commContent\n  nextStep\n  customerID\n  followupbys {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n  tender {\n    id\n    name\n  }\n}\n"
   }
 };
 })();

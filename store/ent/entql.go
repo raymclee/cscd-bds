@@ -131,6 +131,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldAreaID:                {Type: field.TypeString, Column: customer.FieldAreaID},
 			customer.FieldSalesID:               {Type: field.TypeString, Column: customer.FieldSalesID},
 			customer.FieldCreatedByID:           {Type: field.TypeString, Column: customer.FieldCreatedByID},
+			customer.FieldApproverID:            {Type: field.TypeString, Column: customer.FieldApproverID},
 		},
 	}
 	graph.Nodes[5] = &sqlgraph.Node{
@@ -447,6 +448,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldFinderID:                             {Type: field.TypeString, Column: tender.FieldFinderID},
 			tender.FieldCreatedByID:                          {Type: field.TypeString, Column: tender.FieldCreatedByID},
 			tender.FieldCompetitorID:                         {Type: field.TypeString, Column: tender.FieldCompetitorID},
+			tender.FieldApproverID:                           {Type: field.TypeString, Column: tender.FieldApproverID},
 		},
 	}
 	graph.Nodes[14] = &sqlgraph.Node{
@@ -649,6 +651,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Inverse: false,
 			Table:   customer.CreatedByTable,
 			Columns: []string{customer.CreatedByColumn},
+			Bidi:    false,
+		},
+		"Customer",
+		"User",
+	)
+	graph.MustAddE(
+		"approver",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   customer.ApproverTable,
+			Columns: []string{customer.ApproverColumn},
 			Bidi:    false,
 		},
 		"Customer",
@@ -965,6 +979,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		"Tender",
 		"Competitor",
+	)
+	graph.MustAddE(
+		"approver",
+		&sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   tender.ApproverTable,
+			Columns: []string{tender.ApproverColumn},
+			Bidi:    false,
+		},
+		"Tender",
+		"User",
 	)
 	graph.MustAddE(
 		"areas",
@@ -1611,6 +1637,11 @@ func (f *CustomerFilter) WhereCreatedByID(p entql.StringP) {
 	f.Where(p.Field(customer.FieldCreatedByID))
 }
 
+// WhereApproverID applies the entql string predicate on the approver_id field.
+func (f *CustomerFilter) WhereApproverID(p entql.StringP) {
+	f.Where(p.Field(customer.FieldApproverID))
+}
+
 // WhereHasArea applies a predicate to check if query has an edge area.
 func (f *CustomerFilter) WhereHasArea() {
 	f.Where(entql.HasEdge("area"))
@@ -1661,6 +1692,20 @@ func (f *CustomerFilter) WhereHasCreatedBy() {
 // WhereHasCreatedByWith applies a predicate to check if query has an edge created_by with a given conditions (other predicates).
 func (f *CustomerFilter) WhereHasCreatedByWith(preds ...predicate.User) {
 	f.Where(entql.HasEdgeWith("created_by", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasApprover applies a predicate to check if query has an edge approver.
+func (f *CustomerFilter) WhereHasApprover() {
+	f.Where(entql.HasEdge("approver"))
+}
+
+// WhereHasApproverWith applies a predicate to check if query has an edge approver with a given conditions (other predicates).
+func (f *CustomerFilter) WhereHasApproverWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("approver", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}
@@ -3246,6 +3291,11 @@ func (f *TenderFilter) WhereCompetitorID(p entql.StringP) {
 	f.Where(p.Field(tender.FieldCompetitorID))
 }
 
+// WhereApproverID applies the entql string predicate on the approver_id field.
+func (f *TenderFilter) WhereApproverID(p entql.StringP) {
+	f.Where(p.Field(tender.FieldApproverID))
+}
+
 // WhereHasArea applies a predicate to check if query has an edge area.
 func (f *TenderFilter) WhereHasArea() {
 	f.Where(entql.HasEdge("area"))
@@ -3380,6 +3430,20 @@ func (f *TenderFilter) WhereHasCompetitor() {
 // WhereHasCompetitorWith applies a predicate to check if query has an edge competitor with a given conditions (other predicates).
 func (f *TenderFilter) WhereHasCompetitorWith(preds ...predicate.Competitor) {
 	f.Where(entql.HasEdgeWith("competitor", sqlgraph.WrapFunc(func(s *sql.Selector) {
+		for _, p := range preds {
+			p(s)
+		}
+	})))
+}
+
+// WhereHasApprover applies a predicate to check if query has an edge approver.
+func (f *TenderFilter) WhereHasApprover() {
+	f.Where(entql.HasEdge("approver"))
+}
+
+// WhereHasApproverWith applies a predicate to check if query has an edge approver with a given conditions (other predicates).
+func (f *TenderFilter) WhereHasApproverWith(preds ...predicate.User) {
+	f.Where(entql.HasEdgeWith("approver", sqlgraph.WrapFunc(func(s *sql.Selector) {
 		for _, p := range preds {
 			p(s)
 		}

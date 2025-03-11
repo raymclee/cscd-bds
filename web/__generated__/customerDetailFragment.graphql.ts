@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d7404d4295423af82381f8d657cb6960>>
+ * @generated SignedSource<<667da8dbe008dd4c9e34261d2f67de18>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,6 +25,7 @@ export type customerDetailFragment$data = {
   } | null | undefined;
   readonly id: string;
   readonly industry: number | null | undefined;
+  readonly isApproved: boolean;
   readonly lastVisitRecord: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -156,6 +157,13 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "isApproved",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "contactPerson",
       "storageKey": null
     },
@@ -265,6 +273,6 @@ return {
 };
 })();
 
-(node as any).hash = "94288ed2f303273a0d8f3112c97e2bd3";
+(node as any).hash = "2557100fdca845b36f202017d332fc09";
 
 export default node;

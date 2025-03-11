@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"cscd-bds/amap"
 	"cscd-bds/config"
 	"cscd-bds/feishu"
@@ -22,11 +21,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	lark "github.com/larksuite/oapi-sdk-go/v3"
-	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
-	"github.com/larksuite/oapi-sdk-go/v3/event/dispatcher"
-	"github.com/larksuite/oapi-sdk-go/v3/event/dispatcher/callback"
-	larkim "github.com/larksuite/oapi-sdk-go/v3/service/im/v1"
-	larkws "github.com/larksuite/oapi-sdk-go/v3/ws"
 	_ "github.com/microsoft/go-mssqldb"
 )
 
@@ -50,14 +44,14 @@ func main() {
 		middleware.CORS(),
 	)
 
-	go startWSClient()
-
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.New(true)
 	sm := session.NewSession(lc, s)
-	f := feishu.NewFeishu(lc, sm)
+	f := feishu.NewFeishu(lc, sm, s, FEISHU_APP_ID, FEISHU_APP_SECRET)
 	sh := sap.New()
 	amap := amap.New("28982eb1a6a3cd956e0e0614c2fb131b")
+
+	go f.StartWSClient()
 
 	stgDb, err := sql.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&connection+timeout=30", STG_USER, STG_PASSWORD, STG_HOST, STG_PORT, STG_DATABASE))
 	if err != nil {
@@ -68,16 +62,11 @@ func main() {
 	h := handler.NewHandler(s, f, sm, sh, amap)
 	gs := gqlHandler.NewDefaultServer(graphql.NewSchema(s, stgDb, f, sm, sh, amap))
 	gs.Use(entgql.Transactioner{TxOpener: s.Client})
-	// gs.AddTransport(transport.Websocket{
-	// 	KeepAlivePingInterval: 10 * time.Second,
-	// 	Upgrader:              websocket.Upgrader{},
-	// })
-	// gs.AddTransport(transport.SSE{})
-	// gs.AddTransport(transport.Options{})
-	// gs.AddTransport(transport.GET{})
-	// gs.AddTransport(transport.POST{})
-	// gs.AddTransport(transport.MultipartForm{})
 	ph := playground.Handler("远东幕墙市场拓展地图", "/graphql")
+
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.String(http.StatusOK, "ok")
+	})
 
 	publicApiV1 := e.Group("/api/v1", sm.Middlware())
 	publicApiV1.GET("/auth/feishu/callback", h.AuthFeishuCallback)
@@ -113,24 +102,6 @@ func main() {
 		}),
 	}))
 
-	e.Group("/_AMapService", middleware.ProxyWithConfig(middleware.ProxyConfig{
-		Balancer: middleware.NewRandomBalancer([]*middleware.ProxyTarget{
-			{
-				URL: &url.URL{
-					Scheme:     "https",
-					Host:       "restapi.amap.com",
-					ForceQuery: true,
-				},
-			},
-		}),
-		// RegexRewrite: map[*regexp.Regexp]string{
-		// 	regexp.MustCompile(`(.*)(&callback=[\w&.\-]+$)`): "/$1jscode=462956f38d2d32df99c7b863dc9c1bb6",
-		// },
-		Rewrite: map[string]string{
-			"*": "/$1&jscode=462956f38d2d32df99c7b863dc9c1bb6",
-		},
-	}))
-
 	e.Static("/3dm", "3dm")
 	if config.IsProd || config.IsUat {
 		e.Use(middleware.Secure())
@@ -155,30 +126,4 @@ func main() {
 		port = ":3000"
 	}
 	e.Start(port)
-}
-
-func startWSClient() {
-	eventHandler := dispatcher.NewEventDispatcher("", "").
-		// 监听「卡片回传交互 card.action.trigger」
-		OnP2CardActionTrigger(func(ctx context.Context, event *callback.CardActionTriggerEvent) (*callback.CardActionTriggerResponse, error) {
-			fmt.Printf("[ OnP2CardActionTrigger access ], data: %s\n", larkcore.Prettify(event))
-			return nil, nil
-		}).
-		// 监听「拉取链接预览数据 url.preview.get」
-		OnP2CardURLPreviewGet(func(ctx context.Context, event *callback.URLPreviewGetEvent) (*callback.URLPreviewGetResponse, error) {
-			fmt.Printf("[ OnP2URLPreviewAction access ], data: %s\n", larkcore.Prettify(event))
-			return nil, nil
-		}).
-		OnP2MessageReceiveV1(func(ctx context.Context, event *larkim.P2MessageReceiveV1) error {
-			fmt.Printf("[ OnP2MessageReceiveV1 access ], data: %s\n", larkcore.Prettify(event))
-			return nil
-		})
-	// 创建Client
-	cli := larkws.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET,
-		larkws.WithEventHandler(eventHandler),
-		larkws.WithLogLevel(larkcore.LogLevelDebug),
-	)
-	// 建立长连接
-	err := cli.Start(context.Background())
-	fmt.Println(err)
 }

@@ -16,10 +16,10 @@ export function DashboardTenderListBoard() {
       layoutId="dashboard-tender-list-board"
       className={cn(
         // "h-[calc((100vh-100px)/3)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
-        "h-[calc(90vh/3)] overflow-hidden rounded border border-brand bg-transparent text-white shadow-dashboard-card drop-shadow-2xl backdrop-blur",
+        "border-brand shadow-dashboard-card h-[calc(90vh/3)] overflow-hidden rounded border bg-transparent text-white drop-shadow-2xl backdrop-blur",
       )}
     >
-      <MotionCardHeader className="bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700 font-bold text-white">
+      <MotionCardHeader className="font-bold text-white bg-gradient-to-tl from-sky-500 via-sky-900 to-sky-700">
         <div className="flex items-center justify-between">
           <motion.span layoutId="dashboard-tender-list-board-title">
             项目列表
@@ -37,7 +37,7 @@ export function DashboardTenderListBoard() {
       </MotionCardHeader>
       <CardContent className="h-full px-0 pb-8">
         <ScrollArea className="h-full px-4">
-          <TenderListTable />
+          <TenderListTable size="large" />
         </ScrollArea>
       </CardContent>
     </MotionCard>

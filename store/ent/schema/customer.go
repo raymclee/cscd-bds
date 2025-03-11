@@ -71,6 +71,10 @@ func (Customer) Fields() []ent.Field {
 			GoType(xid.ID("")).
 			Optional().
 			Nillable(),
+		field.String("approver_id").
+			GoType(xid.ID("")).
+			Optional().
+			Nillable(),
 	}
 }
 
@@ -92,6 +96,9 @@ func (Customer) Edges() []ent.Edge {
 			Unique(),
 		edge.To("created_by", User.Type).
 			Field("created_by_id").
+			Unique(),
+		edge.To("approver", User.Type).
+			Field("approver_id").
 			Unique(),
 		edge.To("visit_records", VisitRecord.Type).
 			Annotations(

@@ -45,6 +45,8 @@ const (
 	FieldSalesID = "sales_id"
 	// FieldCreatedByID holds the string denoting the created_by_id field in the database.
 	FieldCreatedByID = "created_by_id"
+	// FieldApproverID holds the string denoting the approver_id field in the database.
+	FieldApproverID = "approver_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeTenders holds the string denoting the tenders edge name in mutations.
@@ -53,6 +55,8 @@ const (
 	EdgeSales = "sales"
 	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
 	EdgeCreatedBy = "created_by"
+	// EdgeApprover holds the string denoting the approver edge name in mutations.
+	EdgeApprover = "approver"
 	// EdgeVisitRecords holds the string denoting the visit_records edge name in mutations.
 	EdgeVisitRecords = "visit_records"
 	// Table holds the table name of the customer in the database.
@@ -85,6 +89,13 @@ const (
 	CreatedByInverseTable = "users"
 	// CreatedByColumn is the table column denoting the created_by relation/edge.
 	CreatedByColumn = "created_by_id"
+	// ApproverTable is the table that holds the approver relation/edge.
+	ApproverTable = "customers"
+	// ApproverInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	ApproverInverseTable = "users"
+	// ApproverColumn is the table column denoting the approver relation/edge.
+	ApproverColumn = "approver_id"
 	// VisitRecordsTable is the table that holds the visit_records relation/edge.
 	VisitRecordsTable = "visit_records"
 	// VisitRecordsInverseTable is the table name for the VisitRecord entity.
@@ -112,6 +123,7 @@ var Columns = []string{
 	FieldAreaID,
 	FieldSalesID,
 	FieldCreatedByID,
+	FieldApproverID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -215,6 +227,11 @@ func ByCreatedByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedByID, opts...).ToFunc()
 }
 
+// ByApproverID orders the results by the approver_id field.
+func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
+}
+
 // ByAreaField orders the results by area field.
 func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -247,6 +264,13 @@ func BySalesField(field string, opts ...sql.OrderTermOption) OrderOption {
 func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByApproverField orders the results by approver field.
+func ByApproverField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newApproverStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -289,6 +313,13 @@ func newCreatedByStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CreatedByInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, false, CreatedByTable, CreatedByColumn),
+	)
+}
+func newApproverStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ApproverInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, ApproverTable, ApproverColumn),
 	)
 }
 func newVisitRecordsStep() *sqlgraph.Step {

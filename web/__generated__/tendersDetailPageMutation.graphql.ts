@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5864e6bba2ebb9b8779fbda2bec62fb6>>
+ * @generated SignedSource<<c455f1e2397ae82bc7dd282d8f0dd76f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type UpdateTenderInput = {
   address?: string | null | undefined;
   appendAttachements?: ReadonlyArray<string> | null | undefined;
   appendImages?: ReadonlyArray<string> | null | undefined;
+  approverID?: string | null | undefined;
   architect?: string | null | undefined;
   areaID?: string | null | undefined;
   attachements?: ReadonlyArray<string> | null | undefined;
@@ -23,6 +24,7 @@ export type UpdateTenderInput = {
   cityID?: string | null | undefined;
   classify?: number | null | undefined;
   clearAddress?: boolean | null | undefined;
+  clearApprover?: boolean | null | undefined;
   clearArchitect?: boolean | null | undefined;
   clearAttachements?: boolean | null | undefined;
   clearBiddingDate?: boolean | null | undefined;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4a202c850d7899aee0905995743ec1d7>>
+ * @generated SignedSource<<e4742702ee2480810554329e7c561ec8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,7 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type CreateCustomerInput = {
+  approverID?: string | null | undefined;
   areaID: string;
   contactPerson?: string | null | undefined;
   contactPersonEmail?: string | null | undefined;
@@ -248,6 +249,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "isApproved",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "contactPerson",
                     "storageKey": null
                   },
@@ -389,12 +397,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0e893f3db2b713ada6cee9312270574c",
+    "cacheID": "89a83989c5e89ad0b47c12a5afe3a42a",
     "id": null,
     "metadata": {},
     "name": "useCreateCustomerMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "mutation useCreateCustomerMutation(\n  $input: CreateCustomerInput!\n) {\n  createCustomer(input: $input) {\n    edges {\n      node {\n        ...customerDetailFragment\n        id\n      }\n    }\n  }\n}\n\nfragment customerDetailFragment on Customer {\n  id\n  name\n  createdAt\n  createdBy {\n    name\n    id\n  }\n  updatedAt\n  ownerType\n  industry\n  size\n  sales {\n    id\n    name\n  }\n  area {\n    id\n    name\n  }\n  isApproved\n  contactPerson\n  contactPersonPosition\n  contactPersonPhone\n  contactPersonEmail\n  lastVisitRecord: visitRecords(last: 1) {\n    edges {\n      node {\n        date\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

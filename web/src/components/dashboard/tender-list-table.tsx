@@ -24,20 +24,20 @@ export function TenderListTable({
   const tenders = useAreaTenders();
 
   return (
-    <Table className="my-4 h-full">
+    <Table className="h-full my-4">
       {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
       <TableHeader className="sticky top-0 bg-gray-900">
         <TableRow className="items-center">
-          <TableHead className="w-[60px] text-center text-[0.7rem] text-gray-300">
+          <TableHead className="w-[50px] text-center text-[0.6em] text-gray-300">
             序号
           </TableHead>
-          <TableHead className="text-center text-[0.7rem] text-gray-300">
+          <TableHead className="text-center text-[0.6em] text-gray-300">
             名称
           </TableHead>
-          <TableHead className="w-[60px] text-center text-[0.7rem] text-gray-300">
+          <TableHead className="w-[60px] text-center text-[0.6em] text-gray-300">
             区域
           </TableHead>
-          <TableHead className="w-[80px] text-center text-[0.7rem] text-gray-300">
+          <TableHead className="w-[80px] text-center text-[0.6em] text-gray-300">
             <div>金额</div>
             (亿元)
           </TableHead>
@@ -65,7 +65,7 @@ export function TenderListTable({
             }}
           >
             <TableCell className="text-center">{i + 1}</TableCell>
-            <TableCell>{tender?.name}</TableCell>
+            <TableCell className="text-center">{tender?.name}</TableCell>
             <TableCell>
               {tender?.area.name.replace("地区", "").replace("区域", "")}
             </TableCell>

@@ -86,7 +86,9 @@ function RouteComponent() {
         <ContactRound size={16} />,
       ),
       getItem(
-        <Link to="/portal/potential-tenders">潜在商机</Link>,
+        <Link to="/portal/potential-tenders" disabled={!session.isSuperAdmin}>
+          潜在商机
+        </Link>,
         "/portal/potential-tenders",
         <Bot size={16} />,
       ),
@@ -158,7 +160,7 @@ function RouteComponent() {
         <App>
           <Layout hasSider className="relative">
             <Sider
-              className="fixed start-0 top-0 bottom-8"
+              className="!fixed start-0 top-0 bottom-8"
               breakpoint="lg"
               collapsedWidth={70}
               collapsible
@@ -167,7 +169,7 @@ function RouteComponent() {
                 usePortalStore.setState({ sidebarCollapsed: collapsed })
               }
             >
-              <div className="m-4 flex h-10 items-center justify-center gap-2">
+              <div className="flex items-center justify-center h-10 gap-2 m-4">
                 <img src={logoImg} alt="logo" className="h-full" />
                 {/* <span className="text-lg font-bold text-white">远东幕墙</span> */}
               </div>
@@ -184,7 +186,7 @@ function RouteComponent() {
             <Layout
               className={cn(
                 "transition-all",
-                // sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
+                sidebarCollapsed ? "ms-[70px]" : "ms-[200px]",
               )}
             >
               <Header className="flex items-center justify-between !bg-white !px-4">
@@ -248,6 +250,8 @@ function pageTitle(pathname: string) {
       return "商机";
     case "plots":
       return "区域地块";
+    case "potential-tenders":
+      return "潜在商机";
     case "customers":
       return "客户";
     case "visit-records":

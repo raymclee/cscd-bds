@@ -2,15 +2,16 @@ import { EditOutlined } from "@ant-design/icons";
 import { useRouteContext } from "@tanstack/react-router";
 import { customerDetail_customerContact$key } from "__generated__/customerDetail_customerContact.graphql";
 import { customerDetailFragment$key } from "__generated__/customerDetailFragment.graphql";
-import { Button, Descriptions, Space } from "antd";
+import { App, Button, Descriptions, Modal, Space } from "antd";
 import dayjs from "dayjs";
-import { BookUser } from "lucide-react";
+import { BookUser, Check, X } from "lucide-react";
 import { useEffect } from "react";
 import { graphql, useFragment, useRefetchableFragment } from "react-relay";
 import { customerSizeText, industryText, ownerTypeText } from "~/lib/helper";
 import { canEdit } from "~/lib/permission";
 import { usePortalStore } from "~/store/portal";
 import { VisitRecordFormDrawer } from "./visit-record-form-drawer";
+import { useUpdateCustomer } from "~/hooks/use-update-customer";
 
 export function CustomerDetail(props: {
   customer: customerDetailFragment$key;
@@ -37,6 +38,7 @@ export function CustomerDetail(props: {
           id
           name
         }
+        isApproved
         contactPerson
         contactPersonPosition
         contactPersonPhone
@@ -54,8 +56,10 @@ export function CustomerDetail(props: {
     `,
     props.customer,
   );
-
+  // const [modal, contextHolder] = Modal.useModal();
   const { session } = useRouteContext({ from: "/__auth" });
+  const [updateCustomer, inFlight] = useUpdateCustomer();
+  const { message, modal } = App.useApp();
 
   return (
     <>
@@ -85,6 +89,43 @@ export function CustomerDetail(props: {
               >
                 添加拜访记录
               </Button>
+              {(session.isAdmin || session.isSuperAdmin) && (
+                <Button
+                  disabled={customer.isApproved}
+                  type="primary"
+                  icon={<Check size={16} />}
+                  onClick={async () => {
+                    const confirmed = await modal.confirm({
+                      title: "批核",
+                      content: "确定批核该客户吗？",
+                      okText: "同意",
+                      cancelText: "拒绝",
+                      cancelButtonProps: {
+                        danger: true,
+                      },
+                    });
+                    if (confirmed) {
+                      updateCustomer({
+                        variables: {
+                          id: customer.id,
+                          input: { isApproved: true },
+                        },
+                        onCompleted: () => {
+                          message.destroy();
+                          message.success("批核成功");
+                        },
+                        onError: (error) => {
+                          console.error(error);
+                          message.destroy();
+                          message.error("批核失败");
+                        },
+                      });
+                    }
+                  }}
+                >
+                  批核
+                </Button>
+              )}
             </Space>
           )
         }
@@ -235,8 +276,18 @@ export function CustomerDetail(props: {
           {
             key: "contactPersonEmail",
             label: "对接人邮箱",
+            span: 2,
             children: (
               <span className="font-normal">{customer.contactPersonEmail}</span>
+            ),
+          },
+          {
+            key: "isApproved",
+            label: "审批状态",
+            children: (
+              <span className="font-normal">
+                {customer.isApproved ? "已审批" : "未审批"}
+              </span>
             ),
           },
         ]}

@@ -149,6 +149,8 @@ const (
 	FieldCreatedByID = "created_by_id"
 	// FieldCompetitorID holds the string denoting the competitor_id field in the database.
 	FieldCompetitorID = "competitor_id"
+	// FieldApproverID holds the string denoting the approver_id field in the database.
+	FieldApproverID = "approver_id"
 	// EdgeArea holds the string denoting the area edge name in mutations.
 	EdgeArea = "area"
 	// EdgeCustomer holds the string denoting the customer edge name in mutations.
@@ -169,6 +171,8 @@ const (
 	EdgeVisitRecords = "visit_records"
 	// EdgeCompetitor holds the string denoting the competitor edge name in mutations.
 	EdgeCompetitor = "competitor"
+	// EdgeApprover holds the string denoting the approver edge name in mutations.
+	EdgeApprover = "approver"
 	// Table holds the table name of the tender in the database.
 	Table = "tenders"
 	// AreaTable is the table that holds the area relation/edge.
@@ -239,6 +243,13 @@ const (
 	CompetitorInverseTable = "competitors"
 	// CompetitorColumn is the table column denoting the competitor relation/edge.
 	CompetitorColumn = "competitor_id"
+	// ApproverTable is the table that holds the approver relation/edge.
+	ApproverTable = "tenders"
+	// ApproverInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	ApproverInverseTable = "users"
+	// ApproverColumn is the table column denoting the approver relation/edge.
+	ApproverColumn = "approver_id"
 )
 
 // Columns holds all SQL columns for tender fields.
@@ -311,6 +322,7 @@ var Columns = []string{
 	FieldFinderID,
 	FieldCreatedByID,
 	FieldCompetitorID,
+	FieldApproverID,
 }
 
 var (
@@ -694,6 +706,11 @@ func ByCompetitorID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompetitorID, opts...).ToFunc()
 }
 
+// ByApproverID orders the results by the approver_id field.
+func ByApproverID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldApproverID, opts...).ToFunc()
+}
+
 // ByAreaField orders the results by area field.
 func ByAreaField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -777,6 +794,13 @@ func ByCompetitorField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCompetitorStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByApproverField orders the results by approver field.
+func ByApproverField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newApproverStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newAreaStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -845,5 +869,12 @@ func newCompetitorStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompetitorInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompetitorTable, CompetitorColumn),
+	)
+}
+func newApproverStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ApproverInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, ApproverTable, ApproverColumn),
 	)
 }

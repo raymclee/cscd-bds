@@ -161,6 +161,8 @@ type Tender struct {
 	CreatedByID *xid.ID `json:"created_by_id,omitempty"`
 	// CompetitorID holds the value of the "competitor_id" field.
 	CompetitorID *xid.ID `json:"competitor_id,omitempty"`
+	// ApproverID holds the value of the "approver_id" field.
+	ApproverID *xid.ID `json:"approver_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TenderQuery when eager-loading is set.
 	Edges        TenderEdges `json:"edges"`
@@ -189,11 +191,13 @@ type TenderEdges struct {
 	VisitRecords []*VisitRecord `json:"visit_records,omitempty"`
 	// Competitor holds the value of the competitor edge.
 	Competitor *Competitor `json:"competitor,omitempty"`
+	// Approver holds the value of the approver edge.
+	Approver *User `json:"approver,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [10]bool
+	loadedTypes [11]bool
 	// totalCount holds the count of the edges above.
-	totalCount [10]map[string]int
+	totalCount [11]map[string]int
 
 	namedFollowingSales map[string][]*User
 	namedVisitRecords   map[string][]*VisitRecord
@@ -305,6 +309,17 @@ func (e TenderEdges) CompetitorOrErr() (*Competitor, error) {
 	return nil, &NotLoadedError{edge: "competitor"}
 }
 
+// ApproverOrErr returns the Approver value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TenderEdges) ApproverOrErr() (*User, error) {
+	if e.Approver != nil {
+		return e.Approver, nil
+	} else if e.loadedTypes[10] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "approver"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Tender) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -312,7 +327,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tender.FieldGeoCoordinate:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldCompetitorID:
+		case tender.FieldProvinceID, tender.FieldCityID, tender.FieldDistrictID, tender.FieldCustomerID, tender.FieldFinderID, tender.FieldCreatedByID, tender.FieldCompetitorID, tender.FieldApproverID:
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
@@ -799,6 +814,13 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 				t.CompetitorID = new(xid.ID)
 				*t.CompetitorID = *value.S.(*xid.ID)
 			}
+		case tender.FieldApproverID:
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field approver_id", values[i])
+			} else if value.Valid {
+				t.ApproverID = new(xid.ID)
+				*t.ApproverID = *value.S.(*xid.ID)
+			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
 		}
@@ -860,6 +882,11 @@ func (t *Tender) QueryVisitRecords() *VisitRecordQuery {
 // QueryCompetitor queries the "competitor" edge of the Tender entity.
 func (t *Tender) QueryCompetitor() *CompetitorQuery {
 	return NewTenderClient(t.config).QueryCompetitor(t)
+}
+
+// QueryApprover queries the "approver" edge of the Tender entity.
+func (t *Tender) QueryApprover() *UserQuery {
+	return NewTenderClient(t.config).QueryApprover(t)
 }
 
 // Update returns a builder for updating this Tender.
@@ -1169,6 +1196,11 @@ func (t *Tender) String() string {
 	builder.WriteString(", ")
 	if v := t.CompetitorID; v != nil {
 		builder.WriteString("competitor_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := t.ApproverID; v != nil {
+		builder.WriteString("approver_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

@@ -245,32 +245,36 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 		return nil, fmt.Errorf("failed to create tender: %w", err)
 	}
 
-	if t.Status == 3 {
+	if t.Status == 3 && a.Code != "GA" && a.Code != "HW" {
 		go r.sap.InsertTender(r.store, t)
 	}
 
-	go func() {
-		tender, err := r.store.Tender.Query().
-			Where(tender.ID(t.ID)).
-			WithCreatedBy().
-			WithArea().
-			WithCustomer().
-			WithFollowingSales().
-			WithFinder().
-			Only(context.Background())
-		if err != nil {
-			fmt.Printf("failed to get tender: %v\n", err)
-			return
-		}
-		userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
-		for i, u := range tender.Edges.FollowingSales {
-			userIDs[i] = u.OpenID
-		}
-		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
-		if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
-			fmt.Printf("failed to send message: %v\n", err)
-		}
-	}()
+	if a.Code != "GA" && a.Code != "HW" {
+		go func() {
+			tender, err := r.store.Tender.Query().
+				Where(tender.ID(t.ID)).
+				WithCreatedBy().
+				WithArea().
+				WithCustomer().
+				WithFollowingSales().
+				WithFinder().
+				Only(context.Background())
+			if err != nil {
+				fmt.Printf("failed to get tender: %v\n", err)
+				return
+			}
+			userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
+			for i, u := range tender.Edges.FollowingSales {
+				userIDs[i] = u.OpenID
+			}
+			userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
+			if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
+				fmt.Printf("failed to send message: %v\n", err)
+			}
+		}()
+	} else {
+		q.SetIsApproved(true)
+	}
 
 	return &ent.TenderConnection{
 		Edges: []*ent.TenderEdge{
@@ -285,10 +289,12 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session: %w", err)
 	}
-	t, err := r.store.Tender.Get(ctx, id)
+	t, err := r.store.Tender.Query().Where(tender.ID(id)).WithArea().Only(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get tender: %w", err)
 	}
+
+	fmt.Println(t.Edges.Area)
 
 	if t.CreatedByID != nil && string(*t.CreatedByID) != sess.UserId && (!sess.IsAdmin && !sess.IsSuperAdmin) {
 		return nil, fmt.Errorf("failed to update tender: %w", errors.New("permission denied"))
@@ -398,39 +404,41 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 		q.SetGeoCoordinate(coordinate)
 	}
 
-	t, err = q.Save(ctx)
+	st, err := q.Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update tender: %w", err)
 	}
 
-	if t.Status == 3 {
-		go r.sap.InsertTender(r.store, t)
+	if st.Status == 3 && t.Edges.Area.Code != "GA" && t.Edges.Area.Code != "HW" {
+		go r.sap.InsertTender(r.store, st)
 	}
 
-	go func() {
-		tender, err := r.store.Tender.Query().
-			Where(tender.ID(t.ID)).
-			WithCreatedBy().
-			WithArea().
-			WithCustomer().
-			WithFollowingSales().
-			WithFinder().
-			Only(context.Background())
-		if err != nil {
-			fmt.Printf("failed to get tender: %v\n", err)
-			return
-		}
-		userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
-		for i, u := range tender.Edges.FollowingSales {
-			userIDs[i] = u.OpenID
-		}
-		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
-		if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
-			fmt.Printf("failed to send message: %v\n", err)
-		}
-	}()
+	if t.Edges.Area.Code != "GA" && t.Edges.Area.Code != "HW" {
+		// 	go func() {
+		// 		tender, err := r.store.Tender.Query().
+		// 			Where(tender.ID(t.ID)).
+		// 			WithCreatedBy().
+		// 			WithArea().
+		// 			WithCustomer().
+		// 			WithFollowingSales().
+		// 			WithFinder().
+		// 			Only(context.Background())
+		// 		if err != nil {
+		// 			fmt.Printf("failed to get tender: %v\n", err)
+		// 			return
+		// 		}
+		// 		userIDs := make([]string, len(tender.Edges.FollowingSales)+1)
+		// 		for i, u := range tender.Edges.FollowingSales {
+		// 			userIDs[i] = u.OpenID
+		// 		}
+		// 		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
+		// 		if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
+		// 			fmt.Printf("failed to send message: %v\n", err)
+		// 		}
+		// 	}()
+	}
 
-	return t, nil
+	return st, nil
 }
 
 // DeleteTender is the resolver for the deleteTender field.

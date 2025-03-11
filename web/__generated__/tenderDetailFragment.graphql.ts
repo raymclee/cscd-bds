@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<164b0c2d1bc31e7ebf43b23adeba5ac4>>
+ * @generated SignedSource<<604efa3bef6a884709ae2763ad243c85>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,6 +26,7 @@ export type tenderDetailFragment$data = {
     readonly id: string;
     readonly name: string;
   } | null | undefined;
+  readonly classify: number | null | undefined;
   readonly code: string;
   readonly competitivePartnershipRating: number | null | undefined;
   readonly competitivePartnershipRatingOverview: string | null | undefined;
@@ -74,6 +75,7 @@ export type tenderDetailFragment$data = {
   } | null | undefined;
   readonly id: string;
   readonly images: ReadonlyArray<string> | null | undefined;
+  readonly isApproved: boolean;
   readonly keyProject: boolean;
   readonly lastTenderAmount: number | null | undefined;
   readonly levelInvolved: number | null | undefined;
@@ -154,6 +156,13 @@ return {
   "name": "tenderDetailFragment",
   "selections": [
     (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isApproved",
+      "storageKey": null
+    },
     (v1/*: any*/),
     (v2/*: any*/),
     {
@@ -619,6 +628,13 @@ return {
       "plural": false,
       "selections": (v4/*: any*/),
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "classify",
+      "storageKey": null
     }
   ],
   "type": "Tender",
@@ -626,6 +642,6 @@ return {
 };
 })();
 
-(node as any).hash = "f4579545e475fc6dd786ad2d67c10688";
+(node as any).hash = "fefed1bcb5ede14c0570a61c07168346";
 
 export default node;
