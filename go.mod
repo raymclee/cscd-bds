@@ -19,6 +19,7 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
@@ -59,7 +60,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/labstack/echo/v4 v4.12.0
-	github.com/larksuite/oapi-sdk-go/v3 v3.3.7
+	github.com/larksuite/oapi-sdk-go/v3 v3.4.11
 	github.com/microsoft/go-mssqldb v1.8.0
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect

@@ -267,7 +267,7 @@ func (r *mutationResolver) CreateTender(ctx context.Context, input ent.CreateTen
 			userIDs[i] = u.OpenID
 		}
 		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
-		if err := r.feishu.SendMessage(context.Background(), userIDs, tender); err != nil {
+		if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
 			fmt.Printf("failed to send message: %v\n", err)
 		}
 	}()
@@ -425,7 +425,7 @@ func (r *mutationResolver) UpdateTender(ctx context.Context, id xid.ID, input en
 			userIDs[i] = u.OpenID
 		}
 		userIDs[len(userIDs)-1] = tender.Edges.Finder.OpenID
-		if err := r.feishu.SendMessage(context.Background(), userIDs, tender); err != nil {
+		if err := r.feishu.SendGroupMessage(context.Background(), userIDs, tender); err != nil {
 			fmt.Printf("failed to send message: %v\n", err)
 		}
 	}()

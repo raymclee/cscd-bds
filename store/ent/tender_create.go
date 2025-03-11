@@ -81,6 +81,20 @@ func (tc *TenderCreate) SetNillableStatus(i *int) *TenderCreate {
 	return tc
 }
 
+// SetIsApproved sets the "is_approved" field.
+func (tc *TenderCreate) SetIsApproved(b bool) *TenderCreate {
+	tc.mutation.SetIsApproved(b)
+	return tc
+}
+
+// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
+func (tc *TenderCreate) SetNillableIsApproved(b *bool) *TenderCreate {
+	if b != nil {
+		tc.SetIsApproved(*b)
+	}
+	return tc
+}
+
 // SetName sets the "name" field.
 func (tc *TenderCreate) SetName(s string) *TenderCreate {
 	tc.mutation.SetName(s)
@@ -1024,9 +1038,9 @@ func (tc *TenderCreate) defaults() {
 		v := tender.DefaultStatus
 		tc.mutation.SetStatus(v)
 	}
-	if _, ok := tc.mutation.Classify(); !ok {
-		v := tender.DefaultClassify
-		tc.mutation.SetClassify(v)
+	if _, ok := tc.mutation.IsApproved(); !ok {
+		v := tender.DefaultIsApproved
+		tc.mutation.SetIsApproved(v)
 	}
 	if _, ok := tc.mutation.PrepareToBid(); !ok {
 		v := tender.DefaultPrepareToBid
@@ -1055,6 +1069,9 @@ func (tc *TenderCreate) check() error {
 	}
 	if _, ok := tc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Tender.status"`)}
+	}
+	if _, ok := tc.mutation.IsApproved(); !ok {
+		return &ValidationError{Name: "is_approved", err: errors.New(`ent: missing required field "Tender.is_approved"`)}
 	}
 	if _, ok := tc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Tender.name"`)}
@@ -1171,6 +1188,10 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 		_spec.SetField(tender.FieldStatus, field.TypeInt, value)
 		_node.Status = value
 	}
+	if value, ok := tc.mutation.IsApproved(); ok {
+		_spec.SetField(tender.FieldIsApproved, field.TypeBool, value)
+		_node.IsApproved = value
+	}
 	if value, ok := tc.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -1185,7 +1206,7 @@ func (tc *TenderCreate) createSpec() (*Tender, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.Classify(); ok {
 		_spec.SetField(tender.FieldClassify, field.TypeInt, value)
-		_node.Classify = value
+		_node.Classify = &value
 	}
 	if value, ok := tc.mutation.DiscoveryDate(); ok {
 		_spec.SetField(tender.FieldDiscoveryDate, field.TypeTime, value)
@@ -1646,6 +1667,18 @@ func (u *TenderUpsert) UpdateStatus() *TenderUpsert {
 // AddStatus adds v to the "status" field.
 func (u *TenderUpsert) AddStatus(v int) *TenderUpsert {
 	u.Add(tender.FieldStatus, v)
+	return u
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (u *TenderUpsert) SetIsApproved(v bool) *TenderUpsert {
+	u.Set(tender.FieldIsApproved, v)
+	return u
+}
+
+// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
+func (u *TenderUpsert) UpdateIsApproved() *TenderUpsert {
+	u.SetExcluded(tender.FieldIsApproved)
 	return u
 }
 
@@ -2892,6 +2925,20 @@ func (u *TenderUpsertOne) AddStatus(v int) *TenderUpsertOne {
 func (u *TenderUpsertOne) UpdateStatus() *TenderUpsertOne {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (u *TenderUpsertOne) SetIsApproved(v bool) *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetIsApproved(v)
+	})
+}
+
+// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
+func (u *TenderUpsertOne) UpdateIsApproved() *TenderUpsertOne {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateIsApproved()
 	})
 }
 
@@ -4496,6 +4543,20 @@ func (u *TenderUpsertBulk) AddStatus(v int) *TenderUpsertBulk {
 func (u *TenderUpsertBulk) UpdateStatus() *TenderUpsertBulk {
 	return u.Update(func(s *TenderUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (u *TenderUpsertBulk) SetIsApproved(v bool) *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.SetIsApproved(v)
+	})
+}
+
+// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
+func (u *TenderUpsertBulk) UpdateIsApproved() *TenderUpsertBulk {
+	return u.Update(func(s *TenderUpsert) {
+		s.UpdateIsApproved()
 	})
 }
 

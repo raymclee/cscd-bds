@@ -4,7 +4,6 @@ import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/field"
 )
 
 // PotentialTender holds the schema definition for the PotentialTender entity.
@@ -22,7 +21,7 @@ func (PotentialTender) Mixin() []ent.Mixin {
 // Fields of the PotentialTender.
 func (PotentialTender) Fields() []ent.Field {
 	return []ent.Field{
-		field.JSON("meta", map[string]any{}),
+		// field.JSON("meta", map[string]interface{}{}),
 	}
 }
 

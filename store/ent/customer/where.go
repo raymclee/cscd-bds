@@ -71,6 +71,11 @@ func Name(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldName, v))
 }
 
+// IsApproved applies equality check predicate on the "is_approved" field. It's identical to IsApprovedEQ.
+func IsApproved(v bool) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldIsApproved, v))
+}
+
 // OwnerType applies equality check predicate on the "owner_type" field. It's identical to OwnerTypeEQ.
 func OwnerType(v int) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldOwnerType, v))
@@ -264,6 +269,16 @@ func NameEqualFold(v string) predicate.Customer {
 // NameContainsFold applies the ContainsFold predicate on the "name" field.
 func NameContainsFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldName, v))
+}
+
+// IsApprovedEQ applies the EQ predicate on the "is_approved" field.
+func IsApprovedEQ(v bool) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldIsApproved, v))
+}
+
+// IsApprovedNEQ applies the NEQ predicate on the "is_approved" field.
+func IsApprovedNEQ(v bool) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldIsApproved, v))
 }
 
 // OwnerTypeEQ applies the EQ predicate on the "owner_type" field.

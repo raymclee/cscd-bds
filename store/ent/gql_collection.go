@@ -430,6 +430,16 @@ func (a *AreaQuery) collectField(ctx context.Context, oneNode bool, opCtx *graph
 				selectedFields = append(selectedFields, area.FieldCode)
 				fieldSeen[area.FieldCode] = struct{}{}
 			}
+		case "leaderChatID":
+			if _, ok := fieldSeen[area.FieldLeaderChatID]; !ok {
+				selectedFields = append(selectedFields, area.FieldLeaderChatID)
+				fieldSeen[area.FieldLeaderChatID] = struct{}{}
+			}
+		case "salesChatID":
+			if _, ok := fieldSeen[area.FieldSalesChatID]; !ok {
+				selectedFields = append(selectedFields, area.FieldSalesChatID)
+				fieldSeen[area.FieldSalesChatID] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:
@@ -1451,6 +1461,11 @@ func (c *CustomerQuery) collectField(ctx context.Context, oneNode bool, opCtx *g
 				selectedFields = append(selectedFields, customer.FieldName)
 				fieldSeen[customer.FieldName] = struct{}{}
 			}
+		case "isApproved":
+			if _, ok := fieldSeen[customer.FieldIsApproved]; !ok {
+				selectedFields = append(selectedFields, customer.FieldIsApproved)
+				fieldSeen[customer.FieldIsApproved] = struct{}{}
+			}
 		case "ownerType":
 			if _, ok := fieldSeen[customer.FieldOwnerType]; !ok {
 				selectedFields = append(selectedFields, customer.FieldOwnerType)
@@ -2190,11 +2205,6 @@ func (pt *PotentialTenderQuery) collectField(ctx context.Context, oneNode bool, 
 			if _, ok := fieldSeen[potentialtender.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, potentialtender.FieldUpdatedAt)
 				fieldSeen[potentialtender.FieldUpdatedAt] = struct{}{}
-			}
-		case "meta":
-			if _, ok := fieldSeen[potentialtender.FieldMeta]; !ok {
-				selectedFields = append(selectedFields, potentialtender.FieldMeta)
-				fieldSeen[potentialtender.FieldMeta] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -3917,6 +3927,11 @@ func (t *TenderQuery) collectField(ctx context.Context, oneNode bool, opCtx *gra
 			if _, ok := fieldSeen[tender.FieldStatus]; !ok {
 				selectedFields = append(selectedFields, tender.FieldStatus)
 				fieldSeen[tender.FieldStatus] = struct{}{}
+			}
+		case "isApproved":
+			if _, ok := fieldSeen[tender.FieldIsApproved]; !ok {
+				selectedFields = append(selectedFields, tender.FieldIsApproved)
+				fieldSeen[tender.FieldIsApproved] = struct{}{}
 			}
 		case "name":
 			if _, ok := fieldSeen[tender.FieldName]; !ok {

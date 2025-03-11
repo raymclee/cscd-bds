@@ -70,6 +70,8 @@ type AreaMutation struct {
 	updated_at       *time.Time
 	name             *string
 	code             *string
+	leader_chat_id   *string
+	sales_chat_id    *string
 	center           **geo.GeoJson
 	clearedFields    map[string]struct{}
 	customers        map[xid.ID]struct{}
@@ -335,6 +337,104 @@ func (m *AreaMutation) OldCode(ctx context.Context) (v string, err error) {
 // ResetCode resets all changes to the "code" field.
 func (m *AreaMutation) ResetCode() {
 	m.code = nil
+}
+
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (m *AreaMutation) SetLeaderChatID(s string) {
+	m.leader_chat_id = &s
+}
+
+// LeaderChatID returns the value of the "leader_chat_id" field in the mutation.
+func (m *AreaMutation) LeaderChatID() (r string, exists bool) {
+	v := m.leader_chat_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLeaderChatID returns the old "leader_chat_id" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldLeaderChatID(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLeaderChatID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLeaderChatID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLeaderChatID: %w", err)
+	}
+	return oldValue.LeaderChatID, nil
+}
+
+// ClearLeaderChatID clears the value of the "leader_chat_id" field.
+func (m *AreaMutation) ClearLeaderChatID() {
+	m.leader_chat_id = nil
+	m.clearedFields[area.FieldLeaderChatID] = struct{}{}
+}
+
+// LeaderChatIDCleared returns if the "leader_chat_id" field was cleared in this mutation.
+func (m *AreaMutation) LeaderChatIDCleared() bool {
+	_, ok := m.clearedFields[area.FieldLeaderChatID]
+	return ok
+}
+
+// ResetLeaderChatID resets all changes to the "leader_chat_id" field.
+func (m *AreaMutation) ResetLeaderChatID() {
+	m.leader_chat_id = nil
+	delete(m.clearedFields, area.FieldLeaderChatID)
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (m *AreaMutation) SetSalesChatID(s string) {
+	m.sales_chat_id = &s
+}
+
+// SalesChatID returns the value of the "sales_chat_id" field in the mutation.
+func (m *AreaMutation) SalesChatID() (r string, exists bool) {
+	v := m.sales_chat_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSalesChatID returns the old "sales_chat_id" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldSalesChatID(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSalesChatID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSalesChatID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSalesChatID: %w", err)
+	}
+	return oldValue.SalesChatID, nil
+}
+
+// ClearSalesChatID clears the value of the "sales_chat_id" field.
+func (m *AreaMutation) ClearSalesChatID() {
+	m.sales_chat_id = nil
+	m.clearedFields[area.FieldSalesChatID] = struct{}{}
+}
+
+// SalesChatIDCleared returns if the "sales_chat_id" field was cleared in this mutation.
+func (m *AreaMutation) SalesChatIDCleared() bool {
+	_, ok := m.clearedFields[area.FieldSalesChatID]
+	return ok
+}
+
+// ResetSalesChatID resets all changes to the "sales_chat_id" field.
+func (m *AreaMutation) ResetSalesChatID() {
+	m.sales_chat_id = nil
+	delete(m.clearedFields, area.FieldSalesChatID)
 }
 
 // SetCenter sets the "center" field.
@@ -636,7 +736,7 @@ func (m *AreaMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AreaMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 7)
 	if m.created_at != nil {
 		fields = append(fields, area.FieldCreatedAt)
 	}
@@ -648,6 +748,12 @@ func (m *AreaMutation) Fields() []string {
 	}
 	if m.code != nil {
 		fields = append(fields, area.FieldCode)
+	}
+	if m.leader_chat_id != nil {
+		fields = append(fields, area.FieldLeaderChatID)
+	}
+	if m.sales_chat_id != nil {
+		fields = append(fields, area.FieldSalesChatID)
 	}
 	if m.center != nil {
 		fields = append(fields, area.FieldCenter)
@@ -668,6 +774,10 @@ func (m *AreaMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case area.FieldCode:
 		return m.Code()
+	case area.FieldLeaderChatID:
+		return m.LeaderChatID()
+	case area.FieldSalesChatID:
+		return m.SalesChatID()
 	case area.FieldCenter:
 		return m.Center()
 	}
@@ -687,6 +797,10 @@ func (m *AreaMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldName(ctx)
 	case area.FieldCode:
 		return m.OldCode(ctx)
+	case area.FieldLeaderChatID:
+		return m.OldLeaderChatID(ctx)
+	case area.FieldSalesChatID:
+		return m.OldSalesChatID(ctx)
 	case area.FieldCenter:
 		return m.OldCenter(ctx)
 	}
@@ -726,6 +840,20 @@ func (m *AreaMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCode(v)
 		return nil
+	case area.FieldLeaderChatID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLeaderChatID(v)
+		return nil
+	case area.FieldSalesChatID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSalesChatID(v)
+		return nil
 	case area.FieldCenter:
 		v, ok := value.(*geo.GeoJson)
 		if !ok {
@@ -763,6 +891,12 @@ func (m *AreaMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *AreaMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(area.FieldLeaderChatID) {
+		fields = append(fields, area.FieldLeaderChatID)
+	}
+	if m.FieldCleared(area.FieldSalesChatID) {
+		fields = append(fields, area.FieldSalesChatID)
+	}
 	if m.FieldCleared(area.FieldCenter) {
 		fields = append(fields, area.FieldCenter)
 	}
@@ -780,6 +914,12 @@ func (m *AreaMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *AreaMutation) ClearField(name string) error {
 	switch name {
+	case area.FieldLeaderChatID:
+		m.ClearLeaderChatID()
+		return nil
+	case area.FieldSalesChatID:
+		m.ClearSalesChatID()
+		return nil
 	case area.FieldCenter:
 		m.ClearCenter()
 		return nil
@@ -802,6 +942,12 @@ func (m *AreaMutation) ResetField(name string) error {
 		return nil
 	case area.FieldCode:
 		m.ResetCode()
+		return nil
+	case area.FieldLeaderChatID:
+		m.ResetLeaderChatID()
+		return nil
+	case area.FieldSalesChatID:
+		m.ResetSalesChatID()
 		return nil
 	case area.FieldCenter:
 		m.ResetCenter()
@@ -3192,6 +3338,7 @@ type CustomerMutation struct {
 	created_at              *time.Time
 	updated_at              *time.Time
 	name                    *string
+	is_approved             *bool
 	owner_type              *int
 	addowner_type           *int
 	industry                *int
@@ -3431,6 +3578,42 @@ func (m *CustomerMutation) OldName(ctx context.Context) (v string, err error) {
 // ResetName resets all changes to the "name" field.
 func (m *CustomerMutation) ResetName() {
 	m.name = nil
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (m *CustomerMutation) SetIsApproved(b bool) {
+	m.is_approved = &b
+}
+
+// IsApproved returns the value of the "is_approved" field in the mutation.
+func (m *CustomerMutation) IsApproved() (r bool, exists bool) {
+	v := m.is_approved
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsApproved returns the old "is_approved" field's value of the Customer entity.
+// If the Customer object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CustomerMutation) OldIsApproved(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsApproved is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsApproved requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsApproved: %w", err)
+	}
+	return oldValue.IsApproved, nil
+}
+
+// ResetIsApproved resets all changes to the "is_approved" field.
+func (m *CustomerMutation) ResetIsApproved() {
+	m.is_approved = nil
 }
 
 // SetOwnerType sets the "owner_type" field.
@@ -4245,7 +4428,7 @@ func (m *CustomerMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CustomerMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 15)
 	if m.created_at != nil {
 		fields = append(fields, customer.FieldCreatedAt)
 	}
@@ -4254,6 +4437,9 @@ func (m *CustomerMutation) Fields() []string {
 	}
 	if m.name != nil {
 		fields = append(fields, customer.FieldName)
+	}
+	if m.is_approved != nil {
+		fields = append(fields, customer.FieldIsApproved)
 	}
 	if m.owner_type != nil {
 		fields = append(fields, customer.FieldOwnerType)
@@ -4302,6 +4488,8 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case customer.FieldName:
 		return m.Name()
+	case customer.FieldIsApproved:
+		return m.IsApproved()
 	case customer.FieldOwnerType:
 		return m.OwnerType()
 	case customer.FieldIndustry:
@@ -4339,6 +4527,8 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldUpdatedAt(ctx)
 	case customer.FieldName:
 		return m.OldName(ctx)
+	case customer.FieldIsApproved:
+		return m.OldIsApproved(ctx)
 	case customer.FieldOwnerType:
 		return m.OldOwnerType(ctx)
 	case customer.FieldIndustry:
@@ -4390,6 +4580,13 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetName(v)
+		return nil
+	case customer.FieldIsApproved:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsApproved(v)
 		return nil
 	case customer.FieldOwnerType:
 		v, ok := value.(int)
@@ -4627,6 +4824,9 @@ func (m *CustomerMutation) ResetField(name string) error {
 		return nil
 	case customer.FieldName:
 		m.ResetName()
+		return nil
+	case customer.FieldIsApproved:
+		m.ResetIsApproved()
 		return nil
 	case customer.FieldOwnerType:
 		m.ResetOwnerType()
@@ -7936,7 +8136,6 @@ type PotentialTenderMutation struct {
 	id            *xid.ID
 	created_at    *time.Time
 	updated_at    *time.Time
-	meta          *map[string]interface{}
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*PotentialTender, error)
@@ -8119,42 +8318,6 @@ func (m *PotentialTenderMutation) ResetUpdatedAt() {
 	m.updated_at = nil
 }
 
-// SetMeta sets the "meta" field.
-func (m *PotentialTenderMutation) SetMeta(value map[string]interface{}) {
-	m.meta = &value
-}
-
-// Meta returns the value of the "meta" field in the mutation.
-func (m *PotentialTenderMutation) Meta() (r map[string]interface{}, exists bool) {
-	v := m.meta
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMeta returns the old "meta" field's value of the PotentialTender entity.
-// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PotentialTenderMutation) OldMeta(ctx context.Context) (v map[string]interface{}, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMeta is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMeta requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMeta: %w", err)
-	}
-	return oldValue.Meta, nil
-}
-
-// ResetMeta resets all changes to the "meta" field.
-func (m *PotentialTenderMutation) ResetMeta() {
-	m.meta = nil
-}
-
 // Where appends a list predicates to the PotentialTenderMutation builder.
 func (m *PotentialTenderMutation) Where(ps ...predicate.PotentialTender) {
 	m.predicates = append(m.predicates, ps...)
@@ -8189,15 +8352,12 @@ func (m *PotentialTenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PotentialTenderMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 2)
 	if m.created_at != nil {
 		fields = append(fields, potentialtender.FieldCreatedAt)
 	}
 	if m.updated_at != nil {
 		fields = append(fields, potentialtender.FieldUpdatedAt)
-	}
-	if m.meta != nil {
-		fields = append(fields, potentialtender.FieldMeta)
 	}
 	return fields
 }
@@ -8211,8 +8371,6 @@ func (m *PotentialTenderMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedAt()
 	case potentialtender.FieldUpdatedAt:
 		return m.UpdatedAt()
-	case potentialtender.FieldMeta:
-		return m.Meta()
 	}
 	return nil, false
 }
@@ -8226,8 +8384,6 @@ func (m *PotentialTenderMutation) OldField(ctx context.Context, name string) (en
 		return m.OldCreatedAt(ctx)
 	case potentialtender.FieldUpdatedAt:
 		return m.OldUpdatedAt(ctx)
-	case potentialtender.FieldMeta:
-		return m.OldMeta(ctx)
 	}
 	return nil, fmt.Errorf("unknown PotentialTender field %s", name)
 }
@@ -8250,13 +8406,6 @@ func (m *PotentialTenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdatedAt(v)
-		return nil
-	case potentialtender.FieldMeta:
-		v, ok := value.(map[string]interface{})
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMeta(v)
 		return nil
 	}
 	return fmt.Errorf("unknown PotentialTender field %s", name)
@@ -8312,9 +8461,6 @@ func (m *PotentialTenderMutation) ResetField(name string) error {
 		return nil
 	case potentialtender.FieldUpdatedAt:
 		m.ResetUpdatedAt()
-		return nil
-	case potentialtender.FieldMeta:
-		m.ResetMeta()
 		return nil
 	}
 	return fmt.Errorf("unknown PotentialTender field %s", name)
@@ -20017,6 +20163,7 @@ type TenderMutation struct {
 	code                                    *string
 	status                                  *int
 	addstatus                               *int
+	is_approved                             *bool
 	name                                    *string
 	estimated_amount                        *float64
 	addestimated_amount                     *float64
@@ -20380,6 +20527,42 @@ func (m *TenderMutation) ResetStatus() {
 	m.addstatus = nil
 }
 
+// SetIsApproved sets the "is_approved" field.
+func (m *TenderMutation) SetIsApproved(b bool) {
+	m.is_approved = &b
+}
+
+// IsApproved returns the value of the "is_approved" field in the mutation.
+func (m *TenderMutation) IsApproved() (r bool, exists bool) {
+	v := m.is_approved
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsApproved returns the old "is_approved" field's value of the Tender entity.
+// If the Tender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenderMutation) OldIsApproved(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsApproved is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsApproved requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsApproved: %w", err)
+	}
+	return oldValue.IsApproved, nil
+}
+
+// ResetIsApproved resets all changes to the "is_approved" field.
+func (m *TenderMutation) ResetIsApproved() {
+	m.is_approved = nil
+}
+
 // SetName sets the "name" field.
 func (m *TenderMutation) SetName(s string) {
 	m.name = &s
@@ -20553,7 +20736,7 @@ func (m *TenderMutation) Classify() (r int, exists bool) {
 // OldClassify returns the old "classify" field's value of the Tender entity.
 // If the Tender object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenderMutation) OldClassify(ctx context.Context) (v int, err error) {
+func (m *TenderMutation) OldClassify(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldClassify is only allowed on UpdateOne operations")
 	}
@@ -23969,7 +24152,7 @@ func (m *TenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenderMutation) Fields() []string {
-	fields := make([]string, 0, 66)
+	fields := make([]string, 0, 67)
 	if m.created_at != nil {
 		fields = append(fields, tender.FieldCreatedAt)
 	}
@@ -23981,6 +24164,9 @@ func (m *TenderMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, tender.FieldStatus)
+	}
+	if m.is_approved != nil {
+		fields = append(fields, tender.FieldIsApproved)
 	}
 	if m.name != nil {
 		fields = append(fields, tender.FieldName)
@@ -24184,6 +24370,8 @@ func (m *TenderMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case tender.FieldStatus:
 		return m.Status()
+	case tender.FieldIsApproved:
+		return m.IsApproved()
 	case tender.FieldName:
 		return m.Name()
 	case tender.FieldEstimatedAmount:
@@ -24325,6 +24513,8 @@ func (m *TenderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldCode(ctx)
 	case tender.FieldStatus:
 		return m.OldStatus(ctx)
+	case tender.FieldIsApproved:
+		return m.OldIsApproved(ctx)
 	case tender.FieldName:
 		return m.OldName(ctx)
 	case tender.FieldEstimatedAmount:
@@ -24485,6 +24675,13 @@ func (m *TenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
+		return nil
+	case tender.FieldIsApproved:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsApproved(v)
 		return nil
 	case tender.FieldName:
 		v, ok := value.(string)
@@ -25460,6 +25657,9 @@ func (m *TenderMutation) ResetField(name string) error {
 		return nil
 	case tender.FieldStatus:
 		m.ResetStatus()
+		return nil
+	case tender.FieldIsApproved:
+		m.ResetIsApproved()
 		return nil
 	case tender.FieldName:
 		m.ResetName()

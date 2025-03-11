@@ -1,18 +1,22 @@
 package handler
 
 import (
+	"context"
 	"cscd-bds/amap"
 	"cscd-bds/config"
 	"cscd-bds/feishu"
 	"cscd-bds/sap"
 	"cscd-bds/session"
 	"cscd-bds/store"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
+	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
+	"golang.org/x/sync/errgroup"
 )
 
 type handler struct {
@@ -31,6 +35,55 @@ func NewHandler(store *store.Store, f *feishu.Feishu, session *session.Session, 
 		sap:     sap,
 		amap:    amap,
 	}
+}
+
+func (h handler) SendTextMessage(c echo.Context) error {
+	eg := errgroup.Group{}
+
+	userIDs := []string{"oc_da016c6340ec087f24ad722be2859e75"}
+
+	content, err := json.Marshal(map[string]any{
+		"type": "template",
+		"data": map[string]any{
+			"template_id":       "AAqBXLd58fBQa",
+			"template_variable": map[string]any{
+				// "tender_id":      tender.ID,
+				// "created_by":     tender.Edges.CreatedBy.Name,
+				// "created_by_id":  tender.Edges.CreatedBy.OpenID,
+				// "area":           tender.Edges.Area.Name,
+				// "name":           tender.Name,
+				// "customer":       tender.Edges.Customer.Name,
+				// "finder":         tender.Edges.Finder.Name,
+				// "finder_id":      tender.Edges.Finder.OpenID,
+				// "discovery_date": tender.DiscoveryDate.Format("2006-01-02"),
+				// "tender_url":     fmt.Sprintf("https://mkm.fefacade.com/portal/tenders/%s", tender.ID),
+			},
+		},
+	})
+	if err != nil {
+		fmt.Println(err)
+		return fmt.Errorf("failed to marshal content: %w", err)
+	}
+
+	for _, id := range userIDs {
+		eg.Go(func() error {
+			res, err := h.feishu.Client.Post(context.Background(), "/open-apis/im/v1/messages?receive_id_type=chat_id", map[string]any{
+				"msg_type":   "interactive",
+				"content":    string(content),
+				"receive_id": id,
+			}, larkcore.AccessTokenTypeTenant)
+			if err != nil {
+				fmt.Println(err)
+				return fmt.Errorf("failed to send message: %w", err)
+			}
+			if res.StatusCode != 200 {
+				return fmt.Errorf("send message error: %v", res.StatusCode)
+			}
+			return nil
+		})
+	}
+
+	return eg.Wait()
 }
 
 func (h handler) UploadFile(c echo.Context) error {

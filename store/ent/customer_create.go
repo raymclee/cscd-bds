@@ -63,6 +63,20 @@ func (cc *CustomerCreate) SetName(s string) *CustomerCreate {
 	return cc
 }
 
+// SetIsApproved sets the "is_approved" field.
+func (cc *CustomerCreate) SetIsApproved(b bool) *CustomerCreate {
+	cc.mutation.SetIsApproved(b)
+	return cc
+}
+
+// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableIsApproved(b *bool) *CustomerCreate {
+	if b != nil {
+		cc.SetIsApproved(*b)
+	}
+	return cc
+}
+
 // SetOwnerType sets the "owner_type" field.
 func (cc *CustomerCreate) SetOwnerType(i int) *CustomerCreate {
 	cc.mutation.SetOwnerType(i)
@@ -303,6 +317,10 @@ func (cc *CustomerCreate) defaults() {
 		v := customer.DefaultUpdatedAt()
 		cc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := cc.mutation.IsApproved(); !ok {
+		v := customer.DefaultIsApproved
+		cc.mutation.SetIsApproved(v)
+	}
 	if _, ok := cc.mutation.ID(); !ok {
 		v := customer.DefaultID()
 		cc.mutation.SetID(v)
@@ -319,6 +337,9 @@ func (cc *CustomerCreate) check() error {
 	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Customer.name"`)}
+	}
+	if _, ok := cc.mutation.IsApproved(); !ok {
+		return &ValidationError{Name: "is_approved", err: errors.New(`ent: missing required field "Customer.is_approved"`)}
 	}
 	if _, ok := cc.mutation.AreaID(); !ok {
 		return &ValidationError{Name: "area_id", err: errors.New(`ent: missing required field "Customer.area_id"`)}
@@ -373,6 +394,10 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Name(); ok {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := cc.mutation.IsApproved(); ok {
+		_spec.SetField(customer.FieldIsApproved, field.TypeBool, value)
+		_node.IsApproved = value
 	}
 	if value, ok := cc.mutation.OwnerType(); ok {
 		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
@@ -562,6 +587,18 @@ func (u *CustomerUpsert) SetName(v string) *CustomerUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *CustomerUpsert) UpdateName() *CustomerUpsert {
 	u.SetExcluded(customer.FieldName)
+	return u
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (u *CustomerUpsert) SetIsApproved(v bool) *CustomerUpsert {
+	u.Set(customer.FieldIsApproved, v)
+	return u
+}
+
+// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
+func (u *CustomerUpsert) UpdateIsApproved() *CustomerUpsert {
+	u.SetExcluded(customer.FieldIsApproved)
 	return u
 }
 
@@ -851,6 +888,20 @@ func (u *CustomerUpsertOne) SetName(v string) *CustomerUpsertOne {
 func (u *CustomerUpsertOne) UpdateName() *CustomerUpsertOne {
 	return u.Update(func(s *CustomerUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (u *CustomerUpsertOne) SetIsApproved(v bool) *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetIsApproved(v)
+	})
+}
+
+// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
+func (u *CustomerUpsertOne) UpdateIsApproved() *CustomerUpsertOne {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateIsApproved()
 	})
 }
 
@@ -1342,6 +1393,20 @@ func (u *CustomerUpsertBulk) SetName(v string) *CustomerUpsertBulk {
 func (u *CustomerUpsertBulk) UpdateName() *CustomerUpsertBulk {
 	return u.Update(func(s *CustomerUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (u *CustomerUpsertBulk) SetIsApproved(v bool) *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.SetIsApproved(v)
+	})
+}
+
+// UpdateIsApproved sets the "is_approved" field to the value that was provided on create.
+func (u *CustomerUpsertBulk) UpdateIsApproved() *CustomerUpsertBulk {
+	return u.Update(func(s *CustomerUpsert) {
+		s.UpdateIsApproved()
 	})
 }
 

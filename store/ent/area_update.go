@@ -68,6 +68,46 @@ func (au *AreaUpdate) SetNillableCode(s *string) *AreaUpdate {
 	return au
 }
 
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (au *AreaUpdate) SetLeaderChatID(s string) *AreaUpdate {
+	au.mutation.SetLeaderChatID(s)
+	return au
+}
+
+// SetNillableLeaderChatID sets the "leader_chat_id" field if the given value is not nil.
+func (au *AreaUpdate) SetNillableLeaderChatID(s *string) *AreaUpdate {
+	if s != nil {
+		au.SetLeaderChatID(*s)
+	}
+	return au
+}
+
+// ClearLeaderChatID clears the value of the "leader_chat_id" field.
+func (au *AreaUpdate) ClearLeaderChatID() *AreaUpdate {
+	au.mutation.ClearLeaderChatID()
+	return au
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (au *AreaUpdate) SetSalesChatID(s string) *AreaUpdate {
+	au.mutation.SetSalesChatID(s)
+	return au
+}
+
+// SetNillableSalesChatID sets the "sales_chat_id" field if the given value is not nil.
+func (au *AreaUpdate) SetNillableSalesChatID(s *string) *AreaUpdate {
+	if s != nil {
+		au.SetSalesChatID(*s)
+	}
+	return au
+}
+
+// ClearSalesChatID clears the value of the "sales_chat_id" field.
+func (au *AreaUpdate) ClearSalesChatID() *AreaUpdate {
+	au.mutation.ClearSalesChatID()
+	return au
+}
+
 // SetCenter sets the "center" field.
 func (au *AreaUpdate) SetCenter(gj *geo.GeoJson) *AreaUpdate {
 	au.mutation.SetCenter(gj)
@@ -265,7 +305,25 @@ func (au *AreaUpdate) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (au *AreaUpdate) check() error {
+	if v, ok := au.mutation.LeaderChatID(); ok {
+		if err := area.LeaderChatIDValidator(v); err != nil {
+			return &ValidationError{Name: "leader_chat_id", err: fmt.Errorf(`ent: validator failed for field "Area.leader_chat_id": %w`, err)}
+		}
+	}
+	if v, ok := au.mutation.SalesChatID(); ok {
+		if err := area.SalesChatIDValidator(v); err != nil {
+			return &ValidationError{Name: "sales_chat_id", err: fmt.Errorf(`ent: validator failed for field "Area.sales_chat_id": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
+	if err := au.check(); err != nil {
+		return n, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(area.Table, area.Columns, sqlgraph.NewFieldSpec(area.FieldID, field.TypeString))
 	if ps := au.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -282,6 +340,18 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
+	}
+	if value, ok := au.mutation.LeaderChatID(); ok {
+		_spec.SetField(area.FieldLeaderChatID, field.TypeString, value)
+	}
+	if au.mutation.LeaderChatIDCleared() {
+		_spec.ClearField(area.FieldLeaderChatID, field.TypeString)
+	}
+	if value, ok := au.mutation.SalesChatID(); ok {
+		_spec.SetField(area.FieldSalesChatID, field.TypeString, value)
+	}
+	if au.mutation.SalesChatIDCleared() {
+		_spec.ClearField(area.FieldSalesChatID, field.TypeString)
 	}
 	if value, ok := au.mutation.Center(); ok {
 		_spec.SetField(area.FieldCenter, field.TypeOther, value)
@@ -523,6 +593,46 @@ func (auo *AreaUpdateOne) SetNillableCode(s *string) *AreaUpdateOne {
 	return auo
 }
 
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (auo *AreaUpdateOne) SetLeaderChatID(s string) *AreaUpdateOne {
+	auo.mutation.SetLeaderChatID(s)
+	return auo
+}
+
+// SetNillableLeaderChatID sets the "leader_chat_id" field if the given value is not nil.
+func (auo *AreaUpdateOne) SetNillableLeaderChatID(s *string) *AreaUpdateOne {
+	if s != nil {
+		auo.SetLeaderChatID(*s)
+	}
+	return auo
+}
+
+// ClearLeaderChatID clears the value of the "leader_chat_id" field.
+func (auo *AreaUpdateOne) ClearLeaderChatID() *AreaUpdateOne {
+	auo.mutation.ClearLeaderChatID()
+	return auo
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (auo *AreaUpdateOne) SetSalesChatID(s string) *AreaUpdateOne {
+	auo.mutation.SetSalesChatID(s)
+	return auo
+}
+
+// SetNillableSalesChatID sets the "sales_chat_id" field if the given value is not nil.
+func (auo *AreaUpdateOne) SetNillableSalesChatID(s *string) *AreaUpdateOne {
+	if s != nil {
+		auo.SetSalesChatID(*s)
+	}
+	return auo
+}
+
+// ClearSalesChatID clears the value of the "sales_chat_id" field.
+func (auo *AreaUpdateOne) ClearSalesChatID() *AreaUpdateOne {
+	auo.mutation.ClearSalesChatID()
+	return auo
+}
+
 // SetCenter sets the "center" field.
 func (auo *AreaUpdateOne) SetCenter(gj *geo.GeoJson) *AreaUpdateOne {
 	auo.mutation.SetCenter(gj)
@@ -733,7 +843,25 @@ func (auo *AreaUpdateOne) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (auo *AreaUpdateOne) check() error {
+	if v, ok := auo.mutation.LeaderChatID(); ok {
+		if err := area.LeaderChatIDValidator(v); err != nil {
+			return &ValidationError{Name: "leader_chat_id", err: fmt.Errorf(`ent: validator failed for field "Area.leader_chat_id": %w`, err)}
+		}
+	}
+	if v, ok := auo.mutation.SalesChatID(); ok {
+		if err := area.SalesChatIDValidator(v); err != nil {
+			return &ValidationError{Name: "sales_chat_id", err: fmt.Errorf(`ent: validator failed for field "Area.sales_chat_id": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) {
+	if err := auo.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(area.Table, area.Columns, sqlgraph.NewFieldSpec(area.FieldID, field.TypeString))
 	id, ok := auo.mutation.ID()
 	if !ok {
@@ -767,6 +895,18 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 	}
 	if value, ok := auo.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
+	}
+	if value, ok := auo.mutation.LeaderChatID(); ok {
+		_spec.SetField(area.FieldLeaderChatID, field.TypeString, value)
+	}
+	if auo.mutation.LeaderChatIDCleared() {
+		_spec.ClearField(area.FieldLeaderChatID, field.TypeString)
+	}
+	if value, ok := auo.mutation.SalesChatID(); ok {
+		_spec.SetField(area.FieldSalesChatID, field.TypeString, value)
+	}
+	if auo.mutation.SalesChatIDCleared() {
+		_spec.ClearField(area.FieldSalesChatID, field.TypeString)
 	}
 	if value, ok := auo.mutation.Center(); ok {
 		_spec.SetField(area.FieldCenter, field.TypeOther, value)

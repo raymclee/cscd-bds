@@ -51,16 +51,18 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Area struct {
-		Center    func(childComplexity int) int
-		Code      func(childComplexity int) int
-		CreatedAt func(childComplexity int) int
-		Customers func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
-		ID        func(childComplexity int) int
-		Name      func(childComplexity int) int
-		Provinces func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
-		Tenders   func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
-		UpdatedAt func(childComplexity int) int
-		Users     func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
+		Center       func(childComplexity int) int
+		Code         func(childComplexity int) int
+		CreatedAt    func(childComplexity int) int
+		Customers    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.CustomerOrder, where *ent.CustomerWhereInput) int
+		ID           func(childComplexity int) int
+		LeaderChatID func(childComplexity int) int
+		Name         func(childComplexity int) int
+		Provinces    func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.ProvinceOrder, where *ent.ProvinceWhereInput) int
+		SalesChatID  func(childComplexity int) int
+		Tenders      func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.TenderOrder, where *ent.TenderWhereInput) int
+		UpdatedAt    func(childComplexity int) int
+		Users        func(childComplexity int, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy *ent.UserOrder, where *ent.UserWhereInput) int
 	}
 
 	AreaConnection struct {
@@ -152,6 +154,7 @@ type ComplexityRoot struct {
 		CreatedByID           func(childComplexity int) int
 		ID                    func(childComplexity int) int
 		Industry              func(childComplexity int) int
+		IsApproved            func(childComplexity int) int
 		Name                  func(childComplexity int) int
 		OwnerType             func(childComplexity int) int
 		Sales                 func(childComplexity int) int
@@ -312,7 +315,6 @@ type ComplexityRoot struct {
 	PotentialTender struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
-		Meta      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
 	}
 
@@ -580,6 +582,7 @@ type ComplexityRoot struct {
 		GeoCoordinate                        func(childComplexity int) int
 		ID                                   func(childComplexity int) int
 		Images                               func(childComplexity int) int
+		IsApproved                           func(childComplexity int) int
 		KeyProject                           func(childComplexity int) int
 		LastTenderAmount                     func(childComplexity int) int
 		LevelInvolved                        func(childComplexity int) int
@@ -754,6 +757,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Area.ID(childComplexity), true
 
+	case "Area.leaderChatID":
+		if e.complexity.Area.LeaderChatID == nil {
+			break
+		}
+
+		return e.complexity.Area.LeaderChatID(childComplexity), true
+
 	case "Area.name":
 		if e.complexity.Area.Name == nil {
 			break
@@ -772,6 +782,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Area.Provinces(childComplexity, args["after"].(*entgql.Cursor[xid.ID]), args["first"].(*int), args["before"].(*entgql.Cursor[xid.ID]), args["last"].(*int), args["orderBy"].(*ent.ProvinceOrder), args["where"].(*ent.ProvinceWhereInput)), true
+
+	case "Area.salesChatID":
+		if e.complexity.Area.SalesChatID == nil {
+			break
+		}
+
+		return e.complexity.Area.SalesChatID(childComplexity), true
 
 	case "Area.tenders":
 		if e.complexity.Area.Tenders == nil {
@@ -1208,6 +1225,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Customer.Industry(childComplexity), true
+
+	case "Customer.isApproved":
+		if e.complexity.Customer.IsApproved == nil {
+			break
+		}
+
+		return e.complexity.Customer.IsApproved(childComplexity), true
 
 	case "Customer.name":
 		if e.complexity.Customer.Name == nil {
@@ -2075,13 +2099,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.PotentialTender.ID(childComplexity), true
-
-	case "PotentialTender.meta":
-		if e.complexity.PotentialTender.Meta == nil {
-			break
-		}
-
-		return e.complexity.PotentialTender.Meta(childComplexity), true
 
 	case "PotentialTender.updatedAt":
 		if e.complexity.PotentialTender.UpdatedAt == nil {
@@ -3772,6 +3789,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tender.Images(childComplexity), true
 
+	case "Tender.isApproved":
+		if e.complexity.Tender.IsApproved == nil {
+			break
+		}
+
+		return e.complexity.Tender.IsApproved(childComplexity), true
+
 	case "Tender.keyProject":
 		if e.complexity.Tender.KeyProject == nil {
 			break
@@ -4582,6 +4606,8 @@ type Area implements Node {
   updatedAt: Time!
   name: String!
   code: String!
+  leaderChatID: String
+  salesChatID: String
   customers(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -4829,6 +4855,42 @@ input AreaWhereInput {
   codeHasSuffix: String
   codeEqualFold: String
   codeContainsFold: String
+  """
+  leader_chat_id field predicates
+  """
+  leaderChatID: String
+  leaderChatIDNEQ: String
+  leaderChatIDIn: [String!]
+  leaderChatIDNotIn: [String!]
+  leaderChatIDGT: String
+  leaderChatIDGTE: String
+  leaderChatIDLT: String
+  leaderChatIDLTE: String
+  leaderChatIDContains: String
+  leaderChatIDHasPrefix: String
+  leaderChatIDHasSuffix: String
+  leaderChatIDIsNil: Boolean
+  leaderChatIDNotNil: Boolean
+  leaderChatIDEqualFold: String
+  leaderChatIDContainsFold: String
+  """
+  sales_chat_id field predicates
+  """
+  salesChatID: String
+  salesChatIDNEQ: String
+  salesChatIDIn: [String!]
+  salesChatIDNotIn: [String!]
+  salesChatIDGT: String
+  salesChatIDGTE: String
+  salesChatIDLT: String
+  salesChatIDLTE: String
+  salesChatIDContains: String
+  salesChatIDHasPrefix: String
+  salesChatIDHasSuffix: String
+  salesChatIDIsNil: Boolean
+  salesChatIDNotNil: Boolean
+  salesChatIDEqualFold: String
+  salesChatIDContainsFold: String
   """
   customers edge predicates
   """
@@ -5419,6 +5481,8 @@ input CreateAreaInput {
   updatedAt: Time
   name: String!
   code: String!
+  leaderChatID: String
+  salesChatID: String
   customerIDs: [ID!]
   tenderIDs: [ID!]
   userIDs: [ID!]
@@ -5468,6 +5532,7 @@ input CreateCustomerInput {
   createdAt: Time
   updatedAt: Time
   name: String!
+  isApproved: Boolean
   ownerType: Int
   industry: Int
   size: Int
@@ -5515,7 +5580,6 @@ Input was generated by ent.
 input CreatePotentialTenderInput {
   createdAt: Time
   updatedAt: Time
-  meta: Map!
 }
 """
 CreateProvinceInput is used for create Province object.
@@ -5541,6 +5605,7 @@ input CreateTenderInput {
   updatedAt: Time
   code: String!
   status: Int
+  isApproved: Boolean
   name: String!
   estimatedAmount: Float
   tenderDate: Time
@@ -5680,6 +5745,7 @@ type Customer implements Node {
   createdAt: Time!
   updatedAt: Time!
   name: String!
+  isApproved: Boolean!
   ownerType: Int
   industry: Int
   size: Int
@@ -5864,6 +5930,11 @@ input CustomerWhereInput {
   nameHasSuffix: String
   nameEqualFold: String
   nameContainsFold: String
+  """
+  is_approved field predicates
+  """
+  isApproved: Boolean
+  isApprovedNEQ: Boolean
   """
   owner_type field predicates
   """
@@ -6323,10 +6394,6 @@ input DistrictWhereInput {
   hasPlotsWith: [PlotWhereInput!]
 }
 """
-The builtin Map type
-"""
-scalar Map
-"""
 An object with an ID.
 Follows the [Relay Global Object Identification Specification](https://relay.dev/graphql/objectidentification.htm)
 """
@@ -6760,7 +6827,6 @@ type PotentialTender implements Node {
   id: ID!
   createdAt: Time!
   updatedAt: Time!
-  meta: Map!
 }
 """
 A connection to a list of items.
@@ -9571,6 +9637,7 @@ type Tender implements Node {
   updatedAt: Time!
   code: String!
   status: Int!
+  isApproved: Boolean!
   name: String!
   estimatedAmount: Float
   tenderDate: Time
@@ -9816,6 +9883,11 @@ input TenderWhereInput {
   statusGTE: Int
   statusLT: Int
   statusLTE: Int
+  """
+  is_approved field predicates
+  """
+  isApproved: Boolean
+  isApprovedNEQ: Boolean
   """
   name field predicates
   """
@@ -10802,6 +10874,10 @@ input UpdateAreaInput {
   updatedAt: Time
   name: String
   code: String
+  leaderChatID: String
+  clearLeaderChatID: Boolean
+  salesChatID: String
+  clearSalesChatID: Boolean
   addCustomerIDs: [ID!]
   removeCustomerIDs: [ID!]
   clearCustomers: Boolean
@@ -10863,6 +10939,7 @@ Input was generated by ent.
 input UpdateCustomerInput {
   updatedAt: Time
   name: String
+  isApproved: Boolean
   ownerType: Int
   clearOwnerType: Boolean
   industry: Int
@@ -10925,7 +11002,6 @@ Input was generated by ent.
 """
 input UpdatePotentialTenderInput {
   updatedAt: Time
-  meta: Map
 }
 """
 UpdateProjectInput is used for update Project object.
@@ -11364,6 +11440,7 @@ input UpdateTenderInput {
   updatedAt: Time
   code: String
   status: Int
+  isApproved: Boolean
   name: String
   estimatedAmount: Float
   clearEstimatedAmount: Boolean

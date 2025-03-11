@@ -21,6 +21,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldIsApproved holds the string denoting the is_approved field in the database.
+	FieldIsApproved = "is_approved"
 	// FieldOwnerType holds the string denoting the owner_type field in the database.
 	FieldOwnerType = "owner_type"
 	// FieldIndustry holds the string denoting the industry field in the database.
@@ -98,6 +100,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldName,
+	FieldIsApproved,
 	FieldOwnerType,
 	FieldIndustry,
 	FieldSize,
@@ -128,6 +131,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultIsApproved holds the default value on creation for the "is_approved" field.
+	DefaultIsApproved bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -153,6 +158,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
+// ByIsApproved orders the results by the is_approved field.
+func ByIsApproved(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsApproved, opts...).ToFunc()
 }
 
 // ByOwnerType orders the results by the owner_type field.

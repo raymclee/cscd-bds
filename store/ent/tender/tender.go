@@ -23,6 +23,8 @@ const (
 	FieldCode = "code"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldIsApproved holds the string denoting the is_approved field in the database.
+	FieldIsApproved = "is_approved"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldEstimatedAmount holds the string denoting the estimated_amount field in the database.
@@ -246,6 +248,7 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldCode,
 	FieldStatus,
+	FieldIsApproved,
 	FieldName,
 	FieldEstimatedAmount,
 	FieldTenderDate,
@@ -335,8 +338,8 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
-	// DefaultClassify holds the default value on creation for the "classify" field.
-	DefaultClassify int
+	// DefaultIsApproved holds the default value on creation for the "is_approved" field.
+	DefaultIsApproved bool
 	// ClassifyValidator is a validator for the "classify" field. It is called by the builders before save.
 	ClassifyValidator func(int) error
 	// LevelInvolvedValidator is a validator for the "level_involved" field. It is called by the builders before save.
@@ -389,6 +392,11 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByIsApproved orders the results by the is_approved field.
+func ByIsApproved(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsApproved, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.

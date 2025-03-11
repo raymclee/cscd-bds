@@ -41,11 +41,13 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Area",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			area.FieldCreatedAt: {Type: field.TypeTime, Column: area.FieldCreatedAt},
-			area.FieldUpdatedAt: {Type: field.TypeTime, Column: area.FieldUpdatedAt},
-			area.FieldName:      {Type: field.TypeString, Column: area.FieldName},
-			area.FieldCode:      {Type: field.TypeString, Column: area.FieldCode},
-			area.FieldCenter:    {Type: field.TypeOther, Column: area.FieldCenter},
+			area.FieldCreatedAt:    {Type: field.TypeTime, Column: area.FieldCreatedAt},
+			area.FieldUpdatedAt:    {Type: field.TypeTime, Column: area.FieldUpdatedAt},
+			area.FieldName:         {Type: field.TypeString, Column: area.FieldName},
+			area.FieldCode:         {Type: field.TypeString, Column: area.FieldCode},
+			area.FieldLeaderChatID: {Type: field.TypeString, Column: area.FieldLeaderChatID},
+			area.FieldSalesChatID:  {Type: field.TypeString, Column: area.FieldSalesChatID},
+			area.FieldCenter:       {Type: field.TypeOther, Column: area.FieldCenter},
 		},
 	}
 	graph.Nodes[1] = &sqlgraph.Node{
@@ -117,6 +119,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			customer.FieldCreatedAt:             {Type: field.TypeTime, Column: customer.FieldCreatedAt},
 			customer.FieldUpdatedAt:             {Type: field.TypeTime, Column: customer.FieldUpdatedAt},
 			customer.FieldName:                  {Type: field.TypeString, Column: customer.FieldName},
+			customer.FieldIsApproved:            {Type: field.TypeBool, Column: customer.FieldIsApproved},
 			customer.FieldOwnerType:             {Type: field.TypeInt, Column: customer.FieldOwnerType},
 			customer.FieldIndustry:              {Type: field.TypeInt, Column: customer.FieldIndustry},
 			customer.FieldSize:                  {Type: field.TypeInt, Column: customer.FieldSize},
@@ -207,7 +210,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 		Fields: map[string]*sqlgraph.FieldSpec{
 			potentialtender.FieldCreatedAt: {Type: field.TypeTime, Column: potentialtender.FieldCreatedAt},
 			potentialtender.FieldUpdatedAt: {Type: field.TypeTime, Column: potentialtender.FieldUpdatedAt},
-			potentialtender.FieldMeta:      {Type: field.TypeJSON, Column: potentialtender.FieldMeta},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -382,6 +384,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			tender.FieldUpdatedAt:                            {Type: field.TypeTime, Column: tender.FieldUpdatedAt},
 			tender.FieldCode:                                 {Type: field.TypeString, Column: tender.FieldCode},
 			tender.FieldStatus:                               {Type: field.TypeInt, Column: tender.FieldStatus},
+			tender.FieldIsApproved:                           {Type: field.TypeBool, Column: tender.FieldIsApproved},
 			tender.FieldName:                                 {Type: field.TypeString, Column: tender.FieldName},
 			tender.FieldEstimatedAmount:                      {Type: field.TypeFloat64, Column: tender.FieldEstimatedAmount},
 			tender.FieldTenderDate:                           {Type: field.TypeTime, Column: tender.FieldTenderDate},
@@ -1152,6 +1155,16 @@ func (f *AreaFilter) WhereCode(p entql.StringP) {
 	f.Where(p.Field(area.FieldCode))
 }
 
+// WhereLeaderChatID applies the entql string predicate on the leader_chat_id field.
+func (f *AreaFilter) WhereLeaderChatID(p entql.StringP) {
+	f.Where(p.Field(area.FieldLeaderChatID))
+}
+
+// WhereSalesChatID applies the entql string predicate on the sales_chat_id field.
+func (f *AreaFilter) WhereSalesChatID(p entql.StringP) {
+	f.Where(p.Field(area.FieldSalesChatID))
+}
+
 // WhereCenter applies the entql other predicate on the center field.
 func (f *AreaFilter) WhereCenter(p entql.OtherP) {
 	f.Where(p.Field(area.FieldCenter))
@@ -1536,6 +1549,11 @@ func (f *CustomerFilter) WhereUpdatedAt(p entql.TimeP) {
 // WhereName applies the entql string predicate on the name field.
 func (f *CustomerFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(customer.FieldName))
+}
+
+// WhereIsApproved applies the entql bool predicate on the is_approved field.
+func (f *CustomerFilter) WhereIsApproved(p entql.BoolP) {
+	f.Where(p.Field(customer.FieldIsApproved))
 }
 
 // WhereOwnerType applies the entql int predicate on the owner_type field.
@@ -2026,11 +2044,6 @@ func (f *PotentialTenderFilter) WhereCreatedAt(p entql.TimeP) {
 // WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
 func (f *PotentialTenderFilter) WhereUpdatedAt(p entql.TimeP) {
 	f.Where(p.Field(potentialtender.FieldUpdatedAt))
-}
-
-// WhereMeta applies the entql json.RawMessage predicate on the meta field.
-func (f *PotentialTenderFilter) WhereMeta(p entql.BytesP) {
-	f.Where(p.Field(potentialtender.FieldMeta))
 }
 
 // addPredicate implements the predicateAdder interface.
@@ -2916,6 +2929,11 @@ func (f *TenderFilter) WhereCode(p entql.StringP) {
 // WhereStatus applies the entql int predicate on the status field.
 func (f *TenderFilter) WhereStatus(p entql.IntP) {
 	f.Where(p.Field(tender.FieldStatus))
+}
+
+// WhereIsApproved applies the entql bool predicate on the is_approved field.
+func (f *TenderFilter) WhereIsApproved(p entql.BoolP) {
+	f.Where(p.Field(tender.FieldIsApproved))
 }
 
 // WhereName applies the entql string predicate on the name field.

@@ -9,14 +9,16 @@ import (
 
 // CreateAreaInput represents a mutation input for creating areas.
 type CreateAreaInput struct {
-	CreatedAt   *time.Time
-	UpdatedAt   *time.Time
-	Name        string
-	Code        string
-	CustomerIDs []xid.ID
-	TenderIDs   []xid.ID
-	UserIDs     []xid.ID
-	ProvinceIDs []xid.ID
+	CreatedAt    *time.Time
+	UpdatedAt    *time.Time
+	Name         string
+	Code         string
+	LeaderChatID *string
+	SalesChatID  *string
+	CustomerIDs  []xid.ID
+	TenderIDs    []xid.ID
+	UserIDs      []xid.ID
+	ProvinceIDs  []xid.ID
 }
 
 // Mutate applies the CreateAreaInput on the AreaMutation builder.
@@ -29,6 +31,12 @@ func (i *CreateAreaInput) Mutate(m *AreaMutation) {
 	}
 	m.SetName(i.Name)
 	m.SetCode(i.Code)
+	if v := i.LeaderChatID; v != nil {
+		m.SetLeaderChatID(*v)
+	}
+	if v := i.SalesChatID; v != nil {
+		m.SetSalesChatID(*v)
+	}
 	if v := i.CustomerIDs; len(v) > 0 {
 		m.AddCustomerIDs(v...)
 	}
@@ -54,6 +62,10 @@ type UpdateAreaInput struct {
 	UpdatedAt         *time.Time
 	Name              *string
 	Code              *string
+	ClearLeaderChatID bool
+	LeaderChatID      *string
+	ClearSalesChatID  bool
+	SalesChatID       *string
 	ClearCustomers    bool
 	AddCustomerIDs    []xid.ID
 	RemoveCustomerIDs []xid.ID
@@ -78,6 +90,18 @@ func (i *UpdateAreaInput) Mutate(m *AreaMutation) {
 	}
 	if v := i.Code; v != nil {
 		m.SetCode(*v)
+	}
+	if i.ClearLeaderChatID {
+		m.ClearLeaderChatID()
+	}
+	if v := i.LeaderChatID; v != nil {
+		m.SetLeaderChatID(*v)
+	}
+	if i.ClearSalesChatID {
+		m.ClearSalesChatID()
+	}
+	if v := i.SalesChatID; v != nil {
+		m.SetSalesChatID(*v)
 	}
 	if i.ClearCustomers {
 		m.ClearCustomers()
@@ -384,6 +408,7 @@ type CreateCustomerInput struct {
 	CreatedAt             *time.Time
 	UpdatedAt             *time.Time
 	Name                  string
+	IsApproved            *bool
 	OwnerType             *int
 	Industry              *int
 	Size                  *int
@@ -407,6 +432,9 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 		m.SetUpdatedAt(*v)
 	}
 	m.SetName(i.Name)
+	if v := i.IsApproved; v != nil {
+		m.SetIsApproved(*v)
+	}
 	if v := i.OwnerType; v != nil {
 		m.SetOwnerType(*v)
 	}
@@ -453,6 +481,7 @@ func (c *CustomerCreate) SetInput(i CreateCustomerInput) *CustomerCreate {
 type UpdateCustomerInput struct {
 	UpdatedAt                  *time.Time
 	Name                       *string
+	IsApproved                 *bool
 	ClearOwnerType             bool
 	OwnerType                  *int
 	ClearIndustry              bool
@@ -487,6 +516,9 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if v := i.IsApproved; v != nil {
+		m.SetIsApproved(*v)
 	}
 	if i.ClearOwnerType {
 		m.ClearOwnerType()
@@ -765,7 +797,6 @@ func (c *PlotUpdateOne) SetInput(i UpdatePlotInput) *PlotUpdateOne {
 type CreatePotentialTenderInput struct {
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
-	Meta      map[string]interface{}
 }
 
 // Mutate applies the CreatePotentialTenderInput on the PotentialTenderMutation builder.
@@ -775,9 +806,6 @@ func (i *CreatePotentialTenderInput) Mutate(m *PotentialTenderMutation) {
 	}
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
-	}
-	if v := i.Meta; v != nil {
-		m.SetMeta(v)
 	}
 }
 
@@ -790,16 +818,12 @@ func (c *PotentialTenderCreate) SetInput(i CreatePotentialTenderInput) *Potentia
 // UpdatePotentialTenderInput represents a mutation input for updating potentialtenders.
 type UpdatePotentialTenderInput struct {
 	UpdatedAt *time.Time
-	Meta      map[string]interface{}
 }
 
 // Mutate applies the UpdatePotentialTenderInput on the PotentialTenderMutation builder.
 func (i *UpdatePotentialTenderInput) Mutate(m *PotentialTenderMutation) {
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
-	}
-	if v := i.Meta; v != nil {
-		m.SetMeta(v)
 	}
 }
 
@@ -1637,6 +1661,7 @@ type CreateTenderInput struct {
 	UpdatedAt                            *time.Time
 	Code                                 string
 	Status                               *int
+	IsApproved                           *bool
 	Name                                 string
 	EstimatedAmount                      *float64
 	TenderDate                           *time.Time
@@ -1712,6 +1737,9 @@ func (i *CreateTenderInput) Mutate(m *TenderMutation) {
 	m.SetCode(i.Code)
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
+	}
+	if v := i.IsApproved; v != nil {
+		m.SetIsApproved(*v)
 	}
 	m.SetName(i.Name)
 	if v := i.EstimatedAmount; v != nil {
@@ -1906,6 +1934,7 @@ type UpdateTenderInput struct {
 	UpdatedAt                                 *time.Time
 	Code                                      *string
 	Status                                    *int
+	IsApproved                                *bool
 	Name                                      *string
 	ClearEstimatedAmount                      bool
 	EstimatedAmount                           *float64
@@ -2041,6 +2070,9 @@ func (i *UpdateTenderInput) Mutate(m *TenderMutation) {
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
+	}
+	if v := i.IsApproved; v != nil {
+		m.SetIsApproved(*v)
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)

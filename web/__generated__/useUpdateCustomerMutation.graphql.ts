@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c81bbd2864caacf08937b84ff280c645>>
+ * @generated SignedSource<<97c498db4eba5e8fdbeaaeb6427915e0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -31,6 +31,7 @@ export type UpdateCustomerInput = {
   contactPersonPosition?: string | null | undefined;
   createdByID?: string | null | undefined;
   industry?: number | null | undefined;
+  isApproved?: boolean | null | undefined;
   name?: string | null | undefined;
   ownerType?: number | null | undefined;
   removeTenderIDs?: ReadonlyArray<string> | null | undefined;

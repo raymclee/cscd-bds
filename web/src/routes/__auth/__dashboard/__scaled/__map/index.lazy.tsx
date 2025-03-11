@@ -84,7 +84,7 @@ export const mapIndexPageQuery = graphql`
                 orderBy: $orderBy
                 first: $first
                 last: $last
-                where: { statusNEQ: 7 }
+                where: { statusNEQ: 7, isApproved: true }
               ) @connection(key: "MapIndexPageQuery_tenders") {
                 edges {
                   node {
@@ -934,7 +934,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"
@@ -988,7 +988,7 @@ function RouteComponent() {
         )}
       >
         <Breadcrumb className="mt-px">
-          <BreadcrumbList className="px-3 py-2 rounded bg-gradient-to-r from-sky-900 to-sky-600">
+          <BreadcrumbList className="rounded bg-gradient-to-r from-sky-900 to-sky-600 px-3 py-2">
             <BreadcrumbItem>
               <BreadcrumbLink
                 className="cursor-pointer select-none"

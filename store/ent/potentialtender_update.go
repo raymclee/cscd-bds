@@ -34,12 +34,6 @@ func (ptu *PotentialTenderUpdate) SetUpdatedAt(t time.Time) *PotentialTenderUpda
 	return ptu
 }
 
-// SetMeta sets the "meta" field.
-func (ptu *PotentialTenderUpdate) SetMeta(m map[string]interface{}) *PotentialTenderUpdate {
-	ptu.mutation.SetMeta(m)
-	return ptu
-}
-
 // Mutation returns the PotentialTenderMutation object of the builder.
 func (ptu *PotentialTenderUpdate) Mutation() *PotentialTenderMutation {
 	return ptu.mutation
@@ -93,9 +87,6 @@ func (ptu *PotentialTenderUpdate) sqlSave(ctx context.Context) (n int, err error
 	if value, ok := ptu.mutation.UpdatedAt(); ok {
 		_spec.SetField(potentialtender.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if value, ok := ptu.mutation.Meta(); ok {
-		_spec.SetField(potentialtender.FieldMeta, field.TypeJSON, value)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ptu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{potentialtender.Label}
@@ -119,12 +110,6 @@ type PotentialTenderUpdateOne struct {
 // SetUpdatedAt sets the "updated_at" field.
 func (ptuo *PotentialTenderUpdateOne) SetUpdatedAt(t time.Time) *PotentialTenderUpdateOne {
 	ptuo.mutation.SetUpdatedAt(t)
-	return ptuo
-}
-
-// SetMeta sets the "meta" field.
-func (ptuo *PotentialTenderUpdateOne) SetMeta(m map[string]interface{}) *PotentialTenderUpdateOne {
-	ptuo.mutation.SetMeta(m)
 	return ptuo
 }
 
@@ -210,9 +195,6 @@ func (ptuo *PotentialTenderUpdateOne) sqlSave(ctx context.Context) (_node *Poten
 	}
 	if value, ok := ptuo.mutation.UpdatedAt(); ok {
 		_spec.SetField(potentialtender.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := ptuo.mutation.Meta(); ok {
-		_spec.SetField(potentialtender.FieldMeta, field.TypeJSON, value)
 	}
 	_node = &PotentialTender{config: ptuo.config}
 	_spec.Assign = _node.assignValues

@@ -80,6 +80,20 @@ func (tu *TenderUpdate) AddStatus(i int) *TenderUpdate {
 	return tu
 }
 
+// SetIsApproved sets the "is_approved" field.
+func (tu *TenderUpdate) SetIsApproved(b bool) *TenderUpdate {
+	tu.mutation.SetIsApproved(b)
+	return tu
+}
+
+// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
+func (tu *TenderUpdate) SetNillableIsApproved(b *bool) *TenderUpdate {
+	if b != nil {
+		tu.SetIsApproved(*b)
+	}
+	return tu
+}
+
 // SetName sets the "name" field.
 func (tu *TenderUpdate) SetName(s string) *TenderUpdate {
 	tu.mutation.SetName(s)
@@ -1624,6 +1638,9 @@ func (tu *TenderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := tu.mutation.AddedStatus(); ok {
 		_spec.AddField(tender.FieldStatus, field.TypeInt, value)
 	}
+	if value, ok := tu.mutation.IsApproved(); ok {
+		_spec.SetField(tender.FieldIsApproved, field.TypeBool, value)
+	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)
 	}
@@ -2361,6 +2378,20 @@ func (tuo *TenderUpdateOne) SetNillableStatus(i *int) *TenderUpdateOne {
 // AddStatus adds i to the "status" field.
 func (tuo *TenderUpdateOne) AddStatus(i int) *TenderUpdateOne {
 	tuo.mutation.AddStatus(i)
+	return tuo
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (tuo *TenderUpdateOne) SetIsApproved(b bool) *TenderUpdateOne {
+	tuo.mutation.SetIsApproved(b)
+	return tuo
+}
+
+// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
+func (tuo *TenderUpdateOne) SetNillableIsApproved(b *bool) *TenderUpdateOne {
+	if b != nil {
+		tuo.SetIsApproved(*b)
+	}
 	return tuo
 }
 
@@ -3937,6 +3968,9 @@ func (tuo *TenderUpdateOne) sqlSave(ctx context.Context) (_node *Tender, err err
 	}
 	if value, ok := tuo.mutation.AddedStatus(); ok {
 		_spec.AddField(tender.FieldStatus, field.TypeInt, value)
+	}
+	if value, ok := tuo.mutation.IsApproved(); ok {
+		_spec.SetField(tender.FieldIsApproved, field.TypeBool, value)
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tender.FieldName, field.TypeString, value)

@@ -66,3 +66,7 @@ GET https://restapi.amap.com/v3/assistant/inputtips?key={{key}}&keywords=新艺�
 
 ###
 GET https://restapi.amap.com/v3/geocode/regeo?location=114.250984,22.263318&key={{key}}&extensions=base
+
+
+###
+GET http://localhost:3000/api/v1/send/text

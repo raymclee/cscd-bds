@@ -15,6 +15,8 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
 		{Name: "code", Type: field.TypeString, Unique: true},
+		{Name: "leader_chat_id", Type: field.TypeString, Nullable: true},
+		{Name: "sales_chat_id", Type: field.TypeString, Nullable: true},
 		{Name: "center", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"postgres": "geometry(Point,4326)"}},
 	}
 	// AreasTable holds the schema information for the "areas" table.
@@ -83,6 +85,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
+		{Name: "is_approved", Type: field.TypeBool, Default: false},
 		{Name: "owner_type", Type: field.TypeInt, Nullable: true},
 		{Name: "industry", Type: field.TypeInt, Nullable: true},
 		{Name: "size", Type: field.TypeInt, Nullable: true},
@@ -103,19 +106,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "customers_areas_customers",
-				Columns:    []*schema.Column{CustomersColumns[12]},
+				Columns:    []*schema.Column{CustomersColumns[13]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "customers_users_created_by",
-				Columns:    []*schema.Column{CustomersColumns[13]},
+				Columns:    []*schema.Column{CustomersColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "customers_users_customers",
-				Columns:    []*schema.Column{CustomersColumns[14]},
+				Columns:    []*schema.Column{CustomersColumns[15]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -124,7 +127,7 @@ var (
 			{
 				Name:    "customer_name_area_id",
 				Unique:  true,
-				Columns: []*schema.Column{CustomersColumns[3], CustomersColumns[12]},
+				Columns: []*schema.Column{CustomersColumns[3], CustomersColumns[13]},
 			},
 		},
 	}
@@ -210,7 +213,6 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "meta", Type: field.TypeJSON},
 	}
 	// PotentialTendersTable holds the schema information for the "potential_tenders" table.
 	PotentialTendersTable = &schema.Table{
@@ -400,10 +402,11 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "code", Type: field.TypeString, Unique: true},
 		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "is_approved", Type: field.TypeBool, Default: false},
 		{Name: "name", Type: field.TypeString},
 		{Name: "estimated_amount", Type: field.TypeFloat64, Nullable: true, SchemaType: map[string]string{"postgres": "numeric"}},
 		{Name: "tender_date", Type: field.TypeTime, Nullable: true},
-		{Name: "classify", Type: field.TypeInt, Nullable: true, Default: 1},
+		{Name: "classify", Type: field.TypeInt, Nullable: true},
 		{Name: "discovery_date", Type: field.TypeTime},
 		{Name: "address", Type: field.TypeString, Nullable: true},
 		{Name: "full_address", Type: field.TypeString, Nullable: true},
@@ -471,49 +474,49 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tenders_areas_tenders",
-				Columns:    []*schema.Column{TendersColumns[59]},
+				Columns:    []*schema.Column{TendersColumns[60]},
 				RefColumns: []*schema.Column{AreasColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "tenders_cities_tenders",
-				Columns:    []*schema.Column{TendersColumns[60]},
+				Columns:    []*schema.Column{TendersColumns[61]},
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_competitors_won_tenders",
-				Columns:    []*schema.Column{TendersColumns[61]},
+				Columns:    []*schema.Column{TendersColumns[62]},
 				RefColumns: []*schema.Column{CompetitorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_customers_tenders",
-				Columns:    []*schema.Column{TendersColumns[62]},
+				Columns:    []*schema.Column{TendersColumns[63]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_districts_tenders",
-				Columns:    []*schema.Column{TendersColumns[63]},
+				Columns:    []*schema.Column{TendersColumns[64]},
 				RefColumns: []*schema.Column{DistrictsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_provinces_tenders",
-				Columns:    []*schema.Column{TendersColumns[64]},
+				Columns:    []*schema.Column{TendersColumns[65]},
 				RefColumns: []*schema.Column{ProvincesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_finder",
-				Columns:    []*schema.Column{TendersColumns[65]},
+				Columns:    []*schema.Column{TendersColumns[66]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tenders_users_created_by",
-				Columns:    []*schema.Column{TendersColumns[66]},
+				Columns:    []*schema.Column{TendersColumns[67]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

@@ -54,6 +54,20 @@ func (cu *CustomerUpdate) SetNillableName(s *string) *CustomerUpdate {
 	return cu
 }
 
+// SetIsApproved sets the "is_approved" field.
+func (cu *CustomerUpdate) SetIsApproved(b bool) *CustomerUpdate {
+	cu.mutation.SetIsApproved(b)
+	return cu
+}
+
+// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
+func (cu *CustomerUpdate) SetNillableIsApproved(b *bool) *CustomerUpdate {
+	if b != nil {
+		cu.SetIsApproved(*b)
+	}
+	return cu
+}
+
 // SetOwnerType sets the "owner_type" field.
 func (cu *CustomerUpdate) SetOwnerType(i int) *CustomerUpdate {
 	cu.mutation.ResetOwnerType()
@@ -453,6 +467,9 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
 	}
+	if value, ok := cu.mutation.IsApproved(); ok {
+		_spec.SetField(customer.FieldIsApproved, field.TypeBool, value)
+	}
 	if value, ok := cu.mutation.OwnerType(); ok {
 		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)
 	}
@@ -723,6 +740,20 @@ func (cuo *CustomerUpdateOne) SetName(s string) *CustomerUpdateOne {
 func (cuo *CustomerUpdateOne) SetNillableName(s *string) *CustomerUpdateOne {
 	if s != nil {
 		cuo.SetName(*s)
+	}
+	return cuo
+}
+
+// SetIsApproved sets the "is_approved" field.
+func (cuo *CustomerUpdateOne) SetIsApproved(b bool) *CustomerUpdateOne {
+	cuo.mutation.SetIsApproved(b)
+	return cuo
+}
+
+// SetNillableIsApproved sets the "is_approved" field if the given value is not nil.
+func (cuo *CustomerUpdateOne) SetNillableIsApproved(b *bool) *CustomerUpdateOne {
+	if b != nil {
+		cuo.SetIsApproved(*b)
 	}
 	return cuo
 }
@@ -1155,6 +1186,9 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	}
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(customer.FieldName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.IsApproved(); ok {
+		_spec.SetField(customer.FieldIsApproved, field.TypeBool, value)
 	}
 	if value, ok := cuo.mutation.OwnerType(); ok {
 		_spec.SetField(customer.FieldOwnerType, field.TypeInt, value)

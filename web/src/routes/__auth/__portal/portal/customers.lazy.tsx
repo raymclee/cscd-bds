@@ -29,6 +29,7 @@ const query = graphql`
                 edges {
                   node {
                     id
+                    isApproved
                     name
                     updatedAt
                     ownerType

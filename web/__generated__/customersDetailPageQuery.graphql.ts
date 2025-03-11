@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a30349d475530f3fb1700d246bc95a74>>
+ * @generated SignedSource<<d88015cd3d250dff67adae456fdc0e26>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -262,6 +262,8 @@ export type CustomerWhereInput = {
   industryNEQ?: number | null | undefined;
   industryNotIn?: ReadonlyArray<number> | null | undefined;
   industryNotNil?: boolean | null | undefined;
+  isApproved?: boolean | null | undefined;
+  isApprovedNEQ?: boolean | null | undefined;
   name?: string | null | undefined;
   nameContains?: string | null | undefined;
   nameContainsFold?: string | null | undefined;
@@ -360,6 +362,21 @@ export type AreaWhereInput = {
   idLTE?: string | null | undefined;
   idNEQ?: string | null | undefined;
   idNotIn?: ReadonlyArray<string> | null | undefined;
+  leaderChatID?: string | null | undefined;
+  leaderChatIDContains?: string | null | undefined;
+  leaderChatIDContainsFold?: string | null | undefined;
+  leaderChatIDEqualFold?: string | null | undefined;
+  leaderChatIDGT?: string | null | undefined;
+  leaderChatIDGTE?: string | null | undefined;
+  leaderChatIDHasPrefix?: string | null | undefined;
+  leaderChatIDHasSuffix?: string | null | undefined;
+  leaderChatIDIn?: ReadonlyArray<string> | null | undefined;
+  leaderChatIDIsNil?: boolean | null | undefined;
+  leaderChatIDLT?: string | null | undefined;
+  leaderChatIDLTE?: string | null | undefined;
+  leaderChatIDNEQ?: string | null | undefined;
+  leaderChatIDNotIn?: ReadonlyArray<string> | null | undefined;
+  leaderChatIDNotNil?: boolean | null | undefined;
   name?: string | null | undefined;
   nameContains?: string | null | undefined;
   nameContainsFold?: string | null | undefined;
@@ -375,6 +392,21 @@ export type AreaWhereInput = {
   nameNotIn?: ReadonlyArray<string> | null | undefined;
   not?: AreaWhereInput | null | undefined;
   or?: ReadonlyArray<AreaWhereInput> | null | undefined;
+  salesChatID?: string | null | undefined;
+  salesChatIDContains?: string | null | undefined;
+  salesChatIDContainsFold?: string | null | undefined;
+  salesChatIDEqualFold?: string | null | undefined;
+  salesChatIDGT?: string | null | undefined;
+  salesChatIDGTE?: string | null | undefined;
+  salesChatIDHasPrefix?: string | null | undefined;
+  salesChatIDHasSuffix?: string | null | undefined;
+  salesChatIDIn?: ReadonlyArray<string> | null | undefined;
+  salesChatIDIsNil?: boolean | null | undefined;
+  salesChatIDLT?: string | null | undefined;
+  salesChatIDLTE?: string | null | undefined;
+  salesChatIDNEQ?: string | null | undefined;
+  salesChatIDNotIn?: ReadonlyArray<string> | null | undefined;
+  salesChatIDNotNil?: boolean | null | undefined;
   updatedAt?: any | null | undefined;
   updatedAtGT?: any | null | undefined;
   updatedAtGTE?: any | null | undefined;
@@ -1218,6 +1250,8 @@ export type TenderWhereInput = {
   idLTE?: string | null | undefined;
   idNEQ?: string | null | undefined;
   idNotIn?: ReadonlyArray<string> | null | undefined;
+  isApproved?: boolean | null | undefined;
+  isApprovedNEQ?: boolean | null | undefined;
   keyProject?: boolean | null | undefined;
   keyProjectNEQ?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;

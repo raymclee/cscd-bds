@@ -69,6 +69,34 @@ func (ac *AreaCreate) SetCode(s string) *AreaCreate {
 	return ac
 }
 
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (ac *AreaCreate) SetLeaderChatID(s string) *AreaCreate {
+	ac.mutation.SetLeaderChatID(s)
+	return ac
+}
+
+// SetNillableLeaderChatID sets the "leader_chat_id" field if the given value is not nil.
+func (ac *AreaCreate) SetNillableLeaderChatID(s *string) *AreaCreate {
+	if s != nil {
+		ac.SetLeaderChatID(*s)
+	}
+	return ac
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (ac *AreaCreate) SetSalesChatID(s string) *AreaCreate {
+	ac.mutation.SetSalesChatID(s)
+	return ac
+}
+
+// SetNillableSalesChatID sets the "sales_chat_id" field if the given value is not nil.
+func (ac *AreaCreate) SetNillableSalesChatID(s *string) *AreaCreate {
+	if s != nil {
+		ac.SetSalesChatID(*s)
+	}
+	return ac
+}
+
 // SetCenter sets the "center" field.
 func (ac *AreaCreate) SetCenter(gj *geo.GeoJson) *AreaCreate {
 	ac.mutation.SetCenter(gj)
@@ -212,6 +240,16 @@ func (ac *AreaCreate) check() error {
 	if _, ok := ac.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Area.code"`)}
 	}
+	if v, ok := ac.mutation.LeaderChatID(); ok {
+		if err := area.LeaderChatIDValidator(v); err != nil {
+			return &ValidationError{Name: "leader_chat_id", err: fmt.Errorf(`ent: validator failed for field "Area.leader_chat_id": %w`, err)}
+		}
+	}
+	if v, ok := ac.mutation.SalesChatID(); ok {
+		if err := area.SalesChatIDValidator(v); err != nil {
+			return &ValidationError{Name: "sales_chat_id", err: fmt.Errorf(`ent: validator failed for field "Area.sales_chat_id": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -263,6 +301,14 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 	if value, ok := ac.mutation.Code(); ok {
 		_spec.SetField(area.FieldCode, field.TypeString, value)
 		_node.Code = value
+	}
+	if value, ok := ac.mutation.LeaderChatID(); ok {
+		_spec.SetField(area.FieldLeaderChatID, field.TypeString, value)
+		_node.LeaderChatID = &value
+	}
+	if value, ok := ac.mutation.SalesChatID(); ok {
+		_spec.SetField(area.FieldSalesChatID, field.TypeString, value)
+		_node.SalesChatID = &value
 	}
 	if value, ok := ac.mutation.Center(); ok {
 		_spec.SetField(area.FieldCenter, field.TypeOther, value)
@@ -420,6 +466,42 @@ func (u *AreaUpsert) UpdateCode() *AreaUpsert {
 	return u
 }
 
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (u *AreaUpsert) SetLeaderChatID(v string) *AreaUpsert {
+	u.Set(area.FieldLeaderChatID, v)
+	return u
+}
+
+// UpdateLeaderChatID sets the "leader_chat_id" field to the value that was provided on create.
+func (u *AreaUpsert) UpdateLeaderChatID() *AreaUpsert {
+	u.SetExcluded(area.FieldLeaderChatID)
+	return u
+}
+
+// ClearLeaderChatID clears the value of the "leader_chat_id" field.
+func (u *AreaUpsert) ClearLeaderChatID() *AreaUpsert {
+	u.SetNull(area.FieldLeaderChatID)
+	return u
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (u *AreaUpsert) SetSalesChatID(v string) *AreaUpsert {
+	u.Set(area.FieldSalesChatID, v)
+	return u
+}
+
+// UpdateSalesChatID sets the "sales_chat_id" field to the value that was provided on create.
+func (u *AreaUpsert) UpdateSalesChatID() *AreaUpsert {
+	u.SetExcluded(area.FieldSalesChatID)
+	return u
+}
+
+// ClearSalesChatID clears the value of the "sales_chat_id" field.
+func (u *AreaUpsert) ClearSalesChatID() *AreaUpsert {
+	u.SetNull(area.FieldSalesChatID)
+	return u
+}
+
 // SetCenter sets the "center" field.
 func (u *AreaUpsert) SetCenter(v *geo.GeoJson) *AreaUpsert {
 	u.Set(area.FieldCenter, v)
@@ -528,6 +610,48 @@ func (u *AreaUpsertOne) SetCode(v string) *AreaUpsertOne {
 func (u *AreaUpsertOne) UpdateCode() *AreaUpsertOne {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCode()
+	})
+}
+
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (u *AreaUpsertOne) SetLeaderChatID(v string) *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.SetLeaderChatID(v)
+	})
+}
+
+// UpdateLeaderChatID sets the "leader_chat_id" field to the value that was provided on create.
+func (u *AreaUpsertOne) UpdateLeaderChatID() *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.UpdateLeaderChatID()
+	})
+}
+
+// ClearLeaderChatID clears the value of the "leader_chat_id" field.
+func (u *AreaUpsertOne) ClearLeaderChatID() *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.ClearLeaderChatID()
+	})
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (u *AreaUpsertOne) SetSalesChatID(v string) *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.SetSalesChatID(v)
+	})
+}
+
+// UpdateSalesChatID sets the "sales_chat_id" field to the value that was provided on create.
+func (u *AreaUpsertOne) UpdateSalesChatID() *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.UpdateSalesChatID()
+	})
+}
+
+// ClearSalesChatID clears the value of the "sales_chat_id" field.
+func (u *AreaUpsertOne) ClearSalesChatID() *AreaUpsertOne {
+	return u.Update(func(s *AreaUpsert) {
+		s.ClearSalesChatID()
 	})
 }
 
@@ -809,6 +933,48 @@ func (u *AreaUpsertBulk) SetCode(v string) *AreaUpsertBulk {
 func (u *AreaUpsertBulk) UpdateCode() *AreaUpsertBulk {
 	return u.Update(func(s *AreaUpsert) {
 		s.UpdateCode()
+	})
+}
+
+// SetLeaderChatID sets the "leader_chat_id" field.
+func (u *AreaUpsertBulk) SetLeaderChatID(v string) *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.SetLeaderChatID(v)
+	})
+}
+
+// UpdateLeaderChatID sets the "leader_chat_id" field to the value that was provided on create.
+func (u *AreaUpsertBulk) UpdateLeaderChatID() *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.UpdateLeaderChatID()
+	})
+}
+
+// ClearLeaderChatID clears the value of the "leader_chat_id" field.
+func (u *AreaUpsertBulk) ClearLeaderChatID() *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.ClearLeaderChatID()
+	})
+}
+
+// SetSalesChatID sets the "sales_chat_id" field.
+func (u *AreaUpsertBulk) SetSalesChatID(v string) *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.SetSalesChatID(v)
+	})
+}
+
+// UpdateSalesChatID sets the "sales_chat_id" field to the value that was provided on create.
+func (u *AreaUpsertBulk) UpdateSalesChatID() *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.UpdateSalesChatID()
+	})
+}
+
+// ClearSalesChatID clears the value of the "sales_chat_id" field.
+func (u *AreaUpsertBulk) ClearSalesChatID() *AreaUpsertBulk {
+	return u.Update(func(s *AreaUpsert) {
+		s.ClearSalesChatID()
 	})
 }
 

@@ -27,6 +27,10 @@ type Area struct {
 	Name string `json:"name,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
+	// LeaderChatID holds the value of the "leader_chat_id" field.
+	LeaderChatID *string `json:"leader_chat_id,omitempty"`
+	// SalesChatID holds the value of the "sales_chat_id" field.
+	SalesChatID *string `json:"sales_chat_id,omitempty"`
 	// Center holds the value of the "center" field.
 	Center *geo.GeoJson `json:"center,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -100,7 +104,7 @@ func (*Area) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case area.FieldCenter:
 			values[i] = &sql.NullScanner{S: new(geo.GeoJson)}
-		case area.FieldName, area.FieldCode:
+		case area.FieldName, area.FieldCode, area.FieldLeaderChatID, area.FieldSalesChatID:
 			values[i] = new(sql.NullString)
 		case area.FieldCreatedAt, area.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -150,6 +154,20 @@ func (a *Area) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
 			} else if value.Valid {
 				a.Code = value.String
+			}
+		case area.FieldLeaderChatID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field leader_chat_id", values[i])
+			} else if value.Valid {
+				a.LeaderChatID = new(string)
+				*a.LeaderChatID = value.String
+			}
+		case area.FieldSalesChatID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field sales_chat_id", values[i])
+			} else if value.Valid {
+				a.SalesChatID = new(string)
+				*a.SalesChatID = value.String
 			}
 		case area.FieldCenter:
 			if value, ok := values[i].(*sql.NullScanner); !ok {
@@ -224,6 +242,16 @@ func (a *Area) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(a.Code)
+	builder.WriteString(", ")
+	if v := a.LeaderChatID; v != nil {
+		builder.WriteString("leader_chat_id=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := a.SalesChatID; v != nil {
+		builder.WriteString("sales_chat_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	if v := a.Center; v != nil {
 		builder.WriteString("center=")

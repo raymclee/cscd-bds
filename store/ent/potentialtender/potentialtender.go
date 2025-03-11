@@ -18,8 +18,6 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldMeta holds the string denoting the meta field in the database.
-	FieldMeta = "meta"
 	// Table holds the table name of the potentialtender in the database.
 	Table = "potential_tenders"
 )
@@ -29,7 +27,6 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldUpdatedAt,
-	FieldMeta,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

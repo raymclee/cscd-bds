@@ -35,6 +35,8 @@ type Tender struct {
 	Code string `json:"code,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int `json:"status,omitempty"`
+	// IsApproved holds the value of the "is_approved" field.
+	IsApproved bool `json:"is_approved,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// EstimatedAmount holds the value of the "estimated_amount" field.
@@ -42,7 +44,7 @@ type Tender struct {
 	// TenderDate holds the value of the "tender_date" field.
 	TenderDate time.Time `json:"tender_date,omitempty"`
 	// Classify holds the value of the "classify" field.
-	Classify int `json:"classify,omitempty"`
+	Classify *int `json:"classify,omitempty"`
 	// DiscoveryDate holds the value of the "discovery_date" field.
 	DiscoveryDate time.Time `json:"discovery_date,omitempty"`
 	// Address holds the value of the "address" field.
@@ -314,7 +316,7 @@ func (*Tender) scanValues(columns []string) ([]any, error) {
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case tender.FieldAttachements, tender.FieldGeoBounds, tender.FieldImages:
 			values[i] = new([]byte)
-		case tender.FieldPrepareToBid, tender.FieldKeyProject:
+		case tender.FieldIsApproved, tender.FieldPrepareToBid, tender.FieldKeyProject:
 			values[i] = new(sql.NullBool)
 		case tender.FieldEstimatedAmount, tender.FieldTenderWinAmount, tender.FieldLastTenderAmount:
 			values[i] = new(sql.NullFloat64)
@@ -371,6 +373,12 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.Status = int(value.Int64)
 			}
+		case tender.FieldIsApproved:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_approved", values[i])
+			} else if value.Valid {
+				t.IsApproved = value.Bool
+			}
 		case tender.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -393,7 +401,8 @@ func (t *Tender) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field classify", values[i])
 			} else if value.Valid {
-				t.Classify = int(value.Int64)
+				t.Classify = new(int)
+				*t.Classify = int(value.Int64)
 			}
 		case tender.FieldDiscoveryDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -888,6 +897,9 @@ func (t *Tender) String() string {
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))
 	builder.WriteString(", ")
+	builder.WriteString("is_approved=")
+	builder.WriteString(fmt.Sprintf("%v", t.IsApproved))
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(t.Name)
 	builder.WriteString(", ")
@@ -897,8 +909,10 @@ func (t *Tender) String() string {
 	builder.WriteString("tender_date=")
 	builder.WriteString(t.TenderDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("classify=")
-	builder.WriteString(fmt.Sprintf("%v", t.Classify))
+	if v := t.Classify; v != nil {
+		builder.WriteString("classify=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("discovery_date=")
 	builder.WriteString(t.DiscoveryDate.Format(time.ANSIC))

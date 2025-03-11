@@ -93,6 +93,40 @@ type AreaWhereInput struct {
 	CodeEqualFold    *string  `json:"codeEqualFold,omitempty"`
 	CodeContainsFold *string  `json:"codeContainsFold,omitempty"`
 
+	// "leader_chat_id" field predicates.
+	LeaderChatID             *string  `json:"leaderChatID,omitempty"`
+	LeaderChatIDNEQ          *string  `json:"leaderChatIDNEQ,omitempty"`
+	LeaderChatIDIn           []string `json:"leaderChatIDIn,omitempty"`
+	LeaderChatIDNotIn        []string `json:"leaderChatIDNotIn,omitempty"`
+	LeaderChatIDGT           *string  `json:"leaderChatIDGT,omitempty"`
+	LeaderChatIDGTE          *string  `json:"leaderChatIDGTE,omitempty"`
+	LeaderChatIDLT           *string  `json:"leaderChatIDLT,omitempty"`
+	LeaderChatIDLTE          *string  `json:"leaderChatIDLTE,omitempty"`
+	LeaderChatIDContains     *string  `json:"leaderChatIDContains,omitempty"`
+	LeaderChatIDHasPrefix    *string  `json:"leaderChatIDHasPrefix,omitempty"`
+	LeaderChatIDHasSuffix    *string  `json:"leaderChatIDHasSuffix,omitempty"`
+	LeaderChatIDIsNil        bool     `json:"leaderChatIDIsNil,omitempty"`
+	LeaderChatIDNotNil       bool     `json:"leaderChatIDNotNil,omitempty"`
+	LeaderChatIDEqualFold    *string  `json:"leaderChatIDEqualFold,omitempty"`
+	LeaderChatIDContainsFold *string  `json:"leaderChatIDContainsFold,omitempty"`
+
+	// "sales_chat_id" field predicates.
+	SalesChatID             *string  `json:"salesChatID,omitempty"`
+	SalesChatIDNEQ          *string  `json:"salesChatIDNEQ,omitempty"`
+	SalesChatIDIn           []string `json:"salesChatIDIn,omitempty"`
+	SalesChatIDNotIn        []string `json:"salesChatIDNotIn,omitempty"`
+	SalesChatIDGT           *string  `json:"salesChatIDGT,omitempty"`
+	SalesChatIDGTE          *string  `json:"salesChatIDGTE,omitempty"`
+	SalesChatIDLT           *string  `json:"salesChatIDLT,omitempty"`
+	SalesChatIDLTE          *string  `json:"salesChatIDLTE,omitempty"`
+	SalesChatIDContains     *string  `json:"salesChatIDContains,omitempty"`
+	SalesChatIDHasPrefix    *string  `json:"salesChatIDHasPrefix,omitempty"`
+	SalesChatIDHasSuffix    *string  `json:"salesChatIDHasSuffix,omitempty"`
+	SalesChatIDIsNil        bool     `json:"salesChatIDIsNil,omitempty"`
+	SalesChatIDNotNil       bool     `json:"salesChatIDNotNil,omitempty"`
+	SalesChatIDEqualFold    *string  `json:"salesChatIDEqualFold,omitempty"`
+	SalesChatIDContainsFold *string  `json:"salesChatIDContainsFold,omitempty"`
+
 	// "customers" edge predicates.
 	HasCustomers     *bool                 `json:"hasCustomers,omitempty"`
 	HasCustomersWith []*CustomerWhereInput `json:"hasCustomersWith,omitempty"`
@@ -330,6 +364,96 @@ func (i *AreaWhereInput) P() (predicate.Area, error) {
 	}
 	if i.CodeContainsFold != nil {
 		predicates = append(predicates, area.CodeContainsFold(*i.CodeContainsFold))
+	}
+	if i.LeaderChatID != nil {
+		predicates = append(predicates, area.LeaderChatIDEQ(*i.LeaderChatID))
+	}
+	if i.LeaderChatIDNEQ != nil {
+		predicates = append(predicates, area.LeaderChatIDNEQ(*i.LeaderChatIDNEQ))
+	}
+	if len(i.LeaderChatIDIn) > 0 {
+		predicates = append(predicates, area.LeaderChatIDIn(i.LeaderChatIDIn...))
+	}
+	if len(i.LeaderChatIDNotIn) > 0 {
+		predicates = append(predicates, area.LeaderChatIDNotIn(i.LeaderChatIDNotIn...))
+	}
+	if i.LeaderChatIDGT != nil {
+		predicates = append(predicates, area.LeaderChatIDGT(*i.LeaderChatIDGT))
+	}
+	if i.LeaderChatIDGTE != nil {
+		predicates = append(predicates, area.LeaderChatIDGTE(*i.LeaderChatIDGTE))
+	}
+	if i.LeaderChatIDLT != nil {
+		predicates = append(predicates, area.LeaderChatIDLT(*i.LeaderChatIDLT))
+	}
+	if i.LeaderChatIDLTE != nil {
+		predicates = append(predicates, area.LeaderChatIDLTE(*i.LeaderChatIDLTE))
+	}
+	if i.LeaderChatIDContains != nil {
+		predicates = append(predicates, area.LeaderChatIDContains(*i.LeaderChatIDContains))
+	}
+	if i.LeaderChatIDHasPrefix != nil {
+		predicates = append(predicates, area.LeaderChatIDHasPrefix(*i.LeaderChatIDHasPrefix))
+	}
+	if i.LeaderChatIDHasSuffix != nil {
+		predicates = append(predicates, area.LeaderChatIDHasSuffix(*i.LeaderChatIDHasSuffix))
+	}
+	if i.LeaderChatIDIsNil {
+		predicates = append(predicates, area.LeaderChatIDIsNil())
+	}
+	if i.LeaderChatIDNotNil {
+		predicates = append(predicates, area.LeaderChatIDNotNil())
+	}
+	if i.LeaderChatIDEqualFold != nil {
+		predicates = append(predicates, area.LeaderChatIDEqualFold(*i.LeaderChatIDEqualFold))
+	}
+	if i.LeaderChatIDContainsFold != nil {
+		predicates = append(predicates, area.LeaderChatIDContainsFold(*i.LeaderChatIDContainsFold))
+	}
+	if i.SalesChatID != nil {
+		predicates = append(predicates, area.SalesChatIDEQ(*i.SalesChatID))
+	}
+	if i.SalesChatIDNEQ != nil {
+		predicates = append(predicates, area.SalesChatIDNEQ(*i.SalesChatIDNEQ))
+	}
+	if len(i.SalesChatIDIn) > 0 {
+		predicates = append(predicates, area.SalesChatIDIn(i.SalesChatIDIn...))
+	}
+	if len(i.SalesChatIDNotIn) > 0 {
+		predicates = append(predicates, area.SalesChatIDNotIn(i.SalesChatIDNotIn...))
+	}
+	if i.SalesChatIDGT != nil {
+		predicates = append(predicates, area.SalesChatIDGT(*i.SalesChatIDGT))
+	}
+	if i.SalesChatIDGTE != nil {
+		predicates = append(predicates, area.SalesChatIDGTE(*i.SalesChatIDGTE))
+	}
+	if i.SalesChatIDLT != nil {
+		predicates = append(predicates, area.SalesChatIDLT(*i.SalesChatIDLT))
+	}
+	if i.SalesChatIDLTE != nil {
+		predicates = append(predicates, area.SalesChatIDLTE(*i.SalesChatIDLTE))
+	}
+	if i.SalesChatIDContains != nil {
+		predicates = append(predicates, area.SalesChatIDContains(*i.SalesChatIDContains))
+	}
+	if i.SalesChatIDHasPrefix != nil {
+		predicates = append(predicates, area.SalesChatIDHasPrefix(*i.SalesChatIDHasPrefix))
+	}
+	if i.SalesChatIDHasSuffix != nil {
+		predicates = append(predicates, area.SalesChatIDHasSuffix(*i.SalesChatIDHasSuffix))
+	}
+	if i.SalesChatIDIsNil {
+		predicates = append(predicates, area.SalesChatIDIsNil())
+	}
+	if i.SalesChatIDNotNil {
+		predicates = append(predicates, area.SalesChatIDNotNil())
+	}
+	if i.SalesChatIDEqualFold != nil {
+		predicates = append(predicates, area.SalesChatIDEqualFold(*i.SalesChatIDEqualFold))
+	}
+	if i.SalesChatIDContainsFold != nil {
+		predicates = append(predicates, area.SalesChatIDContainsFold(*i.SalesChatIDContainsFold))
 	}
 
 	if i.HasCustomers != nil {
@@ -1524,6 +1648,10 @@ type CustomerWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
+	// "is_approved" field predicates.
+	IsApproved    *bool `json:"isApproved,omitempty"`
+	IsApprovedNEQ *bool `json:"isApprovedNEQ,omitempty"`
+
 	// "owner_type" field predicates.
 	OwnerType       *int  `json:"ownerType,omitempty"`
 	OwnerTypeNEQ    *int  `json:"ownerTypeNEQ,omitempty"`
@@ -1879,6 +2007,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	}
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, customer.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.IsApproved != nil {
+		predicates = append(predicates, customer.IsApprovedEQ(*i.IsApproved))
+	}
+	if i.IsApprovedNEQ != nil {
+		predicates = append(predicates, customer.IsApprovedNEQ(*i.IsApprovedNEQ))
 	}
 	if i.OwnerType != nil {
 		predicates = append(predicates, customer.OwnerTypeEQ(*i.OwnerType))
@@ -9322,6 +9456,10 @@ type TenderWhereInput struct {
 	StatusLT    *int  `json:"statusLT,omitempty"`
 	StatusLTE   *int  `json:"statusLTE,omitempty"`
 
+	// "is_approved" field predicates.
+	IsApproved    *bool `json:"isApproved,omitempty"`
+	IsApprovedNEQ *bool `json:"isApprovedNEQ,omitempty"`
+
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
 	NameNEQ          *string  `json:"nameNEQ,omitempty"`
@@ -10437,6 +10575,12 @@ func (i *TenderWhereInput) P() (predicate.Tender, error) {
 	}
 	if i.StatusLTE != nil {
 		predicates = append(predicates, tender.StatusLTE(*i.StatusLTE))
+	}
+	if i.IsApproved != nil {
+		predicates = append(predicates, tender.IsApprovedEQ(*i.IsApproved))
+	}
+	if i.IsApprovedNEQ != nil {
+		predicates = append(predicates, tender.IsApprovedNEQ(*i.IsApprovedNEQ))
 	}
 	if i.Name != nil {
 		predicates = append(predicates, tender.NameEQ(*i.Name))

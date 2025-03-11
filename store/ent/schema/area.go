@@ -28,6 +28,8 @@ func (Area) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name"),
 		field.String("code").Unique(),
+		field.String("leader_chat_id").Optional().NotEmpty().Nillable(),
+		field.String("sales_chat_id").Optional().NotEmpty().Nillable(),
 		field.Other("center", &geo.GeoJson{}).
 			SchemaType(map[string]string{
 				dialect.Postgres: "geometry(Point,4326)",

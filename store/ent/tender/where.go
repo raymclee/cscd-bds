@@ -77,6 +77,11 @@ func Status(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldStatus, v))
 }
 
+// IsApproved applies equality check predicate on the "is_approved" field. It's identical to IsApprovedEQ.
+func IsApproved(v bool) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldIsApproved, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Tender {
 	return predicate.Tender(sql.FieldEQ(FieldName, v))
@@ -555,6 +560,16 @@ func StatusLT(v int) predicate.Tender {
 // StatusLTE applies the LTE predicate on the "status" field.
 func StatusLTE(v int) predicate.Tender {
 	return predicate.Tender(sql.FieldLTE(FieldStatus, v))
+}
+
+// IsApprovedEQ applies the EQ predicate on the "is_approved" field.
+func IsApprovedEQ(v bool) predicate.Tender {
+	return predicate.Tender(sql.FieldEQ(FieldIsApproved, v))
+}
+
+// IsApprovedNEQ applies the NEQ predicate on the "is_approved" field.
+func IsApprovedNEQ(v bool) predicate.Tender {
+	return predicate.Tender(sql.FieldNEQ(FieldIsApproved, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.

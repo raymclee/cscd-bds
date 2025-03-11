@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c5271f6e5e3da883d581258952cdafa2>>
+ * @generated SignedSource<<1f3671cda3928cd7962745d012e3d80d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -108,6 +108,7 @@ export type UpdateTenderInput = {
   finderID?: string | null | undefined;
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
+  isApproved?: boolean | null | undefined;
   keyProject?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;
   levelInvolved?: number | null | undefined;

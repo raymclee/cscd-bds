@@ -5,7 +5,6 @@ package ent
 import (
 	"cscd-bds/store/ent/potentialtender"
 	"cscd-bds/store/ent/schema/xid"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -22,9 +21,7 @@ type PotentialTender struct {
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// Meta holds the value of the "meta" field.
-	Meta         map[string]interface{} `json:"meta,omitempty"`
+	UpdatedAt    time.Time `json:"updated_at,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -33,8 +30,6 @@ func (*PotentialTender) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case potentialtender.FieldMeta:
-			values[i] = new([]byte)
 		case potentialtender.FieldCreatedAt, potentialtender.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		case potentialtender.FieldID:
@@ -71,14 +66,6 @@ func (pt *PotentialTender) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				pt.UpdatedAt = value.Time
-			}
-		case potentialtender.FieldMeta:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field meta", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &pt.Meta); err != nil {
-					return fmt.Errorf("unmarshal field meta: %w", err)
-				}
 			}
 		default:
 			pt.selectValues.Set(columns[i], values[i])
@@ -121,9 +108,6 @@ func (pt *PotentialTender) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
 	builder.WriteString(pt.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("meta=")
-	builder.WriteString(fmt.Sprintf("%v", pt.Meta))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -28,6 +28,8 @@ type Customer struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// IsApproved holds the value of the "is_approved" field.
+	IsApproved bool `json:"is_approved,omitempty"`
 	// OwnerType holds the value of the "owner_type" field.
 	OwnerType *int `json:"owner_type,omitempty"`
 	// Industry holds the value of the "industry" field.
@@ -138,6 +140,8 @@ func (*Customer) scanValues(columns []string) ([]any, error) {
 			values[i] = &sql.NullScanner{S: new(xid.ID)}
 		case customer.FieldFeishuGroup:
 			values[i] = new([]byte)
+		case customer.FieldIsApproved:
+			values[i] = new(sql.NullBool)
 		case customer.FieldOwnerType, customer.FieldIndustry, customer.FieldSize:
 			values[i] = new(sql.NullInt64)
 		case customer.FieldName, customer.FieldContactPerson, customer.FieldContactPersonPosition, customer.FieldContactPersonPhone, customer.FieldContactPersonEmail:
@@ -184,6 +188,12 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				c.Name = value.String
+			}
+		case customer.FieldIsApproved:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_approved", values[i])
+			} else if value.Valid {
+				c.IsApproved = value.Bool
 			}
 		case customer.FieldOwnerType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -331,6 +341,9 @@ func (c *Customer) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(c.Name)
+	builder.WriteString(", ")
+	builder.WriteString("is_approved=")
+	builder.WriteString(fmt.Sprintf("%v", c.IsApproved))
 	builder.WriteString(", ")
 	if v := c.OwnerType; v != nil {
 		builder.WriteString("owner_type=")

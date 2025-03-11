@@ -31,6 +31,7 @@ func (Customer) Fields() []ent.Field {
 			Annotations(
 				entgql.OrderField("NAME"),
 			),
+		field.Bool("is_approved").Default(false),
 		field.Int("owner_type").
 			Optional().
 			Nillable().

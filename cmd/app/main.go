@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"cscd-bds/amap"
 	"cscd-bds/config"
 	"cscd-bds/feishu"
@@ -21,6 +22,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	lark "github.com/larksuite/oapi-sdk-go/v3"
+	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
+	"github.com/larksuite/oapi-sdk-go/v3/event/dispatcher"
+	"github.com/larksuite/oapi-sdk-go/v3/event/dispatcher/callback"
+	larkim "github.com/larksuite/oapi-sdk-go/v3/service/im/v1"
+	larkws "github.com/larksuite/oapi-sdk-go/v3/ws"
 	_ "github.com/microsoft/go-mssqldb"
 )
 
@@ -43,6 +49,8 @@ func main() {
 		middleware.Logger(),
 		middleware.CORS(),
 	)
+
+	go startWSClient()
 
 	lc := lark.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET)
 	s := store.New(true)
@@ -73,6 +81,8 @@ func main() {
 
 	publicApiV1 := e.Group("/api/v1", sm.Middlware())
 	publicApiV1.GET("/auth/feishu/callback", h.AuthFeishuCallback)
+
+	publicApiV1.GET("/send/text", h.SendTextMessage)
 
 	// protected := e.Group("", sm.Middlware(), h.AuthMiddleware())
 	e.Any("/playground", echo.WrapHandler(ph), sm.Middlware(), h.AuthMiddleware(), h.AdminOnly())
@@ -145,4 +155,30 @@ func main() {
 		port = ":3000"
 	}
 	e.Start(port)
+}
+
+func startWSClient() {
+	eventHandler := dispatcher.NewEventDispatcher("", "").
+		// 监听「卡片回传交互 card.action.trigger」
+		OnP2CardActionTrigger(func(ctx context.Context, event *callback.CardActionTriggerEvent) (*callback.CardActionTriggerResponse, error) {
+			fmt.Printf("[ OnP2CardActionTrigger access ], data: %s\n", larkcore.Prettify(event))
+			return nil, nil
+		}).
+		// 监听「拉取链接预览数据 url.preview.get」
+		OnP2CardURLPreviewGet(func(ctx context.Context, event *callback.URLPreviewGetEvent) (*callback.URLPreviewGetResponse, error) {
+			fmt.Printf("[ OnP2URLPreviewAction access ], data: %s\n", larkcore.Prettify(event))
+			return nil, nil
+		}).
+		OnP2MessageReceiveV1(func(ctx context.Context, event *larkim.P2MessageReceiveV1) error {
+			fmt.Printf("[ OnP2MessageReceiveV1 access ], data: %s\n", larkcore.Prettify(event))
+			return nil
+		})
+	// 创建Client
+	cli := larkws.NewClient(FEISHU_APP_ID, FEISHU_APP_SECRET,
+		larkws.WithEventHandler(eventHandler),
+		larkws.WithLogLevel(larkcore.LogLevelDebug),
+	)
+	// 建立长连接
+	err := cli.Start(context.Background())
+	fmt.Println(err)
 }

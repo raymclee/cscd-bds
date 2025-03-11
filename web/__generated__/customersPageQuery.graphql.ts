@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<165611ebc78787048dd80f96b82d3470>>
+ * @generated SignedSource<<6e9e2cd3a998929197c0da8799c3d4d2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -30,6 +30,7 @@ export type customersPageQuery$data = {
                 };
                 readonly id: string;
                 readonly industry: number | null | undefined;
+                readonly isApproved: boolean;
                 readonly name: string;
                 readonly ownerType: number | null | undefined;
                 readonly size: number | null | undefined;
@@ -134,6 +135,13 @@ v9 = [
         "plural": false,
         "selections": [
           (v6/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isApproved",
+            "storageKey": null
+          },
           (v4/*: any*/),
           {
             "alias": null,
@@ -473,7 +481,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "88498cc8c54dbc4006cc349e18719006",
+    "cacheID": "634cceb5d51f4e277e4b9d0cfff64dd0",
     "id": null,
     "metadata": {
       "connection": [
@@ -487,11 +495,11 @@ return {
     },
     "name": "customersPageQuery",
     "operationKind": "query",
-    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  visitRecords {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query customersPageQuery(\n  $userId: ID!\n  $first: Int\n  $last: Int\n) {\n  node(id: $userId) {\n    __typename\n    ... on User {\n      areas {\n        edges {\n          node {\n            name\n            code\n            customers(first: $first, last: $last) {\n              edges {\n                node {\n                  id\n                  isApproved\n                  name\n                  updatedAt\n                  ownerType\n                  industry\n                  size\n                  area {\n                    id\n                    code\n                    name\n                  }\n                  tenders {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  visitRecords {\n                    edges {\n                      node {\n                        id\n                      }\n                    }\n                  }\n                  __typename\n                }\n                cursor\n              }\n              pageInfo {\n                endCursor\n                hasNextPage\n                hasPreviousPage\n                startCursor\n              }\n            }\n            id\n          }\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "70a8c51b6197c104a3f32fe46c676d4c";
+(node as any).hash = "4322c0c3e124530f02373f0fcbca1d68";
 
 export default node;

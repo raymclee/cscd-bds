@@ -29,6 +29,7 @@ func (Tender) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("code").Unique(),
 		field.Int("status").Default(1),
+		field.Bool("is_approved").Default(false),
 		field.String("name").
 			Annotations(
 				entgql.OrderField("NAME"),
@@ -41,7 +42,7 @@ func (Tender) Fields() []ent.Field {
 		field.Time("tender_date").Optional().Annotations(
 			entgql.OrderField("TENDER_DATE"),
 		),
-		field.Int("classify").Optional().Default(1).Min(1),
+		field.Int("classify").Optional().Nillable().Min(1).Max(3),
 		field.Time("discovery_date"),
 		field.String("address").Optional().Nillable(),
 		field.String("full_address").Optional().Nillable(),

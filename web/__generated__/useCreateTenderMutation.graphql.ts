@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<cc930c82399a21cb60e52c40a4222460>>
+ * @generated SignedSource<<fa8c83099b4e08ecc0594c105041a2c8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -49,6 +49,7 @@ export type CreateTenderInput = {
   followingSaleIDs?: ReadonlyArray<string> | null | undefined;
   fullAddress?: string | null | undefined;
   images?: ReadonlyArray<string> | null | undefined;
+  isApproved?: boolean | null | undefined;
   keyProject?: boolean | null | undefined;
   lastTenderAmount?: number | null | undefined;
   levelInvolved?: number | null | undefined;

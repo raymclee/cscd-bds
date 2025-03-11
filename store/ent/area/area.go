@@ -23,6 +23,10 @@ const (
 	FieldName = "name"
 	// FieldCode holds the string denoting the code field in the database.
 	FieldCode = "code"
+	// FieldLeaderChatID holds the string denoting the leader_chat_id field in the database.
+	FieldLeaderChatID = "leader_chat_id"
+	// FieldSalesChatID holds the string denoting the sales_chat_id field in the database.
+	FieldSalesChatID = "sales_chat_id"
 	// FieldCenter holds the string denoting the center field in the database.
 	FieldCenter = "center"
 	// EdgeCustomers holds the string denoting the customers edge name in mutations.
@@ -70,6 +74,8 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldCode,
+	FieldLeaderChatID,
+	FieldSalesChatID,
 	FieldCenter,
 }
 
@@ -96,6 +102,10 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// LeaderChatIDValidator is a validator for the "leader_chat_id" field. It is called by the builders before save.
+	LeaderChatIDValidator func(string) error
+	// SalesChatIDValidator is a validator for the "sales_chat_id" field. It is called by the builders before save.
+	SalesChatIDValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() xid.ID
 )
@@ -126,6 +136,16 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByCode orders the results by the code field.
 func ByCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCode, opts...).ToFunc()
+}
+
+// ByLeaderChatID orders the results by the leader_chat_id field.
+func ByLeaderChatID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLeaderChatID, opts...).ToFunc()
+}
+
+// BySalesChatID orders the results by the sales_chat_id field.
+func BySalesChatID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSalesChatID, opts...).ToFunc()
 }
 
 // ByCenter orders the results by the center field.

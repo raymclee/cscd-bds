@@ -1376,6 +1376,10 @@ func (ec *executionContext) fieldContext_Mutation_updateArea(ctx context.Context
 				return ec.fieldContext_Area_name(ctx, field)
 			case "code":
 				return ec.fieldContext_Area_code(ctx, field)
+			case "leaderChatID":
+				return ec.fieldContext_Area_leaderChatID(ctx, field)
+			case "salesChatID":
+				return ec.fieldContext_Area_salesChatID(ctx, field)
 			case "customers":
 				return ec.fieldContext_Area_customers(ctx, field)
 			case "tenders":
@@ -1787,6 +1791,8 @@ func (ec *executionContext) fieldContext_Mutation_updateCustomer(ctx context.Con
 				return ec.fieldContext_Customer_updatedAt(ctx, field)
 			case "name":
 				return ec.fieldContext_Customer_name(ctx, field)
+			case "isApproved":
+				return ec.fieldContext_Customer_isApproved(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_Customer_ownerType(ctx, field)
 			case "industry":
@@ -1882,6 +1888,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteCustomer(ctx context.Con
 				return ec.fieldContext_Customer_updatedAt(ctx, field)
 			case "name":
 				return ec.fieldContext_Customer_name(ctx, field)
+			case "isApproved":
+				return ec.fieldContext_Customer_isApproved(ctx, field)
 			case "ownerType":
 				return ec.fieldContext_Customer_ownerType(ctx, field)
 			case "industry":
@@ -2042,6 +2050,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTender(ctx context.Conte
 				return ec.fieldContext_Tender_code(ctx, field)
 			case "status":
 				return ec.fieldContext_Tender_status(ctx, field)
+			case "isApproved":
+				return ec.fieldContext_Tender_isApproved(ctx, field)
 			case "name":
 				return ec.fieldContext_Tender_name(ctx, field)
 			case "estimatedAmount":
@@ -2253,6 +2263,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteTender(ctx context.Conte
 				return ec.fieldContext_Tender_code(ctx, field)
 			case "status":
 				return ec.fieldContext_Tender_status(ctx, field)
+			case "isApproved":
+				return ec.fieldContext_Tender_isApproved(ctx, field)
 			case "name":
 				return ec.fieldContext_Tender_name(ctx, field)
 			case "estimatedAmount":

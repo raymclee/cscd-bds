@@ -77,6 +77,16 @@ func Code(v string) predicate.Area {
 	return predicate.Area(sql.FieldEQ(FieldCode, v))
 }
 
+// LeaderChatID applies equality check predicate on the "leader_chat_id" field. It's identical to LeaderChatIDEQ.
+func LeaderChatID(v string) predicate.Area {
+	return predicate.Area(sql.FieldEQ(FieldLeaderChatID, v))
+}
+
+// SalesChatID applies equality check predicate on the "sales_chat_id" field. It's identical to SalesChatIDEQ.
+func SalesChatID(v string) predicate.Area {
+	return predicate.Area(sql.FieldEQ(FieldSalesChatID, v))
+}
+
 // Center applies equality check predicate on the "center" field. It's identical to CenterEQ.
 func Center(v *geo.GeoJson) predicate.Area {
 	return predicate.Area(sql.FieldEQ(FieldCenter, v))
@@ -290,6 +300,156 @@ func CodeEqualFold(v string) predicate.Area {
 // CodeContainsFold applies the ContainsFold predicate on the "code" field.
 func CodeContainsFold(v string) predicate.Area {
 	return predicate.Area(sql.FieldContainsFold(FieldCode, v))
+}
+
+// LeaderChatIDEQ applies the EQ predicate on the "leader_chat_id" field.
+func LeaderChatIDEQ(v string) predicate.Area {
+	return predicate.Area(sql.FieldEQ(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDNEQ applies the NEQ predicate on the "leader_chat_id" field.
+func LeaderChatIDNEQ(v string) predicate.Area {
+	return predicate.Area(sql.FieldNEQ(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDIn applies the In predicate on the "leader_chat_id" field.
+func LeaderChatIDIn(vs ...string) predicate.Area {
+	return predicate.Area(sql.FieldIn(FieldLeaderChatID, vs...))
+}
+
+// LeaderChatIDNotIn applies the NotIn predicate on the "leader_chat_id" field.
+func LeaderChatIDNotIn(vs ...string) predicate.Area {
+	return predicate.Area(sql.FieldNotIn(FieldLeaderChatID, vs...))
+}
+
+// LeaderChatIDGT applies the GT predicate on the "leader_chat_id" field.
+func LeaderChatIDGT(v string) predicate.Area {
+	return predicate.Area(sql.FieldGT(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDGTE applies the GTE predicate on the "leader_chat_id" field.
+func LeaderChatIDGTE(v string) predicate.Area {
+	return predicate.Area(sql.FieldGTE(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDLT applies the LT predicate on the "leader_chat_id" field.
+func LeaderChatIDLT(v string) predicate.Area {
+	return predicate.Area(sql.FieldLT(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDLTE applies the LTE predicate on the "leader_chat_id" field.
+func LeaderChatIDLTE(v string) predicate.Area {
+	return predicate.Area(sql.FieldLTE(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDContains applies the Contains predicate on the "leader_chat_id" field.
+func LeaderChatIDContains(v string) predicate.Area {
+	return predicate.Area(sql.FieldContains(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDHasPrefix applies the HasPrefix predicate on the "leader_chat_id" field.
+func LeaderChatIDHasPrefix(v string) predicate.Area {
+	return predicate.Area(sql.FieldHasPrefix(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDHasSuffix applies the HasSuffix predicate on the "leader_chat_id" field.
+func LeaderChatIDHasSuffix(v string) predicate.Area {
+	return predicate.Area(sql.FieldHasSuffix(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDIsNil applies the IsNil predicate on the "leader_chat_id" field.
+func LeaderChatIDIsNil() predicate.Area {
+	return predicate.Area(sql.FieldIsNull(FieldLeaderChatID))
+}
+
+// LeaderChatIDNotNil applies the NotNil predicate on the "leader_chat_id" field.
+func LeaderChatIDNotNil() predicate.Area {
+	return predicate.Area(sql.FieldNotNull(FieldLeaderChatID))
+}
+
+// LeaderChatIDEqualFold applies the EqualFold predicate on the "leader_chat_id" field.
+func LeaderChatIDEqualFold(v string) predicate.Area {
+	return predicate.Area(sql.FieldEqualFold(FieldLeaderChatID, v))
+}
+
+// LeaderChatIDContainsFold applies the ContainsFold predicate on the "leader_chat_id" field.
+func LeaderChatIDContainsFold(v string) predicate.Area {
+	return predicate.Area(sql.FieldContainsFold(FieldLeaderChatID, v))
+}
+
+// SalesChatIDEQ applies the EQ predicate on the "sales_chat_id" field.
+func SalesChatIDEQ(v string) predicate.Area {
+	return predicate.Area(sql.FieldEQ(FieldSalesChatID, v))
+}
+
+// SalesChatIDNEQ applies the NEQ predicate on the "sales_chat_id" field.
+func SalesChatIDNEQ(v string) predicate.Area {
+	return predicate.Area(sql.FieldNEQ(FieldSalesChatID, v))
+}
+
+// SalesChatIDIn applies the In predicate on the "sales_chat_id" field.
+func SalesChatIDIn(vs ...string) predicate.Area {
+	return predicate.Area(sql.FieldIn(FieldSalesChatID, vs...))
+}
+
+// SalesChatIDNotIn applies the NotIn predicate on the "sales_chat_id" field.
+func SalesChatIDNotIn(vs ...string) predicate.Area {
+	return predicate.Area(sql.FieldNotIn(FieldSalesChatID, vs...))
+}
+
+// SalesChatIDGT applies the GT predicate on the "sales_chat_id" field.
+func SalesChatIDGT(v string) predicate.Area {
+	return predicate.Area(sql.FieldGT(FieldSalesChatID, v))
+}
+
+// SalesChatIDGTE applies the GTE predicate on the "sales_chat_id" field.
+func SalesChatIDGTE(v string) predicate.Area {
+	return predicate.Area(sql.FieldGTE(FieldSalesChatID, v))
+}
+
+// SalesChatIDLT applies the LT predicate on the "sales_chat_id" field.
+func SalesChatIDLT(v string) predicate.Area {
+	return predicate.Area(sql.FieldLT(FieldSalesChatID, v))
+}
+
+// SalesChatIDLTE applies the LTE predicate on the "sales_chat_id" field.
+func SalesChatIDLTE(v string) predicate.Area {
+	return predicate.Area(sql.FieldLTE(FieldSalesChatID, v))
+}
+
+// SalesChatIDContains applies the Contains predicate on the "sales_chat_id" field.
+func SalesChatIDContains(v string) predicate.Area {
+	return predicate.Area(sql.FieldContains(FieldSalesChatID, v))
+}
+
+// SalesChatIDHasPrefix applies the HasPrefix predicate on the "sales_chat_id" field.
+func SalesChatIDHasPrefix(v string) predicate.Area {
+	return predicate.Area(sql.FieldHasPrefix(FieldSalesChatID, v))
+}
+
+// SalesChatIDHasSuffix applies the HasSuffix predicate on the "sales_chat_id" field.
+func SalesChatIDHasSuffix(v string) predicate.Area {
+	return predicate.Area(sql.FieldHasSuffix(FieldSalesChatID, v))
+}
+
+// SalesChatIDIsNil applies the IsNil predicate on the "sales_chat_id" field.
+func SalesChatIDIsNil() predicate.Area {
+	return predicate.Area(sql.FieldIsNull(FieldSalesChatID))
+}
+
+// SalesChatIDNotNil applies the NotNil predicate on the "sales_chat_id" field.
+func SalesChatIDNotNil() predicate.Area {
+	return predicate.Area(sql.FieldNotNull(FieldSalesChatID))
+}
+
+// SalesChatIDEqualFold applies the EqualFold predicate on the "sales_chat_id" field.
+func SalesChatIDEqualFold(v string) predicate.Area {
+	return predicate.Area(sql.FieldEqualFold(FieldSalesChatID, v))
+}
+
+// SalesChatIDContainsFold applies the ContainsFold predicate on the "sales_chat_id" field.
+func SalesChatIDContainsFold(v string) predicate.Area {
+	return predicate.Area(sql.FieldContainsFold(FieldSalesChatID, v))
 }
 
 // CenterEQ applies the EQ predicate on the "center" field.

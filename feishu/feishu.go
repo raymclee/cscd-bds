@@ -139,7 +139,7 @@ func (f *Feishu) GetUserInfos(ctx context.Context, userIds []string) ([]*larkcon
 	return out, nil
 }
 
-func (f *Feishu) SendMessage(ctx context.Context, userIDs []string, tender *ent.Tender) error {
+func (f *Feishu) SendGroupMessage(ctx context.Context, userIDs []string, tender *ent.Tender) error {
 	eg := errgroup.Group{}
 
 	content, err := json.Marshal(map[string]any{
@@ -166,7 +166,7 @@ func (f *Feishu) SendMessage(ctx context.Context, userIDs []string, tender *ent.
 
 	for _, id := range userIDs {
 		eg.Go(func() error {
-			res, err := f.Client.Post(ctx, "/open-apis/im/v1/messages?receive_id_type=open_id", map[string]any{
+			res, err := f.Client.Post(ctx, "/open-apis/im/v1/messages?receive_id_type=chat_id", map[string]any{
 				"msg_type":   "interactive",
 				"content":    string(content),
 				"receive_id": id,

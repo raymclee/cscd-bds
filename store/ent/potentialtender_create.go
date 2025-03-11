@@ -52,12 +52,6 @@ func (ptc *PotentialTenderCreate) SetNillableUpdatedAt(t *time.Time) *PotentialT
 	return ptc
 }
 
-// SetMeta sets the "meta" field.
-func (ptc *PotentialTenderCreate) SetMeta(m map[string]interface{}) *PotentialTenderCreate {
-	ptc.mutation.SetMeta(m)
-	return ptc
-}
-
 // SetID sets the "id" field.
 func (ptc *PotentialTenderCreate) SetID(x xid.ID) *PotentialTenderCreate {
 	ptc.mutation.SetID(x)
@@ -129,9 +123,6 @@ func (ptc *PotentialTenderCreate) check() error {
 	if _, ok := ptc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "PotentialTender.updated_at"`)}
 	}
-	if _, ok := ptc.mutation.Meta(); !ok {
-		return &ValidationError{Name: "meta", err: errors.New(`ent: missing required field "PotentialTender.meta"`)}
-	}
 	return nil
 }
 
@@ -175,10 +166,6 @@ func (ptc *PotentialTenderCreate) createSpec() (*PotentialTender, *sqlgraph.Crea
 	if value, ok := ptc.mutation.UpdatedAt(); ok {
 		_spec.SetField(potentialtender.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
-	}
-	if value, ok := ptc.mutation.Meta(); ok {
-		_spec.SetField(potentialtender.FieldMeta, field.TypeJSON, value)
-		_node.Meta = value
 	}
 	return _node, _spec
 }
@@ -244,18 +231,6 @@ func (u *PotentialTenderUpsert) UpdateUpdatedAt() *PotentialTenderUpsert {
 	return u
 }
 
-// SetMeta sets the "meta" field.
-func (u *PotentialTenderUpsert) SetMeta(v map[string]interface{}) *PotentialTenderUpsert {
-	u.Set(potentialtender.FieldMeta, v)
-	return u
-}
-
-// UpdateMeta sets the "meta" field to the value that was provided on create.
-func (u *PotentialTenderUpsert) UpdateMeta() *PotentialTenderUpsert {
-	u.SetExcluded(potentialtender.FieldMeta)
-	return u
-}
-
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -318,20 +293,6 @@ func (u *PotentialTenderUpsertOne) SetUpdatedAt(v time.Time) *PotentialTenderUps
 func (u *PotentialTenderUpsertOne) UpdateUpdatedAt() *PotentialTenderUpsertOne {
 	return u.Update(func(s *PotentialTenderUpsert) {
 		s.UpdateUpdatedAt()
-	})
-}
-
-// SetMeta sets the "meta" field.
-func (u *PotentialTenderUpsertOne) SetMeta(v map[string]interface{}) *PotentialTenderUpsertOne {
-	return u.Update(func(s *PotentialTenderUpsert) {
-		s.SetMeta(v)
-	})
-}
-
-// UpdateMeta sets the "meta" field to the value that was provided on create.
-func (u *PotentialTenderUpsertOne) UpdateMeta() *PotentialTenderUpsertOne {
-	return u.Update(func(s *PotentialTenderUpsert) {
-		s.UpdateMeta()
 	})
 }
 
@@ -564,20 +525,6 @@ func (u *PotentialTenderUpsertBulk) SetUpdatedAt(v time.Time) *PotentialTenderUp
 func (u *PotentialTenderUpsertBulk) UpdateUpdatedAt() *PotentialTenderUpsertBulk {
 	return u.Update(func(s *PotentialTenderUpsert) {
 		s.UpdateUpdatedAt()
-	})
-}
-
-// SetMeta sets the "meta" field.
-func (u *PotentialTenderUpsertBulk) SetMeta(v map[string]interface{}) *PotentialTenderUpsertBulk {
-	return u.Update(func(s *PotentialTenderUpsert) {
-		s.SetMeta(v)
-	})
-}
-
-// UpdateMeta sets the "meta" field to the value that was provided on create.
-func (u *PotentialTenderUpsertBulk) UpdateMeta() *PotentialTenderUpsertBulk {
-	return u.Update(func(s *PotentialTenderUpsert) {
-		s.UpdateMeta()
 	})
 }
 

@@ -19,8 +19,6 @@ export type Scalars = {
    * https://relay.dev/graphql/connections.htm#sec-Cursor
    */
   Cursor: { input: any; output: any; }
-  /** The builtin Map type */
-  Map: { input: any; output: any; }
   Time: { input: any; output: any; }
 };
 
@@ -31,8 +29,10 @@ export type Area = Node & {
   createdAt: Scalars['Time']['output'];
   customers: CustomerConnection;
   id: Scalars['ID']['output'];
+  leaderChatID?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   provinces: ProvinceConnection;
+  salesChatID?: Maybe<Scalars['String']['output']>;
   tenders: TenderConnection;
   updatedAt: Scalars['Time']['output'];
   users: UserConnection;
@@ -161,6 +161,22 @@ export type AreaWhereInput = {
   idLTE?: InputMaybe<Scalars['ID']['input']>;
   idNEQ?: InputMaybe<Scalars['ID']['input']>;
   idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** leader_chat_id field predicates */
+  leaderChatID?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDContains?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDContainsFold?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDEqualFold?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDGT?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDGTE?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  leaderChatIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  leaderChatIDLT?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDLTE?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDNEQ?: InputMaybe<Scalars['String']['input']>;
+  leaderChatIDNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  leaderChatIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** name field predicates */
   name?: InputMaybe<Scalars['String']['input']>;
   nameContains?: InputMaybe<Scalars['String']['input']>;
@@ -177,6 +193,22 @@ export type AreaWhereInput = {
   nameNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
   not?: InputMaybe<AreaWhereInput>;
   or?: InputMaybe<Array<AreaWhereInput>>;
+  /** sales_chat_id field predicates */
+  salesChatID?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDContains?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDContainsFold?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDEqualFold?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDGT?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDGTE?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDHasPrefix?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDHasSuffix?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  salesChatIDIsNil?: InputMaybe<Scalars['Boolean']['input']>;
+  salesChatIDLT?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDLTE?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDNEQ?: InputMaybe<Scalars['String']['input']>;
+  salesChatIDNotIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  salesChatIDNotNil?: InputMaybe<Scalars['Boolean']['input']>;
   /** updated_at field predicates */
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   updatedAtGT?: InputMaybe<Scalars['Time']['input']>;
@@ -595,8 +627,10 @@ export type CreateAreaInput = {
   code: Scalars['String']['input'];
   createdAt?: InputMaybe<Scalars['Time']['input']>;
   customerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  leaderChatID?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   provinceIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  salesChatID?: InputMaybe<Scalars['String']['input']>;
   tenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
   userIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -654,6 +688,7 @@ export type CreateCustomerInput = {
   createdAt?: InputMaybe<Scalars['Time']['input']>;
   createdByID?: InputMaybe<Scalars['ID']['input']>;
   industry?: InputMaybe<Scalars['Int']['input']>;
+  isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
   ownerType?: InputMaybe<Scalars['Int']['input']>;
   salesID?: InputMaybe<Scalars['ID']['input']>;
@@ -698,7 +733,6 @@ export type CreatePlotInput = {
  */
 export type CreatePotentialTenderInput = {
   createdAt?: InputMaybe<Scalars['Time']['input']>;
-  meta: Scalars['Map']['input'];
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
 
@@ -764,6 +798,7 @@ export type CreateTenderInput = {
   followingSaleIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   fullAddress?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
+  isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
   /** 最後一次投標金額，只限港澳 */
   lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;
@@ -856,6 +891,7 @@ export type Customer = Node & {
   createdByID?: Maybe<Scalars['ID']['output']>;
   id: Scalars['ID']['output'];
   industry?: Maybe<Scalars['Int']['output']>;
+  isApproved: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   ownerType?: Maybe<Scalars['Int']['output']>;
   sales?: Maybe<User>;
@@ -1065,6 +1101,9 @@ export type CustomerWhereInput = {
   industryNEQ?: InputMaybe<Scalars['Int']['input']>;
   industryNotIn?: InputMaybe<Array<Scalars['Int']['input']>>;
   industryNotNil?: InputMaybe<Scalars['Boolean']['input']>;
+  /** is_approved field predicates */
+  isApproved?: InputMaybe<Scalars['Boolean']['input']>;
+  isApprovedNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** name field predicates */
   name?: InputMaybe<Scalars['String']['input']>;
   nameContains?: InputMaybe<Scalars['String']['input']>;
@@ -1850,7 +1889,6 @@ export type PotentialTender = Node & {
   __typename?: 'PotentialTender';
   createdAt: Scalars['Time']['output'];
   id: Scalars['ID']['output'];
-  meta: Scalars['Map']['output'];
   updatedAt: Scalars['Time']['output'];
 };
 
@@ -3882,6 +3920,7 @@ export type Tender = Node & {
   geoCoordinate?: Maybe<GeoJson>;
   id: Scalars['ID']['output'];
   images?: Maybe<Array<Scalars['String']['output']>>;
+  isApproved: Scalars['Boolean']['output'];
   keyProject: Scalars['Boolean']['output'];
   /** 最後一次投標金額，只限港澳 */
   lastTenderAmount?: Maybe<Scalars['Float']['output']>;
@@ -4511,6 +4550,9 @@ export type TenderWhereInput = {
   idLTE?: InputMaybe<Scalars['ID']['input']>;
   idNEQ?: InputMaybe<Scalars['ID']['input']>;
   idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** is_approved field predicates */
+  isApproved?: InputMaybe<Scalars['Boolean']['input']>;
+  isApprovedNEQ?: InputMaybe<Scalars['Boolean']['input']>;
   /** key_project field predicates */
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
   keyProjectNEQ?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4883,15 +4925,19 @@ export type UpdateAreaInput = {
   addTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   addUserIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   clearCustomers?: InputMaybe<Scalars['Boolean']['input']>;
+  clearLeaderChatID?: InputMaybe<Scalars['Boolean']['input']>;
   clearProvinces?: InputMaybe<Scalars['Boolean']['input']>;
+  clearSalesChatID?: InputMaybe<Scalars['Boolean']['input']>;
   clearTenders?: InputMaybe<Scalars['Boolean']['input']>;
   clearUsers?: InputMaybe<Scalars['Boolean']['input']>;
   code?: InputMaybe<Scalars['String']['input']>;
+  leaderChatID?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   removeCustomerIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeProvinceIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   removeUserIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
+  salesChatID?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
 
@@ -4964,6 +5010,7 @@ export type UpdateCustomerInput = {
   contactPersonPosition?: InputMaybe<Scalars['String']['input']>;
   createdByID?: InputMaybe<Scalars['ID']['input']>;
   industry?: InputMaybe<Scalars['Int']['input']>;
+  isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   ownerType?: InputMaybe<Scalars['Int']['input']>;
   removeTenderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -5010,7 +5057,6 @@ export type UpdatePlotInput = {
  * Input was generated by ent.
  */
 export type UpdatePotentialTenderInput = {
-  meta?: InputMaybe<Scalars['Map']['input']>;
   updatedAt?: InputMaybe<Scalars['Time']['input']>;
 };
 
@@ -5394,6 +5440,7 @@ export type UpdateTenderInput = {
   finderID?: InputMaybe<Scalars['ID']['input']>;
   fullAddress?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
+  isApproved?: InputMaybe<Scalars['Boolean']['input']>;
   keyProject?: InputMaybe<Scalars['Boolean']['input']>;
   /** 最後一次投標金額，只限港澳 */
   lastTenderAmount?: InputMaybe<Scalars['Float']['input']>;

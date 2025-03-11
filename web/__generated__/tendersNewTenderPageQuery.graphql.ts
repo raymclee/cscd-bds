@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4723fdd542b5393224c53c455857556c>>
+ * @generated SignedSource<<3747bafc4996186acf55d59e7bfede36>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -61,6 +61,15 @@ v4 = {
   "storageKey": null
 },
 v5 = [
+  {
+    "kind": "Literal",
+    "name": "where",
+    "value": {
+      "isApproved": true
+    }
+  }
+],
+v6 = [
   (v3/*: any*/),
   (v4/*: any*/)
 ];
@@ -149,7 +158,7 @@ return {
                           },
                           {
                             "alias": null,
-                            "args": null,
+                            "args": (v5/*: any*/),
                             "concreteType": "CustomerConnection",
                             "kind": "LinkedField",
                             "name": "customers",
@@ -227,12 +236,14 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": null
+                            "storageKey": "customers(where:{\"isApproved\":true})"
                           },
                           {
                             "alias": null,
-                            "args": null,
-                            "filters": null,
+                            "args": (v5/*: any*/),
+                            "filters": [
+                              "where"
+                            ],
                             "handle": "connection",
                             "key": "tenderFormFragment_customers",
                             "kind": "LinkedHandle",
@@ -261,7 +272,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "node",
                                     "plural": false,
-                                    "selections": (v5/*: any*/),
+                                    "selections": (v6/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -310,7 +321,7 @@ return {
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
-                "selections": (v5/*: any*/),
+                "selections": (v6/*: any*/),
                 "storageKey": null
               }
             ],
@@ -322,12 +333,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "10c7d304f11eddf467573aa8cd8b35b6",
+    "cacheID": "98fe0c5ce073389ae8584e2739cc75e1",
     "id": null,
     "metadata": {},
     "name": "tendersNewTenderPageQuery",
     "operationKind": "query",
-    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query tendersNewTenderPageQuery(\n  $userId: ID!\n) {\n  node(id: $userId) {\n    __typename\n    ...tenderFormFragment\n    id\n  }\n  ...tenderFormFragment_competitors\n}\n\nfragment tenderFormFragment on User {\n  areas {\n    edges {\n      node {\n        id\n        name\n        code\n        customers(where: {isApproved: true}) {\n          edges {\n            node {\n              id\n              name\n              __typename\n            }\n            cursor\n          }\n          pageInfo {\n            endCursor\n            hasNextPage\n            hasPreviousPage\n            startCursor\n          }\n        }\n        users {\n          edges {\n            node {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment tenderFormFragment_competitors on Query {\n  competitors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();

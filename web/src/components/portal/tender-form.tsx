@@ -5,6 +5,7 @@ import { tenderFormFragment$key } from "__generated__/tenderFormFragment.graphql
 import { tenderFormFragment_competitors$key } from "__generated__/tenderFormFragment_competitors.graphql";
 import { tenderForm_provinceCityDistrictSelectorQuery } from "__generated__/tenderForm_provinceCityDistrictSelectorQuery.graphql";
 import {
+  Alert,
   App,
   Button,
   Card,
@@ -46,8 +47,9 @@ import { TenderDetailFragment } from "./tender-detail";
 import { SearchLocationSelect } from "./search-location-select";
 import { TenderFormMap } from "./tender-form-map";
 import { usePortalStore } from "~/store/portal";
-import { Plus } from "lucide-react";
+import { Plus, Space } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { useFormLocalStorage } from "~/hooks/use-form-localstorage";
 
 const { Dragger } = Upload;
 
@@ -60,7 +62,7 @@ const fragment = graphql`
           id
           name
           code
-          customers(first: $first, last: $last)
+          customers(first: $first, last: $last, where: { isApproved: true })
             @connection(key: "tenderFormFragment_customers") {
             edges {
               node {
@@ -120,6 +122,12 @@ export function TenderForm({
   const [commitCreateMutation, isCreateInFlight] = useCreateTender();
   const [commitUpdateMutation, isUpdateInFlight] = useUpdateTender();
   const navigate = useNavigate();
+
+  const { state, clear } = useFormLocalStorage({
+    form,
+    id: "tender-form",
+    enabled: !tender,
+  });
 
   const areaID = Form.useWatch("areaID", form);
 
@@ -231,6 +239,31 @@ export function TenderForm({
     }
   }, [tender]);
 
+  useEffect(() => {
+    if (!tender && state) {
+      form.setFieldsValue({
+        ...state,
+        discoveryDate: state?.discoveryDate
+          ? dayjs(state.discoveryDate)
+          : undefined,
+        tenderClosingDate: state?.tenderClosingDate
+          ? dayjs(state.tenderClosingDate)
+          : undefined,
+        tenderDate: state?.tenderDate ? dayjs(state.tenderDate) : undefined,
+        biddingDate: state?.biddingDate ? dayjs(state.biddingDate) : undefined,
+        estimatedProjectStartDate: state?.estimatedProjectStartDate
+          ? dayjs(state.estimatedProjectStartDate)
+          : undefined,
+        estimatedProjectEndDate: state?.estimatedProjectEndDate
+          ? dayjs(state.estimatedProjectEndDate)
+          : undefined,
+        tenderWinDate: state?.tenderWinDate
+          ? dayjs(state.tenderWinDate)
+          : undefined,
+      } as any);
+    }
+  }, [state, tender]);
+
   return (
     <Form<CreateTenderInput & { geoCoordinate: number[] }>
       form={form}
@@ -337,6 +370,7 @@ export function TenderForm({
             },
             onCompleted() {
               navigate({ to: "/portal/tenders" });
+              clear();
               message.success("创建成功");
             },
             onError(error) {
@@ -354,6 +388,27 @@ export function TenderForm({
         }
       }}
     >
+      {!tender && state && (
+        <Alert
+          className="!mb-4"
+          message="请注意，数据从缓存中恢复"
+          type="warning"
+          action={
+            <Button
+              type="text"
+              size="small"
+              onClick={() => {
+                clear();
+                form.resetFields();
+              }}
+            >
+              清除缓存
+            </Button>
+          }
+          closable
+        />
+      )}
+
       <Card
         title="信息"
         extra={[
