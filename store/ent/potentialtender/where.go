@@ -65,6 +65,81 @@ func UpdatedAt(v time.Time) predicate.PotentialTender {
 	return predicate.PotentialTender(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
+// RefURL applies equality check predicate on the "ref_url" field. It's identical to RefURLEQ.
+func RefURL(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldRefURL, v))
+}
+
+// Title applies equality check predicate on the "title" field. It's identical to TitleEQ.
+func Title(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldTitle, v))
+}
+
+// Description applies equality check predicate on the "description" field. It's identical to DescriptionEQ.
+func Description(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldDescription, v))
+}
+
+// Requirement applies equality check predicate on the "requirement" field. It's identical to RequirementEQ.
+func Requirement(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldRequirement, v))
+}
+
+// Address applies equality check predicate on the "address" field. It's identical to AddressEQ.
+func Address(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldAddress, v))
+}
+
+// Date applies equality check predicate on the "date" field. It's identical to DateEQ.
+func Date(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldDate, v))
+}
+
+// Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
+func Type(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldType, v))
+}
+
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
+func Status(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldStatus, v))
+}
+
+// Amount applies equality check predicate on the "amount" field. It's identical to AmountEQ.
+func Amount(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldAmount, v))
+}
+
+// Size applies equality check predicate on the "size" field. It's identical to SizeEQ.
+func Size(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldSize, v))
+}
+
+// Location applies equality check predicate on the "location" field. It's identical to LocationEQ.
+func Location(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldLocation, v))
+}
+
+// Contact applies equality check predicate on the "contact" field. It's identical to ContactEQ.
+func Contact(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContact, v))
+}
+
+// ContactPhone applies equality check predicate on the "contact_phone" field. It's identical to ContactPhoneEQ.
+func ContactPhone(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContactPhone, v))
+}
+
+// ContactEmail applies equality check predicate on the "contact_email" field. It's identical to ContactEmailEQ.
+func ContactEmail(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContactEmail, v))
+}
+
+// ContactAddress applies equality check predicate on the "contact_address" field. It's identical to ContactAddressEQ.
+func ContactAddress(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContactAddress, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.PotentialTender {
 	return predicate.PotentialTender(sql.FieldEQ(FieldCreatedAt, v))
@@ -143,6 +218,1111 @@ func UpdatedAtLT(v time.Time) predicate.PotentialTender {
 // UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.PotentialTender {
 	return predicate.PotentialTender(sql.FieldLTE(FieldUpdatedAt, v))
+}
+
+// RefURLEQ applies the EQ predicate on the "ref_url" field.
+func RefURLEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldRefURL, v))
+}
+
+// RefURLNEQ applies the NEQ predicate on the "ref_url" field.
+func RefURLNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldRefURL, v))
+}
+
+// RefURLIn applies the In predicate on the "ref_url" field.
+func RefURLIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldRefURL, vs...))
+}
+
+// RefURLNotIn applies the NotIn predicate on the "ref_url" field.
+func RefURLNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldRefURL, vs...))
+}
+
+// RefURLGT applies the GT predicate on the "ref_url" field.
+func RefURLGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldRefURL, v))
+}
+
+// RefURLGTE applies the GTE predicate on the "ref_url" field.
+func RefURLGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldRefURL, v))
+}
+
+// RefURLLT applies the LT predicate on the "ref_url" field.
+func RefURLLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldRefURL, v))
+}
+
+// RefURLLTE applies the LTE predicate on the "ref_url" field.
+func RefURLLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldRefURL, v))
+}
+
+// RefURLContains applies the Contains predicate on the "ref_url" field.
+func RefURLContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldRefURL, v))
+}
+
+// RefURLHasPrefix applies the HasPrefix predicate on the "ref_url" field.
+func RefURLHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldRefURL, v))
+}
+
+// RefURLHasSuffix applies the HasSuffix predicate on the "ref_url" field.
+func RefURLHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldRefURL, v))
+}
+
+// RefURLEqualFold applies the EqualFold predicate on the "ref_url" field.
+func RefURLEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldRefURL, v))
+}
+
+// RefURLContainsFold applies the ContainsFold predicate on the "ref_url" field.
+func RefURLContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldRefURL, v))
+}
+
+// TitleEQ applies the EQ predicate on the "title" field.
+func TitleEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldTitle, v))
+}
+
+// TitleNEQ applies the NEQ predicate on the "title" field.
+func TitleNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldTitle, v))
+}
+
+// TitleIn applies the In predicate on the "title" field.
+func TitleIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldTitle, vs...))
+}
+
+// TitleNotIn applies the NotIn predicate on the "title" field.
+func TitleNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldTitle, vs...))
+}
+
+// TitleGT applies the GT predicate on the "title" field.
+func TitleGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldTitle, v))
+}
+
+// TitleGTE applies the GTE predicate on the "title" field.
+func TitleGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldTitle, v))
+}
+
+// TitleLT applies the LT predicate on the "title" field.
+func TitleLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldTitle, v))
+}
+
+// TitleLTE applies the LTE predicate on the "title" field.
+func TitleLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldTitle, v))
+}
+
+// TitleContains applies the Contains predicate on the "title" field.
+func TitleContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldTitle, v))
+}
+
+// TitleHasPrefix applies the HasPrefix predicate on the "title" field.
+func TitleHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldTitle, v))
+}
+
+// TitleHasSuffix applies the HasSuffix predicate on the "title" field.
+func TitleHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldTitle, v))
+}
+
+// TitleEqualFold applies the EqualFold predicate on the "title" field.
+func TitleEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldTitle, v))
+}
+
+// TitleContainsFold applies the ContainsFold predicate on the "title" field.
+func TitleContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldTitle, v))
+}
+
+// DescriptionEQ applies the EQ predicate on the "description" field.
+func DescriptionEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldDescription, v))
+}
+
+// DescriptionNEQ applies the NEQ predicate on the "description" field.
+func DescriptionNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldDescription, v))
+}
+
+// DescriptionIn applies the In predicate on the "description" field.
+func DescriptionIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldDescription, vs...))
+}
+
+// DescriptionNotIn applies the NotIn predicate on the "description" field.
+func DescriptionNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldDescription, vs...))
+}
+
+// DescriptionGT applies the GT predicate on the "description" field.
+func DescriptionGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldDescription, v))
+}
+
+// DescriptionGTE applies the GTE predicate on the "description" field.
+func DescriptionGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldDescription, v))
+}
+
+// DescriptionLT applies the LT predicate on the "description" field.
+func DescriptionLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldDescription, v))
+}
+
+// DescriptionLTE applies the LTE predicate on the "description" field.
+func DescriptionLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldDescription, v))
+}
+
+// DescriptionContains applies the Contains predicate on the "description" field.
+func DescriptionContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldDescription, v))
+}
+
+// DescriptionHasPrefix applies the HasPrefix predicate on the "description" field.
+func DescriptionHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldDescription, v))
+}
+
+// DescriptionHasSuffix applies the HasSuffix predicate on the "description" field.
+func DescriptionHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldDescription, v))
+}
+
+// DescriptionIsNil applies the IsNil predicate on the "description" field.
+func DescriptionIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldDescription))
+}
+
+// DescriptionNotNil applies the NotNil predicate on the "description" field.
+func DescriptionNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldDescription))
+}
+
+// DescriptionEqualFold applies the EqualFold predicate on the "description" field.
+func DescriptionEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldDescription, v))
+}
+
+// DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
+func DescriptionContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldDescription, v))
+}
+
+// RequirementEQ applies the EQ predicate on the "requirement" field.
+func RequirementEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldRequirement, v))
+}
+
+// RequirementNEQ applies the NEQ predicate on the "requirement" field.
+func RequirementNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldRequirement, v))
+}
+
+// RequirementIn applies the In predicate on the "requirement" field.
+func RequirementIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldRequirement, vs...))
+}
+
+// RequirementNotIn applies the NotIn predicate on the "requirement" field.
+func RequirementNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldRequirement, vs...))
+}
+
+// RequirementGT applies the GT predicate on the "requirement" field.
+func RequirementGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldRequirement, v))
+}
+
+// RequirementGTE applies the GTE predicate on the "requirement" field.
+func RequirementGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldRequirement, v))
+}
+
+// RequirementLT applies the LT predicate on the "requirement" field.
+func RequirementLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldRequirement, v))
+}
+
+// RequirementLTE applies the LTE predicate on the "requirement" field.
+func RequirementLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldRequirement, v))
+}
+
+// RequirementContains applies the Contains predicate on the "requirement" field.
+func RequirementContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldRequirement, v))
+}
+
+// RequirementHasPrefix applies the HasPrefix predicate on the "requirement" field.
+func RequirementHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldRequirement, v))
+}
+
+// RequirementHasSuffix applies the HasSuffix predicate on the "requirement" field.
+func RequirementHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldRequirement, v))
+}
+
+// RequirementIsNil applies the IsNil predicate on the "requirement" field.
+func RequirementIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldRequirement))
+}
+
+// RequirementNotNil applies the NotNil predicate on the "requirement" field.
+func RequirementNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldRequirement))
+}
+
+// RequirementEqualFold applies the EqualFold predicate on the "requirement" field.
+func RequirementEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldRequirement, v))
+}
+
+// RequirementContainsFold applies the ContainsFold predicate on the "requirement" field.
+func RequirementContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldRequirement, v))
+}
+
+// AddressEQ applies the EQ predicate on the "address" field.
+func AddressEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldAddress, v))
+}
+
+// AddressNEQ applies the NEQ predicate on the "address" field.
+func AddressNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldAddress, v))
+}
+
+// AddressIn applies the In predicate on the "address" field.
+func AddressIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldAddress, vs...))
+}
+
+// AddressNotIn applies the NotIn predicate on the "address" field.
+func AddressNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldAddress, vs...))
+}
+
+// AddressGT applies the GT predicate on the "address" field.
+func AddressGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldAddress, v))
+}
+
+// AddressGTE applies the GTE predicate on the "address" field.
+func AddressGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldAddress, v))
+}
+
+// AddressLT applies the LT predicate on the "address" field.
+func AddressLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldAddress, v))
+}
+
+// AddressLTE applies the LTE predicate on the "address" field.
+func AddressLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldAddress, v))
+}
+
+// AddressContains applies the Contains predicate on the "address" field.
+func AddressContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldAddress, v))
+}
+
+// AddressHasPrefix applies the HasPrefix predicate on the "address" field.
+func AddressHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldAddress, v))
+}
+
+// AddressHasSuffix applies the HasSuffix predicate on the "address" field.
+func AddressHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldAddress, v))
+}
+
+// AddressIsNil applies the IsNil predicate on the "address" field.
+func AddressIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldAddress))
+}
+
+// AddressNotNil applies the NotNil predicate on the "address" field.
+func AddressNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldAddress))
+}
+
+// AddressEqualFold applies the EqualFold predicate on the "address" field.
+func AddressEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldAddress, v))
+}
+
+// AddressContainsFold applies the ContainsFold predicate on the "address" field.
+func AddressContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldAddress, v))
+}
+
+// DateEQ applies the EQ predicate on the "date" field.
+func DateEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldDate, v))
+}
+
+// DateNEQ applies the NEQ predicate on the "date" field.
+func DateNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldDate, v))
+}
+
+// DateIn applies the In predicate on the "date" field.
+func DateIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldDate, vs...))
+}
+
+// DateNotIn applies the NotIn predicate on the "date" field.
+func DateNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldDate, vs...))
+}
+
+// DateGT applies the GT predicate on the "date" field.
+func DateGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldDate, v))
+}
+
+// DateGTE applies the GTE predicate on the "date" field.
+func DateGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldDate, v))
+}
+
+// DateLT applies the LT predicate on the "date" field.
+func DateLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldDate, v))
+}
+
+// DateLTE applies the LTE predicate on the "date" field.
+func DateLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldDate, v))
+}
+
+// DateContains applies the Contains predicate on the "date" field.
+func DateContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldDate, v))
+}
+
+// DateHasPrefix applies the HasPrefix predicate on the "date" field.
+func DateHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldDate, v))
+}
+
+// DateHasSuffix applies the HasSuffix predicate on the "date" field.
+func DateHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldDate, v))
+}
+
+// DateIsNil applies the IsNil predicate on the "date" field.
+func DateIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldDate))
+}
+
+// DateNotNil applies the NotNil predicate on the "date" field.
+func DateNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldDate))
+}
+
+// DateEqualFold applies the EqualFold predicate on the "date" field.
+func DateEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldDate, v))
+}
+
+// DateContainsFold applies the ContainsFold predicate on the "date" field.
+func DateContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldDate, v))
+}
+
+// TypeEQ applies the EQ predicate on the "type" field.
+func TypeEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldType, v))
+}
+
+// TypeNEQ applies the NEQ predicate on the "type" field.
+func TypeNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldType, v))
+}
+
+// TypeIn applies the In predicate on the "type" field.
+func TypeIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldType, vs...))
+}
+
+// TypeNotIn applies the NotIn predicate on the "type" field.
+func TypeNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldType, vs...))
+}
+
+// TypeGT applies the GT predicate on the "type" field.
+func TypeGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldType, v))
+}
+
+// TypeGTE applies the GTE predicate on the "type" field.
+func TypeGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldType, v))
+}
+
+// TypeLT applies the LT predicate on the "type" field.
+func TypeLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldType, v))
+}
+
+// TypeLTE applies the LTE predicate on the "type" field.
+func TypeLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldType, v))
+}
+
+// TypeContains applies the Contains predicate on the "type" field.
+func TypeContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldType, v))
+}
+
+// TypeHasPrefix applies the HasPrefix predicate on the "type" field.
+func TypeHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldType, v))
+}
+
+// TypeHasSuffix applies the HasSuffix predicate on the "type" field.
+func TypeHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldType, v))
+}
+
+// TypeIsNil applies the IsNil predicate on the "type" field.
+func TypeIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldType))
+}
+
+// TypeNotNil applies the NotNil predicate on the "type" field.
+func TypeNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldType))
+}
+
+// TypeEqualFold applies the EqualFold predicate on the "type" field.
+func TypeEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldType, v))
+}
+
+// TypeContainsFold applies the ContainsFold predicate on the "type" field.
+func TypeContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldType, v))
+}
+
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldStatus, v))
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldStatus, v))
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldStatus, vs...))
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldStatus, vs...))
+}
+
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldStatus, v))
+}
+
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldStatus, v))
+}
+
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldStatus, v))
+}
+
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldStatus, v))
+}
+
+// StatusContains applies the Contains predicate on the "status" field.
+func StatusContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldStatus, v))
+}
+
+// StatusHasPrefix applies the HasPrefix predicate on the "status" field.
+func StatusHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldStatus, v))
+}
+
+// StatusHasSuffix applies the HasSuffix predicate on the "status" field.
+func StatusHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldStatus, v))
+}
+
+// StatusIsNil applies the IsNil predicate on the "status" field.
+func StatusIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldStatus))
+}
+
+// StatusNotNil applies the NotNil predicate on the "status" field.
+func StatusNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldStatus))
+}
+
+// StatusEqualFold applies the EqualFold predicate on the "status" field.
+func StatusEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldStatus, v))
+}
+
+// StatusContainsFold applies the ContainsFold predicate on the "status" field.
+func StatusContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldStatus, v))
+}
+
+// AmountEQ applies the EQ predicate on the "amount" field.
+func AmountEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldAmount, v))
+}
+
+// AmountNEQ applies the NEQ predicate on the "amount" field.
+func AmountNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldAmount, v))
+}
+
+// AmountIn applies the In predicate on the "amount" field.
+func AmountIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldAmount, vs...))
+}
+
+// AmountNotIn applies the NotIn predicate on the "amount" field.
+func AmountNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldAmount, vs...))
+}
+
+// AmountGT applies the GT predicate on the "amount" field.
+func AmountGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldAmount, v))
+}
+
+// AmountGTE applies the GTE predicate on the "amount" field.
+func AmountGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldAmount, v))
+}
+
+// AmountLT applies the LT predicate on the "amount" field.
+func AmountLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldAmount, v))
+}
+
+// AmountLTE applies the LTE predicate on the "amount" field.
+func AmountLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldAmount, v))
+}
+
+// AmountContains applies the Contains predicate on the "amount" field.
+func AmountContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldAmount, v))
+}
+
+// AmountHasPrefix applies the HasPrefix predicate on the "amount" field.
+func AmountHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldAmount, v))
+}
+
+// AmountHasSuffix applies the HasSuffix predicate on the "amount" field.
+func AmountHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldAmount, v))
+}
+
+// AmountIsNil applies the IsNil predicate on the "amount" field.
+func AmountIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldAmount))
+}
+
+// AmountNotNil applies the NotNil predicate on the "amount" field.
+func AmountNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldAmount))
+}
+
+// AmountEqualFold applies the EqualFold predicate on the "amount" field.
+func AmountEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldAmount, v))
+}
+
+// AmountContainsFold applies the ContainsFold predicate on the "amount" field.
+func AmountContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldAmount, v))
+}
+
+// SizeEQ applies the EQ predicate on the "size" field.
+func SizeEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldSize, v))
+}
+
+// SizeNEQ applies the NEQ predicate on the "size" field.
+func SizeNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldSize, v))
+}
+
+// SizeIn applies the In predicate on the "size" field.
+func SizeIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldSize, vs...))
+}
+
+// SizeNotIn applies the NotIn predicate on the "size" field.
+func SizeNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldSize, vs...))
+}
+
+// SizeGT applies the GT predicate on the "size" field.
+func SizeGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldSize, v))
+}
+
+// SizeGTE applies the GTE predicate on the "size" field.
+func SizeGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldSize, v))
+}
+
+// SizeLT applies the LT predicate on the "size" field.
+func SizeLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldSize, v))
+}
+
+// SizeLTE applies the LTE predicate on the "size" field.
+func SizeLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldSize, v))
+}
+
+// SizeContains applies the Contains predicate on the "size" field.
+func SizeContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldSize, v))
+}
+
+// SizeHasPrefix applies the HasPrefix predicate on the "size" field.
+func SizeHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldSize, v))
+}
+
+// SizeHasSuffix applies the HasSuffix predicate on the "size" field.
+func SizeHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldSize, v))
+}
+
+// SizeIsNil applies the IsNil predicate on the "size" field.
+func SizeIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldSize))
+}
+
+// SizeNotNil applies the NotNil predicate on the "size" field.
+func SizeNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldSize))
+}
+
+// SizeEqualFold applies the EqualFold predicate on the "size" field.
+func SizeEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldSize, v))
+}
+
+// SizeContainsFold applies the ContainsFold predicate on the "size" field.
+func SizeContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldSize, v))
+}
+
+// LocationEQ applies the EQ predicate on the "location" field.
+func LocationEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldLocation, v))
+}
+
+// LocationNEQ applies the NEQ predicate on the "location" field.
+func LocationNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldLocation, v))
+}
+
+// LocationIn applies the In predicate on the "location" field.
+func LocationIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldLocation, vs...))
+}
+
+// LocationNotIn applies the NotIn predicate on the "location" field.
+func LocationNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldLocation, vs...))
+}
+
+// LocationGT applies the GT predicate on the "location" field.
+func LocationGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldLocation, v))
+}
+
+// LocationGTE applies the GTE predicate on the "location" field.
+func LocationGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldLocation, v))
+}
+
+// LocationLT applies the LT predicate on the "location" field.
+func LocationLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldLocation, v))
+}
+
+// LocationLTE applies the LTE predicate on the "location" field.
+func LocationLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldLocation, v))
+}
+
+// LocationContains applies the Contains predicate on the "location" field.
+func LocationContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldLocation, v))
+}
+
+// LocationHasPrefix applies the HasPrefix predicate on the "location" field.
+func LocationHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldLocation, v))
+}
+
+// LocationHasSuffix applies the HasSuffix predicate on the "location" field.
+func LocationHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldLocation, v))
+}
+
+// LocationIsNil applies the IsNil predicate on the "location" field.
+func LocationIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldLocation))
+}
+
+// LocationNotNil applies the NotNil predicate on the "location" field.
+func LocationNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldLocation))
+}
+
+// LocationEqualFold applies the EqualFold predicate on the "location" field.
+func LocationEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldLocation, v))
+}
+
+// LocationContainsFold applies the ContainsFold predicate on the "location" field.
+func LocationContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldLocation, v))
+}
+
+// ContactEQ applies the EQ predicate on the "contact" field.
+func ContactEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContact, v))
+}
+
+// ContactNEQ applies the NEQ predicate on the "contact" field.
+func ContactNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldContact, v))
+}
+
+// ContactIn applies the In predicate on the "contact" field.
+func ContactIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldContact, vs...))
+}
+
+// ContactNotIn applies the NotIn predicate on the "contact" field.
+func ContactNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldContact, vs...))
+}
+
+// ContactGT applies the GT predicate on the "contact" field.
+func ContactGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldContact, v))
+}
+
+// ContactGTE applies the GTE predicate on the "contact" field.
+func ContactGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldContact, v))
+}
+
+// ContactLT applies the LT predicate on the "contact" field.
+func ContactLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldContact, v))
+}
+
+// ContactLTE applies the LTE predicate on the "contact" field.
+func ContactLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldContact, v))
+}
+
+// ContactContains applies the Contains predicate on the "contact" field.
+func ContactContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldContact, v))
+}
+
+// ContactHasPrefix applies the HasPrefix predicate on the "contact" field.
+func ContactHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldContact, v))
+}
+
+// ContactHasSuffix applies the HasSuffix predicate on the "contact" field.
+func ContactHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldContact, v))
+}
+
+// ContactIsNil applies the IsNil predicate on the "contact" field.
+func ContactIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldContact))
+}
+
+// ContactNotNil applies the NotNil predicate on the "contact" field.
+func ContactNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldContact))
+}
+
+// ContactEqualFold applies the EqualFold predicate on the "contact" field.
+func ContactEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldContact, v))
+}
+
+// ContactContainsFold applies the ContainsFold predicate on the "contact" field.
+func ContactContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldContact, v))
+}
+
+// ContactPhoneEQ applies the EQ predicate on the "contact_phone" field.
+func ContactPhoneEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContactPhone, v))
+}
+
+// ContactPhoneNEQ applies the NEQ predicate on the "contact_phone" field.
+func ContactPhoneNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldContactPhone, v))
+}
+
+// ContactPhoneIn applies the In predicate on the "contact_phone" field.
+func ContactPhoneIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldContactPhone, vs...))
+}
+
+// ContactPhoneNotIn applies the NotIn predicate on the "contact_phone" field.
+func ContactPhoneNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldContactPhone, vs...))
+}
+
+// ContactPhoneGT applies the GT predicate on the "contact_phone" field.
+func ContactPhoneGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldContactPhone, v))
+}
+
+// ContactPhoneGTE applies the GTE predicate on the "contact_phone" field.
+func ContactPhoneGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldContactPhone, v))
+}
+
+// ContactPhoneLT applies the LT predicate on the "contact_phone" field.
+func ContactPhoneLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldContactPhone, v))
+}
+
+// ContactPhoneLTE applies the LTE predicate on the "contact_phone" field.
+func ContactPhoneLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldContactPhone, v))
+}
+
+// ContactPhoneContains applies the Contains predicate on the "contact_phone" field.
+func ContactPhoneContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldContactPhone, v))
+}
+
+// ContactPhoneHasPrefix applies the HasPrefix predicate on the "contact_phone" field.
+func ContactPhoneHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldContactPhone, v))
+}
+
+// ContactPhoneHasSuffix applies the HasSuffix predicate on the "contact_phone" field.
+func ContactPhoneHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldContactPhone, v))
+}
+
+// ContactPhoneIsNil applies the IsNil predicate on the "contact_phone" field.
+func ContactPhoneIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldContactPhone))
+}
+
+// ContactPhoneNotNil applies the NotNil predicate on the "contact_phone" field.
+func ContactPhoneNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldContactPhone))
+}
+
+// ContactPhoneEqualFold applies the EqualFold predicate on the "contact_phone" field.
+func ContactPhoneEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldContactPhone, v))
+}
+
+// ContactPhoneContainsFold applies the ContainsFold predicate on the "contact_phone" field.
+func ContactPhoneContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldContactPhone, v))
+}
+
+// ContactEmailEQ applies the EQ predicate on the "contact_email" field.
+func ContactEmailEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContactEmail, v))
+}
+
+// ContactEmailNEQ applies the NEQ predicate on the "contact_email" field.
+func ContactEmailNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldContactEmail, v))
+}
+
+// ContactEmailIn applies the In predicate on the "contact_email" field.
+func ContactEmailIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldContactEmail, vs...))
+}
+
+// ContactEmailNotIn applies the NotIn predicate on the "contact_email" field.
+func ContactEmailNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldContactEmail, vs...))
+}
+
+// ContactEmailGT applies the GT predicate on the "contact_email" field.
+func ContactEmailGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldContactEmail, v))
+}
+
+// ContactEmailGTE applies the GTE predicate on the "contact_email" field.
+func ContactEmailGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldContactEmail, v))
+}
+
+// ContactEmailLT applies the LT predicate on the "contact_email" field.
+func ContactEmailLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldContactEmail, v))
+}
+
+// ContactEmailLTE applies the LTE predicate on the "contact_email" field.
+func ContactEmailLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldContactEmail, v))
+}
+
+// ContactEmailContains applies the Contains predicate on the "contact_email" field.
+func ContactEmailContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldContactEmail, v))
+}
+
+// ContactEmailHasPrefix applies the HasPrefix predicate on the "contact_email" field.
+func ContactEmailHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldContactEmail, v))
+}
+
+// ContactEmailHasSuffix applies the HasSuffix predicate on the "contact_email" field.
+func ContactEmailHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldContactEmail, v))
+}
+
+// ContactEmailIsNil applies the IsNil predicate on the "contact_email" field.
+func ContactEmailIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldContactEmail))
+}
+
+// ContactEmailNotNil applies the NotNil predicate on the "contact_email" field.
+func ContactEmailNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldContactEmail))
+}
+
+// ContactEmailEqualFold applies the EqualFold predicate on the "contact_email" field.
+func ContactEmailEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldContactEmail, v))
+}
+
+// ContactEmailContainsFold applies the ContainsFold predicate on the "contact_email" field.
+func ContactEmailContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldContactEmail, v))
+}
+
+// ContactAddressEQ applies the EQ predicate on the "contact_address" field.
+func ContactAddressEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEQ(FieldContactAddress, v))
+}
+
+// ContactAddressNEQ applies the NEQ predicate on the "contact_address" field.
+func ContactAddressNEQ(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNEQ(FieldContactAddress, v))
+}
+
+// ContactAddressIn applies the In predicate on the "contact_address" field.
+func ContactAddressIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIn(FieldContactAddress, vs...))
+}
+
+// ContactAddressNotIn applies the NotIn predicate on the "contact_address" field.
+func ContactAddressNotIn(vs ...string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotIn(FieldContactAddress, vs...))
+}
+
+// ContactAddressGT applies the GT predicate on the "contact_address" field.
+func ContactAddressGT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGT(FieldContactAddress, v))
+}
+
+// ContactAddressGTE applies the GTE predicate on the "contact_address" field.
+func ContactAddressGTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldGTE(FieldContactAddress, v))
+}
+
+// ContactAddressLT applies the LT predicate on the "contact_address" field.
+func ContactAddressLT(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLT(FieldContactAddress, v))
+}
+
+// ContactAddressLTE applies the LTE predicate on the "contact_address" field.
+func ContactAddressLTE(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldLTE(FieldContactAddress, v))
+}
+
+// ContactAddressContains applies the Contains predicate on the "contact_address" field.
+func ContactAddressContains(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContains(FieldContactAddress, v))
+}
+
+// ContactAddressHasPrefix applies the HasPrefix predicate on the "contact_address" field.
+func ContactAddressHasPrefix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasPrefix(FieldContactAddress, v))
+}
+
+// ContactAddressHasSuffix applies the HasSuffix predicate on the "contact_address" field.
+func ContactAddressHasSuffix(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldHasSuffix(FieldContactAddress, v))
+}
+
+// ContactAddressIsNil applies the IsNil predicate on the "contact_address" field.
+func ContactAddressIsNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldIsNull(FieldContactAddress))
+}
+
+// ContactAddressNotNil applies the NotNil predicate on the "contact_address" field.
+func ContactAddressNotNil() predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldNotNull(FieldContactAddress))
+}
+
+// ContactAddressEqualFold applies the EqualFold predicate on the "contact_address" field.
+func ContactAddressEqualFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldEqualFold(FieldContactAddress, v))
+}
+
+// ContactAddressContainsFold applies the ContainsFold predicate on the "contact_address" field.
+func ContactAddressContainsFold(v string) predicate.PotentialTender {
+	return predicate.PotentialTender(sql.FieldContainsFold(FieldContactAddress, v))
 }
 
 // And groups predicates with the AND operator between them.

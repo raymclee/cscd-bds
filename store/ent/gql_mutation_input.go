@@ -807,8 +807,23 @@ func (c *PlotUpdateOne) SetInput(i UpdatePlotInput) *PlotUpdateOne {
 
 // CreatePotentialTenderInput represents a mutation input for creating potentialtenders.
 type CreatePotentialTenderInput struct {
-	CreatedAt *time.Time
-	UpdatedAt *time.Time
+	CreatedAt      *time.Time
+	UpdatedAt      *time.Time
+	RefURL         string
+	Title          string
+	Description    *string
+	Requirement    *string
+	Address        *string
+	Date           *string
+	Type           *string
+	Status         *string
+	Amount         *string
+	Size           *string
+	Location       *string
+	Contact        *string
+	ContactPhone   *string
+	ContactEmail   *string
+	ContactAddress *string
 }
 
 // Mutate applies the CreatePotentialTenderInput on the PotentialTenderMutation builder.
@@ -818,6 +833,47 @@ func (i *CreatePotentialTenderInput) Mutate(m *PotentialTenderMutation) {
 	}
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
+	}
+	m.SetRefURL(i.RefURL)
+	m.SetTitle(i.Title)
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.Requirement; v != nil {
+		m.SetRequirement(*v)
+	}
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if v := i.Date; v != nil {
+		m.SetDate(*v)
+	}
+	if v := i.Type; v != nil {
+		m.SetType(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.Amount; v != nil {
+		m.SetAmount(*v)
+	}
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
+	}
+	if v := i.Location; v != nil {
+		m.SetLocation(*v)
+	}
+	if v := i.Contact; v != nil {
+		m.SetContact(*v)
+	}
+	if v := i.ContactPhone; v != nil {
+		m.SetContactPhone(*v)
+	}
+	if v := i.ContactEmail; v != nil {
+		m.SetContactEmail(*v)
+	}
+	if v := i.ContactAddress; v != nil {
+		m.SetContactAddress(*v)
 	}
 }
 
@@ -829,13 +885,125 @@ func (c *PotentialTenderCreate) SetInput(i CreatePotentialTenderInput) *Potentia
 
 // UpdatePotentialTenderInput represents a mutation input for updating potentialtenders.
 type UpdatePotentialTenderInput struct {
-	UpdatedAt *time.Time
+	UpdatedAt           *time.Time
+	RefURL              *string
+	Title               *string
+	ClearDescription    bool
+	Description         *string
+	ClearRequirement    bool
+	Requirement         *string
+	ClearAddress        bool
+	Address             *string
+	ClearDate           bool
+	Date                *string
+	ClearType           bool
+	Type                *string
+	ClearStatus         bool
+	Status              *string
+	ClearAmount         bool
+	Amount              *string
+	ClearSize           bool
+	Size                *string
+	ClearLocation       bool
+	Location            *string
+	ClearContact        bool
+	Contact             *string
+	ClearContactPhone   bool
+	ContactPhone        *string
+	ClearContactEmail   bool
+	ContactEmail        *string
+	ClearContactAddress bool
+	ContactAddress      *string
 }
 
 // Mutate applies the UpdatePotentialTenderInput on the PotentialTenderMutation builder.
 func (i *UpdatePotentialTenderInput) Mutate(m *PotentialTenderMutation) {
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
+	}
+	if v := i.RefURL; v != nil {
+		m.SetRefURL(*v)
+	}
+	if v := i.Title; v != nil {
+		m.SetTitle(*v)
+	}
+	if i.ClearDescription {
+		m.ClearDescription()
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if i.ClearRequirement {
+		m.ClearRequirement()
+	}
+	if v := i.Requirement; v != nil {
+		m.SetRequirement(*v)
+	}
+	if i.ClearAddress {
+		m.ClearAddress()
+	}
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if i.ClearDate {
+		m.ClearDate()
+	}
+	if v := i.Date; v != nil {
+		m.SetDate(*v)
+	}
+	if i.ClearType {
+		m.ClearType()
+	}
+	if v := i.Type; v != nil {
+		m.SetType(*v)
+	}
+	if i.ClearStatus {
+		m.ClearStatus()
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearAmount {
+		m.ClearAmount()
+	}
+	if v := i.Amount; v != nil {
+		m.SetAmount(*v)
+	}
+	if i.ClearSize {
+		m.ClearSize()
+	}
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
+	}
+	if i.ClearLocation {
+		m.ClearLocation()
+	}
+	if v := i.Location; v != nil {
+		m.SetLocation(*v)
+	}
+	if i.ClearContact {
+		m.ClearContact()
+	}
+	if v := i.Contact; v != nil {
+		m.SetContact(*v)
+	}
+	if i.ClearContactPhone {
+		m.ClearContactPhone()
+	}
+	if v := i.ContactPhone; v != nil {
+		m.SetContactPhone(*v)
+	}
+	if i.ClearContactEmail {
+		m.ClearContactEmail()
+	}
+	if v := i.ContactEmail; v != nil {
+		m.SetContactEmail(*v)
+	}
+	if i.ClearContactAddress {
+		m.ClearContactAddress()
+	}
+	if v := i.ContactAddress; v != nil {
+		m.SetContactAddress(*v)
 	}
 }
 

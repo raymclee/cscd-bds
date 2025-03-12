@@ -21,8 +21,38 @@ type PotentialTender struct {
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt    time.Time `json:"updated_at,omitempty"`
-	selectValues sql.SelectValues
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// RefURL holds the value of the "ref_url" field.
+	RefURL string `json:"ref_url,omitempty"`
+	// Title holds the value of the "title" field.
+	Title string `json:"title,omitempty"`
+	// Description holds the value of the "description" field.
+	Description *string `json:"description,omitempty"`
+	// Requirement holds the value of the "requirement" field.
+	Requirement *string `json:"requirement,omitempty"`
+	// Address holds the value of the "address" field.
+	Address *string `json:"address,omitempty"`
+	// Date holds the value of the "date" field.
+	Date *string `json:"date,omitempty"`
+	// Type holds the value of the "type" field.
+	Type *string `json:"type,omitempty"`
+	// Status holds the value of the "status" field.
+	Status *string `json:"status,omitempty"`
+	// Amount holds the value of the "amount" field.
+	Amount *string `json:"amount,omitempty"`
+	// Size holds the value of the "size" field.
+	Size *string `json:"size,omitempty"`
+	// Location holds the value of the "location" field.
+	Location *string `json:"location,omitempty"`
+	// Contact holds the value of the "contact" field.
+	Contact *string `json:"contact,omitempty"`
+	// ContactPhone holds the value of the "contact_phone" field.
+	ContactPhone *string `json:"contact_phone,omitempty"`
+	// ContactEmail holds the value of the "contact_email" field.
+	ContactEmail *string `json:"contact_email,omitempty"`
+	// ContactAddress holds the value of the "contact_address" field.
+	ContactAddress *string `json:"contact_address,omitempty"`
+	selectValues   sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -30,6 +60,8 @@ func (*PotentialTender) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case potentialtender.FieldRefURL, potentialtender.FieldTitle, potentialtender.FieldDescription, potentialtender.FieldRequirement, potentialtender.FieldAddress, potentialtender.FieldDate, potentialtender.FieldType, potentialtender.FieldStatus, potentialtender.FieldAmount, potentialtender.FieldSize, potentialtender.FieldLocation, potentialtender.FieldContact, potentialtender.FieldContactPhone, potentialtender.FieldContactEmail, potentialtender.FieldContactAddress:
+			values[i] = new(sql.NullString)
 		case potentialtender.FieldCreatedAt, potentialtender.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		case potentialtender.FieldID:
@@ -66,6 +98,109 @@ func (pt *PotentialTender) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				pt.UpdatedAt = value.Time
+			}
+		case potentialtender.FieldRefURL:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field ref_url", values[i])
+			} else if value.Valid {
+				pt.RefURL = value.String
+			}
+		case potentialtender.FieldTitle:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field title", values[i])
+			} else if value.Valid {
+				pt.Title = value.String
+			}
+		case potentialtender.FieldDescription:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field description", values[i])
+			} else if value.Valid {
+				pt.Description = new(string)
+				*pt.Description = value.String
+			}
+		case potentialtender.FieldRequirement:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field requirement", values[i])
+			} else if value.Valid {
+				pt.Requirement = new(string)
+				*pt.Requirement = value.String
+			}
+		case potentialtender.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
+			} else if value.Valid {
+				pt.Address = new(string)
+				*pt.Address = value.String
+			}
+		case potentialtender.FieldDate:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field date", values[i])
+			} else if value.Valid {
+				pt.Date = new(string)
+				*pt.Date = value.String
+			}
+		case potentialtender.FieldType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field type", values[i])
+			} else if value.Valid {
+				pt.Type = new(string)
+				*pt.Type = value.String
+			}
+		case potentialtender.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				pt.Status = new(string)
+				*pt.Status = value.String
+			}
+		case potentialtender.FieldAmount:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field amount", values[i])
+			} else if value.Valid {
+				pt.Amount = new(string)
+				*pt.Amount = value.String
+			}
+		case potentialtender.FieldSize:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field size", values[i])
+			} else if value.Valid {
+				pt.Size = new(string)
+				*pt.Size = value.String
+			}
+		case potentialtender.FieldLocation:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field location", values[i])
+			} else if value.Valid {
+				pt.Location = new(string)
+				*pt.Location = value.String
+			}
+		case potentialtender.FieldContact:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contact", values[i])
+			} else if value.Valid {
+				pt.Contact = new(string)
+				*pt.Contact = value.String
+			}
+		case potentialtender.FieldContactPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contact_phone", values[i])
+			} else if value.Valid {
+				pt.ContactPhone = new(string)
+				*pt.ContactPhone = value.String
+			}
+		case potentialtender.FieldContactEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contact_email", values[i])
+			} else if value.Valid {
+				pt.ContactEmail = new(string)
+				*pt.ContactEmail = value.String
+			}
+		case potentialtender.FieldContactAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contact_address", values[i])
+			} else if value.Valid {
+				pt.ContactAddress = new(string)
+				*pt.ContactAddress = value.String
 			}
 		default:
 			pt.selectValues.Set(columns[i], values[i])
@@ -108,6 +243,77 @@ func (pt *PotentialTender) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
 	builder.WriteString(pt.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("ref_url=")
+	builder.WriteString(pt.RefURL)
+	builder.WriteString(", ")
+	builder.WriteString("title=")
+	builder.WriteString(pt.Title)
+	builder.WriteString(", ")
+	if v := pt.Description; v != nil {
+		builder.WriteString("description=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Requirement; v != nil {
+		builder.WriteString("requirement=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Address; v != nil {
+		builder.WriteString("address=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Date; v != nil {
+		builder.WriteString("date=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Type; v != nil {
+		builder.WriteString("type=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Status; v != nil {
+		builder.WriteString("status=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Amount; v != nil {
+		builder.WriteString("amount=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Size; v != nil {
+		builder.WriteString("size=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Location; v != nil {
+		builder.WriteString("location=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.Contact; v != nil {
+		builder.WriteString("contact=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.ContactPhone; v != nil {
+		builder.WriteString("contact_phone=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.ContactEmail; v != nil {
+		builder.WriteString("contact_email=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := pt.ContactAddress; v != nil {
+		builder.WriteString("contact_address=")
+		builder.WriteString(*v)
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

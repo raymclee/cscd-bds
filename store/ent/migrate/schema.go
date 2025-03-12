@@ -220,6 +220,21 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "ref_url", Type: field.TypeString, Unique: true},
+		{Name: "title", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "requirement", Type: field.TypeString, Nullable: true},
+		{Name: "address", Type: field.TypeString, Nullable: true},
+		{Name: "date", Type: field.TypeString, Nullable: true},
+		{Name: "type", Type: field.TypeString, Nullable: true},
+		{Name: "status", Type: field.TypeString, Nullable: true},
+		{Name: "amount", Type: field.TypeString, Nullable: true},
+		{Name: "size", Type: field.TypeString, Nullable: true},
+		{Name: "location", Type: field.TypeString, Nullable: true},
+		{Name: "contact", Type: field.TypeString, Nullable: true},
+		{Name: "contact_phone", Type: field.TypeString, Nullable: true},
+		{Name: "contact_email", Type: field.TypeString, Nullable: true},
+		{Name: "contact_address", Type: field.TypeString, Nullable: true},
 	}
 	// PotentialTendersTable holds the schema information for the "potential_tenders" table.
 	PotentialTendersTable = &schema.Table{

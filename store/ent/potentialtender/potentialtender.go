@@ -18,6 +18,36 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
+	// FieldRefURL holds the string denoting the ref_url field in the database.
+	FieldRefURL = "ref_url"
+	// FieldTitle holds the string denoting the title field in the database.
+	FieldTitle = "title"
+	// FieldDescription holds the string denoting the description field in the database.
+	FieldDescription = "description"
+	// FieldRequirement holds the string denoting the requirement field in the database.
+	FieldRequirement = "requirement"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
+	// FieldDate holds the string denoting the date field in the database.
+	FieldDate = "date"
+	// FieldType holds the string denoting the type field in the database.
+	FieldType = "type"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
+	// FieldAmount holds the string denoting the amount field in the database.
+	FieldAmount = "amount"
+	// FieldSize holds the string denoting the size field in the database.
+	FieldSize = "size"
+	// FieldLocation holds the string denoting the location field in the database.
+	FieldLocation = "location"
+	// FieldContact holds the string denoting the contact field in the database.
+	FieldContact = "contact"
+	// FieldContactPhone holds the string denoting the contact_phone field in the database.
+	FieldContactPhone = "contact_phone"
+	// FieldContactEmail holds the string denoting the contact_email field in the database.
+	FieldContactEmail = "contact_email"
+	// FieldContactAddress holds the string denoting the contact_address field in the database.
+	FieldContactAddress = "contact_address"
 	// Table holds the table name of the potentialtender in the database.
 	Table = "potential_tenders"
 )
@@ -27,6 +57,21 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldUpdatedAt,
+	FieldRefURL,
+	FieldTitle,
+	FieldDescription,
+	FieldRequirement,
+	FieldAddress,
+	FieldDate,
+	FieldType,
+	FieldStatus,
+	FieldAmount,
+	FieldSize,
+	FieldLocation,
+	FieldContact,
+	FieldContactPhone,
+	FieldContactEmail,
+	FieldContactAddress,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -66,4 +111,79 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
+}
+
+// ByRefURL orders the results by the ref_url field.
+func ByRefURL(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRefURL, opts...).ToFunc()
+}
+
+// ByTitle orders the results by the title field.
+func ByTitle(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTitle, opts...).ToFunc()
+}
+
+// ByDescription orders the results by the description field.
+func ByDescription(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDescription, opts...).ToFunc()
+}
+
+// ByRequirement orders the results by the requirement field.
+func ByRequirement(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRequirement, opts...).ToFunc()
+}
+
+// ByAddress orders the results by the address field.
+func ByAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddress, opts...).ToFunc()
+}
+
+// ByDate orders the results by the date field.
+func ByDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDate, opts...).ToFunc()
+}
+
+// ByType orders the results by the type field.
+func ByType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldType, opts...).ToFunc()
+}
+
+// ByStatus orders the results by the status field.
+func ByStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByAmount orders the results by the amount field.
+func ByAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAmount, opts...).ToFunc()
+}
+
+// BySize orders the results by the size field.
+func BySize(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSize, opts...).ToFunc()
+}
+
+// ByLocation orders the results by the location field.
+func ByLocation(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLocation, opts...).ToFunc()
+}
+
+// ByContact orders the results by the contact field.
+func ByContact(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContact, opts...).ToFunc()
+}
+
+// ByContactPhone orders the results by the contact_phone field.
+func ByContactPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContactPhone, opts...).ToFunc()
+}
+
+// ByContactEmail orders the results by the contact_email field.
+func ByContactEmail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContactEmail, opts...).ToFunc()
+}
+
+// ByContactAddress orders the results by the contact_address field.
+func ByContactAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContactAddress, opts...).ToFunc()
 }

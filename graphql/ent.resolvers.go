@@ -9,7 +9,6 @@ import (
 	"cscd-bds/graphql/generated"
 	"cscd-bds/store/ent"
 	"cscd-bds/store/ent/schema/xid"
-	"fmt"
 
 	"entgo.io/contrib/entgql"
 )
@@ -66,7 +65,7 @@ func (r *queryResolver) Plots(ctx context.Context, after *entgql.Cursor[xid.ID],
 
 // PotentialTenders is the resolver for the potentialTenders field.
 func (r *queryResolver) PotentialTenders(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.PotentialTenderOrder, where *ent.PotentialTenderWhereInput) (*ent.PotentialTenderConnection, error) {
-	panic(fmt.Errorf("not implemented: PotentialTenders - potentialTenders"))
+	return r.store.PotentialTender.Query().Paginate(ctx, after, first, before, last, ent.WithPotentialTenderFilter(where.Filter), ent.WithPotentialTenderOrder(orderBy))
 }
 
 // Projects is the resolver for the projects field.
@@ -76,7 +75,7 @@ func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[xid.I
 
 // ProjectStaffs is the resolver for the projectStaffs field.
 func (r *queryResolver) ProjectStaffs(ctx context.Context, after *entgql.Cursor[xid.ID], first *int, before *entgql.Cursor[xid.ID], last *int, orderBy []*ent.ProjectStaffOrder, where *ent.ProjectStaffWhereInput) (*ent.ProjectStaffConnection, error) {
-	panic(fmt.Errorf("not implemented: ProjectStaffs - projectStaffs"))
+	return r.store.ProjectStaff.Query().Paginate(ctx, after, first, before, last, ent.WithProjectStaffFilter(where.Filter), ent.WithProjectStaffOrder(orderBy))
 }
 
 // Provinces is the resolver for the provinces field.

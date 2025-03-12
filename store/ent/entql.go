@@ -209,8 +209,23 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "PotentialTender",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			potentialtender.FieldCreatedAt: {Type: field.TypeTime, Column: potentialtender.FieldCreatedAt},
-			potentialtender.FieldUpdatedAt: {Type: field.TypeTime, Column: potentialtender.FieldUpdatedAt},
+			potentialtender.FieldCreatedAt:      {Type: field.TypeTime, Column: potentialtender.FieldCreatedAt},
+			potentialtender.FieldUpdatedAt:      {Type: field.TypeTime, Column: potentialtender.FieldUpdatedAt},
+			potentialtender.FieldRefURL:         {Type: field.TypeString, Column: potentialtender.FieldRefURL},
+			potentialtender.FieldTitle:          {Type: field.TypeString, Column: potentialtender.FieldTitle},
+			potentialtender.FieldDescription:    {Type: field.TypeString, Column: potentialtender.FieldDescription},
+			potentialtender.FieldRequirement:    {Type: field.TypeString, Column: potentialtender.FieldRequirement},
+			potentialtender.FieldAddress:        {Type: field.TypeString, Column: potentialtender.FieldAddress},
+			potentialtender.FieldDate:           {Type: field.TypeString, Column: potentialtender.FieldDate},
+			potentialtender.FieldType:           {Type: field.TypeString, Column: potentialtender.FieldType},
+			potentialtender.FieldStatus:         {Type: field.TypeString, Column: potentialtender.FieldStatus},
+			potentialtender.FieldAmount:         {Type: field.TypeString, Column: potentialtender.FieldAmount},
+			potentialtender.FieldSize:           {Type: field.TypeString, Column: potentialtender.FieldSize},
+			potentialtender.FieldLocation:       {Type: field.TypeString, Column: potentialtender.FieldLocation},
+			potentialtender.FieldContact:        {Type: field.TypeString, Column: potentialtender.FieldContact},
+			potentialtender.FieldContactPhone:   {Type: field.TypeString, Column: potentialtender.FieldContactPhone},
+			potentialtender.FieldContactEmail:   {Type: field.TypeString, Column: potentialtender.FieldContactEmail},
+			potentialtender.FieldContactAddress: {Type: field.TypeString, Column: potentialtender.FieldContactAddress},
 		},
 	}
 	graph.Nodes[9] = &sqlgraph.Node{
@@ -2089,6 +2104,81 @@ func (f *PotentialTenderFilter) WhereCreatedAt(p entql.TimeP) {
 // WhereUpdatedAt applies the entql time.Time predicate on the updated_at field.
 func (f *PotentialTenderFilter) WhereUpdatedAt(p entql.TimeP) {
 	f.Where(p.Field(potentialtender.FieldUpdatedAt))
+}
+
+// WhereRefURL applies the entql string predicate on the ref_url field.
+func (f *PotentialTenderFilter) WhereRefURL(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldRefURL))
+}
+
+// WhereTitle applies the entql string predicate on the title field.
+func (f *PotentialTenderFilter) WhereTitle(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldTitle))
+}
+
+// WhereDescription applies the entql string predicate on the description field.
+func (f *PotentialTenderFilter) WhereDescription(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldDescription))
+}
+
+// WhereRequirement applies the entql string predicate on the requirement field.
+func (f *PotentialTenderFilter) WhereRequirement(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldRequirement))
+}
+
+// WhereAddress applies the entql string predicate on the address field.
+func (f *PotentialTenderFilter) WhereAddress(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldAddress))
+}
+
+// WhereDate applies the entql string predicate on the date field.
+func (f *PotentialTenderFilter) WhereDate(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldDate))
+}
+
+// WhereType applies the entql string predicate on the type field.
+func (f *PotentialTenderFilter) WhereType(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldType))
+}
+
+// WhereStatus applies the entql string predicate on the status field.
+func (f *PotentialTenderFilter) WhereStatus(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldStatus))
+}
+
+// WhereAmount applies the entql string predicate on the amount field.
+func (f *PotentialTenderFilter) WhereAmount(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldAmount))
+}
+
+// WhereSize applies the entql string predicate on the size field.
+func (f *PotentialTenderFilter) WhereSize(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldSize))
+}
+
+// WhereLocation applies the entql string predicate on the location field.
+func (f *PotentialTenderFilter) WhereLocation(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldLocation))
+}
+
+// WhereContact applies the entql string predicate on the contact field.
+func (f *PotentialTenderFilter) WhereContact(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldContact))
+}
+
+// WhereContactPhone applies the entql string predicate on the contact_phone field.
+func (f *PotentialTenderFilter) WhereContactPhone(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldContactPhone))
+}
+
+// WhereContactEmail applies the entql string predicate on the contact_email field.
+func (f *PotentialTenderFilter) WhereContactEmail(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldContactEmail))
+}
+
+// WhereContactAddress applies the entql string predicate on the contact_address field.
+func (f *PotentialTenderFilter) WhereContactAddress(p entql.StringP) {
+	f.Where(p.Field(potentialtender.FieldContactAddress))
 }
 
 // addPredicate implements the predicateAdder interface.

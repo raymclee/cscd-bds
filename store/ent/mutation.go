@@ -8250,15 +8250,30 @@ func (m *PlotMutation) ResetEdge(name string) error {
 // PotentialTenderMutation represents an operation that mutates the PotentialTender nodes in the graph.
 type PotentialTenderMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *xid.ID
-	created_at    *time.Time
-	updated_at    *time.Time
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*PotentialTender, error)
-	predicates    []predicate.PotentialTender
+	op              Op
+	typ             string
+	id              *xid.ID
+	created_at      *time.Time
+	updated_at      *time.Time
+	ref_url         *string
+	title           *string
+	description     *string
+	requirement     *string
+	address         *string
+	date            *string
+	_type           *string
+	status          *string
+	amount          *string
+	size            *string
+	location        *string
+	contact         *string
+	contact_phone   *string
+	contact_email   *string
+	contact_address *string
+	clearedFields   map[string]struct{}
+	done            bool
+	oldValue        func(context.Context) (*PotentialTender, error)
+	predicates      []predicate.PotentialTender
 }
 
 var _ ent.Mutation = (*PotentialTenderMutation)(nil)
@@ -8437,6 +8452,715 @@ func (m *PotentialTenderMutation) ResetUpdatedAt() {
 	m.updated_at = nil
 }
 
+// SetRefURL sets the "ref_url" field.
+func (m *PotentialTenderMutation) SetRefURL(s string) {
+	m.ref_url = &s
+}
+
+// RefURL returns the value of the "ref_url" field in the mutation.
+func (m *PotentialTenderMutation) RefURL() (r string, exists bool) {
+	v := m.ref_url
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRefURL returns the old "ref_url" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldRefURL(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRefURL is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRefURL requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRefURL: %w", err)
+	}
+	return oldValue.RefURL, nil
+}
+
+// ResetRefURL resets all changes to the "ref_url" field.
+func (m *PotentialTenderMutation) ResetRefURL() {
+	m.ref_url = nil
+}
+
+// SetTitle sets the "title" field.
+func (m *PotentialTenderMutation) SetTitle(s string) {
+	m.title = &s
+}
+
+// Title returns the value of the "title" field in the mutation.
+func (m *PotentialTenderMutation) Title() (r string, exists bool) {
+	v := m.title
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTitle returns the old "title" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldTitle(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTitle requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
+	}
+	return oldValue.Title, nil
+}
+
+// ResetTitle resets all changes to the "title" field.
+func (m *PotentialTenderMutation) ResetTitle() {
+	m.title = nil
+}
+
+// SetDescription sets the "description" field.
+func (m *PotentialTenderMutation) SetDescription(s string) {
+	m.description = &s
+}
+
+// Description returns the value of the "description" field in the mutation.
+func (m *PotentialTenderMutation) Description() (r string, exists bool) {
+	v := m.description
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDescription returns the old "description" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldDescription(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDescription requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
+	}
+	return oldValue.Description, nil
+}
+
+// ClearDescription clears the value of the "description" field.
+func (m *PotentialTenderMutation) ClearDescription() {
+	m.description = nil
+	m.clearedFields[potentialtender.FieldDescription] = struct{}{}
+}
+
+// DescriptionCleared returns if the "description" field was cleared in this mutation.
+func (m *PotentialTenderMutation) DescriptionCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldDescription]
+	return ok
+}
+
+// ResetDescription resets all changes to the "description" field.
+func (m *PotentialTenderMutation) ResetDescription() {
+	m.description = nil
+	delete(m.clearedFields, potentialtender.FieldDescription)
+}
+
+// SetRequirement sets the "requirement" field.
+func (m *PotentialTenderMutation) SetRequirement(s string) {
+	m.requirement = &s
+}
+
+// Requirement returns the value of the "requirement" field in the mutation.
+func (m *PotentialTenderMutation) Requirement() (r string, exists bool) {
+	v := m.requirement
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRequirement returns the old "requirement" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldRequirement(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRequirement is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRequirement requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRequirement: %w", err)
+	}
+	return oldValue.Requirement, nil
+}
+
+// ClearRequirement clears the value of the "requirement" field.
+func (m *PotentialTenderMutation) ClearRequirement() {
+	m.requirement = nil
+	m.clearedFields[potentialtender.FieldRequirement] = struct{}{}
+}
+
+// RequirementCleared returns if the "requirement" field was cleared in this mutation.
+func (m *PotentialTenderMutation) RequirementCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldRequirement]
+	return ok
+}
+
+// ResetRequirement resets all changes to the "requirement" field.
+func (m *PotentialTenderMutation) ResetRequirement() {
+	m.requirement = nil
+	delete(m.clearedFields, potentialtender.FieldRequirement)
+}
+
+// SetAddress sets the "address" field.
+func (m *PotentialTenderMutation) SetAddress(s string) {
+	m.address = &s
+}
+
+// Address returns the value of the "address" field in the mutation.
+func (m *PotentialTenderMutation) Address() (r string, exists bool) {
+	v := m.address
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddress returns the old "address" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldAddress(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAddress is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAddress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddress: %w", err)
+	}
+	return oldValue.Address, nil
+}
+
+// ClearAddress clears the value of the "address" field.
+func (m *PotentialTenderMutation) ClearAddress() {
+	m.address = nil
+	m.clearedFields[potentialtender.FieldAddress] = struct{}{}
+}
+
+// AddressCleared returns if the "address" field was cleared in this mutation.
+func (m *PotentialTenderMutation) AddressCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldAddress]
+	return ok
+}
+
+// ResetAddress resets all changes to the "address" field.
+func (m *PotentialTenderMutation) ResetAddress() {
+	m.address = nil
+	delete(m.clearedFields, potentialtender.FieldAddress)
+}
+
+// SetDate sets the "date" field.
+func (m *PotentialTenderMutation) SetDate(s string) {
+	m.date = &s
+}
+
+// Date returns the value of the "date" field in the mutation.
+func (m *PotentialTenderMutation) Date() (r string, exists bool) {
+	v := m.date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDate returns the old "date" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldDate(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+	}
+	return oldValue.Date, nil
+}
+
+// ClearDate clears the value of the "date" field.
+func (m *PotentialTenderMutation) ClearDate() {
+	m.date = nil
+	m.clearedFields[potentialtender.FieldDate] = struct{}{}
+}
+
+// DateCleared returns if the "date" field was cleared in this mutation.
+func (m *PotentialTenderMutation) DateCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldDate]
+	return ok
+}
+
+// ResetDate resets all changes to the "date" field.
+func (m *PotentialTenderMutation) ResetDate() {
+	m.date = nil
+	delete(m.clearedFields, potentialtender.FieldDate)
+}
+
+// SetType sets the "type" field.
+func (m *PotentialTenderMutation) SetType(s string) {
+	m._type = &s
+}
+
+// GetType returns the value of the "type" field in the mutation.
+func (m *PotentialTenderMutation) GetType() (r string, exists bool) {
+	v := m._type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldType returns the old "type" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldType(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldType: %w", err)
+	}
+	return oldValue.Type, nil
+}
+
+// ClearType clears the value of the "type" field.
+func (m *PotentialTenderMutation) ClearType() {
+	m._type = nil
+	m.clearedFields[potentialtender.FieldType] = struct{}{}
+}
+
+// TypeCleared returns if the "type" field was cleared in this mutation.
+func (m *PotentialTenderMutation) TypeCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldType]
+	return ok
+}
+
+// ResetType resets all changes to the "type" field.
+func (m *PotentialTenderMutation) ResetType() {
+	m._type = nil
+	delete(m.clearedFields, potentialtender.FieldType)
+}
+
+// SetStatus sets the "status" field.
+func (m *PotentialTenderMutation) SetStatus(s string) {
+	m.status = &s
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *PotentialTenderMutation) Status() (r string, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldStatus(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *PotentialTenderMutation) ClearStatus() {
+	m.status = nil
+	m.clearedFields[potentialtender.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *PotentialTenderMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *PotentialTenderMutation) ResetStatus() {
+	m.status = nil
+	delete(m.clearedFields, potentialtender.FieldStatus)
+}
+
+// SetAmount sets the "amount" field.
+func (m *PotentialTenderMutation) SetAmount(s string) {
+	m.amount = &s
+}
+
+// Amount returns the value of the "amount" field in the mutation.
+func (m *PotentialTenderMutation) Amount() (r string, exists bool) {
+	v := m.amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmount returns the old "amount" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldAmount(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmount: %w", err)
+	}
+	return oldValue.Amount, nil
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (m *PotentialTenderMutation) ClearAmount() {
+	m.amount = nil
+	m.clearedFields[potentialtender.FieldAmount] = struct{}{}
+}
+
+// AmountCleared returns if the "amount" field was cleared in this mutation.
+func (m *PotentialTenderMutation) AmountCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldAmount]
+	return ok
+}
+
+// ResetAmount resets all changes to the "amount" field.
+func (m *PotentialTenderMutation) ResetAmount() {
+	m.amount = nil
+	delete(m.clearedFields, potentialtender.FieldAmount)
+}
+
+// SetSize sets the "size" field.
+func (m *PotentialTenderMutation) SetSize(s string) {
+	m.size = &s
+}
+
+// Size returns the value of the "size" field in the mutation.
+func (m *PotentialTenderMutation) Size() (r string, exists bool) {
+	v := m.size
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSize returns the old "size" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldSize(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSize is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSize requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSize: %w", err)
+	}
+	return oldValue.Size, nil
+}
+
+// ClearSize clears the value of the "size" field.
+func (m *PotentialTenderMutation) ClearSize() {
+	m.size = nil
+	m.clearedFields[potentialtender.FieldSize] = struct{}{}
+}
+
+// SizeCleared returns if the "size" field was cleared in this mutation.
+func (m *PotentialTenderMutation) SizeCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldSize]
+	return ok
+}
+
+// ResetSize resets all changes to the "size" field.
+func (m *PotentialTenderMutation) ResetSize() {
+	m.size = nil
+	delete(m.clearedFields, potentialtender.FieldSize)
+}
+
+// SetLocation sets the "location" field.
+func (m *PotentialTenderMutation) SetLocation(s string) {
+	m.location = &s
+}
+
+// Location returns the value of the "location" field in the mutation.
+func (m *PotentialTenderMutation) Location() (r string, exists bool) {
+	v := m.location
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLocation returns the old "location" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldLocation(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLocation is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLocation requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLocation: %w", err)
+	}
+	return oldValue.Location, nil
+}
+
+// ClearLocation clears the value of the "location" field.
+func (m *PotentialTenderMutation) ClearLocation() {
+	m.location = nil
+	m.clearedFields[potentialtender.FieldLocation] = struct{}{}
+}
+
+// LocationCleared returns if the "location" field was cleared in this mutation.
+func (m *PotentialTenderMutation) LocationCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldLocation]
+	return ok
+}
+
+// ResetLocation resets all changes to the "location" field.
+func (m *PotentialTenderMutation) ResetLocation() {
+	m.location = nil
+	delete(m.clearedFields, potentialtender.FieldLocation)
+}
+
+// SetContact sets the "contact" field.
+func (m *PotentialTenderMutation) SetContact(s string) {
+	m.contact = &s
+}
+
+// Contact returns the value of the "contact" field in the mutation.
+func (m *PotentialTenderMutation) Contact() (r string, exists bool) {
+	v := m.contact
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContact returns the old "contact" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldContact(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContact is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContact requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContact: %w", err)
+	}
+	return oldValue.Contact, nil
+}
+
+// ClearContact clears the value of the "contact" field.
+func (m *PotentialTenderMutation) ClearContact() {
+	m.contact = nil
+	m.clearedFields[potentialtender.FieldContact] = struct{}{}
+}
+
+// ContactCleared returns if the "contact" field was cleared in this mutation.
+func (m *PotentialTenderMutation) ContactCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldContact]
+	return ok
+}
+
+// ResetContact resets all changes to the "contact" field.
+func (m *PotentialTenderMutation) ResetContact() {
+	m.contact = nil
+	delete(m.clearedFields, potentialtender.FieldContact)
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (m *PotentialTenderMutation) SetContactPhone(s string) {
+	m.contact_phone = &s
+}
+
+// ContactPhone returns the value of the "contact_phone" field in the mutation.
+func (m *PotentialTenderMutation) ContactPhone() (r string, exists bool) {
+	v := m.contact_phone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactPhone returns the old "contact_phone" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldContactPhone(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactPhone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactPhone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactPhone: %w", err)
+	}
+	return oldValue.ContactPhone, nil
+}
+
+// ClearContactPhone clears the value of the "contact_phone" field.
+func (m *PotentialTenderMutation) ClearContactPhone() {
+	m.contact_phone = nil
+	m.clearedFields[potentialtender.FieldContactPhone] = struct{}{}
+}
+
+// ContactPhoneCleared returns if the "contact_phone" field was cleared in this mutation.
+func (m *PotentialTenderMutation) ContactPhoneCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldContactPhone]
+	return ok
+}
+
+// ResetContactPhone resets all changes to the "contact_phone" field.
+func (m *PotentialTenderMutation) ResetContactPhone() {
+	m.contact_phone = nil
+	delete(m.clearedFields, potentialtender.FieldContactPhone)
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (m *PotentialTenderMutation) SetContactEmail(s string) {
+	m.contact_email = &s
+}
+
+// ContactEmail returns the value of the "contact_email" field in the mutation.
+func (m *PotentialTenderMutation) ContactEmail() (r string, exists bool) {
+	v := m.contact_email
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactEmail returns the old "contact_email" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldContactEmail(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactEmail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactEmail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactEmail: %w", err)
+	}
+	return oldValue.ContactEmail, nil
+}
+
+// ClearContactEmail clears the value of the "contact_email" field.
+func (m *PotentialTenderMutation) ClearContactEmail() {
+	m.contact_email = nil
+	m.clearedFields[potentialtender.FieldContactEmail] = struct{}{}
+}
+
+// ContactEmailCleared returns if the "contact_email" field was cleared in this mutation.
+func (m *PotentialTenderMutation) ContactEmailCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldContactEmail]
+	return ok
+}
+
+// ResetContactEmail resets all changes to the "contact_email" field.
+func (m *PotentialTenderMutation) ResetContactEmail() {
+	m.contact_email = nil
+	delete(m.clearedFields, potentialtender.FieldContactEmail)
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (m *PotentialTenderMutation) SetContactAddress(s string) {
+	m.contact_address = &s
+}
+
+// ContactAddress returns the value of the "contact_address" field in the mutation.
+func (m *PotentialTenderMutation) ContactAddress() (r string, exists bool) {
+	v := m.contact_address
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactAddress returns the old "contact_address" field's value of the PotentialTender entity.
+// If the PotentialTender object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PotentialTenderMutation) OldContactAddress(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactAddress is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactAddress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactAddress: %w", err)
+	}
+	return oldValue.ContactAddress, nil
+}
+
+// ClearContactAddress clears the value of the "contact_address" field.
+func (m *PotentialTenderMutation) ClearContactAddress() {
+	m.contact_address = nil
+	m.clearedFields[potentialtender.FieldContactAddress] = struct{}{}
+}
+
+// ContactAddressCleared returns if the "contact_address" field was cleared in this mutation.
+func (m *PotentialTenderMutation) ContactAddressCleared() bool {
+	_, ok := m.clearedFields[potentialtender.FieldContactAddress]
+	return ok
+}
+
+// ResetContactAddress resets all changes to the "contact_address" field.
+func (m *PotentialTenderMutation) ResetContactAddress() {
+	m.contact_address = nil
+	delete(m.clearedFields, potentialtender.FieldContactAddress)
+}
+
 // Where appends a list predicates to the PotentialTenderMutation builder.
 func (m *PotentialTenderMutation) Where(ps ...predicate.PotentialTender) {
 	m.predicates = append(m.predicates, ps...)
@@ -8471,12 +9195,57 @@ func (m *PotentialTenderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PotentialTenderMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 17)
 	if m.created_at != nil {
 		fields = append(fields, potentialtender.FieldCreatedAt)
 	}
 	if m.updated_at != nil {
 		fields = append(fields, potentialtender.FieldUpdatedAt)
+	}
+	if m.ref_url != nil {
+		fields = append(fields, potentialtender.FieldRefURL)
+	}
+	if m.title != nil {
+		fields = append(fields, potentialtender.FieldTitle)
+	}
+	if m.description != nil {
+		fields = append(fields, potentialtender.FieldDescription)
+	}
+	if m.requirement != nil {
+		fields = append(fields, potentialtender.FieldRequirement)
+	}
+	if m.address != nil {
+		fields = append(fields, potentialtender.FieldAddress)
+	}
+	if m.date != nil {
+		fields = append(fields, potentialtender.FieldDate)
+	}
+	if m._type != nil {
+		fields = append(fields, potentialtender.FieldType)
+	}
+	if m.status != nil {
+		fields = append(fields, potentialtender.FieldStatus)
+	}
+	if m.amount != nil {
+		fields = append(fields, potentialtender.FieldAmount)
+	}
+	if m.size != nil {
+		fields = append(fields, potentialtender.FieldSize)
+	}
+	if m.location != nil {
+		fields = append(fields, potentialtender.FieldLocation)
+	}
+	if m.contact != nil {
+		fields = append(fields, potentialtender.FieldContact)
+	}
+	if m.contact_phone != nil {
+		fields = append(fields, potentialtender.FieldContactPhone)
+	}
+	if m.contact_email != nil {
+		fields = append(fields, potentialtender.FieldContactEmail)
+	}
+	if m.contact_address != nil {
+		fields = append(fields, potentialtender.FieldContactAddress)
 	}
 	return fields
 }
@@ -8490,6 +9259,36 @@ func (m *PotentialTenderMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedAt()
 	case potentialtender.FieldUpdatedAt:
 		return m.UpdatedAt()
+	case potentialtender.FieldRefURL:
+		return m.RefURL()
+	case potentialtender.FieldTitle:
+		return m.Title()
+	case potentialtender.FieldDescription:
+		return m.Description()
+	case potentialtender.FieldRequirement:
+		return m.Requirement()
+	case potentialtender.FieldAddress:
+		return m.Address()
+	case potentialtender.FieldDate:
+		return m.Date()
+	case potentialtender.FieldType:
+		return m.GetType()
+	case potentialtender.FieldStatus:
+		return m.Status()
+	case potentialtender.FieldAmount:
+		return m.Amount()
+	case potentialtender.FieldSize:
+		return m.Size()
+	case potentialtender.FieldLocation:
+		return m.Location()
+	case potentialtender.FieldContact:
+		return m.Contact()
+	case potentialtender.FieldContactPhone:
+		return m.ContactPhone()
+	case potentialtender.FieldContactEmail:
+		return m.ContactEmail()
+	case potentialtender.FieldContactAddress:
+		return m.ContactAddress()
 	}
 	return nil, false
 }
@@ -8503,6 +9302,36 @@ func (m *PotentialTenderMutation) OldField(ctx context.Context, name string) (en
 		return m.OldCreatedAt(ctx)
 	case potentialtender.FieldUpdatedAt:
 		return m.OldUpdatedAt(ctx)
+	case potentialtender.FieldRefURL:
+		return m.OldRefURL(ctx)
+	case potentialtender.FieldTitle:
+		return m.OldTitle(ctx)
+	case potentialtender.FieldDescription:
+		return m.OldDescription(ctx)
+	case potentialtender.FieldRequirement:
+		return m.OldRequirement(ctx)
+	case potentialtender.FieldAddress:
+		return m.OldAddress(ctx)
+	case potentialtender.FieldDate:
+		return m.OldDate(ctx)
+	case potentialtender.FieldType:
+		return m.OldType(ctx)
+	case potentialtender.FieldStatus:
+		return m.OldStatus(ctx)
+	case potentialtender.FieldAmount:
+		return m.OldAmount(ctx)
+	case potentialtender.FieldSize:
+		return m.OldSize(ctx)
+	case potentialtender.FieldLocation:
+		return m.OldLocation(ctx)
+	case potentialtender.FieldContact:
+		return m.OldContact(ctx)
+	case potentialtender.FieldContactPhone:
+		return m.OldContactPhone(ctx)
+	case potentialtender.FieldContactEmail:
+		return m.OldContactEmail(ctx)
+	case potentialtender.FieldContactAddress:
+		return m.OldContactAddress(ctx)
 	}
 	return nil, fmt.Errorf("unknown PotentialTender field %s", name)
 }
@@ -8525,6 +9354,111 @@ func (m *PotentialTenderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdatedAt(v)
+		return nil
+	case potentialtender.FieldRefURL:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRefURL(v)
+		return nil
+	case potentialtender.FieldTitle:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTitle(v)
+		return nil
+	case potentialtender.FieldDescription:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDescription(v)
+		return nil
+	case potentialtender.FieldRequirement:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRequirement(v)
+		return nil
+	case potentialtender.FieldAddress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddress(v)
+		return nil
+	case potentialtender.FieldDate:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDate(v)
+		return nil
+	case potentialtender.FieldType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetType(v)
+		return nil
+	case potentialtender.FieldStatus:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case potentialtender.FieldAmount:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmount(v)
+		return nil
+	case potentialtender.FieldSize:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSize(v)
+		return nil
+	case potentialtender.FieldLocation:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLocation(v)
+		return nil
+	case potentialtender.FieldContact:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContact(v)
+		return nil
+	case potentialtender.FieldContactPhone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactPhone(v)
+		return nil
+	case potentialtender.FieldContactEmail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactEmail(v)
+		return nil
+	case potentialtender.FieldContactAddress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactAddress(v)
 		return nil
 	}
 	return fmt.Errorf("unknown PotentialTender field %s", name)
@@ -8555,7 +9489,47 @@ func (m *PotentialTenderMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *PotentialTenderMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(potentialtender.FieldDescription) {
+		fields = append(fields, potentialtender.FieldDescription)
+	}
+	if m.FieldCleared(potentialtender.FieldRequirement) {
+		fields = append(fields, potentialtender.FieldRequirement)
+	}
+	if m.FieldCleared(potentialtender.FieldAddress) {
+		fields = append(fields, potentialtender.FieldAddress)
+	}
+	if m.FieldCleared(potentialtender.FieldDate) {
+		fields = append(fields, potentialtender.FieldDate)
+	}
+	if m.FieldCleared(potentialtender.FieldType) {
+		fields = append(fields, potentialtender.FieldType)
+	}
+	if m.FieldCleared(potentialtender.FieldStatus) {
+		fields = append(fields, potentialtender.FieldStatus)
+	}
+	if m.FieldCleared(potentialtender.FieldAmount) {
+		fields = append(fields, potentialtender.FieldAmount)
+	}
+	if m.FieldCleared(potentialtender.FieldSize) {
+		fields = append(fields, potentialtender.FieldSize)
+	}
+	if m.FieldCleared(potentialtender.FieldLocation) {
+		fields = append(fields, potentialtender.FieldLocation)
+	}
+	if m.FieldCleared(potentialtender.FieldContact) {
+		fields = append(fields, potentialtender.FieldContact)
+	}
+	if m.FieldCleared(potentialtender.FieldContactPhone) {
+		fields = append(fields, potentialtender.FieldContactPhone)
+	}
+	if m.FieldCleared(potentialtender.FieldContactEmail) {
+		fields = append(fields, potentialtender.FieldContactEmail)
+	}
+	if m.FieldCleared(potentialtender.FieldContactAddress) {
+		fields = append(fields, potentialtender.FieldContactAddress)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -8568,6 +9542,47 @@ func (m *PotentialTenderMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *PotentialTenderMutation) ClearField(name string) error {
+	switch name {
+	case potentialtender.FieldDescription:
+		m.ClearDescription()
+		return nil
+	case potentialtender.FieldRequirement:
+		m.ClearRequirement()
+		return nil
+	case potentialtender.FieldAddress:
+		m.ClearAddress()
+		return nil
+	case potentialtender.FieldDate:
+		m.ClearDate()
+		return nil
+	case potentialtender.FieldType:
+		m.ClearType()
+		return nil
+	case potentialtender.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case potentialtender.FieldAmount:
+		m.ClearAmount()
+		return nil
+	case potentialtender.FieldSize:
+		m.ClearSize()
+		return nil
+	case potentialtender.FieldLocation:
+		m.ClearLocation()
+		return nil
+	case potentialtender.FieldContact:
+		m.ClearContact()
+		return nil
+	case potentialtender.FieldContactPhone:
+		m.ClearContactPhone()
+		return nil
+	case potentialtender.FieldContactEmail:
+		m.ClearContactEmail()
+		return nil
+	case potentialtender.FieldContactAddress:
+		m.ClearContactAddress()
+		return nil
+	}
 	return fmt.Errorf("unknown PotentialTender nullable field %s", name)
 }
 
@@ -8580,6 +9595,51 @@ func (m *PotentialTenderMutation) ResetField(name string) error {
 		return nil
 	case potentialtender.FieldUpdatedAt:
 		m.ResetUpdatedAt()
+		return nil
+	case potentialtender.FieldRefURL:
+		m.ResetRefURL()
+		return nil
+	case potentialtender.FieldTitle:
+		m.ResetTitle()
+		return nil
+	case potentialtender.FieldDescription:
+		m.ResetDescription()
+		return nil
+	case potentialtender.FieldRequirement:
+		m.ResetRequirement()
+		return nil
+	case potentialtender.FieldAddress:
+		m.ResetAddress()
+		return nil
+	case potentialtender.FieldDate:
+		m.ResetDate()
+		return nil
+	case potentialtender.FieldType:
+		m.ResetType()
+		return nil
+	case potentialtender.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case potentialtender.FieldAmount:
+		m.ResetAmount()
+		return nil
+	case potentialtender.FieldSize:
+		m.ResetSize()
+		return nil
+	case potentialtender.FieldLocation:
+		m.ResetLocation()
+		return nil
+	case potentialtender.FieldContact:
+		m.ResetContact()
+		return nil
+	case potentialtender.FieldContactPhone:
+		m.ResetContactPhone()
+		return nil
+	case potentialtender.FieldContactEmail:
+		m.ResetContactEmail()
+		return nil
+	case potentialtender.FieldContactAddress:
+		m.ResetContactAddress()
 		return nil
 	}
 	return fmt.Errorf("unknown PotentialTender field %s", name)

@@ -2226,6 +2226,81 @@ func (pt *PotentialTenderQuery) collectField(ctx context.Context, oneNode bool, 
 				selectedFields = append(selectedFields, potentialtender.FieldUpdatedAt)
 				fieldSeen[potentialtender.FieldUpdatedAt] = struct{}{}
 			}
+		case "refURL":
+			if _, ok := fieldSeen[potentialtender.FieldRefURL]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldRefURL)
+				fieldSeen[potentialtender.FieldRefURL] = struct{}{}
+			}
+		case "title":
+			if _, ok := fieldSeen[potentialtender.FieldTitle]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldTitle)
+				fieldSeen[potentialtender.FieldTitle] = struct{}{}
+			}
+		case "description":
+			if _, ok := fieldSeen[potentialtender.FieldDescription]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldDescription)
+				fieldSeen[potentialtender.FieldDescription] = struct{}{}
+			}
+		case "requirement":
+			if _, ok := fieldSeen[potentialtender.FieldRequirement]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldRequirement)
+				fieldSeen[potentialtender.FieldRequirement] = struct{}{}
+			}
+		case "address":
+			if _, ok := fieldSeen[potentialtender.FieldAddress]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldAddress)
+				fieldSeen[potentialtender.FieldAddress] = struct{}{}
+			}
+		case "date":
+			if _, ok := fieldSeen[potentialtender.FieldDate]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldDate)
+				fieldSeen[potentialtender.FieldDate] = struct{}{}
+			}
+		case "type":
+			if _, ok := fieldSeen[potentialtender.FieldType]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldType)
+				fieldSeen[potentialtender.FieldType] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[potentialtender.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldStatus)
+				fieldSeen[potentialtender.FieldStatus] = struct{}{}
+			}
+		case "amount":
+			if _, ok := fieldSeen[potentialtender.FieldAmount]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldAmount)
+				fieldSeen[potentialtender.FieldAmount] = struct{}{}
+			}
+		case "size":
+			if _, ok := fieldSeen[potentialtender.FieldSize]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldSize)
+				fieldSeen[potentialtender.FieldSize] = struct{}{}
+			}
+		case "location":
+			if _, ok := fieldSeen[potentialtender.FieldLocation]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldLocation)
+				fieldSeen[potentialtender.FieldLocation] = struct{}{}
+			}
+		case "contact":
+			if _, ok := fieldSeen[potentialtender.FieldContact]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldContact)
+				fieldSeen[potentialtender.FieldContact] = struct{}{}
+			}
+		case "contactPhone":
+			if _, ok := fieldSeen[potentialtender.FieldContactPhone]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldContactPhone)
+				fieldSeen[potentialtender.FieldContactPhone] = struct{}{}
+			}
+		case "contactEmail":
+			if _, ok := fieldSeen[potentialtender.FieldContactEmail]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldContactEmail)
+				fieldSeen[potentialtender.FieldContactEmail] = struct{}{}
+			}
+		case "contactAddress":
+			if _, ok := fieldSeen[potentialtender.FieldContactAddress]; !ok {
+				selectedFields = append(selectedFields, potentialtender.FieldContactAddress)
+				fieldSeen[potentialtender.FieldContactAddress] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:

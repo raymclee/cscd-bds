@@ -39,8 +39,10 @@ import { RankingListBoardMore } from "~/components/dashboard/ranking-list-board-
 import { DashboardTenderListBoardMore } from "~/components/dashboard/dashboard-tender-list-board-more";
 import { useRef } from "react";
 import { useWindowSize } from "usehooks-ts";
-import { useCopilotReadable } from "@copilotkit/react-core";
+import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import { useCreateVisitRecordAction } from "~/hooks/use-create-visit-record";
+import { AgentChart } from "~/components/demo";
+import { SkeletonCard } from "~/components/demo";
 
 export const Route = createLazyFileRoute("/__auth/__dashboard/__scaled/__map/")(
   {
@@ -882,42 +884,87 @@ function RouteComponent() {
   //   [data.node, map, map, renderMarker],
   // );
 
-  // useCopilotReadable({
-  //   description: "這是遠東幕牆市場拓展地圖系統裡的客戶列表",
-  //   value: data.node?.areas?.edges?.flatMap((e) =>
-  //     e?.node?.tenders?.edges
-  //       ?.map((t) => t?.node?.customer)
-  //       .map((c) => ({ ...c, ownerType: ownerTypeText(c?.ownerType) }))
-  //       .filter(Boolean),
-  //   ),
-  // });
+  useCopilotReadable(
+    {
+      description: "這是遠東幕牆市場拓展地圖系統裡的客戶列表",
+      value: data.node?.areas?.edges?.flatMap((e) =>
+        e?.node?.tenders?.edges
+          ?.map((t) => t?.node?.customer)
+          .map((c) => ({ ...c, ownerType: ownerTypeText(c?.ownerType) }))
+          .filter(Boolean),
+      ),
+    },
+    [data.node],
+  );
 
-  // useCopilotReadable({
-  //   description: "這是遠東幕牆市場拓展地圖系統裡的商機列表",
-  //   value: data.node?.areas?.edges?.flatMap((e) =>
-  //     e?.node?.tenders?.edges
-  //       ?.map((t) => ({
-  //         id: t?.node?.id,
-  //         name: t?.node?.name,
-  //         estimatedAmount: t?.node?.estimatedAmount,
-  //         status: tenderStatusText(t?.node?.status),
-  //         tenderDate: t?.node?.tenderDate,
-  //       }))
-  //       .filter(Boolean),
-  //   ),
-  // });
+  useCopilotReadable(
+    {
+      description: "這是遠東幕牆市場拓展地圖系統裡的商機列表",
+      value: data.node?.areas?.edges?.flatMap((e) =>
+        e?.node?.tenders?.edges
+          ?.map((t) => ({
+            id: t?.node?.id,
+            name: t?.node?.name,
+            estimatedAmount: t?.node?.estimatedAmount,
+            status: tenderStatusText(t?.node?.status),
+            tenderDate: t?.node?.tenderDate,
+          }))
+          .filter(Boolean),
+      ),
+    },
+    [data.node],
+  );
 
-  // useCreateVisitRecordAction({
-  //   users: (data.users.edges?.map((e) => e?.node).filter(Boolean) || []) as {
-  //     readonly id: string;
-  //     readonly name: string;
-  //   }[],
-  //   customers: data.customers.edges?.map((c) => c?.node).filter(Boolean) as {
-  //     readonly id: string;
-  //     readonly name: string;
-  //     readonly ownerType: number;
-  //   }[],
-  // });
+  // useCopilotReadable(
+  //   {
+  //     description: "這是遠東幕牆市場拓展地圖系統裡的訪問記錄列表",
+  //     value: data.visitRecords.edges
+  //       ?.map((v) => v?.node)
+  //       .map((n) => ({
+  //         id: n?.id,
+  //         date: n?.date,
+  //         visitType: n?.visitType,
+  //         commPeople: n?.commPeople,
+  //         commContent: n?.commContent,
+  //         nextStep: n?.nextStep,
+  //         customer: n?.customer.name,
+  //         tender: n?.tender?.name,
+  //       })),
+  //   },
+  //   [data.visitRecords],
+  // );
+
+  useCreateVisitRecordAction({
+    users: (data.users.edges?.map((e) => e?.node).filter(Boolean) || []) as {
+      readonly id: string;
+      readonly name: string;
+    }[],
+    customers: data.customers.edges?.map((c) => c?.node).filter(Boolean) as {
+      readonly id: string;
+      readonly name: string;
+      readonly ownerType: number;
+    }[],
+  });
+
+  useCopilotAction({
+    name: "bi_get_financial_data",
+    available: "disabled",
+    parameters: [
+      {
+        name: "year",
+        type: "number",
+      },
+    ],
+    render: ({ status, args, result }) => {
+      if (status !== "complete") {
+        return <SkeletonCard />;
+      }
+      if (status === "complete" && Array.isArray(result)) {
+        return <AgentChart chartData={result} />;
+      }
+      return <></>;
+    },
+  });
 
   return (
     <>

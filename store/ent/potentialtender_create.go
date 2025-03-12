@@ -52,6 +52,200 @@ func (ptc *PotentialTenderCreate) SetNillableUpdatedAt(t *time.Time) *PotentialT
 	return ptc
 }
 
+// SetRefURL sets the "ref_url" field.
+func (ptc *PotentialTenderCreate) SetRefURL(s string) *PotentialTenderCreate {
+	ptc.mutation.SetRefURL(s)
+	return ptc
+}
+
+// SetTitle sets the "title" field.
+func (ptc *PotentialTenderCreate) SetTitle(s string) *PotentialTenderCreate {
+	ptc.mutation.SetTitle(s)
+	return ptc
+}
+
+// SetDescription sets the "description" field.
+func (ptc *PotentialTenderCreate) SetDescription(s string) *PotentialTenderCreate {
+	ptc.mutation.SetDescription(s)
+	return ptc
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableDescription(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetDescription(*s)
+	}
+	return ptc
+}
+
+// SetRequirement sets the "requirement" field.
+func (ptc *PotentialTenderCreate) SetRequirement(s string) *PotentialTenderCreate {
+	ptc.mutation.SetRequirement(s)
+	return ptc
+}
+
+// SetNillableRequirement sets the "requirement" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableRequirement(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetRequirement(*s)
+	}
+	return ptc
+}
+
+// SetAddress sets the "address" field.
+func (ptc *PotentialTenderCreate) SetAddress(s string) *PotentialTenderCreate {
+	ptc.mutation.SetAddress(s)
+	return ptc
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableAddress(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetAddress(*s)
+	}
+	return ptc
+}
+
+// SetDate sets the "date" field.
+func (ptc *PotentialTenderCreate) SetDate(s string) *PotentialTenderCreate {
+	ptc.mutation.SetDate(s)
+	return ptc
+}
+
+// SetNillableDate sets the "date" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableDate(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetDate(*s)
+	}
+	return ptc
+}
+
+// SetType sets the "type" field.
+func (ptc *PotentialTenderCreate) SetType(s string) *PotentialTenderCreate {
+	ptc.mutation.SetType(s)
+	return ptc
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableType(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetType(*s)
+	}
+	return ptc
+}
+
+// SetStatus sets the "status" field.
+func (ptc *PotentialTenderCreate) SetStatus(s string) *PotentialTenderCreate {
+	ptc.mutation.SetStatus(s)
+	return ptc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableStatus(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetStatus(*s)
+	}
+	return ptc
+}
+
+// SetAmount sets the "amount" field.
+func (ptc *PotentialTenderCreate) SetAmount(s string) *PotentialTenderCreate {
+	ptc.mutation.SetAmount(s)
+	return ptc
+}
+
+// SetNillableAmount sets the "amount" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableAmount(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetAmount(*s)
+	}
+	return ptc
+}
+
+// SetSize sets the "size" field.
+func (ptc *PotentialTenderCreate) SetSize(s string) *PotentialTenderCreate {
+	ptc.mutation.SetSize(s)
+	return ptc
+}
+
+// SetNillableSize sets the "size" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableSize(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetSize(*s)
+	}
+	return ptc
+}
+
+// SetLocation sets the "location" field.
+func (ptc *PotentialTenderCreate) SetLocation(s string) *PotentialTenderCreate {
+	ptc.mutation.SetLocation(s)
+	return ptc
+}
+
+// SetNillableLocation sets the "location" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableLocation(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetLocation(*s)
+	}
+	return ptc
+}
+
+// SetContact sets the "contact" field.
+func (ptc *PotentialTenderCreate) SetContact(s string) *PotentialTenderCreate {
+	ptc.mutation.SetContact(s)
+	return ptc
+}
+
+// SetNillableContact sets the "contact" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableContact(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetContact(*s)
+	}
+	return ptc
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (ptc *PotentialTenderCreate) SetContactPhone(s string) *PotentialTenderCreate {
+	ptc.mutation.SetContactPhone(s)
+	return ptc
+}
+
+// SetNillableContactPhone sets the "contact_phone" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableContactPhone(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetContactPhone(*s)
+	}
+	return ptc
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (ptc *PotentialTenderCreate) SetContactEmail(s string) *PotentialTenderCreate {
+	ptc.mutation.SetContactEmail(s)
+	return ptc
+}
+
+// SetNillableContactEmail sets the "contact_email" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableContactEmail(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetContactEmail(*s)
+	}
+	return ptc
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (ptc *PotentialTenderCreate) SetContactAddress(s string) *PotentialTenderCreate {
+	ptc.mutation.SetContactAddress(s)
+	return ptc
+}
+
+// SetNillableContactAddress sets the "contact_address" field if the given value is not nil.
+func (ptc *PotentialTenderCreate) SetNillableContactAddress(s *string) *PotentialTenderCreate {
+	if s != nil {
+		ptc.SetContactAddress(*s)
+	}
+	return ptc
+}
+
 // SetID sets the "id" field.
 func (ptc *PotentialTenderCreate) SetID(x xid.ID) *PotentialTenderCreate {
 	ptc.mutation.SetID(x)
@@ -123,6 +317,12 @@ func (ptc *PotentialTenderCreate) check() error {
 	if _, ok := ptc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "PotentialTender.updated_at"`)}
 	}
+	if _, ok := ptc.mutation.RefURL(); !ok {
+		return &ValidationError{Name: "ref_url", err: errors.New(`ent: missing required field "PotentialTender.ref_url"`)}
+	}
+	if _, ok := ptc.mutation.Title(); !ok {
+		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "PotentialTender.title"`)}
+	}
 	return nil
 }
 
@@ -166,6 +366,66 @@ func (ptc *PotentialTenderCreate) createSpec() (*PotentialTender, *sqlgraph.Crea
 	if value, ok := ptc.mutation.UpdatedAt(); ok {
 		_spec.SetField(potentialtender.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
+	}
+	if value, ok := ptc.mutation.RefURL(); ok {
+		_spec.SetField(potentialtender.FieldRefURL, field.TypeString, value)
+		_node.RefURL = value
+	}
+	if value, ok := ptc.mutation.Title(); ok {
+		_spec.SetField(potentialtender.FieldTitle, field.TypeString, value)
+		_node.Title = value
+	}
+	if value, ok := ptc.mutation.Description(); ok {
+		_spec.SetField(potentialtender.FieldDescription, field.TypeString, value)
+		_node.Description = &value
+	}
+	if value, ok := ptc.mutation.Requirement(); ok {
+		_spec.SetField(potentialtender.FieldRequirement, field.TypeString, value)
+		_node.Requirement = &value
+	}
+	if value, ok := ptc.mutation.Address(); ok {
+		_spec.SetField(potentialtender.FieldAddress, field.TypeString, value)
+		_node.Address = &value
+	}
+	if value, ok := ptc.mutation.Date(); ok {
+		_spec.SetField(potentialtender.FieldDate, field.TypeString, value)
+		_node.Date = &value
+	}
+	if value, ok := ptc.mutation.GetType(); ok {
+		_spec.SetField(potentialtender.FieldType, field.TypeString, value)
+		_node.Type = &value
+	}
+	if value, ok := ptc.mutation.Status(); ok {
+		_spec.SetField(potentialtender.FieldStatus, field.TypeString, value)
+		_node.Status = &value
+	}
+	if value, ok := ptc.mutation.Amount(); ok {
+		_spec.SetField(potentialtender.FieldAmount, field.TypeString, value)
+		_node.Amount = &value
+	}
+	if value, ok := ptc.mutation.Size(); ok {
+		_spec.SetField(potentialtender.FieldSize, field.TypeString, value)
+		_node.Size = &value
+	}
+	if value, ok := ptc.mutation.Location(); ok {
+		_spec.SetField(potentialtender.FieldLocation, field.TypeString, value)
+		_node.Location = &value
+	}
+	if value, ok := ptc.mutation.Contact(); ok {
+		_spec.SetField(potentialtender.FieldContact, field.TypeString, value)
+		_node.Contact = &value
+	}
+	if value, ok := ptc.mutation.ContactPhone(); ok {
+		_spec.SetField(potentialtender.FieldContactPhone, field.TypeString, value)
+		_node.ContactPhone = &value
+	}
+	if value, ok := ptc.mutation.ContactEmail(); ok {
+		_spec.SetField(potentialtender.FieldContactEmail, field.TypeString, value)
+		_node.ContactEmail = &value
+	}
+	if value, ok := ptc.mutation.ContactAddress(); ok {
+		_spec.SetField(potentialtender.FieldContactAddress, field.TypeString, value)
+		_node.ContactAddress = &value
 	}
 	return _node, _spec
 }
@@ -231,6 +491,264 @@ func (u *PotentialTenderUpsert) UpdateUpdatedAt() *PotentialTenderUpsert {
 	return u
 }
 
+// SetRefURL sets the "ref_url" field.
+func (u *PotentialTenderUpsert) SetRefURL(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldRefURL, v)
+	return u
+}
+
+// UpdateRefURL sets the "ref_url" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateRefURL() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldRefURL)
+	return u
+}
+
+// SetTitle sets the "title" field.
+func (u *PotentialTenderUpsert) SetTitle(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldTitle, v)
+	return u
+}
+
+// UpdateTitle sets the "title" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateTitle() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldTitle)
+	return u
+}
+
+// SetDescription sets the "description" field.
+func (u *PotentialTenderUpsert) SetDescription(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldDescription, v)
+	return u
+}
+
+// UpdateDescription sets the "description" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateDescription() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldDescription)
+	return u
+}
+
+// ClearDescription clears the value of the "description" field.
+func (u *PotentialTenderUpsert) ClearDescription() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldDescription)
+	return u
+}
+
+// SetRequirement sets the "requirement" field.
+func (u *PotentialTenderUpsert) SetRequirement(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldRequirement, v)
+	return u
+}
+
+// UpdateRequirement sets the "requirement" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateRequirement() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldRequirement)
+	return u
+}
+
+// ClearRequirement clears the value of the "requirement" field.
+func (u *PotentialTenderUpsert) ClearRequirement() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldRequirement)
+	return u
+}
+
+// SetAddress sets the "address" field.
+func (u *PotentialTenderUpsert) SetAddress(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldAddress, v)
+	return u
+}
+
+// UpdateAddress sets the "address" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateAddress() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldAddress)
+	return u
+}
+
+// ClearAddress clears the value of the "address" field.
+func (u *PotentialTenderUpsert) ClearAddress() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldAddress)
+	return u
+}
+
+// SetDate sets the "date" field.
+func (u *PotentialTenderUpsert) SetDate(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldDate, v)
+	return u
+}
+
+// UpdateDate sets the "date" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateDate() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldDate)
+	return u
+}
+
+// ClearDate clears the value of the "date" field.
+func (u *PotentialTenderUpsert) ClearDate() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldDate)
+	return u
+}
+
+// SetType sets the "type" field.
+func (u *PotentialTenderUpsert) SetType(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldType, v)
+	return u
+}
+
+// UpdateType sets the "type" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateType() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldType)
+	return u
+}
+
+// ClearType clears the value of the "type" field.
+func (u *PotentialTenderUpsert) ClearType() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldType)
+	return u
+}
+
+// SetStatus sets the "status" field.
+func (u *PotentialTenderUpsert) SetStatus(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldStatus, v)
+	return u
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateStatus() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldStatus)
+	return u
+}
+
+// ClearStatus clears the value of the "status" field.
+func (u *PotentialTenderUpsert) ClearStatus() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldStatus)
+	return u
+}
+
+// SetAmount sets the "amount" field.
+func (u *PotentialTenderUpsert) SetAmount(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldAmount, v)
+	return u
+}
+
+// UpdateAmount sets the "amount" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateAmount() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldAmount)
+	return u
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (u *PotentialTenderUpsert) ClearAmount() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldAmount)
+	return u
+}
+
+// SetSize sets the "size" field.
+func (u *PotentialTenderUpsert) SetSize(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldSize, v)
+	return u
+}
+
+// UpdateSize sets the "size" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateSize() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldSize)
+	return u
+}
+
+// ClearSize clears the value of the "size" field.
+func (u *PotentialTenderUpsert) ClearSize() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldSize)
+	return u
+}
+
+// SetLocation sets the "location" field.
+func (u *PotentialTenderUpsert) SetLocation(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldLocation, v)
+	return u
+}
+
+// UpdateLocation sets the "location" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateLocation() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldLocation)
+	return u
+}
+
+// ClearLocation clears the value of the "location" field.
+func (u *PotentialTenderUpsert) ClearLocation() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldLocation)
+	return u
+}
+
+// SetContact sets the "contact" field.
+func (u *PotentialTenderUpsert) SetContact(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldContact, v)
+	return u
+}
+
+// UpdateContact sets the "contact" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateContact() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldContact)
+	return u
+}
+
+// ClearContact clears the value of the "contact" field.
+func (u *PotentialTenderUpsert) ClearContact() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldContact)
+	return u
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (u *PotentialTenderUpsert) SetContactPhone(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldContactPhone, v)
+	return u
+}
+
+// UpdateContactPhone sets the "contact_phone" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateContactPhone() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldContactPhone)
+	return u
+}
+
+// ClearContactPhone clears the value of the "contact_phone" field.
+func (u *PotentialTenderUpsert) ClearContactPhone() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldContactPhone)
+	return u
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (u *PotentialTenderUpsert) SetContactEmail(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldContactEmail, v)
+	return u
+}
+
+// UpdateContactEmail sets the "contact_email" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateContactEmail() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldContactEmail)
+	return u
+}
+
+// ClearContactEmail clears the value of the "contact_email" field.
+func (u *PotentialTenderUpsert) ClearContactEmail() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldContactEmail)
+	return u
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (u *PotentialTenderUpsert) SetContactAddress(v string) *PotentialTenderUpsert {
+	u.Set(potentialtender.FieldContactAddress, v)
+	return u
+}
+
+// UpdateContactAddress sets the "contact_address" field to the value that was provided on create.
+func (u *PotentialTenderUpsert) UpdateContactAddress() *PotentialTenderUpsert {
+	u.SetExcluded(potentialtender.FieldContactAddress)
+	return u
+}
+
+// ClearContactAddress clears the value of the "contact_address" field.
+func (u *PotentialTenderUpsert) ClearContactAddress() *PotentialTenderUpsert {
+	u.SetNull(potentialtender.FieldContactAddress)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -293,6 +811,307 @@ func (u *PotentialTenderUpsertOne) SetUpdatedAt(v time.Time) *PotentialTenderUps
 func (u *PotentialTenderUpsertOne) UpdateUpdatedAt() *PotentialTenderUpsertOne {
 	return u.Update(func(s *PotentialTenderUpsert) {
 		s.UpdateUpdatedAt()
+	})
+}
+
+// SetRefURL sets the "ref_url" field.
+func (u *PotentialTenderUpsertOne) SetRefURL(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetRefURL(v)
+	})
+}
+
+// UpdateRefURL sets the "ref_url" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateRefURL() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateRefURL()
+	})
+}
+
+// SetTitle sets the "title" field.
+func (u *PotentialTenderUpsertOne) SetTitle(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetTitle(v)
+	})
+}
+
+// UpdateTitle sets the "title" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateTitle() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateTitle()
+	})
+}
+
+// SetDescription sets the "description" field.
+func (u *PotentialTenderUpsertOne) SetDescription(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetDescription(v)
+	})
+}
+
+// UpdateDescription sets the "description" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateDescription() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateDescription()
+	})
+}
+
+// ClearDescription clears the value of the "description" field.
+func (u *PotentialTenderUpsertOne) ClearDescription() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearDescription()
+	})
+}
+
+// SetRequirement sets the "requirement" field.
+func (u *PotentialTenderUpsertOne) SetRequirement(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetRequirement(v)
+	})
+}
+
+// UpdateRequirement sets the "requirement" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateRequirement() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateRequirement()
+	})
+}
+
+// ClearRequirement clears the value of the "requirement" field.
+func (u *PotentialTenderUpsertOne) ClearRequirement() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearRequirement()
+	})
+}
+
+// SetAddress sets the "address" field.
+func (u *PotentialTenderUpsertOne) SetAddress(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetAddress(v)
+	})
+}
+
+// UpdateAddress sets the "address" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateAddress() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateAddress()
+	})
+}
+
+// ClearAddress clears the value of the "address" field.
+func (u *PotentialTenderUpsertOne) ClearAddress() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearAddress()
+	})
+}
+
+// SetDate sets the "date" field.
+func (u *PotentialTenderUpsertOne) SetDate(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetDate(v)
+	})
+}
+
+// UpdateDate sets the "date" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateDate() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateDate()
+	})
+}
+
+// ClearDate clears the value of the "date" field.
+func (u *PotentialTenderUpsertOne) ClearDate() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearDate()
+	})
+}
+
+// SetType sets the "type" field.
+func (u *PotentialTenderUpsertOne) SetType(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetType(v)
+	})
+}
+
+// UpdateType sets the "type" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateType() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateType()
+	})
+}
+
+// ClearType clears the value of the "type" field.
+func (u *PotentialTenderUpsertOne) ClearType() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearType()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *PotentialTenderUpsertOne) SetStatus(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateStatus() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateStatus()
+	})
+}
+
+// ClearStatus clears the value of the "status" field.
+func (u *PotentialTenderUpsertOne) ClearStatus() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearStatus()
+	})
+}
+
+// SetAmount sets the "amount" field.
+func (u *PotentialTenderUpsertOne) SetAmount(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetAmount(v)
+	})
+}
+
+// UpdateAmount sets the "amount" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateAmount() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateAmount()
+	})
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (u *PotentialTenderUpsertOne) ClearAmount() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearAmount()
+	})
+}
+
+// SetSize sets the "size" field.
+func (u *PotentialTenderUpsertOne) SetSize(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetSize(v)
+	})
+}
+
+// UpdateSize sets the "size" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateSize() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateSize()
+	})
+}
+
+// ClearSize clears the value of the "size" field.
+func (u *PotentialTenderUpsertOne) ClearSize() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearSize()
+	})
+}
+
+// SetLocation sets the "location" field.
+func (u *PotentialTenderUpsertOne) SetLocation(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetLocation(v)
+	})
+}
+
+// UpdateLocation sets the "location" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateLocation() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateLocation()
+	})
+}
+
+// ClearLocation clears the value of the "location" field.
+func (u *PotentialTenderUpsertOne) ClearLocation() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearLocation()
+	})
+}
+
+// SetContact sets the "contact" field.
+func (u *PotentialTenderUpsertOne) SetContact(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContact(v)
+	})
+}
+
+// UpdateContact sets the "contact" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateContact() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContact()
+	})
+}
+
+// ClearContact clears the value of the "contact" field.
+func (u *PotentialTenderUpsertOne) ClearContact() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContact()
+	})
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (u *PotentialTenderUpsertOne) SetContactPhone(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContactPhone(v)
+	})
+}
+
+// UpdateContactPhone sets the "contact_phone" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateContactPhone() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContactPhone()
+	})
+}
+
+// ClearContactPhone clears the value of the "contact_phone" field.
+func (u *PotentialTenderUpsertOne) ClearContactPhone() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContactPhone()
+	})
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (u *PotentialTenderUpsertOne) SetContactEmail(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContactEmail(v)
+	})
+}
+
+// UpdateContactEmail sets the "contact_email" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateContactEmail() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContactEmail()
+	})
+}
+
+// ClearContactEmail clears the value of the "contact_email" field.
+func (u *PotentialTenderUpsertOne) ClearContactEmail() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContactEmail()
+	})
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (u *PotentialTenderUpsertOne) SetContactAddress(v string) *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContactAddress(v)
+	})
+}
+
+// UpdateContactAddress sets the "contact_address" field to the value that was provided on create.
+func (u *PotentialTenderUpsertOne) UpdateContactAddress() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContactAddress()
+	})
+}
+
+// ClearContactAddress clears the value of the "contact_address" field.
+func (u *PotentialTenderUpsertOne) ClearContactAddress() *PotentialTenderUpsertOne {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContactAddress()
 	})
 }
 
@@ -525,6 +1344,307 @@ func (u *PotentialTenderUpsertBulk) SetUpdatedAt(v time.Time) *PotentialTenderUp
 func (u *PotentialTenderUpsertBulk) UpdateUpdatedAt() *PotentialTenderUpsertBulk {
 	return u.Update(func(s *PotentialTenderUpsert) {
 		s.UpdateUpdatedAt()
+	})
+}
+
+// SetRefURL sets the "ref_url" field.
+func (u *PotentialTenderUpsertBulk) SetRefURL(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetRefURL(v)
+	})
+}
+
+// UpdateRefURL sets the "ref_url" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateRefURL() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateRefURL()
+	})
+}
+
+// SetTitle sets the "title" field.
+func (u *PotentialTenderUpsertBulk) SetTitle(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetTitle(v)
+	})
+}
+
+// UpdateTitle sets the "title" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateTitle() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateTitle()
+	})
+}
+
+// SetDescription sets the "description" field.
+func (u *PotentialTenderUpsertBulk) SetDescription(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetDescription(v)
+	})
+}
+
+// UpdateDescription sets the "description" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateDescription() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateDescription()
+	})
+}
+
+// ClearDescription clears the value of the "description" field.
+func (u *PotentialTenderUpsertBulk) ClearDescription() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearDescription()
+	})
+}
+
+// SetRequirement sets the "requirement" field.
+func (u *PotentialTenderUpsertBulk) SetRequirement(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetRequirement(v)
+	})
+}
+
+// UpdateRequirement sets the "requirement" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateRequirement() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateRequirement()
+	})
+}
+
+// ClearRequirement clears the value of the "requirement" field.
+func (u *PotentialTenderUpsertBulk) ClearRequirement() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearRequirement()
+	})
+}
+
+// SetAddress sets the "address" field.
+func (u *PotentialTenderUpsertBulk) SetAddress(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetAddress(v)
+	})
+}
+
+// UpdateAddress sets the "address" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateAddress() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateAddress()
+	})
+}
+
+// ClearAddress clears the value of the "address" field.
+func (u *PotentialTenderUpsertBulk) ClearAddress() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearAddress()
+	})
+}
+
+// SetDate sets the "date" field.
+func (u *PotentialTenderUpsertBulk) SetDate(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetDate(v)
+	})
+}
+
+// UpdateDate sets the "date" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateDate() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateDate()
+	})
+}
+
+// ClearDate clears the value of the "date" field.
+func (u *PotentialTenderUpsertBulk) ClearDate() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearDate()
+	})
+}
+
+// SetType sets the "type" field.
+func (u *PotentialTenderUpsertBulk) SetType(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetType(v)
+	})
+}
+
+// UpdateType sets the "type" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateType() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateType()
+	})
+}
+
+// ClearType clears the value of the "type" field.
+func (u *PotentialTenderUpsertBulk) ClearType() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearType()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *PotentialTenderUpsertBulk) SetStatus(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateStatus() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateStatus()
+	})
+}
+
+// ClearStatus clears the value of the "status" field.
+func (u *PotentialTenderUpsertBulk) ClearStatus() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearStatus()
+	})
+}
+
+// SetAmount sets the "amount" field.
+func (u *PotentialTenderUpsertBulk) SetAmount(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetAmount(v)
+	})
+}
+
+// UpdateAmount sets the "amount" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateAmount() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateAmount()
+	})
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (u *PotentialTenderUpsertBulk) ClearAmount() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearAmount()
+	})
+}
+
+// SetSize sets the "size" field.
+func (u *PotentialTenderUpsertBulk) SetSize(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetSize(v)
+	})
+}
+
+// UpdateSize sets the "size" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateSize() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateSize()
+	})
+}
+
+// ClearSize clears the value of the "size" field.
+func (u *PotentialTenderUpsertBulk) ClearSize() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearSize()
+	})
+}
+
+// SetLocation sets the "location" field.
+func (u *PotentialTenderUpsertBulk) SetLocation(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetLocation(v)
+	})
+}
+
+// UpdateLocation sets the "location" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateLocation() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateLocation()
+	})
+}
+
+// ClearLocation clears the value of the "location" field.
+func (u *PotentialTenderUpsertBulk) ClearLocation() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearLocation()
+	})
+}
+
+// SetContact sets the "contact" field.
+func (u *PotentialTenderUpsertBulk) SetContact(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContact(v)
+	})
+}
+
+// UpdateContact sets the "contact" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateContact() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContact()
+	})
+}
+
+// ClearContact clears the value of the "contact" field.
+func (u *PotentialTenderUpsertBulk) ClearContact() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContact()
+	})
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (u *PotentialTenderUpsertBulk) SetContactPhone(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContactPhone(v)
+	})
+}
+
+// UpdateContactPhone sets the "contact_phone" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateContactPhone() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContactPhone()
+	})
+}
+
+// ClearContactPhone clears the value of the "contact_phone" field.
+func (u *PotentialTenderUpsertBulk) ClearContactPhone() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContactPhone()
+	})
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (u *PotentialTenderUpsertBulk) SetContactEmail(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContactEmail(v)
+	})
+}
+
+// UpdateContactEmail sets the "contact_email" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateContactEmail() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContactEmail()
+	})
+}
+
+// ClearContactEmail clears the value of the "contact_email" field.
+func (u *PotentialTenderUpsertBulk) ClearContactEmail() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContactEmail()
+	})
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (u *PotentialTenderUpsertBulk) SetContactAddress(v string) *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.SetContactAddress(v)
+	})
+}
+
+// UpdateContactAddress sets the "contact_address" field to the value that was provided on create.
+func (u *PotentialTenderUpsertBulk) UpdateContactAddress() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.UpdateContactAddress()
+	})
+}
+
+// ClearContactAddress clears the value of the "contact_address" field.
+func (u *PotentialTenderUpsertBulk) ClearContactAddress() *PotentialTenderUpsertBulk {
+	return u.Update(func(s *PotentialTenderUpsert) {
+		s.ClearContactAddress()
 	})
 }
 

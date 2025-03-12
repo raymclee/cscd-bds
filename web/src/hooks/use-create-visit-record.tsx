@@ -187,9 +187,10 @@ export function useCreateVisitRecordAction({
           <CardFooter className="flex gap-2">
             <Button
               size="sm"
+              className="bg-[var(--copilot-kit-primary-color)]"
               disabled={isCreateVisitRecordInFlight || status === "inProgress"}
               onClick={() => {
-                respond?.("确认");
+                respond?.("用戶确认");
                 if (!customer) {
                   throw new Error("客户不能为空");
                 }
@@ -229,7 +230,7 @@ export function useCreateVisitRecordAction({
               disabled={isCreateVisitRecordInFlight || status === "inProgress"}
               className="bg-red-600 hover:bg-red-500"
               onClick={() => {
-                respond?.("取消");
+                respond?.("用戶取消");
               }}
             >
               取消

@@ -11,6 +11,7 @@ require (
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gomodule/redigo v1.8.0
 	github.com/hashicorp/go-multierror v1.1.1
+	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/rs/xid v1.6.0
 	github.com/vektah/gqlparser/v2 v2.5.19
 	golang.org/x/sync v0.9.0

@@ -40,7 +40,10 @@ func NewHandler(store *store.Store, f *feishu.Feishu, session *session.Session, 
 func (h handler) SendTextMessage(c echo.Context) error {
 	eg := errgroup.Group{}
 
-	userIDs := []string{"oc_da016c6340ec087f24ad722be2859e75"}
+	userIDs := []string{
+		"oc_28cc8fc274afd392fde3e5e5c7e19160",
+		// "ou_743b55f410fd90d254d4c3da3680f196",
+	}
 
 	content, err := json.Marshal(map[string]any{
 		"type": "template",
@@ -76,6 +79,7 @@ func (h handler) SendTextMessage(c echo.Context) error {
 				fmt.Println(err)
 				return fmt.Errorf("failed to send message: %w", err)
 			}
+			fmt.Println(res)
 			if res.StatusCode != 200 {
 				return fmt.Errorf("send message error: %v", res.StatusCode)
 			}

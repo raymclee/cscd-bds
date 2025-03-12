@@ -34,6 +34,294 @@ func (ptu *PotentialTenderUpdate) SetUpdatedAt(t time.Time) *PotentialTenderUpda
 	return ptu
 }
 
+// SetRefURL sets the "ref_url" field.
+func (ptu *PotentialTenderUpdate) SetRefURL(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetRefURL(s)
+	return ptu
+}
+
+// SetNillableRefURL sets the "ref_url" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableRefURL(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetRefURL(*s)
+	}
+	return ptu
+}
+
+// SetTitle sets the "title" field.
+func (ptu *PotentialTenderUpdate) SetTitle(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetTitle(s)
+	return ptu
+}
+
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableTitle(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetTitle(*s)
+	}
+	return ptu
+}
+
+// SetDescription sets the "description" field.
+func (ptu *PotentialTenderUpdate) SetDescription(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetDescription(s)
+	return ptu
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableDescription(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetDescription(*s)
+	}
+	return ptu
+}
+
+// ClearDescription clears the value of the "description" field.
+func (ptu *PotentialTenderUpdate) ClearDescription() *PotentialTenderUpdate {
+	ptu.mutation.ClearDescription()
+	return ptu
+}
+
+// SetRequirement sets the "requirement" field.
+func (ptu *PotentialTenderUpdate) SetRequirement(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetRequirement(s)
+	return ptu
+}
+
+// SetNillableRequirement sets the "requirement" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableRequirement(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetRequirement(*s)
+	}
+	return ptu
+}
+
+// ClearRequirement clears the value of the "requirement" field.
+func (ptu *PotentialTenderUpdate) ClearRequirement() *PotentialTenderUpdate {
+	ptu.mutation.ClearRequirement()
+	return ptu
+}
+
+// SetAddress sets the "address" field.
+func (ptu *PotentialTenderUpdate) SetAddress(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetAddress(s)
+	return ptu
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableAddress(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetAddress(*s)
+	}
+	return ptu
+}
+
+// ClearAddress clears the value of the "address" field.
+func (ptu *PotentialTenderUpdate) ClearAddress() *PotentialTenderUpdate {
+	ptu.mutation.ClearAddress()
+	return ptu
+}
+
+// SetDate sets the "date" field.
+func (ptu *PotentialTenderUpdate) SetDate(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetDate(s)
+	return ptu
+}
+
+// SetNillableDate sets the "date" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableDate(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetDate(*s)
+	}
+	return ptu
+}
+
+// ClearDate clears the value of the "date" field.
+func (ptu *PotentialTenderUpdate) ClearDate() *PotentialTenderUpdate {
+	ptu.mutation.ClearDate()
+	return ptu
+}
+
+// SetType sets the "type" field.
+func (ptu *PotentialTenderUpdate) SetType(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetType(s)
+	return ptu
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableType(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetType(*s)
+	}
+	return ptu
+}
+
+// ClearType clears the value of the "type" field.
+func (ptu *PotentialTenderUpdate) ClearType() *PotentialTenderUpdate {
+	ptu.mutation.ClearType()
+	return ptu
+}
+
+// SetStatus sets the "status" field.
+func (ptu *PotentialTenderUpdate) SetStatus(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetStatus(s)
+	return ptu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableStatus(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetStatus(*s)
+	}
+	return ptu
+}
+
+// ClearStatus clears the value of the "status" field.
+func (ptu *PotentialTenderUpdate) ClearStatus() *PotentialTenderUpdate {
+	ptu.mutation.ClearStatus()
+	return ptu
+}
+
+// SetAmount sets the "amount" field.
+func (ptu *PotentialTenderUpdate) SetAmount(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetAmount(s)
+	return ptu
+}
+
+// SetNillableAmount sets the "amount" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableAmount(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetAmount(*s)
+	}
+	return ptu
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (ptu *PotentialTenderUpdate) ClearAmount() *PotentialTenderUpdate {
+	ptu.mutation.ClearAmount()
+	return ptu
+}
+
+// SetSize sets the "size" field.
+func (ptu *PotentialTenderUpdate) SetSize(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetSize(s)
+	return ptu
+}
+
+// SetNillableSize sets the "size" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableSize(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetSize(*s)
+	}
+	return ptu
+}
+
+// ClearSize clears the value of the "size" field.
+func (ptu *PotentialTenderUpdate) ClearSize() *PotentialTenderUpdate {
+	ptu.mutation.ClearSize()
+	return ptu
+}
+
+// SetLocation sets the "location" field.
+func (ptu *PotentialTenderUpdate) SetLocation(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetLocation(s)
+	return ptu
+}
+
+// SetNillableLocation sets the "location" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableLocation(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetLocation(*s)
+	}
+	return ptu
+}
+
+// ClearLocation clears the value of the "location" field.
+func (ptu *PotentialTenderUpdate) ClearLocation() *PotentialTenderUpdate {
+	ptu.mutation.ClearLocation()
+	return ptu
+}
+
+// SetContact sets the "contact" field.
+func (ptu *PotentialTenderUpdate) SetContact(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetContact(s)
+	return ptu
+}
+
+// SetNillableContact sets the "contact" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableContact(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetContact(*s)
+	}
+	return ptu
+}
+
+// ClearContact clears the value of the "contact" field.
+func (ptu *PotentialTenderUpdate) ClearContact() *PotentialTenderUpdate {
+	ptu.mutation.ClearContact()
+	return ptu
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (ptu *PotentialTenderUpdate) SetContactPhone(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetContactPhone(s)
+	return ptu
+}
+
+// SetNillableContactPhone sets the "contact_phone" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableContactPhone(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetContactPhone(*s)
+	}
+	return ptu
+}
+
+// ClearContactPhone clears the value of the "contact_phone" field.
+func (ptu *PotentialTenderUpdate) ClearContactPhone() *PotentialTenderUpdate {
+	ptu.mutation.ClearContactPhone()
+	return ptu
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (ptu *PotentialTenderUpdate) SetContactEmail(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetContactEmail(s)
+	return ptu
+}
+
+// SetNillableContactEmail sets the "contact_email" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableContactEmail(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetContactEmail(*s)
+	}
+	return ptu
+}
+
+// ClearContactEmail clears the value of the "contact_email" field.
+func (ptu *PotentialTenderUpdate) ClearContactEmail() *PotentialTenderUpdate {
+	ptu.mutation.ClearContactEmail()
+	return ptu
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (ptu *PotentialTenderUpdate) SetContactAddress(s string) *PotentialTenderUpdate {
+	ptu.mutation.SetContactAddress(s)
+	return ptu
+}
+
+// SetNillableContactAddress sets the "contact_address" field if the given value is not nil.
+func (ptu *PotentialTenderUpdate) SetNillableContactAddress(s *string) *PotentialTenderUpdate {
+	if s != nil {
+		ptu.SetContactAddress(*s)
+	}
+	return ptu
+}
+
+// ClearContactAddress clears the value of the "contact_address" field.
+func (ptu *PotentialTenderUpdate) ClearContactAddress() *PotentialTenderUpdate {
+	ptu.mutation.ClearContactAddress()
+	return ptu
+}
+
 // Mutation returns the PotentialTenderMutation object of the builder.
 func (ptu *PotentialTenderUpdate) Mutation() *PotentialTenderMutation {
 	return ptu.mutation
@@ -87,6 +375,90 @@ func (ptu *PotentialTenderUpdate) sqlSave(ctx context.Context) (n int, err error
 	if value, ok := ptu.mutation.UpdatedAt(); ok {
 		_spec.SetField(potentialtender.FieldUpdatedAt, field.TypeTime, value)
 	}
+	if value, ok := ptu.mutation.RefURL(); ok {
+		_spec.SetField(potentialtender.FieldRefURL, field.TypeString, value)
+	}
+	if value, ok := ptu.mutation.Title(); ok {
+		_spec.SetField(potentialtender.FieldTitle, field.TypeString, value)
+	}
+	if value, ok := ptu.mutation.Description(); ok {
+		_spec.SetField(potentialtender.FieldDescription, field.TypeString, value)
+	}
+	if ptu.mutation.DescriptionCleared() {
+		_spec.ClearField(potentialtender.FieldDescription, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Requirement(); ok {
+		_spec.SetField(potentialtender.FieldRequirement, field.TypeString, value)
+	}
+	if ptu.mutation.RequirementCleared() {
+		_spec.ClearField(potentialtender.FieldRequirement, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Address(); ok {
+		_spec.SetField(potentialtender.FieldAddress, field.TypeString, value)
+	}
+	if ptu.mutation.AddressCleared() {
+		_spec.ClearField(potentialtender.FieldAddress, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Date(); ok {
+		_spec.SetField(potentialtender.FieldDate, field.TypeString, value)
+	}
+	if ptu.mutation.DateCleared() {
+		_spec.ClearField(potentialtender.FieldDate, field.TypeString)
+	}
+	if value, ok := ptu.mutation.GetType(); ok {
+		_spec.SetField(potentialtender.FieldType, field.TypeString, value)
+	}
+	if ptu.mutation.TypeCleared() {
+		_spec.ClearField(potentialtender.FieldType, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Status(); ok {
+		_spec.SetField(potentialtender.FieldStatus, field.TypeString, value)
+	}
+	if ptu.mutation.StatusCleared() {
+		_spec.ClearField(potentialtender.FieldStatus, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Amount(); ok {
+		_spec.SetField(potentialtender.FieldAmount, field.TypeString, value)
+	}
+	if ptu.mutation.AmountCleared() {
+		_spec.ClearField(potentialtender.FieldAmount, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Size(); ok {
+		_spec.SetField(potentialtender.FieldSize, field.TypeString, value)
+	}
+	if ptu.mutation.SizeCleared() {
+		_spec.ClearField(potentialtender.FieldSize, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Location(); ok {
+		_spec.SetField(potentialtender.FieldLocation, field.TypeString, value)
+	}
+	if ptu.mutation.LocationCleared() {
+		_spec.ClearField(potentialtender.FieldLocation, field.TypeString)
+	}
+	if value, ok := ptu.mutation.Contact(); ok {
+		_spec.SetField(potentialtender.FieldContact, field.TypeString, value)
+	}
+	if ptu.mutation.ContactCleared() {
+		_spec.ClearField(potentialtender.FieldContact, field.TypeString)
+	}
+	if value, ok := ptu.mutation.ContactPhone(); ok {
+		_spec.SetField(potentialtender.FieldContactPhone, field.TypeString, value)
+	}
+	if ptu.mutation.ContactPhoneCleared() {
+		_spec.ClearField(potentialtender.FieldContactPhone, field.TypeString)
+	}
+	if value, ok := ptu.mutation.ContactEmail(); ok {
+		_spec.SetField(potentialtender.FieldContactEmail, field.TypeString, value)
+	}
+	if ptu.mutation.ContactEmailCleared() {
+		_spec.ClearField(potentialtender.FieldContactEmail, field.TypeString)
+	}
+	if value, ok := ptu.mutation.ContactAddress(); ok {
+		_spec.SetField(potentialtender.FieldContactAddress, field.TypeString, value)
+	}
+	if ptu.mutation.ContactAddressCleared() {
+		_spec.ClearField(potentialtender.FieldContactAddress, field.TypeString)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ptu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{potentialtender.Label}
@@ -110,6 +482,294 @@ type PotentialTenderUpdateOne struct {
 // SetUpdatedAt sets the "updated_at" field.
 func (ptuo *PotentialTenderUpdateOne) SetUpdatedAt(t time.Time) *PotentialTenderUpdateOne {
 	ptuo.mutation.SetUpdatedAt(t)
+	return ptuo
+}
+
+// SetRefURL sets the "ref_url" field.
+func (ptuo *PotentialTenderUpdateOne) SetRefURL(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetRefURL(s)
+	return ptuo
+}
+
+// SetNillableRefURL sets the "ref_url" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableRefURL(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetRefURL(*s)
+	}
+	return ptuo
+}
+
+// SetTitle sets the "title" field.
+func (ptuo *PotentialTenderUpdateOne) SetTitle(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetTitle(s)
+	return ptuo
+}
+
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableTitle(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetTitle(*s)
+	}
+	return ptuo
+}
+
+// SetDescription sets the "description" field.
+func (ptuo *PotentialTenderUpdateOne) SetDescription(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetDescription(s)
+	return ptuo
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableDescription(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetDescription(*s)
+	}
+	return ptuo
+}
+
+// ClearDescription clears the value of the "description" field.
+func (ptuo *PotentialTenderUpdateOne) ClearDescription() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearDescription()
+	return ptuo
+}
+
+// SetRequirement sets the "requirement" field.
+func (ptuo *PotentialTenderUpdateOne) SetRequirement(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetRequirement(s)
+	return ptuo
+}
+
+// SetNillableRequirement sets the "requirement" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableRequirement(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetRequirement(*s)
+	}
+	return ptuo
+}
+
+// ClearRequirement clears the value of the "requirement" field.
+func (ptuo *PotentialTenderUpdateOne) ClearRequirement() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearRequirement()
+	return ptuo
+}
+
+// SetAddress sets the "address" field.
+func (ptuo *PotentialTenderUpdateOne) SetAddress(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetAddress(s)
+	return ptuo
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableAddress(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetAddress(*s)
+	}
+	return ptuo
+}
+
+// ClearAddress clears the value of the "address" field.
+func (ptuo *PotentialTenderUpdateOne) ClearAddress() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearAddress()
+	return ptuo
+}
+
+// SetDate sets the "date" field.
+func (ptuo *PotentialTenderUpdateOne) SetDate(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetDate(s)
+	return ptuo
+}
+
+// SetNillableDate sets the "date" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableDate(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetDate(*s)
+	}
+	return ptuo
+}
+
+// ClearDate clears the value of the "date" field.
+func (ptuo *PotentialTenderUpdateOne) ClearDate() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearDate()
+	return ptuo
+}
+
+// SetType sets the "type" field.
+func (ptuo *PotentialTenderUpdateOne) SetType(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetType(s)
+	return ptuo
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableType(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetType(*s)
+	}
+	return ptuo
+}
+
+// ClearType clears the value of the "type" field.
+func (ptuo *PotentialTenderUpdateOne) ClearType() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearType()
+	return ptuo
+}
+
+// SetStatus sets the "status" field.
+func (ptuo *PotentialTenderUpdateOne) SetStatus(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetStatus(s)
+	return ptuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableStatus(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetStatus(*s)
+	}
+	return ptuo
+}
+
+// ClearStatus clears the value of the "status" field.
+func (ptuo *PotentialTenderUpdateOne) ClearStatus() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearStatus()
+	return ptuo
+}
+
+// SetAmount sets the "amount" field.
+func (ptuo *PotentialTenderUpdateOne) SetAmount(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetAmount(s)
+	return ptuo
+}
+
+// SetNillableAmount sets the "amount" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableAmount(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetAmount(*s)
+	}
+	return ptuo
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (ptuo *PotentialTenderUpdateOne) ClearAmount() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearAmount()
+	return ptuo
+}
+
+// SetSize sets the "size" field.
+func (ptuo *PotentialTenderUpdateOne) SetSize(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetSize(s)
+	return ptuo
+}
+
+// SetNillableSize sets the "size" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableSize(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetSize(*s)
+	}
+	return ptuo
+}
+
+// ClearSize clears the value of the "size" field.
+func (ptuo *PotentialTenderUpdateOne) ClearSize() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearSize()
+	return ptuo
+}
+
+// SetLocation sets the "location" field.
+func (ptuo *PotentialTenderUpdateOne) SetLocation(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetLocation(s)
+	return ptuo
+}
+
+// SetNillableLocation sets the "location" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableLocation(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetLocation(*s)
+	}
+	return ptuo
+}
+
+// ClearLocation clears the value of the "location" field.
+func (ptuo *PotentialTenderUpdateOne) ClearLocation() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearLocation()
+	return ptuo
+}
+
+// SetContact sets the "contact" field.
+func (ptuo *PotentialTenderUpdateOne) SetContact(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetContact(s)
+	return ptuo
+}
+
+// SetNillableContact sets the "contact" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableContact(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetContact(*s)
+	}
+	return ptuo
+}
+
+// ClearContact clears the value of the "contact" field.
+func (ptuo *PotentialTenderUpdateOne) ClearContact() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearContact()
+	return ptuo
+}
+
+// SetContactPhone sets the "contact_phone" field.
+func (ptuo *PotentialTenderUpdateOne) SetContactPhone(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetContactPhone(s)
+	return ptuo
+}
+
+// SetNillableContactPhone sets the "contact_phone" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableContactPhone(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetContactPhone(*s)
+	}
+	return ptuo
+}
+
+// ClearContactPhone clears the value of the "contact_phone" field.
+func (ptuo *PotentialTenderUpdateOne) ClearContactPhone() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearContactPhone()
+	return ptuo
+}
+
+// SetContactEmail sets the "contact_email" field.
+func (ptuo *PotentialTenderUpdateOne) SetContactEmail(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetContactEmail(s)
+	return ptuo
+}
+
+// SetNillableContactEmail sets the "contact_email" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableContactEmail(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetContactEmail(*s)
+	}
+	return ptuo
+}
+
+// ClearContactEmail clears the value of the "contact_email" field.
+func (ptuo *PotentialTenderUpdateOne) ClearContactEmail() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearContactEmail()
+	return ptuo
+}
+
+// SetContactAddress sets the "contact_address" field.
+func (ptuo *PotentialTenderUpdateOne) SetContactAddress(s string) *PotentialTenderUpdateOne {
+	ptuo.mutation.SetContactAddress(s)
+	return ptuo
+}
+
+// SetNillableContactAddress sets the "contact_address" field if the given value is not nil.
+func (ptuo *PotentialTenderUpdateOne) SetNillableContactAddress(s *string) *PotentialTenderUpdateOne {
+	if s != nil {
+		ptuo.SetContactAddress(*s)
+	}
+	return ptuo
+}
+
+// ClearContactAddress clears the value of the "contact_address" field.
+func (ptuo *PotentialTenderUpdateOne) ClearContactAddress() *PotentialTenderUpdateOne {
+	ptuo.mutation.ClearContactAddress()
 	return ptuo
 }
 
@@ -195,6 +855,90 @@ func (ptuo *PotentialTenderUpdateOne) sqlSave(ctx context.Context) (_node *Poten
 	}
 	if value, ok := ptuo.mutation.UpdatedAt(); ok {
 		_spec.SetField(potentialtender.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := ptuo.mutation.RefURL(); ok {
+		_spec.SetField(potentialtender.FieldRefURL, field.TypeString, value)
+	}
+	if value, ok := ptuo.mutation.Title(); ok {
+		_spec.SetField(potentialtender.FieldTitle, field.TypeString, value)
+	}
+	if value, ok := ptuo.mutation.Description(); ok {
+		_spec.SetField(potentialtender.FieldDescription, field.TypeString, value)
+	}
+	if ptuo.mutation.DescriptionCleared() {
+		_spec.ClearField(potentialtender.FieldDescription, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Requirement(); ok {
+		_spec.SetField(potentialtender.FieldRequirement, field.TypeString, value)
+	}
+	if ptuo.mutation.RequirementCleared() {
+		_spec.ClearField(potentialtender.FieldRequirement, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Address(); ok {
+		_spec.SetField(potentialtender.FieldAddress, field.TypeString, value)
+	}
+	if ptuo.mutation.AddressCleared() {
+		_spec.ClearField(potentialtender.FieldAddress, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Date(); ok {
+		_spec.SetField(potentialtender.FieldDate, field.TypeString, value)
+	}
+	if ptuo.mutation.DateCleared() {
+		_spec.ClearField(potentialtender.FieldDate, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.GetType(); ok {
+		_spec.SetField(potentialtender.FieldType, field.TypeString, value)
+	}
+	if ptuo.mutation.TypeCleared() {
+		_spec.ClearField(potentialtender.FieldType, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Status(); ok {
+		_spec.SetField(potentialtender.FieldStatus, field.TypeString, value)
+	}
+	if ptuo.mutation.StatusCleared() {
+		_spec.ClearField(potentialtender.FieldStatus, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Amount(); ok {
+		_spec.SetField(potentialtender.FieldAmount, field.TypeString, value)
+	}
+	if ptuo.mutation.AmountCleared() {
+		_spec.ClearField(potentialtender.FieldAmount, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Size(); ok {
+		_spec.SetField(potentialtender.FieldSize, field.TypeString, value)
+	}
+	if ptuo.mutation.SizeCleared() {
+		_spec.ClearField(potentialtender.FieldSize, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Location(); ok {
+		_spec.SetField(potentialtender.FieldLocation, field.TypeString, value)
+	}
+	if ptuo.mutation.LocationCleared() {
+		_spec.ClearField(potentialtender.FieldLocation, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.Contact(); ok {
+		_spec.SetField(potentialtender.FieldContact, field.TypeString, value)
+	}
+	if ptuo.mutation.ContactCleared() {
+		_spec.ClearField(potentialtender.FieldContact, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.ContactPhone(); ok {
+		_spec.SetField(potentialtender.FieldContactPhone, field.TypeString, value)
+	}
+	if ptuo.mutation.ContactPhoneCleared() {
+		_spec.ClearField(potentialtender.FieldContactPhone, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.ContactEmail(); ok {
+		_spec.SetField(potentialtender.FieldContactEmail, field.TypeString, value)
+	}
+	if ptuo.mutation.ContactEmailCleared() {
+		_spec.ClearField(potentialtender.FieldContactEmail, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.ContactAddress(); ok {
+		_spec.SetField(potentialtender.FieldContactAddress, field.TypeString, value)
+	}
+	if ptuo.mutation.ContactAddressCleared() {
+		_spec.ClearField(potentialtender.FieldContactAddress, field.TypeString)
 	}
 	_node = &PotentialTender{config: ptuo.config}
 	_spec.Assign = _node.assignValues

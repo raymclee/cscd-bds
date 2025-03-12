@@ -4090,6 +4090,257 @@ type PotentialTenderWhereInput struct {
 	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
 	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
 	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
+
+	// "ref_url" field predicates.
+	RefURL             *string  `json:"refURL,omitempty"`
+	RefURLNEQ          *string  `json:"refURLNEQ,omitempty"`
+	RefURLIn           []string `json:"refURLIn,omitempty"`
+	RefURLNotIn        []string `json:"refURLNotIn,omitempty"`
+	RefURLGT           *string  `json:"refURLGT,omitempty"`
+	RefURLGTE          *string  `json:"refURLGTE,omitempty"`
+	RefURLLT           *string  `json:"refURLLT,omitempty"`
+	RefURLLTE          *string  `json:"refURLLTE,omitempty"`
+	RefURLContains     *string  `json:"refURLContains,omitempty"`
+	RefURLHasPrefix    *string  `json:"refURLHasPrefix,omitempty"`
+	RefURLHasSuffix    *string  `json:"refURLHasSuffix,omitempty"`
+	RefURLEqualFold    *string  `json:"refURLEqualFold,omitempty"`
+	RefURLContainsFold *string  `json:"refURLContainsFold,omitempty"`
+
+	// "title" field predicates.
+	Title             *string  `json:"title,omitempty"`
+	TitleNEQ          *string  `json:"titleNEQ,omitempty"`
+	TitleIn           []string `json:"titleIn,omitempty"`
+	TitleNotIn        []string `json:"titleNotIn,omitempty"`
+	TitleGT           *string  `json:"titleGT,omitempty"`
+	TitleGTE          *string  `json:"titleGTE,omitempty"`
+	TitleLT           *string  `json:"titleLT,omitempty"`
+	TitleLTE          *string  `json:"titleLTE,omitempty"`
+	TitleContains     *string  `json:"titleContains,omitempty"`
+	TitleHasPrefix    *string  `json:"titleHasPrefix,omitempty"`
+	TitleHasSuffix    *string  `json:"titleHasSuffix,omitempty"`
+	TitleEqualFold    *string  `json:"titleEqualFold,omitempty"`
+	TitleContainsFold *string  `json:"titleContainsFold,omitempty"`
+
+	// "description" field predicates.
+	Description             *string  `json:"description,omitempty"`
+	DescriptionNEQ          *string  `json:"descriptionNEQ,omitempty"`
+	DescriptionIn           []string `json:"descriptionIn,omitempty"`
+	DescriptionNotIn        []string `json:"descriptionNotIn,omitempty"`
+	DescriptionGT           *string  `json:"descriptionGT,omitempty"`
+	DescriptionGTE          *string  `json:"descriptionGTE,omitempty"`
+	DescriptionLT           *string  `json:"descriptionLT,omitempty"`
+	DescriptionLTE          *string  `json:"descriptionLTE,omitempty"`
+	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
+	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
+	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
+	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
+	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
+	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
+	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
+
+	// "requirement" field predicates.
+	Requirement             *string  `json:"requirement,omitempty"`
+	RequirementNEQ          *string  `json:"requirementNEQ,omitempty"`
+	RequirementIn           []string `json:"requirementIn,omitempty"`
+	RequirementNotIn        []string `json:"requirementNotIn,omitempty"`
+	RequirementGT           *string  `json:"requirementGT,omitempty"`
+	RequirementGTE          *string  `json:"requirementGTE,omitempty"`
+	RequirementLT           *string  `json:"requirementLT,omitempty"`
+	RequirementLTE          *string  `json:"requirementLTE,omitempty"`
+	RequirementContains     *string  `json:"requirementContains,omitempty"`
+	RequirementHasPrefix    *string  `json:"requirementHasPrefix,omitempty"`
+	RequirementHasSuffix    *string  `json:"requirementHasSuffix,omitempty"`
+	RequirementIsNil        bool     `json:"requirementIsNil,omitempty"`
+	RequirementNotNil       bool     `json:"requirementNotNil,omitempty"`
+	RequirementEqualFold    *string  `json:"requirementEqualFold,omitempty"`
+	RequirementContainsFold *string  `json:"requirementContainsFold,omitempty"`
+
+	// "address" field predicates.
+	Address             *string  `json:"address,omitempty"`
+	AddressNEQ          *string  `json:"addressNEQ,omitempty"`
+	AddressIn           []string `json:"addressIn,omitempty"`
+	AddressNotIn        []string `json:"addressNotIn,omitempty"`
+	AddressGT           *string  `json:"addressGT,omitempty"`
+	AddressGTE          *string  `json:"addressGTE,omitempty"`
+	AddressLT           *string  `json:"addressLT,omitempty"`
+	AddressLTE          *string  `json:"addressLTE,omitempty"`
+	AddressContains     *string  `json:"addressContains,omitempty"`
+	AddressHasPrefix    *string  `json:"addressHasPrefix,omitempty"`
+	AddressHasSuffix    *string  `json:"addressHasSuffix,omitempty"`
+	AddressIsNil        bool     `json:"addressIsNil,omitempty"`
+	AddressNotNil       bool     `json:"addressNotNil,omitempty"`
+	AddressEqualFold    *string  `json:"addressEqualFold,omitempty"`
+	AddressContainsFold *string  `json:"addressContainsFold,omitempty"`
+
+	// "date" field predicates.
+	Date             *string  `json:"date,omitempty"`
+	DateNEQ          *string  `json:"dateNEQ,omitempty"`
+	DateIn           []string `json:"dateIn,omitempty"`
+	DateNotIn        []string `json:"dateNotIn,omitempty"`
+	DateGT           *string  `json:"dateGT,omitempty"`
+	DateGTE          *string  `json:"dateGTE,omitempty"`
+	DateLT           *string  `json:"dateLT,omitempty"`
+	DateLTE          *string  `json:"dateLTE,omitempty"`
+	DateContains     *string  `json:"dateContains,omitempty"`
+	DateHasPrefix    *string  `json:"dateHasPrefix,omitempty"`
+	DateHasSuffix    *string  `json:"dateHasSuffix,omitempty"`
+	DateIsNil        bool     `json:"dateIsNil,omitempty"`
+	DateNotNil       bool     `json:"dateNotNil,omitempty"`
+	DateEqualFold    *string  `json:"dateEqualFold,omitempty"`
+	DateContainsFold *string  `json:"dateContainsFold,omitempty"`
+
+	// "type" field predicates.
+	Type             *string  `json:"type,omitempty"`
+	TypeNEQ          *string  `json:"typeNEQ,omitempty"`
+	TypeIn           []string `json:"typeIn,omitempty"`
+	TypeNotIn        []string `json:"typeNotIn,omitempty"`
+	TypeGT           *string  `json:"typeGT,omitempty"`
+	TypeGTE          *string  `json:"typeGTE,omitempty"`
+	TypeLT           *string  `json:"typeLT,omitempty"`
+	TypeLTE          *string  `json:"typeLTE,omitempty"`
+	TypeContains     *string  `json:"typeContains,omitempty"`
+	TypeHasPrefix    *string  `json:"typeHasPrefix,omitempty"`
+	TypeHasSuffix    *string  `json:"typeHasSuffix,omitempty"`
+	TypeIsNil        bool     `json:"typeIsNil,omitempty"`
+	TypeNotNil       bool     `json:"typeNotNil,omitempty"`
+	TypeEqualFold    *string  `json:"typeEqualFold,omitempty"`
+	TypeContainsFold *string  `json:"typeContainsFold,omitempty"`
+
+	// "status" field predicates.
+	Status             *string  `json:"status,omitempty"`
+	StatusNEQ          *string  `json:"statusNEQ,omitempty"`
+	StatusIn           []string `json:"statusIn,omitempty"`
+	StatusNotIn        []string `json:"statusNotIn,omitempty"`
+	StatusGT           *string  `json:"statusGT,omitempty"`
+	StatusGTE          *string  `json:"statusGTE,omitempty"`
+	StatusLT           *string  `json:"statusLT,omitempty"`
+	StatusLTE          *string  `json:"statusLTE,omitempty"`
+	StatusContains     *string  `json:"statusContains,omitempty"`
+	StatusHasPrefix    *string  `json:"statusHasPrefix,omitempty"`
+	StatusHasSuffix    *string  `json:"statusHasSuffix,omitempty"`
+	StatusIsNil        bool     `json:"statusIsNil,omitempty"`
+	StatusNotNil       bool     `json:"statusNotNil,omitempty"`
+	StatusEqualFold    *string  `json:"statusEqualFold,omitempty"`
+	StatusContainsFold *string  `json:"statusContainsFold,omitempty"`
+
+	// "amount" field predicates.
+	Amount             *string  `json:"amount,omitempty"`
+	AmountNEQ          *string  `json:"amountNEQ,omitempty"`
+	AmountIn           []string `json:"amountIn,omitempty"`
+	AmountNotIn        []string `json:"amountNotIn,omitempty"`
+	AmountGT           *string  `json:"amountGT,omitempty"`
+	AmountGTE          *string  `json:"amountGTE,omitempty"`
+	AmountLT           *string  `json:"amountLT,omitempty"`
+	AmountLTE          *string  `json:"amountLTE,omitempty"`
+	AmountContains     *string  `json:"amountContains,omitempty"`
+	AmountHasPrefix    *string  `json:"amountHasPrefix,omitempty"`
+	AmountHasSuffix    *string  `json:"amountHasSuffix,omitempty"`
+	AmountIsNil        bool     `json:"amountIsNil,omitempty"`
+	AmountNotNil       bool     `json:"amountNotNil,omitempty"`
+	AmountEqualFold    *string  `json:"amountEqualFold,omitempty"`
+	AmountContainsFold *string  `json:"amountContainsFold,omitempty"`
+
+	// "size" field predicates.
+	Size             *string  `json:"size,omitempty"`
+	SizeNEQ          *string  `json:"sizeNEQ,omitempty"`
+	SizeIn           []string `json:"sizeIn,omitempty"`
+	SizeNotIn        []string `json:"sizeNotIn,omitempty"`
+	SizeGT           *string  `json:"sizeGT,omitempty"`
+	SizeGTE          *string  `json:"sizeGTE,omitempty"`
+	SizeLT           *string  `json:"sizeLT,omitempty"`
+	SizeLTE          *string  `json:"sizeLTE,omitempty"`
+	SizeContains     *string  `json:"sizeContains,omitempty"`
+	SizeHasPrefix    *string  `json:"sizeHasPrefix,omitempty"`
+	SizeHasSuffix    *string  `json:"sizeHasSuffix,omitempty"`
+	SizeIsNil        bool     `json:"sizeIsNil,omitempty"`
+	SizeNotNil       bool     `json:"sizeNotNil,omitempty"`
+	SizeEqualFold    *string  `json:"sizeEqualFold,omitempty"`
+	SizeContainsFold *string  `json:"sizeContainsFold,omitempty"`
+
+	// "location" field predicates.
+	Location             *string  `json:"location,omitempty"`
+	LocationNEQ          *string  `json:"locationNEQ,omitempty"`
+	LocationIn           []string `json:"locationIn,omitempty"`
+	LocationNotIn        []string `json:"locationNotIn,omitempty"`
+	LocationGT           *string  `json:"locationGT,omitempty"`
+	LocationGTE          *string  `json:"locationGTE,omitempty"`
+	LocationLT           *string  `json:"locationLT,omitempty"`
+	LocationLTE          *string  `json:"locationLTE,omitempty"`
+	LocationContains     *string  `json:"locationContains,omitempty"`
+	LocationHasPrefix    *string  `json:"locationHasPrefix,omitempty"`
+	LocationHasSuffix    *string  `json:"locationHasSuffix,omitempty"`
+	LocationIsNil        bool     `json:"locationIsNil,omitempty"`
+	LocationNotNil       bool     `json:"locationNotNil,omitempty"`
+	LocationEqualFold    *string  `json:"locationEqualFold,omitempty"`
+	LocationContainsFold *string  `json:"locationContainsFold,omitempty"`
+
+	// "contact" field predicates.
+	Contact             *string  `json:"contact,omitempty"`
+	ContactNEQ          *string  `json:"contactNEQ,omitempty"`
+	ContactIn           []string `json:"contactIn,omitempty"`
+	ContactNotIn        []string `json:"contactNotIn,omitempty"`
+	ContactGT           *string  `json:"contactGT,omitempty"`
+	ContactGTE          *string  `json:"contactGTE,omitempty"`
+	ContactLT           *string  `json:"contactLT,omitempty"`
+	ContactLTE          *string  `json:"contactLTE,omitempty"`
+	ContactContains     *string  `json:"contactContains,omitempty"`
+	ContactHasPrefix    *string  `json:"contactHasPrefix,omitempty"`
+	ContactHasSuffix    *string  `json:"contactHasSuffix,omitempty"`
+	ContactIsNil        bool     `json:"contactIsNil,omitempty"`
+	ContactNotNil       bool     `json:"contactNotNil,omitempty"`
+	ContactEqualFold    *string  `json:"contactEqualFold,omitempty"`
+	ContactContainsFold *string  `json:"contactContainsFold,omitempty"`
+
+	// "contact_phone" field predicates.
+	ContactPhone             *string  `json:"contactPhone,omitempty"`
+	ContactPhoneNEQ          *string  `json:"contactPhoneNEQ,omitempty"`
+	ContactPhoneIn           []string `json:"contactPhoneIn,omitempty"`
+	ContactPhoneNotIn        []string `json:"contactPhoneNotIn,omitempty"`
+	ContactPhoneGT           *string  `json:"contactPhoneGT,omitempty"`
+	ContactPhoneGTE          *string  `json:"contactPhoneGTE,omitempty"`
+	ContactPhoneLT           *string  `json:"contactPhoneLT,omitempty"`
+	ContactPhoneLTE          *string  `json:"contactPhoneLTE,omitempty"`
+	ContactPhoneContains     *string  `json:"contactPhoneContains,omitempty"`
+	ContactPhoneHasPrefix    *string  `json:"contactPhoneHasPrefix,omitempty"`
+	ContactPhoneHasSuffix    *string  `json:"contactPhoneHasSuffix,omitempty"`
+	ContactPhoneIsNil        bool     `json:"contactPhoneIsNil,omitempty"`
+	ContactPhoneNotNil       bool     `json:"contactPhoneNotNil,omitempty"`
+	ContactPhoneEqualFold    *string  `json:"contactPhoneEqualFold,omitempty"`
+	ContactPhoneContainsFold *string  `json:"contactPhoneContainsFold,omitempty"`
+
+	// "contact_email" field predicates.
+	ContactEmail             *string  `json:"contactEmail,omitempty"`
+	ContactEmailNEQ          *string  `json:"contactEmailNEQ,omitempty"`
+	ContactEmailIn           []string `json:"contactEmailIn,omitempty"`
+	ContactEmailNotIn        []string `json:"contactEmailNotIn,omitempty"`
+	ContactEmailGT           *string  `json:"contactEmailGT,omitempty"`
+	ContactEmailGTE          *string  `json:"contactEmailGTE,omitempty"`
+	ContactEmailLT           *string  `json:"contactEmailLT,omitempty"`
+	ContactEmailLTE          *string  `json:"contactEmailLTE,omitempty"`
+	ContactEmailContains     *string  `json:"contactEmailContains,omitempty"`
+	ContactEmailHasPrefix    *string  `json:"contactEmailHasPrefix,omitempty"`
+	ContactEmailHasSuffix    *string  `json:"contactEmailHasSuffix,omitempty"`
+	ContactEmailIsNil        bool     `json:"contactEmailIsNil,omitempty"`
+	ContactEmailNotNil       bool     `json:"contactEmailNotNil,omitempty"`
+	ContactEmailEqualFold    *string  `json:"contactEmailEqualFold,omitempty"`
+	ContactEmailContainsFold *string  `json:"contactEmailContainsFold,omitempty"`
+
+	// "contact_address" field predicates.
+	ContactAddress             *string  `json:"contactAddress,omitempty"`
+	ContactAddressNEQ          *string  `json:"contactAddressNEQ,omitempty"`
+	ContactAddressIn           []string `json:"contactAddressIn,omitempty"`
+	ContactAddressNotIn        []string `json:"contactAddressNotIn,omitempty"`
+	ContactAddressGT           *string  `json:"contactAddressGT,omitempty"`
+	ContactAddressGTE          *string  `json:"contactAddressGTE,omitempty"`
+	ContactAddressLT           *string  `json:"contactAddressLT,omitempty"`
+	ContactAddressLTE          *string  `json:"contactAddressLTE,omitempty"`
+	ContactAddressContains     *string  `json:"contactAddressContains,omitempty"`
+	ContactAddressHasPrefix    *string  `json:"contactAddressHasPrefix,omitempty"`
+	ContactAddressHasSuffix    *string  `json:"contactAddressHasSuffix,omitempty"`
+	ContactAddressIsNil        bool     `json:"contactAddressIsNil,omitempty"`
+	ContactAddressNotNil       bool     `json:"contactAddressNotNil,omitempty"`
+	ContactAddressEqualFold    *string  `json:"contactAddressEqualFold,omitempty"`
+	ContactAddressContainsFold *string  `json:"contactAddressContainsFold,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -4234,6 +4485,669 @@ func (i *PotentialTenderWhereInput) P() (predicate.PotentialTender, error) {
 	}
 	if i.UpdatedAtLTE != nil {
 		predicates = append(predicates, potentialtender.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.RefURL != nil {
+		predicates = append(predicates, potentialtender.RefURLEQ(*i.RefURL))
+	}
+	if i.RefURLNEQ != nil {
+		predicates = append(predicates, potentialtender.RefURLNEQ(*i.RefURLNEQ))
+	}
+	if len(i.RefURLIn) > 0 {
+		predicates = append(predicates, potentialtender.RefURLIn(i.RefURLIn...))
+	}
+	if len(i.RefURLNotIn) > 0 {
+		predicates = append(predicates, potentialtender.RefURLNotIn(i.RefURLNotIn...))
+	}
+	if i.RefURLGT != nil {
+		predicates = append(predicates, potentialtender.RefURLGT(*i.RefURLGT))
+	}
+	if i.RefURLGTE != nil {
+		predicates = append(predicates, potentialtender.RefURLGTE(*i.RefURLGTE))
+	}
+	if i.RefURLLT != nil {
+		predicates = append(predicates, potentialtender.RefURLLT(*i.RefURLLT))
+	}
+	if i.RefURLLTE != nil {
+		predicates = append(predicates, potentialtender.RefURLLTE(*i.RefURLLTE))
+	}
+	if i.RefURLContains != nil {
+		predicates = append(predicates, potentialtender.RefURLContains(*i.RefURLContains))
+	}
+	if i.RefURLHasPrefix != nil {
+		predicates = append(predicates, potentialtender.RefURLHasPrefix(*i.RefURLHasPrefix))
+	}
+	if i.RefURLHasSuffix != nil {
+		predicates = append(predicates, potentialtender.RefURLHasSuffix(*i.RefURLHasSuffix))
+	}
+	if i.RefURLEqualFold != nil {
+		predicates = append(predicates, potentialtender.RefURLEqualFold(*i.RefURLEqualFold))
+	}
+	if i.RefURLContainsFold != nil {
+		predicates = append(predicates, potentialtender.RefURLContainsFold(*i.RefURLContainsFold))
+	}
+	if i.Title != nil {
+		predicates = append(predicates, potentialtender.TitleEQ(*i.Title))
+	}
+	if i.TitleNEQ != nil {
+		predicates = append(predicates, potentialtender.TitleNEQ(*i.TitleNEQ))
+	}
+	if len(i.TitleIn) > 0 {
+		predicates = append(predicates, potentialtender.TitleIn(i.TitleIn...))
+	}
+	if len(i.TitleNotIn) > 0 {
+		predicates = append(predicates, potentialtender.TitleNotIn(i.TitleNotIn...))
+	}
+	if i.TitleGT != nil {
+		predicates = append(predicates, potentialtender.TitleGT(*i.TitleGT))
+	}
+	if i.TitleGTE != nil {
+		predicates = append(predicates, potentialtender.TitleGTE(*i.TitleGTE))
+	}
+	if i.TitleLT != nil {
+		predicates = append(predicates, potentialtender.TitleLT(*i.TitleLT))
+	}
+	if i.TitleLTE != nil {
+		predicates = append(predicates, potentialtender.TitleLTE(*i.TitleLTE))
+	}
+	if i.TitleContains != nil {
+		predicates = append(predicates, potentialtender.TitleContains(*i.TitleContains))
+	}
+	if i.TitleHasPrefix != nil {
+		predicates = append(predicates, potentialtender.TitleHasPrefix(*i.TitleHasPrefix))
+	}
+	if i.TitleHasSuffix != nil {
+		predicates = append(predicates, potentialtender.TitleHasSuffix(*i.TitleHasSuffix))
+	}
+	if i.TitleEqualFold != nil {
+		predicates = append(predicates, potentialtender.TitleEqualFold(*i.TitleEqualFold))
+	}
+	if i.TitleContainsFold != nil {
+		predicates = append(predicates, potentialtender.TitleContainsFold(*i.TitleContainsFold))
+	}
+	if i.Description != nil {
+		predicates = append(predicates, potentialtender.DescriptionEQ(*i.Description))
+	}
+	if i.DescriptionNEQ != nil {
+		predicates = append(predicates, potentialtender.DescriptionNEQ(*i.DescriptionNEQ))
+	}
+	if len(i.DescriptionIn) > 0 {
+		predicates = append(predicates, potentialtender.DescriptionIn(i.DescriptionIn...))
+	}
+	if len(i.DescriptionNotIn) > 0 {
+		predicates = append(predicates, potentialtender.DescriptionNotIn(i.DescriptionNotIn...))
+	}
+	if i.DescriptionGT != nil {
+		predicates = append(predicates, potentialtender.DescriptionGT(*i.DescriptionGT))
+	}
+	if i.DescriptionGTE != nil {
+		predicates = append(predicates, potentialtender.DescriptionGTE(*i.DescriptionGTE))
+	}
+	if i.DescriptionLT != nil {
+		predicates = append(predicates, potentialtender.DescriptionLT(*i.DescriptionLT))
+	}
+	if i.DescriptionLTE != nil {
+		predicates = append(predicates, potentialtender.DescriptionLTE(*i.DescriptionLTE))
+	}
+	if i.DescriptionContains != nil {
+		predicates = append(predicates, potentialtender.DescriptionContains(*i.DescriptionContains))
+	}
+	if i.DescriptionHasPrefix != nil {
+		predicates = append(predicates, potentialtender.DescriptionHasPrefix(*i.DescriptionHasPrefix))
+	}
+	if i.DescriptionHasSuffix != nil {
+		predicates = append(predicates, potentialtender.DescriptionHasSuffix(*i.DescriptionHasSuffix))
+	}
+	if i.DescriptionIsNil {
+		predicates = append(predicates, potentialtender.DescriptionIsNil())
+	}
+	if i.DescriptionNotNil {
+		predicates = append(predicates, potentialtender.DescriptionNotNil())
+	}
+	if i.DescriptionEqualFold != nil {
+		predicates = append(predicates, potentialtender.DescriptionEqualFold(*i.DescriptionEqualFold))
+	}
+	if i.DescriptionContainsFold != nil {
+		predicates = append(predicates, potentialtender.DescriptionContainsFold(*i.DescriptionContainsFold))
+	}
+	if i.Requirement != nil {
+		predicates = append(predicates, potentialtender.RequirementEQ(*i.Requirement))
+	}
+	if i.RequirementNEQ != nil {
+		predicates = append(predicates, potentialtender.RequirementNEQ(*i.RequirementNEQ))
+	}
+	if len(i.RequirementIn) > 0 {
+		predicates = append(predicates, potentialtender.RequirementIn(i.RequirementIn...))
+	}
+	if len(i.RequirementNotIn) > 0 {
+		predicates = append(predicates, potentialtender.RequirementNotIn(i.RequirementNotIn...))
+	}
+	if i.RequirementGT != nil {
+		predicates = append(predicates, potentialtender.RequirementGT(*i.RequirementGT))
+	}
+	if i.RequirementGTE != nil {
+		predicates = append(predicates, potentialtender.RequirementGTE(*i.RequirementGTE))
+	}
+	if i.RequirementLT != nil {
+		predicates = append(predicates, potentialtender.RequirementLT(*i.RequirementLT))
+	}
+	if i.RequirementLTE != nil {
+		predicates = append(predicates, potentialtender.RequirementLTE(*i.RequirementLTE))
+	}
+	if i.RequirementContains != nil {
+		predicates = append(predicates, potentialtender.RequirementContains(*i.RequirementContains))
+	}
+	if i.RequirementHasPrefix != nil {
+		predicates = append(predicates, potentialtender.RequirementHasPrefix(*i.RequirementHasPrefix))
+	}
+	if i.RequirementHasSuffix != nil {
+		predicates = append(predicates, potentialtender.RequirementHasSuffix(*i.RequirementHasSuffix))
+	}
+	if i.RequirementIsNil {
+		predicates = append(predicates, potentialtender.RequirementIsNil())
+	}
+	if i.RequirementNotNil {
+		predicates = append(predicates, potentialtender.RequirementNotNil())
+	}
+	if i.RequirementEqualFold != nil {
+		predicates = append(predicates, potentialtender.RequirementEqualFold(*i.RequirementEqualFold))
+	}
+	if i.RequirementContainsFold != nil {
+		predicates = append(predicates, potentialtender.RequirementContainsFold(*i.RequirementContainsFold))
+	}
+	if i.Address != nil {
+		predicates = append(predicates, potentialtender.AddressEQ(*i.Address))
+	}
+	if i.AddressNEQ != nil {
+		predicates = append(predicates, potentialtender.AddressNEQ(*i.AddressNEQ))
+	}
+	if len(i.AddressIn) > 0 {
+		predicates = append(predicates, potentialtender.AddressIn(i.AddressIn...))
+	}
+	if len(i.AddressNotIn) > 0 {
+		predicates = append(predicates, potentialtender.AddressNotIn(i.AddressNotIn...))
+	}
+	if i.AddressGT != nil {
+		predicates = append(predicates, potentialtender.AddressGT(*i.AddressGT))
+	}
+	if i.AddressGTE != nil {
+		predicates = append(predicates, potentialtender.AddressGTE(*i.AddressGTE))
+	}
+	if i.AddressLT != nil {
+		predicates = append(predicates, potentialtender.AddressLT(*i.AddressLT))
+	}
+	if i.AddressLTE != nil {
+		predicates = append(predicates, potentialtender.AddressLTE(*i.AddressLTE))
+	}
+	if i.AddressContains != nil {
+		predicates = append(predicates, potentialtender.AddressContains(*i.AddressContains))
+	}
+	if i.AddressHasPrefix != nil {
+		predicates = append(predicates, potentialtender.AddressHasPrefix(*i.AddressHasPrefix))
+	}
+	if i.AddressHasSuffix != nil {
+		predicates = append(predicates, potentialtender.AddressHasSuffix(*i.AddressHasSuffix))
+	}
+	if i.AddressIsNil {
+		predicates = append(predicates, potentialtender.AddressIsNil())
+	}
+	if i.AddressNotNil {
+		predicates = append(predicates, potentialtender.AddressNotNil())
+	}
+	if i.AddressEqualFold != nil {
+		predicates = append(predicates, potentialtender.AddressEqualFold(*i.AddressEqualFold))
+	}
+	if i.AddressContainsFold != nil {
+		predicates = append(predicates, potentialtender.AddressContainsFold(*i.AddressContainsFold))
+	}
+	if i.Date != nil {
+		predicates = append(predicates, potentialtender.DateEQ(*i.Date))
+	}
+	if i.DateNEQ != nil {
+		predicates = append(predicates, potentialtender.DateNEQ(*i.DateNEQ))
+	}
+	if len(i.DateIn) > 0 {
+		predicates = append(predicates, potentialtender.DateIn(i.DateIn...))
+	}
+	if len(i.DateNotIn) > 0 {
+		predicates = append(predicates, potentialtender.DateNotIn(i.DateNotIn...))
+	}
+	if i.DateGT != nil {
+		predicates = append(predicates, potentialtender.DateGT(*i.DateGT))
+	}
+	if i.DateGTE != nil {
+		predicates = append(predicates, potentialtender.DateGTE(*i.DateGTE))
+	}
+	if i.DateLT != nil {
+		predicates = append(predicates, potentialtender.DateLT(*i.DateLT))
+	}
+	if i.DateLTE != nil {
+		predicates = append(predicates, potentialtender.DateLTE(*i.DateLTE))
+	}
+	if i.DateContains != nil {
+		predicates = append(predicates, potentialtender.DateContains(*i.DateContains))
+	}
+	if i.DateHasPrefix != nil {
+		predicates = append(predicates, potentialtender.DateHasPrefix(*i.DateHasPrefix))
+	}
+	if i.DateHasSuffix != nil {
+		predicates = append(predicates, potentialtender.DateHasSuffix(*i.DateHasSuffix))
+	}
+	if i.DateIsNil {
+		predicates = append(predicates, potentialtender.DateIsNil())
+	}
+	if i.DateNotNil {
+		predicates = append(predicates, potentialtender.DateNotNil())
+	}
+	if i.DateEqualFold != nil {
+		predicates = append(predicates, potentialtender.DateEqualFold(*i.DateEqualFold))
+	}
+	if i.DateContainsFold != nil {
+		predicates = append(predicates, potentialtender.DateContainsFold(*i.DateContainsFold))
+	}
+	if i.Type != nil {
+		predicates = append(predicates, potentialtender.TypeEQ(*i.Type))
+	}
+	if i.TypeNEQ != nil {
+		predicates = append(predicates, potentialtender.TypeNEQ(*i.TypeNEQ))
+	}
+	if len(i.TypeIn) > 0 {
+		predicates = append(predicates, potentialtender.TypeIn(i.TypeIn...))
+	}
+	if len(i.TypeNotIn) > 0 {
+		predicates = append(predicates, potentialtender.TypeNotIn(i.TypeNotIn...))
+	}
+	if i.TypeGT != nil {
+		predicates = append(predicates, potentialtender.TypeGT(*i.TypeGT))
+	}
+	if i.TypeGTE != nil {
+		predicates = append(predicates, potentialtender.TypeGTE(*i.TypeGTE))
+	}
+	if i.TypeLT != nil {
+		predicates = append(predicates, potentialtender.TypeLT(*i.TypeLT))
+	}
+	if i.TypeLTE != nil {
+		predicates = append(predicates, potentialtender.TypeLTE(*i.TypeLTE))
+	}
+	if i.TypeContains != nil {
+		predicates = append(predicates, potentialtender.TypeContains(*i.TypeContains))
+	}
+	if i.TypeHasPrefix != nil {
+		predicates = append(predicates, potentialtender.TypeHasPrefix(*i.TypeHasPrefix))
+	}
+	if i.TypeHasSuffix != nil {
+		predicates = append(predicates, potentialtender.TypeHasSuffix(*i.TypeHasSuffix))
+	}
+	if i.TypeIsNil {
+		predicates = append(predicates, potentialtender.TypeIsNil())
+	}
+	if i.TypeNotNil {
+		predicates = append(predicates, potentialtender.TypeNotNil())
+	}
+	if i.TypeEqualFold != nil {
+		predicates = append(predicates, potentialtender.TypeEqualFold(*i.TypeEqualFold))
+	}
+	if i.TypeContainsFold != nil {
+		predicates = append(predicates, potentialtender.TypeContainsFold(*i.TypeContainsFold))
+	}
+	if i.Status != nil {
+		predicates = append(predicates, potentialtender.StatusEQ(*i.Status))
+	}
+	if i.StatusNEQ != nil {
+		predicates = append(predicates, potentialtender.StatusNEQ(*i.StatusNEQ))
+	}
+	if len(i.StatusIn) > 0 {
+		predicates = append(predicates, potentialtender.StatusIn(i.StatusIn...))
+	}
+	if len(i.StatusNotIn) > 0 {
+		predicates = append(predicates, potentialtender.StatusNotIn(i.StatusNotIn...))
+	}
+	if i.StatusGT != nil {
+		predicates = append(predicates, potentialtender.StatusGT(*i.StatusGT))
+	}
+	if i.StatusGTE != nil {
+		predicates = append(predicates, potentialtender.StatusGTE(*i.StatusGTE))
+	}
+	if i.StatusLT != nil {
+		predicates = append(predicates, potentialtender.StatusLT(*i.StatusLT))
+	}
+	if i.StatusLTE != nil {
+		predicates = append(predicates, potentialtender.StatusLTE(*i.StatusLTE))
+	}
+	if i.StatusContains != nil {
+		predicates = append(predicates, potentialtender.StatusContains(*i.StatusContains))
+	}
+	if i.StatusHasPrefix != nil {
+		predicates = append(predicates, potentialtender.StatusHasPrefix(*i.StatusHasPrefix))
+	}
+	if i.StatusHasSuffix != nil {
+		predicates = append(predicates, potentialtender.StatusHasSuffix(*i.StatusHasSuffix))
+	}
+	if i.StatusIsNil {
+		predicates = append(predicates, potentialtender.StatusIsNil())
+	}
+	if i.StatusNotNil {
+		predicates = append(predicates, potentialtender.StatusNotNil())
+	}
+	if i.StatusEqualFold != nil {
+		predicates = append(predicates, potentialtender.StatusEqualFold(*i.StatusEqualFold))
+	}
+	if i.StatusContainsFold != nil {
+		predicates = append(predicates, potentialtender.StatusContainsFold(*i.StatusContainsFold))
+	}
+	if i.Amount != nil {
+		predicates = append(predicates, potentialtender.AmountEQ(*i.Amount))
+	}
+	if i.AmountNEQ != nil {
+		predicates = append(predicates, potentialtender.AmountNEQ(*i.AmountNEQ))
+	}
+	if len(i.AmountIn) > 0 {
+		predicates = append(predicates, potentialtender.AmountIn(i.AmountIn...))
+	}
+	if len(i.AmountNotIn) > 0 {
+		predicates = append(predicates, potentialtender.AmountNotIn(i.AmountNotIn...))
+	}
+	if i.AmountGT != nil {
+		predicates = append(predicates, potentialtender.AmountGT(*i.AmountGT))
+	}
+	if i.AmountGTE != nil {
+		predicates = append(predicates, potentialtender.AmountGTE(*i.AmountGTE))
+	}
+	if i.AmountLT != nil {
+		predicates = append(predicates, potentialtender.AmountLT(*i.AmountLT))
+	}
+	if i.AmountLTE != nil {
+		predicates = append(predicates, potentialtender.AmountLTE(*i.AmountLTE))
+	}
+	if i.AmountContains != nil {
+		predicates = append(predicates, potentialtender.AmountContains(*i.AmountContains))
+	}
+	if i.AmountHasPrefix != nil {
+		predicates = append(predicates, potentialtender.AmountHasPrefix(*i.AmountHasPrefix))
+	}
+	if i.AmountHasSuffix != nil {
+		predicates = append(predicates, potentialtender.AmountHasSuffix(*i.AmountHasSuffix))
+	}
+	if i.AmountIsNil {
+		predicates = append(predicates, potentialtender.AmountIsNil())
+	}
+	if i.AmountNotNil {
+		predicates = append(predicates, potentialtender.AmountNotNil())
+	}
+	if i.AmountEqualFold != nil {
+		predicates = append(predicates, potentialtender.AmountEqualFold(*i.AmountEqualFold))
+	}
+	if i.AmountContainsFold != nil {
+		predicates = append(predicates, potentialtender.AmountContainsFold(*i.AmountContainsFold))
+	}
+	if i.Size != nil {
+		predicates = append(predicates, potentialtender.SizeEQ(*i.Size))
+	}
+	if i.SizeNEQ != nil {
+		predicates = append(predicates, potentialtender.SizeNEQ(*i.SizeNEQ))
+	}
+	if len(i.SizeIn) > 0 {
+		predicates = append(predicates, potentialtender.SizeIn(i.SizeIn...))
+	}
+	if len(i.SizeNotIn) > 0 {
+		predicates = append(predicates, potentialtender.SizeNotIn(i.SizeNotIn...))
+	}
+	if i.SizeGT != nil {
+		predicates = append(predicates, potentialtender.SizeGT(*i.SizeGT))
+	}
+	if i.SizeGTE != nil {
+		predicates = append(predicates, potentialtender.SizeGTE(*i.SizeGTE))
+	}
+	if i.SizeLT != nil {
+		predicates = append(predicates, potentialtender.SizeLT(*i.SizeLT))
+	}
+	if i.SizeLTE != nil {
+		predicates = append(predicates, potentialtender.SizeLTE(*i.SizeLTE))
+	}
+	if i.SizeContains != nil {
+		predicates = append(predicates, potentialtender.SizeContains(*i.SizeContains))
+	}
+	if i.SizeHasPrefix != nil {
+		predicates = append(predicates, potentialtender.SizeHasPrefix(*i.SizeHasPrefix))
+	}
+	if i.SizeHasSuffix != nil {
+		predicates = append(predicates, potentialtender.SizeHasSuffix(*i.SizeHasSuffix))
+	}
+	if i.SizeIsNil {
+		predicates = append(predicates, potentialtender.SizeIsNil())
+	}
+	if i.SizeNotNil {
+		predicates = append(predicates, potentialtender.SizeNotNil())
+	}
+	if i.SizeEqualFold != nil {
+		predicates = append(predicates, potentialtender.SizeEqualFold(*i.SizeEqualFold))
+	}
+	if i.SizeContainsFold != nil {
+		predicates = append(predicates, potentialtender.SizeContainsFold(*i.SizeContainsFold))
+	}
+	if i.Location != nil {
+		predicates = append(predicates, potentialtender.LocationEQ(*i.Location))
+	}
+	if i.LocationNEQ != nil {
+		predicates = append(predicates, potentialtender.LocationNEQ(*i.LocationNEQ))
+	}
+	if len(i.LocationIn) > 0 {
+		predicates = append(predicates, potentialtender.LocationIn(i.LocationIn...))
+	}
+	if len(i.LocationNotIn) > 0 {
+		predicates = append(predicates, potentialtender.LocationNotIn(i.LocationNotIn...))
+	}
+	if i.LocationGT != nil {
+		predicates = append(predicates, potentialtender.LocationGT(*i.LocationGT))
+	}
+	if i.LocationGTE != nil {
+		predicates = append(predicates, potentialtender.LocationGTE(*i.LocationGTE))
+	}
+	if i.LocationLT != nil {
+		predicates = append(predicates, potentialtender.LocationLT(*i.LocationLT))
+	}
+	if i.LocationLTE != nil {
+		predicates = append(predicates, potentialtender.LocationLTE(*i.LocationLTE))
+	}
+	if i.LocationContains != nil {
+		predicates = append(predicates, potentialtender.LocationContains(*i.LocationContains))
+	}
+	if i.LocationHasPrefix != nil {
+		predicates = append(predicates, potentialtender.LocationHasPrefix(*i.LocationHasPrefix))
+	}
+	if i.LocationHasSuffix != nil {
+		predicates = append(predicates, potentialtender.LocationHasSuffix(*i.LocationHasSuffix))
+	}
+	if i.LocationIsNil {
+		predicates = append(predicates, potentialtender.LocationIsNil())
+	}
+	if i.LocationNotNil {
+		predicates = append(predicates, potentialtender.LocationNotNil())
+	}
+	if i.LocationEqualFold != nil {
+		predicates = append(predicates, potentialtender.LocationEqualFold(*i.LocationEqualFold))
+	}
+	if i.LocationContainsFold != nil {
+		predicates = append(predicates, potentialtender.LocationContainsFold(*i.LocationContainsFold))
+	}
+	if i.Contact != nil {
+		predicates = append(predicates, potentialtender.ContactEQ(*i.Contact))
+	}
+	if i.ContactNEQ != nil {
+		predicates = append(predicates, potentialtender.ContactNEQ(*i.ContactNEQ))
+	}
+	if len(i.ContactIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactIn(i.ContactIn...))
+	}
+	if len(i.ContactNotIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactNotIn(i.ContactNotIn...))
+	}
+	if i.ContactGT != nil {
+		predicates = append(predicates, potentialtender.ContactGT(*i.ContactGT))
+	}
+	if i.ContactGTE != nil {
+		predicates = append(predicates, potentialtender.ContactGTE(*i.ContactGTE))
+	}
+	if i.ContactLT != nil {
+		predicates = append(predicates, potentialtender.ContactLT(*i.ContactLT))
+	}
+	if i.ContactLTE != nil {
+		predicates = append(predicates, potentialtender.ContactLTE(*i.ContactLTE))
+	}
+	if i.ContactContains != nil {
+		predicates = append(predicates, potentialtender.ContactContains(*i.ContactContains))
+	}
+	if i.ContactHasPrefix != nil {
+		predicates = append(predicates, potentialtender.ContactHasPrefix(*i.ContactHasPrefix))
+	}
+	if i.ContactHasSuffix != nil {
+		predicates = append(predicates, potentialtender.ContactHasSuffix(*i.ContactHasSuffix))
+	}
+	if i.ContactIsNil {
+		predicates = append(predicates, potentialtender.ContactIsNil())
+	}
+	if i.ContactNotNil {
+		predicates = append(predicates, potentialtender.ContactNotNil())
+	}
+	if i.ContactEqualFold != nil {
+		predicates = append(predicates, potentialtender.ContactEqualFold(*i.ContactEqualFold))
+	}
+	if i.ContactContainsFold != nil {
+		predicates = append(predicates, potentialtender.ContactContainsFold(*i.ContactContainsFold))
+	}
+	if i.ContactPhone != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneEQ(*i.ContactPhone))
+	}
+	if i.ContactPhoneNEQ != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneNEQ(*i.ContactPhoneNEQ))
+	}
+	if len(i.ContactPhoneIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactPhoneIn(i.ContactPhoneIn...))
+	}
+	if len(i.ContactPhoneNotIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactPhoneNotIn(i.ContactPhoneNotIn...))
+	}
+	if i.ContactPhoneGT != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneGT(*i.ContactPhoneGT))
+	}
+	if i.ContactPhoneGTE != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneGTE(*i.ContactPhoneGTE))
+	}
+	if i.ContactPhoneLT != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneLT(*i.ContactPhoneLT))
+	}
+	if i.ContactPhoneLTE != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneLTE(*i.ContactPhoneLTE))
+	}
+	if i.ContactPhoneContains != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneContains(*i.ContactPhoneContains))
+	}
+	if i.ContactPhoneHasPrefix != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneHasPrefix(*i.ContactPhoneHasPrefix))
+	}
+	if i.ContactPhoneHasSuffix != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneHasSuffix(*i.ContactPhoneHasSuffix))
+	}
+	if i.ContactPhoneIsNil {
+		predicates = append(predicates, potentialtender.ContactPhoneIsNil())
+	}
+	if i.ContactPhoneNotNil {
+		predicates = append(predicates, potentialtender.ContactPhoneNotNil())
+	}
+	if i.ContactPhoneEqualFold != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneEqualFold(*i.ContactPhoneEqualFold))
+	}
+	if i.ContactPhoneContainsFold != nil {
+		predicates = append(predicates, potentialtender.ContactPhoneContainsFold(*i.ContactPhoneContainsFold))
+	}
+	if i.ContactEmail != nil {
+		predicates = append(predicates, potentialtender.ContactEmailEQ(*i.ContactEmail))
+	}
+	if i.ContactEmailNEQ != nil {
+		predicates = append(predicates, potentialtender.ContactEmailNEQ(*i.ContactEmailNEQ))
+	}
+	if len(i.ContactEmailIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactEmailIn(i.ContactEmailIn...))
+	}
+	if len(i.ContactEmailNotIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactEmailNotIn(i.ContactEmailNotIn...))
+	}
+	if i.ContactEmailGT != nil {
+		predicates = append(predicates, potentialtender.ContactEmailGT(*i.ContactEmailGT))
+	}
+	if i.ContactEmailGTE != nil {
+		predicates = append(predicates, potentialtender.ContactEmailGTE(*i.ContactEmailGTE))
+	}
+	if i.ContactEmailLT != nil {
+		predicates = append(predicates, potentialtender.ContactEmailLT(*i.ContactEmailLT))
+	}
+	if i.ContactEmailLTE != nil {
+		predicates = append(predicates, potentialtender.ContactEmailLTE(*i.ContactEmailLTE))
+	}
+	if i.ContactEmailContains != nil {
+		predicates = append(predicates, potentialtender.ContactEmailContains(*i.ContactEmailContains))
+	}
+	if i.ContactEmailHasPrefix != nil {
+		predicates = append(predicates, potentialtender.ContactEmailHasPrefix(*i.ContactEmailHasPrefix))
+	}
+	if i.ContactEmailHasSuffix != nil {
+		predicates = append(predicates, potentialtender.ContactEmailHasSuffix(*i.ContactEmailHasSuffix))
+	}
+	if i.ContactEmailIsNil {
+		predicates = append(predicates, potentialtender.ContactEmailIsNil())
+	}
+	if i.ContactEmailNotNil {
+		predicates = append(predicates, potentialtender.ContactEmailNotNil())
+	}
+	if i.ContactEmailEqualFold != nil {
+		predicates = append(predicates, potentialtender.ContactEmailEqualFold(*i.ContactEmailEqualFold))
+	}
+	if i.ContactEmailContainsFold != nil {
+		predicates = append(predicates, potentialtender.ContactEmailContainsFold(*i.ContactEmailContainsFold))
+	}
+	if i.ContactAddress != nil {
+		predicates = append(predicates, potentialtender.ContactAddressEQ(*i.ContactAddress))
+	}
+	if i.ContactAddressNEQ != nil {
+		predicates = append(predicates, potentialtender.ContactAddressNEQ(*i.ContactAddressNEQ))
+	}
+	if len(i.ContactAddressIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactAddressIn(i.ContactAddressIn...))
+	}
+	if len(i.ContactAddressNotIn) > 0 {
+		predicates = append(predicates, potentialtender.ContactAddressNotIn(i.ContactAddressNotIn...))
+	}
+	if i.ContactAddressGT != nil {
+		predicates = append(predicates, potentialtender.ContactAddressGT(*i.ContactAddressGT))
+	}
+	if i.ContactAddressGTE != nil {
+		predicates = append(predicates, potentialtender.ContactAddressGTE(*i.ContactAddressGTE))
+	}
+	if i.ContactAddressLT != nil {
+		predicates = append(predicates, potentialtender.ContactAddressLT(*i.ContactAddressLT))
+	}
+	if i.ContactAddressLTE != nil {
+		predicates = append(predicates, potentialtender.ContactAddressLTE(*i.ContactAddressLTE))
+	}
+	if i.ContactAddressContains != nil {
+		predicates = append(predicates, potentialtender.ContactAddressContains(*i.ContactAddressContains))
+	}
+	if i.ContactAddressHasPrefix != nil {
+		predicates = append(predicates, potentialtender.ContactAddressHasPrefix(*i.ContactAddressHasPrefix))
+	}
+	if i.ContactAddressHasSuffix != nil {
+		predicates = append(predicates, potentialtender.ContactAddressHasSuffix(*i.ContactAddressHasSuffix))
+	}
+	if i.ContactAddressIsNil {
+		predicates = append(predicates, potentialtender.ContactAddressIsNil())
+	}
+	if i.ContactAddressNotNil {
+		predicates = append(predicates, potentialtender.ContactAddressNotNil())
+	}
+	if i.ContactAddressEqualFold != nil {
+		predicates = append(predicates, potentialtender.ContactAddressEqualFold(*i.ContactAddressEqualFold))
+	}
+	if i.ContactAddressContainsFold != nil {
+		predicates = append(predicates, potentialtender.ContactAddressContainsFold(*i.ContactAddressContainsFold))
 	}
 
 	switch len(predicates) {
